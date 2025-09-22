@@ -1,0 +1,204 @@
+erDiagram
+    %% Atomic CRM Database Entity Relationship Diagram
+    %% PostgreSQL 15 with Supabase Integration
+
+    %% Authentication Layer
+    AUTH_USERS {
+        uuid id PK "Supabase Auth"
+        text email
+        jsonb raw_user_meta_data
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    %% Core User Management
+    SALES {
+        bigint id PK "IDENTITY"
+        text first_name "NOT NULL"
+        text last_name "NOT NULL"
+        text email "NOT NULL"
+        uuid user_id FK "UNIQUE, NOT NULL"
+        boolean administrator "NOT NULL"
+        jsonb avatar
+        boolean disabled "DEFAULT FALSE"
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    %% Business Entities
+    COMPANIES {
+        bigint id PK "IDENTITY"
+        timestamptz created_at "DEFAULT now()"
+        text name "NOT NULL"
+        text sector
+        smallint size
+        text linkedin_url
+        text website
+        text phone_number
+        text address
+        text zipcode
+        text city
+        text stateAbbr
+        bigint sales_id FK
+        json context_links
+        text country
+        text description
+        text revenue
+        text tax_identifier
+        jsonb logo
+    }
+
+    CONTACTS {
+        bigint id PK "IDENTITY"
+        text first_name
+        text last_name
+        text gender
+        text title
+        jsonb email_jsonb "EVOLVED FIELD"
+        jsonb phone_jsonb "EVOLVED FIELD"
+        text background
+        jsonb avatar
+        timestamptz first_seen
+        timestamptz last_seen
+        boolean has_newsletter
+        text status
+        bigint_array tags "ARRAY REFERENCE"
+        bigint company_id FK
+        bigint sales_id FK
+        text linkedin_url
+    }
+
+    DEALS {
+        bigint id PK "IDENTITY"
+        text name "NOT NULL"
+        bigint company_id FK
+        bigint_array contact_ids "ARRAY REFERENCE"
+        text category
+        text stage "NOT NULL"
+        text description
+        bigint amount
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz archived_at
+        timestamptz expected_closing_date
+        bigint sales_id FK
+        smallint index
+    }
+
+    TAGS {
+        bigint id PK "IDENTITY"
+        text name "NOT NULL"
+        text color "SEMANTIC COLORS CHECK"
+    }
+
+    TASKS {
+        bigint id PK "IDENTITY"
+        bigint contact_id FK "NOT NULL"
+        text type
+        text text
+        timestamptz due_date "NOT NULL"
+        timestamptz done_date
+        bigint sales_id FK
+    }
+
+    CONTACT_NOTES {
+        bigint id PK "IDENTITY"
+        bigint contact_id FK "NOT NULL"
+        text text
+        timestamptz date "DEFAULT now()"
+        bigint sales_id FK
+        text status
+        jsonb_array attachments "ARRAY"
+    }
+
+    DEAL_NOTES {
+        bigint id PK "IDENTITY"
+        bigint deal_id FK "NOT NULL"
+        text type
+        text text
+        timestamptz date "DEFAULT now()"
+        bigint sales_id FK
+        jsonb_array attachments "ARRAY"
+    }
+
+    %% Performance Views
+    COMPANIES_SUMMARY {
+        view_type VIEW "Performance View"
+        text description "All company fields + nb_deals + nb_contacts"
+        text source "companies + deals + contacts"
+    }
+
+    CONTACTS_SUMMARY {
+        view_type VIEW "Performance View"
+        text description "All contact fields + company_name + nb_tasks"
+        text source "contacts + tasks + companies"
+        text fts_fields "email_fts, phone_fts"
+    }
+
+    INIT_STATE {
+        view_type VIEW "System State View"
+        bigint is_initialized "COUNT(sales.id)"
+        text purpose "Check if system has users"
+    }
+
+    %% Storage
+    STORAGE_BUCKETS {
+        text bucket_name "attachments"
+        boolean public "true"
+        text rls_policies "SELECT/INSERT/DELETE authenticated"
+    }
+
+    %% Relationships
+
+    %% Authentication Flow
+    AUTH_USERS ||--|| SALES : "user_id (triggers)"
+
+    %% Sales-Centric Relationships
+    SALES ||--o{ COMPANIES : "sales_id"
+    SALES ||--o{ CONTACTS : "sales_id"
+    SALES ||--o{ DEALS : "sales_id"
+    SALES ||--o{ TASKS : "sales_id"
+    SALES ||--o{ CONTACT_NOTES : "sales_id"
+    SALES ||--o{ DEAL_NOTES : "sales_id"
+
+    %% Business Entity Relationships
+    COMPANIES ||--o{ CONTACTS : "company_id"
+    COMPANIES ||--o{ DEALS : "company_id"
+    CONTACTS ||--o{ TASKS : "contact_id"
+    CONTACTS ||--o{ CONTACT_NOTES : "contact_id"
+    DEALS ||--o{ DEAL_NOTES : "deal_id"
+
+    %% Array Relationships (Many-to-Many)
+    DEALS }o--o{ CONTACTS : "contact_ids array"
+    CONTACTS }o--o{ TAGS : "tags array"
+
+    %% View Dependencies
+    COMPANIES ||--o{ COMPANIES_SUMMARY : "source"
+    DEALS ||--o{ COMPANIES_SUMMARY : "source"
+    CONTACTS ||--o{ COMPANIES_SUMMARY : "source"
+
+    CONTACTS ||--o{ CONTACTS_SUMMARY : "source"
+    TASKS ||--o{ CONTACTS_SUMMARY : "source"
+
+    SALES ||--o{ INIT_STATE : "source"
+
+    %% Annotations
+    %%{wrap}%%
+    %% RLS Security: All tables have Row Level Security enabled
+    %% Policy Pattern: Authenticated users have full CRUD access
+    %%
+    %% JSONB Evolution:
+    %% - contacts.email_jsonb: [{"email": "user@example.com", "type": "Work"}]
+    %% - contacts.phone_jsonb: [{"number": "555-1234", "type": "Mobile"}]
+    %%
+    %% Tag Colors: Migrated from hex to semantic identifiers
+    %% Valid colors: 'warm', 'green', 'teal', 'blue', 'purple', 'yellow', 'gray', 'pink'
+    %%
+    %% Database Triggers:
+    %% - handle_new_user(): Auto-creates sales record
+    %% - handle_update_user(): Syncs sales data
+    %%
+    %% Cascade Rules:
+    %% - Most FK: ON UPDATE CASCADE ON DELETE CASCADE
+    %% - Sales FK: Preserve data on user deletion
+    %%{/wrap}%%

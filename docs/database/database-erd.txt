@@ -1,0 +1,264 @@
+================================================================================
+                        ATOMIC CRM - DATABASE ERD
+                     PostgreSQL 15 with Supabase Integration
+================================================================================
+
+LEGEND:
+  [PK] = Primary Key    [FK] = Foreign Key    [U] = Unique
+  [RLS] = Row Level Security Enabled
+  {JSONB} = JSONB Column    [ARRAY] = Array Column
+  [VIEW] = Database View    [TRIGGER] = Has Triggers
+  ──→ = One-to-Many     ←──→ = Many-to-Many    ~~~> = Array Reference
+
+================================================================================
+                            AUTHENTICATION LAYER
+================================================================================
+
+┌─────────────────────────────┐
+│        auth.users           │  ← Supabase Auth System
+│        (Supabase)           │
+├─────────────────────────────┤
+│ [PK] id (uuid)             │
+│     email (text)           │
+│     raw_user_meta_data     │
+│     created_at             │
+│     updated_at             │
+└─────────────────────────────┘
+              │
+              ▼ [TRIGGER: on_auth_user_created]
+              ▼ [TRIGGER: on_auth_user_updated]
+
+================================================================================
+                              CORE ENTITIES
+================================================================================
+
+┌─────────────────────────────┐
+│           sales             │ [RLS] ← User Management Hub
+│        [TRIGGER]            │
+├─────────────────────────────┤
+│ [PK] id (bigint IDENTITY)  │
+│     first_name (text) NN   │
+│     last_name (text) NN    │
+│     email (text) NN        │
+│ [FK] user_id (uuid) NN [U] │ ──→ auth.users(id)
+│     administrator (bool)    │
+│     avatar {JSONB}         │
+│     disabled (bool)        │
+│     created_at             │
+│     updated_at             │
+└─────────────────────────────┘
+              │
+              ▼ (sales_id FK in all business entities)
+              │
+    ┌─────────┼─────────┬─────────────┬─────────────┐
+    │         │         │             │             │
+    ▼         ▼         ▼             ▼             ▼
+
+┌─────────────────────────────┐  ┌─────────────────────────────┐
+│         companies           │  │          contacts           │
+│           [RLS]             │  │         [RLS] [VIEW]        │
+├─────────────────────────────┤  ├─────────────────────────────┤
+│ [PK] id (bigint IDENTITY)  │  │ [PK] id (bigint IDENTITY)  │
+│     created_at (timestamptz)│  │     first_name (text)      │
+│     name (text) NN         │  │     last_name (text)       │
+│     sector (text)          │  │     gender (text)          │
+│     size (smallint)        │  │     title (text)           │
+│     linkedin_url (text)    │  │     email_jsonb {JSONB} ★  │ ← EVOLVED
+│     website (text)         │  │     phone_jsonb {JSONB} ★  │ ← EVOLVED
+│     phone_number (text)    │  │     background (text)      │
+│     address (text)         │  │     avatar {JSONB}         │
+│     zipcode (text)         │  │     first_seen (timestamptz)│
+│     city (text)            │  │     last_seen (timestamptz) │
+│     stateAbbr (text)       │  │     has_newsletter (bool)  │
+│ [FK] sales_id (bigint)     │  │     status (text)          │
+│     context_links (json)   │  │     tags [ARRAY bigint]    │ ~~~> tags(id)
+│     country (text)         │  │ [FK] company_id (bigint)   │ ──→ companies(id)
+│     description (text)     │  │ [FK] sales_id (bigint)     │ ──→ sales(id)
+│     revenue (text)         │  │     linkedin_url (text)    │
+│     tax_identifier (text)  │  └─────────────────────────────┘
+│     logo {JSONB}           │              │
+└─────────────────────────────┘              │
+              │                              │
+              ▼                              ▼
+┌─────────────────────────────┐      ┌─────────────────────────────┐
+│          deals              │      │          tasks              │
+│         [RLS]               │      │         [RLS]               │
+├─────────────────────────────┤      ├─────────────────────────────┤
+│ [PK] id (bigint IDENTITY)  │      │ [PK] id (bigint IDENTITY)  │
+│     name (text) NN         │      │ [FK] contact_id (bigint) NN│ ──→ contacts(id)
+│ [FK] company_id (bigint)   │ ──→  │     type (text)            │
+│     contact_ids [ARRAY]    │ ~~~> │     text (text)            │
+│     category (text)        │      │     due_date (timestamptz) │
+│     stage (text) NN        │      │     done_date (timestamptz)│
+│     description (text)     │      │ [FK] sales_id (bigint)     │ ──→ sales(id)
+│     amount (bigint)        │      └─────────────────────────────┘
+│     created_at (timestamptz)│
+│     updated_at (timestamptz)│      ┌─────────────────────────────┐
+│     archived_at (timestamptz)│     │          tags               │
+│     expected_closing_date   │      │         [RLS]               │
+│ [FK] sales_id (bigint)     │ ──→  ├─────────────────────────────┤
+│     index (smallint)       │      │ [PK] id (bigint IDENTITY)  │
+└─────────────────────────────┘      │     name (text) NN         │
+              │                      │     color (text) NN ★      │ ← SEMANTIC
+              │                      └─────────────────────────────┘
+              ▼                      │
+┌─────────────────────────────┐      │ CHECK: color IN ('warm','green',
+│        dealNotes            │      │        'teal','blue','purple',
+│         [RLS]               │      │        'yellow','gray','pink')
+├─────────────────────────────┤      │
+│ [PK] id (bigint IDENTITY)  │      │
+│ [FK] deal_id (bigint) NN   │ ──→  │
+│     type (text)            │      │
+│     text (text)            │      │
+│     date (timestamptz)     │      │
+│ [FK] sales_id (bigint)     │ ──→  │
+│     attachments [JSONB[]]  │      │
+└─────────────────────────────┘      │
+                                     │
+┌─────────────────────────────┐      │
+│       contactNotes          │      │
+│         [RLS]               │      │
+├─────────────────────────────┤      │
+│ [PK] id (bigint IDENTITY)  │      │
+│ [FK] contact_id (bigint) NN│ ──→  │
+│     text (text)            │      │
+│     date (timestamptz)     │      │
+│ [FK] sales_id (bigint)     │ ──→  │
+│     status (text)          │      │
+│     attachments [JSONB[]]  │      │
+└─────────────────────────────┘      │
+
+================================================================================
+                            PERFORMANCE VIEWS
+================================================================================
+
+┌─────────────────────────────┐      ┌─────────────────────────────┐
+│     companies_summary       │      │     contacts_summary        │
+│         [VIEW]              │      │         [VIEW]              │
+├─────────────────────────────┤      ├─────────────────────────────┤
+│ Aggregates:                 │      │ Aggregates:                 │
+│ • All company fields        │      │ • All contact fields        │
+│ • nb_deals (count)          │      │ • company_name (JOIN)       │
+│ • nb_contacts (count)       │      │ • nb_tasks (count)          │
+│                             │      │ • email_fts (search opt)    │
+│ Source: companies + deals   │      │ • phone_fts (search opt)    │
+│         + contacts          │      │                             │
+└─────────────────────────────┘      │ Source: contacts + tasks    │
+                                     │         + companies         │
+┌─────────────────────────────┐      └─────────────────────────────┘
+│         init_state          │
+│         [VIEW]              │
+├─────────────────────────────┤
+│ is_initialized (count)      │
+│                             │
+│ Source: sales table         │
+│ Purpose: Check if any       │
+│          users exist        │
+└─────────────────────────────┘
+
+================================================================================
+                            STORAGE & FILES
+================================================================================
+
+┌─────────────────────────────┐
+│      Storage Buckets        │
+│       (Supabase)            │
+├─────────────────────────────┤
+│ • attachments (public)      │
+│   - RLS Policies:           │
+│     * SELECT authenticated  │
+│     * INSERT authenticated  │
+│     * DELETE authenticated  │
+└─────────────────────────────┘
+
+================================================================================
+                           EVOLUTION HISTORY
+================================================================================
+
+★ JSONB EVOLUTION - Contact Communication Data:
+
+  Migration 20250109152531: email → email_jsonb
+  Format: [{"email": "user@example.com", "type": "Other"}]
+
+  Migration 20250113132531: phone_1_number, phone_1_type,
+                           phone_2_number, phone_2_type → phone_jsonb
+  Format: [{"number": "555-1234", "type": "Work"}]
+
+★ TAG COLOR EVOLUTION:
+
+  Migration 20241221120000: hex colors → semantic identifiers
+  Mapping: #eddcd2 → 'warm', #fff1e6 → 'yellow', etc.
+  Backup: tags_color_backup table for rollback
+
+================================================================================
+                           SECURITY ARCHITECTURE
+================================================================================
+
+RLS POLICY PATTERN (All Tables):
+├─── SELECT: "Enable read access for authenticated users" USING (true)
+├─── INSERT: "Enable insert for authenticated users only" WITH CHECK (true)
+├─── UPDATE: "Enable update for authenticated users only" USING (true)
+└─── DELETE: "[Table] Delete Policy" USING (true)
+
+SECURITY MODEL: Single-tenant with authenticated user access
+- All authenticated users can access all data
+- Sales-centric ownership through foreign key relationships
+- File storage protected by bucket-level RLS policies
+
+DATABASE FUNCTIONS:
+├─── handle_new_user(): Auto-creates sales record on auth.user insert
+├─── handle_update_user(): Syncs sales data with auth.user changes
+└─── Triggers: on_auth_user_created, on_auth_user_updated
+
+================================================================================
+                           RELATIONSHIP SUMMARY
+================================================================================
+
+Core Relationships:
+• sales (1) ──→ (M) companies, contacts, deals, tasks, notes
+• companies (1) ──→ (M) contacts
+• companies (1) ──→ (M) deals
+• contacts (1) ──→ (M) tasks
+• contacts (1) ──→ (M) contactNotes
+• deals (1) ──→ (M) dealNotes
+• deals (M) ~~~> (M) contacts via contact_ids array
+• contacts (M) ~~~> (M) tags via tags array
+
+Special Relationships:
+• auth.users ──→ sales (via triggers, unique constraint)
+• All business entities ──→ sales (sales_id foreign key)
+• Summary views aggregate from multiple tables
+
+Cascade Rules:
+• Most FK relationships: ON UPDATE CASCADE ON DELETE CASCADE
+• Sales relationships: ON DELETE SET NULL (preserve data)
+• Auth integration: Protected by unique constraint
+
+================================================================================
+                         TECHNICAL SPECIFICATIONS
+================================================================================
+
+Database: PostgreSQL 15 (via Supabase)
+Primary Keys: bigint GENERATED BY DEFAULT AS IDENTITY
+Foreign Keys: bigint with explicit cascade rules
+Indexes: Unique indexes on all primary keys
+Special Types: JSONB, arrays, timestamptz
+
+Configuration (supabase/config.toml):
+• Project ID: atomic-crm-demo
+• API Port: 54321
+• DB Port: 54322
+• Studio Port: 54323
+• File Size Limit: 50MiB
+• Major Version: 15
+
+Environment Variables Required:
+• VITE_SUPABASE_URL
+• VITE_SUPABASE_ANON_KEY
+• VITE_IS_DEMO (toggles FakeRest vs Supabase provider)
+
+Migration Files Location: /supabase/migrations/
+
+================================================================================
+                               END OF ERD
+================================================================================
