@@ -38,6 +38,25 @@ export const defaultDealCategories = [
   "Website design",
 ];
 
+export const defaultOpportunityStages = [
+  { value: "lead", label: "Lead" },
+  { value: "qualified", label: "Qualified" },
+  { value: "needs_analysis", label: "Needs Analysis" },
+  { value: "proposal", label: "Proposal" },
+  { value: "negotiation", label: "Negotiation" },
+  { value: "closed_won", label: "Closed Won" },
+  { value: "closed_lost", label: "Closed Lost" },
+  { value: "nurturing", label: "Nurturing" },
+];
+
+export const defaultOpportunityCategories = [
+  "Other",
+  "Copywriting",
+  "Print project",
+  "UI Design",
+  "Website design",
+];
+
 export const defaultNoteStatuses = [
   { value: "cold", label: "Cold", color: "var(--info-default)" },
   { value: "warm", label: "Warm", color: "var(--warning-default)" },

@@ -5,6 +5,7 @@ import type {
   DataProvider,
   GetListParams,
   Identifier,
+  RaRecord,
   ResourceCallbacks,
   UpdateParams,
 } from "ra-core";
@@ -12,8 +13,12 @@ import { withLifecycleCallbacks } from "ra-core";
 import type {
   Contact,
   ContactNote,
-  Deal,
-  DealNote,
+  ContactOrganization,
+  // Deal, // REMOVED - use Opportunity
+  // DealNote, // REMOVED - use OpportunityNote
+  Opportunity,
+  OpportunityNote,
+  OpportunityParticipant,
   RAFile,
   Sale,
   SalesFormData,
@@ -26,10 +31,12 @@ import {
   isLegacyHexColor,
 } from "../../tags/tag-colors";
 import { getActivityLog } from "../commons/activity";
+// import { withBackwardCompatibility } from "../commons/backwardCompatibility"; // REMOVED - NO BACKWARD COMPATIBILITY
 import { getCompanyAvatar } from "../commons/getCompanyAvatar";
 import { getContactAvatar } from "../commons/getContactAvatar";
 import { getIsInitialized } from "./authProvider";
 import { supabase } from "./supabase";
+import { getResourceName, getSearchableFields, RESOURCE_LIFECYCLE_CONFIG } from "./resources";
 
 if (import.meta.env.VITE_SUPABASE_URL === undefined) {
   throw new Error("Please set the VITE_SUPABASE_URL environment variable");
@@ -86,27 +93,73 @@ async function processContactAvatar(
   return { ...params, data: newData };
 }
 
+// Transformation functions moved to commons/backwardCompatibility.ts
+
 const dataProviderWithCustomMethods = {
   ...baseDataProvider,
-  async getList(resource: string, params: GetListParams) {
+  async getList<RecordType extends RaRecord = any>(resource: string, params: GetListParams): Promise<any> {
+    // Map resource names through the resource mapping
+    const actualResource = getResourceName(resource);
+
+    // Use summary views for optimized queries
+    if (resource === "opportunities") {
+      return baseDataProvider.getList("opportunities_summary", params);
+    }
+
     if (resource === "companies") {
       return baseDataProvider.getList("companies_summary", params);
     }
+
     if (resource === "contacts") {
       return baseDataProvider.getList("contacts_summary", params);
     }
 
-    return baseDataProvider.getList(resource, params);
+    return baseDataProvider.getList(actualResource, params);
   },
-  async getOne(resource: string, params: any) {
+  async getOne<RecordType extends RaRecord = any>(resource: string, params: any): Promise<any> {
+    // Map resource names through the resource mapping
+    const actualResource = getResourceName(resource);
+
+    // Use summary views for optimized queries
+    if (resource === "opportunities") {
+      return baseDataProvider.getOne("opportunities_summary", params);
+    }
+
     if (resource === "companies") {
       return baseDataProvider.getOne("companies_summary", params);
     }
+
     if (resource === "contacts") {
       return baseDataProvider.getOne("contacts_summary", params);
     }
 
-    return baseDataProvider.getOne(resource, params);
+    return baseDataProvider.getOne(actualResource, params);
+  },
+  async create<RecordType extends Omit<RaRecord, "id"> = any>(
+    resource: string,
+    params: CreateParams<RecordType>
+  ): Promise<any> {
+    // Map resource names through the resource mapping
+    const actualResource = getResourceName(resource);
+    return baseDataProvider.create(actualResource, params);
+  },
+  async update<RecordType extends RaRecord = any>(
+    resource: string,
+    params: UpdateParams<RecordType>
+  ): Promise<any> {
+    // Map resource names through the resource mapping
+    const actualResource = getResourceName(resource);
+    return baseDataProvider.update(actualResource, params);
+  },
+  async delete(resource: string, params: any): Promise<any> {
+    // Map resource names through the resource mapping
+    const actualResource = getResourceName(resource);
+    return baseDataProvider.delete(actualResource, params);
+  },
+  async deleteMany(resource: string, params: any): Promise<any> {
+    // Map resource names through the resource mapping
+    const actualResource = getResourceName(resource);
+    return baseDataProvider.deleteMany(actualResource, params);
   },
 
   async signUp({ email, password, first_name, last_name }: SignUpData) {
@@ -194,27 +247,29 @@ const dataProviderWithCustomMethods = {
 
     return passwordUpdated;
   },
-  async unarchiveDeal(deal: Deal) {
-    // get all deals where stage is the same as the deal to unarchive
-    const { data: deals } = await baseDataProvider.getList<Deal>("deals", {
-      filter: { stage: deal.stage },
+  // unarchiveDeal: REMOVED - use unarchiveOpportunity
+  async unarchiveOpportunity(opportunity: Opportunity) {
+    // get all opportunities where stage is the same as the opportunity to unarchive
+    const { data: opportunities } = await baseDataProvider.getList<Opportunity>("opportunities", {
+      filter: { stage: opportunity.stage },
       pagination: { page: 1, perPage: 1000 },
       sort: { field: "index", order: "ASC" },
     });
 
-    // set index for each deal starting from 1, if the deal to unarchive is found, set its index to the last one
-    const updatedDeals = deals.map((d, index) => ({
-      ...d,
-      index: d.id === deal.id ? 0 : index + 1,
-      archived_at: d.id === deal.id ? null : d.archived_at,
+    // set index for each opportunity starting from 1, if the opportunity to unarchive is found, set its index to the last one
+    const updatedOpportunities = opportunities.map((o, index) => ({
+      ...o,
+      index: o.id === opportunity.id ? 0 : index + 1,
+      deleted_at: o.id === opportunity.id ? null : o.deleted_at,
+      archived_at: o.id === opportunity.id ? null : o.archived_at, // backward compatibility
     }));
 
     return await Promise.all(
-      updatedDeals.map((updatedDeal) =>
-        baseDataProvider.update("deals", {
-          id: updatedDeal.id,
-          data: updatedDeal,
-          previousData: deals.find((d) => d.id === updatedDeal.id),
+      updatedOpportunities.map((updatedOpportunity) =>
+        baseDataProvider.update("opportunities", {
+          id: updatedOpportunity.id,
+          data: updatedOpportunity,
+          previousData: opportunities.find((o) => o.id === updatedOpportunity.id),
         }),
       ),
     );
@@ -225,12 +280,153 @@ const dataProviderWithCustomMethods = {
   async isInitialized() {
     return getIsInitialized();
   },
-} satisfies DataProvider;
+  // Junction table support for contact-organization relationships
+  async getContactOrganizations(contactId: Identifier) {
+    const { data } = await supabase
+      .from('contact_organizations')
+      .select(`
+        *,
+        organization:companies(*)
+      `)
+      .eq('contact_id', contactId);
+
+    return { data: data || [] };
+  },
+  async addContactToOrganization(contactId: Identifier, organizationId: Identifier, params: Partial<ContactOrganization> = {}) {
+    const { data, error } = await supabase
+      .from('contact_organizations')
+      .insert({
+        contact_id: contactId,
+        organization_id: organizationId,
+        is_primary_contact: params.is_primary_contact || false,
+        purchase_influence: params.purchase_influence || 'Unknown',
+        decision_authority: params.decision_authority || 'End User',
+        role: params.role,
+        created_at: new Date().toISOString(),
+        ...params
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Failed to add contact to organization: ${error.message}`);
+    }
+
+    return { data };
+  },
+  async removeContactFromOrganization(contactId: Identifier, organizationId: Identifier) {
+    const { error } = await supabase
+      .from('contact_organizations')
+      .delete()
+      .eq('contact_id', contactId)
+      .eq('organization_id', organizationId);
+
+    if (error) {
+      throw new Error(`Failed to remove contact from organization: ${error.message}`);
+    }
+
+    return { data: { id: `${contactId}-${organizationId}` } };
+  },
+  // Opportunity participants support
+  async getOpportunityParticipants(opportunityId: Identifier) {
+    const { data } = await supabase
+      .from('opportunity_participants')
+      .select(`
+        *,
+        organization:companies(*)
+      `)
+      .eq('opportunity_id', opportunityId);
+
+    return { data: data || [] };
+  },
+  async addOpportunityParticipant(opportunityId: Identifier, organizationId: Identifier, params: Partial<OpportunityParticipant> = {}) {
+    const { data, error } = await supabase
+      .from('opportunity_participants')
+      .insert({
+        opportunity_id: opportunityId,
+        organization_id: organizationId,
+        role: params.role || 'customer',
+        is_primary: params.is_primary || false,
+        commission_rate: params.commission_rate,
+        territory: params.territory,
+        notes: params.notes,
+        created_at: new Date().toISOString(),
+        ...params
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Failed to add opportunity participant: ${error.message}`);
+    }
+
+    return { data };
+  },
+  async removeOpportunityParticipant(opportunityId: Identifier, organizationId: Identifier) {
+    const { error } = await supabase
+      .from('opportunity_participants')
+      .delete()
+      .eq('opportunity_id', opportunityId)
+      .eq('organization_id', organizationId);
+
+    if (error) {
+      throw new Error(`Failed to remove opportunity participant: ${error.message}`);
+    }
+
+    return { data: { id: `${opportunityId}-${organizationId}` } };
+  },
+  // Opportunity contacts support (many-to-many)
+  async getOpportunityContacts(opportunityId: Identifier) {
+    const { data } = await supabase
+      .from('opportunity_contacts')
+      .select(`
+        *,
+        contact:contacts(*)
+      `)
+      .eq('opportunity_id', opportunityId);
+
+    return { data: data || [] };
+  },
+  async addOpportunityContact(opportunityId: Identifier, contactId: Identifier, params: any = {}) {
+    const { data, error } = await supabase
+      .from('opportunity_contacts')
+      .insert({
+        opportunity_id: opportunityId,
+        contact_id: contactId,
+        role: params.role,
+        is_primary: params.is_primary || false,
+        created_at: new Date().toISOString(),
+        ...params
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Failed to add opportunity contact: ${error.message}`);
+    }
+
+    return { data };
+  },
+  async removeOpportunityContact(opportunityId: Identifier, contactId: Identifier) {
+    const { error } = await supabase
+      .from('opportunity_contacts')
+      .delete()
+      .eq('opportunity_id', opportunityId)
+      .eq('contact_id', contactId);
+
+    if (error) {
+      throw new Error(`Failed to remove opportunity contact: ${error.message}`);
+    }
+
+    return { data: { id: `${opportunityId}-${contactId}` } };
+  },
+} as any;
 
 export type CrmDataProvider = typeof dataProviderWithCustomMethods;
 
+// NO BACKWARD COMPATIBILITY - Direct export without wrapper
 export const dataProvider = withLifecycleCallbacks(
-  dataProviderWithCustomMethods,
+    dataProviderWithCustomMethods,
   [
     {
       resource: "contactNotes",
@@ -243,9 +439,10 @@ export const dataProvider = withLifecycleCallbacks(
         return data;
       },
     },
+    // ResourceCallbacks for "dealNotes" REMOVED - use "opportunityNotes"
     {
-      resource: "dealNotes",
-      beforeSave: async (data: DealNote, _, __) => {
+      resource: "opportunityNotes",
+      beforeSave: async (data: OpportunityNote, _, __) => {
         if (data.attachments) {
           for (const fi of data.attachments) {
             await uploadToBucket(fi);
@@ -293,6 +490,8 @@ export const dataProvider = withLifecycleCallbacks(
           "zipcode",
           "city",
           "stateAbbr",
+          "description",
+          "segment",
         ])(params);
       },
       beforeCreate: async (params) => {
@@ -311,6 +510,21 @@ export const dataProvider = withLifecycleCallbacks(
       },
     },
     {
+      resource: "companies_summary",
+      beforeGetList: async (params) => {
+        return applyFullTextSearch([
+          "name",
+          "phone_number",
+          "website",
+          "zipcode",
+          "city",
+          "stateAbbr",
+          "description",
+          "segment",
+        ])(params);
+      },
+    },
+    {
       resource: "contacts_summary",
       beforeGetList: async (params) => {
         return applyFullTextSearch(["first_name", "last_name"])(params);
@@ -320,6 +534,18 @@ export const dataProvider = withLifecycleCallbacks(
       resource: "deals",
       beforeGetList: async (params) => {
         return applyFullTextSearch(["name", "type", "description"])(params);
+      },
+    },
+    {
+      resource: "opportunities",
+      beforeGetList: async (params) => {
+        return applyFullTextSearch(["name", "category", "description", "next_action"])(params);
+      },
+    },
+    {
+      resource: "opportunities_summary",
+      beforeGetList: async (params) => {
+        return applyFullTextSearch(["name", "category", "description"])(params);
       },
     },
     {
@@ -377,10 +603,15 @@ const applyFullTextSearch = (columns: string[]) => (params: GetListParams) => {
     return params;
   }
   const { q, ...filter } = params.filter;
+
+  // Apply soft delete filter automatically for supported resources
+  const softDeleteFilter = params.filter?.includeDeleted ? {} : { deleted_at: null };
+
   return {
     ...params,
     filter: {
       ...filter,
+      ...softDeleteFilter,
       "@or": columns.reduce((acc, column) => {
         if (column === "email")
           return {

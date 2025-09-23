@@ -17,7 +17,7 @@ import { isLinkedinUrl } from "../misc/isLinkedInUrl";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Sale } from "../types";
 import { Avatar } from "./Avatar";
-import { AutocompleteCompanyInput } from "@/atomic-crm/companies/AutocompleteCompanyInput.tsx";
+import { MultiOrganizationInput } from "./MultiOrganizationInput";
 
 export const ContactInputs = () => {
   const isMobile = useIsMobile();
@@ -69,9 +69,10 @@ const ContactPositionInputs = () => {
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Position</h6>
       <TextInput source="title" helperText={false} />
-      <ReferenceInput source="company_id" reference="companies">
-        <AutocompleteCompanyInput />
-      </ReferenceInput>
+      <TextInput source="department" label="Department" helperText={false} />
+
+      {/* Multi-Organization Support */}
+      <MultiOrganizationInput />
     </div>
   );
 };

@@ -48,6 +48,14 @@ export const generateCompanies = (db: Db, size = 55): Required<Company>[] => {
       tax_identifier: random.alphaNumeric(10),
       country: random.arrayElement(["USA", "France", "UK"]),
       context_links: [],
+      // New organization fields
+      organization_type: random.arrayElement(['customer', 'principal', 'distributor', 'prospect', 'vendor', 'partner', 'unknown']) as Company['organization_type'],
+      is_principal: datatype.boolean(),
+      is_distributor: datatype.boolean(),
+      parent_company_id: datatype.boolean() ? datatype.number({ min: 0, max: size - 1 }) : undefined,
+      segment: datatype.boolean() ? random.arrayElement(['Enterprise', 'SMB', 'Startup', 'Government']) : undefined,
+      priority: random.arrayElement(['A', 'B', 'C', 'D']) as Company['priority'],
+      deleted_at: undefined,
     };
   });
 };

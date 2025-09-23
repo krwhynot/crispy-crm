@@ -75,8 +75,8 @@ const CompanyShowContent = () => {
                 {record.nb_deals ? (
                   <TabsTrigger value="deals">
                     {record.nb_deals === 1
-                      ? "1 deal"
-                      : `${record.nb_deals} deals`}
+                      ? "1 opportunity"
+                      : `${record.nb_deals} opportunities`}
                   </TabsTrigger>
                 ) : null}
               </TabsList>

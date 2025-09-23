@@ -9,6 +9,7 @@ import companies from "../companies";
 import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
 import deals from "../deals";
+import opportunities from "../opportunities";
 import { Layout } from "../layout/Layout";
 import { SignupPage } from "../login/SignupPage";
 import {
@@ -19,6 +20,7 @@ import {
   authProvider as fakeRestAuthProvider,
   dataProvider as fakeRestDataProvider,
 } from "../providers/fakerest";
+import { handleDealUrlRedirect } from "../providers/commons/backwardCompatibility";
 
 // Use FakeRest provider in demo mode, Supabase otherwise
 const isDemoMode = import.meta.env.VITE_IS_DEMO === "true";
@@ -37,6 +39,8 @@ import {
   defaultDealStages,
   defaultLightModeLogo,
   defaultNoteStatuses,
+  defaultOpportunityCategories,
+  defaultOpportunityStages,
   defaultTaskTypes,
   defaultTitle,
 } from "./defaultConfiguration";
@@ -59,9 +63,13 @@ export type CRMProps = {
  * @param {Array<ContactGender>} contactGender - The gender options for contacts used in the application.
  * @param {string[]} companySectors - The list of company sectors used in the application.
  * @param {RaThemeOptions} darkTheme - The theme to use when the application is in dark mode.
- * @param {string[]} dealCategories - The categories of deals used in the application.
- * @param {string[]} dealPipelineStatuses - The statuses of deals in the pipeline used in the application.
- * @param {DealStage[]} dealStages - The stages of deals used in the application.
+ * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
+ * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
+ * @param {string[]} dealCategories - The categories of deals used in the application (deprecated, use opportunityCategories).
+ * @param {string[]} dealPipelineStatuses - The statuses of deals in the pipeline used in the application (deprecated, use opportunityStages).
+ * @param {DealStage[]} dealStages - The stages of deals used in the application (deprecated, use opportunityStages).
+ * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
+ * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
  * @param {RaThemeOptions} lightTheme - The theme to use when the application is in light mode.
  * @param {string} logo - The logo used in the CRM application.
  * @param {NoteStatus[]} noteStatuses - The statuses of notes used in the application.
@@ -95,6 +103,8 @@ export const CRM = ({
   dealCategories = defaultDealCategories,
   dealPipelineStatuses = defaultDealPipelineStatuses,
   dealStages = defaultDealStages,
+  opportunityCategories = defaultOpportunityCategories,
+  opportunityStages = defaultOpportunityStages,
   darkModeLogo = defaultDarkModeLogo,
   lightModeLogo = defaultLightModeLogo,
   noteStatuses = defaultNoteStatuses,
@@ -105,6 +115,11 @@ export const CRM = ({
   disableTelemetry,
   ...rest
 }: CRMProps) => {
+  // Handle backward compatibility URL redirects for /deals/* to /opportunities/*
+  useEffect(() => {
+    handleDealUrlRedirect();
+  }, []);
+
   useEffect(() => {
     if (
       disableTelemetry ||
@@ -126,6 +141,8 @@ export const CRM = ({
       dealCategories={dealCategories}
       dealPipelineStatuses={dealPipelineStatuses}
       dealStages={dealStages}
+      opportunityCategories={opportunityCategories}
+      opportunityStages={opportunityStages}
       darkModeLogo={darkModeLogo}
       lightModeLogo={lightModeLogo}
       noteStatuses={noteStatuses}
@@ -157,10 +174,12 @@ export const CRM = ({
           <Route path={SettingsPage.path} element={<SettingsPage />} />
         </CustomRoutes>
         <Resource name="deals" {...deals} />
+        <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />
         <Resource name="companies" {...companies} />
         <Resource name="contactNotes" />
         <Resource name="dealNotes" />
+        <Resource name="opportunityNotes" />
         <Resource name="tasks" />
         <Resource name="sales" {...sales} />
         <Resource name="tags" />

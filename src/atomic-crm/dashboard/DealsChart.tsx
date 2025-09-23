@@ -90,7 +90,7 @@ export const DealsChart = memo(() => {
           <DollarSign className="text-muted-foreground w-6 h-6" />
         </div>
         <h2 className="text-xl font-semibold text-muted-foreground">
-          Upcoming Deal Revenue
+          Upcoming Opportunity Revenue
         </h2>
       </div>
       <div className="h-[400px]">

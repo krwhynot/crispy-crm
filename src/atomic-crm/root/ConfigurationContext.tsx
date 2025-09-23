@@ -11,6 +11,8 @@ import {
   defaultDealStages,
   defaultLightModeLogo,
   defaultNoteStatuses,
+  defaultOpportunityCategories,
+  defaultOpportunityStages,
   defaultTaskTypes,
   defaultTitle,
 } from "./defaultConfiguration";
@@ -21,6 +23,8 @@ export interface ConfigurationContextValue {
   dealCategories: string[];
   dealPipelineStatuses: string[];
   dealStages: DealStage[];
+  opportunityCategories: string[];
+  opportunityStages: { value: string; label: string }[];
   noteStatuses: NoteStatus[];
   taskTypes: string[];
   title: string;
@@ -39,6 +43,8 @@ export const ConfigurationContext = createContext<ConfigurationContextValue>({
   dealCategories: defaultDealCategories,
   dealPipelineStatuses: defaultDealPipelineStatuses,
   dealStages: defaultDealStages,
+  opportunityCategories: defaultOpportunityCategories,
+  opportunityStages: defaultOpportunityStages,
   noteStatuses: defaultNoteStatuses,
   taskTypes: defaultTaskTypes,
   title: defaultTitle,
@@ -53,6 +59,8 @@ export const ConfigurationProvider = ({
   dealCategories,
   dealPipelineStatuses,
   dealStages,
+  opportunityCategories,
+  opportunityStages,
   darkModeLogo,
   lightModeLogo,
   noteStatuses,
@@ -66,6 +74,8 @@ export const ConfigurationProvider = ({
       dealCategories,
       dealPipelineStatuses,
       dealStages,
+      opportunityCategories,
+      opportunityStages,
       darkModeLogo,
       lightModeLogo,
       noteStatuses,

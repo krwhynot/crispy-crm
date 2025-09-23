@@ -10,7 +10,8 @@ import fakeRestDataProvider from "ra-data-fakerest";
 import type {
   Company,
   Contact,
-  Deal,
+  // Deal, // REMOVED - use Opportunity
+  Opportunity,
   Sale,
   SalesFormData,
   SignUpData,
@@ -23,6 +24,7 @@ import {
   isLegacyHexColor,
 } from "../../tags/tag-colors";
 import { getActivityLog } from "../commons/activity";
+// import { withBackwardCompatibility } from "../commons/backwardCompatibility"; // REMOVED - NO BACKWARD COMPATIBILITY
 import { getCompanyAvatar } from "../commons/getCompanyAvatar";
 import { getContactAvatar } from "../commons/getContactAvatar";
 import type { CrmDataProvider } from "../types";
@@ -114,27 +116,28 @@ async function fetchAndUpdateCompanyData(
 
 const dataProviderWithCustomMethod: CrmDataProvider = {
   ...baseDataProvider,
-  unarchiveDeal: async (deal: Deal) => {
-    // get all deals where stage is the same as the deal to unarchive
-    const { data: deals } = await baseDataProvider.getList<Deal>("deals", {
-      filter: { stage: deal.stage },
+  // unarchiveDeal: REMOVED - use unarchiveOpportunity
+  unarchiveOpportunity: async (opportunity: Opportunity) => {
+    // get all opportunities where stage is the same as the opportunity to unarchive
+    const { data: opportunities } = await baseDataProvider.getList<Opportunity>("opportunities", {
+      filter: { stage: opportunity.stage },
       pagination: { page: 1, perPage: 1000 },
       sort: { field: "index", order: "ASC" },
     });
 
-    // set index for each deal starting from 1, if the deal to unarchive is found, set its index to the last one
-    const updatedDeals = deals.map((d, index) => ({
-      ...d,
-      index: d.id === deal.id ? 0 : index + 1,
-      archived_at: d.id === deal.id ? null : d.archived_at,
+    // set index for each opportunity starting from 1, if the opportunity to unarchive is found, set its index to the last one
+    const updatedOpportunities = opportunities.map((o, index) => ({
+      ...o,
+      index: o.id === opportunity.id ? 0 : index + 1,
+      deleted_at: o.id === opportunity.id ? null : o.deleted_at,
     }));
 
     return await Promise.all(
-      updatedDeals.map((updatedDeal) =>
-        dataProvider.update("deals", {
-          id: updatedDeal.id,
-          data: updatedDeal,
-          previousData: deals.find((d) => d.id === updatedDeal.id),
+      updatedOpportunities.map((updatedOpportunity) =>
+        dataProvider.update("opportunities", {
+          id: updatedOpportunity.id,
+          data: updatedOpportunity,
+          previousData: opportunities.find((o) => o.id === updatedOpportunity.id),
         }),
       ),
     );
@@ -246,8 +249,9 @@ async function updateCompany(
   });
 }
 
+// NO BACKWARD COMPATIBILITY - Direct export without wrapper
 export const dataProvider = withLifecycleCallbacks(
-  withSupabaseFilterAdapter(dataProviderWithCustomMethod),
+    withSupabaseFilterAdapter(dataProviderWithCustomMethod),
   [
     {
       resource: "sales",
@@ -275,7 +279,7 @@ export const dataProvider = withLifecycleCallbacks(
 
         const newSaleId = params.meta.identity.id as Identifier;
 
-        const [companies, contacts, contactNotes, deals] = await Promise.all([
+        const [companies, contacts, contactNotes, deals, opportunities] = await Promise.all([
           dataProvider.getList("companies", {
             filter: { sales_id: params.id },
             pagination: {
@@ -308,6 +312,14 @@ export const dataProvider = withLifecycleCallbacks(
             },
             sort: { field: "id", order: "ASC" },
           }),
+          dataProvider.getList("opportunities", {
+            filter: { sales_id: params.id },
+            pagination: {
+              page: 1,
+              perPage: 10_000,
+            },
+            sort: { field: "id", order: "ASC" },
+          }),
         ]);
 
         await Promise.all([
@@ -331,6 +343,12 @@ export const dataProvider = withLifecycleCallbacks(
           }),
           dataProvider.updateMany("deals", {
             ids: deals.data.map((company) => company.id),
+            data: {
+              sales_id: newSaleId,
+            },
+          }),
+          dataProvider.updateMany("opportunities", {
+            ids: opportunities.data.map((opportunity) => opportunity.id),
             data: {
               sales_id: newSaleId,
             },
@@ -466,8 +484,9 @@ export const dataProvider = withLifecycleCallbacks(
         return result;
       },
     } satisfies ResourceCallbacks<Company>,
+    // ResourceCallbacks for "deals" REMOVED - use "opportunities"
     {
-      resource: "deals",
+      resource: "opportunities",
       beforeCreate: async (params) => {
         return {
           ...params,
@@ -479,7 +498,7 @@ export const dataProvider = withLifecycleCallbacks(
         };
       },
       afterCreate: async (result) => {
-        await updateCompany(result.data.company_id, (company) => ({
+        await updateCompany(result.data.customer_organization_id || result.data.company_id, (company) => ({
           nb_deals: (company.nb_deals ?? 0) + 1,
         }));
 
@@ -495,13 +514,13 @@ export const dataProvider = withLifecycleCallbacks(
         };
       },
       afterDelete: async (result) => {
-        await updateCompany(result.data.company_id, (company) => ({
+        await updateCompany(result.data.customer_organization_id || result.data.company_id, (company) => ({
           nb_deals: (company.nb_deals ?? 1) - 1,
         }));
 
         return result;
       },
-    } satisfies ResourceCallbacks<Deal>,
+    } satisfies ResourceCallbacks<Opportunity>,
     {
       resource: "tags",
       beforeCreate: async (params) => {

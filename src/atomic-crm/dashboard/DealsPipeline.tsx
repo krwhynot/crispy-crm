@@ -1,6 +1,7 @@
 /**
- * This component displays the deals pipeline for the current user.
+ * This component displays the opportunities pipeline for the current user.
  * It's currently not used in the application but can be added to the dashboard.
+ * @deprecated Use OpportunitiesPipeline component instead
  */
 
 import { Card } from "@/components/ui/card";
@@ -28,19 +29,19 @@ export const DealsPipeline = () => {
     { enabled: Number.isInteger(identity?.id) },
   );
 
-  const getOrderedDeals = (data?: Deal[]): Deal[] | undefined => {
+  const getOrderedOpportunities = (data?: Deal[]): Deal[] | undefined => {
     if (!data) {
       return;
     }
-    const deals: Deal[] = [];
+    const opportunities: Deal[] = [];
     dealStages
       .filter((stage) => !dealPipelineStatuses.includes(stage.value))
       .forEach((stage) =>
         data
           .filter((deal) => deal.stage === stage.value)
-          .forEach((deal) => deals.push(deal)),
+          .forEach((deal) => opportunities.push(deal)),
       );
-    return deals;
+    return opportunities;
   };
 
   return (
@@ -51,16 +52,16 @@ export const DealsPipeline = () => {
         </div>
         <Link
           className="text-xl font-semibold text-muted-foreground hover:underline"
-          to="/deals"
+          to="/opportunities"
         >
-          Deals Pipeline
+          Opportunities Pipeline
         </Link>
       </div>
       <Card>
         <SimpleList<Deal>
           resource="deals"
           linkType="show"
-          data={getOrderedDeals(data)}
+          data={getOrderedOpportunities(data)}
           total={total}
           isPending={isPending}
           primaryText={(deal) => deal.name}

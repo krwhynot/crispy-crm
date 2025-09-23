@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { CheckSquare, Clock, Tag, TrendingUp, Users } from "lucide-react";
+import { Building2, CheckSquare, Clock, Tag, TrendingUp, Users } from "lucide-react";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 import { cn } from "@/lib/utils";
 
@@ -112,6 +112,57 @@ export const ContactListFilter = () => {
           className="w-full justify-between"
           label={"With pending tasks"}
           value={{ "nb_tasks@gt": 0 }}
+        />
+      </FilterCategory>
+
+      <FilterCategory icon={<TrendingUp />} label="Role">
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Decision Maker"
+          value={{ role: "decision_maker" }}
+        />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Influencer"
+          value={{ role: "influencer" }}
+        />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Champion"
+          value={{ role: "champion" }}
+        />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Executive"
+          value={{ role: "executive" }}
+        />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Primary Contact"
+          value={{ is_primary_contact: true }}
+        />
+      </FilterCategory>
+
+      <FilterCategory icon={<Building2 className="h-4 w-4" />} label="Influence">
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="High Influence"
+          value={{ purchase_influence: "High" }}
+        />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Medium Influence"
+          value={{ purchase_influence: "Medium" }}
+        />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Low Influence"
+          value={{ purchase_influence: "Low" }}
+        />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Multiple Organizations"
+          value={{ "total_organizations@gt": 1 }}
         />
       </FilterCategory>
 

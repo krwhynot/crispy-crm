@@ -45,7 +45,7 @@ export function ActivityLogDealNoteCreated({
             >
               <SaleName />
             </ReferenceField>
-            &nbsp;added a note about deal&nbsp;
+            &nbsp;added a note about opportunity&nbsp;
             <ReferenceField
               source="deal_id"
               reference="deals"

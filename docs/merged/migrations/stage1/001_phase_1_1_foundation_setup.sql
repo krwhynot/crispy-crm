@@ -5,6 +5,10 @@
 -- Description: Core schema enhancements, enum types, and base tables
 -- =====================================================
 
+-- CRITICAL FIX: Transaction safety with savepoints for safe rollback
+BEGIN;
+SAVEPOINT phase_1_1_start;
+
 -- Create migration tracking table
 CREATE TABLE IF NOT EXISTS migration_history (
     id BIGSERIAL PRIMARY KEY,
@@ -164,6 +168,17 @@ CREATE INDEX IF NOT EXISTS idx_contacts_search_tsv
 ON contacts USING GIN(search_tsv);
 
 -- =====================================================
+-- ADD BACKUP COLUMNS BEFORE ANY MODIFICATIONS
+-- =====================================================
+
+-- Add backup columns to preserve original relationships
+ALTER TABLE contacts ADD COLUMN IF NOT EXISTS company_id_backup BIGINT;
+UPDATE contacts SET company_id_backup = company_id WHERE company_id IS NOT NULL;
+
+ALTER TABLE deals ADD COLUMN IF NOT EXISTS original_company_id BIGINT;
+UPDATE deals SET original_company_id = company_id WHERE company_id IS NOT NULL;
+
+-- =====================================================
 -- RENAME DEALS TO OPPORTUNITIES
 -- =====================================================
 
@@ -310,9 +325,25 @@ CREATE TRIGGER trigger_calculate_opportunity_probability
 -- CREATE COMPATIBILITY VIEWS
 -- =====================================================
 
+-- Create opportunities_summary view (critical for app functionality)
+CREATE OR REPLACE VIEW opportunities_summary AS
+SELECT
+    o.*,
+    c.name as company_name,
+    array_agg(DISTINCT ct.name) FILTER (WHERE ct.name IS NOT NULL) as contact_names
+FROM opportunities o
+LEFT JOIN companies c ON o.customer_organization_id = c.id
+LEFT JOIN contacts ct ON ct.id = ANY(o.contact_ids)
+WHERE o.deleted_at IS NULL
+GROUP BY o.id, c.name;
+
 -- Create backward compatibility view for deals
 CREATE OR REPLACE VIEW deals AS
 SELECT * FROM opportunities;
+
+-- Backward compatibility for deals_summary
+CREATE OR REPLACE VIEW deals_summary AS
+SELECT * FROM opportunities_summary;
 
 -- Create view for opportunities with deal flag
 CREATE OR REPLACE VIEW opportunities_with_status AS
@@ -332,6 +363,38 @@ FROM opportunities;
 ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE opportunities ENABLE ROW LEVEL SECURITY;
+
+-- CRITICAL: Copy existing RLS policies from deals to opportunities
+DO $$
+DECLARE
+    policy_record RECORD;
+    policy_def TEXT;
+BEGIN
+    -- Get all policies from deals table and recreate them for opportunities
+    FOR policy_record IN
+        SELECT polname, polcmd, polroles::regrole[], polqual, polwithcheck
+        FROM pg_policy p
+        JOIN pg_class c ON p.polrelid = c.oid
+        WHERE c.relname = 'deals'
+    LOOP
+        -- Get the policy definition and replace table name
+        SELECT pg_get_policydef(p.oid) INTO policy_def
+        FROM pg_policy p
+        JOIN pg_class c ON p.polrelid = c.oid
+        WHERE c.relname = 'deals' AND p.polname = policy_record.polname;
+
+        -- Replace 'deals' with 'opportunities' in the policy definition
+        policy_def := REPLACE(policy_def, ' ON deals ', ' ON opportunities ');
+
+        -- Execute the modified policy definition
+        EXECUTE policy_def;
+
+        RAISE NOTICE 'Migrated RLS policy: %', policy_record.polname;
+    END LOOP;
+EXCEPTION
+    WHEN undefined_table THEN
+        RAISE NOTICE 'Deals table not found, creating default policies';
+END $$;
 
 -- Update policies to respect soft deletes
 DROP POLICY IF EXISTS "Enable all access for authenticated users" ON companies;
@@ -407,6 +470,9 @@ SET status = 'completed',
     completed_at = NOW()
 WHERE phase_number = '1.1'
 AND status = 'in_progress';
+
+-- Create savepoint for next phase
+SAVEPOINT phase_1_1_complete;
 
 -- =====================================================
 -- END OF PHASE 1.1 - FOUNDATION SETUP

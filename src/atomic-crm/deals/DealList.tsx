@@ -111,7 +111,7 @@ const DealActions = () => {
     <TopToolbar>
       <FilterButton />
       <ExportButton />
-      <CreateButton label="New Deal" />
+      <CreateButton label="New Opportunity" />
     </TopToolbar>
   );
 };

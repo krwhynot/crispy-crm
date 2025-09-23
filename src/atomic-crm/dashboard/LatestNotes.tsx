@@ -90,7 +90,7 @@ export const LatestNotes = () => {
 
 const Deal = ({ note }: any) => (
   <>
-    Deal{" "}
+    Opportunity{" "}
     <ReferenceField
       record={note}
       source="deal_id"

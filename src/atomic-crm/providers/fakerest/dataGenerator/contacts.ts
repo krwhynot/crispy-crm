@@ -1,5 +1,6 @@
 import {
   company as fakerCompany,
+  datatype,
   internet,
   lorem,
   name,
@@ -98,6 +99,14 @@ export const generateContacts = (db: Db, size = 500): Required<Contact>[] => {
       sales_id: company.sales_id,
       nb_tasks: 0,
       linkedin_url: null,
+      // New multi-organization support
+      role: random.arrayElement(['decision_maker', 'influencer', 'buyer', 'end_user', 'gatekeeper', 'champion', 'technical', 'executive']) as Contact['role'],
+      department: datatype.boolean() ? random.arrayElement(['Sales', 'Marketing', 'Engineering', 'Operations', 'Finance', 'HR', 'Legal']) : undefined,
+      is_primary_contact: datatype.boolean(),
+      purchase_influence: random.arrayElement(['High', 'Medium', 'Low', 'Unknown']) as Contact['purchase_influence'],
+      decision_authority: random.arrayElement(['Decision Maker', 'Influencer', 'End User', 'Gatekeeper']) as Contact['decision_authority'],
+      deleted_at: undefined,
+      organizations: undefined, // Will be populated by contactOrganizations
     };
   });
 };

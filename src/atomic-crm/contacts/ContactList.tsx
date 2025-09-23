@@ -103,6 +103,14 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
         ?.number,
       phone_jsonb: JSON.stringify(contact.phone_jsonb),
       phone_fts: undefined,
+      // New multi-organization fields
+      role: contact.role || '',
+      department: contact.department || '',
+      is_primary_contact: contact.is_primary_contact ? 'Yes' : 'No',
+      purchase_influence: contact.purchase_influence || 'Unknown',
+      decision_authority: contact.decision_authority || 'End User',
+      organizations: contact.organizations ? JSON.stringify(contact.organizations) : '[]',
+      total_organizations: contact.organizations ? contact.organizations.length : 0,
     };
     delete exportedContact.email_fts;
     delete exportedContact.phone_fts;

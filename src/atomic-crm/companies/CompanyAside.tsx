@@ -89,12 +89,44 @@ const CompanyInfo = ({ record }: { record: Company }) => {
 };
 
 const ContextInfo = ({ record }: { record: Company }) => {
+  const organizationTypeChoices = [
+    { id: 'customer', name: 'Customer' },
+    { id: 'prospect', name: 'Prospect' },
+    { id: 'vendor', name: 'Vendor' },
+    { id: 'partner', name: 'Partner' },
+    { id: 'principal', name: 'Principal' },
+    { id: 'distributor', name: 'Distributor' },
+    { id: 'unknown', name: 'Unknown' },
+  ];
+
+  const priorityChoices = [
+    { id: 'A', name: 'A - High Priority' },
+    { id: 'B', name: 'B - Medium-High Priority' },
+    { id: 'C', name: 'C - Medium Priority' },
+    { id: 'D', name: 'D - Low Priority' },
+  ];
+
   if (!record.revenue && !record.id) {
     return null;
   }
 
   return (
     <AsideSection title="Context">
+      {record.organization_type && (
+        <span>
+          Type: <SelectField source="organization_type" choices={organizationTypeChoices} />
+        </span>
+      )}
+      {record.priority && (
+        <span>
+          Priority: <SelectField source="priority" choices={priorityChoices} />
+        </span>
+      )}
+      {record.segment && (
+        <span>
+          Segment: <TextField source="segment" />
+        </span>
+      )}
       {record.sector && (
         <span>
           Sector: <TextField source="sector" />
@@ -140,7 +172,8 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
     !record.created_at &&
     !record.sales_id &&
     !record.description &&
-    !record.context_links
+    !record.context_links &&
+    !record.parent_company_id
   ) {
     return null;
   }
@@ -153,6 +186,14 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
     <AsideSection title="Additional Info">
       {record.description && (
         <p className="text-sm  mb-1">{record.description}</p>
+      )}
+      {record.parent_company_id && (
+        <div className="inline-flex text-sm text-muted-foreground mb-1">
+          Parent company:&nbsp;
+          <ReferenceField source="parent_company_id" reference="companies" record={record}>
+            <TextField source="name" />
+          </ReferenceField>
+        </div>
       )}
       {record.context_links && (
         <div className="flex flex-col">

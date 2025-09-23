@@ -29,31 +29,31 @@ export const DealEmpty = ({ children }: { children?: React.ReactNode }) => {
         height: `calc(100dvh - ${appbarHeight}px)`,
       }}
     >
-      <img src="./img/empty.svg" alt="No deals found" />
+      <img src="./img/empty.svg" alt="No opportunities found" />
       {contacts && contacts.length > 0 ? (
         <>
           <div className="flex flex-col items-center gap-0">
-            <h3 className="text-lg font-bold">No deals found</h3>
+            <h3 className="text-lg font-bold">No opportunities found</h3>
             <p className="text-sm text-center text-muted-foreground mb-4">
-              It seems your deal list is empty.
+              It seems your opportunity list is empty.
             </p>
           </div>
           <div className="flex space-x-8">
-            <CreateButton label="Create deal" />
+            <CreateButton label="Create opportunity" />
           </div>
           <DealCreate open={!!matchCreate} />
           {children}
         </>
       ) : (
         <div className="flex flex-col items-center gap-0">
-          <h3 className="text-lg font-bold">No deals found</h3>
+          <h3 className="text-lg font-bold">No opportunities found</h3>
           <p className="text-sm text-center text-muted-foreground mb-4">
             It seems your contact list is empty.
             <br />
             <Link to="/contacts/create" className="hover:underline">
               Add your first contact
             </Link>{" "}
-            before creating a deal.
+            before creating an opportunity.
           </p>
         </div>
       )}

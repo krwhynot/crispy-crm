@@ -5,6 +5,12 @@
 -- Description: Implement many-to-many relationships between contacts and organizations
 -- =====================================================
 
+-- CRITICAL FIX: Transaction safety with savepoints
+-- Continue transaction from Phase 1.1
+-- If starting independently, uncomment BEGIN;
+-- BEGIN;
+SAVEPOINT phase_1_2_start;
+
 -- Record migration start
 INSERT INTO migration_history (phase_number, phase_name, status, started_at)
 VALUES ('1.2', 'Contact-Organization Relationships', 'in_progress', NOW());
@@ -71,15 +77,8 @@ CREATE TABLE IF NOT EXISTS contact_preferred_principals (
     created_by BIGINT REFERENCES sales(id),
     deleted_at TIMESTAMPTZ,
     CONSTRAINT unique_contact_principal_active
-        UNIQUE(contact_id, principal_organization_id, deleted_at),
-    CONSTRAINT principal_must_be_principal
-        CHECK (
-            EXISTS (
-                SELECT 1 FROM companies
-                WHERE id = principal_organization_id
-                AND is_principal = true
-            )
-        )
+        UNIQUE(contact_id, principal_organization_id, deleted_at)
+    -- CRITICAL FIX: Removed illegal CHECK constraint with subquery - replaced with trigger below
 );
 
 -- Create indexes for advocacy tracking
@@ -96,7 +95,38 @@ ON contact_preferred_principals(advocacy_strength)
 WHERE deleted_at IS NULL;
 
 -- =====================================================
+-- CRITICAL FIX: Replace CHECK constraint with trigger function
+-- PostgreSQL does not allow CHECK constraints with subqueries
+-- =====================================================
+
+-- Function to validate principal organization
+CREATE OR REPLACE FUNCTION validate_principal_organization()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM companies
+        WHERE id = NEW.principal_organization_id
+        AND is_principal = true
+        AND deleted_at IS NULL
+    ) THEN
+        RAISE EXCEPTION 'Organization % is not marked as principal', NEW.principal_organization_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger for principal validation
+CREATE TRIGGER check_principal_organization
+    BEFORE INSERT OR UPDATE ON contact_preferred_principals
+    FOR EACH ROW EXECUTE FUNCTION validate_principal_organization();
+
+-- =====================================================
 -- MIGRATE EXISTING DATA
+-- =====================================================
+
+-- =====================================================
+-- CRITICAL FIX: Populate junction table from existing contact.company_id
+-- This preserves existing relationships during migration
 -- =====================================================
 
 -- Migrate existing contact-company relationships to junction table
@@ -125,13 +155,15 @@ SELECT
     c.sale_id
 FROM contacts c
 WHERE c.company_id IS NOT NULL
+  AND c.deleted_at IS NULL
   AND NOT EXISTS (
       SELECT 1
       FROM contact_organizations co
       WHERE co.contact_id = c.id
         AND co.organization_id = c.company_id
         AND co.deleted_at IS NULL
-  );
+  )
+ON CONFLICT DO NOTHING;
 
 -- =====================================================
 -- CREATE HELPER FUNCTIONS
@@ -460,6 +492,14 @@ SET status = 'completed',
     completed_at = NOW()
 WHERE phase_number = '1.2'
 AND status = 'in_progress';
+
+-- Create savepoint for next phase
+SAVEPOINT phase_1_2_complete;
+
+-- CRITICAL FIX: Transaction safety - commit or continue
+-- Commit transaction if this is the final phase being run
+-- Remove this if running subsequent phases in same transaction
+-- COMMIT;
 
 -- =====================================================
 -- END OF PHASE 1.2 - CONTACT-ORGANIZATION RELATIONSHIPS

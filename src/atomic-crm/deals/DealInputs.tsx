@@ -33,7 +33,7 @@ const DealInfoInputs = () => {
     <div className="flex flex-col gap-4 flex-1">
       <TextInput
         source="name"
-        label="Deal name"
+        label="Opportunity name"
         validate={required()}
         helperText={false}
       />

@@ -98,6 +98,32 @@ const CompanyContextInputs = () => {
         helperText={false}
       />
       <SelectInput source="size" choices={sizes} helperText={false} />
+      <SelectInput
+        source="organization_type"
+        choices={[
+          { id: 'customer', name: 'Customer' },
+          { id: 'prospect', name: 'Prospect' },
+          { id: 'vendor', name: 'Vendor' },
+          { id: 'partner', name: 'Partner' },
+          { id: 'principal', name: 'Principal' },
+          { id: 'distributor', name: 'Distributor' },
+          { id: 'unknown', name: 'Unknown' },
+        ]}
+        helperText={false}
+        emptyText="Select organization type"
+      />
+      <SelectInput
+        source="priority"
+        choices={[
+          { id: 'A', name: 'A - High Priority' },
+          { id: 'B', name: 'B - Medium-High Priority' },
+          { id: 'C', name: 'C - Medium Priority' },
+          { id: 'D', name: 'D - Low Priority' },
+        ]}
+        helperText={false}
+        emptyText="Select priority level"
+      />
+      <TextInput source="segment" helperText={false} placeholder="Segment (e.g., Enterprise, SMB)" />
       <TextInput source="revenue" helperText={false} />
       <TextInput source="tax_identifier" helperText={false} />
     </div>
@@ -122,6 +148,18 @@ const CompanyAdditionalInformationInputs = () => {
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Additional information</h6>
       <TextInput source="description" multiline helperText={false} />
+      <ReferenceInput
+        source="parent_company_id"
+        reference="companies"
+        helperText={false}
+      >
+        <SelectInput
+          label="Parent company"
+          helperText={false}
+          optionText="name"
+          emptyText="Select parent company (optional)"
+        />
+      </ReferenceInput>
       <ArrayInput source="context_links" helperText={false}>
         <SimpleFormIterator disableReordering fullWidth getItemLabel={false}>
           <TextInput

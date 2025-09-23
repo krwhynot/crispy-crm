@@ -179,7 +179,7 @@ const DealShowContent = () => {
 
 const ArchivedTitle = () => (
   <div className="bg-orange-500 px-6 py-4">
-    <h3 className="text-lg font-bold text-white">Archived Deal</h3>
+    <h3 className="text-lg font-bold text-white">Archived Opportunity</h3>
   </div>
 );
 
@@ -199,11 +199,11 @@ const ArchiveButton = ({ record }: { record: Deal }) => {
       {
         onSuccess: () => {
           redirect("list", "deals");
-          notify("Deal archived", { type: "info", undoable: false });
+          notify("Opportunity archived", { type: "info", undoable: false });
           refresh();
         },
         onError: () => {
-          notify("Error: deal not archived", { type: "error" });
+          notify("Error: opportunity not archived", { type: "error" });
         },
       },
     );
@@ -232,14 +232,14 @@ const UnarchiveButton = ({ record }: { record: Deal }) => {
     mutationFn: () => dataProvider.unarchiveDeal(record),
     onSuccess: () => {
       redirect("list", "deals");
-      notify("Deal unarchived", {
+      notify("Opportunity unarchived", {
         type: "info",
         undoable: false,
       });
       refresh();
     },
     onError: () => {
-      notify("Error: deal not unarchived", { type: "error" });
+      notify("Error: opportunity not unarchived", { type: "error" });
     },
   });
 

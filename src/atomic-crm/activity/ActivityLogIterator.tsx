@@ -5,8 +5,8 @@ import {
   COMPANY_CREATED,
   CONTACT_CREATED,
   CONTACT_NOTE_CREATED,
-  DEAL_CREATED,
-  DEAL_NOTE_CREATED,
+  OPPORTUNITY_CREATED,
+  OPPORTUNITY_NOTE_CREATED,
 } from "../consts";
 import type { Activity } from "../types";
 import { ActivityLogCompanyCreated } from "./ActivityLogCompanyCreated";
@@ -68,11 +68,11 @@ function ActivityItem({ activity }: { activity: Activity }) {
     return <ActivityLogContactNoteCreated activity={activity} />;
   }
 
-  if (activity.type === DEAL_CREATED) {
+  if (activity.type === OPPORTUNITY_CREATED) {
     return <ActivityLogDealCreated activity={activity} />;
   }
 
-  if (activity.type === DEAL_NOTE_CREATED) {
+  if (activity.type === OPPORTUNITY_NOTE_CREATED) {
     return <ActivityLogDealNoteCreated activity={activity} />;
   }
 

@@ -1,0 +1,314 @@
+{
+  "dashboard": {
+    "id": "opportunity-metrics",
+    "title": "Opportunity Metrics Dashboard",
+    "description": "Sales pipeline and opportunity performance metrics (migrated from deals)",
+    "version": "2.0.0",
+    "tags": ["sales", "opportunities", "pipeline", "revenue"],
+    "refresh": "30s",
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Total Pipeline Value",
+        "type": "stat",
+        "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT SUM(expected_revenue) as value FROM opportunities WHERE status = 'active'",
+            "format": "time_series",
+            "alias": "Pipeline Value"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD",
+            "decimals": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "yellow", "value": 1000000 },
+                { "color": "red", "value": 5000000 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Opportunities by Stage",
+        "type": "piechart",
+        "gridPos": { "h": 8, "w": 12, "x": 6, "y": 0 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT stage as label, COUNT(*) as value FROM opportunities WHERE status = 'active' GROUP BY stage ORDER BY value DESC",
+            "format": "table"
+          }
+        ],
+        "options": {
+          "legendDisplayMode": "table",
+          "legendPlacement": "right",
+          "tooltipDisplayMode": "single",
+          "pieType": "donut"
+        }
+      },
+      {
+        "id": 3,
+        "title": "Win Rate",
+        "type": "gauge",
+        "gridPos": { "h": 4, "w": 6, "x": 0, "y": 4 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT (COUNT(CASE WHEN status = 'won' THEN 1 END)::float / NULLIF(COUNT(CASE WHEN status IN ('won', 'lost') THEN 1 END), 0)) * 100 as value FROM opportunities WHERE updated_at >= NOW() - INTERVAL '30 days'",
+            "format": "table",
+            "alias": "Win Rate %"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "yellow", "value": 30 },
+                { "color": "green", "value": 60 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Average Deal Size",
+        "type": "stat",
+        "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT AVG(expected_revenue) as value FROM opportunities WHERE status = 'active' AND expected_revenue > 0",
+            "format": "table"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD",
+            "decimals": 0
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Sales Velocity (Opportunities Created)",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT DATE_TRUNC('day', created_at) as time, COUNT(*) as value FROM opportunities WHERE created_at >= NOW() - INTERVAL '30 days' GROUP BY 1 ORDER BY 1",
+            "format": "time_series",
+            "alias": "New Opportunities"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "bars",
+              "fillOpacity": 50,
+              "gradientMode": "opacity"
+            }
+          }
+        }
+      },
+      {
+        "id": 6,
+        "title": "Pipeline Conversion Funnel",
+        "type": "bargauge",
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "WITH stage_order AS (SELECT unnest(ARRAY['lead', 'qualification', 'proposal', 'negotiation', 'closed']) AS stage, generate_series(1, 5) AS order_num) SELECT so.stage, COUNT(o.id) as value FROM stage_order so LEFT JOIN opportunities o ON o.stage = so.stage AND o.status = 'active' GROUP BY so.stage, so.order_num ORDER BY so.order_num",
+            "format": "table"
+          }
+        ],
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "gradient",
+          "showUnfilled": true
+        }
+      },
+      {
+        "id": 7,
+        "title": "Top Performing Sales Reps",
+        "type": "table",
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT s.first_name || ' ' || s.last_name as \"Sales Rep\", COUNT(o.id) as \"Total Opportunities\", SUM(CASE WHEN o.status = 'won' THEN 1 ELSE 0 END) as \"Won\", SUM(o.expected_revenue) as \"Pipeline Value\", AVG(o.probability) as \"Avg Probability\" FROM opportunities o JOIN sales s ON o.sales_id = s.id WHERE o.created_at >= NOW() - INTERVAL '30 days' GROUP BY s.id, s.first_name, s.last_name ORDER BY \"Pipeline Value\" DESC LIMIT 10",
+            "format": "table"
+          }
+        ],
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": { "id": "byName", "options": "Pipeline Value" },
+              "properties": [
+                { "id": "unit", "value": "currencyUSD" },
+                { "id": "decimals", "value": 0 }
+              ]
+            },
+            {
+              "matcher": { "id": "byName", "options": "Avg Probability" },
+              "properties": [
+                { "id": "unit", "value": "percent" },
+                { "id": "decimals", "value": 0 }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "title": "Opportunity Types Distribution",
+        "type": "piechart",
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT type as label, COUNT(*) as value FROM opportunities WHERE status = 'active' GROUP BY type",
+            "format": "table"
+          }
+        ],
+        "options": {
+          "legendDisplayMode": "list",
+          "legendPlacement": "bottom",
+          "pieType": "pie"
+        }
+      },
+      {
+        "id": 9,
+        "title": "Expected vs Actual Close Dates",
+        "type": "scatter",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 24 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT name, expected_close_date as x, actual_close_date as y, expected_revenue as size FROM opportunities WHERE status IN ('won', 'lost') AND actual_close_date IS NOT NULL ORDER BY actual_close_date DESC LIMIT 100",
+            "format": "table"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "scatterShowPoints": "always",
+              "scatterShowLines": false,
+              "scatterPointSize": 5
+            }
+          }
+        }
+      },
+      {
+        "id": 10,
+        "title": "Revenue Forecast",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 32 },
+        "targets": [
+          {
+            "datasource": "PostgreSQL",
+            "rawSql": "SELECT DATE_TRUNC('month', expected_close_date) as time, SUM(expected_revenue * probability / 100) as \"Weighted Revenue\", SUM(expected_revenue) as \"Total Pipeline\" FROM opportunities WHERE status = 'active' AND expected_close_date >= NOW() AND expected_close_date <= NOW() + INTERVAL '6 months' GROUP BY 1 ORDER BY 1",
+            "format": "time_series"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD",
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "fillOpacity": 10,
+              "pointSize": 5,
+              "showPoints": "always"
+            }
+          }
+        }
+      }
+    ],
+    "templating": {
+      "list": [
+        {
+          "name": "time_range",
+          "type": "interval",
+          "options": [
+            { "text": "Last 24 hours", "value": "24h" },
+            { "text": "Last 7 days", "value": "7d" },
+            { "text": "Last 30 days", "value": "30d" },
+            { "text": "Last 90 days", "value": "90d" }
+          ],
+          "current": { "text": "Last 30 days", "value": "30d" }
+        },
+        {
+          "name": "sales_rep",
+          "type": "query",
+          "datasource": "PostgreSQL",
+          "query": "SELECT id as value, first_name || ' ' || last_name as text FROM sales ORDER BY first_name",
+          "multi": true,
+          "includeAll": true
+        },
+        {
+          "name": "opportunity_type",
+          "type": "custom",
+          "options": [
+            { "text": "New Business", "value": "new_business" },
+            { "text": "Expansion", "value": "expansion" },
+            { "text": "Renewal", "value": "renewal" }
+          ],
+          "multi": true,
+          "includeAll": true
+        }
+      ]
+    },
+    "annotations": [
+      {
+        "name": "Opportunity Won",
+        "datasource": "PostgreSQL",
+        "query": "SELECT actual_close_date as time, name as text, 'Opportunity Won: $' || expected_revenue as tags FROM opportunities WHERE status = 'won' AND actual_close_date >= $__timeFrom() AND actual_close_date <= $__timeTo()",
+        "iconColor": "green",
+        "enable": true
+      },
+      {
+        "name": "Opportunity Lost",
+        "datasource": "PostgreSQL",
+        "query": "SELECT updated_at as time, name as text, 'Opportunity Lost' as tags FROM opportunities WHERE status = 'lost' AND updated_at >= $__timeFrom() AND updated_at <= $__timeTo()",
+        "iconColor": "red",
+        "enable": true
+      }
+    ],
+    "migration_notes": {
+      "from_version": "1.0.0",
+      "changes": [
+        "Renamed all 'deals' references to 'opportunities'",
+        "Updated table names: deals → opportunities",
+        "Updated field names: amount → expected_revenue, close_date → expected_close_date",
+        "Added new metrics for opportunity types and probability tracking",
+        "Enhanced funnel visualization with new stages",
+        "Added currency support in value displays"
+      ],
+      "deprecated_queries": [
+        "SELECT * FROM deals WHERE ...",
+        "SELECT * FROM dealNotes WHERE ...",
+        "SELECT deal_id, contact_id FROM deal_contacts WHERE ..."
+      ]
+    }
+  }
+}
