@@ -21,7 +21,7 @@ import { ReferenceManyField, SortButton } from "@/components/admin";
 import { ActivityLog } from "../activity/ActivityLog";
 import { Avatar } from "../contacts/Avatar";
 import { TagsList } from "../contacts/TagsList";
-// import { findDealLabel } from "../deals/deal"; // REMOVED - deals module deleted
+import { findOpportunityLabel } from "../opportunities/opportunity";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Company, Contact, Deal } from "../types";
@@ -73,7 +73,7 @@ const CompanyShowContent = () => {
                     : "No Contacts"}
                 </TabsTrigger>
                 {record.nb_deals ? (
-                  <TabsTrigger value="deals">
+                  <TabsTrigger value="opportunities">
                     {record.nb_deals === 1
                       ? "1 opportunity"
                       : `${record.nb_deals} opportunities`}
@@ -110,14 +110,14 @@ const CompanyShowContent = () => {
                   </div>
                 )}
               </TabsContent>
-              <TabsContent value="deals">
+              <TabsContent value="opportunities">
                 {record.nb_deals ? (
                   <ReferenceManyField
-                    reference="deals"
+                    reference="opportunities"
                     target="company_id"
                     sort={{ field: "name", order: "ASC" }}
                   >
-                    <DealsIterator />
+                    <OpportunitiesIterator />
                   </ReferenceManyField>
                 ) : null}
               </TabsContent>
@@ -197,38 +197,38 @@ const CreateRelatedContactButton = () => {
   );
 };
 
-const DealsIterator = () => {
-  const { data: deals, error, isPending } = useListContext<Deal>();
-  const { dealStages } = useConfigurationContext();
+const OpportunitiesIterator = () => {
+  const { data: opportunities, error, isPending } = useListContext<Deal>();
+  const { opportunityStages } = useConfigurationContext();
   if (isPending || error) return null;
 
   const now = Date.now();
   return (
     <div>
       <div>
-        {deals.map((deal) => (
-          <div key={deal.id} className="p-0 text-sm">
+        {opportunities.map((opportunity) => (
+          <div key={opportunity.id} className="p-0 text-sm">
             <RouterLink
-              to={`/deals/${deal.id}/show`}
+              to={`/opportunities/${opportunity.id}/show`}
               className="flex items-center justify-between hover:bg-muted py-2 px-4 transition-colors"
             >
               <div className="flex-1 min-w-0">
-                <div className="font-medium">{deal.name}</div>
+                <div className="font-medium">{opportunity.name}</div>
                 <div className="text-sm text-muted-foreground">
-                  {findDealLabel(dealStages, deal.stage)},{" "}
-                  {deal.amount.toLocaleString("en-US", {
+                  {findOpportunityLabel(opportunityStages, opportunity.stage)},{" "}
+                  {opportunity.amount.toLocaleString("en-US", {
                     notation: "compact",
                     style: "currency",
                     currency: "USD",
                     currencyDisplay: "narrowSymbol",
                     minimumSignificantDigits: 3,
                   })}
-                  {deal.category ? `, ${deal.category}` : ""}
+                  {opportunity.category ? `, ${opportunity.category}` : ""}
                 </div>
               </div>
               <div className="text-right">
                 <div className="text-sm text-muted-foreground">
-                  last activity {formatDistance(deal.updated_at, now)} ago{" "}
+                  last activity {formatDistance(opportunity.updated_at, now)} ago{" "}
                 </div>
               </div>
             </RouterLink>
