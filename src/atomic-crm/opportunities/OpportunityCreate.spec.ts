@@ -386,7 +386,7 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
     });
   });
 
-  it('should set commission fields for distributor deals', async () => {
+  it('should set commission fields for distributor opportunities', async () => {
     render(
       <TestWrapper>
         <OpportunityCreate open={true} />

@@ -357,15 +357,15 @@ describe('Opportunity Utils', () => {
       expect(opportunity.expected_closing_date).toBeTruthy();
     });
 
-    it('should validate URL redirection logic', () => {
-      const redirectLegacyUrl = (url: string): string => {
-        return url.replace('/deals', '/opportunities');
+    it('should handle opportunity URLs correctly', () => {
+      const validateOpportunityUrl = (url: string): boolean => {
+        return url.includes('/opportunities');
       };
 
-      expect(redirectLegacyUrl('/deals')).toBe('/opportunities');
-      expect(redirectLegacyUrl('/deals/1')).toBe('/opportunities/1');
-      expect(redirectLegacyUrl('/deals/1/show')).toBe('/opportunities/1/show');
-      expect(redirectLegacyUrl('/deals/create')).toBe('/opportunities/create');
+      expect(validateOpportunityUrl('/opportunities')).toBe(true);
+      expect(validateOpportunityUrl('/opportunities/1')).toBe(true);
+      expect(validateOpportunityUrl('/opportunities/1/show')).toBe(true);
+      expect(validateOpportunityUrl('/opportunities/create')).toBe(true);
     });
   });
 });

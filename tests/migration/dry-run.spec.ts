@@ -77,11 +77,11 @@ describe('Migration Dry Run Tests', () => {
 
     it('should validate schema compatibility', async () => {
       const mockValidation = {
-        checkDealToOpportunityMapping: vi.fn().mockResolvedValue({
+        checkOpportunityDataIntegrity: vi.fn().mockResolvedValue({
           recordCount: 150,
           validRecords: 149,
           invalidRecords: 1,
-          warnings: ['1 deal missing company_id']
+          warnings: ['1 opportunity missing customer_organization_id']
         }),
 
         checkContactOrganizationRelationships: vi.fn().mockResolvedValue({
@@ -98,9 +98,9 @@ describe('Migration Dry Run Tests', () => {
       };
 
       // Test schema validation logic
-      const dealValidation = await mockValidation.checkDealToOpportunityMapping();
-      expect(dealValidation.recordCount).toBeGreaterThan(0);
-      expect(dealValidation.validRecords / dealValidation.recordCount).toBeGreaterThan(0.99);
+      const opportunityValidation = await mockValidation.checkOpportunityDataIntegrity();
+      expect(opportunityValidation.recordCount).toBeGreaterThan(0);
+      expect(opportunityValidation.validRecords / opportunityValidation.recordCount).toBeGreaterThan(0.99);
 
       const contactValidation = await mockValidation.checkContactOrganizationRelationships();
       expect(contactValidation.recordCount).toBeGreaterThan(0);
@@ -130,7 +130,7 @@ describe('Migration Dry Run Tests', () => {
         }),
 
         estimateDuration: vi.fn().mockReturnValue({
-          dealMigration: '5 minutes',
+          opportunityProcessing: '5 minutes',
           contactMigration: '8 minutes',
           indexRebuild: '3 minutes',
           verification: '2 minutes',
@@ -226,9 +226,9 @@ describe('Migration Dry Run Tests', () => {
     it('should validate required field completeness', async () => {
       const mockFieldValidator = {
         validateRequiredFields: vi.fn().mockResolvedValue({
-          deals: {
-            missingCompanyId: 2,
-            missingTitle: 0,
+          opportunities: {
+            missingCustomerOrgId: 2,
+            missingName: 0,
             missingStage: 1,
             totalRecords: 150
           },
@@ -248,9 +248,9 @@ describe('Migration Dry Run Tests', () => {
 
       const validation = await mockFieldValidator.validateRequiredFields();
 
-      // Deals validation
-      expect(validation.deals.missingTitle).toBe(0);
-      expect(validation.deals.missingCompanyId / validation.deals.totalRecords).toBeLessThan(0.02);
+      // Opportunities validation
+      expect(validation.opportunities.missingName).toBe(0);
+      expect(validation.opportunities.missingCustomerOrgId / validation.opportunities.totalRecords).toBeLessThan(0.02);
 
       // Contacts validation
       expect(validation.contacts.missingName).toBe(0);
@@ -324,7 +324,7 @@ describe('Migration Dry Run Tests', () => {
     it('should handle null values in critical fields', async () => {
       const mockEdgeCaseValidator = {
         checkNullValues: vi.fn().mockResolvedValue({
-          dealsWithNullCompany: 2,
+          opportunitiesWithNullCustomerOrg: 2,
           contactsWithNullName: 0,
           companiesWithNullSector: 10,
           handlingStrategy: 'skip_invalid_records'

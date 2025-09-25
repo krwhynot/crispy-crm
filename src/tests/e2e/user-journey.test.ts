@@ -58,7 +58,7 @@ const generateSyntheticData = () => {
       }]
     },
     opportunity: {
-      name: `${faker.company.name()} ${faker.commerce.product()} Deal`,
+      name: `${faker.company.name()} ${faker.commerce.product()} Opportunity`,
       amount: faker.number.int({ min: 10000, max: 500000 }),
       stage: 'lead',
       probability: 10
@@ -114,7 +114,7 @@ describe('E2E User Journey Tests', () => {
   });
 
   describe('Complete Sales Workflow', () => {
-    test('end-to-end sales process: organization → contact → opportunity → close deal', async () => {
+    test('end-to-end sales process: organization → contact → opportunity → close opportunity', async () => {
       const syntheticData = generateSyntheticData();
 
       // Step 1: Create Organization
@@ -247,7 +247,7 @@ describe('E2E User Journey Tests', () => {
         if (note) testData.notes.push(note.id);
       }
 
-      // Step 6: Verify final deal state
+      // Step 6: Verify final opportunity state
       const { data: finalOpportunity } = await supabase
         .from('opportunities')
         .select('*')
@@ -499,7 +499,7 @@ describe('E2E User Journey Tests', () => {
       const opportunities = createdOrgs.map(org => {
         faker.seed(Math.random() * 1000000);
         return {
-          name: `${org.name} Deal`,
+          name: `${org.name} Opportunity`,
           customer_organization_id: org.id,
           stage: 'lead',
           amount: faker.number.int({ min: 10000, max: 100000 })
@@ -546,7 +546,7 @@ describe('E2E User Journey Tests', () => {
       const { error: negativeAmountError } = await supabase
         .from('opportunities')
         .insert({
-          name: 'Invalid Amount Deal',
+          name: 'Invalid Amount Opportunity',
           amount: -1000, // Negative amount
           stage: 'lead'
         });
@@ -560,7 +560,7 @@ describe('E2E User Journey Tests', () => {
       const { data: testOpp } = await supabase
         .from('opportunities')
         .insert({
-          name: 'Stage Test Deal',
+          name: 'Stage Test Opportunity',
           stage: 'closed-won', // Starting at final stage
           probability: 0 // Inconsistent probability
         })

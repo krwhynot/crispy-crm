@@ -35,7 +35,7 @@ const generateOpportunityData = (overrides = {}) => {
   faker.seed(54321); // Different seed from user-journey for variety
 
   return {
-    name: faker.company.name() + ' ' + faker.commerce.product() + ' Deal',
+    name: faker.company.name() + ' ' + faker.commerce.product() + ' Opportunity',
     amount: faker.number.int({ min: 5000, max: 1000000 }),
     stage: 'lead',
     probability: 10,

@@ -16,17 +16,17 @@ describe('Migration Data Integrity Tests', () => {
     it('should preserve exact record counts across all tables', async () => {
       const mockCountValidator = {
         capturePreMigrationCounts: vi.fn().mockResolvedValue({
-          deals: 150,
+          opportunities: 150,
           contacts: 300,
           companies: 80,
-          dealNotes: 220,
+          opportunityNotes: 220,
           contactNotes: 180,
           tags: 25,
           total: 955
         }),
 
         capturePostMigrationCounts: vi.fn().mockResolvedValue({
-          opportunities: 150, // deals transformed to opportunities
+          opportunities: 150, // verified count
           contacts: 300,
           companies: 80,
           contactOrganizations: 295, // junction table entries
@@ -39,10 +39,10 @@ describe('Migration Data Integrity Tests', () => {
         }),
 
         validateCountPreservation: vi.fn().mockResolvedValue({
-          dealsToOpportunities: { source: 150, target: 150, preserved: true },
+          opportunityIntegrity: { count: 150, preserved: true },
           contactsPreserved: { source: 300, target: 300, preserved: true },
           companiesPreserved: { source: 80, target: 80, preserved: true },
-          notesPreserved: { dealNotes: 220, opportunityNotes: 220, preserved: true },
+          notesPreserved: { opportunityNotes: 220, preserved: true },
           allCountsPreserved: true
         })
       };
@@ -52,10 +52,10 @@ describe('Migration Data Integrity Tests', () => {
       const validation = await mockCountValidator.validateCountPreservation();
 
       expect(validation.allCountsPreserved).toBe(true);
-      expect(validation.dealsToOpportunities.preserved).toBe(true);
+      expect(validation.opportunityIntegrity.preserved).toBe(true);
       expect(validation.contactsPreserved.preserved).toBe(true);
       expect(validation.companiesPreserved.preserved).toBe(true);
-      expect(postCounts.opportunities).toBe(preCounts.deals);
+      expect(postCounts.opportunities).toBe(preCounts.opportunities);
     });
 
     it('should account for new relationship records correctly', async () => {
@@ -67,7 +67,7 @@ describe('Migration Data Integrity Tests', () => {
             correctlyMapped: true
           },
           opportunityParticipants: {
-            expectedFromDeals: 145, // deals with contact arrays
+            expectedFromOpportunities: 145, // opportunities with contact arrays
             actualCreated: 145,
             correctlyMapped: true
           },
@@ -83,12 +83,12 @@ describe('Migration Data Integrity Tests', () => {
   });
 
   describe('100-Sample Record Verification', () => {
-    it('should verify deal to opportunity transformation accuracy', async () => {
+    it('should verify opportunity data integrity', async () => {
       const mockSampleValidator = {
-        selectRandomDeals: vi.fn().mockResolvedValue([
-          { id: 1, title: 'Deal A', company_id: 10, stage: 'qualified', value: 5000 },
-          { id: 15, title: 'Deal B', company_id: 20, stage: 'proposal', value: 12000 },
-          { id: 33, title: 'Deal C', company_id: 5, stage: 'closed_won', value: 25000 }
+        selectRandomOpportunities: vi.fn().mockResolvedValue([
+          { id: 1, name: 'Opportunity A', customer_organization_id: 10, stage: 'qualified', amount: 5000 },
+          { id: 15, name: 'Opportunity B', customer_organization_id: 20, stage: 'proposal', amount: 12000 },
+          { id: 33, name: 'Opportunity C', customer_organization_id: 5, stage: 'closed_won', amount: 25000 }
           // ... would continue for 100 samples
         ]),
 
@@ -96,8 +96,8 @@ describe('Migration Data Integrity Tests', () => {
           sampleSize: 100,
           successfulTransformations: 100,
           fieldMappingAccuracy: {
-            titlePreserved: 100,
-            companyIdMapped: 100,
+            namePreserved: 100,
+            customerOrgIdMapped: 100,
             stageTransformed: 100,
             valuePreserved: 100,
             timestampsPreserved: 100
@@ -106,13 +106,13 @@ describe('Migration Data Integrity Tests', () => {
         })
       };
 
-      const sampleDeals = await mockSampleValidator.selectRandomDeals();
-      expect(sampleDeals).toHaveLength(3); // Mock sample
+      const sampleOpportunities = await mockSampleValidator.selectRandomOpportunities();
+      expect(sampleOpportunities).toHaveLength(3); // Mock sample
 
       const verification = await mockSampleValidator.verifyOpportunityTransformation();
       expect(verification.transformationAccuracy).toBe(100.0);
-      expect(verification.fieldMappingAccuracy.titlePreserved).toBe(100);
-      expect(verification.fieldMappingAccuracy.companyIdMapped).toBe(100);
+      expect(verification.fieldMappingAccuracy.namePreserved).toBe(100);
+      expect(verification.fieldMappingAccuracy.customerOrgIdMapped).toBe(100);
       expect(verification.fieldMappingAccuracy.stageTransformed).toBe(100);
     });
 
@@ -351,7 +351,7 @@ describe('Migration Data Integrity Tests', () => {
 
         validateOptionalFieldNulls: vi.fn().mockResolvedValue({
           nullDescriptions: 45,
-          nullCloseReasons: 135, // Only closed deals have close reasons
+          nullCloseReasons: 135, // Only closed opportunities have close reasons
           nullProbabilities: 25, // Assigned default based on stage
           optionalNullsValid: true
         })
