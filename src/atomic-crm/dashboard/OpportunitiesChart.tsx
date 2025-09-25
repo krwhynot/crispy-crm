@@ -20,7 +20,7 @@ const threeMonthsAgo = new Date(
 const DEFAULT_LOCALE = "en-US";
 const CURRENCY = "USD";
 
-export const DealsChart = memo(() => {
+export const OpportunitiesChart = memo(() => {
   const acceptedLanguages = navigator
     ? navigator.languages || [navigator.language]
     : [DEFAULT_LOCALE];
