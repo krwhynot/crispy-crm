@@ -8,12 +8,12 @@ import {
   taskSchema,
   createTaskSchema,
   updateTaskSchema,
-  validateTaskForm,
+  taskWithReminderSchema,
   validateCreateTask,
   validateUpdateTask,
-  taskTypeSchema,
-  taskStatusSchema,
-  taskPrioritySchema,
+  validateTaskWithReminder,
+  validateTaskForSubmission,
+  transformTaskDate,
   type Task,
   type CreateTaskInput,
   type UpdateTaskInput,
@@ -21,207 +21,117 @@ import {
 import { z } from 'zod';
 
 describe('Task Validation Schemas', () => {
-  describe('Enum Schemas', () => {
-    describe('taskTypeSchema', () => {
-      it('should accept valid task types', () => {
-        const validTypes = ['call', 'email', 'meeting', 'todo', 'deadline', 'milestone'];
-
-        validTypes.forEach(type => {
-          expect(() => taskTypeSchema.parse(type)).not.toThrow();
-        });
-      });
-
-      it('should reject invalid task types', () => {
-        const invalidTypes = ['', 'phone', 'appointment', 'task', 'reminder'];
-
-        invalidTypes.forEach(type => {
-          expect(() => taskTypeSchema.parse(type)).toThrow(z.ZodError);
-        });
-      });
-    });
-
-    describe('taskStatusSchema', () => {
-      it('should accept valid statuses', () => {
-        const validStatuses = ['pending', 'in_progress', 'completed', 'cancelled', 'deferred'];
-
-        validStatuses.forEach(status => {
-          expect(() => taskStatusSchema.parse(status)).not.toThrow();
-        });
-      });
-
-      it('should reject invalid statuses', () => {
-        expect(() => taskStatusSchema.parse('done')).toThrow(z.ZodError);
-        expect(() => taskStatusSchema.parse('open')).toThrow(z.ZodError);
-        expect(() => taskStatusSchema.parse('closed')).toThrow(z.ZodError);
-      });
-    });
-
-    describe('taskPrioritySchema', () => {
-      it('should accept valid priorities', () => {
-        const validPriorities = ['low', 'medium', 'high', 'urgent'];
-
-        validPriorities.forEach(priority => {
-          expect(() => taskPrioritySchema.parse(priority)).not.toThrow();
-        });
-      });
-
-      it('should reject invalid priorities', () => {
-        expect(() => taskPrioritySchema.parse('critical')).toThrow(z.ZodError);
-        expect(() => taskPrioritySchema.parse('normal')).toThrow(z.ZodError);
-      });
-    });
-  });
-
   describe('taskSchema', () => {
     const validTask = {
-      title: 'Follow up with client',
+      text: 'Follow up with client',
+      contact_id: 'contact-123',
       type: 'call',
-      status: 'pending',
-      priority: 'medium',
       due_date: '2024-12-31T10:00:00Z',
-      description: 'Discuss project requirements',
+      sales_id: 'user-456',
     };
 
     it('should accept valid task data', () => {
       const result = taskSchema.parse(validTask);
       expect(result).toBeDefined();
-      expect(result.title).toBe('Follow up with client');
+      expect(result.text).toBe('Follow up with client');
       expect(result.type).toBe('call');
-      expect(result.status).toBe('pending');
+      expect(result.contact_id).toBe('contact-123');
     });
 
-    it('should provide default values', () => {
-      const minimalTask = {
-        title: 'Minimal Task',
-        type: 'todo',
-        due_date: '2024-12-31T10:00:00Z',
-      };
-
-      const result = taskSchema.parse(minimalTask);
-      expect(result.status).toBe('pending');
-      expect(result.priority).toBe('medium');
-    });
-
-    it('should reject empty title', () => {
-      const invalidData = { ...validTask, title: '' };
+    it('should reject empty text', () => {
+      const invalidData = { ...validTask, text: '' };
       expect(() => taskSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
-    it('should validate reminder is before due date', () => {
-      // Valid: reminder before due date
-      const validReminder = {
-        ...validTask,
-        due_date: '2024-12-31T10:00:00Z',
-        reminder_date: '2024-12-30T10:00:00Z',
-      };
-      expect(() => taskSchema.parse(validReminder)).not.toThrow();
-
-      // Invalid: reminder after due date
-      const invalidReminder = {
-        ...validTask,
-        due_date: '2024-12-31T10:00:00Z',
-        reminder_date: '2025-01-01T10:00:00Z',
-      };
-      expect(() => taskSchema.parse(invalidReminder)).toThrow(z.ZodError);
-
-      // Invalid: reminder same as due date
-      const sameTimeReminder = {
-        ...validTask,
-        due_date: '2024-12-31T10:00:00Z',
-        reminder_date: '2024-12-31T10:00:00Z',
-      };
-      expect(() => taskSchema.parse(sameTimeReminder)).toThrow(z.ZodError);
+    it('should reject empty type', () => {
+      const invalidData = { ...validTask, type: '' };
+      expect(() => taskSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
-    it('should handle assigned user relationship', () => {
-      const taskWithAssignee = {
-        ...validTask,
-        assigned_to_id: 'user-123',
-      };
-
-      const result = taskSchema.parse(taskWithAssignee);
-      expect(result.assigned_to_id).toBe('user-123');
-
-      // Should accept both string and number IDs
-      expect(() => taskSchema.parse({
-        ...validTask,
-        assigned_to_id: 123
-      })).not.toThrow();
+    it('should reject empty due_date', () => {
+      const invalidData = { ...validTask, due_date: '' };
+      expect(() => taskSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
-    it('should handle entity relationships', () => {
-      const taskWithRelations = {
-        ...validTask,
+    it('should require contact_id', () => {
+      const withoutContact = {
+        text: 'Task without contact',
+        type: 'call',
+        due_date: '2024-12-31T10:00:00Z',
+        sales_id: 'user-456',
+      };
+      // Missing contact_id should fail
+      expect(() => taskSchema.parse(withoutContact)).toThrow(z.ZodError);
+    });
+
+    it('should require sales_id', () => {
+      const withoutSalesId = {
+        text: 'Task without sales',
         contact_id: 'contact-123',
-        company_id: 'company-456',
-        opportunity_id: 'opp-789',
-      };
-
-      const result = taskSchema.parse(taskWithRelations);
-      expect(result.contact_id).toBe('contact-123');
-      expect(result.company_id).toBe('company-456');
-      expect(result.opportunity_id).toBe('opp-789');
-    });
-
-    it('should handle nullable fields', () => {
-      const dataWithNulls = {
-        ...validTask,
-        completed_date: null,
-        reminder_date: null,
-        notes: null,
-        deleted_at: null,
-      };
-
-      expect(() => taskSchema.parse(dataWithNulls)).not.toThrow();
-    });
-
-    it('should handle optional fields', () => {
-      const minimalData = {
-        title: 'Simple Task',
-        type: 'todo',
+        type: 'call',
         due_date: '2024-12-31T10:00:00Z',
       };
-
-      const result = taskSchema.parse(minimalData);
-      expect(result.description).toBeUndefined();
-      expect(result.assigned_to_id).toBeUndefined();
-      expect(result.contact_id).toBeUndefined();
-    });
-
-    it('should validate completed_date when status is completed', () => {
-      const completedTask = {
-        ...validTask,
-        status: 'completed',
-        completed_date: '2024-12-15T10:00:00Z',
-      };
-
-      expect(() => taskSchema.parse(completedTask)).not.toThrow();
-    });
-
-    it('should handle recurrence pattern', () => {
-      const recurringTask = {
-        ...validTask,
-        recurrence_pattern: 'weekly',
-        recurrence_end_date: '2025-12-31T10:00:00Z',
-      };
-
-      expect(() => taskSchema.parse(recurringTask)).not.toThrow();
+      // Missing sales_id should fail
+      expect(() => taskSchema.parse(withoutSalesId)).toThrow(z.ZodError);
     });
 
     it('should accept both string and number IDs', () => {
-      expect(() => taskSchema.parse({ ...validTask, id: 'string-id' })).not.toThrow();
-      expect(() => taskSchema.parse({ ...validTask, id: 12345 })).not.toThrow();
-      expect(() => taskSchema.parse({ ...validTask, created_by_id: 'user-1' })).not.toThrow();
-      expect(() => taskSchema.parse({ ...validTask, created_by_id: 100 })).not.toThrow();
+      // String IDs
+      expect(() => taskSchema.parse(validTask)).not.toThrow();
+
+      // Number IDs
+      const withNumberIds = {
+        text: 'Task with number IDs',
+        contact_id: 123,
+        type: 'email',
+        due_date: '2024-12-31T10:00:00Z',
+        sales_id: 456,
+      };
+      expect(() => taskSchema.parse(withNumberIds)).not.toThrow();
+
+      // Optional id field
+      expect(() => taskSchema.parse({ ...validTask, id: 'task-123' })).not.toThrow();
+      expect(() => taskSchema.parse({ ...validTask, id: 789 })).not.toThrow();
+    });
+
+    it('should handle done_date field', () => {
+      const completedTask = {
+        ...validTask,
+        done_date: '2024-12-20T10:00:00Z',
+      };
+
+      const result = taskSchema.parse(completedTask);
+      expect(result.done_date).toBe('2024-12-20T10:00:00Z');
+
+      // done_date can be null
+      const taskWithNullDone = {
+        ...validTask,
+        done_date: null,
+      };
+      expect(() => taskSchema.parse(taskWithNullDone)).not.toThrow();
+
+      // done_date is optional
+      expect(() => taskSchema.parse(validTask)).not.toThrow();
+    });
+
+    it('should validate different task types', () => {
+      const taskTypes = ['call', 'email', 'meeting', 'todo', 'follow-up', 'reminder'];
+
+      taskTypes.forEach(type => {
+        const task = { ...validTask, type };
+        expect(() => taskSchema.parse(task)).not.toThrow();
+      });
     });
   });
 
   describe('createTaskSchema', () => {
     it('should require essential fields for creation', () => {
       const validCreate = {
-        title: 'New Task',
+        text: 'New Task',
+        contact_id: 'contact-123',
         type: 'call',
         due_date: '2024-12-31T10:00:00Z',
+        sales_id: 'user-456',
       };
 
       expect(() => createTaskSchema.parse(validCreate)).not.toThrow();
@@ -229,69 +139,46 @@ describe('Task Validation Schemas', () => {
 
     it('should reject creation without required fields', () => {
       expect(() => createTaskSchema.parse({})).toThrow(z.ZodError);
-      expect(() => createTaskSchema.parse({ title: 'Test' })).toThrow(z.ZodError);
+
       expect(() => createTaskSchema.parse({
-        title: 'Test',
-        type: 'call'
-      })).toThrow(z.ZodError); // Missing due_date
+        text: 'Test',
+        // Missing other required fields
+      })).toThrow(z.ZodError);
+
+      expect(() => createTaskSchema.parse({
+        text: 'Test',
+        contact_id: 'contact-123',
+        type: 'call',
+        // Missing due_date and sales_id
+      })).toThrow(z.ZodError);
     });
 
     it('should not allow id field on creation', () => {
       const dataWithId = {
         id: 'should-not-be-here',
-        title: 'New Task',
+        text: 'New Task',
+        contact_id: 'contact-123',
         type: 'call',
         due_date: '2024-12-31T10:00:00Z',
+        sales_id: 'user-456',
       };
 
       const result = createTaskSchema.parse(dataWithId);
       expect('id' in result).toBe(false);
     });
 
-    it('should not include system fields on creation', () => {
-      const dataWithSystemFields = {
-        title: 'New Task',
+    it('should not allow done_date on creation', () => {
+      const dataWithDoneDate = {
+        text: 'New Task',
+        contact_id: 'contact-123',
         type: 'call',
         due_date: '2024-12-31T10:00:00Z',
-        created_at: '2024-01-01T00:00:00Z',
-        updated_at: '2024-01-01T00:00:00Z',
+        sales_id: 'user-456',
+        done_date: '2024-12-30T10:00:00Z',
       };
 
-      const result = createTaskSchema.parse(dataWithSystemFields);
-      expect('created_at' in result).toBe(false);
-      expect('updated_at' in result).toBe(false);
-    });
-
-    it('should apply defaults on creation', () => {
-      const minimalCreate = {
-        title: 'New Task',
-        type: 'todo',
-        due_date: '2024-12-31T10:00:00Z',
-      };
-
-      const result = createTaskSchema.parse(minimalCreate);
-      expect(result.status).toBe('pending');
-      expect(result.priority).toBe('medium');
-    });
-
-    it('should validate reminder on creation', () => {
-      // Valid reminder
-      const withValidReminder = {
-        title: 'Task with Reminder',
-        type: 'call',
-        due_date: '2024-12-31T10:00:00Z',
-        reminder_date: '2024-12-30T10:00:00Z',
-      };
-      expect(() => createTaskSchema.parse(withValidReminder)).not.toThrow();
-
-      // Invalid reminder (after due date)
-      const withInvalidReminder = {
-        title: 'Task with Bad Reminder',
-        type: 'call',
-        due_date: '2024-12-31T10:00:00Z',
-        reminder_date: '2025-01-01T10:00:00Z',
-      };
-      expect(() => createTaskSchema.parse(withInvalidReminder)).toThrow(z.ZodError);
+      const result = createTaskSchema.parse(dataWithDoneDate);
+      expect('done_date' in result).toBe(false);
     });
   });
 
@@ -299,7 +186,7 @@ describe('Task Validation Schemas', () => {
     it('should require id for updates', () => {
       const validUpdate = {
         id: 'task-123',
-        title: 'Updated Title',
+        text: 'Updated Text',
       };
 
       expect(() => updateTaskSchema.parse(validUpdate)).not.toThrow();
@@ -307,299 +194,403 @@ describe('Task Validation Schemas', () => {
 
     it('should reject updates without id', () => {
       const invalidUpdate = {
-        title: 'Updated Title',
+        text: 'Updated Text',
       };
 
       expect(() => updateTaskSchema.parse(invalidUpdate)).toThrow(z.ZodError);
     });
 
     it('should allow partial updates', () => {
-      expect(() => updateTaskSchema.parse({ id: 't-1', title: 'New Title' })).not.toThrow();
-      expect(() => updateTaskSchema.parse({ id: 't-1', status: 'completed' })).not.toThrow();
-      expect(() => updateTaskSchema.parse({ id: 't-1', priority: 'high' })).not.toThrow();
-      expect(() => updateTaskSchema.parse({ id: 't-1', description: 'Updated desc' })).not.toThrow();
+      expect(() => updateTaskSchema.parse({ id: 't-1', text: 'New text' })).not.toThrow();
+      expect(() => updateTaskSchema.parse({ id: 't-1', type: 'email' })).not.toThrow();
+      expect(() => updateTaskSchema.parse({ id: 't-1', due_date: '2025-01-01T10:00:00Z' })).not.toThrow();
+      expect(() => updateTaskSchema.parse({ id: 't-1', done_date: '2024-12-31T10:00:00Z' })).not.toThrow();
       expect(() => updateTaskSchema.parse({ id: 't-1' })).not.toThrow(); // Just id
     });
 
-    it('should validate updated fields', () => {
-      expect(() => updateTaskSchema.parse({
-        id: 't-1',
-        type: 'invalid_type'
-      })).toThrow(z.ZodError);
+    it('should allow marking task as done', () => {
+      const markAsDone = {
+        id: 'task-123',
+        done_date: '2024-12-20T10:00:00Z',
+      };
 
-      expect(() => updateTaskSchema.parse({
-        id: 't-1',
-        status: 'invalid_status'
-      })).toThrow(z.ZodError);
-
-      expect(() => updateTaskSchema.parse({
-        id: 't-1',
-        priority: 'invalid_priority'
-      })).toThrow(z.ZodError);
+      expect(() => updateTaskSchema.parse(markAsDone)).not.toThrow();
     });
 
-    it('should validate reminder update', () => {
-      // Can't validate without due_date in partial update
-      const validUpdate = {
-        id: 't-1',
-        reminder_date: '2024-12-30T10:00:00Z',
+    it('should allow clearing done_date', () => {
+      const clearDone = {
+        id: 'task-123',
+        done_date: null,
       };
-      // This should pass schema validation (business logic validation happens elsewhere)
-      expect(() => updateTaskSchema.parse(validUpdate)).not.toThrow();
+
+      expect(() => updateTaskSchema.parse(clearDone)).not.toThrow();
+    });
+  });
+
+  describe('taskWithReminderSchema', () => {
+    it('should validate tasks with future due dates for reminders', () => {
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 7); // 7 days from now
+
+      const validTaskWithReminder = {
+        text: 'Task with reminder',
+        contact_id: 'contact-123',
+        type: 'call',
+        due_date: futureDate.toISOString(),
+        sales_id: 'user-456',
+      };
+
+      expect(() => taskWithReminderSchema.parse(validTaskWithReminder)).not.toThrow();
+    });
+
+    it('should reject tasks with past due dates for reminders', () => {
+      const pastDate = new Date();
+      pastDate.setDate(pastDate.getDate() - 7); // 7 days ago
+
+      const invalidTaskWithReminder = {
+        text: 'Task with past date',
+        contact_id: 'contact-123',
+        type: 'call',
+        due_date: pastDate.toISOString(),
+        sales_id: 'user-456',
+      };
+
+      expect(() => taskWithReminderSchema.parse(invalidTaskWithReminder)).toThrow(z.ZodError);
+    });
+
+    it('should handle tasks without due dates', () => {
+      const taskWithoutDueDate = {
+        text: 'Task without date',
+        contact_id: 'contact-123',
+        type: 'call',
+        due_date: '', // Empty due date
+        sales_id: 'user-456',
+      };
+
+      // Should fail on base validation (due_date required)
+      expect(() => taskWithReminderSchema.parse(taskWithoutDueDate)).toThrow(z.ZodError);
     });
   });
 
   describe('Validation Functions', () => {
-    describe('validateTaskForm', () => {
-      it('should validate and pass valid data', async () => {
-        const validData = {
-          title: 'Test Task',
-          type: 'call',
-          due_date: '2024-12-31T10:00:00Z',
-        };
-
-        await expect(validateTaskForm(validData)).resolves.toBeUndefined();
-      });
-
-      it('should format errors for React Admin', async () => {
-        const invalidData = {
-          title: '',
-          type: 'invalid_type',
-          status: 'invalid_status',
-          priority: 'invalid_priority',
-          due_date: '',
-        };
-
-        try {
-          await validateTaskForm(invalidData);
-          expect.fail('Should have thrown validation error');
-        } catch (error: any) {
-          expect(error.message).toBe('Validation failed');
-          expect(error.errors).toBeDefined();
-          expect(error.errors.title).toBe('Task title is required');
-          expect(error.errors.type).toBeDefined();
-          expect(error.errors.status).toBeDefined();
-          expect(error.errors.priority).toBeDefined();
-          expect(error.errors.due_date).toBe('Due date is required');
-        }
-      });
-
-      it('should validate reminder business rule', async () => {
-        const invalidData = {
-          title: 'Task',
-          type: 'call',
-          due_date: '2024-12-31T10:00:00Z',
-          reminder_date: '2025-01-01T10:00:00Z', // After due date
-        };
-
-        try {
-          await validateTaskForm(invalidData);
-          expect.fail('Should have thrown validation error');
-        } catch (error: any) {
-          expect(error.errors.reminder_date).toBe('Reminder must be before due date');
-        }
-      });
-    });
-
     describe('validateCreateTask', () => {
-      it('should validate creation data', async () => {
+      it('should validate and return parsed data', () => {
         const validData = {
-          title: 'New Task',
+          text: 'New Task',
+          contact_id: 'contact-123',
           type: 'email',
           due_date: '2024-12-31T10:00:00Z',
+          sales_id: 'user-456',
         };
 
-        await expect(validateCreateTask(validData)).resolves.toBeUndefined();
+        const result = validateCreateTask(validData);
+        expect(result.text).toBe('New Task');
+        expect(result.contact_id).toBe('contact-123');
       });
 
-      it('should reject incomplete creation data', async () => {
-        const incompleteData = {
-          title: 'New Task',
-          type: 'meeting',
-          // Missing due_date
+      it('should throw for invalid creation data', () => {
+        const invalidData = {
+          text: '',
+          contact_id: 'contact-123',
+          type: 'call',
+          due_date: '2024-12-31T10:00:00Z',
+          sales_id: 'user-456',
         };
 
-        try {
-          await validateCreateTask(incompleteData);
-          expect.fail('Should have thrown validation error');
-        } catch (error: any) {
-          expect(error.message).toBe('Validation failed');
-          expect(error.errors.due_date).toBeDefined();
-        }
+        expect(() => validateCreateTask(invalidData)).toThrow(z.ZodError);
+      });
+
+      it('should reject incomplete creation data', () => {
+        const incompleteData = {
+          text: 'New Task',
+          type: 'meeting',
+          // Missing contact_id, due_date, sales_id
+        };
+
+        expect(() => validateCreateTask(incompleteData)).toThrow(z.ZodError);
       });
     });
 
     describe('validateUpdateTask', () => {
-      it('should validate update data', async () => {
+      it('should validate and return parsed data', () => {
         const validData = {
           id: 'task-123',
-          title: 'Updated Task',
-          status: 'completed',
+          text: 'Updated Task',
+          done_date: '2024-12-20T10:00:00Z',
         };
 
-        await expect(validateUpdateTask(validData)).resolves.toBeUndefined();
+        const result = validateUpdateTask(validData);
+        expect(result.id).toBe('task-123');
+        expect(result.text).toBe('Updated Task');
+        expect(result.done_date).toBe('2024-12-20T10:00:00Z');
       });
 
-      it('should reject update without id', async () => {
+      it('should throw for update without id', () => {
         const invalidData = {
-          title: 'Updated Task',
+          text: 'Updated Task',
         };
 
-        try {
-          await validateUpdateTask(invalidData);
-          expect.fail('Should have thrown validation error');
-        } catch (error: any) {
-          expect(error.message).toBe('Validation failed');
-          expect(error.errors.id).toBeDefined();
-        }
+        expect(() => validateUpdateTask(invalidData)).toThrow(z.ZodError);
+      });
+    });
+
+    describe('validateTaskWithReminder', () => {
+      it('should validate tasks with reminders', () => {
+        const futureDate = new Date();
+        futureDate.setMonth(futureDate.getMonth() + 1); // 1 month from now
+
+        const validData = {
+          text: 'Important reminder',
+          contact_id: 'contact-123',
+          type: 'follow-up',
+          due_date: futureDate.toISOString(),
+          sales_id: 'user-456',
+        };
+
+        const result = validateTaskWithReminder(validData);
+        expect(result.text).toBe('Important reminder');
+      });
+
+      it('should reject reminders for past dates', () => {
+        const pastData = {
+          text: 'Late reminder',
+          contact_id: 'contact-123',
+          type: 'call',
+          due_date: '2020-01-01T10:00:00Z', // Past date
+          sales_id: 'user-456',
+        };
+
+        expect(() => validateTaskWithReminder(pastData)).toThrow(z.ZodError);
+      });
+    });
+
+    describe('validateTaskForSubmission', () => {
+      it('should validate and transform task data', () => {
+        const inputData = {
+          text: 'Task for submission',
+          contact_id: 'contact-123',
+          type: 'meeting',
+          due_date: '2024-12-31T15:30:45Z',
+          sales_id: 'user-456',
+        };
+
+        const result = validateTaskForSubmission(inputData);
+        expect(result.text).toBe('Task for submission');
+        // Date should be transformed to start of day
+        expect(result.due_date).toMatch(/T00:00:00\.000Z$/);
+      });
+
+      it('should transform done_date if present', () => {
+        const dataWithDoneDate = {
+          text: 'Completed task',
+          contact_id: 'contact-123',
+          type: 'call',
+          due_date: '2024-12-31T15:30:00Z',
+          sales_id: 'user-456',
+          done_date: '2024-12-20T18:45:30Z',
+        };
+
+        const result = validateTaskForSubmission(dataWithDoneDate);
+        // Both dates should be transformed to start of day
+        expect(result.due_date).toMatch(/T00:00:00\.000Z$/);
+        expect(result.done_date).toMatch(/T00:00:00\.000Z$/);
+      });
+    });
+
+    describe('transformTaskDate', () => {
+      it('should transform date to start of day', () => {
+        const testCases = [
+          { input: '2024-12-31T15:30:45Z', expected: '2024-12-31T00:00:00.000Z' },
+          { input: '2024-01-15T23:59:59Z', expected: '2024-01-15T00:00:00.000Z' },
+          { input: '2024-06-15T12:00:00Z', expected: '2024-06-15T00:00:00.000Z' },
+        ];
+
+        testCases.forEach(({ input, expected }) => {
+          const result = transformTaskDate(input);
+          expect(result).toBe(expected);
+        });
       });
     });
   });
 
   describe('Business Rules', () => {
-    it('should enforce reminder before due date rule', () => {
-      const testCases = [
-        {
-          due_date: '2024-12-31T10:00:00Z',
-          reminder_date: '2024-12-30T10:00:00Z',
-          shouldPass: true,
-        },
-        {
-          due_date: '2024-12-31T10:00:00Z',
-          reminder_date: '2024-12-31T09:00:00Z',
-          shouldPass: true,
-        },
-        {
-          due_date: '2024-12-31T10:00:00Z',
-          reminder_date: '2024-12-31T10:00:00Z',
-          shouldPass: false, // Same time
-        },
-        {
-          due_date: '2024-12-31T10:00:00Z',
-          reminder_date: '2025-01-01T10:00:00Z',
-          shouldPass: false, // After
-        },
-      ];
-
-      testCases.forEach(({ due_date, reminder_date, shouldPass }) => {
-        const data = {
-          title: 'Test Task',
-          type: 'call',
-          due_date,
-          reminder_date,
-        };
-
-        if (shouldPass) {
-          expect(() => taskSchema.parse(data)).not.toThrow();
-        } else {
-          expect(() => taskSchema.parse(data)).toThrow(z.ZodError);
-        }
-      });
-    });
-
-    it('should handle task status transitions', () => {
-      const statusTransitions = [
-        { from: 'pending', to: 'in_progress' },
-        { from: 'in_progress', to: 'completed' },
-        { from: 'in_progress', to: 'deferred' },
-        { from: 'pending', to: 'cancelled' },
-        { from: 'deferred', to: 'pending' },
-      ];
-
-      // Schema should accept all valid statuses
-      statusTransitions.forEach(({ to }) => {
-        const task = {
-          title: 'Test Task',
-          type: 'call',
-          due_date: '2024-12-31T10:00:00Z',
-          status: to,
-        };
-
-        expect(() => taskSchema.parse(task)).not.toThrow();
-      });
-    });
-
-    it('should validate priority levels', () => {
-      const priorities = ['low', 'medium', 'high', 'urgent'];
-
-      priorities.forEach(priority => {
-        const task = {
-          title: 'Priority Task',
-          type: 'todo',
-          due_date: '2024-12-31T10:00:00Z',
-          priority,
-        };
-
-        expect(() => taskSchema.parse(task)).not.toThrow();
-      });
-    });
-
-    it('should handle task associations with entities', () => {
-      const taskWithMultipleAssociations = {
-        title: 'Multi-Entity Task',
-        type: 'meeting',
+    it('should enforce required contact association', () => {
+      const taskWithoutContact = {
+        text: 'Orphan task',
+        type: 'call',
         due_date: '2024-12-31T10:00:00Z',
+        sales_id: 'user-456',
+        // Missing contact_id
+      };
+
+      expect(() => taskSchema.parse(taskWithoutContact)).toThrow(z.ZodError);
+    });
+
+    it('should enforce sales assignment', () => {
+      const unassignedTask = {
+        text: 'Unassigned task',
         contact_id: 'contact-123',
-        company_id: 'company-456',
-        opportunity_id: 'opp-789',
-        assigned_to_id: 'user-999',
+        type: 'email',
+        due_date: '2024-12-31T10:00:00Z',
+        // Missing sales_id
       };
 
-      const result = taskSchema.parse(taskWithMultipleAssociations);
-      expect(result.contact_id).toBe('contact-123');
-      expect(result.company_id).toBe('company-456');
-      expect(result.opportunity_id).toBe('opp-789');
-      expect(result.assigned_to_id).toBe('user-999');
+      expect(() => taskSchema.parse(unassignedTask)).toThrow(z.ZodError);
     });
 
-    it('should handle recurring tasks', () => {
-      const recurringTask = {
-        title: 'Weekly Meeting',
-        type: 'meeting',
+    it('should handle task completion workflow', () => {
+      // Create task
+      const newTask = {
+        text: 'Task to complete',
+        contact_id: 'contact-123',
+        type: 'todo',
         due_date: '2024-12-31T10:00:00Z',
-        recurrence_pattern: 'weekly',
-        recurrence_end_date: '2025-12-31T10:00:00Z',
+        sales_id: 'user-456',
       };
 
-      expect(() => taskSchema.parse(recurringTask)).not.toThrow();
+      const created = createTaskSchema.parse(newTask);
+      expect(created.done_date).toBeUndefined();
+
+      // Mark as complete
+      const completeUpdate = {
+        id: 'task-123',
+        done_date: '2024-12-20T10:00:00Z',
+      };
+
+      const completed = updateTaskSchema.parse(completeUpdate);
+      expect(completed.done_date).toBe('2024-12-20T10:00:00Z');
+
+      // Reopen task
+      const reopenUpdate = {
+        id: 'task-123',
+        done_date: null,
+      };
+
+      const reopened = updateTaskSchema.parse(reopenUpdate);
+      expect(reopened.done_date).toBeNull();
+    });
+
+    it('should support various task types', () => {
+      const taskTypes = [
+        'call',
+        'email',
+        'meeting',
+        'todo',
+        'follow-up',
+        'reminder',
+        'deadline',
+        'milestone',
+        'review',
+        'approval',
+      ];
+
+      taskTypes.forEach(type => {
+        const task = {
+          text: `${type} task`,
+          contact_id: 'contact-123',
+          type,
+          due_date: '2024-12-31T10:00:00Z',
+          sales_id: 'user-456',
+        };
+
+        expect(() => taskSchema.parse(task)).not.toThrow();
+      });
     });
   });
 
   describe('Error Message Formatting', () => {
-    it('should provide clear error messages', async () => {
+    it('should provide clear error messages', () => {
       const testCases = [
         {
-          data: { title: '', type: 'call', due_date: '2024-12-31T10:00:00Z' },
-          expectedError: 'Task title is required',
-          field: 'title'
+          data: { text: '', contact_id: 'c-1', type: 'call', due_date: '2024-12-31', sales_id: 'u-1' },
+          expectedError: 'Description is required',
         },
         {
-          data: { title: 'Test', type: 'call', due_date: '' },
+          data: { text: 'Test', contact_id: '', type: 'call', due_date: '2024-12-31', sales_id: 'u-1' },
+          expectedError: 'Contact is required',
+        },
+        {
+          data: { text: 'Test', contact_id: 'c-1', type: '', due_date: '2024-12-31', sales_id: 'u-1' },
+          expectedError: 'Type is required',
+        },
+        {
+          data: { text: 'Test', contact_id: 'c-1', type: 'call', due_date: '', sales_id: 'u-1' },
           expectedError: 'Due date is required',
-          field: 'due_date'
-        },
-        {
-          data: {
-            title: 'Test',
-            type: 'call',
-            due_date: '2024-12-31T10:00:00Z',
-            reminder_date: '2025-01-01T10:00:00Z'
-          },
-          expectedError: 'Reminder must be before due date',
-          field: 'reminder_date'
         },
       ];
 
-      for (const { data, expectedError, field } of testCases) {
+      testCases.forEach(({ data, expectedError }) => {
         try {
-          await validateTaskForm(data);
-          if (expectedError) {
-            expect.fail(`Should have thrown error for field: ${field}`);
+          taskSchema.parse(data);
+          expect.fail('Should have thrown error');
+        } catch (error) {
+          if (error instanceof z.ZodError) {
+            const message = error.errors[0].message;
+            expect(message).toBe(expectedError);
           }
-        } catch (error: any) {
-          expect(error.errors[field]).toBe(expectedError);
         }
-      }
+      });
+    });
+  });
+
+  describe('API Boundary Integration', () => {
+    it('should validate at creation boundary', () => {
+      const apiPayload = {
+        text: 'API created task',
+        contact_id: 'contact-123',
+        type: 'api-call',
+        due_date: '2024-12-31T10:00:00Z',
+        sales_id: 'user-456',
+        extra_field: 'should be ignored',
+      };
+
+      const result = validateCreateTask(apiPayload);
+      expect(result.text).toBe('API created task');
+      expect('extra_field' in result).toBe(false);
+    });
+
+    it('should handle type coercion at boundary', () => {
+      const apiPayload = {
+        text: 'Coerced task',
+        contact_id: 123, // Number instead of string
+        type: 'call',
+        due_date: '2024-12-31T10:00:00Z',
+        sales_id: 456, // Number instead of string
+      };
+
+      const result = taskSchema.parse(apiPayload);
+      expect(result.contact_id).toBe(123);
+      expect(result.sales_id).toBe(456);
+    });
+
+    it('should validate at update boundary', () => {
+      const apiPayload = {
+        id: 'task-123',
+        text: 'Updated via API',
+        done_date: '2024-12-20T10:00:00Z',
+        malicious_field: 'should be ignored',
+      };
+
+      const result = validateUpdateTask(apiPayload);
+      expect(result.id).toBe('task-123');
+      expect(result.text).toBe('Updated via API');
+      expect('malicious_field' in result).toBe(false);
+    });
+
+    it('should handle date transformation at submission', () => {
+      const apiPayload = {
+        text: 'Task with dates',
+        contact_id: 'contact-123',
+        type: 'meeting',
+        due_date: '2024-12-31T15:30:45.123Z', // With milliseconds and time
+        sales_id: 'user-456',
+        done_date: '2024-12-20T18:45:30.456Z',
+      };
+
+      const result = validateTaskForSubmission(apiPayload);
+      // Dates should be normalized to start of day
+      expect(result.due_date).toBe('2024-12-31T00:00:00.000Z');
+      expect(result.done_date).toBe('2024-12-20T00:00:00.000Z');
     });
   });
 });
