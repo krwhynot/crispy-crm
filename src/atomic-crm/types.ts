@@ -201,21 +201,7 @@ export type ContactNote = {
   attachments?: AttachmentNote[];
 } & Pick<RaRecord, "id">;
 
-export type Deal = {
-  name: string;
-  company_id: Identifier;
-  contact_ids: Identifier[];
-  category: string;
-  stage: string;
-  description: string;
-  amount: number;
-  created_at: string;
-  updated_at: string;
-  archived_at?: string;
-  expected_closing_date: string;
-  sales_id: Identifier;
-  index: number;
-} & Pick<RaRecord, "id">;
+// Deal type removed - use Opportunity instead
 
 export type Opportunity = {
   name: string;
@@ -250,16 +236,7 @@ export type Opportunity = {
   archived_at?: string;
 } & Pick<RaRecord, "id">;
 
-export type DealNote = {
-  deal_id: Identifier;
-  text: string;
-  date: string;
-  sales_id: Identifier;
-  attachments?: AttachmentNote[];
-
-  // This is defined for compatibility with `ContactNote`
-  status?: undefined;
-} & Pick<RaRecord, "id">;
+// DealNote type removed - use OpportunityNote instead
 
 export type OpportunityNote = {
   opportunity_id: Identifier;
@@ -342,10 +319,7 @@ export interface RAFile {
 }
 
 export type AttachmentNote = RAFile;
-export interface DealStage {
-  value: string;
-  label: string;
-}
+// DealStage interface removed - use OpportunityStage instead
 
 export interface NoteStatus {
   value: string;
