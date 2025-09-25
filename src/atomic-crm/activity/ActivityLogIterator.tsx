@@ -12,8 +12,8 @@ import type { Activity } from "../types";
 import { ActivityLogCompanyCreated } from "./ActivityLogCompanyCreated";
 import { ActivityLogContactCreated } from "./ActivityLogContactCreated";
 import { ActivityLogContactNoteCreated } from "./ActivityLogContactNoteCreated";
-import { ActivityLogDealCreated } from "./ActivityLogDealCreated";
-import { ActivityLogDealNoteCreated } from "./ActivityLogDealNoteCreated";
+import { ActivityLogOpportunityCreated } from "./ActivityLogOpportunityCreated";
+import { ActivityLogOpportunityNoteCreated } from "./ActivityLogOpportunityNoteCreated";
 
 type ActivityLogIteratorProps = {
   activities: Activity[];
@@ -69,11 +69,11 @@ function ActivityItem({ activity }: { activity: Activity }) {
   }
 
   if (activity.type === OPPORTUNITY_CREATED) {
-    return <ActivityLogDealCreated activity={activity} />;
+    return <ActivityLogOpportunityCreated activity={activity} />;
   }
 
   if (activity.type === OPPORTUNITY_NOTE_CREATED) {
-    return <ActivityLogDealNoteCreated activity={activity} />;
+    return <ActivityLogOpportunityNoteCreated activity={activity} />;
   }
 
   return null;

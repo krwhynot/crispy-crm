@@ -4,27 +4,27 @@ import type { RaRecord } from "ra-core";
 import { CompanyAvatar } from "../companies/CompanyAvatar";
 import { RelativeDate } from "../misc/RelativeDate";
 import { SaleName } from "../sales/SaleName";
-import type { ActivityDealNoteCreated } from "../types";
+import type { ActivityOpportunityNoteCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 import { ActivityLogNote } from "./ActivityLogNote";
 
-type ActivityLogDealNoteCreatedProps = {
-  activity: RaRecord & ActivityDealNoteCreated;
+type ActivityLogOpportunityNoteCreatedProps = {
+  activity: RaRecord & ActivityOpportunityNoteCreated;
 };
 
-export function ActivityLogDealNoteCreated({
+export function ActivityLogOpportunityNoteCreated({
   activity,
-}: ActivityLogDealNoteCreatedProps) {
+}: ActivityLogOpportunityNoteCreatedProps) {
   const context = useActivityLogContext();
-  const { dealNote } = activity;
+  const { opportunityNote } = activity;
   return (
     <ActivityLogNote
       header={
         <div className="flex flex-row items-center gap-2 flex-grow">
           <ReferenceField
-            source="deal_id"
-            reference="deals"
-            record={dealNote}
+            source="opportunity_id"
+            reference="opportunities"
+            record={opportunityNote}
             link={false}
           >
             <ReferenceField
@@ -47,18 +47,18 @@ export function ActivityLogDealNoteCreated({
             </ReferenceField>
             &nbsp;added a note about opportunity&nbsp;
             <ReferenceField
-              source="deal_id"
-              reference="deals"
-              record={dealNote}
+              source="opportunity_id"
+              reference="opportunities"
+              record={opportunityNote}
               link="show"
             />
             {context !== "company" && (
               <>
                 {" at "}
                 <ReferenceField
-                  source="deal_id"
-                  reference="deals"
-                  record={dealNote}
+                  source="opportunity_id"
+                  reference="opportunities"
+                  record={opportunityNote}
                   link={false}
                 >
                   <ReferenceField
@@ -78,7 +78,7 @@ export function ActivityLogDealNoteCreated({
           )}
         </div>
       }
-      text={dealNote.text}
+      text={opportunityNote.text}
     />
   );
 }
