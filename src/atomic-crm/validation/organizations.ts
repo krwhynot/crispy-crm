@@ -83,7 +83,7 @@ export const organizationSchema = z.object({
 
   // Computed fields (readonly)
   nb_contacts: z.number().optional(),
-  nb_deals: z.number().optional(),
+  nb_opportunities: z.number().optional(),
 
   // System fields
   created_at: z.string().optional(),
@@ -124,7 +124,7 @@ export const createOrganizationSchema = organizationSchema.omit({
   created_at: true,
   deleted_at: true,
   nb_contacts: true,
-  nb_deals: true,
+  nb_opportunities: true,
 }).required({
   name: true,
 });

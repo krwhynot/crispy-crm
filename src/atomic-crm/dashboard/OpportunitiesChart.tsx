@@ -4,7 +4,7 @@ import { DollarSign } from "lucide-react";
 import { useGetList } from "ra-core";
 import { memo, useMemo } from "react";
 
-import type { Deal } from "../types";
+import type { Opportunity } from "../types";
 
 const multiplier = {
   opportunity: 0.2,
@@ -25,7 +25,7 @@ export const OpportunitiesChart = memo(() => {
     ? navigator.languages || [navigator.language]
     : [DEFAULT_LOCALE];
 
-  const { data, isPending } = useGetList<Deal>("deals", {
+  const { data, isPending } = useGetList<Opportunity>("opportunities", {
     pagination: { perPage: 100, page: 1 },
     sort: {
       field: "created_at",
@@ -37,12 +37,12 @@ export const OpportunitiesChart = memo(() => {
   });
   const months = useMemo(() => {
     if (!data) return [];
-    const dealsByMonth = data.reduce((acc, deal) => {
-      const month = startOfMonth(deal.created_at ?? new Date()).toISOString();
+    const opportunitiesByMonth = data.reduce((acc, opportunity) => {
+      const month = startOfMonth(opportunity.created_at ?? new Date()).toISOString();
       if (!acc[month]) {
         acc[month] = [];
       }
-      acc[month].push(deal);
+      acc[month].push(opportunity);
       return acc;
     }, {} as any);
 

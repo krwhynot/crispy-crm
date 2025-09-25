@@ -69,7 +69,7 @@ export type Company = {
   country: string;
   context_links?: string[];
   nb_contacts?: number;
-  nb_deals?: number;
+  nb_opportunities?: number;
 
   // New organization fields
   organization_type?: OrganizationType;

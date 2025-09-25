@@ -70,13 +70,13 @@ export const CompanyCard = (props: { record?: Company }) => {
               </ReferenceManyField>
             ) : null}
           </div>
-          {record.nb_deals ? (
+          {record.nb_opportunities ? (
             <div className="flex items-center ml-2 gap-0.5">
               <DollarSign className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium">{record.nb_deals}</span>
+              <span className="text-sm font-medium">{record.nb_opportunities}</span>
               <span className="text-xs text-muted-foreground">
-                {record.nb_deals
-                  ? record.nb_deals > 1
+                {record.nb_opportunities
+                  ? record.nb_opportunities > 1
                     ? "opportunities"
                     : "opportunity"
                   : "opportunity"}

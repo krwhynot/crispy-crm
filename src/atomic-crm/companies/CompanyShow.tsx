@@ -24,7 +24,7 @@ import { TagsList } from "../contacts/TagsList";
 import { findOpportunityLabel } from "../opportunities/opportunity";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
-import type { Company, Contact, Deal } from "../types";
+import type { Company, Contact, Opportunity } from "../types";
 import { CompanyAside } from "./CompanyAside";
 import { CompanyAvatar } from "./CompanyAvatar";
 
@@ -72,11 +72,11 @@ const CompanyShowContent = () => {
                       : `${record.nb_contacts} Contacts`
                     : "No Contacts"}
                 </TabsTrigger>
-                {record.nb_deals ? (
+                {record.nb_opportunities ? (
                   <TabsTrigger value="opportunities">
-                    {record.nb_deals === 1
+                    {record.nb_opportunities === 1
                       ? "1 opportunity"
-                      : `${record.nb_deals} opportunities`}
+                      : `${record.nb_opportunities} opportunities`}
                   </TabsTrigger>
                 ) : null}
               </TabsList>
@@ -111,7 +111,7 @@ const CompanyShowContent = () => {
                 )}
               </TabsContent>
               <TabsContent value="opportunities">
-                {record.nb_deals ? (
+                {record.nb_opportunities ? (
                   <ReferenceManyField
                     reference="opportunities"
                     target="company_id"
@@ -198,7 +198,7 @@ const CreateRelatedContactButton = () => {
 };
 
 const OpportunitiesIterator = () => {
-  const { data: opportunities, error, isPending } = useListContext<Deal>();
+  const { data: opportunities, error, isPending } = useListContext<Opportunity>();
   const { opportunityStages } = useConfigurationContext();
   if (isPending || error) return null;
 
