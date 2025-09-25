@@ -17,14 +17,14 @@ import { getCurrentDate } from "./utils";
 
 const foreignKeyMapping = {
   contacts: "contact_id",
-  deals: "deal_id",
+  opportunities: "opportunity_id",
 };
 
 export const NoteCreate = ({
   reference,
   showStatus,
 }: {
-  reference: "contacts" | "deals";
+  reference: "contacts" | "opportunities";
   showStatus?: boolean;
 }) => {
   const resource = useResourceContext();
@@ -49,7 +49,7 @@ const NoteCreateButton = ({
   reference,
   record,
 }: {
-  reference: "contacts" | "deals";
+  reference: "contacts" | "opportunities";
   record: RaRecord<Identifier>;
 }) => {
   const [update] = useUpdate();

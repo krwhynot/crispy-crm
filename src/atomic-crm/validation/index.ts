@@ -10,15 +10,12 @@
  * - Business rules and custom validators
  */
 
-// Core entity schemas will be re-exported here
-// export * from './opportunities';
-// export * from './organizations';
-// export * from './contacts';
+// Core entity schemas
+export * from './opportunities';
+export * from './organizations';
+export * from './contacts';
 
-// Supporting entity schemas will be re-exported here
-// export * from './tasks';
-// export * from './tags';
-// export * from './notes';
-
-// Placeholder export to prevent TypeScript errors
-export {};
+// Supporting entity schemas
+export * from './tasks';
+export * from './tags';
+export * from './notes';

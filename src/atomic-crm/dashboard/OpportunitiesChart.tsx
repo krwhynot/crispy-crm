@@ -46,26 +46,26 @@ export const DealsChart = memo(() => {
       return acc;
     }, {} as any);
 
-    const amountByMonth = Object.keys(dealsByMonth).map((month) => {
+    const amountByMonth = Object.keys(opportunitiesByMonth).map((month) => {
       return {
         date: format(month, "MMM"),
-        won: dealsByMonth[month]
-          .filter((deal: Deal) => deal.stage === "won")
-          .reduce((acc: number, deal: Deal) => {
-            acc += deal.amount;
+        won: opportunitiesByMonth[month]
+          .filter((opportunity: Opportunity) => opportunity.stage === "won")
+          .reduce((acc: number, opportunity: Opportunity) => {
+            acc += opportunity.amount;
             return acc;
           }, 0),
-        pending: dealsByMonth[month]
-          .filter((deal: Deal) => !["won", "lost"].includes(deal.stage))
-          .reduce((acc: number, deal: Deal) => {
+        pending: opportunitiesByMonth[month]
+          .filter((opportunity: Opportunity) => !["won", "lost"].includes(opportunity.stage))
+          .reduce((acc: number, opportunity: Opportunity) => {
             // @ts-expect-error - multiplier type issue
-            acc += deal.amount * multiplier[deal.stage];
+            acc += opportunity.amount * multiplier[opportunity.stage];
             return acc;
           }, 0),
-        lost: dealsByMonth[month]
-          .filter((deal: Deal) => deal.stage === "lost")
-          .reduce((acc: number, deal: Deal) => {
-            acc -= deal.amount;
+        lost: opportunitiesByMonth[month]
+          .filter((opportunity: Opportunity) => opportunity.stage === "lost")
+          .reduce((acc: number, opportunity: Opportunity) => {
+            acc -= opportunity.amount;
             return acc;
           }, 0),
       };

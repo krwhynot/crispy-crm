@@ -4,7 +4,7 @@ import { FileText } from "lucide-react";
 import { useGetIdentity, useGetList } from "ra-core";
 
 import { ReferenceField, TextField } from "@/components/admin";
-import type { Contact, ContactNote } from "../types";
+import type { Contact, ContactNote, OpportunityNote } from "../types";
 
 export const LatestNotes = () => {
   const { identity } = useGetIdentity();
@@ -17,8 +17,8 @@ export const LatestNotes = () => {
     },
     { enabled: Number.isInteger(identity?.id) },
   );
-  const { data: dealNotesData, isPending: dealNotesLoading } = useGetList(
-    "dealNotes",
+  const { data: opportunityNotesData, isPending: opportunityNotesLoading } = useGetList(
+    "opportunityNotes",
     {
       pagination: { page: 1, perPage: 5 },
       sort: { field: "date", order: "DESC" },
@@ -26,11 +26,11 @@ export const LatestNotes = () => {
     },
     { enabled: Number.isInteger(identity?.id) },
   );
-  if (contactNotesLoading || dealNotesLoading) {
+  if (contactNotesLoading || opportunityNotesLoading) {
     return null;
   }
   // TypeScript guards
-  if (!contactNotesData || !dealNotesData) {
+  if (!contactNotesData || !opportunityNotesData) {
     return null;
   }
 
@@ -40,7 +40,7 @@ export const LatestNotes = () => {
         ...note,
         type: "contactNote",
       })),
-      dealNotesData.map((note) => ({ ...note, type: "dealNote" })),
+      opportunityNotesData.map((note) => ({ ...note, type: "opportunityNote" })),
     )
     .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
     .slice(0, 5);
@@ -65,8 +65,8 @@ export const LatestNotes = () => {
             >
               <div className="text-sm text-muted-foreground">
                 on{" "}
-                {note.type === "dealNote" ? (
-                  <Deal note={note} />
+                {note.type === "opportunityNote" ? (
+                  <Opportunity note={note} />
                 ) : (
                   <Contact note={note} />
                 )}
@@ -88,13 +88,13 @@ export const LatestNotes = () => {
   );
 };
 
-const Deal = ({ note }: any) => (
+const Opportunity = ({ note }: any) => (
   <>
     Opportunity{" "}
     <ReferenceField
       record={note}
-      source="deal_id"
-      reference="deals"
+      source="opportunity_id"
+      reference="opportunities"
       link="show"
     >
       <TextField source="name" />

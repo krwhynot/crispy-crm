@@ -1,7 +1,6 @@
 /**
  * This component displays the opportunities pipeline for the current user.
  * It's currently not used in the application but can be added to the dashboard.
- * @deprecated Use OpportunitiesPipeline component instead
  */
 
 import { Card } from "@/components/ui/card";
@@ -12,15 +11,15 @@ import { ReferenceField } from "@/components/admin";
 import { Link } from "react-router-dom";
 import { SimpleList } from "../simple-list/SimpleList";
 import { CompanyAvatar } from "../companies/CompanyAvatar";
-import { findDealLabel } from "../deals/deal";
+import { findOpportunityLabel } from "../opportunities/opportunity";
 import { useConfigurationContext } from "../root/ConfigurationContext";
-import type { Deal } from "../types";
+import type { Opportunity } from "../types";
 
-export const DealsPipeline = () => {
+export const OpportunitiesPipeline = () => {
   const { identity } = useGetIdentity();
-  const { dealStages, dealPipelineStatuses } = useConfigurationContext();
-  const { data, total, isPending } = useGetList<Deal>(
-    "deals",
+  const { opportunityStages, opportunityPipelineStatuses } = useConfigurationContext();
+  const { data, total, isPending } = useGetList<Opportunity>(
+    "opportunities",
     {
       pagination: { page: 1, perPage: 10 },
       sort: { field: "last_seen", order: "DESC" },
@@ -29,17 +28,17 @@ export const DealsPipeline = () => {
     { enabled: Number.isInteger(identity?.id) },
   );
 
-  const getOrderedOpportunities = (data?: Deal[]): Deal[] | undefined => {
+  const getOrderedOpportunities = (data?: Opportunity[]): Opportunity[] | undefined => {
     if (!data) {
       return;
     }
-    const opportunities: Deal[] = [];
-    dealStages
-      .filter((stage) => !dealPipelineStatuses.includes(stage.value))
+    const opportunities: Opportunity[] = [];
+    opportunityStages
+      .filter((stage) => !opportunityPipelineStatuses.includes(stage.value))
       .forEach((stage) =>
         data
-          .filter((deal) => deal.stage === stage.value)
-          .forEach((deal) => opportunities.push(deal)),
+          .filter((opportunity) => opportunity.stage === stage.value)
+          .forEach((opportunity) => opportunities.push(opportunity)),
       );
     return opportunities;
   };
@@ -58,28 +57,28 @@ export const DealsPipeline = () => {
         </Link>
       </div>
       <Card>
-        <SimpleList<Deal>
-          resource="deals"
+        <SimpleList<Opportunity>
+          resource="opportunities"
           linkType="show"
           data={getOrderedOpportunities(data)}
           total={total}
           isPending={isPending}
-          primaryText={(deal) => deal.name}
-          secondaryText={(deal) =>
-            `${deal.amount.toLocaleString("en-US", {
+          primaryText={(opportunity) => opportunity.name}
+          secondaryText={(opportunity) =>
+            `${opportunity.amount.toLocaleString("en-US", {
               notation: "compact",
               style: "currency",
               currency: "USD",
               currencyDisplay: "narrowSymbol",
               minimumSignificantDigits: 3,
-            })} , ${findDealLabel(dealStages, deal.stage)}`
+            })} , ${findOpportunityLabel(opportunityStages, opportunity.stage)}`
           }
-          leftAvatar={(deal) => (
+          leftAvatar={(opportunity) => (
             <ReferenceField
               source="company_id"
-              record={deal}
+              record={opportunity}
               reference="companies"
-              resource="deals"
+              resource="opportunities"
               link={false}
             >
               <CompanyAvatar width={20} height={20} />

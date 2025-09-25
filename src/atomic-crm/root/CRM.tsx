@@ -8,14 +8,12 @@ import { Route } from "react-router-dom";
 import companies from "../companies";
 import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
-// import deals from "../deals"; // REMOVED - deals module deleted
 import opportunities from "../opportunities";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
   dataProvider as supabaseDataProvider,
 } from "../providers/supabase";
-// import { handleDealUrlRedirect } from "../providers/commons/backwardCompatibility"; // REMOVED - backward compatibility deleted
 import sales from "../sales";
 import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
@@ -24,9 +22,6 @@ import {
   defaultCompanySectors,
   defaultContactGender,
   defaultDarkModeLogo,
-  defaultDealCategories,
-  defaultDealPipelineStatuses,
-  defaultDealStages,
   defaultLightModeLogo,
   defaultNoteStatuses,
   defaultOpportunityCategories,
@@ -55,9 +50,6 @@ export type CRMProps = {
  * @param {RaThemeOptions} darkTheme - The theme to use when the application is in dark mode.
  * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
  * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
- * @param {string[]} dealCategories - The categories of deals used in the application (deprecated, use opportunityCategories).
- * @param {string[]} dealPipelineStatuses - The statuses of deals in the pipeline used in the application (deprecated, use opportunityStages).
- * @param {DealStage[]} dealStages - The stages of deals used in the application (deprecated, use opportunityStages).
  * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
  * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
  * @param {RaThemeOptions} lightTheme - The theme to use when the application is in light mode.
@@ -90,9 +82,6 @@ export type CRMProps = {
 export const CRM = ({
   contactGender = defaultContactGender,
   companySectors = defaultCompanySectors,
-  dealCategories = defaultDealCategories,
-  dealPipelineStatuses = defaultDealPipelineStatuses,
-  dealStages = defaultDealStages,
   opportunityCategories = defaultOpportunityCategories,
   opportunityStages = defaultOpportunityStages,
   darkModeLogo = defaultDarkModeLogo,
@@ -105,11 +94,6 @@ export const CRM = ({
   disableTelemetry,
   ...rest
 }: CRMProps) => {
-  // Handle backward compatibility URL redirects for /deals/* to /opportunities/*
-  useEffect(() => {
-    handleDealUrlRedirect();
-  }, []);
-
   useEffect(() => {
     if (
       disableTelemetry ||
@@ -128,9 +112,6 @@ export const CRM = ({
     <ConfigurationProvider
       contactGender={contactGender}
       companySectors={companySectors}
-      dealCategories={dealCategories}
-      dealPipelineStatuses={dealPipelineStatuses}
-      dealStages={dealStages}
       opportunityCategories={opportunityCategories}
       opportunityStages={opportunityStages}
       darkModeLogo={darkModeLogo}
@@ -162,12 +143,10 @@ export const CRM = ({
         <CustomRoutes>
           <Route path={SettingsPage.path} element={<SettingsPage />} />
         </CustomRoutes>
-        <Resource name="deals" {...deals} />
         <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />
         <Resource name="companies" {...companies} />
         <Resource name="contactNotes" />
-        <Resource name="dealNotes" />
         <Resource name="opportunityNotes" />
         <Resource name="tasks" />
         <Resource name="sales" {...sales} />
