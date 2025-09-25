@@ -1,4 +1,115 @@
-# CLAUDE.md
+### Core Principles
+
+These rules prevent debates and ensure consistency across the Atomic CRM codebase:
+
+  
+
+1. **Database Access**: Use a single unified data provider with optional resilience features. Systematically refactor/deprecate other custom data layers.
+
+  
+
+2. **Error Handling**: Implement basic retry logic with exponential backoff and standardized error types. No circuit breakers or health monitoring - these are over-engineering for a CRM.
+
+  
+
+3. **Validation**: Single point validation with Zod schemas at the API boundary only. No multi-layer validation.
+
+  
+
+4. **Testing**: Focus on critical business logic unit tests + key user journey E2E tests. Avoid over-testing infrastructure.
+
+  
+
+5. **Migrations**: Use sequential numbering (108_feature_name.sql, 109_another_feature.sql) for explicit ordering.
+
+  
+
+6. **TypeScript**: Use `interface` for objects/classes, `type` for unions/intersections/utilities.
+
+  
+
+7. **State Management**: Local state for UI-only concerns, React Admin store for resource data.
+
+  
+
+8. **Transactions**: Only wrap multi-table operations or operations with business rule dependencies.
+
+  
+
+9. **Backward Compatibility**: Never maintain it - fail fast to catch issues immediately.
+
+  
+
+10. **Comments**: Only for non-obvious business rules or necessary workarounds. Code should be self-documenting.
+
+  
+
+11. **Forms**: Always use the admin form layer (src/components/admin/) for consistent validation and error handling.
+
+  
+
+12. **Colors**: Only use semantic CSS variables (--primary, --destructive, etc.). No hardcoded hex values.
+
+  
+
+### Operational Standards
+
+  
+
+13. **Data Access Strategy**: Prioritize the primary auto-generated data provider. Refactor away custom layers.
+
+  
+
+14. **Transaction Management**: Handle in dedicated Service Layer orchestrating business operations.
+
+  
+
+15. **Technical Debt**: Apply "Boy Scout Rule" - fix inconsistencies in files you edit as part of current work.
+
+  
+
+16. **Architecture Enforcement**: Use automated ESLint rules to prevent forbidden imports and layer violations.
+
+  
+
+17. **Complexity Threshold**: Only introduce new patterns (circuit breakers, queues) for documented, recurring production issues.
+
+  
+
+18. **Performance**: Measure first with tracing, optimize queries/indexes before adding caches. No premature optimization.
+
+  
+
+19. **Feature Flags**: Server-evaluated with ownership/expiry. Remove within one release post-rollout.
+
+  
+
+20. **API Design**: Versioned REST with consistent JSON errors, idempotency keys, DTOs validated at boundary.
+
+  
+
+21. **Deployment**: Two-phase migrations, canary rollouts, automated health gates, schema-compatible rollbacks.
+
+  
+
+22. **Observability**: User-centric SLIs/SLOs, distributed tracing, structured logs with correlation IDs.
+
+  
+
+### Quick Reference
+
+- **DO NOT OVER-ENGINEER** - No circuit breakers, health monitoring, or complex resilience patterns
+
+- **FAIL FAST** - No backward compatibility, surface errors immediately
+
+- **SINGLE RESPONSIBILITY** - One validation point, one data provider, one source of truth
+
+- **AUTOMATE ENFORCEMENT** - ESLint for architecture, git hooks for types, CI/CD for standards
+
+- **MEASURE BEFORE OPTIMIZING** - Always profile before adding complexity
+
+  
+
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -17,21 +128,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run prettier:apply` - Auto-format code
 - `npm run validate:colors` - Validate color usage across components
 
-### Supabase
-- `npx supabase start` - Start local Supabase instance
-- `npx supabase stop` - Stop local Supabase
-- `npm run supabase:remote:init` - Initialize remote Supabase connection
+### Database Operations
+
+#### Local Development
+- Connect directly to remote Supabase via environment variables
+
+#### MCP Database Tools
+When MCP is configured (`.mcp.json` has credentials), use these tools directly:
+- `mcp__supabase__list_projects` - List Supabase projects
+- `mcp__supabase__apply_migration` - Apply database migrations
+- `mcp__supabase__execute_sql` - Execute SQL queries
+- `mcp__supabase__deploy_edge_function` - Deploy Edge Functions
+- `mcp__supabase__generate_typescript_types` - Generate TypeScript types
+
+#### CI/CD Database Operations
+- GitHub Actions uses Supabase CLI in cloud environment
+- Commands: `npx supabase link`, `npx supabase db push`, `npx supabase functions deploy`
+
+## Critical Implementation Notes
+
+### Migration Numbering
+Migrations use timestamp format (YYYYMMDDHHMMSS) for ordering. Example:
+- `20250113132532_fixcontactorganizationplural.sql`
+- Always use timestamps, never sequential numbers
+
+### Environment Variables
+- **OPPORTUNITY_* variables**: Configure sales pipeline (renamed from DEAL_*)
+- See `.env.example` for all configuration options
 
 ## Architecture Overview
 
 This is Atomic CRM, a full-stack React CRM application built on these key architectural decisions:
 
-### Dual Data Provider Architecture
-The application supports two data provider modes configured via `VITE_IS_DEMO`:
-- **FakeRest Provider**: In-memory data for development/demo (when `VITE_IS_DEMO=true`)
-- **Supabase Provider**: Production-ready PostgreSQL backend with RLS policies
-
-Both providers implement the React Admin DataProvider interface, allowing seamless switching between environments.
+### Data Provider Architecture
+The application uses the Supabase Provider: Production-ready PostgreSQL backend with RLS policies that implements the React Admin DataProvider interface.
 
 ### Core Application Structure
 
@@ -65,13 +195,16 @@ The UI layer uses a three-tier component system:
 
 Key tables in Supabase:
 - `companies` - Organization records with sectors
-- `contacts` - People with email/phone as JSONB for flexibility
-- `deals` - Sales pipeline with stages and statuses
+- `contacts` - People with email/phone as JSONB for flexibility (migration v0.2.0)
+- `opportunities` - Sales pipeline (renamed from `deals` in v0.2.0)
 - `tasks` - Activity tracking with reminders
-- `contactNotes`/`dealNotes` - Communication history
-- `tags` - Flexible categorization with color themes
+- `contactNotes`/`opportunityNotes` - Communication history
+- `tags` - Flexible categorization with semantic color tokens
+- `contactOrganizations` - Many-to-many relationship (contacts ↔ organizations)
 
 All tables include RLS policies for multi-tenant security.
+
+**Important**: Legacy `deals` endpoints remain for backward compatibility but should not be used in new code.
 
 ### Provider Pattern
 
@@ -102,9 +235,7 @@ Resources are registered in the CRM component with their CRUD components. React 
 Forms use React Hook Form via React Admin's Form components. Validation uses Zod schemas with custom validators for business rules.
 
 ### Data Fetching
-The dual provider pattern means data operations must work with both:
-- FakeRest: Synchronous operations on in-memory data
-- Supabase: Async operations with real PostgreSQL queries
+Data operations work with Supabase: Async operations with real PostgreSQL queries
 
 ### Authentication Flow
 The app supports multiple auth methods through Supabase Auth, with custom pages for:
@@ -117,9 +248,30 @@ The app supports multiple auth methods through Supabase Auth, with custom pages 
 Required environment variables:
 - `VITE_SUPABASE_URL` - Supabase project URL
 - `VITE_SUPABASE_ANON_KEY` - Public anonymous key
-- `VITE_IS_DEMO` - Toggle demo mode (FakeRest provider)
 - `VITE_INBOUND_EMAIL` - Optional email capture address
 
 ## Testing Strategy
 
 Tests use Vitest with React Testing Library. Test files follow the `*.test.ts(x)` or `*.spec.ts(x)` naming convention and are co-located with source files.
+
+### Seed Data Management
+- `npm run seed:data` - Insert test data
+- `npm run seed:data:dry-run` - Preview without inserting
+- `npm run seed:data:clean` - Clean and regenerate
+
+## Active Refactoring Patterns
+
+Based on Core Principle #15 (Boy Scout Rule), when editing files:
+
+1. **Data Provider Consolidation**: Replace custom data access with unified provider
+2. **Color System**: Replace hex values with semantic CSS variables
+3. **Form Components**: Migrate to admin form layer (`src/components/admin/`)
+4. **Validation**: Move to single-point Zod validation at API boundary
+5. **TypeScript**: Use `interface` for objects, `type` for unions/utilities
+
+## Known Limitations
+
+1. **No Local Supabase**: Use remote Supabase project for development
+2. **MCP vs CLI**: Local development uses MCP tools, CI/CD uses Supabase CLI
+3. **Migration Rollback**: Limited to 48-hour window in production
+4. **Edge Functions**: Test directly on development project

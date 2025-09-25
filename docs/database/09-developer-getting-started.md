@@ -7,9 +7,8 @@ This guide helps developers quickly set up, understand, and work with the Atomic
 
 ### Prerequisites
 - Node.js 18+ and npm
-- Supabase CLI installed (`npm install -g @supabase/cli`)
-- Docker Desktop running
 - Git for version control
+- Access to a Supabase project (create at https://supabase.com)
 
 ### Local Development Setup
 
@@ -25,24 +24,12 @@ npm install
 # Copy environment template
 cp .env.example .env.local
 
-# Key environment variables
-VITE_SUPABASE_URL=http://localhost:54321
-VITE_SUPABASE_ANON_KEY=<anon-key-from-supabase-start>
-VITE_IS_DEMO=false  # Use Supabase instead of FakeRest
+# Key environment variables (get from Supabase dashboard)
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=<your-anon-key>
 ```
 
-#### 3. Start Local Supabase
-```bash
-# Initialize Supabase (first time only)
-npx supabase init
-
-# Start local Supabase stack
-npx supabase start
-
-# Note the output - copy anon key to .env.local
-```
-
-#### 4. Run Application
+#### 3. Run Application
 ```bash
 # Start development server
 npm run dev
@@ -528,8 +515,7 @@ VITE_IS_DEMO=false
 ### Common Commands
 ```bash
 # Supabase commands
-npx supabase start           # Start local stack
-npx supabase stop            # Stop local stack
+npx supabase link            # Link to remote project
 npx supabase status          # Check service status
 npx supabase db reset        # Reset database with migrations
 npx supabase db shell        # Open PostgreSQL shell

@@ -1,0 +1,267 @@
+{
+  "testUsers": {
+    "validUser": {
+      "id": "user-123",
+      "email": "test@example.com",
+      "password": "secure_password_123",
+      "firstName": "Test",
+      "lastName": "User",
+      "administrator": false,
+      "avatar": null,
+      "createdAt": "2024-01-15T10:00:00Z",
+      "emailVerified": true,
+      "phoneVerified": false
+    },
+    "adminUser": {
+      "id": "admin-456",
+      "email": "admin@example.com",
+      "password": "admin_password_123",
+      "firstName": "Admin",
+      "lastName": "User",
+      "administrator": true,
+      "avatar": {
+        "src": "https://example.com/admin-avatar.jpg",
+        "alt": "Admin User Avatar"
+      },
+      "createdAt": "2024-01-10T09:00:00Z",
+      "emailVerified": true,
+      "phoneVerified": true
+    },
+    "expiredUser": {
+      "id": "expired-789",
+      "email": "expired@example.com",
+      "password": "expired_password_123",
+      "firstName": "Expired",
+      "lastName": "Token",
+      "administrator": false,
+      "avatar": null,
+      "createdAt": "2024-01-01T08:00:00Z",
+      "emailVerified": true,
+      "phoneVerified": false,
+      "tokenExpiredAt": "2024-01-30T12:00:00Z"
+    },
+    "unverifiedUser": {
+      "id": "unverified-101",
+      "email": "unverified@example.com",
+      "password": "unverified_password_123",
+      "firstName": "Unverified",
+      "lastName": "User",
+      "administrator": false,
+      "avatar": null,
+      "createdAt": "2024-02-01T14:00:00Z",
+      "emailVerified": false,
+      "phoneVerified": false
+    },
+    "blockedUser": {
+      "id": "blocked-202",
+      "email": "blocked@example.com",
+      "password": "blocked_password_123",
+      "firstName": "Blocked",
+      "lastName": "User",
+      "administrator": false,
+      "avatar": null,
+      "createdAt": "2024-01-20T16:00:00Z",
+      "emailVerified": true,
+      "phoneVerified": false,
+      "blockedAt": "2024-02-15T10:00:00Z",
+      "blockReason": "suspicious_activity"
+    }
+  },
+  "testSessions": {
+    "validSession": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_valid_token",
+      "refresh_token": "mock_refresh_token_valid",
+      "expires_at": 1740000000,
+      "token_type": "bearer",
+      "user": {
+        "id": "user-123",
+        "email": "test@example.com",
+        "created_at": "2024-01-15T10:00:00Z"
+      }
+    },
+    "expiredSession": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_expired_token",
+      "refresh_token": "mock_refresh_token_expired",
+      "expires_at": 1640000000,
+      "token_type": "bearer",
+      "user": {
+        "id": "expired-789",
+        "email": "expired@example.com",
+        "created_at": "2024-01-01T08:00:00Z"
+      }
+    },
+    "adminSession": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_admin_token",
+      "refresh_token": "mock_refresh_token_admin",
+      "expires_at": 1740000000,
+      "token_type": "bearer",
+      "user": {
+        "id": "admin-456",
+        "email": "admin@example.com",
+        "created_at": "2024-01-10T09:00:00Z"
+      }
+    },
+    "refreshedSession": {
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_refreshed_token",
+      "refresh_token": "mock_new_refresh_token",
+      "expires_at": 1740000000,
+      "token_type": "bearer",
+      "user": {
+        "id": "user-123",
+        "email": "test@example.com",
+        "created_at": "2024-01-15T10:00:00Z"
+      }
+    }
+  },
+  "testSaleRecords": {
+    "regularSale": {
+      "id": 1,
+      "first_name": "Test",
+      "last_name": "User",
+      "email": "test@example.com",
+      "avatar": null,
+      "administrator": false,
+      "user_id": "user-123",
+      "sales_id": 1,
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-15T10:00:00Z"
+    },
+    "adminSale": {
+      "id": 2,
+      "first_name": "Admin",
+      "last_name": "User",
+      "email": "admin@example.com",
+      "avatar": {
+        "src": "https://example.com/admin-avatar.jpg",
+        "alt": "Admin User Avatar"
+      },
+      "administrator": true,
+      "user_id": "admin-456",
+      "sales_id": 2,
+      "created_at": "2024-01-10T09:00:00Z",
+      "updated_at": "2024-01-10T09:00:00Z"
+    },
+    "expiredSale": {
+      "id": 3,
+      "first_name": "Expired",
+      "last_name": "Token",
+      "email": "expired@example.com",
+      "avatar": null,
+      "administrator": false,
+      "user_id": "expired-789",
+      "sales_id": 3,
+      "created_at": "2024-01-01T08:00:00Z",
+      "updated_at": "2024-01-30T12:00:00Z"
+    }
+  },
+  "testScenarios": {
+    "successfulLogin": {
+      "description": "Valid credentials with proper session and sale record",
+      "user": "validUser",
+      "session": "validSession",
+      "sale": "regularSale",
+      "expectedResult": "success"
+    },
+    "adminLogin": {
+      "description": "Admin user login with elevated permissions",
+      "user": "adminUser",
+      "session": "adminSession",
+      "sale": "adminSale",
+      "expectedResult": "success"
+    },
+    "expiredTokenRefresh": {
+      "description": "Expired token that gets successfully refreshed",
+      "user": "expiredUser",
+      "session": "expiredSession",
+      "sale": "expiredSale",
+      "refreshedSession": "refreshedSession",
+      "expectedResult": "refreshed"
+    },
+    "failedLogin": {
+      "description": "Invalid credentials resulting in login failure",
+      "credentials": {
+        "email": "invalid@example.com",
+        "password": "wrong_password"
+      },
+      "expectedResult": "failure",
+      "expectedError": "Invalid login credentials"
+    },
+    "blockedUserLogin": {
+      "description": "Blocked user attempting to login",
+      "user": "blockedUser",
+      "expectedResult": "blocked",
+      "expectedError": "Account has been blocked"
+    },
+    "unverifiedUserLogin": {
+      "description": "Unverified email attempting to login",
+      "user": "unverifiedUser",
+      "expectedResult": "unverified",
+      "expectedError": "Email not verified"
+    }
+  },
+  "testPermissions": {
+    "adminPermissions": [
+      "organizations:create",
+      "organizations:read",
+      "organizations:update",
+      "organizations:delete",
+      "contacts:create",
+      "contacts:read",
+      "contacts:update",
+      "contacts:delete",
+      "opportunities:create",
+      "opportunities:read",
+      "opportunities:update",
+      "opportunities:delete",
+      "admin:access",
+      "admin:users",
+      "admin:settings"
+    ],
+    "userPermissions": [
+      "organizations:read",
+      "organizations:update",
+      "contacts:create",
+      "contacts:read",
+      "contacts:update",
+      "contacts:delete",
+      "opportunities:create",
+      "opportunities:read",
+      "opportunities:update",
+      "opportunities:delete"
+    ],
+    "guestPermissions": [],
+    "blockedPermissions": []
+  },
+  "testErrors": {
+    "invalidCredentials": {
+      "code": "invalid_credentials",
+      "message": "Invalid login credentials",
+      "status": 400
+    },
+    "tokenExpired": {
+      "code": "token_expired",
+      "message": "The access token has expired",
+      "status": 401
+    },
+    "refreshFailed": {
+      "code": "refresh_failed",
+      "message": "Unable to refresh the access token",
+      "status": 401
+    },
+    "networkError": {
+      "code": "network_error",
+      "message": "Network request failed",
+      "status": 500
+    },
+    "databaseError": {
+      "code": "database_error",
+      "message": "Database connection failed",
+      "status": 500
+    },
+    "userNotFound": {
+      "code": "user_not_found",
+      "message": "User record not found in sales table",
+      "status": 404
+    }
+  }
+}

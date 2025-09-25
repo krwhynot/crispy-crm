@@ -25,7 +25,6 @@ To run this project locally, you will need the following tools installed on your
 
 - Make
 - Node 22 LTS
-- Docker (required by Supabase)
 
 Fork the [`marmelab/atomic-crm`](https://github.com/marmelab/atomic-crm) repository to your user/organization, then clone it locally:
 
@@ -48,7 +47,7 @@ Once you app is configured, start the app locally with the following command:
 make start
 ```
 
-This will start the Vite dev server for the frontend, the local Supabase instance for the API, and a Postgres database (thanks to Docker).
+This will start the Vite dev server for the frontend and the local Supabase instance for the API.
 
 You can then access the app via [http://localhost:5173/](http://localhost:5173/). You will be prompted to create the first user.
 
