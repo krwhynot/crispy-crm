@@ -30,161 +30,61 @@ import {
   supportsSoftDelete,
 } from "./resources";
 
-// Import all transformers
-import {
-  transformOpportunity,
-  toOpportunityDatabase,
-  transformOpportunities,
-} from "../../transformers/opportunities";
-
-import {
-  transformOrganization,
-  toDbCompany,
-  transformOrganizations,
-} from "../../transformers/organizations";
-
-import {
-  transformContact,
-  contactToDatabase as toDbContact,
-  transformContacts,
-} from "../../transformers/contacts";
-
-import {
-  transformContactNote,
-  transformOpportunityNote,
-  toDbContactNote,
-  toDbOpportunityNote,
-  transformContactNotes,
-  transformOpportunityNotes,
-} from "../../transformers/notes";
-
-import {
-  transformActivity,
-  transformActivities,
-} from "../../transformers/activities";
-
-import {
-  transformTag,
-  tagToDatabase as toDbTag,
-  transformTags,
-} from "../../transformers/tags";
-
-import {
-  transformProduct,
-  toDbProduct,
-  transformProducts,
-} from "../../transformers/products";
-
-import {
-  transformContactOrganization,
-  toDbContactOrganization,
-  transformContactOrganizations,
-  transformOpportunityContact,
-  toDbOpportunityContact,
-  transformOpportunityContacts,
-} from "../../transformers/relationships";
-
 // Import validation functions
 import { validateOpportunityForm } from "../../validation/opportunities";
 import { validateOrganizationForSubmission } from "../../validation/organizations";
 import { validateContactForm } from "../../validation/contacts";
 import { validateCreateTag, validateUpdateTag } from "../../validation/tags";
 
-// Type for transformer configuration
-interface TransformerConfig<TDb = any, TApp = any> {
-  transform: (db: TDb) => TApp;
-  toDatabase: (app: any) => any;
-  transformBatch: (db: TDb[]) => { items: TApp[] | any; errors: any[] };
-  validate?: (data: any) => any;
+// Type for validation configuration
+interface ValidationConfig {
+  validate?: (data: any, isUpdate?: boolean) => Promise<void> | void;
 }
 
-// Transformer registry for each resource
-const transformerRegistry: Record<string, TransformerConfig<any, any>> = {
+// Validation registry for each resource
+// Note: Transformers will be added in a future task
+const validationRegistry: Record<string, ValidationConfig> = {
   opportunities: {
-    transform: transformOpportunity,
-    toDatabase: toOpportunityDatabase as any,
-    transformBatch: (db: any[]) => {
-      const items = transformOpportunities(db);
-      return { items, errors: [] };
-    },
     validate: validateOpportunityForm,
   },
 
   organizations: {
-    transform: transformOrganization,
-    toDatabase: toDbCompany as any,
-    transformBatch: (db: any[]) => {
-      const items = transformOrganizations(db);
-      return { items, errors: [] };
-    },
+    validate: validateOrganizationForSubmission,
+  },
+
+  companies: {
+    // Alias for organizations to match resource name
     validate: validateOrganizationForSubmission,
   },
 
   contacts: {
-    transform: transformContact,
-    toDatabase: toDbContact as any,
-    transformBatch: (db: any[]) => {
-      const result = transformContacts(db);
-      return { items: result.items, errors: result.errors };
-    },
     validate: validateContactForm,
   },
 
-  contactNotes: {
-    transform: transformContactNote,
-    toDatabase: toDbContactNote as any,
-    transformBatch: (db: any[]) => {
-      const result = transformContactNotes(db);
-      return { items: result.items, errors: result.errors };
-    },
-  },
-
-  opportunityNotes: {
-    transform: transformOpportunityNote,
-    toDatabase: toDbOpportunityNote as any,
-    transformBatch: (db: any[]) => {
-      const result = transformOpportunityNotes(db);
-      return { items: result.items, errors: result.errors };
-    },
-  },
-
   tags: {
-    transform: transformTag,
-    toDatabase: toDbTag as any,
-    transformBatch: (db: any[]) => {
-      const result = transformTags(db);
-      return { items: result.items, errors: result.errors };
-    },
-    validate: (data: any) => {
-      // Use appropriate validator based on operation
-      return data.id ? validateUpdateTag(data) : validateCreateTag(data);
-    },
-  },
-
-  products: {
-    transform: transformProduct,
-    toDatabase: toDbProduct as any,
-    transformBatch: (db: any[]) => {
-      const result = transformProducts(db);
-      return { items: result.items, errors: result.errors };
-    },
-  },
-
-  contact_organization: {
-    transform: transformContactOrganization,
-    toDatabase: toDbContactOrganization as any,
-    transformBatch: (db: any[]) => {
-      const result = transformContactOrganizations(db);
-      return { items: result.items, errors: result.errors };
-    },
-  },
-
-  opportunity_contacts: {
-    transform: transformOpportunityContact,
-    toDatabase: toDbOpportunityContact as any,
-    transformBatch: (db: any[]) => {
-      const result = transformOpportunityContacts(db);
-      return { items: result.items, errors: result.errors };
+    validate: async (data: any, isUpdate?: boolean) => {
+      try {
+        // Use appropriate validator based on operation
+        const validatedData = isUpdate || data.id
+          ? validateUpdateTag(data)
+          : validateCreateTag(data);
+        // Tag validators return data, not throw, so we don't need to do anything
+        return;
+      } catch (error: any) {
+        // Convert Zod errors to React Admin format
+        if (error.errors) {
+          const formattedErrors: Record<string, string> = {};
+          error.errors.forEach((err: any) => {
+            const path = Array.isArray(err.path) ? err.path.join('.') : 'root';
+            formattedErrors[path] = err.message;
+          });
+          throw {
+            message: 'Validation failed',
+            errors: formattedErrors,
+          };
+        }
+        throw error;
+      }
     },
   },
 };
@@ -274,55 +174,37 @@ function getDatabaseResource(resource: string, operation: 'list' | 'one' | 'crea
 }
 
 /**
- * Transform data based on resource configuration
+ * Validate data based on resource configuration
  */
-async function transformData<TDb, TApp>(
+async function validateData(
   resource: string,
-  data: TDb | TDb[],
-  operation: 'get' | 'create' | 'update' = 'get'
-): Promise<TApp | TApp[]> {
-  const config = transformerRegistry[resource];
+  data: any,
+  operation: 'create' | 'update' = 'create'
+): Promise<void> {
+  const config = validationRegistry[resource];
 
-  if (!config) {
-    // No transformer configured, return data as-is
-    return data as unknown as TApp;
+  if (!config || !config.validate) {
+    // No validation configured, skip
+    return;
   }
 
-  // Handle batch transformation for arrays
-  if (Array.isArray(data)) {
-    const result = config.transformBatch(data);
-
-    if (result.errors.length > 0 && import.meta.env.DEV) {
-      console.warn(`${resource} transformation had ${result.errors.length} errors:`, result.errors);
-    }
-
-    return result.items;
-  }
-
-  // Single item transformation
-  return config.transform(data);
+  // Call validation function
+  await config.validate(data, operation === 'update');
 }
 
 /**
- * Transform application data to database format
+ * Process data for database operations (validation only for now)
  */
-async function toDatabaseFormat<TApp, TDb>(
+async function processForDatabase<T>(
   resource: string,
-  data: Partial<TApp>
-): Promise<Partial<TDb>> {
-  const config = transformerRegistry[resource];
+  data: Partial<T>,
+  operation: 'create' | 'update' = 'create'
+): Promise<Partial<T>> {
+  // Validate data
+  await validateData(resource, data, operation);
 
-  if (!config) {
-    // No transformer configured, return data as-is
-    return data as unknown as Partial<TDb>;
-  }
-
-  // Validate if validator is configured
-  if (config.validate) {
-    await config.validate(data);
-  }
-
-  return config.toDatabase(data);
+  // Return data as-is (transformers will be added in a future task)
+  return data;
 }
 
 /**
@@ -360,13 +242,8 @@ export const unifiedDataProvider: DataProvider = {
       // Execute query
       const result = await baseDataProvider.getList(dbResource, searchParams);
 
-      // Transform results
-      const transformedData = await transformData(resource, result.data, 'get');
-
-      return {
-        ...result,
-        data: transformedData as RecordType[],
-      };
+      // No transformation needed yet (will be added in a future task)
+      return result;
     });
   },
 
@@ -381,13 +258,8 @@ export const unifiedDataProvider: DataProvider = {
       // Execute query
       const result = await baseDataProvider.getOne(dbResource, params);
 
-      // Transform result
-      const transformedData = await transformData(resource, result.data, 'get');
-
-      return {
-        ...result,
-        data: transformedData as RecordType,
-      };
+      // No transformation needed yet (will be added in a future task)
+      return result;
     });
   },
 
@@ -399,13 +271,8 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getResourceName(resource);
       const result = await baseDataProvider.getMany(dbResource, params);
 
-      // Transform results
-      const transformedData = await transformData(resource, result.data, 'get');
-
-      return {
-        ...result,
-        data: transformedData as RecordType[],
-      };
+      // No transformation needed yet (will be added in a future task)
+      return result;
     });
   },
 
@@ -417,13 +284,8 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getResourceName(resource);
       const result = await baseDataProvider.getManyReference(dbResource, params);
 
-      // Transform results
-      const transformedData = await transformData(resource, result.data, 'get');
-
-      return {
-        ...result,
-        data: transformedData as RecordType[],
-      };
+      // No transformation needed yet (will be added in a future task)
+      return result;
     });
   },
 
@@ -434,22 +296,17 @@ export const unifiedDataProvider: DataProvider = {
     return wrapMethod('create', resource, params, async () => {
       const dbResource = getResourceName(resource);
 
-      // Transform to database format
-      const dbData = await toDatabaseFormat(resource, params.data);
+      // Validate and process data
+      const processedData = await processForDatabase(resource, params.data, 'create');
 
       // Execute create
       const result = await baseDataProvider.create(dbResource, {
         ...params,
-        data: dbData as any,
+        data: processedData as any,
       });
 
-      // Transform result back to application format
-      const transformedData = await transformData(resource, result.data, 'create');
-
-      return {
-        ...result,
-        data: transformedData as RecordType & { id: Identifier },
-      };
+      // No transformation needed yet (will be added in a future task)
+      return result;
     });
   },
 
@@ -460,25 +317,20 @@ export const unifiedDataProvider: DataProvider = {
     return wrapMethod('update', resource, params, async () => {
       const dbResource = getResourceName(resource);
 
-      // Transform to database format
-      const dbData = await toDatabaseFormat(resource, params.data);
+      // Validate and process data
+      const processedData = await processForDatabase(resource, params.data, 'update');
 
       // Execute update
       const result = await baseDataProvider.update(dbResource, {
         ...params,
         data: {
-          ...dbData,
+          ...processedData,
           id: params.id, // Preserve ID
         } as any,
       });
 
-      // Transform result back to application format
-      const transformedData = await transformData(resource, result.data, 'update');
-
-      return {
-        ...result,
-        data: transformedData as RecordType,
-      };
+      // No transformation needed yet (will be added in a future task)
+      return result;
     });
   },
 
@@ -489,12 +341,12 @@ export const unifiedDataProvider: DataProvider = {
     return wrapMethod('updateMany', resource, params, async () => {
       const dbResource = getResourceName(resource);
 
-      // Transform each update to database format
-      const dbData = await toDatabaseFormat(resource, params.data);
+      // Validate data for updates
+      const processedData = await processForDatabase(resource, params.data, 'update');
 
       const result = await baseDataProvider.updateMany(dbResource, {
         ...params,
-        data: dbData as any,
+        data: processedData as any,
       });
 
       return result;
@@ -523,13 +375,13 @@ export const unifiedDataProvider: DataProvider = {
 };
 
 /**
- * Export a helper to check if a resource uses transformers
+ * Export a helper to check if a resource uses validation
  */
-export function resourceUsesTransformers(resource: string): boolean {
-  return resource in transformerRegistry;
+export function resourceUsesValidation(resource: string): boolean {
+  return resource in validationRegistry;
 }
 
 /**
- * Export transformer registry for testing and debugging
+ * Export validation registry for testing and debugging
  */
-export { transformerRegistry };
+export { validationRegistry };
