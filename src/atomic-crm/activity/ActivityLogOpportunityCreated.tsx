@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 
 import type { RaRecord } from "ra-core";
 import { RelativeDate } from "../misc/RelativeDate";
-import type { ActivityDealCreated } from "../types";
+import type { ActivityOpportunityCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 
-type ActivityLogDealCreatedProps = {
-  activity: RaRecord & ActivityDealCreated;
+type ActivityLogOpportunityCreatedProps = {
+  activity: RaRecord & ActivityOpportunityCreated;
 };
 
-export function ActivityLogDealCreated({
+export function ActivityLogOpportunityCreated({
   activity,
-}: ActivityLogDealCreatedProps) {
+}: ActivityLogOpportunityCreatedProps) {
   const context = useActivityLogContext();
-  const { deal } = activity;
+  const { opportunity } = activity;
   return (
     <div className="p-0">
       <div className="flex flex-row space-x-1 items-center w-full">
@@ -22,7 +22,7 @@ export function ActivityLogDealCreated({
           <span className="text-muted-foreground text-sm">
             Sales ID: {activity.sales_id}
           </span>{" "}
-          added opportunity <Link to={`/deals/${deal.id}/show`}>{deal.name}</Link>{" "}
+          added opportunity <Link to={`/opportunities/${opportunity.id}/show`}>{opportunity.name}</Link>{" "}
           {context !== "company" && (
             <>
               to company {activity.company_id}{" "}
