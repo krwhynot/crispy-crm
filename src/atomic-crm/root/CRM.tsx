@@ -8,14 +8,14 @@ import { Route } from "react-router-dom";
 import companies from "../companies";
 import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
-import deals from "../deals";
+// import deals from "../deals"; // REMOVED - deals module deleted
 import opportunities from "../opportunities";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
   dataProvider as supabaseDataProvider,
 } from "../providers/supabase";
-import { handleDealUrlRedirect } from "../providers/commons/backwardCompatibility";
+// import { handleDealUrlRedirect } from "../providers/commons/backwardCompatibility"; // REMOVED - backward compatibility deleted
 import sales from "../sales";
 import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";

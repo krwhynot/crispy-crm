@@ -21,7 +21,7 @@ import { ReferenceManyField, SortButton } from "@/components/admin";
 import { ActivityLog } from "../activity/ActivityLog";
 import { Avatar } from "../contacts/Avatar";
 import { TagsList } from "../contacts/TagsList";
-import { findDealLabel } from "../deals/deal";
+// import { findDealLabel } from "../deals/deal"; // REMOVED - deals module deleted
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Company, Contact, Deal } from "../types";
