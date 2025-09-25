@@ -24,7 +24,7 @@ Use this agent for:
 - Implementing virtualization for large lists
 - Optimizing Core Web Vitals (LCP, FID, CLS, INP)
 - Debugging performance bottlenecks in React Admin components
-- Optimizing dual data provider (FakeRest/Supabase) performance
+- Optimizing dual data provider (Supabase) performance
 
 ## React Component Optimization
 
@@ -137,7 +137,6 @@ export default defineConfig({
           // React Admin core
           'vendor-ra-core': ['react-admin', 'ra-core', 'ra-ui-materialui'],
           // Data providers
-          'data-providers': ['@supabase/supabase-js', 'fakerest'],
           // UI components
           'ui-components': ['@radix-ui/*', '@headlessui/*'],
           // Charts and visualization

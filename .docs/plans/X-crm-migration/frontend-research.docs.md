@@ -158,8 +158,8 @@ type Company = {
 **Configuration**: `/home/krwhynot/Projects/atomic/src/atomic-crm/root/CRM.tsx` (lines 24-26)
 ```typescript
 const isDemoMode = import.meta.env.VITE_IS_DEMO === "true";
-const defaultAuthProvider = isDemoMode ? fakeRestAuthProvider : supabaseAuthProvider;
-const defaultDataProvider = isDemoMode ? fakeRestDataProvider : supabaseDataProvider;
+const defaultAuthProvider = isDemoMode ? supabaseAuthProvider : supabaseAuthProvider;
+const defaultDataProvider = isDemoMode ? supabaseDataProvider : supabaseDataProvider;
 ```
 
 ### Supabase Provider Features
@@ -181,8 +181,8 @@ const defaultDataProvider = isDemoMode ? fakeRestDataProvider : supabaseDataProv
    - `signUp()`: User registration with profile data
    - `getActivityLog()`: Cross-resource activity tracking
 
-### FakeRest Provider Features
-**File**: `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/dataProvider.ts`
+### Seed Data System Features
+**File**: `/home/krwhynot/Projects/atomic/src/atomic-crm/scripts/seed-datadataProvider.ts`
 
 #### Key Patterns:
 1. **In-Memory Data**: Generated via `/dataGenerator` for consistent demo experience

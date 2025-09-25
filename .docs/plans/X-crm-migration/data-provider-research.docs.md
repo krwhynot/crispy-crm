@@ -8,8 +8,7 @@ Comprehensive analysis of Atomic CRM's dual data provider architecture, migratio
 
 The application implements a sophisticated dual provider architecture supporting both development/demo and production environments:
 
-**FakeRest Provider** (`/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/dataProvider.ts`):
-- In-memory data storage using `ra-data-fakerest`
+**Seed Data System** (`/home/krwhynot/Projects/atomic/src/atomic-crm/scripts/seed-datadataProvider.ts`):
 - Simulates async operations with 300ms delays for realistic UX
 - Base64 file conversion instead of real uploads
 - Generates demo data through `dataGenerator`
@@ -39,7 +38,6 @@ Both providers implement the identical `CrmDataProvider` interface, enabling:
 
 **File Upload Handling**:
 - Supabase: Real uploads to storage bucket with signed URLs
-- FakeRest: Base64 conversion for in-memory storage
 - Attachment processing for notes with validation
 
 **Tag Color Migration Logic**:
@@ -69,9 +67,9 @@ COMMIT;
 
 ### Data Transformation Patterns
 
-**Filter Transformation Layer** (`/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/internal/supabaseAdapter.ts`):
+**Filter Transformation Layer** (`/home/krwhynot/Projects/atomic/src/atomic-crm/scripts/seed-datainternal/supabaseAdapter.ts`):
 - Removes `_summary` suffix from resource names
-- Transforms Supabase-specific filters for FakeRest compatibility
+- Transforms filters for compatibility
 - Enables identical query patterns across providers
 
 **Activity Aggregation** (`/home/krwhynot/Projects/atomic/src/atomic-crm/providers/commons/activity.ts`):
@@ -83,7 +81,7 @@ COMMIT;
 ### Environment Configuration
 
 **Development/Demo Mode** (`VITE_IS_DEMO=true`):
-- Uses FakeRest provider with generated demo data
+- Uses seed data system with generated demo data
 - Local file handling with base64 conversion
 - No external dependencies for development
 
@@ -128,7 +126,7 @@ SELECT *, NOW() as backup_date FROM {table};
 **Test Coverage**:
 - `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/commons/getContactAvatar.spec.ts`
 - `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/commons/getCompanyAvatar.spec.ts`
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/internal/supabaseAdapter.spec.ts`
+- `/home/krwhynot/Projects/atomic/src/atomic-crm/scripts/seed-datainternal/supabaseAdapter.spec.ts`
 - Filter transformation tests for various Supabase operators
 
 **Testing Patterns**:
@@ -151,7 +149,7 @@ SELECT *, NOW() as backup_date FROM {table};
 
 **Core Development**:
 - `npm run dev` - Vite development server with force reload
-- `npm run dev:demo` - Demo mode with FakeRest provider
+- `npm run dev:demo` - Demo mode with seed data system
 - `npm run build` - TypeScript check + production build
 - `npm run build:demo` - Demo build configuration
 
@@ -202,7 +200,6 @@ SELECT *, NOW() as backup_date FROM {table};
 
 ### File Handling Strategy
 - Supabase: Real uploads with signed URL validation
-- FakeRest: Base64 conversion for development
 - Attachment processing with MIME type preservation
 - Error handling for upload failures
 

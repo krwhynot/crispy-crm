@@ -43,7 +43,7 @@ This plan implements Stage 1 of the CRM migration, transforming Atomic CRM to su
 ### Key Implementation Files
 - `/home/krwhynot/Projects/atomic/src/atomic-crm/root/CRM.tsx` - Main app configuration
 - `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/supabase/dataProvider.ts` - Production provider
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/dataProvider.ts` - Demo provider
+- `/home/krwhynot/Projects/atomic/src/atomic-crm/scripts/seed-datadataProvider.ts` - Demo provider
 - `/home/krwhynot/Projects/atomic/package.json` - CLI commands configuration
 - `/home/krwhynot/Projects/atomic/supabase/migrations/` - Existing migrations
 - `/home/krwhynot/Projects/atomic/docs/merged/migrations/stage1/` - Stage 1 SQL migrations (phases 1.1-1.4)
@@ -297,26 +297,6 @@ Update Supabase provider:
 - Update view names (deals → opportunities)
 - Implement backward compatibility layer for 1 month
 
-#### Task 3.2: FakeRest Provider Migration [Depends on: none]
-
-**READ THESE BEFORE TASK**
-- `/home/krwhynot/Projects/atomic/.docs/plans/crm-migration/data-provider-research.docs.md`
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/dataProvider.ts`
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/dataGenerator.ts`
-
-**Instructions**
-
-Files to Modify:
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/dataProvider.ts`
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/dataGenerator.ts`
-
-Update demo provider:
-- Generate opportunities instead of deals
-- Create multi-organization contact relationships
-- Generate opportunity participants from contacts
-- Add activity history (interactions and engagements)
-- Update demo data for new schema
-
 #### Task 3.3: API Backward Compatibility Layer [Depends on: Tasks 3.1, 3.2]
 
 **READ THESE BEFORE TASK**
@@ -450,13 +430,13 @@ Test user workflows:
 #### Task 4.3: Data Provider Tests [Depends on: Tasks 3.1, 3.2, 3.3]
 
 **READ THESE BEFORE TASK**
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/internal/*.spec.ts` - Provider test patterns
+- `/home/krwhynot/Projects/atomic/src/atomic-crm/scripts/seed-datainternal/*.spec.ts` - Provider test patterns
 
 **Instructions**
 
 Files to Create:
 - `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/supabase/*.spec.ts` - Supabase tests
-- `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/fakerest/*.spec.ts` - FakeRest tests
+- `/home/krwhynot/Projects/atomic/src/atomic-crm/scripts/seed-data*.spec.ts` - Seed data tests
 - `/home/krwhynot/Projects/atomic/src/atomic-crm/providers/commons/backwardCompatibility.spec.ts`
 
 Test provider logic:

@@ -36,9 +36,9 @@ Successfully migrated the entire codebase from fragmented color usage (hex value
 - `/src/atomic-crm/root/defaultConfiguration.ts` - Updated note status colors to semantic tokens
 
 ### Data & API Files
-- `/src/atomic-crm/providers/fakerest/dataGenerator/tags.ts` - Updated to generate semantic color names
+- `/src/atomic-crm/scripts/seed-datadataGenerator/tags.ts` - Updated to generate semantic color names
 - `/src/atomic-crm/contacts/useContactImport.tsx` - Modified default tag color to semantic "gray"
-- `/src/atomic-crm/providers/fakerest/dataProvider.ts` - Added tag color validation hooks
+- `/src/atomic-crm/scripts/seed-datadataProvider.ts` - Added tag color validation hooks
 - `/src/atomic-crm/providers/supabase/dataProvider.ts` - Added tag color validation hooks
 
 ### Configuration Files

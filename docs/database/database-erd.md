@@ -298,7 +298,6 @@ auth.users (1) ──→ (1) sales           [Via triggers, unique constraint]
 ### Required Environment Variables
 - `VITE_SUPABASE_URL`: Supabase project URL
 - `VITE_SUPABASE_ANON_KEY`: Anonymous access key
-- `VITE_IS_DEMO`: Toggle between FakeRest and Supabase providers
 
 ## Migration Files Location
 All migrations are stored in: `/supabase/migrations/`

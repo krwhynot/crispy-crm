@@ -108,11 +108,8 @@ describe('Task 4.7: Final Verification Sweep', () => {
       'src/atomic-crm/providers/commons/backwardCompatibility.ts',
       'src/atomic-crm/BackwardCompatibility.spec.ts',
 
-      // Data generators for new tables
-      'src/atomic-crm/providers/fakerest/dataGenerator/opportunities.ts',
-      'src/atomic-crm/providers/fakerest/dataGenerator/contactOrganizations.ts',
-      'src/atomic-crm/providers/fakerest/dataGenerator/opportunityParticipants.ts',
-      'src/atomic-crm/providers/fakerest/dataGenerator/interactionParticipants.ts'
+      // Seed data scripts
+      'scripts/seed-data.js'
     ];
 
     criticalFiles.forEach(file => {

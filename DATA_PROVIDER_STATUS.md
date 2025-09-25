@@ -19,20 +19,19 @@ The data provider implementation for the CRM migration is **approximately 85% co
 - **Tag color migration**: Validates and migrates legacy hex colors to semantic tokens
 - **File upload handling**: Attachment processing for notes with Supabase storage
 
-### 2. FakeRest Data Generator Updates ✅
-**Files**: `/src/atomic-crm/providers/fakerest/dataGenerator/`
+### 2. Data Generation Updates ✅
+**Status**: Now using direct database seed scripts
 
-- **New generators created**:
-  - `opportunities.ts` - Generates opportunities with new schema fields
-  - `contactOrganizations.ts` - Junction table data generation
-  - `opportunityParticipants.ts` - Participant relationship data
-  - `interactionParticipants.ts` - Activity participant data
-  - `activities.ts` - Activity tracking data
-  - `opportunityNotes.ts` - Opportunity notes generation
-- **Updated existing generators**:
-  - `companies.ts` - Added organization type support
-  - `contacts.ts` - Multi-organization relationship support
-  - `index.ts` - Integrated all new generators
+- **Seed data system implemented**:
+  - `npm run seed:data` - Insert test data directly to database
+  - `npm run seed:data:dry-run` - Preview without inserting
+  - `npm run seed:data:clean` - Clean and regenerate
+- **Coverage includes**:
+  - Opportunities with new schema fields
+  - Contact-organization relationships
+  - Opportunity participants
+  - Activity tracking data
+  - Notes with attachments
 
 ### 3. Backward Compatibility Layer ✅
 **File**: `/src/atomic-crm/providers/commons/backwardCompatibility.ts`
@@ -165,7 +164,7 @@ The data provider implementation for the CRM migration is **approximately 85% co
 | Component | Completion | Risk Level | Priority |
 |-----------|------------|------------|----------|
 | Supabase Provider | 95% | Low | Maintenance |
-| FakeRest Generator | 90% | Low | Polish |
+| Seed Data System | 100% | Low | Complete |
 | Backward Compatibility | 100% | Low | Monitor |
 | Type Definitions | 100% | Low | Done |
 | Query Optimization | 70% | Medium | High |

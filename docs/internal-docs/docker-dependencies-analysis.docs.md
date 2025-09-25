@@ -86,8 +86,7 @@ The codebase includes new MCP-based alternatives:
 - `scripts/mcp-deploy-validate.js`: Deployment validation
 - `scripts/mcp-migrate-status.js`: Migration status checking
 
-**FakeRest Provider**:
-- `VITE_IS_DEMO=true` enables in-memory data provider
+**Data Provider**:
 - No database dependency for basic development
 - Useful for UI-only development work
 

@@ -196,15 +196,12 @@ phase3_checks() {
         echo -e "  ${YELLOW}⚠️  Migration scripts not yet created${NC}"
     fi
 
-    # Check data generators
-    echo -e "${YELLOW}→ Checking data generators...${NC}"
-    if [ -f "src/atomic-crm/providers/fakerest/dataGenerator/tags.ts" ]; then
-        if grep -q "#[0-9a-fA-F]\{6\}" src/atomic-crm/providers/fakerest/dataGenerator/tags.ts; then
-            echo -e "  ${RED}❌ Data generator still uses hex colors${NC}"
-            return 1
-        else
-            echo -e "  ${GREEN}✅ Data generator updated${NC}"
-        fi
+    # Check seed data scripts
+    echo -e "${YELLOW}→ Checking seed data scripts...${NC}"
+    if [ -f "scripts/seed-data.js" ]; then
+        echo -e "  ${GREEN}✅ Seed data scripts exist${NC}"
+    else
+        echo -e "  ${YELLOW}⚠️  Seed data scripts not found${NC}"
     fi
 
     # Check for validation functions

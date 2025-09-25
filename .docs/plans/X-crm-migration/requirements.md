@@ -86,7 +86,7 @@ This is a medium-scope feature implementing the migration plans documented in `/
 
 #### Data Provider Updates
 1. **Supabase Provider**: Full migration with new schema
-2. **FakeRest Provider**:
+2. **Seed Data System**:
    - Migrate subset to validate logic
    - Generate new B2B showcase data
    - Include principal-distributor examples

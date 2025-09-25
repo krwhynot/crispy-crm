@@ -174,7 +174,7 @@ export const OpportunityList = () => (
 
 ### Without Backward Compatibility (Current State)
 ```javascript
-// FakeRest Provider
+// Data Provider
 const dataProvider = withLifecycleCallbacks(
   withSupabaseFilterAdapter(dataProviderWithCustomMethod),
   [

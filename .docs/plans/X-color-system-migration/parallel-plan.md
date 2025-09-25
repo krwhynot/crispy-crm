@@ -23,7 +23,7 @@ The codebase contains fragmented color usage: a modern OKLCH-based design system
 - `/src/atomic-crm/contacts/TagsList.tsx` - Additional tag displays (inline backgroundColor)
 - `/src/atomic-crm/contacts/ContactListFilter.tsx` - Filter tag colors (inline backgroundColor)
 - `/src/atomic-crm/contacts/useContactImport.tsx` - Default tag color logic
-- `/src/atomic-crm/providers/fakerest/dataGenerator/tags.ts` - Test data generation
+- `/src/atomic-crm/scripts/seed-datadataGenerator/tags.ts` - Test data generation
 - `/index.html` - Theme meta tags and loading background colors
 - `/src/App.css` - Drop shadow colors for logo effects
 
@@ -235,13 +235,13 @@ Create migration script with backup table for safety. Map existing hex colors to
 #### Task 3.2: Update Data Generation and Import Logic - Depends on [1.2]
 
 **READ THESE BEFORE TASK**
-- `/src/atomic-crm/providers/fakerest/dataGenerator/tags.ts`
+- `/src/atomic-crm/scripts/seed-datadataGenerator/tags.ts`
 - `/src/atomic-crm/contacts/useContactImport.tsx`
 
 **Instructions**
 
 Files to Modify:
-- `/src/atomic-crm/providers/fakerest/dataGenerator/tags.ts`
+- `/src/atomic-crm/scripts/seed-datadataGenerator/tags.ts`
 - `/src/atomic-crm/contacts/useContactImport.tsx`
 
 Update fake data generation to use new semantic color names instead of hex values. Modify tag import logic to handle default color assignment using semantic identifiers. Ensure test fixtures and data generators create data compatible with the new color system.

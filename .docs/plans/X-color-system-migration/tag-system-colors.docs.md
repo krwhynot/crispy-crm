@@ -14,7 +14,7 @@ Comprehensive analysis of the current tag color system implementation, including
 - `/src/atomic-crm/types.ts`: Tag TypeScript interface definition
 - `/supabase/migrations/20240730075029_init_db.sql`: Database schema definition for tags table
 - `/supabase/migrations/20240813084010_tags_policy.sql`: Tags table security policies
-- `/src/atomic-crm/providers/fakerest/dataGenerator/tags.ts`: Sample tag data with 6 predefined tags
+- `/src/atomic-crm/scripts/seed-datadataGenerator/tags.ts`: Sample tag data with 6 predefined tags
 
 ## Architectural Patterns
 

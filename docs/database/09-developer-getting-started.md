@@ -493,7 +493,6 @@ npx supabase db push --linked
 # Production environment
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
-VITE_IS_DEMO=false
 ```
 
 ### Monitoring Setup

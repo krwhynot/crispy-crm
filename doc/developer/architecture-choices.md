@@ -6,9 +6,7 @@ This document explains some of the architecture decisions made in the developmen
 
 Some pages in Atomic CRM require data from multiple tables. To simplify the frontend code and reduce the HTTP overhead, Atomic CRM uses database views to abstract the complexity of the queries.
 
-For instance, the contact list page displays the number of tasks for each contact. This information is provided by the `contacts_summary` view, defined in the `supabase/migrations/init_db.sql` file.
-
-When using [the FakeRest data provider](./data-providers.md#setting-up-the-fakerest-data-provider), these views are emulated in the frontend.
+For instance, the contact list page displays the number of tasks for each contact. This information is provided by the `contacts_summary` view, defined in the database migration files.
 
 ## Triggers
 

@@ -1,6 +1,6 @@
 # CRM Migration - Shared Architecture
 
-The Atomic CRM migration transforms a simple CRM into an enterprise B2B system with principal-distributor relationships, multi-organization contact support, and enhanced opportunity management. The architecture leverages a dual data provider pattern (FakeRest/Supabase) with React Admin for the frontend, implementing a staged migration approach that maintains backward compatibility while introducing new capabilities through database views, junction tables, and enhanced RLS policies.
+The Atomic CRM migration transforms a simple CRM into an enterprise B2B system with principal-distributor relationships, multi-organization contact support, and enhanced opportunity management. The architecture leverages a single Supabase data provider pattern with React Admin for the frontend, implementing a staged migration approach that maintains backward compatibility while introducing new capabilities through database views, junction tables, and enhanced RLS policies.
 
 ## Relevant Files
 
@@ -28,9 +28,9 @@ The Atomic CRM migration transforms a simple CRM into an enterprise B2B system w
 
 ### Data Providers
 - `/src/atomic-crm/providers/supabase/dataProvider.ts`: Production data provider with views and RLS
-- `/src/atomic-crm/providers/fakerest/dataProvider.ts`: Demo provider with in-memory data
+- `/src/atomic-crm/scripts/seed-datadataProvider.ts`: Demo provider with in-memory data
 - `/src/atomic-crm/providers/commons/activity.ts`: Cross-resource activity aggregation
-- `/src/atomic-crm/providers/fakerest/internal/supabaseAdapter.ts`: Filter compatibility layer
+- `/src/atomic-crm/scripts/seed-datainternal/supabaseAdapter.ts`: Filter compatibility layer
 
 ### Scripts & Automation
 - `/scripts/supabase-remote-init.mjs`: Automated Supabase project setup and migration
@@ -163,7 +163,7 @@ Example: Missing backup column (1 task) = No rollback possible if issues occur
 
 ## Relevant Patterns
 
-**Dual Provider Architecture**: Environment-based switching between FakeRest (demo) and Supabase (production) providers with identical interfaces, enabling seamless development to production transitions - see `/src/atomic-crm/root/CRM.tsx:24-26`
+**Dual Provider Architecture**: Environment-based switching with Supabase providers with identical interfaces, enabling seamless development to production transitions - see `/src/atomic-crm/root/CRM.tsx:24-26`
 
 **Resource Module Structure**: Consistent organization with index.ts, List, Show, Edit, Create, and Inputs components per feature - example in `/src/atomic-crm/contacts/`
 

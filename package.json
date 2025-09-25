@@ -39,7 +39,6 @@
     "test:load": "node ./scripts/load-test.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.1.1",
     "@nivo/bar": "^0.99.0",
@@ -59,6 +58,7 @@
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@supabase/supabase-js": "^2.39.0",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.85.9",
     "class-variance-authority": "^0.7.1",
@@ -74,7 +74,6 @@
     "papaparse": "^5.5.3",
     "query-string": "^9.2.2",
     "ra-core": "^5.10.0",
-    "ra-data-fakerest": "^5.10.0",
     "ra-i18n-polyglot": "^5.10.0",
     "ra-language-english": "^5.10.0",
     "ra-supabase-core": "^3.5.1",

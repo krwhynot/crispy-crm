@@ -16,7 +16,7 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
     return {
       id: sale.id,
       fullName: `${sale.first_name} ${sale.last_name}`,
-      avatar: sale.avatar?.src,
+      avatar: sale.avatar_url,
     };
   },
 });
@@ -55,7 +55,7 @@ export const authProvider: AuthProvider = {
     if (sale == null) return false;
 
     // Compute access rights from the sale role
-    const role = sale.administrator ? "admin" : "user";
+    const role = sale.is_admin ? "admin" : "user";
     return canAccess(role, params);
   },
 };
@@ -74,9 +74,9 @@ const getSaleFromCache = async () => {
 
   const { data: dataSale, error: errorSale } = await supabase
     .from("sales")
-    .select("id, first_name, last_name, avatar, administrator")
+    .select("id, first_name, last_name, avatar_url, is_admin")
     .match({ user_id: dataSession?.session?.user.id })
-    .single();
+    .maybeSingle();
 
   // Shouldn't happen either as all users are sales but just in case
   if (dataSale == null || errorSale) {

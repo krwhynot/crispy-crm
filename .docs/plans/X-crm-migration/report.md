@@ -67,11 +67,11 @@ Successfully implemented Stage 1 of the CRM migration, transforming Atomic CRM f
 ### Data Providers
 - `src/atomic-crm/providers/supabase/dataProvider.ts` - Added opportunity support, junction tables, backward compatibility
 - `src/atomic-crm/providers/supabase/resources.ts` (New) - Resource mapping configuration
-- `src/atomic-crm/providers/fakerest/dataProvider.ts` - Updated for opportunities
-- `src/atomic-crm/providers/fakerest/dataGenerator/opportunities.ts` (New) - Opportunity data generator
-- `src/atomic-crm/providers/fakerest/dataGenerator/contactOrganizations.ts` (New) - Junction table generator
-- `src/atomic-crm/providers/fakerest/dataGenerator/opportunityParticipants.ts` (New) - Participants generator
-- `src/atomic-crm/providers/fakerest/dataGenerator/activities.ts` (New) - Activities generator
+- `src/atomic-crm/scripts/seed-datadataProvider.ts` - Updated for opportunities
+- `src/atomic-crm/scripts/seed-datadataGenerator/opportunities.ts` (New) - Opportunity data generator
+- `src/atomic-crm/scripts/seed-datadataGenerator/contactOrganizations.ts` (New) - Junction table generator
+- `src/atomic-crm/scripts/seed-datadataGenerator/opportunityParticipants.ts` (New) - Participants generator
+- `src/atomic-crm/scripts/seed-datadataGenerator/activities.ts` (New) - Activities generator
 - `src/atomic-crm/providers/commons/backwardCompatibility.ts` (New) - Compatibility layer with grace period
 
 ### Services & Hooks (New)

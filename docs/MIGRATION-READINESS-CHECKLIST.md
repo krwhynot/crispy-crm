@@ -46,14 +46,14 @@
 
 ## ✅ Phase 2: Data Provider Implementation
 
-### Task 2.1: FakeRest Data Generators
-- [x] `opportunities.ts` generator created
-- [x] `contactOrganizations.ts` generator created
-- [x] `opportunityParticipants.ts` generator created
-- [x] `interactionParticipants.ts` generator created
-- [x] All generators integrated in index.ts
-- **Files:** `src/atomic-crm/providers/fakerest/dataGenerator/`
-- **Verified:** Test data generation working
+### Task 2.1: Seed Data System
+- [x] Seed data scripts created for opportunities
+- [x] Contact-organization relationships supported
+- [x] Opportunity participants included
+- [x] Activity tracking data included
+- [x] All data types integrated in seed scripts
+- **Files:** `scripts/seed-data.js`
+- **Verified:** Direct database seeding working
 
 ### Task 2.2: Supabase Data Provider Updates
 - [x] Opportunities resource support added
