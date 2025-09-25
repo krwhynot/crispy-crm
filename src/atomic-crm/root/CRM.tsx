@@ -11,21 +11,11 @@ import { Dashboard } from "../dashboard/Dashboard";
 import deals from "../deals";
 import opportunities from "../opportunities";
 import { Layout } from "../layout/Layout";
-import { SignupPage } from "../login/SignupPage";
 import {
   authProvider as supabaseAuthProvider,
   dataProvider as supabaseDataProvider,
 } from "../providers/supabase";
-import {
-  authProvider as fakeRestAuthProvider,
-  dataProvider as fakeRestDataProvider,
-} from "../providers/fakerest";
 import { handleDealUrlRedirect } from "../providers/commons/backwardCompatibility";
-
-// Use FakeRest provider in demo mode, Supabase otherwise
-const isDemoMode = import.meta.env.VITE_IS_DEMO === "true";
-const defaultAuthProvider = isDemoMode ? fakeRestAuthProvider : supabaseAuthProvider;
-const defaultDataProvider = isDemoMode ? fakeRestDataProvider : supabaseDataProvider;
 import sales from "../sales";
 import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
@@ -110,8 +100,8 @@ export const CRM = ({
   noteStatuses = defaultNoteStatuses,
   taskTypes = defaultTaskTypes,
   title = defaultTitle,
-  dataProvider = defaultDataProvider,
-  authProvider = defaultAuthProvider,
+  dataProvider = supabaseDataProvider,
+  authProvider = supabaseAuthProvider,
   disableTelemetry,
   ...rest
 }: CRMProps) => {
@@ -162,7 +152,6 @@ export const CRM = ({
         {...rest}
       >
         <CustomRoutes noLayout>
-          <Route path={SignupPage.path} element={<SignupPage />} />
           <Route path={SetPasswordPage.path} element={<SetPasswordPage />} />
           <Route
             path={ForgotPasswordPage.path}

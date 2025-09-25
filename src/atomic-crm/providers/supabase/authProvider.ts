@@ -21,19 +21,7 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
   },
 });
 
-export async function getIsInitialized() {
-  if (getIsInitialized._is_initialized_cache == null) {
-    const { data } = await supabase.from("init_state").select("is_initialized");
-
-    getIsInitialized._is_initialized_cache = data?.at(0)?.is_initialized > 0;
-  }
-
-  return getIsInitialized._is_initialized_cache;
-}
-
-export namespace getIsInitialized {
-  export var _is_initialized_cache: boolean | null = null;
-}
+// Removed getIsInitialized - no longer checking for initial setup
 
 export const authProvider: AuthProvider = {
   ...baseAuthProvider,
@@ -58,30 +46,10 @@ export const authProvider: AuthProvider = {
     ) {
       return;
     }
-    // Users are on the sign-up page, nothing to do
-    if (
-      window.location.pathname === "/sign-up" ||
-      window.location.hash.includes("#/sign-up")
-    ) {
-      return;
-    }
-
-    const isInitialized = await getIsInitialized();
-
-    if (!isInitialized) {
-      await supabase.auth.signOut();
-      throw {
-        redirectTo: "/sign-up",
-        message: false,
-      };
-    }
-
+    // Simply delegate to base auth provider
     return baseAuthProvider.checkAuth(params);
   },
   canAccess: async (params) => {
-    const isInitialized = await getIsInitialized();
-    if (!isInitialized) return false;
-
     // Get the current user
     const sale = await getSaleFromCache();
     if (sale == null) return false;

@@ -22,7 +22,6 @@ import type {
   RAFile,
   Sale,
   SalesFormData,
-  SignUpData,
   Tag,
 } from "../../types";
 import {
@@ -34,7 +33,7 @@ import { getActivityLog } from "../commons/activity";
 // import { withBackwardCompatibility } from "../commons/backwardCompatibility"; // REMOVED - NO BACKWARD COMPATIBILITY
 import { getCompanyAvatar } from "../commons/getCompanyAvatar";
 import { getContactAvatar } from "../commons/getContactAvatar";
-import { getIsInitialized } from "./authProvider";
+// Removed getIsInitialized import - no longer checking for initial setup
 import { supabase } from "./supabase";
 import { getResourceName, getSearchableFields, RESOURCE_LIFECYCLE_CONFIG } from "./resources";
 
@@ -162,32 +161,7 @@ const dataProviderWithCustomMethods = {
     return baseDataProvider.deleteMany(actualResource, params);
   },
 
-  async signUp({ email, password, first_name, last_name }: SignUpData) {
-    const response = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          first_name,
-          last_name,
-        },
-      },
-    });
-
-    if (!response.data?.user || response.error) {
-      console.error("signUp.error", response.error);
-      throw new Error("Failed to create account");
-    }
-
-    // Update the is initialized cache
-    getIsInitialized._is_initialized_cache = true;
-
-    return {
-      id: response.data.user.id,
-      email,
-      password,
-    };
-  },
+  // signUp method removed - all users must be created through Sales management
   async salesCreate(body: SalesFormData) {
     const { data, error } = await supabase.functions.invoke<Sale>("users", {
       method: "POST",
@@ -277,9 +251,7 @@ const dataProviderWithCustomMethods = {
   async getActivityLog(companyId?: Identifier) {
     return getActivityLog(baseDataProvider, companyId);
   },
-  async isInitialized() {
-    return getIsInitialized();
-  },
+  // isInitialized method removed - no longer checking for initial setup
   // Junction table support for contact-organization relationships
   async getContactOrganizations(contactId: Identifier) {
     const { data } = await supabase

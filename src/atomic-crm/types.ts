@@ -15,12 +15,7 @@ export type DecisionAuthority = 'Decision Maker' | 'Influencer' | 'End User' | '
 export type OrganizationType = 'customer' | 'prospect' | 'vendor' | 'partner' | 'principal' | 'distributor' | 'unknown';
 export type CompanyPriority = 'A' | 'B' | 'C' | 'D';
 
-export type SignUpData = {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-};
+// SignUpData type removed - all users created through Sales management
 
 export type SalesFormData = {
   avatar: string;
