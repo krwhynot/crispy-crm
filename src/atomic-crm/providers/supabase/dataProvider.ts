@@ -14,8 +14,6 @@ import type {
   Contact,
   ContactNote,
   ContactOrganization,
-  // Deal, // REMOVED - use Opportunity
-  // DealNote, // REMOVED - use OpportunityNote
   Opportunity,
   OpportunityNote,
   OpportunityParticipant,
@@ -30,10 +28,8 @@ import {
   isLegacyHexColor,
 } from "../../tags/tag-colors";
 import { getActivityLog } from "../commons/activity";
-// import { withBackwardCompatibility } from "../commons/backwardCompatibility"; // REMOVED - NO BACKWARD COMPATIBILITY
 import { getCompanyAvatar } from "../commons/getCompanyAvatar";
 import { getContactAvatar } from "../commons/getContactAvatar";
-// Removed getIsInitialized import - no longer checking for initial setup
 import { supabase } from "./supabase";
 import { getResourceName, getSearchableFields, RESOURCE_LIFECYCLE_CONFIG } from "./resources";
 
@@ -91,8 +87,6 @@ async function processContactAvatar(
 
   return { ...params, data: newData };
 }
-
-// Transformation functions moved to commons/backwardCompatibility.ts
 
 const dataProviderWithCustomMethods = {
   ...baseDataProvider,
@@ -160,8 +154,6 @@ const dataProviderWithCustomMethods = {
     const actualResource = getResourceName(resource);
     return baseDataProvider.deleteMany(actualResource, params);
   },
-
-  // signUp method removed - all users must be created through Sales management
   async salesCreate(body: SalesFormData) {
     const { data, error } = await supabase.functions.invoke<Sale>("users", {
       method: "POST",
@@ -221,7 +213,6 @@ const dataProviderWithCustomMethods = {
 
     return passwordUpdated;
   },
-  // unarchiveDeal: REMOVED - use unarchiveOpportunity
   async unarchiveOpportunity(opportunity: Opportunity) {
     // get all opportunities where stage is the same as the opportunity to unarchive
     const { data: opportunities } = await baseDataProvider.getList<Opportunity>("opportunities", {
@@ -235,7 +226,6 @@ const dataProviderWithCustomMethods = {
       ...o,
       index: o.id === opportunity.id ? 0 : index + 1,
       deleted_at: o.id === opportunity.id ? null : o.deleted_at,
-      archived_at: o.id === opportunity.id ? null : o.archived_at, // backward compatibility
     }));
 
     return await Promise.all(
@@ -251,7 +241,6 @@ const dataProviderWithCustomMethods = {
   async getActivityLog(companyId?: Identifier) {
     return getActivityLog(baseDataProvider, companyId);
   },
-  // isInitialized method removed - no longer checking for initial setup
   // Junction table support for contact-organization relationships
   async getContactOrganizations(contactId: Identifier) {
     const { data } = await supabase
@@ -396,7 +385,6 @@ const dataProviderWithCustomMethods = {
 
 export type CrmDataProvider = typeof dataProviderWithCustomMethods;
 
-// NO BACKWARD COMPATIBILITY - Direct export without wrapper
 export const dataProvider = withLifecycleCallbacks(
     dataProviderWithCustomMethods,
   [
@@ -411,7 +399,6 @@ export const dataProvider = withLifecycleCallbacks(
         return data;
       },
     },
-    // ResourceCallbacks for "dealNotes" REMOVED - use "opportunityNotes"
     {
       resource: "opportunityNotes",
       beforeSave: async (data: OpportunityNote, _, __) => {
@@ -500,12 +487,6 @@ export const dataProvider = withLifecycleCallbacks(
       resource: "contacts_summary",
       beforeGetList: async (params) => {
         return applyFullTextSearch(["first_name", "last_name"])(params);
-      },
-    },
-    {
-      resource: "deals",
-      beforeGetList: async (params) => {
-        return applyFullTextSearch(["name", "type", "description"])(params);
       },
     },
     {
