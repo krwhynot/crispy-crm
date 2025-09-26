@@ -8,11 +8,11 @@ import {
   SortButton,
 } from "@/components/admin";
 import { TopToolbar } from "../layout/TopToolbar";
-import { CompanyEmpty } from "./CompanyEmpty";
-import { CompanyListFilter } from "./CompanyListFilter";
+import { OrganizationEmpty } from "./OrganizationEmpty";
+import { OrganizationListFilter } from "./OrganizationListFilter";
 import { ImageList } from "./GridList";
 
-export const CompanyList = () => {
+export const OrganizationList = () => {
   const { identity } = useGetIdentity();
   if (!identity) return null;
   return (
@@ -20,24 +20,24 @@ export const CompanyList = () => {
       title={false}
       perPage={25}
       sort={{ field: "name", order: "ASC" }}
-      actions={<CompanyListActions />}
+      actions={<OrganizationListActions />}
       pagination={<ListPagination rowsPerPageOptions={[10, 25, 50, 100]} />}
     >
-      <CompanyListLayout />
+      <OrganizationListLayout />
     </List>
   );
 };
 
-const CompanyListLayout = () => {
+const OrganizationListLayout = () => {
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
   if (isPending) return null;
-  if (!data?.length && !hasFilters) return <CompanyEmpty />;
+  if (!data?.length && !hasFilters) return <OrganizationEmpty />;
 
   return (
     <div className="w-full flex flex-row gap-8">
-      <CompanyListFilter />
+      <OrganizationListFilter />
       <div className="flex flex-col flex-1 gap-4">
         <ImageList />
       </div>
@@ -45,12 +45,12 @@ const CompanyListLayout = () => {
   );
 };
 
-const CompanyListActions = () => {
+const OrganizationListActions = () => {
   return (
     <TopToolbar>
       <SortButton fields={["name", "created_at", "nb_contacts"]} />
       <ExportButton />
-      <CreateButton label="New Company" />
+      <CreateButton label="New Organization" />
     </TopToolbar>
   );
 };

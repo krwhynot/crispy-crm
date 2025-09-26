@@ -28,7 +28,7 @@ import {
   isLegacyHexColor,
 } from "../../tags/tag-colors";
 import { getActivityLog } from "../commons/activity";
-import { getCompanyAvatar } from "../commons/getCompanyAvatar";
+import { getOrganizationAvatar } from "../commons/getOrganizationAvatar";
 import { getContactAvatar } from "../commons/getContactAvatar";
 import { supabase } from "./supabase";
 import { getResourceName, getSearchableFields, RESOURCE_LIFECYCLE_CONFIG } from "./resources";
@@ -51,7 +51,7 @@ const processCompanyLogo = async (params: any) => {
   let logo = params.data.logo;
 
   if (typeof logo !== "object" || logo === null || !logo.src) {
-    logo = await getCompanyAvatar(params.data);
+    logo = await getOrganizationAvatar(params.data);
   } else if (logo.rawFile instanceof File) {
     await uploadToBucket(logo);
   }
@@ -99,8 +99,8 @@ const dataProviderWithCustomMethods = {
       return baseDataProvider.getList("opportunities_summary", params);
     }
 
-    if (resource === "companies") {
-      return baseDataProvider.getList("companies_summary", params);
+    if (resource === "organizations") {
+      return baseDataProvider.getList("organizations_summary", params);
     }
 
     if (resource === "contacts") {
@@ -118,8 +118,8 @@ const dataProviderWithCustomMethods = {
       return baseDataProvider.getOne("opportunities_summary", params);
     }
 
-    if (resource === "companies") {
-      return baseDataProvider.getOne("companies_summary", params);
+    if (resource === "organizations") {
+      return baseDataProvider.getOne("organizations_summary", params);
     }
 
     if (resource === "contacts") {
@@ -440,7 +440,7 @@ export const dataProvider = withLifecycleCallbacks(
       },
     },
     {
-      resource: "companies",
+      resource: "organizations",
       beforeGetList: async (params) => {
         return applyFullTextSearch([
           "name",

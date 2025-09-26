@@ -6,10 +6,10 @@ import { FilterCategory } from "../filters/FilterCategory";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import { sizes } from "./sizes";
 
-export const CompanyListFilter = () => {
+export const OrganizationListFilter = () => {
   const { identity } = useGetIdentity();
-  const { companySectors } = useConfigurationContext();
-  const sectors = companySectors.map((sector) => ({
+  const { organizationSectors } = useConfigurationContext();
+  const sectors = organizationSectors.map((sector) => ({
     id: sector,
     name: sector,
   }));

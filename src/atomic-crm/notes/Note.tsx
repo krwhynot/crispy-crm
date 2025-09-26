@@ -18,7 +18,7 @@ import { useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 import { ReferenceField } from "@/components/admin";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { Avatar } from "../contacts/Avatar";
 import { RelativeDate } from "../misc/RelativeDate";
 import { Status } from "../misc/Status";
@@ -88,8 +88,8 @@ export const Note = ({
         {resource === "contactNote" ? (
           <Avatar width={20} height={20} />
         ) : (
-          <ReferenceField source="company_id" reference="companies" link="show">
-            <CompanyAvatar width={20} height={20} />
+          <ReferenceField source="company_id" reference="organizations" link="show">
+            <OrganizationAvatar width={20} height={20} />
           </ReferenceField>
         )}
         <div className="inline-flex h-full items-center text-sm text-muted-foreground">

@@ -40,7 +40,7 @@ export function useContactImport() {
   const getCompanies = useCallback(
     async (names: string[]) =>
       fetchRecordsWithCache<Company>(
-        "companies",
+        "organizations",
         companiesCache,
         names,
         (name) => ({

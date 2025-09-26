@@ -7,20 +7,12 @@ import { useEffect, useState } from "react";
 
 import type { Opportunity } from "../types";
 import { OpportunityColumn } from "./OpportunityColumn";
+import { OPPORTUNITY_STAGES_LEGACY } from "./stageConstants";
 import type { OpportunitiesByStage } from "./stages";
 import { getOpportunitiesByStage } from "./stages";
 
 export const OpportunityListContent = () => {
-  const opportunityStages = [
-    { value: 'lead', label: 'Lead' },
-    { value: 'qualified', label: 'Qualified' },
-    { value: 'needs_analysis', label: 'Needs Analysis' },
-    { value: 'proposal', label: 'Proposal' },
-    { value: 'negotiation', label: 'Negotiation' },
-    { value: 'closed_won', label: 'Closed Won' },
-    { value: 'closed_lost', label: 'Closed Lost' },
-    { value: 'nurturing', label: 'Nurturing' }
-  ];
+  const opportunityStages = OPPORTUNITY_STAGES_LEGACY;
 
   const { data: unorderedOpportunities, isPending, refetch } = useListContext<Opportunity>();
   const dataProvider = useDataProvider();

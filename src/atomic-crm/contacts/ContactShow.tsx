@@ -5,7 +5,7 @@ import {
 } from "@/components/admin";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShowBase, useShowContext } from "ra-core";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { NoteCreate, NotesIterator } from "../notes";
 import type { Contact } from "../types";
 import { Avatar } from "./Avatar";
@@ -39,7 +39,7 @@ const ContactShowContent = () => {
                   {record.company_id != null && (
                     <ReferenceField
                       source="company_id"
-                      reference="companies"
+                      reference="organizations"
                       link="show"
                     >
                       &nbsp;
@@ -67,11 +67,11 @@ const ContactShowContent = () => {
               <div>
                 <ReferenceField
                   source="company_id"
-                  reference="companies"
+                  reference="organizations"
                   link="show"
                   className="no-underline"
                 >
-                  <CompanyAvatar />
+                  <OrganizationAvatar />
                 </ReferenceField>
               </div>
             </div>
@@ -92,7 +92,7 @@ const ContactShowContent = () => {
                           <ReferenceField
                             record={{ company_id: org.organization_id }}
                             source="company_id"
-                            reference="companies"
+                            reference="organizations"
                             link="show"
                             className="font-medium"
                           >
@@ -139,3 +139,5 @@ const ContactShowContent = () => {
     </div>
   );
 };
+
+export default ContactShow;

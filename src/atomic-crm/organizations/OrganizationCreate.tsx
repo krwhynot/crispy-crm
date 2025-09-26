@@ -2,9 +2,9 @@ import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton, SaveButton, FormToolbar } from "@/components/admin";
 
-import { CompanyInputs } from "./CompanyInputs";
+import { OrganizationInputs } from "./OrganizationInputs";
 
-export const CompanyCreate = () => {
+export const OrganizationCreate = () => {
   const { identity } = useGetIdentity();
   return (
     <CreateBase
@@ -22,11 +22,11 @@ export const CompanyCreate = () => {
           <Form defaultValues={{ sales_id: identity?.id }}>
             <Card>
               <CardContent>
-                <CompanyInputs />
+                <OrganizationInputs />
                 <FormToolbar>
                   <div className="flex flex-row gap-2 justify-end">
                     <CancelButton />
-                    <SaveButton label="Create Company" />
+                    <SaveButton label="Create Organization" />
                   </div>
                 </FormToolbar>
               </CardContent>

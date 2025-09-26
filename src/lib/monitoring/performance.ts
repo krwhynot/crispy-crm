@@ -116,7 +116,7 @@ function sendMetricToAnalytics(metric: PerformanceMetric): void {
       // });
 
     } catch (error) {
-      console.error('Error processing performance metric:', error);
+      console.error('Error processing performance metric:', error instanceof Error ? error.message : String(error));
     }
   });
 }
@@ -168,7 +168,7 @@ export function initializePerformanceMonitoring(): void {
       console.log('🔔 Alert thresholds:', ALERT_THRESHOLDS);
     }
   } catch (error) {
-    console.error('Failed to initialize performance monitoring:', error);
+    console.error('Failed to initialize performance monitoring:', error instanceof Error ? error.message : String(error));
   }
 }
 
@@ -199,7 +199,7 @@ export function trackCustomMetric(name: string, value: number, details?: Record<
       // like route transition times, API response times, etc.
 
     } catch (error) {
-      console.error('Error tracking custom metric:', error);
+      console.error('Error tracking custom metric:', error instanceof Error ? error.message : String(error));
     }
   });
 }

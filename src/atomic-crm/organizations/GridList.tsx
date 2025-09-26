@@ -1,7 +1,7 @@
 import { RecordContextProvider, useListContext } from "ra-core";
 
 import type { Company } from "../types";
-import { CompanyCard } from "./CompanyCard";
+import { OrganizationCard } from "./OrganizationCard";
 
 const times = (nbChildren: number, fn: (key: number) => any) =>
   Array.from({ length: nbChildren }, (_, key) => fn(key));
@@ -31,11 +31,11 @@ const LoadedGridList = () => {
     >
       {data.map((record) => (
         <RecordContextProvider key={record.id} value={record}>
-          <CompanyCard />
+          <OrganizationCard />
         </RecordContextProvider>
       ))}
 
-      {data.length === 0 && <div className="p-2">No companies found</div>}
+      {data.length === 0 && <div className="p-2">No organizations found</div>}
     </div>
   );
 };

@@ -36,8 +36,8 @@ const CONFIG = {
 
   // Opportunity configuration from environment
   DEFAULT_CATEGORY: process.env.OPPORTUNITY_DEFAULT_CATEGORY || 'new_business',
-  DEFAULT_STAGE: process.env.OPPORTUNITY_DEFAULT_STAGE || 'lead',
-  PIPELINE_STAGES: (process.env.OPPORTUNITY_PIPELINE_STAGES || 'lead,qualified,needs_analysis,proposal,negotiation,closed_won,closed_lost,nurturing').split(','),
+  DEFAULT_STAGE: process.env.OPPORTUNITY_DEFAULT_STAGE || 'new_lead',
+  PIPELINE_STAGES: (process.env.OPPORTUNITY_PIPELINE_STAGES || 'new_lead,initial_outreach,sample_visit_offered,awaiting_response,feedback_logged,demo_scheduled,closed_won,closed_lost').split(','),
   MAX_AMOUNT: parseInt(process.env.OPPORTUNITY_MAX_AMOUNT || '1000000'),
   DEFAULT_PROBABILITY: parseInt(process.env.OPPORTUNITY_DEFAULT_PROBABILITY || '50'),
 
@@ -118,7 +118,7 @@ class SeedDataGenerator {
       await this.supabase.from('contact_notes').delete().gte('id', 0);
       await this.supabase.from('contact_organizations').delete().gte('id', 0);
       await this.supabase.from('contacts').delete().gte('id', 0);
-      await this.supabase.from('companies').delete().gte('id', 0);
+      await this.supabase.from('organizations').delete().gte('id', 0);
       await this.supabase.from('tags').delete().gte('id', 0);
 
       this.spinner.succeed('Cleaned existing data');
@@ -368,10 +368,10 @@ class SeedDataGenerator {
         if (error) throw error;
       }
 
-      // Insert organizations (companies table)
+      // Insert organizations
       if (this.generatedData.organizations.length > 0) {
         const { error } = await this.supabase
-          .from('companies')
+          .from('organizations')
           .insert(this.generatedData.organizations);
         if (error) throw error;
       }
@@ -508,20 +508,20 @@ class SeedDataGenerator {
   getStatusForStage(stage) {
     if (stage === 'closed_won') return 'won';
     if (stage === 'closed_lost') return 'lost';
-    if (stage === 'nurturing') return 'stalled';
+    if (stage === 'awaiting_response') return 'stalled';
     return 'open';
   }
 
   getProbabilityForStage(stage) {
     const probabilities = {
-      lead: 10,
-      qualified: 25,
-      needs_analysis: 40,
-      proposal: 60,
-      negotiation: 80,
+      new_lead: 10,
+      initial_outreach: 20,
+      sample_visit_offered: 30,
+      awaiting_response: 25,
+      feedback_logged: 50,
+      demo_scheduled: 70,
       closed_won: 100,
-      closed_lost: 0,
-      nurturing: 20
+      closed_lost: 0
     };
     return probabilities[stage] || CONFIG.DEFAULT_PROBABILITY;
   }

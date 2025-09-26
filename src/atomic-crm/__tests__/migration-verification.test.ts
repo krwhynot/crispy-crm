@@ -393,7 +393,7 @@ describe('Fresh Start Migration Verification', () => {
         const mockColumnsCheck = async () => {
           return {
             hasRequiredColumns: true,
-            columns: ['id', 'name', 'company_id', 'stage', 'amount', 'probability']
+            columns: ['id', 'name', 'organization_id', 'stage', 'amount', 'probability']
           };
         };
 
@@ -405,7 +405,7 @@ describe('Fresh Start Migration Verification', () => {
       // Try to select key columns
       const { error } = await supabaseClient
         .from('opportunities')
-        .select('id, name, company_id, stage, amount, probability')
+        .select('id, name, organization_id, stage, amount, probability')
         .limit(1);
 
       // If no error, columns exist
@@ -423,7 +423,7 @@ describe('Fresh Start Migration Verification', () => {
       const mockIndexCheck = async () => {
         return {
           indexes: [
-            'idx_opportunities_company_id',
+            'idx_opportunities_organization_id',
             'idx_opportunities_stage',
             'idx_opportunity_notes_opportunity_id'
           ],

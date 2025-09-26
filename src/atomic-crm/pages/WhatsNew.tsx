@@ -55,7 +55,7 @@ const newFeatures: FeatureTour[] = [
       },
       {
         title: "Advanced Stages",
-        description: "New stages: Lead, Qualified, Needs Analysis, Proposal, Negotiation, Closed Won/Lost, Nurturing.",
+        description: "Food service pipeline: New Lead, Initial Outreach, Sample/Visit Offered, Awaiting Response, Feedback Logged, Demo Scheduled, Closed Won/Lost.",
         action: "Change an opportunity stage to see automatic probability updates",
         tip: "Stages can be updated manually or automatically based on activities.",
       },
@@ -85,7 +85,7 @@ const newFeatures: FeatureTour[] = [
         title: "Associated Organizations",
         description: "View all organizations a contact is connected to in the 'Organizations' section.",
         action: "Add a contact to an additional organization",
-        tip: "Use this for consultants, contractors, or people who work with multiple companies.",
+        tip: "Use this for consultants, contractors, or people who work with multiple organizations.",
       },
       {
         title: "Role and Influence",
@@ -98,15 +98,15 @@ const newFeatures: FeatureTour[] = [
   {
     id: "organization-types",
     title: "Organization Types & Hierarchies",
-    description: "Companies now have types (Customer, Principal, Distributor, etc.) and can form hierarchical relationships.",
+    description: "Organizations now have types (Customer, Principal, Distributor, etc.) and can form hierarchical relationships.",
     icon: <Building className="h-6 w-6" />,
     category: "organizations",
     isNew: true,
     steps: [
       {
         title: "Organization Types",
-        description: "Classify companies as Customer, Principal, Distributor, Prospect, Vendor, Partner, or Unknown.",
-        action: "Review your top companies and set appropriate types",
+        description: "Classify organizations as Customer, Principal, Distributor, Prospect, Vendor, Partner, or Unknown.",
+        action: "Review your top organizations and set appropriate types",
         tip: "Types help with filtering and reporting on different relationship categories.",
       },
       {
@@ -116,9 +116,9 @@ const newFeatures: FeatureTour[] = [
         tip: "A-priority accounts get highlighted treatment throughout the system.",
       },
       {
-        title: "Parent Companies",
-        description: "Link subsidiaries to parent companies for better relationship mapping.",
-        action: "Set up parent-child relationships for related companies",
+        title: "Parent Organizations",
+        description: "Link subsidiaries to parent organizations for better relationship mapping.",
+        action: "Set up parent-child relationships for related organizations",
         tip: "This helps track enterprise accounts with multiple entities.",
       },
     ],
@@ -469,7 +469,7 @@ export const WhatsNew = () => {
                     </a>
                   </Button>
                   <Button asChild variant="outline" className="w-full justify-start">
-                    <a href="/companies">
+                    <a href="/organizations">
                       <Building className="h-4 w-4 mr-2" />
                       Set Organization Types
                     </a>

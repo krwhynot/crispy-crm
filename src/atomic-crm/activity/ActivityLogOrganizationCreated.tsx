@@ -1,25 +1,25 @@
 import { Link } from "react-router-dom";
 
 import { ReferenceField } from "@/components/admin";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { RelativeDate } from "../misc/RelativeDate";
 import { SaleName } from "../sales/SaleName";
-import type { ActivityCompanyCreated } from "../types";
+import type { ActivityOrganizationCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 
-type ActivityLogCompanyCreatedProps = {
-  activity: ActivityCompanyCreated;
+type ActivityLogOrganizationCreatedProps = {
+  activity: ActivityOrganizationCreated;
 };
 
-export function ActivityLogCompanyCreated({
+export function ActivityLogOrganizationCreated({
   activity,
-}: ActivityLogCompanyCreatedProps) {
+}: ActivityLogOrganizationCreatedProps) {
   const context = useActivityLogContext();
-  const { company } = activity;
+  const { organization } = activity;
   return (
     <div className="p-0">
       <div className="flex flex-row space-x-1 items-center w-full">
-        <CompanyAvatar width={20} height={20} record={company} />
+        <OrganizationAvatar width={20} height={20} record={organization} />
 
         <div className="text-sm text-muted-foreground flex-grow">
           <span className="text-muted-foreground text-sm inline-flex">
@@ -31,15 +31,15 @@ export function ActivityLogCompanyCreated({
               <SaleName />
             </ReferenceField>
           </span>
-          &nbsp;added company &nbsp;
-          <Link to={`/companies/${company.id}/show`}>{company.name}</Link>
+          &nbsp;added organization &nbsp;
+          <Link to={`/organizations/${organization.id}/show`}>{organization.name}</Link>
           {context === "all" && (
             <>
               <RelativeDate date={activity.date} />
             </>
           )}
         </div>
-        {context === "company" && (
+        {context === "organization" && (
           <span className="text-muted-foreground text-sm">
             <RelativeDate date={activity.date} />
           </span>

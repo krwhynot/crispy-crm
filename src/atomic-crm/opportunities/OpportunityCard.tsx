@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Draggable } from "@hello-pangea/dnd";
 import { useRedirect } from "ra-core";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 
 export const OpportunityCard = ({ opportunity, index }: { opportunity: Opportunity; index: number }) => {
@@ -73,10 +73,10 @@ export const OpportunityCardContent = ({
           <ReferenceField
             source="customer_organization_id"
             record={opportunity}
-            reference="companies"
+            reference="organizations"
             link={false}
           >
-            <CompanyAvatar width={20} height={20} />
+            <OrganizationAvatar width={20} height={20} />
           </ReferenceField>
           <div className="ml-3 flex-1">
             <div className="flex justify-between items-start mb-2">

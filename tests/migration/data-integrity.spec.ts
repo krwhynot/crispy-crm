@@ -62,7 +62,7 @@ describe('Migration Data Integrity Tests', () => {
       const mockRelationshipValidator = {
         validateNewRelationships: vi.fn().mockResolvedValue({
           contactOrganizations: {
-            expectedFromContacts: 295, // contacts with valid company_id
+            expectedFromContacts: 295, // contacts with valid organization_id
             actualCreated: 295,
             correctlyMapped: true
           },
@@ -119,9 +119,9 @@ describe('Migration Data Integrity Tests', () => {
     it('should verify contact organization relationship creation', async () => {
       const mockContactValidator = {
         selectRandomContacts: vi.fn().mockResolvedValue([
-          { id: 1, name: 'John Doe', company_id: 10, email: ['john@example.com'] },
-          { id: 25, name: 'Jane Smith', company_id: 15, email: ['jane@company.com'] },
-          { id: 50, name: 'Bob Wilson', company_id: null, email: ['bob@personal.com'] }
+          { id: 1, name: 'John Doe', organization_id: 10, email: ['john@example.com'] },
+          { id: 25, name: 'Jane Smith', organization_id: 15, email: ['jane@company.com'] },
+          { id: 50, name: 'Bob Wilson', organization_id: null, email: ['bob@personal.com'] }
           // ... would continue for 100 samples
         ]),
 
@@ -343,7 +343,7 @@ describe('Migration Data Integrity Tests', () => {
         validateNullHandling: vi.fn().mockResolvedValue({
           nullCompanyIdsInContacts: 5,
           nullHandlingStrategy: 'preserve_as_null',
-          junctionRecordsSkipped: 5, // Contacts without company_id don't get junction records
+          junctionRecordsSkipped: 5, // Contacts without organization_id don't get junction records
           nullEmailArrays: 2,
           nullPhoneArrays: 8,
           nullValuesHandledCorrectly: true

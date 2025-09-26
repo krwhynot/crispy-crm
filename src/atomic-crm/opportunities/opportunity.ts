@@ -1,8 +1,11 @@
-export type OpportunityStage = {
-  value: string;
-  label: string;
-};
+import { getOpportunityStageLabel, findOpportunityLabel as legacyFindOpportunityLabel, OpportunityStage } from "./stageConstants";
+
+export type { OpportunityStage } from "./stageConstants";
 
 export const findOpportunityLabel = (opportunityStages: OpportunityStage[], opportunityValue: string) => {
-  return opportunityStages.find((opportunityStage) => opportunityStage.value === opportunityValue)?.label;
+  // Use centralized stage label lookup instead of array search
+  return getOpportunityStageLabel(opportunityValue);
 };
+
+// Legacy compatibility - use centralized lookup
+export { findOpportunityLabel as legacyFindOpportunityLabel } from "./stageConstants";

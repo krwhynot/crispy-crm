@@ -25,30 +25,33 @@ const STATE_FILE = path.join(__dirname, '..', 'logs', 'transformation-state.json
 
 // Stage mappings according to business rules
 const STAGE_MAPPINGS = {
-  'discovery': 'lead',
-  'opportunity': 'qualified',
-  'proposal': 'proposal',
-  'qualified': 'needs_analysis',
+  'discovery': 'new_lead',
+  'opportunity': 'initial_outreach',
+  'proposal': 'demo_scheduled',
+  'qualified': 'feedback_logged',
   'won': 'closed_won',
   'lost': 'closed_lost',
   // Additional common mappings
-  'new': 'lead',
-  'prospecting': 'lead',
-  'demo': 'needs_analysis',
-  'negotiation': 'negotiation',
+  'new': 'new_lead',
+  'prospecting': 'new_lead',
+  'lead': 'new_lead',
+  'demo': 'demo_scheduled',
+  'negotiation': 'demo_scheduled',
+  'needs_analysis': 'feedback_logged',
+  'nurturing': 'awaiting_response',
   'closed': 'closed_won'
 };
 
 // Probability assignments by stage
 const STAGE_PROBABILITIES = {
-  'lead': 10,
-  'qualified': 25,
-  'needs_analysis': 40,
-  'proposal': 60,
-  'negotiation': 80,
+  'new_lead': 10,
+  'initial_outreach': 20,
+  'sample_visit_offered': 30,
+  'awaiting_response': 25,
+  'feedback_logged': 50,
+  'demo_scheduled': 70,
   'closed_won': 100,
-  'closed_lost': 0,
-  'nurturing': 15
+  'closed_lost': 0
 };
 
 class DataTransformer {
@@ -235,7 +238,7 @@ class DataTransformer {
         for (const opp of batch) {
           // Map old stage to new stage
           const currentStage = opp.stage?.toLowerCase();
-          const newStage = STAGE_MAPPINGS[currentStage] || 'lead';
+          const newStage = STAGE_MAPPINGS[currentStage] || 'new_lead';
           const probability = STAGE_PROBABILITIES[newStage];
 
           const { error: updateError } = await this.supabase

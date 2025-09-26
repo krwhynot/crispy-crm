@@ -1,7 +1,7 @@
 import { ReferenceField } from "@/components/admin";
 
 import type { RaRecord } from "ra-core";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { RelativeDate } from "../misc/RelativeDate";
 import { SaleName } from "../sales/SaleName";
 import type { ActivityOpportunityNoteCreated } from "../types";
@@ -29,10 +29,10 @@ export function ActivityLogOpportunityNoteCreated({
           >
             <ReferenceField
               source="company_id"
-              reference="companies"
+              reference="organizations"
               link={false}
             >
-              <CompanyAvatar width={20} height={20} />
+              <OrganizationAvatar width={20} height={20} />
             </ReferenceField>
           </ReferenceField>
 
@@ -63,7 +63,7 @@ export function ActivityLogOpportunityNoteCreated({
                 >
                   <ReferenceField
                     source="company_id"
-                    reference="companies"
+                    reference="organizations"
                     link="show"
                   />
                 </ReferenceField>{" "}

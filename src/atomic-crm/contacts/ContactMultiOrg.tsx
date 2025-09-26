@@ -73,7 +73,7 @@ export const ContactMultiOrg = (props: ContactMultiOrgProps) => {
         <div className="flex flex-col gap-4 p-4 border rounded-md mb-4">
           <ReferenceInput
             source="organization_id"
-            reference="companies"
+            reference="organizations"
             label="Organization"
             validate={[(value: any) => (value ? undefined : 'Required')]}
             helperText={false}

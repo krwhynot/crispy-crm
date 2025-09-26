@@ -22,14 +22,14 @@ describe('Opportunity Validation Schemas', () => {
     describe('opportunityStageSchema', () => {
       it('should accept valid stages', () => {
         const validStages = [
-          'lead',
-          'qualified',
-          'needs_analysis',
-          'proposal',
-          'negotiation',
+          'new_lead',
+          'initial_outreach',
+          'sample_visit_offered',
+          'awaiting_response',
+          'feedback_logged',
+          'demo_scheduled',
           'closed_won',
-          'closed_lost',
-          'nurturing'
+          'closed_lost'
         ];
 
         validStages.forEach(stage => {
@@ -81,7 +81,7 @@ describe('Opportunity Validation Schemas', () => {
     const validOpportunity = {
       name: 'Test Opportunity',
       contact_ids: ['contact-1', 'contact-2'],
-      stage: 'lead',
+      stage: 'new_lead',
       priority: 'medium',
       amount: 10000,
       probability: 75,
@@ -103,7 +103,7 @@ describe('Opportunity Validation Schemas', () => {
       };
 
       const result = opportunitySchema.parse(minimalOpportunity);
-      expect(result.stage).toBe('lead');
+      expect(result.stage).toBe('new_lead');
       expect(result.priority).toBe('medium');
       expect(result.amount).toBe(0);
       expect(result.probability).toBe(50);
@@ -243,7 +243,7 @@ describe('Opportunity Validation Schemas', () => {
     it('should allow partial updates', () => {
       expect(() => updateOpportunitySchema.parse({ id: 'opp-1', name: 'New Name' })).not.toThrow();
       expect(() => updateOpportunitySchema.parse({ id: 'opp-1', amount: 5000 })).not.toThrow();
-      expect(() => updateOpportunitySchema.parse({ id: 'opp-1', stage: 'qualified' })).not.toThrow();
+      expect(() => updateOpportunitySchema.parse({ id: 'opp-1', stage: 'initial_outreach' })).not.toThrow();
       expect(() => updateOpportunitySchema.parse({ id: 'opp-1' })).not.toThrow(); // Just id
     });
 
@@ -399,12 +399,13 @@ describe('Opportunity Validation Schemas', () => {
 
     it('should handle stage progression rules', () => {
       const validStageProgressions = [
-        { from: 'lead', to: 'qualified' },
-        { from: 'qualified', to: 'needs_analysis' },
-        { from: 'needs_analysis', to: 'proposal' },
-        { from: 'proposal', to: 'negotiation' },
-        { from: 'negotiation', to: 'closed_won' },
-        { from: 'negotiation', to: 'closed_lost' },
+        { from: 'new_lead', to: 'initial_outreach' },
+        { from: 'initial_outreach', to: 'sample_visit_offered' },
+        { from: 'sample_visit_offered', to: 'awaiting_response' },
+        { from: 'awaiting_response', to: 'feedback_logged' },
+        { from: 'feedback_logged', to: 'demo_scheduled' },
+        { from: 'demo_scheduled', to: 'closed_won' },
+        { from: 'demo_scheduled', to: 'closed_lost' },
       ];
 
       // Schema should accept all valid stages

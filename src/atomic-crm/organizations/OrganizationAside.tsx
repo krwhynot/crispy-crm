@@ -15,11 +15,11 @@ import { SaleName } from "../sales/SaleName";
 import type { Company } from "../types";
 import { sizes } from "./sizes";
 
-interface CompanyAsideProps {
+interface OrganizationAsideProps {
   link?: string;
 }
 
-export const CompanyAside = ({ link = "edit" }: CompanyAsideProps) => {
+export const OrganizationAside = ({ link = "edit" }: OrganizationAsideProps) => {
   const record = useRecordContext<Company>();
   if (!record) return null;
 
@@ -27,13 +27,13 @@ export const CompanyAside = ({ link = "edit" }: CompanyAsideProps) => {
     <div className="hidden sm:block w-[250px] min-w-[250px] space-y-4">
       <div className="flex flex-row space-x-1">
         {link === "edit" ? (
-          <EditButton label="Edit Company" />
+          <EditButton label="Edit Organization" />
         ) : (
-          <ShowButton label="Show Company" />
+          <ShowButton label="Show Organization" />
         )}
       </div>
 
-      <CompanyInfo record={record} />
+      <OrganizationInfo record={record} />
 
       <AddressInfo record={record} />
 
@@ -44,13 +44,13 @@ export const CompanyAside = ({ link = "edit" }: CompanyAsideProps) => {
   );
 };
 
-const CompanyInfo = ({ record }: { record: Company }) => {
+const OrganizationInfo = ({ record }: { record: Company }) => {
   if (!record.website && !record.linkedin_url && !record.phone_number) {
     return null;
   }
 
   return (
-    <AsideSection title="Company Info">
+    <AsideSection title="Organization Info">
       {record.website && (
         <div className="flex flex-row items-center gap-1 min-h-[24px]">
           <Globe className="w-4 h-4" />
@@ -173,7 +173,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
     !record.sales_id &&
     !record.description &&
     !record.context_links &&
-    !record.parent_company_id
+    !record.parent_organization_id
   ) {
     return null;
   }
@@ -187,10 +187,10 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
       {record.description && (
         <p className="text-sm  mb-1">{record.description}</p>
       )}
-      {record.parent_company_id && (
+      {record.parent_organization_id && (
         <div className="inline-flex text-sm text-muted-foreground mb-1">
-          Parent company:&nbsp;
-          <ReferenceField source="parent_company_id" reference="companies" record={record}>
+          Parent organization:&nbsp;
+          <ReferenceField source="parent_organization_id" reference="organizations" record={record}>
             <TextField source="name" />
           </ReferenceField>
         </div>

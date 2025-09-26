@@ -5,7 +5,7 @@ import type { AuthProvider, DataProvider } from "ra-core";
 import { CustomRoutes, localStorageStore, Resource } from "ra-core";
 import { useEffect } from "react";
 import { Route } from "react-router-dom";
-import companies from "../companies";
+import organizations from "../organizations";
 import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
 import opportunities from "../opportunities";
@@ -19,7 +19,7 @@ import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
 import { ConfigurationProvider } from "./ConfigurationContext";
 import {
-  defaultCompanySectors,
+  defaultOrganizationSectors,
   defaultContactGender,
   defaultDarkModeLogo,
   defaultLightModeLogo,
@@ -46,7 +46,7 @@ export type CRMProps = {
  * wraps the application with a `ConfigurationProvider` to provide configuration values via context.
  *
  * @param {Array<ContactGender>} contactGender - The gender options for contacts used in the application.
- * @param {string[]} companySectors - The list of company sectors used in the application.
+ * @param {string[]} organizationSectors - The list of organization sectors used in the application.
  * @param {RaThemeOptions} darkTheme - The theme to use when the application is in dark mode.
  * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
  * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
@@ -81,7 +81,7 @@ export type CRMProps = {
  */
 export const CRM = ({
   contactGender = defaultContactGender,
-  companySectors = defaultCompanySectors,
+  organizationSectors = defaultOrganizationSectors,
   opportunityCategories = defaultOpportunityCategories,
   opportunityStages = defaultOpportunityStages,
   darkModeLogo = defaultDarkModeLogo,
@@ -111,7 +111,7 @@ export const CRM = ({
   return (
     <ConfigurationProvider
       contactGender={contactGender}
-      companySectors={companySectors}
+      organizationSectors={organizationSectors}
       opportunityCategories={opportunityCategories}
       opportunityStages={opportunityStages}
       darkModeLogo={darkModeLogo}
@@ -145,7 +145,7 @@ export const CRM = ({
         </CustomRoutes>
         <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />
-        <Resource name="companies" {...companies} />
+        <Resource name="organizations" {...organizations} />
         <Resource name="contactNotes" />
         <Resource name="opportunityNotes" />
         <Resource name="tasks" />

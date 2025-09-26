@@ -396,7 +396,7 @@ describe("Supabase DataProvider", () => {
         {
           id: "deal-1",
           name: "Legacy Deal",
-          company_name: "Old Corp",
+          organization_name: "Old Corp",
           stage: "proposal",
           amount: 50000,
         },

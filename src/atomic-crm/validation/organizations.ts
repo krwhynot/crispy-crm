@@ -103,7 +103,7 @@ export async function validateOrganizationForSubmission(data: any): Promise<void
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join('.');
         formattedErrors[path] = err.message;
       });
@@ -141,7 +141,7 @@ export async function validateCreateOrganization(data: any): Promise<void> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join('.');
         formattedErrors[path] = err.message;
       });
@@ -160,7 +160,7 @@ export async function validateUpdateOrganization(data: any): Promise<void> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join('.');
         formattedErrors[path] = err.message;
       });
@@ -173,12 +173,3 @@ export async function validateUpdateOrganization(data: any): Promise<void> {
   }
 }
 
-// Alias exports for backward compatibility
-export const companySchema = organizationSchema;
-export type CompanyInput = OrganizationInput;
-export type Company = Organization;
-export const validateCompanyForSubmission = validateOrganizationForSubmission;
-export const createCompanySchema = createOrganizationSchema;
-export const updateCompanySchema = updateOrganizationSchema;
-export const validateCreateCompany = validateCreateOrganization;
-export const validateUpdateCompany = validateUpdateOrganization;

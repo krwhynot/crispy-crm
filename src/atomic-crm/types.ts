@@ -1,12 +1,13 @@
 import type { Identifier, RaRecord } from "ra-core";
 import type { ComponentType } from "react";
 import type {
-  COMPANY_CREATED,
+  ORGANIZATION_CREATED,
   CONTACT_CREATED,
   CONTACT_NOTE_CREATED,
   OPPORTUNITY_CREATED,
   OPPORTUNITY_NOTE_CREATED,
 } from "./consts";
+import type { Organization } from "./validation/organizations";
 
 // Type definitions for enhanced CRM features
 export type ContactRole = 'decision_maker' | 'influencer' | 'buyer' | 'end_user' | 'gatekeeper' | 'champion' | 'technical' | 'executive' | 'unknown';
@@ -49,37 +50,11 @@ export type Sale = {
   password?: string;
 } & Pick<RaRecord, "id">;
 
-export type Company = {
-  name: string;
-  logo: RAFile;
-  sector: string;
-  size: 1 | 10 | 50 | 250 | 500;
-  linkedin_url: string;
-  website: string;
-  phone_number: string;
-  address: string;
-  zipcode: string;
-  city: string;
-  stateAbbr: string;
-  sales_id: Identifier;
-  created_at: string;
-  description: string;
-  revenue: string;
-  tax_identifier: string;
-  country: string;
-  context_links?: string[];
-  nb_contacts?: number;
-  nb_opportunities?: number;
+// Organization type (imported from validation)
+export type { Organization } from "./validation/organizations";
 
-  // New organization fields
-  organization_type?: OrganizationType;
-  is_principal?: boolean;
-  is_distributor?: boolean;
-  parent_company_id?: Identifier;
-  segment?: string;
-  priority?: CompanyPriority;
-  deleted_at?: string;
-} & Pick<RaRecord, "id">;
+// Company type - alias to Organization for backward compatibility
+export type Company = Organization;
 
 export type EmailAndType = {
   email: string;
@@ -263,10 +238,10 @@ export type Task = {
   sales_id?: Identifier;
 } & Pick<RaRecord, "id">;
 
-export type ActivityCompanyCreated = {
-  type: typeof COMPANY_CREATED;
-  company_id: Identifier;
-  company: Company;
+export type ActivityOrganizationCreated = {
+  type: typeof ORGANIZATION_CREATED;
+  organization_id: Identifier;
+  organization: Organization;
   sales_id: Identifier;
   date: string;
 } & Pick<RaRecord, "id">;
@@ -303,7 +278,7 @@ export type ActivityOpportunityNoteCreated = {
 
 export type Activity = RaRecord &
   (
-    | ActivityCompanyCreated
+    | ActivityOrganizationCreated
     | ActivityContactCreated
     | ActivityContactNoteCreated
     | ActivityOpportunityCreated

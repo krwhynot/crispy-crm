@@ -31,7 +31,7 @@ describe('UAT: Opportunity Workflows', () => {
     first_name: string;
     last_name: string;
     title: string;
-    company_id: number;
+    organization_id: number;
     email_jsonb: Array<{ email: string; type: string }>;
     phone_number_jsonb: Array<{ phone: string; type: string }>;
     background: string;
@@ -91,7 +91,7 @@ describe('UAT: Opportunity Workflows', () => {
       first_name: 'John',
       last_name: 'Smith',
       title: 'CTO',
-      company_id: 1,
+      organization_id: 1,
       email_jsonb: [{ email: 'john.smith@techinnovators.com', type: 'Work' }],
       phone_number_jsonb: [{ phone: '+1-555-0199', type: 'Work' }],
       background: 'Technical decision maker with 15 years experience'
@@ -101,7 +101,7 @@ describe('UAT: Opportunity Workflows', () => {
       first_name: 'Sarah',
       last_name: 'Johnson',
       title: 'VP of Operations',
-      company_id: 2,
+      organization_id: 2,
       email_jsonb: [{ email: 'sarah.johnson@globalsolutions.com', type: 'Work' }],
       phone_number_jsonb: [{ phone: '+1-555-0788', type: 'Work' }],
       background: 'Operations leader focused on efficiency'
@@ -115,10 +115,10 @@ describe('UAT: Opportunity Workflows', () => {
       customer_organization_id: 1,
       contact_ids: [1],
       category: 'Software',
-      stage: 'Proposal',
-      probability: 75,
+      stage: 'Demo Scheduled',
+      probability: 80,
       priority: 'High',
-      lifecycle_stage: 'Evaluation',
+      lifecycle_stage: 'Demo Scheduled',
       description: 'Annual enterprise software license renewal',
       amount: 50000,
       expected_close_date: '2024-03-31',
@@ -136,10 +136,10 @@ describe('UAT: Opportunity Workflows', () => {
         customer_organization_id: 2,
         contact_ids: [2],
         category: 'Consulting',
-        stage: 'Discovery',
-        probability: 25,
+        stage: 'New Lead',
+        probability: 10,
         priority: 'Medium',
-        lifecycle_stage: 'Qualification',
+        lifecycle_stage: 'Initial Outreach',
         description: 'Cloud infrastructure migration consulting',
         amount: 75000,
         expected_close_date: '2024-06-30'
@@ -157,7 +157,7 @@ describe('UAT: Opportunity Workflows', () => {
       expect(newOpportunity.probability).toBeLessThanOrEqual(100);
 
       expect(['High', 'Medium', 'Low']).toContain(newOpportunity.priority);
-      expect(['Discovery', 'Qualification', 'Evaluation', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost']).toContain(newOpportunity.lifecycle_stage);
+      expect(['New Lead', 'Initial Outreach', 'Sample/Visit Offered', 'Awaiting Response', 'Feedback Logged', 'Demo Scheduled', 'Closed Won', 'Closed Lost']).toContain(newOpportunity.lifecycle_stage);
     });
 
     test('should validate enhanced opportunity data structure', () => {
@@ -172,7 +172,7 @@ describe('UAT: Opportunity Workflows', () => {
       // Verify enhanced field values
       expect(opportunity.probability).toBe(75);
       expect(opportunity.priority).toBe('High');
-      expect(opportunity.lifecycle_stage).toBe('Evaluation');
+      expect(opportunity.lifecycle_stage).toBe('Demo Scheduled');
       expect(opportunity.customer_organization_id).toBe(1);
     });
   });
@@ -239,11 +239,11 @@ describe('UAT: Opportunity Workflows', () => {
   describe('Search and Filter Opportunities', () => {
     test('should support enhanced filtering options', () => {
       const filterCriteria = {
-        stage: 'Proposal',
+        stage: 'Demo Scheduled',
         priority: 'High',
         probability_min: 50,
         probability_max: 100,
-        lifecycle_stage: 'Evaluation',
+        lifecycle_stage: 'Demo Scheduled',
         customer_organization_id: 1
       };
 
@@ -352,10 +352,10 @@ describe('UAT: Opportunity Workflows', () => {
       const dealData = {
         id: 1,
         name: 'Legacy Deal',
-        company_id: 1,
+        organization_id: 1,
         contact_ids: [1],
         category: 'Software',
-        stage: 'Proposal',
+        stage: 'Demo Scheduled',
         description: 'Legacy deal description',
         amount: 25000,
         created_at: '2024-01-01T00:00:00Z',
@@ -365,15 +365,15 @@ describe('UAT: Opportunity Workflows', () => {
       // Transform to Opportunity structure
       const opportunityData = {
         ...dealData,
-        customer_organization_id: dealData.company_id,
+        customer_organization_id: dealData.organization_id,
         probability: 50, // Default value
         priority: 'Medium', // Default value
-        lifecycle_stage: 'Evaluation', // Default value
+        lifecycle_stage: 'Demo Scheduled', // Default value
         expected_close_date: null
       };
 
       // Validate transformation
-      expect(opportunityData.customer_organization_id).toBe(dealData.company_id);
+      expect(opportunityData.customer_organization_id).toBe(dealData.organization_id);
       expect(opportunityData.name).toBe(dealData.name);
       expect(opportunityData.amount).toBe(dealData.amount);
       expect(opportunityData.contact_ids).toEqual(dealData.contact_ids);
@@ -413,11 +413,11 @@ describe('UAT: Opportunity Workflows', () => {
       expect(reportData.averageProbability).toBe(75);
 
       // Validate distribution calculations
-      expect(reportData.stageDistribution['Proposal']).toBe(1);
+      expect(reportData.stageDistribution['Demo Scheduled']).toBe(1);
       expect(reportData.priorityDistribution['High']).toBe(1);
 
       // Validate all stages and priorities are included
-      const expectedStages = ['Discovery', 'Qualification', 'Evaluation', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost'];
+      const expectedStages = ['New Lead', 'Initial Outreach', 'Sample/Visit Offered', 'Awaiting Response', 'Feedback Logged', 'Demo Scheduled', 'Closed Won', 'Closed Lost'];
       expectedStages.forEach(stage => {
         expect(reportData.stageDistribution).toHaveProperty(stage);
       });
@@ -434,10 +434,10 @@ describe('UAT: Opportunity Workflows', () => {
       const preMigrationDeal = {
         id: 1,
         name: 'Enterprise Software License',
-        company_id: 1,
+        organization_id: 1,
         contact_ids: [1],
         category: 'Software',
-        stage: 'Proposal',
+        stage: 'Demo Scheduled',
         description: 'Annual enterprise software license renewal',
         amount: 50000,
         created_at: '2024-01-01T00:00:00Z',
@@ -449,7 +449,7 @@ describe('UAT: Opportunity Workflows', () => {
       // Validate core data preservation
       expect(postMigrationOpportunity.id).toBe(preMigrationDeal.id);
       expect(postMigrationOpportunity.name).toBe(preMigrationDeal.name);
-      expect(postMigrationOpportunity.customer_organization_id).toBe(preMigrationDeal.company_id);
+      expect(postMigrationOpportunity.customer_organization_id).toBe(preMigrationDeal.organization_id);
       expect(postMigrationOpportunity.contact_ids).toEqual(preMigrationDeal.contact_ids);
       expect(postMigrationOpportunity.category).toBe(preMigrationDeal.category);
       expect(postMigrationOpportunity.stage).toBe(preMigrationDeal.stage);
@@ -513,7 +513,7 @@ describe('UAT: Opportunity Workflows', () => {
         pagination: { page: 1, perPage: 25 },
         sort: { field: 'created_at', order: 'DESC' },
         filter: {
-          stage: 'Proposal',
+          stage: 'Demo Scheduled',
           priority: 'High',
           'probability_gte': 50
         }
@@ -523,7 +523,7 @@ describe('UAT: Opportunity Workflows', () => {
       expect(queryStructure.resource).toBe('opportunities');
       expect(queryStructure.pagination.perPage).toBe(25);
       expect(queryStructure.sort.field).toBe('created_at');
-      expect(queryStructure.filter.stage).toBe('Proposal');
+      expect(queryStructure.filter.stage).toBe('Demo Scheduled');
 
       // Validate filter capabilities
       expect(queryStructure.filter).toHaveProperty('probability_gte');
@@ -572,7 +572,7 @@ describe('UAT: System Integration Tests', () => {
         amount: { required: true, type: 'number', min: 0 },
         probability: { required: false, type: 'number', min: 0, max: 100 },
         priority: { required: false, enum: ['High', 'Medium', 'Low'] },
-        stage: { required: true, enum: ['Discovery', 'Qualification', 'Evaluation', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost'] }
+        stage: { required: true, enum: ['New Lead', 'Initial Outreach', 'Sample/Visit Offered', 'Awaiting Response', 'Feedback Logged', 'Demo Scheduled', 'Closed Won', 'Closed Lost'] }
       },
       contact: {
         first_name: { required: true, minLength: 1 },

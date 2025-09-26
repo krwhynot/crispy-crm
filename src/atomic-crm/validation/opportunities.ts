@@ -8,14 +8,14 @@ import type { Identifier } from 'ra-core';
 
 // Enum schemas for stage, status, and priority
 export const opportunityStageSchema = z.enum([
-  'lead',
-  'qualified',
-  'needs_analysis',
-  'proposal',
-  'negotiation',
+  'new_lead',
+  'initial_outreach',
+  'sample_visit_offered',
+  'awaiting_response',
+  'feedback_logged',
+  'demo_scheduled',
   'closed_won',
-  'closed_lost',
-  'nurturing'
+  'closed_lost'
 ]);
 
 export const opportunityStatusSchema = z.enum([
@@ -33,6 +33,39 @@ export const opportunityPrioritySchema = z.enum([
   'critical'
 ]);
 
+// Stage-specific field schemas
+export const sampleVisitOfferedSchema = z.object({
+  sampleType: z.string().optional(),
+  visitDate: z.string().optional(), // ISO date string
+  sampleProducts: z.array(z.string()).optional(),
+});
+
+export const feedbackLoggedSchema = z.object({
+  feedbackNotes: z.string().optional(),
+  sentimentScore: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]).optional(),
+  nextSteps: z.string().optional(),
+});
+
+export const demoScheduledSchema = z.object({
+  demoDate: z.string().optional(), // ISO date string
+  attendees: z.array(z.string()).optional(),
+  demoProducts: z.array(z.string()).optional(),
+});
+
+export const closedWonSchema = z.object({
+  finalAmount: z.number().min(0).optional(),
+  contractStartDate: z.string().optional(), // ISO date string
+  contractTermMonths: z.number().min(0).optional(),
+});
+
+export const lossReasonSchema = z.enum(['price', 'product_fit', 'competitor', 'timing', 'other']);
+
+export const closedLostSchema = z.object({
+  lossReason: lossReasonSchema.optional(),
+  competitorWon: z.string().optional(),
+  lossNotes: z.string().optional(),
+});
+
 // Main opportunity schema
 export const opportunitySchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
@@ -42,7 +75,7 @@ export const opportunitySchema = z.object({
   distributor_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
   contact_ids: z.array(z.union([z.string(), z.number()])).min(1, 'At least one contact is required'),
   category: z.string().optional(),
-  stage: opportunityStageSchema.default('lead'),
+  stage: opportunityStageSchema.default('new_lead'),
   status: opportunityStatusSchema.optional(),
   priority: opportunityPrioritySchema.default('medium'),
   description: z.string().optional(),
@@ -63,6 +96,23 @@ export const opportunitySchema = z.object({
   next_action_date: z.string().optional().nullable(),
   competition: z.string().optional().nullable(),
   decision_criteria: z.string().optional().nullable(),
+
+  // Stage-specific fields (optional for all opportunities)
+  sampleType: z.string().optional(),
+  visitDate: z.string().optional(),
+  sampleProducts: z.array(z.string()).optional(),
+  feedbackNotes: z.string().optional(),
+  sentimentScore: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]).optional(),
+  nextSteps: z.string().optional(),
+  demoDate: z.string().optional(),
+  attendees: z.array(z.string()).optional(),
+  demoProducts: z.array(z.string()).optional(),
+  finalAmount: z.number().min(0).optional(),
+  contractStartDate: z.string().optional(),
+  contractTermMonths: z.number().min(0).optional(),
+  lossReason: lossReasonSchema.optional(),
+  competitorWon: z.string().optional(),
+  lossNotes: z.string().optional(),
 
   // Backward compatibility fields (may be present but not used)
   company_id: z.union([z.string(), z.number()]).optional(),
@@ -87,7 +137,7 @@ export async function validateOpportunityForm(data: any): Promise<void> {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join('.');
         formattedErrors[path] = err.message;
       });
@@ -126,7 +176,7 @@ export async function validateCreateOpportunity(data: any): Promise<void> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join('.');
         formattedErrors[path] = err.message;
       });
@@ -145,7 +195,7 @@ export async function validateUpdateOpportunity(data: any): Promise<void> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join('.');
         formattedErrors[path] = err.message;
       });

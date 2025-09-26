@@ -1,7 +1,7 @@
 import type { Company } from "../../types";
 
 // Main function to get the avatar URL
-export async function getCompanyAvatar(record: Partial<Company>): Promise<{
+export async function getOrganizationAvatar(record: Partial<Company>): Promise<{
   src: string;
   title: string;
 } | null> {
@@ -16,6 +16,6 @@ export async function getCompanyAvatar(record: Partial<Company>): Promise<{
     .replace(/\/$/, "");
   return {
     src: `https://favicon.show/${websiteUrlWithoutScheme}`,
-    title: "Company favicon",
+    title: "Organization favicon",
   };
 }

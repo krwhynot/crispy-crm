@@ -28,6 +28,7 @@ import { OpportunityEmpty } from "./OpportunityEmpty";
 import { OpportunityListContent } from "./OpportunityListContent";
 import { OpportunityShow } from "./OpportunityShow";
 import { OnlyMineInput } from "./OnlyMineInput";
+import { OPPORTUNITY_STAGE_CHOICES } from "./stageConstants";
 
 const OpportunityList = () => {
   const { identity } = useGetIdentity();
@@ -39,7 +40,7 @@ const OpportunityList = () => {
 
   const opportunityFilters = [
     <SearchInput source="q" alwaysOn />,
-    <ReferenceInput source="customer_organization_id" reference="companies">
+    <ReferenceInput source="customer_organization_id" reference="organizations">
       <AutocompleteInput label={false} placeholder="Customer Organization" />
     </ReferenceInput>,
     <SelectInput
@@ -60,16 +61,7 @@ const OpportunityList = () => {
     <SelectInput
       source="stage"
       emptyText="Stage"
-      choices={[
-        { id: 'lead', name: 'Lead' },
-        { id: 'qualified', name: 'Qualified' },
-        { id: 'needs_analysis', name: 'Needs Analysis' },
-        { id: 'proposal', name: 'Proposal' },
-        { id: 'negotiation', name: 'Negotiation' },
-        { id: 'closed_won', name: 'Closed Won' },
-        { id: 'closed_lost', name: 'Closed Lost' },
-        { id: 'nurturing', name: 'Nurturing' }
-      ]}
+      choices={OPPORTUNITY_STAGE_CHOICES}
     />,
     <OnlyMineInput source="sales_id" alwaysOn />,
   ];

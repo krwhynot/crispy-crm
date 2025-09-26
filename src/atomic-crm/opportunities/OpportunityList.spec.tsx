@@ -14,7 +14,7 @@ const mockOpportunities = [
   {
     id: 1,
     name: 'Enterprise Software Deal',
-    stage: 'qualified',
+    stage: 'initial_outreach',
     priority: 'high',
     amount: 50000,
     probability: 75,
@@ -27,7 +27,7 @@ const mockOpportunities = [
   {
     id: 2,
     name: 'Hardware Upgrade Project',
-    stage: 'proposal',
+    stage: 'demo_scheduled',
     priority: 'medium',
     amount: 25000,
     probability: 60,
@@ -40,7 +40,7 @@ const mockOpportunities = [
   {
     id: 3,
     name: 'Consulting Services',
-    stage: 'negotiation',
+    stage: 'feedback_logged',
     priority: 'critical',
     amount: 75000,
     probability: 90,
@@ -256,14 +256,14 @@ describe('OpportunityList', () => {
 
     // Apply stage filter
     const stageFilter = screen.getByLabelText(/stage/i);
-    fireEvent.change(stageFilter, { target: { value: 'qualified' } });
+    fireEvent.change(stageFilter, { target: { value: 'initial_outreach' } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
         'opportunities_summary',
         expect.objectContaining({
           filter: expect.objectContaining({
-            stage: 'qualified'
+            stage: 'initial_outreach'
           })
         })
       );

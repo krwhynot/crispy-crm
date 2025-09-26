@@ -112,7 +112,7 @@ describe('UnifiedDataProvider Validation Integration', () => {
     });
 
     it('should validate companies (alias for organizations) on create', async () => {
-      // Attempt to create a company without required fields
+      // Attempt to create an organization without required fields
       await expect(
         unifiedDataProvider.create('companies', {
           data: { website: 'https://example.com' },

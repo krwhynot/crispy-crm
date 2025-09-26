@@ -11,7 +11,7 @@ import {
   useRedirect,
 } from "ra-core";
 import { Link } from "react-router-dom";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 import { OpportunityInputs } from "./OpportunityInputs";
 
@@ -63,8 +63,8 @@ function EditHeader() {
     <DialogTitle className="pb-0">
       <div className="flex justify-between items-start mb-8">
         <div className="flex items-center gap-4">
-          <ReferenceField source="customer_organization_id" reference="companies" link="show">
-            <CompanyAvatar />
+          <ReferenceField source="customer_organization_id" reference="organizations" link="show">
+            <OrganizationAvatar />
           </ReferenceField>
           <h2 className="text-2xl font-semibold">Edit {opportunity.name} opportunity</h2>
         </div>

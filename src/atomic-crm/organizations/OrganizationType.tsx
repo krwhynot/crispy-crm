@@ -21,7 +21,7 @@ const priorityColors = {
   D: 'bg-green-500 text-white hover:bg-green-600',
 };
 
-export const CompanyOrganizationType = () => {
+export const OrganizationType = () => {
   const record = useRecordContext<Company>();
   if (!record) return null;
 
@@ -68,7 +68,7 @@ export const CompanyOrganizationType = () => {
 };
 
 // Export for use in list views with simplified display
-export const CompanyOrganizationTypeChip = () => {
+export const OrganizationTypeChip = () => {
   const record = useRecordContext<Company>();
   if (!record?.organization_type) return null;
 
@@ -80,7 +80,7 @@ export const CompanyOrganizationTypeChip = () => {
 };
 
 // Export for priority display in list views
-export const CompanyPriorityChip = () => {
+export const OrganizationPriorityChip = () => {
   const record = useRecordContext<Company>();
   if (!record?.priority) return null;
 

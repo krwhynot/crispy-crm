@@ -1,12 +1,12 @@
 import { EditBase, Form } from "ra-core";
 
-import { CompanyInputs } from "./CompanyInputs";
+import { OrganizationInputs } from "./OrganizationInputs";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { CompanyAside } from "./CompanyAside";
+import { OrganizationAside } from "./OrganizationAside";
 import { FormToolbar } from "../layout/FormToolbar";
 
-export const CompanyEdit = () => (
+export const OrganizationEdit = () => (
   <EditBase
     actions={false}
     redirect="show"
@@ -22,13 +22,13 @@ export const CompanyEdit = () => (
       <Form className="flex flex-1 flex-col gap-4 pb-2">
         <Card>
           <CardContent>
-            <CompanyInputs />
+            <OrganizationInputs />
             <FormToolbar />
           </CardContent>
         </Card>
       </Form>
 
-      <CompanyAside link="show" />
+      <OrganizationAside link="show" />
     </div>
   </EditBase>
 );

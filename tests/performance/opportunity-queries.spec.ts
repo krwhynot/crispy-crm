@@ -69,7 +69,7 @@ describe('Opportunity Queries Performance Tests', () => {
 
     // Create 10,000+ opportunities for performance testing
     const opportunities = [];
-    const stages = ['lead', 'qualified', 'needs_analysis', 'proposal', 'negotiation', 'closed_won', 'closed_lost'];
+    const stages = ['new_lead', 'initial_outreach', 'sample_visit_offered', 'awaiting_response', 'feedback_logged', 'demo_scheduled', 'closed_won', 'closed_lost'];
     const statuses = ['active', 'on_hold', 'nurturing', 'stalled', 'expired'];
     const priorities = ['low', 'medium', 'high', 'critical'];
 
@@ -179,7 +179,7 @@ describe('Opportunity Queries Performance Tests', () => {
     const { data, error, count } = await supabase
       .from('opportunities')
       .select('*', { count: 'exact' })
-      .eq('stage', 'qualified')
+      .eq('stage', 'initial_outreach')
       .eq('status', 'active')
       .gte('amount', 10000)
       .limit(50)
@@ -227,7 +227,7 @@ describe('Opportunity Queries Performance Tests', () => {
           activity_date
         )
       `)
-      .eq('stage', 'proposal')
+      .eq('stage', 'demo_scheduled')
       .limit(20);
 
     const executionTime = performance.now() - startTime;

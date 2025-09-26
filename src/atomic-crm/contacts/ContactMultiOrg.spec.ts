@@ -9,7 +9,7 @@ const mockContactWithMultipleOrgs = {
   department: 'Technology',
   email_jsonb: [{ email: 'john.doe@acme.com', type: 'Work' }],
   phone_jsonb: [{ number: '+1-555-0123', type: 'Work' }],
-  company_id: 1, // Primary organization (backward compatibility)
+  organization_id: 1, // Primary organization (backward compatibility)
   role: 'decision_maker',
   is_primary_contact: true,
   purchase_influence: 'High',
@@ -71,7 +71,7 @@ describe('Contact Multi-Organization Support', () => {
 
     // Mock getList for various resources
     mockDataProvider.getList.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
+      if (resource === 'organizations') {
         return Promise.resolve({
           data: mockOrganizations,
           total: mockOrganizations.length,
@@ -96,7 +96,7 @@ describe('Contact Multi-Organization Support', () => {
 
     // Mock getMany for organizations
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
+      if (resource === 'organizations') {
         return Promise.resolve({
           data: mockOrganizations.filter(org => params.ids.includes(org.id)),
         });
@@ -120,7 +120,7 @@ describe('Contact Multi-Organization Support', () => {
       expect(contact.id).toBe(1);
       expect(contact.first_name).toBe('John');
       expect(contact.last_name).toBe('Doe');
-      expect(contact.company_id).toBe(1); // Backward compatibility
+      expect(contact.organization_id).toBe(1); // Backward compatibility
       expect(contact.role).toBe('decision_maker');
       expect(contact.purchase_influence).toBe('High');
       expect(contact.decision_authority).toBe('Decision Maker');
@@ -162,7 +162,7 @@ describe('Contact Multi-Organization Support', () => {
       expect(result.data.id).toBe(1);
       expect(result.data.first_name).toBe('John');
       expect(result.data.last_name).toBe('Doe');
-      expect(result.data.company_id).toBe(1); // Primary organization
+      expect(result.data.organization_id).toBe(1); // Primary organization
     });
 
     it('should retrieve contact organization relationships', async () => {
@@ -344,7 +344,7 @@ describe('Contact Multi-Organization Support', () => {
         id: 2,
         first_name: 'Jane',
         last_name: 'Smith',
-        company_id: 1, // Legacy single organization reference
+        organization_id: 1, // Legacy single organization reference
         role: 'buyer',
         is_primary_contact: false
       };
@@ -365,14 +365,14 @@ describe('Contact Multi-Organization Support', () => {
         id: 1,
         first_name: 'John',
         last_name: 'Doe',
-        company_id: 1,
+        organization_id: 1,
         role: 'decision_maker',
         is_primary_contact: true
       };
 
       const junctionTableEntry = {
         contact_id: legacyContact.id,
-        organization_id: legacyContact.company_id,
+        organization_id: legacyContact.organization_id,
         is_primary_organization: legacyContact.is_primary_contact,
         role: legacyContact.role,
         purchase_influence: 'Unknown', // Default for legacy data
@@ -388,12 +388,12 @@ describe('Contact Multi-Organization Support', () => {
       expect(junctionTableEntry.decision_authority).toBe('End User');
     });
 
-    it('should support querying contacts by legacy company_id field', async () => {
+    it('should support querying contacts by legacy organization_id field', async () => {
       mockDataProvider.getList.mockImplementation((resource, params) => {
-        if (resource === 'contacts_summary' && params.filter?.company_id) {
-          // Support legacy filtering by company_id
+        if (resource === 'contacts_summary' && params.filter?.organization_id) {
+          // Support legacy filtering by organization_id
           const contacts = [mockContactWithMultipleOrgs].filter(
-            contact => contact.company_id === params.filter.company_id
+            contact => contact.organization_id === params.filter.organization_id
           );
           return Promise.resolve({
             data: contacts,
@@ -404,13 +404,13 @@ describe('Contact Multi-Organization Support', () => {
       });
 
       const result = await mockDataProvider.getList('contacts_summary', {
-        filter: { company_id: 1 },
+        filter: { organization_id: 1 },
         pagination: { page: 1, perPage: 25 },
         sort: { field: 'last_name', order: 'ASC' }
       });
 
       expect(result.data).toHaveLength(1);
-      expect(result.data[0].company_id).toBe(1);
+      expect(result.data[0].organization_id).toBe(1);
     });
 
     it('should handle contact without organizations gracefully', async () => {
@@ -419,7 +419,7 @@ describe('Contact Multi-Organization Support', () => {
         first_name: 'Bob',
         last_name: 'Johnson',
         email_jsonb: [{ email: 'bob@example.com', type: 'Work' }],
-        // No company_id or organization relationships
+        // No organization_id or organization relationships
       };
 
       mockDataProvider.getOne.mockResolvedValue({
@@ -430,7 +430,7 @@ describe('Contact Multi-Organization Support', () => {
 
       expect(result.data.first_name).toBe('Bob');
       expect(result.data.last_name).toBe('Johnson');
-      expect(result.data.company_id).toBeUndefined();
+      expect(result.data.organization_id).toBeUndefined();
     });
   });
 

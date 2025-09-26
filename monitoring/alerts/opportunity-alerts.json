@@ -10,7 +10,7 @@
         "severity": "info",
         "enabled": true,
         "conditions": {
-          "query": "SELECT id, name, expected_revenue, company_id, sales_id FROM opportunities WHERE created_at > NOW() - INTERVAL '5 minutes' AND expected_revenue > $threshold",
+          "query": "SELECT id, name, expected_revenue, organization_id, sales_id FROM opportunities WHERE created_at > NOW() - INTERVAL '5 minutes' AND expected_revenue > $threshold",
           "parameters": {
             "threshold": 100000
           },
@@ -48,7 +48,7 @@
         "severity": "info",
         "enabled": true,
         "conditions": {
-          "query": "SELECT o.id, o.name, o.expected_revenue, o.actual_close_date, c.name as company_name, s.first_name || ' ' || s.last_name as sales_rep FROM opportunities o JOIN companies c ON o.company_id = c.id JOIN sales s ON o.sales_id = s.id WHERE o.status = 'won' AND o.updated_at > NOW() - INTERVAL '5 minutes'",
+          "query": "SELECT o.id, o.name, o.expected_revenue, o.actual_close_date, org.name as organization_name, s.first_name || ' ' || s.last_name as sales_rep FROM opportunities o JOIN organizations org ON o.organization_id = org.id JOIN sales s ON o.sales_id = s.id WHERE o.status = 'won' AND o.updated_at > NOW() - INTERVAL '5 minutes'",
           "evaluationInterval": "5m",
           "datasource": "PostgreSQL"
         },
@@ -56,13 +56,13 @@
           {
             "channel": "email",
             "recipients": ["sales-team@atomic-crm.com", "executives@atomic-crm.com"],
-            "template": "🎉 Opportunity WON: {{name}} at {{company_name}} for {{expected_revenue | currency}} by {{sales_rep}}"
+            "template": "🎉 Opportunity WON: {{name}} at {{organization_name}} for {{expected_revenue | currency}} by {{sales_rep}}"
           },
           {
             "channel": "slack",
             "webhook": "${SLACK_WEBHOOK_URL}",
             "channel_name": "#sales-wins",
-            "template": ":tada: *CLOSED WON* :tada:\n• Deal: {{name}}\n• Company: {{company_name}}\n• Value: {{expected_revenue | currency}}\n• Rep: {{sales_rep}}"
+            "template": ":tada: *CLOSED WON* :tada:\n• Deal: {{name}}\n• Organization: {{organization_name}}\n• Value: {{expected_revenue | currency}}\n• Rep: {{sales_rep}}"
           }
         ],
         "migration_note": "Renamed from 'deal-won', updated to use opportunities table"
@@ -135,7 +135,7 @@
         "severity": "info",
         "enabled": true,
         "conditions": {
-          "query": "SELECT o.id, o.name, o.expected_revenue, o.probability, c.name as company_name, s.email as sales_email FROM opportunities o JOIN companies c ON o.company_id = c.id JOIN sales s ON o.sales_id = s.id WHERE o.status = 'active' AND o.expected_revenue > 50000 AND o.probability < 30 AND o.updated_at > NOW() - INTERVAL '24 hours'",
+          "query": "SELECT o.id, o.name, o.expected_revenue, o.probability, org.name as organization_name, s.email as sales_email FROM opportunities o JOIN organizations org ON o.organization_id = org.id JOIN sales s ON o.sales_id = s.id WHERE o.status = 'active' AND o.expected_revenue > 50000 AND o.probability < 30 AND o.updated_at > NOW() - INTERVAL '24 hours'",
           "evaluationInterval": "1d",
           "datasource": "PostgreSQL"
         },
@@ -143,7 +143,7 @@
           {
             "channel": "email",
             "recipients": ["sales-managers@atomic-crm.com"],
-            "template": "📊 High-value opportunity needs support: {{name}} at {{company_name}} ({{expected_revenue | currency}}) has only {{probability}}% probability"
+            "template": "📊 High-value opportunity needs support: {{name}} at {{organization_name}} ({{expected_revenue | currency}}) has only {{probability}}% probability"
           }
         ],
         "migration_note": "New alert leveraging probability field in opportunities"

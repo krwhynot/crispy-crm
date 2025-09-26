@@ -10,7 +10,7 @@ import { useGetIdentity, useGetList } from "ra-core";
 import { ReferenceField } from "@/components/admin";
 import { Link } from "react-router-dom";
 import { SimpleList } from "../simple-list/SimpleList";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { findOpportunityLabel } from "../opportunities/opportunity";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Opportunity } from "../types";
@@ -77,11 +77,11 @@ export const OpportunitiesPipeline = () => {
             <ReferenceField
               source="company_id"
               record={opportunity}
-              reference="companies"
+              reference="organizations"
               resource="opportunities"
               link={false}
             >
-              <CompanyAvatar width={20} height={20} />
+              <OrganizationAvatar width={20} height={20} />
             </ReferenceField>
           )}
         />

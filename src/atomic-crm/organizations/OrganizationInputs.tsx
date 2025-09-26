@@ -24,29 +24,29 @@ const isUrl = (url: string) => {
   }
 };
 
-export const CompanyInputs = () => {
+export const OrganizationInputs = () => {
   const isMobile = useIsMobile();
 
   return (
     <div className="flex flex-col gap-4 p-1">
-      <CompanyDisplayInputs />
+      <OrganizationDisplayInputs />
       <div className={`flex gap-6 ${isMobile ? "flex-col" : "flex-row"}`}>
         <div className="flex flex-col gap-10 flex-1">
-          <CompanyContactInputs />
-          <CompanyContextInputs />
+          <OrganizationContactInputs />
+          <OrganizationContextInputs />
         </div>
         <Separator orientation={isMobile ? "horizontal" : "vertical"} />
         <div className="flex flex-col gap-8 flex-1">
-          <CompanyAddressInputs />
-          <CompanyAdditionalInformationInputs />
-          <CompanyAccountManagerInput />
+          <OrganizationAddressInputs />
+          <OrganizationAdditionalInformationInputs />
+          <OrganizationAccountManagerInput />
         </div>
       </div>
     </div>
   );
 };
 
-const CompanyDisplayInputs = () => {
+const OrganizationDisplayInputs = () => {
   const record = useRecordContext<Company>();
   return (
     <div className="flex gap-4 flex-1 flex-row">
@@ -63,13 +63,13 @@ const CompanyDisplayInputs = () => {
         className="w-full h-fit"
         validate={required()}
         helperText={false}
-        placeholder="Company name"
+        placeholder="Organization name"
       />
     </div>
   );
 };
 
-const CompanyContactInputs = () => {
+const OrganizationContactInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Contact</h6>
@@ -84,14 +84,14 @@ const CompanyContactInputs = () => {
   );
 };
 
-const CompanyContextInputs = () => {
-  const { companySectors } = useConfigurationContext();
+const OrganizationContextInputs = () => {
+  const { organizationSectors } = useConfigurationContext();
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Context</h6>
       <SelectInput
         source="sector"
-        choices={companySectors.map((sector) => ({
+        choices={organizationSectors.map((sector) => ({
           id: sector,
           name: sector,
         }))}
@@ -130,7 +130,7 @@ const CompanyContextInputs = () => {
   );
 };
 
-const CompanyAddressInputs = () => {
+const OrganizationAddressInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Address</h6>
@@ -143,21 +143,21 @@ const CompanyAddressInputs = () => {
   );
 };
 
-const CompanyAdditionalInformationInputs = () => {
+const OrganizationAdditionalInformationInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Additional information</h6>
       <TextInput source="description" multiline helperText={false} />
       <ReferenceInput
-        source="parent_company_id"
-        reference="companies"
+        source="parent_organization_id"
+        reference="organizations"
         helperText={false}
       >
         <SelectInput
-          label="Parent company"
+          label="Parent organization"
           helperText={false}
           optionText="name"
-          emptyText="Select parent company (optional)"
+          emptyText="Select parent organization (optional)"
         />
       </ReferenceInput>
       <ArrayInput source="context_links" helperText={false}>
@@ -174,7 +174,7 @@ const CompanyAdditionalInformationInputs = () => {
   );
 };
 
-const CompanyAccountManagerInput = () => {
+const OrganizationAccountManagerInput = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Account manager</h6>

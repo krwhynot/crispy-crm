@@ -139,7 +139,7 @@ describe('Opportunity Lifecycle Workflows', () => {
 
       // Select lifecycle stage
       const stageSelect = screen.getByLabelText(/lifecycle stage/i);
-      fireEvent.change(stageSelect, { target: { value: 'lead' } });
+      fireEvent.change(stageSelect, { target: { value: 'new_lead' } });
 
       // Select priority
       const prioritySelect = screen.getByLabelText(/priority/i);
@@ -173,7 +173,7 @@ describe('Opportunity Lifecycle Workflows', () => {
         expect(mockDataProvider.create).toHaveBeenCalledWith('opportunities', {
           data: expect.objectContaining({
             name: 'New Enterprise Deal',
-            stage: 'lead',
+            stage: 'new_lead',
             priority: 'high',
             amount: 75000,
             probability: 60,
@@ -217,7 +217,7 @@ describe('Opportunity Lifecycle Workflows', () => {
       fireEvent.change(nameInput, { target: { value: 'Participant Test Deal' } });
 
       const stageSelect = screen.getByLabelText(/lifecycle stage/i);
-      fireEvent.change(stageSelect, { target: { value: 'lead' } });
+      fireEvent.change(stageSelect, { target: { value: 'new_lead' } });
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: '50000' } });
@@ -249,10 +249,10 @@ describe('Opportunity Lifecycle Workflows', () => {
     const mockOpportunity = {
       id: 1,
       name: 'Test Opportunity',
-      stage: 'lead',
+      stage: 'new_lead',
       priority: 'medium',
       amount: 50000,
-      probability: 25,
+      probability: 10,
       customer_organization_id: 1,
       contact_ids: [1],
       expected_closing_date: '2024-06-30'
@@ -264,7 +264,7 @@ describe('Opportunity Lifecycle Workflows', () => {
       });
     });
 
-    it('should progress from lead to qualified stage', async () => {
+    it('should progress from new_lead to initial_outreach stage', async () => {
       render(
         <TestWrapper>
           <OpportunityEdit />
@@ -272,16 +272,16 @@ describe('Opportunity Lifecycle Workflows', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByDisplayValue('lead')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('new_lead')).toBeInTheDocument();
       });
 
-      // Change stage to qualified
+      // Change stage to initial_outreach
       const stageSelect = screen.getByLabelText(/lifecycle stage/i);
-      fireEvent.change(stageSelect, { target: { value: 'qualified' } });
+      fireEvent.change(stageSelect, { target: { value: 'initial_outreach' } });
 
-      // Update probability for qualified stage
+      // Update probability for initial_outreach stage
       const probabilityInput = screen.getByLabelText(/probability/i);
-      fireEvent.change(probabilityInput, { target: { value: '50' } });
+      fireEvent.change(probabilityInput, { target: { value: '25' } });
 
       // Save changes
       const saveButton = screen.getByRole('button', { name: /save/i });
@@ -291,8 +291,8 @@ describe('Opportunity Lifecycle Workflows', () => {
         expect(mockDataProvider.update).toHaveBeenCalledWith('opportunities', {
           id: 1,
           data: expect.objectContaining({
-            stage: 'qualified',
-            probability: 50
+            stage: 'initial_outreach',
+            probability: 25
           }),
           previousData: mockOpportunity
         });
@@ -301,11 +301,12 @@ describe('Opportunity Lifecycle Workflows', () => {
 
     it('should progress through all lifecycle stages', async () => {
       const stages = [
-        { stage: 'lead', probability: 25 },
-        { stage: 'qualified', probability: 50 },
-        { stage: 'needs_analysis', probability: 60 },
-        { stage: 'proposal', probability: 75 },
-        { stage: 'negotiation', probability: 85 },
+        { stage: 'new_lead', probability: 10 },
+        { stage: 'initial_outreach', probability: 25 },
+        { stage: 'sample_visit_offered', probability: 40 },
+        { stage: 'awaiting_response', probability: 50 },
+        { stage: 'feedback_logged', probability: 60 },
+        { stage: 'demo_scheduled', probability: 80 },
         { stage: 'closed_won', probability: 100 },
       ];
 
@@ -335,7 +336,7 @@ describe('Opportunity Lifecycle Workflows', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByDisplayValue('lead')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('new_lead')).toBeInTheDocument();
       });
 
       // Change stage to closed lost
@@ -370,7 +371,7 @@ describe('Opportunity Lifecycle Workflows', () => {
           id: 1,
           opportunity_id: 1,
           type: 'stage_change',
-          subject: 'Stage changed from Lead to Qualified',
+          subject: 'Stage changed from New Lead to Initial Outreach',
           date: '2024-02-01T10:00:00Z',
           sales_id: 1
         },
@@ -402,8 +403,8 @@ describe('Opportunity Lifecycle Workflows', () => {
 
     it('should aggregate opportunity metrics correctly', async () => {
       const opportunities = [
-        { id: 1, stage: 'qualified', amount: 50000, probability: 75 },
-        { id: 2, stage: 'proposal', amount: 30000, probability: 60 },
+        { id: 1, stage: 'initial_outreach', amount: 50000, probability: 25 },
+        { id: 2, stage: 'demo_scheduled', amount: 30000, probability: 80 },
         { id: 3, stage: 'closed_won', amount: 25000, probability: 100 }
       ];
 
@@ -412,7 +413,7 @@ describe('Opportunity Lifecycle Workflows', () => {
         return total + (opp.amount * opp.probability / 100);
       }, 0);
 
-      expect(pipelineValue).toBe(87500); // (50000*0.75 + 30000*0.6 + 25000*1.0)
+      expect(pipelineValue).toBe(61500); // (50000*0.25 + 30000*0.80 + 25000*1.0)
 
       // Count opportunities by stage
       const stageCount = opportunities.reduce((counts, opp) => {
@@ -421,8 +422,8 @@ describe('Opportunity Lifecycle Workflows', () => {
       }, {} as Record<string, number>);
 
       expect(stageCount).toEqual({
-        qualified: 1,
-        proposal: 1,
+        initial_outreach: 1,
+        demo_scheduled: 1,
         closed_won: 1
       });
     });

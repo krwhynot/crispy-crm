@@ -15,8 +15,8 @@ const ContactOptionRender = () => {
         </span>
         <span className="text-xs text-muted-foreground">
           {record.title}
-          {record.title && record.company_name && " at "}
-          {record.company_name}
+          {record.title && record.organization_name && " at "}
+          {record.organization_name}
         </span>
       </div>
     </div>

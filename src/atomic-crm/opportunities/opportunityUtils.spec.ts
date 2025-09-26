@@ -3,14 +3,14 @@ import { describe, it, expect } from 'vitest';
 // Simple utility functions for opportunity management
 export const calculateOpportunityProbability = (stage: string): number => {
   const stageProbabilities: Record<string, number> = {
-    'lead': 25,
-    'qualified': 50,
-    'needs_analysis': 60,
-    'proposal': 75,
-    'negotiation': 85,
+    'new_lead': 10,
+    'initial_outreach': 25,
+    'sample_visit_offered': 40,
+    'awaiting_response': 50,
+    'feedback_logged': 60,
+    'demo_scheduled': 80,
     'closed_won': 100,
-    'closed_lost': 0,
-    'nurturing': 30
+    'closed_lost': 0
   };
 
   return stageProbabilities[stage] !== undefined ? stageProbabilities[stage] : 50;
@@ -28,14 +28,14 @@ export const calculateWeightedPipelineValue = (opportunities: Array<{ amount: nu
 
 export const formatOpportunityStage = (stage: string): string => {
   const stageLabels: Record<string, string> = {
-    'lead': 'Lead',
-    'qualified': 'Qualified',
-    'needs_analysis': 'Needs Analysis',
-    'proposal': 'Proposal',
-    'negotiation': 'Negotiation',
+    'new_lead': 'New Lead',
+    'initial_outreach': 'Initial Outreach',
+    'sample_visit_offered': 'Sample/Visit Offered',
+    'awaiting_response': 'Awaiting Response',
+    'feedback_logged': 'Feedback Logged',
+    'demo_scheduled': 'Demo Scheduled',
     'closed_won': 'Closed Won',
-    'closed_lost': 'Closed Lost',
-    'nurturing': 'Nurturing'
+    'closed_lost': 'Closed Lost'
   };
 
   return stageLabels[stage] || stage;
@@ -43,16 +43,16 @@ export const formatOpportunityStage = (stage: string): string => {
 
 describe('Opportunity Utils', () => {
   describe('calculateOpportunityProbability', () => {
-    it('should return correct probability for lead stage', () => {
-      expect(calculateOpportunityProbability('lead')).toBe(25);
+    it('should return correct probability for new_lead stage', () => {
+      expect(calculateOpportunityProbability('new_lead')).toBe(10);
     });
 
-    it('should return correct probability for qualified stage', () => {
-      expect(calculateOpportunityProbability('qualified')).toBe(50);
+    it('should return correct probability for initial_outreach stage', () => {
+      expect(calculateOpportunityProbability('initial_outreach')).toBe(25);
     });
 
-    it('should return correct probability for proposal stage', () => {
-      expect(calculateOpportunityProbability('proposal')).toBe(75);
+    it('should return correct probability for demo_scheduled stage', () => {
+      expect(calculateOpportunityProbability('demo_scheduled')).toBe(80);
     });
 
     it('should return correct probability for closed_won stage', () => {
@@ -126,24 +126,28 @@ describe('Opportunity Utils', () => {
   });
 
   describe('formatOpportunityStage', () => {
-    it('should format lead stage', () => {
-      expect(formatOpportunityStage('lead')).toBe('Lead');
+    it('should format new_lead stage', () => {
+      expect(formatOpportunityStage('new_lead')).toBe('New Lead');
     });
 
-    it('should format qualified stage', () => {
-      expect(formatOpportunityStage('qualified')).toBe('Qualified');
+    it('should format initial_outreach stage', () => {
+      expect(formatOpportunityStage('initial_outreach')).toBe('Initial Outreach');
     });
 
-    it('should format needs_analysis stage', () => {
-      expect(formatOpportunityStage('needs_analysis')).toBe('Needs Analysis');
+    it('should format sample_visit_offered stage', () => {
+      expect(formatOpportunityStage('sample_visit_offered')).toBe('Sample/Visit Offered');
     });
 
-    it('should format proposal stage', () => {
-      expect(formatOpportunityStage('proposal')).toBe('Proposal');
+    it('should format awaiting_response stage', () => {
+      expect(formatOpportunityStage('awaiting_response')).toBe('Awaiting Response');
     });
 
-    it('should format negotiation stage', () => {
-      expect(formatOpportunityStage('negotiation')).toBe('Negotiation');
+    it('should format feedback_logged stage', () => {
+      expect(formatOpportunityStage('feedback_logged')).toBe('Feedback Logged');
+    });
+
+    it('should format demo_scheduled stage', () => {
+      expect(formatOpportunityStage('demo_scheduled')).toBe('Demo Scheduled');
     });
 
     it('should format closed_won stage', () => {
@@ -154,10 +158,6 @@ describe('Opportunity Utils', () => {
       expect(formatOpportunityStage('closed_lost')).toBe('Closed Lost');
     });
 
-    it('should format nurturing stage', () => {
-      expect(formatOpportunityStage('nurturing')).toBe('Nurturing');
-    });
-
     it('should return original string for unknown stage', () => {
       expect(formatOpportunityStage('custom_stage')).toBe('custom_stage');
     });
@@ -166,11 +166,12 @@ describe('Opportunity Utils', () => {
   describe('Opportunity Lifecycle Tests', () => {
     it('should validate stage progression logic', () => {
       const stageProgression = [
-        'lead',
-        'qualified',
-        'needs_analysis',
-        'proposal',
-        'negotiation',
+        'new_lead',
+        'initial_outreach',
+        'sample_visit_offered',
+        'awaiting_response',
+        'feedback_logged',
+        'demo_scheduled',
         'closed_won'
       ];
 
@@ -335,15 +336,15 @@ describe('Opportunity Utils', () => {
       const legacyDeal = {
         id: 1,
         name: 'Legacy Deal',
-        stage: 'qualified',
+        stage: 'initial_outreach',
         amount: 50000,
-        company_id: 1,
+        organization_id: 1,
         contact_ids: [1, 2]
       };
 
       const transformToOpportunity = (deal: any) => ({
         ...deal,
-        customer_organization_id: deal.company_id,
+        customer_organization_id: deal.organization_id,
         probability: calculateOpportunityProbability(deal.stage),
         priority: 'medium',
         expected_closing_date: new Date().toISOString().split('T')[0]
@@ -352,7 +353,7 @@ describe('Opportunity Utils', () => {
       const opportunity = transformToOpportunity(legacyDeal);
 
       expect(opportunity.customer_organization_id).toBe(1);
-      expect(opportunity.probability).toBe(50);
+      expect(opportunity.probability).toBe(25);
       expect(opportunity.priority).toBe('medium');
       expect(opportunity.expected_closing_date).toBeTruthy();
     });

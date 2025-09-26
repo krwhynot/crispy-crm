@@ -26,11 +26,12 @@ const mockDataProvider = {
 const mockConfiguration = {
   opportunityCategories: ['Software', 'Hardware', 'Services', 'Support'],
   opportunityStages: [
-    { value: 'lead', label: 'Lead' },
-    { value: 'qualified', label: 'Qualified' },
-    { value: 'needs_analysis', label: 'Needs Analysis' },
-    { value: 'proposal', label: 'Proposal' },
-    { value: 'negotiation', label: 'Negotiation' },
+    { value: 'new_lead', label: 'New Lead' },
+    { value: 'initial_outreach', label: 'Initial Outreach' },
+    { value: 'sample_visit_offered', label: 'Sample/Visit Offered' },
+    { value: 'awaiting_response', label: 'Awaiting Response' },
+    { value: 'feedback_logged', label: 'Feedback Logged' },
+    { value: 'demo_scheduled', label: 'Demo Scheduled' },
     { value: 'closed_won', label: 'Closed Won' },
     { value: 'closed_lost', label: 'Closed Lost' }
   ],
@@ -44,7 +45,7 @@ const mockConfiguration = {
     { id: 'influencer', name: 'Influencer' },
     { id: 'buyer', name: 'Buyer' }
   ],
-  companySectors: ['Technology', 'Healthcare', 'Finance']
+  organizationSectors: ['Technology', 'Healthcare', 'Finance']
 };
 
 const mockOrganizations = [
@@ -79,7 +80,7 @@ const mockContacts = [
     first_name: 'John',
     last_name: 'Doe',
     title: 'CTO',
-    company_id: 1,
+    organization_id: 1,
     role: 'decision_maker'
   },
   {
@@ -87,7 +88,7 @@ const mockContacts = [
     first_name: 'Jane',
     last_name: 'Smith',
     title: 'VP Sales',
-    company_id: 1,
+    organization_id: 1,
     role: 'influencer'
   },
   {
@@ -95,7 +96,7 @@ const mockContacts = [
     first_name: 'Bob',
     last_name: 'Johnson',
     title: 'Procurement Manager',
-    company_id: 2,
+    organization_id: 2,
     role: 'buyer'
   }
 ];
@@ -135,9 +136,9 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
       }
       if (resource === 'contacts' || resource === 'contacts_summary') {
         let filteredContacts = [...mockContacts];
-        if (params.filter?.company_id) {
+        if (params.filter?.organization_id) {
           filteredContacts = filteredContacts.filter(
-            contact => contact.company_id === params.filter.company_id
+            contact => contact.organization_id === params.filter.organization_id
           );
         }
         return Promise.resolve({
@@ -188,11 +189,12 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
     fireEvent.click(stageSelect);
 
     await waitFor(() => {
-      expect(screen.getByText('Lead')).toBeInTheDocument();
-      expect(screen.getByText('Qualified')).toBeInTheDocument();
-      expect(screen.getByText('Needs Analysis')).toBeInTheDocument();
-      expect(screen.getByText('Proposal')).toBeInTheDocument();
-      expect(screen.getByText('Negotiation')).toBeInTheDocument();
+      expect(screen.getByText('New Lead')).toBeInTheDocument();
+      expect(screen.getByText('Initial Outreach')).toBeInTheDocument();
+      expect(screen.getByText('Sample/Visit Offered')).toBeInTheDocument();
+      expect(screen.getByText('Awaiting Response')).toBeInTheDocument();
+      expect(screen.getByText('Feedback Logged')).toBeInTheDocument();
+      expect(screen.getByText('Demo Scheduled')).toBeInTheDocument();
       expect(screen.getByText('Closed Won')).toBeInTheDocument();
       expect(screen.getByText('Closed Lost')).toBeInTheDocument();
     });
@@ -222,7 +224,7 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
 
     // Select stage
     const stageSelect = screen.getByLabelText(/stage/i);
-    fireEvent.change(stageSelect, { target: { value: 'qualified' } });
+    fireEvent.change(stageSelect, { target: { value: 'initial_outreach' } });
 
     // Submit form
     const saveButton = screen.getByRole('button', { name: /save/i });
@@ -236,7 +238,7 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
             name: 'New Enterprise Deal',
             amount: 150000,
             customer_organization_id: 1,
-            stage: 'qualified'
+            stage: 'initial_outreach'
           })
         })
       );
@@ -305,11 +307,12 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
     });
 
     const stageProbabilities = {
-      'lead': 10,
-      'qualified': 25,
-      'needs_analysis': 40,
-      'proposal': 60,
-      'negotiation': 80,
+      'new_lead': 10,
+      'initial_outreach': 25,
+      'sample_visit_offered': 40,
+      'awaiting_response': 50,
+      'feedback_logged': 60,
+      'demo_scheduled': 80,
       'closed_won': 100,
       'closed_lost': 0
     };
@@ -351,7 +354,7 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
         'contacts_summary',
         expect.objectContaining({
-          filter: { company_id: 1 }
+          filter: { organization_id: 1 }
         })
       );
     });
@@ -473,8 +476,8 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
     // Select different stages and check closing date suggestions
     const stageSelect = screen.getByLabelText(/stage/i);
 
-    // Lead stage - should suggest 90 days out
-    fireEvent.change(stageSelect, { target: { value: 'lead' } });
+    // New Lead stage - should suggest 90 days out
+    fireEvent.change(stageSelect, { target: { value: 'new_lead' } });
 
     await waitFor(() => {
       const closingDateInput = screen.getByLabelText(/expected closing date/i) as HTMLInputElement;
@@ -484,8 +487,8 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
       expect(closingDateInput.value).toBeTruthy();
     });
 
-    // Proposal stage - should suggest 30 days out
-    fireEvent.change(stageSelect, { target: { value: 'proposal' } });
+    // Demo Scheduled stage - should suggest 30 days out
+    fireEvent.change(stageSelect, { target: { value: 'demo_scheduled' } });
 
     await waitFor(() => {
       const closingDateInput = screen.getByLabelText(/expected closing date/i) as HTMLInputElement;

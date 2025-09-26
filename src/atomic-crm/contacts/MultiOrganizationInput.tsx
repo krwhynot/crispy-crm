@@ -10,7 +10,7 @@ import {
   BooleanInput,
   RadioButtonGroupInput,
 } from "@/components/admin";
-import { AutocompleteCompanyInput } from "@/atomic-crm/companies/AutocompleteCompanyInput";
+import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/AutocompleteOrganizationInput";
 import { useFormContext, useWatch } from "react-hook-form";
 import type { ContactOrganization } from "../types";
 
@@ -97,8 +97,8 @@ export const MultiOrganizationInput = () => {
       <Card className="p-4">
         <h6 className="text-sm font-medium mb-3">Primary Organization</h6>
         <div className="space-y-3">
-          <ReferenceInput source="company_id" reference="companies">
-            <AutocompleteCompanyInput />
+          <ReferenceInput source="company_id" reference="organizations">
+            <AutocompleteOrganizationInput />
           </ReferenceInput>
           <SelectInput
             source="role"
@@ -149,8 +149,8 @@ export const MultiOrganizationInput = () => {
             className="space-y-4"
           >
             <div className="grid gap-3 p-3 border rounded-lg">
-              <ReferenceInput source="organization_id" reference="companies" label="Organization">
-                <AutocompleteCompanyInput />
+              <ReferenceInput source="organization_id" reference="organizations" label="Organization">
+                <AutocompleteOrganizationInput />
               </ReferenceInput>
               <SelectInput
                 source="role"

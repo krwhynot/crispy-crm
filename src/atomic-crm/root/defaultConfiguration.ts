@@ -5,7 +5,7 @@ export const defaultLightModeLogo = "./logos/logo_atomic_crm_light.svg";
 
 export const defaultTitle = "Atomic CRM";
 
-export const defaultCompanySectors = [
+export const defaultOrganizationSectors = [
   "Communication Services",
   "Consumer Discretionary",
   "Consumer Staples",

@@ -6,11 +6,11 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AdminContext } from 'ra-core';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CompanyList } from './CompanyList';
+import { OrganizationList } from './OrganizationList';
 import { ConfigurationContext } from '../root/ConfigurationContext';
 
-// Mock companies data with enhanced organization features
-const mockCompanies = [
+// Mock organizations data with enhanced organization features
+const mockOrganizations = [
   {
     id: 1,
     name: 'Acme Corp',
@@ -143,7 +143,7 @@ const mockConfiguration = {
     { id: 'influencer', name: 'Influencer' },
     { id: 'buyer', name: 'Buyer' }
   ],
-  companySectors: ['Technology', 'Healthcare', 'Finance', 'Software', 'Services', 'Distribution']
+  organizationSectors: ['Technology', 'Healthcare', 'Finance', 'Software', 'Services', 'Distribution']
 };
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -167,67 +167,67 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe('CompanyList - Enhanced Organization Features', () => {
+describe('OrganizationList - Enhanced Organization Features', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Mock getList for companies
+    // Mock getList for organizations
     mockDataProvider.getList.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
-        let filteredCompanies = [...mockCompanies];
+      if (resource === 'organizations') {
+        let filteredOrganizations = [...mockOrganizations];
 
         // Apply filters
         if (params.filter) {
           if (params.filter.organization_type) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.organization_type === params.filter.organization_type
+            filteredOrganizations = filteredOrganizations.filter(organization =>
+              organization.organization_type === params.filter.organization_type
             );
           }
 
           if (params.filter.priority) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.priority === params.filter.priority
+            filteredOrganizations = filteredOrganizations.filter(organization =>
+              organization.priority === params.filter.priority
             );
           }
 
           if (params.filter.sector) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.sector === params.filter.sector
+            filteredOrganizations = filteredOrganizations.filter(organization =>
+              organization.sector === params.filter.sector
             );
           }
 
           if (params.filter.size) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.size === params.filter.size
+            filteredOrganizations = filteredOrganizations.filter(organization =>
+              organization.size === params.filter.size
             );
           }
 
           if (params.filter.is_principal !== undefined) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.is_principal === params.filter.is_principal
+            filteredOrganizations = filteredOrganizations.filter(organization =>
+              organization.is_principal === params.filter.is_principal
             );
           }
 
           if (params.filter.is_distributor !== undefined) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.is_distributor === params.filter.is_distributor
+            filteredOrganizations = filteredOrganizations.filter(organization =>
+              organization.is_distributor === params.filter.is_distributor
             );
           }
 
           if (params.filter.q) {
             const query = params.filter.q.toLowerCase();
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.name.toLowerCase().includes(query) ||
-              company.sector?.toLowerCase().includes(query) ||
-              company.segment?.toLowerCase().includes(query) ||
-              company.city?.toLowerCase().includes(query)
+            filteredOrganizations = filteredOrganizations.filter(organization =>
+              organization.name.toLowerCase().includes(query) ||
+              organization.sector?.toLowerCase().includes(query) ||
+              organization.segment?.toLowerCase().includes(query) ||
+              organization.city?.toLowerCase().includes(query)
             );
           }
         }
 
         // Apply sorting
         if (params.sort) {
-          filteredCompanies.sort((a, b) => {
+          filteredOrganizations.sort((a, b) => {
             const aValue = a[params.sort.field as keyof typeof a];
             const bValue = b[params.sort.field as keyof typeof b];
 
@@ -246,8 +246,8 @@ describe('CompanyList - Enhanced Organization Features', () => {
         }
 
         return Promise.resolve({
-          data: filteredCompanies,
-          total: filteredCompanies.length,
+          data: filteredOrganizations,
+          total: filteredOrganizations.length,
         });
       }
 
@@ -262,9 +262,9 @@ describe('CompanyList - Enhanced Organization Features', () => {
     });
 
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
+      if (resource === 'organizations') {
         return Promise.resolve({
-          data: mockCompanies.filter(c => params.ids.includes(c.id)),
+          data: mockOrganizations.filter(c => params.ids.includes(c.id)),
         });
       }
       if (resource === 'sales') {
@@ -276,10 +276,10 @@ describe('CompanyList - Enhanced Organization Features', () => {
     });
   });
 
-  it('should render company list with organization types', async () => {
+  it('should render organization list with organization types', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -295,7 +295,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should display organization types correctly', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -311,7 +311,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should display priority levels with visual indicators', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -322,10 +322,10 @@ describe('CompanyList - Enhanced Organization Features', () => {
     });
   });
 
-  it('should display company segments', async () => {
+  it('should display organization segments', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -337,10 +337,10 @@ describe('CompanyList - Enhanced Organization Features', () => {
     });
   });
 
-  it('should display company sizes', async () => {
+  it('should display organization sizes', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -354,7 +354,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should display revenue information', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -370,7 +370,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should filter by organization type', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -385,7 +385,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             organization_type: 'principal'
@@ -398,7 +398,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should filter by priority level', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -413,7 +413,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             priority: 'A'
@@ -426,7 +426,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should filter by sector', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -441,7 +441,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             sector: 'Technology'
@@ -451,10 +451,10 @@ describe('CompanyList - Enhanced Organization Features', () => {
     });
   });
 
-  it('should filter by company size', async () => {
+  it('should filter by organization size', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -469,7 +469,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             size: 'Large'
@@ -482,7 +482,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should filter principal companies', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -497,7 +497,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             is_principal: true
@@ -510,7 +510,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should filter distributor companies', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -525,7 +525,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             is_distributor: true
@@ -538,7 +538,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should perform full-text search across multiple fields', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -547,13 +547,13 @@ describe('CompanyList - Enhanced Organization Features', () => {
       expect(screen.getByText('Acme Corp')).toBeInTheDocument();
     });
 
-    // Search by company name
+    // Search by organization name
     const searchInput = screen.getByPlaceholderText(/search/i);
     fireEvent.change(searchInput, { target: { value: 'Principal' } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             q: 'Principal'
@@ -566,7 +566,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should search by city/location', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -581,7 +581,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             q: 'San Francisco'
@@ -594,7 +594,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should sort by organization type', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -609,7 +609,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           sort: { field: 'organization_type', order: 'ASC' }
         })
@@ -620,7 +620,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should sort by priority level', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -635,7 +635,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           sort: { field: 'priority', order: 'ASC' }
         })
@@ -646,7 +646,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should sort by revenue', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -661,7 +661,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           sort: { field: 'revenue', order: 'DESC' }
         })
@@ -672,7 +672,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should display account managers correctly', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -697,7 +697,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -712,7 +712,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should support combined filters', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -733,7 +733,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'companies',
+        'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
             organization_type: 'customer',
@@ -748,7 +748,7 @@ describe('CompanyList - Enhanced Organization Features', () => {
   it('should display special indicators for principal and distributor companies', async () => {
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
@@ -774,12 +774,12 @@ describe('CompanyList - Enhanced Organization Features', () => {
 
     render(
       <TestWrapper>
-        <CompanyList />
+        <OrganizationList />
       </TestWrapper>
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/no companies found/i)).toBeInTheDocument();
+      expect(screen.getByText(/no organizations found/i)).toBeInTheDocument();
     });
   });
 });

@@ -6,11 +6,13 @@ import { memo, useMemo } from "react";
 
 import type { Opportunity } from "../types";
 
-const multiplier = {
-  opportunity: 0.2,
-  "proposal-sent": 0.5,
-  "in-negociation": 0.8,
-  delayed: 0.3,
+const multiplier: Record<string, number> = {
+  new_lead: 0.1,
+  initial_outreach: 0.2,
+  sample_visit_offered: 0.3,
+  awaiting_response: 0.25,
+  feedback_logged: 0.5,
+  demo_scheduled: 0.7,
 };
 
 const threeMonthsAgo = new Date(
@@ -50,20 +52,20 @@ export const OpportunitiesChart = memo(() => {
       return {
         date: format(month, "MMM"),
         won: opportunitiesByMonth[month]
-          .filter((opportunity: Opportunity) => opportunity.stage === "won")
+          .filter((opportunity: Opportunity) => opportunity.stage === "closed_won")
           .reduce((acc: number, opportunity: Opportunity) => {
             acc += opportunity.amount;
             return acc;
           }, 0),
         pending: opportunitiesByMonth[month]
-          .filter((opportunity: Opportunity) => !["won", "lost"].includes(opportunity.stage))
+          .filter((opportunity: Opportunity) => !["closed_won", "closed_lost"].includes(opportunity.stage))
           .reduce((acc: number, opportunity: Opportunity) => {
-            // @ts-expect-error - multiplier type issue
-            acc += opportunity.amount * multiplier[opportunity.stage];
+            const stageMultiplier = multiplier[opportunity.stage] || 0.1;
+            acc += opportunity.amount * stageMultiplier;
             return acc;
           }, 0),
         lost: opportunitiesByMonth[month]
-          .filter((opportunity: Opportunity) => opportunity.stage === "lost")
+          .filter((opportunity: Opportunity) => opportunity.stage === "closed_lost")
           .reduce((acc: number, opportunity: Opportunity) => {
             acc -= opportunity.amount;
             return acc;

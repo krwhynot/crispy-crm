@@ -14,7 +14,7 @@ const mockOpportunity = {
   id: 1,
   name: 'Enterprise Software Deal',
   description: 'Large-scale enterprise software implementation for client transformation',
-  stage: 'qualified',
+  stage: 'initial_outreach',
   priority: 'high',
   amount: 50000,
   probability: 75,

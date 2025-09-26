@@ -67,7 +67,7 @@ export const ContactListContent = () => {
                 {contact.company_id != null && (
                   <ReferenceField
                     source="company_id"
-                    reference="companies"
+                    reference="organizations"
                     link={false}
                   >
                     <TextField source="name" />

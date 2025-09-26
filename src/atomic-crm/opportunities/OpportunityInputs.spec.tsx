@@ -252,14 +252,14 @@ describe('OpportunityInputs', () => {
     fireEvent.click(stageSelect);
 
     await waitFor(() => {
-      expect(screen.getByText('Lead')).toBeInTheDocument();
-      expect(screen.getByText('Qualified')).toBeInTheDocument();
-      expect(screen.getByText('Needs Analysis')).toBeInTheDocument();
-      expect(screen.getByText('Proposal')).toBeInTheDocument();
-      expect(screen.getByText('Negotiation')).toBeInTheDocument();
+      expect(screen.getByText('New Lead')).toBeInTheDocument();
+      expect(screen.getByText('Initial Outreach')).toBeInTheDocument();
+      expect(screen.getByText('Sample/Visit Offered')).toBeInTheDocument();
+      expect(screen.getByText('Awaiting Response')).toBeInTheDocument();
+      expect(screen.getByText('Feedback Logged')).toBeInTheDocument();
+      expect(screen.getByText('Demo Scheduled')).toBeInTheDocument();
       expect(screen.getByText('Closed Won')).toBeInTheDocument();
       expect(screen.getByText('Closed Lost')).toBeInTheDocument();
-      expect(screen.getByText('Nurturing')).toBeInTheDocument();
     });
   });
 

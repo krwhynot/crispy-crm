@@ -1,6 +1,6 @@
 import type { DataProvider, Identifier } from "ra-core";
 import {
-  COMPANY_CREATED,
+  ORGANIZATION_CREATED,
   CONTACT_CREATED,
   CONTACT_NOTE_CREATED,
   OPPORTUNITY_CREATED,
@@ -57,16 +57,16 @@ const getNewCompanies = async (
   dataProvider: DataProvider,
   filter: any,
 ): Promise<Activity[]> => {
-  const { data: companies } = await dataProvider.getList<Company>("companies", {
+  const { data: companies } = await dataProvider.getList<Company>("organizations", {
     filter,
     pagination: { page: 1, perPage: 250 },
     sort: { field: "created_at", order: "DESC" },
   });
   return companies.map((company) => ({
-    id: `company.${company.id}.created`,
-    type: COMPANY_CREATED,
-    company_id: company.id,
-    company,
+    id: `organization.${company.id}.created`,
+    type: ORGANIZATION_CREATED,
+    organization_id: company.id,
+    organization: company,
     sales_id: company.sales_id,
     date: company.created_at,
   }));

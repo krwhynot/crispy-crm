@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { CompanyAvatar } from "../companies/CompanyAvatar";
+import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { NoteCreate, NotesIterator } from "../notes";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Opportunity } from "../types";
@@ -72,10 +72,10 @@ const OpportunityShowContent = () => {
             <div className="flex items-center gap-4">
               <ReferenceField
                 source="customer_organization_id"
-                reference="companies"
+                reference="organizations"
                 link="show"
               >
-                <CompanyAvatar />
+                <OrganizationAvatar />
               </ReferenceField>
               <h2 className="text-2xl font-semibold">{record.name}</h2>
             </div>
@@ -173,7 +173,7 @@ const OpportunityShowContent = () => {
               </span>
               <ReferenceField
                 source="customer_organization_id"
-                reference="companies"
+                reference="organizations"
                 link="show"
               >
                 <span className="text-sm">{record.customer_organization_id}</span>
@@ -187,7 +187,7 @@ const OpportunityShowContent = () => {
                 </span>
                 <ReferenceField
                   source="principal_organization_id"
-                  reference="companies"
+                  reference="organizations"
                   link="show"
                 >
                   <span className="text-sm">{record.principal_organization_id}</span>
@@ -202,7 +202,7 @@ const OpportunityShowContent = () => {
                 </span>
                 <ReferenceField
                   source="distributor_organization_id"
-                  reference="companies"
+                  reference="organizations"
                   link="show"
                 >
                   <span className="text-sm">{record.distributor_organization_id}</span>

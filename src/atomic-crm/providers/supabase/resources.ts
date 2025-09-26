@@ -6,13 +6,13 @@
 // Resource names mapping - NO BACKWARD COMPATIBILITY
 export const RESOURCE_MAPPING = {
   // Core entities
-  companies: 'companies',
+  organizations: 'organizations',
   contacts: 'contacts',
   opportunities: 'opportunities',
   // deals: REMOVED - use opportunities
 
   // Summary views for optimized queries
-  companies_summary: 'companies_summary',
+  organizations_summary: 'organizations_summary',
   contacts_summary: 'contacts_summary',
   opportunities_summary: 'opportunities_summary',
   // deals_summary: REMOVED - use opportunities_summary
@@ -39,8 +39,8 @@ export const RESOURCE_MAPPING = {
  * Resources that support full-text search
  */
 export const SEARCHABLE_RESOURCES = {
-  companies: ['name', 'phone_number', 'website', 'zipcode', 'city', 'stateAbbr', 'description', 'segment'],
-  companies_summary: ['name', 'phone_number', 'website', 'zipcode', 'city', 'stateAbbr', 'description', 'segment'],
+  organizations: ['name', 'phone_number', 'website', 'zipcode', 'city', 'stateAbbr', 'description', 'segment'],
+  organizations_summary: ['name', 'phone_number', 'website', 'zipcode', 'city', 'stateAbbr', 'description', 'segment'],
   contacts: ['first_name', 'last_name', 'company_name', 'title', 'email', 'phone', 'background'],
   opportunities: ['name', 'category', 'description', 'next_action'],
   opportunities_summary: ['name', 'category', 'description'],
@@ -52,7 +52,7 @@ export const SEARCHABLE_RESOURCES = {
  * Resources that have soft delete support
  */
 export const SOFT_DELETE_RESOURCES = [
-  'companies',
+  'organizations',
   'contacts',
   'opportunities',
   'contact_organizations',
@@ -79,7 +79,7 @@ export const RESOURCE_LIFECYCLE_CONFIG = {
     processAvatar: true,
     hasFullTextSearch: true,
   },
-  companies: {
+  organizations: {
     hasLogo: true,
     processLogo: true,
     hasFullTextSearch: true,

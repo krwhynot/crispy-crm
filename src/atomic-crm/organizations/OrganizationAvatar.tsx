@@ -3,7 +3,7 @@ import { useRecordContext } from "ra-core";
 
 import type { Company } from "../types";
 
-export const CompanyAvatar = (props: {
+export const OrganizationAvatar = (props: {
   record?: Company;
   width?: 20 | 40;
   height?: 20 | 40;

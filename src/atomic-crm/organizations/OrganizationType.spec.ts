@@ -6,9 +6,9 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AdminContext } from 'ra-core';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CompanyInputs } from './CompanyInputs';
-import { CompanyShow } from './CompanyShow';
-import { CompanyList } from './CompanyList';
+import { OrganizationInputs } from './OrganizationInputs';
+import { OrganizationShow } from './OrganizationShow';
+import { OrganizationList } from './OrganizationList';
 import { ConfigurationContext } from '../root/ConfigurationContext';
 
 // Mock companies with organization types

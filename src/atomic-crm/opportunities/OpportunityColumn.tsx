@@ -1,8 +1,8 @@
 import { Droppable } from "@hello-pangea/dnd";
 
 import type { Opportunity } from "../types";
-import { findOpportunityLabel } from "./opportunity";
 import { OpportunityCard } from "./OpportunityCard";
+import { getOpportunityStageLabel } from "./stageConstants";
 
 export const OpportunityColumn = ({
   stage,
@@ -13,22 +13,11 @@ export const OpportunityColumn = ({
 }) => {
   const totalAmount = opportunities.reduce((sum, opportunity) => sum + opportunity.amount, 0);
 
-  const opportunityStages = [
-    { value: 'lead', label: 'Lead' },
-    { value: 'qualified', label: 'Qualified' },
-    { value: 'needs_analysis', label: 'Needs Analysis' },
-    { value: 'proposal', label: 'Proposal' },
-    { value: 'negotiation', label: 'Negotiation' },
-    { value: 'closed_won', label: 'Closed Won' },
-    { value: 'closed_lost', label: 'Closed Lost' },
-    { value: 'nurturing', label: 'Nurturing' }
-  ];
-
   return (
     <div className="flex-1 pb-8">
       <div className="flex flex-col items-center">
         <h3 className="text-base font-medium">
-          {findOpportunityLabel(opportunityStages, stage)}
+          {getOpportunityStageLabel(stage)}
         </h3>
         <p className="text-sm text-muted-foreground">
           {totalAmount.toLocaleString("en-US", {

@@ -82,7 +82,7 @@ export const OpportunityCreate = ({ open }: { open: boolean }) => {
               index: 0,
               priority: 'medium',
               probability: 50,
-              stage: 'lead'
+              stage: 'new_lead'
             }}
           >
             <OpportunityInputs />

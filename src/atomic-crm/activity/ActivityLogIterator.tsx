@@ -2,14 +2,14 @@ import { Fragment, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
 import {
-  COMPANY_CREATED,
+  ORGANIZATION_CREATED,
   CONTACT_CREATED,
   CONTACT_NOTE_CREATED,
   OPPORTUNITY_CREATED,
   OPPORTUNITY_NOTE_CREATED,
 } from "../consts";
 import type { Activity } from "../types";
-import { ActivityLogCompanyCreated } from "./ActivityLogCompanyCreated";
+import { ActivityLogOrganizationCreated } from "./ActivityLogOrganizationCreated";
 import { ActivityLogContactCreated } from "./ActivityLogContactCreated";
 import { ActivityLogContactNoteCreated } from "./ActivityLogContactNoteCreated";
 import { ActivityLogOpportunityCreated } from "./ActivityLogOpportunityCreated";
@@ -56,8 +56,8 @@ export function ActivityLogIterator({
 }
 
 function ActivityItem({ activity }: { activity: Activity }) {
-  if (activity.type === COMPANY_CREATED) {
-    return <ActivityLogCompanyCreated activity={activity} />;
+  if (activity.type === ORGANIZATION_CREATED) {
+    return <ActivityLogOrganizationCreated activity={activity} />;
   }
 
   if (activity.type === CONTACT_CREATED) {

@@ -1,15 +1,15 @@
 import { useCreate, useGetIdentity, useNotify } from "ra-core";
 import { AutocompleteInput } from "@/components/admin";
 
-export const AutocompleteCompanyInput = () => {
+export const AutocompleteOrganizationInput = () => {
   const [create] = useCreate();
   const { identity } = useGetIdentity();
   const notify = useNotify();
-  const handleCreateCompany = async (name?: string) => {
+  const handleCreateOrganization = async (name?: string) => {
     if (!name) return;
     try {
-      const newCompany = await create(
-        "companies",
+      const newOrganization = await create(
+        "organizations",
         {
           data: {
             name,
@@ -19,9 +19,9 @@ export const AutocompleteCompanyInput = () => {
         },
         { returnPromise: true },
       );
-      return newCompany;
+      return newOrganization;
     } catch {
-      notify("An error occurred while creating the company", {
+      notify("An error occurred while creating the organization", {
         type: "error",
       });
     }
@@ -31,7 +31,7 @@ export const AutocompleteCompanyInput = () => {
     <AutocompleteInput
       optionText="name"
       helperText={false}
-      onCreate={handleCreateCompany}
+      onCreate={handleCreateOrganization}
       createItemLabel="Create %{item}"
     />
   );

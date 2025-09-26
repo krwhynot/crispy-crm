@@ -29,6 +29,7 @@ export const TextInput = (props: TextInputProps) => {
     className,
     validate: _validateProp,
     format: _formatProp,
+    helperText,
     ...rest
   } = props;
   const { id, field, isRequired } = useInput(props);
@@ -59,7 +60,7 @@ export const TextInput = (props: TextInputProps) => {
           <Input {...rest} {...field} value={value} />
         )}
       </FormControl>
-      <InputHelperText helperText={props.helperText} />
+      <InputHelperText helperText={helperText} />
       <FormError />
     </FormField>
   );

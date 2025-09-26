@@ -52,11 +52,6 @@ const validationRegistry: Record<string, ValidationConfig> = {
     validate: validateOrganizationForSubmission,
   },
 
-  companies: {
-    // Alias for organizations to match resource name
-    validate: validateOrganizationForSubmission,
-  },
-
   contacts: {
     validate: validateContactForm,
   },
@@ -117,7 +112,11 @@ function logError(method: string, resource: string, params: any, error: unknown)
     timestamp: new Date().toISOString(),
   };
 
-  console.error(`[DataProvider Error]`, context, error);
+  console.error(`[DataProvider Error]`, context, {
+    error: error instanceof Error ? error.message : String(error),
+    stack: error instanceof Error ? error.stack : undefined,
+    fullError: error
+  });
 }
 
 /**

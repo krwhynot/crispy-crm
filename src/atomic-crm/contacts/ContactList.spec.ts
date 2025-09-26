@@ -18,7 +18,7 @@ const mockContacts = [
     title: 'CTO',
     email_jsonb: [{ email: 'john.doe@acme.com', type: 'Work' }],
     phone_jsonb: [{ number: '+1-555-0123', type: 'Work' }],
-    company_id: 1,
+    organization_id: 1,
     organization_names: ['Acme Corp', 'Tech Partners Ltd'], // Aggregated from junction table
     primary_organization_name: 'Acme Corp',
     role: 'decision_maker',
@@ -32,7 +32,7 @@ const mockContacts = [
     title: 'VP Engineering',
     email_jsonb: [{ email: 'jane.smith@techcorp.com', type: 'Work' }],
     phone_jsonb: [{ number: '+1-555-0124', type: 'Work' }],
-    company_id: 2,
+    organization_id: 2,
     organization_names: ['TechCorp Inc'],
     primary_organization_name: 'TechCorp Inc',
     role: 'influencer',
@@ -46,7 +46,7 @@ const mockContacts = [
     title: 'Procurement Manager',
     email_jsonb: [{ email: 'bob.johnson@global.com', type: 'Work' }],
     phone_jsonb: [{ number: '+1-555-0125', type: 'Work' }],
-    company_id: 3,
+    organization_id: 3,
     organization_names: ['Global Systems Ltd', 'Consulting Firm Inc', 'Tech Distributors Ltd'],
     primary_organization_name: 'Global Systems Ltd',
     role: 'buyer',
@@ -90,7 +90,7 @@ const mockConfiguration = {
     { id: 'buyer', name: 'Buyer' },
     { id: 'end_user', name: 'End User' }
   ],
-  companySectors: ['Technology', 'Healthcare', 'Finance']
+  organizationSectors: ['Technology', 'Healthcare', 'Finance']
 };
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {

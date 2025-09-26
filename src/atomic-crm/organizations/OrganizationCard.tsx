@@ -7,9 +7,9 @@ import { Badge } from "@/components/ui/badge";
 
 import { Avatar as ContactAvatar } from "../contacts/Avatar";
 import type { Company } from "../types";
-import { CompanyAvatar } from "./CompanyAvatar";
+import { OrganizationAvatar } from "./OrganizationAvatar";
 
-export const CompanyCard = (props: { record?: Company }) => {
+export const OrganizationCard = (props: { record?: Company }) => {
   const createPath = useCreatePath();
   const record = useRecordContext<Company>(props);
   if (!record) return null;
@@ -34,7 +34,7 @@ export const CompanyCard = (props: { record?: Company }) => {
   return (
     <Link
       to={createPath({
-        resource: "companies",
+        resource: "organizations",
         id: record.id,
         type: "show",
       })}
@@ -42,7 +42,7 @@ export const CompanyCard = (props: { record?: Company }) => {
     >
       <Card className="h-[200px] flex flex-col justify-between p-4 hover:bg-muted">
         <div className="flex flex-col items-center gap-1">
-          <CompanyAvatar />
+          <OrganizationAvatar />
           <div className="text-center mt-1">
             <h6 className="text-sm font-medium">{record.name}</h6>
             <p className="text-xs text-muted-foreground">{record.sector}</p>
@@ -65,7 +65,7 @@ export const CompanyCard = (props: { record?: Company }) => {
         <div className="flex flex-row w-full justify-between gap-2">
           <div className="flex items-center">
             {record.nb_contacts ? (
-              <ReferenceManyField reference="contacts" target="company_id">
+              <ReferenceManyField reference="contacts" target="organization_id">
                 <AvatarGroupIterator />
               </ReferenceManyField>
             ) : null}

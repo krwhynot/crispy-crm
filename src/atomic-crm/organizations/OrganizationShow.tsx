@@ -25,30 +25,30 @@ import { findOpportunityLabel } from "../opportunities/opportunity";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Company, Contact, Opportunity } from "../types";
-import { CompanyAside } from "./CompanyAside";
-import { CompanyAvatar } from "./CompanyAvatar";
+import { OrganizationAside } from "./OrganizationAside";
+import { OrganizationAvatar } from "./OrganizationAvatar";
 
-export const CompanyShow = () => (
+export const OrganizationShow = () => (
   <ShowBase>
-    <CompanyShowContent />
+    <OrganizationShowContent />
   </ShowBase>
 );
 
-const CompanyShowContent = () => {
+const OrganizationShowContent = () => {
   const { record, isPending } = useShowContext<Company>();
   const navigate = useNavigate();
 
   // Get tab from URL or default to "activity"
-  const tabMatch = useMatch("/companies/:id/show/:tab");
+  const tabMatch = useMatch("/organizations/:id/show/:tab");
   const currentTab = tabMatch?.params?.tab || "activity";
 
   const handleTabChange = (value: string) => {
     if (value === currentTab) return;
     if (value === "activity") {
-      navigate(`/companies/${record?.id}/show`);
+      navigate(`/organizations/${record?.id}/show`);
       return;
     }
-    navigate(`/companies/${record?.id}/show/${value}`);
+    navigate(`/organizations/${record?.id}/show/${value}`);
   };
 
   if (isPending || !record) return null;
@@ -59,7 +59,7 @@ const CompanyShowContent = () => {
         <Card>
           <CardContent>
             <div className="flex mb-3">
-              <CompanyAvatar />
+              <OrganizationAvatar />
               <h5 className="text-xl ml-2 flex-1">{record.name}</h5>
             </div>
             <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
@@ -81,13 +81,13 @@ const CompanyShowContent = () => {
                 ) : null}
               </TabsList>
               <TabsContent value="activity" className="pt-2">
-                <ActivityLog companyId={record.id} context="company" />
+                <ActivityLog organizationId={record.id} context="organization" />
               </TabsContent>
               <TabsContent value="contacts">
                 {record.nb_contacts ? (
                   <ReferenceManyField
                     reference="contacts_summary"
-                    target="company_id"
+                    target="organization_id"
                     sort={{ field: "last_name", order: "ASC" }}
                   >
                     <div className="flex flex-col gap-4">
@@ -114,7 +114,7 @@ const CompanyShowContent = () => {
                 {record.nb_opportunities ? (
                   <ReferenceManyField
                     reference="opportunities"
-                    target="company_id"
+                    target="organization_id"
                     sort={{ field: "name", order: "ASC" }}
                   >
                     <OpportunitiesIterator />
@@ -125,7 +125,7 @@ const CompanyShowContent = () => {
           </CardContent>
         </Card>
       </div>
-      <CompanyAside />
+      <OrganizationAside />
     </div>
   );
 };
@@ -182,12 +182,12 @@ const ContactsIterator = () => {
 };
 
 const CreateRelatedContactButton = () => {
-  const company = useRecordContext<Company>();
+  const organization = useRecordContext<Company>();
   return (
     <Button variant="outline" asChild size="sm" className="h-9">
       <RouterLink
         to="/contacts/create"
-        state={company ? { record: { company_id: company.id } } : undefined}
+        state={organization ? { record: { organization_id: organization.id } } : undefined}
         className="flex items-center gap-2"
       >
         <UserPlus className="h-4 w-4" />
