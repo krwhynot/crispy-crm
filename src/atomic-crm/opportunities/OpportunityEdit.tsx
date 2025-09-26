@@ -1,90 +1,56 @@
-import { DeleteButton, ReferenceField } from "@/components/admin";
-import { SaveButton } from "@/components/admin";
-import { FormToolbar } from "@/components/admin";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import {
-  EditBase,
-  Form,
-  useNotify,
-  useRecordContext,
-  useRedirect,
-} from "ra-core";
-import { Link } from "react-router-dom";
+import { EditBase, Form, useRecordContext } from "ra-core";
+import { Card, CardContent } from "@/components/ui/card";
+import { DeleteButton, SaveButton, CancelButton, ReferenceField } from "@/components/admin";
+import { FormToolbar } from "../layout/FormToolbar";
+import { OpportunityInputs } from "./OpportunityInputs";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
-import { OpportunityInputs } from "./OpportunityInputs";
 
-export const OpportunityEdit = ({ open, id }: { open: boolean; id?: string }) => {
-  const redirect = useRedirect();
-  const notify = useNotify();
+const OpportunityEdit = () => (
+  <EditBase
+    actions={false}
+    redirect="show"
+    mutationMode="pessimistic"
+  >
+    <div className="mt-2">
+      <EditHeader />
+      <div className="flex gap-8">
+        <Form className="flex flex-1 flex-col gap-4 pb-2">
+          <Card>
+            <CardContent>
+              <OpportunityInputs />
+              <FormToolbar>
+                <div className="flex flex-row gap-2 justify-between w-full">
+                  <DeleteButton />
+                  <div className="flex gap-2">
+                    <CancelButton />
+                    <SaveButton />
+                  </div>
+                </div>
+              </FormToolbar>
+            </CardContent>
+          </Card>
+        </Form>
+      </div>
+    </div>
+  </EditBase>
+);
 
-  const handleClose = () => {
-    redirect("/opportunities", undefined, undefined, undefined, {
-      _scrollToTop: false,
-    });
-  };
+const EditHeader = () => {
+  const opportunity = useRecordContext<Opportunity>();
+  if (!opportunity) return null;
 
   return (
-    <Dialog open={open} onOpenChange={() => handleClose()}>
-      <DialogContent className="lg:max-w-4xl p-4 overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
-        {id ? (
-          <EditBase
-            id={id}
-            mutationMode="pessimistic"
-            mutationOptions={{
-              onSuccess: () => {
-                notify("Opportunity updated");
-                redirect(`/opportunities/${id}/show`, undefined, undefined, undefined, {
-                  _scrollToTop: false,
-                });
-              },
-            }}
-          >
-            <EditHeader />
-            <Form>
-              <OpportunityInputs />
-              <EditToolbar />
-            </Form>
-          </EditBase>
-        ) : null}
-      </DialogContent>
-    </Dialog>
+    <div className="flex items-center gap-4 mb-4">
+      {opportunity.customer_organization_id && (
+        <ReferenceField source="customer_organization_id" reference="organizations" link={false}>
+          <OrganizationAvatar />
+        </ReferenceField>
+      )}
+      <h2 className="text-2xl font-semibold">Edit {opportunity.name}</h2>
+    </div>
   );
 };
 
-function EditHeader() {
-  const opportunity = useRecordContext<Opportunity>();
-  if (!opportunity) {
-    return null;
-  }
-
-  return (
-    <DialogTitle className="pb-0">
-      <div className="flex justify-between items-start mb-8">
-        <div className="flex items-center gap-4">
-          <ReferenceField source="customer_organization_id" reference="organizations" link="show">
-            <OrganizationAvatar />
-          </ReferenceField>
-          <h2 className="text-2xl font-semibold">Edit {opportunity.name} opportunity</h2>
-        </div>
-        <div className="flex gap-2 pr-12">
-          <Button asChild variant="outline" className="h-9">
-            <Link to={`/opportunities/${opportunity.id}/show`}>Back to opportunity</Link>
-          </Button>
-        </div>
-      </div>
-    </DialogTitle>
-  );
-}
-
-function EditToolbar() {
-  return (
-    <FormToolbar>
-      <div className="flex-1 flex justify-between">
-        <DeleteButton />
-        <SaveButton />
-      </div>
-    </FormToolbar>
-  );
-}
+export { OpportunityEdit };
+export default OpportunityEdit;

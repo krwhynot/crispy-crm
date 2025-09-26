@@ -22,6 +22,7 @@ export const NumberInput = (props: NumberInputProps) => {
     parse = convertStringToNumber,
     onFocus,
     helperText,
+    defaultValue, // Extract defaultValue to prevent it from being spread to Input
     ...rest
   } = props;
   const resource = useResourceContext({ resource: resourceProp });

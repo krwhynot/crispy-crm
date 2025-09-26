@@ -20,33 +20,19 @@ import {
 } from "@/components/admin";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { NoteCreate, NotesIterator } from "../notes";
-import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Opportunity } from "../types";
 import { ContactList } from "./ContactList";
 import { findOpportunityLabel } from "./opportunity";
 
-export const OpportunityShow = ({ open, id }: { open: boolean; id?: string }) => {
-  const redirect = useRedirect();
-  const handleClose = () => {
-    redirect("list", "opportunities");
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={(open) => !open && handleClose()}>
-      <DialogContent className="lg:max-w-4xl p-4 overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
-        {id ? (
-          <ShowBase id={id}>
-            <OpportunityShowContent />
-          </ShowBase>
-        ) : null}
-      </DialogContent>
-    </Dialog>
-  );
-};
+const OpportunityShow = () => (
+  <ShowBase>
+    <OpportunityShowContent />
+  </ShowBase>
+);
 
 const OpportunityShowContent = () => {
   const record = useRecordContext<Opportunity>();
@@ -64,10 +50,10 @@ const OpportunityShowContent = () => {
   ];
 
   return (
-    <>
-      <div className="space-y-2">
-        {record.deleted_at ? <ArchivedTitle /> : null}
-        <div className="flex-1">
+    <div className="mt-2">
+      {record.deleted_at ? <ArchivedTitle /> : null}
+      <Card>
+        <CardContent className="pt-6">
           <div className="flex justify-between items-start mb-8">
             <div className="flex items-center gap-4">
               <ReferenceField
@@ -79,7 +65,7 @@ const OpportunityShowContent = () => {
               </ReferenceField>
               <h2 className="text-2xl font-semibold">{record.name}</h2>
             </div>
-            <div className={`flex gap-2 ${record.deleted_at ? "" : "pr-12"}`}>
+            <div className={`flex gap-2`}>
               {record.deleted_at ? (
                 <>
                   <UnarchiveButton record={record} />
@@ -247,9 +233,9 @@ const OpportunityShowContent = () => {
               <NotesIterator reference="opportunities" />
             </ReferenceManyField>
           </div>
-        </div>
-      </div>
-    </>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
@@ -335,3 +321,6 @@ const UnarchiveButton = ({ record }: { record: Opportunity }) => {
     </Button>
   );
 };
+
+export { OpportunityShow };
+export default OpportunityShow;

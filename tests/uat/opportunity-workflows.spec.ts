@@ -32,7 +32,7 @@ describe('UAT: Opportunity Workflows', () => {
     last_name: string;
     title: string;
     organization_id: number;
-    email_jsonb: Array<{ email: string; type: string }>;
+    email: Array<{ email: string; type: string }>;
     phone_number_jsonb: Array<{ phone: string; type: string }>;
     background: string;
     organization_relationships?: Array<{
@@ -92,7 +92,7 @@ describe('UAT: Opportunity Workflows', () => {
       last_name: 'Smith',
       title: 'CTO',
       organization_id: 1,
-      email_jsonb: [{ email: 'john.smith@techinnovators.com', type: 'Work' }],
+      email: [{ email: 'john.smith@techinnovators.com', type: 'Work' }],
       phone_number_jsonb: [{ phone: '+1-555-0199', type: 'Work' }],
       background: 'Technical decision maker with 15 years experience'
     },
@@ -102,7 +102,7 @@ describe('UAT: Opportunity Workflows', () => {
       last_name: 'Johnson',
       title: 'VP of Operations',
       organization_id: 2,
-      email_jsonb: [{ email: 'sarah.johnson@globalsolutions.com', type: 'Work' }],
+      email: [{ email: 'sarah.johnson@globalsolutions.com', type: 'Work' }],
       phone_number_jsonb: [{ phone: '+1-555-0788', type: 'Work' }],
       background: 'Operations leader focused on efficiency'
     }
@@ -474,8 +474,8 @@ describe('UAT: Opportunity Workflows', () => {
       expect(contact.first_name).toBe('John');
       expect(contact.last_name).toBe('Smith');
       expect(contact.title).toBe('CTO');
-      expect(contact.email_jsonb).toHaveLength(1);
-      expect(contact.email_jsonb[0].email).toBe('john.smith@techinnovators.com');
+      expect(contact.email).toHaveLength(1);
+      expect(contact.email[0].email).toBe('john.smith@techinnovators.com');
 
       // Validate company data integrity
       expect(company.name).toBe('Tech Innovators Inc');
@@ -577,7 +577,7 @@ describe('UAT: System Integration Tests', () => {
       contact: {
         first_name: { required: true, minLength: 1 },
         last_name: { required: true, minLength: 1 },
-        email_jsonb: { required: true, type: 'array', minItems: 1 }
+        email: { required: true, type: 'array', minItems: 1 }
       }
     };
 
@@ -589,6 +589,6 @@ describe('UAT: System Integration Tests', () => {
 
     // Validate contact rules
     expect(validationRules.contact.first_name.required).toBe(true);
-    expect(validationRules.contact.email_jsonb.type).toBe('array');
+    expect(validationRules.contact.email.type).toBe('array');
   });
 });

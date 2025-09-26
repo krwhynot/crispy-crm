@@ -1,80 +1,75 @@
-import { Create } from "@/components/admin";
-import { SaveButton } from "@/components/admin";
-import { FormToolbar } from "@/components/admin";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { CreateBase, Form, useGetIdentity, useDataProvider, useNotify, useRedirect, useGetList } from "ra-core";
+import { Card, CardContent } from "@/components/ui/card";
+import { CancelButton, SaveButton } from "@/components/admin";
+import { FormToolbar } from "../layout/FormToolbar";
 import { useQueryClient } from "@tanstack/react-query";
 import type { GetListResult } from "ra-core";
-import {
-  Form,
-  useDataProvider,
-  useGetIdentity,
-  useListContext,
-  useRedirect,
-} from "ra-core";
-import type { Opportunity } from "../types";
 import { OpportunityInputs } from "./OpportunityInputs";
+import type { Opportunity } from "../types";
 
-export const OpportunityCreate = ({ open }: { open: boolean }) => {
-  const redirect = useRedirect();
+const OpportunityCreate = () => {
+  const { identity } = useGetIdentity();
   const dataProvider = useDataProvider();
-  const { data: allOpportunities } = useListContext<Opportunity>();
-
-  const handleClose = () => {
-    redirect("/opportunities");
-  };
-
+  const notify = useNotify();
+  const redirect = useRedirect();
   const queryClient = useQueryClient();
 
+  // Get all opportunities for index management
+  const { data: allOpportunities } = useGetList<Opportunity>('opportunities', {
+    pagination: { page: 1, perPage: 1000 },
+    filter: { "deleted_at@is": null },
+  });
+
   const onSuccess = async (opportunity: Opportunity) => {
-    if (!allOpportunities) {
-      redirect("/opportunities");
-      return;
-    }
-    // increase the index of all opportunities in the same stage as the new opportunity
-    // first, get the list of opportunities in the same stage
-    const opportunities = allOpportunities.filter(
-      (o: Opportunity) => o.stage === opportunity.stage && o.id !== opportunity.id,
-    );
-    // update the actual opportunities in the database
-    await Promise.all(
-      opportunities.map(async (oldOpportunity) =>
-        dataProvider.update("opportunities", {
-          id: oldOpportunity.id,
-          data: { index: oldOpportunity.index + 1 },
-          previousData: oldOpportunity,
+    // Manage kanban board indexes
+    if (allOpportunities) {
+      // Get opportunities in the same stage
+      const opportunities = allOpportunities.filter(
+        (o: Opportunity) => o.stage === opportunity.stage && o.id !== opportunity.id,
+      );
+
+      // Update indexes to make room for the new opportunity at index 0
+      await Promise.all(
+        opportunities.map(async (oldOpportunity) =>
+          dataProvider.update("opportunities", {
+            id: oldOpportunity.id,
+            data: { index: oldOpportunity.index + 1 },
+            previousData: oldOpportunity,
+          }),
+        ),
+      );
+
+      // Update cache to reflect index changes
+      const opportunitiesById = opportunities.reduce(
+        (acc, o) => ({
+          ...acc,
+          [o.id]: { ...o, index: o.index + 1 },
         }),
-      ),
-    );
-    // refresh the list of opportunities in the cache as we used dataProvider.update(),
-    // which does not update the cache
-    const opportunitiesById = opportunities.reduce(
-      (acc, o) => ({
-        ...acc,
-        [o.id]: { ...o, index: o.index + 1 },
-      }),
-      {} as { [key: string]: Opportunity },
-    );
-    const now = Date.now();
-    queryClient.setQueriesData<GetListResult | undefined>(
-      { queryKey: ["opportunities", "getList"] },
-      (res) => {
-        if (!res) return res;
-        return {
-          ...res,
-          data: res.data.map((o: Opportunity) => opportunitiesById[o.id] || o),
-        };
-      },
-      { updatedAt: now },
-    );
-    redirect("/opportunities");
+        {} as { [key: string]: Opportunity },
+      );
+
+      const now = Date.now();
+      queryClient.setQueriesData<GetListResult | undefined>(
+        { queryKey: ["opportunities", "getList"] },
+        (res) => {
+          if (!res) return res;
+          return {
+            ...res,
+            data: res.data.map((o: Opportunity) => opportunitiesById[o.id] || o),
+          };
+        },
+        { updatedAt: now },
+      );
+    }
+
+    notify("Opportunity created successfully");
+    redirect(`/opportunities/${opportunity.id}/show`);
   };
 
-  const { identity } = useGetIdentity();
-
   return (
-    <Dialog open={open} onOpenChange={() => handleClose()}>
-      <DialogContent className="lg:max-w-4xl overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
-        <Create resource="opportunities" mutationOptions={{ onSuccess }}>
+    <CreateBase mutationOptions={{ onSuccess }} redirect={false}>
+      <div className="mt-2 flex lg:mr-72">
+        <div className="flex-1">
           <Form
             defaultValues={{
               sales_id: identity?.id,
@@ -85,13 +80,23 @@ export const OpportunityCreate = ({ open }: { open: boolean }) => {
               stage: 'new_lead'
             }}
           >
-            <OpportunityInputs />
-            <FormToolbar>
-              <SaveButton />
-            </FormToolbar>
+            <Card>
+              <CardContent>
+                <OpportunityInputs />
+                <FormToolbar>
+                  <div className="flex flex-row gap-2 justify-end">
+                    <CancelButton />
+                    <SaveButton label="Create Opportunity" />
+                  </div>
+                </FormToolbar>
+              </CardContent>
+            </Card>
           </Form>
-        </Create>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </div>
+    </CreateBase>
   );
 };
+
+export { OpportunityCreate };
+export default OpportunityCreate;

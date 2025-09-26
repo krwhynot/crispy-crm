@@ -28,7 +28,7 @@ import type { Company, Contact, Opportunity } from "../types";
 import { OrganizationAside } from "./OrganizationAside";
 import { OrganizationAvatar } from "./OrganizationAvatar";
 
-export const OrganizationShow = () => (
+const OrganizationShow = () => (
   <ShowBase>
     <OrganizationShowContent />
   </ShowBase>
@@ -238,3 +238,6 @@ const OpportunitiesIterator = () => {
     </div>
   );
 };
+
+export { OrganizationShow };
+export default OrganizationShow;

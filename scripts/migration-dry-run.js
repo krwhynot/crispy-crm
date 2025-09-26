@@ -142,14 +142,14 @@ class MigrationDryRun {
         }
       }
 
-      // Check email_jsonb structure
-      if (contact.email_jsonb && !Array.isArray(contact.email_jsonb)) {
-        issues.push('email_jsonb is not an array');
+      // Check email structure
+      if (contact.email && !Array.isArray(contact.email)) {
+        issues.push('email is not an array');
       }
 
-      // Check phone_jsonb structure
-      if (contact.phone_jsonb && !Array.isArray(contact.phone_jsonb)) {
-        issues.push('phone_jsonb is not an array');
+      // Check phone structure
+      if (contact.phone && !Array.isArray(contact.phone)) {
+        issues.push('phone is not an array');
       }
 
       if (issues.length > 0) {

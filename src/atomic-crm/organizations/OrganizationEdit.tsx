@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { OrganizationAside } from "./OrganizationAside";
 import { FormToolbar } from "../layout/FormToolbar";
 
-export const OrganizationEdit = () => (
+const OrganizationEdit = () => (
   <EditBase
     actions={false}
     redirect="show"
@@ -32,3 +32,6 @@ export const OrganizationEdit = () => (
     </div>
   </EditBase>
 );
+
+export { OrganizationEdit };
+export default OrganizationEdit;

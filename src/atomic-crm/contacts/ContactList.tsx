@@ -87,21 +87,21 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
         sales[contact.sales_id].last_name
       }`,
       tags: contact.tags.map((tagId) => tags[tagId].name).join(", "),
-      email_work: contact.email_jsonb?.find((email) => email.type === "Work")
+      email_work: contact.email?.find((email) => email.type === "Work")
         ?.email,
-      email_home: contact.email_jsonb?.find((email) => email.type === "Home")
+      email_home: contact.email?.find((email) => email.type === "Home")
         ?.email,
-      email_other: contact.email_jsonb?.find((email) => email.type === "Other")
+      email_other: contact.email?.find((email) => email.type === "Other")
         ?.email,
-      email_jsonb: JSON.stringify(contact.email_jsonb),
+      email: JSON.stringify(contact.email),
       email_fts: undefined,
-      phone_work: contact.phone_jsonb?.find((phone) => phone.type === "Work")
+      phone_work: contact.phone?.find((phone) => phone.type === "Work")
         ?.number,
-      phone_home: contact.phone_jsonb?.find((phone) => phone.type === "Home")
+      phone_home: contact.phone?.find((phone) => phone.type === "Home")
         ?.number,
-      phone_other: contact.phone_jsonb?.find((phone) => phone.type === "Other")
+      phone_other: contact.phone?.find((phone) => phone.type === "Other")
         ?.number,
-      phone_jsonb: JSON.stringify(contact.phone_jsonb),
+      phone: JSON.stringify(contact.phone),
       phone_fts: undefined,
       // New multi-organization fields
       role: contact.role || '',

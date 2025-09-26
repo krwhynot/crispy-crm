@@ -105,12 +105,12 @@ export function useContactImport() {
             tags: tagNames,
             linkedin_url,
           }) => {
-            const email_jsonb = [
+            const email = [
               { email: email_work, type: "Work" },
               { email: email_home, type: "Home" },
               { email: email_other, type: "Other" },
             ].filter(({ email }) => email);
-            const phone_jsonb = [
+            const phone = [
               { number: phone_work, type: "Work" },
               { number: phone_home, type: "Home" },
               { number: phone_other, type: "Other" },
@@ -128,8 +128,8 @@ export function useContactImport() {
                 last_name,
                 gender,
                 title,
-                email_jsonb,
-                phone_jsonb,
+                email,
+                phone,
                 background,
                 first_seen: first_seen
                   ? new Date(first_seen).toISOString()

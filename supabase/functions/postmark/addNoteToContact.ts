@@ -40,7 +40,7 @@ export const addNoteToContact = async ({
     await supabaseAdmin
       .from("contacts")
       .select("*")
-      .contains("email_jsonb", JSON.stringify([{ email }]))
+      .contains("email", JSON.stringify([{ email }]))
       .maybeSingle();
   if (fetchContactError)
     return new Response(
@@ -92,7 +92,7 @@ export const addNoteToContact = async ({
       .insert({
         first_name: firstName,
         last_name: lastName,
-        email_jsonb: [{ email, type: "Work" }],
+        email: [{ email, type: "Work" }],
         organization_id: organization.id,
         sales_id: sales.id,
         first_seen: new Date(),

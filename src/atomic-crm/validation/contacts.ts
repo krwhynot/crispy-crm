@@ -72,13 +72,18 @@ export const contactOrganizationSchema = z.object({
   contact_id: z.union([z.string(), z.number()]).optional(),
   organization_id: z.union([z.string(), z.number()]),
   is_primary_organization: z.boolean().default(false),
-  is_primary_contact: z.boolean().optional(), // Legacy backward compatibility
   purchase_influence: purchaseInfluenceSchema.default('Unknown'),
   decision_authority: decisionAuthoritySchema.default('End User'),
   role: contactRoleSchema.optional(),
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
   deleted_at: z.string().optional().nullable(),
+}).refine((data) => {
+  // Check for removed legacy fields and provide helpful error messages
+  if ('is_primary_contact' in data) {
+    throw new Error("Field 'is_primary_contact' is no longer supported. Use is_primary_organization in contact_organizations relationship instead.");
+  }
+  return true;
 });
 
 // Main contact schema
@@ -87,8 +92,7 @@ export const contactSchema = z.object({
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
   title: z.string().optional(),
-  company_id: z.union([z.string(), z.number()]).optional(), // Backward compatibility
-  email_jsonb: z.array(emailAndTypeSchema).default([]),
+  email: z.array(emailAndTypeSchema).default([]),
   avatar: z.any().optional(), // Partial<RAFile>
   linkedin_url: isLinkedinUrl,
   first_seen: z.string().optional(),
@@ -99,14 +103,7 @@ export const contactSchema = z.object({
   sales_id: z.union([z.string(), z.number()]).min(1, 'Account manager is required'),
   status: z.string().optional(),
   background: z.string().optional(),
-  phone_jsonb: z.array(phoneNumberAndTypeSchema).default([]),
-
-  // Primary organization fields (backward compatibility)
-  role: contactRoleSchema.optional(),
-  department: z.string().optional(),
-  is_primary_contact: z.boolean().optional(),
-  purchase_influence: purchaseInfluenceSchema.optional(),
-  decision_authority: decisionAuthoritySchema.optional(),
+  phone: z.array(phoneNumberAndTypeSchema).default([]),
 
   // Multi-organization support
   organizations: z.array(contactOrganizationSchema).optional(),
@@ -119,6 +116,27 @@ export const contactSchema = z.object({
 
   // System fields
   deleted_at: z.string().optional().nullable(),
+}).refine((data) => {
+  // Check for removed legacy fields and provide helpful error messages
+  if ('company_id' in data) {
+    throw new Error("Field 'company_id' is no longer supported. Use contact_organizations relationship instead.");
+  }
+  if ('role' in data) {
+    throw new Error("Field 'role' is no longer supported at contact level. Use role in contact_organizations relationship instead.");
+  }
+  if ('department' in data) {
+    throw new Error("Field 'department' is no longer supported at contact level. Define department in contact_organizations relationship instead.");
+  }
+  if ('is_primary_contact' in data) {
+    throw new Error("Field 'is_primary_contact' is no longer supported. Use is_primary_organization in contact_organizations relationship instead.");
+  }
+  if ('purchase_influence' in data) {
+    throw new Error("Field 'purchase_influence' is no longer supported at contact level. Use purchase_influence in contact_organizations relationship instead.");
+  }
+  if ('decision_authority' in data) {
+    throw new Error("Field 'decision_authority' is no longer supported at contact level. Use decision_authority in contact_organizations relationship instead.");
+  }
+  return true;
 });
 
 // Type inference
@@ -129,15 +147,15 @@ export type ContactOrganization = z.infer<typeof contactOrganizationSchema>;
 // Validation function matching expected signature from unifiedDataProvider
 export async function validateContactForm(data: any): Promise<void> {
   try {
-    // Ensure at least one email is provided if email_jsonb exists
-    if (data.email_jsonb && Array.isArray(data.email_jsonb) && data.email_jsonb.length > 0) {
+    // Ensure at least one email is provided if email exists
+    if (data.email && Array.isArray(data.email) && data.email.length > 0) {
       // Validate each email entry
-      data.email_jsonb.forEach((entry: any, index: number) => {
+      data.email.forEach((entry: any, index: number) => {
         if (!entry.email || entry.email.trim() === '') {
           throw new z.ZodError([{
             code: z.ZodIssueCode.custom,
             message: 'Email address is required',
-            path: ['email_jsonb', index, 'email'],
+            path: ['email', index, 'email'],
           }]);
         }
       });
@@ -188,11 +206,11 @@ export const updateContactSchema = contactSchema.partial().required({
 export async function validateCreateContact(data: any): Promise<void> {
   try {
     // Ensure at least one email is provided for new contacts
-    if (!data.email_jsonb || !Array.isArray(data.email_jsonb) || data.email_jsonb.length === 0) {
+    if (!data.email || !Array.isArray(data.email) || data.email.length === 0) {
       throw new z.ZodError([{
         code: z.ZodIssueCode.custom,
         message: 'At least one email address is required',
-        path: ['email_jsonb'],
+        path: ['email'],
       }]);
     }
 

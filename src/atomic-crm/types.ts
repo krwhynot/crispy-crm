@@ -71,7 +71,7 @@ export type Contact = {
   last_name: string;
   title: string;
   company_id: Identifier; // Backward compatibility - primary organization
-  email_jsonb: EmailAndType[];
+  email: EmailAndType[];
   avatar?: Partial<RAFile>;
   linkedin_url?: string | null;
   first_seen: string;
@@ -82,7 +82,7 @@ export type Contact = {
   sales_id: Identifier;
   status: string;
   background: string;
-  phone_jsonb: PhoneNumberAndType[];
+  phone: PhoneNumberAndType[];
 
   // Primary organization fields (backward compatibility)
   role?: ContactRole;

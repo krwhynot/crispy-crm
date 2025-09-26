@@ -60,16 +60,16 @@ const mockContacts = [
     first_name: 'John',
     last_name: 'Doe',
     title: 'CTO',
-    email_jsonb: [{ email: 'john.doe@acme.com', type: 'Work' }],
-    phone_jsonb: [{ number: '+1-555-0123', type: 'Work' }]
+    email: [{ email: 'john.doe@acme.com', type: 'Work' }],
+    phone: [{ number: '+1-555-0123', type: 'Work' }]
   },
   {
     id: 2,
     first_name: 'Jane',
     last_name: 'Smith',
     title: 'VP Engineering',
-    email_jsonb: [{ email: 'jane.smith@acme.com', type: 'Work' }],
-    phone_jsonb: [{ number: '+1-555-0124', type: 'Work' }]
+    email: [{ email: 'jane.smith@acme.com', type: 'Work' }],
+    phone: [{ number: '+1-555-0124', type: 'Work' }]
   }
 ];
 

@@ -1,98 +1,48 @@
-# CLAUDE.md
+## Engineering Constitution Core Principles
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Rules preventing debates & ensuring consistency:
 
-## Core Principles
-
-These rules prevent debates and ensure consistency across the Atomic CRM codebase:
-
-1. **Database Access**: Use a single unified data provider with optional resilience features. Systematically refactor/deprecate other custom data layers.
-
-2. **Error Handling**: Implement basic retry logic with exponential backoff and standardized error types. No circuit breakers or health monitoring - these are over-engineering for a CRM.
-
-3. **Validation**: Single point validation with Zod schemas at the API boundary only. No multi-layer validation.
-
-4. **Testing**: Focus on critical business logic unit tests + key user journey E2E tests. Avoid over-testing infrastructure.
-
-5. **Migrations**: Use timestamp format (YYYYMMDDHHMMSS) for ordering. Example: `20250125000000_fresh_crm_schema.sql`
-
-6. **TypeScript**: Use `interface` for objects/classes, `type` for unions/intersections/utilities.
-
-7. **State Management**: Local state for UI-only concerns, React Admin store for resource data.
-
-8. **Transactions**: Only wrap multi-table operations or operations with business rule dependencies.
-
-9. **Backward Compatibility**: Never maintain it - fail fast to catch issues immediately.
-
-10. **Comments**: Only for non-obvious business rules or necessary workarounds. Code should be self-documenting.
-
-11. **Forms**: Always use the admin form layer (src/components/admin/) for consistent validation and error handling.
-
-12. **Colors**: Only use semantic CSS variables (--primary, --destructive, etc.). No hardcoded hex values.
+1. **Database**: Single unified data provider + optional resilience. Refactor/deprecate custom layers
+2. **Errors**: Basic retry + exponential backoff + standard types. No circuit breakers/health monitoring (over-engineering)
+3. **Validation**: Zod schemas at API boundary only. No multi-layer
+4. **Testing**: Critical logic units + key E2E journeys. Avoid infrastructure over-testing
+5. **Migrations**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250125000000_fresh_crm_schema.sql`)
+6. **TypeScript**: `interface` for objects/classes, `type` for unions/intersections/utilities
+7. **State**: Local for UI-only, React Admin store for resources
+8. **Transactions**: Multi-table or business-rule dependencies only
+9. **Compatibility**: Never maintain backward compatibility - fail fast
+10. **Comments**: Non-obvious business rules/workarounds only. Self-documenting code
+11. **Forms**: Always use admin layer (`src/components/admin/`) for validation/errors
+12. **Colors**: Semantic CSS variables only (--primary, --destructive). No hex
 
 ### Operational Standards
 
-13. **Data Access Strategy**: Prioritize the primary auto-generated data provider. Refactor away custom layers.
-
-14. **Transaction Management**: Handle in dedicated Service Layer orchestrating business operations.
-
-15. **Technical Debt**: Apply "Boy Scout Rule" - fix inconsistencies in files you edit as part of current work.
-
-16. **Architecture Enforcement**: Use automated ESLint rules to prevent forbidden imports and layer violations.
-
-17. **Complexity Threshold**: Only introduce new patterns (circuit breakers, queues) for documented, recurring production issues.
-
-18. **Performance**: Measure first with tracing, optimize queries/indexes before adding caches. No premature optimization.
-
-19. **Feature Flags**: Server-evaluated with ownership/expiry. Remove within one release post-rollout.
-
-20. **API Design**: Versioned REST with consistent JSON errors, idempotency keys, DTOs validated at boundary.
-
-21. **Deployment**: Two-phase migrations, canary rollouts, automated health gates, schema-compatible rollbacks.
-
-22. **Observability**: User-centric SLIs/SLOs, distributed tracing, structured logs with correlation IDs.
+13. **Data Access**: Primary auto-generated provider. Refactor custom layers
+14. **Transactions**: Service Layer orchestration for business ops
+15. **Tech Debt**: Boy Scout Rule - fix inconsistencies when editing
+16. **Architecture**: ESLint rules prevent forbidden imports/violations
+17. **Complexity**: New patterns only for documented production issues
+18. **Performance**: Measure→optimize queries/indexes→cache. No premature optimization
+19. **Feature Flags**: Server-evaluated + ownership/expiry. Remove within one release
+20. **API**: Versioned REST + JSON errors + idempotency keys + boundary-validated DTOs
+21. **Deployment**: Two-phase migrations + canary + health gates + schema-compatible rollbacks
+22. **Observability**: User-centric SLIs/SLOs + distributed tracing + correlation IDs
 
 ### Quick Reference
 
-- **DO NOT OVER-ENGINEER** - No circuit breakers, health monitoring, or complex resilience patterns
-- **FAIL FAST** - No backward compatibility, surface errors immediately
-- **SINGLE RESPONSIBILITY** - One validation point, one data provider, one source of truth
-- **AUTOMATE ENFORCEMENT** - ESLint for architecture, git hooks for types, CI/CD for standards
-- **MEASURE BEFORE OPTIMIZING** - Always profile before adding complexity
+- **NO OVER-ENGINEERING**: No circuit breakers/health monitoring/complex resilience
+- **FAIL FAST**: No backward compatibility, surface errors immediately
+- **SINGLE RESPONSIBILITY**: One validation/data provider/truth source
+- **AUTOMATE**: ESLint→architecture, git hooks→types, CI/CD→standards
+- **MEASURE FIRST**: Profile before adding complexity
 
 ## Build & Development Commands
-
-### Core Commands
-- `npm run dev` - Start development server (Vite with force reload)
-- `npm run build` - TypeScript check + production build
-- `npm run preview` - Preview production build
-- `npm test` - Run Vitest tests
-
-### Code Quality
-- `npm run lint:check` - Check ESLint violations
-- `npm run lint:apply` - Auto-fix ESLint issues
-- `npm run prettier:check` - Check formatting
-- `npm run prettier:apply` - Auto-format code
-- `npm run validate:colors` - Validate semantic color usage
 
 ### Database Operations
 
 #### Local Development
 - Connect directly to remote Supabase via environment variables
 - No local Supabase instance required
-
-#### MCP Database Tools
-When MCP is configured (`.mcp.json` has credentials), use these tools directly:
-- `mcp__supabase__list_projects` - List Supabase projects
-- `mcp__supabase__apply_migration` - Apply database migrations
-- `mcp__supabase__execute_sql` - Execute SQL queries
-- `mcp__supabase__deploy_edge_function` - Deploy Edge Functions
-- `mcp__supabase__generate_typescript_types` - Generate TypeScript types
-
-#### Seed Data Management
-- `npm run seed:data` - Insert test data
-- `npm run seed:data:dry-run` - Preview without inserting
-- `npm run seed:data:clean` - Clean and regenerate
 
 ## Architecture Overview
 

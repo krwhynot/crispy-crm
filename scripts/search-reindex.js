@@ -209,15 +209,15 @@ async function rebuildGinIndexes() {
   const ginIndexes = [
     {
       table: 'contacts',
-      column: 'email_jsonb',
-      indexName: 'idx_contacts_email_jsonb_gin',
-      createSql: 'CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_contacts_email_jsonb_gin ON contacts USING gin(email_jsonb);'
+      column: 'email',
+      indexName: 'idx_contacts_email_gin',
+      createSql: 'CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_contacts_email_gin ON contacts USING gin(email);'
     },
     {
       table: 'contacts',
-      column: 'phone_jsonb',
-      indexName: 'idx_contacts_phone_jsonb_gin',
-      createSql: 'CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_contacts_phone_jsonb_gin ON contacts USING gin(phone_jsonb);'
+      column: 'phone',
+      indexName: 'idx_contacts_phone_gin',
+      createSql: 'CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_contacts_phone_gin ON contacts USING gin(phone);'
     },
     {
       table: 'contacts',
@@ -485,7 +485,7 @@ async function verifySearchFunctionality() {
     },
     {
       description: 'contacts email search',
-      sql: `SELECT COUNT(*) as count FROM contacts WHERE email_jsonb ? 'email';`
+      sql: `SELECT COUNT(*) as count FROM contacts WHERE email ? 'email';`
     },
     {
       description: 'opportunities summary view',

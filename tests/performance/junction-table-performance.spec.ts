@@ -74,7 +74,7 @@ describe('Junction Table Performance Tests', () => {
     const contacts = Array(500).fill(null).map((_, i) => ({
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
-      email_jsonb: [{ email: faker.internet.email(), type: 'Work' }],
+      email: [{ email: faker.internet.email(), type: 'Work' }],
       company_id: testOrgIds[i % testOrgIds.length], // Primary org for backward compatibility
       sales_id: testSalesId,
       role: ['decision_maker', 'influencer', 'buyer', 'end_user'][i % 4],
@@ -448,7 +448,7 @@ describe('Junction Table Performance Tests', () => {
     const newContacts = Array(50).fill(null).map(() => ({
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
-      email_jsonb: [{ email: faker.internet.email(), type: 'Work' }],
+      email: [{ email: faker.internet.email(), type: 'Work' }],
       company_id: testOrgIds[0],
       sales_id: testSalesId
     }));
@@ -557,7 +557,7 @@ describe('Junction Table Performance Tests', () => {
           id,
           first_name,
           last_name,
-          email_jsonb
+          email
         ),
         organization:companies(
           id,

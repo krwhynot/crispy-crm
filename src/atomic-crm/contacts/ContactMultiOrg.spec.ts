@@ -7,8 +7,8 @@ const mockContactWithMultipleOrgs = {
   last_name: 'Doe',
   title: 'Senior Consultant',
   department: 'Technology',
-  email_jsonb: [{ email: 'john.doe@acme.com', type: 'Work' }],
-  phone_jsonb: [{ number: '+1-555-0123', type: 'Work' }],
+  email: [{ email: 'john.doe@acme.com', type: 'Work' }],
+  phone: [{ number: '+1-555-0123', type: 'Work' }],
   organization_id: 1, // Primary organization (backward compatibility)
   role: 'decision_maker',
   is_primary_contact: true,
@@ -418,7 +418,7 @@ describe('Contact Multi-Organization Support', () => {
         id: 3,
         first_name: 'Bob',
         last_name: 'Johnson',
-        email_jsonb: [{ email: 'bob@example.com', type: 'Work' }],
+        email: [{ email: 'bob@example.com', type: 'Work' }],
         // No organization_id or organization relationships
       };
 

@@ -54,3 +54,5 @@ const OrganizationListActions = () => {
     </TopToolbar>
   );
 };
+
+export default OrganizationList;

@@ -17,16 +17,13 @@ import {
   useListContext,
   useGetResourceLabel,
 } from "ra-core";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import { TopToolbar } from "../layout/TopToolbar";
 import { OpportunityArchivedList } from "./OpportunityArchivedList";
-import { OpportunityCreate } from "./OpportunityCreate";
-import { OpportunityEdit } from "./OpportunityEdit";
 import { OpportunityEmpty } from "./OpportunityEmpty";
 import { OpportunityListContent } from "./OpportunityListContent";
-import { OpportunityShow } from "./OpportunityShow";
 import { OnlyMineInput } from "./OnlyMineInput";
 import { OPPORTUNITY_STAGE_CHOICES } from "./stageConstants";
 
@@ -92,11 +89,6 @@ const OpportunityList = () => {
 };
 
 const OpportunityLayout = () => {
-  const location = useLocation();
-  const matchCreate = matchPath("/opportunities/create", location.pathname);
-  const matchShow = matchPath("/opportunities/:id/show", location.pathname);
-  const matchEdit = matchPath("/opportunities/:id", location.pathname);
-
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
@@ -105,7 +97,6 @@ const OpportunityLayout = () => {
     return (
       <>
         <OpportunityEmpty>
-          <OpportunityShow open={!!matchShow} id={matchShow?.params.id} />
           <OpportunityArchivedList />
         </OpportunityEmpty>
       </>
@@ -115,9 +106,6 @@ const OpportunityLayout = () => {
     <div className="w-full">
       <OpportunityListContent />
       <OpportunityArchivedList />
-      <OpportunityCreate open={!!matchCreate} />
-      <OpportunityEdit open={!!matchEdit && !matchCreate} id={matchEdit?.params.id} />
-      <OpportunityShow open={!!matchShow} id={matchShow?.params.id} />
     </div>
   );
 };

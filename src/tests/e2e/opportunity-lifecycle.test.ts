@@ -105,7 +105,7 @@ describe('E2E Opportunity Lifecycle Tests', () => {
         .insert({
           first_name: 'Test',
           last_name: 'Contact',
-          email_jsonb: [{ type: 'work', email: 'test@lifecycle.com' }],
+          email: [{ type: 'work', email: 'test@lifecycle.com' }],
           organization_id: org.id
         })
         .select()

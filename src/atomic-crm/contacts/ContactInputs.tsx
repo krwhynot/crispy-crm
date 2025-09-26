@@ -110,7 +110,7 @@ const ContactPersonalInformationInputs = () => {
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Personal info</h6>
       <ArrayInput
-        source="email_jsonb"
+        source="email"
         label="Email addresses"
         helperText={false}
       >
@@ -141,7 +141,7 @@ const ContactPersonalInformationInputs = () => {
           />
         </SimpleFormIterator>
       </ArrayInput>
-      <ArrayInput source="phone_jsonb" label="Phone numbers" helperText={false}>
+      <ArrayInput source="phone" label="Phone numbers" helperText={false}>
         <SimpleFormIterator
           inline
           disableReordering

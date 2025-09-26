@@ -4,7 +4,7 @@ import { CancelButton, SaveButton, FormToolbar } from "@/components/admin";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 
-export const OrganizationCreate = () => {
+const OrganizationCreate = () => {
   const { identity } = useGetIdentity();
   return (
     <CreateBase
@@ -37,3 +37,6 @@ export const OrganizationCreate = () => {
     </CreateBase>
   );
 };
+
+export { OrganizationCreate };
+export default OrganizationCreate;

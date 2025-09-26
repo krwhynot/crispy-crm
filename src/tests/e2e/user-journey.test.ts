@@ -52,7 +52,7 @@ const generateSyntheticData = () => {
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
       title: faker.person.jobTitle(),
-      email_jsonb: [{
+      email: [{
         type: 'work',
         email: faker.internet.email()
       }]
@@ -314,7 +314,7 @@ describe('E2E User Journey Tests', () => {
           first_name: faker.person.firstName(),
           last_name: faker.person.lastName(),
           title: roleInfo.role,
-          email_jsonb: [{ type: 'work', email: faker.internet.email() }]
+          email: [{ type: 'work', email: faker.internet.email() }]
         };
 
         const { data: contact } = await supabase
@@ -534,7 +534,7 @@ describe('E2E User Journey Tests', () => {
         .insert({
           first_name: 'Test',
           last_name: 'Contact',
-          email_jsonb: [{ type: 'work', email: 'invalid-email' }] // Invalid format
+          email: [{ type: 'work', email: 'invalid-email' }] // Invalid format
         });
 
       // Should either succeed (no validation) or fail with proper error
