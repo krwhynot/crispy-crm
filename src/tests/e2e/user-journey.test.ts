@@ -147,18 +147,18 @@ describe('E2E User Journey Tests', () => {
 
       // Step 3: Link Contact as Primary Contact for Organization
       const { data: relationship } = await supabase
-        .from('contact_organization')
+        .from('contact_organizations')
         .insert({
           contact_id: contact.id,
           organization_id: organization.id,
-          is_primary_contact: true,
+          is_primary: true,
           decision_authority: 'Decision Maker'
         })
         .select()
         .single();
 
       expect(relationship).toBeDefined();
-      expect(relationship.is_primary_contact).toBe(true);
+      expect(relationship.is_primary).toBe(true);
 
       // Step 4: Create Opportunity linked to Organization and Contact
       const opportunityData = {
@@ -329,11 +329,11 @@ describe('E2E User Journey Tests', () => {
 
           // Create relationship
           await supabase
-            .from('contact_organization')
+            .from('contact_organizations')
             .insert({
               contact_id: contact.id,
               organization_id: organization.id,
-              is_primary_contact: roleInfo.is_primary,
+              is_primary: roleInfo.is_primary,
               decision_authority: roleInfo.authority
             });
         }

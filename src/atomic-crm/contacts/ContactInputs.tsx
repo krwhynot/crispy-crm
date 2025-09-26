@@ -71,7 +71,6 @@ const ContactPositionInputs = () => {
       <TextInput source="title" helperText={false} />
       <TextInput source="department" label="Department" helperText={false} />
 
-      {/* Multi-Organization Support */}
       <MultiOrganizationInput />
     </div>
   );
@@ -80,7 +79,6 @@ const ContactPositionInputs = () => {
 const ContactPersonalInformationInputs = () => {
   const { getValues, setValue } = useFormContext();
 
-  // set first and last name based on email
   const handleEmailChange = (email: string) => {
     const { first_name, last_name } = getValues();
     if (first_name || last_name || !email) return;

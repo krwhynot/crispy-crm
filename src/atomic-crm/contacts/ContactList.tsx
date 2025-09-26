@@ -68,21 +68,33 @@ const ContactListActions = () => (
 );
 
 const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
-  const organizations = await fetchRelatedRecords<Organization>(
-    records,
-    "company_id",
-    "organizations",
-  );
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
   const tags = await fetchRelatedRecords<Tag>(records, "tags", "tags");
 
+  // Collect all organization IDs from all contacts' organizations arrays
+  const organizationIds = Array.from(new Set(
+    records.flatMap(contact =>
+      contact.organizations?.map(org => org.organization_id) || []
+    )
+  ));
+
+  // Fetch organization names for all unique organization IDs
+  const organizations = organizationIds.length > 0 ?
+    await fetchRelatedRecords<Organization>(
+      organizationIds.map(id => ({ id, organization_id: id })),
+      "organization_id",
+      "organizations"
+    ) : {};
+
   const contacts = records.map((contact) => {
+    // Find the primary organization from the organizations array
+    const primaryOrganization = contact.organizations?.find(org => org.is_primary_organization);
+
     const exportedContact = {
       ...contact,
-      company:
-        contact.company_id != null
-          ? organizations[contact.company_id].name
-          : undefined,
+      company: primaryOrganization?.organization_id ?
+        organizations[primaryOrganization.organization_id]?.name :
+        undefined,
       sales: `${sales[contact.sales_id].first_name} ${
         sales[contact.sales_id].last_name
       }`,
@@ -106,7 +118,7 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
       // New multi-organization fields
       role: contact.role || '',
       department: contact.department || '',
-      is_primary_contact: contact.is_primary_contact ? 'Yes' : 'No',
+      is_primary_contact: primaryOrganization ? 'Yes' : 'No',
       purchase_influence: contact.purchase_influence || 'Unknown',
       decision_authority: contact.decision_authority || 'End User',
       organizations: contact.organizations ? JSON.stringify(contact.organizations) : '[]',

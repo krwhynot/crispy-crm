@@ -75,11 +75,7 @@ describe('Junction Table Performance Tests', () => {
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
       email: [{ email: faker.internet.email(), type: 'Work' }],
-      company_id: testOrgIds[i % testOrgIds.length], // Primary org for backward compatibility
-      sales_id: testSalesId,
-      role: ['decision_maker', 'influencer', 'buyer', 'end_user'][i % 4],
-      purchase_influence: ['High', 'Medium', 'Low', 'Unknown'][i % 4],
-      decision_authority: ['Decision Maker', 'Influencer', 'End User', 'Gatekeeper'][i % 4]
+      sales_id: testSalesId
     }));
 
     const { data: contactData, error: contactError } = await supabase
@@ -105,7 +101,7 @@ describe('Junction Table Performance Tests', () => {
         contactOrgRelationships.push({
           contact_id: testContactIds[i],
           organization_id: testOrgIds[orgIndex],
-          is_primary_contact: orgIndices.size === 1 || Math.random() > 0.7,
+          is_primary: orgIndices.size === 1 || Math.random() > 0.7,
           purchase_influence: ['High', 'Medium', 'Low', 'Unknown'][Math.floor(Math.random() * 4)],
           decision_authority: ['Decision Maker', 'Influencer', 'End User', 'Gatekeeper'][Math.floor(Math.random() * 4)],
           role: ['decision_maker', 'influencer', 'buyer', 'end_user', 'gatekeeper', 'champion'][Math.floor(Math.random() * 6)]
@@ -271,7 +267,7 @@ describe('Junction Table Performance Tests', () => {
         last_name,
         contact_organizations(
           organization_id,
-          is_primary_contact,
+          is_primary,
           purchase_influence,
           role,
           organization:companies(
@@ -449,7 +445,6 @@ describe('Junction Table Performance Tests', () => {
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
       email: [{ email: faker.internet.email(), type: 'Work' }],
-      company_id: testOrgIds[0],
       sales_id: testSalesId
     }));
 
@@ -467,7 +462,7 @@ describe('Junction Table Performance Tests', () => {
         junctionRecords.push({
           contact_id: contact.id,
           organization_id: testOrgIds[i],
-          is_primary_contact: i === 0,
+          is_primary: i === 0,
           purchase_influence: 'Medium',
           role: 'influencer'
         });
@@ -552,7 +547,7 @@ describe('Junction Table Performance Tests', () => {
       .select(`
         id,
         purchase_influence,
-        is_primary_contact,
+        is_primary,
         contact:contacts(
           id,
           first_name,
@@ -567,7 +562,7 @@ describe('Junction Table Performance Tests', () => {
         )
       `)
       .eq('purchase_influence', 'High')
-      .eq('is_primary_contact', true)
+      .eq('is_primary', true)
       .eq('organization.organization_type', 'customer')
       .limit(50);
 

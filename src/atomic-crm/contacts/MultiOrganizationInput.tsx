@@ -8,7 +8,6 @@ import {
   ReferenceInput,
   SelectInput,
   BooleanInput,
-  RadioButtonGroupInput,
 } from "@/components/admin";
 import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/AutocompleteOrganizationInput";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -40,51 +39,33 @@ const decisionAuthorityChoices = [
 ];
 
 export const MultiOrganizationInput = () => {
-  const { setValue, getValues } = useFormContext();
+  const { setValue } = useFormContext();
   const organizations = useWatch({ name: "organizations" }) || [];
-  const primaryOrgId = useWatch({ name: "company_id" });
-  const primaryRole = useWatch({ name: "role" });
-  const primaryInfluence = useWatch({ name: "purchase_influence" });
-  const primaryAuthority = useWatch({ name: "decision_authority" });
-  const isPrimaryContact = useWatch({ name: "is_primary_contact" });
 
-  // Sync primary organization with organizations array
+  // Validate that exactly one organization has is_primary = true
   React.useEffect(() => {
-    if (primaryOrgId) {
-      const primaryOrgExists = organizations.some(
-        (org: ContactOrganization) => org.organization_id === primaryOrgId
-      );
+    const primaryCount = organizations.filter((org: any) => org.is_primary).length;
 
-      if (!primaryOrgExists && primaryOrgId !== undefined) {
-        // Add primary organization to the array
-        const updatedOrgs = [
-          {
-            organization_id: primaryOrgId,
-            is_primary_contact: isPrimaryContact || false,
-            role: primaryRole,
-            purchase_influence: primaryInfluence || "Unknown",
-            decision_authority: primaryAuthority || "End User",
-          },
-          ...organizations,
-        ];
-        setValue("organizations", updatedOrgs);
-      } else if (primaryOrgExists) {
-        // Update primary organization in the array
-        const updatedOrgs = organizations.map((org: ContactOrganization) =>
-          org.organization_id === primaryOrgId
-            ? {
-                ...org,
-                is_primary_contact: isPrimaryContact || false,
-                role: primaryRole,
-                purchase_influence: primaryInfluence || org.purchase_influence,
-                decision_authority: primaryAuthority || org.decision_authority,
-              }
-            : org
-        );
-        setValue("organizations", updatedOrgs);
-      }
+    if (primaryCount === 0 && organizations.length > 0) {
+      // Set first organization as primary if none is marked
+      const updatedOrgs = organizations.map((org: any, index: number) => ({
+        ...org,
+        is_primary: index === 0,
+      }));
+      setValue("organizations", updatedOrgs);
+    } else if (primaryCount > 1) {
+      // Ensure only the first primary remains primary
+      let foundFirst = false;
+      const updatedOrgs = organizations.map((org: any) => {
+        if (org.is_primary && !foundFirst) {
+          foundFirst = true;
+          return org;
+        }
+        return { ...org, is_primary: false };
+      });
+      setValue("organizations", updatedOrgs);
     }
-  }, [primaryOrgId, primaryRole, primaryInfluence, primaryAuthority, isPrimaryContact]);
+  }, [organizations, setValue]);
 
   return (
     <div className="space-y-4">
@@ -93,50 +74,9 @@ export const MultiOrganizationInput = () => {
         Associated Organizations
       </h6>
 
-      {/* Primary Organization - backward compatibility */}
+      {/* Organizations */}
       <Card className="p-4">
-        <h6 className="text-sm font-medium mb-3">Primary Organization</h6>
-        <div className="space-y-3">
-          <ReferenceInput source="company_id" reference="organizations">
-            <AutocompleteOrganizationInput />
-          </ReferenceInput>
-          <SelectInput
-            source="role"
-            label="Role"
-            choices={roleChoices}
-            helperText={false}
-            optionText="name"
-            optionValue="id"
-          />
-          <BooleanInput
-            source="is_primary_contact"
-            label="Primary Contact for Organization"
-            helperText={false}
-          />
-          <SelectInput
-            source="purchase_influence"
-            label="Purchase Influence"
-            choices={purchaseInfluenceChoices}
-            helperText={false}
-            optionText="name"
-            optionValue="id"
-            defaultValue="Unknown"
-          />
-          <SelectInput
-            source="decision_authority"
-            label="Decision Authority"
-            choices={decisionAuthorityChoices}
-            helperText={false}
-            optionText="name"
-            optionValue="id"
-            defaultValue="End User"
-          />
-        </div>
-      </Card>
-
-      {/* Additional Organizations */}
-      <Card className="p-4">
-        <h6 className="text-sm font-medium mb-3">Additional Organizations</h6>
+        <h6 className="text-sm font-medium mb-3">Organizations</h6>
         <ArrayInput source="organizations" label={false} helperText={false}>
           <SimpleFormIterator
             inline={false}
@@ -161,8 +101,8 @@ export const MultiOrganizationInput = () => {
                 optionValue="id"
               />
               <BooleanInput
-                source="is_primary_contact"
-                label="Primary Contact for this Organization"
+                source="is_primary"
+                label="Primary Organization"
                 helperText={false}
               />
               <div className="grid grid-cols-2 gap-3">

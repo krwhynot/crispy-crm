@@ -18,7 +18,7 @@ export type CompanyPriority = 'A' | 'B' | 'C' | 'D';
 
 // SignUpData type removed - all users created through Sales management
 
-export type SalesFormData = {
+export interface SalesFormData {
   avatar: string;
   email: string;
   password: string;
@@ -26,7 +26,7 @@ export type SalesFormData = {
   last_name: string;
   administrator: boolean;
   disabled: boolean;
-};
+}
 
 export type Sale = {
   first_name: string;
@@ -53,24 +53,21 @@ export type Sale = {
 // Organization type (imported from validation)
 export type { Organization } from "./validation/organizations";
 
-// Company type - alias to Organization for backward compatibility
-export type Company = Organization;
 
-export type EmailAndType = {
+export interface EmailAndType {
   email: string;
   type: "Work" | "Home" | "Other";
-};
+}
 
-export type PhoneNumberAndType = {
+export interface PhoneNumberAndType {
   number: string;
   type: "Work" | "Home" | "Other";
-};
+}
 
 export type Contact = {
   first_name: string;
   last_name: string;
   title: string;
-  company_id: Identifier; // Backward compatibility - primary organization
   email: EmailAndType[];
   avatar?: Partial<RAFile>;
   linkedin_url?: string | null;
@@ -87,7 +84,6 @@ export type Contact = {
   // Primary organization fields (backward compatibility)
   role?: ContactRole;
   department?: string;
-  is_primary_contact?: boolean;
   purchase_influence?: PurchaseInfluence;
   decision_authority?: DecisionAuthority;
   deleted_at?: string;
@@ -102,19 +98,18 @@ export type Contact = {
   total_organizations?: number;
 } & Pick<RaRecord, "id">;
 
-export type ContactOrganization = {
+export interface ContactOrganization {
   id?: Identifier; // Optional for new records
   contact_id: Identifier;
   organization_id: Identifier;
   is_primary_organization: boolean; // Fixed field name to match tests
-  is_primary_contact?: boolean; // Legacy backward compatibility
   purchase_influence: PurchaseInfluence;
   decision_authority: DecisionAuthority;
   role?: ContactRole;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;
-};
+}
 
 export type OpportunityParticipant = {
   id: Identifier;
@@ -206,9 +201,6 @@ export type Opportunity = {
   next_action_date?: string;
   competition?: string;
   decision_criteria?: string;
-  // Backward compatibility
-  company_id?: Identifier;
-  archived_at?: string;
 } & Pick<RaRecord, "id">;
 
 // DealNote type removed - use OpportunityNote instead
@@ -248,7 +240,7 @@ export type ActivityOrganizationCreated = {
 
 export type ActivityContactCreated = {
   type: typeof CONTACT_CREATED;
-  company_id: Identifier;
+  customer_organization_id: Identifier;
   sales_id?: Identifier;
   contact: Contact;
   date: string;
@@ -263,7 +255,7 @@ export type ActivityContactNoteCreated = {
 
 export type ActivityOpportunityCreated = {
   type: typeof OPPORTUNITY_CREATED;
-  company_id: Identifier;
+  customer_organization_id: Identifier;
   sales_id?: Identifier;
   opportunity: Opportunity;
   date: string;

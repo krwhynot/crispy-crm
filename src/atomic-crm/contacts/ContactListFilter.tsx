@@ -138,8 +138,8 @@ export const ContactListFilter = () => {
         />
         <ToggleFilterButton
           className="w-full justify-between"
-          label="Primary Contact"
-          value={{ is_primary_contact: true }}
+          label="Primary at Any Organization"
+          value={{ "contact_organizations.is_primary": true }}
         />
       </FilterCategory>
 

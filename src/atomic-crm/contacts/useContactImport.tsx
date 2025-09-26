@@ -3,7 +3,7 @@ import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Company, Tag } from "../types";
 
-export type ContactImportSchema = {
+export interface ContactImportSchema {
   first_name: string;
   last_name: string;
   gender: string;
@@ -23,7 +23,7 @@ export type ContactImportSchema = {
   status: string;
   tags: string;
   linkedin_url: string;
-};
+}
 
 export function useContactImport() {
   const today = new Date().toISOString();

@@ -18,7 +18,6 @@ const mockContacts = [
     title: 'CTO',
     email: [{ email: 'john.doe@acme.com', type: 'Work' }],
     phone: [{ number: '+1-555-0123', type: 'Work' }],
-    organization_id: 1,
     organization_names: ['Acme Corp', 'Tech Partners Ltd'], // Aggregated from junction table
     primary_organization_name: 'Acme Corp',
     role: 'decision_maker',
@@ -32,7 +31,6 @@ const mockContacts = [
     title: 'VP Engineering',
     email: [{ email: 'jane.smith@techcorp.com', type: 'Work' }],
     phone: [{ number: '+1-555-0124', type: 'Work' }],
-    organization_id: 2,
     organization_names: ['TechCorp Inc'],
     primary_organization_name: 'TechCorp Inc',
     role: 'influencer',
@@ -46,7 +44,6 @@ const mockContacts = [
     title: 'Procurement Manager',
     email: [{ email: 'bob.johnson@global.com', type: 'Work' }],
     phone: [{ number: '+1-555-0125', type: 'Work' }],
-    organization_id: 3,
     organization_names: ['Global Systems Ltd', 'Consulting Firm Inc', 'Tech Distributors Ltd'],
     primary_organization_name: 'Global Systems Ltd',
     role: 'buyer',
@@ -126,7 +123,7 @@ describe('ContactList - Multi-Organization Support', () => {
         // Apply filters
         if (params.filter) {
           if (params.filter.organization_id) {
-            // Filter by any organization the contact is associated with
+            // Filter by any organization the contact is associated with via junction table
             filteredContacts = filteredContacts.filter(contact =>
               contact.organization_names.some(name =>
                 mockOrganizations.find(org =>

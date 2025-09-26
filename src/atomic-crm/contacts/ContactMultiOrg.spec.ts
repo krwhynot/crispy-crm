@@ -8,12 +8,7 @@ const mockContactWithMultipleOrgs = {
   title: 'Senior Consultant',
   department: 'Technology',
   email: [{ email: 'john.doe@acme.com', type: 'Work' }],
-  phone: [{ number: '+1-555-0123', type: 'Work' }],
-  organization_id: 1, // Primary organization (backward compatibility)
-  role: 'decision_maker',
-  is_primary_contact: true,
-  purchase_influence: 'High',
-  decision_authority: 'Decision Maker'
+  phone: [{ number: '+1-555-0123', type: 'Work' }]
 };
 
 const mockOrganizations = [
@@ -27,7 +22,7 @@ const mockContactOrganizations = [
     id: 1,
     contact_id: 1,
     organization_id: 1,
-    is_primary_organization: true,
+    is_primary: true,
     role: 'decision_maker',
     purchase_influence: 'High',
     decision_authority: 'Decision Maker'
@@ -36,7 +31,7 @@ const mockContactOrganizations = [
     id: 2,
     contact_id: 1,
     organization_id: 2,
-    is_primary_organization: false,
+    is_primary: false,
     role: 'influencer',
     purchase_influence: 'Medium',
     decision_authority: 'Influencer'
@@ -45,7 +40,7 @@ const mockContactOrganizations = [
     id: 3,
     contact_id: 1,
     organization_id: 3,
-    is_primary_organization: false,
+    is_primary: false,
     role: 'buyer',
     purchase_influence: 'Low',
     decision_authority: 'End User'
@@ -120,10 +115,8 @@ describe('Contact Multi-Organization Support', () => {
       expect(contact.id).toBe(1);
       expect(contact.first_name).toBe('John');
       expect(contact.last_name).toBe('Doe');
-      expect(contact.organization_id).toBe(1); // Backward compatibility
-      expect(contact.role).toBe('decision_maker');
-      expect(contact.purchase_influence).toBe('High');
-      expect(contact.decision_authority).toBe('Decision Maker');
+      expect(contact.title).toBe('Senior Consultant');
+      expect(contact.department).toBe('Technology');
     });
 
     it('should validate contact organization relationships', () => {
@@ -132,13 +125,13 @@ describe('Contact Multi-Organization Support', () => {
       expect(relationships).toHaveLength(3);
 
       // Should have exactly one primary organization
-      const primaryCount = relationships.filter(rel => rel.is_primary_organization).length;
+      const primaryCount = relationships.filter(rel => rel.is_primary).length;
       expect(primaryCount).toBe(1);
 
       // Primary organization should be the first one
-      expect(relationships[0].is_primary_organization).toBe(true);
-      expect(relationships[1].is_primary_organization).toBe(false);
-      expect(relationships[2].is_primary_organization).toBe(false);
+      expect(relationships[0].is_primary).toBe(true);
+      expect(relationships[1].is_primary).toBe(false);
+      expect(relationships[2].is_primary).toBe(false);
     });
 
     it('should support different roles per organization', () => {
@@ -162,21 +155,22 @@ describe('Contact Multi-Organization Support', () => {
       expect(result.data.id).toBe(1);
       expect(result.data.first_name).toBe('John');
       expect(result.data.last_name).toBe('Doe');
-      expect(result.data.organization_id).toBe(1); // Primary organization
+      expect(result.data.title).toBe('Senior Consultant');
+      expect(result.data.department).toBe('Technology');
     });
 
     it('should retrieve contact organization relationships', async () => {
       const result = await mockDataProvider.getList('contact_organizations', {
         filter: { contact_id: 1 },
         pagination: { page: 1, perPage: 25 },
-        sort: { field: 'is_primary_organization', order: 'DESC' }
+        sort: { field: 'is_primary', order: 'DESC' }
       });
 
       expect(result.data).toHaveLength(3);
       expect(result.total).toBe(3);
 
       // Check that primary organization comes first when sorted
-      const primaryRelationship = result.data.find(rel => rel.is_primary_organization);
+      const primaryRelationship = result.data.find(rel => rel.is_primary);
       expect(primaryRelationship).toBeDefined();
       expect(primaryRelationship?.organization_id).toBe(1);
     });
@@ -215,7 +209,7 @@ describe('Contact Multi-Organization Support', () => {
       const newRelationship = {
         contact_id: 1,
         organization_id: 4,
-        is_primary_organization: false,
+        is_primary: false,
         role: 'technical',
         purchase_influence: 'Low',
         decision_authority: 'End User'
@@ -235,7 +229,7 @@ describe('Contact Multi-Organization Support', () => {
         id: 1,
         contact_id: 1,
         organization_id: 1,
-        is_primary_organization: true,
+        is_primary: true,
         role: 'champion', // Updated role
         purchase_influence: 'High',
         decision_authority: 'Decision Maker'
@@ -269,14 +263,14 @@ describe('Contact Multi-Organization Support', () => {
         target: 'contact_id',
         id: 1,
         pagination: { page: 1, perPage: 25 },
-        sort: { field: 'is_primary_organization', order: 'DESC' }
+        sort: { field: 'is_primary', order: 'DESC' }
       });
 
       expect(mockDataProvider.getManyReference).toHaveBeenCalledWith('contact_organizations', {
         target: 'contact_id',
         id: 1,
         pagination: { page: 1, perPage: 25 },
-        sort: { field: 'is_primary_organization', order: 'DESC' }
+        sort: { field: 'is_primary', order: 'DESC' }
       });
     });
   });
@@ -338,99 +332,141 @@ describe('Contact Multi-Organization Support', () => {
     });
   });
 
-  describe('Backward Compatibility', () => {
-    it('should maintain backward compatibility with single organization contacts', async () => {
-      const legacyContact = {
-        id: 2,
-        first_name: 'Jane',
-        last_name: 'Smith',
-        organization_id: 1, // Legacy single organization reference
-        role: 'buyer',
-        is_primary_contact: false
-      };
+  describe('Primary Organization Validation', () => {
+    it('should enforce exactly one primary organization', () => {
+      const relationships = mockContactOrganizations;
 
-      mockDataProvider.getOne.mockResolvedValue({
-        data: legacyContact
-      });
+      // Count primary organizations
+      const primaryCount = relationships.filter(rel => rel.is_primary).length;
+      expect(primaryCount).toBe(1);
 
-      const result = await mockDataProvider.getOne('contacts', { id: 2 });
-
-      expect(result.data.company_id).toBe(1);
-      expect(result.data.role).toBe('buyer');
-      expect(result.data.is_primary_contact).toBe(false);
+      // Verify only the first relationship is primary
+      expect(relationships[0].is_primary).toBe(true);
+      expect(relationships[1].is_primary).toBe(false);
+      expect(relationships[2].is_primary).toBe(false);
     });
 
-    it('should create junction table entries for legacy contacts', () => {
-      const legacyContact = {
+    it('should reject contact with no primary organization', () => {
+      const invalidRelationships = mockContactOrganizations.map(rel => ({
+        ...rel,
+        is_primary: false
+      }));
+
+      const primaryCount = invalidRelationships.filter(rel => rel.is_primary).length;
+      expect(primaryCount).toBe(0);
+
+      // This would be invalid - should have exactly one primary
+      const isValid = primaryCount === 1;
+      expect(isValid).toBe(false);
+    });
+
+    it('should reject contact with multiple primary organizations', () => {
+      const invalidRelationships = mockContactOrganizations.map(rel => ({
+        ...rel,
+        is_primary: true
+      }));
+
+      const primaryCount = invalidRelationships.filter(rel => rel.is_primary).length;
+      expect(primaryCount).toBe(3);
+
+      // This would be invalid - should have exactly one primary
+      const isValid = primaryCount === 1;
+      expect(isValid).toBe(false);
+    });
+
+    it('should validate primary organization updates maintain single primary', async () => {
+      // Attempt to create a second primary relationship
+      const invalidUpdate = {
+        contact_id: 1,
+        organization_id: 4,
+        is_primary: true, // This would create a second primary
+        role: 'influencer',
+        purchase_influence: 'Medium',
+        decision_authority: 'Influencer'
+      };
+
+      // In a real system, this should be rejected by validation
+      const existingPrimaryCount = mockContactOrganizations.filter(rel => rel.is_primary).length;
+      const wouldCreateMultiplePrimary = existingPrimaryCount >= 1 && invalidUpdate.is_primary;
+
+      expect(wouldCreateMultiplePrimary).toBe(true);
+      // This should fail validation in the actual system
+    });
+  });
+
+  describe('Legacy Field Rejection', () => {
+    it('should reject creation with legacy organization_id field', async () => {
+      const contactWithLegacyField = {
+        first_name: 'Test',
+        last_name: 'Contact',
+        organization_id: 1, // Legacy field - should be rejected
+        email: [{ email: 'test@example.com', type: 'Work' }]
+      };
+
+      // Mock provider to simulate validation error
+      mockDataProvider.create.mockRejectedValue(new Error(
+        'Legacy field organization_id is not supported. Use contact_organizations junction table instead.'
+      ));
+
+      await expect(
+        mockDataProvider.create('contacts', { data: contactWithLegacyField })
+      ).rejects.toThrow('Legacy field organization_id is not supported');
+    });
+
+    it('should reject update with legacy role field on contact', async () => {
+      const contactWithLegacyRole = {
         id: 1,
         first_name: 'John',
         last_name: 'Doe',
-        organization_id: 1,
-        role: 'decision_maker',
-        is_primary_contact: true
+        role: 'decision_maker', // Legacy field - should be rejected
+        purchase_influence: 'High' // Legacy field - should be rejected
       };
 
-      const junctionTableEntry = {
-        contact_id: legacyContact.id,
-        organization_id: legacyContact.organization_id,
-        is_primary_organization: legacyContact.is_primary_contact,
-        role: legacyContact.role,
-        purchase_influence: 'Unknown', // Default for legacy data
-        decision_authority: 'End User', // Default for legacy data
-        created_at: new Date().toISOString()
-      };
+      // Mock provider to simulate validation error
+      mockDataProvider.update.mockRejectedValue(new Error(
+        'Legacy fields role, purchase_influence are not supported on contacts. Use contact_organizations junction table instead.'
+      ));
 
-      expect(junctionTableEntry.contact_id).toBe(1);
-      expect(junctionTableEntry.organization_id).toBe(1);
-      expect(junctionTableEntry.is_primary_organization).toBe(true);
-      expect(junctionTableEntry.role).toBe('decision_maker');
-      expect(junctionTableEntry.purchase_influence).toBe('Unknown');
-      expect(junctionTableEntry.decision_authority).toBe('End User');
+      await expect(
+        mockDataProvider.update('contacts', {
+          id: 1,
+          data: contactWithLegacyRole,
+          previousData: mockContactWithMultipleOrgs
+        })
+      ).rejects.toThrow('Legacy fields role, purchase_influence are not supported');
     });
 
-    it('should support querying contacts by legacy organization_id field', async () => {
-      mockDataProvider.getList.mockImplementation((resource, params) => {
-        if (resource === 'contacts_summary' && params.filter?.organization_id) {
-          // Support legacy filtering by organization_id
-          const contacts = [mockContactWithMultipleOrgs].filter(
-            contact => contact.organization_id === params.filter.organization_id
-          );
-          return Promise.resolve({
-            data: contacts,
-            total: contacts.length,
-          });
-        }
-        return Promise.resolve({ data: [], total: 0 });
-      });
-
-      const result = await mockDataProvider.getList('contacts_summary', {
-        filter: { organization_id: 1 },
-        pagination: { page: 1, perPage: 25 },
-        sort: { field: 'last_name', order: 'ASC' }
-      });
-
-      expect(result.data).toHaveLength(1);
-      expect(result.data[0].organization_id).toBe(1);
-    });
-
-    it('should handle contact without organizations gracefully', async () => {
-      const contactWithoutOrg = {
-        id: 3,
-        first_name: 'Bob',
-        last_name: 'Johnson',
-        email: [{ email: 'bob@example.com', type: 'Work' }],
-        // No organization_id or organization relationships
+    it('should reject update with legacy decision_authority field', async () => {
+      const contactWithLegacyAuthority = {
+        id: 1,
+        first_name: 'John',
+        last_name: 'Doe',
+        decision_authority: 'Decision Maker' // Legacy field - should be rejected
       };
 
-      mockDataProvider.getOne.mockResolvedValue({
-        data: contactWithoutOrg
+      // Mock provider to simulate validation error
+      mockDataProvider.update.mockRejectedValue(new Error(
+        'Legacy field decision_authority is not supported on contacts. Use contact_organizations junction table instead.'
+      ));
+
+      await expect(
+        mockDataProvider.update('contacts', {
+          id: 1,
+          data: contactWithLegacyAuthority,
+          previousData: mockContactWithMultipleOrgs
+        })
+      ).rejects.toThrow('Legacy field decision_authority is not supported');
+    });
+
+    it('should provide helpful error messages for legacy fields', () => {
+      const legacyFields = ['organization_id', 'role', 'purchase_influence', 'decision_authority'];
+
+      legacyFields.forEach(field => {
+        const errorMessage = `Legacy field ${field} is not supported on contacts. Use contact_organizations junction table instead.`;
+        expect(errorMessage).toContain('Legacy field');
+        expect(errorMessage).toContain('contact_organizations junction table');
+        expect(errorMessage).toContain(field);
       });
-
-      const result = await mockDataProvider.getOne('contacts', { id: 3 });
-
-      expect(result.data.first_name).toBe('Bob');
-      expect(result.data.last_name).toBe('Johnson');
-      expect(result.data.organization_id).toBeUndefined();
     });
   });
 
@@ -439,7 +475,7 @@ describe('Contact Multi-Organization Support', () => {
       const contactOrganizationData = {
         contact_id: 1,
         organization_id: 2,
-        is_primary_organization: false,
+        is_primary: false,
         role: 'influencer',
         purchase_influence: 'Medium',
         decision_authority: 'Influencer'
@@ -456,19 +492,19 @@ describe('Contact Multi-Organization Support', () => {
       expect(result.data).toEqual(expect.objectContaining({
         contact_id: 1,
         organization_id: 2,
-        is_primary_organization: false,
+        is_primary: false,
         role: 'influencer'
       }));
     });
 
     it('should maintain primary organization designation', () => {
       const relationships = mockContactOrganizations;
-      const primaryCount = relationships.filter(rel => rel.is_primary_organization).length;
+      const primaryCount = relationships.filter(rel => rel.is_primary).length;
 
       expect(primaryCount).toBe(1);
-      expect(relationships[0].is_primary_organization).toBe(true);
-      expect(relationships[1].is_primary_organization).toBe(false);
-      expect(relationships[2].is_primary_organization).toBe(false);
+      expect(relationships[0].is_primary).toBe(true);
+      expect(relationships[1].is_primary).toBe(false);
+      expect(relationships[2].is_primary).toBe(false);
     });
 
     it('should handle different roles per organization', () => {

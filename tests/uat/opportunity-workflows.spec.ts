@@ -23,7 +23,6 @@ describe('UAT: Opportunity Workflows', () => {
     sales_id: number;
     created_at: string;
     updated_at: string;
-    archived_at?: string;
   }
 
   interface TestContact {
@@ -37,7 +36,7 @@ describe('UAT: Opportunity Workflows', () => {
     background: string;
     organization_relationships?: Array<{
       organization_id: number;
-      is_primary_contact: boolean;
+      is_primary: boolean;
       role: string;
       purchase_influence: string;
       decision_authority: string;
@@ -125,7 +124,6 @@ describe('UAT: Opportunity Workflows', () => {
       sales_id: 1,
       created_at: '2024-01-01T00:00:00Z',
       updated_at: '2024-01-15T00:00:00Z',
-      archived_at: null
     }
   ];
 
@@ -184,14 +182,14 @@ describe('UAT: Opportunity Workflows', () => {
         organization_relationships: [
           {
             organization_id: 1,
-            is_primary_contact: true,
+            is_primary: true,
             role: 'Technical Lead',
             purchase_influence: 'High',
             decision_authority: 'Recommender'
           },
           {
             organization_id: 2,
-            is_primary_contact: false,
+            is_primary: false,
             role: 'Consultant',
             purchase_influence: 'Medium',
             decision_authority: 'Influencer'
@@ -204,13 +202,13 @@ describe('UAT: Opportunity Workflows', () => {
       expect(contactWithMultipleOrgs.organization_relationships).toHaveLength(2);
 
       // Check primary organization
-      const primaryRelationship = contactWithMultipleOrgs.organization_relationships?.find(rel => rel.is_primary_contact);
+      const primaryRelationship = contactWithMultipleOrgs.organization_relationships?.find(rel => rel.is_primary);
       expect(primaryRelationship).toBeDefined();
       expect(primaryRelationship?.organization_id).toBe(1);
       expect(primaryRelationship?.role).toBe('Technical Lead');
 
       // Check secondary organization
-      const secondaryRelationship = contactWithMultipleOrgs.organization_relationships?.find(rel => !rel.is_primary_contact);
+      const secondaryRelationship = contactWithMultipleOrgs.organization_relationships?.find(rel => !rel.is_primary);
       expect(secondaryRelationship).toBeDefined();
       expect(secondaryRelationship?.organization_id).toBe(2);
       expect(secondaryRelationship?.role).toBe('Consultant');
@@ -219,7 +217,7 @@ describe('UAT: Opportunity Workflows', () => {
     test('should validate organization relationship fields', () => {
       const relationshipFields = {
         organization_id: 1,
-        is_primary_contact: true,
+        is_primary: true,
         role: 'Technical Lead',
         purchase_influence: 'High',
         decision_authority: 'Recommender'
@@ -227,7 +225,7 @@ describe('UAT: Opportunity Workflows', () => {
 
       // Validate required fields
       expect(relationshipFields.organization_id).toBeDefined();
-      expect(typeof relationshipFields.is_primary_contact).toBe('boolean');
+      expect(typeof relationshipFields.is_primary).toBe('boolean');
       expect(relationshipFields.role).toBeDefined();
 
       // Validate enum values
@@ -468,7 +466,7 @@ describe('UAT: Opportunity Workflows', () => {
       const company = mockCompanies[0];
 
       // Validate relationship exists
-      expect(contact.company_id).toBe(company.id);
+      // Contact-organization relationship managed via junction table
 
       // Validate contact data integrity
       expect(contact.first_name).toBe('John');

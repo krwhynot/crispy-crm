@@ -3,12 +3,12 @@
  * Replaces hardcoded stage definitions across components
  */
 
-export type OpportunityStage = {
+export interface OpportunityStage {
   value: string;
   label: string;
   color: string;
   description: string;
-};
+}
 
 export type OpportunityStageValue =
   | 'new_lead'

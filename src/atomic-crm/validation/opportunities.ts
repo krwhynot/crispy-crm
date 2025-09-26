@@ -114,14 +114,20 @@ export const opportunitySchema = z.object({
   competitorWon: z.string().optional(),
   lossNotes: z.string().optional(),
 
-  // Backward compatibility fields (may be present but not used)
-  company_id: z.union([z.string(), z.number()]).optional(),
-  archived_at: z.string().optional().nullable(),
   deleted_at: z.string().optional().nullable(),
 
   // System fields
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
+}).refine((data) => {
+  // Check for removed legacy fields and provide helpful error messages
+  if ('company_id' in data) {
+    throw new Error("Field 'company_id' is no longer supported. Use customer_organization_id, principal_organization_id, or distributor_organization_id instead.");
+  }
+  if ('archived_at' in data) {
+    throw new Error("Field 'archived_at' is no longer supported. Use deleted_at for soft deletes or stage transitions for opportunity lifecycle management.");
+  }
+  return true;
 });
 
 // Type inference

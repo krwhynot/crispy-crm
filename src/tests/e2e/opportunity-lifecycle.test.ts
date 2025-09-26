@@ -105,13 +105,23 @@ describe('E2E Opportunity Lifecycle Tests', () => {
         .insert({
           first_name: 'Test',
           last_name: 'Contact',
-          email: [{ type: 'work', email: 'test@lifecycle.com' }],
-          organization_id: org.id
+          email: [{ type: 'work', email: 'test@lifecycle.com' }]
         })
         .select()
         .single();
 
-      if (contact) testData.contacts.push(contact.id);
+      if (contact) {
+        testData.contacts.push(contact.id);
+
+        // Create junction table relationship
+        await supabase
+          .from('contact_organizations')
+          .insert({
+            contact_id: contact.id,
+            organization_id: org.id,
+            is_primary: true
+          });
+      }
     }
   });
 

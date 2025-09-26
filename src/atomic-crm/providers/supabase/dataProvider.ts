@@ -24,8 +24,6 @@ import type {
 } from "../../types";
 import {
   validateTagColor,
-  migrateHexToSemantic,
-  isLegacyHexColor,
 } from "../../tags/tag-colors";
 import { getActivityLog } from "../commons/activity";
 import { getOrganizationAvatar } from "../commons/getOrganizationAvatar";
@@ -259,7 +257,7 @@ const dataProviderWithCustomMethods = {
       .insert({
         contact_id: contactId,
         organization_id: organizationId,
-        is_primary_contact: params.is_primary_contact || false,
+        is_primary: params.is_primary || false,
         purchase_influence: params.purchase_influence || 'Unknown',
         decision_authority: params.decision_authority || 'End User',
         role: params.role,
@@ -509,17 +507,6 @@ export const dataProvider = withLifecycleCallbacks(
         // Validate the color
         const validationError = validateTagColor(data.color);
         if (validationError) {
-          // If it's a legacy hex color, migrate it
-          if (isLegacyHexColor(data.color)) {
-            return {
-              ...params,
-              data: {
-                ...data,
-                color: migrateHexToSemantic(data.color),
-              },
-            };
-          }
-          // Otherwise, throw an error
           throw new Error(validationError);
         }
 
@@ -531,17 +518,6 @@ export const dataProvider = withLifecycleCallbacks(
         // Validate the color
         const validationError = validateTagColor(data.color);
         if (validationError) {
-          // If it's a legacy hex color, migrate it
-          if (isLegacyHexColor(data.color)) {
-            return {
-              ...params,
-              data: {
-                ...data,
-                color: migrateHexToSemantic(data.color),
-              },
-            };
-          }
-          // Otherwise, throw an error
           throw new Error(validationError);
         }
 

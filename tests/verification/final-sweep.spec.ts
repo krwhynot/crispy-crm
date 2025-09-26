@@ -244,7 +244,7 @@ describe('Task 4.7: Final Verification Sweep', () => {
         probability: 0.75,
         expected_close_date: new Date().toISOString(),
         stage: 'qualification',
-        company_id: 1 // Assuming test company exists
+        customer_organization_id: 1 // Assuming test company exists
       };
 
       const { data, error } = await supabase

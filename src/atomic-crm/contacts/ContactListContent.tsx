@@ -63,9 +63,10 @@ export const ContactListContent = () => {
               <div className="text-sm text-muted-foreground">
                 {contact.title}
                 {contact.department && ` - ${contact.department}`}
-                {contact.title && contact.company_id != null && " at "}
-                {contact.company_id != null && (
+                {contact.title && contact.organizations?.find((org: any) => org.is_primary) && " at "}
+                {contact.organizations?.find((org: any) => org.is_primary) && (
                   <ReferenceField
+                    record={{ company_id: contact.organizations.find((org: any) => org.is_primary)?.organization_id }}
                     source="company_id"
                     reference="organizations"
                     link={false}
@@ -76,11 +77,6 @@ export const ContactListContent = () => {
                 {contact.role && (
                   <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
                     {contact.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </span>
-                )}
-                {contact.is_primary_contact && (
-                  <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">
-                    Primary
                   </span>
                 )}
                 {contact.nb_tasks
