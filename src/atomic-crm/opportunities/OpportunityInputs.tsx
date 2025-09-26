@@ -8,7 +8,7 @@ import {
 } from "@/components/admin";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { required } from "ra-core";
+// Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { useWatch } from "react-hook-form";
 import { contactOptionText } from "../misc/ContactOption";
 import { useConfigurationContext } from "../root/ConfigurationContext";
@@ -56,9 +56,8 @@ const OpportunityInfoInputs = () => {
     <div className="flex flex-col gap-4 flex-1">
       <TextInput
         source="name"
-        label="Opportunity name"
-        validate={required()}
-        helperText={false}
+        label="Opportunity name *"
+        helperText="Required field"
       />
       <TextInput source="description" multiline rows={3} helperText={false} />
     </div>
@@ -92,10 +91,9 @@ const OpportunityLinkedToInputs = () => {
 
       <ReferenceArrayInput source="contact_ids" reference="contacts_summary">
         <AutocompleteArrayInput
-          label="Contacts"
+          label="Contacts *"
           optionText={contactOptionText}
-          helperText={false}
-          validate={required()}
+          helperText="At least one contact is required"
         />
       </ReferenceArrayInput>
     </div>
@@ -120,16 +118,15 @@ const OpportunityMiscInputs = () => {
 
       <SelectInput
         source="stage"
-        label="Lifecycle Stage"
+        label="Lifecycle Stage *"
         choices={OPPORTUNITY_STAGE_CHOICES}
         defaultValue="new_lead"
-        helperText={false}
-        validate={required()}
+        helperText="Required field"
       />
 
       <SelectInput
         source="priority"
-        label="Priority"
+        label="Priority *"
         choices={[
           { id: "low", name: "Low" },
           { id: "medium", name: "Medium" },
@@ -137,31 +134,29 @@ const OpportunityMiscInputs = () => {
           { id: "critical", name: "Critical" },
         ]}
         defaultValue="medium"
-        helperText={false}
-        validate={required()}
+        helperText="Required field"
       />
 
       <NumberInput
         source="amount"
+        label="Amount *"
         defaultValue={0}
-        helperText={false}
-        validate={required()}
+        helperText="Required field"
       />
 
       <NumberInput
         source="probability"
-        label="Probability (%)"
+        label="Probability (%) *"
         min={0}
         max={100}
         defaultValue={50}
-        helperText={false}
-        validate={required()}
+        helperText="Required: Enter a value between 0-100"
       />
 
       <TextInput
-        validate={required()}
         source="expected_closing_date"
-        helperText={false}
+        label="Expected Closing Date *"
+        helperText="Required field"
         type="date"
         defaultValue={new Date().toISOString().split("T")[0]}
       />
@@ -218,10 +213,9 @@ const OpportunityStageSpecificInputs = ({
             </h4>
             <TextInput
               source="demoDate"
-              label="Demo Date"
+              label={stage === "demo_scheduled" ? "Demo Date *" : "Demo Date"}
               type="date"
-              helperText={false}
-              validate={stage === "demo_scheduled" ? required() : undefined}
+              helperText={stage === "demo_scheduled" ? "Required for Demo Scheduled stage" : false}
             />
             <TextInput
               source="attendees"
@@ -246,11 +240,10 @@ const OpportunityStageSpecificInputs = ({
             </h4>
             <TextInput
               source="feedbackNotes"
-              label="Feedback Notes"
+              label={stage === "feedback_logged" ? "Feedback Notes *" : "Feedback Notes"}
               multiline
               rows={3}
-              helperText={false}
-              validate={stage === "feedback_logged" ? required() : undefined}
+              helperText={stage === "feedback_logged" ? "Required for Feedback Logged stage" : false}
             />
             <SelectInput
               source="sentimentScore"
@@ -287,9 +280,8 @@ const OpportunityStageSpecificInputs = ({
               <>
                 <NumberInput
                   source="finalAmount"
-                  label="Final Amount"
-                  helperText={false}
-                  validate={required()}
+                  label="Final Amount *"
+                  helperText="Required for closed won deals"
                 />
                 <TextInput
                   source="contractStartDate"
@@ -318,8 +310,7 @@ const OpportunityStageSpecificInputs = ({
                     { id: "timing", name: "Timing" },
                     { id: "other", name: "Other" },
                   ]}
-                  helperText={false}
-                  validate={required()}
+                  helperText="Required for closed lost deals"
                 />
                 <TextInput
                   source="competitorWon"
@@ -341,8 +332,7 @@ const OpportunityStageSpecificInputs = ({
                 source="actual_close_date"
                 label="Actual Close Date"
                 type="date"
-                helperText={false}
-                validate={required()}
+                helperText="Required when closing a deal"
               />
             )}
           </div>

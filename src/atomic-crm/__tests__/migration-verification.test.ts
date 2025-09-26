@@ -248,12 +248,12 @@ describe("Fresh Start Migration Verification", () => {
   });
 
   describe("View Verification", () => {
-    test("companies_summary view references opportunities not deals", async () => {
+    test("organizations_summary view references opportunities not deals", async () => {
       if (!supabaseClient) {
         // Mock test for view verification
         const mockViewCheck = async () => {
           return {
-            viewName: "companies_summary",
+            viewName: "organizations_summary",
             referencesOpportunities: true,
             referencesDeals: false,
             columns: ["id", "name", "opportunities_count", "contacts_count"],
@@ -267,9 +267,9 @@ describe("Fresh Start Migration Verification", () => {
         return;
       }
 
-      // Try to query companies_summary view
+      // Try to query organizations_summary view
       const { data, error } = await supabaseClient
-        .from("companies_summary")
+        .from("organizations_summary")
         .select("opportunities_count")
         .limit(1);
 

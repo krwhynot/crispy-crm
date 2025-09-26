@@ -11,6 +11,8 @@ import {
   useUpdate,
 } from "ra-core";
 
+import { OpportunitiesService } from "../services";
+
 import {
   DeleteButton,
   EditButton,
@@ -302,8 +304,10 @@ const UnarchiveButton = ({ record }: { record: Opportunity }) => {
   const notify = useNotify();
   const refresh = useRefresh();
 
+  const opportunitiesService = new OpportunitiesService(dataProvider);
+
   const { mutate } = useMutation({
-    mutationFn: () => dataProvider.unarchiveOpportunity(record),
+    mutationFn: () => opportunitiesService.unarchiveOpportunity(record),
     onSuccess: () => {
       redirect("list", "opportunities");
       notify("Opportunity unarchived", {

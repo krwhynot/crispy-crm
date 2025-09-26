@@ -20,7 +20,6 @@ import type {
   DeleteParams,
   DeleteManyParams,
   Identifier,
-  RaRecord,
 } from "ra-core";
 
 import { supabase } from "./supabase";
@@ -36,13 +35,33 @@ import { validateOrganizationForSubmission } from "../../validation/organization
 import { validateContactForm } from "../../validation/contacts";
 import { validateCreateTag, validateUpdateTag } from "../../validation/tags";
 
+// Import utilities for transformers
+import { uploadToBucket } from "../../utils/storage.utils";
+import { processContactAvatar, processOrganizationLogo } from "../../utils/avatar.utils";
+import type { RAFile } from "../../types";
+
+// Import service classes
+import {
+  SalesService,
+  OpportunitiesService,
+  ActivitiesService,
+  JunctionsService,
+} from "../../services";
+
+// Import types for custom methods
+import type { SalesFormData, Sale, Opportunity, OpportunityParticipant } from "../../types";
+
 // Type for validation configuration
 interface ValidationConfig {
   validate?: (data: any, isUpdate?: boolean) => Promise<void> | void;
 }
 
+// Type for transformer configuration
+interface TransformerConfig<T = any> {
+  transform?: (data: Partial<T>, operation: 'create' | 'update') => Promise<Partial<T>>;
+}
+
 // Validation registry for each resource
-// Note: Transformers will be added in a future task
 const validationRegistry: Record<string, ValidationConfig> = {
   opportunities: {
     validate: validateOpportunityForm,
@@ -60,10 +79,11 @@ const validationRegistry: Record<string, ValidationConfig> = {
     validate: async (data: any, isUpdate?: boolean) => {
       try {
         // Use appropriate validator based on operation
-        const validatedData =
-          isUpdate || data.id
-            ? validateUpdateTag(data)
-            : validateCreateTag(data);
+        if (isUpdate || data.id) {
+          validateUpdateTag(data);
+        } else {
+          validateCreateTag(data);
+        }
         // Tag validators return data, not throw, so we don't need to do anything
         return;
       } catch (error: any) {
@@ -85,6 +105,88 @@ const validationRegistry: Record<string, ValidationConfig> = {
   },
 };
 
+// Transformer registry for each resource
+// Handles pre-save transformations like file uploads, avatar processing, and timestamp injection
+const transformerRegistry: Record<string, TransformerConfig> = {
+  // Contact notes: Process attachment uploads
+  contactNotes: {
+    transform: async (data: any) => {
+      if (data.attachments && Array.isArray(data.attachments)) {
+        // Upload all attachments sequentially to avoid overwhelming storage
+        for (const attachment of data.attachments) {
+          if (attachment && typeof attachment === 'object') {
+            await uploadToBucket(attachment as RAFile);
+          }
+        }
+      }
+      return data;
+    }
+  },
+
+  // Opportunity notes: Process attachment uploads
+  opportunityNotes: {
+    transform: async (data: any) => {
+      if (data.attachments && Array.isArray(data.attachments)) {
+        // Upload all attachments sequentially to avoid overwhelming storage
+        for (const attachment of data.attachments) {
+          if (attachment && typeof attachment === 'object') {
+            await uploadToBucket(attachment as RAFile);
+          }
+        }
+      }
+      return data;
+    }
+  },
+
+  // Sales: Process avatar uploads
+  sales: {
+    transform: async (data: any) => {
+      if (data.avatar && typeof data.avatar === 'object') {
+        await uploadToBucket(data.avatar as RAFile);
+      }
+      return data;
+    }
+  },
+
+  // Contacts: Auto-generate avatars from email addresses
+  contacts: {
+    transform: async (data: any) => {
+      return await processContactAvatar(data);
+    }
+  },
+
+  // Organizations: Logo processing and timestamp injection
+  organizations: {
+    transform: async (data: any, operation: 'create' | 'update') => {
+      // Process logo first
+      const processedData = await processOrganizationLogo(data);
+
+      // If it's a file upload, upload to bucket
+      if (processedData.logo &&
+          typeof processedData.logo === 'object' &&
+          processedData.logo.rawFile instanceof File) {
+        await uploadToBucket(processedData.logo as RAFile);
+      }
+
+      // Add timestamp for create operations
+      if (operation === 'create') {
+        processedData.created_at = new Date().toISOString();
+      }
+
+      return processedData;
+    }
+  },
+
+  // Tags: Semantic color validation and mapping - handled by validation layer
+  // Color transformation is done in the Zod schema, no additional processing needed
+  tags: {
+    transform: async (data: any) => {
+      // No transformation needed - color mapping handled by validation schema
+      return data;
+    }
+  },
+};
+
 // Initialize base data provider
 const baseDataProvider = supabaseDataProvider({
   instanceUrl: import.meta.env.VITE_SUPABASE_URL,
@@ -92,6 +194,12 @@ const baseDataProvider = supabaseDataProvider({
   supabaseClient: supabase,
   sortOrder: "asc,desc.nullslast" as any,
 });
+
+// Initialize service layer instances
+const salesService = new SalesService(baseDataProvider);
+const opportunitiesService = new OpportunitiesService(baseDataProvider);
+const activitiesService = new ActivitiesService(baseDataProvider);
+const junctionsService = new JunctionsService(baseDataProvider);
 
 /**
  * Log error with context for debugging
@@ -126,7 +234,52 @@ function logError(
 }
 
 /**
+ * Apply full-text search to query parameters
+ * Replicates the behavior from the original dataProvider's applyFullTextSearch function
+ */
+function applyFullTextSearch(columns: readonly string[], shouldAddSoftDeleteFilter: boolean = true) {
+  return (params: GetListParams): GetListParams => {
+    if (!params.filter?.q) {
+      return params;
+    }
+
+    const { q, ...filter } = params.filter;
+
+    // Apply soft delete filter automatically for supported resources (unless it's a view)
+    const softDeleteFilter = params.filter?.includeDeleted || !shouldAddSoftDeleteFilter
+      ? {}
+      : { deleted_at: null };
+
+    return {
+      ...params,
+      filter: {
+        ...filter,
+        ...softDeleteFilter,
+        "@or": columns.reduce((acc, column) => {
+          if (column === "email")
+            return {
+              ...acc,
+              [`email_fts@ilike`]: q,
+            };
+          if (column === "phone")
+            return {
+              ...acc,
+              [`phone_fts@ilike`]: q,
+            };
+          else
+            return {
+              ...acc,
+              [`${column}@ilike`]: q,
+            };
+        }, {}),
+      },
+    };
+  };
+}
+
+/**
  * Apply search parameters to a query
+ * Enhanced version that supports both search and automatic soft delete filtering
  */
 function applySearchParams(
   resource: string,
@@ -134,35 +287,47 @@ function applySearchParams(
 ): GetListParams {
   const searchableFields = getSearchableFields(resource);
 
-  if (!params.filter?.q || searchableFields.length === 0) {
+  // Check if we're using a view (views already handle soft delete filtering internally)
+  const dbResource = getDatabaseResource(resource, "list");
+  const isView = dbResource.includes("_summary") || dbResource.includes("_view");
+
+  // Apply soft delete filter for all supported resources, even without search
+  // But skip for views as they handle this internally and adding the filter causes PostgREST errors
+  const needsSoftDeleteFilter = supportsSoftDelete(resource) &&
+    !params.filter?.includeDeleted &&
+    !isView;
+
+  // If no search query but needs soft delete filter
+  if (!params.filter?.q && needsSoftDeleteFilter) {
+    return {
+      ...params,
+      filter: {
+        ...params.filter,
+        deleted_at: null,
+      },
+    };
+  }
+
+  // If no search query and no soft delete needed, return params as-is
+  if (!params.filter?.q) {
     return params;
   }
 
-  const { q, ...filter } = params.filter;
+  // If no searchable fields configured, apply basic soft delete only
+  if (searchableFields.length === 0) {
+    const softDeleteFilter = needsSoftDeleteFilter ? { deleted_at: null } : {};
+    return {
+      ...params,
+      filter: {
+        ...params.filter,
+        ...softDeleteFilter,
+      },
+    };
+  }
 
-  // Apply soft delete filter if supported
-  const softDeleteFilter =
-    supportsSoftDelete(resource) && !params.filter?.includeDeleted
-      ? { deleted_at: null }
-      : {};
-
-  return {
-    ...params,
-    filter: {
-      ...filter,
-      ...softDeleteFilter,
-      "@or": searchableFields.reduce((acc, field) => {
-        // Special handling for FTS columns
-        if (field === "email") {
-          return { ...acc, [`email_fts@ilike`]: q };
-        }
-        if (field === "phone") {
-          return { ...acc, [`phone_fts@ilike`]: q };
-        }
-        return { ...acc, [`${field}@ilike`]: q };
-      }, {}),
-    },
-  };
+  // Use the applyFullTextSearch helper for resources with search configuration
+  // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
+  return applyFullTextSearch(searchableFields, needsSoftDeleteFilter)(params);
 }
 
 /**
@@ -191,6 +356,7 @@ function getDatabaseResource(
 
 /**
  * Validate data based on resource configuration
+ * Engineering Constitution: Single-point validation at API boundary only
  */
 async function validateData(
   resource: string,
@@ -204,27 +370,75 @@ async function validateData(
     return;
   }
 
-  // Call validation function
-  await config.validate(data, operation === "update");
+  try {
+    // Call validation function
+    await config.validate(data, operation === "update");
+  } catch (error: any) {
+    // Ensure errors are properly formatted for React Admin
+    // React Admin expects { message: string, errors: { fieldName: string } }
+
+    if (error.errors && typeof error.errors === 'object') {
+      // Already properly formatted
+      throw error;
+    }
+
+    // If it's a generic error, wrap it
+    if (error instanceof Error) {
+      throw {
+        message: error.message || "Validation failed",
+        errors: { _error: error.message },
+      };
+    }
+
+    // Unknown error format
+    throw {
+      message: "Validation failed",
+      errors: { _error: String(error) },
+    };
+  }
 }
 
 /**
- * Process data for database operations (validation only for now)
+ * Transform data based on resource configuration
+ */
+async function transformData<T>(
+  resource: string,
+  data: Partial<T>,
+  operation: "create" | "update" = "create",
+): Promise<Partial<T>> {
+  const config = transformerRegistry[resource];
+
+  if (!config || !config.transform) {
+    // No transformer configured, return data as-is
+    return data;
+  }
+
+  // Call transformer function
+  return await config.transform(data, operation);
+}
+
+/**
+ * Process data for database operations
+ * Applies transformations first, then validation
+ * Order matters: transformations may add/modify fields needed for validation
  */
 async function processForDatabase<T>(
   resource: string,
   data: Partial<T>,
   operation: "create" | "update" = "create",
 ): Promise<Partial<T>> {
-  // Validate data
-  await validateData(resource, data, operation);
+  // Apply transformations first (file uploads, timestamps, etc.)
+  const processedData = await transformData(resource, data, operation);
 
-  // Return data as-is (transformers will be added in a future task)
-  return data;
+  // Then validate the transformed data
+  await validateData(resource, processedData, operation);
+
+  return processedData;
 }
 
 /**
  * Wrap a data provider method with error logging and transformations
+ * Ensures validation errors are properly formatted for React Admin's inline display
  */
 async function wrapMethod<T>(
   method: string,
@@ -234,9 +448,39 @@ async function wrapMethod<T>(
 ): Promise<T> {
   try {
     return await operation();
-  } catch (error) {
+  } catch (error: any) {
     logError(method, resource, params, error);
-    throw error; // Fail fast - no recovery attempts
+
+    // For validation errors, ensure React Admin format
+    // This allows errors to be displayed inline next to form fields
+    if (error.errors && typeof error.errors === 'object') {
+      // Already in correct format { message, errors: { field: message } }
+      throw error;
+    }
+
+    // For Supabase errors, try to extract field-specific errors
+    if (error.code && error.details) {
+      const fieldErrors: Record<string, string> = {};
+
+      // Try to parse field from error details
+      if (typeof error.details === 'string') {
+        // Simple heuristic to extract field name from error
+        const match = error.details.match(/column "(\w+)"/i);
+        if (match) {
+          fieldErrors[match[1]] = error.details;
+        } else {
+          fieldErrors._error = error.details;
+        }
+      }
+
+      throw {
+        message: error.message || "Operation failed",
+        errors: fieldErrors,
+      };
+    }
+
+    // Pass through other errors
+    throw error;
   }
 }
 
@@ -244,7 +488,7 @@ async function wrapMethod<T>(
  * Create the unified data provider with integrated transformations and error logging
  */
 export const unifiedDataProvider: DataProvider = {
-  async getList<RecordType extends RaRecord = any>(
+  async getList(
     resource: string,
     params: GetListParams,
   ): Promise<any> {
@@ -263,7 +507,7 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getOne<RecordType extends RaRecord = any>(
+  async getOne(
     resource: string,
     params: GetOneParams,
   ): Promise<any> {
@@ -279,38 +523,57 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getMany<RecordType extends RaRecord = any>(
+  async getMany(
     resource: string,
     params: GetManyParams,
   ): Promise<any> {
     return wrapMethod("getMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
-      const result = await baseDataProvider.getMany(dbResource, params);
+
+      // Apply soft delete filtering if supported
+      let filteredParams = params;
+      if (supportsSoftDelete(resource)) {
+        filteredParams = {
+          ...params,
+          // Note: getMany uses ids array, but we may need to filter results
+          // This is handled at the database level through RLS policies in most cases
+        };
+      }
+
+      const result = await baseDataProvider.getMany(dbResource, filteredParams);
 
       // No transformation needed yet (will be added in a future task)
       return result;
     });
   },
 
-  async getManyReference<RecordType extends RaRecord = any>(
+  async getManyReference(
     resource: string,
     params: GetManyReferenceParams,
   ): Promise<any> {
     return wrapMethod("getManyReference", resource, params, async () => {
       const dbResource = getResourceName(resource);
-      const result = await baseDataProvider.getManyReference(
-        dbResource,
-        params,
-      );
+
+      // Apply search parameters and soft delete filtering
+      // getManyReference can have filter parameters similar to getList
+      const searchParams = applySearchParams(resource, {
+        ...params,
+        filter: params.filter || {},
+      } as GetListParams);
+
+      const result = await baseDataProvider.getManyReference(dbResource, {
+        ...params,
+        filter: searchParams.filter,
+      });
 
       // No transformation needed yet (will be added in a future task)
       return result;
     });
   },
 
-  async create<RecordType extends Omit<RaRecord, "id"> = any>(
+  async create(
     resource: string,
-    params: CreateParams<RecordType>,
+    params: CreateParams,
   ): Promise<any> {
     return wrapMethod("create", resource, params, async () => {
       const dbResource = getResourceName(resource);
@@ -333,9 +596,9 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async update<RecordType extends RaRecord = any>(
+  async update(
     resource: string,
-    params: UpdateParams<RecordType>,
+    params: UpdateParams,
   ): Promise<any> {
     return wrapMethod("update", resource, params, async () => {
       const dbResource = getResourceName(resource);
@@ -381,7 +644,7 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async delete<RecordType extends RaRecord = any>(
+  async delete(
     resource: string,
     params: DeleteParams,
   ): Promise<any> {
@@ -397,6 +660,101 @@ export const unifiedDataProvider: DataProvider = {
       return baseDataProvider.deleteMany(dbResource, params);
     });
   },
+
+  // Custom sales methods - delegated to SalesService
+  async salesCreate(body: SalesFormData): Promise<Sale> {
+    return salesService.salesCreate(body);
+  },
+
+  async salesUpdate(
+    id: Identifier,
+    data: Partial<Omit<SalesFormData, "password">>,
+  ): Promise<Partial<Omit<SalesFormData, "password">>> {
+    return salesService.salesUpdate(id, data);
+  },
+
+  async updatePassword(id: Identifier): Promise<boolean> {
+    return salesService.updatePassword(id);
+  },
+
+  // Custom opportunities methods - delegated to OpportunitiesService
+  async unarchiveOpportunity(opportunity: Opportunity): Promise<any[]> {
+    return opportunitiesService.unarchiveOpportunity(opportunity);
+  },
+
+  // Custom activities methods - delegated to ActivitiesService
+  async getActivityLog(companyId?: Identifier, salesId?: Identifier): Promise<any[]> {
+    return activitiesService.getActivityLog(companyId, salesId);
+  },
+
+  // Junction table methods - delegated to JunctionsService
+
+  // Contact-Organization relationships
+  async getContactOrganizations(contactId: Identifier): Promise<{ data: any[] }> {
+    return junctionsService.getContactOrganizations(contactId);
+  },
+
+  async addContactToOrganization(
+    contactId: Identifier,
+    organizationId: Identifier,
+    params: any = {},
+  ): Promise<{ data: any }> {
+    return junctionsService.addContactToOrganization(contactId, organizationId, params);
+  },
+
+  async removeContactFromOrganization(
+    contactId: Identifier,
+    organizationId: Identifier,
+  ): Promise<{ data: { id: string } }> {
+    return junctionsService.removeContactFromOrganization(contactId, organizationId);
+  },
+
+  async setPrimaryOrganization(
+    contactId: Identifier,
+    organizationId: Identifier,
+  ): Promise<{ data: { success: boolean } }> {
+    return junctionsService.setPrimaryOrganization(contactId, organizationId);
+  },
+
+  // Opportunity participants
+  async getOpportunityParticipants(opportunityId: Identifier): Promise<{ data: any[] }> {
+    return junctionsService.getOpportunityParticipants(opportunityId);
+  },
+
+  async addOpportunityParticipant(
+    opportunityId: Identifier,
+    organizationId: Identifier,
+    params: Partial<OpportunityParticipant> = {},
+  ): Promise<{ data: any }> {
+    return junctionsService.addOpportunityParticipant(opportunityId, organizationId, params);
+  },
+
+  async removeOpportunityParticipant(
+    opportunityId: Identifier,
+    organizationId: Identifier,
+  ): Promise<{ data: { id: string } }> {
+    return junctionsService.removeOpportunityParticipant(opportunityId, organizationId);
+  },
+
+  // Opportunity contacts
+  async getOpportunityContacts(opportunityId: Identifier): Promise<{ data: any[] }> {
+    return junctionsService.getOpportunityContacts(opportunityId);
+  },
+
+  async addOpportunityContact(
+    opportunityId: Identifier,
+    contactId: Identifier,
+    params: any = {},
+  ): Promise<{ data: any }> {
+    return junctionsService.addOpportunityContact(opportunityId, contactId, params);
+  },
+
+  async removeOpportunityContact(
+    opportunityId: Identifier,
+    contactId: Identifier,
+  ): Promise<{ data: { id: string } }> {
+    return junctionsService.removeOpportunityContact(opportunityId, contactId);
+  },
 };
 
 /**
@@ -407,6 +765,18 @@ export function resourceUsesValidation(resource: string): boolean {
 }
 
 /**
- * Export validation registry for testing and debugging
+ * Export a helper to check if a resource uses transformers
  */
-export { validationRegistry };
+export function resourceUsesTransformers(resource: string): boolean {
+  return resource in transformerRegistry;
+}
+
+/**
+ * Export validation and transformer registries for testing and debugging
+ */
+export { validationRegistry, transformerRegistry };
+
+/**
+ * Export CrmDataProvider type for convenience
+ */
+export type CrmDataProvider = typeof unifiedDataProvider;

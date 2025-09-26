@@ -7,22 +7,15 @@ import {
 } from "@/components/admin";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { required, useRecordContext } from "ra-core";
+import { useRecordContext } from "ra-core";
 import ImageEditorField from "../misc/ImageEditorField";
-import { isLinkedinUrl } from "../misc/isLinkedInUrl";
+// Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Company, Sale } from "../types";
 import { sizes } from "./sizes";
 
-const isUrl = (url: string) => {
-  if (!url) return;
-  const UrlRegex = new RegExp(
-    /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i,
-  );
-  if (!UrlRegex.test(url)) {
-    return "Must be a valid URL";
-  }
-};
+// URL validation removed - handled at API boundary
+// Helper text provides format guidance instead
 
 export const OrganizationInputs = () => {
   const isMobile = useIsMobile();
@@ -61,9 +54,9 @@ const OrganizationDisplayInputs = () => {
       <TextInput
         source="name"
         className="w-full h-fit"
-        validate={required()}
-        helperText={false}
+        helperText="Required field"
         placeholder="Organization name"
+        label="Name *"
       />
     </div>
   );
@@ -73,11 +66,11 @@ const OrganizationContactInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Contact</h6>
-      <TextInput source="website" helperText={false} validate={isUrl} />
+      <TextInput source="website" helperText="Format: https://example.com" />
       <TextInput
         source="linkedin_url"
-        helperText={false}
-        validate={isLinkedinUrl}
+        label="LinkedIn URL"
+        helperText="Format: https://linkedin.com/company/name"
       />
       <TextInput source="phone_number" helperText={false} />
     </div>
@@ -169,8 +162,7 @@ const OrganizationAdditionalInformationInputs = () => {
           <TextInput
             source=""
             label={false}
-            helperText={false}
-            validate={isUrl}
+            helperText="Enter a valid URL"
           />
         </SimpleFormIterator>
       </ArrayInput>

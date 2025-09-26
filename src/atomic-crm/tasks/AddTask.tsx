@@ -24,13 +24,13 @@ import {
   CreateBase,
   Form,
   RecordRepresentation,
-  required,
   useDataProvider,
   useGetIdentity,
   useNotify,
   useRecordContext,
   useUpdate,
 } from "ra-core";
+// Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { useState } from "react";
 import { contactOptionText } from "../misc/ContactOption";
 import { useConfigurationContext } from "../root/ConfigurationContext";
@@ -142,11 +142,10 @@ export const AddTask = ({
                 <TextInput
                   autoFocus
                   source="text"
-                  label="Description"
-                  validate={required()}
+                  label="Description *"
                   multiline
                   className="m-0"
-                  helperText={false}
+                  helperText="Required field"
                 />
                 {selectContact && (
                   <ReferenceInput
@@ -154,10 +153,9 @@ export const AddTask = ({
                     reference="contacts_summary"
                   >
                     <AutocompleteInput
-                      label="Contact"
+                      label="Contact *"
                       optionText={contactOptionText}
-                      helperText={false}
-                      validate={required()}
+                      helperText="Required field"
                     />
                   </ReferenceInput>
                 )}
@@ -165,18 +163,18 @@ export const AddTask = ({
                 <div className="flex flex-row gap-4">
                   <TextInput
                     source="due_date"
-                    helperText={false}
+                    label="Due Date *"
+                    helperText="Required field"
                     type="date"
-                    validate={required()}
                   />
                   <SelectInput
                     source="type"
-                    validate={required()}
+                    label="Type *"
                     choices={taskTypes.map((type) => ({
                       id: type,
                       name: type,
                     }))}
-                    helperText={false}
+                    helperText="Required field"
                   />
                 </div>
               </div>

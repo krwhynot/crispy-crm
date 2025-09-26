@@ -94,7 +94,9 @@ export const contactOrganizationSchema = z
     return true;
   });
 
-// Main contact schema
+// Main contact schema with comprehensive validation
+// This schema serves as the single source of truth for all contact validation
+// per Engineering Constitution - all validation happens at API boundary only
 export const contactSchema = z
   .object({
     id: z.union([z.string(), z.number()]).optional(),
@@ -109,9 +111,13 @@ export const contactSchema = z
     has_newsletter: z.boolean().default(false),
     tags: z.array(z.union([z.string(), z.number()])).optional(),
     gender: z.string().optional(),
+    // Using refine to ensure 'sales_id' is present and not an empty string,
+    // as .min(1) on a union of string | number caused a TypeError.
     sales_id: z
       .union([z.string(), z.number()])
-      .min(1, "Account manager is required"),
+      .refine((val) => val !== undefined && val !== null && val !== "", {
+        message: "Account manager is required"
+      }),
     status: z.string().optional(),
     background: z.string().optional(),
     phone: z.array(phoneNumberAndTypeSchema).default([]),
@@ -161,6 +167,69 @@ export const contactSchema = z
       );
     }
     return true;
+  })
+  .superRefine((data, ctx) => {
+    // Multi-organization validation
+    // These rules were previously in ContactMultiOrg component
+
+    // Check contact_organizations array if present
+    if (data.organizations && Array.isArray(data.organizations)) {
+      const organizations = data.organizations;
+
+      // At least one organization is required
+      if (organizations.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["organizations"],
+          message: "At least one organization relationship is required",
+        });
+        return;
+      }
+
+      // Count primary organizations
+      const primaryCount = organizations.filter(
+        (org: any) => org && org.is_primary_organization
+      ).length;
+
+      // Exactly one primary organization is required
+      if (primaryCount === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["organizations"],
+          message: "One organization must be designated as primary",
+        });
+      } else if (primaryCount > 1) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["organizations"],
+          message: "Only one organization can be designated as primary",
+        });
+      }
+
+      // Each organization needs an organization_id
+      organizations.forEach((org: any, index: number) => {
+        if (!org.organization_id) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["organizations", index, "organization_id"],
+            message: "Organization is required",
+          });
+        }
+      });
+    }
+
+    // Contact-level email validation
+    if (data.email && Array.isArray(data.email)) {
+      data.email.forEach((entry: any, index: number) => {
+        if (entry.email && !emailSchema.safeParse(entry.email).success) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["email", index, "email"],
+            message: "Must be a valid email address",
+          });
+        }
+      });
+    }
   });
 
 // Type inference
@@ -169,6 +238,7 @@ export type Contact = z.infer<typeof contactSchema>;
 export type ContactOrganization = z.infer<typeof contactOrganizationSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
+// This is the ONLY place where contact validation occurs
 export async function validateContactForm(data: any): Promise<void> {
   try {
     // Ensure at least one email is provided if email exists

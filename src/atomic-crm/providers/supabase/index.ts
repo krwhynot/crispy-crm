@@ -1,2 +1,2 @@
 export { authProvider } from "./authProvider";
-export { dataProvider } from "./dataProvider";
+export { unifiedDataProvider as dataProvider } from "./unifiedDataProvider";

@@ -3,19 +3,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import { useDataProvider, useNotify, useRedirect } from "ra-core";
 import type { SubmitHandler } from "react-hook-form";
-import type { CrmDataProvider } from "../providers/types";
+import { SalesService } from "../services";
 import type { SalesFormData } from "../types";
 import { SalesInputs } from "./SalesInputs";
 
 export function SalesCreate() {
-  const dataProvider = useDataProvider<CrmDataProvider>();
+  const dataProvider = useDataProvider();
   const notify = useNotify();
   const redirect = useRedirect();
+
+  // Create service instance using the base data provider
+  const salesService = new SalesService(dataProvider);
 
   const { mutate } = useMutation({
     mutationKey: ["signup"],
     mutationFn: async (data: SalesFormData) => {
-      return dataProvider.salesCreate(data);
+      return salesService.salesCreate(data);
     },
     onSuccess: () => {
       notify(

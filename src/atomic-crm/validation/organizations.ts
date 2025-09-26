@@ -54,7 +54,9 @@ const isLinkedinUrl = z.string().refine(
   { message: "URL must be from linkedin.com" },
 );
 
-// Main company/organization schema
+// Main company/organization schema with comprehensive validation
+// This schema serves as the single source of truth for all organization validation
+// per Engineering Constitution - all validation happens at API boundary only
 export const organizationSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
   name: z.string().min(1, "Company name is required"),
@@ -79,7 +81,7 @@ export const organizationSchema = z.object({
   organization_type: organizationTypeSchema.optional(),
   is_principal: z.boolean().optional(),
   is_distributor: z.boolean().optional(),
-  parent_company_id: z.union([z.string(), z.number()]).optional().nullable(),
+  parent_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
   segment: z.string().optional(),
   priority: companyPrioritySchema.optional(),
 
@@ -97,6 +99,7 @@ export type OrganizationInput = z.input<typeof organizationSchema>;
 export type Organization = z.infer<typeof organizationSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
+// This is the ONLY place where organization validation occurs
 export async function validateOrganizationForSubmission(
   data: any,
 ): Promise<void> {

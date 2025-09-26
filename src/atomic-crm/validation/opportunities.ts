@@ -80,7 +80,9 @@ export const closedLostSchema = z.object({
   lossNotes: z.string().optional(),
 });
 
-// Main opportunity schema
+// Main opportunity schema with comprehensive validation
+// This schema serves as the single source of truth for all opportunity validation
+// per Engineering Constitution - all validation happens at API boundary only
 export const opportunitySchema = z
   .object({
     id: z.union([z.string(), z.number()]).optional(),
@@ -170,6 +172,64 @@ export const opportunitySchema = z
       );
     }
     return true;
+  })
+  .superRefine((data, ctx) => {
+    // Stage-specific conditional validation
+    // These rules were previously spread across form components
+
+    // Demo scheduled stage requires demo date
+    if (data.stage === "demo_scheduled" && !data.demoDate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["demoDate"],
+        message: "Demo date is required for Demo Scheduled stage",
+      });
+    }
+
+    // Feedback logged stage requires feedback notes
+    if (data.stage === "feedback_logged" && !data.feedbackNotes) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["feedbackNotes"],
+        message: "Feedback notes are required for Feedback Logged stage",
+      });
+    }
+
+    // Closed won stage requires final amount
+    if (data.stage === "closed_won") {
+      if (data.finalAmount === undefined || data.finalAmount === null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["finalAmount"],
+          message: "Final amount is required for closed won deals",
+        });
+      }
+      if (!data.actual_close_date) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["actual_close_date"],
+          message: "Actual close date is required when closing a deal",
+        });
+      }
+    }
+
+    // Closed lost stage requires loss reason
+    if (data.stage === "closed_lost") {
+      if (!data.lossReason) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["lossReason"],
+          message: "Loss reason is required for closed lost deals",
+        });
+      }
+      if (!data.actual_close_date) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["actual_close_date"],
+          message: "Actual close date is required when closing a deal",
+        });
+      }
+    }
   });
 
 // Type inference
@@ -177,6 +237,7 @@ export type OpportunityInput = z.input<typeof opportunitySchema>;
 export type Opportunity = z.infer<typeof opportunitySchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
+// This is the ONLY place where opportunity validation occurs
 export async function validateOpportunityForm(data: any): Promise<void> {
   try {
     // Parse and validate the data

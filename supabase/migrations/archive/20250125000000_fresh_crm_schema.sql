@@ -173,14 +173,14 @@ CREATE TABLE sales (
     deleted_at TIMESTAMPTZ
 );
 
--- Companies/Organizations table
-CREATE TABLE companies (
+-- Organizations table
+CREATE TABLE organizations (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     organization_type organization_type DEFAULT 'customer',
     is_principal BOOLEAN DEFAULT false,
     is_distributor BOOLEAN DEFAULT false,
-    parent_company_id BIGINT REFERENCES companies(id),
+    parent_organization_id BIGINT REFERENCES organizations(id),
     segment TEXT DEFAULT 'Standard',
     priority VARCHAR(1) DEFAULT 'C' CHECK (priority IN ('A', 'B', 'C', 'D')),
     industry TEXT,
@@ -232,7 +232,7 @@ CREATE TABLE contacts (
     linkedin_url TEXT,
     twitter_handle TEXT,
     notes TEXT,
-    company_id BIGINT REFERENCES companies(id) ON DELETE CASCADE,
+    -- Note: Use contact_organizations junction table for many-to-many relationships
     sales_id BIGINT REFERENCES sales(id),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -255,9 +255,9 @@ CREATE TABLE opportunities (
     index INTEGER,
     estimated_close_date DATE,
     actual_close_date DATE,
-    customer_organization_id BIGINT REFERENCES companies(id),
-    principal_organization_id BIGINT REFERENCES companies(id),
-    distributor_organization_id BIGINT REFERENCES companies(id),
+    customer_organization_id BIGINT REFERENCES organizations(id),
+    principal_organization_id BIGINT REFERENCES organizations(id),
+    distributor_organization_id BIGINT REFERENCES organizations(id),
     founding_interaction_id BIGINT,
     stage_manual BOOLEAN DEFAULT false,
     status_manual BOOLEAN DEFAULT false,
@@ -266,7 +266,7 @@ CREATE TABLE opportunities (
     competition TEXT,
     decision_criteria TEXT,
     contact_ids BIGINT[] DEFAULT '{}',
-    company_id BIGINT REFERENCES companies(id) ON DELETE CASCADE,
+    -- Note: Use contact_organizations junction table for many-to-many relationships
     sales_id BIGINT REFERENCES sales(id),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -297,7 +297,7 @@ CREATE TABLE tasks (
     completed_at TIMESTAMPTZ,
     priority priority_level DEFAULT 'medium',
     contact_id BIGINT REFERENCES contacts(id) ON DELETE CASCADE,
-    company_id BIGINT REFERENCES companies(id),
+    organization_id BIGINT REFERENCES organizations(id),
     opportunity_id BIGINT REFERENCES opportunities(id),
     sales_id BIGINT REFERENCES sales(id),
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -335,7 +335,7 @@ CREATE TABLE "opportunityNotes" (
 CREATE TABLE contact_organizations (
     id BIGSERIAL PRIMARY KEY,
     contact_id BIGINT NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
-    organization_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+    organization_id BIGINT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     is_primary BOOLEAN DEFAULT false,
     is_primary_decision_maker BOOLEAN DEFAULT false,
     is_primary_contact BOOLEAN DEFAULT false,
@@ -360,7 +360,7 @@ CREATE TABLE contact_organizations (
 CREATE TABLE contact_preferred_principals (
     id BIGSERIAL PRIMARY KEY,
     contact_id BIGINT NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
-    principal_organization_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+    principal_organization_id BIGINT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     advocacy_strength SMALLINT DEFAULT 50 CHECK (advocacy_strength BETWEEN 0 AND 100),
     last_interaction_date DATE,
     notes TEXT,
@@ -376,7 +376,7 @@ CREATE TABLE contact_preferred_principals (
 CREATE TABLE opportunity_participants (
     id BIGSERIAL PRIMARY KEY,
     opportunity_id BIGINT NOT NULL REFERENCES opportunities(id) ON DELETE CASCADE,
-    organization_id BIGINT NOT NULL REFERENCES companies(id),
+    organization_id BIGINT NOT NULL REFERENCES organizations(id),
     role VARCHAR(20) NOT NULL CHECK (role IN ('customer', 'principal', 'distributor', 'partner', 'competitor')),
     is_primary BOOLEAN DEFAULT false,
     commission_rate NUMERIC(5,4) CHECK (commission_rate >= 0 AND commission_rate <= 1),
@@ -402,7 +402,7 @@ CREATE TABLE activities (
     activity_date TIMESTAMPTZ DEFAULT NOW(),
     duration_minutes INTEGER,
     contact_id BIGINT REFERENCES contacts(id),
-    organization_id BIGINT REFERENCES companies(id),
+    organization_id BIGINT REFERENCES organizations(id),
     opportunity_id BIGINT REFERENCES opportunities(id),
     follow_up_required BOOLEAN DEFAULT false,
     follow_up_date DATE,
@@ -431,7 +431,7 @@ CREATE TABLE interaction_participants (
     id BIGSERIAL PRIMARY KEY,
     activity_id BIGINT NOT NULL REFERENCES activities(id) ON DELETE CASCADE,
     contact_id BIGINT REFERENCES contacts(id),
-    organization_id BIGINT REFERENCES companies(id),
+    organization_id BIGINT REFERENCES organizations(id),
     role VARCHAR(20) DEFAULT 'participant',
     notes TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -445,7 +445,7 @@ CREATE TABLE interaction_participants (
 -- Products table
 CREATE TABLE products (
     id BIGSERIAL PRIMARY KEY,
-    principal_id BIGINT NOT NULL REFERENCES companies(id),
+    principal_id BIGINT NOT NULL REFERENCES organizations(id),
     name TEXT NOT NULL,
     description TEXT,
     sku TEXT NOT NULL,
@@ -541,7 +541,7 @@ CREATE TABLE product_pricing_tiers (
 CREATE TABLE product_distributor_authorizations (
     id BIGSERIAL PRIMARY KEY,
     product_id BIGINT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-    distributor_id BIGINT NOT NULL REFERENCES companies(id),
+    distributor_id BIGINT NOT NULL REFERENCES organizations(id),
     is_authorized BOOLEAN DEFAULT true,
     authorization_date DATE DEFAULT CURRENT_DATE,
     expiration_date DATE,
@@ -647,14 +647,14 @@ CREATE TABLE migration_history (
 -- =====================================================
 
 -- Companies indexes
-CREATE INDEX idx_companies_deleted_at ON companies(deleted_at) WHERE deleted_at IS NULL;
-CREATE INDEX idx_companies_organization_type ON companies(organization_type);
-CREATE INDEX idx_companies_parent_company_id ON companies(parent_company_id) WHERE parent_company_id IS NOT NULL;
-CREATE INDEX idx_companies_is_principal ON companies(is_principal) WHERE is_principal = true;
-CREATE INDEX idx_companies_is_distributor ON companies(is_distributor) WHERE is_distributor = true;
-CREATE INDEX idx_companies_segment ON companies(segment);
-CREATE INDEX idx_companies_priority ON companies(priority);
-CREATE INDEX idx_companies_sales_id ON companies(sales_id);
+CREATE INDEX idx_organizations_deleted_at ON organizations(deleted_at) WHERE deleted_at IS NULL;
+CREATE INDEX idx_organizations_organization_type ON organizations(organization_type);
+CREATE INDEX idx_organizations_parent_company_id ON organizations(parent_company_id) WHERE parent_company_id IS NOT NULL;
+CREATE INDEX idx_organizations_is_principal ON organizations(is_principal) WHERE is_principal = true;
+CREATE INDEX idx_organizations_is_distributor ON organizations(is_distributor) WHERE is_distributor = true;
+CREATE INDEX idx_organizations_segment ON organizations(segment);
+CREATE INDEX idx_organizations_priority ON organizations(priority);
+CREATE INDEX idx_organizations_sales_id ON organizations(sales_id);
 
 -- Contacts indexes
 CREATE INDEX idx_contacts_deleted_at ON contacts(deleted_at) WHERE deleted_at IS NULL;
@@ -747,7 +747,7 @@ CREATE INDEX idx_tasks_due_date ON tasks(due_date) WHERE completed = false;
 CREATE INDEX idx_tasks_reminder_date ON tasks(reminder_date) WHERE completed = false;
 
 -- Full-text search indexes (GIN)
-CREATE INDEX idx_companies_search_tsv ON companies USING GIN(search_tsv);
+CREATE INDEX idx_organizations_search_tsv ON organizations USING GIN(search_tsv);
 CREATE INDEX idx_contacts_search_tsv ON contacts USING GIN(search_tsv);
 CREATE INDEX idx_opportunities_search_tsv ON opportunities USING GIN(search_tsv);
 CREATE INDEX idx_products_search_tsv ON products USING GIN(search_tsv);
@@ -760,7 +760,7 @@ CREATE INDEX idx_products_search_tsv ON products USING GIN(search_tsv);
 CREATE OR REPLACE FUNCTION update_search_tsv()
 RETURNS trigger AS $$
 BEGIN
-    IF TG_TABLE_NAME = 'companies' THEN
+    IF TG_TABLE_NAME = 'organizations' THEN
         NEW.search_tsv := to_tsvector('english',
             COALESCE(NEW.name, '') || ' ' ||
             COALESCE(NEW.industry, '') || ' ' ||
@@ -803,8 +803,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create triggers for search vector updates
-CREATE TRIGGER trigger_update_companies_search_tsv
-    BEFORE INSERT OR UPDATE ON companies
+CREATE TRIGGER trigger_update_organizations_search_tsv
+    BEFORE INSERT OR UPDATE ON organizations
     FOR EACH ROW
     EXECUTE FUNCTION update_search_tsv();
 
@@ -858,7 +858,7 @@ CREATE OR REPLACE FUNCTION validate_principal_organization()
 RETURNS TRIGGER AS $$
 BEGIN
     IF NOT EXISTS (
-        SELECT 1 FROM companies
+        SELECT 1 FROM organizations
         WHERE id = NEW.principal_organization_id
         AND is_principal = true
     ) THEN
@@ -909,7 +909,7 @@ DECLARE
 BEGIN
     SELECT organization_type, is_principal, is_distributor
     INTO v_org_type, v_is_principal, v_is_distributor
-    FROM companies
+    FROM organizations
     WHERE id = NEW.organization_id;
 
     IF NEW.role = 'principal' AND NOT v_is_principal THEN
@@ -1074,7 +1074,7 @@ BEGIN
         co.is_primary,
         co.is_primary_decision_maker
     FROM contact_organizations co
-    JOIN companies c ON c.id = co.organization_id
+    JOIN organizations c ON c.id = co.organization_id
     WHERE co.contact_id = p_contact_id
     AND co.deleted_at IS NULL
     AND c.deleted_at IS NULL
@@ -1463,14 +1463,14 @@ $$ LANGUAGE plpgsql;
 -- =====================================================
 
 -- Companies summary
-CREATE OR REPLACE VIEW companies_summary AS
+CREATE OR REPLACE VIEW organizations_summary AS
 SELECT
     c.*,
     COUNT(DISTINCT con.id) AS contact_count,
     COUNT(DISTINCT o.id) AS opportunity_count,
     COUNT(DISTINCT o.id) FILTER (WHERE o.stage = 'closed_won') AS won_opportunities,
     SUM(o.amount) FILTER (WHERE o.stage = 'closed_won') AS total_revenue
-FROM companies c
+FROM organizations c
 LEFT JOIN contacts con ON c.id = con.company_id AND con.deleted_at IS NULL
 LEFT JOIN opportunities o ON c.id = o.company_id AND o.deleted_at IS NULL
 WHERE c.deleted_at IS NULL
@@ -1485,7 +1485,7 @@ SELECT
     COUNT(DISTINCT cn.id) AS note_count,
     COUNT(DISTINCT co.organization_id) AS organization_count
 FROM contacts c
-LEFT JOIN companies comp ON c.company_id = comp.id
+LEFT JOIN organizations comp ON co.organization_id = comp.id AND co.is_primary = true
 LEFT JOIN tasks t ON c.id = t.contact_id AND t.archived_at IS NULL
 LEFT JOIN "contactNotes" cn ON c.id = cn.contact_id
 LEFT JOIN contact_organizations co ON c.id = co.contact_id AND co.deleted_at IS NULL
@@ -1509,7 +1509,7 @@ SELECT
     COUNT(DISTINCT op.organization_id) FILTER (WHERE op.role = 'principal') AS principal_count,
     COUNT(DISTINCT op.organization_id) AS participant_count
 FROM opportunities o
-LEFT JOIN companies c ON o.customer_organization_id = c.id
+LEFT JOIN organizations c ON o.customer_organization_id = c.id
 LEFT JOIN opportunity_participants op ON o.id = op.opportunity_id AND op.deleted_at IS NULL
 WHERE o.deleted_at IS NULL
 GROUP BY o.id, c.name, c.industry;
@@ -1524,7 +1524,7 @@ SELECT
         'type', c.organization_type
     )
     FROM opportunity_participants op
-    JOIN companies c ON op.organization_id = c.id
+    JOIN organizations c ON op.organization_id = c.id
     WHERE op.opportunity_id = o.id
       AND op.role = 'customer'
       AND op.is_primary = true
@@ -1539,7 +1539,7 @@ SELECT
         ORDER BY op.is_primary DESC, c.name
     )
     FROM opportunity_participants op
-    JOIN companies c ON op.organization_id = c.id
+    JOIN organizations c ON op.organization_id = c.id
     WHERE op.opportunity_id = o.id
       AND op.role = 'principal'
       AND op.deleted_at IS NULL
@@ -1554,7 +1554,7 @@ SELECT
         ORDER BY op.is_primary DESC, c.name
     )
     FROM opportunity_participants op
-    JOIN companies c ON op.organization_id = c.id
+    JOIN organizations c ON op.organization_id = c.id
     WHERE op.opportunity_id = o.id
       AND op.role = 'distributor'
       AND op.deleted_at IS NULL
@@ -1586,7 +1586,7 @@ SELECT
     ARRAY_AGG(DISTINCT co.role::text) as roles
 FROM contacts c
 LEFT JOIN contact_organizations co ON co.contact_id = c.id AND co.deleted_at IS NULL
-LEFT JOIN companies comp ON comp.id = co.organization_id AND comp.deleted_at IS NULL
+LEFT JOIN organizations comp ON comp.id = co.organization_id AND comp.deleted_at IS NULL
 WHERE c.deleted_at IS NULL
 GROUP BY c.id, c.name;
 
@@ -1598,7 +1598,7 @@ SELECT
     COUNT(DISTINCT cpp.contact_id) as advocate_count,
     AVG(cpp.advocacy_strength) as avg_advocacy_strength,
     COUNT(DISTINCT co.organization_id) as reach_org_count
-FROM companies p
+FROM organizations p
 LEFT JOIN contact_preferred_principals cpp ON cpp.principal_organization_id = p.id AND cpp.deleted_at IS NULL
 LEFT JOIN contact_organizations co ON co.contact_id = cpp.contact_id AND co.deleted_at IS NULL
 WHERE p.is_principal = true
@@ -1688,7 +1688,7 @@ SELECT
     COUNT(DISTINCT ppt.id) AS pricing_tier_count,
     COUNT(DISTINCT pda.distributor_id) AS authorized_distributors
 FROM products p
-JOIN companies c ON p.principal_id = c.id
+JOIN organizations c ON p.principal_id = c.id
 LEFT JOIN product_inventory pi ON p.id = pi.product_id
 LEFT JOIN product_pricing_tiers ppt ON p.id = ppt.product_id
 LEFT JOIN product_distributor_authorizations pda ON p.id = pda.product_id AND pda.is_authorized = true
@@ -1709,7 +1709,7 @@ SELECT
     COUNT(DISTINCT opp.id) FILTER (WHERE opp.stage = 'closed_won') AS won_opportunities,
     SUM(op.final_price) FILTER (WHERE opp.stage = 'closed_won') AS actual_revenue
 FROM products p
-JOIN companies c ON p.principal_id = c.id
+JOIN organizations c ON p.principal_id = c.id
 LEFT JOIN opportunity_products op ON p.id = op.product_id_reference
 LEFT JOIN opportunities opp ON op.opportunity_id = opp.id
 WHERE p.deleted_at IS NULL
@@ -1748,7 +1748,7 @@ FROM opportunities o;
 
 -- Enable RLS on all tables
 ALTER TABLE sales ENABLE ROW LEVEL SECURITY;
-ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
+ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE opportunities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tags ENABLE ROW LEVEL SECURITY;
@@ -1774,7 +1774,7 @@ ALTER TABLE migration_history ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Enable all access for authenticated users" ON sales
     FOR ALL TO authenticated USING (true);
 
-CREATE POLICY "Enable all access for authenticated users" ON companies
+CREATE POLICY "Enable all access for authenticated users" ON organizations
     FOR ALL TO authenticated USING (deleted_at IS NULL);
 
 CREATE POLICY "Enable all access for authenticated users" ON contacts

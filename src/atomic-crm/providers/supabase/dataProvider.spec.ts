@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { GetListParams, CreateParams, UpdateParams } from "ra-core";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { supabaseDataProvider } from "ra-supabase-core";
+import type { SalesFormData, OpportunityParticipant } from "../../types";
 
 // Mock modules
 vi.mock("@supabase/supabase-js", () => ({
@@ -18,6 +19,70 @@ vi.mock("./supabase", () => ({
 
 vi.mock("./authProvider", () => ({
   getIsInitialized: vi.fn(() => true),
+}));
+
+// Create mock service instances first
+const mockSalesService = {
+  salesCreate: vi.fn(),
+  salesUpdate: vi.fn(),
+  updatePassword: vi.fn(),
+};
+
+const mockOpportunitiesService = {
+  unarchiveOpportunity: vi.fn(),
+};
+
+const mockActivitiesService = {
+  getActivityLog: vi.fn(),
+};
+
+const mockJunctionsService = {
+  getContactOrganizations: vi.fn(),
+  addContactToOrganization: vi.fn(),
+  removeContactFromOrganization: vi.fn(),
+  setPrimaryOrganization: vi.fn(),
+  getOpportunityParticipants: vi.fn(),
+  addOpportunityParticipant: vi.fn(),
+  removeOpportunityParticipant: vi.fn(),
+  getOpportunityContacts: vi.fn(),
+  addOpportunityContact: vi.fn(),
+  removeOpportunityContact: vi.fn(),
+};
+
+// Mock services
+vi.mock("../../services", () => ({
+  SalesService: vi.fn().mockImplementation(() => mockSalesService),
+  OpportunitiesService: vi.fn().mockImplementation(() => mockOpportunitiesService),
+  ActivitiesService: vi.fn().mockImplementation(() => mockActivitiesService),
+  JunctionsService: vi.fn().mockImplementation(() => mockJunctionsService),
+}));
+
+// Mock validation functions
+vi.mock("../../validation/opportunities", () => ({
+  validateOpportunityForm: vi.fn(),
+}));
+
+vi.mock("../../validation/organizations", () => ({
+  validateOrganizationForSubmission: vi.fn(),
+}));
+
+vi.mock("../../validation/contacts", () => ({
+  validateContactForm: vi.fn(),
+}));
+
+vi.mock("../../validation/tags", () => ({
+  validateCreateTag: vi.fn(),
+  validateUpdateTag: vi.fn(),
+}));
+
+// Mock utils
+vi.mock("../../utils/storage.utils", () => ({
+  uploadToBucket: vi.fn(),
+}));
+
+vi.mock("../../utils/avatar.utils", () => ({
+  processContactAvatar: vi.fn().mockImplementation((data) => data),
+  processOrganizationLogo: vi.fn().mockImplementation((data) => data),
 }));
 
 // Mock environment variables
@@ -48,9 +113,15 @@ const mockBaseDataProvider = {
   updateMany: vi.fn(),
 };
 
-describe("Supabase DataProvider", () => {
+describe("Unified Supabase DataProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Reset service mocks
+    Object.values(mockSalesService).forEach(mock => mock.mockReset());
+    Object.values(mockOpportunitiesService).forEach(mock => mock.mockReset());
+    Object.values(mockActivitiesService).forEach(mock => mock.mockReset());
+    Object.values(mockJunctionsService).forEach(mock => mock.mockReset());
   });
 
   describe("Opportunities CRUD Operations", () => {
@@ -101,8 +172,8 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      // Import the actual data provider after mocks are set up
-      const { dataProvider } = await import("./dataProvider");
+      // Import the actual unified data provider after mocks are set up
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
       const params: GetListParams = {
         pagination: { page: 1, perPage: 10 },
@@ -110,9 +181,9 @@ describe("Supabase DataProvider", () => {
         filter: { stage: "qualified" },
       };
 
-      const result = await dataProvider.getList("opportunities", params);
+      const result = await unifiedDataProvider.getList("opportunities", params);
 
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunities");
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunities_summary");
       expect(result).toBeDefined();
     });
 
@@ -145,13 +216,13 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockInsertChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { dataProvider } = await import("./index");
 
       const params: CreateParams = {
         data: newOpportunity,
       };
 
-      const result = await dataProvider.create("opportunities", params);
+      const result = await unifiedDataProvider.create("opportunities", params);
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunities");
       expect(result).toBeDefined();
@@ -178,7 +249,7 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockUpdateChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { dataProvider } = await import("./index");
 
       const params: UpdateParams = {
         id: "opp-1",
@@ -191,7 +262,7 @@ describe("Supabase DataProvider", () => {
         },
       };
 
-      const result = await dataProvider.update("opportunities", params);
+      const result = await unifiedDataProvider.update("opportunities", params);
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunities");
       expect(result).toBeDefined();
@@ -210,9 +281,9 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockDeleteChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { dataProvider } = await import("./index");
 
-      const result = await dataProvider.delete("opportunities", {
+      const result = await unifiedDataProvider.delete("opportunities", {
         id: "opp-1",
       });
 
@@ -221,7 +292,7 @@ describe("Supabase DataProvider", () => {
     });
   });
 
-  describe("Junction Table Queries", () => {
+  describe("Junction Table Operations", () => {
     it("should handle contact_organizations junction table queries", async () => {
       const mockContactOrganizations = [
         {
@@ -256,9 +327,9 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const result = await dataProvider.getList("contact_organizations", {
+      const result = await unifiedDataProvider.getList("contact_organizations", {
         pagination: { page: 1, perPage: 10 },
         filter: { contact_id: "contact-1" },
       });
@@ -303,9 +374,9 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const result = await dataProvider.getList("opportunity_participants", {
+      const result = await unifiedDataProvider.getList("opportunity_participants", {
         pagination: { page: 1, perPage: 10 },
         filter: { opportunity_id: "opp-1" },
       });
@@ -342,9 +413,9 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockInsertChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const result = await dataProvider.create("contact_organizations", {
+      const result = await unifiedDataProvider.create("contact_organizations", {
         data: newRelationship,
       });
 
@@ -385,54 +456,15 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const result = await dataProvider.getList("opportunities_summary", {
+      const result = await unifiedDataProvider.getList("opportunities_summary", {
         pagination: { page: 1, perPage: 10 },
       });
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith(
         "opportunities_summary",
       );
-      expect(result).toBeDefined();
-    });
-
-    it("should handle backward compatible deals_summary view", async () => {
-      // This would be handled by the backward compatibility wrapper
-      // but we test that the underlying provider handles the view correctly
-      const mockSummaryData = [
-        {
-          id: "deal-1",
-          name: "Legacy Deal",
-          organization_name: "Old Corp",
-          stage: "proposal",
-          amount: 50000,
-        },
-      ];
-
-      const mockSelectChain = {
-        select: vi.fn().mockReturnThis(),
-        range: vi.fn().mockReturnThis(),
-        order: vi.fn().mockReturnThis(),
-        then: vi.fn((callback) => {
-          callback({
-            data: mockSummaryData,
-            error: null,
-            count: 1,
-          });
-        }),
-      };
-
-      (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
-
-      const { dataProvider } = await import("./dataProvider");
-
-      // The deals_summary would be transformed to opportunities_summary
-      // by the backward compatibility layer
-      const result = await dataProvider.getList("deals_summary", {
-        pagination: { page: 1, perPage: 10 },
-      });
-
       expect(result).toBeDefined();
     });
   });
@@ -458,7 +490,7 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
       // Test various filter operators
       const complexFilter = {
@@ -472,7 +504,7 @@ describe("Supabase DataProvider", () => {
         },
       };
 
-      await dataProvider.getList("opportunities", {
+      await unifiedDataProvider.getList("opportunities", {
         pagination: { page: 1, perPage: 10 },
         filter: complexFilter,
       });
@@ -498,14 +530,14 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
       const dateFilter = {
         "created_at@gte": "2025-01-01",
         "created_at@lte": "2025-01-31",
       };
 
-      await dataProvider.getList("opportunities", {
+      await unifiedDataProvider.getList("opportunities", {
         pagination: { page: 1, perPage: 10 },
         filter: dateFilter,
       });
@@ -538,10 +570,10 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
       await expect(
-        dataProvider.getList("opportunities", {
+        unifiedDataProvider.getList("opportunities", {
           pagination: { page: 1, perPage: 10 },
         }),
       ).rejects.toThrow();
@@ -568,10 +600,10 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockInsertChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
       await expect(
-        dataProvider.create("opportunities", {
+        unifiedDataProvider.create("opportunities", {
           data: incompleteOpportunity,
         }),
       ).rejects.toThrow();
@@ -605,15 +637,15 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const page1 = await dataProvider.getList("opportunities", {
+      const page1 = await unifiedDataProvider.getList("opportunities", {
         pagination: { page: 1, perPage: 10 },
       });
 
       expect(mockSelectChain.range).toHaveBeenCalledWith(0, 9);
 
-      const page2 = await dataProvider.getList("opportunities", {
+      const page2 = await unifiedDataProvider.getList("opportunities", {
         pagination: { page: 2, perPage: 10 },
       });
 
@@ -636,9 +668,9 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      await dataProvider.getList("opportunities", {
+      await unifiedDataProvider.getList("opportunities", {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "amount", order: "DESC" },
       });
@@ -669,9 +701,9 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockSelectChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const result = await dataProvider.getMany("opportunities", { ids });
+      const result = await unifiedDataProvider.getMany("opportunities", { ids });
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunities");
       expect(result).toBeDefined();
@@ -695,9 +727,9 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockUpdateChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const result = await dataProvider.updateMany("opportunities", {
+      const result = await unifiedDataProvider.updateMany("opportunities", {
         ids,
         data: updateData,
       });
@@ -723,12 +755,63 @@ describe("Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockDeleteChain);
 
-      const { dataProvider } = await import("./dataProvider");
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const result = await dataProvider.deleteMany("opportunities", { ids });
+      const result = await unifiedDataProvider.deleteMany("opportunities", { ids });
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunities");
       expect(result).toBeDefined();
+    });
+  });
+
+  describe("Custom Service Methods", () => {
+    it("should include sales service methods in unified provider", async () => {
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
+
+      expect(typeof unifiedDataProvider.salesCreate).toBe('function');
+      expect(typeof unifiedDataProvider.salesUpdate).toBe('function');
+      expect(typeof unifiedDataProvider.updatePassword).toBe('function');
+    });
+
+    it("should include opportunity service methods in unified provider", async () => {
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
+
+      expect(typeof unifiedDataProvider.unarchiveOpportunity).toBe('function');
+    });
+
+    it("should include junction service methods in unified provider", async () => {
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
+
+      expect(typeof unifiedDataProvider.getContactOrganizations).toBe('function');
+      expect(typeof unifiedDataProvider.addContactToOrganization).toBe('function');
+      expect(typeof unifiedDataProvider.getOpportunityParticipants).toBe('function');
+    });
+
+    it("should include activity service methods in unified provider", async () => {
+      const { unifiedDataProvider } = await import("./unifiedDataProvider");
+
+      expect(typeof unifiedDataProvider.getActivityLog).toBe('function');
+    });
+  });
+
+  describe("Unified Provider Architecture", () => {
+    it("should include validation registry", async () => {
+      const { resourceUsesValidation } = await import("./unifiedDataProvider");
+
+      expect(typeof resourceUsesValidation).toBe('function');
+      expect(resourceUsesValidation("opportunities")).toBe(true);
+      expect(resourceUsesValidation("organizations")).toBe(true);
+      expect(resourceUsesValidation("contacts")).toBe(true);
+      expect(resourceUsesValidation("tags")).toBe(true);
+    });
+
+    it("should include transformer registry", async () => {
+      const { resourceUsesTransformers } = await import("./unifiedDataProvider");
+
+      expect(typeof resourceUsesTransformers).toBe('function');
+      expect(resourceUsesTransformers("contactNotes")).toBe(true);
+      expect(resourceUsesTransformers("organizations")).toBe(true);
+      expect(resourceUsesTransformers("contacts")).toBe(true);
     });
   });
 });

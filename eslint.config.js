@@ -119,6 +119,29 @@ export default tseslint.config(
       // JSX A11y rules for color contrast validation
       "jsx-a11y/no-onchange": "off", // React handles onChange properly
 
+      // Prevent form-level validation (Constitution Principle #3: Single-point validation at API boundary only)
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "JSXAttribute[name.name='validate']",
+          message: "[VALIDATION] Form-level validation is forbidden per Engineering Constitution. All validation must occur at the API boundary (data provider) using Zod schemas. Use helper text and asterisks for visual cues instead.",
+        },
+      ],
+
+      // Prevent validation-related imports (Constitution Principle #3)
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "ra-core",
+              importNames: ["required", "email", "minLength", "maxLength", "minValue", "maxValue", "number", "regex", "choices"],
+              message: "[VALIDATION] React Admin validators are forbidden. Use Zod schemas at the API boundary instead.",
+            },
+          ],
+        },
+      ],
+
       // Prevent reintroduction of legacy fields (Constitution Principle #16)
       "no-restricted-properties": [
         "error",

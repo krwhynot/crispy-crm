@@ -41,15 +41,15 @@ DROP INDEX IF EXISTS idx_opportunities_company_id;
 -- UPDATE VIEWS
 -- =====================================================
 
--- Update companies_summary view to remove company_id references
-CREATE OR REPLACE VIEW companies_summary AS
+-- Update organizations_summary view to remove legacy references
+CREATE OR REPLACE VIEW organizations_summary AS
 SELECT
     c.*,
     COUNT(DISTINCT co.contact_id) AS contact_count,
     COUNT(DISTINCT o.id) AS opportunity_count,
     COUNT(DISTINCT o.id) FILTER (WHERE o.stage = 'closed_won') AS won_opportunities,
     SUM(o.amount) FILTER (WHERE o.stage = 'closed_won') AS total_revenue
-FROM companies c
+FROM organizations c
 LEFT JOIN contact_organizations co ON c.id = co.organization_id AND co.deleted_at IS NULL
 LEFT JOIN opportunities o ON c.id = o.customer_organization_id AND o.deleted_at IS NULL
 WHERE c.deleted_at IS NULL
@@ -61,7 +61,7 @@ SELECT
     c.*,
     (SELECT comp.name
      FROM contact_organizations co
-     JOIN companies comp ON co.organization_id = comp.id
+     JOIN organizations comp ON co.organization_id = comp.id
      WHERE co.contact_id = c.id
        AND co.is_primary = true
        AND co.deleted_at IS NULL

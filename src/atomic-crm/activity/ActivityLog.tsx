@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Identifier } from "ra-core";
 import { useDataProvider } from "ra-core";
 
-import type { CrmDataProvider } from "../providers/types";
+import { ActivitiesService } from "../services";
 import { ActivityLogContext } from "./ActivityLogContext";
 import { ActivityLogIterator } from "./ActivityLogIterator";
 
@@ -20,10 +20,14 @@ export function ActivityLog({
   pageSize = 20,
   context = "all",
 }: ActivityLogProps) {
-  const dataProvider = useDataProvider<CrmDataProvider>();
+  const dataProvider = useDataProvider();
+
+  // Create service instance using the base data provider
+  const activitiesService = new ActivitiesService(dataProvider);
+
   const { data, isPending, error } = useQuery({
     queryKey: ["activityLog", companyId],
-    queryFn: () => dataProvider.getActivityLog(companyId),
+    queryFn: () => activitiesService.getActivityLog(companyId),
   });
 
   if (isPending) {

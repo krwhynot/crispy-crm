@@ -11,7 +11,7 @@ import {
   useRedirect,
 } from "ra-core";
 import type { SubmitHandler } from "react-hook-form";
-import type { CrmDataProvider } from "../providers/types";
+import { SalesService } from "../services";
 import type { Sale, SalesFormData } from "../types";
 import { SalesInputs } from "./SalesInputs";
 
@@ -27,9 +27,12 @@ function EditToolbar() {
 export function SalesEdit() {
   const { record } = useEditController();
 
-  const dataProvider = useDataProvider<CrmDataProvider>();
+  const dataProvider = useDataProvider();
   const notify = useNotify();
   const redirect = useRedirect();
+
+  // Create service instance using the base data provider
+  const salesService = new SalesService(dataProvider);
 
   const { mutate } = useMutation({
     mutationKey: ["signup"],
@@ -37,7 +40,7 @@ export function SalesEdit() {
       if (!record) {
         throw new Error("Record not found");
       }
-      return dataProvider.salesUpdate(record.id, data);
+      return salesService.salesUpdate(record.id, data);
     },
     onSuccess: () => {
       redirect("/sales");

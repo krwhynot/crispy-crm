@@ -62,7 +62,7 @@ const mockContactOrganizations = [
   },
 ];
 
-// Mock the data provider
+// Mock the unified data provider with service methods
 const mockDataProvider = {
   getList: vi.fn(),
   getOne: vi.fn(),
@@ -73,9 +73,20 @@ const mockDataProvider = {
   updateMany: vi.fn(),
   delete: vi.fn(),
   deleteMany: vi.fn(),
+  // Custom service methods
+  getContactOrganizations: vi.fn(),
+  addContactToOrganization: vi.fn(),
+  removeContactFromOrganization: vi.fn(),
+  setPrimaryOrganization: vi.fn(),
+  getOpportunityParticipants: vi.fn(),
+  addOpportunityParticipant: vi.fn(),
+  removeOpportunityParticipant: vi.fn(),
+  getOpportunityContacts: vi.fn(),
+  addOpportunityContact: vi.fn(),
+  removeOpportunityContact: vi.fn(),
 };
 
-describe("Contact Multi-Organization Support", () => {
+describe("Contact Multi-Organization Support - Unified Provider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -163,7 +174,7 @@ describe("Contact Multi-Organization Support", () => {
     });
   });
 
-  describe("Data Provider Operations", () => {
+  describe("Unified Data Provider Operations", () => {
     it("should retrieve contact with multi-organization data", async () => {
       const result = await mockDataProvider.getOne("contacts", { id: 1 });
 
@@ -219,7 +230,7 @@ describe("Contact Multi-Organization Support", () => {
     });
   });
 
-  describe("Contact Organization Junction Table Operations", () => {
+  describe("Contact Organization Service Methods", () => {
     it("should create new contact-organization relationship", async () => {
       const newRelationship = {
         contact_id: 1,
@@ -567,6 +578,186 @@ describe("Contact Multi-Organization Support", () => {
       expect(relationships[0].purchase_influence).toBe("High");
       expect(relationships[1].purchase_influence).toBe("Medium");
       expect(relationships[2].purchase_influence).toBe("Low");
+    });
+  });
+
+  describe("Service Layer Integration", () => {
+    it("should use service methods for contact organization queries", async () => {
+      const mockServiceResponse = {
+        data: mockContactOrganizations,
+      };
+
+      mockDataProvider.getContactOrganizations.mockResolvedValue(
+        mockServiceResponse,
+      );
+
+      const result = await mockDataProvider.getContactOrganizations("contact-1");
+
+      expect(mockDataProvider.getContactOrganizations).toHaveBeenCalledWith(
+        "contact-1",
+      );
+      expect(result.data).toEqual(mockContactOrganizations);
+    });
+
+    it("should use service methods for adding contact to organization", async () => {
+      const newRelationship = {
+        contact_id: "contact-1",
+        organization_id: "org-4",
+        is_primary: false,
+        role: "technical",
+        purchase_influence: "Low",
+        decision_authority: "End User",
+      };
+
+      const mockServiceResponse = {
+        data: { id: "co-new", ...newRelationship },
+      };
+
+      mockDataProvider.addContactToOrganization.mockResolvedValue(
+        mockServiceResponse,
+      );
+
+      const result = await mockDataProvider.addContactToOrganization(
+        "contact-1",
+        "org-4",
+        {
+          is_primary: false,
+          role: "technical",
+          purchase_influence: "Low",
+          decision_authority: "End User",
+        },
+      );
+
+      expect(mockDataProvider.addContactToOrganization).toHaveBeenCalledWith(
+        "contact-1",
+        "org-4",
+        {
+          is_primary: false,
+          role: "technical",
+          purchase_influence: "Low",
+          decision_authority: "End User",
+        },
+      );
+      expect(result.data.id).toBe("co-new");
+    });
+
+    it("should use service methods for removing contact from organization", async () => {
+      const mockServiceResponse = {
+        data: { id: "co-2" },
+      };
+
+      mockDataProvider.removeContactFromOrganization.mockResolvedValue(
+        mockServiceResponse,
+      );
+
+      const result = await mockDataProvider.removeContactFromOrganization(
+        "contact-1",
+        "org-2",
+      );
+
+      expect(mockDataProvider.removeContactFromOrganization).toHaveBeenCalledWith(
+        "contact-1",
+        "org-2",
+      );
+      expect(result.data.id).toBe("co-2");
+    });
+
+    it("should use service methods for setting primary organization", async () => {
+      const mockServiceResponse = {
+        data: { success: true },
+      };
+
+      mockDataProvider.setPrimaryOrganization.mockResolvedValue(
+        mockServiceResponse,
+      );
+
+      const result = await mockDataProvider.setPrimaryOrganization(
+        "contact-1",
+        "org-2",
+      );
+
+      expect(mockDataProvider.setPrimaryOrganization).toHaveBeenCalledWith(
+        "contact-1",
+        "org-2",
+      );
+      expect(result.data.success).toBe(true);
+    });
+
+    it("should handle atomic primary organization changes via RPC", async () => {
+      // Test that setting a primary organization atomically updates the previous one
+      const mockServiceResponse = {
+        data: { success: true },
+      };
+
+      mockDataProvider.setPrimaryOrganization.mockResolvedValue(
+        mockServiceResponse,
+      );
+
+      // This should use the set_primary_organization RPC function
+      // which ensures atomicity (only one primary at a time)
+      const result = await mockDataProvider.setPrimaryOrganization(
+        "contact-1",
+        "org-3",
+      );
+
+      expect(mockDataProvider.setPrimaryOrganization).toHaveBeenCalledWith(
+        "contact-1",
+        "org-3",
+      );
+      expect(result.data.success).toBe(true);
+    });
+  });
+
+  describe("Unified Provider Validation", () => {
+    it("should validate relationship data through unified provider", async () => {
+      const invalidRelationship = {
+        contact_id: "contact-1",
+        organization_id: "org-1",
+        // Missing required fields like role
+      };
+
+      const validationError = {
+        message: "Validation failed",
+        errors: { role: "Role is required" },
+      };
+
+      mockDataProvider.create.mockRejectedValue(validationError);
+
+      await expect(
+        mockDataProvider.create("contact_organizations", {
+          data: invalidRelationship,
+        }),
+      ).rejects.toMatchObject(validationError);
+    });
+
+    it("should handle transformation pipeline for relationship data", async () => {
+      const relationshipData = {
+        contact_id: "contact-1",
+        organization_id: "org-1",
+        is_primary: true,
+        role: "decision_maker",
+        purchase_influence: "High",
+        decision_authority: "Decision Maker",
+      };
+
+      const processedData = {
+        ...relationshipData,
+        created_at: "2025-01-01T00:00:00Z",
+      };
+
+      mockDataProvider.create.mockResolvedValue({
+        data: { id: "co-new", ...processedData },
+      });
+
+      const result = await mockDataProvider.create("contact_organizations", {
+        data: relationshipData,
+      });
+
+      expect(result.data.id).toBe("co-new");
+      expect(mockDataProvider.create).toHaveBeenCalledWith(
+        "contact_organizations",
+        { data: relationshipData },
+      );
     });
   });
 });

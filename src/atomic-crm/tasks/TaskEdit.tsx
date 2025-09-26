@@ -12,7 +12,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { Identifier } from "ra-core";
-import { EditBase, Form, required, useNotify } from "ra-core";
+import { EditBase, Form, useNotify } from "ra-core";
+// Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { useConfigurationContext } from "../root/ConfigurationContext";
 
 export const TaskEdit = ({
@@ -52,26 +53,25 @@ export const TaskEdit = ({
               <TextInput
                 autoFocus
                 source="text"
-                label="Description"
-                validate={required()}
+                label="Description *"
                 multiline
-                helperText={false}
+                helperText="Required field"
               />
               <div className="flex flex-row gap-4">
                 <TextInput
                   source="due_date"
-                  helperText={false}
+                  label="Due Date *"
+                  helperText="Required field"
                   type="date"
-                  validate={required()}
                 />
                 <SelectInput
                   source="type"
+                  label="Type *"
                   choices={taskTypes.map((type) => ({
                     id: type,
                     name: type,
                   }))}
-                  helperText={false}
-                  validate={required()}
+                  helperText="Required field"
                 />
               </div>
               <DialogFooter className="w-full sm:justify-between gap-4">

@@ -1,5 +1,6 @@
 import { BooleanInput, TextInput } from "@/components/admin";
-import { email, required, useGetIdentity, useRecordContext } from "ra-core";
+import { useGetIdentity, useRecordContext } from "ra-core";
+// Validation removed per Engineering Constitution - single-point validation at API boundary only
 import type { Sale } from "../types";
 
 export function SalesInputs() {
@@ -7,12 +8,12 @@ export function SalesInputs() {
   const record = useRecordContext<Sale>();
   return (
     <div className="space-y-4 w-full">
-      <TextInput source="first_name" validate={required()} helperText={false} />
-      <TextInput source="last_name" validate={required()} helperText={false} />
+      <TextInput source="first_name" label="First Name *" helperText="Required field" />
+      <TextInput source="last_name" label="Last Name *" helperText="Required field" />
       <TextInput
         source="email"
-        validate={[required(), email()]}
-        helperText={false}
+        label="Email *"
+        helperText="Required: Must be a valid email address"
       />
       <BooleanInput
         source="administrator"

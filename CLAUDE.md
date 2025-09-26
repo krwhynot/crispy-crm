@@ -36,6 +36,9 @@ Rules preventing debates & ensuring consistency:
 - **AUTOMATE**: ESLint→architecture, git hooks→types, CI/CD→standards
 - **MEASURE FIRST**: Profile before adding complexity
 
+## ⚠️ Development Status
+**NOT LIVE** - Development phase only. All Supabase PostgreSQL data is test data and can be modified/deleted as needed. Use supabase MCP tool to access the database.
+
 ## Build & Development Commands
 
 ### Database Operations
