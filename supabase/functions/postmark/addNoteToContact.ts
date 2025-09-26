@@ -40,7 +40,7 @@ export const addNoteToContact = async ({
     await supabaseAdmin
       .from("contacts")
       .select("*")
-      .contains("email_jsonb", JSON.stringify([{ email }]))
+      .contains("email", JSON.stringify([{ email }]))
       .maybeSingle();
   if (fetchContactError)
     return new Response(
@@ -55,35 +55,35 @@ export const addNoteToContact = async ({
   } else {
     // If the contact does not exist, we need to create it, along with the company if needed
 
-    // Check if the company already exists
-    const { data: existingCompany, error: fetchCompanyError } =
+    // Check if the organization already exists
+    const { data: existingOrganization, error: fetchOrganizationError } =
       await supabaseAdmin
-        .from("companies")
+        .from("organizations")
         .select("*")
         .eq("name", domain)
         .maybeSingle();
-    if (fetchCompanyError)
+    if (fetchOrganizationError)
       return new Response(
-        `Could not fetch companies from database, name: ${domain}`,
+        `Could not fetch organizations from database, name: ${domain}`,
         { status: 500 },
       );
 
     // deno-lint-ignore no-explicit-any
-    let company: any = undefined;
-    if (existingCompany) {
-      company = existingCompany;
+    let organization: any = undefined;
+    if (existingOrganization) {
+      organization = existingOrganization;
     } else {
-      const { data: newCompanies, error: createCompanyError } =
+      const { data: newOrganizations, error: createOrganizationError } =
         await supabaseAdmin
-          .from("companies")
+          .from("organizations")
           .insert({ name: domain, sales_id: sales.id })
           .select();
-      if (createCompanyError)
+      if (createOrganizationError)
         return new Response(
-          `Could not create company in database, name: ${domain}`,
+          `Could not create organization in database, name: ${domain}`,
           { status: 500 },
         );
-      company = newCompanies[0];
+      organization = newOrganizations[0];
     }
 
     // Create the contact
@@ -92,8 +92,8 @@ export const addNoteToContact = async ({
       .insert({
         first_name: firstName,
         last_name: lastName,
-        email_jsonb: [{ email, type: "Work" }],
-        company_id: company.id,
+        email: [{ email, type: "Work" }],
+        organization_id: organization.id,
         sales_id: sales.id,
         first_seen: new Date(),
         last_seen: new Date(),

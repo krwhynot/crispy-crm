@@ -37,7 +37,10 @@ export function useBulkExport<
           ),
         )
         .catch((error) => {
-          console.error(error);
+          console.error(
+            "Bulk export failed:",
+            error instanceof Error ? error.message : String(error),
+          );
           notify("ra.notification.http_error", {
             type: "error",
           });

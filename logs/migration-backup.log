@@ -1,0 +1,10 @@
+[2025-09-22T15:50:26.532Z] ==================================================
+[2025-09-22T15:50:26.551Z] STARTING MIGRATION BACKUP PROCESS
+[2025-09-22T15:50:26.551Z] ==================================================
+[2025-09-22T15:50:26.552Z] Checking environment configuration...
+[2025-09-22T15:50:26.553Z] ERROR: Missing required environment variables: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+[2025-09-22T16:30:31.517Z] ==================================================
+[2025-09-22T16:30:31.521Z] STARTING MIGRATION BACKUP PROCESS
+[2025-09-22T16:30:31.524Z] ==================================================
+[2025-09-22T16:30:31.524Z] Checking environment configuration...
+[2025-09-22T16:30:38.302Z] ERROR: Supabase CLI is not available. Please install Supabase CLI.

@@ -1,13 +1,9 @@
-import type { TagColorName } from '@/lib/color-types';
-import {
-  HEX_TO_SEMANTIC_MAP,
-  SEMANTIC_COLORS,
-  VALID_TAG_COLORS
-} from '@/lib/color-types';
+import type { TagColorName } from "@/lib/color-types";
+import { SEMANTIC_COLORS, VALID_TAG_COLORS } from "@/lib/color-types";
 
 /**
  * Validates if a color value is a valid tag color
- * Supports both semantic names and hex values during transition
+ * Only accepts semantic color names
  * @param value - The color value to validate
  * @returns Error message if invalid, undefined if valid
  */
@@ -17,33 +13,20 @@ export function validateTagColor(value: string): string | undefined {
     return undefined;
   }
 
-  // Check if it's a legacy hex value that we can map
-  const normalizedHex = value.toLowerCase();
-  if (HEX_TO_SEMANTIC_MAP[normalizedHex]) {
-    return undefined;
-  }
-
-  return 'Invalid color selection';
+  return "Invalid color selection";
 }
 
 /**
  * Gets the CSS class for a tag color
- * Handles both semantic names and legacy hex values
- * @param color - The color value (semantic name or hex)
+ * Only handles semantic color names
+ * @param color - The semantic color name
  * @returns CSS class string for the color
  */
 export function getTagColorClass(color: string): string {
-  // First try as semantic color name
+  // Try as semantic color name
   const semanticColor = SEMANTIC_COLORS[color as TagColorName];
   if (semanticColor) {
     return semanticColor.cssClass;
-  }
-
-  // Try mapping from hex to semantic
-  const normalizedHex = color.toLowerCase();
-  const mappedColorName = HEX_TO_SEMANTIC_MAP[normalizedHex];
-  if (mappedColorName) {
-    return SEMANTIC_COLORS[mappedColorName].cssClass;
   }
 
   // Fallback to default gray if unknown
@@ -51,42 +34,8 @@ export function getTagColorClass(color: string): string {
 }
 
 /**
- * Migrates a legacy hex color to a semantic color name
- * @param hexColor - The hex color to migrate
- * @returns The semantic color name
- */
-export function migrateHexToSemantic(hexColor: string): TagColorName {
-  const normalizedHex = hexColor.toLowerCase();
-  const mappedColor = HEX_TO_SEMANTIC_MAP[normalizedHex];
-
-  // Return mapped color or default to gray
-  return mappedColor || 'gray';
-}
-
-/**
- * Gets the hex fallback for a semantic color
- * Used during transition period for backward compatibility
- * @param colorName - The semantic color name
- * @returns Hex color string
- */
-export function getHexFallback(colorName: TagColorName): string {
-  const semanticColor = SEMANTIC_COLORS[colorName];
-  return semanticColor ? semanticColor.hexFallback : SEMANTIC_COLORS.gray.hexFallback;
-}
-
-/**
- * Checks if a value is a legacy hex color
- * @param value - The value to check
- * @returns True if it's a known legacy hex color
- */
-export function isLegacyHexColor(value: string): boolean {
-  const normalizedHex = value.toLowerCase();
-  return normalizedHex in HEX_TO_SEMANTIC_MAP;
-}
-
-/**
  * Normalizes a color value to a semantic color name
- * Handles both semantic names and hex values
+ * Only accepts semantic color names, defaults to gray for invalid values
  * @param color - The color value to normalize
  * @returns The normalized semantic color name
  */
@@ -96,26 +45,9 @@ export function normalizeColorToSemantic(color: string): TagColorName {
     return color as TagColorName;
   }
 
-  // Try to migrate from hex
-  return migrateHexToSemantic(color);
+  // Default to gray for any invalid color
+  return "gray";
 }
-
-/**
- * Color migration mapping for database conversion
- * Maps old hex values to new semantic names
- */
-export const COLOR_MIGRATION_MAP = {
-  '#eddcd2': 'warm',
-  '#fff1e6': 'yellow',
-  '#fde2e4': 'pink',
-  '#fad2e1': 'pink',
-  '#c5dedd': 'teal',
-  '#dbe7e4': 'green',
-  '#f0efeb': 'gray',
-  '#d6e2e9': 'blue',
-  '#bcd4e6': 'blue',
-  '#99c1de': 'teal',
-} as const;
 
 /**
  * Export the valid colors list for use in UI components

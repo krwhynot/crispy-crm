@@ -5,18 +5,18 @@ import { FormToolbar } from "@/components/admin";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
 
-export const ContactCreate = () => {
+const ContactCreate = () => {
   const { identity } = useGetIdentity();
+
+  const transformData = (data: Contact) => ({
+    ...data,
+    first_seen: new Date().toISOString(),
+    last_seen: new Date().toISOString(),
+    tags: [],
+  });
+
   return (
-    <CreateBase
-      redirect="show"
-      transform={(data: Contact) => ({
-        ...data,
-        first_seen: new Date().toISOString(),
-        last_seen: new Date().toISOString(),
-        tags: [],
-      })}
-    >
+    <CreateBase redirect="show" transform={transformData}>
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">
           <Form defaultValues={{ sales_id: identity?.id }}>
@@ -32,3 +32,5 @@ export const ContactCreate = () => {
     </CreateBase>
   );
 };
+
+export default ContactCreate;

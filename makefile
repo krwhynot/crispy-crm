@@ -6,36 +6,13 @@ help:
 install: package.json ## install dependencies
 	npm install;
 
-start-supabase: ## start supabase locally
-	npx supabase start
-
-start-supabase-functions: ## start the supabase Functions watcher
-	npx supabase functions serve --env-file supabase/functions/.env.development
-
-supabase-migrate-database: ## apply the migrations to the database
-	npx supabase migration up
-
-supabase-reset-database: ## reset (and clear!) the database
-	npx supabase db reset
-
 start-app: ## start the app locally
 	npm run dev
 
-start: start-supabase start-app ## start the stack locally
-
-start-demo: ## start the app locally in demo mode
-	npm run dev:demo
-
-stop-supabase: ## stop local supabase
-	npx supabase stop
-
-stop: stop-supabase ## stop the stack locally
+start: start-app ## start the app locally
 
 build: ## build the app
 	npm run build
-
-build-demo: ## build the app in demo mode
-	npm run build:demo
 
 build-lib: ## build the library
 	npm run build-lib

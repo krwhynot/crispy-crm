@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { SupportCreateSuggestionOptions } from "@/hooks/useSupportCreateSuggestion";
@@ -216,7 +217,7 @@ export const SelectInput = (props: SelectInputProps) => {
         id={id}
         name={field.name}
         className={cn("w-full min-w-20", className)}
-        {...rest}
+        {...sanitizeInputRestProps(rest)}
       >
         {label !== "" && label !== false && (
           <FormLabel>

@@ -114,7 +114,7 @@
   --warning-default: oklch(70% 0.145 85);
   --warning-strong: oklch(58% 0.15 85);
   --warning-bg: oklch(97% 0.05 85);
-  --warning-border: oklch(85% 0.10 85);
+  --warning-border: oklch(85% 0.1 85);
   --warning-hover: oklch(75% 0.14 85);
   --warning-active: oklch(65% 0.147 85);
   --warning-disabled: oklch(80% 0.06 85);
@@ -124,7 +124,7 @@
   --info-default: oklch(60% 0.145 230);
   --info-strong: oklch(50% 0.15 230);
   --info-bg: oklch(96% 0.04 230);
-  --info-border: oklch(82% 0.10 230);
+  --info-border: oklch(82% 0.1 230);
   --info-hover: oklch(65% 0.14 230);
   --info-active: oklch(55% 0.147 230);
   --info-disabled: oklch(75% 0.06 230);
@@ -155,9 +155,9 @@
   --border-disabled: oklch(95% 0 0);
   --border-selected: oklch(60% 0.08 230);
   --border-success: oklch(80% 0.08 145);
-  --border-warning: oklch(85% 0.10 85);
+  --border-warning: oklch(85% 0.1 85);
   --border-error: oklch(83% 0.11 25);
-  --border-info: oklch(82% 0.10 230);
+  --border-info: oklch(82% 0.1 230);
 }
 
 .dark {
@@ -215,7 +215,7 @@
   --success-default: oklch(55% 0.14 145);
   --success-strong: oklch(65% 0.13 145);
   --success-bg: oklch(20% 0.06 145);
-  --success-border: oklch(40% 0.10 145);
+  --success-border: oklch(40% 0.1 145);
   --success-hover: oklch(50% 0.145 145);
   --success-active: oklch(60% 0.135 145);
   --success-disabled: oklch(35% 0.05 145);
@@ -231,7 +231,7 @@
   --warning-disabled: oklch(40% 0.06 85);
 
   /* Info variants - dark mode */
-  --info-subtle: oklch(25% 0.10 230);
+  --info-subtle: oklch(25% 0.1 230);
   --info-default: oklch(55% 0.145 230);
   --info-strong: oklch(65% 0.14 230);
   --info-bg: oklch(20% 0.07 230);
@@ -264,8 +264,8 @@
   --border-hover: oklch(100% 0 0 / 25%);
   --border-focus: oklch(55.6% 0 0);
   --border-disabled: oklch(100% 0 0 / 8%);
-  --border-selected: oklch(55% 0.10 230);
-  --border-success: oklch(40% 0.10 145);
+  --border-selected: oklch(55% 0.1 230);
+  --border-success: oklch(40% 0.1 145);
   --border-warning: oklch(45% 0.11 85);
   --border-error: oklch(43% 0.13 25);
   --border-info: oklch(42% 0.12 230);

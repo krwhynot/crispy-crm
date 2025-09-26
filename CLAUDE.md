@@ -1,49 +1,103 @@
-# CLAUDE.md
+## Engineering Constitution Core Principles
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Rules preventing debates & ensuring consistency:
+
+1. **Database**: Single unified data provider + optional resilience. Refactor/deprecate custom layers
+2. **Errors**: Basic retry + exponential backoff + standard types. No circuit breakers/health monitoring (over-engineering)
+3. **Validation**: Zod schemas at API boundary only. No multi-layer
+4. **Testing**: Critical logic units + key E2E journeys. Avoid infrastructure over-testing
+5. **Migrations**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250125000000_fresh_crm_schema.sql`)
+6. **TypeScript**: `interface` for objects/classes, `type` for unions/intersections/utilities
+7. **State**: Local for UI-only, React Admin store for resources
+8. **Transactions**: Multi-table or business-rule dependencies only
+9. **Compatibility**: Never maintain backward compatibility - fail fast
+10. **Comments**: Non-obvious business rules/workarounds only. Self-documenting code
+11. **Forms**: Always use admin layer (`src/components/admin/`) for validation/errors
+12. **Colors**: Semantic CSS variables only (--primary, --destructive). No hex
+
+### Operational Standards
+
+13. **Data Access**: Primary auto-generated provider. Refactor custom layers
+14. **Transactions**: Service Layer orchestration for business ops
+15. **Tech Debt**: Boy Scout Rule - fix inconsistencies when editing
+16. **Architecture**: ESLint rules prevent forbidden imports/violations
+17. **Complexity**: New patterns only for documented production issues
+18. **Performance**: Measure→optimize queries/indexes→cache. No premature optimization
+19. **Feature Flags**: Server-evaluated + ownership/expiry. Remove within one release
+20. **API**: Versioned REST + JSON errors + idempotency keys + boundary-validated DTOs
+21. **Deployment**: Two-phase migrations + canary + health gates + schema-compatible rollbacks
+22. **Observability**: User-centric SLIs/SLOs + distributed tracing + correlation IDs
+
+### Quick Reference
+
+- **NO OVER-ENGINEERING**: No circuit breakers/health monitoring/complex resilience
+- **FAIL FAST**: No backward compatibility, surface errors immediately
+- **SINGLE RESPONSIBILITY**: One validation/data provider/truth source
+- **AUTOMATE**: ESLint→architecture, git hooks→types, CI/CD→standards
+- **MEASURE FIRST**: Profile before adding complexity
 
 ## Build & Development Commands
 
-### Core Commands
-- `npm run dev` - Start development server (Vite with force reload)
-- `npm run build` - TypeScript check + production build
-- `npm run preview` - Preview production build
-- `npm test` - Run Vitest tests
+### Database Operations
 
-### Code Quality
-- `npm run lint:check` - Check ESLint violations
-- `npm run lint:apply` - Auto-fix ESLint issues
-- `npm run prettier:check` - Check formatting
-- `npm run prettier:apply` - Auto-format code
-- `npm run validate:colors` - Validate color usage across components
-
-### Supabase
-- `npx supabase start` - Start local Supabase instance
-- `npx supabase stop` - Stop local Supabase
-- `npm run supabase:remote:init` - Initialize remote Supabase connection
+#### Local Development
+- Connect directly to remote Supabase via environment variables
+- No local Supabase instance required
 
 ## Architecture Overview
 
-This is Atomic CRM, a full-stack React CRM application built on these key architectural decisions:
+Atomic CRM is a full-stack React CRM application built on these key architectural decisions:
 
-### Dual Data Provider Architecture
-The application supports two data provider modes configured via `VITE_IS_DEMO`:
-- **FakeRest Provider**: In-memory data for development/demo (when `VITE_IS_DEMO=true`)
-- **Supabase Provider**: Production-ready PostgreSQL backend with RLS policies
+### Data Provider Architecture
 
-Both providers implement the React Admin DataProvider interface, allowing seamless switching between environments.
+The application uses a unified Supabase data provider (`src/atomic-crm/providers/supabase/dataProvider.ts`) that:
+- Implements the React Admin DataProvider interface
+- Handles all CRUD operations against PostgreSQL with RLS policies
+- Integrates Zod validation at API boundaries
+- Manages file attachments via Supabase Storage
+- No backward compatibility layers - clean opportunities-first design
 
-### Core Application Structure
+### Validation Architecture
 
-The CRM component (`src/atomic-crm/root/CRM.tsx`) serves as the application root, accepting configuration for:
-- Custom deal stages and pipelines
-- Company sectors and contact metadata
-- Theme configuration (light/dark modes)
-- Authentication providers (Google, Azure, Keycloak, Auth0)
+Zod schemas provide single-point validation at API boundaries (`src/atomic-crm/validation/`):
+- `opportunities.ts` - Opportunity validation with business rules (probability 0-100)
+- `organizations.ts` - Company validation with URL and LinkedIn validators
+- `contacts.ts` - Contact validation with JSONB email/phone support
+- `tasks.ts` - Task validation with reminder date logic
+- `tags.ts` - Tag validation with semantic color enforcement
+- `notes.ts` - Note validation with attachment support
+
+Each schema exports both the Zod schema and validation functions for React Admin integration.
+
+### Database Schema
+
+Fresh opportunities-based schema with 24 core tables:
+- `opportunities` - Sales pipeline (NOT deals) with multi-principal support
+- `opportunityNotes` - Communication history (NOT dealNotes)
+- `companies` - Organizations with hierarchical relationships
+- `contacts` - People with JSONB email/phone for flexibility
+- `products` - Full catalog with pricing tiers and inventory
+- `activities` - Engagement vs interaction tracking
+- `contact_organizations` - Many-to-many contact↔company relationships
+- `opportunity_participants` - Multi-stakeholder opportunities
+
+Key features:
+- 85+ performance indexes including GIN for full-text search
+- 20+ functions for business logic and validation
+- Simple RLS: `FOR ALL USING (auth.role() = 'authenticated')`
+- Soft deletes via `deleted_at` timestamps
+- Search vectors updated via triggers
+
+### Component Architecture
+
+Three-tier UI component system:
+1. **Base Components** (`src/components/ui/`): shadcn/ui primitives
+2. **Admin Components** (`src/components/admin/`): React Admin integrated components
+3. **Feature Components** (`src/atomic-crm/`): Business logic components
 
 ### Feature Module Organization
 
-Each business entity follows a consistent module structure:
+Each entity follows a consistent structure:
 ```
 src/atomic-crm/[feature]/
 ├── index.ts           # Resource configuration for React Admin
@@ -54,72 +108,68 @@ src/atomic-crm/[feature]/
 └── [Feature]Inputs.tsx # Shared form inputs
 ```
 
-### Component Architecture
-
-The UI layer uses a three-tier component system:
-1. **Base Components** (`src/components/ui/`): shadcn/ui primitives
-2. **Admin Components** (`src/components/admin/`): React Admin integrated components
-3. **Feature Components** (`src/atomic-crm/`): Business logic components
-
-### Database Schema
-
-Key tables in Supabase:
-- `companies` - Organization records with sectors
-- `contacts` - People with email/phone as JSONB for flexibility
-- `deals` - Sales pipeline with stages and statuses
-- `tasks` - Activity tracking with reminders
-- `contactNotes`/`dealNotes` - Communication history
-- `tags` - Flexible categorization with color themes
-
-All tables include RLS policies for multi-tenant security.
-
 ### Provider Pattern
 
-The application uses React Admin's provider system:
-- **AuthProvider**: Handles authentication flow with Supabase Auth or mock auth
-- **DataProvider**: Abstracts data operations (CRUD, filtering, pagination)
-- **I18nProvider**: Internationalization support (currently English)
+React Admin's provider system:
+- **AuthProvider**: Supabase Auth with Google, Azure, Keycloak, Auth0
+- **DataProvider**: Unified Supabase provider with Zod validation
+- **I18nProvider**: Internationalization (currently English only)
 
 ### State Management
 
-- React Admin's store for resource state and UI preferences
-- React Query for server state caching and synchronization
-- Local storage for user preferences and session persistence
-
-### Color System Migration
-
-The project is transitioning to a new Tailwind v4 color system:
-- Color usage is tracked in `COLOR_USAGE_LIST.md`
-- Migration plans documented in `.docs/plans/color-system-migration/`
-- Tag colors migrated to semantic color tokens
+- React Admin store for resource state and UI preferences
+- React Query for server state caching
+- Local storage for user preferences
 
 ## Important Patterns
 
-### Resource Configuration
-Resources are registered in the CRM component with their CRUD components. React Admin automatically generates routes and navigation based on these registrations.
+### Resource Registration
+Resources are registered in `src/atomic-crm/root/CRM.tsx` with lazy-loaded components. React Admin generates routes and navigation automatically.
 
 ### Form Handling
-Forms use React Hook Form via React Admin's Form components. Validation uses Zod schemas with custom validators for business rules.
+Forms use React Hook Form via React Admin's Form components. Validation happens through Zod schemas at the data provider level.
 
-### Data Fetching
-The dual provider pattern means data operations must work with both:
-- FakeRest: Synchronous operations on in-memory data
-- Supabase: Async operations with real PostgreSQL queries
+### Kanban Board
+Opportunities use complex drag-drop reordering via index field. See `src/atomic-crm/opportunities/OpportunityListContent.tsx`.
 
-### Authentication Flow
-The app supports multiple auth methods through Supabase Auth, with custom pages for:
-- Sign up with email verification
-- Password reset flow
-- SSO integration (Google, Azure, etc.)
+### Multi-Organization Contacts
+Contacts can belong to multiple organizations via `contact_organizations` junction table with role and influence tracking.
+
+### Activity System
+Distinction between:
+- **Engagements**: Activities without opportunity context
+- **Interactions**: Activities linked to specific opportunities
 
 ## Environment Configuration
 
-Required environment variables:
+Required variables:
 - `VITE_SUPABASE_URL` - Supabase project URL
 - `VITE_SUPABASE_ANON_KEY` - Public anonymous key
-- `VITE_IS_DEMO` - Toggle demo mode (FakeRest provider)
-- `VITE_INBOUND_EMAIL` - Optional email capture address
+- `VITE_INBOUND_EMAIL` - Optional email capture
+- `OPPORTUNITY_*` variables - Pipeline configuration (NOT DEAL_*)
 
-## Testing Strategy
+## Migration Notes
 
-Tests use Vitest with React Testing Library. Test files follow the `*.test.ts(x)` or `*.spec.ts(x)` naming convention and are co-located with source files.
+The system has been completely migrated from "deals" to "opportunities":
+- Database has fresh schema with no backward compatibility
+- All code references updated to opportunities
+- Legacy deals module completely removed
+- Validation layer implemented with Zod
+- TypeScript types generated from fresh schema
+
+## Active Refactoring Patterns
+
+When editing files (Boy Scout Rule):
+1. **Data Provider**: Consolidate to unified provider
+2. **Validation**: Ensure Zod schemas at API boundary
+3. **Colors**: Use semantic CSS variables only
+4. **Forms**: Use admin form layer components
+5. **TypeScript**: `interface` for objects, `type` for unions
+
+## Known Limitations
+
+1. **No Local Supabase**: Use remote project for development
+2. **MCP vs CLI**: Local uses MCP tools, CI/CD uses Supabase CLI
+3. **Migration Rollback**: Limited to 48-hour window
+4. **Edge Functions**: Test directly on development project
+5. **Type Generation**: MCP response size limits may require Supabase CLI

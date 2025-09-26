@@ -6,14 +6,21 @@ import { visualizer } from "rollup-plugin-visualizer";
 import createHtmlPlugin from "vite-plugin-simple-html";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     tailwindcss(),
-    visualizer({
-      open: process.env.NODE_ENV !== "CI",
-      filename: "./dist/stats.html",
-    }),
+    // Only include visualizer in development or when explicitly analyzing
+    ...(mode === "development" || process.env.ANALYZE === "true"
+      ? [
+          visualizer({
+            open: process.env.NODE_ENV !== "CI",
+            filename: "./dist/stats.html",
+            gzipSize: true,
+            brotliSize: true,
+          }),
+        ]
+      : []),
     createHtmlPlugin({
       minify: true,
       inject: {
@@ -45,7 +52,100 @@ export default defineConfig({
     keepNames: true,
   },
   build: {
-    sourcemap: true,
+    // Disable source maps for production builds (7.7MB savings)
+    sourcemap: mode === "development",
+    rollupOptions: {
+      output: {
+        // Manual chunk splitting for optimal loading
+        manualChunks: {
+          // React ecosystem - high priority
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+
+          // React Admin core - loaded on every page
+          "vendor-ra-core": [
+            "ra-core",
+            "ra-i18n-polyglot",
+            "ra-language-english",
+          ],
+
+          // Supabase and data providers
+          "vendor-supabase": ["@supabase/supabase-js", "ra-supabase-core"],
+
+          // UI component libraries - shared across pages
+          "ui-radix": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-select",
+            "@radix-ui/react-avatar",
+            "@radix-ui/react-checkbox",
+            "@radix-ui/react-label",
+            "@radix-ui/react-separator",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-switch",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-tooltip",
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-navigation-menu",
+            "@radix-ui/react-progress",
+            "@radix-ui/react-radio-group",
+          ],
+
+          // Charts and visualization - heavy but not always needed
+          "charts-nivo": ["@nivo/bar"],
+
+          // Form handling libraries
+          forms: ["react-hook-form", "@hookform/resolvers", "zod"],
+
+          // Drag and drop - only for kanban
+          dnd: ["@hello-pangea/dnd"],
+
+          // Utilities that don't need to be in main bundle
+          utils: [
+            "lodash",
+            "date-fns",
+            "clsx",
+            "class-variance-authority",
+            "inflection",
+          ],
+
+          // File handling
+          "file-utils": [
+            "papaparse",
+            "jsonexport",
+            "react-dropzone",
+            "react-cropper",
+          ],
+
+          // Icons - frequently used but can be separate
+          icons: ["lucide-react"],
+        },
+        // Optimize chunk names and size warnings
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+            ? chunkInfo.facadeModuleId
+                .split("/")
+                .pop()
+                ?.replace(/\.(tsx?|jsx?)$/, "")
+            : "chunk";
+          return `js/${facadeModuleId}-[hash].js`;
+        },
+      },
+    },
+    // Chunk size warnings
+    chunkSizeWarningLimit: 300,
+    // Better minification for production
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ["console.log", "console.info"],
+      },
+      format: {
+        comments: false,
+      },
+    },
   },
   resolve: {
     preserveSymlinks: true,
@@ -53,4 +153,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-});
+}));

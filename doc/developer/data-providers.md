@@ -12,34 +12,6 @@ To import the test data, follow these steps:
 2. Click the "Import" button.
 3. Select the file located at `test-data/contacts.csv`.
 
-## Using A Fake API For Development
+## Filters Syntax
 
-For development purposes, you can use an alternative data provider called [FakeRest](https://github.com/marmelab/FakeRest). It's a simple REST API running in the browser that resets the data on each page reload. It's useful for testing the frontend without having to set up a backend, e.g. to let end users test some updates before the backend is ready.
-
-FakeRest is used in the [Atomic CRM demo](https://marmelab.com/atomic-crm-demo/), where you can test it live.
-
-### Setting Up The FakeRest Data Provider
-
-To set up the FakeRest data provider, you need to change the `dataProvider` import in the `src/App.tsx` file:
-
-```diff
-// in App.tsx
-import { CRM } from "@/atomic-crm/root/CRM";
-+import { authProvider, dataProvider } from "@/atomic-crm/providers/fakerest";
-
-const App = () => (
--    <CRM />
-+    <CRM dataProvider={dataProvider} authProvider={authProvider} />
-);
-
-export default App;
-
-```
-
-**Warning**: As supabase is still the default data provider, its environment variables (`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`) are **still required**.
-
-### Filters Syntax
-
-The list filters used in this project MUST follow the [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest) convention, where the filter operator is concatenated to the field name with an `@`. For example, to filter contacts by first name, you would use the `first_name@eq` filter.
-
-When using FakeRest, the filters are mapped at runtime to the FakeRest filter syntax by the the [`supabaseAdapter`](../../src/providers/fakerest/internal/supabaseAdapter.ts) file. If a filter is not yet supported by the adapter, you have to modify this file to add support for it.
+The list filters used in this project follow the [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest) convention, where the filter operator is concatenated to the field name with an `@`. For example, to filter contacts by first name, you would use the `first_name@eq` filter.

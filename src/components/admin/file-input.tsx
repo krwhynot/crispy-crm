@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import { FormError, FormField, FormLabel } from "@/components/admin/form";
 import { InputHelperText } from "@/components/admin/input-helper-text";
 import { Button } from "@/components/ui/button";
+import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 
 export const FileInput = (props: FileInputProps) => {
   const {
@@ -183,7 +184,7 @@ export const FileInput = (props: FileInputProps) => {
       id={id}
       name={name}
       className={cn("w-full", className)}
-      {...rest}
+      {...sanitizeInputRestProps(rest)}
     >
       <FormLabel
         htmlFor={id}

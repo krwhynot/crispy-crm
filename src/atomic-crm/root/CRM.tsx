@@ -5,38 +5,27 @@ import type { AuthProvider, DataProvider } from "ra-core";
 import { CustomRoutes, localStorageStore, Resource } from "ra-core";
 import { useEffect } from "react";
 import { Route } from "react-router-dom";
-import companies from "../companies";
+import organizations from "../organizations";
 import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
-import deals from "../deals";
+import opportunities from "../opportunities";
 import { Layout } from "../layout/Layout";
-import { SignupPage } from "../login/SignupPage";
 import {
   authProvider as supabaseAuthProvider,
   dataProvider as supabaseDataProvider,
 } from "../providers/supabase";
-import {
-  authProvider as fakeRestAuthProvider,
-  dataProvider as fakeRestDataProvider,
-} from "../providers/fakerest";
-
-// Use FakeRest provider in demo mode, Supabase otherwise
-const isDemoMode = import.meta.env.VITE_IS_DEMO === "true";
-const defaultAuthProvider = isDemoMode ? fakeRestAuthProvider : supabaseAuthProvider;
-const defaultDataProvider = isDemoMode ? fakeRestDataProvider : supabaseDataProvider;
 import sales from "../sales";
 import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
 import { ConfigurationProvider } from "./ConfigurationContext";
 import {
-  defaultCompanySectors,
+  defaultOrganizationSectors,
   defaultContactGender,
   defaultDarkModeLogo,
-  defaultDealCategories,
-  defaultDealPipelineStatuses,
-  defaultDealStages,
   defaultLightModeLogo,
   defaultNoteStatuses,
+  defaultOpportunityCategories,
+  defaultOpportunityStages,
   defaultTaskTypes,
   defaultTitle,
 } from "./defaultConfiguration";
@@ -57,11 +46,12 @@ export type CRMProps = {
  * wraps the application with a `ConfigurationProvider` to provide configuration values via context.
  *
  * @param {Array<ContactGender>} contactGender - The gender options for contacts used in the application.
- * @param {string[]} companySectors - The list of company sectors used in the application.
+ * @param {string[]} organizationSectors - The list of organization sectors used in the application.
  * @param {RaThemeOptions} darkTheme - The theme to use when the application is in dark mode.
- * @param {string[]} dealCategories - The categories of deals used in the application.
- * @param {string[]} dealPipelineStatuses - The statuses of deals in the pipeline used in the application.
- * @param {DealStage[]} dealStages - The stages of deals used in the application.
+ * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
+ * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
+ * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
+ * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
  * @param {RaThemeOptions} lightTheme - The theme to use when the application is in light mode.
  * @param {string} logo - The logo used in the CRM application.
  * @param {NoteStatus[]} noteStatuses - The statuses of notes used in the application.
@@ -91,17 +81,16 @@ export type CRMProps = {
  */
 export const CRM = ({
   contactGender = defaultContactGender,
-  companySectors = defaultCompanySectors,
-  dealCategories = defaultDealCategories,
-  dealPipelineStatuses = defaultDealPipelineStatuses,
-  dealStages = defaultDealStages,
+  organizationSectors = defaultOrganizationSectors,
+  opportunityCategories = defaultOpportunityCategories,
+  opportunityStages = defaultOpportunityStages,
   darkModeLogo = defaultDarkModeLogo,
   lightModeLogo = defaultLightModeLogo,
   noteStatuses = defaultNoteStatuses,
   taskTypes = defaultTaskTypes,
   title = defaultTitle,
-  dataProvider = defaultDataProvider,
-  authProvider = defaultAuthProvider,
+  dataProvider = supabaseDataProvider,
+  authProvider = supabaseAuthProvider,
   disableTelemetry,
   ...rest
 }: CRMProps) => {
@@ -122,10 +111,9 @@ export const CRM = ({
   return (
     <ConfigurationProvider
       contactGender={contactGender}
-      companySectors={companySectors}
-      dealCategories={dealCategories}
-      dealPipelineStatuses={dealPipelineStatuses}
-      dealStages={dealStages}
+      organizationSectors={organizationSectors}
+      opportunityCategories={opportunityCategories}
+      opportunityStages={opportunityStages}
       darkModeLogo={darkModeLogo}
       lightModeLogo={lightModeLogo}
       noteStatuses={noteStatuses}
@@ -145,7 +133,6 @@ export const CRM = ({
         {...rest}
       >
         <CustomRoutes noLayout>
-          <Route path={SignupPage.path} element={<SignupPage />} />
           <Route path={SetPasswordPage.path} element={<SetPasswordPage />} />
           <Route
             path={ForgotPasswordPage.path}
@@ -156,11 +143,11 @@ export const CRM = ({
         <CustomRoutes>
           <Route path={SettingsPage.path} element={<SettingsPage />} />
         </CustomRoutes>
-        <Resource name="deals" {...deals} />
+        <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />
-        <Resource name="companies" {...companies} />
+        <Resource name="organizations" {...organizations} />
         <Resource name="contactNotes" />
-        <Resource name="dealNotes" />
+        <Resource name="opportunityNotes" />
         <Resource name="tasks" />
         <Resource name="sales" {...sales} />
         <Resource name="tags" />

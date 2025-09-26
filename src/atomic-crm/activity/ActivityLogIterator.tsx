@@ -2,18 +2,18 @@ import { Fragment, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
 import {
-  COMPANY_CREATED,
+  ORGANIZATION_CREATED,
   CONTACT_CREATED,
   CONTACT_NOTE_CREATED,
-  DEAL_CREATED,
-  DEAL_NOTE_CREATED,
+  OPPORTUNITY_CREATED,
+  OPPORTUNITY_NOTE_CREATED,
 } from "../consts";
 import type { Activity } from "../types";
-import { ActivityLogCompanyCreated } from "./ActivityLogCompanyCreated";
+import { ActivityLogOrganizationCreated } from "./ActivityLogOrganizationCreated";
 import { ActivityLogContactCreated } from "./ActivityLogContactCreated";
 import { ActivityLogContactNoteCreated } from "./ActivityLogContactNoteCreated";
-import { ActivityLogDealCreated } from "./ActivityLogDealCreated";
-import { ActivityLogDealNoteCreated } from "./ActivityLogDealNoteCreated";
+import { ActivityLogOpportunityCreated } from "./ActivityLogOpportunityCreated";
+import { ActivityLogOpportunityNoteCreated } from "./ActivityLogOpportunityNoteCreated";
 
 type ActivityLogIteratorProps = {
   activities: Activity[];
@@ -56,8 +56,8 @@ export function ActivityLogIterator({
 }
 
 function ActivityItem({ activity }: { activity: Activity }) {
-  if (activity.type === COMPANY_CREATED) {
-    return <ActivityLogCompanyCreated activity={activity} />;
+  if (activity.type === ORGANIZATION_CREATED) {
+    return <ActivityLogOrganizationCreated activity={activity} />;
   }
 
   if (activity.type === CONTACT_CREATED) {
@@ -68,12 +68,12 @@ function ActivityItem({ activity }: { activity: Activity }) {
     return <ActivityLogContactNoteCreated activity={activity} />;
   }
 
-  if (activity.type === DEAL_CREATED) {
-    return <ActivityLogDealCreated activity={activity} />;
+  if (activity.type === OPPORTUNITY_CREATED) {
+    return <ActivityLogOpportunityCreated activity={activity} />;
   }
 
-  if (activity.type === DEAL_NOTE_CREATED) {
-    return <ActivityLogDealNoteCreated activity={activity} />;
+  if (activity.type === OPPORTUNITY_NOTE_CREATED) {
+    return <ActivityLogOpportunityNoteCreated activity={activity} />;
   }
 
   return null;

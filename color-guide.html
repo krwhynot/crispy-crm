@@ -1,827 +1,901 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Atomic CRM - Colors and Components Actually Used in Production">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Atomic CRM - Colors and Components Actually Used in Production"
+    />
     <title>Atomic CRM - Production Color Guide</title>
 
     <style>
-        /* CSS Reset and Base Styles */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+      /* CSS Reset and Base Styles */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        /* Color Variables - Light Theme (Actually Used) */
-        :root {
-            --radius: 0.625rem;
-            --radius-sm: calc(var(--radius) - 4px);
-            --radius-md: calc(var(--radius) - 2px);
-            --radius-lg: var(--radius);
+      /* Color Variables - Light Theme (Actually Used) */
+      :root {
+        --radius: 0.625rem;
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
 
-            /* Core Colors Used in Components */
-            --background: oklch(1 0 0);
-            --foreground: oklch(0.145 0 0);
-            --card: oklch(1 0 0);
-            --card-foreground: oklch(0.145 0 0);
-            --primary: oklch(0.205 0 0);
-            --primary-foreground: oklch(0.985 0 0);
-            --secondary: oklch(0.97 0 0);
-            --secondary-foreground: oklch(0.205 0 0);
-            --muted: oklch(0.97 0 0);
-            --muted-foreground: oklch(0.556 0 0);
-            --accent: oklch(0.97 0 0);
-            --accent-foreground: oklch(0.205 0 0);
-            --destructive: oklch(0.577 0.245 27.325);
-            --destructive-foreground: oklch(0.985 0 0);
-            --border: oklch(0.922 0 0);
-            --input: oklch(0.922 0 0);
-            --ring: oklch(0.708 0 0);
-        }
+        /* Core Colors Used in Components */
+        --background: oklch(1 0 0);
+        --foreground: oklch(0.145 0 0);
+        --card: oklch(1 0 0);
+        --card-foreground: oklch(0.145 0 0);
+        --primary: oklch(0.205 0 0);
+        --primary-foreground: oklch(0.985 0 0);
+        --secondary: oklch(0.97 0 0);
+        --secondary-foreground: oklch(0.205 0 0);
+        --muted: oklch(0.97 0 0);
+        --muted-foreground: oklch(0.556 0 0);
+        --accent: oklch(0.97 0 0);
+        --accent-foreground: oklch(0.205 0 0);
+        --destructive: oklch(0.577 0.245 27.325);
+        --destructive-foreground: oklch(0.985 0 0);
+        --border: oklch(0.922 0 0);
+        --input: oklch(0.922 0 0);
+        --ring: oklch(0.708 0 0);
+      }
 
-        /* Dark Theme */
-        .dark {
-            --background: oklch(0.145 0 0);
-            --foreground: oklch(0.985 0 0);
-            --card: oklch(0.205 0 0);
-            --card-foreground: oklch(0.985 0 0);
-            --primary: oklch(0.922 0 0);
-            --primary-foreground: oklch(0.205 0 0);
-            --secondary: oklch(0.269 0 0);
-            --secondary-foreground: oklch(0.985 0 0);
-            --muted: oklch(0.269 0 0);
-            --muted-foreground: oklch(0.708 0 0);
-            --accent: oklch(0.269 0 0);
-            --accent-foreground: oklch(0.985 0 0);
-            --destructive: oklch(0.704 0.191 22.216);
-            --destructive-foreground: oklch(0.985 0 0);
-            --border: oklch(1 0 0 / 15%);
-            --input: oklch(1 0 0 / 15%);
-            --ring: oklch(0.556 0 0);
-        }
+      /* Dark Theme */
+      .dark {
+        --background: oklch(0.145 0 0);
+        --foreground: oklch(0.985 0 0);
+        --card: oklch(0.205 0 0);
+        --card-foreground: oklch(0.985 0 0);
+        --primary: oklch(0.922 0 0);
+        --primary-foreground: oklch(0.205 0 0);
+        --secondary: oklch(0.269 0 0);
+        --secondary-foreground: oklch(0.985 0 0);
+        --muted: oklch(0.269 0 0);
+        --muted-foreground: oklch(0.708 0 0);
+        --accent: oklch(0.269 0 0);
+        --accent-foreground: oklch(0.985 0 0);
+        --destructive: oklch(0.704 0.191 22.216);
+        --destructive-foreground: oklch(0.985 0 0);
+        --border: oklch(1 0 0 / 15%);
+        --input: oklch(1 0 0 / 15%);
+        --ring: oklch(0.556 0 0);
+      }
 
-        /* Base Styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            background: var(--background);
-            color: var(--foreground);
-            transition: background 200ms ease, color 200ms ease;
-        }
+      /* Base Styles */
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        background: var(--background);
+        color: var(--foreground);
+        transition:
+          background 200ms ease,
+          color 200ms ease;
+      }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1rem;
+      }
 
-        .header {
-            padding: 2rem 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 2rem;
-        }
+      .header {
+        padding: 2rem 0;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 2rem;
+      }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
 
+      h1 {
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+      }
+
+      h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 1.5rem 0 0.75rem;
+      }
+
+      /* Theme Toggle */
+      .theme-toggle {
+        display: flex;
+        gap: 0.5rem;
+        background: var(--muted);
+        padding: 0.25rem;
+        border-radius: var(--radius);
+      }
+
+      .theme-toggle button {
+        padding: 0.5rem 1rem;
+        background: transparent;
+        border: none;
+        color: var(--foreground);
+        cursor: pointer;
+        border-radius: var(--radius-sm);
+        transition: background 200ms ease;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .theme-toggle button:hover {
+        background: var(--accent);
+      }
+
+      .theme-toggle button.active {
+        background: var(--background);
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+      }
+
+      /* Color Grid */
+      .color-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+
+      /* Color Card */
+      .color-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .color-swatch {
+        height: 100px;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .color-info {
+        padding: 1rem;
+      }
+
+      .color-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-family: "Courier New", monospace;
+        font-size: 0.875rem;
+      }
+
+      .color-values {
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+        font-family: "Courier New", monospace;
+      }
+
+      /* Special Colors Section */
+      .special-colors {
+        margin: 2rem 0;
+      }
+
+      .tag-colors,
+      .status-colors,
+      .chart-colors {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+
+      .color-chip {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .color-hex {
+        font-family: "Courier New", monospace;
+        font-size: 0.75rem;
+        opacity: 0.8;
+      }
+
+      /* Component Examples */
+      .component-section {
+        margin: 3rem 0;
+        padding: 2rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+      }
+
+      .button-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      /* Button Variants (As Actually Used) */
+      .btn {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 200ms ease;
+        border: 1px solid transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-default {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      }
+
+      .btn-default:hover {
+        opacity: 0.9;
+      }
+
+      .btn-secondary {
+        background: var(--secondary);
+        color: var(--secondary-foreground);
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      }
+
+      .btn-secondary:hover {
+        opacity: 0.8;
+      }
+
+      .btn-destructive {
+        background: var(--destructive);
+        color: white;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      }
+
+      .btn-destructive:hover {
+        opacity: 0.9;
+      }
+
+      .btn-outline {
+        background: var(--background);
+        border: 1px solid var(--border);
+        color: var(--foreground);
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      }
+
+      .btn-outline:hover {
+        background: var(--accent);
+        color: var(--accent-foreground);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--foreground);
+      }
+
+      .btn-ghost:hover {
+        background: var(--accent);
+        color: var(--accent-foreground);
+      }
+
+      .btn-link {
+        background: transparent;
+        color: var(--primary);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+
+      /* Form Elements (As Used) */
+      .form-example {
+        margin: 1rem 0;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.5rem;
+        background: var(--background);
+        border: 1px solid var(--input);
+        border-radius: var(--radius);
+        color: var(--foreground);
+        font-size: 0.875rem;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus {
+        outline: none;
+        border-color: var(--ring);
+        box-shadow: 0 0 0 3px rgba(113, 113, 122, 0.1);
+      }
+
+      /* State Examples */
+      .state-examples {
+        display: grid;
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      .state-example {
+        padding: 0.5rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+      }
+
+      /* Toast for feedback */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--foreground);
+        color: var(--background);
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius);
+        transform: translateX(400px);
+        transition: transform 200ms ease;
+        z-index: 1000;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      /* Info Box */
+      .info-box {
+        background: var(--muted);
+        padding: 1rem;
+        border-radius: var(--radius);
+        margin: 1rem 0;
+        font-size: 0.875rem;
+      }
+
+      .warning-box {
+        background: oklch(0.577 0.245 27.325 / 0.1);
+        border: 1px solid var(--destructive);
+        padding: 1rem;
+        border-radius: var(--radius);
+        margin: 1rem 0;
+        font-size: 0.875rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
         h1 {
-            font-size: 2rem;
-            font-weight: 700;
+          font-size: 1.5rem;
         }
 
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 2rem 0 1rem;
-        }
-
-        h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin: 1.5rem 0 0.75rem;
-        }
-
-        /* Theme Toggle */
-        .theme-toggle {
-            display: flex;
-            gap: 0.5rem;
-            background: var(--muted);
-            padding: 0.25rem;
-            border-radius: var(--radius);
-        }
-
-        .theme-toggle button {
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: none;
-            color: var(--foreground);
-            cursor: pointer;
-            border-radius: var(--radius-sm);
-            transition: background 200ms ease;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .theme-toggle button:hover {
-            background: var(--accent);
-        }
-
-        .theme-toggle button.active {
-            background: var(--background);
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-        }
-
-        /* Color Grid */
         .color-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         }
+      }
 
-        /* Color Card */
-        .color-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
+      /* Focus Styles */
+      *:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+      }
 
-        .color-swatch {
-            height: 100px;
-            position: relative;
-            cursor: pointer;
-        }
+      .text-muted {
+        color: var(--muted-foreground);
+      }
 
-        .color-info {
-            padding: 1rem;
-        }
+      .mt-4 {
+        margin-top: 2rem;
+      }
 
-        .color-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-        }
-
-        .color-values {
-            font-size: 0.75rem;
-            color: var(--muted-foreground);
-            font-family: 'Courier New', monospace;
-        }
-
-        /* Special Colors Section */
-        .special-colors {
-            margin: 2rem 0;
-        }
-
-        .tag-colors, .status-colors, .chart-colors {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .color-chip {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            font-size: 0.875rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .color-hex {
-            font-family: 'Courier New', monospace;
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-
-        /* Component Examples */
-        .component-section {
-            margin: 3rem 0;
-            padding: 2rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-        }
-
-        .button-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        /* Button Variants (As Actually Used) */
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 200ms ease;
-            border: 1px solid transparent;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-default {
-            background: var(--primary);
-            color: var(--primary-foreground);
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        }
-
-        .btn-default:hover {
-            opacity: 0.9;
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: var(--secondary-foreground);
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        }
-
-        .btn-secondary:hover {
-            opacity: 0.8;
-        }
-
-        .btn-destructive {
-            background: var(--destructive);
-            color: white;
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        }
-
-        .btn-destructive:hover {
-            opacity: 0.9;
-        }
-
-        .btn-outline {
-            background: var(--background);
-            border: 1px solid var(--border);
-            color: var(--foreground);
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        }
-
-        .btn-outline:hover {
-            background: var(--accent);
-            color: var(--accent-foreground);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--foreground);
-        }
-
-        .btn-ghost:hover {
-            background: var(--accent);
-            color: var(--accent-foreground);
-        }
-
-        .btn-link {
-            background: transparent;
-            color: var(--primary);
-            text-decoration: underline;
-            text-underline-offset: 4px;
-        }
-
-        /* Form Elements (As Used) */
-        .form-example {
-            margin: 1rem 0;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        textarea {
-            width: 100%;
-            max-width: 300px;
-            padding: 0.5rem;
-            background: var(--background);
-            border: 1px solid var(--input);
-            border-radius: var(--radius);
-            color: var(--foreground);
-            font-size: 0.875rem;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            border-color: var(--ring);
-            box-shadow: 0 0 0 3px rgba(113, 113, 122, 0.1);
-        }
-
-        /* State Examples */
-        .state-examples {
-            display: grid;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .state-example {
-            padding: 0.5rem;
-            border-radius: var(--radius);
-            font-size: 0.875rem;
-        }
-
-        /* Toast for feedback */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--foreground);
-            color: var(--background);
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            transform: translateX(400px);
-            transition: transform 200ms ease;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        /* Info Box */
-        .info-box {
-            background: var(--muted);
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin: 1rem 0;
-            font-size: 0.875rem;
-        }
-
-        .warning-box {
-            background: oklch(0.577 0.245 27.325 / 0.1);
-            border: 1px solid var(--destructive);
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin: 1rem 0;
-            font-size: 0.875rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .color-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-        }
-
-        /* Focus Styles */
-        *:focus-visible {
-            outline: 2px solid var(--ring);
-            outline-offset: 2px;
-        }
-
-        .text-muted {
-            color: var(--muted-foreground);
-        }
-
-        .mt-4 {
-            margin-top: 2rem;
-        }
-
-        code {
-            background: var(--muted);
-            padding: 0.125rem 0.25rem;
-            border-radius: 0.25rem;
-            font-size: 0.875rem;
-            font-family: 'Courier New', monospace;
-        }
+      code {
+        background: var(--muted);
+        padding: 0.125rem 0.25rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        font-family: "Courier New", monospace;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div>
-                    <h1>Atomic CRM - Production Colors</h1>
-                    <p class="text-muted">Only the colors and components actually used in the application</p>
-                </div>
-                <div class="theme-toggle" role="radiogroup" aria-label="Theme selection">
-                    <button role="radio" aria-checked="false" data-theme="light">Light</button>
-                    <button role="radio" aria-checked="false" data-theme="dark">Dark</button>
-                    <button role="radio" aria-checked="true" data-theme="system">System</button>
-                </div>
-            </div>
+      <div class="container">
+        <div class="header-content">
+          <div>
+            <h1>Atomic CRM - Production Colors</h1>
+            <p class="text-muted">
+              Only the colors and components actually used in the application
+            </p>
+          </div>
+          <div
+            class="theme-toggle"
+            role="radiogroup"
+            aria-label="Theme selection"
+          >
+            <button role="radio" aria-checked="false" data-theme="light">
+              Light
+            </button>
+            <button role="radio" aria-checked="false" data-theme="dark">
+              Dark
+            </button>
+            <button role="radio" aria-checked="true" data-theme="system">
+              System
+            </button>
+          </div>
         </div>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main class="container">
-        <!-- Core UI Colors Actually Used -->
-        <section>
-            <h2>Core UI Colors (Used in Components)</h2>
-            <p class="text-muted">These are the semantic colors actively used throughout the application's UI components.</p>
+      <!-- Core UI Colors Actually Used -->
+      <section>
+        <h2>Core UI Colors (Used in Components)</h2>
+        <p class="text-muted">
+          These are the semantic colors actively used throughout the
+          application's UI components.
+        </p>
 
-            <div class="color-grid">
-                <!-- Primary (used in buttons, links, focus states) -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--primary)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--primary</div>
-                        <div class="color-values">Used in: Buttons, links, active states</div>
-                    </div>
-                </div>
-
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--primary-foreground)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--primary-foreground</div>
-                        <div class="color-values">Text on primary backgrounds</div>
-                    </div>
-                </div>
-
-                <!-- Secondary (used in secondary buttons, subtle backgrounds) -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--secondary)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--secondary</div>
-                        <div class="color-values">Secondary buttons, subtle backgrounds</div>
-                    </div>
-                </div>
-
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--secondary-foreground)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--secondary-foreground</div>
-                        <div class="color-values">Text on secondary backgrounds</div>
-                    </div>
-                </div>
-
-                <!-- Destructive (used in delete buttons, error states) -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--destructive)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--destructive</div>
-                        <div class="color-values">Delete buttons, errors, warnings</div>
-                    </div>
-                </div>
-
-                <!-- Background & Foreground -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--background)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--background</div>
-                        <div class="color-values">Main page background</div>
-                    </div>
-                </div>
-
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--foreground)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--foreground</div>
-                        <div class="color-values">Primary text color</div>
-                    </div>
-                </div>
-
-                <!-- Card (used in card components, modals) -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--card)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--card</div>
-                        <div class="color-values">Card backgrounds, modals</div>
-                    </div>
-                </div>
-
-                <!-- Muted (used for disabled states, subtle text) -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--muted)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--muted</div>
-                        <div class="color-values">Disabled states, subtle backgrounds</div>
-                    </div>
-                </div>
-
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--muted-foreground)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--muted-foreground</div>
-                        <div class="color-values">Subtle text, placeholders</div>
-                    </div>
-                </div>
-
-                <!-- Accent (used for hover states) -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--accent)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--accent</div>
-                        <div class="color-values">Hover states, selected items</div>
-                    </div>
-                </div>
-
-                <!-- Border & Input -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--border)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--border</div>
-                        <div class="color-values">Borders, dividers</div>
-                    </div>
-                </div>
-
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--input)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--input</div>
-                        <div class="color-values">Input borders</div>
-                    </div>
-                </div>
-
-                <!-- Ring (focus indicator) -->
-                <div class="color-card">
-                    <div class="color-swatch" style="background: var(--ring)"></div>
-                    <div class="color-info">
-                        <div class="color-name">--ring</div>
-                        <div class="color-values">Focus rings, active indicators</div>
-                    </div>
-                </div>
+        <div class="color-grid">
+          <!-- Primary (used in buttons, links, focus states) -->
+          <div class="color-card">
+            <div class="color-swatch" style="background: var(--primary)"></div>
+            <div class="color-info">
+              <div class="color-name">--primary</div>
+              <div class="color-values">
+                Used in: Buttons, links, active states
+              </div>
             </div>
-        </section>
+          </div>
 
-        <!-- Hardcoded Colors Still in Use -->
-        <section class="special-colors mt-4">
-            <h2>Application-Specific Colors</h2>
-
-            <div class="info-box">
-                <strong>Note:</strong> These colors are hardcoded and should be migrated to the design system.
+          <div class="color-card">
+            <div
+              class="color-swatch"
+              style="background: var(--primary-foreground)"
+            ></div>
+            <div class="color-info">
+              <div class="color-name">--primary-foreground</div>
+              <div class="color-values">Text on primary backgrounds</div>
             </div>
+          </div>
 
-            <!-- Tag Colors -->
-            <h3>Tag Colors (10 colors)</h3>
-            <div class="tag-colors">
-                <span class="color-chip" style="background: #eddcd2; color: #333">
-                    Dusty Rose <span class="color-hex">#eddcd2</span>
-                </span>
-                <span class="color-chip" style="background: #fff1e6; color: #333">
-                    Cream <span class="color-hex">#fff1e6</span>
-                </span>
-                <span class="color-chip" style="background: #fde2e4; color: #333">
-                    Blush Pink <span class="color-hex">#fde2e4</span>
-                </span>
-                <span class="color-chip" style="background: #fad2e1; color: #333">
-                    Light Pink <span class="color-hex">#fad2e1</span>
-                </span>
-                <span class="color-chip" style="background: #c5dedd; color: #333">
-                    Sage <span class="color-hex">#c5dedd</span>
-                </span>
-                <span class="color-chip" style="background: #dbe7e4; color: #333">
-                    Mint <span class="color-hex">#dbe7e4</span>
-                </span>
-                <span class="color-chip" style="background: #f0efeb; color: #333">
-                    Beige <span class="color-hex">#f0efeb</span>
-                </span>
-                <span class="color-chip" style="background: #d6e2e9; color: #333">
-                    Sky <span class="color-hex">#d6e2e9</span>
-                </span>
-                <span class="color-chip" style="background: #bcd4e6; color: #333">
-                    Powder Blue <span class="color-hex">#bcd4e6</span>
-                </span>
-                <span class="color-chip" style="background: #99c1de; color: #fff">
-                    Cornflower <span class="color-hex">#99c1de</span>
-                </span>
+          <!-- Secondary (used in secondary buttons, subtle backgrounds) -->
+          <div class="color-card">
+            <div
+              class="color-swatch"
+              style="background: var(--secondary)"
+            ></div>
+            <div class="color-info">
+              <div class="color-name">--secondary</div>
+              <div class="color-values">
+                Secondary buttons, subtle backgrounds
+              </div>
             </div>
+          </div>
 
-            <!-- Note Status Colors -->
-            <h3>Note Status Colors</h3>
-            <div class="status-colors">
-                <span class="color-chip" style="background: #7dbde8; color: #fff">
-                    Cold <span class="color-hex">#7dbde8</span>
-                </span>
-                <span class="color-chip" style="background: #e8cb7d; color: #333">
-                    Warm <span class="color-hex">#e8cb7d</span>
-                </span>
-                <span class="color-chip" style="background: #e88b7d; color: #fff">
-                    Hot <span class="color-hex">#e88b7d</span>
-                </span>
-                <span class="color-chip" style="background: #a4e87d; color: #333">
-                    In Contract <span class="color-hex">#a4e87d</span>
-                </span>
+          <div class="color-card">
+            <div
+              class="color-swatch"
+              style="background: var(--secondary-foreground)"
+            ></div>
+            <div class="color-info">
+              <div class="color-name">--secondary-foreground</div>
+              <div class="color-values">Text on secondary backgrounds</div>
             </div>
+          </div>
 
-            <!-- Chart Colors -->
-            <h3>Deal Chart Colors</h3>
-            <div class="chart-colors">
-                <span class="color-chip" style="background: #61cdbb; color: #fff">
-                    Won <span class="color-hex">#61cdbb</span>
-                </span>
-                <span class="color-chip" style="background: #97e3d5; color: #333">
-                    Pending <span class="color-hex">#97e3d5</span>
-                </span>
-                <span class="color-chip" style="background: #e25c3b; color: #fff">
-                    Lost <span class="color-hex">#e25c3b</span>
-                </span>
-                <span class="color-chip" style="background: #2ebca6; color: #fff">
-                    Text Fill <span class="color-hex">#2ebca6</span>
-                </span>
-                <span class="color-chip" style="background: #f47560; color: #fff">
-                    Stroke <span class="color-hex">#f47560</span>
-                </span>
+          <!-- Destructive (used in delete buttons, error states) -->
+          <div class="color-card">
+            <div
+              class="color-swatch"
+              style="background: var(--destructive)"
+            ></div>
+            <div class="color-info">
+              <div class="color-name">--destructive</div>
+              <div class="color-values">Delete buttons, errors, warnings</div>
             </div>
-        </section>
+          </div>
 
-        <!-- Component Gallery -->
-        <section class="component-section mt-4">
-            <h2>Component Examples (As Used in Production)</h2>
-
-            <!-- Buttons -->
-            <div>
-                <h3>Button Variants (All 6 Used)</h3>
-                <div class="button-grid">
-                    <button class="btn btn-default">Default</button>
-                    <button class="btn btn-secondary">Secondary</button>
-                    <button class="btn btn-destructive">Destructive</button>
-                    <button class="btn btn-outline">Outline</button>
-                    <button class="btn btn-ghost">Ghost</button>
-                    <button class="btn btn-link">Link</button>
-                </div>
+          <!-- Background & Foreground -->
+          <div class="color-card">
+            <div
+              class="color-swatch"
+              style="background: var(--background)"
+            ></div>
+            <div class="color-info">
+              <div class="color-name">--background</div>
+              <div class="color-values">Main page background</div>
             </div>
+          </div>
 
-            <!-- Form Elements -->
-            <div class="form-example">
-                <h3>Form Inputs</h3>
-                <div style="display: grid; gap: 1rem; max-width: 400px;">
-                    <input type="text" placeholder="Standard input">
-                    <input type="text" placeholder="Focus me to see ring" style="margin-top: 0.5rem;">
-                    <input type="email" placeholder="Invalid state" style="border-color: var(--destructive); margin-top: 0.5rem;">
-                </div>
+          <div class="color-card">
+            <div
+              class="color-swatch"
+              style="background: var(--foreground)"
+            ></div>
+            <div class="color-info">
+              <div class="color-name">--foreground</div>
+              <div class="color-values">Primary text color</div>
             </div>
+          </div>
 
-            <!-- State Examples -->
-            <div class="state-examples">
-                <h3>Common State Patterns</h3>
-                <div class="state-example" style="background: var(--accent);">
-                    Hover/Selected state (uses <code>--accent</code>)
-                </div>
-                <div class="state-example" style="opacity: 0.5;">
-                    Disabled state (50% opacity)
-                </div>
-                <div class="state-example" style="border: 2px solid var(--ring);">
-                    Focus state (uses <code>--ring</code>)
-                </div>
+          <!-- Card (used in card components, modals) -->
+          <div class="color-card">
+            <div class="color-swatch" style="background: var(--card)"></div>
+            <div class="color-info">
+              <div class="color-name">--card</div>
+              <div class="color-values">Card backgrounds, modals</div>
             </div>
-        </section>
+          </div>
 
-        <!-- Migration Recommendations -->
-        <section class="mt-4">
-            <h2>Migration Recommendations</h2>
-
-            <div class="warning-box">
-                <strong>Action Required:</strong> The following hardcoded colors should be migrated to CSS variables:
-                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                    <li>Tag colors (10 hex values) → Create semantic tag variables</li>
-                    <li>Note status colors (4 hex values) → Create status variables</li>
-                    <li>Chart colors (5 hex values) → Use existing chart variables or create new ones</li>
-                </ul>
+          <!-- Muted (used for disabled states, subtle text) -->
+          <div class="color-card">
+            <div class="color-swatch" style="background: var(--muted)"></div>
+            <div class="color-info">
+              <div class="color-name">--muted</div>
+              <div class="color-values">
+                Disabled states, subtle backgrounds
+              </div>
             </div>
+          </div>
 
-            <div class="info-box">
-                <strong>Unused Variables:</strong> The following CSS variables are defined but not actively used:
-                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                    <li>Chart colors (--chart-1 through --chart-5)</li>
-                    <li>Sidebar colors (all --sidebar-* variables)</li>
-                    <li>Popover colors (--popover, --popover-foreground)</li>
-                </ul>
-                Consider removing these to reduce complexity or implement them where hardcoded colors exist.
+          <div class="color-card">
+            <div
+              class="color-swatch"
+              style="background: var(--muted-foreground)"
+            ></div>
+            <div class="color-info">
+              <div class="color-name">--muted-foreground</div>
+              <div class="color-values">Subtle text, placeholders</div>
             </div>
-        </section>
+          </div>
 
-        <!-- Usage Statistics -->
-        <section class="mt-4">
-            <h2>Usage Summary</h2>
-            <div class="info-box">
-                <strong>Color System Analysis:</strong>
-                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                    <li>✅ 14 semantic colors actively used in components</li>
-                    <li>⚠️ 19 hardcoded hex colors that need migration</li>
-                    <li>❌ 13 defined but unused CSS variables</li>
-                    <li>✅ All 6 button variants are in use</li>
-                    <li>✅ Dark/light theme switching fully implemented</li>
-                </ul>
+          <!-- Accent (used for hover states) -->
+          <div class="color-card">
+            <div class="color-swatch" style="background: var(--accent)"></div>
+            <div class="color-info">
+              <div class="color-name">--accent</div>
+              <div class="color-values">Hover states, selected items</div>
             </div>
-        </section>
+          </div>
+
+          <!-- Border & Input -->
+          <div class="color-card">
+            <div class="color-swatch" style="background: var(--border)"></div>
+            <div class="color-info">
+              <div class="color-name">--border</div>
+              <div class="color-values">Borders, dividers</div>
+            </div>
+          </div>
+
+          <div class="color-card">
+            <div class="color-swatch" style="background: var(--input)"></div>
+            <div class="color-info">
+              <div class="color-name">--input</div>
+              <div class="color-values">Input borders</div>
+            </div>
+          </div>
+
+          <!-- Ring (focus indicator) -->
+          <div class="color-card">
+            <div class="color-swatch" style="background: var(--ring)"></div>
+            <div class="color-info">
+              <div class="color-name">--ring</div>
+              <div class="color-values">Focus rings, active indicators</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hardcoded Colors Still in Use -->
+      <section class="special-colors mt-4">
+        <h2>Application-Specific Colors</h2>
+
+        <div class="info-box">
+          <strong>Note:</strong> These colors are hardcoded and should be
+          migrated to the design system.
+        </div>
+
+        <!-- Tag Colors -->
+        <h3>Tag Colors (10 colors)</h3>
+        <div class="tag-colors">
+          <span class="color-chip" style="background: #eddcd2; color: #333">
+            Dusty Rose <span class="color-hex">#eddcd2</span>
+          </span>
+          <span class="color-chip" style="background: #fff1e6; color: #333">
+            Cream <span class="color-hex">#fff1e6</span>
+          </span>
+          <span class="color-chip" style="background: #fde2e4; color: #333">
+            Blush Pink <span class="color-hex">#fde2e4</span>
+          </span>
+          <span class="color-chip" style="background: #fad2e1; color: #333">
+            Light Pink <span class="color-hex">#fad2e1</span>
+          </span>
+          <span class="color-chip" style="background: #c5dedd; color: #333">
+            Sage <span class="color-hex">#c5dedd</span>
+          </span>
+          <span class="color-chip" style="background: #dbe7e4; color: #333">
+            Mint <span class="color-hex">#dbe7e4</span>
+          </span>
+          <span class="color-chip" style="background: #f0efeb; color: #333">
+            Beige <span class="color-hex">#f0efeb</span>
+          </span>
+          <span class="color-chip" style="background: #d6e2e9; color: #333">
+            Sky <span class="color-hex">#d6e2e9</span>
+          </span>
+          <span class="color-chip" style="background: #bcd4e6; color: #333">
+            Powder Blue <span class="color-hex">#bcd4e6</span>
+          </span>
+          <span class="color-chip" style="background: #99c1de; color: #fff">
+            Cornflower <span class="color-hex">#99c1de</span>
+          </span>
+        </div>
+
+        <!-- Note Status Colors -->
+        <h3>Note Status Colors</h3>
+        <div class="status-colors">
+          <span class="color-chip" style="background: #7dbde8; color: #fff">
+            Cold <span class="color-hex">#7dbde8</span>
+          </span>
+          <span class="color-chip" style="background: #e8cb7d; color: #333">
+            Warm <span class="color-hex">#e8cb7d</span>
+          </span>
+          <span class="color-chip" style="background: #e88b7d; color: #fff">
+            Hot <span class="color-hex">#e88b7d</span>
+          </span>
+          <span class="color-chip" style="background: #a4e87d; color: #333">
+            In Contract <span class="color-hex">#a4e87d</span>
+          </span>
+        </div>
+
+        <!-- Chart Colors -->
+        <h3>Deal Chart Colors</h3>
+        <div class="chart-colors">
+          <span class="color-chip" style="background: #61cdbb; color: #fff">
+            Won <span class="color-hex">#61cdbb</span>
+          </span>
+          <span class="color-chip" style="background: #97e3d5; color: #333">
+            Pending <span class="color-hex">#97e3d5</span>
+          </span>
+          <span class="color-chip" style="background: #e25c3b; color: #fff">
+            Lost <span class="color-hex">#e25c3b</span>
+          </span>
+          <span class="color-chip" style="background: #2ebca6; color: #fff">
+            Text Fill <span class="color-hex">#2ebca6</span>
+          </span>
+          <span class="color-chip" style="background: #f47560; color: #fff">
+            Stroke <span class="color-hex">#f47560</span>
+          </span>
+        </div>
+      </section>
+
+      <!-- Component Gallery -->
+      <section class="component-section mt-4">
+        <h2>Component Examples (As Used in Production)</h2>
+
+        <!-- Buttons -->
+        <div>
+          <h3>Button Variants (All 6 Used)</h3>
+          <div class="button-grid">
+            <button class="btn btn-default">Default</button>
+            <button class="btn btn-secondary">Secondary</button>
+            <button class="btn btn-destructive">Destructive</button>
+            <button class="btn btn-outline">Outline</button>
+            <button class="btn btn-ghost">Ghost</button>
+            <button class="btn btn-link">Link</button>
+          </div>
+        </div>
+
+        <!-- Form Elements -->
+        <div class="form-example">
+          <h3>Form Inputs</h3>
+          <div style="display: grid; gap: 1rem; max-width: 400px">
+            <input type="text" placeholder="Standard input" />
+            <input
+              type="text"
+              placeholder="Focus me to see ring"
+              style="margin-top: 0.5rem"
+            />
+            <input
+              type="email"
+              placeholder="Invalid state"
+              style="border-color: var(--destructive); margin-top: 0.5rem"
+            />
+          </div>
+        </div>
+
+        <!-- State Examples -->
+        <div class="state-examples">
+          <h3>Common State Patterns</h3>
+          <div class="state-example" style="background: var(--accent)">
+            Hover/Selected state (uses <code>--accent</code>)
+          </div>
+          <div class="state-example" style="opacity: 0.5">
+            Disabled state (50% opacity)
+          </div>
+          <div class="state-example" style="border: 2px solid var(--ring)">
+            Focus state (uses <code>--ring</code>)
+          </div>
+        </div>
+      </section>
+
+      <!-- Migration Recommendations -->
+      <section class="mt-4">
+        <h2>Migration Recommendations</h2>
+
+        <div class="warning-box">
+          <strong>Action Required:</strong> The following hardcoded colors
+          should be migrated to CSS variables:
+          <ul style="margin-top: 0.5rem; padding-left: 1.5rem">
+            <li>Tag colors (10 hex values) → Create semantic tag variables</li>
+            <li>Note status colors (4 hex values) → Create status variables</li>
+            <li>
+              Chart colors (5 hex values) → Use existing chart variables or
+              create new ones
+            </li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <strong>Unused Variables:</strong> The following CSS variables are
+          defined but not actively used:
+          <ul style="margin-top: 0.5rem; padding-left: 1.5rem">
+            <li>Chart colors (--chart-1 through --chart-5)</li>
+            <li>Sidebar colors (all --sidebar-* variables)</li>
+            <li>Popover colors (--popover, --popover-foreground)</li>
+          </ul>
+          Consider removing these to reduce complexity or implement them where
+          hardcoded colors exist.
+        </div>
+      </section>
+
+      <!-- Usage Statistics -->
+      <section class="mt-4">
+        <h2>Usage Summary</h2>
+        <div class="info-box">
+          <strong>Color System Analysis:</strong>
+          <ul style="margin-top: 0.5rem; padding-left: 1.5rem">
+            <li>✅ 14 semantic colors actively used in components</li>
+            <li>⚠️ 19 hardcoded hex colors that need migration</li>
+            <li>❌ 13 defined but unused CSS variables</li>
+            <li>✅ All 6 button variants are in use</li>
+            <li>✅ Dark/light theme switching fully implemented</li>
+          </ul>
+        </div>
+      </section>
     </main>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
     <script>
-        // Theme management
-        class ThemeManager {
-            constructor() {
-                this.currentTheme = localStorage.getItem('theme') || 'system';
-                this.init();
-            }
-
-            init() {
-                this.applyTheme(this.currentTheme);
-                this.attachEventListeners();
-                this.updateToggleButtons();
-
-                // Listen for system theme changes
-                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-                    if (this.currentTheme === 'system') {
-                        this.applyTheme('system');
-                    }
-                });
-            }
-
-            applyTheme(theme) {
-                this.currentTheme = theme;
-                localStorage.setItem('theme', theme);
-
-                const root = document.documentElement;
-                root.classList.remove('light', 'dark');
-
-                if (theme === 'system') {
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    root.classList.add(prefersDark ? 'dark' : 'light');
-                } else {
-                    root.classList.add(theme);
-                }
-
-                this.updateToggleButtons();
-            }
-
-            attachEventListeners() {
-                document.querySelectorAll('.theme-toggle button').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.applyTheme(btn.dataset.theme);
-                    });
-                });
-            }
-
-            updateToggleButtons() {
-                document.querySelectorAll('.theme-toggle button').forEach(btn => {
-                    const isActive = btn.dataset.theme === this.currentTheme;
-                    btn.classList.toggle('active', isActive);
-                    btn.setAttribute('aria-checked', isActive);
-                });
-            }
+      // Theme management
+      class ThemeManager {
+        constructor() {
+          this.currentTheme = localStorage.getItem("theme") || "system";
+          this.init();
         }
 
-        // Toast notifications
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
+        init() {
+          this.applyTheme(this.currentTheme);
+          this.attachEventListeners();
+          this.updateToggleButtons();
 
-        // Copy to clipboard
-        async function copyToClipboard(text) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showToast('Copied: ' + text);
-            } catch (err) {
-                // Fallback for older browsers
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast('Copied: ' + text);
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize theme manager
-            const themeManager = new ThemeManager();
-
-            // Add click handlers for color swatches
-            document.querySelectorAll('.color-swatch').forEach(swatch => {
-                swatch.addEventListener('click', () => {
-                    const card = swatch.closest('.color-card');
-                    const colorName = card.querySelector('.color-name').textContent;
-                    const value = getComputedStyle(document.documentElement).getPropertyValue(colorName).trim();
-                    copyToClipboard(value || colorName);
-                });
+          // Listen for system theme changes
+          window
+            .matchMedia("(prefers-color-scheme: dark)")
+            .addEventListener("change", () => {
+              if (this.currentTheme === "system") {
+                this.applyTheme("system");
+              }
             });
+        }
 
-            // Add click handlers for color chips
-            document.querySelectorAll('.color-chip').forEach(chip => {
-                chip.addEventListener('click', () => {
-                    const hex = chip.querySelector('.color-hex').textContent;
-                    copyToClipboard(hex);
-                });
+        applyTheme(theme) {
+          this.currentTheme = theme;
+          localStorage.setItem("theme", theme);
+
+          const root = document.documentElement;
+          root.classList.remove("light", "dark");
+
+          if (theme === "system") {
+            const prefersDark = window.matchMedia(
+              "(prefers-color-scheme: dark)",
+            ).matches;
+            root.classList.add(prefersDark ? "dark" : "light");
+          } else {
+            root.classList.add(theme);
+          }
+
+          this.updateToggleButtons();
+        }
+
+        attachEventListeners() {
+          document.querySelectorAll(".theme-toggle button").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              this.applyTheme(btn.dataset.theme);
             });
+          });
+        }
+
+        updateToggleButtons() {
+          document.querySelectorAll(".theme-toggle button").forEach((btn) => {
+            const isActive = btn.dataset.theme === this.currentTheme;
+            btn.classList.toggle("active", isActive);
+            btn.setAttribute("aria-checked", isActive);
+          });
+        }
+      }
+
+      // Toast notifications
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2000);
+      }
+
+      // Copy to clipboard
+      async function copyToClipboard(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("Copied: " + text);
+        } catch (err) {
+          // Fallback for older browsers
+          const textarea = document.createElement("textarea");
+          textarea.value = text;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+          showToast("Copied: " + text);
+        }
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        // Initialize theme manager
+        const themeManager = new ThemeManager();
+
+        // Add click handlers for color swatches
+        document.querySelectorAll(".color-swatch").forEach((swatch) => {
+          swatch.addEventListener("click", () => {
+            const card = swatch.closest(".color-card");
+            const colorName = card.querySelector(".color-name").textContent;
+            const value = getComputedStyle(document.documentElement)
+              .getPropertyValue(colorName)
+              .trim();
+            copyToClipboard(value || colorName);
+          });
         });
+
+        // Add click handlers for color chips
+        document.querySelectorAll(".color-chip").forEach((chip) => {
+          chip.addEventListener("click", () => {
+            const hex = chip.querySelector(".color-hex").textContent;
+            copyToClipboard(hex);
+          });
+        });
+      });
     </script>
-</body>
+  </body>
 </html>

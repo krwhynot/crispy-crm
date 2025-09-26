@@ -25,7 +25,6 @@ To run this project locally, you will need the following tools installed on your
 
 - Make
 - Node 22 LTS
-- Docker (required by Supabase)
 
 Fork the [`marmelab/atomic-crm`](https://github.com/marmelab/atomic-crm) repository to your user/organization, then clone it locally:
 
@@ -48,7 +47,7 @@ Once you app is configured, start the app locally with the following command:
 make start
 ```
 
-This will start the Vite dev server for the frontend, the local Supabase instance for the API, and a Postgres database (thanks to Docker).
+This will start the Vite dev server for the frontend and the local Supabase instance for the API.
 
 You can then access the app via [http://localhost:5173/](http://localhost:5173/). You will be prompted to create the first user.
 
@@ -79,6 +78,40 @@ To customize Atomic CRM, you will need TypeScript and React programming skills a
 2. [Creating Migrations](./doc/developer/migrations.md) *(optional)*
 3. [Using Fake Rest Data Provider for Development](./doc/developer/data-providers.md) *(optional)*
 4. [Architecture Decisions](./doc/developer/architecture-choices.md) *(optional)*
+
+## Migration Notes (v0.2.0)
+
+### Deal to Opportunity Migration
+The CRM has been enhanced to support more sophisticated sales processes. Key changes include:
+
+- **Renamed Entities**: `deals` are now `opportunities` throughout the system
+- **Environment Variables**: All `DEAL_*` variables renamed to `OPPORTUNITY_*`
+- **Enhanced Schema**: Opportunities now support multiple participants, activity tracking, and interaction history
+- **Many-to-Many Relationships**: Contacts can belong to multiple organizations
+- **Backward Compatibility**: Legacy deal endpoints remain functional during transition
+
+### Development Tooling Updates
+New development scripts for working with the enhanced schema:
+
+```sh
+# Generate seed data for development
+npm run seed:data                # Insert test data
+npm run seed:data:dry-run        # Preview without inserting
+npm run seed:data:clean          # Clean and regenerate
+
+# Database migration tools
+npm run migrate:production        # Execute production migration
+npm run migrate:dry-run          # Preview migration changes
+npm run migrate:backup           # Backup before migration
+npm run migrate:rollback         # Rollback if needed
+npm run migrate:validate         # Validate migration success
+
+# Cache and search management
+npm run cache:clear              # Clear application caches
+npm run search:reindex           # Reindex search data
+```
+
+Test fixtures have been updated to use the new opportunity schema structure. See `/tests/fixtures/` for examples.
 
 ## Testing Changes
 

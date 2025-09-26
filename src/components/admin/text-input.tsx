@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils.ts";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { InputHelperText } from "@/components/admin/input-helper-text";
+import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 
 export type TextInputProps = InputProps & {
   multiline?: boolean;
@@ -29,6 +30,7 @@ export const TextInput = (props: TextInputProps) => {
     className,
     validate: _validateProp,
     format: _formatProp,
+    helperText,
     ...rest
   } = props;
   const { id, field, isRequired } = useInput(props);
@@ -39,6 +41,9 @@ export const TextInput = (props: TextInputProps) => {
       : props.type === "date"
         ? field.value?.slice(0, 10) // Adjust for date input format
         : field.value;
+
+  // Sanitize props to remove React Admin specific props that shouldn't be passed to DOM elements
+  const sanitizedProps = sanitizeInputRestProps(rest);
 
   return (
     <FormField id={id} className={cn(className, "w-full")} name={field.name}>
@@ -54,12 +59,12 @@ export const TextInput = (props: TextInputProps) => {
       )}
       <FormControl>
         {multiline ? (
-          <Textarea {...rest} {...field} value={value} />
+          <Textarea {...sanitizedProps} {...field} value={value} />
         ) : (
-          <Input {...rest} {...field} value={value} />
+          <Input {...sanitizedProps} {...field} value={value} />
         )}
       </FormControl>
-      <InputHelperText helperText={props.helperText} />
+      <InputHelperText helperText={helperText} />
       <FormError />
     </FormField>
   );

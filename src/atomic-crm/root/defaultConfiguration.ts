@@ -5,7 +5,7 @@ export const defaultLightModeLogo = "./logos/logo_atomic_crm_light.svg";
 
 export const defaultTitle = "Atomic CRM";
 
-export const defaultCompanySectors = [
+export const defaultOrganizationSectors = [
   "Communication Services",
   "Consumer Discretionary",
   "Consumer Staples",
@@ -38,11 +38,34 @@ export const defaultDealCategories = [
   "Website design",
 ];
 
+export const defaultOpportunityStages = [
+  { value: "lead", label: "Lead" },
+  { value: "qualified", label: "Qualified" },
+  { value: "needs_analysis", label: "Needs Analysis" },
+  { value: "proposal", label: "Proposal" },
+  { value: "negotiation", label: "Negotiation" },
+  { value: "closed_won", label: "Closed Won" },
+  { value: "closed_lost", label: "Closed Lost" },
+  { value: "nurturing", label: "Nurturing" },
+];
+
+export const defaultOpportunityCategories = [
+  "Other",
+  "Copywriting",
+  "Print project",
+  "UI Design",
+  "Website design",
+];
+
 export const defaultNoteStatuses = [
   { value: "cold", label: "Cold", color: "var(--info-default)" },
   { value: "warm", label: "Warm", color: "var(--warning-default)" },
   { value: "hot", label: "Hot", color: "var(--error-default)" },
-  { value: "in-contract", label: "In Contract", color: "var(--success-default)" },
+  {
+    value: "in-contract",
+    label: "In Contract",
+    color: "var(--success-default)",
+  },
 ];
 
 export const defaultTaskTypes = [
