@@ -1,0 +1,570 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Atomic CRM API",
+    "description": "REST API for Atomic CRM with opportunities (formerly deals) migration",
+    "version": "2.0.0",
+    "contact": {
+      "name": "API Support",
+      "email": "api-support@atomic-crm.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.atomic-crm.com/v2",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:54321/rest/v1",
+      "description": "Local development server (Supabase)"
+    }
+  ],
+  "paths": {
+    "/opportunities": {
+      "get": {
+        "summary": "List opportunities",
+        "description": "Get a paginated list of opportunities (sales pipeline items)",
+        "tags": ["Opportunities"],
+        "parameters": [
+          {
+            "name": "select",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Columns to select"
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Column to order by"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Number of rows to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Number of rows to skip"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Opportunity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create opportunity",
+        "description": "Create a new opportunity in the sales pipeline",
+        "tags": ["Opportunities"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpportunityCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Opportunity created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Opportunity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opportunities/{id}": {
+      "get": {
+        "summary": "Get opportunity by ID",
+        "tags": ["Opportunities"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Opportunity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update opportunity",
+        "tags": ["Opportunities"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpportunityUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Opportunity updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Opportunity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete opportunity",
+        "tags": ["Opportunities"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Opportunity deleted"
+          }
+        }
+      }
+    },
+    "/opportunity_participants": {
+      "get": {
+        "summary": "List opportunity participants",
+        "description": "Get participants (contacts) associated with opportunities",
+        "tags": ["Opportunities"],
+        "parameters": [
+          {
+            "name": "opportunity_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Filter by opportunity ID"
+          },
+          {
+            "name": "contact_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Filter by contact ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OpportunityParticipant"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opportunity_notes": {
+      "get": {
+        "summary": "List opportunity notes",
+        "description": "Get notes associated with opportunities",
+        "tags": ["Opportunities"],
+        "parameters": [
+          {
+            "name": "opportunity_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Filter by opportunity ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OpportunityNote"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deals": {
+      "get": {
+        "summary": "List deals (DEPRECATED)",
+        "description": "⚠️ DEPRECATED: Use /opportunities instead. This endpoint will be removed in v3.0.0",
+        "deprecated": true,
+        "tags": ["Deprecated"],
+        "responses": {
+          "200": {
+            "description": "Redirects to /opportunities"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create deal (DEPRECATED)",
+        "description": "⚠️ DEPRECATED: Use POST /opportunities instead. This endpoint will be removed in v3.0.0",
+        "deprecated": true,
+        "tags": ["Deprecated"],
+        "responses": {
+          "201": {
+            "description": "Redirects to POST /opportunities"
+          }
+        }
+      }
+    },
+    "/deals/{id}": {
+      "get": {
+        "summary": "Get deal by ID (DEPRECATED)",
+        "description": "⚠️ DEPRECATED: Use /opportunities/{id} instead. This endpoint will be removed in v3.0.0",
+        "deprecated": true,
+        "tags": ["Deprecated"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Redirects to /opportunities/{id}"
+          }
+        }
+      }
+    },
+    "/dealNotes": {
+      "get": {
+        "summary": "List deal notes (DEPRECATED)",
+        "description": "⚠️ DEPRECATED: Use /opportunity_notes instead. This endpoint will be removed in v3.0.0",
+        "deprecated": true,
+        "tags": ["Deprecated"],
+        "responses": {
+          "200": {
+            "description": "Redirects to /opportunity_notes"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Opportunity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "Opportunity name"
+          },
+          "stage": {
+            "type": "string",
+            "description": "Current stage in the sales pipeline"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["new_business", "expansion", "renewal"],
+            "description": "Type of opportunity"
+          },
+          "expected_revenue": {
+            "type": "number",
+            "description": "Expected revenue amount"
+          },
+          "currency": {
+            "type": "string",
+            "default": "USD",
+            "description": "Currency code"
+          },
+          "probability": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Probability of closing (%)"
+          },
+          "expected_close_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Expected closing date"
+          },
+          "actual_close_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Actual closing date (when closed)"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "won", "lost", "archived"],
+            "description": "Opportunity status"
+          },
+          "company_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Associated company ID"
+          },
+          "sales_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Assigned salesperson ID"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["name", "stage", "company_id"]
+      },
+      "OpportunityCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["new_business", "expansion", "renewal"]
+          },
+          "expected_revenue": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "probability": {
+            "type": "integer"
+          },
+          "expected_close_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "company_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sales_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": ["name", "stage", "company_id"]
+      },
+      "OpportunityUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "expected_revenue": {
+            "type": "number"
+          },
+          "probability": {
+            "type": "integer"
+          },
+          "expected_close_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "actual_close_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "OpportunityParticipant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opportunity_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contact_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role in the opportunity (e.g., decision_maker, influencer)"
+          },
+          "is_primary": {
+            "type": "boolean",
+            "description": "Primary contact for this opportunity"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["opportunity_id", "contact_id"]
+      },
+      "OpportunityNote": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "opportunity_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "text": {
+            "type": "string",
+            "description": "Note content"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sales_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Author of the note"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["opportunity_id", "text", "sales_id"]
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "apikey",
+        "description": "Supabase API Key"
+      },
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT token from Supabase Auth"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    },
+    {
+      "BearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Opportunities",
+      "description": "Sales opportunities management (formerly deals)"
+    },
+    {
+      "name": "Deprecated",
+      "description": "Deprecated endpoints - will be removed in v3.0.0"
+    }
+  ]
+}

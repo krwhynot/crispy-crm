@@ -118,6 +118,35 @@ export default tseslint.config(
 
       // JSX A11y rules for color contrast validation
       "jsx-a11y/no-onchange": "off", // React handles onChange properly
+
+      // Prevent reintroduction of legacy fields (Constitution Principle #16)
+      "no-restricted-properties": [
+        "error",
+        {
+          object: "Contact",
+          property: "company_id",
+          message:
+            "[DEPRECATED] Contact.company_id is removed. Use contact_organizations junction table instead.",
+        },
+        {
+          object: "Contact",
+          property: "is_primary_contact",
+          message:
+            "[DEPRECATED] Contact.is_primary_contact is removed. Use is_primary field in contact_organizations junction table.",
+        },
+        {
+          object: "Opportunity",
+          property: "company_id",
+          message:
+            "[DEPRECATED] Opportunity.company_id is removed. Use customer_organization_id instead.",
+        },
+        {
+          object: "Opportunity",
+          property: "archived_at",
+          message:
+            "[DEPRECATED] Opportunity.archived_at is removed. Use deleted_at for soft deletes instead.",
+        },
+      ],
     },
     // Settings for future Tailwind v4 support
     // settings: {

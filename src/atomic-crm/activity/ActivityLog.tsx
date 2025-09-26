@@ -12,7 +12,7 @@ import { ActivityLogIterator } from "./ActivityLogIterator";
 type ActivityLogProps = {
   companyId?: Identifier;
   pageSize?: number;
-  context?: "company" | "contact" | "deal" | "all";
+  context?: "company" | "contact" | "opportunity" | "all";
 };
 
 export function ActivityLog({

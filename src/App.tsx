@@ -7,9 +7,13 @@ import { CRM } from "@/atomic-crm/root/CRM";
  *  - contactGender
  *  - companySectors
  *  - darkTheme
- *  - dealCategories
- *  - dealPipelineStatuses
- *  - dealStages
+ *  - opportunityCategories
+ *  - opportunityStages (replaces deprecated dealStages/dealPipelineStatuses)
+ *  - dealCategories (deprecated, use opportunityCategories)
+ *  - dealPipelineStatuses (deprecated, use opportunityStages)
+ *  - dealStages (deprecated, use opportunityStages)
+ *  - opportunityCategories
+ *  - opportunityStages
  *  - lightTheme
  *  - logo
  *  - noteStatuses

@@ -1,21 +1,44 @@
 import type { Identifier, RaRecord } from "ra-core";
 import type { ComponentType } from "react";
 import type {
-  COMPANY_CREATED,
+  ORGANIZATION_CREATED,
   CONTACT_CREATED,
   CONTACT_NOTE_CREATED,
-  DEAL_CREATED,
-  DEAL_NOTE_CREATED,
+  OPPORTUNITY_CREATED,
+  OPPORTUNITY_NOTE_CREATED,
 } from "./consts";
+import type { Organization } from "./validation/organizations";
 
-export type SignUpData = {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-};
+// Type definitions for enhanced CRM features
+export type ContactRole =
+  | "decision_maker"
+  | "influencer"
+  | "buyer"
+  | "end_user"
+  | "gatekeeper"
+  | "champion"
+  | "technical"
+  | "executive"
+  | "unknown";
+export type PurchaseInfluence = "High" | "Medium" | "Low" | "Unknown";
+export type DecisionAuthority =
+  | "Decision Maker"
+  | "Influencer"
+  | "End User"
+  | "Gatekeeper";
+export type OrganizationType =
+  | "customer"
+  | "prospect"
+  | "vendor"
+  | "partner"
+  | "principal"
+  | "distributor"
+  | "unknown";
+export type CompanyPriority = "A" | "B" | "C" | "D";
 
-export type SalesFormData = {
+// SignUpData type removed - all users created through Sales management
+
+export interface SalesFormData {
   avatar: string;
   email: string;
   password: string;
@@ -23,7 +46,7 @@ export type SalesFormData = {
   last_name: string;
   administrator: boolean;
   disabled: boolean;
-};
+}
 
 export type Sale = {
   first_name: string;
@@ -47,45 +70,24 @@ export type Sale = {
   password?: string;
 } & Pick<RaRecord, "id">;
 
-export type Company = {
-  name: string;
-  logo: RAFile;
-  sector: string;
-  size: 1 | 10 | 50 | 250 | 500;
-  linkedin_url: string;
-  website: string;
-  phone_number: string;
-  address: string;
-  zipcode: string;
-  city: string;
-  stateAbbr: string;
-  sales_id: Identifier;
-  created_at: string;
-  description: string;
-  revenue: string;
-  tax_identifier: string;
-  country: string;
-  context_links?: string[];
-  nb_contacts?: number;
-  nb_deals?: number;
-} & Pick<RaRecord, "id">;
+// Organization type (imported from validation)
+export type { Organization } from "./validation/organizations";
 
-export type EmailAndType = {
+export interface EmailAndType {
   email: string;
   type: "Work" | "Home" | "Other";
-};
+}
 
-export type PhoneNumberAndType = {
+export interface PhoneNumberAndType {
   number: string;
   type: "Work" | "Home" | "Other";
-};
+}
 
 export type Contact = {
   first_name: string;
   last_name: string;
   title: string;
-  company_id: Identifier;
-  email_jsonb: EmailAndType[];
+  email: EmailAndType[];
   avatar?: Partial<RAFile>;
   linkedin_url?: string | null;
   first_seen: string;
@@ -96,10 +98,95 @@ export type Contact = {
   sales_id: Identifier;
   status: string;
   background: string;
-  phone_jsonb: PhoneNumberAndType[];
+  phone: PhoneNumberAndType[];
 
+  // Primary organization fields (backward compatibility)
+  role?: ContactRole;
+  department?: string;
+  purchase_influence?: PurchaseInfluence;
+  decision_authority?: DecisionAuthority;
+  deleted_at?: string;
+
+  // Multi-organization support
+  organizations?: ContactOrganization[]; // All organization relationships
+  organization_ids?: Identifier[]; // For form input handling
+
+  // Calculated fields
   nb_tasks?: number;
   company_name?: string;
+  total_organizations?: number;
+} & Pick<RaRecord, "id">;
+
+export interface ContactOrganization {
+  id?: Identifier; // Optional for new records
+  contact_id: Identifier;
+  organization_id: Identifier;
+  is_primary_organization: boolean; // Fixed field name to match tests
+  purchase_influence: PurchaseInfluence;
+  decision_authority: DecisionAuthority;
+  role?: ContactRole;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}
+
+export type OpportunityParticipant = {
+  id: Identifier;
+  opportunity_id: Identifier;
+  organization_id: Identifier;
+  role: "customer" | "principal" | "distributor" | "partner" | "competitor";
+  is_primary: boolean;
+  commission_rate?: number;
+  territory?: string;
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+  created_by?: Identifier;
+  deleted_at?: string;
+} & Pick<RaRecord, "id">;
+
+export type ActivityRecord = {
+  id: Identifier;
+  activity_type: "engagement" | "interaction";
+  type:
+    | "call"
+    | "email"
+    | "meeting"
+    | "demo"
+    | "follow_up"
+    | "visit"
+    | "proposal"
+    | "negotiation";
+  subject: string;
+  description?: string;
+  activity_date: string;
+  duration_minutes?: number;
+  contact_id?: Identifier;
+  organization_id?: Identifier;
+  opportunity_id?: Identifier; // NULL for engagements, required for interactions
+  follow_up_required?: boolean;
+  follow_up_date?: string;
+  follow_up_notes?: string;
+  outcome?: string;
+  sentiment?: "positive" | "neutral" | "negative";
+  attachments?: string[];
+  location?: string;
+  attendees?: string[];
+  tags?: string[];
+  created_at: string;
+  updated_at?: string;
+  created_by?: Identifier;
+  deleted_at?: string;
+} & Pick<RaRecord, "id">;
+
+export type InteractionParticipant = {
+  id: Identifier;
+  activity_id: Identifier;
+  contact_id?: Identifier;
+  organization_id?: Identifier;
+  role?: string;
+  notes?: string;
+  created_at: string;
 } & Pick<RaRecord, "id">;
 
 export type ContactNote = {
@@ -111,24 +198,50 @@ export type ContactNote = {
   attachments?: AttachmentNote[];
 } & Pick<RaRecord, "id">;
 
-export type Deal = {
+// Deal type removed - use Opportunity instead
+
+export type Opportunity = {
   name: string;
-  company_id: Identifier;
+  customer_organization_id: Identifier;
+  principal_organization_id?: Identifier;
+  distributor_organization_id?: Identifier;
   contact_ids: Identifier[];
   category: string;
-  stage: string;
+  stage:
+    | "lead"
+    | "qualified"
+    | "needs_analysis"
+    | "proposal"
+    | "negotiation"
+    | "closed_won"
+    | "closed_lost"
+    | "nurturing";
+  status: "active" | "on_hold" | "nurturing" | "stalled" | "expired";
+  priority: "low" | "medium" | "high" | "critical";
   description: string;
   amount: number;
+  probability: number;
+  estimated_close_date?: string;
+  actual_close_date?: string;
   created_at: string;
   updated_at: string;
-  archived_at?: string;
+  deleted_at?: string;
   expected_closing_date: string;
   sales_id: Identifier;
   index: number;
+  founding_interaction_id?: Identifier;
+  stage_manual: boolean;
+  status_manual: boolean;
+  next_action?: string;
+  next_action_date?: string;
+  competition?: string;
+  decision_criteria?: string;
 } & Pick<RaRecord, "id">;
 
-export type DealNote = {
-  deal_id: Identifier;
+// DealNote type removed - use OpportunityNote instead
+
+export type OpportunityNote = {
+  opportunity_id: Identifier;
   text: string;
   date: string;
   sales_id: Identifier;
@@ -152,17 +265,17 @@ export type Task = {
   sales_id?: Identifier;
 } & Pick<RaRecord, "id">;
 
-export type ActivityCompanyCreated = {
-  type: typeof COMPANY_CREATED;
-  company_id: Identifier;
-  company: Company;
+export type ActivityOrganizationCreated = {
+  type: typeof ORGANIZATION_CREATED;
+  organization_id: Identifier;
+  organization: Organization;
   sales_id: Identifier;
   date: string;
 } & Pick<RaRecord, "id">;
 
 export type ActivityContactCreated = {
   type: typeof CONTACT_CREATED;
-  company_id: Identifier;
+  customer_organization_id: Identifier;
   sales_id?: Identifier;
   contact: Contact;
   date: string;
@@ -175,28 +288,28 @@ export type ActivityContactNoteCreated = {
   date: string;
 } & Pick<RaRecord, "id">;
 
-export type ActivityDealCreated = {
-  type: typeof DEAL_CREATED;
-  company_id: Identifier;
+export type ActivityOpportunityCreated = {
+  type: typeof OPPORTUNITY_CREATED;
+  customer_organization_id: Identifier;
   sales_id?: Identifier;
-  deal: Deal;
+  opportunity: Opportunity;
   date: string;
 };
 
-export type ActivityDealNoteCreated = {
-  type: typeof DEAL_NOTE_CREATED;
+export type ActivityOpportunityNoteCreated = {
+  type: typeof OPPORTUNITY_NOTE_CREATED;
   sales_id?: Identifier;
-  dealNote: DealNote;
+  opportunityNote: OpportunityNote;
   date: string;
 };
 
 export type Activity = RaRecord &
   (
-    | ActivityCompanyCreated
+    | ActivityOrganizationCreated
     | ActivityContactCreated
     | ActivityContactNoteCreated
-    | ActivityDealCreated
-    | ActivityDealNoteCreated
+    | ActivityOpportunityCreated
+    | ActivityOpportunityNoteCreated
   );
 
 export interface RAFile {
@@ -208,10 +321,7 @@ export interface RAFile {
 }
 
 export type AttachmentNote = RAFile;
-export interface DealStage {
-  value: string;
-  label: string;
-}
+// DealStage interface removed - use OpportunityStage instead
 
 export interface NoteStatus {
   value: string;

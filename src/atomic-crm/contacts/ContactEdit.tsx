@@ -30,3 +30,5 @@ const ContactEditContent = () => {
     </div>
   );
 };
+
+export default ContactEdit;

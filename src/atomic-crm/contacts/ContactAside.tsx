@@ -36,7 +36,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
       </div>
 
       <AsideSection title="Personal info">
-        <ArrayField source="email_jsonb">
+        <ArrayField source="email">
           <SingleFieldList className="flex-col">
             <PersonalInfoRow
               icon={<Mail className="w-4 h-4 text-muted-foreground" />}
@@ -67,7 +67,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
             }
           />
         )}
-        <ArrayField source="phone_jsonb">
+        <ArrayField source="phone">
           <SingleFieldList className="flex-col">
             <PersonalInfoRow
               icon={<Phone className="w-4 h-4 text-muted-foreground" />}

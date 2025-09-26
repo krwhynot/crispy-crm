@@ -16,24 +16,12 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
     return {
       id: sale.id,
       fullName: `${sale.first_name} ${sale.last_name}`,
-      avatar: sale.avatar?.src,
+      avatar: sale.avatar_url,
     };
   },
 });
 
-export async function getIsInitialized() {
-  if (getIsInitialized._is_initialized_cache == null) {
-    const { data } = await supabase.from("init_state").select("is_initialized");
-
-    getIsInitialized._is_initialized_cache = data?.at(0)?.is_initialized > 0;
-  }
-
-  return getIsInitialized._is_initialized_cache;
-}
-
-export namespace getIsInitialized {
-  export var _is_initialized_cache: boolean | null = null;
-}
+// Removed getIsInitialized - no longer checking for initial setup
 
 export const authProvider: AuthProvider = {
   ...baseAuthProvider,
@@ -58,36 +46,16 @@ export const authProvider: AuthProvider = {
     ) {
       return;
     }
-    // Users are on the sign-up page, nothing to do
-    if (
-      window.location.pathname === "/sign-up" ||
-      window.location.hash.includes("#/sign-up")
-    ) {
-      return;
-    }
-
-    const isInitialized = await getIsInitialized();
-
-    if (!isInitialized) {
-      await supabase.auth.signOut();
-      throw {
-        redirectTo: "/sign-up",
-        message: false,
-      };
-    }
-
+    // Simply delegate to base auth provider
     return baseAuthProvider.checkAuth(params);
   },
   canAccess: async (params) => {
-    const isInitialized = await getIsInitialized();
-    if (!isInitialized) return false;
-
     // Get the current user
     const sale = await getSaleFromCache();
     if (sale == null) return false;
 
     // Compute access rights from the sale role
-    const role = sale.administrator ? "admin" : "user";
+    const role = sale.is_admin ? "admin" : "user";
     return canAccess(role, params);
   },
 };
@@ -106,9 +74,9 @@ const getSaleFromCache = async () => {
 
   const { data: dataSale, error: errorSale } = await supabase
     .from("sales")
-    .select("id, first_name, last_name, avatar, administrator")
+    .select("id, first_name, last_name, avatar_url, is_admin")
     .match({ user_id: dataSession?.session?.user.id })
-    .single();
+    .maybeSingle();
 
   // Shouldn't happen either as all users are sales but just in case
   if (dataSale == null || errorSale) {

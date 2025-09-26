@@ -17,7 +17,7 @@ import { isLinkedinUrl } from "../misc/isLinkedInUrl";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Sale } from "../types";
 import { Avatar } from "./Avatar";
-import { AutocompleteCompanyInput } from "@/atomic-crm/companies/AutocompleteCompanyInput.tsx";
+import { MultiOrganizationInput } from "./MultiOrganizationInput";
 
 export const ContactInputs = () => {
   const isMobile = useIsMobile();
@@ -69,9 +69,9 @@ const ContactPositionInputs = () => {
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Position</h6>
       <TextInput source="title" helperText={false} />
-      <ReferenceInput source="company_id" reference="companies">
-        <AutocompleteCompanyInput />
-      </ReferenceInput>
+      <TextInput source="department" label="Department" helperText={false} />
+
+      <MultiOrganizationInput />
     </div>
   );
 };
@@ -79,7 +79,6 @@ const ContactPositionInputs = () => {
 const ContactPersonalInformationInputs = () => {
   const { getValues, setValue } = useFormContext();
 
-  // set first and last name based on email
   const handleEmailChange = (email: string) => {
     const { first_name, last_name } = getValues();
     if (first_name || last_name || !email) return;
@@ -108,11 +107,7 @@ const ContactPersonalInformationInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Personal info</h6>
-      <ArrayInput
-        source="email_jsonb"
-        label="Email addresses"
-        helperText={false}
-      >
+      <ArrayInput source="email" label="Email addresses" helperText={false}>
         <SimpleFormIterator
           inline
           disableReordering
@@ -140,7 +135,7 @@ const ContactPersonalInformationInputs = () => {
           />
         </SimpleFormIterator>
       </ArrayInput>
-      <ArrayInput source="phone_jsonb" label="Phone numbers" helperText={false}>
+      <ArrayInput source="phone" label="Phone numbers" helperText={false}>
         <SimpleFormIterator
           inline
           disableReordering

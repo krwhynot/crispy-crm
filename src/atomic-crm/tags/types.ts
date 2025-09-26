@@ -1,4 +1,4 @@
-import type { TagColorName } from '@/lib/color-types';
+import type { TagColorName } from "@/lib/color-types";
 
 /**
  * Represents a tag in the system

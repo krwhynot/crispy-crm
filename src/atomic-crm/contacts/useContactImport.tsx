@@ -3,7 +3,7 @@ import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Company, Tag } from "../types";
 
-export type ContactImportSchema = {
+export interface ContactImportSchema {
   first_name: string;
   last_name: string;
   gender: string;
@@ -23,7 +23,7 @@ export type ContactImportSchema = {
   status: string;
   tags: string;
   linkedin_url: string;
-};
+}
 
 export function useContactImport() {
   const today = new Date().toISOString();
@@ -40,7 +40,7 @@ export function useContactImport() {
   const getCompanies = useCallback(
     async (names: string[]) =>
       fetchRecordsWithCache<Company>(
-        "companies",
+        "organizations",
         companiesCache,
         names,
         (name) => ({
@@ -105,12 +105,12 @@ export function useContactImport() {
             tags: tagNames,
             linkedin_url,
           }) => {
-            const email_jsonb = [
+            const email = [
               { email: email_work, type: "Work" },
               { email: email_home, type: "Home" },
               { email: email_other, type: "Other" },
             ].filter(({ email }) => email);
-            const phone_jsonb = [
+            const phone = [
               { number: phone_work, type: "Work" },
               { number: phone_home, type: "Home" },
               { number: phone_other, type: "Other" },
@@ -128,8 +128,8 @@ export function useContactImport() {
                 last_name,
                 gender,
                 title,
-                email_jsonb,
-                phone_jsonb,
+                email,
+                phone,
                 background,
                 first_seen: first_seen
                   ? new Date(first_seen).toISOString()

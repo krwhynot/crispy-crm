@@ -15,10 +15,10 @@ const Header = () => {
     currentPath = "/";
   } else if (matchPath("/contacts/*", location.pathname)) {
     currentPath = "/contacts";
-  } else if (matchPath("/companies/*", location.pathname)) {
-    currentPath = "/companies";
-  } else if (matchPath("/deals/*", location.pathname)) {
-    currentPath = "/deals";
+  } else if (matchPath("/organizations/*", location.pathname)) {
+    currentPath = "/organizations";
+  } else if (matchPath("/opportunities/*", location.pathname)) {
+    currentPath = "/opportunities";
   } else {
     currentPath = false;
   }
@@ -57,14 +57,14 @@ const Header = () => {
                   isActive={currentPath === "/contacts"}
                 />
                 <NavigationTab
-                  label="Companies"
-                  to="/companies"
-                  isActive={currentPath === "/companies"}
+                  label="Organizations"
+                  to="/organizations"
+                  isActive={currentPath === "/organizations"}
                 />
                 <NavigationTab
-                  label="Deals"
-                  to="/deals"
-                  isActive={currentPath === "/deals"}
+                  label="Opportunities"
+                  to="/opportunities"
+                  isActive={currentPath === "/opportunities"}
                 />
               </nav>
             </div>

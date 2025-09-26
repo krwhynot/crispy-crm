@@ -194,7 +194,7 @@ const defaultCompanySectors = [
 ## Seed Data Generation (Development/Demo)
 
 ### Data Generation Strategy
-**File**: `src/atomic-crm/providers/fakerest/dataGenerator/`
+**File**: `src/atomic-crm/scripts/seed-data.js`
 **Purpose**: Realistic development and demo data
 
 #### Generation Parameters

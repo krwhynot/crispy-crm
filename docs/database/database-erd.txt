@@ -255,7 +255,6 @@ Configuration (supabase/config.toml):
 Environment Variables Required:
 • VITE_SUPABASE_URL
 • VITE_SUPABASE_ANON_KEY
-• VITE_IS_DEMO (toggles FakeRest vs Supabase provider)
 
 Migration Files Location: /supabase/migrations/
 
