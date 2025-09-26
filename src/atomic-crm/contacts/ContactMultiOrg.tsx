@@ -48,28 +48,14 @@ interface ContactMultiOrgProps {
 export const ContactMultiOrg = (props: ContactMultiOrgProps) => {
   const { source = "contact_organizations" } = props;
 
-  // Custom validation for ensuring only one primary organization
-  const validateOnePrimary = (value: ContactOrganization[]) => {
-    if (!value || value.length === 0) {
-      return "At least one organization relationship is required.";
-    }
-    const primaryCount = value.filter(
-      (org) => org && org.is_primary_organization,
-    ).length;
-    if (primaryCount > 1) {
-      return "Only one organization can be designated as primary.";
-    }
-    if (primaryCount === 0) {
-      return "One organization must be designated as primary.";
-    }
-    return undefined;
-  };
+  // Validation removed per Engineering Constitution - single-point validation at API boundary only
+  // Primary organization validation will be handled by Zod schema in data provider
 
   return (
     <ArrayInput
       source={source}
       label="Associated Organizations"
-      validate={validateOnePrimary}
+      helperText="At least one organization required, with exactly one marked as primary"
     >
       <SimpleFormIterator
         getItemLabel={(index: number) => `Organization #${index + 1}`}
@@ -80,9 +66,8 @@ export const ContactMultiOrg = (props: ContactMultiOrgProps) => {
           <ReferenceInput
             source="organization_id"
             reference="organizations"
-            label="Organization"
-            validate={[(value: any) => (value ? undefined : "Required")]}
-            helperText={false}
+            label="Organization *"
+            helperText="Required field"
           >
             <SelectInput optionText="name" emptyText="Select an organization" />
           </ReferenceInput>

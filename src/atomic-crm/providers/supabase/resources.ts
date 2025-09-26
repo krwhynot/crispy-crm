@@ -119,7 +119,7 @@ export const RESOURCE_LIFECYCLE_CONFIG = {
 } as const;
 
 /**
- * Get the actual database resource name, handling backward compatibility
+ * Get the actual database resource name from the mapping
  */
 export function getResourceName(resource: string): string {
   return (
@@ -138,7 +138,7 @@ export function supportsSoftDelete(resource: string): boolean {
 /**
  * Get searchable fields for a resource
  */
-export function getSearchableFields(resource: string): string[] {
+export function getSearchableFields(resource: string): readonly string[] {
   return (
     SEARCHABLE_RESOURCES[resource as keyof typeof SEARCHABLE_RESOURCES] || []
   );

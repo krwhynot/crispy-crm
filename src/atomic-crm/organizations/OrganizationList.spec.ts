@@ -118,7 +118,7 @@ const mockSales = [
   { id: 2, first_name: 'Bob', last_name: 'Smith' }
 ];
 
-// Mock the data provider
+// Mock the unified data provider with service methods
 const mockDataProvider = {
   getList: vi.fn(),
   getOne: vi.fn(),
@@ -129,6 +129,22 @@ const mockDataProvider = {
   updateMany: vi.fn(),
   delete: vi.fn(),
   deleteMany: vi.fn(),
+  // Custom service methods for unified provider
+  salesCreate: vi.fn(),
+  salesUpdate: vi.fn(),
+  updatePassword: vi.fn(),
+  unarchiveOpportunity: vi.fn(),
+  getActivityLog: vi.fn(),
+  getContactOrganizations: vi.fn(),
+  addContactToOrganization: vi.fn(),
+  removeContactFromOrganization: vi.fn(),
+  setPrimaryOrganization: vi.fn(),
+  getOpportunityParticipants: vi.fn(),
+  addOpportunityParticipant: vi.fn(),
+  removeOpportunityParticipant: vi.fn(),
+  getOpportunityContacts: vi.fn(),
+  addOpportunityContact: vi.fn(),
+  removeOpportunityContact: vi.fn(),
 };
 
 const mockConfiguration = {
@@ -167,7 +183,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe('OrganizationList - Enhanced Organization Features', () => {
+describe('OrganizationList - Enhanced Organization Features (Unified Provider)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 

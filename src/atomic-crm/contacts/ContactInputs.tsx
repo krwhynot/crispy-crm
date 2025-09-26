@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { email, required } from "ra-core";
+// Validation removed per Engineering Constitution - single-point validation at API boundary only
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -13,7 +13,7 @@ import {
   ArrayInput,
 } from "@/components/admin";
 import { SimpleFormIterator } from "@/components/admin";
-import { isLinkedinUrl } from "../misc/isLinkedInUrl";
+// LinkedIn validation removed - handled at API boundary
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Sale } from "../types";
 import { Avatar } from "./Avatar";
@@ -58,8 +58,8 @@ const ContactIdentityInputs = () => {
         optionValue="value"
         defaultValue={contactGender[0].value}
       />
-      <TextInput source="first_name" validate={required()} helperText={false} />
-      <TextInput source="last_name" validate={required()} helperText={false} />
+      <TextInput source="first_name" label="First Name *" helperText="Required field" />
+      <TextInput source="last_name" label="Last Name *" helperText="Required field" />
     </div>
   );
 };
@@ -119,8 +119,7 @@ const ContactPersonalInformationInputs = () => {
             className="w-full"
             helperText={false}
             label={false}
-            placeholder="Email"
-            validate={email()}
+            placeholder="Email (valid email required)"
             onPaste={handleEmailPaste}
             onBlur={handleEmailBlur}
           />
@@ -163,8 +162,7 @@ const ContactPersonalInformationInputs = () => {
       <TextInput
         source="linkedin_url"
         label="Linkedin URL"
-        helperText={false}
-        validate={isLinkedinUrl}
+        helperText="Format: https://linkedin.com/in/username"
       />
     </div>
   );
@@ -192,10 +190,9 @@ const ContactMiscInputs = () => {
         }}
       >
         <SelectInput
-          helperText={false}
-          label="Account manager"
+          helperText="Required field"
+          label="Account manager *"
           optionText={saleOptionRenderer}
-          validate={required()}
         />
       </ReferenceInput>
     </div>
