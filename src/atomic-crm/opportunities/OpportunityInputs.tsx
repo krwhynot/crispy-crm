@@ -35,10 +35,16 @@ export const OpportunityInputs = () => {
       </div>
 
       {/* Stage-specific fields */}
-      {(stageConfig.showSampleFields || stageConfig.showDemoFields || stageConfig.showCloseFields || stageConfig.showFeedbackFields) && (
+      {(stageConfig.showSampleFields ||
+        stageConfig.showDemoFields ||
+        stageConfig.showCloseFields ||
+        stageConfig.showFeedbackFields) && (
         <>
           <Separator />
-          <OpportunityStageSpecificInputs stage={stage} stageConfig={stageConfig} />
+          <OpportunityStageSpecificInputs
+            stage={stage}
+            stageConfig={stageConfig}
+          />
         </>
       )}
     </div>
@@ -63,15 +69,24 @@ const OpportunityLinkedToInputs = () => {
   return (
     <div className="flex flex-col gap-4 flex-1">
       <h3 className="text-base font-medium">Linked to</h3>
-      <ReferenceInput source="customer_organization_id" reference="organizations">
+      <ReferenceInput
+        source="customer_organization_id"
+        reference="organizations"
+      >
         <AutocompleteOrganizationInput label="Customer Organization" />
       </ReferenceInput>
 
-      <ReferenceInput source="principal_organization_id" reference="organizations">
+      <ReferenceInput
+        source="principal_organization_id"
+        reference="organizations"
+      >
         <AutocompleteOrganizationInput label="Principal Organization (Optional)" />
       </ReferenceInput>
 
-      <ReferenceInput source="distributor_organization_id" reference="organizations">
+      <ReferenceInput
+        source="distributor_organization_id"
+        reference="organizations"
+      >
         <AutocompleteOrganizationInput label="Distributor Organization (Optional)" />
       </ReferenceInput>
 
@@ -116,10 +131,10 @@ const OpportunityMiscInputs = () => {
         source="priority"
         label="Priority"
         choices={[
-          { id: 'low', name: 'Low' },
-          { id: 'medium', name: 'Medium' },
-          { id: 'high', name: 'High' },
-          { id: 'critical', name: 'Critical' }
+          { id: "low", name: "Low" },
+          { id: "medium", name: "Medium" },
+          { id: "high", name: "High" },
+          { id: "critical", name: "Critical" },
         ]}
         defaultValue="medium"
         helperText={false}
@@ -159,7 +174,10 @@ interface OpportunityStageSpecificInputsProps {
   stageConfig: ReturnType<typeof getStageFieldsConfig>;
 }
 
-const OpportunityStageSpecificInputs = ({ stage, stageConfig }: OpportunityStageSpecificInputsProps) => {
+const OpportunityStageSpecificInputs = ({
+  stage,
+  stageConfig,
+}: OpportunityStageSpecificInputsProps) => {
   const isMobile = useIsMobile();
 
   return (
@@ -170,7 +188,9 @@ const OpportunityStageSpecificInputs = ({ stage, stageConfig }: OpportunityStage
         {/* Sample/Visit Fields */}
         {stageConfig.showSampleFields && (
           <div className="flex flex-col gap-4 flex-1">
-            <h4 className="text-sm font-medium text-muted-foreground">Sample & Visit Information</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">
+              Sample & Visit Information
+            </h4>
             <TextInput
               source="sampleType"
               label="Sample Type"
@@ -193,13 +213,15 @@ const OpportunityStageSpecificInputs = ({ stage, stageConfig }: OpportunityStage
         {/* Demo Fields */}
         {stageConfig.showDemoFields && (
           <div className="flex flex-col gap-4 flex-1">
-            <h4 className="text-sm font-medium text-muted-foreground">Demo Information</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">
+              Demo Information
+            </h4>
             <TextInput
               source="demoDate"
               label="Demo Date"
               type="date"
               helperText={false}
-              validate={stage === 'demo_scheduled' ? required() : undefined}
+              validate={stage === "demo_scheduled" ? required() : undefined}
             />
             <TextInput
               source="attendees"
@@ -219,24 +241,26 @@ const OpportunityStageSpecificInputs = ({ stage, stageConfig }: OpportunityStage
         {/* Feedback Fields */}
         {stageConfig.showFeedbackFields && (
           <div className="flex flex-col gap-4 flex-1">
-            <h4 className="text-sm font-medium text-muted-foreground">Feedback Information</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">
+              Feedback Information
+            </h4>
             <TextInput
               source="feedbackNotes"
               label="Feedback Notes"
               multiline
               rows={3}
               helperText={false}
-              validate={stage === 'feedback_logged' ? required() : undefined}
+              validate={stage === "feedback_logged" ? required() : undefined}
             />
             <SelectInput
               source="sentimentScore"
               label="Sentiment Score"
               choices={[
-                { id: 1, name: '1 - Very Negative' },
-                { id: 2, name: '2 - Negative' },
-                { id: 3, name: '3 - Neutral' },
-                { id: 4, name: '4 - Positive' },
-                { id: 5, name: '5 - Very Positive' }
+                { id: 1, name: "1 - Very Negative" },
+                { id: 2, name: "2 - Negative" },
+                { id: 3, name: "3 - Neutral" },
+                { id: 4, name: "4 - Positive" },
+                { id: 5, name: "5 - Very Positive" },
               ]}
               helperText={false}
             />
@@ -254,10 +278,12 @@ const OpportunityStageSpecificInputs = ({ stage, stageConfig }: OpportunityStage
         {stageConfig.showCloseFields && (
           <div className="flex flex-col gap-4 flex-1">
             <h4 className="text-sm font-medium text-muted-foreground">
-              {stage === 'closed_won' ? 'Won Deal Information' : 'Lost Deal Information'}
+              {stage === "closed_won"
+                ? "Won Deal Information"
+                : "Lost Deal Information"}
             </h4>
 
-            {stage === 'closed_won' && (
+            {stage === "closed_won" && (
               <>
                 <NumberInput
                   source="finalAmount"
@@ -280,17 +306,17 @@ const OpportunityStageSpecificInputs = ({ stage, stageConfig }: OpportunityStage
               </>
             )}
 
-            {stage === 'closed_lost' && (
+            {stage === "closed_lost" && (
               <>
                 <SelectInput
                   source="lossReason"
                   label="Loss Reason"
                   choices={[
-                    { id: 'price', name: 'Price' },
-                    { id: 'product_fit', name: 'Product Fit' },
-                    { id: 'competitor', name: 'Competitor' },
-                    { id: 'timing', name: 'Timing' },
-                    { id: 'other', name: 'Other' }
+                    { id: "price", name: "Price" },
+                    { id: "product_fit", name: "Product Fit" },
+                    { id: "competitor", name: "Competitor" },
+                    { id: "timing", name: "Timing" },
+                    { id: "other", name: "Other" },
                   ]}
                   helperText={false}
                   validate={required()}
@@ -310,7 +336,7 @@ const OpportunityStageSpecificInputs = ({ stage, stageConfig }: OpportunityStage
               </>
             )}
 
-            {(stage === 'closed_won' || stage === 'closed_lost') && (
+            {(stage === "closed_won" || stage === "closed_lost") && (
               <TextInput
                 source="actual_close_date"
                 label="Actual Close Date"

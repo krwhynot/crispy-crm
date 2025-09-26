@@ -29,7 +29,7 @@ export function TagChip({ tag, onUnlink }: TagChipProps) {
           "inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md cursor-pointer",
           "transition-all duration-200",
           "hover:shadow-sm hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-          getTagColorClass(tag.color)
+          getTagColorClass(tag.color),
         )}
         onClick={handleClick}
         tabIndex={0}

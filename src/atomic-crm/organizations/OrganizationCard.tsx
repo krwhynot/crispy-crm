@@ -15,20 +15,20 @@ export const OrganizationCard = (props: { record?: Company }) => {
   if (!record) return null;
 
   const organizationTypeLabels: Record<string, string> = {
-    customer: 'Customer',
-    prospect: 'Prospect',
-    vendor: 'Vendor',
-    partner: 'Partner',
-    principal: 'Principal',
-    distributor: 'Distributor',
-    unknown: 'Unknown'
+    customer: "Customer",
+    prospect: "Prospect",
+    vendor: "Vendor",
+    partner: "Partner",
+    principal: "Principal",
+    distributor: "Distributor",
+    unknown: "Unknown",
   };
 
   const priorityColors: Record<string, string> = {
-    'A': 'destructive',
-    'B': 'default',
-    'C': 'secondary',
-    'D': 'outline'
+    A: "destructive",
+    B: "default",
+    C: "secondary",
+    D: "outline",
   };
 
   return (
@@ -47,14 +47,19 @@ export const OrganizationCard = (props: { record?: Company }) => {
             <h6 className="text-sm font-medium">{record.name}</h6>
             <p className="text-xs text-muted-foreground">{record.sector}</p>
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
-              {record.organization_type && record.organization_type !== 'unknown' && (
-                <Badge variant="secondary" className="text-xs px-1 py-0">
-                  <Building2 className="w-3 h-3 mr-0.5" />
-                  {organizationTypeLabels[record.organization_type] || record.organization_type}
-                </Badge>
-              )}
+              {record.organization_type &&
+                record.organization_type !== "unknown" && (
+                  <Badge variant="secondary" className="text-xs px-1 py-0">
+                    <Building2 className="w-3 h-3 mr-0.5" />
+                    {organizationTypeLabels[record.organization_type] ||
+                      record.organization_type}
+                  </Badge>
+                )}
               {record.priority && (
-                <Badge variant={priorityColors[record.priority] as any} className="text-xs px-1 py-0">
+                <Badge
+                  variant={priorityColors[record.priority] as any}
+                  className="text-xs px-1 py-0"
+                >
                   <Star className="w-3 h-3 mr-0.5" />
                   {record.priority}
                 </Badge>
@@ -73,7 +78,9 @@ export const OrganizationCard = (props: { record?: Company }) => {
           {record.nb_opportunities ? (
             <div className="flex items-center ml-2 gap-0.5">
               <DollarSign className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium">{record.nb_opportunities}</span>
+              <span className="text-sm font-medium">
+                {record.nb_opportunities}
+              </span>
               <span className="text-xs text-muted-foreground">
                 {record.nb_opportunities
                   ? record.nb_opportunities > 1

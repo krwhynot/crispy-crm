@@ -39,14 +39,14 @@ const OpportunityShowContent = () => {
   if (!record) return null;
 
   const opportunityStageChoices = [
-    { value: 'lead', label: 'Lead' },
-    { value: 'qualified', label: 'Qualified' },
-    { value: 'needs_analysis', label: 'Needs Analysis' },
-    { value: 'proposal', label: 'Proposal' },
-    { value: 'negotiation', label: 'Negotiation' },
-    { value: 'closed_won', label: 'Closed Won' },
-    { value: 'closed_lost', label: 'Closed Lost' },
-    { value: 'nurturing', label: 'Nurturing' }
+    { value: "lead", label: "Lead" },
+    { value: "qualified", label: "Qualified" },
+    { value: "needs_analysis", label: "Needs Analysis" },
+    { value: "proposal", label: "Proposal" },
+    { value: "negotiation", label: "Negotiation" },
+    { value: "closed_won", label: "Closed Won" },
+    { value: "closed_lost", label: "Closed Lost" },
+    { value: "nurturing", label: "Nurturing" },
   ];
 
   return (
@@ -141,11 +141,17 @@ const OpportunityShowContent = () => {
               <span className="text-xs text-muted-foreground tracking-wide">
                 Priority
               </span>
-              <Badge variant={
-                record.priority === 'critical' ? 'destructive' :
-                record.priority === 'high' ? 'default' :
-                record.priority === 'medium' ? 'secondary' : 'outline'
-              }>
+              <Badge
+                variant={
+                  record.priority === "critical"
+                    ? "destructive"
+                    : record.priority === "high"
+                      ? "default"
+                      : record.priority === "medium"
+                        ? "secondary"
+                        : "outline"
+                }
+              >
                 {record.priority}
               </Badge>
             </div>
@@ -162,7 +168,9 @@ const OpportunityShowContent = () => {
                 reference="organizations"
                 link="show"
               >
-                <span className="text-sm">{record.customer_organization_id}</span>
+                <span className="text-sm">
+                  {record.customer_organization_id}
+                </span>
               </ReferenceField>
             </div>
 
@@ -176,7 +184,9 @@ const OpportunityShowContent = () => {
                   reference="organizations"
                   link="show"
                 >
-                  <span className="text-sm">{record.principal_organization_id}</span>
+                  <span className="text-sm">
+                    {record.principal_organization_id}
+                  </span>
                 </ReferenceField>
               </div>
             )}
@@ -191,7 +201,9 @@ const OpportunityShowContent = () => {
                   reference="organizations"
                   link="show"
                 >
-                  <span className="text-sm">{record.distributor_organization_id}</span>
+                  <span className="text-sm">
+                    {record.distributor_organization_id}
+                  </span>
                 </ReferenceField>
               </div>
             )}

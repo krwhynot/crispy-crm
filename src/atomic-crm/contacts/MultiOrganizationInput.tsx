@@ -44,11 +44,13 @@ export const MultiOrganizationInput = () => {
 
   // Validate that exactly one organization has is_primary = true
   React.useEffect(() => {
-    const primaryCount = organizations.filter((org: any) => org.is_primary).length;
+    const primaryCount = organizations.filter(
+      (org: ContactOrganization) => org.is_primary,
+    ).length;
 
     if (primaryCount === 0 && organizations.length > 0) {
       // Set first organization as primary if none is marked
-      const updatedOrgs = organizations.map((org: any, index: number) => ({
+      const updatedOrgs = organizations.map((org: ContactOrganization, index: number) => ({
         ...org,
         is_primary: index === 0,
       }));
@@ -56,7 +58,7 @@ export const MultiOrganizationInput = () => {
     } else if (primaryCount > 1) {
       // Ensure only the first primary remains primary
       let foundFirst = false;
-      const updatedOrgs = organizations.map((org: any) => {
+      const updatedOrgs = organizations.map((org: ContactOrganization) => {
         if (org.is_primary && !foundFirst) {
           foundFirst = true;
           return org;
@@ -89,7 +91,11 @@ export const MultiOrganizationInput = () => {
             className="space-y-4"
           >
             <div className="grid gap-3 p-3 border rounded-lg">
-              <ReferenceInput source="organization_id" reference="organizations" label="Organization">
+              <ReferenceInput
+                source="organization_id"
+                reference="organizations"
+                label="Organization"
+              >
                 <AutocompleteOrganizationInput />
               </ReferenceInput>
               <SelectInput

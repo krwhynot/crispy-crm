@@ -55,7 +55,10 @@
         "notifications": [
           {
             "channel": "email",
-            "recipients": ["sales-team@atomic-crm.com", "executives@atomic-crm.com"],
+            "recipients": [
+              "sales-team@atomic-crm.com",
+              "executives@atomic-crm.com"
+            ],
             "template": "🎉 Opportunity WON: {{name}} at {{organization_name}} for {{expected_revenue | currency}} by {{sales_rep}}"
           },
           {
@@ -101,7 +104,10 @@
         "notifications": [
           {
             "channel": "email",
-            "recipients": ["sales-managers@atomic-crm.com", "executives@atomic-crm.com"],
+            "recipients": [
+              "sales-managers@atomic-crm.com",
+              "executives@atomic-crm.com"
+            ],
             "template": "⚠️ Pipeline velocity dropped {{drop_percentage}}% - only {{recent_count}} new opportunities this week vs {{previous_count}} last week"
           }
         ],
@@ -252,10 +258,7 @@
         "low-probability-high-value",
         "opportunity-stage-regression"
       ],
-      "deprecated_alerts": [
-        "deal-contact-added",
-        "deal-amount-changed"
-      ],
+      "deprecated_alerts": ["deal-contact-added", "deal-amount-changed"],
       "table_changes": {
         "deals": "opportunities",
         "dealNotes": "opportunity_notes",

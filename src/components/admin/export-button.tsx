@@ -52,7 +52,10 @@ export const ExportButton = (props: ExportButtonProps) => {
             ),
         )
         .catch((error) => {
-          console.error("Export failed:", error instanceof Error ? error.message : String(error));
+          console.error(
+            "Export failed:",
+            error instanceof Error ? error.message : String(error),
+          );
           notify("HTTP Error", { type: "error" });
         });
       if (typeof onClick === "function") {

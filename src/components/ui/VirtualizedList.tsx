@@ -7,43 +7,47 @@ const { FixedSizeList, VariableSizeList } = ReactWindow;
 // Basic props for virtualized list items
 export interface VirtualizedListItemData<T = unknown> {
   items: T[];
-  ItemComponent: React.ComponentType<{ item: T; index: number; style: React.CSSProperties }>;
+  ItemComponent: React.ComponentType<{
+    item: T;
+    index: number;
+    style: React.CSSProperties;
+  }>;
   className?: string;
 }
 
 // Fixed height list item renderer
-const FixedSizeListItem = React.memo<ReactWindow.ListChildComponentProps<VirtualizedListItemData>>(
-  ({ index, style, data }) => {
-    const { items, ItemComponent, className } = data;
-    const item = items[index];
+const FixedSizeListItem = React.memo<
+  ReactWindow.ListChildComponentProps<VirtualizedListItemData>
+>(({ index, style, data }) => {
+  const { items, ItemComponent, className } = data;
+  const item = items[index];
 
-    if (!item) return null;
+  if (!item) return null;
 
-    return (
-      <div style={style} className={cn("flex", className)}>
-        <ItemComponent item={item} index={index} style={style} />
-      </div>
-    );
-  }
-);
+  return (
+    <div style={style} className={cn("flex", className)}>
+      <ItemComponent item={item} index={index} style={style} />
+    </div>
+  );
+});
 
 FixedSizeListItem.displayName = "FixedSizeListItem";
 
 // Variable height list item renderer
-const VariableSizeListItem = React.memo<ReactWindow.ListChildComponentProps<VirtualizedListItemData>>(
-  ({ index, style, data }) => {
-    const { items, ItemComponent, className } = data;
-    const item = items[index];
+const VariableSizeListItem = React.memo<
+  ReactWindow.ListChildComponentProps<VirtualizedListItemData>
+>(({ index, style, data }) => {
+  const { items, ItemComponent, className } = data;
+  const item = items[index];
 
-    if (!item) return null;
+  if (!item) return null;
 
-    return (
-      <div style={style} className={cn("flex", className)}>
-        <ItemComponent item={item} index={index} style={style} />
-      </div>
-    );
-  }
-);
+  return (
+    <div style={style} className={cn("flex", className)}>
+      <ItemComponent item={item} index={index} style={style} />
+    </div>
+  );
+});
 
 VariableSizeListItem.displayName = "VariableSizeListItem";
 
@@ -52,7 +56,11 @@ export interface VirtualizedListProps<T = unknown> {
   items: T[];
   height: number;
   itemSize: number | ((index: number) => number);
-  ItemComponent: React.ComponentType<{ item: T; index: number; style: React.CSSProperties }>;
+  ItemComponent: React.ComponentType<{
+    item: T;
+    index: number;
+    style: React.CSSProperties;
+  }>;
   className?: string;
   containerClassName?: string;
   overscanCount?: number;
@@ -116,7 +124,7 @@ export const VirtualizedList = <T,>({
 export const useVirtualizedListHeight = (
   maxHeight?: number,
   minHeight?: number,
-  offsetFromBottom = 100
+  offsetFromBottom = 100,
 ) => {
   const [height, setHeight] = React.useState(maxHeight || 400);
 
@@ -139,9 +147,9 @@ export const useVirtualizedListHeight = (
     };
 
     calculateHeight();
-    window.addEventListener('resize', calculateHeight);
+    window.addEventListener("resize", calculateHeight);
 
-    return () => window.removeEventListener('resize', calculateHeight);
+    return () => window.removeEventListener("resize", calculateHeight);
   }, [maxHeight, minHeight, offsetFromBottom]);
 
   return height;

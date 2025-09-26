@@ -130,7 +130,9 @@ export function TagDialog({
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "text-primary",
-                disabled || !newTagName.trim() ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
+                disabled || !newTagName.trim()
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer",
               )}
             >
               <SaveIcon />

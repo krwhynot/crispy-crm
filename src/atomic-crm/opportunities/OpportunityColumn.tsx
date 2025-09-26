@@ -11,7 +11,10 @@ export const OpportunityColumn = ({
   stage: string;
   opportunities: Opportunity[];
 }) => {
-  const totalAmount = opportunities.reduce((sum, opportunity) => sum + opportunity.amount, 0);
+  const totalAmount = opportunities.reduce(
+    (sum, opportunity) => sum + opportunity.amount,
+    0,
+  );
 
   return (
     <div className="flex-1 pb-8">
@@ -39,7 +42,11 @@ export const OpportunityColumn = ({
             }`}
           >
             {opportunities.map((opportunity, index) => (
-              <OpportunityCard key={opportunity.id} opportunity={opportunity} index={index} />
+              <OpportunityCard
+                key={opportunity.id}
+                opportunity={opportunity}
+                index={index}
+              />
             ))}
             {droppableProvided.placeholder}
           </div>

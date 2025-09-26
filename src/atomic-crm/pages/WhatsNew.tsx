@@ -25,7 +25,12 @@ interface FeatureTour {
   title: string;
   description: string;
   icon: React.ReactNode;
-  category: "opportunities" | "contacts" | "organizations" | "activities" | "b2b";
+  category:
+    | "opportunities"
+    | "contacts"
+    | "organizations"
+    | "activities"
+    | "b2b";
   isNew: boolean;
   steps?: TourStep[];
 }
@@ -42,26 +47,31 @@ const newFeatures: FeatureTour[] = [
   {
     id: "opportunities",
     title: "Enhanced Opportunities",
-    description: "Deals are now Opportunities with advanced tracking, probability scoring, and lifecycle management.",
+    description:
+      "Deals are now Opportunities with advanced tracking, probability scoring, and lifecycle management.",
     icon: <Briefcase className="h-6 w-6" />,
     category: "opportunities",
     isNew: true,
     steps: [
       {
         title: "Enhanced Fields",
-        description: "Opportunities now include probability percentage, priority levels, and detailed lifecycle stages.",
+        description:
+          "Opportunities now include probability percentage, priority levels, and detailed lifecycle stages.",
         action: "View an existing opportunity to see new fields",
         tip: "Probability is automatically calculated based on stage, but you can override it manually.",
       },
       {
         title: "Advanced Stages",
-        description: "Food service pipeline: New Lead, Initial Outreach, Sample/Visit Offered, Awaiting Response, Feedback Logged, Demo Scheduled, Closed Won/Lost.",
-        action: "Change an opportunity stage to see automatic probability updates",
+        description:
+          "Food service pipeline: New Lead, Initial Outreach, Sample/Visit Offered, Awaiting Response, Feedback Logged, Demo Scheduled, Closed Won/Lost.",
+        action:
+          "Change an opportunity stage to see automatic probability updates",
         tip: "Stages can be updated manually or automatically based on activities.",
       },
       {
         title: "Priority Management",
-        description: "Set priority levels (Low, Medium, High, Critical) to focus on what matters most.",
+        description:
+          "Set priority levels (Low, Medium, High, Critical) to focus on what matters most.",
         action: "Set high priority on your most important opportunities",
         tip: "High and Critical priorities appear prominently in dashboards.",
       },
@@ -70,26 +80,30 @@ const newFeatures: FeatureTour[] = [
   {
     id: "multi-org-contacts",
     title: "Multi-Organization Contacts",
-    description: "Contacts can now be associated with multiple organizations with different roles and influence levels.",
+    description:
+      "Contacts can now be associated with multiple organizations with different roles and influence levels.",
     icon: <Users className="h-6 w-6" />,
     category: "contacts",
     isNew: true,
     steps: [
       {
         title: "Primary Organization",
-        description: "Each contact has a primary organization shown prominently in their profile.",
+        description:
+          "Each contact has a primary organization shown prominently in their profile.",
         action: "Check your top contacts to verify primary organizations",
         tip: "Primary organization determines default company context for new opportunities.",
       },
       {
         title: "Associated Organizations",
-        description: "View all organizations a contact is connected to in the 'Organizations' section.",
+        description:
+          "View all organizations a contact is connected to in the 'Organizations' section.",
         action: "Add a contact to an additional organization",
         tip: "Use this for consultants, contractors, or people who work with multiple organizations.",
       },
       {
         title: "Role and Influence",
-        description: "Track decision authority and purchase influence for each organization relationship.",
+        description:
+          "Track decision authority and purchase influence for each organization relationship.",
         action: "Set influence levels for key contacts",
         tip: "High influence contacts are highlighted in opportunity planning.",
       },
@@ -98,26 +112,30 @@ const newFeatures: FeatureTour[] = [
   {
     id: "organization-types",
     title: "Organization Types & Hierarchies",
-    description: "Organizations now have types (Customer, Principal, Distributor, etc.) and can form hierarchical relationships.",
+    description:
+      "Organizations now have types (Customer, Principal, Distributor, etc.) and can form hierarchical relationships.",
     icon: <Building className="h-6 w-6" />,
     category: "organizations",
     isNew: true,
     steps: [
       {
         title: "Organization Types",
-        description: "Classify organizations as Customer, Principal, Distributor, Prospect, Vendor, Partner, or Unknown.",
+        description:
+          "Classify organizations as Customer, Principal, Distributor, Prospect, Vendor, Partner, or Unknown.",
         action: "Review your top organizations and set appropriate types",
         tip: "Types help with filtering and reporting on different relationship categories.",
       },
       {
         title: "Priority Levels",
-        description: "Assign A/B/C/D priority levels for account management focus.",
+        description:
+          "Assign A/B/C/D priority levels for account management focus.",
         action: "Set A priority for your most important accounts",
         tip: "A-priority accounts get highlighted treatment throughout the system.",
       },
       {
         title: "Parent Organizations",
-        description: "Link subsidiaries to parent organizations for better relationship mapping.",
+        description:
+          "Link subsidiaries to parent organizations for better relationship mapping.",
         action: "Set up parent-child relationships for related organizations",
         tip: "This helps track enterprise accounts with multiple entities.",
       },
@@ -126,26 +144,30 @@ const newFeatures: FeatureTour[] = [
   {
     id: "activities-system",
     title: "Enhanced Activities System",
-    description: "New activity tracking with interactions (opportunity-specific) and engagements (general relationship building).",
+    description:
+      "New activity tracking with interactions (opportunity-specific) and engagements (general relationship building).",
     icon: <Activity className="h-6 w-6" />,
     category: "activities",
     isNew: true,
     steps: [
       {
         title: "Interactions vs Engagements",
-        description: "Interactions are tied to specific opportunities. Engagements are general relationship activities.",
+        description:
+          "Interactions are tied to specific opportunities. Engagements are general relationship activities.",
         action: "Log an interaction for a specific opportunity",
         tip: "Use interactions for sales activities, engagements for relationship building.",
       },
       {
         title: "Activity Types",
-        description: "Enhanced types: Call, Email, Meeting, Demo, Follow-up, Visit, Proposal, Negotiation.",
+        description:
+          "Enhanced types: Call, Email, Meeting, Demo, Follow-up, Visit, Proposal, Negotiation.",
         action: "Create activities with the new detailed types",
         tip: "Detailed types improve reporting and activity analysis.",
       },
       {
         title: "Follow-up Tracking",
-        description: "Activities can automatically schedule follow-ups with reminders.",
+        description:
+          "Activities can automatically schedule follow-ups with reminders.",
         action: "Set a follow-up when creating an activity",
         tip: "Follow-ups appear in your task dashboard with due dates.",
       },
@@ -154,26 +176,30 @@ const newFeatures: FeatureTour[] = [
   {
     id: "b2b-features",
     title: "B2B Principal-Distributor Workflows",
-    description: "Full support for complex B2B relationships including principal-distributor partnerships and commission tracking.",
+    description:
+      "Full support for complex B2B relationships including principal-distributor partnerships and commission tracking.",
     icon: <Network className="h-6 w-6" />,
     category: "b2b",
     isNew: true,
     steps: [
       {
         title: "Principal Relationships",
-        description: "Mark organizations as principals and track their distributor networks.",
+        description:
+          "Mark organizations as principals and track their distributor networks.",
         action: "Set up principal organizations if applicable",
         tip: "Principals are suppliers who work through distributor channels.",
       },
       {
         title: "Opportunity Participants",
-        description: "Track multiple organizations in a single opportunity (customer, principal, distributor).",
+        description:
+          "Track multiple organizations in a single opportunity (customer, principal, distributor).",
         action: "Add participants to a complex B2B opportunity",
         tip: "Each participant can have different roles and commission rates.",
       },
       {
         title: "Commission Tracking",
-        description: "Set commission rates and territories for distributor relationships.",
+        description:
+          "Set commission rates and territories for distributor relationships.",
         action: "Configure commission rates for relevant opportunities",
         tip: "Commission data helps with distributor performance analysis.",
       },
@@ -182,16 +208,23 @@ const newFeatures: FeatureTour[] = [
 ];
 
 export const WhatsNew = () => {
-  const [selectedFeature, setSelectedFeature] = useState<FeatureTour>(newFeatures[0]);
+  const [selectedFeature, setSelectedFeature] = useState<FeatureTour>(
+    newFeatures[0],
+  );
   const [currentStep, setCurrentStep] = useState(0);
-  const [completedFeatures, setCompletedFeatures] = useState<Set<string>>(new Set());
+  const [completedFeatures, setCompletedFeatures] = useState<Set<string>>(
+    new Set(),
+  );
 
   const handleFeatureComplete = (featureId: string) => {
     setCompletedFeatures((prev) => new Set([...prev, featureId]));
   };
 
   const nextStep = () => {
-    if (selectedFeature.steps && currentStep < selectedFeature.steps.length - 1) {
+    if (
+      selectedFeature.steps &&
+      currentStep < selectedFeature.steps.length - 1
+    ) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -229,7 +262,8 @@ export const WhatsNew = () => {
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold">What's New in Atomic CRM</h1>
         <p className="text-muted-foreground">
-          Discover the powerful new features and enhancements from your migration
+          Discover the powerful new features and enhancements from your
+          migration
         </p>
       </div>
 
@@ -263,7 +297,9 @@ export const WhatsNew = () => {
                   {completedFeatures.has(feature.id) && (
                     <div className="flex items-center gap-2 text-green-600">
                       <CheckCircle className="h-4 w-4" />
-                      <span className="text-sm font-medium">Tour Completed</span>
+                      <span className="text-sm font-medium">
+                        Tour Completed
+                      </span>
                     </div>
                   )}
                   <Button
@@ -319,15 +355,23 @@ export const WhatsNew = () => {
 
                     {selectedFeature.steps[currentStep].action && (
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-blue-900 mb-2">Try it now:</h4>
-                        <p className="text-blue-800">{selectedFeature.steps[currentStep].action}</p>
+                        <h4 className="font-medium text-blue-900 mb-2">
+                          Try it now:
+                        </h4>
+                        <p className="text-blue-800">
+                          {selectedFeature.steps[currentStep].action}
+                        </p>
                       </div>
                     )}
 
                     {selectedFeature.steps[currentStep].tip && (
                       <div className="bg-yellow-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-yellow-900 mb-2">💡 Pro Tip:</h4>
-                        <p className="text-yellow-800">{selectedFeature.steps[currentStep].tip}</p>
+                        <h4 className="font-medium text-yellow-900 mb-2">
+                          💡 Pro Tip:
+                        </h4>
+                        <p className="text-yellow-800">
+                          {selectedFeature.steps[currentStep].tip}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -344,7 +388,9 @@ export const WhatsNew = () => {
                     <div className="space-x-2">
                       {currentStep === selectedFeature.steps.length - 1 ? (
                         <Button
-                          onClick={() => handleFeatureComplete(selectedFeature.id)}
+                          onClick={() =>
+                            handleFeatureComplete(selectedFeature.id)
+                          }
                           className="bg-green-600 hover:bg-green-700"
                         >
                           <CheckCircle className="h-4 w-4 mr-2" />
@@ -362,7 +408,8 @@ export const WhatsNew = () => {
               ) : (
                 <div className="text-center py-8">
                   <p className="text-muted-foreground">
-                    Select a feature from the overview tab to start the interactive tour.
+                    Select a feature from the overview tab to start the
+                    interactive tour.
                   </p>
                 </div>
               )}
@@ -380,7 +427,9 @@ export const WhatsNew = () => {
                   <Button
                     key={feature.id}
                     onClick={() => startTour(feature)}
-                    variant={selectedFeature.id === feature.id ? "default" : "outline"}
+                    variant={
+                      selectedFeature.id === feature.id ? "default" : "outline"
+                    }
                     className="h-auto p-3 justify-start"
                   >
                     <div className="flex items-center gap-3">
@@ -450,25 +499,41 @@ export const WhatsNew = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="space-y-2">
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start"
+                  >
                     <a href="/migration/checklist">
                       <CheckCircle className="h-4 w-4 mr-2" />
                       Complete Verification Checklist
                     </a>
                   </Button>
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start"
+                  >
                     <a href="/opportunities">
                       <Briefcase className="h-4 w-4 mr-2" />
                       View Your Opportunities
                     </a>
                   </Button>
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start"
+                  >
                     <a href="/contacts">
                       <Users className="h-4 w-4 mr-2" />
                       Review Contact Organizations
                     </a>
                   </Button>
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start"
+                  >
                     <a href="/organizations">
                       <Building className="h-4 w-4 mr-2" />
                       Set Organization Types
@@ -484,13 +549,12 @@ export const WhatsNew = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  Need help with the new features or have feedback about the migration?
+                  Need help with the new features or have feedback about the
+                  migration?
                 </p>
                 <div className="flex gap-3">
                   <Button asChild>
-                    <a href="mailto:support@atomiccrm.com">
-                      Contact Support
-                    </a>
+                    <a href="mailto:support@atomiccrm.com">Contact Support</a>
                   </Button>
                   <Button asChild variant="outline">
                     <a href="/feedback">

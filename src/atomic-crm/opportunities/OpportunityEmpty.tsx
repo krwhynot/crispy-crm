@@ -7,7 +7,11 @@ import useAppBarHeight from "../misc/useAppBarHeight";
 import type { Contact } from "../types";
 import { OpportunityCreate } from "./OpportunityCreate";
 
-export const OpportunityEmpty = ({ children }: { children?: React.ReactNode }) => {
+export const OpportunityEmpty = ({
+  children,
+}: {
+  children?: React.ReactNode;
+}) => {
   const location = useLocation();
   const matchCreate = matchPath("/opportunities/create", location.pathname);
   const appbarHeight = useAppBarHeight();

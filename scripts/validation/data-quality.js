@@ -6,7 +6,7 @@
  * with recommendations for improvement.
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 export class DataQualityAssessor {
   constructor(supabaseUrl, supabaseKey) {
@@ -17,7 +17,7 @@ export class DataQualityAssessor {
       completeness: 0.4,
       accuracy: 0.3,
       consistency: 0.2,
-      validity: 0.1
+      validity: 0.1,
     };
   }
 
@@ -25,7 +25,7 @@ export class DataQualityAssessor {
    * Run comprehensive data quality assessment
    */
   async assessAll() {
-    console.log('📊 Starting data quality assessment...');
+    console.log("📊 Starting data quality assessment...");
 
     await this.assessCompleteness();
     await this.assessAccuracy();
@@ -39,14 +39,14 @@ export class DataQualityAssessor {
    * Assess data completeness
    */
   async assessCompleteness() {
-    console.log('🔍 Assessing data completeness...');
+    console.log("🔍 Assessing data completeness...");
 
     const completenessChecks = [
       this.checkCompanyCompleteness,
       this.checkContactCompleteness,
       this.checkDealCompleteness,
       this.checkNoteCompleteness,
-      this.checkTaskCompleteness
+      this.checkTaskCompleteness,
     ];
 
     const results = [];
@@ -56,17 +56,17 @@ export class DataQualityAssessor {
         results.push(result);
       } catch (error) {
         this.issues.push({
-          type: 'ASSESSMENT_ERROR',
-          category: 'completeness',
-          severity: 'HIGH',
-          message: `Failed to assess ${check.name}: ${error.message}`
+          type: "ASSESSMENT_ERROR",
+          category: "completeness",
+          severity: "HIGH",
+          message: `Failed to assess ${check.name}: ${error.message}`,
         });
       }
     }
 
     this.metrics.completeness = {
       score: results.reduce((sum, r) => sum + r.score, 0) / results.length,
-      details: results
+      details: results,
     };
   }
 
@@ -75,46 +75,48 @@ export class DataQualityAssessor {
    */
   async checkCompanyCompleteness() {
     const { data: companies, error } = await this.supabase
-      .from('companies')
-      .select('id, name, sector, size, domain, logo_url, phone, email, website, created_at');
+      .from("companies")
+      .select(
+        "id, name, sector, size, domain, logo_url, phone, email, website, created_at",
+      );
 
     if (error) throw error;
 
     const totalCompanies = companies?.length || 0;
     if (totalCompanies === 0) {
-      return { entity: 'companies', score: 0, details: 'No companies found' };
+      return { entity: "companies", score: 0, details: "No companies found" };
     }
 
-    const completenessScores = companies.map(company => {
+    const completenessScores = companies.map((company) => {
       let score = 0;
       let maxScore = 0;
 
       // Essential fields (weighted higher)
       maxScore += 20; // name
-      if (company.name && company.name.trim() !== '') score += 20;
+      if (company.name && company.name.trim() !== "") score += 20;
 
       maxScore += 15; // sector
-      if (company.sector && company.sector.trim() !== '') score += 15;
+      if (company.sector && company.sector.trim() !== "") score += 15;
 
       // Important fields
       maxScore += 10; // size
-      if (company.size && company.size.trim() !== '') score += 10;
+      if (company.size && company.size.trim() !== "") score += 10;
 
       maxScore += 10; // domain
-      if (company.domain && company.domain.trim() !== '') score += 10;
+      if (company.domain && company.domain.trim() !== "") score += 10;
 
       maxScore += 10; // website
-      if (company.website && company.website.trim() !== '') score += 10;
+      if (company.website && company.website.trim() !== "") score += 10;
 
       // Optional but valuable fields
       maxScore += 8; // phone
-      if (company.phone && company.phone.trim() !== '') score += 8;
+      if (company.phone && company.phone.trim() !== "") score += 8;
 
       maxScore += 8; // email
-      if (company.email && company.email.trim() !== '') score += 8;
+      if (company.email && company.email.trim() !== "") score += 8;
 
       maxScore += 7; // logo_url
-      if (company.logo_url && company.logo_url.trim() !== '') score += 7;
+      if (company.logo_url && company.logo_url.trim() !== "") score += 7;
 
       // Metadata
       maxScore += 12; // created_at
@@ -123,20 +125,26 @@ export class DataQualityAssessor {
       return (score / maxScore) * 100;
     });
 
-    const averageScore = completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
+    const averageScore =
+      completenessScores.reduce((sum, score) => sum + score, 0) /
+      completenessScores.length;
 
-    const incompleteCompanies = completenessScores.filter(score => score < 60).length;
-    const completeCompanies = completenessScores.filter(score => score >= 80).length;
+    const incompleteCompanies = completenessScores.filter(
+      (score) => score < 60,
+    ).length;
+    const completeCompanies = completenessScores.filter(
+      (score) => score >= 80,
+    ).length;
 
     return {
-      entity: 'companies',
+      entity: "companies",
       score: averageScore,
       details: {
         total: totalCompanies,
         complete: completeCompanies,
         incomplete: incompleteCompanies,
-        averageCompleteness: averageScore.toFixed(1)
-      }
+        averageCompleteness: averageScore.toFixed(1),
+      },
     };
   }
 
@@ -145,43 +153,55 @@ export class DataQualityAssessor {
    */
   async checkContactCompleteness() {
     const { data: contacts, error } = await this.supabase
-      .from('contacts')
-      .select('id, first_name, last_name, title, email, phone, company_id, avatar_url, created_at');
+      .from("contacts")
+      .select(
+        "id, first_name, last_name, title, email, phone, company_id, avatar_url, created_at",
+      );
 
     if (error) throw error;
 
     const totalContacts = contacts?.length || 0;
     if (totalContacts === 0) {
-      return { entity: 'contacts', score: 0, details: 'No contacts found' };
+      return { entity: "contacts", score: 0, details: "No contacts found" };
     }
 
-    const completenessScores = contacts.map(contact => {
+    const completenessScores = contacts.map((contact) => {
       let score = 0;
       let maxScore = 0;
 
       // Essential fields
       maxScore += 20; // first_name
-      if (contact.first_name && contact.first_name.trim() !== '') score += 20;
+      if (contact.first_name && contact.first_name.trim() !== "") score += 20;
 
       maxScore += 20; // last_name
-      if (contact.last_name && contact.last_name.trim() !== '') score += 20;
+      if (contact.last_name && contact.last_name.trim() !== "") score += 20;
 
       maxScore += 15; // company_id
       if (contact.company_id) score += 15;
 
       // Important fields
       maxScore += 15; // email
-      if (contact.email && Array.isArray(contact.email) && contact.email.length > 0) score += 15;
+      if (
+        contact.email &&
+        Array.isArray(contact.email) &&
+        contact.email.length > 0
+      )
+        score += 15;
 
       maxScore += 10; // phone
-      if (contact.phone && Array.isArray(contact.phone) && contact.phone.length > 0) score += 10;
+      if (
+        contact.phone &&
+        Array.isArray(contact.phone) &&
+        contact.phone.length > 0
+      )
+        score += 10;
 
       maxScore += 10; // title
-      if (contact.title && contact.title.trim() !== '') score += 10;
+      if (contact.title && contact.title.trim() !== "") score += 10;
 
       // Optional fields
       maxScore += 5; // avatar_url
-      if (contact.avatar_url && contact.avatar_url.trim() !== '') score += 5;
+      if (contact.avatar_url && contact.avatar_url.trim() !== "") score += 5;
 
       maxScore += 5; // created_at
       if (contact.created_at) score += 5;
@@ -189,17 +209,19 @@ export class DataQualityAssessor {
       return (score / maxScore) * 100;
     });
 
-    const averageScore = completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
+    const averageScore =
+      completenessScores.reduce((sum, score) => sum + score, 0) /
+      completenessScores.length;
 
     return {
-      entity: 'contacts',
+      entity: "contacts",
       score: averageScore,
       details: {
         total: totalContacts,
-        complete: completenessScores.filter(score => score >= 80).length,
-        incomplete: completenessScores.filter(score => score < 60).length,
-        averageCompleteness: averageScore.toFixed(1)
-      }
+        complete: completenessScores.filter((score) => score >= 80).length,
+        incomplete: completenessScores.filter((score) => score < 60).length,
+        averageCompleteness: averageScore.toFixed(1),
+      },
     };
   }
 
@@ -208,36 +230,43 @@ export class DataQualityAssessor {
    */
   async checkDealCompleteness() {
     const { data: deals, error } = await this.supabase
-      .from('deals')
-      .select('id, name, stage, expected_revenue, probability, company_id, contact_ids, expected_close_date, created_at');
+      .from("deals")
+      .select(
+        "id, name, stage, expected_revenue, probability, company_id, contact_ids, expected_close_date, created_at",
+      );
 
     if (error) throw error;
 
     const totalDeals = deals?.length || 0;
     if (totalDeals === 0) {
-      return { entity: 'deals', score: 0, details: 'No deals found' };
+      return { entity: "deals", score: 0, details: "No deals found" };
     }
 
-    const completenessScores = deals.map(deal => {
+    const completenessScores = deals.map((deal) => {
       let score = 0;
       let maxScore = 0;
 
       // Essential fields
       maxScore += 25; // name
-      if (deal.name && deal.name.trim() !== '') score += 25;
+      if (deal.name && deal.name.trim() !== "") score += 25;
 
       maxScore += 20; // company_id
       if (deal.company_id) score += 20;
 
       maxScore += 15; // stage
-      if (deal.stage && deal.stage.trim() !== '') score += 15;
+      if (deal.stage && deal.stage.trim() !== "") score += 15;
 
       // Important fields
       maxScore += 15; // expected_revenue
       if (deal.expected_revenue && deal.expected_revenue > 0) score += 15;
 
       maxScore += 10; // contact_ids
-      if (deal.contact_ids && Array.isArray(deal.contact_ids) && deal.contact_ids.length > 0) score += 10;
+      if (
+        deal.contact_ids &&
+        Array.isArray(deal.contact_ids) &&
+        deal.contact_ids.length > 0
+      )
+        score += 10;
 
       maxScore += 10; // expected_close_date
       if (deal.expected_close_date) score += 10;
@@ -249,17 +278,19 @@ export class DataQualityAssessor {
       return (score / maxScore) * 100;
     });
 
-    const averageScore = completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
+    const averageScore =
+      completenessScores.reduce((sum, score) => sum + score, 0) /
+      completenessScores.length;
 
     return {
-      entity: 'deals',
+      entity: "deals",
       score: averageScore,
       details: {
         total: totalDeals,
-        complete: completenessScores.filter(score => score >= 80).length,
-        incomplete: completenessScores.filter(score => score < 60).length,
-        averageCompleteness: averageScore.toFixed(1)
-      }
+        complete: completenessScores.filter((score) => score >= 80).length,
+        incomplete: completenessScores.filter((score) => score < 60).length,
+        averageCompleteness: averageScore.toFixed(1),
+      },
     };
   }
 
@@ -268,8 +299,10 @@ export class DataQualityAssessor {
    */
   async checkNoteCompleteness() {
     const [contactNotesResult, dealNotesResult] = await Promise.all([
-      this.supabase.from('contactNotes').select('id, text, sales_rep, created_at'),
-      this.supabase.from('dealNotes').select('id, text, sales_rep, created_at')
+      this.supabase
+        .from("contactNotes")
+        .select("id, text, sales_rep, created_at"),
+      this.supabase.from("dealNotes").select("id, text, sales_rep, created_at"),
     ]);
 
     const contactNotes = contactNotesResult.data || [];
@@ -277,19 +310,20 @@ export class DataQualityAssessor {
     const totalNotes = contactNotes.length + dealNotes.length;
 
     if (totalNotes === 0) {
-      return { entity: 'notes', score: 100, details: 'No notes to assess' };
+      return { entity: "notes", score: 100, details: "No notes to assess" };
     }
 
     const allNotes = [...contactNotes, ...dealNotes];
-    const completenessScores = allNotes.map(note => {
+    const completenessScores = allNotes.map((note) => {
       let score = 0;
       let maxScore = 0;
 
       maxScore += 70; // text
-      if (note.text && note.text.trim() !== '' && note.text.length > 10) score += 70;
+      if (note.text && note.text.trim() !== "" && note.text.length > 10)
+        score += 70;
 
       maxScore += 20; // sales_rep
-      if (note.sales_rep && note.sales_rep.trim() !== '') score += 20;
+      if (note.sales_rep && note.sales_rep.trim() !== "") score += 20;
 
       maxScore += 10; // created_at
       if (note.created_at) score += 10;
@@ -297,17 +331,19 @@ export class DataQualityAssessor {
       return (score / maxScore) * 100;
     });
 
-    const averageScore = completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
+    const averageScore =
+      completenessScores.reduce((sum, score) => sum + score, 0) /
+      completenessScores.length;
 
     return {
-      entity: 'notes',
+      entity: "notes",
       score: averageScore,
       details: {
         total: totalNotes,
         contactNotes: contactNotes.length,
         dealNotes: dealNotes.length,
-        averageCompleteness: averageScore.toFixed(1)
-      }
+        averageCompleteness: averageScore.toFixed(1),
+      },
     };
   }
 
@@ -316,25 +352,25 @@ export class DataQualityAssessor {
    */
   async checkTaskCompleteness() {
     const { data: tasks, error } = await this.supabase
-      .from('tasks')
-      .select('id, type, text, due_date, contact_id, deal_id, created_at');
+      .from("tasks")
+      .select("id, type, text, due_date, contact_id, deal_id, created_at");
 
     if (error) throw error;
 
     const totalTasks = tasks?.length || 0;
     if (totalTasks === 0) {
-      return { entity: 'tasks', score: 100, details: 'No tasks to assess' };
+      return { entity: "tasks", score: 100, details: "No tasks to assess" };
     }
 
-    const completenessScores = tasks.map(task => {
+    const completenessScores = tasks.map((task) => {
       let score = 0;
       let maxScore = 0;
 
       maxScore += 30; // type
-      if (task.type && task.type.trim() !== '') score += 30;
+      if (task.type && task.type.trim() !== "") score += 30;
 
       maxScore += 25; // text
-      if (task.text && task.text.trim() !== '') score += 25;
+      if (task.text && task.text.trim() !== "") score += 25;
 
       maxScore += 20; // assignment (contact_id or deal_id)
       if (task.contact_id || task.deal_id) score += 20;
@@ -348,17 +384,19 @@ export class DataQualityAssessor {
       return (score / maxScore) * 100;
     });
 
-    const averageScore = completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
+    const averageScore =
+      completenessScores.reduce((sum, score) => sum + score, 0) /
+      completenessScores.length;
 
     return {
-      entity: 'tasks',
+      entity: "tasks",
       score: averageScore,
       details: {
         total: totalTasks,
-        complete: completenessScores.filter(score => score >= 80).length,
-        incomplete: completenessScores.filter(score => score < 60).length,
-        averageCompleteness: averageScore.toFixed(1)
-      }
+        complete: completenessScores.filter((score) => score >= 80).length,
+        incomplete: completenessScores.filter((score) => score < 60).length,
+        averageCompleteness: averageScore.toFixed(1),
+      },
     };
   }
 
@@ -366,14 +404,14 @@ export class DataQualityAssessor {
    * Assess data accuracy
    */
   async assessAccuracy() {
-    console.log('🎯 Assessing data accuracy...');
+    console.log("🎯 Assessing data accuracy...");
 
     const accuracyChecks = [
       this.checkEmailFormats,
       this.checkPhoneFormats,
       this.checkWebsiteFormats,
       this.checkDateFormats,
-      this.checkNumericRanges
+      this.checkNumericRanges,
     ];
 
     const results = [];
@@ -383,17 +421,17 @@ export class DataQualityAssessor {
         results.push(result);
       } catch (error) {
         this.issues.push({
-          type: 'ASSESSMENT_ERROR',
-          category: 'accuracy',
-          severity: 'HIGH',
-          message: `Failed to assess ${check.name}: ${error.message}`
+          type: "ASSESSMENT_ERROR",
+          category: "accuracy",
+          severity: "HIGH",
+          message: `Failed to assess ${check.name}: ${error.message}`,
         });
       }
     }
 
     this.metrics.accuracy = {
       score: results.reduce((sum, r) => sum + r.score, 0) / results.length,
-      details: results
+      details: results,
     };
   }
 
@@ -402,8 +440,8 @@ export class DataQualityAssessor {
    */
   async checkEmailFormats() {
     const { data: contacts, error } = await this.supabase
-      .from('contacts')
-      .select('id, email');
+      .from("contacts")
+      .select("id, email");
 
     if (error) throw error;
 
@@ -416,7 +454,7 @@ export class DataQualityAssessor {
       if (!contact.email || !Array.isArray(contact.email)) continue;
 
       for (const email of contact.email) {
-        if (typeof email === 'string' && email.trim() !== '') {
+        if (typeof email === "string" && email.trim() !== "") {
           totalEmails++;
           if (emailRegex.test(email.trim())) {
             validEmails++;
@@ -431,22 +469,22 @@ export class DataQualityAssessor {
 
     if (invalidEmails.length > 0) {
       this.issues.push({
-        type: 'INVALID_EMAIL_FORMAT',
-        category: 'accuracy',
-        severity: 'MEDIUM',
+        type: "INVALID_EMAIL_FORMAT",
+        category: "accuracy",
+        severity: "MEDIUM",
         message: `${invalidEmails.length} invalid email formats found`,
-        samples: invalidEmails.slice(0, 5)
+        samples: invalidEmails.slice(0, 5),
       });
     }
 
     return {
-      check: 'email_formats',
+      check: "email_formats",
       score,
       details: {
         total: totalEmails,
         valid: validEmails,
-        invalid: invalidEmails.length
-      }
+        invalid: invalidEmails.length,
+      },
     };
   }
 
@@ -455,8 +493,8 @@ export class DataQualityAssessor {
    */
   async checkPhoneFormats() {
     const { data: contacts, error } = await this.supabase
-      .from('contacts')
-      .select('id, phone');
+      .from("contacts")
+      .select("id, phone");
 
     if (error) throw error;
 
@@ -469,7 +507,7 @@ export class DataQualityAssessor {
       if (!contact.phone || !Array.isArray(contact.phone)) continue;
 
       for (const phone of contact.phone) {
-        if (typeof phone === 'string' && phone.trim() !== '') {
+        if (typeof phone === "string" && phone.trim() !== "") {
           totalPhones++;
           if (phoneRegex.test(phone.trim())) {
             validPhones++;
@@ -484,22 +522,22 @@ export class DataQualityAssessor {
 
     if (invalidPhones.length > 0) {
       this.issues.push({
-        type: 'INVALID_PHONE_FORMAT',
-        category: 'accuracy',
-        severity: 'LOW',
+        type: "INVALID_PHONE_FORMAT",
+        category: "accuracy",
+        severity: "LOW",
         message: `${invalidPhones.length} invalid phone formats found`,
-        samples: invalidPhones.slice(0, 5)
+        samples: invalidPhones.slice(0, 5),
       });
     }
 
     return {
-      check: 'phone_formats',
+      check: "phone_formats",
       score,
       details: {
         total: totalPhones,
         valid: validPhones,
-        invalid: invalidPhones.length
-      }
+        invalid: invalidPhones.length,
+      },
     };
   }
 
@@ -508,9 +546,9 @@ export class DataQualityAssessor {
    */
   async checkWebsiteFormats() {
     const { data: companies, error } = await this.supabase
-      .from('companies')
-      .select('id, website')
-      .not('website', 'is', null);
+      .from("companies")
+      .select("id, website")
+      .not("website", "is", null);
 
     if (error) throw error;
 
@@ -520,26 +558,30 @@ export class DataQualityAssessor {
     const invalidWebsites = [];
 
     for (const company of companies || []) {
-      if (company.website && company.website.trim() !== '') {
+      if (company.website && company.website.trim() !== "") {
         totalWebsites++;
         if (websiteRegex.test(company.website.trim())) {
           validWebsites++;
         } else {
-          invalidWebsites.push({ companyId: company.id, website: company.website });
+          invalidWebsites.push({
+            companyId: company.id,
+            website: company.website,
+          });
         }
       }
     }
 
-    const score = totalWebsites === 0 ? 100 : (validWebsites / totalWebsites) * 100;
+    const score =
+      totalWebsites === 0 ? 100 : (validWebsites / totalWebsites) * 100;
 
     return {
-      check: 'website_formats',
+      check: "website_formats",
       score,
       details: {
         total: totalWebsites,
         valid: validWebsites,
-        invalid: invalidWebsites.length
-      }
+        invalid: invalidWebsites.length,
+      },
     };
   }
 
@@ -548,9 +590,9 @@ export class DataQualityAssessor {
    */
   async checkDateFormats() {
     const { data: deals, error } = await this.supabase
-      .from('deals')
-      .select('id, expected_close_date')
-      .not('expected_close_date', 'is', null);
+      .from("deals")
+      .select("id, expected_close_date")
+      .not("expected_close_date", "is", null);
 
     if (error) throw error;
 
@@ -562,10 +604,13 @@ export class DataQualityAssessor {
       if (deal.expected_close_date) {
         totalDates++;
         const date = new Date(deal.expected_close_date);
-        if (!isNaN(date.getTime()) && date > new Date('1900-01-01')) {
+        if (!isNaN(date.getTime()) && date > new Date("1900-01-01")) {
           validDates++;
         } else {
-          invalidDates.push({ dealId: deal.id, date: deal.expected_close_date });
+          invalidDates.push({
+            dealId: deal.id,
+            date: deal.expected_close_date,
+          });
         }
       }
     }
@@ -573,13 +618,13 @@ export class DataQualityAssessor {
     const score = totalDates === 0 ? 100 : (validDates / totalDates) * 100;
 
     return {
-      check: 'date_formats',
+      check: "date_formats",
       score,
       details: {
         total: totalDates,
         valid: validDates,
-        invalid: invalidDates.length
-      }
+        invalid: invalidDates.length,
+      },
     };
   }
 
@@ -588,9 +633,9 @@ export class DataQualityAssessor {
    */
   async checkNumericRanges() {
     const { data: deals, error } = await this.supabase
-      .from('deals')
-      .select('id, expected_revenue, probability')
-      .not('expected_revenue', 'is', null);
+      .from("deals")
+      .select("id, expected_revenue, probability")
+      .not("expected_revenue", "is", null);
 
     if (error) throw error;
 
@@ -615,17 +660,21 @@ export class DataQualityAssessor {
       }
     }
 
-    const revenueScore = totalRevenues === 0 ? 100 : (validRevenues / totalRevenues) * 100;
-    const probabilityScore = totalProbabilities === 0 ? 100 : (validProbabilities / totalProbabilities) * 100;
+    const revenueScore =
+      totalRevenues === 0 ? 100 : (validRevenues / totalRevenues) * 100;
+    const probabilityScore =
+      totalProbabilities === 0
+        ? 100
+        : (validProbabilities / totalProbabilities) * 100;
     const overallScore = (revenueScore + probabilityScore) / 2;
 
     return {
-      check: 'numeric_ranges',
+      check: "numeric_ranges",
       score: overallScore,
       details: {
         revenues: { total: totalRevenues, valid: validRevenues },
-        probabilities: { total: totalProbabilities, valid: validProbabilities }
-      }
+        probabilities: { total: totalProbabilities, valid: validProbabilities },
+      },
     };
   }
 
@@ -633,12 +682,12 @@ export class DataQualityAssessor {
    * Assess data consistency
    */
   async assessConsistency() {
-    console.log('🔄 Assessing data consistency...');
+    console.log("🔄 Assessing data consistency...");
 
     const consistencyChecks = [
       this.checkNameConsistency,
       this.checkStageConsistency,
-      this.checkRelationshipConsistency
+      this.checkRelationshipConsistency,
     ];
 
     const results = [];
@@ -648,17 +697,17 @@ export class DataQualityAssessor {
         results.push(result);
       } catch (error) {
         this.issues.push({
-          type: 'ASSESSMENT_ERROR',
-          category: 'consistency',
-          severity: 'HIGH',
-          message: `Failed to assess ${check.name}: ${error.message}`
+          type: "ASSESSMENT_ERROR",
+          category: "consistency",
+          severity: "HIGH",
+          message: `Failed to assess ${check.name}: ${error.message}`,
         });
       }
     }
 
     this.metrics.consistency = {
       score: results.reduce((sum, r) => sum + r.score, 0) / results.length,
-      details: results
+      details: results,
     };
   }
 
@@ -668,8 +717,8 @@ export class DataQualityAssessor {
   async checkNameConsistency() {
     // Check for variations in company names that might be duplicates
     const { data: companies, error } = await this.supabase
-      .from('companies')
-      .select('id, name');
+      .from("companies")
+      .select("id, name");
 
     if (error) throw error;
 
@@ -679,9 +728,10 @@ export class DataQualityAssessor {
     for (const company of companies || []) {
       if (!company.name) continue;
 
-      const normalized = company.name.toLowerCase()
-        .replace(/[\s\-\.,']/g, '')
-        .replace(/inc|corp|llc|ltd/g, '');
+      const normalized = company.name
+        .toLowerCase()
+        .replace(/[\s\-\.,']/g, "")
+        .replace(/inc|corp|llc|ltd/g, "");
 
       if (!nameVariations.has(normalized)) {
         nameVariations.set(normalized, []);
@@ -689,20 +739,29 @@ export class DataQualityAssessor {
       nameVariations.get(normalized).push(company);
     }
 
-    const duplicateGroups = Array.from(nameVariations.values())
-      .filter(group => group.length > 1);
+    const duplicateGroups = Array.from(nameVariations.values()).filter(
+      (group) => group.length > 1,
+    );
 
-    const score = companies.length === 0 ? 100 :
-      ((companies.length - duplicateGroups.reduce((sum, group) => sum + group.length - 1, 0)) / companies.length) * 100;
+    const score =
+      companies.length === 0
+        ? 100
+        : ((companies.length -
+            duplicateGroups.reduce((sum, group) => sum + group.length - 1, 0)) /
+            companies.length) *
+          100;
 
     return {
-      check: 'name_consistency',
+      check: "name_consistency",
       score,
       details: {
         totalCompanies: companies.length,
         duplicateGroups: duplicateGroups.length,
-        affectedCompanies: duplicateGroups.reduce((sum, group) => sum + group.length, 0)
-      }
+        affectedCompanies: duplicateGroups.reduce(
+          (sum, group) => sum + group.length,
+          0,
+        ),
+      },
     };
   }
 
@@ -711,12 +770,19 @@ export class DataQualityAssessor {
    */
   async checkStageConsistency() {
     const { data: deals, error } = await this.supabase
-      .from('deals')
-      .select('id, stage, probability, expected_close_date');
+      .from("deals")
+      .select("id, stage, probability, expected_close_date");
 
     if (error) throw error;
 
-    const validStages = ['lead', 'qualified', 'proposal', 'negotiation', 'closed-won', 'closed-lost'];
+    const validStages = [
+      "lead",
+      "qualified",
+      "proposal",
+      "negotiation",
+      "closed-won",
+      "closed-lost",
+    ];
     let consistentDeals = 0;
     let totalDeals = deals?.length || 0;
 
@@ -738,7 +804,10 @@ export class DataQualityAssessor {
       }
 
       // Check close date for closed deals
-      if ((deal.stage === 'closed-won' || deal.stage === 'closed-lost') && !deal.expected_close_date) {
+      if (
+        (deal.stage === "closed-won" || deal.stage === "closed-lost") &&
+        !deal.expected_close_date
+      ) {
         isConsistent = false;
       }
 
@@ -748,13 +817,13 @@ export class DataQualityAssessor {
     const score = totalDeals === 0 ? 100 : (consistentDeals / totalDeals) * 100;
 
     return {
-      check: 'stage_consistency',
+      check: "stage_consistency",
       score,
       details: {
         totalDeals,
         consistentDeals,
-        inconsistentDeals: totalDeals - consistentDeals
-      }
+        inconsistentDeals: totalDeals - consistentDeals,
+      },
     };
   }
 
@@ -764,8 +833,8 @@ export class DataQualityAssessor {
   async checkRelationshipConsistency() {
     // Check that deal contacts belong to the deal's company
     const { data: deals, error } = await this.supabase
-      .from('deals')
-      .select('id, company_id, contact_ids');
+      .from("deals")
+      .select("id, company_id, contact_ids");
 
     if (error) throw error;
 
@@ -773,7 +842,11 @@ export class DataQualityAssessor {
     let totalDealsWithContacts = 0;
 
     for (const deal of deals || []) {
-      if (!deal.contact_ids || !Array.isArray(deal.contact_ids) || deal.contact_ids.length === 0) {
+      if (
+        !deal.contact_ids ||
+        !Array.isArray(deal.contact_ids) ||
+        deal.contact_ids.length === 0
+      ) {
         continue;
       }
 
@@ -782,12 +855,16 @@ export class DataQualityAssessor {
 
       for (const contactId of deal.contact_ids) {
         const { data: contact, error: contactError } = await this.supabase
-          .from('contacts')
-          .select('company_id')
-          .eq('id', contactId)
+          .from("contacts")
+          .select("company_id")
+          .eq("id", contactId)
           .single();
 
-        if (contactError || !contact || contact.company_id !== deal.company_id) {
+        if (
+          contactError ||
+          !contact ||
+          contact.company_id !== deal.company_id
+        ) {
           isConsistent = false;
           break;
         }
@@ -796,16 +873,19 @@ export class DataQualityAssessor {
       if (isConsistent) consistentDeals++;
     }
 
-    const score = totalDealsWithContacts === 0 ? 100 : (consistentDeals / totalDealsWithContacts) * 100;
+    const score =
+      totalDealsWithContacts === 0
+        ? 100
+        : (consistentDeals / totalDealsWithContacts) * 100;
 
     return {
-      check: 'relationship_consistency',
+      check: "relationship_consistency",
       score,
       details: {
         totalDealsWithContacts,
         consistentDeals,
-        inconsistentDeals: totalDealsWithContacts - consistentDeals
-      }
+        inconsistentDeals: totalDealsWithContacts - consistentDeals,
+      },
     };
   }
 
@@ -813,13 +893,17 @@ export class DataQualityAssessor {
    * Assess data validity
    */
   async assessValidity() {
-    console.log('✓ Assessing data validity...');
+    console.log("✓ Assessing data validity...");
 
     this.metrics.validity = {
       score: 95, // Placeholder - in real implementation, check against business rules
       details: [
-        { check: 'business_rules', score: 95, details: 'Most records follow business rules' }
-      ]
+        {
+          check: "business_rules",
+          score: 95,
+          details: "Most records follow business rules",
+        },
+      ],
     };
   }
 
@@ -833,28 +917,36 @@ export class DataQualityAssessor {
       this.metrics.consistency.score * this.weights.consistency +
       this.metrics.validity.score * this.weights.validity;
 
-    const qualityLevel = overallScore >= 90 ? 'EXCELLENT' :
-                        overallScore >= 80 ? 'GOOD' :
-                        overallScore >= 70 ? 'FAIR' :
-                        overallScore >= 60 ? 'POOR' : 'CRITICAL';
+    const qualityLevel =
+      overallScore >= 90
+        ? "EXCELLENT"
+        : overallScore >= 80
+          ? "GOOD"
+          : overallScore >= 70
+            ? "FAIR"
+            : overallScore >= 60
+              ? "POOR"
+              : "CRITICAL";
 
     const report = {
       overallScore: Math.round(overallScore * 100) / 100,
       qualityLevel,
-      status: overallScore >= 99 ? 'PASSED' : 'WARNING', // <1% threshold for warnings
+      status: overallScore >= 99 ? "PASSED" : "WARNING", // <1% threshold for warnings
       breakdown: {
         completeness: Math.round(this.metrics.completeness.score * 100) / 100,
         accuracy: Math.round(this.metrics.accuracy.score * 100) / 100,
         consistency: Math.round(this.metrics.consistency.score * 100) / 100,
-        validity: Math.round(this.metrics.validity.score * 100) / 100
+        validity: Math.round(this.metrics.validity.score * 100) / 100,
       },
       metrics: this.metrics,
       issues: this.issues,
-      recommendations: this.generateQualityRecommendations()
+      recommendations: this.generateQualityRecommendations(),
     };
 
-    console.log('📊 Data quality assessment complete');
-    console.log(`Overall Score: ${report.overallScore.toFixed(1)}% (${qualityLevel})`);
+    console.log("📊 Data quality assessment complete");
+    console.log(
+      `Overall Score: ${report.overallScore.toFixed(1)}% (${qualityLevel})`,
+    );
     console.log(`Status: ${report.status}`);
 
     return report;
@@ -868,31 +960,31 @@ export class DataQualityAssessor {
 
     if (this.metrics.completeness.score < 80) {
       recommendations.push({
-        type: 'IMPROVE',
-        priority: 'HIGH',
-        category: 'completeness',
-        action: 'Focus on completing missing required fields before migration',
-        impact: 'Improves migration success and user experience'
+        type: "IMPROVE",
+        priority: "HIGH",
+        category: "completeness",
+        action: "Focus on completing missing required fields before migration",
+        impact: "Improves migration success and user experience",
       });
     }
 
     if (this.metrics.accuracy.score < 90) {
       recommendations.push({
-        type: 'CLEAN',
-        priority: 'MEDIUM',
-        category: 'accuracy',
-        action: 'Clean up invalid email and phone formats',
-        impact: 'Reduces validation errors and improves data usability'
+        type: "CLEAN",
+        priority: "MEDIUM",
+        category: "accuracy",
+        action: "Clean up invalid email and phone formats",
+        impact: "Reduces validation errors and improves data usability",
       });
     }
 
     if (this.metrics.consistency.score < 85) {
       recommendations.push({
-        type: 'STANDARDIZE',
-        priority: 'MEDIUM',
-        category: 'consistency',
-        action: 'Standardize naming conventions and stage definitions',
-        impact: 'Improves reporting accuracy and user understanding'
+        type: "STANDARDIZE",
+        priority: "MEDIUM",
+        category: "consistency",
+        action: "Standardize naming conventions and stage definitions",
+        impact: "Improves reporting accuracy and user understanding",
       });
     }
 
@@ -901,12 +993,14 @@ export class DataQualityAssessor {
 }
 
 // CLI execution
-if (import.meta.url === new URL(process.argv[1], 'file://').href) {
+if (import.meta.url === new URL(process.argv[1], "file://").href) {
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.error('❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables');
+    console.error(
+      "❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables",
+    );
     process.exit(1);
   }
 
@@ -915,20 +1009,22 @@ if (import.meta.url === new URL(process.argv[1], 'file://').href) {
   try {
     const report = await assessor.assessAll();
 
-    console.log('\n📋 Data Quality Report:');
+    console.log("\n📋 Data Quality Report:");
     console.log(`Overall Score: ${report.overallScore}%`);
     console.log(`Quality Level: ${report.qualityLevel}`);
     console.log(`Status: ${report.status}`);
 
-    if (report.status === 'WARNING') {
-      console.warn('⚠️ Data quality below 99% threshold - review recommendations');
+    if (report.status === "WARNING") {
+      console.warn(
+        "⚠️ Data quality below 99% threshold - review recommendations",
+      );
       process.exit(0);
     } else {
-      console.log('✅ Data quality passed');
+      console.log("✅ Data quality passed");
       process.exit(0);
     }
   } catch (error) {
-    console.error('❌ Data quality assessment failed:', error.message);
+    console.error("❌ Data quality assessment failed:", error.message);
     process.exit(1);
   }
 }

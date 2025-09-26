@@ -49,10 +49,10 @@ const OpportunityList = () => {
       source="priority"
       emptyText="Priority"
       choices={[
-        { id: 'low', name: 'Low' },
-        { id: 'medium', name: 'Medium' },
-        { id: 'high', name: 'High' },
-        { id: 'critical', name: 'Critical' }
+        { id: "low", name: "Low" },
+        { id: "medium", name: "Medium" },
+        { id: "high", name: "High" },
+        { id: "critical", name: "Critical" },
       ]}
     />,
     <SelectInput

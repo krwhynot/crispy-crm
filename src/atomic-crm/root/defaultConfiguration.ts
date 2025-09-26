@@ -61,7 +61,11 @@ export const defaultNoteStatuses = [
   { value: "cold", label: "Cold", color: "var(--info-default)" },
   { value: "warm", label: "Warm", color: "var(--warning-default)" },
   { value: "hot", label: "Hot", color: "var(--error-default)" },
-  { value: "in-contract", label: "In Contract", color: "var(--success-default)" },
+  {
+    value: "in-contract",
+    label: "In Contract",
+    color: "var(--success-default)",
+  },
 ];
 
 export const defaultTaskTypes = [

@@ -15,11 +15,11 @@
  *   npm run seed:data -- --count=100 - Generate specific number of records
  */
 
-import { createClient } from '@supabase/supabase-js';
-import { faker } from '@faker-js/faker';
-import chalk from 'chalk';
-import ora from 'ora';
-import dotenv from 'dotenv';
+import { createClient } from "@supabase/supabase-js";
+import { faker } from "@faker-js/faker";
+import chalk from "chalk";
+import ora from "ora";
+import dotenv from "dotenv";
 
 // Load environment variables
 dotenv.config();
@@ -27,44 +27,70 @@ dotenv.config();
 // Configuration
 const CONFIG = {
   // Default counts
-  ORGANIZATION_COUNT: parseInt(process.env.SEED_ORGANIZATION_COUNT || '50'),
-  CONTACT_COUNT: parseInt(process.env.SEED_CONTACT_COUNT || '100'),
-  OPPORTUNITY_COUNT: parseInt(process.env.SEED_OPPORTUNITY_COUNT || '75'),
-  ACTIVITY_COUNT: parseInt(process.env.SEED_ACTIVITY_COUNT || '200'),
-  NOTE_COUNT: parseInt(process.env.SEED_NOTE_COUNT || '150'),
-  TAG_COUNT: parseInt(process.env.SEED_TAG_COUNT || '20'),
+  ORGANIZATION_COUNT: parseInt(process.env.SEED_ORGANIZATION_COUNT || "50"),
+  CONTACT_COUNT: parseInt(process.env.SEED_CONTACT_COUNT || "100"),
+  OPPORTUNITY_COUNT: parseInt(process.env.SEED_OPPORTUNITY_COUNT || "75"),
+  ACTIVITY_COUNT: parseInt(process.env.SEED_ACTIVITY_COUNT || "200"),
+  NOTE_COUNT: parseInt(process.env.SEED_NOTE_COUNT || "150"),
+  TAG_COUNT: parseInt(process.env.SEED_TAG_COUNT || "20"),
 
   // Opportunity configuration from environment
-  DEFAULT_CATEGORY: process.env.OPPORTUNITY_DEFAULT_CATEGORY || 'new_business',
-  DEFAULT_STAGE: process.env.OPPORTUNITY_DEFAULT_STAGE || 'new_lead',
-  PIPELINE_STAGES: (process.env.OPPORTUNITY_PIPELINE_STAGES || 'new_lead,initial_outreach,sample_visit_offered,awaiting_response,feedback_logged,demo_scheduled,closed_won,closed_lost').split(','),
-  MAX_AMOUNT: parseInt(process.env.OPPORTUNITY_MAX_AMOUNT || '1000000'),
-  DEFAULT_PROBABILITY: parseInt(process.env.OPPORTUNITY_DEFAULT_PROBABILITY || '50'),
+  DEFAULT_CATEGORY: process.env.OPPORTUNITY_DEFAULT_CATEGORY || "new_business",
+  DEFAULT_STAGE: process.env.OPPORTUNITY_DEFAULT_STAGE || "new_lead",
+  PIPELINE_STAGES: (
+    process.env.OPPORTUNITY_PIPELINE_STAGES ||
+    "new_lead,initial_outreach,sample_visit_offered,awaiting_response,feedback_logged,demo_scheduled,closed_won,closed_lost"
+  ).split(","),
+  MAX_AMOUNT: parseInt(process.env.OPPORTUNITY_MAX_AMOUNT || "1000000"),
+  DEFAULT_PROBABILITY: parseInt(
+    process.env.OPPORTUNITY_DEFAULT_PROBABILITY || "50",
+  ),
 
   // Parse command line arguments
-  DRY_RUN: process.argv.includes('--dry-run'),
-  VERBOSE: process.argv.includes('--verbose'),
-  CLEAN: process.argv.includes('--clean'),
-  COUNT: process.argv.find(arg => arg.startsWith('--count='))?.split('=')[1] || null
+  DRY_RUN: process.argv.includes("--dry-run"),
+  VERBOSE: process.argv.includes("--verbose"),
+  CLEAN: process.argv.includes("--clean"),
+  COUNT:
+    process.argv.find((arg) => arg.startsWith("--count="))?.split("=")[1] ||
+    null,
 };
 
 // Opportunity categories
-const OPPORTUNITY_CATEGORIES = ['new_business', 'upsell', 'renewal', 'referral'];
+const OPPORTUNITY_CATEGORIES = [
+  "new_business",
+  "upsell",
+  "renewal",
+  "referral",
+];
 
 // Opportunity statuses
-const OPPORTUNITY_STATUSES = ['open', 'won', 'lost', 'stalled'];
+const OPPORTUNITY_STATUSES = ["open", "won", "lost", "stalled"];
 
 // Organization sectors
 const ORGANIZATION_SECTORS = [
-  'technology', 'healthcare', 'finance', 'retail', 'manufacturing',
-  'education', 'government', 'nonprofit', 'real_estate', 'consulting'
+  "technology",
+  "healthcare",
+  "finance",
+  "retail",
+  "manufacturing",
+  "education",
+  "government",
+  "nonprofit",
+  "real_estate",
+  "consulting",
 ];
 
 // Activity types
-const ACTIVITY_TYPES = ['meeting', 'call', 'email', 'task', 'note', 'event'];
+const ACTIVITY_TYPES = ["meeting", "call", "email", "task", "note", "event"];
 
 // Interaction types
-const INTERACTION_TYPES = ['sales_call', 'support_ticket', 'product_demo', 'follow_up', 'negotiation'];
+const INTERACTION_TYPES = [
+  "sales_call",
+  "support_ticket",
+  "product_demo",
+  "follow_up",
+  "negotiation",
+];
 
 class SeedDataGenerator {
   constructor() {
@@ -75,53 +101,63 @@ class SeedDataGenerator {
       opportunities: [],
       activities: [],
       notes: [],
-      tags: []
+      tags: [],
     };
     this.spinner = ora();
   }
 
   async initialize() {
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseServiceKey =
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.VITE_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseServiceKey) {
       throw new Error(
-        'Missing required environment variables: VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY'
+        "Missing required environment variables: VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY",
       );
     }
 
     this.supabase = createClient(supabaseUrl, supabaseServiceKey, {
       auth: {
         autoRefreshToken: false,
-        persistSession: false
-      }
+        persistSession: false,
+      },
     });
 
-    console.log(chalk.blue('🚀 Seed Data Generator initialized'));
+    console.log(chalk.blue("🚀 Seed Data Generator initialized"));
     if (CONFIG.DRY_RUN) {
-      console.log(chalk.yellow('⚠️  Running in DRY RUN mode - no data will be inserted'));
+      console.log(
+        chalk.yellow("⚠️  Running in DRY RUN mode - no data will be inserted"),
+      );
     }
   }
 
   async cleanDatabase() {
     if (!CONFIG.CLEAN) return;
 
-    this.spinner.start('Cleaning existing data...');
+    this.spinner.start("Cleaning existing data...");
 
     try {
       // Delete in reverse dependency order
-      await this.supabase.from('interaction_participants').delete().gte('id', 0);
-      await this.supabase.from('opportunity_participants').delete().gte('id', 0);
-      await this.supabase.from('activities').delete().gte('id', 0);
-      await this.supabase.from('opportunity_notes').delete().gte('id', 0);
-      await this.supabase.from('opportunities').delete().gte('id', 0);
-      await this.supabase.from('contact_notes').delete().gte('id', 0);
-      await this.supabase.from('contact_organizations').delete().gte('id', 0);
-      await this.supabase.from('contacts').delete().gte('id', 0);
-      await this.supabase.from('organizations').delete().gte('id', 0);
-      await this.supabase.from('tags').delete().gte('id', 0);
+      await this.supabase
+        .from("interaction_participants")
+        .delete()
+        .gte("id", 0);
+      await this.supabase
+        .from("opportunity_participants")
+        .delete()
+        .gte("id", 0);
+      await this.supabase.from("activities").delete().gte("id", 0);
+      await this.supabase.from("opportunity_notes").delete().gte("id", 0);
+      await this.supabase.from("opportunities").delete().gte("id", 0);
+      await this.supabase.from("contact_notes").delete().gte("id", 0);
+      await this.supabase.from("contact_organizations").delete().gte("id", 0);
+      await this.supabase.from("contacts").delete().gte("id", 0);
+      await this.supabase.from("organizations").delete().gte("id", 0);
+      await this.supabase.from("tags").delete().gte("id", 0);
 
-      this.spinner.succeed('Cleaned existing data');
+      this.spinner.succeed("Cleaned existing data");
     } catch (error) {
       this.spinner.fail(`Failed to clean database: ${error.message}`);
       if (!CONFIG.DRY_RUN) throw error;
@@ -136,7 +172,12 @@ class SeedDataGenerator {
         id: faker.string.uuid(),
         name: faker.company.name(),
         sector: faker.helpers.arrayElement(ORGANIZATION_SECTORS),
-        size: faker.helpers.arrayElement(['small', 'medium', 'large', 'enterprise']),
+        size: faker.helpers.arrayElement([
+          "small",
+          "medium",
+          "large",
+          "enterprise",
+        ]),
         website: faker.internet.url(),
         address: faker.location.streetAddress(true),
         city: faker.location.city(),
@@ -148,7 +189,7 @@ class SeedDataGenerator {
         employee_count: faker.number.int({ min: 10, max: 10000 }),
         description: faker.company.catchPhrase(),
         created_at: faker.date.past({ years: 2 }),
-        updated_at: faker.date.recent()
+        updated_at: faker.date.recent(),
       };
       this.generatedData.organizations.push(org);
     }
@@ -167,28 +208,34 @@ class SeedDataGenerator {
         email: faker.internet.email(),
         phone: {
           primary: faker.phone.number(),
-          mobile: Math.random() > 0.5 ? faker.phone.number() : null
+          mobile: Math.random() > 0.5 ? faker.phone.number() : null,
         },
         title: faker.person.jobTitle(),
-        department: faker.helpers.arrayElement(['Sales', 'Marketing', 'Engineering', 'Support', 'Executive', 'Finance']),
+        department: faker.helpers.arrayElement([
+          "Sales",
+          "Marketing",
+          "Engineering",
+          "Support",
+          "Executive",
+          "Finance",
+        ]),
         linkedin_url: `https://linkedin.com/in/${faker.internet.userName()}`,
         avatar: faker.image.avatar(),
         background: faker.lorem.sentences(2),
-        status: faker.helpers.arrayElement(['active', 'inactive', 'lead']),
+        status: faker.helpers.arrayElement(["active", "inactive", "lead"]),
         created_at: faker.date.past({ years: 2 }),
-        updated_at: faker.date.recent()
+        updated_at: faker.date.recent(),
       };
 
       // Assign to 1-3 random organizations
-      contact.organizations = faker.helpers.arrayElements(
-        this.generatedData.organizations,
-        { min: 1, max: 3 }
-      ).map(org => ({
-        organization_id: org.id,
-        is_primary: false,
-        role: contact.title,
-        started_at: faker.date.past({ years: 1 })
-      }));
+      contact.organizations = faker.helpers
+        .arrayElements(this.generatedData.organizations, { min: 1, max: 3 })
+        .map((org) => ({
+          organization_id: org.id,
+          is_primary: false,
+          role: contact.title,
+          started_at: faker.date.past({ years: 1 }),
+        }));
 
       // Set one as primary
       if (contact.organizations.length > 0) {
@@ -217,28 +264,44 @@ class SeedDataGenerator {
         amount: faker.number.int({ min: 10000, max: CONFIG.MAX_AMOUNT }),
         probability: this.getProbabilityForStage(stage),
         expected_close_date: faker.date.future({ years: 1 }),
-        company_id: faker.helpers.arrayElement(this.generatedData.organizations).id,
+        company_id: faker.helpers.arrayElement(this.generatedData.organizations)
+          .id,
         contact_id: faker.helpers.arrayElement(this.generatedData.contacts).id,
         sales_id: faker.string.uuid(), // Would be actual sales user in production
         description: faker.lorem.paragraph(),
         next_step: faker.lorem.sentence(),
-        source: faker.helpers.arrayElement(['website', 'referral', 'cold_call', 'event', 'partner']),
+        source: faker.helpers.arrayElement([
+          "website",
+          "referral",
+          "cold_call",
+          "event",
+          "partner",
+        ]),
         campaign: Math.random() > 0.5 ? faker.marketing.slogan() : null,
         created_at: faker.date.past({ years: 1 }),
-        updated_at: faker.date.recent()
+        updated_at: faker.date.recent(),
       };
 
       // Add participants (2-5 contacts)
-      opportunity.participants = faker.helpers.arrayElements(
-        this.generatedData.contacts,
-        { min: 2, max: 5 }
-      ).map(contact => ({
-        contact_id: contact.id,
-        role: faker.helpers.arrayElement(['decision_maker', 'influencer', 'champion', 'technical_lead', 'budget_holder']),
-        is_primary: contact.id === opportunity.contact_id,
-        involvement_level: faker.helpers.arrayElement(['high', 'medium', 'low']),
-        added_at: faker.date.past({ years: 0.5 })
-      }));
+      opportunity.participants = faker.helpers
+        .arrayElements(this.generatedData.contacts, { min: 2, max: 5 })
+        .map((contact) => ({
+          contact_id: contact.id,
+          role: faker.helpers.arrayElement([
+            "decision_maker",
+            "influencer",
+            "champion",
+            "technical_lead",
+            "budget_holder",
+          ]),
+          is_primary: contact.id === opportunity.contact_id,
+          involvement_level: faker.helpers.arrayElement([
+            "high",
+            "medium",
+            "low",
+          ]),
+          added_at: faker.date.past({ years: 0.5 }),
+        }));
 
       this.generatedData.opportunities.push(opportunity);
     }
@@ -256,9 +319,22 @@ class SeedDataGenerator {
         type: activityType,
         subject: this.getActivitySubject(activityType),
         description: faker.lorem.paragraph(),
-        status: faker.helpers.arrayElement(['pending', 'in_progress', 'completed', 'cancelled']),
-        priority: faker.helpers.arrayElement(['low', 'medium', 'high', 'critical']),
-        opportunity_id: Math.random() > 0.3 ? faker.helpers.arrayElement(this.generatedData.opportunities).id : null,
+        status: faker.helpers.arrayElement([
+          "pending",
+          "in_progress",
+          "completed",
+          "cancelled",
+        ]),
+        priority: faker.helpers.arrayElement([
+          "low",
+          "medium",
+          "high",
+          "critical",
+        ]),
+        opportunity_id:
+          Math.random() > 0.3
+            ? faker.helpers.arrayElement(this.generatedData.opportunities).id
+            : null,
         contact_id: faker.helpers.arrayElement(this.generatedData.contacts).id,
         assigned_to: faker.string.uuid(), // Would be actual user in production
         due_date: faker.date.future({ years: 0.5 }),
@@ -266,19 +342,18 @@ class SeedDataGenerator {
         interaction_type: faker.helpers.arrayElement(INTERACTION_TYPES),
         outcome: Math.random() > 0.5 ? faker.lorem.sentence() : null,
         created_at: faker.date.past({ years: 0.5 }),
-        updated_at: faker.date.recent()
+        updated_at: faker.date.recent(),
       };
 
       // Add participants for meetings/calls
-      if (['meeting', 'call'].includes(activityType)) {
-        activity.participants = faker.helpers.arrayElements(
-          this.generatedData.contacts,
-          { min: 2, max: 4 }
-        ).map(contact => ({
-          contact_id: contact.id,
-          participated: Math.random() > 0.2,
-          notes: Math.random() > 0.5 ? faker.lorem.sentence() : null
-        }));
+      if (["meeting", "call"].includes(activityType)) {
+        activity.participants = faker.helpers
+          .arrayElements(this.generatedData.contacts, { min: 2, max: 4 })
+          .map((contact) => ({
+            contact_id: contact.id,
+            participated: Math.random() > 0.2,
+            notes: Math.random() > 0.5 ? faker.lorem.sentence() : null,
+          }));
       }
 
       this.generatedData.activities.push(activity);
@@ -296,18 +371,28 @@ class SeedDataGenerator {
       const note = {
         id: faker.string.uuid(),
         text: faker.lorem.paragraphs({ min: 1, max: 3 }),
-        type: faker.helpers.arrayElement(['general', 'meeting', 'call', 'email', 'internal']),
+        type: faker.helpers.arrayElement([
+          "general",
+          "meeting",
+          "call",
+          "email",
+          "internal",
+        ]),
         created_by: faker.string.uuid(), // Would be actual user in production
         created_at: faker.date.past({ years: 0.5 }),
-        updated_at: faker.date.recent()
+        updated_at: faker.date.recent(),
       };
 
       if (isOpportunityNote) {
-        note.opportunity_id = faker.helpers.arrayElement(this.generatedData.opportunities).id;
-        note.table = 'opportunity_notes';
+        note.opportunity_id = faker.helpers.arrayElement(
+          this.generatedData.opportunities,
+        ).id;
+        note.table = "opportunity_notes";
       } else {
-        note.contact_id = faker.helpers.arrayElement(this.generatedData.contacts).id;
-        note.table = 'contact_notes';
+        note.contact_id = faker.helpers.arrayElement(
+          this.generatedData.contacts,
+        ).id;
+        note.table = "contact_notes";
       }
 
       this.generatedData.notes.push(note);
@@ -319,8 +404,23 @@ class SeedDataGenerator {
   generateTags(count = CONFIG.TAG_COUNT) {
     this.spinner.start(`Generating ${count} tags...`);
 
-    const tagCategories = ['industry', 'priority', 'region', 'product', 'status'];
-    const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'gray'];
+    const tagCategories = [
+      "industry",
+      "priority",
+      "region",
+      "product",
+      "status",
+    ];
+    const colors = [
+      "red",
+      "orange",
+      "yellow",
+      "green",
+      "blue",
+      "purple",
+      "pink",
+      "gray",
+    ];
 
     for (let i = 0; i < count; i++) {
       const tag = {
@@ -330,7 +430,7 @@ class SeedDataGenerator {
         color: faker.helpers.arrayElement(colors),
         description: faker.lorem.sentence(),
         created_at: faker.date.past({ years: 1 }),
-        updated_at: faker.date.recent()
+        updated_at: faker.date.recent(),
       };
 
       this.generatedData.tags.push(tag);
@@ -341,29 +441,43 @@ class SeedDataGenerator {
 
   async insertData() {
     if (CONFIG.DRY_RUN) {
-      console.log(chalk.yellow('\n📝 DRY RUN - Data that would be inserted:'));
-      console.log(chalk.gray(`  Organizations: ${this.generatedData.organizations.length}`));
-      console.log(chalk.gray(`  Contacts: ${this.generatedData.contacts.length}`));
-      console.log(chalk.gray(`  Opportunities: ${this.generatedData.opportunities.length}`));
-      console.log(chalk.gray(`  Activities: ${this.generatedData.activities.length}`));
+      console.log(chalk.yellow("\n📝 DRY RUN - Data that would be inserted:"));
+      console.log(
+        chalk.gray(
+          `  Organizations: ${this.generatedData.organizations.length}`,
+        ),
+      );
+      console.log(
+        chalk.gray(`  Contacts: ${this.generatedData.contacts.length}`),
+      );
+      console.log(
+        chalk.gray(
+          `  Opportunities: ${this.generatedData.opportunities.length}`,
+        ),
+      );
+      console.log(
+        chalk.gray(`  Activities: ${this.generatedData.activities.length}`),
+      );
       console.log(chalk.gray(`  Notes: ${this.generatedData.notes.length}`));
       console.log(chalk.gray(`  Tags: ${this.generatedData.tags.length}`));
 
       if (CONFIG.VERBOSE) {
-        console.log('\nSample opportunity:');
-        console.log(JSON.stringify(this.generatedData.opportunities[0], null, 2));
+        console.log("\nSample opportunity:");
+        console.log(
+          JSON.stringify(this.generatedData.opportunities[0], null, 2),
+        );
       }
 
       return;
     }
 
-    this.spinner.start('Inserting data into database...');
+    this.spinner.start("Inserting data into database...");
 
     try {
       // Insert tags
       if (this.generatedData.tags.length > 0) {
         const { error } = await this.supabase
-          .from('tags')
+          .from("tags")
           .insert(this.generatedData.tags);
         if (error) throw error;
       }
@@ -371,33 +485,35 @@ class SeedDataGenerator {
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
         const { error } = await this.supabase
-          .from('organizations')
+          .from("organizations")
           .insert(this.generatedData.organizations);
         if (error) throw error;
       }
 
       // Insert contacts
       if (this.generatedData.contacts.length > 0) {
-        const contactsWithoutOrgs = this.generatedData.contacts.map(({ organizations, ...contact }) => contact);
+        const contactsWithoutOrgs = this.generatedData.contacts.map(
+          ({ organizations, ...contact }) => contact,
+        );
         const { error } = await this.supabase
-          .from('contacts')
+          .from("contacts")
           .insert(contactsWithoutOrgs);
         if (error) throw error;
 
         // Insert contact-organization relationships
         const contactOrgs = [];
-        this.generatedData.contacts.forEach(contact => {
-          contact.organizations.forEach(org => {
+        this.generatedData.contacts.forEach((contact) => {
+          contact.organizations.forEach((org) => {
             contactOrgs.push({
               contact_id: contact.id,
-              ...org
+              ...org,
             });
           });
         });
 
         if (contactOrgs.length > 0) {
           const { error: orgError } = await this.supabase
-            .from('contact_organizations')
+            .from("contact_organizations")
             .insert(contactOrgs);
           if (orgError) throw orgError;
         }
@@ -405,28 +521,29 @@ class SeedDataGenerator {
 
       // Insert opportunities
       if (this.generatedData.opportunities.length > 0) {
-        const opportunitiesWithoutParticipants = this.generatedData.opportunities.map(
-          ({ participants, ...opp }) => opp
-        );
+        const opportunitiesWithoutParticipants =
+          this.generatedData.opportunities.map(
+            ({ participants, ...opp }) => opp,
+          );
         const { error } = await this.supabase
-          .from('opportunities')
+          .from("opportunities")
           .insert(opportunitiesWithoutParticipants);
         if (error) throw error;
 
         // Insert opportunity participants
         const oppParticipants = [];
-        this.generatedData.opportunities.forEach(opp => {
-          opp.participants.forEach(participant => {
+        this.generatedData.opportunities.forEach((opp) => {
+          opp.participants.forEach((participant) => {
             oppParticipants.push({
               opportunity_id: opp.id,
-              ...participant
+              ...participant,
             });
           });
         });
 
         if (oppParticipants.length > 0) {
           const { error: partError } = await this.supabase
-            .from('opportunity_participants')
+            .from("opportunity_participants")
             .insert(oppParticipants);
           if (partError) throw partError;
         }
@@ -435,21 +552,21 @@ class SeedDataGenerator {
       // Insert activities
       if (this.generatedData.activities.length > 0) {
         const activitiesWithoutParticipants = this.generatedData.activities.map(
-          ({ participants, ...activity }) => activity
+          ({ participants, ...activity }) => activity,
         );
         const { error } = await this.supabase
-          .from('activities')
+          .from("activities")
           .insert(activitiesWithoutParticipants);
         if (error) throw error;
 
         // Insert interaction participants
         const interactionParticipants = [];
-        this.generatedData.activities.forEach(activity => {
+        this.generatedData.activities.forEach((activity) => {
           if (activity.participants) {
-            activity.participants.forEach(participant => {
+            activity.participants.forEach((participant) => {
               interactionParticipants.push({
                 activity_id: activity.id,
-                ...participant
+                ...participant,
               });
             });
           }
@@ -457,7 +574,7 @@ class SeedDataGenerator {
 
         if (interactionParticipants.length > 0) {
           const { error: partError } = await this.supabase
-            .from('interaction_participants')
+            .from("interaction_participants")
             .insert(interactionParticipants);
           if (partError) throw partError;
         }
@@ -465,38 +582,49 @@ class SeedDataGenerator {
 
       // Insert notes
       const opportunityNotes = this.generatedData.notes
-        .filter(note => note.table === 'opportunity_notes')
+        .filter((note) => note.table === "opportunity_notes")
         .map(({ table, ...note }) => note);
 
       const contactNotes = this.generatedData.notes
-        .filter(note => note.table === 'contact_notes')
+        .filter((note) => note.table === "contact_notes")
         .map(({ table, ...note }) => note);
 
       if (opportunityNotes.length > 0) {
         const { error } = await this.supabase
-          .from('opportunity_notes')
+          .from("opportunity_notes")
           .insert(opportunityNotes);
         if (error) throw error;
       }
 
       if (contactNotes.length > 0) {
         const { error } = await this.supabase
-          .from('contact_notes')
+          .from("contact_notes")
           .insert(contactNotes);
         if (error) throw error;
       }
 
-      this.spinner.succeed('Data inserted successfully');
+      this.spinner.succeed("Data inserted successfully");
 
       // Print summary
-      console.log(chalk.green('\n✨ Seed data generation complete!'));
-      console.log(chalk.gray(`  Organizations: ${this.generatedData.organizations.length}`));
-      console.log(chalk.gray(`  Contacts: ${this.generatedData.contacts.length}`));
-      console.log(chalk.gray(`  Opportunities: ${this.generatedData.opportunities.length}`));
-      console.log(chalk.gray(`  Activities: ${this.generatedData.activities.length}`));
+      console.log(chalk.green("\n✨ Seed data generation complete!"));
+      console.log(
+        chalk.gray(
+          `  Organizations: ${this.generatedData.organizations.length}`,
+        ),
+      );
+      console.log(
+        chalk.gray(`  Contacts: ${this.generatedData.contacts.length}`),
+      );
+      console.log(
+        chalk.gray(
+          `  Opportunities: ${this.generatedData.opportunities.length}`,
+        ),
+      );
+      console.log(
+        chalk.gray(`  Activities: ${this.generatedData.activities.length}`),
+      );
       console.log(chalk.gray(`  Notes: ${this.generatedData.notes.length}`));
       console.log(chalk.gray(`  Tags: ${this.generatedData.tags.length}`));
-
     } catch (error) {
       this.spinner.fail(`Failed to insert data: ${error.message}`);
       console.error(error);
@@ -506,10 +634,10 @@ class SeedDataGenerator {
 
   // Helper methods
   getStatusForStage(stage) {
-    if (stage === 'closed_won') return 'won';
-    if (stage === 'closed_lost') return 'lost';
-    if (stage === 'awaiting_response') return 'stalled';
-    return 'open';
+    if (stage === "closed_won") return "won";
+    if (stage === "closed_lost") return "lost";
+    if (stage === "awaiting_response") return "stalled";
+    return "open";
   }
 
   getProbabilityForStage(stage) {
@@ -521,19 +649,49 @@ class SeedDataGenerator {
       feedback_logged: 50,
       demo_scheduled: 70,
       closed_won: 100,
-      closed_lost: 0
+      closed_lost: 0,
     };
     return probabilities[stage] || CONFIG.DEFAULT_PROBABILITY;
   }
 
   getActivitySubject(type) {
     const subjects = {
-      meeting: faker.helpers.arrayElement(['Product Demo', 'Requirements Review', 'Contract Negotiation', 'Kickoff Meeting']),
-      call: faker.helpers.arrayElement(['Discovery Call', 'Follow-up Call', 'Check-in Call', 'Support Call']),
-      email: faker.helpers.arrayElement(['Proposal Sent', 'Information Request', 'Thank You Note', 'Meeting Follow-up']),
-      task: faker.helpers.arrayElement(['Prepare Proposal', 'Send Contract', 'Schedule Demo', 'Review Requirements']),
-      note: faker.helpers.arrayElement(['Internal Note', 'Customer Feedback', 'Meeting Notes', 'Action Items']),
-      event: faker.helpers.arrayElement(['Conference', 'Webinar', 'Training', 'Product Launch'])
+      meeting: faker.helpers.arrayElement([
+        "Product Demo",
+        "Requirements Review",
+        "Contract Negotiation",
+        "Kickoff Meeting",
+      ]),
+      call: faker.helpers.arrayElement([
+        "Discovery Call",
+        "Follow-up Call",
+        "Check-in Call",
+        "Support Call",
+      ]),
+      email: faker.helpers.arrayElement([
+        "Proposal Sent",
+        "Information Request",
+        "Thank You Note",
+        "Meeting Follow-up",
+      ]),
+      task: faker.helpers.arrayElement([
+        "Prepare Proposal",
+        "Send Contract",
+        "Schedule Demo",
+        "Review Requirements",
+      ]),
+      note: faker.helpers.arrayElement([
+        "Internal Note",
+        "Customer Feedback",
+        "Meeting Notes",
+        "Action Items",
+      ]),
+      event: faker.helpers.arrayElement([
+        "Conference",
+        "Webinar",
+        "Training",
+        "Product Launch",
+      ]),
     };
     return subjects[type] || faker.lorem.sentence();
   }
@@ -557,10 +715,11 @@ class SeedDataGenerator {
       // Insert into database
       await this.insertData();
 
-      console.log(chalk.blue('\n🎉 Seed data generation completed successfully!'));
-
+      console.log(
+        chalk.blue("\n🎉 Seed data generation completed successfully!"),
+      );
     } catch (error) {
-      console.error(chalk.red('\n❌ Error:'), error.message);
+      console.error(chalk.red("\n❌ Error:"), error.message);
       if (CONFIG.VERBOSE) {
         console.error(error);
       }

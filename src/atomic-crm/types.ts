@@ -10,11 +10,31 @@ import type {
 import type { Organization } from "./validation/organizations";
 
 // Type definitions for enhanced CRM features
-export type ContactRole = 'decision_maker' | 'influencer' | 'buyer' | 'end_user' | 'gatekeeper' | 'champion' | 'technical' | 'executive' | 'unknown';
-export type PurchaseInfluence = 'High' | 'Medium' | 'Low' | 'Unknown';
-export type DecisionAuthority = 'Decision Maker' | 'Influencer' | 'End User' | 'Gatekeeper';
-export type OrganizationType = 'customer' | 'prospect' | 'vendor' | 'partner' | 'principal' | 'distributor' | 'unknown';
-export type CompanyPriority = 'A' | 'B' | 'C' | 'D';
+export type ContactRole =
+  | "decision_maker"
+  | "influencer"
+  | "buyer"
+  | "end_user"
+  | "gatekeeper"
+  | "champion"
+  | "technical"
+  | "executive"
+  | "unknown";
+export type PurchaseInfluence = "High" | "Medium" | "Low" | "Unknown";
+export type DecisionAuthority =
+  | "Decision Maker"
+  | "Influencer"
+  | "End User"
+  | "Gatekeeper";
+export type OrganizationType =
+  | "customer"
+  | "prospect"
+  | "vendor"
+  | "partner"
+  | "principal"
+  | "distributor"
+  | "unknown";
+export type CompanyPriority = "A" | "B" | "C" | "D";
 
 // SignUpData type removed - all users created through Sales management
 
@@ -52,7 +72,6 @@ export type Sale = {
 
 // Organization type (imported from validation)
 export type { Organization } from "./validation/organizations";
-
 
 export interface EmailAndType {
   email: string;
@@ -115,7 +134,7 @@ export type OpportunityParticipant = {
   id: Identifier;
   opportunity_id: Identifier;
   organization_id: Identifier;
-  role: 'customer' | 'principal' | 'distributor' | 'partner' | 'competitor';
+  role: "customer" | "principal" | "distributor" | "partner" | "competitor";
   is_primary: boolean;
   commission_rate?: number;
   territory?: string;
@@ -128,8 +147,16 @@ export type OpportunityParticipant = {
 
 export type ActivityRecord = {
   id: Identifier;
-  activity_type: 'engagement' | 'interaction';
-  type: 'call' | 'email' | 'meeting' | 'demo' | 'follow_up' | 'visit' | 'proposal' | 'negotiation';
+  activity_type: "engagement" | "interaction";
+  type:
+    | "call"
+    | "email"
+    | "meeting"
+    | "demo"
+    | "follow_up"
+    | "visit"
+    | "proposal"
+    | "negotiation";
   subject: string;
   description?: string;
   activity_date: string;
@@ -141,7 +168,7 @@ export type ActivityRecord = {
   follow_up_date?: string;
   follow_up_notes?: string;
   outcome?: string;
-  sentiment?: 'positive' | 'neutral' | 'negative';
+  sentiment?: "positive" | "neutral" | "negative";
   attachments?: string[];
   location?: string;
   attendees?: string[];
@@ -180,9 +207,17 @@ export type Opportunity = {
   distributor_organization_id?: Identifier;
   contact_ids: Identifier[];
   category: string;
-  stage: 'lead' | 'qualified' | 'needs_analysis' | 'proposal' | 'negotiation' | 'closed_won' | 'closed_lost' | 'nurturing';
-  status: 'active' | 'on_hold' | 'nurturing' | 'stalled' | 'expired';
-  priority: 'low' | 'medium' | 'high' | 'critical';
+  stage:
+    | "lead"
+    | "qualified"
+    | "needs_analysis"
+    | "proposal"
+    | "negotiation"
+    | "closed_won"
+    | "closed_lost"
+    | "nurturing";
+  status: "active" | "on_hold" | "nurturing" | "stalled" | "expired";
+  priority: "low" | "medium" | "high" | "critical";
   description: string;
   amount: number;
   probability: number;

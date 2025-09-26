@@ -122,7 +122,7 @@ export const TagsListEdit = () => {
                   variant="secondary"
                   className={cn(
                     "text-xs font-normal",
-                    getTagColorClass(tag.color)
+                    getTagColorClass(tag.color),
                   )}
                 >
                   {tag.name}

@@ -2,69 +2,69 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { AdminContext } from 'ra-core';
-import { MemoryRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { OpportunityList } from './OpportunityList';
-import { ConfigurationContext } from '../root/ConfigurationContext';
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { AdminContext } from "ra-core";
+import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { OpportunityList } from "./OpportunityList";
+import { ConfigurationContext } from "../root/ConfigurationContext";
 
 // Mock opportunities data
 const mockOpportunities = [
   {
     id: 1,
-    name: 'Enterprise Software Deal',
-    stage: 'initial_outreach',
-    priority: 'high',
+    name: "Enterprise Software Deal",
+    stage: "initial_outreach",
+    priority: "high",
     amount: 50000,
     probability: 75,
-    expected_closing_date: '2024-03-15',
+    expected_closing_date: "2024-03-15",
     customer_organization_id: 1,
     contact_ids: [1, 2],
-    created_at: '2024-01-15T10:00:00Z',
-    category: 'Software'
+    created_at: "2024-01-15T10:00:00Z",
+    category: "Software",
   },
   {
     id: 2,
-    name: 'Hardware Upgrade Project',
-    stage: 'demo_scheduled',
-    priority: 'medium',
+    name: "Hardware Upgrade Project",
+    stage: "demo_scheduled",
+    priority: "medium",
     amount: 25000,
     probability: 60,
-    expected_closing_date: '2024-04-20',
+    expected_closing_date: "2024-04-20",
     customer_organization_id: 2,
     contact_ids: [3],
-    created_at: '2024-02-01T10:00:00Z',
-    category: 'Hardware'
+    created_at: "2024-02-01T10:00:00Z",
+    category: "Hardware",
   },
   {
     id: 3,
-    name: 'Consulting Services',
-    stage: 'feedback_logged',
-    priority: 'critical',
+    name: "Consulting Services",
+    stage: "feedback_logged",
+    priority: "critical",
     amount: 75000,
     probability: 90,
-    expected_closing_date: '2024-02-28',
+    expected_closing_date: "2024-02-28",
     customer_organization_id: 3,
     contact_ids: [4, 5, 6],
-    created_at: '2024-01-20T10:00:00Z',
-    category: 'Services'
-  }
+    created_at: "2024-01-20T10:00:00Z",
+    category: "Services",
+  },
 ];
 
 const mockCompanies = [
-  { id: 1, name: 'Acme Corp' },
-  { id: 2, name: 'Tech Solutions Inc' },
-  { id: 3, name: 'Global Systems Ltd' }
+  { id: 1, name: "Acme Corp" },
+  { id: 2, name: "Tech Solutions Inc" },
+  { id: 3, name: "Global Systems Ltd" },
 ];
 
 const mockContacts = [
-  { id: 1, first_name: 'John', last_name: 'Doe' },
-  { id: 2, first_name: 'Jane', last_name: 'Smith' },
-  { id: 3, first_name: 'Bob', last_name: 'Johnson' },
-  { id: 4, first_name: 'Alice', last_name: 'Brown' },
-  { id: 5, first_name: 'Charlie', last_name: 'Wilson' },
-  { id: 6, first_name: 'Diana', last_name: 'Davis' }
+  { id: 1, first_name: "John", last_name: "Doe" },
+  { id: 2, first_name: "Jane", last_name: "Smith" },
+  { id: 3, first_name: "Bob", last_name: "Johnson" },
+  { id: 4, first_name: "Alice", last_name: "Brown" },
+  { id: 5, first_name: "Charlie", last_name: "Wilson" },
+  { id: 6, first_name: "Diana", last_name: "Davis" },
 ];
 
 // Mock the data provider
@@ -81,18 +81,18 @@ const mockDataProvider = {
 };
 
 const mockConfiguration = {
-  opportunityCategories: ['Software', 'Hardware', 'Services', 'Support'],
+  opportunityCategories: ["Software", "Hardware", "Services", "Support"],
   contactGender: [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-    { value: 'other', label: 'Other' }
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "other", label: "Other" },
   ],
   contactRoles: [
-    { id: 'decision_maker', name: 'Decision Maker' },
-    { id: 'influencer', name: 'Influencer' },
-    { id: 'buyer', name: 'Buyer' }
+    { id: "decision_maker", name: "Decision Maker" },
+    { id: "influencer", name: "Influencer" },
+    { id: "buyer", name: "Buyer" },
   ],
-  companySectors: ['Technology', 'Healthcare', 'Finance']
+  companySectors: ["Technology", "Healthcare", "Finance"],
 };
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -116,25 +116,25 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe('OpportunityList', () => {
+describe("OpportunityList", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
     // Mock getList for opportunities
     mockDataProvider.getList.mockImplementation((resource) => {
-      if (resource === 'opportunities_summary') {
+      if (resource === "opportunities_summary") {
         return Promise.resolve({
           data: mockOpportunities,
           total: mockOpportunities.length,
         });
       }
-      if (resource === 'companies') {
+      if (resource === "companies") {
         return Promise.resolve({
           data: mockCompanies,
           total: mockCompanies.length,
         });
       }
-      if (resource === 'contacts_summary') {
+      if (resource === "contacts_summary") {
         return Promise.resolve({
           data: mockContacts,
           total: mockContacts.length,
@@ -144,226 +144,226 @@ describe('OpportunityList', () => {
     });
 
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
+      if (resource === "companies") {
         return Promise.resolve({
-          data: mockCompanies.filter(c => params.ids.includes(c.id)),
+          data: mockCompanies.filter((c) => params.ids.includes(c.id)),
         });
       }
-      if (resource === 'contacts_summary') {
+      if (resource === "contacts_summary") {
         return Promise.resolve({
-          data: mockContacts.filter(c => params.ids.includes(c.id)),
+          data: mockContacts.filter((c) => params.ids.includes(c.id)),
         });
       }
       return Promise.resolve({ data: [] });
     });
   });
 
-  it('should render opportunity list with data', async () => {
+  it("should render opportunity list with data", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Enterprise Software Deal')).toBeInTheDocument();
-      expect(screen.getByText('Hardware Upgrade Project')).toBeInTheDocument();
-      expect(screen.getByText('Consulting Services')).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
+      expect(screen.getByText("Hardware Upgrade Project")).toBeInTheDocument();
+      expect(screen.getByText("Consulting Services")).toBeInTheDocument();
     });
   });
 
-  it('should display opportunity amounts correctly', async () => {
+  it("should display opportunity amounts correctly", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
-      expect(screen.getByText('50,000')).toBeInTheDocument();
-      expect(screen.getByText('25,000')).toBeInTheDocument();
-      expect(screen.getByText('75,000')).toBeInTheDocument();
+      expect(screen.getByText("50,000")).toBeInTheDocument();
+      expect(screen.getByText("25,000")).toBeInTheDocument();
+      expect(screen.getByText("75,000")).toBeInTheDocument();
     });
   });
 
-  it('should display opportunity stages correctly', async () => {
+  it("should display opportunity stages correctly", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Qualified')).toBeInTheDocument();
-      expect(screen.getByText('Proposal')).toBeInTheDocument();
-      expect(screen.getByText('Negotiation')).toBeInTheDocument();
+      expect(screen.getByText("Qualified")).toBeInTheDocument();
+      expect(screen.getByText("Proposal")).toBeInTheDocument();
+      expect(screen.getByText("Negotiation")).toBeInTheDocument();
     });
   });
 
-  it('should display priority levels correctly', async () => {
+  it("should display priority levels correctly", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
-      expect(screen.getByText('High')).toBeInTheDocument();
-      expect(screen.getByText('Medium')).toBeInTheDocument();
-      expect(screen.getByText('Critical')).toBeInTheDocument();
+      expect(screen.getByText("High")).toBeInTheDocument();
+      expect(screen.getByText("Medium")).toBeInTheDocument();
+      expect(screen.getByText("Critical")).toBeInTheDocument();
     });
   });
 
-  it('should display probability percentages', async () => {
+  it("should display probability percentages", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
-      expect(screen.getByText('75%')).toBeInTheDocument();
-      expect(screen.getByText('60%')).toBeInTheDocument();
-      expect(screen.getByText('90%')).toBeInTheDocument();
+      expect(screen.getByText("75%")).toBeInTheDocument();
+      expect(screen.getByText("60%")).toBeInTheDocument();
+      expect(screen.getByText("90%")).toBeInTheDocument();
     });
   });
 
-  it('should display expected closing dates', async () => {
+  it("should display expected closing dates", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
-      expect(screen.getByText('2024-03-15')).toBeInTheDocument();
-      expect(screen.getByText('2024-04-20')).toBeInTheDocument();
-      expect(screen.getByText('2024-02-28')).toBeInTheDocument();
+      expect(screen.getByText("2024-03-15")).toBeInTheDocument();
+      expect(screen.getByText("2024-04-20")).toBeInTheDocument();
+      expect(screen.getByText("2024-02-28")).toBeInTheDocument();
     });
   });
 
-  it('should allow filtering by stage', async () => {
+  it("should allow filtering by stage", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Wait for initial load
     await waitFor(() => {
-      expect(screen.getByText('Enterprise Software Deal')).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
     });
 
     // Apply stage filter
     const stageFilter = screen.getByLabelText(/stage/i);
-    fireEvent.change(stageFilter, { target: { value: 'initial_outreach' } });
+    fireEvent.change(stageFilter, { target: { value: "initial_outreach" } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'opportunities_summary',
+        "opportunities_summary",
         expect.objectContaining({
           filter: expect.objectContaining({
-            stage: 'initial_outreach'
-          })
-        })
+            stage: "initial_outreach",
+          }),
+        }),
       );
     });
   });
 
-  it('should allow filtering by priority', async () => {
+  it("should allow filtering by priority", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Wait for initial load
     await waitFor(() => {
-      expect(screen.getByText('Enterprise Software Deal')).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
     });
 
     // Apply priority filter
     const priorityFilter = screen.getByLabelText(/priority/i);
-    fireEvent.change(priorityFilter, { target: { value: 'high' } });
+    fireEvent.change(priorityFilter, { target: { value: "high" } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'opportunities_summary',
+        "opportunities_summary",
         expect.objectContaining({
           filter: expect.objectContaining({
-            priority: 'high'
-          })
-        })
+            priority: "high",
+          }),
+        }),
       );
     });
   });
 
-  it('should allow filtering by category', async () => {
+  it("should allow filtering by category", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Wait for initial load
     await waitFor(() => {
-      expect(screen.getByText('Enterprise Software Deal')).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
     });
 
     // Apply category filter
     const categoryFilter = screen.getByLabelText(/category/i);
-    fireEvent.change(categoryFilter, { target: { value: 'Software' } });
+    fireEvent.change(categoryFilter, { target: { value: "Software" } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'opportunities_summary',
+        "opportunities_summary",
         expect.objectContaining({
           filter: expect.objectContaining({
-            category: 'Software'
-          })
-        })
+            category: "Software",
+          }),
+        }),
       );
     });
   });
 
-  it('should allow searching by opportunity name', async () => {
+  it("should allow searching by opportunity name", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Wait for initial load
     await waitFor(() => {
-      expect(screen.getByText('Enterprise Software Deal')).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
     });
 
     // Search by name
     const searchInput = screen.getByPlaceholderText(/search/i);
-    fireEvent.change(searchInput, { target: { value: 'Enterprise' } });
+    fireEvent.change(searchInput, { target: { value: "Enterprise" } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'opportunities_summary',
+        "opportunities_summary",
         expect.objectContaining({
           filter: expect.objectContaining({
-            q: 'Enterprise'
-          })
-        })
+            q: "Enterprise",
+          }),
+        }),
       );
     });
   });
 
-  it('should handle sorting by amount', async () => {
+  it("should handle sorting by amount", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Wait for initial load
     await waitFor(() => {
-      expect(screen.getByText('Enterprise Software Deal')).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
     });
 
     // Click amount column header to sort
@@ -372,24 +372,24 @@ describe('OpportunityList', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'opportunities_summary',
+        "opportunities_summary",
         expect.objectContaining({
-          sort: { field: 'amount', order: 'ASC' }
-        })
+          sort: { field: "amount", order: "ASC" },
+        }),
       );
     });
   });
 
-  it('should handle sorting by probability', async () => {
+  it("should handle sorting by probability", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Wait for initial load
     await waitFor(() => {
-      expect(screen.getByText('Enterprise Software Deal')).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
     });
 
     // Click probability column header to sort
@@ -398,19 +398,19 @@ describe('OpportunityList', () => {
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        'opportunities_summary',
+        "opportunities_summary",
         expect.objectContaining({
-          sort: { field: 'probability', order: 'ASC' }
-        })
+          sort: { field: "probability", order: "ASC" },
+        }),
       );
     });
   });
 
-  it('should handle pagination', async () => {
+  it("should handle pagination", async () => {
     const manyOpportunities = Array.from({ length: 50 }, (_, i) => ({
       ...mockOpportunities[0],
       id: i + 1,
-      name: `Opportunity ${i + 1}`
+      name: `Opportunity ${i + 1}`,
     }));
 
     mockDataProvider.getList.mockResolvedValue({
@@ -421,11 +421,11 @@ describe('OpportunityList', () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Opportunity 1')).toBeInTheDocument();
+      expect(screen.getByText("Opportunity 1")).toBeInTheDocument();
     });
 
     // Check pagination controls exist

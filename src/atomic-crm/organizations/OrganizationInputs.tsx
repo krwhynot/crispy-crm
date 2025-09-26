@@ -101,13 +101,13 @@ const OrganizationContextInputs = () => {
       <SelectInput
         source="organization_type"
         choices={[
-          { id: 'customer', name: 'Customer' },
-          { id: 'prospect', name: 'Prospect' },
-          { id: 'vendor', name: 'Vendor' },
-          { id: 'partner', name: 'Partner' },
-          { id: 'principal', name: 'Principal' },
-          { id: 'distributor', name: 'Distributor' },
-          { id: 'unknown', name: 'Unknown' },
+          { id: "customer", name: "Customer" },
+          { id: "prospect", name: "Prospect" },
+          { id: "vendor", name: "Vendor" },
+          { id: "partner", name: "Partner" },
+          { id: "principal", name: "Principal" },
+          { id: "distributor", name: "Distributor" },
+          { id: "unknown", name: "Unknown" },
         ]}
         helperText={false}
         emptyText="Select organization type"
@@ -115,15 +115,19 @@ const OrganizationContextInputs = () => {
       <SelectInput
         source="priority"
         choices={[
-          { id: 'A', name: 'A - High Priority' },
-          { id: 'B', name: 'B - Medium-High Priority' },
-          { id: 'C', name: 'C - Medium Priority' },
-          { id: 'D', name: 'D - Low Priority' },
+          { id: "A", name: "A - High Priority" },
+          { id: "B", name: "B - Medium-High Priority" },
+          { id: "C", name: "C - Medium Priority" },
+          { id: "D", name: "D - Low Priority" },
         ]}
         helperText={false}
         emptyText="Select priority level"
       />
-      <TextInput source="segment" helperText={false} placeholder="Segment (e.g., Enterprise, SMB)" />
+      <TextInput
+        source="segment"
+        helperText={false}
+        placeholder="Segment (e.g., Enterprise, SMB)"
+      />
       <TextInput source="revenue" helperText={false} />
       <TextInput source="tax_identifier" helperText={false} />
     </div>

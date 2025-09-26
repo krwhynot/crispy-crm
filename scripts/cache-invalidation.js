@@ -17,25 +17,25 @@
  *   --help             Show this help message
  */
 
-import { createClient } from '@supabase/supabase-js';
-import fs from 'fs/promises';
-import path from 'path';
+import { createClient } from "@supabase/supabase-js";
+import fs from "fs/promises";
+import path from "path";
 
 // Configuration
 const CONFIG = {
   CACHE_TTL_HOURS: 24, // Default cache TTL for gradual expiry
-  LOG_FILE: 'logs/cache-invalidation.log',
+  LOG_FILE: "logs/cache-invalidation.log",
   SUPABASE_URL: process.env.VITE_SUPABASE_URL,
   SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_ANON_KEY,
 };
 
 // Parse command line arguments
 const args = process.argv.slice(2);
-const isDryRun = args.includes('--dry-run');
-const isVerbose = args.includes('--verbose') || isDryRun;
-const skipBrowser = args.includes('--skip-browser');
-const skipCdn = args.includes('--skip-cdn');
-const showHelp = args.includes('--help');
+const isDryRun = args.includes("--dry-run");
+const isVerbose = args.includes("--verbose") || isDryRun;
+const skipBrowser = args.includes("--skip-browser");
+const skipCdn = args.includes("--skip-cdn");
+const showHelp = args.includes("--help");
 
 if (showHelp) {
   console.log(`
@@ -70,7 +70,7 @@ Cache TTLs for Gradual Expiry:
 }
 
 // Logging utility
-async function log(message, level = 'INFO') {
+async function log(message, level = "INFO") {
   const timestamp = new Date().toISOString();
   const logMessage = `[${timestamp}] [${level}] ${message}`;
 
@@ -79,9 +79,9 @@ async function log(message, level = 'INFO') {
   if (!isDryRun) {
     try {
       await fs.mkdir(path.dirname(CONFIG.LOG_FILE), { recursive: true });
-      await fs.appendFile(CONFIG.LOG_FILE, logMessage + '\n');
+      await fs.appendFile(CONFIG.LOG_FILE, logMessage + "\n");
     } catch (error) {
-      console.error('Failed to write to log file:', error.message);
+      console.error("Failed to write to log file:", error.message);
     }
   }
 }
@@ -98,32 +98,34 @@ if (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
  */
 async function clearBrowserCache() {
   if (skipBrowser) {
-    await log('Skipping browser localStorage clearing (--skip-browser)');
+    await log("Skipping browser localStorage clearing (--skip-browser)");
     return;
   }
 
-  await log('=== Browser Cache Clearing Instructions ===');
-  await log('');
-  await log('To clear browser localStorage manually:');
-  await log('1. Open browser Developer Tools (F12)');
-  await log('2. Go to Application/Storage tab');
+  await log("=== Browser Cache Clearing Instructions ===");
+  await log("");
+  await log("To clear browser localStorage manually:");
+  await log("1. Open browser Developer Tools (F12)");
+  await log("2. Go to Application/Storage tab");
   await log('3. Select "Local Storage" for your domain');
-  await log('4. Clear the following keys:');
-  await log('   - CRM (React Admin store)');
-  await log('   - supabase.auth.token');
+  await log("4. Clear the following keys:");
+  await log("   - CRM (React Admin store)");
+  await log("   - supabase.auth.token");
   await log('   - Any keys starting with "ra-"');
-  await log('');
-  await log('Alternatively, run in browser console:');
-  await log('  Object.keys(localStorage).forEach(key => {');
-  await log('    if (key === "CRM" || key.startsWith("ra-") || key.includes("supabase")) {');
-  await log('      localStorage.removeItem(key);');
-  await log('    }');
-  await log('  });');
-  await log('');
-  await log('Or clear all localStorage (affects other apps):');
-  await log('  localStorage.clear();');
-  await log('');
-  await log('Cache TTL: localStorage has no expiry, manual clearing required');
+  await log("");
+  await log("Alternatively, run in browser console:");
+  await log("  Object.keys(localStorage).forEach(key => {");
+  await log(
+    '    if (key === "CRM" || key.startsWith("ra-") || key.includes("supabase")) {',
+  );
+  await log("      localStorage.removeItem(key);");
+  await log("    }");
+  await log("  });");
+  await log("");
+  await log("Or clear all localStorage (affects other apps):");
+  await log("  localStorage.clear();");
+  await log("");
+  await log("Cache TTL: localStorage has no expiry, manual clearing required");
 }
 
 /**
@@ -131,18 +133,18 @@ async function clearBrowserCache() {
  * This would typically be done on the client side, but we document the process
  */
 async function clearReactQueryCache() {
-  await log('=== React Query Cache Clearing ===');
-  await log('React Query cache is client-side only and will be cleared on:');
-  await log('1. Browser refresh (new session)');
-  await log('2. queryClient.clear() if implemented in app');
-  await log('3. Individual query invalidation');
-  await log('');
-  await log('The migration will trigger automatic cache invalidation through:');
-  await log('- Resource name changes (deals → opportunities)');
-  await log('- New data structure changes');
-  await log('- Query key changes in data provider');
-  await log('');
-  await log('Cache TTL: 5 minutes default staleTime, 1 hour cacheTime');
+  await log("=== React Query Cache Clearing ===");
+  await log("React Query cache is client-side only and will be cleared on:");
+  await log("1. Browser refresh (new session)");
+  await log("2. queryClient.clear() if implemented in app");
+  await log("3. Individual query invalidation");
+  await log("");
+  await log("The migration will trigger automatic cache invalidation through:");
+  await log("- Resource name changes (deals → opportunities)");
+  await log("- New data structure changes");
+  await log("- Query key changes in data provider");
+  await log("");
+  await log("Cache TTL: 5 minutes default staleTime, 1 hour cacheTime");
 }
 
 /**
@@ -150,59 +152,70 @@ async function clearReactQueryCache() {
  */
 async function clearSupabaseCache() {
   if (!supabase) {
-    await log('Supabase client not configured, skipping Supabase cache clearing', 'WARN');
+    await log(
+      "Supabase client not configured, skipping Supabase cache clearing",
+      "WARN",
+    );
     return;
   }
 
-  await log('=== Supabase Cache Clearing ===');
+  await log("=== Supabase Cache Clearing ===");
 
   try {
     if (isDryRun) {
-      await log('[DRY RUN] Would clear PostgreSQL query cache');
-      await log('[DRY RUN] Would invalidate materialized views');
-      await log('[DRY RUN] Would clear RPC function cache');
+      await log("[DRY RUN] Would clear PostgreSQL query cache");
+      await log("[DRY RUN] Would invalidate materialized views");
+      await log("[DRY RUN] Would clear RPC function cache");
     } else {
       // Clear PostgreSQL query cache
-      const { error: discardError } = await supabase.rpc('execute_sql', {
-        sql: 'DISCARD ALL;'
+      const { error: discardError } = await supabase.rpc("execute_sql", {
+        sql: "DISCARD ALL;",
       });
 
-      if (discardError && !discardError.message?.includes('does not exist')) {
-        await log(`PostgreSQL cache clear: ${discardError.message}`, 'WARN');
+      if (discardError && !discardError.message?.includes("does not exist")) {
+        await log(`PostgreSQL cache clear: ${discardError.message}`, "WARN");
       } else {
-        await log('PostgreSQL query cache cleared successfully');
+        await log("PostgreSQL query cache cleared successfully");
       }
 
       // Refresh materialized views if any exist
-      const { data: views, error: viewsError } = await supabase.rpc('execute_sql', {
-        sql: `
+      const { data: views, error: viewsError } = await supabase.rpc(
+        "execute_sql",
+        {
+          sql: `
           SELECT schemaname, matviewname
           FROM pg_matviews
           WHERE schemaname = 'public'
-        `
-      });
+        `,
+        },
+      );
 
       if (!viewsError && views) {
         for (const view of views) {
-          const { error: refreshError } = await supabase.rpc('execute_sql', {
-            sql: `REFRESH MATERIALIZED VIEW ${view.schemaname}.${view.matviewname};`
+          const { error: refreshError } = await supabase.rpc("execute_sql", {
+            sql: `REFRESH MATERIALIZED VIEW ${view.schemaname}.${view.matviewname};`,
           });
 
           if (refreshError) {
-            await log(`Failed to refresh view ${view.matviewname}: ${refreshError.message}`, 'ERROR');
+            await log(
+              `Failed to refresh view ${view.matviewname}: ${refreshError.message}`,
+              "ERROR",
+            );
           } else {
             await log(`Refreshed materialized view: ${view.matviewname}`);
           }
         }
       }
 
-      await log('Supabase cache clearing completed');
+      await log("Supabase cache clearing completed");
     }
   } catch (error) {
-    await log(`Supabase cache clearing failed: ${error.message}`, 'ERROR');
+    await log(`Supabase cache clearing failed: ${error.message}`, "ERROR");
   }
 
-  await log('Cache TTL: PostgreSQL - session based, Views - manual refresh required');
+  await log(
+    "Cache TTL: PostgreSQL - session based, Views - manual refresh required",
+  );
 }
 
 /**
@@ -210,25 +223,31 @@ async function clearSupabaseCache() {
  */
 async function clearCdnCache() {
   if (skipCdn) {
-    await log('Skipping CDN cache clearing (--skip-cdn)');
+    await log("Skipping CDN cache clearing (--skip-cdn)");
     return;
   }
 
-  await log('=== CDN Cache Clearing ===');
-  await log('If using a CDN (CloudFlare, AWS CloudFront, etc.), clear cache for:');
-  await log('- Static assets (/assets/*)');
-  await log('- API responses (/api/*)');
-  await log('- HTML pages with embedded data');
-  await log('');
-  await log('Common CDN cache clearing commands:');
-  await log('CloudFlare: curl -X POST "https://api.cloudflare.com/client/v4/zones/{zone_id}/purge_cache"');
-  await log('AWS CloudFront: aws cloudfront create-invalidation --distribution-id {id} --paths "/*"');
-  await log('Vercel: vercel --prod --confirm (redeploy)');
-  await log('');
-  await log('Cache TTL: Varies by CDN provider (typically 1-24 hours)');
+  await log("=== CDN Cache Clearing ===");
+  await log(
+    "If using a CDN (CloudFlare, AWS CloudFront, etc.), clear cache for:",
+  );
+  await log("- Static assets (/assets/*)");
+  await log("- API responses (/api/*)");
+  await log("- HTML pages with embedded data");
+  await log("");
+  await log("Common CDN cache clearing commands:");
+  await log(
+    'CloudFlare: curl -X POST "https://api.cloudflare.com/client/v4/zones/{zone_id}/purge_cache"',
+  );
+  await log(
+    'AWS CloudFront: aws cloudfront create-invalidation --distribution-id {id} --paths "/*"',
+  );
+  await log("Vercel: vercel --prod --confirm (redeploy)");
+  await log("");
+  await log("Cache TTL: Varies by CDN provider (typically 1-24 hours)");
 
   if (isDryRun) {
-    await log('[DRY RUN] CDN cache invalidation would be triggered');
+    await log("[DRY RUN] CDN cache invalidation would be triggered");
   }
 }
 
@@ -236,14 +255,14 @@ async function clearCdnCache() {
  * Clear application-specific caches
  */
 async function clearApplicationCache() {
-  await log('=== Application Cache Clearing ===');
+  await log("=== Application Cache Clearing ===");
 
   // Check for any custom cache files
   const cacheDirectories = [
-    'node_modules/.cache',
-    '.next/cache',
-    'dist/cache',
-    'build/cache'
+    "node_modules/.cache",
+    ".next/cache",
+    "dist/cache",
+    "build/cache",
   ];
 
   for (const dir of cacheDirectories) {
@@ -265,30 +284,32 @@ async function clearApplicationCache() {
     }
   }
 
-  await log('Application cache clearing completed');
+  await log("Application cache clearing completed");
 }
 
 /**
  * Generate cache invalidation report
  */
 async function generateReport() {
-  await log('=== Cache Invalidation Report ===');
-  await log(`Execution mode: ${isDryRun ? 'DRY RUN' : 'LIVE'}`);
+  await log("=== Cache Invalidation Report ===");
+  await log(`Execution mode: ${isDryRun ? "DRY RUN" : "LIVE"}`);
   await log(`Timestamp: ${new Date().toISOString()}`);
-  await log('');
-  await log('Cache layers processed:');
-  await log(`✓ Browser localStorage: ${skipBrowser ? 'SKIPPED' : 'INSTRUCTIONS PROVIDED'}`);
-  await log('✓ React Query cache: AUTOMATIC ON MIGRATION');
-  await log(`✓ Supabase cache: ${supabase ? 'PROCESSED' : 'NOT CONFIGURED'}`);
-  await log(`✓ CDN cache: ${skipCdn ? 'SKIPPED' : 'INSTRUCTIONS PROVIDED'}`);
-  await log('✓ Application cache: PROCESSED');
-  await log('');
-  await log('Expected cache TTLs after clearing:');
-  await log('- React Query: 5 minutes (staleTime)');
-  await log('- Browser localStorage: Manual clearing required');
-  await log('- PostgreSQL: Session-based');
-  await log('- CDN: Provider-specific (1-24 hours)');
-  await log('');
+  await log("");
+  await log("Cache layers processed:");
+  await log(
+    `✓ Browser localStorage: ${skipBrowser ? "SKIPPED" : "INSTRUCTIONS PROVIDED"}`,
+  );
+  await log("✓ React Query cache: AUTOMATIC ON MIGRATION");
+  await log(`✓ Supabase cache: ${supabase ? "PROCESSED" : "NOT CONFIGURED"}`);
+  await log(`✓ CDN cache: ${skipCdn ? "SKIPPED" : "INSTRUCTIONS PROVIDED"}`);
+  await log("✓ Application cache: PROCESSED");
+  await log("");
+  await log("Expected cache TTLs after clearing:");
+  await log("- React Query: 5 minutes (staleTime)");
+  await log("- Browser localStorage: Manual clearing required");
+  await log("- PostgreSQL: Session-based");
+  await log("- CDN: Provider-specific (1-24 hours)");
+  await log("");
 
   if (!isDryRun) {
     await log(`Full log available at: ${CONFIG.LOG_FILE}`);
@@ -300,9 +321,9 @@ async function generateReport() {
  */
 async function main() {
   try {
-    await log('Starting cache invalidation for CRM migration...');
-    await log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE EXECUTION'}`);
-    await log('');
+    await log("Starting cache invalidation for CRM migration...");
+    await log(`Mode: ${isDryRun ? "DRY RUN" : "LIVE EXECUTION"}`);
+    await log("");
 
     // Execute cache clearing steps
     await clearBrowserCache();
@@ -314,21 +335,20 @@ async function main() {
     // Generate final report
     await generateReport();
 
-    await log('');
-    await log('Cache invalidation completed successfully!');
+    await log("");
+    await log("Cache invalidation completed successfully!");
 
     if (!isDryRun) {
-      await log('');
-      await log('Next steps:');
-      await log('1. Run search reindex script: node scripts/search-reindex.js');
-      await log('2. Monitor application for cache-related issues');
-      await log('3. Clear browser caches manually as instructed above');
+      await log("");
+      await log("Next steps:");
+      await log("1. Run search reindex script: node scripts/search-reindex.js");
+      await log("2. Monitor application for cache-related issues");
+      await log("3. Clear browser caches manually as instructed above");
     }
-
   } catch (error) {
-    await log(`Cache invalidation failed: ${error.message}`, 'ERROR');
+    await log(`Cache invalidation failed: ${error.message}`, "ERROR");
     if (isVerbose) {
-      await log(`Stack trace: ${error.stack}`, 'ERROR');
+      await log(`Stack trace: ${error.stack}`, "ERROR");
     }
     process.exit(1);
   }
@@ -339,4 +359,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
 
-export { clearBrowserCache, clearSupabaseCache, clearCdnCache, clearApplicationCache };
+export {
+  clearBrowserCache,
+  clearSupabaseCache,
+  clearCdnCache,
+  clearApplicationCache,
+};

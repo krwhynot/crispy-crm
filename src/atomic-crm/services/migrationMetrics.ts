@@ -5,7 +5,7 @@
  * Works in conjunction with the migration monitor to provide UI updates.
  */
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 export interface MigrationMetrics {
   migrationId: string;
@@ -29,7 +29,7 @@ export interface MigrationError {
   phase: string;
   message: string;
   details?: string;
-  severity: 'critical' | 'high' | 'medium' | 'low';
+  severity: "critical" | "high" | "medium" | "low";
   createdAt: Date;
 }
 
@@ -56,13 +56,13 @@ export interface ResourceMetrics {
 }
 
 export type MigrationStatus =
-  | 'not_started'
-  | 'initializing'
-  | 'in_progress'
-  | 'paused'
-  | 'completed'
-  | 'failed'
-  | 'rolling_back';
+  | "not_started"
+  | "initializing"
+  | "in_progress"
+  | "paused"
+  | "completed"
+  | "failed"
+  | "rolling_back";
 
 export interface MigrationPhase {
   id: string;
@@ -72,7 +72,7 @@ export interface MigrationPhase {
   actualRecords?: number;
   startedAt?: Date;
   completedAt?: Date;
-  status: 'pending' | 'in_progress' | 'completed' | 'failed';
+  status: "pending" | "in_progress" | "completed" | "failed";
 }
 
 export class MigrationMetricsService {
@@ -91,22 +91,22 @@ export class MigrationMetricsService {
       useWebSocket?: boolean;
       wsUrl?: string;
       cacheTimeout?: number;
-    } = {}
+    } = {},
   ) {
     const url = supabaseUrl || import.meta.env.VITE_SUPABASE_URL;
     const key = supabaseKey || import.meta.env.VITE_SUPABASE_ANON_KEY;
 
     if (!url || !key) {
-      throw new Error('Supabase credentials are required');
+      throw new Error("Supabase credentials are required");
     }
 
     this.supabase = createClient(url, key);
     this.options = {
       pollingInterval: options.pollingInterval || 2000,
       useWebSocket: options.useWebSocket || false,
-      wsUrl: options.wsUrl || 'ws://localhost:8080',
+      wsUrl: options.wsUrl || "ws://localhost:8080",
       cacheTimeout: options.cacheTimeout || 1000,
-      ...options
+      ...options,
     };
   }
 
@@ -118,7 +118,7 @@ export class MigrationMetricsService {
     if (!migrationId) {
       const activeMigration = await this.getActiveMigration();
       if (!activeMigration) {
-        throw new Error('No active migration found');
+        throw new Error("No active migration found");
       }
       migrationId = activeMigration;
     }
@@ -139,10 +139,10 @@ export class MigrationMetricsService {
   async getActiveMigration(): Promise<string | null> {
     try {
       const { data, error } = await this.supabase
-        .from('migration_history')
-        .select('id')
-        .eq('status', 'in_progress')
-        .order('created_at', { ascending: false })
+        .from("migration_history")
+        .select("id")
+        .eq("status", "in_progress")
+        .order("created_at", { ascending: false })
         .limit(1)
         .single();
 
@@ -152,7 +152,7 @@ export class MigrationMetricsService {
 
       return data.id;
     } catch (error) {
-      console.error('Failed to get active migration:', error);
+      console.error("Failed to get active migration:", error);
       return null;
     }
   }
@@ -168,29 +168,29 @@ export class MigrationMetricsService {
         this.wsConnection = new WebSocket(this.options.wsUrl);
 
         this.wsConnection.onopen = () => {
-          console.log('Connected to migration monitor WebSocket');
+          console.log("Connected to migration monitor WebSocket");
           resolve();
         };
 
         this.wsConnection.onmessage = (event) => {
           try {
             const message = JSON.parse(event.data);
-            if (message.type === 'metrics') {
+            if (message.type === "metrics") {
               this.updateCachedMetrics(message.data);
             }
           } catch (error) {
-            console.error('Failed to parse WebSocket message:', error);
+            console.error("Failed to parse WebSocket message:", error);
           }
         };
 
         this.wsConnection.onerror = (error) => {
-          console.error('WebSocket error:', error);
+          console.error("WebSocket error:", error);
           // Fall back to polling
           this.startPolling();
         };
 
         this.wsConnection.onclose = () => {
-          console.log('WebSocket connection closed');
+          console.log("WebSocket connection closed");
           this.wsConnection = null;
           // Attempt to reconnect after delay
           setTimeout(() => {
@@ -199,9 +199,8 @@ export class MigrationMetricsService {
             }
           }, 5000);
         };
-
       } catch (error) {
-        console.error('Failed to connect to WebSocket:', error);
+        console.error("Failed to connect to WebSocket:", error);
         reject(error);
       }
     });
@@ -238,7 +237,7 @@ export class MigrationMetricsService {
    */
   async fetchMetrics(): Promise<MigrationMetrics> {
     if (!this.migrationId) {
-      throw new Error('Migration ID not set');
+      throw new Error("Migration ID not set");
     }
 
     // Check cache
@@ -255,7 +254,7 @@ export class MigrationMetricsService {
         this.fetchMigrationState(),
         this.fetchPhases(),
         this.fetchErrors(),
-        this.fetchWarnings()
+        this.fetchWarnings(),
       ]);
 
       // Calculate metrics
@@ -273,14 +272,13 @@ export class MigrationMetricsService {
         warnings,
         resources: await this.fetchResourceMetrics(),
         status: migrationState.status,
-        lastUpdate: new Date()
+        lastUpdate: new Date(),
       };
 
       this.updateCachedMetrics(metrics);
       return metrics;
-
     } catch (error) {
-      console.error('Failed to fetch metrics:', error);
+      console.error("Failed to fetch metrics:", error);
       throw error;
     }
   }
@@ -290,10 +288,10 @@ export class MigrationMetricsService {
    */
   private async fetchMigrationState(): Promise<any> {
     const { data, error } = await this.supabase
-      .from('migration_history')
-      .select('*')
-      .eq('id', this.migrationId)
-      .order('created_at', { ascending: false })
+      .from("migration_history")
+      .select("*")
+      .eq("id", this.migrationId)
+      .order("created_at", { ascending: false })
       .limit(1)
       .single();
 
@@ -308,7 +306,7 @@ export class MigrationMetricsService {
       recordsProcessed: data.metadata?.recordsProcessed,
       totalRecords: data.metadata?.totalRecords,
       startTime: data.started_at ? new Date(data.started_at) : null,
-      status: data.status || 'unknown'
+      status: data.status || "unknown",
     };
   }
 
@@ -317,24 +315,26 @@ export class MigrationMetricsService {
    */
   private async fetchPhases(): Promise<MigrationPhase[]> {
     const { data, error } = await this.supabase
-      .from('migration_phases')
-      .select('*')
-      .eq('migration_id', this.migrationId)
-      .order('order_index', { ascending: true });
+      .from("migration_phases")
+      .select("*")
+      .eq("migration_id", this.migrationId)
+      .order("order_index", { ascending: true });
 
     if (error || !data) {
       return [];
     }
 
-    return data.map(phase => ({
+    return data.map((phase) => ({
       id: phase.id,
       name: phase.name,
       description: phase.description,
       estimatedRecords: phase.estimated_records,
       actualRecords: phase.actual_records,
       startedAt: phase.started_at ? new Date(phase.started_at) : undefined,
-      completedAt: phase.completed_at ? new Date(phase.completed_at) : undefined,
-      status: phase.status
+      completedAt: phase.completed_at
+        ? new Date(phase.completed_at)
+        : undefined,
+      status: phase.status,
     }));
   }
 
@@ -343,24 +343,24 @@ export class MigrationMetricsService {
    */
   private async fetchErrors(): Promise<MigrationError[]> {
     const { data, error } = await this.supabase
-      .from('migration_errors')
-      .select('*')
-      .eq('migration_id', this.migrationId)
-      .eq('severity', 'error')
-      .order('created_at', { ascending: false })
+      .from("migration_errors")
+      .select("*")
+      .eq("migration_id", this.migrationId)
+      .eq("severity", "error")
+      .order("created_at", { ascending: false })
       .limit(10);
 
     if (error || !data) {
       return [];
     }
 
-    return data.map(err => ({
+    return data.map((err) => ({
       id: err.id,
       phase: err.phase,
       message: err.message,
       details: err.details,
-      severity: err.severity || 'medium',
-      createdAt: new Date(err.created_at)
+      severity: err.severity || "medium",
+      createdAt: new Date(err.created_at),
     }));
   }
 
@@ -369,23 +369,23 @@ export class MigrationMetricsService {
    */
   private async fetchWarnings(): Promise<MigrationWarning[]> {
     const { data, error } = await this.supabase
-      .from('migration_errors')
-      .select('*')
-      .eq('migration_id', this.migrationId)
-      .eq('severity', 'warning')
-      .order('created_at', { ascending: false })
+      .from("migration_errors")
+      .select("*")
+      .eq("migration_id", this.migrationId)
+      .eq("severity", "warning")
+      .order("created_at", { ascending: false })
       .limit(10);
 
     if (error || !data) {
       return [];
     }
 
-    return data.map(warning => ({
+    return data.map((warning) => ({
       id: warning.id,
       phase: warning.phase,
       message: warning.message,
       details: warning.details,
-      createdAt: new Date(warning.created_at)
+      createdAt: new Date(warning.created_at),
     }));
   }
 
@@ -455,7 +455,7 @@ export class MigrationMetricsService {
         const metrics = await this.fetchMetrics();
         callback(metrics);
       } catch (error) {
-        console.error('Failed to fetch metrics for subscription:', error);
+        console.error("Failed to fetch metrics for subscription:", error);
       }
     }, this.options.pollingInterval || 2000);
 
@@ -472,25 +472,23 @@ export class MigrationMetricsService {
     phase: string,
     message: string,
     details?: string,
-    severity: 'critical' | 'high' | 'medium' | 'low' = 'medium'
+    severity: "critical" | "high" | "medium" | "low" = "medium",
   ): Promise<void> {
     if (!this.migrationId) {
-      throw new Error('Migration ID not set');
+      throw new Error("Migration ID not set");
     }
 
     try {
-      await this.supabase
-        .from('migration_errors')
-        .insert({
-          migration_id: this.migrationId,
-          phase,
-          message,
-          details,
-          severity,
-          created_at: new Date().toISOString()
-        });
+      await this.supabase.from("migration_errors").insert({
+        migration_id: this.migrationId,
+        phase,
+        message,
+        details,
+        severity,
+        created_at: new Date().toISOString(),
+      });
     } catch (error) {
-      console.error('Failed to log error:', error);
+      console.error("Failed to log error:", error);
     }
   }
 
@@ -500,9 +498,9 @@ export class MigrationMetricsService {
   async logWarning(
     phase: string,
     message: string,
-    details?: string
+    details?: string,
   ): Promise<void> {
-    await this.logError(phase, message, details, 'low');
+    await this.logError(phase, message, details, "low");
   }
 
   /**
@@ -513,15 +511,15 @@ export class MigrationMetricsService {
     batch: number,
     recordsProcessed: number,
     totalRecords: number,
-    totalBatches: number
+    totalBatches: number,
   ): Promise<void> {
     if (!this.migrationId) {
-      throw new Error('Migration ID not set');
+      throw new Error("Migration ID not set");
     }
 
     try {
       await this.supabase
-        .from('migration_history')
+        .from("migration_history")
         .update({
           phase,
           step: `batch_${batch}`,
@@ -530,11 +528,11 @@ export class MigrationMetricsService {
             totalBatches,
             recordsProcessed,
             totalRecords,
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           },
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
-        .eq('id', this.migrationId);
+        .eq("id", this.migrationId);
 
       // Update cache if available
       if (this.metricsCache) {
@@ -545,12 +543,12 @@ export class MigrationMetricsService {
         this.metricsCache.totalBatches = totalBatches;
         this.metricsCache.progressPercent = this.calculateProgress({
           recordsProcessed,
-          totalRecords
+          totalRecords,
         });
         this.metricsCache.lastUpdate = new Date();
       }
     } catch (error) {
-      console.error('Failed to update progress:', error);
+      console.error("Failed to update progress:", error);
       throw error;
     }
   }

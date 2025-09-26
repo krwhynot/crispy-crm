@@ -6,13 +6,23 @@ import { useRedirect } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 
-export const OpportunityCard = ({ opportunity, index }: { opportunity: Opportunity; index: number }) => {
+export const OpportunityCard = ({
+  opportunity,
+  index,
+}: {
+  opportunity: Opportunity;
+  index: number;
+}) => {
   if (!opportunity) return null;
 
   return (
     <Draggable draggableId={String(opportunity.id)} index={index}>
       {(provided, snapshot) => (
-        <OpportunityCardContent provided={provided} snapshot={snapshot} opportunity={opportunity} />
+        <OpportunityCardContent
+          provided={provided}
+          snapshot={snapshot}
+          opportunity={opportunity}
+        />
       )}
     </Draggable>
   );
@@ -29,13 +39,19 @@ export const OpportunityCardContent = ({
 }) => {
   const redirect = useRedirect();
   const handleClick = () => {
-    redirect(`/opportunities/${opportunity.id}/show`, undefined, undefined, undefined, {
-      _scrollToTop: false,
-    });
+    redirect(
+      `/opportunities/${opportunity.id}/show`,
+      undefined,
+      undefined,
+      undefined,
+      {
+        _scrollToTop: false,
+      },
+    );
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       handleClick();
     }
@@ -43,11 +59,16 @@ export const OpportunityCardContent = ({
 
   const getPriorityVariant = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'destructive';
-      case 'high': return 'default';
-      case 'medium': return 'secondary';
-      case 'low': return 'outline';
-      default: return 'outline';
+      case "critical":
+        return "destructive";
+      case "high":
+        return "default";
+      case "medium":
+        return "secondary";
+      case "low":
+        return "outline";
+      default:
+        return "outline";
     }
   };
 
@@ -81,7 +102,10 @@ export const OpportunityCardContent = ({
           <div className="ml-3 flex-1">
             <div className="flex justify-between items-start mb-2">
               <p className="text-sm font-medium">{opportunity.name}</p>
-              <Badge variant={getPriorityVariant(opportunity.priority)} className="text-xs">
+              <Badge
+                variant={getPriorityVariant(opportunity.priority)}
+                className="text-xs"
+              >
                 {opportunity.priority}
               </Badge>
             </div>

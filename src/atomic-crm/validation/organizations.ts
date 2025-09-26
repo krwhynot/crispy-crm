@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Organization/Company validation schemas and functions
@@ -8,17 +8,17 @@ import { z } from 'zod';
 
 // Organization type enum
 export const organizationTypeSchema = z.enum([
-  'customer',
-  'prospect',
-  'vendor',
-  'partner',
-  'principal',
-  'distributor',
-  'unknown'
+  "customer",
+  "prospect",
+  "vendor",
+  "partner",
+  "principal",
+  "distributor",
+  "unknown",
 ]);
 
 // Company priority enum
-export const companyPrioritySchema = z.enum(['A', 'B', 'C', 'D']);
+export const companyPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
 // Company size values
 export const companySizeSchema = z.union([
@@ -26,18 +26,20 @@ export const companySizeSchema = z.union([
   z.literal(10),
   z.literal(50),
   z.literal(250),
-  z.literal(500)
+  z.literal(500),
 ]);
 
 // URL validation regex from CompanyInputs
-const URL_REGEX = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+const URL_REGEX =
+  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
 
 // Custom validators
-const isValidUrl = z.string().refine(
-  (url) => !url || URL_REGEX.test(url),
-  { message: 'Must be a valid URL' }
-);
+const isValidUrl = z
+  .string()
+  .refine((url) => !url || URL_REGEX.test(url), {
+    message: "Must be a valid URL",
+  });
 
 const isLinkedinUrl = z.string().refine(
   (url) => {
@@ -49,13 +51,13 @@ const isLinkedinUrl = z.string().refine(
       return false;
     }
   },
-  { message: 'URL must be from linkedin.com' }
+  { message: "URL must be from linkedin.com" },
 );
 
 // Main company/organization schema
 export const organizationSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
-  name: z.string().min(1, 'Company name is required'),
+  name: z.string().min(1, "Company name is required"),
   logo: z.any().optional(), // RAFile type
   sector: z.string().optional(),
   size: companySizeSchema.optional(),
@@ -95,7 +97,9 @@ export type OrganizationInput = z.input<typeof organizationSchema>;
 export type Organization = z.infer<typeof organizationSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
-export async function validateOrganizationForSubmission(data: any): Promise<void> {
+export async function validateOrganizationForSubmission(
+  data: any,
+): Promise<void> {
   try {
     // Parse and validate the data
     organizationSchema.parse(data);
@@ -104,13 +108,13 @@ export async function validateOrganizationForSubmission(data: any): Promise<void
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
-        const path = err.path.join('.');
+        const path = err.path.join(".");
         formattedErrors[path] = err.message;
       });
 
       // Throw error in React Admin expected format
       throw {
-        message: 'Validation failed',
+        message: "Validation failed",
         errors: formattedErrors,
       };
     }
@@ -119,15 +123,17 @@ export async function validateOrganizationForSubmission(data: any): Promise<void
 }
 
 // Create-specific schema (stricter requirements)
-export const createOrganizationSchema = organizationSchema.omit({
-  id: true,
-  created_at: true,
-  deleted_at: true,
-  nb_contacts: true,
-  nb_opportunities: true,
-}).required({
-  name: true,
-});
+export const createOrganizationSchema = organizationSchema
+  .omit({
+    id: true,
+    created_at: true,
+    deleted_at: true,
+    nb_contacts: true,
+    nb_opportunities: true,
+  })
+  .required({
+    name: true,
+  });
 
 // Update-specific schema (more flexible)
 export const updateOrganizationSchema = organizationSchema.partial().required({
@@ -142,11 +148,11 @@ export async function validateCreateOrganization(data: any): Promise<void> {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
-        const path = err.path.join('.');
+        const path = err.path.join(".");
         formattedErrors[path] = err.message;
       });
       throw {
-        message: 'Validation failed',
+        message: "Validation failed",
         errors: formattedErrors,
       };
     }
@@ -161,15 +167,14 @@ export async function validateUpdateOrganization(data: any): Promise<void> {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
-        const path = err.path.join('.');
+        const path = err.path.join(".");
         formattedErrors[path] = err.message;
       });
       throw {
-        message: 'Validation failed',
+        message: "Validation failed",
         errors: formattedErrors,
       };
     }
     throw error;
   }
 }
-

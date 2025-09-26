@@ -19,7 +19,9 @@ interface OrganizationAsideProps {
   link?: string;
 }
 
-export const OrganizationAside = ({ link = "edit" }: OrganizationAsideProps) => {
+export const OrganizationAside = ({
+  link = "edit",
+}: OrganizationAsideProps) => {
   const record = useRecordContext<Company>();
   if (!record) return null;
 
@@ -90,20 +92,20 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
 
 const ContextInfo = ({ record }: { record: Company }) => {
   const organizationTypeChoices = [
-    { id: 'customer', name: 'Customer' },
-    { id: 'prospect', name: 'Prospect' },
-    { id: 'vendor', name: 'Vendor' },
-    { id: 'partner', name: 'Partner' },
-    { id: 'principal', name: 'Principal' },
-    { id: 'distributor', name: 'Distributor' },
-    { id: 'unknown', name: 'Unknown' },
+    { id: "customer", name: "Customer" },
+    { id: "prospect", name: "Prospect" },
+    { id: "vendor", name: "Vendor" },
+    { id: "partner", name: "Partner" },
+    { id: "principal", name: "Principal" },
+    { id: "distributor", name: "Distributor" },
+    { id: "unknown", name: "Unknown" },
   ];
 
   const priorityChoices = [
-    { id: 'A', name: 'A - High Priority' },
-    { id: 'B', name: 'B - Medium-High Priority' },
-    { id: 'C', name: 'C - Medium Priority' },
-    { id: 'D', name: 'D - Low Priority' },
+    { id: "A", name: "A - High Priority" },
+    { id: "B", name: "B - Medium-High Priority" },
+    { id: "C", name: "C - Medium Priority" },
+    { id: "D", name: "D - Low Priority" },
   ];
 
   if (!record.revenue && !record.id) {
@@ -114,7 +116,11 @@ const ContextInfo = ({ record }: { record: Company }) => {
     <AsideSection title="Context">
       {record.organization_type && (
         <span>
-          Type: <SelectField source="organization_type" choices={organizationTypeChoices} />
+          Type:{" "}
+          <SelectField
+            source="organization_type"
+            choices={organizationTypeChoices}
+          />
         </span>
       )}
       {record.priority && (
@@ -190,7 +196,11 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
       {record.parent_organization_id && (
         <div className="inline-flex text-sm text-muted-foreground mb-1">
           Parent organization:&nbsp;
-          <ReferenceField source="parent_organization_id" reference="organizations" record={record}>
+          <ReferenceField
+            source="parent_organization_id"
+            reference="organizations"
+            record={record}
+          >
             <TextField source="name" />
           </ReferenceField>
         </div>

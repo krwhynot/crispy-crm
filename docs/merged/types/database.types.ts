@@ -9,80 +9,80 @@
 // =====================================================
 
 export type OrganizationType =
-  | 'customer'
-  | 'principal'
-  | 'distributor'
-  | 'prospect'
-  | 'vendor'
-  | 'partner'
-  | 'unknown';
+  | "customer"
+  | "principal"
+  | "distributor"
+  | "prospect"
+  | "vendor"
+  | "partner"
+  | "unknown";
 
 export type ContactRole =
-  | 'decision_maker'
-  | 'influencer'
-  | 'buyer'
-  | 'end_user'
-  | 'gatekeeper'
-  | 'champion'
-  | 'technical'
-  | 'executive';
+  | "decision_maker"
+  | "influencer"
+  | "buyer"
+  | "end_user"
+  | "gatekeeper"
+  | "champion"
+  | "technical"
+  | "executive";
 
 export type OpportunityStage =
-  | 'lead'
-  | 'qualified'
-  | 'needs_analysis'
-  | 'proposal'
-  | 'negotiation'
-  | 'closed_won'
-  | 'closed_lost'
-  | 'nurturing';
+  | "lead"
+  | "qualified"
+  | "needs_analysis"
+  | "proposal"
+  | "negotiation"
+  | "closed_won"
+  | "closed_lost"
+  | "nurturing";
 
 export type OpportunityStatus =
-  | 'active'
-  | 'on_hold'
-  | 'nurturing'
-  | 'stalled'
-  | 'expired';
+  | "active"
+  | "on_hold"
+  | "nurturing"
+  | "stalled"
+  | "expired";
 
 export type InteractionType =
-  | 'call'
-  | 'email'
-  | 'meeting'
-  | 'demo'
-  | 'proposal'
-  | 'follow_up'
-  | 'trade_show'
-  | 'site_visit'
-  | 'contract_review'
-  | 'check_in'
-  | 'social';
+  | "call"
+  | "email"
+  | "meeting"
+  | "demo"
+  | "proposal"
+  | "follow_up"
+  | "trade_show"
+  | "site_visit"
+  | "contract_review"
+  | "check_in"
+  | "social";
 
-export type ActivityType = 'engagement' | 'interaction';
+export type ActivityType = "engagement" | "interaction";
 
-export type PriorityLevel = 'low' | 'medium' | 'high' | 'critical';
+export type PriorityLevel = "low" | "medium" | "high" | "critical";
 
-export type PurchaseInfluence = 'High' | 'Medium' | 'Low' | 'Unknown';
+export type PurchaseInfluence = "High" | "Medium" | "Low" | "Unknown";
 
 export type DecisionAuthority =
-  | 'Decision Maker'
-  | 'Influencer'
-  | 'End User'
-  | 'Gatekeeper';
+  | "Decision Maker"
+  | "Influencer"
+  | "End User"
+  | "Gatekeeper";
 
 export type RelationshipType =
-  | 'professional'
-  | 'personal'
-  | 'historical'
-  | 'competitive';
+  | "professional"
+  | "personal"
+  | "historical"
+  | "competitive";
 
-export type Sentiment = 'positive' | 'neutral' | 'negative';
+export type Sentiment = "positive" | "neutral" | "negative";
 
 export type ParticipantRole =
-  | 'customer'
-  | 'principal'
-  | 'distributor'
-  | 'partner'
-  | 'competitor';
+  | "customer"
+  | "principal"
+  | "distributor"
+  | "partner"
+  | "competitor";
 
 // =====================================================
 // BASE TYPES
@@ -116,7 +116,7 @@ export interface Company extends BaseEntity {
   is_distributor: boolean;
   parent_company_id?: number | null;
   segment: string;
-  priority: 'A' | 'B' | 'C' | 'D';
+  priority: "A" | "B" | "C" | "D";
   import_session_id?: string | null;
   search_tsv?: any;
 }
@@ -127,7 +127,7 @@ export interface Contact extends BaseEntity {
   email_jsonb?: Record<string, any> | null;
   phone_jsonb?: Record<string, any> | null;
   avatar?: Record<string, any> | null;
-  company_id?: number | null;  // Legacy, use ContactOrganization
+  company_id?: number | null; // Legacy, use ContactOrganization
   sale_id?: number | null;
   archived_at?: string | null;
 
@@ -143,7 +143,7 @@ export interface Contact extends BaseEntity {
 export interface Opportunity extends BaseEntity {
   name: string;
   description?: string | null;
-  company_id?: number | null;  // Legacy
+  company_id?: number | null; // Legacy
   contact_id?: number | null;
   contact_ids?: number[] | null;
   sale_id?: number | null;
@@ -158,8 +158,8 @@ export interface Opportunity extends BaseEntity {
   estimated_close_date?: string | null;
   actual_close_date?: string | null;
   customer_organization_id?: number | null;
-  principal_organization_id?: number | null;  // Legacy
-  distributor_organization_id?: number | null;  // Legacy
+  principal_organization_id?: number | null; // Legacy
+  distributor_organization_id?: number | null; // Legacy
   founding_interaction_id?: number | null;
   stage_manual: boolean;
   status_manual: boolean;
@@ -179,7 +179,7 @@ export interface Activity extends BaseEntity {
   duration_minutes?: number | null;
   contact_id?: number | null;
   organization_id?: number | null;
-  opportunity_id?: number | null;  // Required for interactions
+  opportunity_id?: number | null; // Required for interactions
   follow_up_required: boolean;
   follow_up_date?: string | null;
   follow_up_notes?: string | null;
@@ -230,7 +230,7 @@ export interface ContactOrganization extends BaseEntity {
 export interface ContactPreferredPrincipal extends BaseEntity {
   contact_id: number;
   principal_organization_id: number;
-  advocacy_strength: number;  // 1-10
+  advocacy_strength: number; // 1-10
   advocacy_notes?: string | null;
   relationship_type: RelationshipType;
   purchase_influence_for_principal: PurchaseInfluence;
@@ -242,7 +242,7 @@ export interface OpportunityParticipant extends BaseEntity {
   organization_id: number;
   role: ParticipantRole;
   is_primary: boolean;
-  commission_rate?: number | null;  // 0-1
+  commission_rate?: number | null; // 0-1
   territory?: string | null;
   notes?: string | null;
 }
@@ -254,9 +254,9 @@ export interface OpportunityProduct extends BaseEntity {
   product_category?: string | null;
   quantity: number;
   unit_price?: number | null;
-  extended_price?: number | null;  // Generated
+  extended_price?: number | null; // Generated
   discount_percent: number;
-  final_price?: number | null;  // Generated
+  final_price?: number | null; // Generated
   notes?: string | null;
 }
 
@@ -289,7 +289,7 @@ export interface Product extends BaseEntity {
 export interface PrincipalDistributorRelationship extends BaseEntity {
   principal_id: number;
   distributor_id: number;
-  relationship_status: 'active' | 'pending' | 'terminated';
+  relationship_status: "active" | "pending" | "terminated";
   start_date?: string;
   end_date?: string | null;
   commission_percent?: number | null;
@@ -313,7 +313,7 @@ export interface ContactNote extends BaseEntity {
 }
 
 export interface OpportunityNote extends BaseEntity {
-  opportunity_id: number;  // Renamed from deal_id
+  opportunity_id: number; // Renamed from deal_id
   note: string;
   sale_id?: number | null;
 }
@@ -326,7 +326,7 @@ export interface MigrationHistory {
   id: number;
   phase_number: string;
   phase_name: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'failed' | 'rolled_back';
+  status: "pending" | "in_progress" | "completed" | "failed" | "rolled_back";
   started_at?: string | null;
   completed_at?: string | null;
   error_message?: string | null;
@@ -609,7 +609,7 @@ export interface Database {
       };
       get_activity_timeline: {
         Args: {
-          p_entity_type: 'contact' | 'organization' | 'opportunity';
+          p_entity_type: "contact" | "organization" | "opportunity";
           p_entity_id: number;
           p_limit?: number;
         };

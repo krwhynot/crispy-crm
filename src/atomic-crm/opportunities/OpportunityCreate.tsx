@@ -1,4 +1,12 @@
-import { CreateBase, Form, useGetIdentity, useDataProvider, useNotify, useRedirect, useGetList } from "ra-core";
+import {
+  CreateBase,
+  Form,
+  useGetIdentity,
+  useDataProvider,
+  useNotify,
+  useRedirect,
+  useGetList,
+} from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton, SaveButton } from "@/components/admin";
 import { FormToolbar } from "../layout/FormToolbar";
@@ -15,7 +23,7 @@ const OpportunityCreate = () => {
   const queryClient = useQueryClient();
 
   // Get all opportunities for index management
-  const { data: allOpportunities } = useGetList<Opportunity>('opportunities', {
+  const { data: allOpportunities } = useGetList<Opportunity>("opportunities", {
     pagination: { page: 1, perPage: 1000 },
     filter: { "deleted_at@is": null },
   });
@@ -25,7 +33,8 @@ const OpportunityCreate = () => {
     if (allOpportunities) {
       // Get opportunities in the same stage
       const opportunities = allOpportunities.filter(
-        (o: Opportunity) => o.stage === opportunity.stage && o.id !== opportunity.id,
+        (o: Opportunity) =>
+          o.stage === opportunity.stage && o.id !== opportunity.id,
       );
 
       // Update indexes to make room for the new opportunity at index 0
@@ -55,7 +64,9 @@ const OpportunityCreate = () => {
           if (!res) return res;
           return {
             ...res,
-            data: res.data.map((o: Opportunity) => opportunitiesById[o.id] || o),
+            data: res.data.map(
+              (o: Opportunity) => opportunitiesById[o.id] || o,
+            ),
           };
         },
         { updatedAt: now },
@@ -75,9 +86,9 @@ const OpportunityCreate = () => {
               sales_id: identity?.id,
               contact_ids: [],
               index: 0,
-              priority: 'medium',
+              priority: "medium",
               probability: 50,
-              stage: 'new_lead'
+              stage: "new_lead",
             }}
           >
             <Card>

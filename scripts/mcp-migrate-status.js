@@ -14,31 +14,33 @@
  * - Supports JSON output for CI/CD integration
  */
 
-import { existsSync, readFileSync } from 'fs';
-import { readdir } from 'fs/promises';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { existsSync, readFileSync } from "fs";
+import { readdir } from "fs/promises";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Configuration
-const MIGRATION_DIR = join(__dirname, '..', 'supabase', 'migrations');
-const LOG_DIR = join(__dirname, '..', 'logs');
-const STATE_FILE = join(LOG_DIR, 'mcp-migration-state.json');
+const MIGRATION_DIR = join(__dirname, "..", "supabase", "migrations");
+const LOG_DIR = join(__dirname, "..", "logs");
+const STATE_FILE = join(LOG_DIR, "mcp-migration-state.json");
 
 class MCPMigrationStatusChecker {
   constructor() {
     this.projectId = null;
-    this.outputFormat = 'human'; // 'human' or 'json'
+    this.outputFormat = "human"; // 'human' or 'json'
   }
 
   async initialize(options = {}) {
     this.projectId = options.projectId || process.env.VITE_SUPABASE_PROJECT_ID;
-    this.outputFormat = options.outputFormat || 'human';
+    this.outputFormat = options.outputFormat || "human";
 
     if (!this.projectId) {
-      throw new Error('Project ID is required. Set VITE_SUPABASE_PROJECT_ID environment variable or pass --project-id');
+      throw new Error(
+        "Project ID is required. Set VITE_SUPABASE_PROJECT_ID environment variable or pass --project-id",
+      );
     }
   }
 
@@ -48,25 +50,30 @@ class MCPMigrationStatusChecker {
 
       // Filter and sort migration files, focusing on numbered ones
       const migrationFiles = files
-        .filter(f => f.endsWith('.sql'))
-        .filter(f => /^\d+_.+\.sql$/.test(f)) // Only numbered migrations
+        .filter((f) => f.endsWith(".sql"))
+        .filter((f) => /^\d+_.+\.sql$/.test(f)) // Only numbered migrations
         .sort((a, b) => {
-          const aNum = parseInt(a.split('_')[0]);
-          const bNum = parseInt(b.split('_')[0]);
+          const aNum = parseInt(a.split("_")[0]);
+          const bNum = parseInt(b.split("_")[0]);
           return aNum - bNum;
         })
-        .map(filename => {
+        .map((filename) => {
           const filePath = join(MIGRATION_DIR, filename);
-          const stats = existsSync(filePath) ? require('fs').statSync(filePath) : null;
+          const stats = existsSync(filePath)
+            ? require("fs").statSync(filePath)
+            : null;
 
           return {
             filename,
-            number: parseInt(filename.split('_')[0]),
-            description: filename.replace(/^\d+_/, '').replace('.sql', '').replace(/_/g, ' '),
+            number: parseInt(filename.split("_")[0]),
+            description: filename
+              .replace(/^\d+_/, "")
+              .replace(".sql", "")
+              .replace(/_/g, " "),
             path: filePath,
             size: stats ? stats.size : 0,
             modified: stats ? stats.mtime.toISOString() : null,
-            exists: !!stats
+            exists: !!stats,
           };
         });
 
@@ -96,7 +103,9 @@ class MCPMigrationStatusChecker {
       const result = await this.executeMCPQuery(query);
       return result || [];
     } catch (error) {
-      if (error.message.includes('relation "migration_history" does not exist')) {
+      if (
+        error.message.includes('relation "migration_history" does not exist')
+      ) {
         return [];
       }
       throw error;
@@ -110,21 +119,21 @@ class MCPMigrationStatusChecker {
     // Mock data for demonstration
     return [
       {
-        migration_name: '107_critical_schema_fixes.sql',
+        migration_name: "107_critical_schema_fixes.sql",
         applied_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 24 hours ago
-        migration_hash: 'abc123',
-        status: 'completed',
-        rollback_sql: 'ROLLBACK_AVAILABLE_FOR_48_HOURS',
-        applied_by: 'migration-execute.js',
-        hours_since_applied: 24
-      }
+        migration_hash: "abc123",
+        status: "completed",
+        rollback_sql: "ROLLBACK_AVAILABLE_FOR_48_HOURS",
+        applied_by: "migration-execute.js",
+        hours_since_applied: 24,
+      },
     ];
   }
 
   async getLocalMigrationState() {
     try {
       if (existsSync(STATE_FILE)) {
-        const stateData = readFileSync(STATE_FILE, 'utf8');
+        const stateData = readFileSync(STATE_FILE, "utf8");
         return JSON.parse(stateData);
       }
       return null;
@@ -138,58 +147,63 @@ class MCPMigrationStatusChecker {
     const appliedMigrations = await this.getMigrationHistory();
     const localState = await this.getLocalMigrationState();
 
-    const appliedNames = new Set(appliedMigrations.map(m => m.migration_name));
-    const pending = allFiles.filter(file => !appliedNames.has(file.filename));
-    const applied = allFiles.filter(file => appliedNames.has(file.filename));
+    const appliedNames = new Set(
+      appliedMigrations.map((m) => m.migration_name),
+    );
+    const pending = allFiles.filter((file) => !appliedNames.has(file.filename));
+    const applied = allFiles.filter((file) => appliedNames.has(file.filename));
 
     // Check for rollback eligibility (48-hour window)
     const ROLLBACK_WINDOW_HOURS = 48;
-    const rollbackEligible = appliedMigrations.filter(m =>
-      m.status === 'completed' &&
-      m.hours_since_applied < ROLLBACK_WINDOW_HOURS &&
-      m.rollback_sql &&
-      m.rollback_sql !== 'ROLLBACK_NOT_AVAILABLE'
+    const rollbackEligible = appliedMigrations.filter(
+      (m) =>
+        m.status === "completed" &&
+        m.hours_since_applied < ROLLBACK_WINDOW_HOURS &&
+        m.rollback_sql &&
+        m.rollback_sql !== "ROLLBACK_NOT_AVAILABLE",
     );
 
     // Detect issues
     const issues = [];
 
     // Check for failed migrations
-    const failed = appliedMigrations.filter(m => m.status === 'failed');
+    const failed = appliedMigrations.filter((m) => m.status === "failed");
     if (failed.length > 0) {
       issues.push({
-        type: 'error',
+        type: "error",
         message: `${failed.length} migration(s) failed`,
-        details: failed.map(m => m.migration_name)
+        details: failed.map((m) => m.migration_name),
       });
     }
 
     // Check for in-progress migrations (possible interruption)
-    const inProgress = appliedMigrations.filter(m => m.status === 'in_progress');
+    const inProgress = appliedMigrations.filter(
+      (m) => m.status === "in_progress",
+    );
     if (inProgress.length > 0) {
       issues.push({
-        type: 'warning',
+        type: "warning",
         message: `${inProgress.length} migration(s) appear to be interrupted`,
-        details: inProgress.map(m => m.migration_name)
+        details: inProgress.map((m) => m.migration_name),
       });
     }
 
     // Check for missing migration files
-    const missingFiles = appliedMigrations.filter(m => {
-      const file = allFiles.find(f => f.filename === m.migration_name);
+    const missingFiles = appliedMigrations.filter((m) => {
+      const file = allFiles.find((f) => f.filename === m.migration_name);
       return !file || !file.exists;
     });
 
     if (missingFiles.length > 0) {
       issues.push({
-        type: 'warning',
+        type: "warning",
         message: `${missingFiles.length} applied migration file(s) are missing from filesystem`,
-        details: missingFiles.map(m => m.migration_name)
+        details: missingFiles.map((m) => m.migration_name),
       });
     }
 
     // Check for sequence gaps
-    const appliedNumbers = applied.map(f => f.number).sort((a, b) => a - b);
+    const appliedNumbers = applied.map((f) => f.number).sort((a, b) => a - b);
     const gaps = [];
     for (let i = 1; i < appliedNumbers.length; i++) {
       const current = appliedNumbers[i];
@@ -203,9 +217,9 @@ class MCPMigrationStatusChecker {
 
     if (gaps.length > 0) {
       issues.push({
-        type: 'info',
-        message: `Migration sequence has gaps: ${gaps.join(', ')}`,
-        details: gaps
+        type: "info",
+        message: `Migration sequence has gaps: ${gaps.join(", ")}`,
+        details: gaps,
       });
     }
 
@@ -217,65 +231,82 @@ class MCPMigrationStatusChecker {
         applied_count: applied.length,
         pending_count: pending.length,
         failed_count: failed.length,
-        rollback_eligible_count: rollbackEligible.length
+        rollback_eligible_count: rollbackEligible.length,
       },
-      pending_migrations: pending.map(file => ({
+      pending_migrations: pending.map((file) => ({
         filename: file.filename,
         number: file.number,
         description: file.description,
         size: file.size,
-        modified: file.modified
+        modified: file.modified,
       })),
-      applied_migrations: applied.map(file => {
-        const historyRecord = appliedMigrations.find(m => m.migration_name === file.filename);
+      applied_migrations: applied.map((file) => {
+        const historyRecord = appliedMigrations.find(
+          (m) => m.migration_name === file.filename,
+        );
         return {
           filename: file.filename,
           number: file.number,
           description: file.description,
-          applied_at: historyRecord ? historyRecord.applied_at : 'unknown',
-          status: historyRecord ? historyRecord.status : 'unknown',
-          hours_since_applied: historyRecord ? historyRecord.hours_since_applied : null,
-          applied_by: historyRecord ? historyRecord.applied_by : 'unknown',
-          rollback_eligible: rollbackEligible.some(r => r.migration_name === file.filename)
+          applied_at: historyRecord ? historyRecord.applied_at : "unknown",
+          status: historyRecord ? historyRecord.status : "unknown",
+          hours_since_applied: historyRecord
+            ? historyRecord.hours_since_applied
+            : null,
+          applied_by: historyRecord ? historyRecord.applied_by : "unknown",
+          rollback_eligible: rollbackEligible.some(
+            (r) => r.migration_name === file.filename,
+          ),
         };
       }),
-      rollback_eligible: rollbackEligible.map(m => ({
+      rollback_eligible: rollbackEligible.map((m) => ({
         migration_name: m.migration_name,
         applied_at: m.applied_at,
-        hours_remaining: Math.max(0, ROLLBACK_WINDOW_HOURS - m.hours_since_applied),
-        applied_by: m.applied_by
+        hours_remaining: Math.max(
+          0,
+          ROLLBACK_WINDOW_HOURS - m.hours_since_applied,
+        ),
+        applied_by: m.applied_by,
       })),
       issues,
       local_state: localState,
-      next_migration_number: Math.max(...allFiles.map(f => f.number), 107) + 1
+      next_migration_number:
+        Math.max(...allFiles.map((f) => f.number), 107) + 1,
     };
   }
 
   formatHumanOutput(status) {
-    console.log('='.repeat(60));
-    console.log('MIGRATION STATUS REPORT');
-    console.log('='.repeat(60));
+    console.log("=".repeat(60));
+    console.log("MIGRATION STATUS REPORT");
+    console.log("=".repeat(60));
     console.log(`Project ID: ${status.project_id}`);
     console.log(`Generated: ${new Date(status.timestamp).toLocaleString()}`);
     console.log();
 
     // Summary
-    console.log('📊 SUMMARY');
+    console.log("📊 SUMMARY");
     console.log(`   Total migrations: ${status.summary.total_files}`);
     console.log(`   Applied: ${status.summary.applied_count}`);
     console.log(`   Pending: ${status.summary.pending_count}`);
     console.log(`   Failed: ${status.summary.failed_count}`);
-    console.log(`   Rollback eligible: ${status.summary.rollback_eligible_count}`);
+    console.log(
+      `   Rollback eligible: ${status.summary.rollback_eligible_count}`,
+    );
     console.log();
 
     // Issues
     if (status.issues.length > 0) {
-      console.log('🚨 ISSUES');
-      status.issues.forEach(issue => {
-        const icon = issue.type === 'error' ? '❌' : issue.type === 'warning' ? '⚠️' : 'ℹ️';
+      console.log("🚨 ISSUES");
+      status.issues.forEach((issue) => {
+        const icon =
+          issue.type === "error"
+            ? "❌"
+            : issue.type === "warning"
+              ? "⚠️"
+              : "ℹ️";
         console.log(`   ${icon} ${issue.message}`);
         if (issue.details && issue.details.length > 0) {
-          issue.details.forEach(detail => {
+          issue.details.forEach((detail) => {
             console.log(`      - ${detail}`);
           });
         }
@@ -285,37 +316,49 @@ class MCPMigrationStatusChecker {
 
     // Pending migrations
     if (status.pending_migrations.length > 0) {
-      console.log('⏳ PENDING MIGRATIONS');
-      status.pending_migrations.forEach(migration => {
+      console.log("⏳ PENDING MIGRATIONS");
+      status.pending_migrations.forEach((migration) => {
         console.log(`   ${migration.number}. ${migration.filename}`);
         console.log(`      Description: ${migration.description}`);
         console.log(`      Size: ${migration.size} bytes`);
-        console.log(`      Modified: ${new Date(migration.modified).toLocaleString()}`);
+        console.log(
+          `      Modified: ${new Date(migration.modified).toLocaleString()}`,
+        );
         console.log();
       });
     } else {
-      console.log('✅ NO PENDING MIGRATIONS');
+      console.log("✅ NO PENDING MIGRATIONS");
       console.log();
     }
 
     // Recently applied
     if (status.applied_migrations.length > 0) {
-      console.log('📝 RECENTLY APPLIED MIGRATIONS');
+      console.log("📝 RECENTLY APPLIED MIGRATIONS");
       const recent = status.applied_migrations
-        .filter(m => m.applied_at !== 'unknown')
+        .filter((m) => m.applied_at !== "unknown")
         .sort((a, b) => new Date(b.applied_at) - new Date(a.applied_at))
         .slice(0, 5);
 
-      recent.forEach(migration => {
-        const statusIcon = migration.status === 'completed' ? '✅' :
-                          migration.status === 'failed' ? '❌' : '⏳';
-        const rollbackIcon = migration.rollback_eligible ? '🔄' : '';
+      recent.forEach((migration) => {
+        const statusIcon =
+          migration.status === "completed"
+            ? "✅"
+            : migration.status === "failed"
+              ? "❌"
+              : "⏳";
+        const rollbackIcon = migration.rollback_eligible ? "🔄" : "";
 
-        console.log(`   ${statusIcon} ${migration.number}. ${migration.filename} ${rollbackIcon}`);
-        console.log(`      Applied: ${new Date(migration.applied_at).toLocaleString()}`);
+        console.log(
+          `   ${statusIcon} ${migration.number}. ${migration.filename} ${rollbackIcon}`,
+        );
+        console.log(
+          `      Applied: ${new Date(migration.applied_at).toLocaleString()}`,
+        );
         console.log(`      By: ${migration.applied_by}`);
         if (migration.rollback_eligible) {
-          console.log(`      Rollback eligible (${migration.hours_since_applied?.toFixed(1)}h ago)`);
+          console.log(
+            `      Rollback eligible (${migration.hours_since_applied?.toFixed(1)}h ago)`,
+          );
         }
         console.log();
       });
@@ -323,30 +366,40 @@ class MCPMigrationStatusChecker {
 
     // Rollback window
     if (status.rollback_eligible.length > 0) {
-      console.log('🔄 ROLLBACK ELIGIBLE MIGRATIONS');
-      status.rollback_eligible.forEach(migration => {
+      console.log("🔄 ROLLBACK ELIGIBLE MIGRATIONS");
+      status.rollback_eligible.forEach((migration) => {
         console.log(`   ${migration.migration_name}`);
-        console.log(`      Applied: ${new Date(migration.applied_at).toLocaleString()}`);
-        console.log(`      Time remaining: ${migration.hours_remaining.toFixed(1)} hours`);
+        console.log(
+          `      Applied: ${new Date(migration.applied_at).toLocaleString()}`,
+        );
+        console.log(
+          `      Time remaining: ${migration.hours_remaining.toFixed(1)} hours`,
+        );
         console.log();
       });
     }
 
     // Next actions
-    console.log('📋 NEXT ACTIONS');
+    console.log("📋 NEXT ACTIONS");
     if (status.pending_migrations.length > 0) {
-      console.log('   • Run migrations:');
-      console.log('     npx node scripts/mcp-migrate.js --project-id', status.project_id);
-      console.log('   • Dry run first:');
-      console.log('     npx node scripts/mcp-migrate.js --dry-run --project-id', status.project_id);
+      console.log("   • Run migrations:");
+      console.log(
+        "     npx node scripts/mcp-migrate.js --project-id",
+        status.project_id,
+      );
+      console.log("   • Dry run first:");
+      console.log(
+        "     npx node scripts/mcp-migrate.js --dry-run --project-id",
+        status.project_id,
+      );
     }
 
-    if (status.issues.some(i => i.type === 'error')) {
-      console.log('   • Fix failed migrations before proceeding');
+    if (status.issues.some((i) => i.type === "error")) {
+      console.log("   • Fix failed migrations before proceeding");
     }
 
     if (status.rollback_eligible.length > 0) {
-      console.log('   • Consider rollback if needed (within 48h window)');
+      console.log("   • Consider rollback if needed (within 48h window)");
     }
 
     console.log(`   • Next migration number: ${status.next_migration_number}`);
@@ -361,22 +414,23 @@ class MCPMigrationStatusChecker {
     try {
       const status = await this.analyzeMigrationStatus();
 
-      if (this.outputFormat === 'json') {
+      if (this.outputFormat === "json") {
         this.formatJsonOutput(status);
       } else {
         this.formatHumanOutput(status);
       }
 
       // Exit with appropriate code
-      const hasErrors = status.issues.some(i => i.type === 'error');
+      const hasErrors = status.issues.some((i) => i.type === "error");
       process.exit(hasErrors ? 1 : 0);
-
     } catch (error) {
-      if (this.outputFormat === 'json') {
-        console.log(JSON.stringify({
-          error: error.message,
-          timestamp: new Date().toISOString()
-        }));
+      if (this.outputFormat === "json") {
+        console.log(
+          JSON.stringify({
+            error: error.message,
+            timestamp: new Date().toISOString(),
+          }),
+        );
       } else {
         console.error(`❌ Status check failed: ${error.message}`);
       }
@@ -389,17 +443,17 @@ class MCPMigrationStatusChecker {
 async function main() {
   const args = process.argv.slice(2);
   const options = {
-    outputFormat: args.includes('--json') ? 'json' : 'human',
-    projectId: null
+    outputFormat: args.includes("--json") ? "json" : "human",
+    projectId: null,
   };
 
   // Parse project ID
-  const projectIdIndex = args.indexOf('--project-id');
+  const projectIdIndex = args.indexOf("--project-id");
   if (projectIdIndex !== -1 && args[projectIdIndex + 1]) {
     options.projectId = args[projectIdIndex + 1];
   }
 
-  if (args.includes('--help') || args.includes('-h')) {
+  if (args.includes("--help") || args.includes("-h")) {
     console.log(`
 MCP Migration Status Checker
 
@@ -432,7 +486,6 @@ EXIT CODES:
     const checker = new MCPMigrationStatusChecker();
     await checker.initialize(options);
     await checker.checkStatus();
-
   } catch (error) {
     console.error(`❌ Migration status check failed: ${error.message}`);
     process.exit(1);

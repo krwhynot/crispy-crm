@@ -22,7 +22,10 @@ export function ActivityLogOpportunityCreated({
           <span className="text-muted-foreground text-sm">
             Sales ID: {activity.sales_id}
           </span>{" "}
-          added opportunity <Link to={`/opportunities/${opportunity.id}/show`}>{opportunity.name}</Link>{" "}
+          added opportunity{" "}
+          <Link to={`/opportunities/${opportunity.id}/show`}>
+            {opportunity.name}
+          </Link>{" "}
           {context !== "company" && (
             <>
               to company {activity.company_id}{" "}

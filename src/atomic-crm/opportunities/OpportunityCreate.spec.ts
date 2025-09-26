@@ -2,6 +2,7 @@
  * @vitest-environment jsdom
  */
 
+import { vi, describe, it, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AdminContext } from 'ra-core';
 import { MemoryRouter } from 'react-router-dom';

@@ -20,14 +20,13 @@ export const Dashboard = () => {
       pagination: { page: 1, perPage: 1 },
     });
 
-  const { total: totalOpportunities, isPending: isPendingOpportunities } = useGetList<Contact>(
-    "opportunities",
-    {
+  const { total: totalOpportunities, isPending: isPendingOpportunities } =
+    useGetList<Contact>("opportunities", {
       pagination: { page: 1, perPage: 1 },
-    },
-  );
+    });
 
-  const isPending = isPendingContact || isPendingContactNotes || isPendingOpportunities;
+  const isPending =
+    isPendingContact || isPendingContactNotes || isPendingOpportunities;
 
   if (isPending) {
     return null;

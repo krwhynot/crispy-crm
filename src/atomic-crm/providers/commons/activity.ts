@@ -57,11 +57,14 @@ const getNewCompanies = async (
   dataProvider: DataProvider,
   filter: any,
 ): Promise<Activity[]> => {
-  const { data: companies } = await dataProvider.getList<Company>("organizations", {
-    filter,
-    pagination: { page: 1, perPage: 250 },
-    sort: { field: "created_at", order: "DESC" },
-  });
+  const { data: companies } = await dataProvider.getList<Company>(
+    "organizations",
+    {
+      filter,
+      pagination: { page: 1, perPage: 250 },
+      sort: { field: "created_at", order: "DESC" },
+    },
+  );
   return companies.map((company) => ({
     id: `organization.${company.id}.created`,
     type: ORGANIZATION_CREATED,
@@ -126,11 +129,14 @@ async function getNewOpportunitiesAndNotes(
   dataProvider: DataProvider,
   filter: any,
 ): Promise<Activity[]> {
-  const { data: opportunities } = await dataProvider.getList<Opportunity>("opportunities", {
-    filter,
-    pagination: { page: 1, perPage: 250 },
-    sort: { field: "created_at", order: "DESC" },
-  });
+  const { data: opportunities } = await dataProvider.getList<Opportunity>(
+    "opportunities",
+    {
+      filter,
+      pagination: { page: 1, perPage: 250 },
+      sort: { field: "created_at", order: "DESC" },
+    },
+  );
 
   const recentOpportunityNotesFilter = {} as any;
   if (filter.sales_id) {
@@ -139,18 +145,18 @@ async function getNewOpportunitiesAndNotes(
   if (filter.company_id) {
     // No company_id field in opportunityNote, filtering by related opportunities instead.
     // This filter is only valid if an opportunity has less than 250 notes.
-    const opportunityIds = opportunities.map((opportunity) => opportunity.id).join(",");
+    const opportunityIds = opportunities
+      .map((opportunity) => opportunity.id)
+      .join(",");
     recentOpportunityNotesFilter["opportunity_id@in"] = `(${opportunityIds})`;
   }
 
-  const { data: opportunityNotes } = await dataProvider.getList<OpportunityNote>(
-    "opportunityNotes",
-    {
+  const { data: opportunityNotes } =
+    await dataProvider.getList<OpportunityNote>("opportunityNotes", {
       filter: recentOpportunityNotesFilter,
       pagination: { page: 1, perPage: 250 },
       sort: { field: "date", order: "DESC" },
-    },
-  );
+    });
 
   const newOpportunities = opportunities.map((opportunity) => ({
     id: `opportunity.${opportunity.id}.created`,

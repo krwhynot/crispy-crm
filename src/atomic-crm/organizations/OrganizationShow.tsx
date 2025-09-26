@@ -81,7 +81,10 @@ const OrganizationShowContent = () => {
                 ) : null}
               </TabsList>
               <TabsContent value="activity" className="pt-2">
-                <ActivityLog organizationId={record.id} context="organization" />
+                <ActivityLog
+                  organizationId={record.id}
+                  context="organization"
+                />
               </TabsContent>
               <TabsContent value="contacts">
                 {record.nb_contacts ? (
@@ -187,7 +190,11 @@ const CreateRelatedContactButton = () => {
     <Button variant="outline" asChild size="sm" className="h-9">
       <RouterLink
         to="/contacts/create"
-        state={organization ? { record: { organization_id: organization.id } } : undefined}
+        state={
+          organization
+            ? { record: { organization_id: organization.id } }
+            : undefined
+        }
         className="flex items-center gap-2"
       >
         <UserPlus className="h-4 w-4" />
@@ -198,7 +205,11 @@ const CreateRelatedContactButton = () => {
 };
 
 const OpportunitiesIterator = () => {
-  const { data: opportunities, error, isPending } = useListContext<Opportunity>();
+  const {
+    data: opportunities,
+    error,
+    isPending,
+  } = useListContext<Opportunity>();
   const { opportunityStages } = useConfigurationContext();
   if (isPending || error) return null;
 
@@ -228,7 +239,8 @@ const OpportunitiesIterator = () => {
               </div>
               <div className="text-right">
                 <div className="text-sm text-muted-foreground">
-                  last activity {formatDistance(opportunity.updated_at, now)} ago{" "}
+                  last activity {formatDistance(opportunity.updated_at, now)}{" "}
+                  ago{" "}
                 </div>
               </div>
             </RouterLink>

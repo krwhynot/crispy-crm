@@ -35,10 +35,16 @@ const ContactShowContent = () => {
                 <div className="inline-flex text-sm text-muted-foreground">
                   {record.title}
                   {record.department && ` - ${record.department}`}
-                  {record.title && record.organizations?.find(org => org.is_primary) && " at "}
-                  {record.organizations?.find(org => org.is_primary) && (
+                  {record.title &&
+                    record.organizations?.find((org) => org.is_primary) &&
+                    " at "}
+                  {record.organizations?.find((org) => org.is_primary) && (
                     <ReferenceField
-                      record={{ company_id: record.organizations.find(org => org.is_primary)?.organization_id }}
+                      record={{
+                        company_id: record.organizations.find(
+                          (org) => org.is_primary,
+                        )?.organization_id,
+                      }}
                       source="company_id"
                       reference="organizations"
                       link="show"
@@ -50,20 +56,32 @@ const ContactShowContent = () => {
                 </div>
                 {record.role && (
                   <div className="text-sm text-muted-foreground">
-                    Role: {record.role.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    {record.purchase_influence && record.purchase_influence !== 'Unknown' && (
-                      <span> • Purchase Influence: {record.purchase_influence}</span>
-                    )}
-                    {record.decision_authority && record.decision_authority !== 'End User' && (
-                      <span> • {record.decision_authority}</span>
-                    )}
+                    Role:{" "}
+                    {record.role
+                      .replace("_", " ")
+                      .replace(/\b\w/g, (l) => l.toUpperCase())}
+                    {record.purchase_influence &&
+                      record.purchase_influence !== "Unknown" && (
+                        <span>
+                          {" "}
+                          • Purchase Influence: {record.purchase_influence}
+                        </span>
+                      )}
+                    {record.decision_authority &&
+                      record.decision_authority !== "End User" && (
+                        <span> • {record.decision_authority}</span>
+                      )}
                   </div>
                 )}
               </div>
               <div>
-                {record.organizations?.find(org => org.is_primary) && (
+                {record.organizations?.find((org) => org.is_primary) && (
                   <ReferenceField
-                    record={{ company_id: record.organizations.find(org => org.is_primary)?.organization_id }}
+                    record={{
+                      company_id: record.organizations.find(
+                        (org) => org.is_primary,
+                      )?.organization_id,
+                    }}
                     source="company_id"
                     reference="organizations"
                     link="show"
@@ -77,10 +95,15 @@ const ContactShowContent = () => {
             {/* Organizations Section */}
             {record.organizations && record.organizations.length > 0 && (
               <div className="mt-6">
-                <h6 className="text-lg font-semibold mb-4">Associated Organizations</h6>
+                <h6 className="text-lg font-semibold mb-4">
+                  Associated Organizations
+                </h6>
                 <div className="space-y-2">
                   {record.organizations.map((org: any) => (
-                    <div key={org.organization_id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div
+                      key={org.organization_id}
+                      className="flex items-center justify-between p-3 border rounded-lg"
+                    >
                       <div className="flex-1">
                         <ReferenceField
                           record={{ company_id: org.organization_id }}
@@ -93,14 +116,26 @@ const ContactShowContent = () => {
                         </ReferenceField>
                         <div className="text-sm text-muted-foreground mt-1">
                           {org.role && (
-                            <span>Role: {org.role.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}</span>
+                            <span>
+                              Role:{" "}
+                              {org.role
+                                .replace("_", " ")
+                                .replace(/\b\w/g, (l: string) =>
+                                  l.toUpperCase(),
+                                )}
+                            </span>
                           )}
-                          {org.purchase_influence && org.purchase_influence !== 'Unknown' && (
-                            <span> • Influence: {org.purchase_influence}</span>
-                          )}
-                          {org.decision_authority && org.decision_authority !== 'End User' && (
-                            <span> • {org.decision_authority}</span>
-                          )}
+                          {org.purchase_influence &&
+                            org.purchase_influence !== "Unknown" && (
+                              <span>
+                                {" "}
+                                • Influence: {org.purchase_influence}
+                              </span>
+                            )}
+                          {org.decision_authority &&
+                            org.decision_authority !== "End User" && (
+                              <span> • {org.decision_authority}</span>
+                            )}
                         </div>
                       </div>
                       <div className="text-sm">

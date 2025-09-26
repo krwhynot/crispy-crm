@@ -40,7 +40,9 @@ export const OpportunitiesChart = memo(() => {
   const months = useMemo(() => {
     if (!data) return [];
     const opportunitiesByMonth = data.reduce((acc, opportunity) => {
-      const month = startOfMonth(opportunity.created_at ?? new Date()).toISOString();
+      const month = startOfMonth(
+        opportunity.created_at ?? new Date(),
+      ).toISOString();
       if (!acc[month]) {
         acc[month] = [];
       }
@@ -52,20 +54,27 @@ export const OpportunitiesChart = memo(() => {
       return {
         date: format(month, "MMM"),
         won: opportunitiesByMonth[month]
-          .filter((opportunity: Opportunity) => opportunity.stage === "closed_won")
+          .filter(
+            (opportunity: Opportunity) => opportunity.stage === "closed_won",
+          )
           .reduce((acc: number, opportunity: Opportunity) => {
             acc += opportunity.amount;
             return acc;
           }, 0),
         pending: opportunitiesByMonth[month]
-          .filter((opportunity: Opportunity) => !["closed_won", "closed_lost"].includes(opportunity.stage))
+          .filter(
+            (opportunity: Opportunity) =>
+              !["closed_won", "closed_lost"].includes(opportunity.stage),
+          )
           .reduce((acc: number, opportunity: Opportunity) => {
             const stageMultiplier = multiplier[opportunity.stage] || 0.1;
             acc += opportunity.amount * stageMultiplier;
             return acc;
           }, 0),
         lost: opportunitiesByMonth[month]
-          .filter((opportunity: Opportunity) => opportunity.stage === "closed_lost")
+          .filter(
+            (opportunity: Opportunity) => opportunity.stage === "closed_lost",
+          )
           .reduce((acc: number, opportunity: Opportunity) => {
             acc -= opportunity.amount;
             return acc;
@@ -100,7 +109,11 @@ export const OpportunitiesChart = memo(() => {
           data={months}
           indexBy="date"
           keys={["won", "pending", "lost"]}
-          colors={["var(--success-default)", "var(--info-default)", "var(--error-default)"]}
+          colors={[
+            "var(--success-default)",
+            "var(--info-default)",
+            "var(--error-default)",
+          ]}
           margin={{ top: 30, right: 50, bottom: 30, left: 0 }}
           padding={0.3}
           valueScale={{

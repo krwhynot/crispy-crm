@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const projectRoot = path.join(__dirname, '..');
+const projectRoot = path.join(__dirname, "..");
 
 // Track dependencies
 const dependencyGraph = new Map();
@@ -21,7 +21,7 @@ function extractImports(content, filePath) {
     const importPath = match[1];
 
     // Only track local imports (not node_modules)
-    if (importPath.startsWith('.') || importPath.startsWith('@/')) {
+    if (importPath.startsWith(".") || importPath.startsWith("@/")) {
       const resolvedPath = resolveImportPath(importPath, filePath);
       if (resolvedPath) {
         imports.push(resolvedPath);
@@ -36,15 +36,15 @@ function resolveImportPath(importPath, fromFile) {
   const dir = path.dirname(fromFile);
   let resolvedPath;
 
-  if (importPath.startsWith('@/')) {
+  if (importPath.startsWith("@/")) {
     // Handle @/ alias (assuming it maps to src/)
-    resolvedPath = path.join(projectRoot, 'src', importPath.slice(2));
+    resolvedPath = path.join(projectRoot, "src", importPath.slice(2));
   } else {
     resolvedPath = path.resolve(dir, importPath);
   }
 
   // Try various extensions
-  const extensions = ['', '.ts', '.tsx', '.js', '.jsx'];
+  const extensions = ["", ".ts", ".tsx", ".js", ".jsx"];
   for (const ext of extensions) {
     const fullPath = resolvedPath + ext;
     if (fs.existsSync(fullPath)) {
@@ -60,7 +60,7 @@ function resolveImportPath(importPath, fromFile) {
   return null;
 }
 
-function buildDependencyGraph(dir, baseDir = '') {
+function buildDependencyGraph(dir, baseDir = "") {
   const files = fs.readdirSync(dir);
 
   for (const file of files) {
@@ -69,11 +69,11 @@ function buildDependencyGraph(dir, baseDir = '') {
 
     if (fs.statSync(fullPath).isDirectory()) {
       // Skip node_modules and hidden directories
-      if (!file.startsWith('.') && file !== 'node_modules' && file !== 'dist') {
+      if (!file.startsWith(".") && file !== "node_modules" && file !== "dist") {
         buildDependencyGraph(fullPath, path.join(baseDir, file));
       }
     } else if (file.match(/\.(ts|tsx|js|jsx)$/)) {
-      const content = fs.readFileSync(fullPath, 'utf-8');
+      const content = fs.readFileSync(fullPath, "utf-8");
       const imports = extractImports(content, fullPath);
       dependencyGraph.set(relativePath, imports);
     }
@@ -107,10 +107,10 @@ function detectCircularDependency(node, path = []) {
 }
 
 // Analyze dependencies
-console.log('🔍 Analyzing dependencies in Atomic CRM...\n');
+console.log("🔍 Analyzing dependencies in Atomic CRM...\n");
 
 // Build the dependency graph
-const srcPath = path.join(projectRoot, 'src');
+const srcPath = path.join(projectRoot, "src");
 buildDependencyGraph(srcPath);
 
 console.log(`📊 Total files analyzed: ${dependencyGraph.size}`);
@@ -128,36 +128,38 @@ for (const [file] of dependencyGraph) {
 
 // Report circular dependencies
 if (circularDeps.length > 0) {
-  console.log('\n⚠️  Circular dependencies detected:\n');
+  console.log("\n⚠️  Circular dependencies detected:\n");
   const uniqueCycles = new Set();
   for (const cycle of circularDeps) {
-    const cycleKey = cycle.sort().join(' -> ');
+    const cycleKey = cycle.sort().join(" -> ");
     if (!uniqueCycles.has(cycleKey)) {
       uniqueCycles.add(cycleKey);
-      console.log('  Cycle:');
+      console.log("  Cycle:");
       cycle.forEach((file, index) => {
-        console.log(`    ${index === 0 ? '┌─' : index === cycle.length - 1 ? '└─>' : '├─'} ${file}`);
+        console.log(
+          `    ${index === 0 ? "┌─" : index === cycle.length - 1 ? "└─>" : "├─"} ${file}`,
+        );
       });
-      console.log('');
+      console.log("");
     }
   }
 } else {
-  console.log('\n✅ No circular dependencies detected');
+  console.log("\n✅ No circular dependencies detected");
 }
 
 // Analyze module coupling
-console.log('\n📦 Module Analysis:\n');
+console.log("\n📦 Module Analysis:\n");
 
 const modules = new Map();
 
 for (const [file, deps] of dependencyGraph) {
-  const module = file.split('/')[1]; // Assumes src/module/...
+  const module = file.split("/")[1]; // Assumes src/module/...
   if (!modules.has(module)) {
     modules.set(module, {
       files: 0,
       internalDeps: 0,
       externalDeps: 0,
-      dependsOn: new Set()
+      dependsOn: new Set(),
     });
   }
 
@@ -165,7 +167,7 @@ for (const [file, deps] of dependencyGraph) {
   moduleData.files++;
 
   for (const dep of deps) {
-    const depModule = dep.split('/')[1];
+    const depModule = dep.split("/")[1];
     if (depModule === module) {
       moduleData.internalDeps++;
     } else {
@@ -176,21 +178,22 @@ for (const [file, deps] of dependencyGraph) {
 }
 
 // Sort modules by coupling
-const sortedModules = Array.from(modules.entries()).sort((a, b) =>
-  b[1].externalDeps - a[1].externalDeps
+const sortedModules = Array.from(modules.entries()).sort(
+  (a, b) => b[1].externalDeps - a[1].externalDeps,
 );
 
-console.log('Module Coupling Analysis:');
-console.log('─'.repeat(80));
+console.log("Module Coupling Analysis:");
+console.log("─".repeat(80));
 for (const [module, data] of sortedModules) {
-  const coupling = data.externalDeps / (data.internalDeps + data.externalDeps + 1);
+  const coupling =
+    data.externalDeps / (data.internalDeps + data.externalDeps + 1);
   console.log(`  ${module}:`);
   console.log(`    Files: ${data.files}`);
   console.log(`    Internal dependencies: ${data.internalDeps}`);
   console.log(`    External dependencies: ${data.externalDeps}`);
   console.log(`    Coupling ratio: ${(coupling * 100).toFixed(1)}%`);
   if (data.dependsOn.size > 0) {
-    console.log(`    Depends on: ${Array.from(data.dependsOn).join(', ')}`);
+    console.log(`    Depends on: ${Array.from(data.dependsOn).join(", ")}`);
   }
-  console.log('');
+  console.log("");
 }

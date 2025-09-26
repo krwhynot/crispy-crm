@@ -4,21 +4,21 @@ import type { Company, OrganizationType } from "../types";
 
 // Organization type display names
 const organizationTypeLabels: Record<OrganizationType, string> = {
-  customer: 'Customer',
-  prospect: 'Prospect',
-  vendor: 'Vendor',
-  partner: 'Partner',
-  principal: 'Principal',
-  distributor: 'Distributor',
-  unknown: 'Unknown',
+  customer: "Customer",
+  prospect: "Prospect",
+  vendor: "Vendor",
+  partner: "Partner",
+  principal: "Principal",
+  distributor: "Distributor",
+  unknown: "Unknown",
 };
 
 // Priority colors for visual distinction
 const priorityColors = {
-  A: 'bg-red-500 text-white hover:bg-red-600',
-  B: 'bg-orange-500 text-white hover:bg-orange-600',
-  C: 'bg-yellow-500 text-black hover:bg-yellow-600',
-  D: 'bg-green-500 text-white hover:bg-green-600',
+  A: "bg-red-500 text-white hover:bg-red-600",
+  B: "bg-orange-500 text-white hover:bg-orange-600",
+  C: "bg-yellow-500 text-black hover:bg-yellow-600",
+  D: "bg-green-500 text-white hover:bg-green-600",
 };
 
 export const OrganizationType = () => {
@@ -30,14 +30,17 @@ export const OrganizationType = () => {
       {/* Organization Type */}
       {record.organization_type && (
         <span className="text-sm font-medium text-muted-foreground">
-          {organizationTypeLabels[record.organization_type] || record.organization_type}
+          {organizationTypeLabels[record.organization_type] ||
+            record.organization_type}
         </span>
       )}
 
       {/* Priority Badge */}
       {record.priority && (
         <Badge
-          className={priorityColors[record.priority] || 'bg-gray-200 text-gray-800'}
+          className={
+            priorityColors[record.priority] || "bg-gray-200 text-gray-800"
+          }
           variant="default"
         >
           Priority {record.priority}
@@ -86,7 +89,7 @@ export const OrganizationPriorityChip = () => {
 
   return (
     <Badge
-      className={`${priorityColors[record.priority] || 'bg-gray-200 text-gray-800'} text-xs`}
+      className={`${priorityColors[record.priority] || "bg-gray-200 text-gray-800"} text-xs`}
       variant="default"
     >
       {record.priority}

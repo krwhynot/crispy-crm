@@ -14,16 +14,24 @@ import { getOpportunitiesByStage } from "./stages";
 export const OpportunityListContent = () => {
   const opportunityStages = OPPORTUNITY_STAGES_LEGACY;
 
-  const { data: unorderedOpportunities, isPending, refetch } = useListContext<Opportunity>();
+  const {
+    data: unorderedOpportunities,
+    isPending,
+    refetch,
+  } = useListContext<Opportunity>();
   const dataProvider = useDataProvider();
 
-  const [opportunitiesByStage, setOpportunitiesByStage] = useState<OpportunitiesByStage>(
-    getOpportunitiesByStage([], opportunityStages),
-  );
+  const [opportunitiesByStage, setOpportunitiesByStage] =
+    useState<OpportunitiesByStage>(
+      getOpportunitiesByStage([], opportunityStages),
+    );
 
   useEffect(() => {
     if (unorderedOpportunities) {
-      const newOpportunitiesByStage = getOpportunitiesByStage(unorderedOpportunities, opportunityStages);
+      const newOpportunitiesByStage = getOpportunitiesByStage(
+        unorderedOpportunities,
+        opportunityStages,
+      );
       if (!isEqual(newOpportunitiesByStage, opportunitiesByStage)) {
         setOpportunitiesByStage(newOpportunitiesByStage);
       }
@@ -68,7 +76,11 @@ export const OpportunityListContent = () => {
     );
 
     // persist the changes
-    updateOpportunityStage(sourceOpportunity, destinationOpportunity, dataProvider).then(() => {
+    updateOpportunityStage(
+      sourceOpportunity,
+      destinationOpportunity,
+      dataProvider,
+    ).then(() => {
       refetch();
     });
   };
@@ -135,12 +147,16 @@ const updateOpportunityStage = async (
   if (source.stage === destination.stage) {
     // moving opportunity inside the same column
     // Fetch all the opportunities in this stage (because the list may be filtered, but we need to update even non-filtered opportunities)
-    const { data: columnOpportunities } = await dataProvider.getList("opportunities", {
-      sort: { field: "index", order: "ASC" },
-      pagination: { page: 1, perPage: 100 },
-      filter: { stage: source.stage },
-    });
-    const destinationIndex = destination.index ?? columnOpportunities.length + 1;
+    const { data: columnOpportunities } = await dataProvider.getList(
+      "opportunities",
+      {
+        sort: { field: "index", order: "ASC" },
+        pagination: { page: 1, perPage: 100 },
+        filter: { stage: source.stage },
+      },
+    );
+    const destinationIndex =
+      destination.index ?? columnOpportunities.length + 1;
 
     if (source.index > destinationIndex) {
       // opportunity moved up, eg
@@ -152,7 +168,8 @@ const updateOpportunityStage = async (
         ...columnOpportunities
           .filter(
             (opportunity) =>
-              opportunity.index >= destinationIndex && opportunity.index < source.index,
+              opportunity.index >= destinationIndex &&
+              opportunity.index < source.index,
           )
           .map((opportunity) =>
             dataProvider.update("opportunities", {
@@ -178,7 +195,8 @@ const updateOpportunityStage = async (
         ...columnOpportunities
           .filter(
             (opportunity) =>
-              opportunity.index <= destinationIndex && opportunity.index > source.index,
+              opportunity.index <= destinationIndex &&
+              opportunity.index > source.index,
           )
           .map((opportunity) =>
             dataProvider.update("opportunities", {
@@ -211,7 +229,8 @@ const updateOpportunityStage = async (
           filter: { stage: destination.stage },
         }),
       ]);
-    const destinationIndex = destination.index ?? destinationOpportunities.length + 1;
+    const destinationIndex =
+      destination.index ?? destinationOpportunities.length + 1;
 
     await Promise.all([
       // decrease index on the opportunities after the source index in the source columns

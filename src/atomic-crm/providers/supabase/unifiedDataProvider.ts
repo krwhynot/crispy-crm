@@ -60,9 +60,10 @@ const validationRegistry: Record<string, ValidationConfig> = {
     validate: async (data: any, isUpdate?: boolean) => {
       try {
         // Use appropriate validator based on operation
-        const validatedData = isUpdate || data.id
-          ? validateUpdateTag(data)
-          : validateCreateTag(data);
+        const validatedData =
+          isUpdate || data.id
+            ? validateUpdateTag(data)
+            : validateCreateTag(data);
         // Tag validators return data, not throw, so we don't need to do anything
         return;
       } catch (error: any) {
@@ -70,11 +71,11 @@ const validationRegistry: Record<string, ValidationConfig> = {
         if (error.errors) {
           const formattedErrors: Record<string, string> = {};
           error.errors.forEach((err: any) => {
-            const path = Array.isArray(err.path) ? err.path.join('.') : 'root';
+            const path = Array.isArray(err.path) ? err.path.join(".") : "root";
             formattedErrors[path] = err.message;
           });
           throw {
-            message: 'Validation failed',
+            message: "Validation failed",
             errors: formattedErrors,
           };
         }
@@ -96,7 +97,12 @@ const baseDataProvider = supabaseDataProvider({
  * Log error with context for debugging
  * Integrated from resilientDataProvider for consolidated error logging
  */
-function logError(method: string, resource: string, params: any, error: unknown): void {
+function logError(
+  method: string,
+  resource: string,
+  params: any,
+  error: unknown,
+): void {
   const context = {
     method,
     resource,
@@ -107,7 +113,7 @@ function logError(method: string, resource: string, params: any, error: unknown)
       sort: params?.sort,
       pagination: params?.pagination,
       target: params?.target,
-      data: params?.data ? '[Data Present]' : undefined,
+      data: params?.data ? "[Data Present]" : undefined,
     },
     timestamp: new Date().toISOString(),
   };
@@ -115,14 +121,17 @@ function logError(method: string, resource: string, params: any, error: unknown)
   console.error(`[DataProvider Error]`, context, {
     error: error instanceof Error ? error.message : String(error),
     stack: error instanceof Error ? error.stack : undefined,
-    fullError: error
+    fullError: error,
   });
 }
 
 /**
  * Apply search parameters to a query
  */
-function applySearchParams(resource: string, params: GetListParams): GetListParams {
+function applySearchParams(
+  resource: string,
+  params: GetListParams,
+): GetListParams {
   const searchableFields = getSearchableFields(resource);
 
   if (!params.filter?.q || searchableFields.length === 0) {
@@ -132,9 +141,10 @@ function applySearchParams(resource: string, params: GetListParams): GetListPara
   const { q, ...filter } = params.filter;
 
   // Apply soft delete filter if supported
-  const softDeleteFilter = supportsSoftDelete(resource) && !params.filter?.includeDeleted
-    ? { deleted_at: null }
-    : {};
+  const softDeleteFilter =
+    supportsSoftDelete(resource) && !params.filter?.includeDeleted
+      ? { deleted_at: null }
+      : {};
 
   return {
     ...params,
@@ -158,13 +168,20 @@ function applySearchParams(resource: string, params: GetListParams): GetListPara
 /**
  * Get the appropriate database resource name
  */
-function getDatabaseResource(resource: string, operation: 'list' | 'one' | 'create' | 'update' | 'delete' = 'list'): string {
+function getDatabaseResource(
+  resource: string,
+  operation: "list" | "one" | "create" | "update" | "delete" = "list",
+): string {
   const actualResource = getResourceName(resource);
 
   // Use summary views for list operations when available
-  if (operation === 'list' || operation === 'one') {
+  if (operation === "list" || operation === "one") {
     const summaryResource = `${actualResource}_summary`;
-    if (resource === 'opportunities' || resource === 'organizations' || resource === 'contacts') {
+    if (
+      resource === "opportunities" ||
+      resource === "organizations" ||
+      resource === "contacts"
+    ) {
       return summaryResource;
     }
   }
@@ -178,7 +195,7 @@ function getDatabaseResource(resource: string, operation: 'list' | 'one' | 'crea
 async function validateData(
   resource: string,
   data: any,
-  operation: 'create' | 'update' = 'create'
+  operation: "create" | "update" = "create",
 ): Promise<void> {
   const config = validationRegistry[resource];
 
@@ -188,7 +205,7 @@ async function validateData(
   }
 
   // Call validation function
-  await config.validate(data, operation === 'update');
+  await config.validate(data, operation === "update");
 }
 
 /**
@@ -197,7 +214,7 @@ async function validateData(
 async function processForDatabase<T>(
   resource: string,
   data: Partial<T>,
-  operation: 'create' | 'update' = 'create'
+  operation: "create" | "update" = "create",
 ): Promise<Partial<T>> {
   // Validate data
   await validateData(resource, data, operation);
@@ -213,7 +230,7 @@ async function wrapMethod<T>(
   method: string,
   resource: string,
   params: any,
-  operation: () => Promise<T>
+  operation: () => Promise<T>,
 ): Promise<T> {
   try {
     return await operation();
@@ -229,14 +246,14 @@ async function wrapMethod<T>(
 export const unifiedDataProvider: DataProvider = {
   async getList<RecordType extends RaRecord = any>(
     resource: string,
-    params: GetListParams
+    params: GetListParams,
   ): Promise<any> {
-    return wrapMethod('getList', resource, params, async () => {
+    return wrapMethod("getList", resource, params, async () => {
       // Apply search parameters
       const searchParams = applySearchParams(resource, params);
 
       // Get appropriate database resource
-      const dbResource = getDatabaseResource(resource, 'list');
+      const dbResource = getDatabaseResource(resource, "list");
 
       // Execute query
       const result = await baseDataProvider.getList(dbResource, searchParams);
@@ -248,11 +265,11 @@ export const unifiedDataProvider: DataProvider = {
 
   async getOne<RecordType extends RaRecord = any>(
     resource: string,
-    params: GetOneParams
+    params: GetOneParams,
   ): Promise<any> {
-    return wrapMethod('getOne', resource, params, async () => {
+    return wrapMethod("getOne", resource, params, async () => {
       // Get appropriate database resource
-      const dbResource = getDatabaseResource(resource, 'one');
+      const dbResource = getDatabaseResource(resource, "one");
 
       // Execute query
       const result = await baseDataProvider.getOne(dbResource, params);
@@ -264,9 +281,9 @@ export const unifiedDataProvider: DataProvider = {
 
   async getMany<RecordType extends RaRecord = any>(
     resource: string,
-    params: GetManyParams
+    params: GetManyParams,
   ): Promise<any> {
-    return wrapMethod('getMany', resource, params, async () => {
+    return wrapMethod("getMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
       const result = await baseDataProvider.getMany(dbResource, params);
 
@@ -277,11 +294,14 @@ export const unifiedDataProvider: DataProvider = {
 
   async getManyReference<RecordType extends RaRecord = any>(
     resource: string,
-    params: GetManyReferenceParams
+    params: GetManyReferenceParams,
   ): Promise<any> {
-    return wrapMethod('getManyReference', resource, params, async () => {
+    return wrapMethod("getManyReference", resource, params, async () => {
       const dbResource = getResourceName(resource);
-      const result = await baseDataProvider.getManyReference(dbResource, params);
+      const result = await baseDataProvider.getManyReference(
+        dbResource,
+        params,
+      );
 
       // No transformation needed yet (will be added in a future task)
       return result;
@@ -290,13 +310,17 @@ export const unifiedDataProvider: DataProvider = {
 
   async create<RecordType extends Omit<RaRecord, "id"> = any>(
     resource: string,
-    params: CreateParams<RecordType>
+    params: CreateParams<RecordType>,
   ): Promise<any> {
-    return wrapMethod('create', resource, params, async () => {
+    return wrapMethod("create", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
       // Validate and process data
-      const processedData = await processForDatabase(resource, params.data, 'create');
+      const processedData = await processForDatabase(
+        resource,
+        params.data,
+        "create",
+      );
 
       // Execute create
       const result = await baseDataProvider.create(dbResource, {
@@ -311,13 +335,17 @@ export const unifiedDataProvider: DataProvider = {
 
   async update<RecordType extends RaRecord = any>(
     resource: string,
-    params: UpdateParams<RecordType>
+    params: UpdateParams<RecordType>,
   ): Promise<any> {
-    return wrapMethod('update', resource, params, async () => {
+    return wrapMethod("update", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
       // Validate and process data
-      const processedData = await processForDatabase(resource, params.data, 'update');
+      const processedData = await processForDatabase(
+        resource,
+        params.data,
+        "update",
+      );
 
       // Execute update
       const result = await baseDataProvider.update(dbResource, {
@@ -333,15 +361,16 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async updateMany(
-    resource: string,
-    params: UpdateManyParams
-  ): Promise<any> {
-    return wrapMethod('updateMany', resource, params, async () => {
+  async updateMany(resource: string, params: UpdateManyParams): Promise<any> {
+    return wrapMethod("updateMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
       // Validate data for updates
-      const processedData = await processForDatabase(resource, params.data, 'update');
+      const processedData = await processForDatabase(
+        resource,
+        params.data,
+        "update",
+      );
 
       const result = await baseDataProvider.updateMany(dbResource, {
         ...params,
@@ -354,19 +383,16 @@ export const unifiedDataProvider: DataProvider = {
 
   async delete<RecordType extends RaRecord = any>(
     resource: string,
-    params: DeleteParams
+    params: DeleteParams,
   ): Promise<any> {
-    return wrapMethod('delete', resource, params, async () => {
+    return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
       return baseDataProvider.delete(dbResource, params);
     });
   },
 
-  async deleteMany(
-    resource: string,
-    params: DeleteManyParams
-  ): Promise<any> {
-    return wrapMethod('deleteMany', resource, params, async () => {
+  async deleteMany(resource: string, params: DeleteManyParams): Promise<any> {
+    return wrapMethod("deleteMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
       return baseDataProvider.deleteMany(dbResource, params);
     });

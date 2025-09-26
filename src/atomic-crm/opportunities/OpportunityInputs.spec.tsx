@@ -2,12 +2,12 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { AdminContext } from 'ra-core';
-import { MemoryRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { OpportunityInputs } from './OpportunityInputs';
-import { ConfigurationContext } from '../root/ConfigurationContext';
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { AdminContext } from "ra-core";
+import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { OpportunityInputs } from "./OpportunityInputs";
+import { ConfigurationContext } from "../root/ConfigurationContext";
 
 // Mock the data provider
 const mockDataProvider = {
@@ -23,18 +23,18 @@ const mockDataProvider = {
 };
 
 const mockConfiguration = {
-  opportunityCategories: ['Software', 'Hardware', 'Services', 'Support'],
+  opportunityCategories: ["Software", "Hardware", "Services", "Support"],
   contactGender: [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-    { value: 'other', label: 'Other' }
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "other", label: "Other" },
   ],
   contactRoles: [
-    { id: 'decision_maker', name: 'Decision Maker' },
-    { id: 'influencer', name: 'Influencer' },
-    { id: 'buyer', name: 'Buyer' }
+    { id: "decision_maker", name: "Decision Maker" },
+    { id: "influencer", name: "Influencer" },
+    { id: "buyer", name: "Buyer" },
   ],
-  companySectors: ['Technology', 'Healthcare', 'Finance']
+  companySectors: ["Technology", "Healthcare", "Finance"],
 };
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -58,7 +58,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe('OpportunityInputs', () => {
+describe("OpportunityInputs", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockDataProvider.getList.mockResolvedValue({
@@ -70,134 +70,140 @@ describe('OpportunityInputs', () => {
     });
   });
 
-  it('should render opportunity name input with required validation', async () => {
+  it("should render opportunity name input with required validation", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByLabelText(/opportunity name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/opportunity name/i)).toHaveAttribute('required');
+    expect(screen.getByLabelText(/opportunity name/i)).toHaveAttribute(
+      "required",
+    );
   });
 
-  it('should render description input', async () => {
+  it("should render description input", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
   });
 
-  it('should render lifecycle stage selector with required validation', async () => {
+  it("should render lifecycle stage selector with required validation", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const stageSelect = screen.getByLabelText(/lifecycle stage/i);
     expect(stageSelect).toBeInTheDocument();
-    expect(stageSelect).toHaveAttribute('required');
+    expect(stageSelect).toHaveAttribute("required");
   });
 
-  it('should render priority selector with default medium value', async () => {
+  it("should render priority selector with default medium value", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const prioritySelect = screen.getByLabelText(/priority/i);
     expect(prioritySelect).toBeInTheDocument();
   });
 
-  it('should render probability input with validation (0-100)', async () => {
+  it("should render probability input with validation (0-100)", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const probabilityInput = screen.getByLabelText(/probability/i);
     expect(probabilityInput).toBeInTheDocument();
-    expect(probabilityInput).toHaveAttribute('min', '0');
-    expect(probabilityInput).toHaveAttribute('max', '100');
+    expect(probabilityInput).toHaveAttribute("min", "0");
+    expect(probabilityInput).toHaveAttribute("max", "100");
   });
 
-  it('should render customer organization input with required validation', async () => {
+  it("should render customer organization input with required validation", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByLabelText(/customer organization/i)).toBeInTheDocument();
   });
 
-  it('should render optional principal and distributor organization inputs', async () => {
+  it("should render optional principal and distributor organization inputs", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
-    expect(screen.getByLabelText(/principal organization/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/distributor organization/i)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/principal organization/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/distributor organization/i),
+    ).toBeInTheDocument();
   });
 
-  it('should render contacts input with required validation', async () => {
+  it("should render contacts input with required validation", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByLabelText(/contacts/i)).toBeInTheDocument();
   });
 
-  it('should render amount input with required validation', async () => {
+  it("should render amount input with required validation", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const amountInput = screen.getByLabelText(/amount/i);
     expect(amountInput).toBeInTheDocument();
-    expect(amountInput).toHaveAttribute('required');
+    expect(amountInput).toHaveAttribute("required");
   });
 
-  it('should render expected closing date with default current date', async () => {
+  it("should render expected closing date with default current date", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const dateInput = screen.getByLabelText(/expected closing date/i);
     expect(dateInput).toBeInTheDocument();
-    expect(dateInput).toHaveAttribute('type', 'date');
+    expect(dateInput).toHaveAttribute("type", "date");
   });
 
-  it('should render category choices from configuration', async () => {
+  it("should render category choices from configuration", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const categorySelect = screen.getByLabelText(/category/i);
     expect(categorySelect).toBeInTheDocument();
   });
 
-  it('should validate required fields show error messages', async () => {
+  it("should validate required fields show error messages", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const nameInput = screen.getByLabelText(/opportunity name/i);
@@ -211,17 +217,17 @@ describe('OpportunityInputs', () => {
     });
   });
 
-  it('should validate probability within 0-100 range', async () => {
+  it("should validate probability within 0-100 range", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const probabilityInput = screen.getByLabelText(/probability/i);
 
     // Test invalid value above 100
-    fireEvent.change(probabilityInput, { target: { value: '150' } });
+    fireEvent.change(probabilityInput, { target: { value: "150" } });
     fireEvent.blur(probabilityInput);
 
     await waitFor(() => {
@@ -229,11 +235,11 @@ describe('OpportunityInputs', () => {
     });
   });
 
-  it('should have proper section organization', async () => {
+  it("should have proper section organization", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check for section headers
@@ -241,43 +247,43 @@ describe('OpportunityInputs', () => {
     expect(screen.getByText(/misc/i)).toBeInTheDocument();
   });
 
-  it('should render all lifecycle stage options', async () => {
+  it("should render all lifecycle stage options", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const stageSelect = screen.getByLabelText(/lifecycle stage/i);
     fireEvent.click(stageSelect);
 
     await waitFor(() => {
-      expect(screen.getByText('New Lead')).toBeInTheDocument();
-      expect(screen.getByText('Initial Outreach')).toBeInTheDocument();
-      expect(screen.getByText('Sample/Visit Offered')).toBeInTheDocument();
-      expect(screen.getByText('Awaiting Response')).toBeInTheDocument();
-      expect(screen.getByText('Feedback Logged')).toBeInTheDocument();
-      expect(screen.getByText('Demo Scheduled')).toBeInTheDocument();
-      expect(screen.getByText('Closed Won')).toBeInTheDocument();
-      expect(screen.getByText('Closed Lost')).toBeInTheDocument();
+      expect(screen.getByText("New Lead")).toBeInTheDocument();
+      expect(screen.getByText("Initial Outreach")).toBeInTheDocument();
+      expect(screen.getByText("Sample/Visit Offered")).toBeInTheDocument();
+      expect(screen.getByText("Awaiting Response")).toBeInTheDocument();
+      expect(screen.getByText("Feedback Logged")).toBeInTheDocument();
+      expect(screen.getByText("Demo Scheduled")).toBeInTheDocument();
+      expect(screen.getByText("Closed Won")).toBeInTheDocument();
+      expect(screen.getByText("Closed Lost")).toBeInTheDocument();
     });
   });
 
-  it('should render all priority options', async () => {
+  it("should render all priority options", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const prioritySelect = screen.getByLabelText(/priority/i);
     fireEvent.click(prioritySelect);
 
     await waitFor(() => {
-      expect(screen.getByText('Low')).toBeInTheDocument();
-      expect(screen.getByText('Medium')).toBeInTheDocument();
-      expect(screen.getByText('High')).toBeInTheDocument();
-      expect(screen.getByText('Critical')).toBeInTheDocument();
+      expect(screen.getByText("Low")).toBeInTheDocument();
+      expect(screen.getByText("Medium")).toBeInTheDocument();
+      expect(screen.getByText("High")).toBeInTheDocument();
+      expect(screen.getByText("Critical")).toBeInTheDocument();
     });
   });
 });

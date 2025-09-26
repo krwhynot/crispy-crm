@@ -9,12 +9,12 @@
  * - Service role RLS bypass for administrative operations
  */
 
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { beforeEach, afterAll } from 'vitest';
-import * as dotenv from 'dotenv';
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { beforeEach, afterAll } from "vitest";
+import * as dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config({ path: '.env.development' });
+dotenv.config({ path: ".env.development" });
 
 // Validate cloud database configuration
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL!;
@@ -23,42 +23,48 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 // Validate that cloud URLs are configured (not localhost)
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  throw new Error('Missing required environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be configured');
+  throw new Error(
+    "Missing required environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be configured",
+  );
 }
 
-if (SUPABASE_URL.includes('127.0.0.1') || SUPABASE_URL.includes('localhost')) {
-  throw new Error('Cloud database URL required for MCP tests. Remove localhost URLs from environment configuration.');
+if (SUPABASE_URL.includes("127.0.0.1") || SUPABASE_URL.includes("localhost")) {
+  throw new Error(
+    "Cloud database URL required for MCP tests. Remove localhost URLs from environment configuration.",
+  );
 }
 
 if (!SUPABASE_SERVICE_KEY) {
-  console.warn('SUPABASE_SERVICE_ROLE_KEY not configured - some tests may fail');
+  console.warn(
+    "SUPABASE_SERVICE_ROLE_KEY not configured - some tests may fail",
+  );
 }
 
 // Connection configuration for cloud database
 const connectionConfig = {
   auth: {
     persistSession: false,
-    autoRefreshToken: false
+    autoRefreshToken: false,
   },
   global: {
     headers: {
-      'x-application-name': 'atomic-crm-tests'
-    }
+      "x-application-name": "atomic-crm-tests",
+    },
   },
   db: {
-    schema: 'public'
+    schema: "public",
   },
   // Connection pooling configuration
   realtime: {
     params: {
-      eventsPerSecond: 10
-    }
-  }
+      eventsPerSecond: 10,
+    },
+  },
 };
 
 // Test data namespacing
 export function generateTestPrefix(): string {
-  const env = process.env.NODE_ENV || 'development';
+  const env = process.env.NODE_ENV || "development";
   const timestamp = Date.now();
   const random = Math.random().toString(36).substring(2, 8);
   return `test_${env}_${timestamp}_${random}`;
@@ -76,13 +82,13 @@ const defaultRetryConfig: RetryConfig = {
   maxAttempts: 3,
   baseDelay: 100, // Start with 100ms
   maxDelay: 2000, // Max 2 seconds
-  factor: 2
+  factor: 2,
 };
 
 // Retry wrapper with exponential backoff
 export async function withRetry<T>(
   operation: () => Promise<T>,
-  config: RetryConfig = defaultRetryConfig
+  config: RetryConfig = defaultRetryConfig,
 ): Promise<T> {
   let lastError: Error;
 
@@ -98,11 +104,11 @@ export async function withRetry<T>(
 
       const delay = Math.min(
         config.baseDelay * Math.pow(config.factor, attempt - 1),
-        config.maxDelay
+        config.maxDelay,
       );
 
       console.warn(`Attempt ${attempt} failed, retrying in ${delay}ms:`, error);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 
@@ -110,7 +116,11 @@ export async function withRetry<T>(
 }
 
 // Create Supabase clients
-export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, connectionConfig);
+export const supabaseClient = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  connectionConfig,
+);
 export const serviceClient = SUPABASE_SERVICE_KEY
   ? createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, connectionConfig)
   : null;
@@ -119,8 +129,8 @@ export const serviceClient = SUPABASE_SERVICE_KEY
 export async function checkConnection(): Promise<void> {
   const healthCheck = async () => {
     const { error } = await supabaseClient
-      .from('init_state')
-      .select('is_initialized')
+      .from("init_state")
+      .select("is_initialized")
       .limit(1);
 
     if (error) {
@@ -141,28 +151,28 @@ export function registerCleanup(cleanup: () => Promise<void>): void {
 // Emergency cleanup for orphaned test data
 export async function emergencyCleanup(): Promise<void> {
   if (!serviceClient) {
-    console.warn('Service client not available - skipping emergency cleanup');
+    console.warn("Service client not available - skipping emergency cleanup");
     return;
   }
 
   const tables = [
-    'opportunities',
-    'contacts',
-    'organizations',
-    'tasks',
-    'opportunity_items',
-    'contact_organizations'
+    "opportunities",
+    "contacts",
+    "organizations",
+    "tasks",
+    "opportunity_items",
+    "contact_organizations",
   ];
 
   // Clean up test data based on naming convention
-  const testPattern = 'test_%';
+  const testPattern = "test_%";
 
   for (const table of tables) {
     try {
       const { error } = await serviceClient
         .from(table)
         .delete()
-        .like('name', testPattern);
+        .like("name", testPattern);
 
       if (error && !error.message.includes('column "name" does not exist')) {
         console.warn(`Emergency cleanup failed for ${table}:`, error);
@@ -179,7 +189,7 @@ export async function runAllCleanups(): Promise<void> {
     try {
       await cleanup();
     } catch (error) {
-      console.error('Cleanup failed:', error);
+      console.error("Cleanup failed:", error);
     }
   });
 
@@ -200,32 +210,38 @@ export function createTestDataTracker(): TestDataTracker {
     organizations: [],
     contacts: [],
     opportunities: [],
-    tasks: []
+    tasks: [],
   };
 }
 
 // Cleanup helper with service role RLS bypass
 export async function cleanupTestData(
   tracker: TestDataTracker,
-  client?: SupabaseClient<any, 'public', any>
+  client?: SupabaseClient<any, "public", any>,
 ): Promise<void> {
   const cleanupClient = client || serviceClient || supabaseClient;
   const cleanup = async () => {
     // Clean up in dependency order (children first)
     if (tracker.opportunities.length > 0) {
-      await cleanupClient.from('opportunities').delete().in('id', tracker.opportunities);
+      await cleanupClient
+        .from("opportunities")
+        .delete()
+        .in("id", tracker.opportunities);
     }
 
     if (tracker.tasks.length > 0) {
-      await cleanupClient.from('tasks').delete().in('id', tracker.tasks);
+      await cleanupClient.from("tasks").delete().in("id", tracker.tasks);
     }
 
     if (tracker.contacts.length > 0) {
-      await cleanupClient.from('contacts').delete().in('id', tracker.contacts);
+      await cleanupClient.from("contacts").delete().in("id", tracker.contacts);
     }
 
     if (tracker.organizations.length > 0) {
-      await cleanupClient.from('organizations').delete().in('id', tracker.organizations);
+      await cleanupClient
+        .from("organizations")
+        .delete()
+        .in("id", tracker.organizations);
     }
   };
 

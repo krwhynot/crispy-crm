@@ -17,15 +17,16 @@ export const LatestNotes = () => {
     },
     { enabled: Number.isInteger(identity?.id) },
   );
-  const { data: opportunityNotesData, isPending: opportunityNotesLoading } = useGetList(
-    "opportunityNotes",
-    {
-      pagination: { page: 1, perPage: 5 },
-      sort: { field: "date", order: "DESC" },
-      filter: { sales_id: identity?.id },
-    },
-    { enabled: Number.isInteger(identity?.id) },
-  );
+  const { data: opportunityNotesData, isPending: opportunityNotesLoading } =
+    useGetList(
+      "opportunityNotes",
+      {
+        pagination: { page: 1, perPage: 5 },
+        sort: { field: "date", order: "DESC" },
+        filter: { sales_id: identity?.id },
+      },
+      { enabled: Number.isInteger(identity?.id) },
+    );
   if (contactNotesLoading || opportunityNotesLoading) {
     return null;
   }
@@ -40,7 +41,10 @@ export const LatestNotes = () => {
         ...note,
         type: "contactNote",
       })),
-      opportunityNotesData.map((note) => ({ ...note, type: "opportunityNote" })),
+      opportunityNotesData.map((note) => ({
+        ...note,
+        type: "opportunityNote",
+      })),
     )
     .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
     .slice(0, 5);

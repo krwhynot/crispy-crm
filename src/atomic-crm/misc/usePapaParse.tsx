@@ -121,7 +121,10 @@ export function usePapaParse<T>({
           );
         },
         error(error) {
-          console.error("CSV parse error:", error instanceof Error ? error.message : String(error));
+          console.error(
+            "CSV parse error:",
+            error instanceof Error ? error.message : String(error),
+          );
           setImporter({
             state: "error",
             error,

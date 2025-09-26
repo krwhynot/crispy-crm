@@ -1,17 +1,18 @@
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
-import { DeleteButton, SaveButton, CancelButton, ReferenceField } from "@/components/admin";
+import {
+  DeleteButton,
+  SaveButton,
+  CancelButton,
+  ReferenceField,
+} from "@/components/admin";
 import { FormToolbar } from "../layout/FormToolbar";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 
 const OpportunityEdit = () => (
-  <EditBase
-    actions={false}
-    redirect="show"
-    mutationMode="pessimistic"
-  >
+  <EditBase actions={false} redirect="show" mutationMode="pessimistic">
     <div className="mt-2">
       <EditHeader />
       <div className="flex gap-8">
@@ -43,7 +44,11 @@ const EditHeader = () => {
   return (
     <div className="flex items-center gap-4 mb-4">
       {opportunity.customer_organization_id && (
-        <ReferenceField source="customer_organization_id" reference="organizations" link={false}>
+        <ReferenceField
+          source="customer_organization_id"
+          reference="organizations"
+          link={false}
+        >
           <OrganizationAvatar />
         </ReferenceField>
       )}

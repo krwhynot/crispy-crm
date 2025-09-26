@@ -14,7 +14,7 @@ const ColoredBadge = (props: any) => {
       className={cn(
         "font-normal border-0",
         getTagColorClass(record.color),
-        props.className
+        props.className,
       )}
     >
       {record.name}

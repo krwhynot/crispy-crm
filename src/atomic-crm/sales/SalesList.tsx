@@ -24,10 +24,7 @@ const OptionsField = (_props: { label?: string | boolean }) => {
   return (
     <div className="flex flex-row gap-1">
       {record.administrator && (
-        <Badge
-          variant="outline"
-          className="[border-color:var(--border-info)]"
-        >
+        <Badge variant="outline" className="[border-color:var(--border-info)]">
           Admin
         </Badge>
       )}

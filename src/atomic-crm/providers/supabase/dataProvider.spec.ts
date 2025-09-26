@@ -263,7 +263,9 @@ describe("Supabase DataProvider", () => {
         filter: { contact_id: "contact-1" },
       });
 
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith("contact_organizations");
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith(
+        "contact_organizations",
+      );
       expect(result).toBeDefined();
     });
 
@@ -308,7 +310,9 @@ describe("Supabase DataProvider", () => {
         filter: { opportunity_id: "opp-1" },
       });
 
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunity_participants");
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith(
+        "opportunity_participants",
+      );
       expect(result).toBeDefined();
     });
 
@@ -344,7 +348,9 @@ describe("Supabase DataProvider", () => {
         data: newRelationship,
       });
 
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith("contact_organizations");
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith(
+        "contact_organizations",
+      );
       expect(result).toBeDefined();
     });
   });
@@ -385,7 +391,9 @@ describe("Supabase DataProvider", () => {
         pagination: { page: 1, perPage: 10 },
       });
 
-      expect(mockSupabaseClient.from).toHaveBeenCalledWith("opportunities_summary");
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith(
+        "opportunities_summary",
+      );
       expect(result).toBeDefined();
     });
 
@@ -535,7 +543,7 @@ describe("Supabase DataProvider", () => {
       await expect(
         dataProvider.getList("opportunities", {
           pagination: { page: 1, perPage: 10 },
-        })
+        }),
       ).rejects.toThrow();
     });
 
@@ -551,7 +559,8 @@ describe("Supabase DataProvider", () => {
         single: vi.fn().mockResolvedValue({
           data: null,
           error: {
-            message: "null value in column 'customer_organization_id' violates not-null constraint",
+            message:
+              "null value in column 'customer_organization_id' violates not-null constraint",
             code: "23502",
           },
         }),
@@ -564,7 +573,7 @@ describe("Supabase DataProvider", () => {
       await expect(
         dataProvider.create("opportunities", {
           data: incompleteOpportunity,
-        })
+        }),
       ).rejects.toThrow();
     });
   });

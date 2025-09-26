@@ -17,7 +17,8 @@ import type { Opportunity } from "../types";
 
 export const OpportunitiesPipeline = () => {
   const { identity } = useGetIdentity();
-  const { opportunityStages, opportunityPipelineStatuses } = useConfigurationContext();
+  const { opportunityStages, opportunityPipelineStatuses } =
+    useConfigurationContext();
   const { data, total, isPending } = useGetList<Opportunity>(
     "opportunities",
     {
@@ -28,7 +29,9 @@ export const OpportunitiesPipeline = () => {
     { enabled: Number.isInteger(identity?.id) },
   );
 
-  const getOrderedOpportunities = (data?: Opportunity[]): Opportunity[] | undefined => {
+  const getOrderedOpportunities = (
+    data?: Opportunity[],
+  ): Opportunity[] | undefined => {
     if (!data) {
       return;
     }

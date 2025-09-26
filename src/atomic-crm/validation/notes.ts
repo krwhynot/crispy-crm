@@ -5,15 +5,15 @@
  * following Core Principle #3: Single point validation at API boundaries
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Attachment validation schema
  * Validates file attachments for notes
  */
 const attachmentSchema = z.object({
-  src: z.string().url('Invalid attachment URL'),
-  title: z.string().min(1, 'Attachment title is required'),
+  src: z.string().url("Invalid attachment URL"),
+  title: z.string().min(1, "Attachment title is required"),
   type: z.string().optional(),
   size: z.number().positive().optional(),
 });
@@ -23,11 +23,11 @@ const attachmentSchema = z.object({
  */
 const baseNoteSchema = z.object({
   // Required fields
-  text: z.string().min(1, 'Note text is required'),
-  date: z.string().min(1, 'Date is required'),
+  text: z.string().min(1, "Note text is required"),
+  date: z.string().min(1, "Date is required"),
   sales_id: z.union([
-    z.string().min(1, 'Sales ID is required'),
-    z.number().min(1, 'Sales ID is required')
+    z.string().min(1, "Sales ID is required"),
+    z.number().min(1, "Sales ID is required"),
   ]),
 
   // Optional fields
@@ -42,10 +42,10 @@ const baseNoteSchema = z.object({
  */
 export const contactNoteSchema = baseNoteSchema.extend({
   contact_id: z.union([
-    z.string().min(1, 'Contact ID is required'),
-    z.number().min(1, 'Contact ID is required')
+    z.string().min(1, "Contact ID is required"),
+    z.number().min(1, "Contact ID is required"),
   ]),
-  status: z.string().min(1, 'Status is required'),
+  status: z.string().min(1, "Status is required"),
 });
 
 /**
@@ -53,8 +53,8 @@ export const contactNoteSchema = baseNoteSchema.extend({
  */
 export const opportunityNoteSchema = baseNoteSchema.extend({
   opportunity_id: z.union([
-    z.string().min(1, 'Opportunity ID is required'),
-    z.number().min(1, 'Opportunity ID is required')
+    z.string().min(1, "Opportunity ID is required"),
+    z.number().min(1, "Opportunity ID is required"),
   ]),
 });
 
@@ -73,7 +73,9 @@ export const updateContactNoteSchema = contactNoteSchema
 /**
  * Schema for creating an opportunity note
  */
-export const createOpportunityNoteSchema = opportunityNoteSchema.omit({ id: true });
+export const createOpportunityNoteSchema = opportunityNoteSchema.omit({
+  id: true,
+});
 
 /**
  * Schema for updating an opportunity note
@@ -90,8 +92,12 @@ export type ContactNote = z.infer<typeof contactNoteSchema>;
 export type OpportunityNote = z.infer<typeof opportunityNoteSchema>;
 export type CreateContactNoteInput = z.infer<typeof createContactNoteSchema>;
 export type UpdateContactNoteInput = z.infer<typeof updateContactNoteSchema>;
-export type CreateOpportunityNoteInput = z.infer<typeof createOpportunityNoteSchema>;
-export type UpdateOpportunityNoteInput = z.infer<typeof updateOpportunityNoteSchema>;
+export type CreateOpportunityNoteInput = z.infer<
+  typeof createOpportunityNoteSchema
+>;
+export type UpdateOpportunityNoteInput = z.infer<
+  typeof updateOpportunityNoteSchema
+>;
 
 /**
  * Validate contact note creation data
@@ -99,7 +105,9 @@ export type UpdateOpportunityNoteInput = z.infer<typeof updateOpportunityNoteSch
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateCreateContactNote(data: unknown): CreateContactNoteInput {
+export function validateCreateContactNote(
+  data: unknown,
+): CreateContactNoteInput {
   return createContactNoteSchema.parse(data);
 }
 
@@ -109,7 +117,9 @@ export function validateCreateContactNote(data: unknown): CreateContactNoteInput
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateUpdateContactNote(data: unknown): UpdateContactNoteInput {
+export function validateUpdateContactNote(
+  data: unknown,
+): UpdateContactNoteInput {
   return updateContactNoteSchema.parse(data);
 }
 
@@ -119,7 +129,9 @@ export function validateUpdateContactNote(data: unknown): UpdateContactNoteInput
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateCreateOpportunityNote(data: unknown): CreateOpportunityNoteInput {
+export function validateCreateOpportunityNote(
+  data: unknown,
+): CreateOpportunityNoteInput {
   return createOpportunityNoteSchema.parse(data);
 }
 
@@ -129,7 +141,9 @@ export function validateCreateOpportunityNote(data: unknown): CreateOpportunityN
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateUpdateOpportunityNote(data: unknown): UpdateOpportunityNoteInput {
+export function validateUpdateOpportunityNote(
+  data: unknown,
+): UpdateOpportunityNoteInput {
   return updateOpportunityNoteSchema.parse(data);
 }
 
@@ -161,7 +175,7 @@ export function validateAttachments(attachments: unknown[]): Attachment[] {
  */
 export function transformNoteDate(date: string): string {
   // Handle datetime-local input format
-  if (date.includes('T') && !date.includes('Z')) {
+  if (date.includes("T") && !date.includes("Z")) {
     return new Date(date).toISOString();
   }
 
@@ -197,7 +211,9 @@ export function validateContactNoteForSubmission(data: unknown): ContactNote {
  * @param data - Note data to validate and transform
  * @returns Transformed note data ready for database
  */
-export function validateOpportunityNoteForSubmission(data: unknown): OpportunityNote {
+export function validateOpportunityNoteForSubmission(
+  data: unknown,
+): OpportunityNote {
   const validated = opportunityNoteSchema.parse(data);
 
   // Transform date to ISO format
@@ -213,7 +229,9 @@ export function validateOpportunityNoteForSubmission(data: unknown): Opportunity
  * @param note - Note to check
  * @returns True if note has attachments
  */
-export function noteHasAttachments(note: ContactNote | OpportunityNote): boolean {
+export function noteHasAttachments(
+  note: ContactNote | OpportunityNote,
+): boolean {
   return Array.isArray(note.attachments) && note.attachments.length > 0;
 }
 
@@ -225,7 +243,7 @@ export function noteHasAttachments(note: ContactNote | OpportunityNote): boolean
  */
 export function validateAttachmentSize(
   sizeInBytes: number,
-  maxSizeMB: number = 10
+  maxSizeMB: number = 10,
 ): string | undefined {
   const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
@@ -244,12 +262,22 @@ export function validateAttachmentSize(
  */
 export function validateAttachmentType(
   fileName: string,
-  allowedExtensions: string[] = ['.pdf', '.doc', '.docx', '.txt', '.png', '.jpg', '.jpeg']
+  allowedExtensions: string[] = [
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".txt",
+    ".png",
+    ".jpg",
+    ".jpeg",
+  ],
 ): string | undefined {
-  const fileExtension = fileName.toLowerCase().substring(fileName.lastIndexOf('.'));
+  const fileExtension = fileName
+    .toLowerCase()
+    .substring(fileName.lastIndexOf("."));
 
   if (!allowedExtensions.includes(fileExtension)) {
-    return `File type ${fileExtension} is not allowed. Allowed types: ${allowedExtensions.join(', ')}`;
+    return `File type ${fileExtension} is not allowed. Allowed types: ${allowedExtensions.join(", ")}`;
   }
 
   return undefined;

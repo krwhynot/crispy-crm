@@ -5,25 +5,22 @@
  * Single point validation at API boundaries
  */
 
-import { z } from 'zod';
-import type { Identifier } from 'ra-core';
+import { z } from "zod";
+import type { Identifier } from "ra-core";
 
 /**
  * Base task schema with all required fields
  */
 export const taskSchema = z.object({
   // Required fields
-  text: z.string().min(1, 'Description is required'),
+  text: z.string().min(1, "Description is required"),
   contact_id: z.union([
-    z.string().min(1, 'Contact is required'),
-    z.number().min(1, 'Contact is required')
+    z.string().min(1, "Contact is required"),
+    z.number().min(1, "Contact is required"),
   ]),
-  type: z.string().min(1, 'Type is required'),
-  due_date: z.string().min(1, 'Due date is required'),
-  sales_id: z.union([
-    z.string().min(1),
-    z.number().min(1)
-  ]),
+  type: z.string().min(1, "Type is required"),
+  due_date: z.string().min(1, "Due date is required"),
+  sales_id: z.union([z.string().min(1), z.number().min(1)]),
 
   // Optional fields
   done_date: z.string().nullable().optional(),
@@ -53,9 +50,9 @@ export const taskWithReminderSchema = taskSchema.refine(
     return dueDate > new Date();
   },
   {
-    message: 'Tasks with reminders must have a future due date',
-    path: ['due_date'],
-  }
+    message: "Tasks with reminders must have a future due date",
+    path: ["due_date"],
+  },
 );
 
 /**

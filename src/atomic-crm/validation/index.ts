@@ -11,11 +11,11 @@
  */
 
 // Core entity schemas
-export * from './opportunities';
-export * from './organizations';
-export * from './contacts';
+export * from "./opportunities";
+export * from "./organizations";
+export * from "./contacts";
 
 // Supporting entity schemas
-export * from './tasks';
-export * from './tags';
-export * from './notes';
+export * from "./tasks";
+export * from "./tags";
+export * from "./notes";

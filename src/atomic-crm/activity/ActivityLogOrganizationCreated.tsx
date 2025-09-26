@@ -32,7 +32,9 @@ export function ActivityLogOrganizationCreated({
             </ReferenceField>
           </span>
           &nbsp;added organization &nbsp;
-          <Link to={`/organizations/${organization.id}/show`}>{organization.name}</Link>
+          <Link to={`/organizations/${organization.id}/show`}>
+            {organization.name}
+          </Link>
           {context === "all" && (
             <>
               <RelativeDate date={activity.date} />

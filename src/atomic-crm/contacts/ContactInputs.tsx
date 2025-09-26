@@ -107,11 +107,7 @@ const ContactPersonalInformationInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Personal info</h6>
-      <ArrayInput
-        source="email"
-        label="Email addresses"
-        helperText={false}
-      >
+      <ArrayInput source="email" label="Email addresses" helperText={false}>
         <SimpleFormIterator
           inline
           disableReordering

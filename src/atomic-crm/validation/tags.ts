@@ -5,58 +5,59 @@
  * Single point validation at API boundaries
  */
 
-import { z } from 'zod';
-import type { TagColorName } from '@/lib/color-types';
-import {
-  VALID_TAG_COLORS,
-  HEX_TO_SEMANTIC_MAP
-} from '@/lib/color-types';
+import { z } from "zod";
+import type { TagColorName } from "@/lib/color-types";
+import { VALID_TAG_COLORS, HEX_TO_SEMANTIC_MAP } from "@/lib/color-types";
 
 /**
  * Semantic color validation
  * Validates that a color is either a valid semantic color name
  * or a legacy hex value that can be mapped
  */
-const semanticColorSchema = z.string().refine(
-  (value) => {
-    // Check if it's a valid semantic color name
+const semanticColorSchema = z
+  .string()
+  .refine(
+    (value) => {
+      // Check if it's a valid semantic color name
+      if (VALID_TAG_COLORS.includes(value as TagColorName)) {
+        return true;
+      }
+
+      // Check if it's a legacy hex value that we can map
+      const normalizedHex = value.toLowerCase();
+      if (HEX_TO_SEMANTIC_MAP[normalizedHex]) {
+        return true;
+      }
+
+      return false;
+    },
+    {
+      message: "Invalid color selection. Must be a valid semantic color.",
+    },
+  )
+  .transform((value) => {
+    // If it's already a valid semantic color, return it
     if (VALID_TAG_COLORS.includes(value as TagColorName)) {
-      return true;
+      return value as TagColorName;
     }
 
-    // Check if it's a legacy hex value that we can map
+    // Try to map from hex to semantic
     const normalizedHex = value.toLowerCase();
-    if (HEX_TO_SEMANTIC_MAP[normalizedHex]) {
-      return true;
-    }
+    const mappedColorName = HEX_TO_SEMANTIC_MAP[normalizedHex];
 
-    return false;
-  },
-  {
-    message: 'Invalid color selection. Must be a valid semantic color.',
-  }
-).transform((value) => {
-  // If it's already a valid semantic color, return it
-  if (VALID_TAG_COLORS.includes(value as TagColorName)) {
-    return value as TagColorName;
-  }
-
-  // Try to map from hex to semantic
-  const normalizedHex = value.toLowerCase();
-  const mappedColorName = HEX_TO_SEMANTIC_MAP[normalizedHex];
-
-  // Return mapped color or default to gray
-  return mappedColorName || 'gray';
-});
+    // Return mapped color or default to gray
+    return mappedColorName || "gray";
+  });
 
 /**
  * Base tag schema with all fields
  */
 export const tagSchema = z.object({
   // Required fields
-  name: z.string()
-    .min(1, 'Tag name is required')
-    .max(50, 'Tag name must be less than 50 characters')
+  name: z
+    .string()
+    .min(1, "Tag name is required")
+    .max(50, "Tag name must be less than 50 characters")
     .trim(),
 
   color: semanticColorSchema,
@@ -75,7 +76,7 @@ export const tagSchema = z.object({
 export const createTagSchema = tagSchema.omit({
   id: true,
   createdAt: true,
-  updatedAt: true
+  updatedAt: true,
 });
 
 /**
@@ -97,7 +98,9 @@ export const tagWithCountSchema = tagSchema.extend({
  * Schema for tag filter options
  */
 export const tagFilterSchema = z.object({
-  colors: z.array(z.enum(VALID_TAG_COLORS as [TagColorName, ...TagColorName[]])).optional(),
+  colors: z
+    .array(z.enum(VALID_TAG_COLORS as [TagColorName, ...TagColorName[]]))
+    .optional(),
   searchTerm: z.string().optional(),
 });
 
@@ -153,11 +156,11 @@ export function validateTagFilter(options: unknown): TagFilterOptions {
 export function validateTagUniqueness(
   name: string,
   existingTags: Tag[],
-  excludeId?: string | number
+  excludeId?: string | number,
 ): string | undefined {
   const normalizedName = name.trim().toLowerCase();
 
-  const isDuplicate = existingTags.some(tag => {
+  const isDuplicate = existingTags.some((tag) => {
     // Skip the tag being updated
     if (excludeId && tag.id === excludeId) {
       return false;
@@ -167,7 +170,7 @@ export function validateTagUniqueness(
   });
 
   if (isDuplicate) {
-    return 'A tag with this name already exists';
+    return "A tag with this name already exists";
   }
 
   return undefined;

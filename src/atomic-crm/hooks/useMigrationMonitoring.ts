@@ -5,13 +5,13 @@
  * Integrates with the MigrationMetricsService to display progress and status.
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   MigrationMetrics,
   MigrationMetricsService,
   getMigrationMetricsService,
-  resetMigrationMetricsService
-} from '../services/migrationMetrics';
+  resetMigrationMetricsService,
+} from "../services/migrationMetrics";
 
 export interface UseMigrationMonitoringOptions {
   /**
@@ -116,7 +116,7 @@ export interface UseMigrationMonitoringResult {
  * Hook for monitoring migration progress in React components
  */
 export function useMigrationMonitoring(
-  options: UseMigrationMonitoringOptions = {}
+  options: UseMigrationMonitoringOptions = {},
 ): UseMigrationMonitoringResult {
   const {
     migrationId,
@@ -126,7 +126,7 @@ export function useMigrationMonitoring(
     autoStart = true,
     onComplete,
     onError,
-    onProgress
+    onProgress,
   } = options;
 
   // State
@@ -156,16 +156,17 @@ export function useMigrationMonitoring(
         options: {
           pollingInterval,
           useWebSocket,
-          wsUrl: wsUrl || 'ws://localhost:8080',
-          cacheTimeout: 1000
-        }
+          wsUrl: wsUrl || "ws://localhost:8080",
+          cacheTimeout: 1000,
+        },
       });
 
       await service.initialize(migrationId);
       serviceRef.current = service;
       return service;
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('Failed to initialize service');
+      const error =
+        err instanceof Error ? err : new Error("Failed to initialize service");
       setError(error);
       throw error;
     }
@@ -174,31 +175,34 @@ export function useMigrationMonitoring(
   /**
    * Handle metrics update
    */
-  const handleMetricsUpdate = useCallback((newMetrics: MigrationMetrics) => {
-    setMetrics(newMetrics);
-    setError(null);
+  const handleMetricsUpdate = useCallback(
+    (newMetrics: MigrationMetrics) => {
+      setMetrics(newMetrics);
+      setError(null);
 
-    // Check for status changes
-    if (previousStatusRef.current !== newMetrics.status) {
-      const previousStatus = previousStatusRef.current;
-      previousStatusRef.current = newMetrics.status;
+      // Check for status changes
+      if (previousStatusRef.current !== newMetrics.status) {
+        const previousStatus = previousStatusRef.current;
+        previousStatusRef.current = newMetrics.status;
 
-      // Handle completion
-      if (newMetrics.status === 'completed' && onComplete) {
-        onComplete(newMetrics);
+        // Handle completion
+        if (newMetrics.status === "completed" && onComplete) {
+          onComplete(newMetrics);
+        }
+
+        // Handle failure
+        if (newMetrics.status === "failed" && onError) {
+          onError(new Error("Migration failed"), newMetrics);
+        }
       }
 
-      // Handle failure
-      if (newMetrics.status === 'failed' && onError) {
-        onError(new Error('Migration failed'), newMetrics);
+      // Call progress callback
+      if (onProgress) {
+        onProgress(newMetrics);
       }
-    }
-
-    // Call progress callback
-    if (onProgress) {
-      onProgress(newMetrics);
-    }
-  }, [onComplete, onError, onProgress]);
+    },
+    [onComplete, onError, onProgress],
+  );
 
   /**
    * Start monitoring
@@ -229,7 +233,8 @@ export function useMigrationMonitoring(
 
       setIsMonitoring(true);
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('Failed to start monitoring');
+      const error =
+        err instanceof Error ? err : new Error("Failed to start monitoring");
       setError(error);
       if (onError) {
         onError(error);
@@ -237,7 +242,13 @@ export function useMigrationMonitoring(
     } finally {
       setIsLoading(false);
     }
-  }, [isMonitoring, initializeService, handleMetricsUpdate, useWebSocket, onError]);
+  }, [
+    isMonitoring,
+    initializeService,
+    handleMetricsUpdate,
+    useWebSocket,
+    onError,
+  ]);
 
   /**
    * Stop monitoring
@@ -277,7 +288,8 @@ export function useMigrationMonitoring(
       const newMetrics = await serviceRef.current.fetchMetrics();
       handleMetricsUpdate(newMetrics);
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('Failed to refresh metrics');
+      const error =
+        err instanceof Error ? err : new Error("Failed to refresh metrics");
       setError(error);
     } finally {
       setIsLoading(false);
@@ -289,7 +301,7 @@ export function useMigrationMonitoring(
    */
   const formatProgress = useCallback(() => {
     if (!metrics) {
-      return '0%';
+      return "0%";
     }
 
     return `${metrics.progressPercent}%`;
@@ -300,7 +312,7 @@ export function useMigrationMonitoring(
    */
   const formatETA = useCallback(() => {
     if (!metrics?.estimatedCompletion) {
-      return 'Calculating...';
+      return "Calculating...";
     }
 
     const eta = metrics.estimatedCompletion;
@@ -308,7 +320,7 @@ export function useMigrationMonitoring(
     const diffMs = eta.getTime() - now.getTime();
 
     if (diffMs <= 0) {
-      return 'Any moment now';
+      return "Any moment now";
     }
 
     const minutes = Math.floor(diffMs / 60000);
@@ -319,7 +331,7 @@ export function useMigrationMonitoring(
     } else if (minutes > 0) {
       return `~${minutes}m remaining`;
     } else {
-      return 'Less than a minute';
+      return "Less than a minute";
     }
   }, [metrics]);
 
@@ -328,7 +340,7 @@ export function useMigrationMonitoring(
    */
   const formatRuntime = useCallback(() => {
     if (!metrics?.startTime) {
-      return '00:00:00';
+      return "00:00:00";
     }
 
     const now = new Date();
@@ -339,7 +351,7 @@ export function useMigrationMonitoring(
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
 
-    const pad = (n: number) => n.toString().padStart(2, '0');
+    const pad = (n: number) => n.toString().padStart(2, "0");
 
     return `${pad(hours)}:${pad(minutes % 60)}:${pad(seconds % 60)}`;
   }, [metrics]);
@@ -349,18 +361,18 @@ export function useMigrationMonitoring(
    */
   const getSeverityClass = useCallback((severity: string) => {
     switch (severity.toLowerCase()) {
-      case 'critical':
-        return 'text-red-600 bg-red-50 border-red-200';
-      case 'high':
-        return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'medium':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'low':
-        return 'text-blue-600 bg-blue-50 border-blue-200';
-      case 'warning':
-        return 'text-amber-600 bg-amber-50 border-amber-200';
+      case "critical":
+        return "text-red-600 bg-red-50 border-red-200";
+      case "high":
+        return "text-orange-600 bg-orange-50 border-orange-200";
+      case "medium":
+        return "text-yellow-600 bg-yellow-50 border-yellow-200";
+      case "low":
+        return "text-blue-600 bg-blue-50 border-blue-200";
+      case "warning":
+        return "text-amber-600 bg-amber-50 border-amber-200";
       default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+        return "text-gray-600 bg-gray-50 border-gray-200";
     }
   }, []);
 
@@ -390,8 +402,8 @@ export function useMigrationMonitoring(
       Object.assign(serviceRef.current, {
         options: {
           ...serviceRef.current.options,
-          pollingInterval
-        }
+          pollingInterval,
+        },
       });
       if (!useWebSocket) {
         serviceRef.current.startPolling();
@@ -410,7 +422,7 @@ export function useMigrationMonitoring(
     formatProgress,
     formatETA,
     formatRuntime,
-    getSeverityClass
+    getSeverityClass,
   };
 }
 
@@ -418,10 +430,10 @@ export function useMigrationMonitoring(
  * Format bytes to human readable string
  */
 export function formatBytes(bytes: number): string {
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) return '0 B';
+  const sizes = ["B", "KB", "MB", "GB", "TB"];
+  if (bytes === 0) return "0 B";
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+  return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + " " + sizes[i];
 }
 
 /**
@@ -450,5 +462,5 @@ export function formatDuration(ms: number): string {
 export function createProgressBar(percent: number, width: number = 20): string {
   const filled = Math.round((percent / 100) * width);
   const empty = width - filled;
-  return '█'.repeat(filled) + '░'.repeat(empty);
+  return "█".repeat(filled) + "░".repeat(empty);
 }

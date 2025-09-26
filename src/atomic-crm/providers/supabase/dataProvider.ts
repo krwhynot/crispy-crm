@@ -22,14 +22,16 @@ import type {
   SalesFormData,
   Tag,
 } from "../../types";
-import {
-  validateTagColor,
-} from "../../tags/tag-colors";
+import { validateTagColor } from "../../tags/tag-colors";
 import { getActivityLog } from "../commons/activity";
 import { getOrganizationAvatar } from "../commons/getOrganizationAvatar";
 import { getContactAvatar } from "../commons/getContactAvatar";
 import { supabase } from "./supabase";
-import { getResourceName, getSearchableFields, RESOURCE_LIFECYCLE_CONFIG } from "./resources";
+import {
+  getResourceName,
+  getSearchableFields,
+  RESOURCE_LIFECYCLE_CONFIG,
+} from "./resources";
 
 if (import.meta.env.VITE_SUPABASE_URL === undefined) {
   throw new Error("Please set the VITE_SUPABASE_URL environment variable");
@@ -88,7 +90,10 @@ async function processContactAvatar(
 
 const dataProviderWithCustomMethods = {
   ...baseDataProvider,
-  async getList<RecordType extends RaRecord = any>(resource: string, params: GetListParams): Promise<any> {
+  async getList<RecordType extends RaRecord = any>(
+    resource: string,
+    params: GetListParams,
+  ): Promise<any> {
     // Map resource names through the resource mapping
     const actualResource = getResourceName(resource);
 
@@ -107,7 +112,10 @@ const dataProviderWithCustomMethods = {
 
     return baseDataProvider.getList(actualResource, params);
   },
-  async getOne<RecordType extends RaRecord = any>(resource: string, params: any): Promise<any> {
+  async getOne<RecordType extends RaRecord = any>(
+    resource: string,
+    params: any,
+  ): Promise<any> {
     // Map resource names through the resource mapping
     const actualResource = getResourceName(resource);
 
@@ -128,7 +136,7 @@ const dataProviderWithCustomMethods = {
   },
   async create<RecordType extends Omit<RaRecord, "id"> = any>(
     resource: string,
-    params: CreateParams<RecordType>
+    params: CreateParams<RecordType>,
   ): Promise<any> {
     // Map resource names through the resource mapping
     const actualResource = getResourceName(resource);
@@ -136,7 +144,7 @@ const dataProviderWithCustomMethods = {
   },
   async update<RecordType extends RaRecord = any>(
     resource: string,
-    params: UpdateParams<RecordType>
+    params: UpdateParams<RecordType>,
   ): Promise<any> {
     // Map resource names through the resource mapping
     const actualResource = getResourceName(resource);
@@ -213,11 +221,14 @@ const dataProviderWithCustomMethods = {
   },
   async unarchiveOpportunity(opportunity: Opportunity) {
     // get all opportunities where stage is the same as the opportunity to unarchive
-    const { data: opportunities } = await baseDataProvider.getList<Opportunity>("opportunities", {
-      filter: { stage: opportunity.stage },
-      pagination: { page: 1, perPage: 1000 },
-      sort: { field: "index", order: "ASC" },
-    });
+    const { data: opportunities } = await baseDataProvider.getList<Opportunity>(
+      "opportunities",
+      {
+        filter: { stage: opportunity.stage },
+        pagination: { page: 1, perPage: 1000 },
+        sort: { field: "index", order: "ASC" },
+      },
+    );
 
     // set index for each opportunity starting from 1, if the opportunity to unarchive is found, set its index to the last one
     const updatedOpportunities = opportunities.map((o, index) => ({
@@ -231,7 +242,9 @@ const dataProviderWithCustomMethods = {
         baseDataProvider.update("opportunities", {
           id: updatedOpportunity.id,
           data: updatedOpportunity,
-          previousData: opportunities.find((o) => o.id === updatedOpportunity.id),
+          previousData: opportunities.find(
+            (o) => o.id === updatedOpportunity.id,
+          ),
         }),
       ),
     );
@@ -242,46 +255,59 @@ const dataProviderWithCustomMethods = {
   // Junction table support for contact-organization relationships
   async getContactOrganizations(contactId: Identifier) {
     const { data } = await supabase
-      .from('contact_organizations')
-      .select(`
+      .from("contact_organizations")
+      .select(
+        `
         *,
         organization:companies(*)
-      `)
-      .eq('contact_id', contactId);
+      `,
+      )
+      .eq("contact_id", contactId);
 
     return { data: data || [] };
   },
-  async addContactToOrganization(contactId: Identifier, organizationId: Identifier, params: Partial<ContactOrganization> = {}) {
+  async addContactToOrganization(
+    contactId: Identifier,
+    organizationId: Identifier,
+    params: Partial<ContactOrganization> = {},
+  ) {
     const { data, error } = await supabase
-      .from('contact_organizations')
+      .from("contact_organizations")
       .insert({
         contact_id: contactId,
         organization_id: organizationId,
         is_primary: params.is_primary || false,
-        purchase_influence: params.purchase_influence || 'Unknown',
-        decision_authority: params.decision_authority || 'End User',
+        purchase_influence: params.purchase_influence || "Unknown",
+        decision_authority: params.decision_authority || "End User",
         role: params.role,
         created_at: new Date().toISOString(),
-        ...params
+        ...params,
       })
       .select()
       .single();
 
     if (error) {
-      throw new Error(`Failed to add contact to organization: ${error.message}`);
+      throw new Error(
+        `Failed to add contact to organization: ${error.message}`,
+      );
     }
 
     return { data };
   },
-  async removeContactFromOrganization(contactId: Identifier, organizationId: Identifier) {
+  async removeContactFromOrganization(
+    contactId: Identifier,
+    organizationId: Identifier,
+  ) {
     const { error } = await supabase
-      .from('contact_organizations')
+      .from("contact_organizations")
       .delete()
-      .eq('contact_id', contactId)
-      .eq('organization_id', organizationId);
+      .eq("contact_id", contactId)
+      .eq("organization_id", organizationId);
 
     if (error) {
-      throw new Error(`Failed to remove contact from organization: ${error.message}`);
+      throw new Error(
+        `Failed to remove contact from organization: ${error.message}`,
+      );
     }
 
     return { data: { id: `${contactId}-${organizationId}` } };
@@ -289,47 +315,60 @@ const dataProviderWithCustomMethods = {
   // Opportunity participants support
   async getOpportunityParticipants(opportunityId: Identifier) {
     const { data } = await supabase
-      .from('opportunity_participants')
-      .select(`
+      .from("opportunity_participants")
+      .select(
+        `
         *,
         organization:companies(*)
-      `)
-      .eq('opportunity_id', opportunityId);
+      `,
+      )
+      .eq("opportunity_id", opportunityId);
 
     return { data: data || [] };
   },
-  async addOpportunityParticipant(opportunityId: Identifier, organizationId: Identifier, params: Partial<OpportunityParticipant> = {}) {
+  async addOpportunityParticipant(
+    opportunityId: Identifier,
+    organizationId: Identifier,
+    params: Partial<OpportunityParticipant> = {},
+  ) {
     const { data, error } = await supabase
-      .from('opportunity_participants')
+      .from("opportunity_participants")
       .insert({
         opportunity_id: opportunityId,
         organization_id: organizationId,
-        role: params.role || 'customer',
+        role: params.role || "customer",
         is_primary: params.is_primary || false,
         commission_rate: params.commission_rate,
         territory: params.territory,
         notes: params.notes,
         created_at: new Date().toISOString(),
-        ...params
+        ...params,
       })
       .select()
       .single();
 
     if (error) {
-      throw new Error(`Failed to add opportunity participant: ${error.message}`);
+      throw new Error(
+        `Failed to add opportunity participant: ${error.message}`,
+      );
     }
 
     return { data };
   },
-  async removeOpportunityParticipant(opportunityId: Identifier, organizationId: Identifier) {
+  async removeOpportunityParticipant(
+    opportunityId: Identifier,
+    organizationId: Identifier,
+  ) {
     const { error } = await supabase
-      .from('opportunity_participants')
+      .from("opportunity_participants")
       .delete()
-      .eq('opportunity_id', opportunityId)
-      .eq('organization_id', organizationId);
+      .eq("opportunity_id", opportunityId)
+      .eq("organization_id", organizationId);
 
     if (error) {
-      throw new Error(`Failed to remove opportunity participant: ${error.message}`);
+      throw new Error(
+        `Failed to remove opportunity participant: ${error.message}`,
+      );
     }
 
     return { data: { id: `${opportunityId}-${organizationId}` } };
@@ -337,25 +376,31 @@ const dataProviderWithCustomMethods = {
   // Opportunity contacts support (many-to-many)
   async getOpportunityContacts(opportunityId: Identifier) {
     const { data } = await supabase
-      .from('opportunity_contacts')
-      .select(`
+      .from("opportunity_contacts")
+      .select(
+        `
         *,
         contact:contacts(*)
-      `)
-      .eq('opportunity_id', opportunityId);
+      `,
+      )
+      .eq("opportunity_id", opportunityId);
 
     return { data: data || [] };
   },
-  async addOpportunityContact(opportunityId: Identifier, contactId: Identifier, params: any = {}) {
+  async addOpportunityContact(
+    opportunityId: Identifier,
+    contactId: Identifier,
+    params: any = {},
+  ) {
     const { data, error } = await supabase
-      .from('opportunity_contacts')
+      .from("opportunity_contacts")
       .insert({
         opportunity_id: opportunityId,
         contact_id: contactId,
         role: params.role,
         is_primary: params.is_primary || false,
         created_at: new Date().toISOString(),
-        ...params
+        ...params,
       })
       .select()
       .single();
@@ -366,12 +411,15 @@ const dataProviderWithCustomMethods = {
 
     return { data };
   },
-  async removeOpportunityContact(opportunityId: Identifier, contactId: Identifier) {
+  async removeOpportunityContact(
+    opportunityId: Identifier,
+    contactId: Identifier,
+  ) {
     const { error } = await supabase
-      .from('opportunity_contacts')
+      .from("opportunity_contacts")
       .delete()
-      .eq('opportunity_id', opportunityId)
-      .eq('contact_id', contactId);
+      .eq("opportunity_id", opportunityId)
+      .eq("contact_id", contactId);
 
     if (error) {
       throw new Error(`Failed to remove opportunity contact: ${error.message}`);
@@ -384,7 +432,7 @@ const dataProviderWithCustomMethods = {
 export type CrmDataProvider = typeof dataProviderWithCustomMethods;
 
 export const dataProvider = withLifecycleCallbacks(
-    dataProviderWithCustomMethods,
+  dataProviderWithCustomMethods,
   [
     {
       resource: "contactNotes",
@@ -490,7 +538,12 @@ export const dataProvider = withLifecycleCallbacks(
     {
       resource: "opportunities",
       beforeGetList: async (params) => {
-        return applyFullTextSearch(["name", "category", "description", "next_action"])(params);
+        return applyFullTextSearch([
+          "name",
+          "category",
+          "description",
+          "next_action",
+        ])(params);
       },
     },
     {
@@ -534,7 +587,9 @@ const applyFullTextSearch = (columns: string[]) => (params: GetListParams) => {
   const { q, ...filter } = params.filter;
 
   // Apply soft delete filter automatically for supported resources
-  const softDeleteFilter = params.filter?.includeDeleted ? {} : { deleted_at: null };
+  const softDeleteFilter = params.filter?.includeDeleted
+    ? {}
+    : { deleted_at: null };
 
   return {
     ...params,

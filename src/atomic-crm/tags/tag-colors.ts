@@ -1,8 +1,5 @@
-import type { TagColorName } from '@/lib/color-types';
-import {
-  SEMANTIC_COLORS,
-  VALID_TAG_COLORS
-} from '@/lib/color-types';
+import type { TagColorName } from "@/lib/color-types";
+import { SEMANTIC_COLORS, VALID_TAG_COLORS } from "@/lib/color-types";
 
 /**
  * Validates if a color value is a valid tag color
@@ -16,7 +13,7 @@ export function validateTagColor(value: string): string | undefined {
     return undefined;
   }
 
-  return 'Invalid color selection';
+  return "Invalid color selection";
 }
 
 /**
@@ -36,9 +33,6 @@ export function getTagColorClass(color: string): string {
   return SEMANTIC_COLORS.gray.cssClass;
 }
 
-
-
-
 /**
  * Normalizes a color value to a semantic color name
  * Only accepts semantic color names, defaults to gray for invalid values
@@ -52,9 +46,8 @@ export function normalizeColorToSemantic(color: string): TagColorName {
   }
 
   // Default to gray for any invalid color
-  return 'gray';
+  return "gray";
 }
-
 
 /**
  * Export the valid colors list for use in UI components

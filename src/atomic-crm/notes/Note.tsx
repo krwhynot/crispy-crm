@@ -88,7 +88,11 @@ export const Note = ({
         {resource === "contactNote" ? (
           <Avatar width={20} height={20} />
         ) : (
-          <ReferenceField source="company_id" reference="organizations" link="show">
+          <ReferenceField
+            source="company_id"
+            reference="organizations"
+            link="show"
+          >
             <OrganizationAvatar width={20} height={20} />
           </ReferenceField>
         )}

@@ -1,6 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { Building2, CheckSquare, Clock, Tag, TrendingUp, Users } from "lucide-react";
+import {
+  Building2,
+  CheckSquare,
+  Clock,
+  Tag,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 import { cn } from "@/lib/utils";
 
@@ -96,7 +103,7 @@ export const ContactListFilter = () => {
                   variant="secondary"
                   className={cn(
                     "text-xs font-normal cursor-pointer",
-                    getTagColorClass(record?.color)
+                    getTagColorClass(record?.color),
                   )}
                 >
                   {record?.name}
@@ -143,7 +150,10 @@ export const ContactListFilter = () => {
         />
       </FilterCategory>
 
-      <FilterCategory icon={<Building2 className="h-4 w-4" />} label="Influence">
+      <FilterCategory
+        icon={<Building2 className="h-4 w-4" />}
+        label="Influence"
+      >
         <ToggleFilterButton
           className="w-full justify-between"
           label="High Influence"

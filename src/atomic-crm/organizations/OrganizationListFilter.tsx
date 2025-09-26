@@ -15,20 +15,20 @@ export const OrganizationListFilter = () => {
   }));
 
   const organizationTypes = [
-    { id: 'customer', name: 'Customer' },
-    { id: 'prospect', name: 'Prospect' },
-    { id: 'vendor', name: 'Vendor' },
-    { id: 'partner', name: 'Partner' },
-    { id: 'principal', name: 'Principal' },
-    { id: 'distributor', name: 'Distributor' },
-    { id: 'unknown', name: 'Unknown' },
+    { id: "customer", name: "Customer" },
+    { id: "prospect", name: "Prospect" },
+    { id: "vendor", name: "Vendor" },
+    { id: "partner", name: "Partner" },
+    { id: "principal", name: "Principal" },
+    { id: "distributor", name: "Distributor" },
+    { id: "unknown", name: "Unknown" },
   ];
 
   const priorities = [
-    { id: 'A', name: 'A - High Priority' },
-    { id: 'B', name: 'B - Medium-High Priority' },
-    { id: 'C', name: 'C - Medium Priority' },
-    { id: 'D', name: 'D - Low Priority' },
+    { id: "A", name: "A - High Priority" },
+    { id: "B", name: "B - Medium-High Priority" },
+    { id: "C", name: "C - Medium Priority" },
+    { id: "D", name: "D - Low Priority" },
   ];
 
   return (
@@ -37,7 +37,10 @@ export const OrganizationListFilter = () => {
         <SearchInput source="q" />
       </FilterLiveForm>
 
-      <FilterCategory icon={<Tag className="h-4 w-4" />} label="Organization Type">
+      <FilterCategory
+        icon={<Tag className="h-4 w-4" />}
+        label="Organization Type"
+      >
         {organizationTypes.map((type) => (
           <ToggleFilterButton
             key={type.id}
