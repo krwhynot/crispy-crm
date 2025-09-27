@@ -81,20 +81,30 @@ const ProductDetailInputs = () => {
           helperText="Select the supplier organization"
         />
       </ReferenceInput>
-      <TextInput source="upc" label="UPC Code" placeholder="123456789012" />
+      <TextInput
+        source="manufacturer_part_number"
+        label="Manufacturer Part Number"
+        placeholder="MFG-12345"
+        helperText="External product identifier"
+      />
       <SelectInput
         source="unit_of_measure"
         label="Unit of Measure"
+        defaultValue="each"
         choices={[
           { id: "each", name: "Each" },
           { id: "case", name: "Case" },
+          { id: "box", name: "Box" },
           { id: "pound", name: "Pound" },
           { id: "kilogram", name: "Kilogram" },
           { id: "liter", name: "Liter" },
           { id: "gallon", name: "Gallon" },
           { id: "dozen", name: "Dozen" },
           { id: "pallet", name: "Pallet" },
+          { id: "hour", name: "Hour" },
+          { id: "license", name: "License" },
         ]}
+        helperText="What the price refers to"
       />
     </div>
   );
@@ -104,25 +114,37 @@ const ProductPricingInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Pricing</h6>
-      <NumberInput
-        source="list_price"
-        label="List Price"
-        placeholder="0.00"
-        helperText="Selling price to customers"
-        step={0.01}
-      />
+      <div className="flex gap-4">
+        <NumberInput
+          source="list_price"
+          label="List Price"
+          placeholder="0.00"
+          helperText="Selling price to customers"
+          step={0.01}
+          className="flex-1"
+        />
+        <SelectInput
+          source="currency_code"
+          label="Currency"
+          defaultValue="USD"
+          choices={[
+            { id: "USD", name: "USD" },
+            { id: "EUR", name: "EUR" },
+            { id: "GBP", name: "GBP" },
+            { id: "CAD", name: "CAD" },
+            { id: "AUD", name: "AUD" },
+            { id: "JPY", name: "JPY" },
+            { id: "CNY", name: "CNY" },
+            { id: "MXN", name: "MXN" },
+          ]}
+          className="w-32"
+        />
+      </div>
       <NumberInput
         source="cost_per_unit"
         label="Cost per Unit"
         placeholder="0.00"
         helperText="Your cost from supplier"
-        step={0.01}
-      />
-      <NumberInput
-        source="map_price"
-        label="MAP Price"
-        placeholder="0.00"
-        helperText="Minimum Advertised Price"
         step={0.01}
       />
     </div>
@@ -132,26 +154,15 @@ const ProductPricingInputs = () => {
 const ProductInventoryInputs = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Inventory</h6>
+      <h6 className="text-lg font-semibold">Order Requirements</h6>
       <NumberInput
-        source="min_order_quantity"
-        label="Min Order Quantity"
+        source="minimum_order_quantity"
+        label="Minimum Order Quantity"
         placeholder="1"
-        helperText="Minimum units per order"
+        defaultValue={1}
+        helperText="Minimum units required per order"
         step={1}
-      />
-      <NumberInput
-        source="units_per_case"
-        label="Units per Case"
-        placeholder="12"
-        step={1}
-      />
-      <NumberInput
-        source="lead_time_days"
-        label="Lead Time (Days)"
-        placeholder="7"
-        helperText="Days to receive from supplier"
-        step={1}
+        min={1}
       />
     </div>
   );

@@ -288,6 +288,25 @@ function applyFullTextSearch(columns: readonly string[], shouldAddSoftDeleteFilt
 }
 
 /**
+ * Escape values for PostgREST according to official documentation
+ * PostgREST uses BACKSLASH escaping, NOT doubled quotes!
+ */
+function escapeForPostgREST(value: any): string {
+  const str = String(value);
+  // Check for PostgREST reserved characters
+  const needsQuoting = /[,."':() ]/.test(str);
+
+  if (!needsQuoting) {
+    return str;
+  }
+
+  // IMPORTANT: Escape backslashes first, then quotes
+  let escaped = str.replace(/\\/g, '\\\\');  // Backslash → \\
+  escaped = escaped.replace(/"/g, '\\"');    // Quote → \"
+  return `"${escaped}"`;
+}
+
+/**
  * Transform array filter values to PostgREST operators
  * Handles conversion of React Admin array filters to appropriate PostgREST syntax
  *
@@ -331,11 +350,11 @@ function transformArrayFilters(filter: Record<string, any>): Record<string, any>
       if (jsonbArrayFields.includes(key)) {
         // JSONB array contains - format: {1,2,3}
         // This checks if the JSONB array contains any of the specified values
-        transformed[`${key}@cs`] = `{${value.join(',')}}`;
+        transformed[`${key}@cs`] = `{${value.map(escapeForPostgREST).join(',')}}`;
       } else {
         // Regular IN operator - format: (val1,val2,val3)
         // This checks if the field value is in the list
-        transformed[`${key}@in`] = `(${value.join(',')})`;
+        transformed[`${key}@in`] = `(${value.map(escapeForPostgREST).join(',')})`;
       }
     } else {
       // Regular non-array value

@@ -22,9 +22,13 @@ Enable multi-select filtering capabilities on the Opportunities List page to all
 
 ## Implementation Plan
 
-### Phase 0: Critical Foundation
+### Parallel Execution Strategy
 
-#### Task 0.1: Fix String Escaping in Array-to-IN Conversion [Depends on: none] ⚠️ CRITICAL
+Tasks are grouped into batches of 2-3 agents running in parallel to optimize resource usage and prevent conflicts. Each batch should complete before starting the next batch.
+
+### Phase 0: Critical Foundation (Sequential - MUST Complete First)
+
+#### Task 0.1: Fix String Escaping in Array-to-IN Conversion [CRITICAL - DO FIRST]
 
 **Status**: ⚠️ PARTIALLY COMPLETE - The basic `transformArrayFilters()` function exists but has a **CRITICAL BUG** with string escaping.
 
@@ -71,7 +75,10 @@ Then update lines 334 and 338 to use this function:
 5. Test JSONB fields with quotes: `tags@cs={"tag\\"quoted","normal"}`
 6. Ensure no SQL injection with inputs like: `"; DROP TABLE--`
 
-#### Task 0.2: Create Array Conversion Test Script [Depends on: none]
+### Parallel Batch 1: Test Script & Core Multi-Select (2 agents)
+**Execute these 2 tasks in parallel after Phase 0 completion**
+
+#### Task 1.1: Create Array Conversion Test Script
 
 **READ THESE BEFORE TASK**
 - `/home/krwhynot/Projects/atomic/.docs/plans/multi-select-filters/testing-plan.md` - Section "Phase 0: Array Conversion Testing"
@@ -92,9 +99,7 @@ Create a test script that validates the array conversion function:
 
 The script should output clear pass/fail results and show the actual vs expected query formats.
 
-### Phase 1: Core Multi-Select Implementation
-
-#### Task 1.1: Replace Single-Select with Multi-Select Components [Depends on: 0.1]
+#### Task 1.2: Replace Single-Select with Multi-Select Components [Depends on: 0.1]
 
 **READ THESE BEFORE TASK**
 - `/src/atomic-crm/opportunities/OpportunityList.tsx` - Lines 38-64 for current filter implementation
@@ -114,7 +119,10 @@ Import `MultiSelectInput` from the admin layer and replace `SelectInput` compone
 Keep the `ReferenceInput` for customer_organization_id but verify it supports multiple selections.
 Do NOT modify the OnlyMine toggle or Search input.
 
-#### Task 1.2: Implement Default Stage Management [Depends on: none]
+### Parallel Batch 2: Default Behavior & Dynamic Generation (2 agents)
+**Execute these 2 tasks in parallel after Batch 1 completion**
+
+#### Task 2.1: Implement Default Stage Management
 
 **READ THESE BEFORE TASK**
 - `/home/krwhynot/Projects/atomic/.docs/plans/multi-select-filters/requirements.md` - Section "Default Behavior"
@@ -139,7 +147,7 @@ Wire the default values to the stage MultiSelectInput component.
 
 **Table:** opportunities (stage column - opportunity_stage enum)
 
-#### Task 1.3: Dynamic Category Choices Generation [Depends on: none]
+#### Task 2.2: Dynamic Category Choices Generation
 
 **READ THESE BEFORE TASK**
 - `/home/krwhynot/Projects/atomic/.docs/plans/multi-select-filters/implementation-gaps.md` - Section "Category Filter Choices"
@@ -162,9 +170,10 @@ Alternative: Use the opportunityCategories from configuration context if suffici
 
 **Table:** opportunities (category column - text)
 
-### Phase 2: UI Component Enhancements
+### Parallel Batch 3: UI Component Enhancements (2 agents)
+**Execute these 2 tasks in parallel after Batch 2 completion**
 
-#### Task 2.1: Enhance MultiSelectInput Visual Feedback [Depends on: none]
+#### Task 3.1: Enhance MultiSelectInput Visual Feedback
 
 **READ THESE BEFORE TASK**
 - `/src/components/admin/multi-select-input.tsx` - Current implementation
@@ -185,7 +194,7 @@ Enhance the existing component with:
 
 Follow semantic color system - use CSS variables only (--primary, --destructive).
 
-#### Task 2.2: Add Clear All Functionality [Depends on: none]
+#### Task 3.2: Add Clear All Functionality
 
 **READ THESE BEFORE TASK**
 - `/src/components/admin/multi-select-input.tsx` - Dropdown menu structure
@@ -206,9 +215,10 @@ Add "Clear all" option as the first dropdown menu item:
 
 Keep implementation simple - no complex state management.
 
-### Phase 3: Filter Chips Panel
+### Parallel Batch 4: Filter Chips Panel Components (3 agents)
+**Execute these 3 tasks in parallel after Batch 3 completion**
 
-#### Task 3.1: Create FilterChipsPanel Component [Depends on: none]
+#### Task 4.1: Create FilterChipsPanel Component
 
 **READ THESE BEFORE TASK**
 - `/src/atomic-crm/tags/TagChip.tsx` - Existing chip component pattern
@@ -230,10 +240,10 @@ Create a new component that:
 
 Import and reuse existing components - TagChip for display, Collapsible for container.
 
-#### Task 3.2: Organization Name Resolution for Chips [Depends on: 3.1]
+#### Task 4.2: Organization Name Resolution for Chips [Depends on: 4.1]
 
 **READ THESE BEFORE TASK**
-- `/src/atomic-crm/filters/FilterChipsPanel.tsx` - Component created in 3.1
+- `/src/atomic-crm/filters/FilterChipsPanel.tsx` - Component created in 4.1
 - `/home/krwhynot/Projects/atomic/.docs/plans/multi-select-filters/implementation-gaps.md` - Organization resolution code
 - React Admin documentation on dataProvider.getMany()
 
@@ -253,11 +263,11 @@ React Admin's React Query integration handles caching automatically.
 
 **Table:** organizations (id, name columns)
 
-#### Task 3.3: Integrate FilterChipsPanel into OpportunityList [Depends on: 3.1]
+#### Task 4.3: Integrate FilterChipsPanel into OpportunityList [Depends on: 4.1]
 
 **READ THESE BEFORE TASK**
 - `/src/atomic-crm/opportunities/OpportunityList.tsx` - Component structure
-- `/src/atomic-crm/filters/FilterChipsPanel.tsx` - Component created in 3.1
+- `/src/atomic-crm/filters/FilterChipsPanel.tsx` - Component created in 4.1
 - React Admin List component documentation
 
 **Instructions**
@@ -272,9 +282,10 @@ Import and integrate the FilterChipsPanel:
 - Ensure it's within the List component wrapper
 - Test collapsible behavior
 
-### Phase 4: Testing & Validation
+### Parallel Batch 5: Testing & Validation (2 agents)
+**Execute these 2 tasks in parallel after all previous batches complete**
 
-#### Task 4.1: Manual Testing Checklist Implementation [Depends on: all Phase 1-3 tasks]
+#### Task 5.1: Manual Testing Checklist Implementation
 
 **READ THESE BEFORE TASK**
 - `/home/krwhynot/Projects/atomic/.docs/plans/multi-select-filters/testing-plan.md` - Manual Testing Scenarios
@@ -296,7 +307,7 @@ Document and execute all manual test scenarios:
 
 Record any issues found with reproduction steps.
 
-#### Task 4.2: Network Query Validation [Depends on: 0.1, 1.1]
+#### Task 5.2: Network Query Validation
 
 **READ THESE BEFORE TASK**
 - `/home/krwhynot/Projects/atomic/.docs/plans/multi-select-filters/testing-plan.md` - Network Validation section
@@ -316,6 +327,69 @@ Create validation script to:
 - Test special character handling
 
 Output a report of all queries and their validation status.
+
+## Execution Timeline
+
+```mermaid
+gantt
+    title Multi-Select Filters Implementation Timeline
+    dateFormat X
+    axisFormat %s
+
+    section Critical
+    Phase 0 - String Escaping Fix :crit, phase0, 0, 1
+
+    section Batch 1
+    Test Script Creation :batch1a, after phase0, 2
+    Replace with Multi-Select :batch1b, after phase0, 2
+
+    section Batch 2
+    Default Stage Management :batch2a, after batch1a, 2
+    Dynamic Category Generation :batch2b, after batch1a, 2
+
+    section Batch 3
+    Visual Feedback Enhancement :batch3a, after batch2a, 2
+    Clear All Functionality :batch3b, after batch2a, 2
+
+    section Batch 4
+    Create FilterChipsPanel :batch4a, after batch3a, 3
+    Organization Name Resolution :batch4b, after batch3a, 3
+    Integrate FilterChipsPanel :batch4c, after batch3a, 3
+
+    section Batch 5
+    Manual Testing :batch5a, after batch4a, 2
+    Network Validation :batch5b, after batch4a, 2
+```
+
+## Batch Execution Summary
+
+| Batch | Tasks | Agents | Dependencies | Purpose |
+|-------|-------|---------|--------------|---------|
+| **Phase 0** | 1 | Sequential | None | Critical bug fix - MUST complete first |
+| **Batch 1** | 2 | 2 parallel | Phase 0 | Test infrastructure & core UI replacement |
+| **Batch 2** | 2 | 2 parallel | Batch 1 | Default behaviors & dynamic data |
+| **Batch 3** | 2 | 2 parallel | Batch 2 | UI enhancements for usability |
+| **Batch 4** | 3 | 3 parallel | Batch 3 | Filter chip panel system |
+| **Batch 5** | 2 | 2 parallel | Batch 4 | Comprehensive testing & validation |
+
+### Execution Guidelines
+
+1. **Phase 0 is Critical**: The string escaping bug MUST be fixed before any other work. This is a production blocker.
+
+2. **Batch Size Limits**: Never run more than 3 agents in parallel to prevent:
+   - Resource contention (CPU/memory)
+   - File edit conflicts
+   - Debugging complexity
+
+3. **Wait for Batch Completion**: Each batch must fully complete before starting the next batch to ensure:
+   - Dependencies are satisfied
+   - Changes can be tested incrementally
+   - Issues are caught early
+
+4. **Inter-Batch Validation**: Between batches, quickly verify:
+   - No TypeScript errors (`npm run build`)
+   - No lint violations (`npm run lint:check`)
+   - Basic functionality still works
 
 ## Implementation Advice
 
