@@ -7,18 +7,21 @@ import {
   useTranslate,
   type ChoicesProps,
 } from "ra-core";
-import { Check } from "lucide-react";
+import { X } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
+  DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { FormField, FormLabel, FormError } from "@/components/admin/form";
 import { InputHelperText } from "@/components/admin/input-helper-text";
+import { cn } from "@/lib/utils";
 
 export const MultiSelectInput = (props: MultiSelectInputProps) => {
   const {
@@ -36,7 +39,6 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
     validate,
     disabled,
 
-    className,
     emptyText = "Select items",
 
     ...rest
@@ -55,7 +57,6 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
   const {
     field,
     fieldState: { error },
-    formState: { isSubmitted },
   } = useInput({
     defaultValue,
     resource: resourceProp,
@@ -71,6 +72,14 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
         ? [...currentValue, choiceId]
         : currentValue.filter((v: any) => v !== choiceId);
       field.onChange(newValue);
+    },
+    [field]
+  );
+
+  const handleClearAll = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      field.onChange([]);
     },
     [field]
   );
@@ -95,13 +104,30 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between"
+            className={cn(
+              "w-full justify-between",
+              selectedCount > 0 && !disabled && "border-primary text-primary"
+            )}
             disabled={disabled}
           >
-            {displayText}
+            <span>{displayText}</span>
+            {selectedCount > 0 && (
+              <Badge variant="secondary" className="ml-2">
+                {selectedCount}
+              </Badge>
+            )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
+          {selectedCount > 0 && (
+            <>
+              <DropdownMenuItem onClick={handleClearAll}>
+                <X className="mr-2 h-4 w-4" />
+                Clear all
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           {allChoices?.map((choice) => {
             const choiceId = choice[optionValue ?? "id"];
             const choiceLabel = choice[optionText ?? "name"];
@@ -128,5 +154,4 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
 export type MultiSelectInputProps = ChoicesProps &
   Partial<InputProps> & {
     emptyText?: string;
-    className?: string;
   };

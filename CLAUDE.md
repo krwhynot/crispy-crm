@@ -56,7 +56,7 @@ When working with the database, use the Supabase MCP tools:
 - **State**: React Admin store + React Query
 
 ### Data Provider Architecture
-Unified Supabase data provider at `src/atomic-crm/providers/supabase/dataProvider.ts`:
+Unified Supabase data provider at `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`:
 - Implements React Admin DataProvider interface
 - All CRUD operations go through this single provider
 - Zod validation integrated at API boundaries
@@ -102,6 +102,7 @@ Zod schemas in `src/atomic-crm/validation/`:
 - **Kanban Board**: Drag-drop via index field in opportunities
 - **Multi-Org Contacts**: Junction table with role/influence tracking
 - **Activity Types**: Engagements (standalone) vs Interactions (opportunity-linked)
+- **Filter System**: Multi-select filters with JSONB array fields in `src/atomic-crm/filters/`
 
 ### Environment Variables
 ```bash

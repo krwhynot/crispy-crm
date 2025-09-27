@@ -28,28 +28,26 @@ export const productCategorySchema = z.enum([
   "other",
 ]);
 
-// Product status enum
+// Product status enum matching database
 export const productStatusSchema = z.enum([
   "active",
   "discontinued",
-  "pending",
   "seasonal",
+  "coming_soon",
   "out_of_stock",
+  "limited_availability",
 ]);
 
-// Unit of measure enum
-export const unitOfMeasureSchema = z.enum([
-  "each",
-  "case",
-  "pound",
-  "kilogram",
-  "liter",
-  "gallon",
-  "dozen",
-  "pallet",
-]);
+// Currency code validation (3-letter ISO codes)
+export const currencyCodeSchema = z.string()
+  .regex(/^[A-Z]{3}$/, "Currency must be a 3-letter code like USD");
 
-// Main product schema
+// Unit of measure - text field now for flexibility
+export const unitOfMeasureSchema = z.string()
+  .min(1, "Unit of measure is required")
+  .default("each");
+
+// Main product schema matching database structure
 export const productSchema = z.object({
   // Required fields
   name: z.string().min(1, "Product name is required"),
@@ -61,19 +59,24 @@ export const productSchema = z.object({
   status: productStatusSchema.default("active"),
   description: z.string().optional(),
   brand: z.string().optional(),
-  upc: z.string().optional(),
-  unit_of_measure: unitOfMeasureSchema.optional().default("each"),
+  manufacturer_part_number: z.string().optional(),
   subcategory: z.string().optional(),
+
+  // B2B fields with defaults
+  currency_code: currencyCodeSchema.default("USD"),
+  unit_of_measure: unitOfMeasureSchema,
+  minimum_order_quantity: z.number().int().min(1, "Minimum order must be at least 1").default(1),
 
   // Pricing fields (optional but must be positive if provided)
   list_price: z.number().min(0, "Price must be positive").optional(),
   cost_per_unit: z.number().min(0, "Cost must be positive").optional(),
-  map_price: z.number().min(0, "MAP price must be positive").optional(),
 
-  // Inventory fields
-  min_order_quantity: z.number().int().min(1).optional().default(1),
-  units_per_case: z.number().int().min(1).optional(),
-  lead_time_days: z.number().int().min(0).optional(),
+  // Food/health specific fields (kept for flexibility)
+  certifications: z.array(z.string()).optional(),
+  allergens: z.array(z.string()).optional(),
+  ingredients: z.string().optional(),
+  nutritional_info: z.record(z.any()).optional(),
+  marketing_description: z.string().optional(),
 
   // System fields (handled automatically)
   created_by: z.number().int().optional(),

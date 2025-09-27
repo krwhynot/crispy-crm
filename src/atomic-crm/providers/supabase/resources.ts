@@ -33,6 +33,7 @@ export const RESOURCE_MAPPING = {
   tags: "tags",
   sales: "sales",
   activities: "activities",
+  products: "products",
 } as const;
 
 /**
@@ -71,6 +72,7 @@ export const SEARCHABLE_RESOURCES = {
   opportunities: ["name", "category", "description", "next_action"],
   opportunities_summary: ["name", "category", "description"],
   contacts_summary: ["first_name", "last_name"],
+  products: ["name", "sku", "brand", "description", "manufacturer_part_number"],
   // deals: REMOVED - use opportunities
 } as const;
 
@@ -84,6 +86,7 @@ export const SOFT_DELETE_RESOURCES = [
   "contact_organizations",
   "opportunity_participants",
   "activities",
+  "products",
 ] as const;
 
 /**
