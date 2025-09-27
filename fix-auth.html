@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fix Authentication - Atomic CRM</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Authentication Fix Tool</h1>
+    <div id="status">Initializing...</div>
+    <button id="clearBtn" disabled>Clear All Sessions</button>
+    <button id="loginBtn" disabled>Login as Test User</button>
+    <pre id="log"></pre>
+
+    <script>
+        const SUPABASE_URL = 'https://aaqnanddcqvfiwhshndl.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFhcW5hbmRkY3F2Zml3aHNobmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1ODIxODUsImV4cCI6MjA3NDE1ODE4NX0.wJi2sGLrvrI5OQUujTByVWjdyCT7Prjlpsx9LC_CUzU';
+
+        const { createClient } = supabase;
+        const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const status = document.getElementById('status');
+        const log = document.getElementById('log');
+        const clearBtn = document.getElementById('clearBtn');
+        const loginBtn = document.getElementById('loginBtn');
+
+        function addLog(msg) {
+            log.textContent += msg + '\n';
+        }
+
+        async function checkCurrentAuth() {
+            addLog('\n=== Checking Current Authentication ===');
+
+            const { data: { session }, error } = await client.auth.getSession();
+
+            if (error) {
+                addLog(`Error getting session: ${error.message}`);
+                return null;
+            }
+
+            if (session) {
+                addLog(`✓ Session found for: ${session.user.email}`);
+                addLog(`  User ID: ${session.user.id}`);
+                addLog(`  Expires: ${new Date(session.expires_at * 1000).toLocaleString()}`);
+
+                // Test database access
+                const { data, error: dbError } = await client
+                    .from('tasks')
+                    .select('id')
+                    .limit(1);
+
+                if (dbError) {
+                    addLog(`✗ Database test failed: ${dbError.message}`);
+                } else {
+                    addLog(`✓ Database access working! Found ${data?.length || 0} tasks`);
+                }
+            } else {
+                addLog('✗ No active session found');
+            }
+
+            return session;
+        }
+
+        clearBtn.addEventListener('click', async () => {
+            clearBtn.disabled = true;
+            addLog('\n=== Clearing All Sessions ===');
+
+            // Clear localStorage
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.includes('supabase') || key.includes('sb-'))) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+                addLog(`Removed: ${key}`);
+            });
+
+            // Sign out from Supabase
+            const { error } = await client.auth.signOut();
+            if (error) {
+                addLog(`Sign out error: ${error.message}`);
+            } else {
+                addLog('✓ Signed out successfully');
+            }
+
+            status.textContent = 'All sessions cleared. Ready to login.';
+            clearBtn.disabled = false;
+            loginBtn.disabled = false;
+        });
+
+        loginBtn.addEventListener('click', async () => {
+            loginBtn.disabled = true;
+            addLog('\n=== Attempting Login ===');
+
+            const email = 'test@gmail.com';
+            const password = prompt('Enter password for test@gmail.com:');
+
+            if (!password) {
+                addLog('Login cancelled');
+                loginBtn.disabled = false;
+                return;
+            }
+
+            const { data, error } = await client.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) {
+                addLog(`✗ Login failed: ${error.message}`);
+                status.textContent = `Login failed: ${error.message}`;
+            } else {
+                addLog(`✓ Login successful!`);
+                addLog(`  User: ${data.user.email}`);
+                addLog(`  Session token acquired`);
+
+                // Test database access
+                const { data: testData, error: testError } = await client
+                    .from('tasks')
+                    .select('id')
+                    .limit(1);
+
+                if (testError) {
+                    addLog(`✗ Post-login DB test failed: ${testError.message}`);
+                } else {
+                    addLog(`✓ Database access confirmed! Can query tasks table`);
+                }
+
+                status.textContent = 'Login successful! You can now return to the app at http://localhost:5175';
+
+                // Store in correct format for the app
+                addLog('\n=== Setting up localStorage for app ===');
+                const storageKey = `sb-${SUPABASE_URL.split('//')[1].split('.')[0]}-auth-token`;
+                localStorage.setItem(storageKey, JSON.stringify(data.session));
+                addLog(`Stored session in: ${storageKey}`);
+            }
+
+            loginBtn.disabled = false;
+        });
+
+        // Initial check
+        (async () => {
+            const session = await checkCurrentAuth();
+            status.textContent = session ? 'Active session found' : 'No active session';
+            clearBtn.disabled = false;
+            loginBtn.disabled = false;
+        })();
+    </script>
+</body>
+</html>

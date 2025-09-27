@@ -1,0 +1,79 @@
+import { Package, DollarSign, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useCreatePath, useRecordContext } from "ra-core";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { formatDistanceToNow } from "date-fns";
+
+import type { Product } from "../types";
+
+export const ProductCard = (props: { record?: Product }) => {
+  const createPath = useCreatePath();
+  const record = useRecordContext<Product>(props);
+  if (!record) return null;
+
+  const statusColors: Record<string, string> = {
+    active: "default",
+    discontinued: "destructive",
+    pending: "secondary",
+    seasonal: "outline",
+  };
+
+  return (
+    <Link
+      to={createPath({
+        resource: "products",
+        id: record.id,
+        type: "show",
+      })}
+      className="no-underline"
+    >
+      <Card className="h-[200px] flex flex-col justify-between p-4 hover:bg-muted">
+        <div className="flex flex-col items-center gap-1">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <Package className="w-6 h-6 text-primary" />
+          </div>
+          <div className="text-center mt-1">
+            <h6 className="text-sm font-medium line-clamp-1">{record.name}</h6>
+            <p className="text-xs text-muted-foreground">SKU: {record.sku}</p>
+            <div className="flex gap-1 mt-1 justify-center flex-wrap">
+              {record.status && (
+                <Badge
+                  variant={statusColors[record.status] as any}
+                  className="text-xs px-1 py-0"
+                >
+                  {record.status}
+                </Badge>
+              )}
+              {record.brand && (
+                <Badge variant="outline" className="text-xs px-1 py-0">
+                  {record.brand}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          {record.list_price && (
+            <div className="flex items-center justify-center gap-0.5">
+              <DollarSign className="w-3 h-3 text-muted-foreground" />
+              <span className="text-sm font-medium">
+                ${record.list_price.toFixed(2)}
+              </span>
+            </div>
+          )}
+          {record.last_promoted_at && (
+            <div className="flex items-center justify-center gap-0.5">
+              <TrendingUp className="w-3 h-3 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">
+                {formatDistanceToNow(new Date(record.last_promoted_at), {
+                  addSuffix: true,
+                })}
+              </span>
+            </div>
+          )}
+        </div>
+      </Card>
+    </Link>
+  );
+};
