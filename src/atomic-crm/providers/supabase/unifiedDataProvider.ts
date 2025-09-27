@@ -33,7 +33,13 @@ import {
 import { validateOpportunityForm } from "../../validation/opportunities";
 import { validateOrganizationForSubmission } from "../../validation/organizations";
 import { validateContactForm } from "../../validation/contacts";
+import { validateProductForm } from "../../validation/products";
 import { validateCreateTag, validateUpdateTag } from "../../validation/tags";
+import {
+  validateContactNoteForSubmission,
+  validateOpportunityNoteForSubmission
+} from "../../validation/notes";
+import { validateTaskForSubmission } from "../../validation/tasks";
 
 // Import utilities for transformers
 import { uploadToBucket } from "../../utils/storage.utils";
@@ -75,33 +81,31 @@ const validationRegistry: Record<string, ValidationConfig> = {
     validate: validateContactForm,
   },
 
+  products: {
+    validate: validateProductForm,
+  },
+
   tags: {
     validate: async (data: any, isUpdate?: boolean) => {
-      try {
-        // Use appropriate validator based on operation
-        if (isUpdate || data.id) {
-          validateUpdateTag(data);
-        } else {
-          validateCreateTag(data);
-        }
-        // Tag validators return data, not throw, so we don't need to do anything
-        return;
-      } catch (error: any) {
-        // Convert Zod errors to React Admin format
-        if (error.errors) {
-          const formattedErrors: Record<string, string> = {};
-          error.errors.forEach((err: any) => {
-            const path = Array.isArray(err.path) ? err.path.join(".") : "root";
-            formattedErrors[path] = err.message;
-          });
-          throw {
-            message: "Validation failed",
-            errors: formattedErrors,
-          };
-        }
-        throw error;
+      // Use appropriate validator based on operation
+      if (isUpdate || data.id) {
+        await validateUpdateTag(data);
+      } else {
+        await validateCreateTag(data);
       }
     },
+  },
+
+  contactNotes: {
+    validate: validateContactNoteForSubmission,
+  },
+
+  opportunityNotes: {
+    validate: validateOpportunityNoteForSubmission,
+  },
+
+  tasks: {
+    validate: validateTaskForSubmission,
   },
 };
 
@@ -187,13 +191,19 @@ const transformerRegistry: Record<string, TransformerConfig> = {
   },
 };
 
+// Create a function to get the base provider with current auth
+// This ensures the data provider always uses the current authenticated session
+const getBaseDataProvider = () => {
+  return supabaseDataProvider({
+    instanceUrl: import.meta.env.VITE_SUPABASE_URL,
+    apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+    supabaseClient: supabase,
+    sortOrder: "asc,desc.nullslast" as any,
+  });
+};
+
 // Initialize base data provider
-const baseDataProvider = supabaseDataProvider({
-  instanceUrl: import.meta.env.VITE_SUPABASE_URL,
-  apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-  supabaseClient: supabase,
-  sortOrder: "asc,desc.nullslast" as any,
-});
+const baseDataProvider = getBaseDataProvider();
 
 // Initialize service layer instances
 const salesService = new SalesService(baseDataProvider);
@@ -437,6 +447,56 @@ async function processForDatabase<T>(
 }
 
 /**
+ * Normalize JSONB array fields to ensure they are always arrays
+ * This prevents runtime errors when components expect array data
+ * Engineering Constitution: BOY SCOUT RULE - fixing data inconsistencies
+ */
+function normalizeJsonbArrayFields(data: any): any {
+  if (!data) return data;
+
+  // Helper to ensure a value is always an array
+  const ensureArray = (value: any): any[] => {
+    if (value === null || value === undefined) {
+      return [];
+    }
+    if (!Array.isArray(value)) {
+      // Log warning for debugging data inconsistencies
+      console.warn(`[Data Normalization] Converting non-array JSONB to array:`, value);
+      // If it's an object, wrap it in an array, otherwise return empty array
+      return typeof value === 'object' ? [value] : [];
+    }
+    return value;
+  };
+
+  // Normalize based on resource type
+  // Currently only contacts have JSONB array fields that need normalization
+  if (data.email !== undefined || data.phone !== undefined || data.tags !== undefined) {
+    return {
+      ...data,
+      ...(data.email !== undefined && { email: ensureArray(data.email) }),
+      ...(data.phone !== undefined && { phone: ensureArray(data.phone) }),
+      ...(data.tags !== undefined && { tags: ensureArray(data.tags) }),
+    };
+  }
+
+  return data;
+}
+
+/**
+ * Normalize response data from database queries
+ * Applies to both single records and arrays of records
+ */
+function normalizeResponseData(resource: string, data: any): any {
+  // Handle array of records (getList, getMany, getManyReference)
+  if (Array.isArray(data)) {
+    return data.map(record => normalizeJsonbArrayFields(record));
+  }
+
+  // Handle single record (getOne)
+  return normalizeJsonbArrayFields(data);
+}
+
+/**
  * Wrap a data provider method with error logging and transformations
  * Ensures validation errors are properly formatted for React Admin's inline display
  */
@@ -502,8 +562,11 @@ export const unifiedDataProvider: DataProvider = {
       // Execute query
       const result = await baseDataProvider.getList(dbResource, searchParams);
 
-      // No transformation needed yet (will be added in a future task)
-      return result;
+      // Apply data normalization to ensure JSONB fields are arrays
+      return {
+        ...result,
+        data: normalizeResponseData(resource, result.data),
+      };
     });
   },
 
@@ -518,8 +581,11 @@ export const unifiedDataProvider: DataProvider = {
       // Execute query
       const result = await baseDataProvider.getOne(dbResource, params);
 
-      // No transformation needed yet (will be added in a future task)
-      return result;
+      // Apply data normalization to ensure JSONB fields are arrays
+      return {
+        ...result,
+        data: normalizeResponseData(resource, result.data),
+      };
     });
   },
 
@@ -542,8 +608,11 @@ export const unifiedDataProvider: DataProvider = {
 
       const result = await baseDataProvider.getMany(dbResource, filteredParams);
 
-      // No transformation needed yet (will be added in a future task)
-      return result;
+      // Apply data normalization to ensure JSONB fields are arrays
+      return {
+        ...result,
+        data: normalizeResponseData(resource, result.data),
+      };
     });
   },
 
@@ -566,8 +635,11 @@ export const unifiedDataProvider: DataProvider = {
         filter: searchParams.filter,
       });
 
-      // No transformation needed yet (will be added in a future task)
-      return result;
+      // Apply data normalization to ensure JSONB fields are arrays
+      return {
+        ...result,
+        data: normalizeResponseData(resource, result.data),
+      };
     });
   },
 
