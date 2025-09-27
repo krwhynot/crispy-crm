@@ -288,17 +288,82 @@ function applyFullTextSearch(columns: readonly string[], shouldAddSoftDeleteFilt
 }
 
 /**
+ * Transform array filter values to PostgREST operators
+ * Handles conversion of React Admin array filters to appropriate PostgREST syntax
+ *
+ * @example
+ * // JSONB array fields (tags, email, phone)
+ * { tags: [1, 2, 3] } → { "tags@cs": "{1,2,3}" }
+ *
+ * // Regular enum/text fields
+ * { status: ["active", "pending"] } → { "status@in": "(active,pending)" }
+ */
+function transformArrayFilters(filter: Record<string, any>): Record<string, any> {
+  if (!filter || typeof filter !== 'object') {
+    return filter;
+  }
+
+  const transformed: Record<string, any> = {};
+
+  // Fields that are stored as JSONB arrays in PostgreSQL
+  // These use the @cs (contains) operator
+  const jsonbArrayFields = ['tags', 'email', 'phone'];
+
+  for (const [key, value] of Object.entries(filter)) {
+    // Skip null/undefined values
+    if (value === null || value === undefined) {
+      continue;
+    }
+
+    // Preserve existing PostgREST operators (keys containing @)
+    if (key.includes('@')) {
+      transformed[key] = value;
+      continue;
+    }
+
+    // Handle array values
+    if (Array.isArray(value)) {
+      // Skip empty arrays
+      if (value.length === 0) {
+        continue;
+      }
+
+      if (jsonbArrayFields.includes(key)) {
+        // JSONB array contains - format: {1,2,3}
+        // This checks if the JSONB array contains any of the specified values
+        transformed[`${key}@cs`] = `{${value.join(',')}}`;
+      } else {
+        // Regular IN operator - format: (val1,val2,val3)
+        // This checks if the field value is in the list
+        transformed[`${key}@in`] = `(${value.join(',')})`;
+      }
+    } else {
+      // Regular non-array value
+      transformed[key] = value;
+    }
+  }
+
+  return transformed;
+}
+
+/**
  * Apply search parameters to a query
  * Enhanced version that supports both search and automatic soft delete filtering
+ *
+ * @param resource - The resource name
+ * @param params - The query parameters
+ * @param useView - Whether this query will use a summary view (true for getList, false for getManyReference)
  */
 function applySearchParams(
   resource: string,
   params: GetListParams,
+  useView: boolean = true,
 ): GetListParams {
   const searchableFields = getSearchableFields(resource);
 
   // Check if we're using a view (views already handle soft delete filtering internally)
-  const dbResource = getDatabaseResource(resource, "list");
+  // Only check for view if the operation will actually use one
+  const dbResource = useView ? getDatabaseResource(resource, "list") : getResourceName(resource);
   const isView = dbResource.includes("_summary") || dbResource.includes("_view");
 
   // Apply soft delete filter for all supported resources, even without search
@@ -307,21 +372,30 @@ function applySearchParams(
     !params.filter?.includeDeleted &&
     !isView;
 
+  // Transform array filters to PostgREST operators
+  const transformedFilter = transformArrayFilters(params.filter);
+
   // If no search query but needs soft delete filter
-  if (!params.filter?.q && needsSoftDeleteFilter) {
+  if (!transformedFilter?.q && needsSoftDeleteFilter) {
     return {
       ...params,
       filter: {
-        ...params.filter,
+        ...transformedFilter,
         deleted_at: null,
       },
     };
   }
 
-  // If no search query and no soft delete needed, return params as-is
-  if (!params.filter?.q) {
-    return params;
+  // If no search query and no soft delete needed, return params with transformed filters
+  if (!transformedFilter?.q) {
+    return {
+      ...params,
+      filter: transformedFilter,
+    };
   }
+
+  // Extract search query and apply full-text search
+  const { q, ...filterWithoutQ } = transformedFilter;
 
   // If no searchable fields configured, apply basic soft delete only
   if (searchableFields.length === 0) {
@@ -329,7 +403,7 @@ function applySearchParams(
     return {
       ...params,
       filter: {
-        ...params.filter,
+        ...filterWithoutQ,
         ...softDeleteFilter,
       },
     };
@@ -337,7 +411,12 @@ function applySearchParams(
 
   // Use the applyFullTextSearch helper for resources with search configuration
   // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
-  return applyFullTextSearch(searchableFields, needsSoftDeleteFilter)(params);
+  const searchParams = applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
+    ...params,
+    filter: transformedFilter,
+  });
+
+  return searchParams;
 }
 
 /**
@@ -623,12 +702,16 @@ export const unifiedDataProvider: DataProvider = {
     return wrapMethod("getManyReference", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
-      // Apply search parameters and soft delete filtering
-      // getManyReference can have filter parameters similar to getList
-      const searchParams = applySearchParams(resource, {
-        ...params,
-        filter: params.filter || {},
-      } as GetListParams);
+      // Apply search parameters, array transformation, and soft delete filtering
+      // getManyReference uses base tables (not summary views), so pass useView=false
+      const searchParams = applySearchParams(
+        resource,
+        {
+          ...params,
+          filter: params.filter || {},
+        } as GetListParams,
+        false, // getManyReference doesn't use summary views
+      );
 
       const result = await baseDataProvider.getManyReference(dbResource, {
         ...params,
