@@ -121,6 +121,7 @@
     "ora": "^8.1.1",
     "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
+    "supabase": "^2.45.5",
     "terser": "^5.44.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
