@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
-import { ReferenceField } from "@/components/admin";
+import { ReferenceField } from "@/components/admin/reference-field";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { Avatar } from "../contacts/Avatar";
 import { RelativeDate } from "../misc/RelativeDate";

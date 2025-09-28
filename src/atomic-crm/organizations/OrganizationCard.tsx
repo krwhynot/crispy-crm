@@ -1,7 +1,7 @@
 import { DollarSign, Star, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useListContext, useRecordContext } from "ra-core";
-import { ReferenceManyField } from "@/components/admin";
+import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 

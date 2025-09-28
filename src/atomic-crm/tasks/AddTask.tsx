@@ -1,10 +1,9 @@
-import {
-  AutocompleteInput,
-  ReferenceInput,
-  TextInput,
-  SelectInput,
-  SaveButton,
-} from "@/components/admin";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { ReferenceInput } from "@/components/admin/reference-input";
+import { TextInput } from "@/components/admin/text-input";
+import { SelectInput } from "@/components/admin/select-input";
+import { SaveButton } from "@/components/admin/form";
+import {  } from "@/components/admin/";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

@@ -1,7 +1,8 @@
 import { Package, Tag, DollarSign, Building2, TrendingUp } from "lucide-react";
 import { FilterLiveForm } from "ra-core";
 
-import { ToggleFilterButton, SearchInput } from "@/components/admin";
+import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 
 export const ProductListFilter = () => {

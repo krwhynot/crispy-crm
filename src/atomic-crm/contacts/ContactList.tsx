@@ -2,13 +2,12 @@ import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
 
-import {
-  BulkActionsToolbar,
-  CreateButton,
-  ExportButton,
-  List,
-  SortButton,
-} from "@/components/admin";
+import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
+import { CreateButton } from "@/components/admin/create-button";
+import { ExportButton } from "@/components/admin/export-button";
+import { List } from "@/components/admin/list";
+import { SortButton } from "@/components/admin/sort-button";
+import {  } from "@/components/admin/";
 import { Card } from "@/components/ui/card";
 import type { Organization, Contact, Sale, Tag } from "../types";
 import { ContactEmpty } from "./ContactEmpty";

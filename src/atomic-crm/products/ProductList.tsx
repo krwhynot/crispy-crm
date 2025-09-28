@@ -1,11 +1,10 @@
 import { useListContext } from "ra-core";
-import {
-  CreateButton,
-  ExportButton,
-  List,
-  ListPagination,
-  SortButton,
-} from "@/components/admin";
+import { CreateButton } from "@/components/admin/create-button";
+import { ExportButton } from "@/components/admin/export-button";
+import { List } from "@/components/admin/list";
+import { ListPagination } from "@/components/admin/list-pagination";
+import { SortButton } from "@/components/admin/sort-button";
+import {  } from "@/components/admin/";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductGridList } from "./ProductGridList";

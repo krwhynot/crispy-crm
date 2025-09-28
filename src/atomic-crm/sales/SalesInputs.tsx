@@ -1,4 +1,5 @@
-import { BooleanInput, TextInput } from "@/components/admin";
+import { BooleanInput } from "@/components/admin/boolean-input";
+import { TextInput } from "@/components/admin/text-input";
 import { useGetIdentity, useRecordContext } from "ra-core";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import type { Sale } from "../types";

@@ -4,7 +4,8 @@ import { formatRelative } from "date-fns";
 import { RecordContextProvider, useListContext } from "ra-core";
 import { Link } from "react-router-dom";
 
-import { ReferenceField, TextField } from "@/components/admin";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { MouseEvent } from "react";
 import { useCallback } from "react";
