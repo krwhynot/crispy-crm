@@ -1,22 +1,56 @@
-I have created detailed planning and research documentation for changes to the code, located here:
+---
+description: Execute parallel tasks from planning documentation
+argument-hint: [plan-directory]
+allowed-tools: Bash(ls:*), Bash(cat:*), Bash(get_compilation_errors:*)
+model: claude-opus-4-1-20250805  # Recommended but not required
+---
 
-$ARGUMENTS
+## Prerequisites Check
+Files to verify: !`ls -la $ARGUMENTS/*.md 2>/dev/null | head -10`
 
-Specifically, the `parallel-plan.md` file contains the exact steps to take, and in what order. The other files contain documentation and other planning information that will be useful for implementing individual aspects of the master plan. 
+Required files must exist:
+- `$ARGUMENTS/parallel-plan.md` 
+- `$ARGUMENTS/shared.md`
 
-1. Read `parallel-plan.md` and `shared.md`. Parallel-plan.md also contains a list of relevant files at the top that you must also read.
-2. Make a comprehensive todo, with a todo item for each task in `parallel-plan.md`. For each todo, name the tasks it's dependent on. Don't include any testing steps, except for the last step which should run `get_compilation_errors` on /src. 
-3. Delegate work to parallel-task-execution agents in batches. If a task is marked as independent, or if all of its dependencies have been completed, it must be run in parallel with any other such tasks. Prioritize parallel execution wherever possible.
+## Task Execution Protocol
 
-   Each agent should:
-   - Only implement the specific step assigned.
-   - Be provided with links to the `parallel-plan.md`, the `shared.md` and other documentation.
-   - Begin by reading and understanding the relevant sections.
-   - Perform the task completely
-   - Run `get_compilation_errors` on any files they edit, before returning.
-   - Return a summary of changes made.
+1. **Read Core Documentation**
+   - Read `@$ARGUMENTS/parallel-plan.md` and `@$ARGUMENTS/shared.md`
+   - Read all files listed at the top of parallel-plan.md
+   - FAIL FAST: Stop immediately if any required file is missing
 
-It is critical that these agents be used in batches—deploy all the agents in a batch in the same function call.
-4. After each batch of agents finishes, identify which tasks can be run next. There may be multiple tasks that have all of their dependent tasks done. In this case, run those tasks in parallel as well.
+2. **Create Comprehensive Todo List**
+   - Create todo item for each task in `parallel-plan.md`
+   - Mark dependencies for each task
+   - Exclude testing steps except final compilation check: `get_compilation_errors /src`
+   - FAIL FAST: Stop if parallel-plan.md structure is invalid
 
-Upon completing the plan, simply say "Done. Run /report for analysis."
+3. **Parallel Agent Delegation**
+   
+   **Batch Execution Rules:**
+   - Maximum 5 agents per batch
+   - Deploy ALL eligible tasks in each batch simultaneously
+   - Tasks eligible when: marked independent OR all dependencies complete
+   
+   **Each Agent Must:**
+   - Read only their specific task from documentation
+   - Access: `@$ARGUMENTS/parallel-plan.md`, `@$ARGUMENTS/shared.md`, relevant docs
+   - Implement ONLY their assigned step
+   - Run `get_compilation_errors` on modified files
+   - FAIL FAST: Stop batch if compilation errors detected
+   - Return: {taskId, filesModified, changesSummary}
+
+   **Critical:** Deploy all agents in a batch with a SINGLE function call
+
+4. **Batch Progress Tracking**
+   After each batch completes:
+   - Report: "Batch X complete: Y tasks executed"
+   - Identify next eligible tasks (dependencies satisfied)
+   - Continue with next parallel batch
+   - FAIL FAST: Stop all execution if any task fails
+
+## Completion
+Final compilation check: !`get_compilation_errors /src | tail -5`
+
+Upon success: "✅ Plan execution complete. Run /report for detailed analysis."
+Upon failure: "❌ Execution failed at [taskId]. Fix errors and restart."
