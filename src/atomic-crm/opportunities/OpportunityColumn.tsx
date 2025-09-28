@@ -17,7 +17,7 @@ export const OpportunityColumn = ({
   );
 
   return (
-    <div className="flex-1 pb-8">
+    <div className="flex-1 pb-8 min-w-[160px] max-w-[220px]">
       <div className="flex flex-col items-center">
         <h3 className="text-base font-medium">
           {getOpportunityStageLabel(stage)}

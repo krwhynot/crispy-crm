@@ -12,25 +12,31 @@ import type { OpportunitiesByStage } from "./stages";
 import { getOpportunitiesByStage } from "./stages";
 
 export const OpportunityListContent = () => {
-  const opportunityStages = OPPORTUNITY_STAGES_LEGACY;
+  const allOpportunityStages = OPPORTUNITY_STAGES_LEGACY;
 
   const {
     data: unorderedOpportunities,
     isPending,
     refetch,
+    filterValues,
   } = useListContext<Opportunity>();
   const dataProvider = useDataProvider();
 
+  // Filter stages based on active filter
+  const visibleStages = filterValues?.stage && Array.isArray(filterValues.stage) && filterValues.stage.length > 0
+    ? allOpportunityStages.filter((stage) => filterValues.stage.includes(stage.value))
+    : allOpportunityStages;
+
   const [opportunitiesByStage, setOpportunitiesByStage] =
     useState<OpportunitiesByStage>(
-      getOpportunitiesByStage([], opportunityStages),
+      getOpportunitiesByStage([], allOpportunityStages),
     );
 
   useEffect(() => {
     if (unorderedOpportunities) {
       const newOpportunitiesByStage = getOpportunitiesByStage(
         unorderedOpportunities,
-        opportunityStages,
+        allOpportunityStages,
       );
       if (!isEqual(newOpportunitiesByStage, opportunitiesByStage)) {
         setOpportunitiesByStage(newOpportunitiesByStage);
@@ -87,8 +93,8 @@ export const OpportunityListContent = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex gap-4">
-        {opportunityStages.map((stage) => (
+      <div className="flex gap-4 overflow-x-auto">
+        {visibleStages.map((stage) => (
           <OpportunityColumn
             stage={stage.value}
             opportunities={opportunitiesByStage[stage.value]}
