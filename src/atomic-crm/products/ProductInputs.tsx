@@ -3,7 +3,6 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { NumberInput } from "@/components/admin/number-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import {  } from "@/components/admin/";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
 

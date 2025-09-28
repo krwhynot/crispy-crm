@@ -8,9 +8,7 @@ import { ToggleFilterButton as FilterButton } from "@/components/admin/toggle-fi
 import { SearchInput } from "@/components/admin/search-input";
 import { MultiSelectInput } from "@/components/admin/multi-select-input";
 import { Breadcrumb } from "@/components/admin/breadcrumb";
-import { Breadcrumb } from "@/components/admin/breadcrumb";
 
-import {  } from "@/components/admin/";
 import {
   Translate,
   useGetIdentity,

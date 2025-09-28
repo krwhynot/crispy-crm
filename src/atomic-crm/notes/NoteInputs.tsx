@@ -6,7 +6,6 @@ import { TextInput } from "@/components/admin/text-input";
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
 import { SelectInput } from "@/components/admin/select-input";
-import {  } from "@/components/admin/";
 import { Button } from "@/components/ui/button";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
