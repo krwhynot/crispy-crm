@@ -1,0 +1,177 @@
+# Intelligent Cleanup Ignore Patterns
+# Similar to .gitignore - patterns for files that should never be cleaned
+
+# ============================================
+# ESSENTIAL SYSTEM FILES
+# ============================================
+
+# Version Control
+.git/
+.gitignore
+.gitattributes
+
+# Package Management
+package.json
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+composer.json
+composer.lock
+Gemfile
+Gemfile.lock
+Pipfile
+Pipfile.lock
+requirements.txt
+go.mod
+go.sum
+Cargo.toml
+Cargo.lock
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+!.env.template
+secrets/
+credentials/
+
+# ============================================
+# CORE SOURCE FILES
+# ============================================
+
+# Entry Points (adjust for your project)
+src/index.*
+src/main.*
+src/App.*
+src/app.*
+index.html
+main.py
+main.go
+main.rs
+
+# Core Components
+src/components/ui/**
+src/core/**
+src/lib/**
+src/utils/constants.*
+src/config/**
+
+# ============================================
+# DOCUMENTATION
+# ============================================
+
+# Essential Docs
+README.md
+README.rst
+LICENSE*
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+CHANGELOG.md
+AUTHORS
+
+# API Documentation
+docs/api/**
+openapi.json
+openapi.yaml
+swagger.json
+swagger.yaml
+
+# ============================================
+# CONFIGURATION
+# ============================================
+
+# Build Configs
+webpack.config.*
+vite.config.*
+rollup.config.*
+next.config.*
+nuxt.config.*
+vue.config.*
+angular.json
+
+# TypeScript
+tsconfig.json
+tsconfig.*.json
+
+# Linting & Formatting
+.eslintrc*
+.prettierrc*
+.stylelintrc*
+.editorconfig
+
+# Testing
+jest.config.*
+vitest.config.*
+cypress.json
+playwright.config.*
+
+# CI/CD
+.github/**
+.gitlab-ci.yml
+.circleci/**
+.travis.yml
+azure-pipelines.yml
+Jenkinsfile
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# IDE Settings
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+
+# ============================================
+# DATA & DATABASES
+# ============================================
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+migrations/**
+seeders/**
+database/schema.*
+
+# Data Files (be selective)
+data/production/**
+data/critical/**
+
+# ============================================
+# ASSETS
+# ============================================
+
+# Important Assets
+src/assets/logo.*
+src/assets/icons/**
+public/favicon.*
+public/manifest.json
+
+# ============================================
+# CUSTOM PATTERNS
+# ============================================
+
+# Project-Specific (add your own)
+# **/IMPORTANT_*
+# **/KEEP_*
+# **/DO_NOT_DELETE_*
+
+# Files with specific markers
+**/TODO_CRITICAL*
+**/*_INPROGRESS*
+
+# Active Feature Branches
+feature/**/
+experimental/**/
+
+# ============================================
+# TEMPORARY EXCEPTIONS
+# ============================================
+# Add patterns here temporarily during development
+# Remember to review and remove when no longer needed
+
+# Example: Currently working on
+# src/components/NewFeature/**
+# tests/integration/current/**
