@@ -7,6 +7,62 @@ import createHtmlPlugin from "vite-plugin-simple-html";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  optimizeDeps: {
+    include: [
+      // React Admin core - pre-bundle these heavy dependencies
+      'react-admin',
+      'ra-core',
+      'ra-ui-materialui',
+      'ra-i18n-polyglot',
+      'ra-language-english',
+
+      // Supabase
+      '@supabase/supabase-js',
+      'ra-supabase-core',
+
+      // UI Libraries - Radix UI components
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-select',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-label',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-tooltip',
+      '@radix-ui/react-accordion',
+      '@radix-ui/react-navigation-menu',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-radio-group',
+
+      // Heavy libraries
+      '@nivo/bar',
+      '@tanstack/react-query',
+      '@hello-pangea/dnd',
+
+      // Form libraries
+      'react-hook-form',
+      '@hookform/resolvers',
+      'zod',
+
+      // Utilities
+      'date-fns',
+      'lodash',
+      'inflection',
+      'clsx',
+      'class-variance-authority',
+      'lucide-react',
+
+      // File handling
+      'papaparse',
+      'jsonexport',
+      'react-dropzone',
+      'react-cropper'
+    ]
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -48,6 +104,19 @@ export default defineConfig(({ mode }) => ({
         }
       : undefined,
   base: "./",
+  server: {
+    warmup: {
+      clientFiles: [
+        './src/main.tsx',
+        './src/App.tsx',
+        './src/atomic-crm/root/CRM.tsx',
+        './src/atomic-crm/dashboard/Dashboard.tsx'
+      ]
+    },
+    watch: {
+      ignored: ['**/node_modules/**', '**/dist/**', '**/coverage/**', '**/.git/**']
+    }
+  },
   esbuild: {
     keepNames: true,
   },

@@ -1,8 +1,11 @@
-import { ResponsiveBar } from "@nivo/bar";
 import { format, startOfMonth } from "date-fns";
 import { DollarSign } from "lucide-react";
 import { useGetList } from "ra-core";
-import { memo, useMemo } from "react";
+import { lazy, memo, Suspense, useMemo } from "react";
+
+const ResponsiveBar = lazy(() =>
+  import("@nivo/bar").then(module => ({ default: module.ResponsiveBar }))
+);
 
 import type { Opportunity } from "../types";
 
@@ -105,7 +108,8 @@ export const OpportunitiesChart = memo(() => {
         </h2>
       </div>
       <div className="h-[400px]">
-        <ResponsiveBar
+        <Suspense fallback={<div className="h-full flex items-center justify-center text-muted-foreground">Loading chart...</div>}>
+          <ResponsiveBar
           data={months}
           indexBy="date"
           keys={["won", "pending", "lost"]}
@@ -210,7 +214,8 @@ export const OpportunitiesChart = memo(() => {
               },
             ] as any
           }
-        />
+          />
+        </Suspense>
       </div>
     </div>
   );
