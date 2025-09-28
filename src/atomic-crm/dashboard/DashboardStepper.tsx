@@ -1,4 +1,4 @@
-import { CreateButton } from "@/components/admin";
+import { CreateButton } from "@/components/admin/create-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";

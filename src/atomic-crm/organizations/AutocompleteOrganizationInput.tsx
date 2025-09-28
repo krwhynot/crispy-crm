@@ -1,5 +1,5 @@
 import { useCreate, useGetIdentity, useNotify } from "ra-core";
-import { AutocompleteInput } from "@/components/admin";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 
 export const AutocompleteOrganizationInput = () => {
   const [create] = useCreate();

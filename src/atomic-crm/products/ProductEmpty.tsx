@@ -1,5 +1,5 @@
 import { Package } from "lucide-react";
-import { CreateButton } from "@/components/admin";
+import { CreateButton } from "@/components/admin/create-button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const ProductEmpty = () => {

@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { DollarSign } from "lucide-react";
 import { useGetIdentity, useGetList } from "ra-core";
 
-import { ReferenceField } from "@/components/admin";
+import { ReferenceField } from "@/components/admin/reference-field";
 import { Link } from "react-router-dom";
 import { SimpleList } from "../simple-list/SimpleList";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";

@@ -1,4 +1,5 @@
-import { RecordField, TextInput } from "@/components/admin";
+import { RecordField } from "@/components/admin/record-field";
+import { TextInput } from "@/components/admin/text-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {

@@ -1,4 +1,6 @@
-import { RefreshButton, ThemeModeToggle, UserMenu } from "@/components/admin";
+import { RefreshButton } from "@/components/admin/refresh-button";
+import { ThemeModeToggle } from "@/components/admin/theme-mode-toggle";
+import { UserMenu } from "@/components/admin/user-menu";
 import { useUserMenu } from "@/hooks/user-menu-context";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Settings, User } from "lucide-react";

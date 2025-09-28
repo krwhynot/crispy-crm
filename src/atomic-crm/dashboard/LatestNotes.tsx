@@ -3,7 +3,8 @@ import { formatDistance } from "date-fns";
 import { FileText } from "lucide-react";
 import { useGetIdentity, useGetList } from "ra-core";
 
-import { ReferenceField, TextField } from "@/components/admin";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
 import type { Contact, ContactNote, OpportunityNote } from "../types";
 
 export const LatestNotes = () => {

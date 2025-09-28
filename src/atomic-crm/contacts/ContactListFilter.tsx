@@ -11,7 +11,8 @@ import {
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 import { cn } from "@/lib/utils";
 
-import { ToggleFilterButton, SearchInput } from "@/components/admin";
+import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";

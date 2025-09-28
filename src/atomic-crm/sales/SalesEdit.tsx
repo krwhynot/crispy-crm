@@ -1,6 +1,6 @@
-import { SimpleForm } from "@/components/admin";
-import { CancelButton } from "@/components/admin";
-import { SaveButton } from "@/components/admin";
+import { SimpleForm } from "@/components/admin/simple-form";
+import { CancelButton } from "@/components/admin/cancel-button";
+import { SaveButton } from "@/components/admin/form";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import {

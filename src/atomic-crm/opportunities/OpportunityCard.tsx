@@ -1,4 +1,4 @@
-import { ReferenceField } from "@/components/admin";
+import { ReferenceField } from "@/components/admin/reference-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Draggable } from "@hello-pangea/dnd";

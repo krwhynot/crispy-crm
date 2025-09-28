@@ -11,7 +11,7 @@ import {
 } from "ra-core";
 import { useFormContext } from "react-hook-form";
 
-import { SaveButton } from "@/components/admin";
+import { SaveButton } from "@/components/admin/form";
 import { NoteInputs } from "./NoteInputs";
 import { getCurrentDate } from "./utils";
 

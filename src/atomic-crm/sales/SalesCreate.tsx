@@ -1,4 +1,4 @@
-import { SimpleForm } from "@/components/admin";
+import { SimpleForm } from "@/components/admin/simple-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
 import { useDataProvider, useNotify, useRedirect } from "ra-core";

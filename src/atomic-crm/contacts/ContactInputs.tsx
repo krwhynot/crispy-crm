@@ -4,15 +4,14 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
 
-import {
-  BooleanInput,
-  ReferenceInput,
-  TextInput,
-  RadioButtonGroupInput,
-  SelectInput,
-  ArrayInput,
-} from "@/components/admin";
-import { SimpleFormIterator } from "@/components/admin";
+import { BooleanInput } from "@/components/admin/boolean-input";
+import { ReferenceInput } from "@/components/admin/reference-input";
+import { TextInput } from "@/components/admin/text-input";
+import { RadioButtonGroupInput } from "@/components/admin/radio-button-group-input";
+import { SelectInput } from "@/components/admin/select-input";
+import { ArrayInput } from "@/components/admin/array-input";
+import {  } from "@/components/admin/";
+import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 // LinkedIn validation removed - handled at API boundary
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Sale } from "../types";

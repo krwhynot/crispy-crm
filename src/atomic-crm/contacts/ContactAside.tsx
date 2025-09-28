@@ -4,17 +4,16 @@ import { AddTask } from "../tasks/AddTask";
 import { TasksIterator } from "../tasks/TasksIterator";
 import { TagsListEdit } from "./TagsListEdit";
 
-import {
-  ArrayField,
-  EditButton,
-  ReferenceField,
-  ReferenceManyField,
-  ShowButton,
-  SingleFieldList,
-  TextField,
-  DateField,
-  EmailField,
-} from "@/components/admin";
+import { ArrayField } from "@/components/admin/array-field";
+import { EditButton } from "@/components/admin/edit-button";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { ShowButton } from "@/components/admin/show-button";
+import { SingleFieldList } from "@/components/admin/single-field-list";
+import { TextField } from "@/components/admin/text-field";
+import { DateField } from "@/components/admin/date-field";
+import { EmailField } from "@/components/admin/email-field";
+import {  } from "@/components/admin/";
 import type { ReactNode } from "react";
 import { AsideSection } from "../misc/AsideSection";
 import { useConfigurationContext } from "../root/ConfigurationContext";

@@ -8,7 +8,8 @@ import {
   useGetList,
 } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
-import { CancelButton, SaveButton } from "@/components/admin";
+import { CancelButton } from "@/components/admin/cancel-button";
+import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "../layout/FormToolbar";
 import { useQueryClient } from "@tanstack/react-query";
 import type { GetListResult } from "ra-core";
