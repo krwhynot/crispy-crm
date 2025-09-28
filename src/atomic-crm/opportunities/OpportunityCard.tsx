@@ -84,32 +84,32 @@ export const OpportunityCardContent = ({
       tabIndex={0}
     >
       <Card
-        className={`py-4 transition-all duration-200 ${
+        className={`py-2 transition-all duration-200 ${
           snapshot?.isDragging
             ? "opacity-90 transform rotate-1 shadow-lg"
             : "shadow-sm hover:shadow-md"
         }`}
       >
-        <CardContent className="px-4 flex">
+        <CardContent className="px-3 flex">
           <ReferenceField
             source="customer_organization_id"
             record={opportunity}
             reference="organizations"
             link={false}
           >
-            <OrganizationAvatar width={20} height={20} />
+            <OrganizationAvatar width={16} height={16} />
           </ReferenceField>
-          <div className="ml-3 flex-1">
-            <div className="flex justify-between items-start mb-2">
-              <p className="text-sm font-medium">{opportunity.name}</p>
+          <div className="ml-2 flex-1">
+            <div className="flex justify-between items-start mb-1">
+              <p className="text-xs font-medium line-clamp-2">{opportunity.name}</p>
               <Badge
                 variant={getPriorityVariant(opportunity.priority)}
-                className="text-xs"
+                className="text-xs ml-1 px-1 py-0"
               >
                 {opportunity.priority}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground mb-1">
+            <p className="text-xs text-muted-foreground mb-0.5">
               {opportunity.amount.toLocaleString("en-US", {
                 notation: "compact",
                 style: "currency",
@@ -121,10 +121,10 @@ export const OpportunityCardContent = ({
             </p>
             <div className="flex justify-between items-center">
               <span className="text-xs text-muted-foreground">
-                {opportunity.probability}% probability
+                {opportunity.probability}%
               </span>
               {opportunity.principal_organization_id && (
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs px-1 py-0">
                   Principal
                 </Badge>
               )}
