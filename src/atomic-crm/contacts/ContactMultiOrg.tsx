@@ -2,7 +2,6 @@ import { ArrayInput } from "@/components/admin/array-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import {  } from "@/components/admin/";
 import { useFormContext, useInput, useRecordContext } from "ra-core";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";

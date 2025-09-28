@@ -7,7 +7,6 @@ import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { SortButton } from "@/components/admin/sort-button";
-import {  } from "@/components/admin/";
 import { Card } from "@/components/ui/card";
 import type { Organization, Contact, Sale, Tag } from "../types";
 import { ContactEmpty } from "./ContactEmpty";

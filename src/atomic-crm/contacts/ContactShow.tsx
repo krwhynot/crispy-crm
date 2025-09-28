@@ -1,7 +1,6 @@
 import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { TextField } from "@/components/admin/text-field";
-import {  } from "@/components/admin/";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShowBase, useShowContext } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";

@@ -4,7 +4,6 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { SaveButton } from "@/components/admin/form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { ReferenceField } from "@/components/admin/reference-field";
-import {  } from "@/components/admin/";
 import { FormToolbar } from "../layout/FormToolbar";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";

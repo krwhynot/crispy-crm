@@ -3,7 +3,6 @@ import { DataTable } from "@/components/admin/data-table";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { SearchInput } from "@/components/admin/search-input";
-import {  } from "@/components/admin/";
 import { Badge } from "@/components/ui/badge";
 import { useRecordContext } from "ra-core";
 import { TopToolbar } from "../layout/TopToolbar";

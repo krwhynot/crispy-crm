@@ -3,7 +3,6 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import {  } from "@/components/admin/";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useRecordContext } from "ra-core";

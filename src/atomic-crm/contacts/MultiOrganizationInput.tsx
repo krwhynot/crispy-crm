@@ -7,7 +7,6 @@ import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { BooleanInput } from "@/components/admin/boolean-input";
-import {  } from "@/components/admin/";
 import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/AutocompleteOrganizationInput";
 import { useFormContext, useWatch } from "react-hook-form";
 import type { ContactOrganization } from "../types";

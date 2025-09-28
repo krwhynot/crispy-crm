@@ -7,7 +7,6 @@ import { TextField } from "@/components/admin/text-field";
 import { DateField } from "@/components/admin/date-field";
 import { UrlField } from "@/components/admin/url-field";
 import { SelectField } from "@/components/admin/select-field";
-import {  } from "@/components/admin/";
 
 import { AsideSection } from "../misc/AsideSection";
 import { SaleName } from "../sales/SaleName";
