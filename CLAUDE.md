@@ -21,7 +21,10 @@ Core principles to prevent debates & ensure consistency:
 ```bash
 npm run dev           # Start development server (port 5173)
 npm run build         # TypeScript check + Vite build
-npm run test          # Run Vitest tests
+npm run test          # Run Vitest unit tests
+npm run test:e2e      # Run Playwright E2E tests (headless)
+npm run test:e2e:ui   # Run E2E tests with UI mode
+npm run test:e2e:report # View last E2E test report
 npm run lint:check    # Check ESLint violations
 npm run lint:apply    # Fix ESLint violations
 npm run prettier:check # Check formatting
@@ -118,3 +121,90 @@ System migrated from "deals" to "opportunities":
 - Fresh schema, no backward compatibility
 - All references updated throughout codebase
 - Environment variables renamed from `DEAL_*` to `OPPORTUNITY_*`
+
+## E2E Testing with Playwright
+
+### Overview
+Minimal E2E testing infrastructure following Engineering Constitution principle #1 (NO OVER-ENGINEERING):
+- **Location**: All Playwright files in `playwright/` directory
+- **Configuration**: `playwright/playwright.config.ts`
+- **Tests**: `playwright/tests/` directory
+- **Execution**: Headless only (no headed mode)
+- **Coverage**: 5 critical path tests only
+
+### Test Structure
+```
+playwright/
+├── playwright.config.ts     # Headless-only configuration
+├── tests/
+│   ├── auth.spec.ts         # Login/logout flow
+│   ├── contacts-crud.spec.ts
+│   ├── organizations-crud.spec.ts
+│   ├── opportunities-kanban.spec.ts
+│   └── cross-module.spec.ts # Entity relationships
+└── test-results/            # Generated artifacts (gitignored)
+```
+
+### Running Tests
+```bash
+npm run test:e2e              # Run all E2E tests headless
+npm run test:e2e:ui           # Run with Playwright UI mode
+npm run test:e2e:report       # View HTML report
+```
+
+### Writing New Tests
+Follow these patterns:
+
+**1. Robust Selectors**
+```typescript
+// ✅ GOOD: Use data-testid for key elements
+await page.getByTestId('create-button').click();
+
+// ✅ GOOD: Use semantic selectors
+await page.getByRole('button', { name: /save|create/i }).click();
+
+// ❌ BAD: Fragile CSS selectors
+await page.locator('.MuiButton-containedPrimary').click();
+```
+
+**2. Proper Wait Strategies**
+```typescript
+// ✅ GOOD: Wait for network to settle after navigation
+await page.waitForLoadState('networkidle');
+
+// ✅ GOOD: Wait for specific element
+await page.locator('[data-testid="list"]').waitFor({ state: 'visible' });
+
+// ❌ BAD: Arbitrary timeouts
+await page.waitForTimeout(5000);
+```
+
+**3. React Admin Patterns**
+- Always wait for `networkidle` after navigation
+- CreateButton uses `data-testid="create-button"`
+- Forms may have async validation (wait before save)
+- List views load data asynchronously
+
+### Test Credentials
+```typescript
+email: 'test@gmail.com'
+password: 'password'
+```
+
+### Adding data-testid Attributes
+When adding new testable components:
+```tsx
+<button data-testid="submit-form">Submit</button>
+<input data-testid="email-input" type="email" />
+```
+
+### CI/CD Integration
+- Tests run headless in CI
+- Fails fast on first failure
+- Screenshots/videos captured on failure
+- HTML report generated in `playwright/test-results/`
+
+### Performance
+- Target: ~2min full suite execution
+- Parallel execution enabled
+- Single retry on failure in CI

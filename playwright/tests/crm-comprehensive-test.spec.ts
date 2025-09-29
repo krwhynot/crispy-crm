@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../helpers/auth';
-import { TestReporter } from './lib/TestReporter';
-import { FieldDiscovery } from './lib/FieldDiscovery';
-import { TestDataGenerator } from './lib/TestDataGenerator';
-import { ErrorMonitor } from './lib/ErrorMonitor';
-import { ScreenshotManager } from './lib/ScreenshotManager';
-import { ReactAdminHelpers } from './lib/ReactAdminHelpers';
+import { TestReporter } from '../comprehensive/lib/TestReporter';
+import { FieldDiscovery } from '../comprehensive/lib/FieldDiscovery';
+import { TestDataGenerator } from '../comprehensive/lib/TestDataGenerator';
+import { ErrorMonitor } from '../comprehensive/lib/ErrorMonitor';
+import { ScreenshotManager } from '../comprehensive/lib/ScreenshotManager';
+import { ReactAdminHelpers } from '../comprehensive/lib/ReactAdminHelpers';
 import * as path from 'path';
 import * as fs from 'fs';
 

@@ -41,7 +41,7 @@
     "test:e2e:ui": "playwright test --config=playwright/playwright.config.ts --ui",
     "test:e2e:report": "playwright show-report playwright-report",
     "test:e2e:setup": "node playwright/setup-test-user.js",
-    "test:e2e:comprehensive": "playwright test playwright/comprehensive/crm-comprehensive-test.spec.ts --config=playwright/playwright.config.ts"
+    "test:e2e:comprehensive": "playwright test crm-comprehensive-test --config=playwright/playwright.config.ts"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
