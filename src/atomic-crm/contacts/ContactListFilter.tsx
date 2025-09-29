@@ -14,12 +14,9 @@ import { cn } from "@/lib/utils";
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { Status } from "../misc/Status";
-import { useConfigurationContext } from "../root/ConfigurationContext";
 import { getTagColorClass } from "../tags/tag-colors";
 
 export const ContactListFilter = () => {
-  const { noteStatuses } = useConfigurationContext();
   const { identity } = useGetIdentity();
   const { data } = useGetList("tags", {
     pagination: { page: 1, perPage: 10 },
@@ -76,21 +73,6 @@ export const ContactListFilter = () => {
             ).toISOString(),
           }}
         />
-      </FilterCategory>
-
-      <FilterCategory label="Status" icon={<TrendingUp />}>
-        {noteStatuses.map((status) => (
-          <ToggleFilterButton
-            key={status.value}
-            className="w-full justify-between"
-            label={
-              <span>
-                {status.label} <Status status={status.value} />
-              </span>
-            }
-            value={{ status: status.value }}
-          />
-        ))}
       </FilterCategory>
 
       <FilterCategory label="Tags" icon={<Tag />}>

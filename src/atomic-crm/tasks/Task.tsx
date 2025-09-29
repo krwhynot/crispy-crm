@@ -25,6 +25,35 @@ export const Task = ({
   const notify = useNotify();
   const queryClient = useQueryClient();
 
+  // Date helper functions for intelligent postpone menu
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const taskDueDate = new Date(task.due_date);
+  taskDueDate.setHours(0, 0, 0, 0);
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  // Calculate next Monday (start of next week)
+  const nextMonday = new Date(today);
+  const daysUntilMonday = (8 - today.getDay()) % 7 || 7;
+  nextMonday.setDate(today.getDate() + daysUntilMonday);
+
+  // Check if task can be postponed
+  const canPostponeTomorrow = taskDueDate <= today;
+  const canPostponeNextWeek = taskDueDate < nextMonday;
+
+  // Format dates for display
+  const formatDate = (date: Date) => {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
+  };
+
+  const tomorrowFormatted = formatDate(tomorrow);
+  const nextMondayFormatted = formatDate(nextMonday);
+
   const [openEdit, setOpenEdit] = useState(false);
 
   const handleCloseEdit = () => {
@@ -91,7 +120,10 @@ export const Task = ({
                   &nbsp;
                 </>
               )}
-              {task.text}
+              {task.title}
+              {task.description && (
+                <span className="text-muted-foreground"> - {task.description}</span>
+              )}
             </div>
             <div className="text-sm text-muted-foreground">
               due&nbsp;
@@ -132,38 +164,40 @@ export const Task = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                update("tasks", {
-                  id: task.id,
-                  data: {
-                    due_date: new Date(Date.now() + 24 * 60 * 60 * 1000)
-                      .toISOString()
-                      .slice(0, 10),
-                  },
-                  previousData: task,
-                });
-              }}
-            >
-              Postpone to tomorrow
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                update("tasks", {
-                  id: task.id,
-                  data: {
-                    due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-                      .toISOString()
-                      .slice(0, 10),
-                  },
-                  previousData: task,
-                });
-              }}
-            >
-              Postpone to next week
-            </DropdownMenuItem>
+            {canPostponeTomorrow && (
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => {
+                  update("tasks", {
+                    id: task.id,
+                    data: {
+                      ...task, // Include all existing task fields
+                      due_date: tomorrow.toISOString().slice(0, 10),
+                    },
+                    previousData: task,
+                  });
+                }}
+              >
+                Postpone to tomorrow ({tomorrowFormatted})
+              </DropdownMenuItem>
+            )}
+            {canPostponeNextWeek && (
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => {
+                  update("tasks", {
+                    id: task.id,
+                    data: {
+                      ...task, // Include all existing task fields
+                      due_date: nextMonday.toISOString().slice(0, 10),
+                    },
+                    previousData: task,
+                  });
+                }}
+              >
+                Postpone to next week ({nextMondayFormatted})
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem className="cursor-pointer" onClick={handleEdit}>
               Edit
             </DropdownMenuItem>

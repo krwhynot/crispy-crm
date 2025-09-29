@@ -13,7 +13,7 @@ export const LatestNotes = () => {
     "contactNotes",
     {
       pagination: { page: 1, perPage: 5 },
-      sort: { field: "date", order: "DESC" },
+      sort: { field: "created_at", order: "DESC" },
       filter: { sales_id: identity?.id },
     },
     { enabled: Number.isInteger(identity?.id) },
@@ -23,7 +23,7 @@ export const LatestNotes = () => {
       "opportunityNotes",
       {
         pagination: { page: 1, perPage: 5 },
-        sort: { field: "date", order: "DESC" },
+        sort: { field: "created_at", order: "DESC" },
         filter: { sales_id: identity?.id },
       },
       { enabled: Number.isInteger(identity?.id) },
@@ -47,7 +47,7 @@ export const LatestNotes = () => {
         type: "opportunityNote",
       })),
     )
-    .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
+    .sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf())
     .slice(0, 5);
 
   return (
@@ -76,7 +76,7 @@ export const LatestNotes = () => {
                   <Contact note={note} />
                 )}
                 , added{" "}
-                {formatDistance(note.date, new Date(), {
+                {formatDistance(note.created_at, new Date(), {
                   addSuffix: true,
                 })}
               </div>

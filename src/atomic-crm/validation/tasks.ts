@@ -9,21 +9,41 @@ import { z } from "zod";
 import type { Identifier } from "ra-core";
 
 /**
+ * Task type enum matching PostgreSQL task_type enum
+ */
+export const taskTypeEnum = z.enum([
+  'Call',           // Phone conversations
+  'Email',          // Email communications
+  'Meeting',        // In-person/virtual meetings & demos
+  'Follow-up',      // Re-engagement reminders
+  'Proposal',       // Quotes and proposals
+  'Discovery',      // Needs analysis & qualification
+  'Administrative', // Internal tasks
+  'None'           // Default/unspecified
+]);
+
+/**
  * Base task schema with all required fields
  */
 export const taskSchema = z.object({
   // Required fields
-  text: z.string().min(1, "Description is required"),
+  title: z.string().min(1, "Task title is required"),
   contact_id: z.union([
     z.string().min(1, "Contact is required"),
     z.number().min(1, "Contact is required"),
   ]),
-  type: z.string().min(1, "Type is required"),
+  type: taskTypeEnum,
   due_date: z.string().min(1, "Due date is required"),
   sales_id: z.union([z.string().min(1), z.number().min(1)]),
 
   // Optional fields
+  description: z.string().nullable().optional(),
   done_date: z.string().nullable().optional(),
+  completed: z.boolean().optional(),
+  completed_at: z.string().nullable().optional(),
+  priority: z.enum(['low', 'medium', 'high']).default('medium').optional(),
+  opportunity_id: z.union([z.string(), z.number()]).nullable().optional(),
+  reminder_date: z.string().nullable().optional(),
 
   // ID only present on updates
   id: z.union([z.string(), z.number()]).optional(),
@@ -61,6 +81,7 @@ export const taskWithReminderSchema = taskSchema.refine(
 export type Task = z.infer<typeof taskSchema>;
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
 export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
+export type TaskType = z.infer<typeof taskTypeEnum>;
 
 /**
  * Validate task creation data
@@ -107,10 +128,12 @@ export function transformTaskDate(date: string): string {
 /**
  * Validate and transform task for submission
  * @param data - Task data to validate and transform
+ * @param isUpdate - Whether this is an update operation
  * @returns Transformed task data ready for database
  */
-export function validateTaskForSubmission(data: unknown): Task {
-  const validated = taskSchema.parse(data);
+export function validateTaskForSubmission(data: unknown, isUpdate = false): Task | UpdateTaskInput {
+  // Use appropriate schema based on operation
+  const validated = isUpdate ? updateTaskSchema.parse(data) : taskSchema.parse(data);
 
   // Transform due date to ISO format
   if (validated.due_date) {

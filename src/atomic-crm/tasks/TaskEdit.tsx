@@ -50,10 +50,15 @@ export const TaskEdit = ({
               </DialogHeader>
               <TextInput
                 autoFocus
-                source="text"
-                label="Description *"
-                multiline
+                source="title"
+                label="Task Title *"
                 helperText="Required field"
+              />
+              <TextInput
+                source="description"
+                label="Description"
+                multiline
+                helperText="Optional details"
               />
               <div className="flex flex-row gap-4">
                 <TextInput

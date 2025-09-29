@@ -1,6 +1,7 @@
 import jsonExport from "jsonexport/dist";
+import { useEffect } from "react";
 import type { Exporter } from "ra-core";
-import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
+import { downloadCSV, useGetIdentity, useListContext, useStore } from "ra-core";
 
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { CreateButton } from "@/components/admin/create-button";
@@ -17,6 +18,27 @@ import { TopToolbar } from "../layout/TopToolbar";
 
 export const ContactList = () => {
   const { identity } = useGetIdentity();
+  const [, storeApi] = useStore();
+
+  // Clean up invalid cached status filter from localStorage
+  // This can be removed after deployment once all users have cleared their cache
+  useEffect(() => {
+    const key = 'RaStore.contacts.listParams';
+    const storedParams = localStorage.getItem(key);
+    if (storedParams) {
+      try {
+        const params = JSON.parse(storedParams);
+        if (params?.filter?.status) {
+          delete params.filter.status;
+          localStorage.setItem(key, JSON.stringify(params));
+          // Also update the store directly to trigger re-render
+          storeApi.setItem(key, params);
+        }
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+  }, [storeApi]);
 
   if (!identity) return null;
 

@@ -1,0 +1,246 @@
+{
+  "testRun": {
+    "startTime": "2025-09-29T10:13:13.240Z",
+    "endTime": "2025-09-29T10:15:07.193Z",
+    "duration": 113.953,
+    "config": {
+      "baseUrl": "http://localhost:5173/",
+      "credentials": {
+        "email": "test@gmail.com",
+        "password": "Welcome123"
+      },
+      "browser": {
+        "headless": true,
+        "slowMo": 0,
+        "timeout": 30000,
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "modules": {
+        "dashboard": {
+          "enabled": true,
+          "actions": [
+            "view",
+            "validate"
+          ],
+          "expectedElements": {
+            "navigation": true,
+            "cards": true,
+            "charts": false
+          }
+        },
+        "contacts": {
+          "enabled": true,
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "search"
+          ],
+          "requiredFields": [
+            "firstName",
+            "lastName",
+            "email"
+          ],
+          "searchFields": [
+            "name",
+            "email",
+            "phone"
+          ],
+          "validationRules": {
+            "email": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            "phone": "^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$"
+          }
+        },
+        "organizations": {
+          "enabled": true,
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "search"
+          ],
+          "requiredFields": [
+            "name"
+          ],
+          "searchFields": [
+            "name",
+            "industry"
+          ],
+          "validationRules": {
+            "website": "^https?://[\\w\\-]+(\\.[\\w\\-]+)+[/#?]?.*$"
+          }
+        },
+        "opportunities": {
+          "enabled": true,
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "search",
+            "kanban"
+          ],
+          "requiredFields": [
+            "name",
+            "amount",
+            "stage"
+          ],
+          "stages": [
+            "Prospecting",
+            "Qualification",
+            "Proposal",
+            "Negotiation",
+            "Closed Won",
+            "Closed Lost"
+          ],
+          "validationRules": {
+            "amount": "^[0-9]+(\\.[0-9]{1,2})?$",
+            "probability": "^([0-9]|[1-9][0-9]|100)$"
+          }
+        },
+        "products": {
+          "enabled": true,
+          "actions": [
+            "create",
+            "read",
+            "update",
+            "delete",
+            "search",
+            "filter"
+          ],
+          "requiredFields": [
+            "name",
+            "price"
+          ],
+          "categories": [
+            "Software",
+            "Hardware",
+            "Services",
+            "Training"
+          ],
+          "validationRules": {
+            "price": "^[0-9]+(\\.[0-9]{1,2})?$",
+            "sku": "^[A-Z]{3}-[0-9]{4}-[A-Z]{2}$"
+          }
+        }
+      },
+      "testData": {
+        "generateRandom": true,
+        "useEdgeCases": true,
+        "dataPatterns": {
+          "names": [
+            "standard",
+            "international",
+            "special_chars"
+          ],
+          "emails": [
+            "standard",
+            "subdomains",
+            "plus_addressing"
+          ],
+          "phones": [
+            "us",
+            "international",
+            "extensions"
+          ],
+          "amounts": [
+            "small",
+            "large",
+            "decimal",
+            "edge_cases"
+          ]
+        }
+      },
+      "errorHandling": {
+        "captureConsole": true,
+        "captureNetwork": true,
+        "capturePageErrors": true,
+        "suppressedWarnings": [
+          "DevTools failed to load source map",
+          "Non-Error promise rejection captured",
+          "React Hook useEffect has a missing dependency"
+        ],
+        "failOnError": false,
+        "continueOnFailure": true
+      },
+      "screenshots": {
+        "enabled": true,
+        "fullPage": true,
+        "onError": true,
+        "significantMoments": [
+          "login",
+          "dashboard",
+          "module-entry",
+          "form-filled",
+          "after-create",
+          "after-update",
+          "after-delete",
+          "search-results"
+        ],
+        "compress": false,
+        "maxScreenshots": 50
+      },
+      "reporting": {
+        "format": "narrative",
+        "includeTimeline": true,
+        "includePerformanceMetrics": true,
+        "includeScreenshots": true,
+        "includeErrorAnalysis": true,
+        "includeRecommendations": true,
+        "outputFormats": [
+          "markdown",
+          "html",
+          "json"
+        ],
+        "artifactsDir": "./test-artifacts"
+      },
+      "performance": {
+        "measureResponseTimes": true,
+        "thresholds": {
+          "pageLoad": 3000,
+          "apiResponse": 1000,
+          "formSubmit": 2000
+        },
+        "captureMetrics": [
+          "navigationTiming",
+          "resourceTiming",
+          "userTiming"
+        ]
+      },
+      "validation": {
+        "checkRequiredFields": true,
+        "validateFormats": true,
+        "testBoundaryValues": true,
+        "testSpecialCharacters": true,
+        "testMaxLengths": true
+      },
+      "retries": {
+        "testRetries": 2,
+        "elementTimeout": 10000,
+        "pageTimeout": 30000,
+        "navigationTimeout": 30000
+      },
+      "parallel": {
+        "workers": 1,
+        "fullyParallel": false,
+        "retries": 2
+      },
+      "cleanup": {
+        "clearLocalStorage": true,
+        "clearCookies": true,
+        "clearCache": false,
+        "resetDatabase": false
+      }
+    },
+    "environment": {
+      "node": "v22.19.0",
+      "platform": "linux",
+      "arch": "x64"
+    }
+  }
+}

@@ -25,7 +25,7 @@ export const HotContacts = () => {
     {
       pagination: { page: 1, perPage: 10 },
       sort: { field: "last_seen", order: "DESC" },
-      filter: { status: "hot", sales_id: identity?.id },
+      filter: { sales_id: identity?.id },
     },
     { enabled: Number.isInteger(identity?.id) },
   );
@@ -76,12 +76,8 @@ export const HotContacts = () => {
           leftAvatar={(contact) => <Avatar record={contact} />}
           empty={
             <div className="p-4">
-              <p className="text-sm mb-4">
-                Contacts with a "hot" status will appear here.
-              </p>
               <p className="text-sm">
-                Change the status of a contact by adding a note to that contact
-                and clicking on "show options".
+                Your recently seen contacts will appear here.
               </p>
             </div>
           }

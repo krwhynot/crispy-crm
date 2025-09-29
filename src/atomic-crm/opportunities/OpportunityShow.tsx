@@ -239,7 +239,7 @@ const OpportunityShowContent = () => {
             <ReferenceManyField
               target="opportunity_id"
               reference="opportunityNotes"
-              sort={{ field: "date", order: "DESC" }}
+              sort={{ field: "created_at", order: "DESC" }}
               empty={<NoteCreate reference={"opportunities"} />}
             >
               <NotesIterator reference="opportunities" />

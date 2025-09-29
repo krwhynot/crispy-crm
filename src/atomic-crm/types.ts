@@ -192,7 +192,8 @@ export type InteractionParticipant = {
 export type ContactNote = {
   contact_id: Identifier;
   text: string;
-  date: string;
+  created_at: string;
+  updated_at: string;
   sales_id: Identifier;
   status: string;
   attachments?: AttachmentNote[];
@@ -243,7 +244,8 @@ export type Opportunity = {
 export type OpportunityNote = {
   opportunity_id: Identifier;
   text: string;
-  date: string;
+  created_at: string;
+  updated_at: string;
   sales_id: Identifier;
   attachments?: AttachmentNote[];
 

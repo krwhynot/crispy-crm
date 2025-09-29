@@ -10,9 +10,7 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: [
       // React Admin core - pre-bundle these heavy dependencies
-      'react-admin',
       'ra-core',
-      'ra-ui-materialui',
       'ra-i18n-polyglot',
       'ra-language-english',
 

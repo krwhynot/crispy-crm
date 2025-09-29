@@ -41,4 +41,4 @@ While in plan mode, I will:
 
 Respond with: "Plan mode activated. Ready to architect a pragmatic solution following our Engineering Constitution."
 
-Present your feature requirements for planning.
+Present your feature requirements for planning.f
