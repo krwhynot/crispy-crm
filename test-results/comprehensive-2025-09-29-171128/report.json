@@ -1,0 +1,142 @@
+{
+  "timestamp": "2025-09-29T22:12:32.541Z",
+  "duration": 63687,
+  "modules": [
+    {
+      "moduleName": "Dashboard",
+      "status": "passed",
+      "duration": 883,
+      "startTime": "2025-09-29T22:11:58.780Z",
+      "actions": [
+        {
+          "timestamp": "2025-09-29T22:11:59.617Z",
+          "module": "Dashboard",
+          "action": "Verified Hot Contacts widget",
+          "status": "success"
+        },
+        {
+          "timestamp": "2025-09-29T22:11:59.662Z",
+          "module": "Dashboard",
+          "action": "Verified navigation menu structure",
+          "status": "success"
+        }
+      ],
+      "issues": [],
+      "performance": [],
+      "screenshots": [],
+      "consoleLogs": [],
+      "dataUsed": {}
+    },
+    {
+      "moduleName": "Contacts",
+      "status": "failed",
+      "duration": 16412,
+      "startTime": "2025-09-29T22:11:59.664Z",
+      "actions": [
+        {
+          "timestamp": "2025-09-29T22:12:00.404Z",
+          "module": "Contacts",
+          "action": "Navigated to Contacts list view",
+          "status": "success"
+        },
+        {
+          "timestamp": "2025-09-29T22:12:15.454Z",
+          "module": "Contacts",
+          "action": "Contacts test failed",
+          "status": "error",
+          "details": "\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  getByTestId('create-button')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  15000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('create-button')\u001b[22m\n"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "high",
+          "type": "bug",
+          "module": "Contacts",
+          "title": "Contact Creation Failed",
+          "description": "Failed to create contact: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  getByTestId('create-button')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  15000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('create-button')\u001b[22m\n",
+          "evidence": [
+            "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  getByTestId('create-button')\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  15000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('create-button')\u001b[22m\n\n    at ReactAdminHelpers.clickCreateButton (/home/krwhynot/Projects/atomic/playwright/comprehensive/lib/ReactAdminHelpers.ts:22:32)\n    at /home/krwhynot/Projects/atomic/playwright/tests/crm-comprehensive-test.spec.ts:117:26"
+          ],
+          "impact": "Users cannot create new contacts",
+          "recommendation": "Check form validation and API endpoint"
+        }
+      ],
+      "performance": [
+        {
+          "operation": "Navigate to Contacts",
+          "duration": 740,
+          "status": "good"
+        }
+      ],
+      "screenshots": [],
+      "consoleLogs": [],
+      "dataUsed": {}
+    },
+    {
+      "moduleName": "Organizations",
+      "status": "warning",
+      "duration": 0,
+      "startTime": "2025-09-29T22:12:16.076Z",
+      "actions": [
+        {
+          "timestamp": "2025-09-29T22:12:30.756Z",
+          "module": "Organizations",
+          "action": "Navigated to Organizations list view",
+          "status": "success"
+        },
+        {
+          "timestamp": "2025-09-29T22:12:31.807Z",
+          "module": "Organizations",
+          "action": "Discovered 0 form fields",
+          "status": "success"
+        },
+        {
+          "timestamp": "2025-09-29T22:12:32.415Z",
+          "module": "Organizations",
+          "action": "Organizations test failed",
+          "status": "error",
+          "details": "page.screenshot: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+        }
+      ],
+      "issues": [
+        {
+          "severity": "high",
+          "type": "bug",
+          "module": "Organizations",
+          "title": "Organization Creation Failed",
+          "description": "Failed to create organization: page.screenshot: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n",
+          "evidence": [
+            "page.screenshot: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at ScreenshotManager.capture (/home/krwhynot/Projects/atomic/playwright/comprehensive/lib/ScreenshotManager.ts:39:21)\n    at /home/krwhynot/Projects/atomic/playwright/tests/crm-comprehensive-test.spec.ts:236:27"
+          ],
+          "impact": "Users cannot create new organizations",
+          "recommendation": "Check form validation and API endpoint"
+        }
+      ],
+      "performance": [
+        {
+          "operation": "Navigate to Organizations",
+          "duration": 14680,
+          "status": "failed"
+        }
+      ],
+      "screenshots": [],
+      "consoleLogs": [],
+      "dataUsed": {
+        "name": "AdvancedSystems Test 1759183892977",
+        "website": "https://advancedsystemstest1759183892977-1759183892977.com",
+        "linkedin_url": "https://linkedin.com/company/advancedsystems-test-1759183892977-test-1759183892977",
+        "phone_number": "+1-875-741-1576",
+        "address": "8268 Commerce Street",
+        "city": "Denver",
+        "stateAbbr": "WA",
+        "zipcode": "50351",
+        "country": "United States",
+        "sector": "Healthcare",
+        "description": "Full-service provider specializing in cutting-edge technology and strategic consulting.",
+        "sales_id": 2
+      }
+    }
+  ],
+  "consoleLogs": [],
+  "networkActivity": []
+}
