@@ -149,7 +149,7 @@ export const Note = ({
         </span>
         <div className="flex-1"></div>
         <span className="text-sm text-muted-foreground">
-          <RelativeDate date={note.date} />
+          <RelativeDate date={note.created_at} />
         </span>
       </div>
       {isEditing ? (

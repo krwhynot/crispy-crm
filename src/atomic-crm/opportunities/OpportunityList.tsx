@@ -7,7 +7,7 @@ import { ReferenceInput } from "@/components/admin/reference-input";
 import { ToggleFilterButton as FilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { MultiSelectInput } from "@/components/admin/multi-select-input";
-import { Breadcrumb } from "@/components/admin/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 
 import {
   Translate,

@@ -36,3 +36,11 @@ dist/
 
 # MCP Configuration (contains API keys)
 .mcp.json
+
+# Claude memory database (local to each developer)
+*.db
+*.db-journal
+*.db-wal
+
+# But DO track commands and config
+!.claude/commands/

@@ -101,7 +101,7 @@ async function getNewContactsAndNotes(
     {
       filter: recentContactNotesFilter,
       pagination: { page: 1, perPage: 250 },
-      sort: { field: "date", order: "DESC" },
+      sort: { field: "created_at", order: "DESC" },
     },
   );
 
@@ -155,7 +155,7 @@ async function getNewOpportunitiesAndNotes(
     await dataProvider.getList<OpportunityNote>("opportunityNotes", {
       filter: recentOpportunityNotesFilter,
       pagination: { page: 1, perPage: 250 },
-      sort: { field: "date", order: "DESC" },
+      sort: { field: "created_at", order: "DESC" },
     });
 
   const newOpportunities = opportunities.map((opportunity) => ({

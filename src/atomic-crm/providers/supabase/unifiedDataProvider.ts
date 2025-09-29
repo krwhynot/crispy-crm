@@ -105,7 +105,10 @@ const validationRegistry: Record<string, ValidationConfig> = {
   },
 
   tasks: {
-    validate: validateTaskForSubmission,
+    validate: async (data: any, isUpdate?: boolean) => {
+      // Pass the isUpdate flag to the validation function
+      await validateTaskForSubmission(data, isUpdate);
+    },
   },
 };
 
@@ -558,8 +561,7 @@ function normalizeJsonbArrayFields(data: any): any {
       return [];
     }
     if (!Array.isArray(value)) {
-      // Log warning for debugging data inconsistencies
-      console.warn(`[Data Normalization] Converting non-array JSONB to array:`, value);
+      // Data has been migrated to arrays - this shouldn't happen anymore
       // If it's an object, wrap it in an array, otherwise return empty array
       return typeof value === 'object' ? [value] : [];
     }

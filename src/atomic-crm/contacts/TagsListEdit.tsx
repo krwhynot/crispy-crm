@@ -46,7 +46,7 @@ export const TagsListEdit = () => {
     const tags = [...record.tags, id];
     update("contacts", {
       id: record.id,
-      data: { tags },
+      data: { ...record, tags }, // Include all existing contact fields
       previousData: record,
     });
   };
@@ -58,7 +58,7 @@ export const TagsListEdit = () => {
     const tags = record.tags.filter((tagId) => tagId !== id);
     await update("contacts", {
       id: record.id,
-      data: { tags },
+      data: { ...record, tags }, // Include all existing contact fields
       previousData: record,
     });
   };
@@ -81,7 +81,7 @@ export const TagsListEdit = () => {
         "contacts",
         {
           id: record.id,
-          data: { tags: [...record.tags, tag.id] },
+          data: { ...record, tags: [...record.tags, tag.id] }, // Include all existing contact fields
           previousData: record,
         },
         {

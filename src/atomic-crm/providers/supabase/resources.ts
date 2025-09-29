@@ -86,7 +86,6 @@ export const SOFT_DELETE_RESOURCES = [
   "contact_organizations",
   "opportunity_participants",
   "activities",
-  "products",
 ] as const;
 
 /**
