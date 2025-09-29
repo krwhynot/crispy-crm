@@ -21,6 +21,7 @@ export const CreateButton = ({
   });
   return (
     <Link
+      data-testid="create-button"
       className={buttonVariants({ variant: "outline" })}
       to={link}
       onClick={stopPropagation}
