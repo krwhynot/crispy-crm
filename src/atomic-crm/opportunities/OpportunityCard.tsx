@@ -9,7 +9,6 @@ export const OpportunityCard = ({
   opportunity,
 }: {
   opportunity: Opportunity;
-  index: number;
 }) => {
   if (!opportunity) return null;
 

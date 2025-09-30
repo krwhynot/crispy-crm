@@ -31,11 +31,10 @@ export const OpportunityColumn = ({
         </p>
       </div>
       <div className="flex flex-col rounded-2xl mt-2 gap-2">
-        {opportunities.map((opportunity, index) => (
+        {opportunities.map((opportunity) => (
           <OpportunityCard
             key={opportunity.id}
             opportunity={opportunity}
-            index={index}
           />
         ))}
       </div>
