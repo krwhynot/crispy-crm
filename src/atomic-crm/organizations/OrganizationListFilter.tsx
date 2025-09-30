@@ -44,6 +44,7 @@ export const OrganizationListFilter = () => {
       >
         {organizationTypes.map((type) => (
           <ToggleFilterButton
+            multiselect
             key={type.id}
             className="w-full justify-between"
             label={type.name}
@@ -55,6 +56,7 @@ export const OrganizationListFilter = () => {
       <FilterCategory icon={<Star className="h-4 w-4" />} label="Priority">
         {priorities.map((priority) => (
           <ToggleFilterButton
+            multiselect
             key={priority.id}
             className="w-full justify-between"
             label={priority.name}
@@ -63,24 +65,25 @@ export const OrganizationListFilter = () => {
         ))}
       </FilterCategory>
 
-      <FilterCategory icon={<Building className="h-4 w-4" />} label="Size">
+      <FilterCategory icon={<Building className="h-4 w-4" />} label="Employee Count">
         {sizes.map((size) => (
           <ToggleFilterButton
             key={size.id}
             className="w-full justify-between"
             label={size.name}
-            value={{ size: size.id }}
+            value={{ employee_count: size.id }}
           />
         ))}
       </FilterCategory>
 
-      <FilterCategory icon={<Truck className="h-4 w-4" />} label="Sector">
+      <FilterCategory icon={<Truck className="h-4 w-4" />} label="Industry">
         {sectors.map((sector) => (
           <ToggleFilterButton
+            multiselect
             key={sector.id}
             className="w-full justify-between"
             label={sector.name}
-            value={{ sector: sector.id }}
+            value={{ industry: sector.id }}
           />
         ))}
       </FilterCategory>

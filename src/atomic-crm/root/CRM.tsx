@@ -72,7 +72,7 @@ export type CRMProps = {
  *         lightTheme={{
  *             ...defaultTheme,
  *             palette: {
- *                 primary: { main: '#0000ff' },
+ *                 primary: { main: 'var(--primary)' },
  *             },
  *         }}
  *     />

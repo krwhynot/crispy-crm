@@ -1,0 +1,273 @@
+{
+  "timestamp": "2025-09-30T04:16:45.669Z",
+  "summary": {
+    "totalTests": 32,
+    "passed": 29,
+    "failed": 3,
+    "warnings": 0
+  },
+  "passed": [
+    {
+      "mode": "light",
+      "test": "Tag warm",
+      "ratio": "14.34",
+      "minRatio": 4.5,
+      "bg": "tag-warm-bg",
+      "fg": "tag-warm-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Tag green",
+      "ratio": "15.62",
+      "minRatio": 4.5,
+      "bg": "tag-green-bg",
+      "fg": "tag-green-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Tag teal",
+      "ratio": "15.32",
+      "minRatio": 4.5,
+      "bg": "tag-teal-bg",
+      "fg": "tag-teal-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Tag blue",
+      "ratio": "14.69",
+      "minRatio": 4.5,
+      "bg": "tag-blue-bg",
+      "fg": "tag-blue-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Tag purple",
+      "ratio": "15.10",
+      "minRatio": 4.5,
+      "bg": "tag-purple-bg",
+      "fg": "tag-purple-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Tag yellow",
+      "ratio": "17.19",
+      "minRatio": 4.5,
+      "bg": "tag-yellow-bg",
+      "fg": "tag-yellow-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Tag gray",
+      "ratio": "15.46",
+      "minRatio": 4.5,
+      "bg": "tag-gray-bg",
+      "fg": "tag-gray-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Tag pink",
+      "ratio": "14.70",
+      "minRatio": 4.5,
+      "bg": "tag-pink-bg",
+      "fg": "tag-pink-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Primary button",
+      "ratio": "17.18",
+      "minRatio": 4.5,
+      "bg": "primary",
+      "fg": "primary-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Secondary button",
+      "ratio": "16.44",
+      "minRatio": 4.5,
+      "bg": "secondary",
+      "fg": "secondary-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Accent elements",
+      "ratio": "16.44",
+      "minRatio": 4.5,
+      "bg": "accent",
+      "fg": "accent-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Card content",
+      "ratio": "19.80",
+      "minRatio": 4.5,
+      "bg": "card",
+      "fg": "card-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Popover content",
+      "ratio": "19.80",
+      "minRatio": 4.5,
+      "bg": "popover",
+      "fg": "popover-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag warm",
+      "ratio": "9.90",
+      "minRatio": 4.5,
+      "bg": "tag-warm-bg",
+      "fg": "tag-warm-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag green",
+      "ratio": "10.75",
+      "minRatio": 4.5,
+      "bg": "tag-green-bg",
+      "fg": "tag-green-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag teal",
+      "ratio": "10.10",
+      "minRatio": 4.5,
+      "bg": "tag-teal-bg",
+      "fg": "tag-teal-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag blue",
+      "ratio": "10.30",
+      "minRatio": 4.5,
+      "bg": "tag-blue-bg",
+      "fg": "tag-blue-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag purple",
+      "ratio": "10.06",
+      "minRatio": 4.5,
+      "bg": "tag-purple-bg",
+      "fg": "tag-purple-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag yellow",
+      "ratio": "8.62",
+      "minRatio": 4.5,
+      "bg": "tag-yellow-bg",
+      "fg": "tag-yellow-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag gray",
+      "ratio": "11.70",
+      "minRatio": 4.5,
+      "bg": "tag-gray-bg",
+      "fg": "tag-gray-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Tag pink",
+      "ratio": "10.08",
+      "minRatio": 4.5,
+      "bg": "tag-pink-bg",
+      "fg": "tag-pink-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Primary button",
+      "ratio": "14.23",
+      "minRatio": 4.5,
+      "bg": "primary",
+      "fg": "primary-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Secondary button",
+      "ratio": "14.50",
+      "minRatio": 4.5,
+      "bg": "secondary",
+      "fg": "secondary-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Accent elements",
+      "ratio": "14.50",
+      "minRatio": 4.5,
+      "bg": "accent",
+      "fg": "accent-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Muted elements",
+      "ratio": "5.86",
+      "minRatio": 4.5,
+      "bg": "muted",
+      "fg": "muted-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Card content",
+      "ratio": "17.18",
+      "minRatio": 4.5,
+      "bg": "card",
+      "fg": "card-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Popover content",
+      "ratio": "17.18",
+      "minRatio": 4.5,
+      "bg": "popover",
+      "fg": "popover-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Focus ring on background",
+      "ratio": "4.18",
+      "minRatio": 3,
+      "bg": "background",
+      "fg": "ring"
+    },
+    {
+      "mode": "dark",
+      "test": "Focus ring on cards",
+      "ratio": "3.78",
+      "minRatio": 3,
+      "bg": "card",
+      "fg": "ring"
+    }
+  ],
+  "failed": [
+    {
+      "mode": "light",
+      "test": "Muted elements",
+      "ratio": "4.35",
+      "minRatio": 4.5,
+      "bg": "muted",
+      "fg": "muted-foreground",
+      "message": "Contrast ratio 4.35:1 is below WCAG AA minimum of 4.5:1"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on background",
+      "ratio": "2.58",
+      "minRatio": 3,
+      "bg": "background",
+      "fg": "ring",
+      "message": "Contrast ratio 2.58:1 is below WCAG AA minimum of 3:1"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on cards",
+      "ratio": "2.58",
+      "minRatio": 3,
+      "bg": "card",
+      "fg": "ring",
+      "message": "Contrast ratio 2.58:1 is below WCAG AA minimum of 3:1"
+    }
+  ],
+  "warnings": []
+}

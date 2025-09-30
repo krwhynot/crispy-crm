@@ -45,7 +45,7 @@ export const OrganizationAside = ({
 };
 
 const OrganizationInfo = ({ record }: { record: Company }) => {
-  if (!record.website && !record.linkedin_url && !record.phone_number) {
+  if (!record.website && !record.linkedin_url && !record.phone) {
     return null;
   }
 
@@ -78,10 +78,10 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
           </a>
         </div>
       )}
-      {record.phone_number && (
+      {record.phone && (
         <div className="flex flex-row items-center gap-1 min-h-[24px]">
           <Phone className="w-4 h-4" />
-          <TextField source="phone_number" />
+          <TextField source="phone" />
         </div>
       )}
     </AsideSection>
@@ -106,7 +106,7 @@ const ContextInfo = ({ record }: { record: Company }) => {
     { id: "D", name: "D - Low Priority" },
   ];
 
-  if (!record.revenue && !record.id) {
+  if (!record.annual_revenue && !record.id) {
     return null;
   }
 
@@ -131,19 +131,19 @@ const ContextInfo = ({ record }: { record: Company }) => {
           Segment: <TextField source="segment" />
         </span>
       )}
-      {record.sector && (
+      {record.industry && (
         <span>
-          Sector: <TextField source="sector" />
+          Industry: <TextField source="industry" />
         </span>
       )}
-      {record.size && (
+      {record.employee_count && (
         <span>
-          Size: <SelectField source="size" choices={sizes} />
+          Employee Count: <SelectField source="employee_count" choices={sizes} />
         </span>
       )}
-      {record.revenue && (
+      {record.annual_revenue && (
         <span>
-          Revenue: <TextField source="revenue" />
+          Annual Revenue: <TextField source="annual_revenue" />
         </span>
       )}
       {record.tax_identifier && (
@@ -156,7 +156,7 @@ const ContextInfo = ({ record }: { record: Company }) => {
 };
 
 const AddressInfo = ({ record }: { record: Company }) => {
-  if (!record.address && !record.city && !record.zipcode && !record.stateAbbr) {
+  if (!record.address && !record.city && !record.postal_code && !record.state) {
     return null;
   }
 
@@ -164,8 +164,8 @@ const AddressInfo = ({ record }: { record: Company }) => {
     <AsideSection title="Main Address" noGap>
       <TextField source="address" />
       <TextField source="city" />
-      <TextField source="zipcode" />
-      <TextField source="stateAbbr" />
+      <TextField source="postal_code" />
+      <TextField source="state" />
       <TextField source="country" />
     </AsideSection>
   );

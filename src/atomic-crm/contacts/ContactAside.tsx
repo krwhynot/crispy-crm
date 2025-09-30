@@ -43,12 +43,6 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           </SingleFieldList>
         </ArrayField>
 
-        {record.has_newsletter && (
-          <p className="pl-6 text-sm text-muted-foreground">
-            Subscribed to newsletter
-          </p>
-        )}
-
         {record.linkedin_url && (
           <PersonalInfoRow
             icon={<Linkedin className="w-4 h-4 text-muted-foreground" />}

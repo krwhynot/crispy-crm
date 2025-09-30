@@ -13,7 +13,7 @@ import { useFormContext } from "react-hook-form";
 
 import { SaveButton } from "@/components/admin/form";
 import { NoteInputs } from "./NoteInputs";
-import { getCurrentDate } from "./utils";
+import { getCurrentDate } from "../validation/notes";
 
 const foreignKeyMapping = {
   contacts: "contact_id",
@@ -61,13 +61,13 @@ const NoteCreateButton = ({
   if (!record || !identity) return null;
 
   const resetValues: {
-    date: string;
     text: null;
+    date: null;
     attachments: null;
     status?: string;
   } = {
-    date: getCurrentDate(),
     text: null,
+    date: null,
     attachments: null,
   };
 
@@ -78,11 +78,16 @@ const NoteCreateButton = ({
   const handleSuccess = (data: any) => {
     reset(resetValues, { keepValues: false });
     refetch();
-    update(reference, {
-      id: (record && record.id) as unknown as Identifier,
-      data: { last_seen: new Date().toISOString(), status: data.status },
-      previousData: record,
-    });
+
+    // Only update last_seen and status for contacts (opportunities don't have last_seen)
+    if (reference === "contacts") {
+      update(reference, {
+        id: (record && record.id) as unknown as Identifier,
+        data: { last_seen: new Date().toISOString(), status: data.status },
+        previousData: record,
+      });
+    }
+
     notify("Note added");
   };
 

@@ -95,7 +95,7 @@ export const ContactMultiOrg = (props: ContactMultiOrgProps) => {
           />
 
           <PrimaryOrganizationCheckbox
-            source="is_primary_organization"
+            source="is_primary"
             label="Primary Organization"
           />
         </div>
@@ -125,9 +125,9 @@ const PrimaryOrganizationCheckbox = (props: {
       if (currentOrganizations) {
         currentOrganizations.forEach((org, index) => {
           // Check if it's a different organization and it's currently primary
-          if (org && org.id !== record?.id && org.is_primary_organization) {
+          if (org && org.id !== record?.id && org.is_primary) {
             setValue(
-              `contact_organizations.${index}.is_primary_organization`,
+              `contact_organizations.${index}.is_primary`,
               false,
               { shouldDirty: true },
             );

@@ -1,7 +1,7 @@
 import { Paperclip } from "lucide-react";
-import type { AttachmentNote, ContactNote, DealNote } from "../types";
+import type { AttachmentNote, ContactNote, OpportunityNote } from "../types";
 
-export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
+export const NoteAttachments = ({ note }: { note: ContactNote | OpportunityNote }) => {
   if (!note.attachments || note.attachments.length === 0) {
     return null;
   }

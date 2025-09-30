@@ -2,7 +2,7 @@
 allowed-tools: Bash(find:*), Bash(git:*), Bash(grep:*), Read, Write
 argument-hint: [--dry-run] [--force] [--report-only]
 description: Intelligent project cleanup with AI-assisted relevance analysis
-model: claude-opus-4-1-20250805
+
 ---
 
 # Intelligent Project Cleanup with Relevance Analysis

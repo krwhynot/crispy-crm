@@ -79,6 +79,7 @@ export const ContactListFilter = () => {
         {data &&
           data.map((record) => (
             <ToggleFilterButton
+              multiselect
               className="w-full justify-between"
               key={record.id}
               label={
@@ -92,7 +93,7 @@ export const ContactListFilter = () => {
                   {record?.name}
                 </Badge>
               }
-              value={{ "tags@cs": `{${record.id}}` }}
+              value={{ tags: record.id }}
             />
           ))}
       </FilterCategory>
@@ -107,21 +108,25 @@ export const ContactListFilter = () => {
 
       <FilterCategory icon={<TrendingUp />} label="Role">
         <ToggleFilterButton
+          multiselect
           className="w-full justify-between"
           label="Decision Maker"
           value={{ role: "decision_maker" }}
         />
         <ToggleFilterButton
+          multiselect
           className="w-full justify-between"
           label="Influencer"
           value={{ role: "influencer" }}
         />
         <ToggleFilterButton
+          multiselect
           className="w-full justify-between"
           label="Champion"
           value={{ role: "champion" }}
         />
         <ToggleFilterButton
+          multiselect
           className="w-full justify-between"
           label="Executive"
           value={{ role: "executive" }}
@@ -138,16 +143,19 @@ export const ContactListFilter = () => {
         label="Influence"
       >
         <ToggleFilterButton
+          multiselect
           className="w-full justify-between"
           label="High Influence"
           value={{ purchase_influence: "High" }}
         />
         <ToggleFilterButton
+          multiselect
           className="w-full justify-between"
           label="Medium Influence"
           value={{ purchase_influence: "Medium" }}
         />
         <ToggleFilterButton
+          multiselect
           className="w-full justify-between"
           label="Low Influence"
           value={{ purchase_influence: "Low" }}

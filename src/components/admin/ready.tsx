@@ -8,11 +8,7 @@ import {
 export const Ready = () => (
   <div className="flex flex-col h-screen">
     <div
-      className="flex-1 flex flex-col color-white text-center justify-center items-center"
-      style={{
-        background:
-          "linear-gradient(135deg, #00023b 0%, #00023b 50%, #313264 100%)",
-      }}
+      className="flex-1 flex flex-col text-white text-center justify-center items-center bg-gradient-to-br from-primary to-primary/70"
     >
       <ScanFace className="w-32 h-32 mb-4" />
       <h1 className="text-3xl mb-4">Welcome to shadcn-admin-kit</h1>
@@ -23,7 +19,7 @@ export const Ready = () => (
         &lt;Admin&gt;&lt;/Admin&gt;
       </div>
     </div>
-    <div className="flex h-[20vh] bg-zinc-100 text-black items-center justify-evenly">
+    <div className="flex h-[20vh] bg-muted text-foreground items-center justify-evenly">
       <div className="text-xl">
         <a href="https://marmelab.com/shadcn-admin-kit/docs">
           <BookOpenText className="inline mr-4 w-10 h-10" />

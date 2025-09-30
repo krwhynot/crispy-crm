@@ -40,7 +40,7 @@ import { SimpleListLoading } from "./SimpleListLoading.tsx";
  *
  * @example // Display all posts as a List
  * const postRowSx = (record, index) => ({
- *     backgroundColor: record.views >= 500 ? '#efe' : 'white',
+ *     backgroundColor: record.views >= 500 ? 'var(--success-bg)' : 'white',
  * });
  * export const PostList = () => (
  *     <List>

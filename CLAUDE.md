@@ -15,6 +15,39 @@ Core principles to prevent debates & ensure consistency:
 7. **COLORS**: Semantic CSS variables only (--primary, --destructive). Never use hex codes
 8. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
 
+# Parallel Agent Decomposition
+
+**MANDATORY**: For ANY complex task or problem, immediately decompose into parallel-executable subtasks.
+
+## Execution Pattern
+1. **Analyze** - Break the problem into 3-7 independent components
+2. **Assign** - Create parallel agents, each with a specific research/implementation focus:
+   - Agent 1: Database/backend investigation
+   - Agent 2: Frontend/UI patterns
+   - Agent 3: Similar features/existing patterns
+   - Agent 4+: Additional specialized aspects
+3. **Synthesize** - Combine findings into cohesive solution
+
+## Trigger Words
+When you see: "implement", "research", "analyze", "build", "investigate", "plan", "design"
+→ Immediately decompose for parallel execution
+
+## Example Decomposition
+Task: "Add new dashboard feature"
+Parallel Agents:
+
+Agent 1: Research existing dashboard patterns in /src/atomic-crm/
+Agent 2: Analyze required database schema changes
+Agent 3: Investigate relevant shadcn/ui components
+Agent 4: Review similar features for UX patterns
+
+
+## Critical Rules
+- Never work sequentially when parallel is possible
+- Each agent must have clear, independent scope
+- Agents write findings to `.docs/plans/[feature]/[aspect].md`
+- Main thread synthesizes after parallel completion
+
 ## Build & Development Commands
 
 ### Essential Commands
@@ -22,30 +55,38 @@ Core principles to prevent debates & ensure consistency:
 npm run dev           # Start development server (port 5173)
 npm run build         # TypeScript check + Vite build
 npm run test          # Run Vitest unit tests
-npm run test:e2e      # Run Playwright E2E tests (headless)
-npm run test:e2e:ui   # Run E2E tests with UI mode
-npm run test:e2e:report # View last E2E test report
-npm run lint:check    # Check ESLint violations
-npm run lint:apply    # Fix ESLint violations
-npm run prettier:check # Check formatting
-npm run prettier:apply # Fix formatting
-```
+
 
 ### Database Migration Commands
 ```bash
 npm run migrate:production    # Execute production migration
 npm run migrate:status        # Check migration status
 npm run migrate:validate      # Validate migration success
+npm run migrate:dry-run       # Preview migration without executing
+npm run migrate:backup        # Backup before migration
+npm run migrate:rollback      # Rollback to previous state
 npm run seed:data            # Insert test data
 npm run seed:data:dry-run    # Preview seed data
+npm run seed:data:clean      # Clean and regenerate seed data
+```
+
+### Additional Utility Commands
+```bash
+npm run validate:colors       # Validate semantic color usage
+npm run cache:clear          # Clear application caches
+npm run cache:clear:dry-run  # Preview cache clear operation
+npm run search:reindex       # Reindex search data
+npm run search:reindex:dry-run # Preview reindex operation
 ```
 
 ### MCP Tool Access
-When working with the database, use the Supabase MCP tools:
-- `mcp__supabase__list_tables` - List database tables
-- `mcp__supabase__execute_sql` - Execute queries
-- `mcp__supabase__apply_migration` - Apply DDL migrations
-- `mcp__supabase__generate_typescript_types` - Generate types
+When working with the database, use the Supabase Lite MCP tools:
+- `mcp__supabase-lite__list_tables` - List database tables
+- `mcp__supabase-lite__execute_sql` - Execute queries (SELECT/INSERT/UPDATE/DELETE)
+- `mcp__supabase-lite__apply_migration` - Apply DDL migrations (CREATE/ALTER/DROP)
+- `mcp__supabase-lite__generate_typescript_types` - Generate types
+- `mcp__supabase-lite__get_logs` - View service logs (api/postgres/auth/storage/realtime)
+- `mcp__supabase-lite__get_advisors` - Security and performance recommendations
 
 ## Development Status
 **NOT PRODUCTION** - Development environment only. All data is test data and can be modified/deleted.
@@ -58,12 +99,20 @@ When working with the database, use the Supabase MCP tools:
 - **Validation**: Zod schemas at API boundaries
 - **State**: React Admin store + React Query
 
+### Application Entry Point
+- `src/main.tsx` → `src/App.tsx` → `src/atomic-crm/root/CRM.tsx`
+- `CRM.tsx` wraps React Admin's `<Admin>` component with configuration
+- Resources registered via `<Resource>` components in `CRM.tsx`
+- Custom routes for settings, password reset, etc. via `<CustomRoutes>`
+
 ### Data Provider Architecture
 Unified Supabase data provider at `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`:
 - Implements React Admin DataProvider interface
 - All CRUD operations go through this single provider
-- Zod validation integrated at API boundaries
+- Zod validation integrated at API boundaries before database calls
 - File attachments managed via Supabase Storage
+- Consolidates transformation logic (was 4+ layers, now 2 max)
+- Error logging and resource-specific transformations built-in
 
 ### Component Architecture
 Three-tier system:
@@ -87,25 +136,35 @@ src/atomic-crm/[feature]/
 Opportunities-based CRM with key tables:
 - `opportunities` - Sales pipeline (multi-stakeholder support)
 - `companies` - Organizations with hierarchies
-- `contacts` - People (JSONB for emails/phones)
-- `contact_organizations` - Many-to-many relationships
+- `contacts` - People with JSONB arrays for emails/phones (e.g., `[{"email":"x@y.com"}]`)
+- `contact_organizations` - Many-to-many relationships with role/influence tracking
 - `activities` - Engagements and interactions
-- RLS: Simple `auth.role() = 'authenticated'`
+- `tasks` - Action items with type enum (call, email, meeting, todo, follow_up)
+- `contact_notes` / `opportunity_notes` - Entity-specific notes
+- `tags` - Flexible tagging system
+- RLS: Simple `auth.role() = 'authenticated'` on all tables
 - Soft deletes via `deleted_at` timestamps
+- Views: `contacts_summary` (denormalized contact data with company names)
 
 ### Validation Layer
-Zod schemas in `src/atomic-crm/validation/`:
+Zod schemas in `src/atomic-crm/validation/` (API boundary only):
 - `opportunities.ts` - Probability, amount, stage validation
 - `organizations.ts` - URL and LinkedIn validation
-- `contacts.ts` - Email/phone JSONB validation
-- All validation at API boundary only
+- `contacts.ts` - Email/phone JSONB array validation
+- `tasks.ts` - Type enum and status validation
+- `notes.ts` - Contact/opportunity note validation
+- `tags.ts` - Tag creation and update validation
+- `products.ts` - Product validation
+All validation integrated into `unifiedDataProvider.ts` before database operations
 
 ### Key Patterns
 - **Resource Registration**: All resources in `src/atomic-crm/root/CRM.tsx`
-- **Kanban Board**: Drag-drop via index field in opportunities
-- **Multi-Org Contacts**: Junction table with role/influence tracking
+- **Kanban Board**: Drag-drop via `@hello-pangea/dnd` using index field in opportunities
+- **Multi-Org Contacts**: Junction table `contact_organizations` with role/influence tracking
 - **Activity Types**: Engagements (standalone) vs Interactions (opportunity-linked)
 - **Filter System**: Multi-select filters with JSONB array fields in `src/atomic-crm/filters/`
+- **Avatar Storage**: Supabase Storage buckets for avatars/logos, handled by `avatar.utils.ts`
+- **Configuration**: Global app config via `ConfigurationProvider` in `CRM.tsx`
 
 ### Environment Variables
 ```bash
@@ -121,90 +180,3 @@ System migrated from "deals" to "opportunities":
 - Fresh schema, no backward compatibility
 - All references updated throughout codebase
 - Environment variables renamed from `DEAL_*` to `OPPORTUNITY_*`
-
-## E2E Testing with Playwright
-
-### Overview
-Minimal E2E testing infrastructure following Engineering Constitution principle #1 (NO OVER-ENGINEERING):
-- **Location**: All Playwright files in `playwright/` directory
-- **Configuration**: `playwright/playwright.config.ts`
-- **Tests**: `playwright/tests/` directory
-- **Execution**: Headless only (no headed mode)
-- **Coverage**: 5 critical path tests only
-
-### Test Structure
-```
-playwright/
-├── playwright.config.ts     # Headless-only configuration
-├── tests/
-│   ├── auth.spec.ts         # Login/logout flow
-│   ├── contacts-crud.spec.ts
-│   ├── organizations-crud.spec.ts
-│   ├── opportunities-kanban.spec.ts
-│   └── cross-module.spec.ts # Entity relationships
-└── test-results/            # Generated artifacts (gitignored)
-```
-
-### Running Tests
-```bash
-npm run test:e2e              # Run all E2E tests headless
-npm run test:e2e:ui           # Run with Playwright UI mode
-npm run test:e2e:report       # View HTML report
-```
-
-### Writing New Tests
-Follow these patterns:
-
-**1. Robust Selectors**
-```typescript
-// ✅ GOOD: Use data-testid for key elements
-await page.getByTestId('create-button').click();
-
-// ✅ GOOD: Use semantic selectors
-await page.getByRole('button', { name: /save|create/i }).click();
-
-// ❌ BAD: Fragile CSS selectors
-await page.locator('.MuiButton-containedPrimary').click();
-```
-
-**2. Proper Wait Strategies**
-```typescript
-// ✅ GOOD: Wait for network to settle after navigation
-await page.waitForLoadState('networkidle');
-
-// ✅ GOOD: Wait for specific element
-await page.locator('[data-testid="list"]').waitFor({ state: 'visible' });
-
-// ❌ BAD: Arbitrary timeouts
-await page.waitForTimeout(5000);
-```
-
-**3. React Admin Patterns**
-- Always wait for `networkidle` after navigation
-- CreateButton uses `data-testid="create-button"`
-- Forms may have async validation (wait before save)
-- List views load data asynchronously
-
-### Test Credentials
-```typescript
-email: 'test@gmail.com'
-password: 'password'
-```
-
-### Adding data-testid Attributes
-When adding new testable components:
-```tsx
-<button data-testid="submit-form">Submit</button>
-<input data-testid="email-input" type="email" />
-```
-
-### CI/CD Integration
-- Tests run headless in CI
-- Fails fast on first failure
-- Screenshots/videos captured on failure
-- HTML report generated in `playwright/test-results/`
-
-### Performance
-- Target: ~2min full suite execution
-- Parallel execution enabled
-- Single retry on failure in CI

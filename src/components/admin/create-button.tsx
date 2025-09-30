@@ -15,13 +15,13 @@ export const CreateButton = ({
 }: CreateButtonProps) => {
   const resource = useResourceContext();
   const createPath = useCreatePath();
+  const resourceName = targetResource ?? resource;
   const link = createPath({
-    resource: targetResource ?? resource,
+    resource: resourceName,
     type: "create",
   });
   return (
     <Link
-      data-testid="create-button"
       className={buttonVariants({ variant: "outline" })}
       to={link}
       onClick={stopPropagation}

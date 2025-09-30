@@ -61,19 +61,20 @@ export const organizationSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
   name: z.string().min(1, "Company name is required"),
   logo: z.any().optional(), // RAFile type
-  sector: z.string().optional(),
-  size: companySizeSchema.optional(),
+  // Updated field names to match database schema
+  industry: z.string().optional(), // was: sector
+  employee_count: companySizeSchema.optional(), // was: size
   linkedin_url: isLinkedinUrl.optional(),
   website: isValidUrl.optional(),
-  phone_number: z.string().optional(),
+  phone: z.string().optional(), // was: phone_number
   address: z.string().optional(),
-  zipcode: z.string().optional(),
+  postal_code: z.string().optional(), // was: zipcode
   city: z.string().optional(),
-  stateAbbr: z.string().optional(),
+  state: z.string().optional(), // was: stateAbbr
   country: z.string().optional(),
   sales_id: z.union([z.string(), z.number()]).optional(),
   description: z.string().optional(),
-  revenue: z.string().optional(),
+  annual_revenue: z.union([z.string(), z.number()]).optional(), // was: revenue (now accepts both string and number for input flexibility)
   tax_identifier: z.string().optional(),
   context_links: z.array(isValidUrl).optional(),
 

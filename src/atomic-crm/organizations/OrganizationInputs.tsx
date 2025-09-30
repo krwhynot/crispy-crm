@@ -70,7 +70,7 @@ const OrganizationContactInputs = () => {
         label="LinkedIn URL"
         helperText="Format: https://linkedin.com/company/name"
       />
-      <TextInput source="phone_number" helperText={false} />
+      <TextInput source="phone" helperText={false} />
     </div>
   );
 };
@@ -81,14 +81,20 @@ const OrganizationContextInputs = () => {
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Context</h6>
       <SelectInput
-        source="sector"
+        source="industry"
+        label="Industry"
         choices={organizationSectors.map((sector) => ({
           id: sector,
           name: sector,
         }))}
         helperText={false}
       />
-      <SelectInput source="size" choices={sizes} helperText={false} />
+      <SelectInput
+        source="employee_count"
+        label="Employee Count"
+        choices={sizes}
+        helperText={false}
+      />
       <SelectInput
         source="organization_type"
         choices={[
@@ -119,7 +125,7 @@ const OrganizationContextInputs = () => {
         helperText={false}
         placeholder="Segment (e.g., Enterprise, SMB)"
       />
-      <TextInput source="revenue" helperText={false} />
+      <TextInput source="annual_revenue" label="Annual Revenue" helperText={false} />
       <TextInput source="tax_identifier" helperText={false} />
     </div>
   );
@@ -131,8 +137,8 @@ const OrganizationAddressInputs = () => {
       <h6 className="text-lg font-semibold">Address</h6>
       <TextInput source="address" helperText={false} />
       <TextInput source="city" helperText={false} />
-      <TextInput source="zipcode" helperText={false} />
-      <TextInput source="stateAbbr" helperText={false} />
+      <TextInput source="postal_code" label="Postal Code" helperText={false} />
+      <TextInput source="state" label="State" helperText={false} />
       <TextInput source="country" helperText={false} />
     </div>
   );

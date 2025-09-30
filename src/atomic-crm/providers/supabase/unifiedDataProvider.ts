@@ -23,28 +23,19 @@ import type {
 } from "ra-core";
 
 import { supabase } from "./supabase";
+import { getResourceName, supportsSoftDelete } from "./resources";
 import {
-  getResourceName,
-  getSearchableFields,
-  supportsSoftDelete,
-} from "./resources";
+  escapeForPostgREST,
+  transformArrayFilters,
+  applyFullTextSearch,
+  getDatabaseResource,
+  applySearchParams,
+  normalizeJsonbArrayFields,
+  normalizeResponseData,
+} from "./dataProviderUtils";
 
-// Import validation functions
-import { validateOpportunityForm } from "../../validation/opportunities";
-import { validateOrganizationForSubmission } from "../../validation/organizations";
-import { validateContactForm } from "../../validation/contacts";
-import { validateProductForm } from "../../validation/products";
-import { validateCreateTag, validateUpdateTag } from "../../validation/tags";
-import {
-  validateContactNoteForSubmission,
-  validateOpportunityNoteForSubmission
-} from "../../validation/notes";
-import { validateTaskForSubmission } from "../../validation/tasks";
-
-// Import utilities for transformers
-import { uploadToBucket } from "../../utils/storage.utils";
-import { processContactAvatar, processOrganizationLogo } from "../../utils/avatar.utils";
-import type { RAFile } from "../../types";
+// Import decomposed services
+import { ValidationService, TransformService, StorageService } from "./services";
 
 // Import service classes
 import {
@@ -57,142 +48,10 @@ import {
 // Import types for custom methods
 import type { SalesFormData, Sale, Opportunity, OpportunityParticipant } from "../../types";
 
-// Type for validation configuration
-interface ValidationConfig {
-  validate?: (data: any, isUpdate?: boolean) => Promise<void> | void;
-}
-
-// Type for transformer configuration
-interface TransformerConfig<T = any> {
-  transform?: (data: Partial<T>, operation: 'create' | 'update') => Promise<Partial<T>>;
-}
-
-// Validation registry for each resource
-const validationRegistry: Record<string, ValidationConfig> = {
-  opportunities: {
-    validate: validateOpportunityForm,
-  },
-
-  organizations: {
-    validate: validateOrganizationForSubmission,
-  },
-
-  contacts: {
-    validate: validateContactForm,
-  },
-
-  products: {
-    validate: validateProductForm,
-  },
-
-  tags: {
-    validate: async (data: any, isUpdate?: boolean) => {
-      // Use appropriate validator based on operation
-      if (isUpdate || data.id) {
-        await validateUpdateTag(data);
-      } else {
-        await validateCreateTag(data);
-      }
-    },
-  },
-
-  contactNotes: {
-    validate: validateContactNoteForSubmission,
-  },
-
-  opportunityNotes: {
-    validate: validateOpportunityNoteForSubmission,
-  },
-
-  tasks: {
-    validate: async (data: any, isUpdate?: boolean) => {
-      // Pass the isUpdate flag to the validation function
-      await validateTaskForSubmission(data, isUpdate);
-    },
-  },
-};
-
-// Transformer registry for each resource
-// Handles pre-save transformations like file uploads, avatar processing, and timestamp injection
-const transformerRegistry: Record<string, TransformerConfig> = {
-  // Contact notes: Process attachment uploads
-  contactNotes: {
-    transform: async (data: any) => {
-      if (data.attachments && Array.isArray(data.attachments)) {
-        // Upload all attachments sequentially to avoid overwhelming storage
-        for (const attachment of data.attachments) {
-          if (attachment && typeof attachment === 'object') {
-            await uploadToBucket(attachment as RAFile);
-          }
-        }
-      }
-      return data;
-    }
-  },
-
-  // Opportunity notes: Process attachment uploads
-  opportunityNotes: {
-    transform: async (data: any) => {
-      if (data.attachments && Array.isArray(data.attachments)) {
-        // Upload all attachments sequentially to avoid overwhelming storage
-        for (const attachment of data.attachments) {
-          if (attachment && typeof attachment === 'object') {
-            await uploadToBucket(attachment as RAFile);
-          }
-        }
-      }
-      return data;
-    }
-  },
-
-  // Sales: Process avatar uploads
-  sales: {
-    transform: async (data: any) => {
-      if (data.avatar && typeof data.avatar === 'object') {
-        await uploadToBucket(data.avatar as RAFile);
-      }
-      return data;
-    }
-  },
-
-  // Contacts: Auto-generate avatars from email addresses
-  contacts: {
-    transform: async (data: any) => {
-      return await processContactAvatar(data);
-    }
-  },
-
-  // Organizations: Logo processing and timestamp injection
-  organizations: {
-    transform: async (data: any, operation: 'create' | 'update') => {
-      // Process logo first
-      const processedData = await processOrganizationLogo(data);
-
-      // If it's a file upload, upload to bucket
-      if (processedData.logo &&
-          typeof processedData.logo === 'object' &&
-          processedData.logo.rawFile instanceof File) {
-        await uploadToBucket(processedData.logo as RAFile);
-      }
-
-      // Add timestamp for create operations
-      if (operation === 'create') {
-        processedData.created_at = new Date().toISOString();
-      }
-
-      return processedData;
-    }
-  },
-
-  // Tags: Semantic color validation and mapping - handled by validation layer
-  // Color transformation is done in the Zod schema, no additional processing needed
-  tags: {
-    transform: async (data: any) => {
-      // No transformation needed - color mapping handled by validation schema
-      return data;
-    }
-  },
-};
+// Initialize decomposed services
+const storageService = new StorageService();
+const transformService = new TransformService(storageService);
+const validationService = new ValidationService();
 
 // Create a function to get the base provider with current auth
 // This ensures the data provider always uses the current authenticated session
@@ -240,229 +99,12 @@ function logError(
   };
 
   console.error(`[DataProvider Error]`, context, {
-    error: error instanceof Error ? error.message : String(error),
+    error: error instanceof Error ? error.message :
+           (error?.message ? error.message : String(error)),
     stack: error instanceof Error ? error.stack : undefined,
+    validationErrors: error?.errors || undefined,
     fullError: error,
   });
-}
-
-/**
- * Apply full-text search to query parameters
- * Replicates the behavior from the original dataProvider's applyFullTextSearch function
- */
-function applyFullTextSearch(columns: readonly string[], shouldAddSoftDeleteFilter: boolean = true) {
-  return (params: GetListParams): GetListParams => {
-    if (!params.filter?.q) {
-      return params;
-    }
-
-    const { q, ...filter } = params.filter;
-
-    // Apply soft delete filter automatically for supported resources (unless it's a view)
-    const softDeleteFilter = params.filter?.includeDeleted || !shouldAddSoftDeleteFilter
-      ? {}
-      : { deleted_at: null };
-
-    return {
-      ...params,
-      filter: {
-        ...filter,
-        ...softDeleteFilter,
-        "@or": columns.reduce((acc, column) => {
-          if (column === "email")
-            return {
-              ...acc,
-              [`email_fts@ilike`]: q,
-            };
-          if (column === "phone")
-            return {
-              ...acc,
-              [`phone_fts@ilike`]: q,
-            };
-          else
-            return {
-              ...acc,
-              [`${column}@ilike`]: q,
-            };
-        }, {}),
-      },
-    };
-  };
-}
-
-/**
- * Escape values for PostgREST according to official documentation
- * PostgREST uses BACKSLASH escaping, NOT doubled quotes!
- */
-function escapeForPostgREST(value: any): string {
-  const str = String(value);
-  // Check for PostgREST reserved characters
-  const needsQuoting = /[,."':() ]/.test(str);
-
-  if (!needsQuoting) {
-    return str;
-  }
-
-  // IMPORTANT: Escape backslashes first, then quotes
-  let escaped = str.replace(/\\/g, '\\\\');  // Backslash → \\
-  escaped = escaped.replace(/"/g, '\\"');    // Quote → \"
-  return `"${escaped}"`;
-}
-
-/**
- * Transform array filter values to PostgREST operators
- * Handles conversion of React Admin array filters to appropriate PostgREST syntax
- *
- * @example
- * // JSONB array fields (tags, email, phone)
- * { tags: [1, 2, 3] } → { "tags@cs": "{1,2,3}" }
- *
- * // Regular enum/text fields
- * { status: ["active", "pending"] } → { "status@in": "(active,pending)" }
- */
-function transformArrayFilters(filter: Record<string, any>): Record<string, any> {
-  if (!filter || typeof filter !== 'object') {
-    return filter;
-  }
-
-  const transformed: Record<string, any> = {};
-
-  // Fields that are stored as JSONB arrays in PostgreSQL
-  // These use the @cs (contains) operator
-  const jsonbArrayFields = ['tags', 'email', 'phone'];
-
-  for (const [key, value] of Object.entries(filter)) {
-    // Skip null/undefined values
-    if (value === null || value === undefined) {
-      continue;
-    }
-
-    // Preserve existing PostgREST operators (keys containing @)
-    if (key.includes('@')) {
-      transformed[key] = value;
-      continue;
-    }
-
-    // Handle array values
-    if (Array.isArray(value)) {
-      // Skip empty arrays
-      if (value.length === 0) {
-        continue;
-      }
-
-      if (jsonbArrayFields.includes(key)) {
-        // JSONB array contains - format: {1,2,3}
-        // This checks if the JSONB array contains any of the specified values
-        transformed[`${key}@cs`] = `{${value.map(escapeForPostgREST).join(',')}}`;
-      } else {
-        // Regular IN operator - format: (val1,val2,val3)
-        // This checks if the field value is in the list
-        transformed[`${key}@in`] = `(${value.map(escapeForPostgREST).join(',')})`;
-      }
-    } else {
-      // Regular non-array value
-      transformed[key] = value;
-    }
-  }
-
-  return transformed;
-}
-
-/**
- * Apply search parameters to a query
- * Enhanced version that supports both search and automatic soft delete filtering
- *
- * @param resource - The resource name
- * @param params - The query parameters
- * @param useView - Whether this query will use a summary view (true for getList, false for getManyReference)
- */
-function applySearchParams(
-  resource: string,
-  params: GetListParams,
-  useView: boolean = true,
-): GetListParams {
-  const searchableFields = getSearchableFields(resource);
-
-  // Check if we're using a view (views already handle soft delete filtering internally)
-  // Only check for view if the operation will actually use one
-  const dbResource = useView ? getDatabaseResource(resource, "list") : getResourceName(resource);
-  const isView = dbResource.includes("_summary") || dbResource.includes("_view");
-
-  // Apply soft delete filter for all supported resources, even without search
-  // But skip for views as they handle this internally and adding the filter causes PostgREST errors
-  const needsSoftDeleteFilter = supportsSoftDelete(resource) &&
-    !params.filter?.includeDeleted &&
-    !isView;
-
-  // Transform array filters to PostgREST operators
-  const transformedFilter = transformArrayFilters(params.filter);
-
-  // If no search query but needs soft delete filter
-  if (!transformedFilter?.q && needsSoftDeleteFilter) {
-    return {
-      ...params,
-      filter: {
-        ...transformedFilter,
-        deleted_at: null,
-      },
-    };
-  }
-
-  // If no search query and no soft delete needed, return params with transformed filters
-  if (!transformedFilter?.q) {
-    return {
-      ...params,
-      filter: transformedFilter,
-    };
-  }
-
-  // Extract search query and apply full-text search
-  const { q, ...filterWithoutQ } = transformedFilter;
-
-  // If no searchable fields configured, apply basic soft delete only
-  if (searchableFields.length === 0) {
-    const softDeleteFilter = needsSoftDeleteFilter ? { deleted_at: null } : {};
-    return {
-      ...params,
-      filter: {
-        ...filterWithoutQ,
-        ...softDeleteFilter,
-      },
-    };
-  }
-
-  // Use the applyFullTextSearch helper for resources with search configuration
-  // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
-  const searchParams = applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
-    ...params,
-    filter: transformedFilter,
-  });
-
-  return searchParams;
-}
-
-/**
- * Get the appropriate database resource name
- */
-function getDatabaseResource(
-  resource: string,
-  operation: "list" | "one" | "create" | "update" | "delete" = "list",
-): string {
-  const actualResource = getResourceName(resource);
-
-  // Use summary views for list operations when available
-  if (operation === "list" || operation === "one") {
-    const summaryResource = `${actualResource}_summary`;
-    if (
-      resource === "opportunities" ||
-      resource === "organizations" ||
-      resource === "contacts"
-    ) {
-      return summaryResource;
-    }
-  }
-
-  return actualResource;
 }
 
 /**
@@ -474,16 +116,9 @@ async function validateData(
   data: any,
   operation: "create" | "update" = "create",
 ): Promise<void> {
-  const config = validationRegistry[resource];
-
-  if (!config || !config.validate) {
-    // No validation configured, skip
-    return;
-  }
-
   try {
-    // Call validation function
-    await config.validate(data, operation === "update");
+    // Use the ValidationService
+    await validationService.validate(resource, operation, data);
   } catch (error: any) {
     // Ensure errors are properly formatted for React Admin
     // React Admin expects { message: string, errors: { fieldName: string } }
@@ -517,15 +152,8 @@ async function transformData<T>(
   data: Partial<T>,
   operation: "create" | "update" = "create",
 ): Promise<Partial<T>> {
-  const config = transformerRegistry[resource];
-
-  if (!config || !config.transform) {
-    // No transformer configured, return data as-is
-    return data;
-  }
-
-  // Call transformer function
-  return await config.transform(data, operation);
+  // Use the TransformService
+  return await transformService.transform(resource, data) as Partial<T>;
 }
 
 /**
@@ -547,54 +175,6 @@ async function processForDatabase<T>(
   return processedData;
 }
 
-/**
- * Normalize JSONB array fields to ensure they are always arrays
- * This prevents runtime errors when components expect array data
- * Engineering Constitution: BOY SCOUT RULE - fixing data inconsistencies
- */
-function normalizeJsonbArrayFields(data: any): any {
-  if (!data) return data;
-
-  // Helper to ensure a value is always an array
-  const ensureArray = (value: any): any[] => {
-    if (value === null || value === undefined) {
-      return [];
-    }
-    if (!Array.isArray(value)) {
-      // Data has been migrated to arrays - this shouldn't happen anymore
-      // If it's an object, wrap it in an array, otherwise return empty array
-      return typeof value === 'object' ? [value] : [];
-    }
-    return value;
-  };
-
-  // Normalize based on resource type
-  // Currently only contacts have JSONB array fields that need normalization
-  if (data.email !== undefined || data.phone !== undefined || data.tags !== undefined) {
-    return {
-      ...data,
-      ...(data.email !== undefined && { email: ensureArray(data.email) }),
-      ...(data.phone !== undefined && { phone: ensureArray(data.phone) }),
-      ...(data.tags !== undefined && { tags: ensureArray(data.tags) }),
-    };
-  }
-
-  return data;
-}
-
-/**
- * Normalize response data from database queries
- * Applies to both single records and arrays of records
- */
-function normalizeResponseData(resource: string, data: any): any {
-  // Handle array of records (getList, getMany, getManyReference)
-  if (Array.isArray(data)) {
-    return data.map(record => normalizeJsonbArrayFields(record));
-  }
-
-  // Handle single record (getOne)
-  return normalizeJsonbArrayFields(data);
-}
 
 /**
  * Wrap a data provider method with error logging and transformations
@@ -610,6 +190,13 @@ async function wrapMethod<T>(
     return await operation();
   } catch (error: any) {
     logError(method, resource, params, error);
+
+    // Handle idempotent delete - if resource doesn't exist, treat as success
+    // This happens with React Admin's undoable mode where UI updates before API call
+    if (method === 'delete' && error.message?.includes('Cannot coerce the result to a single JSON object')) {
+      // Return successful delete response - resource was already deleted
+      return { data: params.previousData } as T;
+    }
 
     // For validation errors, ensure React Admin format
     // This allows errors to be displayed inline next to form fields
@@ -931,26 +518,211 @@ export const unifiedDataProvider: DataProvider = {
   ): Promise<{ data: { id: string } }> {
     return junctionsService.removeOpportunityContact(opportunityId, contactId);
   },
+
+  // Extended capabilities for operations not covered by React Admin's base adapter
+  // These ensure all database operations go through the unified provider
+
+  /**
+   * Execute RPC (Remote Procedure Call) functions
+   * Provides validation, logging, and error handling for database functions
+   * @param functionName The name of the RPC function to execute
+   * @param params Parameters to pass to the RPC function
+   * @returns The data returned by the RPC function
+   */
+  async rpc(functionName: string, params: any = {}): Promise<any> {
+    try {
+      // Log the operation for debugging
+      console.log(`[DataProvider RPC] Calling ${functionName}`, params);
+
+      // TODO: Add Zod validation for RPC params based on function name
+      // This would be added to validationRegistry for each RPC function
+
+      const { data, error } = await supabase.rpc(functionName, params);
+
+      if (error) {
+        logError('rpc', functionName, params, error);
+        throw new Error(`RPC ${functionName} failed: ${error.message}`);
+      }
+
+      console.log(`[DataProvider RPC] ${functionName} succeeded`, data);
+      return data;
+    } catch (error) {
+      logError('rpc', functionName, params, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Storage operations for file handling
+   * Provides consistent file upload/download with validation and error handling
+   */
+  storage: {
+    /**
+     * Upload a file to Supabase storage
+     * @param bucket The storage bucket name
+     * @param path The file path within the bucket
+     * @param file The file to upload
+     * @returns Upload result with path information
+     */
+    async upload(bucket: string, path: string, file: File | Blob): Promise<{ path: string }> {
+      try {
+        console.log(`[DataProvider Storage] Uploading to ${bucket}/${path}`, {
+          size: file.size,
+          type: file.type,
+        });
+
+        // Validate file size (10MB limit)
+        if (file.size > 10 * 1024 * 1024) {
+          throw new Error('File size exceeds 10MB limit');
+        }
+
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .upload(path, file, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+
+        if (error) {
+          logError('storage.upload', bucket, { path, size: file.size }, error);
+          throw new Error(`Upload failed: ${error.message}`);
+        }
+
+        console.log(`[DataProvider Storage] Upload succeeded`, data);
+        return data;
+      } catch (error) {
+        logError('storage.upload', bucket, { path }, error);
+        throw error;
+      }
+    },
+
+    /**
+     * Get public URL for a file
+     * @param bucket The storage bucket name
+     * @param path The file path within the bucket
+     * @returns The public URL for the file
+     */
+    getPublicUrl(bucket: string, path: string): string {
+      const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+      console.log(`[DataProvider Storage] Generated public URL for ${bucket}/${path}`);
+      return data.publicUrl;
+    },
+
+    /**
+     * Remove files from storage
+     * @param bucket The storage bucket name
+     * @param paths Array of file paths to remove
+     */
+    async remove(bucket: string, paths: string[]): Promise<void> {
+      try {
+        console.log(`[DataProvider Storage] Removing from ${bucket}`, paths);
+
+        const { error } = await supabase.storage
+          .from(bucket)
+          .remove(paths);
+
+        if (error) {
+          logError('storage.remove', bucket, { paths }, error);
+          throw new Error(`Remove failed: ${error.message}`);
+        }
+
+        console.log(`[DataProvider Storage] Remove succeeded`);
+      } catch (error) {
+        logError('storage.remove', bucket, { paths }, error);
+        throw error;
+      }
+    },
+
+    /**
+     * List files in a storage bucket
+     * @param bucket The storage bucket name
+     * @param path Optional path prefix to filter files
+     * @returns Array of file metadata
+     */
+    async list(bucket: string, path?: string): Promise<any[]> {
+      try {
+        console.log(`[DataProvider Storage] Listing ${bucket}/${path || ''}`);
+
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .list(path);
+
+        if (error) {
+          logError('storage.list', bucket, { path }, error);
+          throw new Error(`List failed: ${error.message}`);
+        }
+
+        console.log(`[DataProvider Storage] Listed ${data?.length || 0} files`);
+        return data || [];
+      } catch (error) {
+        logError('storage.list', bucket, { path }, error);
+        throw error;
+      }
+    },
+  },
+
+  /**
+   * Invoke Edge Functions
+   * Provides consistent interface for calling Supabase Edge Functions
+   * @param functionName The name of the edge function to invoke
+   * @param options Options including method and body
+   * @returns The data returned by the edge function
+   */
+  async invoke<T = any>(
+    functionName: string,
+    options: {
+      method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+      body?: any;
+      headers?: Record<string, string>;
+    } = {},
+  ): Promise<T> {
+    try {
+      console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
+
+      // TODO: Add Zod validation for edge function params based on function name
+
+      const { data, error } = await supabase.functions.invoke<T>(functionName, {
+        method: options.method || 'POST',
+        body: options.body,
+        headers: options.headers,
+      });
+
+      if (error) {
+        logError('invoke', functionName, options, error);
+        throw new Error(`Edge function ${functionName} failed: ${error.message}`);
+      }
+
+      if (!data) {
+        throw new Error(`Edge function ${functionName} returned no data`);
+      }
+
+      console.log(`[DataProvider Edge] ${functionName} succeeded`, data);
+      return data;
+    } catch (error) {
+      logError('invoke', functionName, options, error);
+      throw error;
+    }
+  },
 };
 
 /**
  * Export a helper to check if a resource uses validation
  */
 export function resourceUsesValidation(resource: string): boolean {
-  return resource in validationRegistry;
+  return validationService.hasValidation(resource);
 }
 
 /**
  * Export a helper to check if a resource uses transformers
  */
 export function resourceUsesTransformers(resource: string): boolean {
-  return resource in transformerRegistry;
+  return transformService.hasTransform(resource);
 }
 
 /**
- * Export validation and transformer registries for testing and debugging
+ * Export services for testing and debugging
  */
-export { validationRegistry, transformerRegistry };
+export { validationService, transformService, storageService };
 
 /**
  * Export CrmDataProvider type for convenience
