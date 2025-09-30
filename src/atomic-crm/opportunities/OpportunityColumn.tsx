@@ -1,5 +1,3 @@
-import { Droppable } from "@hello-pangea/dnd";
-
 import type { Opportunity } from "../types";
 import { OpportunityCard } from "./OpportunityCard";
 import { getOpportunityStageLabel } from "./stageConstants";
@@ -32,26 +30,15 @@ export const OpportunityColumn = ({
           })}
         </p>
       </div>
-      <Droppable droppableId={stage}>
-        {(droppableProvided, snapshot) => (
-          <div
-            ref={droppableProvided.innerRef}
-            {...droppableProvided.droppableProps}
-            className={`flex flex-col rounded-2xl mt-2 gap-2 ${
-              snapshot.isDraggingOver ? "bg-muted" : ""
-            }`}
-          >
-            {opportunities.map((opportunity, index) => (
-              <OpportunityCard
-                key={opportunity.id}
-                opportunity={opportunity}
-                index={index}
-              />
-            ))}
-            {droppableProvided.placeholder}
-          </div>
-        )}
-      </Droppable>
+      <div className="flex flex-col rounded-2xl mt-2 gap-2">
+        {opportunities.map((opportunity, index) => (
+          <OpportunityCard
+            key={opportunity.id}
+            opportunity={opportunity}
+            index={index}
+          />
+        ))}
+      </div>
     </div>
   );
 };

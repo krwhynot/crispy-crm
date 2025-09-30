@@ -1,40 +1,24 @@
 import { ReferenceField } from "@/components/admin/reference-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Draggable } from "@hello-pangea/dnd";
 import { useRedirect } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 
 export const OpportunityCard = ({
   opportunity,
-  index,
 }: {
   opportunity: Opportunity;
   index: number;
 }) => {
   if (!opportunity) return null;
 
-  return (
-    <Draggable draggableId={String(opportunity.id)} index={index}>
-      {(provided, snapshot) => (
-        <OpportunityCardContent
-          provided={provided}
-          snapshot={snapshot}
-          opportunity={opportunity}
-        />
-      )}
-    </Draggable>
-  );
+  return <OpportunityCardContent opportunity={opportunity} />;
 };
 
 export const OpportunityCardContent = ({
-  provided,
-  snapshot,
   opportunity,
 }: {
-  provided?: any;
-  snapshot?: any;
   opportunity: Opportunity;
 }) => {
   const redirect = useRedirect();
@@ -75,21 +59,12 @@ export const OpportunityCardContent = ({
   return (
     <div
       className="cursor-pointer"
-      {...provided?.draggableProps}
-      {...provided?.dragHandleProps}
-      ref={provided?.innerRef}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
     >
-      <Card
-        className={`py-2 transition-all duration-200 ${
-          snapshot?.isDragging
-            ? "opacity-90 transform rotate-1 shadow-lg"
-            : "shadow-sm hover:shadow-md"
-        }`}
-      >
+      <Card className="py-2 transition-all duration-200 shadow-sm hover:shadow-md">
         <CardContent className="px-3 flex">
           <ReferenceField
             source="customer_organization_id"
