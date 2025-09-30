@@ -45,7 +45,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
           <OrganizationAvatar />
           <div className="text-center mt-1">
             <h6 className="text-sm font-medium">{record.name}</h6>
-            <p className="text-xs text-muted-foreground">{record.sector}</p>
+            <p className="text-xs text-muted-foreground">{record.industry}</p>
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
               {record.organization_type &&
                 record.organization_type !== "unknown" && (

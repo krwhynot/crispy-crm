@@ -36,6 +36,15 @@ export interface FilterChoice {
 
 /**
  * Filter configuration
+ *
+ * Usage patterns:
+ * - 'select': Single-value selection (dropdown, radio buttons)
+ * - 'multiselect': Multiple-value selection, accumulates into array
+ *   - Use MultiSelectInput for top-bar filters (OpportunityList)
+ *   - Use ToggleFilterButton with multiselect={true} for sidebar filters
+ * - 'reference': Reference to another resource (organizations, contacts, etc.)
+ * - 'search': Text search input
+ * - 'toggle': Boolean toggle or single-value toggle button
  */
 export interface FilterConfig {
   key: string;

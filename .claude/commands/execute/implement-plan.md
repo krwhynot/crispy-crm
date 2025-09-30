@@ -2,7 +2,7 @@
 description: Execute parallel tasks from planning documentation
 argument-hint: [plan-directory]
 allowed-tools: Bash(ls:*), Bash(cat:*), Bash(get_compilation_errors:*)
-model: claude-opus-4-1-20250805  # Recommended but not required
+
 ---
 
 ## Prerequisites Check

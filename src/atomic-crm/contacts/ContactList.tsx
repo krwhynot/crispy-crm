@@ -114,7 +114,7 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
   const contacts = records.map((contact) => {
     // Find the primary organization from the organizations array
     const primaryOrganization = contact.organizations?.find(
-      (org) => org.is_primary_organization,
+      (org) => org.is_primary,
     );
 
     const exportedContact = {

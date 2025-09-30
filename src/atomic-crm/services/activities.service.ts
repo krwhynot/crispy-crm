@@ -20,6 +20,15 @@ export class ActivitiesService {
    * @returns Array of activity records sorted by date descending, limited to 250 items
    */
   async getActivityLog(companyId?: Identifier, salesId?: Identifier): Promise<any[]> {
-    return getActivityLog(this.dataProvider, companyId, salesId);
+    try {
+      return await getActivityLog(this.dataProvider, companyId, salesId);
+    } catch (error: any) {
+      console.error(`[ActivitiesService] Failed to get activity log`, {
+        companyId,
+        salesId,
+        error
+      });
+      throw new Error(`Get activity log failed: ${error.message}`);
+    }
   }
 }

@@ -121,7 +121,7 @@ export interface ContactOrganization {
   id?: Identifier; // Optional for new records
   contact_id: Identifier;
   organization_id: Identifier;
-  is_primary_organization: boolean; // Fixed field name to match tests
+  is_primary: boolean; // Matches database schema column name
   purchase_influence: PurchaseInfluence;
   decision_authority: DecisionAuthority;
   role?: ContactRole;

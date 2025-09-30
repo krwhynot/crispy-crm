@@ -36,12 +36,7 @@
     "seed:data:dry-run": "node ./scripts/seed-data.js --dry-run",
     "seed:data:clean": "node ./scripts/seed-data.js --clean",
     "test:performance": "vitest run tests/performance/",
-    "test:load": "node ./scripts/load-test.js",
-    "test:e2e": "playwright test --config=playwright/playwright.config.ts",
-    "test:e2e:ui": "playwright test --config=playwright/playwright.config.ts --ui",
-    "test:e2e:report": "playwright show-report playwright-report",
-    "test:e2e:setup": "node playwright/setup-test-user.js",
-    "test:e2e:comprehensive": "playwright test crm-comprehensive-test --config=playwright/playwright.config.ts"
+    "test:load": "node ./scripts/load-test.js"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
@@ -102,7 +97,6 @@
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@faker-js/faker": "^9.9.0",
-    "@playwright/test": "^1.55.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

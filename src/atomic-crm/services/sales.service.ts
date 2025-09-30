@@ -1,13 +1,17 @@
 import type { DataProvider, Identifier } from "ra-core";
 import type { Sale, SalesFormData } from "../types";
-import { supabase } from "../providers/supabase/supabase";
 
 /**
  * Sales service handles sales user management operations through Edge functions
  * Follows Engineering Constitution principle #14: Service Layer orchestration for business ops
+ *
+ * Updated to use dataProvider exclusively - no direct Supabase access
+ * per Engineering Constitution principle #2: Single Source of Truth
  */
 export class SalesService {
-  constructor(private dataProvider: DataProvider) {}
+  constructor(private dataProvider: DataProvider & {
+    invoke?: <T = any>(functionName: string, options?: any) => Promise<T>;
+  }) {}
 
   /**
    * Create a new sales account manager via Edge function
@@ -15,17 +19,36 @@ export class SalesService {
    * @returns Created sale record
    */
   async salesCreate(body: SalesFormData): Promise<Sale> {
-    const { data, error } = await supabase.functions.invoke<Sale>("users", {
-      method: "POST",
-      body,
-    });
-
-    if (!data || error) {
-      console.error("salesCreate.error", error);
-      throw new Error("Failed to create account manager");
+    // Use the extended invoke capability from unifiedDataProvider
+    if (!this.dataProvider.invoke) {
+      console.error(`[SalesService] DataProvider missing invoke capability`, {
+        operation: 'salesCreate',
+        body
+      });
+      throw new Error(`Sales creation failed: DataProvider does not support Edge Function operations`);
     }
 
-    return data;
+    try {
+      const data = await this.dataProvider.invoke<Sale>("users", {
+        method: "POST",
+        body,
+      });
+
+      if (!data) {
+        console.error(`[SalesService] Create account manager returned no data`, {
+          body
+        });
+        throw new Error(`Sales creation failed: No data returned from Edge Function`);
+      }
+
+      return data;
+    } catch (error: any) {
+      console.error(`[SalesService] Failed to create account manager`, {
+        body,
+        error
+      });
+      throw new Error(`Sales creation failed: ${error.message}`);
+    }
   }
 
   /**
@@ -41,9 +64,17 @@ export class SalesService {
     const { email, first_name, last_name, administrator, avatar, disabled } =
       data;
 
-    const { data: sale, error } = await supabase.functions.invoke<Sale>(
-      "users",
-      {
+    if (!this.dataProvider.invoke) {
+      console.error(`[SalesService] DataProvider missing invoke capability`, {
+        operation: 'salesUpdate',
+        id,
+        data
+      });
+      throw new Error(`Sales update failed: DataProvider does not support Edge Function operations`);
+    }
+
+    try {
+      const sale = await this.dataProvider.invoke<Sale>("users", {
         method: "PATCH",
         body: {
           sales_id: id,
@@ -54,15 +85,25 @@ export class SalesService {
           disabled,
           avatar,
         },
-      },
-    );
+      });
 
-    if (!sale || error) {
-      console.error("salesCreate.error", error);
-      throw new Error("Failed to update account manager");
+      if (!sale) {
+        console.error(`[SalesService] Update account manager returned no data`, {
+          id,
+          data
+        });
+        throw new Error(`Sales update failed: No data returned from Edge Function`);
+      }
+
+      return data;
+    } catch (error: any) {
+      console.error(`[SalesService] Failed to update account manager`, {
+        id,
+        data,
+        error
+      });
+      throw new Error(`Sales update failed: ${error.message}`);
     }
-
-    return data;
   }
 
   /**
@@ -71,19 +112,36 @@ export class SalesService {
    * @returns Success status
    */
   async updatePassword(id: Identifier): Promise<boolean> {
-    const { data: passwordUpdated, error } =
-      await supabase.functions.invoke<boolean>("updatePassword", {
+    if (!this.dataProvider.invoke) {
+      console.error(`[SalesService] DataProvider missing invoke capability`, {
+        operation: 'updatePassword',
+        id
+      });
+      throw new Error(`Password update failed: DataProvider does not support Edge Function operations`);
+    }
+
+    try {
+      const passwordUpdated = await this.dataProvider.invoke<boolean>("updatePassword", {
         method: "PATCH",
         body: {
           sales_id: id,
         },
       });
 
-    if (!passwordUpdated || error) {
-      console.error("passwordUpdate.error", error);
-      throw new Error("Failed to update password");
-    }
+      if (!passwordUpdated) {
+        console.error(`[SalesService] Update password returned false`, {
+          id
+        });
+        throw new Error(`Password update failed: Edge Function returned false`);
+      }
 
-    return passwordUpdated;
+      return passwordUpdated;
+    } catch (error: any) {
+      console.error(`[SalesService] Failed to update password`, {
+        id,
+        error
+      });
+      throw new Error(`Password update failed: ${error.message}`);
+    }
   }
 }

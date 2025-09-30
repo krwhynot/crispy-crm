@@ -1,7 +1,6 @@
 ---
 description: Define a new feature with structured requirements gathering
 argument-hint: [feature-description]
-model: claude-opus-4-1-20250805  # Recommended but not required
 ---
 
 I want to define a new feature, eventually resulting in a `.docs/plans/[feature-name]/requirements.md` file. Your job is to ask me a series of questions to help clarify the requirements and implementation details. The feature is medium in scope (roughly 3-7 days of work), so we don't need exhaustive planning or edge-case coverage — just a solid, actionable requirements document.

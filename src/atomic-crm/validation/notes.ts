@@ -35,6 +35,10 @@ const baseNoteSchema = z.object({
 
   // ID only present on updates
   id: z.union([z.string(), z.number()]).optional(),
+
+  // Timestamps (automatically managed by database)
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
 });
 
 /**
@@ -168,42 +172,12 @@ export function validateAttachments(attachments: unknown[]): Attachment[] {
 }
 
 /**
- * Transform note date for database storage
- * Ensures date is in ISO format
- * @param date - Date string to transform
- * @returns ISO formatted date string
- */
-export function transformNoteDate(date: string): string {
-  // Handle datetime-local input format
-  if (date.includes("T") && !date.includes("Z")) {
-    return new Date(date).toISOString();
-  }
-
-  return new Date(date).toISOString();
-}
-
-/**
- * Get current date in the format expected by the date input
- * @returns Current date string
- */
-export function getCurrentNoteDate(): string {
-  return new Date().toISOString().slice(0, 16);
-}
-
-/**
  * Validate and transform contact note for submission
  * @param data - Note data to validate and transform
  * @returns Transformed note data ready for database
  */
 export function validateContactNoteForSubmission(data: unknown): ContactNote {
-  const validated = contactNoteSchema.parse(data);
-
-  // Transform date to ISO format
-  if (validated.date) {
-    validated.date = transformNoteDate(validated.date);
-  }
-
-  return validated;
+  return contactNoteSchema.parse(data);
 }
 
 /**
@@ -214,14 +188,7 @@ export function validateContactNoteForSubmission(data: unknown): ContactNote {
 export function validateOpportunityNoteForSubmission(
   data: unknown,
 ): OpportunityNote {
-  const validated = opportunityNoteSchema.parse(data);
-
-  // Transform date to ISO format
-  if (validated.date) {
-    validated.date = transformNoteDate(validated.date);
-  }
-
-  return validated;
+  return opportunityNoteSchema.parse(data);
 }
 
 /**
@@ -281,4 +248,22 @@ export function validateAttachmentType(
   }
 
   return undefined;
+}
+
+/**
+ * Get the current date in ISO format for note timestamps
+ * @returns Current date/time in ISO string format
+ */
+export function getCurrentDate(): string {
+  return new Date().toISOString();
+}
+
+/**
+ * Format date for datetime-local input (YYYY-MM-DDTHH:MM)
+ * @param date - Optional date to format, defaults to now
+ * @returns Formatted date string for datetime-local input
+ */
+export function formatDateForInput(date?: Date | string): string {
+  const d = date ? new Date(date) : new Date();
+  return d.toISOString().slice(0, 16);
 }

@@ -66,18 +66,169 @@ const OPPORTUNITY_CATEGORIES = [
 // Opportunity statuses
 const OPPORTUNITY_STATUSES = ["open", "won", "lost", "stalled"];
 
-// Organization sectors
-const ORGANIZATION_SECTORS = [
-  "technology",
-  "healthcare",
-  "finance",
-  "retail",
-  "manufacturing",
-  "education",
-  "government",
-  "nonprofit",
-  "real_estate",
-  "consulting",
+// Food & Beverage organization types
+const FB_ORGANIZATION_TYPES = [
+  "Quick Service Restaurant",
+  "Fine Dining",
+  "Fast Casual",
+  "Food Manufacturing",
+  "Beverage Production",
+  "Food Distribution",
+  "Catering & Events",
+  "Food Technology",
+  "Craft Beverage",
+  "Specialty Foods",
+  "Organic & Natural Foods",
+  "Plant-Based Foods",
+  "Restaurant Chain",
+  "Brewery",
+  "Winery",
+  "Coffee Roaster",
+  "Bakery Chain",
+  "Ghost Kitchen",
+  "Food Wholesaler",
+];
+
+// F&B company names by category
+const FB_COMPANY_NAMES = [
+  "Fresh Fork Bistro",
+  "Golden Grain Mills",
+  "Mountain Spring Water Co",
+  "Urban Eats Catering",
+  "FoodFlow Technologies",
+  "Copper Kettle Brewing",
+  "Valley View Vineyards",
+  "Roasted Peak Coffee",
+  "Sunrise Bakery Group",
+  "Chef's Table Meal Kits",
+  "Street Flavor Food Trucks",
+  "CloudKitchen Collective",
+  "Green Acres Organic",
+  "Artisan Pantry Markets",
+  "Crunch Co Snacks",
+  "Vitality Energy Drinks",
+  "Living Cultures Kombucha",
+  "PlantWise Foods",
+  "Heritage Creamery",
+  "Pacific Catch Seafood",
+  "Fusion Flavors Inc",
+  "Harvest Moon Organics",
+  "Brewmaster's Choice",
+  "Gourmet Grounds",
+  "Farm Fresh Distributors",
+  "The Spice Route",
+  "Coastal Cuisine Co",
+  "Garden Fresh Grill",
+  "Artisan Bowl Company",
+  "Stone Fire Pizza",
+  "Grain & Green Kitchen",
+  "The Wellington House",
+  "Sapphire Steakhouse",
+  "Le Jardin Noir",
+  "Metropolitan Grill",
+  "Morning Brew Collective",
+  "The Daily Grind Cafe",
+  "Craft Hop Brewing",
+  "The Taphouse Collection",
+  "Hopworks Brewing Co",
+  "Pure Source Beverages",
+  "Natural Spring Waters",
+  "Craft Soda Works",
+  "Juice Bar Manufacturing",
+  "Ready-to-Cook Co",
+  "Quick Chef Meals",
+  "Earth's Harvest Foods",
+  "Plant Power Foods",
+  "Regional Food Services",
+  "Premium Beverage Distributors",
+];
+
+// F&B job titles
+const FB_JOB_TITLES = [
+  "Food & Beverage Director",
+  "Executive Chef",
+  "Head Chef",
+  "Restaurant Manager",
+  "Culinary Director",
+  "Supply Chain Manager",
+  "Food Safety Officer",
+  "Procurement Manager",
+  "Menu Development Chef",
+  "Beverage Manager",
+  "Catering Director",
+  "Kitchen Operations Manager",
+  "Brand Manager",
+  "Distribution Manager",
+  "Quality Assurance Manager",
+  "R&D Chef",
+  "Restaurant Owner",
+  "Franchise Director",
+  "VP of Operations",
+  "Sous Chef",
+  "Pastry Chef",
+  "General Manager",
+  "Assistant F&B Manager",
+  "Banquet Manager",
+  "Bar Manager",
+  "Room Service Manager",
+];
+
+// F&B departments
+const FB_DEPARTMENTS = [
+  "Kitchen Operations",
+  "Food & Beverage",
+  "Supply Chain",
+  "Quality Assurance",
+  "Menu Development",
+  "Catering",
+  "Procurement",
+  "Operations",
+  "Brand Management",
+  "Distribution",
+  "Food Safety",
+  "R&D",
+  "Front of House",
+  "Bar & Beverage Service",
+  "Banquet & Events",
+];
+
+// F&B software products
+const FB_PRODUCTS = [
+  "Kitchen Management System",
+  "POS Integration Platform",
+  "Inventory Management Software",
+  "Menu Planning Platform",
+  "Food Cost Analytics",
+  "Supplier Management System",
+  "Compliance Tracking Software",
+  "Recipe Management System",
+  "Delivery Integration Platform",
+  "Staff Scheduling Software",
+  "Customer Loyalty Program",
+  "Table Reservation System",
+  "Food Safety Monitoring",
+  "Waste Reduction Analytics",
+  "Supply Chain Visibility Platform",
+  "Kitchen Display System",
+  "Order Management System",
+  "Multi-Location Dashboard",
+];
+
+// F&B competitors
+const FB_COMPETITORS = [
+  "Toast POS",
+  "Square for Restaurants",
+  "Upserve",
+  "TouchBistro",
+  "Revel Systems",
+  "Lightspeed",
+  "MarketMan",
+  "BlueCart",
+  "Restaurant365",
+  "7shifts",
+  "In-house Solution",
+  "None",
+  "Unknown",
 ];
 
 // Activity types
@@ -139,15 +290,7 @@ class SeedDataGenerator {
     this.spinner.start("Cleaning existing data...");
 
     try {
-      // Delete in reverse dependency order
-      await this.supabase
-        .from("interaction_participants")
-        .delete()
-        .gte("id", 0);
-      await this.supabase
-        .from("opportunity_participants")
-        .delete()
-        .gte("id", 0);
+      // Delete in reverse dependency order (keep tags)
       await this.supabase.from("activities").delete().gte("id", 0);
       await this.supabase.from("opportunity_notes").delete().gte("id", 0);
       await this.supabase.from("opportunities").delete().gte("id", 0);
@@ -155,7 +298,7 @@ class SeedDataGenerator {
       await this.supabase.from("contact_organizations").delete().gte("id", 0);
       await this.supabase.from("contacts").delete().gte("id", 0);
       await this.supabase.from("organizations").delete().gte("id", 0);
-      await this.supabase.from("tags").delete().gte("id", 0);
+      // Keep tags - they're managed separately
 
       this.spinner.succeed("Cleaned existing data");
     } catch (error) {
@@ -165,63 +308,98 @@ class SeedDataGenerator {
   }
 
   generateOrganizations(count = CONFIG.ORGANIZATION_COUNT) {
-    this.spinner.start(`Generating ${count} organizations...`);
+    this.spinner.start(`Generating ${count} F&B organizations...`);
 
     for (let i = 0; i < count; i++) {
+      const companyName =
+        i < FB_COMPANY_NAMES.length
+          ? FB_COMPANY_NAMES[i]
+          : `${faker.helpers.arrayElement([
+              "Prime",
+              "Fresh",
+              "Golden",
+              "Gourmet",
+              "Chef's",
+              "Artisan",
+            ])} ${faker.helpers.arrayElement([
+              "Kitchen",
+              "Dining",
+              "Foods",
+              "Cuisine",
+              "Bistro",
+              "Eatery",
+            ])}`;
+
+      const orgType = faker.helpers.arrayElement(FB_ORGANIZATION_TYPES);
+
       const org = {
-        id: faker.string.uuid(),
-        name: faker.company.name(),
-        sector: faker.helpers.arrayElement(ORGANIZATION_SECTORS),
-        size: faker.helpers.arrayElement([
-          "small",
-          "medium",
-          "large",
-          "enterprise",
-        ]),
-        website: faker.internet.url(),
+        name: companyName,
+        industry: orgType,
+        segment: faker.helpers.arrayElement(["SMB", "Mid-Market", "Enterprise"]),
+        priority: faker.helpers.arrayElement(["A", "B", "C", "D"]), // A=Highest, D=Lowest
+        website: `https://${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
         address: faker.location.streetAddress(true),
         city: faker.location.city(),
-        zipcode: faker.location.zipCode(),
-        country: faker.location.country(),
-        linkedin: `https://linkedin.com/company/${faker.internet.userName()}`,
-        phone_number: faker.phone.number(),
-        annual_revenue: faker.number.int({ min: 100000, max: 100000000 }),
-        employee_count: faker.number.int({ min: 10, max: 10000 }),
-        description: faker.company.catchPhrase(),
+        state: faker.location.state(),
+        postal_code: faker.location.zipCode(),
+        country: "United States",
+        linkedin_url: `https://linkedin.com/company/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
+        phone: faker.phone.number(),
+        email: `info@${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
+        annual_revenue: faker.number.int({ min: 500000, max: 50000000 }),
+        employee_count: faker.number.int({ min: 10, max: 2000 }),
+        founded_year: faker.number.int({ min: 1990, max: 2023 }),
+        description: faker.helpers.arrayElement([
+          "Serving fresh, locally-sourced cuisine",
+          "Crafting premium beverages since 2010",
+          "Your trusted food service partner",
+          "Innovation in every bite",
+          "Farm-to-table excellence",
+          "Quality ingredients, exceptional taste",
+          "Sustainable food solutions",
+          "Bringing communities together through food",
+          "Award-winning culinary experiences",
+          "Fresh from our kitchen to your table",
+        ]),
+        notes: faker.helpers.maybe(() => faker.lorem.sentence(), { probability: 0.3 }),
         created_at: faker.date.past({ years: 2 }),
         updated_at: faker.date.recent(),
       };
       this.generatedData.organizations.push(org);
     }
 
-    this.spinner.succeed(`Generated ${count} organizations`);
+    this.spinner.succeed(`Generated ${count} F&B organizations`);
   }
 
   generateContacts(count = CONFIG.CONTACT_COUNT) {
-    this.spinner.start(`Generating ${count} contacts...`);
+    this.spinner.start(`Generating ${count} F&B contacts...`);
 
     for (let i = 0; i < count; i++) {
+      const firstName = faker.person.firstName();
+      const lastName = faker.person.lastName();
+      const title = faker.helpers.arrayElement(FB_JOB_TITLES);
+      const department = faker.helpers.arrayElement(FB_DEPARTMENTS);
+
       const contact = {
         id: faker.string.uuid(),
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
+        first_name: firstName,
+        last_name: lastName,
+        email: faker.internet.email({ firstName, lastName }),
         phone: {
           primary: faker.phone.number(),
           mobile: Math.random() > 0.5 ? faker.phone.number() : null,
         },
-        title: faker.person.jobTitle(),
-        department: faker.helpers.arrayElement([
-          "Sales",
-          "Marketing",
-          "Engineering",
-          "Support",
-          "Executive",
-          "Finance",
-        ]),
-        linkedin_url: `https://linkedin.com/in/${faker.internet.userName()}`,
+        title: title,
+        department: department,
+        linkedin_url: `https://linkedin.com/in/${firstName.toLowerCase()}-${lastName.toLowerCase()}`,
         avatar: faker.image.avatar(),
-        background: faker.lorem.sentences(2),
+        background: faker.helpers.arrayElement([
+          `${faker.number.int({ min: 5, max: 25 })} years of F&B industry experience. Specializes in ${department.toLowerCase()}.`,
+          `Passionate about culinary excellence and operational efficiency. Background in ${department.toLowerCase()}.`,
+          `Proven track record in ${department.toLowerCase()}. Known for innovation and cost control.`,
+          `Industry veteran with expertise in ${department.toLowerCase()}. Committed to food safety and quality.`,
+          `Results-driven professional in ${department.toLowerCase()}. Focus on sustainable operations.`,
+        ]),
         status: faker.helpers.arrayElement(["active", "inactive", "lead"]),
         created_at: faker.date.past({ years: 2 }),
         updated_at: faker.date.recent(),
@@ -245,68 +423,81 @@ class SeedDataGenerator {
       this.generatedData.contacts.push(contact);
     }
 
-    this.spinner.succeed(`Generated ${count} contacts`);
+    this.spinner.succeed(`Generated ${count} F&B contacts`);
   }
 
   generateOpportunities(count = CONFIG.OPPORTUNITY_COUNT) {
-    this.spinner.start(`Generating ${count} opportunities...`);
+    this.spinner.start(`Generating ${count} F&B opportunities...`);
 
     for (let i = 0; i < count; i++) {
       const stage = faker.helpers.arrayElement(CONFIG.PIPELINE_STAGES);
       const status = this.getStatusForStage(stage);
+      const org = faker.helpers.arrayElement(this.generatedData.organizations);
+      const product = faker.helpers.arrayElement(FB_PRODUCTS);
+
+      const selectedContacts = faker.helpers.arrayElements(
+        this.generatedData.contacts,
+        { min: 1, max: 3 }
+      );
 
       const opportunity = {
-        id: faker.string.uuid(),
-        name: `${faker.commerce.productName()} Implementation`,
+        name: `${org.name} - ${product}`,
         category: faker.helpers.arrayElement(OPPORTUNITY_CATEGORIES),
         stage,
         status,
-        amount: faker.number.int({ min: 10000, max: CONFIG.MAX_AMOUNT }),
+        priority: faker.helpers.arrayElement(["low", "medium", "high", "critical"]), // These are enum values
+        amount: faker.number.int({ min: 5000, max: 250000 }),
         probability: this.getProbabilityForStage(stage),
-        expected_close_date: faker.date.future({ years: 1 }),
-        company_id: faker.helpers.arrayElement(this.generatedData.organizations)
-          .id,
-        contact_id: faker.helpers.arrayElement(this.generatedData.contacts).id,
-        sales_id: faker.string.uuid(), // Would be actual sales user in production
-        description: faker.lorem.paragraph(),
-        next_step: faker.lorem.sentence(),
-        source: faker.helpers.arrayElement([
-          "website",
-          "referral",
-          "cold_call",
-          "event",
-          "partner",
+        estimated_close_date: faker.date.future({ years: 1 }),
+        customer_organization_id: org.id,
+        contact_ids: selectedContacts.map(c => c.id),
+        index: i, // For Kanban board ordering
+        description: faker.helpers.arrayElement([
+          "Looking to modernize kitchen operations and improve efficiency across all locations",
+          "Seeking better inventory management and food cost control solutions",
+          "Need to streamline multi-location restaurant operations and reporting",
+          "Expanding delivery operations and need better third-party integration",
+          "Food safety compliance and HACCP tracking requirements becoming critical",
+          "Want to improve customer experience and implement loyalty program",
+          "Need better supply chain visibility and vendor management tools",
+          "Looking to reduce food waste by 25% and improve sustainability metrics",
+          "Current POS system outdated, need modern cloud-based solution",
+          "Menu engineering and recipe costing needs for 15+ locations",
         ]),
-        campaign: Math.random() > 0.5 ? faker.marketing.slogan() : null,
+        next_action: faker.helpers.arrayElement([
+          "Schedule product demo at flagship location with kitchen staff",
+          "Send ROI analysis and case studies from similar F&B clients",
+          "Set up 30-day trial at busiest location to prove value",
+          "Review integration requirements with IT and POS vendor",
+          "Present to executive leadership team next week",
+          "Conduct site visit during dinner rush to understand workflow",
+          "Provide references from other restaurant chains in region",
+          "Prepare proposal for multi-location rollout plan",
+          "Demo waste tracking features to sustainability team",
+          "Walk through food safety compliance reporting",
+        ]),
+        next_action_date: faker.date.future({ years: 0.5 }),
+        competition: faker.helpers.arrayElement([
+          ...FB_COMPETITORS,
+          null,
+        ]),
+        decision_criteria: faker.helpers.arrayElement([
+          "Price and ROI within 12 months",
+          "Ease of use for kitchen staff",
+          "Integration with existing POS system",
+          "Multi-location reporting capabilities",
+          "Food safety compliance features",
+          "Customer support and training",
+          "Mobile accessibility for managers",
+        ]),
         created_at: faker.date.past({ years: 1 }),
         updated_at: faker.date.recent(),
       };
 
-      // Add participants (2-5 contacts)
-      opportunity.participants = faker.helpers
-        .arrayElements(this.generatedData.contacts, { min: 2, max: 5 })
-        .map((contact) => ({
-          contact_id: contact.id,
-          role: faker.helpers.arrayElement([
-            "decision_maker",
-            "influencer",
-            "champion",
-            "technical_lead",
-            "budget_holder",
-          ]),
-          is_primary: contact.id === opportunity.contact_id,
-          involvement_level: faker.helpers.arrayElement([
-            "high",
-            "medium",
-            "low",
-          ]),
-          added_at: faker.date.past({ years: 0.5 }),
-        }));
-
       this.generatedData.opportunities.push(opportunity);
     }
 
-    this.spinner.succeed(`Generated ${count} opportunities`);
+    this.spinner.succeed(`Generated ${count} F&B opportunities`);
   }
 
   generateActivities(count = CONFIG.ACTIVITY_COUNT) {
@@ -402,33 +593,37 @@ class SeedDataGenerator {
   }
 
   generateTags(count = CONFIG.TAG_COUNT) {
-    this.spinner.start(`Generating ${count} tags...`);
+    this.spinner.start(`Generating ${count} F&B tags...`);
 
-    const tagCategories = [
-      "industry",
-      "priority",
-      "region",
-      "product",
-      "status",
-    ];
-    const colors = [
-      "red",
-      "orange",
-      "yellow",
-      "green",
-      "blue",
-      "purple",
-      "pink",
-      "gray",
+    const fbTags = [
+      { name: "Hot Lead", color: "destructive", description: "High-priority lead requiring immediate attention" },
+      { name: "Enterprise Deal", color: "primary", description: "Large multi-location opportunity" },
+      { name: "QSR", color: "secondary", description: "Quick Service Restaurant segment" },
+      { name: "Fine Dining", color: "info", description: "Fine dining restaurant segment" },
+      { name: "Fast Casual", color: "secondary", description: "Fast casual restaurant segment" },
+      { name: "Multi-Location", color: "primary", description: "Chain with multiple locations" },
+      { name: "Food Safety Focus", color: "warning", description: "Compliance and food safety driven" },
+      { name: "Cost Control", color: "success", description: "Focused on reducing food costs" },
+      { name: "POS Integration", color: "info", description: "Requires POS system integration" },
+      { name: "Inventory Management", color: "secondary", description: "Inventory tracking priority" },
+      { name: "Waste Reduction", color: "success", description: "Sustainability and waste reduction focus" },
+      { name: "Menu Engineering", color: "info", description: "Menu optimization and costing" },
+      { name: "Brewery", color: "primary", description: "Craft brewery or taproom" },
+      { name: "Winery", color: "primary", description: "Wine production or tasting room" },
+      { name: "Catering", color: "secondary", description: "Catering and events business" },
+      { name: "Ghost Kitchen", color: "info", description: "Delivery-only kitchen operation" },
+      { name: "Competitor: Toast", color: "warning", description: "Currently evaluating Toast POS" },
+      { name: "Competitor: Square", color: "warning", description: "Currently using Square" },
+      { name: "Budget Approved", color: "success", description: "Budget approved, ready to purchase" },
+      { name: "Trial Active", color: "info", description: "Currently in trial period" },
     ];
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < Math.min(count, fbTags.length); i++) {
       const tag = {
-        id: faker.string.uuid(),
-        name: faker.commerce.department(),
-        category: faker.helpers.arrayElement(tagCategories),
-        color: faker.helpers.arrayElement(colors),
-        description: faker.lorem.sentence(),
+        name: fbTags[i].name,
+        color: fbTags[i].color,
+        description: fbTags[i].description,
+        usage_count: faker.number.int({ min: 0, max: 50 }),
         created_at: faker.date.past({ years: 1 }),
         updated_at: faker.date.recent(),
       };
@@ -436,7 +631,7 @@ class SeedDataGenerator {
       this.generatedData.tags.push(tag);
     }
 
-    this.spinner.succeed(`Generated ${count} tags`);
+    this.spinner.succeed(`Generated ${this.generatedData.tags.length} F&B tags`);
   }
 
   async insertData() {
@@ -474,13 +669,7 @@ class SeedDataGenerator {
     this.spinner.start("Inserting data into database...");
 
     try {
-      // Insert tags
-      if (this.generatedData.tags.length > 0) {
-        const { error } = await this.supabase
-          .from("tags")
-          .insert(this.generatedData.tags);
-        if (error) throw error;
-      }
+      // Tags already in database - skip insertion
 
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
@@ -521,32 +710,10 @@ class SeedDataGenerator {
 
       // Insert opportunities
       if (this.generatedData.opportunities.length > 0) {
-        const opportunitiesWithoutParticipants =
-          this.generatedData.opportunities.map(
-            ({ participants, ...opp }) => opp,
-          );
         const { error } = await this.supabase
           .from("opportunities")
-          .insert(opportunitiesWithoutParticipants);
+          .insert(this.generatedData.opportunities);
         if (error) throw error;
-
-        // Insert opportunity participants
-        const oppParticipants = [];
-        this.generatedData.opportunities.forEach((opp) => {
-          opp.participants.forEach((participant) => {
-            oppParticipants.push({
-              opportunity_id: opp.id,
-              ...participant,
-            });
-          });
-        });
-
-        if (oppParticipants.length > 0) {
-          const { error: partError } = await this.supabase
-            .from("opportunity_participants")
-            .insert(oppParticipants);
-          if (partError) throw partError;
-        }
       }
 
       // Insert activities
@@ -558,26 +725,6 @@ class SeedDataGenerator {
           .from("activities")
           .insert(activitiesWithoutParticipants);
         if (error) throw error;
-
-        // Insert interaction participants
-        const interactionParticipants = [];
-        this.generatedData.activities.forEach((activity) => {
-          if (activity.participants) {
-            activity.participants.forEach((participant) => {
-              interactionParticipants.push({
-                activity_id: activity.id,
-                ...participant,
-              });
-            });
-          }
-        });
-
-        if (interactionParticipants.length > 0) {
-          const { error: partError } = await this.supabase
-            .from("interaction_participants")
-            .insert(interactionParticipants);
-          if (partError) throw partError;
-        }
       }
 
       // Insert notes
@@ -657,40 +804,58 @@ class SeedDataGenerator {
   getActivitySubject(type) {
     const subjects = {
       meeting: faker.helpers.arrayElement([
-        "Product Demo",
-        "Requirements Review",
+        "Kitchen Operations Demo",
+        "Menu Costing Review",
         "Contract Negotiation",
-        "Kickoff Meeting",
+        "Implementation Kickoff",
+        "Multi-Location Rollout Planning",
+        "Food Safety Compliance Demo",
+        "POS Integration Discussion",
+        "Executive Stakeholder Meeting",
       ]),
       call: faker.helpers.arrayElement([
-        "Discovery Call",
-        "Follow-up Call",
-        "Check-in Call",
-        "Support Call",
+        "Discovery Call - Pain Points",
+        "Follow-up on Demo",
+        "Check-in with Kitchen Manager",
+        "Support Call - Integration Issues",
+        "Budget Discussion",
+        "Reference Call with Similar Restaurant",
+        "Technical Requirements Call",
       ]),
       email: faker.helpers.arrayElement([
-        "Proposal Sent",
-        "Information Request",
-        "Thank You Note",
-        "Meeting Follow-up",
+        "ROI Analysis Sent",
+        "Case Study: Similar Restaurant Chain",
+        "Thank You - Great Demo!",
+        "Meeting Follow-up & Next Steps",
+        "Integration Requirements Doc",
+        "Trial Period Proposal",
+        "Competitor Comparison Sheet",
       ]),
       task: faker.helpers.arrayElement([
-        "Prepare Proposal",
-        "Send Contract",
-        "Schedule Demo",
-        "Review Requirements",
+        "Prepare Custom Proposal",
+        "Send MSA Contract",
+        "Schedule On-site Demo",
+        "Review Kitchen Workflow",
+        "Setup Trial Environment",
+        "Coordinate with POS Vendor",
+        "Gather References",
       ]),
       note: faker.helpers.arrayElement([
-        "Internal Note",
-        "Customer Feedback",
-        "Meeting Notes",
-        "Action Items",
+        "Internal Note - Pricing Strategy",
+        "Chef Feedback on Features",
+        "Demo Session Notes",
+        "Competitive Situation Update",
+        "Budget Cycle Timing",
+        "Implementation Concerns",
+        "Champion Identified",
       ]),
       event: faker.helpers.arrayElement([
-        "Conference",
-        "Webinar",
-        "Training",
-        "Product Launch",
+        "NRA Show Booth Meeting",
+        "Restaurant Tech Webinar",
+        "F&B Manager Training",
+        "Product Launch Event",
+        "Regional Trade Show",
+        "Customer Advisory Board",
       ]),
     };
     return subjects[type] || faker.lorem.sentence();
@@ -710,7 +875,8 @@ class SeedDataGenerator {
       this.generateOpportunities(count || CONFIG.OPPORTUNITY_COUNT);
       this.generateActivities(count || CONFIG.ACTIVITY_COUNT);
       this.generateNotes(count || CONFIG.NOTE_COUNT);
-      this.generateTags(count || CONFIG.TAG_COUNT);
+      // Skip tags - already in database
+      // this.generateTags(count || CONFIG.TAG_COUNT);
 
       // Insert into database
       await this.insertData();

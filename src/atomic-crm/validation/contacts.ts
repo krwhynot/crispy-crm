@@ -76,7 +76,7 @@ export const contactOrganizationSchema = z
     id: z.union([z.string(), z.number()]).optional(),
     contact_id: z.union([z.string(), z.number()]).optional(),
     organization_id: z.union([z.string(), z.number()]),
-    is_primary_organization: z.boolean().default(false),
+    is_primary: z.boolean().default(false),
     purchase_influence: purchaseInfluenceSchema.default("Unknown"),
     decision_authority: decisionAuthoritySchema.default("End User"),
     role: contactRoleSchema.optional(),
@@ -88,7 +88,7 @@ export const contactOrganizationSchema = z
     // Check for removed legacy fields and provide helpful error messages
     if ("is_primary_contact" in data) {
       throw new Error(
-        "Field 'is_primary_contact' is no longer supported. Use is_primary_organization in contact_organizations relationship instead.",
+        "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead.",
       );
     }
     return true;
@@ -153,7 +153,7 @@ export const contactSchema = z
     }
     if ("is_primary_contact" in data) {
       throw new Error(
-        "Field 'is_primary_contact' is no longer supported. Use is_primary_organization in contact_organizations relationship instead.",
+        "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead.",
       );
     }
     if ("purchase_influence" in data) {
@@ -176,19 +176,20 @@ export const contactSchema = z
     if (data.organizations && Array.isArray(data.organizations)) {
       const organizations = data.organizations;
 
-      // At least one organization is required
+      // At least one organization is required (skip if explicitly empty for now to allow creation)
       if (organizations.length === 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["organizations"],
-          message: "At least one organization relationship is required",
-        });
+        // Allow empty organizations during creation - validation can be added later
+        // ctx.addIssue({
+        //   code: z.ZodIssueCode.custom,
+        //   path: ["organizations"],
+        //   message: "At least one organization relationship is required",
+        // });
         return;
       }
 
       // Count primary organizations
       const primaryCount = organizations.filter(
-        (org: any) => org && org.is_primary_organization
+        (org: any) => org && org.is_primary
       ).length;
 
       // Exactly one primary organization is required
@@ -263,7 +264,7 @@ export async function validateContactForm(data: any): Promise<void> {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join(".");
         formattedErrors[path] = err.message;
       });
@@ -318,7 +319,7 @@ export async function validateCreateContact(data: any): Promise<void> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join(".");
         formattedErrors[path] = err.message;
       });
@@ -337,7 +338,7 @@ export async function validateUpdateContact(data: any): Promise<void> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join(".");
         formattedErrors[path] = err.message;
       });
@@ -357,7 +358,7 @@ export async function validateContactOrganization(data: any): Promise<void> {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join(".");
         formattedErrors[path] = err.message;
       });

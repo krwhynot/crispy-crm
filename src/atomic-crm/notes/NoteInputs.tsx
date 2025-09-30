@@ -9,12 +9,12 @@ import { SelectInput } from "@/components/admin/select-input";
 import { Button } from "@/components/ui/button";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
-import { getCurrentDate } from "./utils";
+import { getCurrentDate, formatDateForInput } from "../validation/notes";
 
 export const NoteInputs = ({ showStatus }: { showStatus?: boolean }) => {
   const { noteStatuses } = useConfigurationContext();
-  const { setValue } = useFormContext();
   const [displayMore, setDisplayMore] = useState(false);
+  const { setValue } = useFormContext();
 
   return (
     <div className="space-y-2">
@@ -40,7 +40,7 @@ export const NoteInputs = ({ showStatus }: { showStatus?: boolean }) => {
             Show options
           </Button>
           <span className="text-sm text-muted-foreground">
-            (attach files, or change details)
+            (change date/time, attach files{showStatus ? ', or change status' : ''})
           </span>
         </div>
       )}
@@ -51,29 +51,27 @@ export const NoteInputs = ({ showStatus }: { showStatus?: boolean }) => {
           !displayMore ? "scale-y-0 max-h-0 h-0" : "scale-y-100",
         )}
       >
-        <div className="flex gap-4">
-          {showStatus && (
-            <SelectInput
-              source="status"
-              choices={noteStatuses.map((status) => ({
-                id: status.value,
-                name: status.label,
-                value: status.value,
-              }))}
-              optionText={optionRenderer}
-              defaultValue={"warm"}
-              helperText={false}
-            />
-          )}
-          <TextInput
-            source="date"
-            label="Date"
+        <TextInput
+          source="date"
+          label="Date & Time"
+          helperText={false}
+          type="datetime-local"
+          className="text-primary"
+          defaultValue={formatDateForInput()}
+        />
+        {showStatus && (
+          <SelectInput
+            source="status"
+            choices={noteStatuses.map((status) => ({
+              id: status.value,
+              name: status.label,
+              value: status.value,
+            }))}
+            optionText={optionRenderer}
+            defaultValue={"warm"}
             helperText={false}
-            type="datetime-local"
-            className="text-primary"
-            defaultValue={new Date().toISOString().slice(0, 16)}
           />
-        </div>
+        )}
         <FileInput source="attachments" multiple>
           <FileField source="src" title="title" target="_blank" />
         </FileInput>

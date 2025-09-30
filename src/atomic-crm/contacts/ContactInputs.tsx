@@ -178,7 +178,6 @@ const ContactMiscInputs = () => {
         multiline
         helperText={false}
       />
-      <BooleanInput source="has_newsletter" helperText={false} />
       <ReferenceInput
         reference="sales"
         source="sales_id"

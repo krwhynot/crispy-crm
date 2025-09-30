@@ -129,6 +129,7 @@ export default tseslint.config(
       ],
 
       // Prevent validation-related imports (Constitution Principle #3)
+      // and direct Supabase access (Constitution Principle #2: Single Source of Truth)
       "no-restricted-imports": [
         "error",
         {
@@ -137,6 +138,18 @@ export default tseslint.config(
               name: "ra-core",
               importNames: ["required", "email", "minLength", "maxLength", "minValue", "maxValue", "number", "regex", "choices"],
               message: "[VALIDATION] React Admin validators are forbidden. Use Zod schemas at the API boundary instead.",
+            },
+            {
+              name: "../providers/supabase/supabase",
+              message: "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+            },
+            {
+              name: "../../providers/supabase/supabase",
+              message: "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+            },
+            {
+              name: "../../../providers/supabase/supabase",
+              message: "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
             },
           ],
         },
