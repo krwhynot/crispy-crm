@@ -508,11 +508,11 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByLabelText(/category/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/opportunity context/i)).toBeInTheDocument();
     });
 
-    const categorySelect = screen.getByLabelText(/category/i);
-    fireEvent.click(categorySelect);
+    const contextSelect = screen.getByLabelText(/opportunity context/i);
+    fireEvent.click(contextSelect);
 
     await waitFor(() => {
       expect(screen.getByText('Software')).toBeInTheDocument();
@@ -535,7 +535,7 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
         expect.objectContaining({
           data: expect.objectContaining({
             name: 'Software Deal',
-            category: 'Software'
+            opportunity_context: 'Software'
           })
         })
       );

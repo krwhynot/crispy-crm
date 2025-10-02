@@ -188,15 +188,15 @@ describe("OpportunityInputs", () => {
     expect(dateInput).toHaveAttribute("type", "date");
   });
 
-  it("should render category choices from configuration", async () => {
+  it("should render opportunity context choices from configuration", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>,
     );
 
-    const categorySelect = screen.getByLabelText(/category/i);
-    expect(categorySelect).toBeInTheDocument();
+    const contextSelect = screen.getByLabelText(/opportunity context/i);
+    expect(contextSelect).toBeInTheDocument();
   });
 
   it("should validate required fields show error messages", async () => {

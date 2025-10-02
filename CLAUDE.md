@@ -180,3 +180,56 @@ System migrated from "deals" to "opportunities":
 - Fresh schema, no backward compatibility
 - All references updated throughout codebase
 - Environment variables renamed from `DEAL_*` to `OPPORTUNITY_*`
+
+## Memory Management Protocol
+
+### Automatic Memory Storage
+Claude MUST use the Memory MCP tools to automatically store knowledge when:
+
+1. **Architectural Decisions** - Technology choices, pattern decisions, structural changes
+   - Entity type: `architectural-decision`
+   - Include: rationale, date, affected components, alternatives considered
+
+2. **Bug Fixes** - After fixing any bug
+   - Entity type: `bug-fix`
+   - Include: symptoms, root cause, solution, affected files
+
+3. **New Features** - When implementing features
+   - Entity type: `feature`
+   - Include: requirements, implementation approach, key files, dependencies
+
+4. **Database Changes** - Migrations, schema modifications
+   - Entity type: `database-change`
+   - Include: migration name, reason, affected tables, breaking changes
+
+5. **Performance Optimizations** - Query improvements, caching, code optimizations
+   - Entity type: `optimization`
+   - Include: bottleneck identified, solution, metrics improvement
+
+6. **API Changes** - Endpoint additions/modifications, contract changes
+   - Entity type: `api-change`
+   - Include: endpoint, change type, reason, affected clients
+
+7. **Engineering Constitution Violations Fixed** - When fixing code that violates principles
+   - Entity type: `constitution-fix`
+   - Include: violation type, location, fix applied
+
+### Automatic Memory Recall
+Before starting ANY task, Claude MUST:
+1. Use `mcp__memory__search_nodes` to find related entities
+2. Use `mcp__memory__open_nodes` to load relevant context
+3. Reference prior decisions in responses (e.g., "Per our 2025-01-28 decision...")
+4. Check for related bug-fixes to avoid regressions
+5. Ensure consistency with established patterns
+
+### Memory Operations
+- **After completing work**: Create entities and relations for key decisions
+- **Before answering questions**: Search memory for relevant context
+- **When encountering inconsistencies**: Check memory for established patterns
+- **Confirm memory saved**: Display "✓ Memory updated: [entity names]" after storage
+
+### Memory Format Requirements
+- **Observations**: Always include date (YYYY-MM-DD) as first observation
+- **Relations**: Use active voice (e.g., "implements", "depends_on", "fixes")
+- **Tags**: Add relevant tags to observations for searchability
+- **File Paths**: Use absolute paths in observations when referencing code

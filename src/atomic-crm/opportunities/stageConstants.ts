@@ -71,87 +71,6 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   },
 ];
 
-// Stage-specific field visibility configuration
-export interface StageFieldsConfig {
-  showSampleFields: boolean;
-  showDemoFields: boolean;
-  showCloseFields: boolean;
-  showFeedbackFields: boolean;
-  requiredFields: string[];
-}
-
-export const STAGE_FIELDS_CONFIG: Record<
-  OpportunityStageValue,
-  StageFieldsConfig
-> = {
-  new_lead: {
-    showSampleFields: false,
-    showDemoFields: false,
-    showCloseFields: false,
-    showFeedbackFields: false,
-    requiredFields: ["name", "customer_organization_id", "contact_ids"],
-  },
-  initial_outreach: {
-    showSampleFields: false,
-    showDemoFields: false,
-    showCloseFields: false,
-    showFeedbackFields: false,
-    requiredFields: ["name", "customer_organization_id", "contact_ids"],
-  },
-  sample_visit_offered: {
-    showSampleFields: true,
-    showDemoFields: false,
-    showCloseFields: false,
-    showFeedbackFields: false,
-    requiredFields: ["name", "customer_organization_id", "contact_ids"],
-  },
-  awaiting_response: {
-    showSampleFields: true,
-    showDemoFields: false,
-    showCloseFields: false,
-    showFeedbackFields: false,
-    requiredFields: ["name", "customer_organization_id", "contact_ids"],
-  },
-  feedback_logged: {
-    showSampleFields: true,
-    showDemoFields: false,
-    showCloseFields: false,
-    showFeedbackFields: true,
-    requiredFields: ["name", "customer_organization_id", "contact_ids"],
-  },
-  demo_scheduled: {
-    showSampleFields: true,
-    showDemoFields: true,
-    showCloseFields: false,
-    showFeedbackFields: true,
-    requiredFields: ["name", "customer_organization_id", "contact_ids"],
-  },
-  closed_won: {
-    showSampleFields: true,
-    showDemoFields: true,
-    showCloseFields: true,
-    showFeedbackFields: true,
-    requiredFields: [
-      "name",
-      "customer_organization_id",
-      "contact_ids",
-      "actual_close_date",
-    ],
-  },
-  closed_lost: {
-    showSampleFields: true,
-    showDemoFields: true,
-    showCloseFields: true,
-    showFeedbackFields: true,
-    requiredFields: [
-      "name",
-      "customer_organization_id",
-      "contact_ids",
-      "actual_close_date",
-    ],
-  },
-};
-
 // Helper functions for stage management
 export function getOpportunityStageLabel(stageValue: string): string {
   const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
@@ -166,13 +85,6 @@ export function getOpportunityStageColor(stageValue: string): string {
 export function getOpportunityStageDescription(stageValue: string): string {
   const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
   return stage?.description || "";
-}
-
-export function getStageFieldsConfig(stageValue: string): StageFieldsConfig {
-  return (
-    STAGE_FIELDS_CONFIG[stageValue as OpportunityStageValue] ||
-    STAGE_FIELDS_CONFIG.new_lead
-  );
 }
 
 export function isActiveStage(stageValue: string): boolean {

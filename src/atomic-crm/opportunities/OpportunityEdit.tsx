@@ -1,56 +1,135 @@
 import { EditBase, Form, useRecordContext } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { SaveButton } from "@/components/admin/form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { ReferenceField } from "@/components/admin/reference-field";
+import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { FormToolbar } from "../layout/FormToolbar";
 import { OpportunityInputs } from "./OpportunityInputs";
+import { OpportunityProductsInput } from "./OpportunityProductsInput";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
+import { NoteCreate, NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
 
-const OpportunityEdit = () => (
-  <EditBase actions={false} redirect="show" mutationMode="pessimistic">
-    <div className="mt-2">
-      <EditHeader />
-      <div className="flex gap-8">
-        <Form className="flex flex-1 flex-col gap-4 pb-2">
-          <Card>
-            <CardContent>
-              <OpportunityInputs />
-              <FormToolbar>
-                <div className="flex flex-row gap-2 justify-between w-full">
-                  <DeleteButton />
-                  <div className="flex gap-2">
-                    <CancelButton />
-                    <SaveButton />
-                  </div>
-                </div>
-              </FormToolbar>
-            </CardContent>
-          </Card>
-        </Form>
+const OpportunityEdit = () => {
+  const queryClient = useQueryClient();
+
+  return (
+    <EditBase
+      actions={false}
+      redirect="show"
+      mutationMode="pessimistic"
+      transform={(data) => {
+        // Extract products to products_to_sync field for RPC processing
+        const { products, ...opportunityData } = data;
+        return {
+          ...opportunityData,
+          products_to_sync: products || [],
+        };
+      }}
+      mutationOptions={{
+        onSuccess: () => {
+          // Invalidate opportunities cache to refresh products
+          queryClient.invalidateQueries({ queryKey: ["opportunities"] });
+        },
+      }}
+    >
+      <div className="mt-2">
+        <OpportunityEditForm />
       </div>
-    </div>
-  </EditBase>
-);
+    </EditBase>
+  );
+};
+
+const OpportunityEditForm = () => {
+  const record = useRecordContext<Opportunity>();
+
+  // Wait for record to load before rendering form
+  if (!record) return null;
+
+  return (
+    <Form
+      className="flex flex-1 flex-col gap-4 pb-2"
+      defaultValues={{
+        ...record,
+        products: record.products || [],
+      }}
+      key={record.id} // Force remount when record changes
+    >
+      <Card>
+        <CardContent className="pt-6">
+          <EditHeader />
+
+          <Tabs defaultValue="details" className="mt-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="details">Details</TabsTrigger>
+              <TabsTrigger value="products">Products</TabsTrigger>
+              <TabsTrigger value="notes">Notes & Activity</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="details">
+              <OpportunityInputs mode="edit" />
+            </TabsContent>
+
+            <TabsContent value="products" className="pt-4">
+              <div className="flex flex-col gap-4">
+                <h3 className="text-base font-medium">Product Line Items</h3>
+                <OpportunityProductsInput />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="notes">
+              <div className="m-4">
+                <Separator className="mb-4" />
+                <ReferenceManyField
+                  target="opportunity_id"
+                  reference="opportunityNotes"
+                  sort={{ field: "created_at", order: "DESC" }}
+                  empty={<NoteCreate reference={"opportunities"} />}
+                >
+                  <NotesIterator reference="opportunities" />
+                </ReferenceManyField>
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          <FormToolbar>
+            <div className="flex flex-row gap-2 justify-between w-full">
+              <DeleteButton />
+              <div className="flex gap-2">
+                <CancelButton />
+                <SaveButton />
+              </div>
+            </div>
+          </FormToolbar>
+        </CardContent>
+      </Card>
+    </Form>
+  );
+};
 
 const EditHeader = () => {
   const opportunity = useRecordContext<Opportunity>();
   if (!opportunity) return null;
 
   return (
-    <div className="flex items-center gap-4 mb-4">
-      {opportunity.customer_organization_id && (
-        <ReferenceField
-          source="customer_organization_id"
-          reference="organizations"
-          link={false}
-        >
-          <OrganizationAvatar />
-        </ReferenceField>
-      )}
-      <h2 className="text-2xl font-semibold">Edit {opportunity.name}</h2>
+    <div className="flex justify-between items-start mb-4">
+      <div className="flex items-center gap-4">
+        {opportunity.customer_organization_id && (
+          <ReferenceField
+            source="customer_organization_id"
+            reference="organizations"
+            link={false}
+          >
+            <OrganizationAvatar />
+          </ReferenceField>
+        )}
+        <h2 className="text-2xl font-semibold">Edit {opportunity.name}</h2>
+      </div>
     </div>
   );
 };

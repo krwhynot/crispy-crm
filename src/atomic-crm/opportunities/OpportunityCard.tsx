@@ -91,8 +91,15 @@ export const OpportunityCardContent = ({
                 currencyDisplay: "narrowSymbol",
                 minimumSignificantDigits: 3,
               })}
-              {opportunity.category ? `, ${opportunity.category}` : ""}
+              {opportunity.opportunity_context ? `, ${opportunity.opportunity_context}` : ""}
             </p>
+            {opportunity.products && opportunity.products.length > 0 && (
+              <p className="text-xs text-muted-foreground mb-0.5">
+                Products: {opportunity.products.length === 1
+                  ? opportunity.products[0].product_name
+                  : `${opportunity.products[0].product_name} +${opportunity.products.length - 1} more`}
+              </p>
+            )}
             <div className="flex justify-between items-center">
               <span className="text-xs text-muted-foreground">
                 {opportunity.probability}%

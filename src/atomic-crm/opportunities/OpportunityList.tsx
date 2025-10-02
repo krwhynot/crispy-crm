@@ -73,50 +73,50 @@ const OpportunityList = () => {
   const resourceLabel = getResourceLabel("opportunities", 2);
   const { opportunityCategories } = useConfigurationContext();
   const dataProvider = useDataProvider();
-  const [categoryChoices, setCategoryChoices] = useState<Array<{ id: string; name: string }>>([]);
+  const [contextChoices, setContextChoices] = useState<Array<{ id: string; name: string }>>([]);
 
-  // Fetch distinct categories from opportunities table
+  // Fetch distinct opportunity contexts from opportunities table
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchContexts = async () => {
       try {
         // Calculate date 6 months ago for performance optimization
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
         const sixMonthsAgoISO = sixMonthsAgo.toISOString();
 
-        // Fetch recent opportunities to get current categories (performance optimization)
+        // Fetch recent opportunities to get current contexts (performance optimization)
         const { data } = await dataProvider.getList('opportunities', {
           pagination: { page: 1, perPage: 1000 },
           filter: {
             "deleted_at@is": null, // Only include non-deleted opportunities
             "created_at@gte": sixMonthsAgoISO // Only opportunities from last 6 months
           },
-          sort: { field: 'category', order: 'ASC' }
+          sort: { field: 'opportunity_context', order: 'ASC' }
         });
 
-        // Extract unique, non-null categories
-        const uniqueCategories = [...new Set(
+        // Extract unique, non-null contexts
+        const uniqueContexts = [...new Set(
           data
-            .map(opportunity => opportunity.category)
-            .filter(category => category && category.trim() !== '') // Filter out null, undefined, and empty strings
+            .map(opportunity => opportunity.opportunity_context)
+            .filter(context => context && context.trim() !== '') // Filter out null, undefined, and empty strings
         )];
 
         // Format as React Admin choice array
-        const choices = uniqueCategories.map(category => ({
-          id: category,
-          name: category
+        const choices = uniqueContexts.map(context => ({
+          id: context,
+          name: context
         }));
 
-        setCategoryChoices(choices);
+        setContextChoices(choices);
       } catch (error) {
-        console.error('Failed to fetch categories:', error);
-        // Fallback to configuration categories if fetch fails
-        setCategoryChoices(opportunityCategories.map(type => ({ id: type, name: type })));
+        console.error('Failed to fetch opportunity contexts:', error);
+        // Fallback to configuration contexts if fetch fails
+        setContextChoices(opportunityCategories.map(type => ({ id: type, name: type })));
       }
     };
 
     if (identity) {
-      fetchCategories();
+      fetchContexts();
     }
   }, [dataProvider, identity, opportunityCategories]);
 
@@ -128,9 +128,9 @@ const OpportunityList = () => {
       <AutocompleteArrayInput label={false} placeholder="Customer Organization" />
     </ReferenceInput>,
     <MultiSelectInput
-      source="category"
-      emptyText="Category"
-      choices={categoryChoices}
+      source="opportunity_context"
+      emptyText="Opportunity Context"
+      choices={contextChoices}
     />,
     <MultiSelectInput
       source="priority"
@@ -148,7 +148,7 @@ const OpportunityList = () => {
       choices={OPPORTUNITY_STAGE_CHOICES}
       defaultValue={getInitialStageFilter()}
     />,
-    <OnlyMineInput source="sales_id" alwaysOn />,
+    <OnlyMineInput source="opportunity_owner_id" alwaysOn />,
   ];
 
   return (

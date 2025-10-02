@@ -8,25 +8,27 @@ import {
   useRecordContext,
   useRedirect,
   useRefresh,
+  useShowContext,
   useUpdate,
 } from "ra-core";
+import { useMatch, useNavigate } from "react-router-dom";
 
 import { OpportunitiesService } from "../services";
 
-import { DeleteButton } from "@/components/admin/delete-button";
-import { EditButton } from "@/components/admin/edit-button";
+import { ArrayField } from "@/components/admin/array-field";
+import { DataTable } from "@/components/admin/data-table";
 import { ReferenceArrayField } from "@/components/admin/reference-array-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { NoteCreate, NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
 import { ContactList } from "./ContactList";
 import { findOpportunityLabel } from "./opportunity";
+import { OpportunityHeader } from "./OpportunityHeader";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -35,8 +37,21 @@ const OpportunityShow = () => (
 );
 
 const OpportunityShowContent = () => {
-  const record = useRecordContext<Opportunity>();
-  if (!record) return null;
+  const { record, isPending } = useShowContext<Opportunity>();
+  const navigate = useNavigate();
+
+  // Get tab from URL or default to "details"
+  const tabMatch = useMatch("/opportunities/:id/show/:tab");
+  const currentTab = tabMatch?.params?.tab || "details";
+
+  const handleTabChange = (value: string) => {
+    if (value === currentTab) return;
+    if (value === "details") {
+      navigate(`/opportunities/${record?.id}/show`);
+      return;
+    }
+    navigate(`/opportunities/${record?.id}/show/${value}`);
+  };
 
   const opportunityStageChoices = [
     { value: "lead", label: "Lead" },
@@ -49,202 +64,275 @@ const OpportunityShowContent = () => {
     { value: "nurturing", label: "Nurturing" },
   ];
 
+  if (isPending || !record) return null;
+
   return (
     <div className="mt-2">
       {record.deleted_at ? <ArchivedTitle /> : null}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex justify-between items-start mb-8">
-            <div className="flex items-center gap-4">
-              <ReferenceField
-                source="customer_organization_id"
-                reference="organizations"
-                link="show"
-              >
-                <OrganizationAvatar />
-              </ReferenceField>
-              <h2 className="text-2xl font-semibold">{record.name}</h2>
-            </div>
-            <div className={`flex gap-2`}>
-              {record.deleted_at ? (
-                <>
-                  <UnarchiveButton record={record} />
-                  <DeleteButton />
-                </>
-              ) : (
-                <>
-                  <ArchiveButton record={record} />
-                  <EditButton />
-                </>
+          <OpportunityHeader
+            mode="show"
+            ArchiveButton={ArchiveButton}
+            UnarchiveButton={UnarchiveButton}
+          />
+
+          <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="details">Details</TabsTrigger>
+              <TabsTrigger value="products">Products</TabsTrigger>
+              <TabsTrigger value="notes">Notes & Activity</TabsTrigger>
+            </TabsList>
+
+            {/* Details Tab */}
+            <TabsContent value="details" className="pt-4">
+              <div className="flex gap-8 mb-4">
+                <div className="flex flex-col min-w-[150px]">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    Expected closing date
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">
+                      {isValid(new Date(record.expected_closing_date))
+                        ? format(new Date(record.expected_closing_date), "PP")
+                        : "Invalid date"}
+                    </span>
+                    {new Date(record.expected_closing_date) < new Date() ? (
+                      <Badge variant="destructive">Past</Badge>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="flex flex-col min-w-[150px]">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    Budget
+                  </span>
+                  <span className="text-sm">
+                    {record.amount.toLocaleString("en-US", {
+                      notation: "compact",
+                      style: "currency",
+                      currency: "USD",
+                      currencyDisplay: "narrowSymbol",
+                      minimumSignificantDigits: 3,
+                    })}
+                  </span>
+                </div>
+
+                <div className="flex flex-col min-w-[150px]">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    Probability
+                  </span>
+                  <span className="text-sm">{record.probability}%</span>
+                </div>
+
+                <div className="flex flex-col min-w-[150px]">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    Stage
+                  </span>
+                  <span className="text-sm">
+                    {findOpportunityLabel(opportunityStageChoices, record.stage)}
+                  </span>
+                </div>
+
+                <div className="flex flex-col min-w-[150px]">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    Priority
+                  </span>
+                  <Badge
+                    variant={
+                      record.priority === "critical"
+                        ? "destructive"
+                        : record.priority === "high"
+                          ? "default"
+                          : record.priority === "medium"
+                            ? "secondary"
+                            : "outline"
+                    }
+                  >
+                    {record.priority}
+                  </Badge>
+                </div>
+              </div>
+
+              {(record.opportunity_context || record.opportunity_owner_id || record.account_manager_id || record.lead_source) && (
+                <div className="flex gap-8 mb-4">
+                  {record.opportunity_context && (
+                    <div className="flex flex-col min-w-[150px]">
+                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                        Opportunity Context
+                      </span>
+                      <span className="text-sm">{record.opportunity_context}</span>
+                    </div>
+                  )}
+
+                  {record.opportunity_owner_id && (
+                    <div className="flex flex-col min-w-[150px]">
+                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                        Opportunity Owner
+                      </span>
+                      <ReferenceField
+                        source="opportunity_owner_id"
+                        reference="sales"
+                        link={false}
+                      >
+                        <span className="text-sm">{record.opportunity_owner_id}</span>
+                      </ReferenceField>
+                    </div>
+                  )}
+
+                  {record.account_manager_id && (
+                    <div className="flex flex-col min-w-[150px]">
+                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                        Account Manager
+                      </span>
+                      <ReferenceField
+                        source="account_manager_id"
+                        reference="sales"
+                        link={false}
+                      >
+                        <span className="text-sm">{record.account_manager_id}</span>
+                      </ReferenceField>
+                    </div>
+                  )}
+
+                  {record.lead_source && (
+                    <div className="flex flex-col min-w-[150px]">
+                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                        Lead Source
+                      </span>
+                      <span className="text-sm">
+                        {record.lead_source.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </span>
+                    </div>
+                  )}
+                </div>
               )}
-            </div>
-          </div>
 
-          <div className="flex gap-8 m-4">
-            <div className="flex flex-col mr-10">
-              <span className="text-xs text-muted-foreground tracking-wide">
-                Expected closing date
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-sm">
-                  {isValid(new Date(record.expected_closing_date))
-                    ? format(new Date(record.expected_closing_date), "PP")
-                    : "Invalid date"}
-                </span>
-                {new Date(record.expected_closing_date) < new Date() ? (
-                  <Badge variant="destructive">Past</Badge>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="flex flex-col mr-10">
-              <span className="text-xs text-muted-foreground tracking-wide">
-                Budget
-              </span>
-              <span className="text-sm">
-                {record.amount.toLocaleString("en-US", {
-                  notation: "compact",
-                  style: "currency",
-                  currency: "USD",
-                  currencyDisplay: "narrowSymbol",
-                  minimumSignificantDigits: 3,
-                })}
-              </span>
-            </div>
-
-            <div className="flex flex-col mr-10">
-              <span className="text-xs text-muted-foreground tracking-wide">
-                Probability
-              </span>
-              <span className="text-sm">{record.probability}%</span>
-            </div>
-
-            {record.category && (
-              <div className="flex flex-col mr-10">
-                <span className="text-xs text-muted-foreground tracking-wide">
-                  Category
-                </span>
-                <span className="text-sm">{record.category}</span>
-              </div>
-            )}
-
-            <div className="flex flex-col mr-10">
-              <span className="text-xs text-muted-foreground tracking-wide">
-                Stage
-              </span>
-              <span className="text-sm">
-                {findOpportunityLabel(opportunityStageChoices, record.stage)}
-              </span>
-            </div>
-
-            <div className="flex flex-col mr-10">
-              <span className="text-xs text-muted-foreground tracking-wide">
-                Priority
-              </span>
-              <Badge
-                variant={
-                  record.priority === "critical"
-                    ? "destructive"
-                    : record.priority === "high"
-                      ? "default"
-                      : record.priority === "medium"
-                        ? "secondary"
-                        : "outline"
-                }
-              >
-                {record.priority}
-              </Badge>
-            </div>
-          </div>
-
-          {/* Organization Details */}
-          <div className="flex gap-8 m-4">
-            <div className="flex flex-col mr-10">
-              <span className="text-xs text-muted-foreground tracking-wide">
-                Customer Organization
-              </span>
-              <ReferenceField
-                source="customer_organization_id"
-                reference="organizations"
-                link="show"
-              >
-                <span className="text-sm">
-                  {record.customer_organization_id}
-                </span>
-              </ReferenceField>
-            </div>
-
-            {record.principal_organization_id && (
-              <div className="flex flex-col mr-10">
-                <span className="text-xs text-muted-foreground tracking-wide">
-                  Principal Organization
-                </span>
-                <ReferenceField
-                  source="principal_organization_id"
-                  reference="organizations"
-                  link="show"
-                >
-                  <span className="text-sm">
-                    {record.principal_organization_id}
+              {/* Organization Details */}
+              <div className="flex gap-8 mb-4">
+                <div className="flex flex-col min-w-[150px]">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    Customer Organization
                   </span>
-                </ReferenceField>
-              </div>
-            )}
+                  <ReferenceField
+                    source="customer_organization_id"
+                    reference="organizations"
+                    link="show"
+                  >
+                    <span className="text-sm">
+                      {record.customer_organization_id}
+                    </span>
+                  </ReferenceField>
+                </div>
 
-            {record.distributor_organization_id && (
-              <div className="flex flex-col mr-10">
-                <span className="text-xs text-muted-foreground tracking-wide">
-                  Distributor Organization
-                </span>
-                <ReferenceField
-                  source="distributor_organization_id"
-                  reference="organizations"
-                  link="show"
-                >
-                  <span className="text-sm">
-                    {record.distributor_organization_id}
+                {record.principal_organization_id && (
+                  <div className="flex flex-col min-w-[150px]">
+                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                      Principal Organization
+                    </span>
+                    <ReferenceField
+                      source="principal_organization_id"
+                      reference="organizations"
+                      link="show"
+                    >
+                      <span className="text-sm">
+                        {record.principal_organization_id}
+                      </span>
+                    </ReferenceField>
+                  </div>
+                )}
+
+                {record.distributor_organization_id && (
+                  <div className="flex flex-col min-w-[150px]">
+                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                      Distributor Organization
+                    </span>
+                    <ReferenceField
+                      source="distributor_organization_id"
+                      reference="organizations"
+                      link="show"
+                    >
+                      <span className="text-sm">
+                        {record.distributor_organization_id}
+                      </span>
+                    </ReferenceField>
+                  </div>
+                )}
+              </div>
+
+              {!!record.contact_ids?.length && (
+                <div className="mb-4">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2">
+                      Contacts
+                    </span>
+                    <ReferenceArrayField
+                      source="contact_ids"
+                      reference="contacts_summary"
+                    >
+                      <ContactList />
+                    </ReferenceArrayField>
+                  </div>
+                </div>
+              )}
+
+              {record.description && (
+                <div className="mb-4 whitespace-pre-line">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2 block">
+                    Description
                   </span>
-                </ReferenceField>
-              </div>
-            )}
-          </div>
+                  <p className="text-sm leading-6">{record.description}</p>
+                </div>
+              )}
+            </TabsContent>
 
-          {!!record.contact_ids?.length && (
-            <div className="m-4">
-              <div className="flex flex-col min-h-12 mr-10">
-                <span className="text-xs text-muted-foreground tracking-wide">
-                  Contacts
-                </span>
-                <ReferenceArrayField
-                  source="contact_ids"
-                  reference="contacts_summary"
-                >
-                  <ContactList />
-                </ReferenceArrayField>
-              </div>
-            </div>
-          )}
+            {/* Products Tab */}
+            <TabsContent value="products" className="pt-4">
+              {record.products && record.products.length > 0 ? (
+                <div>
+                  <ArrayField source="products">
+                    <DataTable bulkActionButtons={false} rowClick={false}>
+                      <DataTable.Col source="product_name" label="Product" />
+                      <DataTable.Col source="quantity" />
+                      <DataTable.NumberCol
+                        source="unit_price"
+                        label="Unit Price"
+                        options={{
+                          style: "currency",
+                          currency: "USD",
+                        }}
+                      />
+                      <DataTable.NumberCol
+                        source="extended_price"
+                        label="Extended Price"
+                        options={{
+                          style: "currency",
+                          currency: "USD",
+                        }}
+                      />
+                      <DataTable.Col source="notes" />
+                    </DataTable>
+                  </ArrayField>
+                </div>
+              ) : (
+                <div className="text-sm text-muted-foreground">
+                  No products added yet.
+                </div>
+              )}
+            </TabsContent>
 
-          {record.description && (
-            <div className="m-4 whitespace-pre-line">
-              <span className="text-xs text-muted-foreground tracking-wide">
-                Description
-              </span>
-              <p className="text-sm leading-6">{record.description}</p>
-            </div>
-          )}
-
-          <div className="m-4">
-            <Separator className="mb-4" />
-            <ReferenceManyField
-              target="opportunity_id"
-              reference="opportunityNotes"
-              sort={{ field: "created_at", order: "DESC" }}
-              empty={<NoteCreate reference={"opportunities"} />}
-            >
-              <NotesIterator reference="opportunities" />
-            </ReferenceManyField>
-          </div>
+            {/* Notes & Activity Tab */}
+            <TabsContent value="notes" className="pt-4">
+              <ReferenceManyField
+                target="opportunity_id"
+                reference="opportunityNotes"
+                sort={{ field: "created_at", order: "DESC" }}
+                empty={<NoteCreate reference={"opportunities"} />}
+              >
+                <NotesIterator reference="opportunities" />
+              </ReferenceManyField>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </div>

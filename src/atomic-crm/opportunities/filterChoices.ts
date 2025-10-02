@@ -38,9 +38,9 @@ export const opportunityFilters: Record<string, FilterConfig> = {
     type: 'reference',
     reference: 'organizations',
   },
-  category: {
-    key: 'category',
-    label: 'Category',
+  opportunity_context: {
+    key: 'opportunity_context',
+    label: 'Opportunity Context',
     type: 'multiselect',
     dynamicChoices: true,
   },
