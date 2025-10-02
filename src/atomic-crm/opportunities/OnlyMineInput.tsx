@@ -8,10 +8,10 @@ export const OnlyMineInput = (_: { alwaysOn: boolean; source: string }) => {
 
   const handleChange = () => {
     const newFilterValues = { ...filterValues };
-    if (typeof filterValues.sales_id !== "undefined") {
-      delete newFilterValues.sales_id;
+    if (typeof filterValues.opportunity_owner_id !== "undefined") {
+      delete newFilterValues.opportunity_owner_id;
     } else {
-      newFilterValues.sales_id = identity && identity?.id;
+      newFilterValues.opportunity_owner_id = identity && identity?.id;
     }
     setFilters(newFilterValues, displayedFilters);
   };
@@ -20,7 +20,7 @@ export const OnlyMineInput = (_: { alwaysOn: boolean; source: string }) => {
       <div className="flex items-center space-x-2">
         <Switch
           id="only-mine"
-          checked={typeof filterValues.sales_id !== "undefined"}
+          checked={typeof filterValues.opportunity_owner_id !== "undefined"}
           onCheckedChange={handleChange}
         />
         <Label htmlFor="only-mine">Only opportunities I manage</Label>

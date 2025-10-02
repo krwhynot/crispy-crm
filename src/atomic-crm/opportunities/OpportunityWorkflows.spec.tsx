@@ -377,7 +377,7 @@ describe("Opportunity Lifecycle Workflows", () => {
           type: "stage_change",
           subject: "Stage changed from New Lead to Initial Outreach",
           date: "2024-02-01T10:00:00Z",
-          sales_id: 1,
+          opportunity_owner_id: 1,
         },
         {
           id: 2,
@@ -385,7 +385,7 @@ describe("Opportunity Lifecycle Workflows", () => {
           type: "call",
           subject: "Discovery call with decision maker",
           date: "2024-02-02T14:00:00Z",
-          sales_id: 1,
+          opportunity_owner_id: 1,
         },
       ];
 

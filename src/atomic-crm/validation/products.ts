@@ -106,3 +106,38 @@ export async function validateProductForm(data: any): Promise<void> {
 
 // Export for type inference
 export type ProductFormData = z.infer<typeof productSchema>;
+
+// Opportunity Product schema for line items (added for opportunity-products junction)
+export const opportunityProductSchema = z.object({
+  id: z.union([z.string(), z.number()]).optional(),
+  product_id_reference: z.coerce.number().int().positive("Product is required"),
+  product_name: z.string().min(1, "Product name is required"),
+  product_category: z.string().optional(),
+  quantity: z.coerce.number().int().positive().optional(),
+  unit_price: z.coerce.number().nonnegative().optional(),
+  discount_percent: z.coerce.number().min(0).max(100).optional(),
+  notes: z.string().optional(),
+});
+
+// Type inference for opportunity products
+export type OpportunityProduct = z.infer<typeof opportunityProductSchema>;
+
+// Validation function for opportunity products
+export async function validateOpportunityProduct(data: any): Promise<void> {
+  try {
+    opportunityProductSchema.parse(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const formattedErrors: Record<string, string> = {};
+      error.issues.forEach((err) => {
+        const path = err.path.join(".");
+        formattedErrors[path] = err.message;
+      });
+      throw {
+        message: "Product validation failed",
+        errors: formattedErrors,
+      };
+    }
+    throw error;
+  }
+}

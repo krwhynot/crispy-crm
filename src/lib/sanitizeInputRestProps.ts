@@ -12,6 +12,7 @@ export const sanitizeInputRestProps = ({
   formatOnBlur,
   initializeForm,
   input,
+  InputProps,
   isEqual,
   isRequired,
   label,

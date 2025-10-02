@@ -22,7 +22,7 @@ const mockOpportunities = [
     customer_organization_id: 1,
     contact_ids: [1, 2],
     created_at: "2024-01-15T10:00:00Z",
-    category: "Software",
+    opportunity_context: "Software",
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const mockOpportunities = [
     customer_organization_id: 2,
     contact_ids: [3],
     created_at: "2024-02-01T10:00:00Z",
-    category: "Hardware",
+    opportunity_context: "Hardware",
   },
   {
     id: 3,
@@ -48,7 +48,7 @@ const mockOpportunities = [
     customer_organization_id: 3,
     contact_ids: [4, 5, 6],
     created_at: "2024-01-20T10:00:00Z",
-    category: "Services",
+    opportunity_context: "Services",
   },
 ];
 
@@ -298,7 +298,7 @@ describe("OpportunityList", () => {
     });
   });
 
-  it("should allow filtering by category", async () => {
+  it("should allow filtering by opportunity context", async () => {
     render(
       <TestWrapper>
         <OpportunityList />
@@ -310,16 +310,16 @@ describe("OpportunityList", () => {
       expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
     });
 
-    // Apply category filter
-    const categoryFilter = screen.getByLabelText(/category/i);
-    fireEvent.change(categoryFilter, { target: { value: "Software" } });
+    // Apply opportunity context filter
+    const contextFilter = screen.getByLabelText(/opportunity context/i);
+    fireEvent.change(contextFilter, { target: { value: "Software" } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
         "opportunities_summary",
         expect.objectContaining({
           filter: expect.objectContaining({
-            category: "Software",
+            opportunity_context: "Software",
           }),
         }),
       );

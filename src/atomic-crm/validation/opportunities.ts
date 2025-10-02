@@ -6,6 +6,17 @@ import type { Identifier } from "ra-core";
  * Implements validation rules from OpportunityInputs.tsx
  */
 
+// Opportunity Context enum schema (SIMPLIFIED - 7 values only, no legacy)
+export const opportunityContextSchema = z.enum([
+  "Site Visit",
+  "Food Show",
+  "New Product Interest",
+  "Follow-up",
+  "Demo Request",
+  "Sampling",
+  "Custom",
+]);
+
 // Enum schemas for stage, status, and priority
 export const opportunityStageSchema = z.enum([
   "new_lead",
@@ -33,52 +44,16 @@ export const opportunityPrioritySchema = z.enum([
   "critical",
 ]);
 
-// Stage-specific field schemas
-export const sampleVisitOfferedSchema = z.object({
-  sampleType: z.string().optional(),
-  visitDate: z.string().optional(), // ISO date string
-  sampleProducts: z.array(z.string()).optional(),
-});
-
-export const feedbackLoggedSchema = z.object({
-  feedbackNotes: z.string().optional(),
-  sentimentScore: z
-    .union([
-      z.literal(1),
-      z.literal(2),
-      z.literal(3),
-      z.literal(4),
-      z.literal(5),
-    ])
-    .optional(),
-  nextSteps: z.string().optional(),
-});
-
-export const demoScheduledSchema = z.object({
-  demoDate: z.string().optional(), // ISO date string
-  attendees: z.array(z.string()).optional(),
-  demoProducts: z.array(z.string()).optional(),
-});
-
-export const closedWonSchema = z.object({
-  finalAmount: z.number().min(0).optional(),
-  contractStartDate: z.string().optional(), // ISO date string
-  contractTermMonths: z.number().min(0).optional(),
-});
-
-export const lossReasonSchema = z.enum([
-  "price",
-  "product_fit",
-  "competitor",
-  "timing",
-  "other",
+export const leadSourceSchema = z.enum([
+  "referral",
+  "trade_show",
+  "website",
+  "cold_call",
+  "email_campaign",
+  "social_media",
+  "partner",
+  "existing_customer",
 ]);
-
-export const closedLostSchema = z.object({
-  lossReason: lossReasonSchema.optional(),
-  competitorWon: z.string().optional(),
-  lossNotes: z.string().optional(),
-});
 
 // Main opportunity schema with comprehensive validation
 // This schema serves as the single source of truth for all opportunity validation
@@ -87,7 +62,7 @@ export const opportunitySchema = z
   .object({
     id: z.union([z.string(), z.number()]).optional(),
     name: z.string().min(1, "Opportunity name is required"),
-    customer_organization_id: z.union([z.string(), z.number()]).optional(),
+    customer_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
     principal_organization_id: z
       .union([z.string(), z.number()])
       .optional()
@@ -99,11 +74,13 @@ export const opportunitySchema = z
     contact_ids: z
       .array(z.union([z.string(), z.number()]))
       .min(1, "At least one contact is required"),
-    category: z.string().optional(),
-    stage: opportunityStageSchema.default("new_lead"),
-    status: opportunityStatusSchema.optional(),
-    priority: opportunityPrioritySchema.default("medium"),
-    description: z.string().optional(),
+    opportunity_context: opportunityContextSchema.optional().nullable(),
+    products: z.array(z.any()).optional(), // Products before transform - will become products_to_sync after transform
+    products_to_sync: z.array(z.any()).optional(), // Products after transform extraction
+    stage: opportunityStageSchema.nullable().default("new_lead"),
+    status: opportunityStatusSchema.optional().nullable(),
+    priority: opportunityPrioritySchema.nullable().default("medium"),
+    description: z.string().optional().nullable(),
     amount: z.number().min(0, "Amount must be positive").default(0),
     probability: z
       .number()
@@ -113,45 +90,22 @@ export const opportunitySchema = z
     expected_closing_date: z
       .string()
       .min(1, "Expected closing date is required"),
-    estimated_close_date: z.string().optional(),
+    estimated_close_date: z.string().optional().nullable(),
     actual_close_date: z.string().optional().nullable(),
-    sales_id: z.union([z.string(), z.number()]).optional(),
-    index: z.number().optional(),
+    opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
+    account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
+    lead_source: leadSourceSchema.optional().nullable(),
+    index: z.number().optional().nullable(),
     founding_interaction_id: z
       .union([z.string(), z.number()])
       .optional()
       .nullable(),
-    stage_manual: z.boolean().optional(),
-    status_manual: z.boolean().optional(),
+    stage_manual: z.boolean().optional().nullable(),
+    status_manual: z.boolean().optional().nullable(),
     next_action: z.string().optional().nullable(),
     next_action_date: z.string().optional().nullable(),
     competition: z.string().optional().nullable(),
     decision_criteria: z.string().optional().nullable(),
-
-    // Stage-specific fields (optional for all opportunities)
-    sampleType: z.string().optional(),
-    visitDate: z.string().optional(),
-    sampleProducts: z.array(z.string()).optional(),
-    feedbackNotes: z.string().optional(),
-    sentimentScore: z
-      .union([
-        z.literal(1),
-        z.literal(2),
-        z.literal(3),
-        z.literal(4),
-        z.literal(5),
-      ])
-      .optional(),
-    nextSteps: z.string().optional(),
-    demoDate: z.string().optional(),
-    attendees: z.array(z.string()).optional(),
-    demoProducts: z.array(z.string()).optional(),
-    finalAmount: z.number().min(0).optional(),
-    contractStartDate: z.string().optional(),
-    contractTermMonths: z.number().min(0).optional(),
-    lossReason: lossReasonSchema.optional(),
-    competitorWon: z.string().optional(),
-    lossNotes: z.string().optional(),
 
     deleted_at: z.string().optional().nullable(),
 
@@ -172,69 +126,12 @@ export const opportunitySchema = z
       );
     }
     return true;
-  })
-  .superRefine((data, ctx) => {
-    // Stage-specific conditional validation
-    // These rules were previously spread across form components
-
-    // Demo scheduled stage requires demo date
-    if (data.stage === "demo_scheduled" && !data.demoDate) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["demoDate"],
-        message: "Demo date is required for Demo Scheduled stage",
-      });
-    }
-
-    // Feedback logged stage requires feedback notes
-    if (data.stage === "feedback_logged" && !data.feedbackNotes) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["feedbackNotes"],
-        message: "Feedback notes are required for Feedback Logged stage",
-      });
-    }
-
-    // Closed won stage requires final amount
-    if (data.stage === "closed_won") {
-      if (data.finalAmount === undefined || data.finalAmount === null) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["finalAmount"],
-          message: "Final amount is required for closed won deals",
-        });
-      }
-      if (!data.actual_close_date) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["actual_close_date"],
-          message: "Actual close date is required when closing a deal",
-        });
-      }
-    }
-
-    // Closed lost stage requires loss reason
-    if (data.stage === "closed_lost") {
-      if (!data.lossReason) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["lossReason"],
-          message: "Loss reason is required for closed lost deals",
-        });
-      }
-      if (!data.actual_close_date) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["actual_close_date"],
-          message: "Actual close date is required when closing a deal",
-        });
-      }
-    }
   });
 
 // Type inference
 export type OpportunityInput = z.input<typeof opportunitySchema>;
 export type Opportunity = z.infer<typeof opportunitySchema>;
+export type LeadSource = z.infer<typeof leadSourceSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where opportunity validation occurs

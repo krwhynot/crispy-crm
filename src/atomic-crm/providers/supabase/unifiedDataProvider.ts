@@ -33,6 +33,7 @@ import {
   normalizeJsonbArrayFields,
   normalizeResponseData,
 } from "./dataProviderUtils";
+import { diffProducts } from "../../opportunities/diffProducts";
 
 // Import decomposed services
 import { ValidationService, TransformService, StorageService } from "./services";
@@ -105,6 +106,11 @@ function logError(
     validationErrors: error?.errors || undefined,
     fullError: error,
   });
+
+  // Log validation errors in detail for debugging
+  if (error?.errors) {
+    console.error('[Validation Errors Detail]', JSON.stringify(error.errors, null, 2));
+  }
 }
 
 /**
@@ -158,19 +164,20 @@ async function transformData<T>(
 
 /**
  * Process data for database operations
- * Applies transformations first, then validation
- * Order matters: transformations may add/modify fields needed for validation
+ * CRITICAL: Validate FIRST, Transform SECOND (Issue 0.4)
+ * This allows validation of original field names (e.g., 'products')
+ * before transformation renames them (e.g., 'products_to_sync')
  */
 async function processForDatabase<T>(
   resource: string,
   data: Partial<T>,
   operation: "create" | "update" = "create",
 ): Promise<Partial<T>> {
-  // Apply transformations first (file uploads, timestamps, etc.)
-  const processedData = await transformData(resource, data, operation);
+  // Validate first (original field names)
+  await validateData(resource, data, operation);
 
-  // Then validate the transformed data
-  await validateData(resource, processedData, operation);
+  // Then apply transformations (field renames, file uploads, timestamps, etc.)
+  const processedData = await transformData(resource, data, operation);
 
   return processedData;
 }
@@ -240,6 +247,63 @@ export const unifiedDataProvider: DataProvider = {
     params: GetListParams,
   ): Promise<any> {
     return wrapMethod("getList", resource, params, async () => {
+      // Special handling for opportunities with products (lightweight)
+      if (resource === "opportunities") {
+        // Apply search parameters
+        const searchParams = applySearchParams(resource, params);
+
+        // Build query manually to include products
+        let query = supabase
+          .from("opportunities")
+          .select("*, opportunity_products(product_name, product_id_reference)", { count: "exact" });
+
+        // Apply filters
+        if (searchParams.filter) {
+          Object.entries(searchParams.filter).forEach(([key, value]) => {
+            if (key === "q") {
+              // Full-text search handled separately
+              return;
+            }
+            if (Array.isArray(value)) {
+              query = query.in(key, value);
+            } else {
+              query = query.eq(key, value);
+            }
+          });
+        }
+
+        // Apply sorting
+        if (searchParams.sort) {
+          query = query.order(searchParams.sort.field, {
+            ascending: searchParams.sort.order === "ASC"
+          });
+        }
+
+        // Apply pagination
+        const { page = 1, perPage = 10 } = searchParams.pagination || {};
+        const start = (page - 1) * perPage;
+        const end = start + perPage - 1;
+        query = query.range(start, end);
+
+        const { data, error, count } = await query;
+
+        if (error) throw error;
+
+        // Flatten products structure
+        const normalizedData = (data || []).map((opp: any) => ({
+          ...opp,
+          products: opp.opportunity_products || [],
+        })).map((opp: any) => {
+          delete opp.opportunity_products;
+          return opp;
+        });
+
+        return {
+          data: normalizeResponseData(resource, normalizedData),
+          total: count || 0,
+        };
+      }
+
       // Apply search parameters
       const searchParams = applySearchParams(resource, params);
 
@@ -262,6 +326,43 @@ export const unifiedDataProvider: DataProvider = {
     params: GetOneParams,
   ): Promise<any> {
     return wrapMethod("getOne", resource, params, async () => {
+      // Special handling for opportunities with products
+      if (resource === "opportunities") {
+        const { data, error } = await supabase
+          .from("opportunities")
+          .select("*, opportunity_products(*, products(*))")
+          .eq("id", params.id)
+          .single();
+
+        if (error) throw error;
+
+        // Parse products with safety check (Issue 0.6)
+        let products;
+        try {
+          // If already an array, use directly
+          if (Array.isArray(data.opportunity_products)) {
+            products = data.opportunity_products;
+          } else {
+            // Try to parse as JSON if it's a string
+            products = JSON.parse(data.opportunity_products || '[]');
+          }
+        } catch (e) {
+          console.error('Failed to parse products JSON:', data.opportunity_products, e);
+          throw new Error("Could not load product data. The record may be corrupted.");
+        }
+
+        // Flatten products structure
+        const normalizedData = {
+          ...data,
+          products,
+        };
+        delete normalizedData.opportunity_products;
+
+        return {
+          data: normalizeResponseData(resource, normalizedData),
+        };
+      }
+
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "one");
 
@@ -348,6 +449,32 @@ export const unifiedDataProvider: DataProvider = {
         "create",
       );
 
+      // Special handling for opportunities with products
+      if (resource === "opportunities" && processedData.products_to_sync) {
+        const products = processedData.products_to_sync;
+        delete processedData.products_to_sync;
+
+        // Call RPC function to create opportunity with products atomically
+        const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
+          opportunity_data: processedData,
+          products_to_create: products,
+          products_to_update: [],
+          products_to_delete: [],
+        });
+
+        if (error) {
+          // Try to parse structured error if it's JSON
+          try {
+            const parsedError = JSON.parse(error.message);
+            throw parsedError;
+          } catch {
+            throw error;
+          }
+        }
+
+        return { data };
+      }
+
       // Execute create
       const result = await baseDataProvider.create(dbResource, {
         ...params,
@@ -372,6 +499,44 @@ export const unifiedDataProvider: DataProvider = {
         params.data,
         "update",
       );
+
+      // Special handling for opportunities with products
+      if (resource === "opportunities" && processedData.products_to_sync) {
+        // CRITICAL: Check previousData.products exists (Issue 0.1)
+        if (!params.previousData?.products) {
+          throw new Error(
+            "Cannot update products: previousData.products is missing. " +
+            "Ensure the form fetches the complete record with meta.select."
+          );
+        }
+
+        const formProducts = processedData.products_to_sync;
+        const originalProducts = params.previousData.products;
+        delete processedData.products_to_sync;
+
+        // Diff products to identify creates, updates, deletes
+        const { creates, updates, deletes } = diffProducts(originalProducts, formProducts);
+
+        // Call RPC function to update opportunity with products atomically
+        const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
+          opportunity_data: { ...processedData, id: params.id },
+          products_to_create: creates,
+          products_to_update: updates,
+          products_to_delete: deletes,
+        });
+
+        if (error) {
+          // Try to parse structured error if it's JSON
+          try {
+            const parsedError = JSON.parse(error.message);
+            throw parsedError;
+          } catch {
+            throw error;
+          }
+        }
+
+        return { data };
+      }
 
       // Execute update
       const result = await baseDataProvider.update(dbResource, {

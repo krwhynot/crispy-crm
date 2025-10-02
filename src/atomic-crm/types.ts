@@ -8,6 +8,7 @@ import type {
   OPPORTUNITY_NOTE_CREATED,
 } from "./consts";
 import type { Organization } from "./validation/organizations";
+import type { OpportunityStageValue } from "./opportunities/stageConstants";
 
 // Type definitions for enhanced CRM features
 export type ContactRole =
@@ -95,7 +96,7 @@ export type Contact = {
   has_newsletter: boolean;
   tags: Identifier[];
   gender: string;
-  sales_id: Identifier;
+  opportunity_owner_id: Identifier;
   status: string;
   background: string;
   phone: PhoneNumberAndType[];
@@ -194,12 +195,48 @@ export type ContactNote = {
   text: string;
   created_at: string;
   updated_at: string;
-  sales_id: Identifier;
+  opportunity_owner_id: Identifier;
   status: string;
   attachments?: AttachmentNote[];
 } & Pick<RaRecord, "id">;
 
 // Deal type removed - use Opportunity instead
+
+// Opportunity Context type (SIMPLIFIED - 7 values only, no legacy)
+export type OpportunityContext =
+  | "Site Visit"
+  | "Food Show"
+  | "New Product Interest"
+  | "Follow-up"
+  | "Demo Request"
+  | "Sampling"
+  | "Custom";
+
+// Lead Source type
+export type LeadSource =
+  | "referral"
+  | "trade_show"
+  | "website"
+  | "cold_call"
+  | "email_campaign"
+  | "social_media"
+  | "partner"
+  | "existing_customer";
+
+// Opportunity Product interface for line items
+export interface OpportunityProduct {
+  id?: Identifier;
+  opportunity_id?: Identifier;
+  product_id_reference: Identifier;
+  product_name?: string;
+  product_category?: string;
+  quantity?: number;
+  unit_price?: number;
+  extended_price?: number;
+  discount_percent?: number;
+  final_price?: number;
+  notes?: string;
+}
 
 export type Opportunity = {
   name: string;
@@ -207,16 +244,9 @@ export type Opportunity = {
   principal_organization_id?: Identifier;
   distributor_organization_id?: Identifier;
   contact_ids: Identifier[];
-  category: string;
-  stage:
-    | "lead"
-    | "qualified"
-    | "needs_analysis"
-    | "proposal"
-    | "negotiation"
-    | "closed_won"
-    | "closed_lost"
-    | "nurturing";
+  opportunity_context?: OpportunityContext;
+  products?: OpportunityProduct[];
+  stage: OpportunityStageValue;
   status: "active" | "on_hold" | "nurturing" | "stalled" | "expired";
   priority: "low" | "medium" | "high" | "critical";
   description: string;
@@ -228,7 +258,9 @@ export type Opportunity = {
   updated_at: string;
   deleted_at?: string;
   expected_closing_date: string;
-  sales_id: Identifier;
+  opportunity_owner_id?: Identifier;
+  account_manager_id?: Identifier;
+  lead_source?: LeadSource;
   index: number;
   founding_interaction_id?: Identifier;
   stage_manual: boolean;
@@ -246,7 +278,7 @@ export type OpportunityNote = {
   text: string;
   created_at: string;
   updated_at: string;
-  sales_id: Identifier;
+  opportunity_owner_id: Identifier;
   attachments?: AttachmentNote[];
 
   // This is defined for compatibility with `ContactNote`
@@ -264,28 +296,28 @@ export type Task = {
   text: string;
   due_date: string;
   done_date?: string | null;
-  sales_id?: Identifier;
+  opportunity_owner_id?: Identifier;
 } & Pick<RaRecord, "id">;
 
 export type ActivityOrganizationCreated = {
   type: typeof ORGANIZATION_CREATED;
   organization_id: Identifier;
   organization: Organization;
-  sales_id: Identifier;
+  opportunity_owner_id: Identifier;
   date: string;
 } & Pick<RaRecord, "id">;
 
 export type ActivityContactCreated = {
   type: typeof CONTACT_CREATED;
   customer_organization_id: Identifier;
-  sales_id?: Identifier;
+  opportunity_owner_id?: Identifier;
   contact: Contact;
   date: string;
 } & Pick<RaRecord, "id">;
 
 export type ActivityContactNoteCreated = {
   type: typeof CONTACT_NOTE_CREATED;
-  sales_id?: Identifier;
+  opportunity_owner_id?: Identifier;
   contactNote: ContactNote;
   date: string;
 } & Pick<RaRecord, "id">;
@@ -293,14 +325,14 @@ export type ActivityContactNoteCreated = {
 export type ActivityOpportunityCreated = {
   type: typeof OPPORTUNITY_CREATED;
   customer_organization_id: Identifier;
-  sales_id?: Identifier;
+  opportunity_owner_id?: Identifier;
   opportunity: Opportunity;
   date: string;
 };
 
 export type ActivityOpportunityNoteCreated = {
   type: typeof OPPORTUNITY_NOTE_CREATED;
-  sales_id?: Identifier;
+  opportunity_owner_id?: Identifier;
   opportunityNote: OpportunityNote;
   date: string;
 };

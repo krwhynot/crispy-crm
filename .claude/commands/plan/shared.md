@@ -1,4 +1,4 @@
-For this task, make a `.docs/plans/[plan-dir]/shared.md` document, containing high level information on files and architectures relevant to the new feature described.
+For this task, make a `.docs/plans/[plan-dir]/shared.md` document, containing high level information on files and architectures relevanwhat the new feature described.
 
 First, if it does not exist yet, create a `.docs/plans/[feature-name] directory. If it exists already, read every file within `.docs/plans/[feature-name]/`.
 

@@ -22,12 +22,12 @@ const mockOpportunity = {
   expected_closing_date: "2024-03-15",
   created_at: "2024-01-15T10:00:00Z",
   updated_at: "2024-02-01T15:30:00Z",
-  category: "Software",
+  opportunity_context: "Software",
   customer_organization_id: 1,
   principal_organization_id: 2,
   distributor_organization_id: 3,
   contact_ids: [1, 2],
-  sales_id: 1,
+  opportunity_owner_id: 1,
 };
 
 const mockOpportunityParticipants = [
@@ -91,7 +91,7 @@ const mockActivities = [
     subject: "Discovery call with technical team",
     description: "Discussed technical requirements and integration needs",
     date: "2024-01-20T14:00:00Z",
-    sales_id: 1,
+    opportunity_owner_id: 1,
   },
   {
     id: 2,
@@ -100,7 +100,7 @@ const mockActivities = [
     subject: "Follow-up on proposal requirements",
     description: "Sent detailed technical specifications document",
     date: "2024-01-25T10:30:00Z",
-    sales_id: 1,
+    opportunity_owner_id: 1,
   },
 ];
 
