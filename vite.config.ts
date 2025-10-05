@@ -96,9 +96,6 @@ export default defineConfig(({ mode }) => ({
           "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(
             process.env.VITE_SUPABASE_ANON_KEY,
           ),
-          "import.meta.env.VITE_INBOUND_EMAIL": JSON.stringify(
-            process.env.VITE_INBOUND_EMAIL,
-          ),
         }
       : undefined,
   base: "./",
