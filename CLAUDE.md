@@ -170,7 +170,6 @@ All validation integrated into `unifiedDataProvider.ts` before database operatio
 ```bash
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your_anon_key
-VITE_INBOUND_EMAIL=capture@example.com  # Optional
 OPPORTUNITY_DEFAULT_STAGE=lead
 OPPORTUNITY_PIPELINE_STAGES=lead,qualified,proposal,closed_won,closed_lost
 ```

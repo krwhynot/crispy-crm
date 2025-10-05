@@ -180,24 +180,6 @@ const SettingsForm = ({
           </div>
         </CardContent>
       </Card>
-      {import.meta.env.VITE_INBOUND_EMAIL && (
-        <Card>
-          <CardContent>
-            <div className="space-y-4 justify-between">
-              <h2 className="text-xl font-semibold text-muted-foreground">
-                Inbound email
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                You can start sending emails to your server's inbound email
-                address, e.g. by adding it to the
-                <b> Cc: </b> field. Atomic CRM will process the emails and add
-                notes to the corresponding contacts.
-              </p>
-              <CopyPaste />
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 };
@@ -216,39 +198,6 @@ const TextRender = ({
     <div className="m-2">
       <RecordField source={source} />
     </div>
-  );
-};
-
-const CopyPaste = () => {
-  const [copied, setCopied] = useState(false);
-  const handleCopy = () => {
-    setCopied(true);
-    navigator.clipboard.writeText(import.meta.env.VITE_INBOUND_EMAIL);
-    setTimeout(() => {
-      setCopied(false);
-    }, 1500);
-  };
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            type="button"
-            onClick={handleCopy}
-            variant="ghost"
-            className="normal-case justify-between w-full"
-          >
-            <span className="overflow-hidden text-ellipsis">
-              {import.meta.env.VITE_INBOUND_EMAIL}
-            </span>
-            <Copy className="h-4 w-4 ml-2" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{copied ? "Copied!" : "Copy"}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
   );
 };
 
