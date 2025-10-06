@@ -50,33 +50,63 @@ Agent 4: Review similar features for UX patterns
 
 ## Build & Development Commands
 
-### Essential Commands
-```bash
-npm run dev           # Start development server (port 5173)
-npm run build         # TypeScript check + Vite build
-npm run test          # Run Vitest unit tests
+**IMPORTANT**: All build operations use npm scripts only. No Makefile or other build tools.
+This project previously used a Makefile but it was removed per Engineering Constitution Rule #2 (SINGLE SOURCE OF TRUTH).
 
-
-### Database Migration Commands
+### Development
 ```bash
-npm run migrate:production    # Execute production migration
-npm run migrate:status        # Check migration status
-npm run migrate:validate      # Validate migration success
-npm run migrate:dry-run       # Preview migration without executing
-npm run migrate:backup        # Backup before migration
-npm run migrate:rollback      # Rollback to previous state
-npm run seed:data            # Insert test data
-npm run seed:data:dry-run    # Preview seed data
-npm run seed:data:clean      # Clean and regenerate seed data
+npm run dev              # Start development server (port 5173)
+npm run build            # Build for production (TypeScript check + Vite build)
+npm run preview          # Preview production build locally
 ```
 
-### Additional Utility Commands
+### Testing
 ```bash
-npm run validate:colors       # Validate semantic color usage
-npm run cache:clear          # Clear application caches
-npm run cache:clear:dry-run  # Preview cache clear operation
-npm run search:reindex       # Reindex search data
-npm run search:reindex:dry-run # Preview reindex operation
+npm test                 # Run tests in watch mode
+npm run test:ci          # Run tests once (for CI)
+npm run test:performance # Run performance benchmarks
+npm run test:load        # Run load tests
+```
+
+**Testing Documentation**: Comprehensive testing strategy documented in `.docs/plans/ui-ux-testing-automation/`:
+- `requirements.md` - Testing strategy with critical gaps (RBAC, API errors, cleanup, selectors, a11y)
+- `shared.md` - Testing patterns and architecture
+- `react-admin-patterns.research.md` - React Admin-specific patterns
+- `env-and-auth.research.md` - Environment and authorization testing
+- `existing-test-setup.research.md` - Current Vitest configuration
+
+### Code Quality
+```bash
+npm run lint             # Check linting and formatting
+npm run lint:check       # Check ESLint only
+npm run lint:apply       # Auto-fix ESLint issues
+npm run prettier:check   # Check Prettier formatting
+npm run prettier:apply   # Auto-fix Prettier formatting
+npm run validate:colors  # Validate semantic color usage
+```
+
+### Database & Deployment
+```bash
+npm run supabase:deploy  # Deploy database migrations and functions
+npm run prod:start       # Build and start production server locally
+npm run prod:deploy      # Deploy to production (GitHub Pages)
+```
+
+### Development Utilities
+```bash
+npm run seed:data             # Insert test data
+npm run seed:data:dry-run     # Preview test data
+npm run seed:data:clean       # Clean and regenerate test data
+npm run cache:clear           # Clear application caches
+npm run cache:clear:dry-run   # Preview cache clear
+npm run search:reindex        # Reindex search data
+npm run search:reindex:dry-run # Preview reindex
+npm run migrate:production    # Execute production migration
+npm run migrate:dry-run       # Preview migration changes
+npm run migrate:backup        # Backup before migration
+npm run migrate:rollback      # Rollback to previous state
+npm run migrate:validate      # Validate migration success
+npm run migrate:status        # Check migration status
 ```
 
 ### MCP Tool Access

@@ -38,7 +38,12 @@
     "seed:products": "node ./scripts/seed-products.js",
     "seed:products:dry-run": "node ./scripts/seed-products.js --dry-run",
     "test:performance": "vitest run tests/performance/",
-    "test:load": "node ./scripts/load-test.js"
+    "test:load": "node ./scripts/load-test.js",
+    "test:ci": "vitest run --reporter=verbose",
+    "lint": "npm run lint:check && npm run prettier:check",
+    "supabase:deploy": "npx supabase db push && npx supabase functions deploy",
+    "prod:start": "npm run build && npm run supabase:deploy && npx serve -l tcp://127.0.0.1:3000 dist",
+    "prod:deploy": "npm run build && npm run supabase:deploy && npm run ghpages:deploy"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",

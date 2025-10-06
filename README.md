@@ -23,7 +23,6 @@ Atomic CRM is free and open-source. You can test it online at https://marmelab.c
 
 To run this project locally, you will need the following tools installed on your computer:
 
-- Make
 - Node 22 LTS
 
 Fork the [`marmelab/atomic-crm`](https://github.com/marmelab/atomic-crm) repository to your user/organization, then clone it locally:
@@ -36,7 +35,7 @@ Install dependencies:
 
 ```sh
 cd atomic-crm
-make install
+npm install
 ```
 
 This will install the dependencies for the frontend and the backend, including a local Supabase instance.
@@ -44,7 +43,7 @@ This will install the dependencies for the frontend and the backend, including a
 Once you app is configured, start the app locally with the following command:
 
 ```sh
-make start
+npm run dev
 ```
 
 This will start the Vite dev server for the frontend and the local Supabase instance for the API.
@@ -113,15 +112,59 @@ npm run search:reindex           # Reindex search data
 
 Test fixtures have been updated to use the new opportunity schema structure. See `/tests/fixtures/` for examples.
 
-## Testing Changes
+## Available Commands
 
-This project contains unit tests. Run them with the following command:
-
+### Development
 ```sh
-make test
+npm run dev              # Start development server (port 5173)
+npm run build            # Build for production
+npm run preview          # Preview production build locally
 ```
 
-You can add your own unit tests powered by Jest anywhere in the `src` directory. The test files should be named `*.test.tsx` or `*.test.ts`.
+### Testing
+```sh
+npm test                 # Run tests in watch mode
+npm run test:ci          # Run tests once (for CI)
+npm run test:performance # Run performance benchmarks
+npm run test:load        # Run load tests
+```
+
+### Code Quality
+```sh
+npm run lint             # Check linting and formatting
+npm run lint:check       # Check ESLint only
+npm run lint:apply       # Auto-fix ESLint issues
+npm run prettier:check   # Check Prettier formatting
+npm run prettier:apply   # Auto-fix Prettier formatting
+npm run validate:colors  # Validate semantic color usage
+```
+
+### Database & Deployment
+```sh
+npm run supabase:deploy  # Deploy database migrations and functions
+npm run prod:start       # Build and start production server locally
+npm run prod:deploy      # Deploy to production (GitHub Pages)
+```
+
+### Development Utilities
+```sh
+npm run seed:data             # Insert test data
+npm run seed:data:dry-run     # Preview test data
+npm run cache:clear           # Clear application caches
+npm run search:reindex        # Reindex search data
+npm run migrate:production    # Execute production migration
+npm run migrate:dry-run       # Preview migration changes
+```
+
+## Testing Changes
+
+This project contains unit tests powered by Vitest. Run them with the following command:
+
+```sh
+npm test
+```
+
+You can add your own unit tests anywhere in the `src` directory. The test files should be named `*.test.tsx` or `*.test.ts`.
 
 ## License
 
