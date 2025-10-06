@@ -51,13 +51,11 @@ jobs:
               name: 📡 Push database migrations
               run: npx supabase db push
 
-            - if: ${{ env.IS_SUPABASE_CONFIGURED && secrets.ALLOWED_ORIGINS }}
-              name: 🔐 Configure CORS allowed origins
-              run: npx supabase secrets set ALLOWED_ORIGINS="${{ secrets.ALLOWED_ORIGINS }}"
-
-            - if: ${{ env.IS_SUPABASE_CONFIGURED && secrets.DENO_ENV }}
-              name: 🔐 Set Deno environment
-              run: npx supabase secrets set DENO_ENV="${{ secrets.DENO_ENV }}"
+            - if: ${{ env.IS_SUPABASE_CONFIGURED }}
+              name: 🔐 Configure environment secrets
+              run: |
+                  npx supabase secrets set ALLOWED_ORIGINS="${{ secrets.ALLOWED_ORIGINS || 'http://localhost:5173' }}"
+                  npx supabase secrets set DENO_ENV="${{ secrets.DENO_ENV || 'development' }}"
 
             - if: ${{ env.IS_SUPABASE_CONFIGURED }}
               name: 📡 Deploy edge functions
