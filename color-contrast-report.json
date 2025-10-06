@@ -1,9 +1,9 @@
 {
-  "timestamp": "2025-09-30T04:16:45.669Z",
+  "timestamp": "2025-10-06T12:14:38.294Z",
   "summary": {
     "totalTests": 32,
-    "passed": 29,
-    "failed": 3,
+    "passed": 32,
+    "failed": 0,
     "warnings": 0
   },
   "passed": [
@@ -97,6 +97,14 @@
     },
     {
       "mode": "light",
+      "test": "Muted elements",
+      "ratio": "5.04",
+      "minRatio": 4.5,
+      "bg": "muted",
+      "fg": "muted-foreground"
+    },
+    {
+      "mode": "light",
       "test": "Card content",
       "ratio": "19.80",
       "minRatio": 4.5,
@@ -110,6 +118,22 @@
       "minRatio": 4.5,
       "bg": "popover",
       "fg": "popover-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on background",
+      "ratio": "3.95",
+      "minRatio": 3,
+      "bg": "background",
+      "fg": "ring"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on cards",
+      "ratio": "3.95",
+      "minRatio": 3,
+      "bg": "card",
+      "fg": "ring"
     },
     {
       "mode": "dark",
@@ -240,34 +264,6 @@
       "fg": "ring"
     }
   ],
-  "failed": [
-    {
-      "mode": "light",
-      "test": "Muted elements",
-      "ratio": "4.35",
-      "minRatio": 4.5,
-      "bg": "muted",
-      "fg": "muted-foreground",
-      "message": "Contrast ratio 4.35:1 is below WCAG AA minimum of 4.5:1"
-    },
-    {
-      "mode": "light",
-      "test": "Focus ring on background",
-      "ratio": "2.58",
-      "minRatio": 3,
-      "bg": "background",
-      "fg": "ring",
-      "message": "Contrast ratio 2.58:1 is below WCAG AA minimum of 3:1"
-    },
-    {
-      "mode": "light",
-      "test": "Focus ring on cards",
-      "ratio": "2.58",
-      "minRatio": 3,
-      "bg": "card",
-      "fg": "ring",
-      "message": "Contrast ratio 2.58:1 is below WCAG AA minimum of 3:1"
-    }
-  ],
+  "failed": [],
   "warnings": []
 }

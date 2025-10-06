@@ -10,9 +10,6 @@
 
 # testing
 /coverage
-/playwright/test-results/
-/playwright-report/
-/test-artifacts/
 
 # production
 /build
@@ -47,3 +44,5 @@ dist/
 
 # But DO track commands and config
 !.claude/commands/
+
+storybook-static
