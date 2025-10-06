@@ -156,15 +156,62 @@ npm run migrate:production    # Execute production migration
 npm run migrate:dry-run       # Preview migration changes
 ```
 
-## Testing Changes
+## Testing
 
-This project contains unit tests powered by Vitest. Run them with the following command:
+![Coverage](https://img.shields.io/badge/coverage-70%25-yellow)
 
-```sh
+Atomic CRM uses a comprehensive testing strategy with unit, integration, and end-to-end tests. See our [Testing Documentation](./.docs/testing/TESTING.md) for complete details.
+
+### Quick Start
+
+```bash
+# Run tests in watch mode (development)
 npm test
+
+# Run tests once with coverage
+npm run test:coverage
+
+# Run tests in CI mode (no watch)
+npm run test:ci
+
+# Run end-to-end tests
+npm run test:e2e
+
+# Launch Vitest UI for visual exploration
+npm run test:ui
 ```
 
-You can add your own unit tests anywhere in the `src` directory. The test files should be named `*.test.tsx` or `*.test.ts`.
+### Test Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm test` | Run unit/integration tests in watch mode |
+| `npm run test:ci` | Run tests once with verbose output (for CI) |
+| `npm run test:coverage` | Generate coverage report |
+| `npm run test:unit` | Run only unit tests |
+| `npm run test:e2e` | Run Playwright end-to-end tests |
+| `npm run test:e2e:ui` | Launch Playwright UI mode |
+| `npm run test:performance` | Run performance benchmarks |
+| `npm run test:load` | Run load tests |
+
+### Coverage Requirements
+
+We maintain a baseline coverage of **70%** across all metrics (statements, branches, functions, lines). Coverage reports are generated in the `coverage/` directory.
+
+### Documentation
+
+- [Testing Overview](./.docs/testing/TESTING.md) - Complete testing strategy and setup
+- [Writing Tests Guide](./.docs/testing/WRITING_TESTS.md) - Patterns, examples, and best practices
+- [Flaky Test Policy](./.docs/testing/FLAKY_TEST_POLICY.md) - Handling unreliable tests
+
+### Adding Tests
+
+You can add tests anywhere in the `src` directory:
+- Unit tests: `*.test.ts` or `*.test.tsx` files
+- Integration tests: `src/tests/integration/`
+- E2E tests: `tests/e2e/`
+
+Tests should follow our [testing patterns](./.docs/testing/WRITING_TESTS.md) and use semantic selectors (getByRole > data-testid > avoid CSS/text).
 
 ## License
 
