@@ -207,11 +207,11 @@ describe('Data Provider Schema Validation', () => {
       const requiredFields = {
         contacts: ['id', 'first_name', 'last_name', 'created_at', 'updated_at'],
         contacts_summary: ['id', 'first_name', 'last_name', 'last_seen'],
-        opportunities: ['id', 'name', 'stage', 'amount', 'company_id'],
+        opportunities: ['id', 'name', 'stage', 'amount', 'customer_organization_id'],
         companies: ['id', 'name', 'created_at'],
-        tasks: ['id', 'name', 'due_date', 'status'],
+        tasks: ['id', 'title', 'due_date', 'completed'],
         notes: ['id', 'text', 'date', 'contact_id'],
-        activities: ['id', 'type', 'occurred_at']
+        activities: ['id', 'type', 'activity_date']
       };
 
       for (const [table, fields] of Object.entries(requiredFields)) {
