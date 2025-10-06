@@ -30,8 +30,21 @@ vi.mock("ra-supabase-core", () => ({
 // Mock the supabase client
 vi.mock("./supabase", () => ({
   supabase: {
+    from: vi.fn(() => ({
+      select: vi.fn().mockReturnThis(),
+      insert: vi.fn().mockReturnThis(),
+      update: vi.fn().mockReturnThis(),
+      delete: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      in: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(),
+      limit: vi.fn().mockReturnThis(),
+      range: vi.fn().mockReturnThis(),
+      single: vi.fn().mockResolvedValue({ data: null, error: null }),
+      then: vi.fn((resolve) => resolve({ data: [], error: null, count: 0 })),
+    })),
     auth: {
-      getUser: vi.fn(),
+      getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
     },
   },
 }));
@@ -217,7 +230,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         expect.objectContaining({
           filter: {
             "tags@cs": "{1,2}",
-            "email@cs": "{test@example.com,test2@example.com}",
+            "email@cs": "{\"test@example.com\",\"test2@example.com\"}",
             first_name: "John",
             "last_name@ilike": "%doe%",
           },
@@ -239,7 +252,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         "contacts_summary",
         expect.objectContaining({
           filter: {
-            "phone@cs": "{+1234567890,+0987654321}",
+            "phone@cs": "{\"+1234567890\",\"+0987654321\"}",
           },
         }),
       );
