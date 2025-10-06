@@ -155,23 +155,21 @@ Press `F12` → **Console** tab
 
 ---
 
-## Step 5: Configure GitHub Actions for Backend (5 minutes)
+## Step 5: Configure GitHub Actions for Backend (Automated)
 
-Your GitHub Actions workflow currently deploys to GitHub Pages. We'll keep it for backend-only operations.
+Your GitHub Actions workflow has been optimized to deploy backend-only operations.
 
-### 5.1 Update Workflow to Skip Frontend Deployment
+### 5.1 Workflow Configuration ✅
 
-**Option A: Keep GitHub Pages Running** (safest - you already chose to disable it later)
-- Do nothing for now
-- Both GitHub Pages and Vercel will serve the frontend
-- Disable GitHub Pages after 1-2 weeks of Vercel stability
+The `.github/workflows/supabase-deploy.yml` workflow:
+- ✅ Runs only when Supabase files change (path filtering)
+- ✅ Deploys database migrations automatically
+- ✅ Deploys edge functions automatically
+- ✅ Sets CORS secrets automatically
+- ✅ No frontend build (Vercel handles that)
+- ✅ Can be triggered manually if needed
 
-**Option B: Disable GitHub Pages Now**
-1. Go to GitHub repo → **Settings** → **Pages**
-2. Set "Source" to **None**
-3. Click **Save**
-
-The workflow will still run backend operations (migrations + edge functions).
+**No action required** - this was optimized during deployment setup.
 
 ### 5.2 Verify GitHub Secrets Exist
 
