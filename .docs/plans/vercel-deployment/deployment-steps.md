@@ -176,13 +176,15 @@ The `.github/workflows/supabase-deploy.yml` workflow:
 Go to GitHub repo → **Settings** → **Secrets and variables** → **Actions**
 
 Required secrets (should already exist):
-- ✅ `SUPABASE_ACCESS_TOKEN`
-- ✅ `SUPABASE_DB_PASSWORD`
-- ✅ `SUPABASE_PROJECT_ID`
-- ✅ `SUPABASE_URL`
-- ✅ `SUPABASE_ANON_KEY`
+- ✅ `SUPABASE_ACCESS_TOKEN` - Personal access token from Supabase
+- ✅ `SUPABASE_DB_PASSWORD` - Database password
+- ✅ `SUPABASE_PROJECT_ID` - Project reference ID (e.g., aaqnanddcqvfiwhshndl)
+- ✅ `ALLOWED_ORIGINS` - CORS domains (e.g., "http://localhost:5173,https://crispy-crm.vercel.app")
+- ✅ `DENO_ENV` - Environment mode (e.g., "development")
 
-If any are missing, add them with values from Supabase dashboard.
+**Note**: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are configured in Vercel (not GitHub secrets).
+
+See [GitHub Secrets Setup Guide](./github-secrets-setup.md) for detailed instructions.
 
 ---
 
