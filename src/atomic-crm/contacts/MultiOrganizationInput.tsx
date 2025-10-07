@@ -38,10 +38,11 @@ const decisionAuthorityChoices = [
 
 export const MultiOrganizationInput = () => {
   const { setValue } = useFormContext();
-  const organizations = useWatch({ name: "organizations" }) || [];
+  const organizationsRaw = useWatch({ name: "organizations" });
 
   // Validate that exactly one organization has is_primary = true
   React.useEffect(() => {
+    const organizations = organizationsRaw || [];
     const primaryCount = organizations.filter(
       (org: ContactOrganization) => org.is_primary,
     ).length;
@@ -65,7 +66,7 @@ export const MultiOrganizationInput = () => {
       });
       setValue("organizations", updatedOrgs);
     }
-  }, [organizations, setValue]);
+  }, [organizationsRaw, setValue]);
 
   return (
     <div className="space-y-4">

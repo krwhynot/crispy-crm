@@ -1,5 +1,4 @@
 import type { Preview } from '@storybook/react-vite';
-import type { ReactRenderer } from '@storybook/react';
 import React from 'react';
 
 // Import Tailwind CSS with all OKLCH semantic color variables

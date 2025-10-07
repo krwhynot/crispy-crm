@@ -18,7 +18,7 @@ const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || 'test-key';
 
 describe('Data Provider Schema Validation', () => {
   let supabase: ReturnType<typeof createClient>;
-  let tableSchemas: TableSchema = {};
+  const tableSchemas: TableSchema = {};
 
   beforeAll(async () => {
     supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

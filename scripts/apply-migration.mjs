@@ -33,7 +33,7 @@ async function applyMigration(fileName) {
     console.log(`⚙️  Applying migration...`);
 
     // Use Supabase's SQL function to execute the migration
-    const { data, error } = await supabase.rpc('exec_sql', {
+    const { error } = await supabase.rpc('exec_sql', {
       sql_query: sqlContent
     }).single();
 

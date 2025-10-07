@@ -59,7 +59,7 @@ describe("ContactCreate", () => {
     });
 
     test("handles create operation with JSONB arrays", async () => {
-      const expectedData = {
+      const _expectedData = {
         first_name: "John",
         last_name: "Doe",
         email: createEmailArray([

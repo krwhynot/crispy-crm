@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, vi, afterEach } from 'vitest';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 // Test the actual unified data provider behavior
 describe('Unified Data Provider - Real Schema Tests', () => {
@@ -176,7 +177,7 @@ describe('Unified Data Provider - Real Schema Tests', () => {
       // Build safe query
       const buildSafeQuery = (table: string, filters: Record<string, any>) => {
         const safeFilters: Record<string, any> = {};
-        let warnings: string[] = [];
+        const warnings: string[] = [];
 
         Object.entries(filters).forEach(([field, value]) => {
           if (validateField(table, field)) {

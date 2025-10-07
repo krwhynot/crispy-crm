@@ -201,7 +201,7 @@ async function seedProducts() {
   console.log('\n📝 Inserting valid test products...');
 
   for (const product of productsWithPrincipal) {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('products')
       .insert(product)
       .select();
@@ -222,7 +222,7 @@ async function seedProducts() {
       principal_id: invalidProduct.principal_id || principalId
     };
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('products')
       .insert(testProduct)
       .select();

@@ -16,7 +16,8 @@ import {
   vi,
   beforeAll,
 } from "vitest";
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import * as dotenv from "dotenv";
 
 // Load environment variables
@@ -213,13 +214,14 @@ describe("Authentication Flow Integration Tests", () => {
       const expiredTimestamp = Math.floor(now / 1000) - 300; // Expired 5 minutes ago
       const validTimestamp = Math.floor(now / 1000) + 3600; // Valid for 1 hour
 
-      const expiredSession = {
+      // Example session structures (for documentation)
+      const _expiredSession = {
         access_token: "expired_token",
         expires_at: expiredTimestamp,
         user: { id: "user-123", email: "test@example.com" },
       };
 
-      const validSession = {
+      const _validSession = {
         access_token: "valid_token",
         expires_at: validTimestamp,
         user: { id: "user-123", email: "test@example.com" },
@@ -431,7 +433,7 @@ describe("Authentication Flow Integration Tests", () => {
 
     test("service role has full database access", async () => {
       // Service role should be able to query counts
-      const { data, error } = await serviceClient
+      const { error } = await serviceClient
         .from("organizations")
         .select("count")
         .limit(1);
@@ -461,7 +463,7 @@ describe("Authentication Flow Integration Tests", () => {
       expect(() => {
         try {
           JSON.parse(invalidResponse);
-        } catch (e) {
+        } catch (_e) {
           throw new Error("Invalid JSON response");
         }
       }).toThrow("Invalid JSON response");

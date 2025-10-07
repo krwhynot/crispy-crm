@@ -63,7 +63,19 @@ const bannedColorPatterns = [
 ];
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  {
+    ignores: [
+      "dist",
+      "node_modules",
+      "build",
+      "lib",
+      "esm",
+      "prism.js",
+      "packages/create-react-admin/templates/**",
+      ".github"
+    ]
+  },
+  // TypeScript configuration
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -198,6 +210,28 @@ export default tseslint.config(
     //     classRegex: "^(class(Name)?|tw)$",
     //   },
     // },
+  },
+  // JavaScript/MJS configuration (for scripts)
+  {
+    extends: [js.configs.recommended],
+    files: ["**/*.{js,mjs}"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    rules: {
+      "no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+        },
+      ],
+    },
   },
   // Storybook config disabled due to missing dependency
   // storybook.configs["flat/recommended"],

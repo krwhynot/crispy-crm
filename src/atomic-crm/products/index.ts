@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { ResourceProps } from "react-admin";
+import type { ResourceProps } from "react-admin";
 import { Package } from "lucide-react";
 
 const ProductList = lazy(() =>

@@ -91,7 +91,7 @@ describe("Contact Multi-Organization Support - Unified Provider", () => {
     vi.clearAllMocks();
 
     // Mock getList for various resources
-    mockDataProvider.getList.mockImplementation((resource, params) => {
+    mockDataProvider.getList.mockImplementation((resource, _params) => {
       if (resource === "organizations") {
         return Promise.resolve({
           data: mockOrganizations,

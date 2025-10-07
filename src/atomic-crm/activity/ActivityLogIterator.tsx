@@ -38,10 +38,9 @@ export function ActivityLogIterator({
       ))}
 
       {activitiesDisplayed < activities.length && (
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
+        <button
+          type="button"
+          onClick={() => {
             setActivityDisplayed(
               (activitiesDisplayed) => activitiesDisplayed + pageSize,
             );
@@ -49,7 +48,7 @@ export function ActivityLogIterator({
           className="flex w-full justify-center text-sm underline hover:no-underline"
         >
           Load more activity
-        </a>
+        </button>
       )}
     </div>
   );

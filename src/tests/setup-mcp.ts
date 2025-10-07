@@ -9,7 +9,8 @@
  * - Service role RLS bypass for administrative operations
  */
 
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import { beforeEach, afterAll } from "vitest";
 import * as dotenv from "dotenv";
 

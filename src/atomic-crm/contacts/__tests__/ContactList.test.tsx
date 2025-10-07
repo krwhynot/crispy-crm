@@ -7,9 +7,8 @@
 
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { createMockContact, createMockOrganization } from "@/tests/utils/mock-providers";
+import { createMockContact } from "@/tests/utils/mock-providers";
 import { ContactListContent } from "../ContactListContent";
 import { ContactListFilter } from "../ContactListFilter";
 import { downloadCSV } from "ra-core";

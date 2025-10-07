@@ -34,7 +34,7 @@ export const ContactList = () => {
           // Also update the store directly to trigger re-render
           storeApi.setItem(key, params);
         }
-      } catch (e) {
+      } catch (_e) {
         // Ignore parse errors
       }
     }

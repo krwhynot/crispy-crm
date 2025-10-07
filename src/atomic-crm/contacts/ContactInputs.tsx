@@ -4,7 +4,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
 
-import { BooleanInput } from "@/components/admin/boolean-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { TextInput } from "@/components/admin/text-input";
 import { RadioButtonGroupInput } from "@/components/admin/radio-button-group-input";
