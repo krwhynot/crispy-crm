@@ -140,26 +140,8 @@ export const ContactListFilter = () => {
 
       <FilterCategory
         icon={<Building2 className="h-4 w-4" />}
-        label="Influence"
+        label="Organizations"
       >
-        <ToggleFilterButton
-          multiselect
-          className="w-full justify-between"
-          label="High Influence"
-          value={{ purchase_influence: "High" }}
-        />
-        <ToggleFilterButton
-          multiselect
-          className="w-full justify-between"
-          label="Medium Influence"
-          value={{ purchase_influence: "Medium" }}
-        />
-        <ToggleFilterButton
-          multiselect
-          className="w-full justify-between"
-          label="Low Influence"
-          value={{ purchase_influence: "Low" }}
-        />
         <ToggleFilterButton
           className="w-full justify-between"
           label="Multiple Organizations"

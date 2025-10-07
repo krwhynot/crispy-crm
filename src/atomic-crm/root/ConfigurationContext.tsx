@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { createContext, useContext } from "react";
 import type { ContactGender, DealStage, NoteStatus } from "../types";
 import {
-  defaultOrganizationSectors,
   defaultContactGender,
   defaultDarkModeLogo,
   defaultDealCategories,
@@ -19,7 +18,6 @@ import {
 
 // Define types for the context value
 export interface ConfigurationContextValue {
-  organizationSectors: string[];
   dealCategories: string[];
   dealPipelineStatuses: string[];
   dealStages: DealStage[];
@@ -39,7 +37,6 @@ export interface ConfigurationProviderProps extends ConfigurationContextValue {
 
 // Create context with default value
 export const ConfigurationContext = createContext<ConfigurationContextValue>({
-  organizationSectors: defaultOrganizationSectors,
   dealCategories: defaultDealCategories,
   dealPipelineStatuses: defaultDealPipelineStatuses,
   dealStages: defaultDealStages,
@@ -55,7 +52,6 @@ export const ConfigurationContext = createContext<ConfigurationContextValue>({
 
 export const ConfigurationProvider = ({
   children,
-  organizationSectors,
   dealCategories,
   dealPipelineStatuses,
   dealStages,
@@ -70,7 +66,6 @@ export const ConfigurationProvider = ({
 }: ConfigurationProviderProps) => (
   <ConfigurationContext.Provider
     value={{
-      organizationSectors,
       dealCategories,
       dealPipelineStatuses,
       dealStages,

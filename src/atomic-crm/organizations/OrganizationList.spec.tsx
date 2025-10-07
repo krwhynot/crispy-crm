@@ -25,7 +25,6 @@ const mockOrganizations = [
     address: '123 Tech Street',
     city: 'San Francisco',
     stateAbbr: 'CA',
-    country: 'USA',
     is_principal: false,
     is_distributor: false,
     created_at: '2024-01-15T10:00:00Z',
@@ -45,7 +44,6 @@ const mockOrganizations = [
     address: '456 Principal Ave',
     city: 'Austin',
     stateAbbr: 'TX',
-    country: 'USA',
     is_principal: true,
     is_distributor: false,
     created_at: '2024-01-10T10:00:00Z',
@@ -65,7 +63,6 @@ const mockOrganizations = [
     address: '789 Distribution Way',
     city: 'Chicago',
     stateAbbr: 'IL',
-    country: 'USA',
     is_principal: false,
     is_distributor: true,
     created_at: '2024-01-20T10:00:00Z',
@@ -73,19 +70,18 @@ const mockOrganizations = [
   },
   {
     id: 4,
-    name: 'Vendor Services Co',
+    name: 'Partner Services Co',
     sector: 'Services',
-    organization_type: 'vendor',
+    organization_type: 'partner',
     priority: 'C',
     segment: 'SMB',
     size: 'Small',
     revenue: 5000000,
-    website: 'https://vendorservices.com',
+    website: 'https://partnerservices.com',
     phone_number: '+1-555-0400',
     address: '321 Service Road',
     city: 'Denver',
     stateAbbr: 'CO',
-    country: 'USA',
     is_principal: false,
     is_distributor: false,
     created_at: '2024-02-01T10:00:00Z',
@@ -105,7 +101,6 @@ const mockOrganizations = [
     address: '555 Prospect Plaza',
     city: 'Seattle',
     stateAbbr: 'WA',
-    country: 'USA',
     is_principal: false,
     is_distributor: false,
     created_at: '2024-01-25T10:00:00Z',
@@ -158,8 +153,7 @@ const mockConfiguration = {
     { id: 'decision_maker', name: 'Decision Maker' },
     { id: 'influencer', name: 'Influencer' },
     { id: 'buyer', name: 'Buyer' }
-  ],
-  organizationSectors: ['Technology', 'Healthcare', 'Finance', 'Software', 'Services', 'Distribution']
+  ]
 };
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -303,7 +297,7 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
       expect(screen.getByText('Acme Corp')).toBeInTheDocument();
       expect(screen.getByText('Principal Solutions Inc')).toBeInTheDocument();
       expect(screen.getByText('Tech Distributors Ltd')).toBeInTheDocument();
-      expect(screen.getByText('Vendor Services Co')).toBeInTheDocument();
+      expect(screen.getByText('Partner Services Co')).toBeInTheDocument();
       expect(screen.getByText('Prospect Tech Inc')).toBeInTheDocument();
     });
   });
@@ -319,7 +313,7 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
       expect(screen.getByText('Customer')).toBeInTheDocument();
       expect(screen.getByText('Principal')).toBeInTheDocument();
       expect(screen.getByText('Distributor')).toBeInTheDocument();
-      expect(screen.getByText('Vendor')).toBeInTheDocument();
+      expect(screen.getByText('Partner')).toBeInTheDocument();
       expect(screen.getByText('Prospect')).toBeInTheDocument();
     });
   });

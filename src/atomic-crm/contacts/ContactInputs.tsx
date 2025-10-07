@@ -6,12 +6,10 @@ import { useFormContext } from "react-hook-form";
 
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { TextInput } from "@/components/admin/text-input";
-import { RadioButtonGroupInput } from "@/components/admin/radio-button-group-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 // LinkedIn validation removed - handled at API boundary
-import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Sale } from "../types";
 import { Avatar } from "./Avatar";
 import { MultiOrganizationInput } from "./MultiOrganizationInput";
@@ -41,20 +39,9 @@ export const ContactInputs = () => {
 };
 
 const ContactIdentityInputs = () => {
-  const { contactGender } = useConfigurationContext();
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Identity</h6>
-      <RadioButtonGroupInput
-        label={false}
-        row
-        source="gender"
-        choices={contactGender}
-        helperText={false}
-        optionText="label"
-        optionValue="value"
-        defaultValue={contactGender[0].value}
-      />
       <TextInput source="first_name" label="First Name *" helperText="Required field" />
       <TextInput source="last_name" label="Last Name *" helperText="Required field" />
     </div>
@@ -171,12 +158,6 @@ const ContactMiscInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Misc</h6>
-      <TextInput
-        source="background"
-        label="Background info (bio, how you met, etc)"
-        multiline
-        helperText={false}
-      />
       <ReferenceInput
         reference="sales"
         source="sales_id"

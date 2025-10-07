@@ -90,7 +90,7 @@ const OrganizationShowContent = () => {
               <TabsContent value="contacts">
                 {record.nb_contacts ? (
                   <ReferenceManyField
-                    reference="contacts_summary"
+                    reference="contact_organization_details"
                     target="organization_id"
                     sort={{ field: "last_name", order: "ASC" }}
                   >
@@ -118,7 +118,7 @@ const OrganizationShowContent = () => {
                 {record.nb_opportunities ? (
                   <ReferenceManyField
                     reference="opportunities"
-                    target="organization_id"
+                    target="customer_organization_id"
                     sort={{ field: "name", order: "ASC" }}
                   >
                     <OpportunitiesIterator />
@@ -193,7 +193,7 @@ const CreateRelatedContactButton = () => {
         to="/contacts/create"
         state={
           organization
-            ? { record: { organization_id: organization.id } }
+            ? { record: { organizations: [{ organization_id: organization.id, is_primary: true }] } }
             : undefined
         }
         className="flex items-center gap-2"

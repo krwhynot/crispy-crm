@@ -1,11 +1,11 @@
 import { DollarSign, Star, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useCreatePath, useListContext, useRecordContext } from "ra-core";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { useCreatePath, useRecordContext } from "ra-core";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-import { Avatar as ContactAvatar } from "../contacts/Avatar";
 import type { Company } from "../types";
 import { OrganizationAvatar } from "./OrganizationAvatar";
 
@@ -17,7 +17,6 @@ export const OrganizationCard = (props: { record?: Company }) => {
   const organizationTypeLabels: Record<string, string> = {
     customer: "Customer",
     prospect: "Prospect",
-    vendor: "Vendor",
     partner: "Partner",
     principal: "Principal",
     distributor: "Distributor",
@@ -45,7 +44,11 @@ export const OrganizationCard = (props: { record?: Company }) => {
           <OrganizationAvatar />
           <div className="text-center mt-1">
             <h6 className="text-sm font-medium">{record.name}</h6>
-            <p className="text-xs text-muted-foreground">{record.industry}</p>
+            {record.industry_id && (
+              <ReferenceField source="industry_id" reference="industries" link={false}>
+                <TextField source="name" className="text-xs text-muted-foreground" />
+              </ReferenceField>
+            )}
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
               {record.organization_type &&
                 record.organization_type !== "unknown" && (
@@ -68,60 +71,30 @@ export const OrganizationCard = (props: { record?: Company }) => {
           </div>
         </div>
         <div className="flex flex-row w-full justify-between gap-2">
-          <div className="flex items-center">
-            {record.nb_contacts ? (
-              <ReferenceManyField reference="contacts" target="organization_id">
-                <AvatarGroupIterator />
-              </ReferenceManyField>
-            ) : null}
-          </div>
+          {record.nb_contacts ? (
+            <div className="flex items-center gap-0.5">
+              <Building2 className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm font-medium">
+                {record.nb_contacts}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {record.nb_contacts > 1 ? "contacts" : "contact"}
+              </span>
+            </div>
+          ) : null}
           {record.nb_opportunities ? (
-            <div className="flex items-center ml-2 gap-0.5">
+            <div className="flex items-center gap-0.5">
               <DollarSign className="w-4 h-4 text-muted-foreground" />
               <span className="text-sm font-medium">
                 {record.nb_opportunities}
               </span>
               <span className="text-xs text-muted-foreground">
-                {record.nb_opportunities
-                  ? record.nb_opportunities > 1
-                    ? "opportunities"
-                    : "opportunity"
-                  : "opportunity"}
+                {record.nb_opportunities > 1 ? "opportunities" : "opportunity"}
               </span>
             </div>
           ) : null}
         </div>
       </Card>
     </Link>
-  );
-};
-
-const AvatarGroupIterator = () => {
-  const { data, total, error, isPending } = useListContext();
-  if (isPending || error) return null;
-
-  const MAX_AVATARS = 3;
-  return (
-    <div className="*:data-[slot=avatar]:ring-background flex -space-x-0.5 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
-      {data.slice(0, MAX_AVATARS).map((record: any) => (
-        <ContactAvatar
-          key={record.id}
-          record={record}
-          width={25}
-          height={25}
-          title={`${record.first_name} ${record.last_name}`}
-        />
-      ))}
-      {total > MAX_AVATARS && (
-        <span
-          className="relative flex size-8 shrink-0 overflow-hidden rounded-full w-[25px] h-[25px]"
-          data-slot="avatar"
-        >
-          <span className="bg-muted flex size-full items-center justify-center rounded-full text-[10px]">
-            +{total - MAX_AVATARS}
-          </span>
-        </span>
-      )}
-    </div>
   );
 };

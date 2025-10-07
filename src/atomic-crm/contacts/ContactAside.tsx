@@ -85,14 +85,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           })
           .filter(Boolean)}
       </AsideSection>
-      <AsideSection title="Background info">
-        <WithRecord<Contact>
-          render={(record) =>
-            record?.background ? (
-              <TextField source="background" record={record} className="pb-2" />
-            ) : null
-          }
-        />
+      <AsideSection title="Contact info">
         <div className="text-muted-foreground">
           <span className="text-sm">Added on</span>{" "}
           <DateField
