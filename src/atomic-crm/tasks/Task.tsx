@@ -80,6 +80,7 @@ export const Task = ({
     update("tasks", {
       id: task.id,
       data: {
+        id: task.id, // Include ID to trigger partial update validation
         completed: checked,
         completed_at: checked ? new Date().toISOString() : null,
       },
