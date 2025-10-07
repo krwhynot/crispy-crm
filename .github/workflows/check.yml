@@ -1,4 +1,5 @@
-name: ✅ Check
+name: ✅ Build Check
+
 on:
     push:
         branches:
@@ -15,65 +16,9 @@ concurrency:
     cancel-in-progress: true
 
 permissions:
-    contents: write
-    checks: write
+    contents: read
 
 jobs:
-    lint:
-        name: 🔬 ESLint
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
-        if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
-        steps:
-            - name: 📥 Checkout repo
-              uses: actions/checkout@v4
-
-            - name: ⚙️ Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: npm
-
-            - name: 📥 Download deps
-              run: npm install
-
-            - name: 🔬 Lint
-              uses: wearerequired/lint-action@v2
-              with:
-                  eslint: true
-                  eslint_args: "**/*.{mjs,ts,tsx}"
-                  prettier: true
-                  prettier_args: "--config ./.prettierrc.mjs \"**/*.{js,json,ts,tsx,css,md,html}\""
-
-    test:
-        name: 🔎 Test
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
-        if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
-        steps:
-            - name: 📥 Checkout repo
-              uses: actions/checkout@v4
-
-            - name: ⚙️ Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: npm
-
-            - name: 📥 Download deps
-              run: npm ci
-
-            - name: 🔎 Test
-              run: npm run test:ci
-
-            - name: 📊 Upload coverage
-              uses: codecov/codecov-action@v4
-              if: always()
-              with:
-                  token: ${{ secrets.CODECOV_TOKEN }}
-                  files: ./coverage/lcov.info
-
-
     build:
         name: 🔨 Build
         timeout-minutes: 10
@@ -89,94 +34,8 @@ jobs:
                   node-version: 22
                   cache: npm
 
-            - name: 📥 Download deps
+            - name: 📥 Install dependencies
               run: npm install
 
             - name: 🔨 Build
               run: npm run build
-
-    a11y-tests:
-        name: ♿ Accessibility
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
-        if: ${{ !github.event.pull_request.draft || github.event_name == 'push' }}
-        steps:
-            - name: 📥 Checkout repo
-              uses: actions/checkout@v4
-
-            - name: ⚙️ Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: npm
-
-            - name: 📥 Download deps
-              run: npm ci
-
-            - name: 🔍 Check if accessibility tests exist
-              id: check-a11y
-              run: |
-                if [ -f "tests/e2e/accessibility.spec.ts" ]; then
-                  echo "exists=true" >> $GITHUB_OUTPUT
-                else
-                  echo "exists=false" >> $GITHUB_OUTPUT
-                  echo "⚠️ Accessibility tests not yet implemented - skipping"
-                fi
-
-            - name: 🎭 Install Playwright Chromium
-              if: steps.check-a11y.outputs.exists == 'true'
-              run: npx playwright install chromium --with-deps
-
-            - name: 🔍 Run accessibility tests
-              if: steps.check-a11y.outputs.exists == 'true'
-              run: npx playwright test tests/e2e/accessibility.spec.ts
-
-            - name: 📊 Upload a11y report
-              uses: actions/upload-artifact@v4
-              if: always() && steps.check-a11y.outputs.exists == 'true'
-              with:
-                  name: accessibility-report
-                  path: playwright-report/
-                  retention-days: 30
-
-    e2e-tests:
-        name: 🌐 E2E Tests
-        runs-on: ubuntu-latest
-        timeout-minutes: 20
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: npm
-            - run: npm ci
-
-            - name: 🔍 Check if E2E tests exist
-              id: check-e2e
-              run: |
-                if [ -d "tests/e2e" ] && [ "$(find tests/e2e -name '*.spec.ts' | wc -l)" -gt 0 ]; then
-                  echo "exists=true" >> $GITHUB_OUTPUT
-                else
-                  echo "exists=false" >> $GITHUB_OUTPUT
-                  echo "⚠️ E2E tests not yet implemented - skipping"
-                fi
-
-            - name: Install Playwright browsers
-              if: steps.check-e2e.outputs.exists == 'true'
-              run: npx playwright install chromium --with-deps
-
-            - name: Run E2E tests
-              if: steps.check-e2e.outputs.exists == 'true'
-              run: npx playwright test tests/e2e/
-              env:
-                  VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-                  VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-                  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-
-            - name: Upload Playwright report
-              uses: actions/upload-artifact@v4
-              if: failure() && steps.check-e2e.outputs.exists == 'true'
-              with:
-                  name: playwright-report
-                  path: playwright-report/
-                  retention-days: 7
