@@ -112,10 +112,10 @@ export class ValidationService {
     },
     tasks: {
       create: async (data: unknown) => {
-        await validateTaskForSubmission(data);
+        await validateTaskForSubmission(data, false);
       },
       update: async (data: unknown) => {
-        await validateTaskForSubmission(data);
+        await validateTaskForSubmission(data, true);
       },
     },
     sales: {
