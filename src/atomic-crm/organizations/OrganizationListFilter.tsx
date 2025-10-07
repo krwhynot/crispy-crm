@@ -1,24 +1,21 @@
 import { Building, Truck, Users, Tag, Star } from "lucide-react";
-import { FilterLiveForm, useGetIdentity } from "ra-core";
+import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { useConfigurationContext } from "../root/ConfigurationContext";
 import { sizes } from "./sizes";
 
 export const OrganizationListFilter = () => {
   const { identity } = useGetIdentity();
-  const { organizationSectors } = useConfigurationContext();
-  const sectors = organizationSectors.map((sector) => ({
-    id: sector,
-    name: sector,
-  }));
+  const { data: industries } = useGetList("industries", {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+  });
 
   const organizationTypes = [
     { id: "customer", name: "Customer" },
     { id: "prospect", name: "Prospect" },
-    { id: "vendor", name: "Vendor" },
     { id: "partner", name: "Partner" },
     { id: "principal", name: "Principal" },
     { id: "distributor", name: "Distributor" },
@@ -77,13 +74,13 @@ export const OrganizationListFilter = () => {
       </FilterCategory>
 
       <FilterCategory icon={<Truck className="h-4 w-4" />} label="Industry">
-        {sectors.map((sector) => (
+        {industries?.map((industry) => (
           <ToggleFilterButton
             multiselect
-            key={sector.id}
+            key={industry.id}
             className="w-full justify-between"
-            label={sector.name}
-            value={{ industry: sector.id }}
+            label={industry.name}
+            value={{ industry_id: industry.id }}
           />
         ))}
       </FilterCategory>

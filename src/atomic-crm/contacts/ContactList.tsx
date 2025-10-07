@@ -139,11 +139,8 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
       phone: JSON.stringify(contact.phone),
       phone_fts: undefined,
       // New multi-organization fields
-      role: contact.role || "",
       department: contact.department || "",
       is_primary_contact: primaryOrganization ? "Yes" : "No",
-      purchase_influence: contact.purchase_influence || "Unknown",
-      decision_authority: contact.decision_authority || "End User",
       organizations: contact.organizations
         ? JSON.stringify(contact.organizations)
         : "[]",

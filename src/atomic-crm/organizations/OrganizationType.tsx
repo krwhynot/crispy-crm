@@ -6,19 +6,18 @@ import type { Company, OrganizationType } from "../types";
 const organizationTypeLabels: Record<OrganizationType, string> = {
   customer: "Customer",
   prospect: "Prospect",
-  vendor: "Vendor",
   partner: "Partner",
   principal: "Principal",
   distributor: "Distributor",
   unknown: "Unknown",
 };
 
-// Priority colors for visual distinction
+// Priority colors for visual distinction using semantic variables
 const priorityColors = {
-  A: "bg-red-500 text-white hover:bg-red-600",
-  B: "bg-orange-500 text-white hover:bg-orange-600",
-  C: "bg-yellow-500 text-black hover:bg-yellow-600",
-  D: "bg-green-500 text-white hover:bg-green-600",
+  A: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+  B: "bg-primary text-primary-foreground hover:bg-primary/90",
+  C: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+  D: "bg-muted text-muted-foreground hover:bg-muted/90",
 };
 
 export const OrganizationType = () => {
@@ -56,13 +55,13 @@ export const OrganizationType = () => {
 
       {/* Special Flags */}
       {record.is_principal && (
-        <Badge variant="outline" className="border-blue-500 text-blue-500">
+        <Badge variant="outline">
           Principal
         </Badge>
       )}
 
       {record.is_distributor && (
-        <Badge variant="outline" className="border-purple-500 text-purple-500">
+        <Badge variant="outline">
           Distributor
         </Badge>
       )}

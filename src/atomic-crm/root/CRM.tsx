@@ -20,7 +20,6 @@ import { SettingsPage } from "../settings/SettingsPage";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
 import { ConfigurationProvider } from "./ConfigurationContext";
 import {
-  defaultOrganizationSectors,
   defaultContactGender,
   defaultDarkModeLogo,
   defaultLightModeLogo,
@@ -47,7 +46,6 @@ export type CRMProps = {
  * wraps the application with a `ConfigurationProvider` to provide configuration values via context.
  *
  * @param {Array<ContactGender>} contactGender - The gender options for contacts used in the application.
- * @param {string[]} organizationSectors - The list of organization sectors used in the application.
  * @param {RaThemeOptions} darkTheme - The theme to use when the application is in dark mode.
  * @param {string[]} opportunityCategories - The categories of opportunities used in the application.
  * @param {OpportunityStage[]} opportunityStages - The stages of opportunities used in the application.
@@ -82,7 +80,6 @@ export type CRMProps = {
  */
 export const CRM = ({
   contactGender = defaultContactGender,
-  organizationSectors = defaultOrganizationSectors,
   opportunityCategories = defaultOpportunityCategories,
   opportunityStages = defaultOpportunityStages,
   darkModeLogo = defaultDarkModeLogo,
@@ -112,7 +109,6 @@ export const CRM = ({
   return (
     <ConfigurationProvider
       contactGender={contactGender}
-      organizationSectors={organizationSectors}
       opportunityCategories={opportunityCategories}
       opportunityStages={opportunityStages}
       darkModeLogo={darkModeLogo}
@@ -153,6 +149,7 @@ export const CRM = ({
         <Resource name="tasks" />
         <Resource name="sales" {...sales} />
         <Resource name="tags" />
+        <Resource name="industries" />
       </Admin>
     </ConfigurationProvider>
   );

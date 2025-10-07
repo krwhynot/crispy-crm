@@ -167,7 +167,7 @@ Opportunities-based CRM with key tables:
 - `opportunities` - Sales pipeline (multi-stakeholder support)
 - `companies` - Organizations with hierarchies
 - `contacts` - People with JSONB arrays for emails/phones (e.g., `[{"email":"x@y.com"}]`)
-- `contact_organizations` - Many-to-many relationships with role/influence tracking
+- `contact_organizations` - Many-to-many relationships with primary flag, decision maker status, and relationship dates
 - `activities` - Engagements and interactions
 - `tasks` - Action items with type enum (call, email, meeting, todo, follow_up)
 - `contact_notes` / `opportunity_notes` - Entity-specific notes
@@ -190,7 +190,8 @@ All validation integrated into `unifiedDataProvider.ts` before database operatio
 ### Key Patterns
 - **Resource Registration**: All resources in `src/atomic-crm/root/CRM.tsx`
 - **Kanban Board**: Drag-drop via `@hello-pangea/dnd` using index field in opportunities
-- **Multi-Org Contacts**: Junction table `contact_organizations` with role/influence tracking
+- **Multi-Org Contacts**: Junction table `contact_organizations` with primary flag, decision maker status, and relationship tracking
+- **Junction Table Sync**: Contacts/organizations synced via `sync_contact_organizations` RPC (similar to opportunities/products pattern)
 - **Activity Types**: Engagements (standalone) vs Interactions (opportunity-linked)
 - **Filter System**: Multi-select filters with JSONB array fields in `src/atomic-crm/filters/`
 - **Avatar Storage**: Supabase Storage buckets for avatars/logos, handled by `avatar.utils.ts`

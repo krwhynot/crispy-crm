@@ -76,7 +76,7 @@ export class TransformService {
         // Process avatar (upload if needed, delete old if changed)
         const processedData = await processContactAvatar(contactData);
 
-        // Remove organizations field - it's a junction table relationship, not a column
+        // Extract organizations for junction table sync (similar to opportunities/products pattern)
         const { organizations, ...cleanedData } = processedData as any;
 
         // Combine first_name and last_name into name field (required by database)
@@ -88,6 +88,11 @@ export class TransformService {
         if (!cleanedData.id) {
           // Use type assertion since created_at is a database field that might not be in type definition
           (cleanedData as Record<string, unknown>).created_at = new Date().toISOString();
+        }
+
+        // Preserve organizations for sync (rename to avoid column error, handled by data provider)
+        if (organizations) {
+          (cleanedData as any).organizations_to_sync = organizations;
         }
 
         return cleanedData;

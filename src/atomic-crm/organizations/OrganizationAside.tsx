@@ -92,7 +92,6 @@ const ContextInfo = ({ record }: { record: Company }) => {
   const organizationTypeChoices = [
     { id: "customer", name: "Customer" },
     { id: "prospect", name: "Prospect" },
-    { id: "vendor", name: "Vendor" },
     { id: "partner", name: "Partner" },
     { id: "principal", name: "Principal" },
     { id: "distributor", name: "Distributor" },
@@ -131,9 +130,12 @@ const ContextInfo = ({ record }: { record: Company }) => {
           Segment: <TextField source="segment" />
         </span>
       )}
-      {record.industry && (
+      {record.industry_id && (
         <span>
-          Industry: <TextField source="industry" />
+          Industry:{" "}
+          <ReferenceField source="industry_id" reference="industries" link={false}>
+            <TextField source="name" />
+          </ReferenceField>
         </span>
       )}
       {record.employee_count && (
@@ -144,11 +146,6 @@ const ContextInfo = ({ record }: { record: Company }) => {
       {record.annual_revenue && (
         <span>
           Annual Revenue: <TextField source="annual_revenue" />
-        </span>
-      )}
-      {record.tax_identifier && (
-        <span>
-          Tax Identifier: <TextField source="tax_identifier" />
         </span>
       )}
     </AsideSection>
@@ -166,7 +163,6 @@ const AddressInfo = ({ record }: { record: Company }) => {
       <TextField source="city" />
       <TextField source="postal_code" />
       <TextField source="state" />
-      <TextField source="country" />
     </AsideSection>
   );
 };

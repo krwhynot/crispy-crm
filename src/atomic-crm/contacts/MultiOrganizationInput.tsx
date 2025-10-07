@@ -9,32 +9,18 @@ import { SelectInput } from "@/components/admin/select-input";
 import { BooleanInput } from "@/components/admin/boolean-input";
 import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/AutocompleteOrganizationInput";
 import { useFormContext, useWatch } from "react-hook-form";
+import { useSimpleFormIterator } from "@/hooks/simple-form-iterator-context";
 import type { ContactOrganization } from "../types";
 
-const roleChoices = [
-  { id: "decision_maker", name: "Decision Maker" },
-  { id: "influencer", name: "Influencer" },
-  { id: "buyer", name: "Buyer" },
-  { id: "end_user", name: "End User" },
-  { id: "gatekeeper", name: "Gatekeeper" },
-  { id: "champion", name: "Champion" },
-  { id: "technical", name: "Technical" },
-  { id: "executive", name: "Executive" },
-];
-
-const purchaseInfluenceChoices = [
-  { id: "High", name: "High" },
-  { id: "Medium", name: "Medium" },
-  { id: "Low", name: "Low" },
-  { id: "Unknown", name: "Unknown" },
-];
-
-const decisionAuthorityChoices = [
-  { id: "Decision Maker", name: "Decision Maker" },
-  { id: "Influencer", name: "Influencer" },
-  { id: "End User", name: "End User" },
-  { id: "Gatekeeper", name: "Gatekeeper" },
-];
+const AddOrganizationButton = () => {
+  const { add } = useSimpleFormIterator();
+  return (
+    <Button type="button" variant="outline" size="sm" onClick={() => add()}>
+      <Plus className="h-4 w-4 mr-2" />
+      Add Organization
+    </Button>
+  );
+};
 
 export const MultiOrganizationInput = () => {
   const { setValue } = useFormContext();
@@ -81,12 +67,7 @@ export const MultiOrganizationInput = () => {
         <ArrayInput source="organizations" label={false} helperText={false}>
           <SimpleFormIterator
             inline={false}
-            addButton={
-              <Button type="button" variant="outline" size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Organization
-              </Button>
-            }
+            addButton={<AddOrganizationButton />}
             className="space-y-4"
           >
             <div className="grid gap-3 p-3 border rounded-lg">
@@ -97,39 +78,11 @@ export const MultiOrganizationInput = () => {
               >
                 <AutocompleteOrganizationInput />
               </ReferenceInput>
-              <SelectInput
-                source="role"
-                label="Role"
-                choices={roleChoices}
-                helperText={false}
-                optionText="name"
-                optionValue="id"
-              />
               <BooleanInput
                 source="is_primary"
                 label="Primary Organization"
                 helperText={false}
               />
-              <div className="grid grid-cols-2 gap-3">
-                <SelectInput
-                  source="purchase_influence"
-                  label="Purchase Influence"
-                  choices={purchaseInfluenceChoices}
-                  helperText={false}
-                  optionText="name"
-                  optionValue="id"
-                  defaultValue="Unknown"
-                />
-                <SelectInput
-                  source="decision_authority"
-                  label="Decision Authority"
-                  choices={decisionAuthorityChoices}
-                  helperText={false}
-                  optionText="name"
-                  optionValue="id"
-                  defaultValue="End User"
-                />
-              </div>
             </div>
           </SimpleFormIterator>
         </ArrayInput>

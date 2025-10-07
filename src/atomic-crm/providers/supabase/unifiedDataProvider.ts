@@ -449,6 +449,17 @@ export const unifiedDataProvider: DataProvider = {
         "create",
       );
 
+      // Special handling for industries - use RPC for get_or_create
+      if (resource === "industries") {
+        const { data, error } = await supabase
+          .rpc('get_or_create_industry', { p_name: processedData.name });
+
+        if (error) throw error;
+
+        // RPC returns array, return first item
+        return { data: data[0] };
+      }
+
       // Special handling for opportunities with products
       if (resource === "opportunities" && processedData.products_to_sync) {
         const products = processedData.products_to_sync;
@@ -473,6 +484,28 @@ export const unifiedDataProvider: DataProvider = {
         }
 
         return { data };
+      }
+
+      // Special handling for contacts with organizations
+      if (resource === "contacts" && processedData.organizations_to_sync) {
+        const organizations = processedData.organizations_to_sync;
+        delete processedData.organizations_to_sync;
+
+        // Create the contact first
+        const result = await baseDataProvider.create(dbResource, {
+          ...params,
+          data: processedData as any,
+        });
+
+        // Sync organizations to junction table
+        const { error } = await supabase.rpc("sync_contact_organizations", {
+          p_contact_id: result.data.id,
+          p_organizations: organizations,
+        });
+
+        if (error) throw error;
+
+        return result;
       }
 
       // Execute create
@@ -536,6 +569,31 @@ export const unifiedDataProvider: DataProvider = {
         }
 
         return { data };
+      }
+
+      // Special handling for contacts with organizations
+      if (resource === "contacts" && processedData.organizations_to_sync) {
+        const organizations = processedData.organizations_to_sync;
+        delete processedData.organizations_to_sync;
+
+        // Update the contact first
+        const result = await baseDataProvider.update(dbResource, {
+          ...params,
+          data: {
+            ...processedData,
+            id: params.id,
+          } as any,
+        });
+
+        // Sync organizations to junction table (delete-then-insert, no diff needed)
+        const { error } = await supabase.rpc("sync_contact_organizations", {
+          p_contact_id: params.id,
+          p_organizations: organizations,
+        });
+
+        if (error) throw error;
+
+        return result;
       }
 
       // Execute update

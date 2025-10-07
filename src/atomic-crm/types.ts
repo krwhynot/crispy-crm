@@ -11,26 +11,9 @@ import type { Organization } from "./validation/organizations";
 import type { OpportunityStageValue } from "./opportunities/stageConstants";
 
 // Type definitions for enhanced CRM features
-export type ContactRole =
-  | "decision_maker"
-  | "influencer"
-  | "buyer"
-  | "end_user"
-  | "gatekeeper"
-  | "champion"
-  | "technical"
-  | "executive"
-  | "unknown";
-export type PurchaseInfluence = "High" | "Medium" | "Low" | "Unknown";
-export type DecisionAuthority =
-  | "Decision Maker"
-  | "Influencer"
-  | "End User"
-  | "Gatekeeper";
 export type OrganizationType =
   | "customer"
   | "prospect"
-  | "vendor"
   | "partner"
   | "principal"
   | "distributor"
@@ -102,10 +85,7 @@ export type Contact = {
   phone: PhoneNumberAndType[];
 
   // Primary organization fields (backward compatibility)
-  role?: ContactRole;
   department?: string;
-  purchase_influence?: PurchaseInfluence;
-  decision_authority?: DecisionAuthority;
   deleted_at?: string;
 
   // Multi-organization support
@@ -123,9 +103,6 @@ export interface ContactOrganization {
   contact_id: Identifier;
   organization_id: Identifier;
   is_primary: boolean; // Matches database schema column name
-  purchase_influence: PurchaseInfluence;
-  decision_authority: DecisionAuthority;
-  role?: ContactRole;
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;

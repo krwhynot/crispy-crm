@@ -15,6 +15,7 @@ export const RESOURCE_MAPPING = {
   organizations_summary: "organizations_summary",
   contacts_summary: "contacts_summary",
   opportunities_summary: "opportunities_summary",
+  contact_organization_details: "contact_organization_details",
   // deals_summary: REMOVED - use opportunities_summary
 
   // Notes/activities

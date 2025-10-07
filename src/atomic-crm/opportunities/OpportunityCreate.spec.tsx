@@ -45,8 +45,7 @@ const mockConfiguration = {
     { id: 'decision_maker', name: 'Decision Maker' },
     { id: 'influencer', name: 'Influencer' },
     { id: 'buyer', name: 'Buyer' }
-  ],
-  organizationSectors: ['Technology', 'Healthcare', 'Finance']
+  ]
 };
 
 const mockOrganizations = [

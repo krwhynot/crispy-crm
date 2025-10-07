@@ -6,38 +6,7 @@ import { useFormContext, useInput, useRecordContext } from "ra-core";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import type {
-  ContactOrganization,
-  ContactRole,
-  PurchaseInfluence,
-  DecisionAuthority,
-} from "../types";
-
-// Define choices for SelectInputs based on tests
-const contactRoleChoices: { id: ContactRole; name: string }[] = [
-  { id: "decision_maker", name: "Decision Maker" },
-  { id: "influencer", name: "Influencer" },
-  { id: "buyer", name: "Buyer" },
-  { id: "end_user", name: "End User" },
-  { id: "gatekeeper", name: "Gatekeeper" },
-  { id: "champion", name: "Champion" },
-  { id: "technical", name: "Technical" },
-  { id: "executive", name: "Executive" },
-];
-
-const purchaseInfluenceChoices: { id: PurchaseInfluence; name: string }[] = [
-  { id: "High", name: "High" },
-  { id: "Medium", name: "Medium" },
-  { id: "Low", name: "Low" },
-  { id: "Unknown", name: "Unknown" },
-];
-
-const decisionAuthorityChoices: { id: DecisionAuthority; name: string }[] = [
-  { id: "Decision Maker", name: "Decision Maker" },
-  { id: "Influencer", name: "Influencer" },
-  { id: "End User", name: "End User" },
-  { id: "Gatekeeper", name: "Gatekeeper" },
-];
+import type { ContactOrganization } from "../types";
 
 interface ContactMultiOrgProps {
   source?: string; // The source field for the ArrayInput, defaults to "contact_organizations"
@@ -69,30 +38,6 @@ export const ContactMultiOrg = (props: ContactMultiOrgProps) => {
           >
             <SelectInput optionText="name" emptyText="Select an organization" />
           </ReferenceInput>
-
-          <SelectInput
-            source="role"
-            choices={contactRoleChoices}
-            label="Role"
-            helperText={false}
-            emptyText="Select role"
-          />
-
-          <SelectInput
-            source="purchase_influence"
-            choices={purchaseInfluenceChoices}
-            label="Purchase Influence"
-            helperText={false}
-            emptyText="Select influence level"
-          />
-
-          <SelectInput
-            source="decision_authority"
-            choices={decisionAuthorityChoices}
-            label="Decision Authority"
-            helperText={false}
-            emptyText="Select authority level"
-          />
 
           <PrimaryOrganizationCheckbox
             source="is_primary"

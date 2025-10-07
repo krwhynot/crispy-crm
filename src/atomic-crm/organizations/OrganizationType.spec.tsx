@@ -26,7 +26,6 @@ const mockCompanies = [
     city: 'San Francisco',
     zipcode: '94105',
     stateAbbr: 'CA',
-    country: 'USA',
     revenue: 50000000,
     size: 'Large',
     parent_company_id: null,
@@ -47,7 +46,6 @@ const mockCompanies = [
     city: 'Austin',
     zipcode: '73301',
     stateAbbr: 'TX',
-    country: 'USA',
     revenue: 100000000,
     size: 'Large',
     parent_company_id: null,
@@ -68,7 +66,6 @@ const mockCompanies = [
     city: 'Chicago',
     zipcode: '60601',
     stateAbbr: 'IL',
-    country: 'USA',
     revenue: 25000000,
     size: 'Medium',
     parent_company_id: null,
@@ -78,18 +75,17 @@ const mockCompanies = [
   },
   {
     id: 4,
-    name: 'Vendor Services Co',
+    name: 'Partner Services Co',
     sector: 'Services',
-    organization_type: 'vendor',
+    organization_type: 'partner',
     priority: 'C',
     segment: 'SMB',
-    website: 'https://vendorservices.com',
+    website: 'https://partnerservices.com',
     phone_number: '+1-555-0400',
     address: '321 Service Road',
     city: 'Denver',
     zipcode: '80202',
     stateAbbr: 'CO',
-    country: 'USA',
     revenue: 5000000,
     size: 'Small',
     parent_company_id: null,
@@ -99,18 +95,17 @@ const mockCompanies = [
   },
   {
     id: 5,
-    name: 'Partner Alliance Inc',
+    name: 'Prospect Alliance Inc',
     sector: 'Technology',
-    organization_type: 'partner',
+    organization_type: 'prospect',
     priority: 'B',
-    segment: 'Strategic Partner',
-    website: 'https://partneralliance.com',
+    segment: 'Strategic Prospect',
+    website: 'https://prospectalliance.com',
     phone_number: '+1-555-0500',
-    address: '555 Partner Plaza',
+    address: '555 Prospect Plaza',
     city: 'Seattle',
     zipcode: '98101',
     stateAbbr: 'WA',
-    country: 'USA',
     revenue: 15000000,
     size: 'Medium',
     parent_company_id: null,
@@ -289,7 +284,6 @@ describe('Company Organization Type Support', () => {
       await waitFor(() => {
         expect(screen.getByText('Customer')).toBeInTheDocument();
         expect(screen.getByText('Prospect')).toBeInTheDocument();
-        expect(screen.getByText('Vendor')).toBeInTheDocument();
         expect(screen.getByText('Partner')).toBeInTheDocument();
         expect(screen.getByText('Principal')).toBeInTheDocument();
         expect(screen.getByText('Distributor')).toBeInTheDocument();
@@ -479,8 +473,8 @@ describe('Company Organization Type Support', () => {
         expect(screen.getByText('Acme Corp')).toBeInTheDocument();
         expect(screen.getByText('Principal Solutions Inc')).toBeInTheDocument();
         expect(screen.getByText('Tech Distributors Ltd')).toBeInTheDocument();
-        expect(screen.getByText('Vendor Services Co')).toBeInTheDocument();
-        expect(screen.getByText('Partner Alliance Inc')).toBeInTheDocument();
+        expect(screen.getByText('Partner Services Co')).toBeInTheDocument();
+        expect(screen.getByText('Prospect Alliance Inc')).toBeInTheDocument();
       });
     });
 
@@ -495,8 +489,8 @@ describe('Company Organization Type Support', () => {
         expect(screen.getByText('Customer')).toBeInTheDocument();
         expect(screen.getByText('Principal')).toBeInTheDocument();
         expect(screen.getByText('Distributor')).toBeInTheDocument();
-        expect(screen.getByText('Vendor')).toBeInTheDocument();
         expect(screen.getByText('Partner')).toBeInTheDocument();
+        expect(screen.getByText('Prospect')).toBeInTheDocument();
       });
     });
 
@@ -793,8 +787,8 @@ describe('Company Organization Type Support', () => {
         customer: 1,
         principal: 1,
         distributor: 1,
-        vendor: 1,
-        partner: 1
+        partner: 1,
+        prospect: 1
       });
 
       // Test priority distribution

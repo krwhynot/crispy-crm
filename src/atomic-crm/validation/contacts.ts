@@ -5,35 +5,6 @@ import { z } from "zod";
  * Implements validation rules from ContactInputs.tsx
  */
 
-// Contact role enum
-export const contactRoleSchema = z.enum([
-  "decision_maker",
-  "influencer",
-  "buyer",
-  "end_user",
-  "gatekeeper",
-  "champion",
-  "technical",
-  "executive",
-  "unknown",
-]);
-
-// Purchase influence enum
-export const purchaseInfluenceSchema = z.enum([
-  "High",
-  "Medium",
-  "Low",
-  "Unknown",
-]);
-
-// Decision authority enum
-export const decisionAuthoritySchema = z.enum([
-  "Decision Maker",
-  "Influencer",
-  "End User",
-  "Gatekeeper",
-]);
-
 // Email and phone type enum
 export const personalInfoTypeSchema = z.enum(["Work", "Home", "Other"]);
 
@@ -75,11 +46,8 @@ export const contactOrganizationSchema = z
   .object({
     id: z.union([z.string(), z.number()]).optional(),
     contact_id: z.union([z.string(), z.number()]).optional(),
-    organization_id: z.union([z.string(), z.number()]),
+    organization_id: z.union([z.string(), z.number()]).optional(),
     is_primary: z.boolean().default(false),
-    purchase_influence: purchaseInfluenceSchema.default("Unknown"),
-    decision_authority: decisionAuthoritySchema.default("End User"),
-    role: contactRoleSchema.optional(),
     created_at: z.string().optional(),
     updated_at: z.string().optional(),
     deleted_at: z.string().optional().nullable(),
@@ -102,7 +70,7 @@ export const contactSchema = z
     id: z.union([z.string(), z.number()]).optional(),
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
-    title: z.string().optional(),
+    title: z.string().optional().nullable(),
     email: z.array(emailAndTypeSchema).default([]),
     avatar: z.any().optional(), // Partial<RAFile>
     linkedin_url: isLinkedinUrl,
@@ -110,7 +78,7 @@ export const contactSchema = z
     last_seen: z.string().optional(),
     has_newsletter: z.boolean().default(false),
     tags: z.array(z.union([z.string(), z.number()])).optional(),
-    gender: z.string().optional(),
+    gender: z.string().optional().nullable(),
     // Using refine to ensure 'sales_id' is present and not an empty string,
     // as .min(1) on a union of string | number caused a TypeError.
     sales_id: z
@@ -141,11 +109,6 @@ export const contactSchema = z
         "Field 'company_id' is no longer supported. Use contact_organizations relationship instead.",
       );
     }
-    if ("role" in data) {
-      throw new Error(
-        "Field 'role' is no longer supported at contact level. Use role in contact_organizations relationship instead.",
-      );
-    }
     if ("department" in data) {
       throw new Error(
         "Field 'department' is no longer supported at contact level. Define department in contact_organizations relationship instead.",
@@ -154,16 +117,6 @@ export const contactSchema = z
     if ("is_primary_contact" in data) {
       throw new Error(
         "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead.",
-      );
-    }
-    if ("purchase_influence" in data) {
-      throw new Error(
-        "Field 'purchase_influence' is no longer supported at contact level. Use purchase_influence in contact_organizations relationship instead.",
-      );
-    }
-    if ("decision_authority" in data) {
-      throw new Error(
-        "Field 'decision_authority' is no longer supported at contact level. Use decision_authority in contact_organizations relationship instead.",
       );
     }
     return true;
@@ -297,9 +250,8 @@ export const createContactSchema = contactSchema
   });
 
 // Update-specific schema (more flexible)
-export const updateContactSchema = contactSchema.partial().required({
-  id: true,
-});
+// ID is passed in params.id by React Admin, not in data
+export const updateContactSchema = contactSchema.partial();
 
 // Export validation functions for specific operations
 export async function validateCreateContact(data: any): Promise<void> {

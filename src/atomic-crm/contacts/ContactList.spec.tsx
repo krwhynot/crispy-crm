@@ -106,8 +106,7 @@ const mockConfiguration = {
     { id: "influencer", name: "Influencer" },
     { id: "buyer", name: "Buyer" },
     { id: "end_user", name: "End User" },
-  ],
-  organizationSectors: ["Technology", "Healthcare", "Finance"],
+  ]
 };
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {

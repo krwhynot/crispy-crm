@@ -10,7 +10,6 @@ import { z } from "zod";
 export const organizationTypeSchema = z.enum([
   "customer",
   "prospect",
-  "vendor",
   "partner",
   "principal",
   "distributor",
@@ -62,7 +61,7 @@ export const organizationSchema = z.object({
   name: z.string().min(1, "Company name is required"),
   logo: z.any().optional(), // RAFile type
   // Updated field names to match database schema
-  industry: z.string().optional(), // was: sector
+  industry_id: z.string().uuid().nullable(), // was: industry (text field)
   employee_count: companySizeSchema.optional(), // was: size
   linkedin_url: isLinkedinUrl.optional(),
   website: isValidUrl.optional(),
@@ -71,15 +70,13 @@ export const organizationSchema = z.object({
   postal_code: z.string().optional(), // was: zipcode
   city: z.string().optional(),
   state: z.string().optional(), // was: stateAbbr
-  country: z.string().optional(),
   sales_id: z.union([z.string(), z.number()]).optional(),
   description: z.string().optional(),
   annual_revenue: z.union([z.string(), z.number()]).optional(), // was: revenue (now accepts both string and number for input flexibility)
-  tax_identifier: z.string().optional(),
   context_links: z.array(isValidUrl).optional(),
 
   // Organization-specific fields
-  organization_type: organizationTypeSchema.optional(),
+  organization_type: organizationTypeSchema, // Required field
   is_principal: z.boolean().optional(),
   is_distributor: z.boolean().optional(),
   parent_organization_id: z.union([z.string(), z.number()]).optional().nullable(),

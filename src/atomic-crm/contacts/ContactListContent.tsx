@@ -81,13 +81,6 @@ export const ContactListContent = () => {
                     <TextField source="name" />
                   </ReferenceField>
                 )}
-                {contact.role && (
-                  <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs">
-                    {contact.role
-                      .replace("_", " ")
-                      .replace(/\b\w/g, (l) => l.toUpperCase())}
-                  </span>
-                )}
                 {contact.nb_tasks
                   ? ` - ${contact.nb_tasks} task${
                       contact.nb_tasks > 1 ? "s" : ""
