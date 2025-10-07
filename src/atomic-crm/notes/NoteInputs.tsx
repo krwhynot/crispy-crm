@@ -5,14 +5,10 @@ import { cn } from "@/lib/utils.ts";
 import { TextInput } from "@/components/admin/text-input";
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
-import { SelectInput } from "@/components/admin/select-input";
 import { Button } from "@/components/ui/button";
-import { Status } from "../misc/Status";
-import { useConfigurationContext } from "../root/ConfigurationContext";
 import { getCurrentDate, formatDateForInput } from "../validation/notes";
 
-export const NoteInputs = ({ showStatus }: { showStatus?: boolean }) => {
-  const { noteStatuses } = useConfigurationContext();
+export const NoteInputs = () => {
   const [displayMore, setDisplayMore] = useState(false);
   const { setValue } = useFormContext();
 
@@ -40,7 +36,7 @@ export const NoteInputs = ({ showStatus }: { showStatus?: boolean }) => {
             Show options
           </Button>
           <span className="text-sm text-muted-foreground">
-            (change date/time, attach files{showStatus ? ', or change status' : ''})
+            (change date/time or attach files)
           </span>
         </div>
       )}
@@ -59,31 +55,10 @@ export const NoteInputs = ({ showStatus }: { showStatus?: boolean }) => {
           className="text-primary"
           defaultValue={formatDateForInput()}
         />
-        {showStatus && (
-          <SelectInput
-            source="status"
-            choices={noteStatuses.map((status) => ({
-              id: status.value,
-              name: status.label,
-              value: status.value,
-            }))}
-            optionText={optionRenderer}
-            defaultValue={"warm"}
-            helperText={false}
-          />
-        )}
         <FileInput source="attachments" multiple>
           <FileField source="src" title="title" target="_blank" />
         </FileInput>
       </div>
-    </div>
-  );
-};
-
-const optionRenderer = (choice: any) => {
-  return (
-    <div>
-      <Status status={choice.value} /> {choice.name}
     </div>
   );
 };

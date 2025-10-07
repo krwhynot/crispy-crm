@@ -52,25 +52,6 @@ const ContactShowContent = () => {
                     </ReferenceField>
                   )}
                 </div>
-                {record.role && (
-                  <div className="text-sm text-muted-foreground">
-                    Role:{" "}
-                    {record.role
-                      .replace("_", " ")
-                      .replace(/\b\w/g, (l) => l.toUpperCase())}
-                    {record.purchase_influence &&
-                      record.purchase_influence !== "Unknown" && (
-                        <span>
-                          {" "}
-                          • Purchase Influence: {record.purchase_influence}
-                        </span>
-                      )}
-                    {record.decision_authority &&
-                      record.decision_authority !== "End User" && (
-                        <span> • {record.decision_authority}</span>
-                      )}
-                  </div>
-                )}
               </div>
               <div>
                 {record.organizations?.find((org) => org.is_primary) && (
@@ -112,29 +93,6 @@ const ContactShowContent = () => {
                         >
                           <TextField source="name" />
                         </ReferenceField>
-                        <div className="text-sm text-muted-foreground mt-1">
-                          {org.role && (
-                            <span>
-                              Role:{" "}
-                              {org.role
-                                .replace("_", " ")
-                                .replace(/\b\w/g, (l: string) =>
-                                  l.toUpperCase(),
-                                )}
-                            </span>
-                          )}
-                          {org.purchase_influence &&
-                            org.purchase_influence !== "Unknown" && (
-                              <span>
-                                {" "}
-                                • Influence: {org.purchase_influence}
-                              </span>
-                            )}
-                          {org.decision_authority &&
-                            org.decision_authority !== "End User" && (
-                              <span> • {org.decision_authority}</span>
-                            )}
-                        </div>
                       </div>
                       <div className="text-sm">
                         {org.is_primary && (
@@ -153,9 +111,9 @@ const ContactShowContent = () => {
               target="contact_id"
               reference="contactNotes"
               sort={{ field: "created_at", order: "DESC" }}
-              empty={<NoteCreate reference="contacts" showStatus />}
+              empty={<NoteCreate reference="contacts" />}
             >
-              <NotesIterator reference="contacts" showStatus />
+              <NotesIterator reference="contacts" />
             </ReferenceManyField>
           </CardContent>
         </Card>

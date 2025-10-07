@@ -11,14 +11,17 @@ import type {
   ActivityRecord
 } from "../../../types";
 import type { ProductFormData } from "../../../validation/products";
+import type { Industry } from "../../../validation/industries";
 
 // Import all validation schemas
-import { validateContactForm } from "../../../validation/contacts";
+import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
 import { validateOrganizationForSubmission } from "../../../validation/organizations";
 import { validateOpportunityForm } from "../../../validation/opportunities";
 import {
-  validateContactNoteForSubmission,
-  validateOpportunityNoteForSubmission
+  validateCreateContactNote,
+  validateUpdateContactNote,
+  validateCreateOpportunityNote,
+  validateUpdateOpportunityNote
 } from "../../../validation/notes";
 import { validateTaskForSubmission } from "../../../validation/tasks";
 import { validateProductForm } from "../../../validation/products";
@@ -29,6 +32,7 @@ import {
   validateEngagementsForm,
   validateInteractionsForm
 } from "../../../validation/activities";
+import { validateCreateIndustry, validateUpdateIndustry } from "../../../validation/industries";
 
 // Type for validation functions
 type ValidationFunction<T = unknown> = (data: T) => Promise<void> | void;
@@ -52,6 +56,7 @@ type ResourceTypeMap = {
   activities: ActivityRecord;
   engagements: ActivityRecord;
   interactions: ActivityRecord;
+  industries: Industry;
 };
 
 /**
@@ -65,7 +70,7 @@ export class ValidationService {
   private validationRegistry: Record<string, ValidationHandlers<unknown>> = {
     contacts: {
       create: async (data: unknown) => validateContactForm(data),
-      update: async (data: unknown) => validateContactForm(data),
+      update: async (data: unknown) => validateUpdateContact(data),
     },
     organizations: {
       create: async (data: unknown) => validateOrganizationForSubmission(data),
@@ -91,18 +96,18 @@ export class ValidationService {
     },
     contactNotes: {
       create: async (data: unknown) => {
-        await validateContactNoteForSubmission(data);
+        validateCreateContactNote(data);
       },
       update: async (data: unknown) => {
-        await validateContactNoteForSubmission(data);
+        validateUpdateContactNote(data);
       },
     },
     opportunityNotes: {
       create: async (data: unknown) => {
-        await validateOpportunityNoteForSubmission(data);
+        validateCreateOpportunityNote(data);
       },
       update: async (data: unknown) => {
-        await validateOpportunityNoteForSubmission(data);
+        validateUpdateOpportunityNote(data);
       },
     },
     tasks: {
@@ -128,6 +133,14 @@ export class ValidationService {
     interactions: {
       create: async (data: unknown) => validateInteractionsForm(data),
       update: async (data: unknown) => validateInteractionsForm(data),
+    },
+    industries: {
+      create: async (data: unknown) => {
+        validateCreateIndustry(data);
+      },
+      update: async (data: unknown) => {
+        validateUpdateIndustry(data);
+      },
     },
   };
 
@@ -156,5 +169,14 @@ export class ValidationService {
       await validator.update(data);
     }
     // Other methods (getList, getOne, delete) typically don't need validation
+  }
+
+  /**
+   * Check if a resource has validation configured
+   * @param resource The resource to check
+   * @returns true if validation is configured for this resource
+   */
+  hasValidation(resource: string): boolean {
+    return !!this.validationRegistry[resource];
   }
 }

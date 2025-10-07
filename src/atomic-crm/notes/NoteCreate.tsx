@@ -22,10 +22,8 @@ const foreignKeyMapping = {
 
 export const NoteCreate = ({
   reference,
-  showStatus,
 }: {
   reference: "contacts" | "opportunities";
-  showStatus?: boolean;
 }) => {
   const resource = useResourceContext();
   const record = useRecordContext();
@@ -37,7 +35,7 @@ export const NoteCreate = ({
     <CreateBase resource={resource} redirect={false}>
       <Form>
         <div className="space-y-3">
-          <NoteInputs showStatus={showStatus} />
+          <NoteInputs />
           <NoteCreateButton reference={reference} record={record} />
         </div>
       </Form>
@@ -60,30 +58,21 @@ const NoteCreateButton = ({
 
   if (!record || !identity) return null;
 
-  const resetValues: {
-    text: null;
-    date: null;
-    attachments: null;
-    status?: string;
-  } = {
+  const resetValues = {
     text: null,
     date: null,
     attachments: null,
   };
 
-  if (reference === "contacts") {
-    resetValues.status = "warm";
-  }
-
-  const handleSuccess = (data: any) => {
+  const handleSuccess = () => {
     reset(resetValues, { keepValues: false });
     refetch();
 
-    // Only update last_seen and status for contacts (opportunities don't have last_seen)
+    // Only update last_seen for contacts (opportunities don't have last_seen)
     if (reference === "contacts") {
       update(reference, {
         id: (record && record.id) as unknown as Identifier,
-        data: { last_seen: new Date().toISOString(), status: data.status },
+        data: { last_seen: new Date().toISOString() },
         previousData: record,
       });
     }
