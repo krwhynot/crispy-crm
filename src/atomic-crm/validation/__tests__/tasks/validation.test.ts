@@ -18,9 +18,9 @@ import { z } from "zod";
 describe("Task Validation Schemas", () => {
   describe("taskSchema", () => {
     const validTask = {
-      text: "Follow up with client",
+      title: "Follow up with client",
       contact_id: "contact-123",
-      type: "call",
+      type: "Call",
       due_date: "2024-12-31T10:00:00Z",
       sales_id: "user-456",
     };
@@ -28,13 +28,13 @@ describe("Task Validation Schemas", () => {
     it("should accept valid task data", () => {
       const result = taskSchema.parse(validTask);
       expect(result).toBeDefined();
-      expect(result.text).toBe("Follow up with client");
-      expect(result.type).toBe("call");
+      expect(result.title).toBe("Follow up with client");
+      expect(result.type).toBe("Call");
       expect(result.contact_id).toBe("contact-123");
     });
 
-    it("should reject empty text", () => {
-      const invalidData = { ...validTask, text: "" };
+    it("should reject empty title", () => {
+      const invalidData = { ...validTask, title: "" };
       expect(() => taskSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
@@ -50,8 +50,8 @@ describe("Task Validation Schemas", () => {
 
     it("should require contact_id", () => {
       const withoutContact = {
-        text: "Task without contact",
-        type: "call",
+        title: "Task without contact",
+        type: "Call",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: "user-456",
       };
@@ -60,9 +60,9 @@ describe("Task Validation Schemas", () => {
 
     it("should require sales_id", () => {
       const withoutSalesId = {
-        text: "Task without sales",
+        title: "Task without sales",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: "2024-12-31T10:00:00Z",
       };
       expect(() => taskSchema.parse(withoutSalesId)).toThrow(z.ZodError);
@@ -72,9 +72,9 @@ describe("Task Validation Schemas", () => {
       expect(() => taskSchema.parse(validTask)).not.toThrow();
 
       const withNumberIds = {
-        text: "Task with number IDs",
+        title: "Task with number IDs",
         contact_id: 123,
-        type: "email",
+        type: "Email",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: 456,
       };
@@ -106,12 +106,14 @@ describe("Task Validation Schemas", () => {
 
     it("should validate different task types", () => {
       const taskTypes = [
-        "call",
-        "email",
-        "meeting",
-        "todo",
-        "follow-up",
-        "reminder",
+        "Call",
+        "Email",
+        "Meeting",
+        "Follow-up",
+        "Proposal",
+        "Discovery",
+        "Administrative",
+        "None",
       ];
 
       taskTypes.forEach((type) => {
@@ -124,9 +126,9 @@ describe("Task Validation Schemas", () => {
   describe("createTaskSchema", () => {
     it("should require essential fields for creation", () => {
       const validCreate = {
-        text: "New Task",
+        title: "New Task",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: "user-456",
       };
@@ -139,15 +141,15 @@ describe("Task Validation Schemas", () => {
 
       expect(() =>
         createTaskSchema.parse({
-          text: "Test",
+          title: "Test",
         }),
       ).toThrow(z.ZodError);
 
       expect(() =>
         createTaskSchema.parse({
-          text: "Test",
+          title: "Test",
           contact_id: "contact-123",
-          type: "call",
+          type: "Call",
         }),
       ).toThrow(z.ZodError);
     });
@@ -155,9 +157,9 @@ describe("Task Validation Schemas", () => {
     it("should not allow id field on creation", () => {
       const dataWithId = {
         id: "should-not-be-here",
-        text: "New Task",
+        title: "New Task",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: "user-456",
       };
@@ -168,9 +170,9 @@ describe("Task Validation Schemas", () => {
 
     it("should not allow done_date on creation", () => {
       const dataWithDoneDate = {
-        text: "New Task",
+        title: "New Task",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: "user-456",
         done_date: "2024-12-30T10:00:00Z",
@@ -185,7 +187,7 @@ describe("Task Validation Schemas", () => {
     it("should require id for updates", () => {
       const validUpdate = {
         id: "task-123",
-        text: "Updated Text",
+        title: "Updated Text",
       };
 
       expect(() => updateTaskSchema.parse(validUpdate)).not.toThrow();
@@ -193,7 +195,7 @@ describe("Task Validation Schemas", () => {
 
     it("should reject updates without id", () => {
       const invalidUpdate = {
-        text: "Updated Text",
+        title: "Updated Text",
       };
 
       expect(() => updateTaskSchema.parse(invalidUpdate)).toThrow(z.ZodError);
@@ -201,10 +203,10 @@ describe("Task Validation Schemas", () => {
 
     it("should allow partial updates", () => {
       expect(() =>
-        updateTaskSchema.parse({ id: "t-1", text: "New text" }),
+        updateTaskSchema.parse({ id: "t-1", title: "New text" }),
       ).not.toThrow();
       expect(() =>
-        updateTaskSchema.parse({ id: "t-1", type: "email" }),
+        updateTaskSchema.parse({ id: "t-1", type: "Email" }),
       ).not.toThrow();
       expect(() =>
         updateTaskSchema.parse({ id: "t-1", due_date: "2025-01-01T10:00:00Z" }),
@@ -243,9 +245,9 @@ describe("Task Validation Schemas", () => {
       futureDate.setDate(futureDate.getDate() + 7);
 
       const validTaskWithReminder = {
-        text: "Task with reminder",
+        title: "Task with reminder",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: futureDate.toISOString(),
         sales_id: "user-456",
       };
@@ -260,9 +262,9 @@ describe("Task Validation Schemas", () => {
       pastDate.setDate(pastDate.getDate() - 7);
 
       const invalidTaskWithReminder = {
-        text: "Task with past date",
+        title: "Task with past date",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: pastDate.toISOString(),
         sales_id: "user-456",
       };
@@ -274,9 +276,9 @@ describe("Task Validation Schemas", () => {
 
     it("should handle tasks without due dates", () => {
       const taskWithoutDueDate = {
-        text: "Task without date",
+        title: "Task without date",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: "",
         sales_id: "user-456",
       };
@@ -291,23 +293,23 @@ describe("Task Validation Schemas", () => {
     describe("validateCreateTask", () => {
       it("should validate and return parsed data", () => {
         const validData = {
-          text: "New Task",
+          title: "New Task",
           contact_id: "contact-123",
-          type: "email",
+          type: "Email",
           due_date: "2024-12-31T10:00:00Z",
           sales_id: "user-456",
         };
 
         const result = validateCreateTask(validData);
-        expect(result.text).toBe("New Task");
+        expect(result.title).toBe("New Task");
         expect(result.contact_id).toBe("contact-123");
       });
 
       it("should throw for invalid creation data", () => {
         const invalidData = {
-          text: "",
+          title: "",
           contact_id: "contact-123",
-          type: "call",
+          type: "Call",
           due_date: "2024-12-31T10:00:00Z",
           sales_id: "user-456",
         };
@@ -317,8 +319,8 @@ describe("Task Validation Schemas", () => {
 
       it("should reject incomplete creation data", () => {
         const incompleteData = {
-          text: "New Task",
-          type: "meeting",
+          title: "New Task",
+          type: "Meeting",
         };
 
         expect(() => validateCreateTask(incompleteData)).toThrow(z.ZodError);
@@ -329,19 +331,19 @@ describe("Task Validation Schemas", () => {
       it("should validate and return parsed data", () => {
         const validData = {
           id: "task-123",
-          text: "Updated Task",
+          title: "Updated Task",
           done_date: "2024-12-20T10:00:00Z",
         };
 
         const result = validateUpdateTask(validData);
         expect(result.id).toBe("task-123");
-        expect(result.text).toBe("Updated Task");
+        expect(result.title).toBe("Updated Task");
         expect(result.done_date).toBe("2024-12-20T10:00:00Z");
       });
 
       it("should throw for update without id", () => {
         const invalidData = {
-          text: "Updated Task",
+          title: "Updated Task",
         };
 
         expect(() => validateUpdateTask(invalidData)).toThrow(z.ZodError);
@@ -354,22 +356,22 @@ describe("Task Validation Schemas", () => {
         futureDate.setMonth(futureDate.getMonth() + 1);
 
         const validData = {
-          text: "Important reminder",
+          title: "Important reminder",
           contact_id: "contact-123",
-          type: "follow-up",
+          type: "Follow-up",
           due_date: futureDate.toISOString(),
           sales_id: "user-456",
         };
 
         const result = validateTaskWithReminder(validData);
-        expect(result.text).toBe("Important reminder");
+        expect(result.title).toBe("Important reminder");
       });
 
       it("should reject reminders for past dates", () => {
         const pastData = {
-          text: "Late reminder",
+          title: "Late reminder",
           contact_id: "contact-123",
-          type: "call",
+          type: "Call",
           due_date: "2020-01-01T10:00:00Z",
           sales_id: "user-456",
         };
