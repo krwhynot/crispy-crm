@@ -1,28 +1,26 @@
 import type { DataProvider } from "ra-core";
 import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
-import type { Company, Tag } from "../types";
+import type { Organization, Tag } from "../types";
 
 export interface ContactImportSchema {
   first_name: string;
   last_name: string;
-  gender: string;
-  title: string;
-  company: string;
-  email_work: string;
-  email_home: string;
-  email_other: string;
-  phone_work: string;
-  phone_home: string;
-  phone_other: string;
-  background: string;
-  avatar: string;
-  first_seen: string;
-  last_seen: string;
-  has_newsletter: string;
-  status: string;
-  tags: string;
-  linkedin_url: string;
+  gender?: string;
+  title?: string;
+  organization_name: string; // Primary organization (mandatory)
+  organization_role?: string; // Role at organization (optional)
+  email_work?: string;
+  email_home?: string;
+  email_other?: string;
+  phone_work?: string;
+  phone_home?: string;
+  phone_other?: string;
+  avatar?: string;
+  first_seen?: string;
+  last_seen?: string;
+  tags?: string;
+  linkedin_url?: string;
 }
 
 export function useContactImport() {
@@ -30,18 +28,18 @@ export function useContactImport() {
   const user = useGetIdentity();
   const dataProvider = useDataProvider();
 
-  // company cache to avoid creating the same company multiple times and costly roundtrips
+  // organization cache to avoid creating the same organization multiple times and costly roundtrips
   // Cache is dependent of dataProvider, so it's safe to use it as a dependency
-  const companiesCache = useMemo(
-    () => new Map<string, Company>(),
+  const organizationsCache = useMemo(
+    () => new Map<string, Organization>(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [dataProvider],
   );
-  const getCompanies = useCallback(
+  const getOrganizations = useCallback(
     async (names: string[]) =>
-      fetchRecordsWithCache<Company>(
+      fetchRecordsWithCache<Organization>(
         "organizations",
-        companiesCache,
+        organizationsCache,
         names,
         (name) => ({
           name,
@@ -50,7 +48,7 @@ export function useContactImport() {
         }),
         dataProvider,
       ),
-    [companiesCache, user?.identity?.id, dataProvider],
+    [organizationsCache, user?.identity?.id, dataProvider],
   );
 
   // Tags cache to avoid creating the same tag multiple times and costly roundtrips
@@ -74,10 +72,10 @@ export function useContactImport() {
 
   const processBatch = useCallback(
     async (batch: ContactImportSchema[]) => {
-      const [companies, tags] = await Promise.all([
-        getCompanies(
+      const [organizations, tags] = await Promise.all([
+        getOrganizations(
           batch
-            .map((contact) => contact.company?.trim())
+            .map((contact) => contact.organization_name?.trim())
             .filter((name) => name),
         ),
         getTags(batch.flatMap((batch) => parseTags(batch.tags))),
@@ -96,12 +94,10 @@ export function useContactImport() {
             phone_work,
             phone_home,
             phone_other,
-            background,
             first_seen,
             last_seen,
-            has_newsletter,
-            status,
-            company: companyName,
+            organization_name,
+            organization_role,
             tags: tagNames,
             linkedin_url,
           }) => {
@@ -115,14 +111,32 @@ export function useContactImport() {
               { number: phone_home, type: "Home" },
               { number: phone_other, type: "Other" },
             ].filter(({ number }) => number);
-            const company = companyName?.trim()
-              ? companies.get(companyName.trim())
-              : undefined;
+
+            const trimmedOrgName = organization_name?.trim();
+            // Fail fast: Ensure a primary organization name is provided
+            if (!trimmedOrgName) {
+              console.warn(
+                `Skipping contact ${first_name} ${last_name} due to missing primary organization name.`,
+              );
+              return Promise.resolve(); // Skip processing this contact
+            }
+
+            const organization = organizations.get(trimmedOrgName);
+
+            // Fail fast: If organization doesn't exist and couldn't be created, skip
+            if (!organization?.id) {
+              console.error(
+                `Failed to find or create organization "${trimmedOrgName}" for contact ${first_name} ${last_name}. Skipping contact.`,
+              );
+              return Promise.resolve();
+            }
+
             const tagList = parseTags(tagNames)
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 
-            return dataProvider.create("contacts", {
+            // Step 1: Create the contact record
+            const contactResponse = await dataProvider.create("contacts", {
               data: {
                 first_name,
                 last_name,
@@ -130,26 +144,40 @@ export function useContactImport() {
                 title,
                 email,
                 phone,
-                background,
                 first_seen: first_seen
                   ? new Date(first_seen).toISOString()
                   : today,
                 last_seen: last_seen
                   ? new Date(last_seen).toISOString()
                   : today,
-                has_newsletter,
-                status,
-                company_id: company?.id,
                 tags: tagList.map((tag) => tag.id),
                 sales_id: user?.identity?.id,
                 linkedin_url,
               },
             });
+
+            const contactId = contactResponse.data.id;
+
+            // Step 2: Create the contact_organization junction table entry
+            if (contactId) {
+              await dataProvider.create("contact_organizations", {
+                data: {
+                  contact_id: contactId,
+                  organization_id: organization.id,
+                  is_primary: true, // Imported organization is primary
+                  role: organization_role || "decision_maker", // Default role
+                },
+              });
+            } else {
+              console.error(
+                `Failed to retrieve contact ID for ${first_name} ${last_name}. Cannot link to organization.`,
+              );
+            }
           },
         ),
       );
     },
-    [dataProvider, getCompanies, getTags, user?.identity?.id, today],
+    [dataProvider, getOrganizations, getTags, user?.identity?.id, today],
   );
 
   return processBatch;
