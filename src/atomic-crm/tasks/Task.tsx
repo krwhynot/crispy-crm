@@ -80,7 +80,8 @@ export const Task = ({
     update("tasks", {
       id: task.id,
       data: {
-        done_date: task.done_date ? null : new Date().toISOString(),
+        completed: !task.completed_at,
+        completed_at: task.completed_at ? null : new Date().toISOString(),
       },
       previousData: task,
     });
@@ -91,7 +92,7 @@ export const Task = ({
     if (
       isUpdatePending ||
       !isSuccess ||
-      variables?.data?.done_date != undefined
+      variables?.data?.completed_at != undefined
     ) {
       return;
     }
@@ -107,12 +108,12 @@ export const Task = ({
         <div className="flex items-start gap-2 flex-1">
           <Checkbox
             id={labelId}
-            checked={!!task.done_date}
+            checked={!!task.completed_at}
             onCheckedChange={handleCheck()}
             disabled={isUpdatePending}
             className="mt-1"
           />
-          <div className={`flex-grow ${task.done_date ? "line-through" : ""}`}>
+          <div className={`flex-grow ${task.completed_at ? "line-through" : ""}`}>
             <div className="text-sm">
               {task.type && task.type !== "None" && (
                 <>

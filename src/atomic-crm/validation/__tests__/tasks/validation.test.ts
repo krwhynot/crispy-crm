@@ -86,20 +86,20 @@ describe("Task Validation Schemas", () => {
       expect(() => taskSchema.parse({ ...validTask, id: 789 })).not.toThrow();
     });
 
-    it("should handle done_date field", () => {
+    it("should handle completed_at field", () => {
       const completedTask = {
         ...validTask,
-        done_date: "2024-12-20T10:00:00Z",
+        completed_at: "2024-12-20T10:00:00Z",
       };
 
       const result = taskSchema.parse(completedTask);
-      expect(result.done_date).toBe("2024-12-20T10:00:00Z");
+      expect(result.completed_at).toBe("2024-12-20T10:00:00Z");
 
-      const taskWithNullDone = {
+      const taskWithNullCompleted = {
         ...validTask,
-        done_date: null,
+        completed_at: null,
       };
-      expect(() => taskSchema.parse(taskWithNullDone)).not.toThrow();
+      expect(() => taskSchema.parse(taskWithNullCompleted)).not.toThrow();
 
       expect(() => taskSchema.parse(validTask)).not.toThrow();
     });
@@ -168,18 +168,18 @@ describe("Task Validation Schemas", () => {
       expect("id" in result).toBe(false);
     });
 
-    it("should not allow done_date on creation", () => {
-      const dataWithDoneDate = {
+    it("should allow completed_at on creation", () => {
+      const dataWithCompletedAt = {
         title: "New Task",
         contact_id: "contact-123",
         type: "Call",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: "user-456",
-        done_date: "2024-12-30T10:00:00Z",
+        completed_at: "2024-12-30T10:00:00Z",
       };
 
-      const result = createTaskSchema.parse(dataWithDoneDate);
-      expect("done_date" in result).toBe(false);
+      const result = createTaskSchema.parse(dataWithCompletedAt);
+      expect(result.completed_at).toBe("2024-12-30T10:00:00Z");
     });
   });
 
@@ -214,7 +214,7 @@ describe("Task Validation Schemas", () => {
       expect(() =>
         updateTaskSchema.parse({
           id: "t-1",
-          done_date: "2024-12-31T10:00:00Z",
+          completed_at: "2024-12-31T10:00:00Z",
         }),
       ).not.toThrow();
       expect(() => updateTaskSchema.parse({ id: "t-1" })).not.toThrow();
@@ -223,16 +223,16 @@ describe("Task Validation Schemas", () => {
     it("should allow marking task as done", () => {
       const markAsDone = {
         id: "task-123",
-        done_date: "2024-12-20T10:00:00Z",
+        completed_at: "2024-12-20T10:00:00Z",
       };
 
       expect(() => updateTaskSchema.parse(markAsDone)).not.toThrow();
     });
 
-    it("should allow clearing done_date", () => {
+    it("should allow clearing completed_at", () => {
       const clearDone = {
         id: "task-123",
-        done_date: null,
+        completed_at: null,
       };
 
       expect(() => updateTaskSchema.parse(clearDone)).not.toThrow();
@@ -332,13 +332,13 @@ describe("Task Validation Schemas", () => {
         const validData = {
           id: "task-123",
           title: "Updated Task",
-          done_date: "2024-12-20T10:00:00Z",
+          completed_at: "2024-12-20T10:00:00Z",
         };
 
         const result = validateUpdateTask(validData);
         expect(result.id).toBe("task-123");
         expect(result.title).toBe("Updated Task");
-        expect(result.done_date).toBe("2024-12-20T10:00:00Z");
+        expect(result.completed_at).toBe("2024-12-20T10:00:00Z");
       });
 
       it("should throw for update without id", () => {

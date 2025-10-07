@@ -38,7 +38,6 @@ export const taskSchema = z.object({
 
   // Optional fields
   description: z.string().nullable().optional(),
-  done_date: z.string().nullable().optional(),
   completed: z.boolean().optional(),
   completed_at: z.string().nullable().optional(),
   priority: z.enum(['low', 'medium', 'high']).default('medium').optional(),
@@ -52,7 +51,7 @@ export const taskSchema = z.object({
 /**
  * Schema for creating a new task
  */
-export const createTaskSchema = taskSchema.omit({ id: true, done_date: true });
+export const createTaskSchema = taskSchema.omit({ id: true });
 
 /**
  * Schema for updating an existing task
@@ -115,13 +114,13 @@ export function validateTaskWithReminder(data: unknown): Task {
 
 /**
  * Transform date for database storage
- * Ensures date is in ISO format with time set to start of day
+ * Ensures date is in ISO format with time set to start of day in UTC
  * @param date - Date string to transform
  * @returns ISO formatted date string
  */
 export function transformTaskDate(date: string): string {
   const taskDate = new Date(date);
-  taskDate.setHours(0, 0, 0, 0);
+  taskDate.setUTCHours(0, 0, 0, 0);
   return taskDate.toISOString();
 }
 
@@ -140,9 +139,9 @@ export function validateTaskForSubmission(data: unknown, isUpdate = false): Task
     validated.due_date = transformTaskDate(validated.due_date);
   }
 
-  // Transform done date if present
-  if (validated.done_date) {
-    validated.done_date = transformTaskDate(validated.done_date);
+  // Transform completed_at if present
+  if (validated.completed_at) {
+    validated.completed_at = transformTaskDate(validated.completed_at);
   }
 
   return validated;

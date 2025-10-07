@@ -13,33 +13,33 @@ describe("Task Transformation Utilities", () => {
   describe("validateTaskForSubmission", () => {
     it("should validate and transform task data", () => {
       const inputData = {
-        text: "Task for submission",
+        title: "Task for submission",
         contact_id: "contact-123",
-        type: "meeting",
+        type: "Meeting",
         due_date: "2024-12-31T15:30:45Z",
         sales_id: "user-456",
       };
 
       const result = validateTaskForSubmission(inputData);
-      expect(result.text).toBe("Task for submission");
+      expect(result.title).toBe("Task for submission");
       // Date should be transformed to start of day
       expect(result.due_date).toMatch(/T00:00:00\.000Z$/);
     });
 
-    it("should transform done_date if present", () => {
-      const dataWithDoneDate = {
-        text: "Completed task",
+    it("should transform completed_at if present", () => {
+      const dataWithCompletedAt = {
+        title: "Completed task",
         contact_id: "contact-123",
-        type: "call",
+        type: "Call",
         due_date: "2024-12-31T15:30:00Z",
         sales_id: "user-456",
-        done_date: "2024-12-20T18:45:30Z",
+        completed_at: "2024-12-20T18:45:30Z",
       };
 
-      const result = validateTaskForSubmission(dataWithDoneDate);
+      const result = validateTaskForSubmission(dataWithCompletedAt);
       // Both dates should be transformed to start of day
       expect(result.due_date).toMatch(/T00:00:00\.000Z$/);
-      expect(result.done_date).toMatch(/T00:00:00\.000Z$/);
+      expect(result.completed_at).toMatch(/T00:00:00\.000Z$/);
     });
   });
 

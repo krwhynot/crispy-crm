@@ -268,12 +268,20 @@ export type Tag = {
 } & Pick<RaRecord, "id">;
 
 export type Task = {
+  title: string;
+  description?: string | null;
   contact_id: Identifier;
   type: string;
-  text: string;
   due_date: string;
-  done_date?: string | null;
+  reminder_date?: string | null;
+  completed?: boolean;
+  completed_at?: string | null;
+  priority?: "low" | "medium" | "high";
+  opportunity_id?: Identifier;
+  sales_id?: Identifier;
   opportunity_owner_id?: Identifier;
+  created_at?: string;
+  updated_at?: string;
 } & Pick<RaRecord, "id">;
 
 export type ActivityOrganizationCreated = {
