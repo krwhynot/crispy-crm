@@ -10,7 +10,7 @@
     "test:unit": "vitest run src/**/*.test.{ts,tsx}",
     "test:smoke": "bash tests/simple-smoke-test.sh",
     "dev": "vite --force",
-    "build": "npx tsc --noEmit && vite build",
+    "build": "./node_modules/.bin/tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint:apply": "eslint **/*.{mjs,ts,tsx} --fix",
     "lint:check": "eslint **/*.{mjs,ts,tsx}",
