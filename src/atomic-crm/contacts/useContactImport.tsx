@@ -25,7 +25,7 @@ export interface ContactImportSchema {
 
 export function useContactImport() {
   const today = new Date().toISOString();
-  const user = useGetIdentity();
+  const { identity } = useGetIdentity();
   const dataProvider = useDataProvider();
 
   // organization cache to avoid creating the same organization multiple times and costly roundtrips
@@ -44,11 +44,11 @@ export function useContactImport() {
         (name) => ({
           name,
           created_at: new Date().toISOString(),
-          sales_id: user?.identity?.id,
+          sales_id: identity?.id,
         }),
         dataProvider,
       ),
-    [organizationsCache, user?.identity?.id, dataProvider],
+    [organizationsCache, identity?.id, dataProvider],
   );
 
   // Tags cache to avoid creating the same tag multiple times and costly roundtrips
@@ -151,7 +151,7 @@ export function useContactImport() {
                   ? new Date(last_seen).toISOString()
                   : today,
                 tags: tagList.map((tag) => tag.id),
-                sales_id: user?.identity?.id,
+                sales_id: identity?.id,
                 linkedin_url,
               },
             });
@@ -177,7 +177,7 @@ export function useContactImport() {
         ),
       );
     },
-    [dataProvider, getOrganizations, getTags, user?.identity?.id, today],
+    [dataProvider, getOrganizations, getTags, identity?.id, today],
   );
 
   return processBatch;
