@@ -33,16 +33,16 @@ const TAG_COLORS = [
   { name: "Renewal", color: "info" },
 ];
 
-// Food & Beverage specific data
-const FB_COMPANY_TYPES = [
-  "Restaurant Chain", "Food Manufacturer", "Beverage Distributor",
-  "Catering Service", "Food Tech Startup", "Brewery", "Winery",
-  "Coffee Roaster", "Bakery Chain", "Meal Kit Service",
-  "Food Truck Fleet", "Ghost Kitchen", "Organic Farm Co-op",
-  "Specialty Food Retailer", "Snack Brand", "Energy Drink Company",
-  "Kombucha Brewery", "Plant-Based Foods", "Artisan Cheese Maker",
-  "Seafood Wholesaler"
-];
+// Food & Beverage specific data (reserved for future use)
+// const _FB_COMPANY_TYPES = [
+//   "Restaurant Chain", "Food Manufacturer", "Beverage Distributor",
+//   "Catering Service", "Food Tech Startup", "Brewery", "Winery",
+//   "Coffee Roaster", "Bakery Chain", "Meal Kit Service",
+//   "Food Truck Fleet", "Ghost Kitchen", "Organic Farm Co-op",
+//   "Specialty Food Retailer", "Snack Brand", "Energy Drink Company",
+//   "Kombucha Brewery", "Plant-Based Foods", "Artisan Cheese Maker",
+//   "Seafood Wholesaler"
+// ];
 
 const FB_COMPANY_NAMES = [
   "Fresh Fork Bistro", "Golden Grain Mills", "Mountain Spring Water Co",

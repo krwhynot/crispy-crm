@@ -2,7 +2,7 @@
  * Tests for mock data providers and test data factories
  */
 
-import { describe, test, expect, beforeEach, vi } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import {
   createMockDataProvider,
   createMockAuthProvider,

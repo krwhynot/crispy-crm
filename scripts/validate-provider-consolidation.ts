@@ -204,7 +204,7 @@ async function validateTestsPassing() {
   try {
     execSync("tsc --noEmit", { encoding: "utf-8", stdio: "pipe" });
     addResult("Tests", "TypeScript compilation", "PASS");
-  } catch (error) {
+  } catch (_error) {
     addResult("Tests", "TypeScript compilation", "FAIL", "TypeScript compilation errors");
   }
 
@@ -212,7 +212,7 @@ async function validateTestsPassing() {
   try {
     execSync("npm run lint:check", { encoding: "utf-8", stdio: "pipe" });
     addResult("Tests", "Lint checks", "PASS");
-  } catch (error) {
+  } catch (_error) {
     addResult("Tests", "Lint checks", "WARN", "Linting errors found");
   }
 
@@ -220,7 +220,7 @@ async function validateTestsPassing() {
   try {
     execSync("npm run test -- --run --reporter=minimal", { encoding: "utf-8", stdio: "pipe" });
     addResult("Tests", "Unit tests", "PASS");
-  } catch (error) {
+  } catch (_error) {
     addResult("Tests", "Unit tests", "WARN", "Some unit tests failing");
   }
 
@@ -241,7 +241,7 @@ async function validateTestsPassing() {
     } else {
       addResult("Tests", "E2E tests configured", "WARN", "E2E test directory not found");
     }
-  } catch (error) {
+  } catch (_error) {
     addResult("Tests", "E2E tests configured", "WARN", "Could not validate E2E setup");
   }
 
@@ -297,9 +297,6 @@ async function validateCRUDOperations() {
     "opportunities", "organizations", "contacts", "tasks", "notes", "tags",
     "sales", "activities", "opportunityNotes", "contactNotes"
   ];
-
-  const unifiedPath = join(process.cwd(), "src/atomic-crm/providers/supabase/unifiedDataProvider.ts");
-  const unifiedContent = await readFileContent(unifiedPath);
 
   // Check validation schemas exist
   const validationDir = join(process.cwd(), "src/atomic-crm/validation");

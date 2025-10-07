@@ -29,8 +29,8 @@ export const createMockDataProvider = (
 ): DataProvider => {
   const defaultProvider: DataProvider = {
     getList: async <RecordType extends Record<string, any> = any>(
-      resource: string,
-      params: GetListParams,
+      _resource: string,
+      _params: GetListParams,
     ) => {
       // Simulate pessimistic mode delay
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -64,8 +64,8 @@ export const createMockDataProvider = (
     },
 
     getManyReference: async <RecordType extends Record<string, any> = any>(
-      resource: string,
-      params: GetManyReferenceParams,
+      _resource: string,
+      _params: GetManyReferenceParams,
     ) => {
       return {
         data: [] as RecordType[],
@@ -143,7 +143,7 @@ export const createMockAuthProvider = (options?: {
   const { role = "user", isAuthenticated = true } = options || {};
 
   return {
-    login: async (params: any) => {
+    login: async (_params: any) => {
       return Promise.resolve();
     },
     logout: async () => {
@@ -155,7 +155,7 @@ export const createMockAuthProvider = (options?: {
       }
       return Promise.resolve();
     },
-    checkError: async (error: any) => {
+    checkError: async (_error: any) => {
       return Promise.resolve();
     },
     getPermissions: async () => {

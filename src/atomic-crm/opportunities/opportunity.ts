@@ -1,7 +1,8 @@
+import type {
+  OpportunityStage} from "./stageConstants";
 import {
   getOpportunityStageLabel,
-  findOpportunityLabel as legacyFindOpportunityLabel,
-  OpportunityStage,
+  findOpportunityLabel as legacyFindOpportunityLabel
 } from "./stageConstants";
 
 export type { OpportunityStage } from "./stageConstants";
