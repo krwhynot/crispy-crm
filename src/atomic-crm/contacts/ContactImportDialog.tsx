@@ -13,7 +13,6 @@ import { usePapaParse } from "../misc/usePapaParse";
 import type { ContactImportSchema } from "./useContactImport";
 import { useContactImport } from "./useContactImport";
 
-import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
 import * as React from "react";
@@ -158,22 +157,20 @@ export function ContactImportDialog({
           </div>
         </Form>
 
-        <div className="flex justify-start pt-6">
-          <FormToolbar>
-            {importer.state === "idle" ? (
-              <Button onClick={startImport} disabled={!file}>
-                Import
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                onClick={handleClose}
-                disabled={importer.state === "running"}
-              >
-                Close
-              </Button>
-            )}
-          </FormToolbar>
+        <div className="flex justify-start pt-6 gap-2">
+          {importer.state === "idle" ? (
+            <Button onClick={startImport} disabled={!file}>
+              Import
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              onClick={handleClose}
+              disabled={importer.state === "running"}
+            >
+              Close
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>
