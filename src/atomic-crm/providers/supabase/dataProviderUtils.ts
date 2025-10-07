@@ -164,21 +164,10 @@ export function applyFullTextSearch(columns: readonly string[], shouldAddSoftDel
         ...filter,
         ...softDeleteFilter,
         "@or": columns.reduce((acc, column) => {
-          if (column === "email")
-            return {
-              ...acc,
-              [`email_fts@ilike`]: q,
-            };
-          if (column === "phone")
-            return {
-              ...acc,
-              [`phone_fts@ilike`]: q,
-            };
-          else
-            return {
-              ...acc,
-              [`${column}@ilike`]: q,
-            };
+          return {
+            ...acc,
+            [`${column}@ilike`]: q,
+          };
         }, {}),
       },
     };
