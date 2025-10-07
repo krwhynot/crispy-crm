@@ -2,7 +2,6 @@ import { Badge } from "@/components/ui/badge";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
 import {
   Building2,
-  CheckSquare,
   Clock,
   Tag,
   Users,
@@ -95,14 +94,6 @@ export const ContactListFilter = () => {
               value={{ tags: record.id }}
             />
           ))}
-      </FilterCategory>
-
-      <FilterCategory icon={<CheckSquare className="h-4 w-4" />} label="Tasks">
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label={"With pending tasks"}
-          value={{ "nb_tasks@gt": 0 }}
-        />
       </FilterCategory>
 
       <FilterCategory
