@@ -49,7 +49,6 @@ export const contactNoteSchema = baseNoteSchema.extend({
     z.string().min(1, "Contact ID is required"),
     z.number().min(1, "Contact ID is required"),
   ]),
-  status: z.string().min(1, "Status is required"),
 });
 
 /**
