@@ -5,7 +5,6 @@ import {
   CheckSquare,
   Clock,
   Tag,
-  TrendingUp,
   Users,
 } from "lucide-react";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
@@ -103,38 +102,6 @@ export const ContactListFilter = () => {
           className="w-full justify-between"
           label={"With pending tasks"}
           value={{ "nb_tasks@gt": 0 }}
-        />
-      </FilterCategory>
-
-      <FilterCategory icon={<TrendingUp />} label="Role">
-        <ToggleFilterButton
-          multiselect
-          className="w-full justify-between"
-          label="Decision Maker"
-          value={{ role: "decision_maker" }}
-        />
-        <ToggleFilterButton
-          multiselect
-          className="w-full justify-between"
-          label="Influencer"
-          value={{ role: "influencer" }}
-        />
-        <ToggleFilterButton
-          multiselect
-          className="w-full justify-between"
-          label="Champion"
-          value={{ role: "champion" }}
-        />
-        <ToggleFilterButton
-          multiselect
-          className="w-full justify-between"
-          label="Executive"
-          value={{ role: "executive" }}
-        />
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="Primary at Any Organization"
-          value={{ "contact_organizations.is_primary": true }}
         />
       </FilterCategory>
 
