@@ -128,8 +128,13 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
         transformed[`${key}@in`] = `(${value.map(escapeForPostgREST).join(',')})`;
       }
     } else {
-      // Regular non-array value
-      transformed[key] = value;
+      // JSONB array fields: Single value needs @cs operator too
+      if (jsonbArrayFields.includes(key)) {
+        transformed[`${key}@cs`] = `{${escapeForPostgREST(value)}}`;
+      } else {
+        // Regular non-array value
+        transformed[key] = value;
+      }
     }
   }
 
