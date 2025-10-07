@@ -98,7 +98,6 @@ export default defineConfig(({ mode }) => ({
           ),
         }
       : undefined,
-  base: "./",
   server: {
     warmup: {
       clientFiles: [
