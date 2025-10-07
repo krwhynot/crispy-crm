@@ -76,12 +76,12 @@ export const Task = ({
     setOpenEdit(true);
   };
 
-  const handleCheck = () => () => {
+  const handleCheck = (checked: boolean) => {
     update("tasks", {
       id: task.id,
       data: {
-        completed: !task.completed_at,
-        completed_at: task.completed_at ? null : new Date().toISOString(),
+        completed: checked,
+        completed_at: checked ? new Date().toISOString() : null,
       },
       previousData: task,
     });
@@ -109,7 +109,7 @@ export const Task = ({
           <Checkbox
             id={labelId}
             checked={!!task.completed_at}
-            onCheckedChange={handleCheck()}
+            onCheckedChange={handleCheck}
             disabled={isUpdatePending}
             className="mt-1"
           />
