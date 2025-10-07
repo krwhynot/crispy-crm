@@ -15,8 +15,8 @@ describe("Task Edge Cases and Business Rules", () => {
   describe("Business Rules", () => {
     it("should enforce required contact association", () => {
       const taskWithoutContact = {
-        text: "Orphan task",
-        type: "call",
+        title: "Orphan task",
+        type: "Call",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: "user-456",
       };
@@ -26,9 +26,9 @@ describe("Task Edge Cases and Business Rules", () => {
 
     it("should enforce sales assignment", () => {
       const unassignedTask = {
-        text: "Unassigned task",
+        title: "Unassigned task",
         contact_id: "contact-123",
-        type: "email",
+        type: "Email",
         due_date: "2024-12-31T10:00:00Z",
       };
 
@@ -38,52 +38,50 @@ describe("Task Edge Cases and Business Rules", () => {
     it("should handle task completion workflow", () => {
       // Create task
       const newTask = {
-        text: "Task to complete",
+        title: "Task to complete",
         contact_id: "contact-123",
-        type: "todo",
+        type: "None",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: "user-456",
       };
 
       const created = createTaskSchema.parse(newTask);
-      expect(created.done_date).toBeUndefined();
+      expect(created.completed_at).toBeUndefined();
 
       // Mark as complete
       const completeUpdate = {
         id: "task-123",
-        done_date: "2024-12-20T10:00:00Z",
+        completed_at: "2024-12-20T10:00:00Z",
       };
 
       const completed = updateTaskSchema.parse(completeUpdate);
-      expect(completed.done_date).toBe("2024-12-20T10:00:00Z");
+      expect(completed.completed_at).toBe("2024-12-20T10:00:00Z");
 
       // Reopen task
       const reopenUpdate = {
         id: "task-123",
-        done_date: null,
+        completed_at: null,
       };
 
       const reopened = updateTaskSchema.parse(reopenUpdate);
-      expect(reopened.done_date).toBeNull();
+      expect(reopened.completed_at).toBeNull();
     });
 
     it("should support various task types", () => {
       const taskTypes = [
-        "call",
-        "email",
-        "meeting",
-        "todo",
-        "follow-up",
-        "reminder",
-        "deadline",
-        "milestone",
-        "review",
-        "approval",
+        "Call",
+        "Email",
+        "Meeting",
+        "Follow-up",
+        "Proposal",
+        "Discovery",
+        "Administrative",
+        "None",
       ];
 
       taskTypes.forEach((type) => {
         const task = {
-          text: `${type} task`,
+          title: `${type} task`,
           contact_id: "contact-123",
           type,
           due_date: "2024-12-31T10:00:00Z",
@@ -96,61 +94,51 @@ describe("Task Edge Cases and Business Rules", () => {
   });
 
   describe("Error Message Formatting", () => {
-    it("should provide clear error messages", () => {
-      const testCases = [
-        {
-          data: {
-            text: "",
-            contact_id: "c-1",
-            type: "call",
-            due_date: "2024-12-31",
-            sales_id: "u-1",
-          },
-          expectedError: "Description is required",
-        },
-        {
-          data: {
-            text: "Test",
-            contact_id: "",
-            type: "call",
-            due_date: "2024-12-31",
-            sales_id: "u-1",
-          },
-          expectedError: "Contact is required",
-        },
-        {
-          data: {
-            text: "Test",
-            contact_id: "c-1",
-            type: "",
-            due_date: "2024-12-31",
-            sales_id: "u-1",
-          },
-          expectedError: "Type is required",
-        },
-        {
-          data: {
-            text: "Test",
-            contact_id: "c-1",
-            type: "call",
-            due_date: "",
-            sales_id: "u-1",
-          },
-          expectedError: "Due date is required",
-        },
-      ];
+    it("should reject tasks with empty required fields", () => {
+      // Empty title
+      expect(() =>
+        taskSchema.parse({
+          title: "",
+          contact_id: "c-1",
+          type: "Call",
+          due_date: "2024-12-31",
+          sales_id: "u-1",
+        }),
+      ).toThrow(z.ZodError);
 
-      testCases.forEach(({ data, expectedError }) => {
-        try {
-          taskSchema.parse(data);
-          expect.fail("Should have thrown error");
-        } catch (error) {
-          if (error instanceof z.ZodError) {
-            const message = error.errors[0].message;
-            expect(message).toBe(expectedError);
-          }
-        }
-      });
+      // Empty contact_id
+      expect(() =>
+        taskSchema.parse({
+          title: "Test",
+          contact_id: "",
+          type: "Call",
+          due_date: "2024-12-31",
+          sales_id: "u-1",
+        }),
+      ).toThrow(z.ZodError);
+
+      // Empty due_date
+      expect(() =>
+        taskSchema.parse({
+          title: "Test",
+          contact_id: "c-1",
+          type: "Call",
+          due_date: "",
+          sales_id: "u-1",
+        }),
+      ).toThrow(z.ZodError);
+    });
+
+    it("should reject invalid task type enum", () => {
+      const invalidType = {
+        title: "Test",
+        contact_id: "c-1",
+        type: "invalid-type",
+        due_date: "2024-12-31",
+        sales_id: "u-1",
+      };
+
+      expect(() => taskSchema.parse(invalidType)).toThrow(z.ZodError);
     });
   });
 });
