@@ -217,4 +217,6 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Vercel deploys to root domain, not subdirectory (was "./" for GitHub Pages)
+  base: "/",
 }));
