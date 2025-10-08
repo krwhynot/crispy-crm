@@ -102,8 +102,8 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           />
         </div>
 
-        <div className="inline-flex text-muted-foreground">
-          Followed by&nbsp;
+        <div className="text-muted-foreground">
+          Followed by{" "}
           <ReferenceField source="sales_id" reference="sales">
             <SaleName />
           </ReferenceField>

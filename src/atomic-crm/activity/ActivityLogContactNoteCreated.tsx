@@ -36,24 +36,23 @@ export function ActivityLogContactNoteCreated({
 
           <div className="flex flex-row flex-grow">
             <div className="text-sm text-muted-foreground flex-grow">
-              <span className="text-muted-foreground text-sm inline-flex">
-                <ReferenceField
-                  source="sales_id"
-                  reference="sales"
-                  record={activity}
-                >
-                  <SaleName />
-                </ReferenceField>
-                <ReferenceField
-                  source="contact_id"
-                  reference="contacts"
-                  record={activity.contactNote}
-                >
-                  &nbsp;added a note about <TextField source="first_name" />
-                  &nbsp;
-                  <TextField source="last_name" />
-                </ReferenceField>
-              </span>
+              <ReferenceField
+                source="sales_id"
+                reference="sales"
+                record={activity}
+              >
+                <SaleName />
+              </ReferenceField>
+              {" "}added a note about{" "}
+              <ReferenceField
+                source="contact_id"
+                reference="contacts"
+                record={activity.contactNote}
+              >
+                <TextField source="first_name" />
+                {" "}
+                <TextField source="last_name" />
+              </ReferenceField>
             </div>
 
             {context === "company" && (

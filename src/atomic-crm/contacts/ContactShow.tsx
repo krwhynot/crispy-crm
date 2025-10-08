@@ -30,7 +30,7 @@ const ContactShowContent = () => {
                 <h5 className="text-xl font-semibold">
                   {record.first_name} {record.last_name}
                 </h5>
-                <div className="inline-flex text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   {record.title}
                   {record.department && ` - ${record.department}`}
                   {record.title &&
@@ -47,7 +47,6 @@ const ContactShowContent = () => {
                       reference="organizations"
                       link="show"
                     >
-                      &nbsp;
                       <TextField source="name" />
                     </ReferenceField>
                   )}

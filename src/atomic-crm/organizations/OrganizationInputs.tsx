@@ -3,7 +3,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import { IndustryComboboxInput } from "@/components/admin/IndustryComboboxInput";
+import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useRecordContext } from "ra-core";
@@ -11,7 +11,6 @@ import { useFormState } from "react-hook-form";
 import ImageEditorField from "../misc/ImageEditorField";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import type { Company, Sale } from "../types";
-import { sizes } from "./sizes";
 
 // URL validation removed - handled at API boundary
 // Helper text provides format guidance instead
@@ -29,12 +28,12 @@ const TAB_DEFINITIONS: TabDefinition[] = [
   {
     key: 'general',
     label: 'General',
-    fields: ['name', 'logo', 'organization_type', 'description', 'parent_organization_id', 'sales_id']
+    fields: ['name', 'logo', 'organization_type', 'description', 'sales_id']
   },
   {
     key: 'details',
     label: 'Details',
-    fields: ['industry_id', 'employee_count', 'priority', 'segment', 'annual_revenue', 'address', 'city', 'postal_code', 'state', 'phone']
+    fields: ['segment_id', 'priority', 'address', 'city', 'postal_code', 'state', 'phone']
   },
   {
     key: 'other',
@@ -119,18 +118,6 @@ export const OrganizationInputs = () => {
             <TextInput source="description" multiline helperText={false} label="Description" />
           </div>
           <ReferenceInput
-            source="parent_organization_id"
-            reference="organizations"
-            helperText={false}
-          >
-            <SelectInput
-              label="Parent organization"
-              helperText={false}
-              optionText="name"
-              emptyText="Select parent organization (optional)"
-            />
-          </ReferenceInput>
-          <ReferenceInput
             source="sales_id"
             reference="sales"
             filter={{
@@ -148,15 +135,9 @@ export const OrganizationInputs = () => {
 
       <TabsContent value="details">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 p-4">
-          <IndustryComboboxInput
-            source="industry_id"
-            label="Industry"
-          />
-          <SelectInput
-            source="employee_count"
-            label="Employee Count"
-            choices={sizes}
-            helperText={false}
+          <SegmentComboboxInput
+            source="segment_id"
+            label="Segment"
           />
           <SelectInput
             source="priority"
@@ -169,12 +150,6 @@ export const OrganizationInputs = () => {
             helperText={false}
             emptyText="Select priority level"
           />
-          <TextInput
-            source="segment"
-            helperText={false}
-            placeholder="Segment (e.g., Enterprise, SMB)"
-          />
-          <TextInput source="annual_revenue" label="Annual Revenue" helperText={false} />
           <TextInput source="phone" helperText={false} label="Phone" />
           <TextInput source="address" helperText={false} label="Address" />
           <TextInput source="city" helperText={false} label="City" />

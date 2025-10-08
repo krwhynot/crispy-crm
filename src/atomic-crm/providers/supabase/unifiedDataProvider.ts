@@ -247,8 +247,17 @@ export const unifiedDataProvider: DataProvider = {
     params: GetListParams,
   ): Promise<any> {
     return wrapMethod("getList", resource, params, async () => {
-      // Apply search parameters
-      const searchParams = applySearchParams(resource, params);
+      // Create a mutable copy of params to potentially modify filters
+      let processedParams = { ...params };
+
+      // CRITICAL: Validate and clean filters BEFORE applying search parameters
+      // This prevents 400 errors from stale cached filters referencing non-existent columns
+      if (processedParams.filter) {
+        processedParams.filter = validationService.validateFilters(resource, processedParams.filter);
+      }
+
+      // Apply search parameters (now uses cleaned filters)
+      const searchParams = applySearchParams(resource, processedParams);
 
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "list");
@@ -355,10 +364,10 @@ export const unifiedDataProvider: DataProvider = {
         "create",
       );
 
-      // Special handling for industries - use RPC for get_or_create
-      if (resource === "industries") {
-        const { data, error } = await supabase
-          .rpc('get_or_create_industry', { p_name: processedData.name });
+      // Special handling for segments - use RPC for get_or_create
+      if (resource === "segments") {
+        const { data, error} = await supabase
+          .rpc('get_or_create_segment', { p_name: processedData.name });
 
         if (error) throw error;
 
@@ -366,52 +375,36 @@ export const unifiedDataProvider: DataProvider = {
         return { data: data[0] };
       }
 
-      // Special handling for opportunities with products
-      if (resource === "opportunities" && processedData.products_to_sync) {
-        const products = processedData.products_to_sync;
-        delete processedData.products_to_sync;
+      // Special handling for opportunities
+      if (resource === "opportunities") {
+        // Remove opportunity_context field - not managed by UI
+        delete processedData.opportunity_context;
 
-        // Call RPC function to create opportunity with products atomically
-        const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
-          opportunity_data: processedData,
-          products_to_create: products,
-          products_to_update: [],
-          products_to_delete: [],
-        });
+        // Handle products sync if present
+        if (processedData.products_to_sync) {
+          const products = processedData.products_to_sync;
+          delete processedData.products_to_sync;
 
-        if (error) {
-          // Try to parse structured error if it's JSON
-          try {
-            const parsedError = JSON.parse(error.message);
-            throw parsedError;
-          } catch {
-            throw error;
+          // Call RPC function to create opportunity with products atomically
+          const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
+            opportunity_data: processedData,
+            products_to_create: products,
+            products_to_update: [],
+            products_to_delete: [],
+          });
+
+          if (error) {
+            // Try to parse structured error if it's JSON
+            try {
+              const parsedError = JSON.parse(error.message);
+              throw parsedError;
+            } catch {
+              throw error;
+            }
           }
+
+          return { data };
         }
-
-        return { data };
-      }
-
-      // Special handling for contacts with organizations
-      if (resource === "contacts" && processedData.organizations_to_sync) {
-        const organizations = processedData.organizations_to_sync;
-        delete processedData.organizations_to_sync;
-
-        // Create the contact first
-        const result = await baseDataProvider.create(dbResource, {
-          ...params,
-          data: processedData as any,
-        });
-
-        // Sync organizations to junction table
-        const { error } = await supabase.rpc("sync_contact_organizations", {
-          p_contact_id: result.data.id,
-          p_organizations: organizations,
-        });
-
-        if (error) throw error;
-
-        return result;
       }
 
       // Execute create
@@ -439,67 +432,48 @@ export const unifiedDataProvider: DataProvider = {
         "update",
       );
 
-      // Special handling for opportunities with products
-      if (resource === "opportunities" && processedData.products_to_sync) {
-        // CRITICAL: Check previousData.products exists (Issue 0.1)
-        if (!params.previousData?.products) {
-          throw new Error(
-            "Cannot update products: previousData.products is missing. " +
-            "Ensure the form fetches the complete record with meta.select."
-          );
-        }
+      // Special handling for opportunities
+      if (resource === "opportunities") {
+        // Remove opportunity_context field - not managed by UI
+        delete processedData.opportunity_context;
 
-        const formProducts = processedData.products_to_sync;
-        const originalProducts = params.previousData.products;
-        delete processedData.products_to_sync;
-
-        // Diff products to identify creates, updates, deletes
-        const { creates, updates, deletes } = diffProducts(originalProducts, formProducts);
-
-        // Call RPC function to update opportunity with products atomically
-        const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
-          opportunity_data: { ...processedData, id: params.id },
-          products_to_create: creates,
-          products_to_update: updates,
-          products_to_delete: deletes,
-        });
-
-        if (error) {
-          // Try to parse structured error if it's JSON
-          try {
-            const parsedError = JSON.parse(error.message);
-            throw parsedError;
-          } catch {
-            throw error;
+        // Handle products sync if present
+        if (processedData.products_to_sync) {
+          // CRITICAL: Check previousData.products exists (Issue 0.1)
+          if (!params.previousData?.products) {
+            throw new Error(
+              "Cannot update products: previousData.products is missing. " +
+              "Ensure the form fetches the complete record with meta.select."
+            );
           }
+
+          const formProducts = processedData.products_to_sync;
+          const originalProducts = params.previousData.products;
+          delete processedData.products_to_sync;
+
+          // Diff products to identify creates, updates, deletes
+          const { creates, updates, deletes } = diffProducts(originalProducts, formProducts);
+
+          // Call RPC function to update opportunity with products atomically
+          const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
+            opportunity_data: { ...processedData, id: params.id },
+            products_to_create: creates,
+            products_to_update: updates,
+            products_to_delete: deletes,
+          });
+
+          if (error) {
+            // Try to parse structured error if it's JSON
+            try {
+              const parsedError = JSON.parse(error.message);
+              throw parsedError;
+            } catch {
+              throw error;
+            }
+          }
+
+          return { data };
         }
-
-        return { data };
-      }
-
-      // Special handling for contacts with organizations
-      if (resource === "contacts" && processedData.organizations_to_sync) {
-        const organizations = processedData.organizations_to_sync;
-        delete processedData.organizations_to_sync;
-
-        // Update the contact first
-        const result = await baseDataProvider.update(dbResource, {
-          ...params,
-          data: {
-            ...processedData,
-            id: params.id,
-          } as any,
-        });
-
-        // Sync organizations to junction table (delete-then-insert, no diff needed)
-        const { error } = await supabase.rpc("sync_contact_organizations", {
-          p_contact_id: params.id,
-          p_organizations: organizations,
-        });
-
-        if (error) throw error;
-
-        return result;
       }
 
       // Execute update

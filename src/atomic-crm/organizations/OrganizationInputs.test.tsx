@@ -140,7 +140,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
 
     await waitFor(() => {
       // Check for fields that should be in Details tab
-      expect(screen.getByLabelText(/industry/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/segment/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/employee count/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/priority/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/phone/i)).toBeInTheDocument();
@@ -210,7 +210,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     fireEvent.click(detailsTab);
 
     await waitFor(() => {
-      expect(screen.getByLabelText(/industry/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/segment/i)).toBeInTheDocument();
     });
 
     // Switch back to General tab
@@ -278,10 +278,9 @@ describe('OrganizationInputs - Tabbed Form', () => {
     fireEvent.click(detailsTab);
 
     await waitFor(() => {
-      expect(screen.getByLabelText(/industry/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/segment/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/employee count/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/priority/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/segment/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/annual revenue/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/phone/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/address/i)).toBeInTheDocument();

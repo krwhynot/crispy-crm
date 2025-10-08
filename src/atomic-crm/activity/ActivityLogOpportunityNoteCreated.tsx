@@ -36,7 +36,7 @@ export function ActivityLogOpportunityNoteCreated({
             </ReferenceField>
           </ReferenceField>
 
-          <span className="text-sm text-muted-foreground flex-grow inline-flex">
+          <span className="text-sm text-muted-foreground flex-grow">
             <ReferenceField
               source="sales_id"
               reference="sales"
@@ -45,7 +45,7 @@ export function ActivityLogOpportunityNoteCreated({
             >
               <SaleName />
             </ReferenceField>
-            &nbsp;added a note about opportunity&nbsp;
+            {" "}added a note about opportunity{" "}
             <ReferenceField
               source="opportunity_id"
               reference="opportunities"

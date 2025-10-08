@@ -19,15 +19,6 @@ export const organizationTypeSchema = z.enum([
 // Company priority enum
 export const companyPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
-// Company size values
-export const companySizeSchema = z.union([
-  z.literal(1),
-  z.literal(10),
-  z.literal(50),
-  z.literal(250),
-  z.literal(500),
-]);
-
 // URL validation regex from CompanyInputs
 const URL_REGEX =
   /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
@@ -61,8 +52,7 @@ export const organizationSchema = z.object({
   name: z.string().min(1, "Company name is required"),
   logo: z.any().optional(), // RAFile type
   // Updated field names to match database schema
-  industry_id: z.string().uuid().nullable(), // was: industry (text field)
-  employee_count: companySizeSchema.optional(), // was: size
+  segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.optional(),
   website: isValidUrl.optional(),
   phone: z.string().optional(), // was: phone_number
@@ -72,15 +62,12 @@ export const organizationSchema = z.object({
   state: z.string().optional(), // was: stateAbbr
   sales_id: z.union([z.string(), z.number()]).optional(),
   description: z.string().optional(),
-  annual_revenue: z.union([z.string(), z.number()]).optional(), // was: revenue (now accepts both string and number for input flexibility)
   context_links: z.array(isValidUrl).optional(),
 
   // Organization-specific fields
   organization_type: organizationTypeSchema, // Required field
   is_principal: z.boolean().optional(),
   is_distributor: z.boolean().optional(),
-  parent_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
-  segment: z.string().optional(),
   priority: companyPrioritySchema.optional(),
 
   // Computed fields (readonly)

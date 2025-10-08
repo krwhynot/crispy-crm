@@ -56,6 +56,8 @@ export type Sale = {
 
 // Organization type (imported from validation)
 export type { Organization } from "./validation/organizations";
+// Company is an alias for Organization for backward compatibility
+export type Company = Organization;
 
 export interface EmailAndType {
   email: string;
@@ -84,18 +86,14 @@ export type Contact = {
   background: string;
   phone: PhoneNumberAndType[];
 
-  // Primary organization fields (backward compatibility)
+  // Organization relationship (one-to-many)
+  organization_id?: Identifier | null;
   department?: string;
   deleted_at?: string;
-
-  // Multi-organization support
-  organizations?: ContactOrganization[]; // All organization relationships
-  organization_ids?: Identifier[]; // For form input handling
 
   // Calculated fields
   nb_tasks?: number;
   company_name?: string;
-  total_organizations?: number;
 } & Pick<RaRecord, "id">;
 
 export interface ContactOrganization {
@@ -202,12 +200,11 @@ export type Opportunity = {
   status: "active" | "on_hold" | "nurturing" | "stalled" | "expired";
   priority: "low" | "medium" | "high" | "critical";
   description: string;
-  estimated_close_date?: string;
+  estimated_close_date: string;
   actual_close_date?: string;
   created_at: string;
   updated_at: string;
   deleted_at?: string;
-  expected_closing_date: string;
   opportunity_owner_id?: Identifier;
   account_manager_id?: Identifier;
   lead_source?: LeadSource;

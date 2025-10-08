@@ -149,7 +149,7 @@ export const CRM = ({
         <Resource name="tasks" />
         <Resource name="sales" {...sales} />
         <Resource name="tags" />
-        <Resource name="industries" />
+        <Resource name="segments" />
       </Admin>
     </ConfigurationProvider>
   );

@@ -1,7 +1,13 @@
 import { useCreate, useGetIdentity, useNotify } from "ra-core";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 
-export const AutocompleteOrganizationInput = () => {
+export const AutocompleteOrganizationInput = ({
+  label,
+  organizationType,
+}: {
+  label?: string;
+  organizationType?: string;
+}) => {
   const [create] = useCreate();
   const { identity } = useGetIdentity();
   const notify = useNotify();
@@ -15,6 +21,7 @@ export const AutocompleteOrganizationInput = () => {
             name,
             sales_id: identity?.id,
             created_at: new Date().toISOString(),
+            ...(organizationType && { organization_type: organizationType }),
           },
         },
         { returnPromise: true },
@@ -33,6 +40,7 @@ export const AutocompleteOrganizationInput = () => {
       helperText={false}
       onCreate={handleCreateOrganization}
       createItemLabel="Create %{item}"
+      label={label}
     />
   );
 };

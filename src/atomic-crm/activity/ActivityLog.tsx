@@ -10,13 +10,13 @@ import { ActivityLogContext } from "./ActivityLogContext";
 import { ActivityLogIterator } from "./ActivityLogIterator";
 
 type ActivityLogProps = {
-  companyId?: Identifier;
+  organizationId?: Identifier;
   pageSize?: number;
-  context?: "company" | "contact" | "opportunity" | "all";
+  context?: "organization" | "contact" | "opportunity" | "all";
 };
 
 export function ActivityLog({
-  companyId,
+  organizationId,
   pageSize = 20,
   context = "all",
 }: ActivityLogProps) {
@@ -26,8 +26,8 @@ export function ActivityLog({
   const activitiesService = new ActivitiesService(dataProvider);
 
   const { data, isPending, error } = useQuery({
-    queryKey: ["activityLog", companyId],
-    queryFn: () => activitiesService.getActivityLog(companyId),
+    queryKey: ["activityLog", organizationId],
+    queryFn: () => activitiesService.getActivityLog(organizationId),
   });
 
   if (isPending) {

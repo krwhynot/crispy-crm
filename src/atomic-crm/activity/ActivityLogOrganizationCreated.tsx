@@ -22,16 +22,14 @@ export function ActivityLogOrganizationCreated({
         <OrganizationAvatar width={20} height={20} record={organization} />
 
         <div className="text-sm text-muted-foreground flex-grow">
-          <span className="text-muted-foreground text-sm inline-flex">
-            <ReferenceField
-              source="sales_id"
-              reference="sales"
-              record={activity}
-            >
-              <SaleName />
-            </ReferenceField>
-          </span>
-          &nbsp;added organization &nbsp;
+          <ReferenceField
+            source="sales_id"
+            reference="sales"
+            record={activity}
+          >
+            <SaleName />
+          </ReferenceField>
+          {" "}added organization{" "}
           <Link to={`/organizations/${organization.id}/show`}>
             {organization.name}
           </Link>
