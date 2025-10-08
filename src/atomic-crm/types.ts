@@ -179,15 +179,6 @@ export type ContactNote = {
 
 // Deal type removed - use Opportunity instead
 
-// Opportunity Context type (SIMPLIFIED - 7 values only, no legacy)
-export type OpportunityContext =
-  | "Site Visit"
-  | "Food Show"
-  | "New Product Interest"
-  | "Follow-up"
-  | "Demo Request"
-  | "Sampling"
-  | "Custom";
 
 // Lead Source type
 export type LeadSource =
@@ -200,20 +191,6 @@ export type LeadSource =
   | "partner"
   | "existing_customer";
 
-// Opportunity Product interface for line items
-export interface OpportunityProduct {
-  id?: Identifier;
-  opportunity_id?: Identifier;
-  product_id_reference: Identifier;
-  product_name?: string;
-  product_category?: string;
-  quantity?: number;
-  unit_price?: number;
-  extended_price?: number;
-  discount_percent?: number;
-  final_price?: number;
-  notes?: string;
-}
 
 export type Opportunity = {
   name: string;
@@ -221,14 +198,10 @@ export type Opportunity = {
   principal_organization_id?: Identifier;
   distributor_organization_id?: Identifier;
   contact_ids: Identifier[];
-  opportunity_context?: OpportunityContext;
-  products?: OpportunityProduct[];
   stage: OpportunityStageValue;
   status: "active" | "on_hold" | "nurturing" | "stalled" | "expired";
   priority: "low" | "medium" | "high" | "critical";
   description: string;
-  amount: number;
-  probability: number;
   estimated_close_date?: string;
   actual_close_date?: string;
   created_at: string;

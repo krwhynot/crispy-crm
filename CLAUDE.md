@@ -189,7 +189,7 @@ All validation integrated into `unifiedDataProvider.ts` before database operatio
 
 ### Key Patterns
 - **Resource Registration**: All resources in `src/atomic-crm/root/CRM.tsx`
-- **Kanban Board**: Drag-drop via `@hello-pangea/dnd` using index field in opportunities
+- **Kanban Board**: Stage-based visualization using index field for opportunity ordering within columns
 - **Multi-Org Contacts**: Junction table `contact_organizations` with primary flag, decision maker status, and relationship tracking
 - **Junction Table Sync**: Contacts/organizations synced via `sync_contact_organizations` RPC (similar to opportunities/products pattern)
 - **Activity Types**: Engagements (standalone) vs Interactions (opportunity-linked)

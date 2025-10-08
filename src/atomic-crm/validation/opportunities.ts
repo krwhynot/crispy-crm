@@ -6,16 +6,6 @@ import type { Identifier } from "ra-core";
  * Implements validation rules from OpportunityInputs.tsx
  */
 
-// Opportunity Context enum schema (SIMPLIFIED - 7 values only, no legacy)
-export const opportunityContextSchema = z.enum([
-  "Site Visit",
-  "Food Show",
-  "New Product Interest",
-  "Follow-up",
-  "Demo Request",
-  "Sampling",
-  "Custom",
-]);
 
 // Enum schemas for stage, status, and priority
 export const opportunityStageSchema = z.enum([
@@ -74,19 +64,10 @@ export const opportunitySchema = z
     contact_ids: z
       .array(z.union([z.string(), z.number()]))
       .min(1, "At least one contact is required"),
-    opportunity_context: opportunityContextSchema.optional().nullable(),
-    products: z.array(z.any()).optional(), // Products before transform - will become products_to_sync after transform
-    products_to_sync: z.array(z.any()).optional(), // Products after transform extraction
     stage: opportunityStageSchema.nullable().default("new_lead"),
     status: opportunityStatusSchema.optional().nullable(),
     priority: opportunityPrioritySchema.nullable().default("medium"),
     description: z.string().optional().nullable(),
-    amount: z.number().min(0, "Amount must be positive").default(0),
-    probability: z
-      .number()
-      .min(0, "Probability must be between 0 and 100")
-      .max(100, "Probability must be between 0 and 100")
-      .default(50),
     expected_closing_date: z
       .string()
       .min(1, "Expected closing date is required"),

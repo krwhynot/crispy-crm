@@ -247,63 +247,6 @@ export const unifiedDataProvider: DataProvider = {
     params: GetListParams,
   ): Promise<any> {
     return wrapMethod("getList", resource, params, async () => {
-      // Special handling for opportunities with products (lightweight)
-      if (resource === "opportunities") {
-        // Apply search parameters
-        const searchParams = applySearchParams(resource, params);
-
-        // Build query manually to include products
-        let query = supabase
-          .from("opportunities")
-          .select("*, opportunity_products(product_name, product_id_reference)", { count: "exact" });
-
-        // Apply filters
-        if (searchParams.filter) {
-          Object.entries(searchParams.filter).forEach(([key, value]) => {
-            if (key === "q") {
-              // Full-text search handled separately
-              return;
-            }
-            if (Array.isArray(value)) {
-              query = query.in(key, value);
-            } else {
-              query = query.eq(key, value);
-            }
-          });
-        }
-
-        // Apply sorting
-        if (searchParams.sort) {
-          query = query.order(searchParams.sort.field, {
-            ascending: searchParams.sort.order === "ASC"
-          });
-        }
-
-        // Apply pagination
-        const { page = 1, perPage = 10 } = searchParams.pagination || {};
-        const start = (page - 1) * perPage;
-        const end = start + perPage - 1;
-        query = query.range(start, end);
-
-        const { data, error, count } = await query;
-
-        if (error) throw error;
-
-        // Flatten products structure
-        const normalizedData = (data || []).map((opp: any) => ({
-          ...opp,
-          products: opp.opportunity_products || [],
-        })).map((opp: any) => {
-          delete opp.opportunity_products;
-          return opp;
-        });
-
-        return {
-          data: normalizeResponseData(resource, normalizedData),
-          total: count || 0,
-        };
-      }
-
       // Apply search parameters
       const searchParams = applySearchParams(resource, params);
 
@@ -326,43 +269,6 @@ export const unifiedDataProvider: DataProvider = {
     params: GetOneParams,
   ): Promise<any> {
     return wrapMethod("getOne", resource, params, async () => {
-      // Special handling for opportunities with products
-      if (resource === "opportunities") {
-        const { data, error } = await supabase
-          .from("opportunities")
-          .select("*, opportunity_products(*, products(*))")
-          .eq("id", params.id)
-          .single();
-
-        if (error) throw error;
-
-        // Parse products with safety check (Issue 0.6)
-        let products;
-        try {
-          // If already an array, use directly
-          if (Array.isArray(data.opportunity_products)) {
-            products = data.opportunity_products;
-          } else {
-            // Try to parse as JSON if it's a string
-            products = JSON.parse(data.opportunity_products || '[]');
-          }
-        } catch (e) {
-          console.error('Failed to parse products JSON:', data.opportunity_products, e);
-          throw new Error("Could not load product data. The record may be corrupted.");
-        }
-
-        // Flatten products structure
-        const normalizedData = {
-          ...data,
-          products,
-        };
-        delete normalizedData.opportunity_products;
-
-        return {
-          data: normalizeResponseData(resource, normalizedData),
-        };
-      }
-
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "one");
 

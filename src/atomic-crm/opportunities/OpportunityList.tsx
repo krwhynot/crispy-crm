@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
@@ -14,11 +14,9 @@ import {
   useGetIdentity,
   useListContext,
   useGetResourceLabel,
-  useDataProvider,
 } from "ra-core";
 import { Link } from "react-router-dom";
 
-import { useConfigurationContext } from "../root/ConfigurationContext";
 import { TopToolbar } from "../layout/TopToolbar";
 import { OpportunityArchivedList } from "./OpportunityArchivedList";
 import { OpportunityEmpty } from "./OpportunityEmpty";
@@ -71,54 +69,6 @@ const OpportunityList = () => {
   const { identity } = useGetIdentity();
   const getResourceLabel = useGetResourceLabel();
   const resourceLabel = getResourceLabel("opportunities", 2);
-  const { opportunityCategories } = useConfigurationContext();
-  const dataProvider = useDataProvider();
-  const [contextChoices, setContextChoices] = useState<Array<{ id: string; name: string }>>([]);
-
-  // Fetch distinct opportunity contexts from opportunities table
-  useEffect(() => {
-    const fetchContexts = async () => {
-      try {
-        // Calculate date 6 months ago for performance optimization
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-        const sixMonthsAgoISO = sixMonthsAgo.toISOString();
-
-        // Fetch recent opportunities to get current contexts (performance optimization)
-        const { data } = await dataProvider.getList('opportunities', {
-          pagination: { page: 1, perPage: 1000 },
-          filter: {
-            "deleted_at@is": null, // Only include non-deleted opportunities
-            "created_at@gte": sixMonthsAgoISO // Only opportunities from last 6 months
-          },
-          sort: { field: 'opportunity_context', order: 'ASC' }
-        });
-
-        // Extract unique, non-null contexts
-        const uniqueContexts = [...new Set(
-          data
-            .map(opportunity => opportunity.opportunity_context)
-            .filter(context => context && context.trim() !== '') // Filter out null, undefined, and empty strings
-        )];
-
-        // Format as React Admin choice array
-        const choices = uniqueContexts.map(context => ({
-          id: context,
-          name: context
-        }));
-
-        setContextChoices(choices);
-      } catch (error) {
-        console.error('Failed to fetch opportunity contexts:', error);
-        // Fallback to configuration contexts if fetch fails
-        setContextChoices(opportunityCategories.map(type => ({ id: type, name: type })));
-      }
-    };
-
-    if (identity) {
-      fetchContexts();
-    }
-  }, [dataProvider, identity, opportunityCategories]);
 
   if (!identity) return null;
 
@@ -127,11 +77,6 @@ const OpportunityList = () => {
     <ReferenceInput source="customer_organization_id" reference="organizations">
       <AutocompleteArrayInput label={false} placeholder="Customer Organization" />
     </ReferenceInput>,
-    <MultiSelectInput
-      source="opportunity_context"
-      emptyText="Opportunity Context"
-      choices={contextChoices}
-    />,
     <MultiSelectInput
       source="priority"
       emptyText="Priority"

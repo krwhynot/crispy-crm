@@ -96,7 +96,6 @@ describe("ContactListContent", () => {
       role: "decision_maker",
       purchase_influence: "High",
       sales_id: 1,
-      nb_tasks: 3,
       last_seen: new Date().toISOString(),
     }),
     createMockContact({
@@ -124,7 +123,6 @@ describe("ContactListContent", () => {
       role: "influencer",
       purchase_influence: "Medium",
       sales_id: 2,
-      nb_tasks: 0,
       last_seen: new Date(Date.now() - 86400000 * 7).toISOString(), // 7 days ago
     }),
     createMockContact({
@@ -138,7 +136,6 @@ describe("ContactListContent", () => {
       role: "executive",
       purchase_influence: "Low",
       sales_id: 1,
-      nb_tasks: 1,
       last_seen: new Date(Date.now() - 86400000 * 30).toISOString(), // 30 days ago
     }),
   ];

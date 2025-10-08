@@ -10,7 +10,6 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { FormToolbar } from "../layout/FormToolbar";
 import { OpportunityInputs } from "./OpportunityInputs";
-import { OpportunityProductsInput } from "./OpportunityProductsInput";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { NoteCreate, NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
@@ -23,17 +22,9 @@ const OpportunityEdit = () => {
       actions={false}
       redirect="show"
       mutationMode="pessimistic"
-      transform={(data) => {
-        // Extract products to products_to_sync field for RPC processing
-        const { products, ...opportunityData } = data;
-        return {
-          ...opportunityData,
-          products_to_sync: products || [],
-        };
-      }}
       mutationOptions={{
         onSuccess: () => {
-          // Invalidate opportunities cache to refresh products
+          // Invalidate opportunities cache
           queryClient.invalidateQueries({ queryKey: ["opportunities"] });
         },
       }}
@@ -56,7 +47,6 @@ const OpportunityEditForm = () => {
       className="flex flex-1 flex-col gap-4 pb-2"
       defaultValues={{
         ...record,
-        products: record.products || [],
       }}
       key={record.id} // Force remount when record changes
     >
@@ -65,21 +55,13 @@ const OpportunityEditForm = () => {
           <EditHeader />
 
           <Tabs defaultValue="details" className="mt-6">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="products">Products</TabsTrigger>
               <TabsTrigger value="notes">Notes & Activity</TabsTrigger>
             </TabsList>
 
             <TabsContent value="details">
               <OpportunityInputs mode="edit" />
-            </TabsContent>
-
-            <TabsContent value="products" className="pt-4">
-              <div className="flex flex-col gap-4">
-                <h3 className="text-base font-medium">Product Line Items</h3>
-                <OpportunityProductsInput />
-              </div>
             </TabsContent>
 
             <TabsContent value="notes">
