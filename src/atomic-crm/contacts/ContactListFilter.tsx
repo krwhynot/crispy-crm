@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
 import {
-  Building2,
   Clock,
   Tag,
   Users,
@@ -94,17 +93,6 @@ export const ContactListFilter = () => {
               value={{ tags: record.id }}
             />
           ))}
-      </FilterCategory>
-
-      <FilterCategory
-        icon={<Building2 className="h-4 w-4" />}
-        label="Organizations"
-      >
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="Multiple Organizations"
-          value={{ "total_organizations@gt": 1 }}
-        />
       </FilterCategory>
 
       <FilterCategory

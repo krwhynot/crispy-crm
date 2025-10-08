@@ -4,7 +4,7 @@ import { useGetOne } from "ra-core";
 
 /**
  * Auto-Generate Name Hook
- * Automatically generates opportunity name from customer + principal + context + date
+ * Automatically generates opportunity name from customer + principal + date
  *
  * @param mode - 'create' for auto-generation, 'edit' for manual regeneration
  * @returns regenerate function and loading state
@@ -15,7 +15,6 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
   // Watch relevant fields
   const customerOrgId = useWatch({ name: "customer_organization_id" });
   const principalOrgId = useWatch({ name: "principal_organization_id" });
-  const opportunityContext = useWatch({ name: "opportunity_context" });
   const currentName = useWatch({ name: "name" });
 
   // Fetch customer organization name
@@ -36,13 +35,12 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
 
   /**
    * Generate name from components
-   * Format: "Customer Name - Principal Name - Context - MMM YYYY"
+   * Format: "Customer Name - Principal Name - MMM YYYY"
    */
   const generateName = useCallback(() => {
     const parts = [
       customerOrg?.name,
       principalOrg?.name,
-      opportunityContext,
       new Date().toLocaleDateString("en-US", {
         month: "short",
         year: "numeric",
@@ -50,7 +48,7 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
     ].filter(Boolean);
 
     return parts.join(" - ");
-  }, [customerOrg?.name, principalOrg?.name, opportunityContext]);
+  }, [customerOrg?.name, principalOrg?.name]);
 
   /**
    * Manual regenerate function for edit mode

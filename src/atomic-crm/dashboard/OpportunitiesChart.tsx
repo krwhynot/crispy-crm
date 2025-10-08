@@ -130,8 +130,9 @@ export const OpportunitiesChart = memo(() => {
           enableGridY={false}
           enableLabel={false}
           tooltip={({ value, indexValue }) => (
-            <div className="p-2 bg-secondary rounded shadow inline-flex items-center gap-1 text-secondary-foreground">
-              <strong>{indexValue}: </strong>&nbsp;{value > 0 ? "+" : ""}
+            <div className="p-2 bg-secondary rounded shadow flex items-center gap-1 text-secondary-foreground">
+              <strong>{indexValue}: </strong>
+              {value > 0 ? "+" : ""}
               {value.toLocaleString(acceptedLanguages.at(0) ?? DEFAULT_LOCALE, {
                 style: "currency",
                 currency: CURRENCY,

@@ -44,8 +44,8 @@ export const OrganizationCard = (props: { record?: Company }) => {
           <OrganizationAvatar />
           <div className="text-center mt-1">
             <h6 className="text-sm font-medium">{record.name}</h6>
-            {record.industry_id && (
-              <ReferenceField source="industry_id" reference="industries" link={false}>
+            {record.segment_id && (
+              <ReferenceField source="segment_id" reference="segments" link={false}>
                 <TextField source="name" className="text-xs text-muted-foreground" />
               </ReferenceField>
             )}

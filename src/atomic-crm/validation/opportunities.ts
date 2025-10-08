@@ -68,10 +68,9 @@ export const opportunitySchema = z
     status: opportunityStatusSchema.optional().nullable(),
     priority: opportunityPrioritySchema.nullable().default("medium"),
     description: z.string().optional().nullable(),
-    expected_closing_date: z
+    estimated_close_date: z
       .string()
       .min(1, "Expected closing date is required"),
-    estimated_close_date: z.string().optional().nullable(),
     actual_close_date: z.string().optional().nullable(),
     opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
     account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
@@ -150,7 +149,7 @@ export const createOpportunitySchema = opportunitySchema
   .required({
     name: true,
     contact_ids: true,
-    expected_closing_date: true,
+    estimated_close_date: true,
   });
 
 // Update-specific schema (more flexible)

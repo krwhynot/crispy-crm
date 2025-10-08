@@ -90,87 +90,18 @@ export const contactSchema = z
     background: z.string().optional(),
     phone: z.array(phoneNumberAndTypeSchema).default([]),
 
-    // Multi-organization support
-    organizations: z.array(contactOrganizationSchema).optional(),
-    organization_ids: z.array(z.union([z.string(), z.number()])).optional(),
+    // Single organization support
+    organization_id: z.union([z.string(), z.number()]).optional().nullable(),
+    department: z.string().optional().nullable(),
 
     // Calculated fields (readonly)
     nb_tasks: z.number().optional(),
-    company_name: z.string().optional(),
-    total_organizations: z.number().optional(),
+    company_name: z.string().optional().nullable(),
 
     // System fields
     deleted_at: z.string().optional().nullable(),
   })
-  .refine((data) => {
-    // Check for removed legacy fields and provide helpful error messages
-    if ("company_id" in data) {
-      throw new Error(
-        "Field 'company_id' is no longer supported. Use contact_organizations relationship instead.",
-      );
-    }
-    if ("department" in data) {
-      throw new Error(
-        "Field 'department' is no longer supported at contact level. Define department in contact_organizations relationship instead.",
-      );
-    }
-    if ("is_primary_contact" in data) {
-      throw new Error(
-        "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead.",
-      );
-    }
-    return true;
-  })
   .superRefine((data, ctx) => {
-    // Multi-organization validation
-    // These rules were previously in ContactMultiOrg component
-
-    // Check contact_organizations array if present
-    if (data.organizations && Array.isArray(data.organizations)) {
-      const organizations = data.organizations;
-
-      // At least one organization is required (skip if explicitly empty for now to allow creation)
-      if (organizations.length === 0) {
-        // Allow empty organizations during creation - validation can be added later
-        // ctx.addIssue({
-        //   code: z.ZodIssueCode.custom,
-        //   path: ["organizations"],
-        //   message: "At least one organization relationship is required",
-        // });
-        return;
-      }
-
-      // Count primary organizations
-      const primaryCount = organizations.filter(
-        (org: any) => org && org.is_primary
-      ).length;
-
-      // Exactly one primary organization is required
-      if (primaryCount === 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["organizations"],
-          message: "One organization must be designated as primary",
-        });
-      } else if (primaryCount > 1) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["organizations"],
-          message: "Only one organization can be designated as primary",
-        });
-      }
-
-      // Each organization needs an organization_id
-      organizations.forEach((org: any, index: number) => {
-        if (!org.organization_id) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["organizations", index, "organization_id"],
-            message: "Organization is required",
-          });
-        }
-      });
-    }
 
     // Contact-level email validation
     if (data.email && Array.isArray(data.email)) {
@@ -241,7 +172,6 @@ export const createContactSchema = contactSchema
     deleted_at: true,
     nb_tasks: true,
     company_name: true,
-    total_organizations: true,
   })
   .required({
     first_name: true,

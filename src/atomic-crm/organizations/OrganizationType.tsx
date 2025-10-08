@@ -46,13 +46,6 @@ export const OrganizationType = () => {
         </Badge>
       )}
 
-      {/* Segment */}
-      {record.segment && (
-        <span className="text-sm text-muted-foreground">
-          • {record.segment}
-        </span>
-      )}
-
       {/* Special Flags */}
       {record.is_principal && (
         <Badge variant="outline">

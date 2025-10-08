@@ -1,14 +1,13 @@
-import { Building, Truck, Users, Tag, Star } from "lucide-react";
+import { Truck, Users, Tag, Star } from "lucide-react";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { sizes } from "./sizes";
 
 export const OrganizationListFilter = () => {
   const { identity } = useGetIdentity();
-  const { data: industries } = useGetList("industries", {
+  const { data: segments } = useGetList("segments", {
     pagination: { page: 1, perPage: 100 },
     sort: { field: "name", order: "ASC" },
   });
@@ -62,25 +61,14 @@ export const OrganizationListFilter = () => {
         ))}
       </FilterCategory>
 
-      <FilterCategory icon={<Building className="h-4 w-4" />} label="Employee Count">
-        {sizes.map((size) => (
-          <ToggleFilterButton
-            key={size.id}
-            className="w-full justify-between"
-            label={size.name}
-            value={{ employee_count: size.id }}
-          />
-        ))}
-      </FilterCategory>
-
-      <FilterCategory icon={<Truck className="h-4 w-4" />} label="Industry">
-        {industries?.map((industry) => (
+      <FilterCategory icon={<Truck className="h-4 w-4" />} label="Segment">
+        {segments?.map((segment) => (
           <ToggleFilterButton
             multiselect
-            key={industry.id}
+            key={segment.id}
             className="w-full justify-between"
-            label={industry.name}
-            value={{ industry_id: industry.id }}
+            label={segment.name}
+            value={{ segment_id: segment.id }}
           />
         ))}
       </FilterCategory>

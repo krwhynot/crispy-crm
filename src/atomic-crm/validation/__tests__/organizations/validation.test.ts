@@ -70,7 +70,7 @@ describe("Organization Validation Schemas", () => {
       type: "customer",
       status: "active",
       website: "https://example.com",
-      industry: "Technology",
+      segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
       annual_revenue: 1000000,
       employee_count: 50,
     };

@@ -17,7 +17,6 @@ const mockOrganizations = [
     sector: 'Technology',
     organization_type: 'customer',
     priority: 'A',
-    segment: 'Enterprise',
     size: 'Large',
     revenue: 50000000,
     website: 'https://acme.com',
@@ -36,7 +35,6 @@ const mockOrganizations = [
     sector: 'Software',
     organization_type: 'principal',
     priority: 'A',
-    segment: 'Enterprise',
     size: 'Large',
     revenue: 100000000,
     website: 'https://principal-solutions.com',
@@ -55,7 +53,6 @@ const mockOrganizations = [
     sector: 'Distribution',
     organization_type: 'distributor',
     priority: 'B',
-    segment: 'Channel Partner',
     size: 'Medium',
     revenue: 25000000,
     website: 'https://techdist.com',
@@ -74,7 +71,6 @@ const mockOrganizations = [
     sector: 'Services',
     organization_type: 'partner',
     priority: 'C',
-    segment: 'SMB',
     size: 'Small',
     revenue: 5000000,
     website: 'https://partnerservices.com',
@@ -93,7 +89,6 @@ const mockOrganizations = [
     sector: 'Technology',
     organization_type: 'prospect',
     priority: 'B',
-    segment: 'Mid-Market',
     size: 'Medium',
     revenue: 15000000,
     website: 'https://prospecttech.com',
@@ -229,7 +224,6 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
             filteredOrganizations = filteredOrganizations.filter(organization =>
               organization.name.toLowerCase().includes(query) ||
               organization.sector?.toLowerCase().includes(query) ||
-              organization.segment?.toLowerCase().includes(query) ||
               organization.city?.toLowerCase().includes(query)
             );
           }
@@ -329,21 +323,6 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
       expect(screen.getByText('A')).toBeInTheDocument(); // High priority
       expect(screen.getByText('B')).toBeInTheDocument(); // Medium-High priority
       expect(screen.getByText('C')).toBeInTheDocument(); // Medium priority
-    });
-  });
-
-  it('should display organization segments', async () => {
-    render(
-      <TestWrapper>
-        <OrganizationList />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText('Enterprise')).toBeInTheDocument();
-      expect(screen.getByText('Channel Partner')).toBeInTheDocument();
-      expect(screen.getByText('SMB')).toBeInTheDocument();
-      expect(screen.getByText('Mid-Market')).toBeInTheDocument();
     });
   });
 

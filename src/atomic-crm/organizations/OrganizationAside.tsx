@@ -125,15 +125,10 @@ const ContextInfo = ({ record }: { record: Company }) => {
           Priority: <SelectField source="priority" choices={priorityChoices} />
         </span>
       )}
-      {record.segment && (
+      {record.segment_id && (
         <span>
-          Segment: <TextField source="segment" />
-        </span>
-      )}
-      {record.industry_id && (
-        <span>
-          Industry:{" "}
-          <ReferenceField source="industry_id" reference="industries" link={false}>
+          Segment:{" "}
+          <ReferenceField source="segment_id" reference="segments" link={false}>
             <TextField source="name" />
           </ReferenceField>
         </span>
@@ -188,8 +183,8 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
         <p className="text-sm  mb-1">{record.description}</p>
       )}
       {record.parent_organization_id && (
-        <div className="inline-flex text-sm text-muted-foreground mb-1">
-          Parent organization:&nbsp;
+        <div className="text-sm text-muted-foreground mb-1">
+          Parent organization:{" "}
           <ReferenceField
             source="parent_organization_id"
             reference="organizations"
@@ -218,8 +213,8 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
         </div>
       )}
       {record.sales_id !== null && (
-        <div className="inline-flex text-sm text-muted-foreground mb-1">
-          Followed by&nbsp;
+        <div className="text-sm text-muted-foreground mb-1">
+          Followed by{" "}
           <ReferenceField source="sales_id" reference="sales" record={record}>
             <SaleName />
           </ReferenceField>

@@ -5,6 +5,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
+import { useWatch } from "react-hook-form";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { contactOptionText } from "../misc/ContactOption";
 import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/AutocompleteOrganizationInput";
@@ -57,7 +58,7 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
       </div>
       <TextInput source="description" multiline rows={1} helperText={false} />
       <TextInput
-        source="expected_closing_date"
+        source="estimated_close_date"
         label="Expected Closing Date *"
         helperText={false}
         type="date"
@@ -109,29 +110,49 @@ const OpportunityOrganizationInputs = () => {
         <ReferenceInput
           source="customer_organization_id"
           reference="organizations"
+          filter={{ organization_type: "customer" }}
         >
-          <AutocompleteOrganizationInput label="Customer Organization *" />
+          <AutocompleteOrganizationInput
+            label="Customer Organization *"
+            organizationType="customer"
+          />
         </ReferenceInput>
 
         <ReferenceInput
           source="account_manager_id"
           reference="sales"
         >
-          <SelectInput optionText="email" label="Account Manager" helperText={false} />
+          <SelectInput
+            optionText={(choice) =>
+              choice?.first_name || choice?.last_name
+                ? `${choice.first_name || ""} ${choice.last_name || ""} (${choice.email})`.trim()
+                : choice?.email || ""
+            }
+            label="Account Manager"
+            helperText={false}
+          />
         </ReferenceInput>
 
         <ReferenceInput
           source="principal_organization_id"
           reference="organizations"
+          filter={{ organization_type: "principal" }}
         >
-          <AutocompleteOrganizationInput label="Principal Organization" />
+          <AutocompleteOrganizationInput
+            label="Principal Organization"
+            organizationType="principal"
+          />
         </ReferenceInput>
 
         <ReferenceInput
           source="distributor_organization_id"
           reference="organizations"
+          filter={{ organization_type: "distributor" }}
         >
-          <AutocompleteOrganizationInput label="Distributor Organization" />
+          <AutocompleteOrganizationInput
+            label="Distributor Organization"
+            organizationType="distributor"
+          />
         </ReferenceInput>
       </div>
     </div>
@@ -140,10 +161,16 @@ const OpportunityOrganizationInputs = () => {
 
 // Contacts section
 const OpportunityContactsInput = () => {
+  const customerOrganizationId = useWatch({ name: "customer_organization_id" });
+
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium mb-2">Contacts *</h3>
-      <ReferenceArrayInput source="contact_ids" reference="contacts_summary">
+      <ReferenceArrayInput
+        source="contact_ids"
+        reference="contacts_summary"
+        filter={customerOrganizationId ? { organization_id: customerOrganizationId } : {}}
+      >
         <AutocompleteArrayInput
           label={false}
           optionText={contactOptionText}

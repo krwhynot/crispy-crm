@@ -243,12 +243,10 @@ export const createMockOrganization = (overrides?: any) => ({
   name: faker.company.name(),
   website: faker.internet.url(),
   linkedin_url: `https://linkedin.com/company/${faker.helpers.slugify(faker.company.name())}`,
-  industry: faker.helpers.arrayElement([
-    "Technology",
-    "Healthcare",
-    "Finance",
-    "Manufacturing",
-    "Retail",
+  segment_id: faker.helpers.arrayElement([
+    "562062be-c15b-417f-b2a1-d4a643d69d52", // Unknown
+    "7ff800ed-22b9-46b1-acd3-f4180fe9fe55", // Health Care
+    "c596adaa-94b1-4145-b1fc-c54dffdcca1f", // restaurant
   ]),
   priority: faker.helpers.arrayElement(["A", "B", "C", "D"]),
   parent_organization_id: null,

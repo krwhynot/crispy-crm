@@ -11,7 +11,7 @@ import type {
   ActivityRecord
 } from "../../../types";
 import type { ProductFormData } from "../../../validation/products";
-import type { Industry } from "../../../validation/industries";
+import type { Segment } from "../../../validation/segments";
 
 // Import all validation schemas
 import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
@@ -32,7 +32,8 @@ import {
   validateEngagementsForm,
   validateInteractionsForm
 } from "../../../validation/activities";
-import { validateCreateIndustry, validateUpdateIndustry } from "../../../validation/industries";
+import { validateCreateSegment, validateUpdateSegment } from "../../../validation/segments";
+import { filterableFields, isValidFilterField } from "../filterRegistry";
 
 // Type for validation functions
 type ValidationFunction<T = unknown> = (data: T) => Promise<void> | void;
@@ -56,7 +57,7 @@ type ResourceTypeMap = {
   activities: ActivityRecord;
   engagements: ActivityRecord;
   interactions: ActivityRecord;
-  industries: Industry;
+  segments: Segment;
 };
 
 /**
@@ -134,12 +135,12 @@ export class ValidationService {
       create: async (data: unknown) => validateInteractionsForm(data),
       update: async (data: unknown) => validateInteractionsForm(data),
     },
-    industries: {
+    segments: {
       create: async (data: unknown) => {
-        validateCreateIndustry(data);
+        validateCreateSegment(data);
       },
       update: async (data: unknown) => {
-        validateUpdateIndustry(data);
+        validateUpdateSegment(data);
       },
     },
   };
@@ -178,5 +179,58 @@ export class ValidationService {
    */
   hasValidation(resource: string): boolean {
     return !!this.validationRegistry[resource];
+  }
+
+  /**
+   * Validates and cleans filter parameters for a given resource.
+   * Removes invalid filter fields that reference non-existent database columns.
+   *
+   * This prevents 400 errors from stale cached filters (e.g., after schema migrations)
+   * and is called in unifiedDataProvider.getList() before API calls.
+   *
+   * @param resource The resource name (e.g., 'contacts', 'organizations')
+   * @param filters The filter object from React Admin (e.g., { status: 'active', last_seen@gte: '2024-01-01' })
+   * @returns A new filter object with invalid fields removed
+   */
+  validateFilters(resource: string, filters: Record<string, any>): Record<string, any> {
+    const allowedFields = filterableFields[resource];
+
+    if (!allowedFields) {
+      console.warn(
+        `[ValidationService] No filterable fields defined for resource: "${resource}". ` +
+        `Skipping filter validation. Consider adding this resource to filterRegistry.ts`
+      );
+      return filters; // No validation possible, return as-is
+    }
+
+    const cleanedFilters: Record<string, any> = {};
+    let modified = false;
+
+    for (const filterKey in filters) {
+      if (Object.prototype.hasOwnProperty.call(filters, filterKey)) {
+        if (isValidFilterField(resource, filterKey)) {
+          // Valid filter - keep it
+          cleanedFilters[filterKey] = filters[filterKey];
+        } else {
+          // Invalid filter - log warning and remove it
+          console.warn(
+            `[ValidationService] Resource "${resource}" received invalid filter field: "${filterKey}". ` +
+            `This field does not exist in the database schema. Removing it to prevent API errors. ` +
+            `If this field should be filterable, add it to filterRegistry.ts`
+          );
+          modified = true;
+        }
+      }
+    }
+
+    if (modified) {
+      console.info(
+        `[ValidationService] Filters cleaned for resource "${resource}".`,
+        `\nOriginal:`, filters,
+        `\nCleaned:`, cleanedFilters
+      );
+    }
+
+    return cleanedFilters;
   }
 }

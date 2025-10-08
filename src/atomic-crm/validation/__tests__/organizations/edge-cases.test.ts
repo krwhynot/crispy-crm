@@ -49,13 +49,13 @@ describe("Organization Business Rules and Edge Cases", () => {
       const multiSectorOrg = {
         name: "Diversified Corp",
         type: "customer",
-        industry: "Conglomerate",
+        segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
         sectors: ["technology", "finance", "healthcare", "retail"],
       };
 
       const result = organizationSchema.parse(multiSectorOrg);
       expect(result.sectors).toHaveLength(4);
-      expect(result.industry).toBe("Conglomerate");
+      expect(result.segment_id).toBe("562062be-c15b-417f-b2a1-d4a643d69d52");
     });
 
     it("should validate organization size metrics", () => {
@@ -158,7 +158,7 @@ describe("Organization Business Rules and Edge Cases", () => {
         description: "A".repeat(1000),
         website: "https://example.com",
         linkedin_url: "https://linkedin.com/company/maximal",
-        industry: "Technology",
+        segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
         sectors: ["tech", "saas", "cloud", "ai", "ml"],
         annual_revenue: 1000000000,
         employee_count: 50000,

@@ -21,7 +21,12 @@ const OrganizationCreate = () => {
     >
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">
-          <Form defaultValues={{ sales_id: identity?.id }}>
+          <Form
+            defaultValues={{
+              sales_id: identity?.id,
+              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52", // Default to "Unknown" segment
+            }}
+          >
             <Card>
               <CardContent>
                 <OrganizationInputs />

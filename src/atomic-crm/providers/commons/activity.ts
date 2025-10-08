@@ -19,31 +19,29 @@ import type {
 // Replace with a server-side view or a custom API endpoint.
 export async function getActivityLog(
   dataProvider: DataProvider,
-  companyId?: Identifier,
+  organizationId?: Identifier,
   salesId?: Identifier,
 ) {
-  const companyFilter = {} as any;
-  if (companyId) {
-    companyFilter.id = companyId;
+  const organizationFilter = {} as any;
+  if (organizationId) {
+    organizationFilter.id = organizationId;
   } else if (salesId) {
-    companyFilter["sales_id@in"] = `(${salesId})`;
+    organizationFilter["sales_id@in"] = `(${salesId})`;
   }
 
   const filter = {} as any;
-  if (companyId) {
-    filter.company_id = companyId;
-  } else if (salesId) {
+  if (salesId) {
     filter["sales_id@in"] = `(${salesId})`;
   }
 
-  const [newCompanies, newContactsAndNotes, newOpportunitiesAndNotes] =
+  const [newOrganizations, newContactsAndNotes, newOpportunitiesAndNotes] =
     await Promise.all([
-      getNewCompanies(dataProvider, companyFilter),
-      getNewContactsAndNotes(dataProvider, filter),
-      getNewOpportunitiesAndNotes(dataProvider, filter),
+      getNewOrganizations(dataProvider, organizationFilter),
+      getNewContactsAndNotes(dataProvider, organizationId, salesId),
+      getNewOpportunitiesAndNotes(dataProvider, organizationId, salesId),
     ]);
   return (
-    [...newCompanies, ...newContactsAndNotes, ...newOpportunitiesAndNotes]
+    [...newOrganizations, ...newContactsAndNotes, ...newOpportunitiesAndNotes]
       // sort by date desc
       .sort((a, b) =>
         a.date && b.date ? a.date.localeCompare(b.date) * -1 : 0,
@@ -53,11 +51,11 @@ export async function getActivityLog(
   );
 }
 
-const getNewCompanies = async (
+const getNewOrganizations = async (
   dataProvider: DataProvider,
   filter: any,
 ): Promise<Activity[]> => {
-  const { data: companies } = await dataProvider.getList<Company>(
+  const { data: organizations } = await dataProvider.getList<Company>(
     "organizations",
     {
       filter,
@@ -65,33 +63,40 @@ const getNewCompanies = async (
       sort: { field: "created_at", order: "DESC" },
     },
   );
-  return companies.map((company) => ({
-    id: `organization.${company.id}.created`,
+  return organizations.map((organization) => ({
+    id: `organization.${organization.id}.created`,
     type: ORGANIZATION_CREATED,
-    organization_id: company.id,
-    organization: company,
-    sales_id: company.sales_id,
-    date: company.created_at,
+    organization_id: organization.id,
+    organization,
+    sales_id: organization.sales_id,
+    date: organization.created_at,
   }));
 };
 
 async function getNewContactsAndNotes(
   dataProvider: DataProvider,
-  filter: any,
+  organizationId?: Identifier,
+  salesId?: Identifier,
 ): Promise<Activity[]> {
+  const contactFilter = {} as any;
+  if (organizationId) {
+    contactFilter.organization_id = organizationId;
+  } else if (salesId) {
+    contactFilter["sales_id@in"] = `(${salesId})`;
+  }
+
   const { data: contacts } = await dataProvider.getList<Contact>("contacts", {
-    filter,
+    filter: contactFilter,
     pagination: { page: 1, perPage: 250 },
     sort: { field: "first_seen", order: "DESC" },
   });
 
   const recentContactNotesFilter = {} as any;
-  if (filter.sales_id) {
-    recentContactNotesFilter.sales_id = filter.sales_id;
+  if (salesId) {
+    recentContactNotesFilter["sales_id@in"] = `(${salesId})`;
   }
-  if (filter.company_id) {
-    // No company_id field in contactNote, filtering by related contacts instead.
-    // This filter is only valid if a company has less than 250 contact.
+  if (organizationId && contacts.length > 0) {
+    // Filter notes by the contacts that belong to this organization
     const contactIds = contacts.map((contact) => contact.id).join(",");
     recentContactNotesFilter["contact_id@in"] = `(${contactIds})`;
   }
@@ -108,7 +113,6 @@ async function getNewContactsAndNotes(
   const newContacts = contacts.map((contact) => ({
     id: `contact.${contact.id}.created`,
     type: CONTACT_CREATED,
-    company_id: contact.company_id,
     sales_id: contact.sales_id,
     contact,
     date: contact.first_seen,
@@ -127,24 +131,37 @@ async function getNewContactsAndNotes(
 
 async function getNewOpportunitiesAndNotes(
   dataProvider: DataProvider,
-  filter: any,
+  organizationId?: Identifier,
+  salesId?: Identifier,
 ): Promise<Activity[]> {
+  const opportunityFilter = {} as any;
+
+  if (organizationId) {
+    // Filter opportunities where the organization appears in ANY role
+    opportunityFilter["@or"] = {
+      customer_organization_id: organizationId,
+      principal_organization_id: organizationId,
+      distributor_organization_id: organizationId,
+    };
+  } else if (salesId) {
+    opportunityFilter["sales_id@in"] = `(${salesId})`;
+  }
+
   const { data: opportunities } = await dataProvider.getList<Opportunity>(
     "opportunities",
     {
-      filter,
+      filter: opportunityFilter,
       pagination: { page: 1, perPage: 250 },
       sort: { field: "created_at", order: "DESC" },
     },
   );
 
   const recentOpportunityNotesFilter = {} as any;
-  if (filter.sales_id) {
-    recentOpportunityNotesFilter.sales_id = filter.sales_id;
+  if (salesId) {
+    recentOpportunityNotesFilter["sales_id@in"] = `(${salesId})`;
   }
-  if (filter.company_id) {
-    // No company_id field in opportunityNote, filtering by related opportunities instead.
-    // This filter is only valid if an opportunity has less than 250 notes.
+  if (organizationId && opportunities.length > 0) {
+    // Filter notes by the opportunities that involve this organization
     const opportunityIds = opportunities
       .map((opportunity) => opportunity.id)
       .join(",");
@@ -161,7 +178,7 @@ async function getNewOpportunitiesAndNotes(
   const newOpportunities = opportunities.map((opportunity) => ({
     id: `opportunity.${opportunity.id}.created`,
     type: OPPORTUNITY_CREATED,
-    company_id: opportunity.customer_organization_id,
+    organization_id: opportunity.customer_organization_id,
     sales_id: opportunity.sales_id,
     opportunity,
     date: opportunity.created_at,

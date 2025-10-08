@@ -89,11 +89,11 @@ const OpportunityShowContent = () => {
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-sm">
-                      {isValid(new Date(record.expected_closing_date))
-                        ? format(new Date(record.expected_closing_date), "PP")
+                      {isValid(new Date(record.estimated_close_date))
+                        ? format(new Date(record.estimated_close_date), "PP")
                         : "Invalid date"}
                     </span>
-                    {new Date(record.expected_closing_date) < new Date() ? (
+                    {new Date(record.estimated_close_date) < new Date() ? (
                       <Badge variant="destructive">Past</Badge>
                     ) : null}
                   </div>

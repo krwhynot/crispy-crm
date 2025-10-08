@@ -19,7 +19,6 @@ const mockCompanies = [
     sector: 'Technology',
     organization_type: 'customer',
     priority: 'A',
-    segment: 'Enterprise',
     website: 'https://acme.com',
     phone_number: '+1-555-0100',
     address: '123 Tech Street',
@@ -39,7 +38,6 @@ const mockCompanies = [
     sector: 'Software',
     organization_type: 'principal',
     priority: 'A',
-    segment: 'Enterprise',
     website: 'https://principal-solutions.com',
     phone_number: '+1-555-0200',
     address: '456 Principal Ave',
@@ -59,7 +57,6 @@ const mockCompanies = [
     sector: 'Distribution',
     organization_type: 'distributor',
     priority: 'B',
-    segment: 'Channel Partner',
     website: 'https://techdist.com',
     phone_number: '+1-555-0300',
     address: '789 Distribution Way',
@@ -79,7 +76,6 @@ const mockCompanies = [
     sector: 'Services',
     organization_type: 'partner',
     priority: 'C',
-    segment: 'SMB',
     website: 'https://partnerservices.com',
     phone_number: '+1-555-0400',
     address: '321 Service Road',
@@ -99,7 +95,6 @@ const mockCompanies = [
     sector: 'Technology',
     organization_type: 'prospect',
     priority: 'B',
-    segment: 'Strategic Prospect',
     website: 'https://prospectalliance.com',
     phone_number: '+1-555-0500',
     address: '555 Prospect Plaza',
@@ -214,8 +209,7 @@ describe('Company Organization Type Support', () => {
             const query = params.filter.q.toLowerCase();
             filteredCompanies = filteredCompanies.filter(company =>
               company.name.toLowerCase().includes(query) ||
-              company.sector?.toLowerCase().includes(query) ||
-              company.segment?.toLowerCase().includes(query)
+              company.sector?.toLowerCase().includes(query)
             );
           }
         }
@@ -309,18 +303,6 @@ describe('Company Organization Type Support', () => {
         expect(screen.getByText('C - Medium Priority')).toBeInTheDocument();
         expect(screen.getByText('D - Low Priority')).toBeInTheDocument();
       });
-    });
-
-    it('should render segment input for categorization', async () => {
-      render(
-        <TestWrapper>
-          <CompanyInputs />
-        </TestWrapper>
-      );
-
-      const segmentInput = screen.getByLabelText(/segment/i);
-      expect(segmentInput).toBeInTheDocument();
-      expect(segmentInput).toHaveAttribute('placeholder', 'Segment (e.g., Enterprise, SMB)');
     });
 
     it('should render parent company reference selector', async () => {
@@ -683,7 +665,6 @@ describe('Company Organization Type Support', () => {
         sector: 'Technology',
         organization_type: 'partner',
         priority: 'B',
-        segment: 'Strategic Partner',
         website: 'https://newtechpartner.com',
         revenue: 10000000,
         size: 'Medium'

@@ -12,7 +12,7 @@ import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 // LinkedIn validation removed - handled at API boundary
 import type { Sale } from "../types";
 import { Avatar } from "./Avatar";
-import { MultiOrganizationInput } from "./MultiOrganizationInput";
+import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
 
 export const ContactInputs = () => {
   const isMobile = useIsMobile();
@@ -55,7 +55,13 @@ const ContactPositionInputs = () => {
       <TextInput source="title" helperText={false} />
       <TextInput source="department" label="Department" helperText={false} />
 
-      <MultiOrganizationInput />
+      <ReferenceInput
+        source="organization_id"
+        reference="organizations"
+        label="Organization"
+      >
+        <AutocompleteOrganizationInput />
+      </ReferenceInput>
     </div>
   );
 };

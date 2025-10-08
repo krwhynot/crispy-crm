@@ -15,56 +15,56 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { FormField, FormLabel, FormControl, FormError } from "@/components/admin/form";
 
-interface IndustryComboboxInputProps {
+interface SegmentComboboxInputProps {
   source: string;
   label?: string;
   helperText?: string;
   className?: string;
 }
 
-export const IndustryComboboxInput = (props: IndustryComboboxInputProps) => {
+export const SegmentComboboxInput = (props: SegmentComboboxInputProps) => {
   const { field } = useInput(props);
   const notify = useNotify();
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
 
-  // Fetch industries for dropdown
-  const { data: industries, isLoading } = useGetList("industries", {
+  // Fetch segments for dropdown
+  const { data: segments, isLoading } = useGetList("segments", {
     pagination: { page: 1, perPage: 100 },
     sort: { field: "name", order: "ASC" },
   });
 
-  // Create new industry handler
-  const [create, { isLoading: isCreating }] = useCreate("industries");
+  // Create new segment handler
+  const [create, { isLoading: isCreating }] = useCreate("segments");
 
-  const handleCreateIndustry = async (name: string) => {
+  const handleCreateSegment = async (name: string) => {
     try {
-      const newIndustry = await create(
-        "industries",
+      const newSegment = await create(
+        "segments",
         { data: { name } },
         { returnPromise: true }
       );
 
-      // Auto-select newly created industry
-      field.onChange(newIndustry.id);
-      notify("Industry created successfully", { type: "success" });
+      // Auto-select newly created segment
+      field.onChange(newSegment.id);
+      notify("Segment created successfully", { type: "success" });
       setOpen(false);
       setSearchQuery("");
     } catch {
-      notify("Failed to create industry", { type: "error" });
+      notify("Failed to create segment", { type: "error" });
     }
   };
 
-  const selectedIndustry = industries?.find((industry) => industry.id === field.value);
+  const selectedSegment = segments?.find((segment) => segment.id === field.value);
 
-  // Filter industries based on search query
-  const filteredIndustries = industries?.filter((industry) =>
-    industry.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // Filter segments based on search query
+  const filteredSegments = segments?.filter((segment) =>
+    segment.name.toLowerCase().includes(searchQuery.toLowerCase())
   ) || [];
 
-  // Check if search query matches an existing industry
-  const exactMatch = filteredIndustries.some(
-    (industry) => industry.name.toLowerCase() === searchQuery.toLowerCase()
+  // Check if search query matches an existing segment
+  const exactMatch = filteredSegments.some(
+    (segment) => segment.name.toLowerCase() === searchQuery.toLowerCase()
   );
 
   const showCreateOption = searchQuery.trim() !== "" && !exactMatch;
@@ -90,10 +90,10 @@ export const IndustryComboboxInput = (props: IndustryComboboxInputProps) => {
               className="w-full justify-between h-9 font-normal"
               disabled={isLoading || isCreating}
             >
-              {selectedIndustry ? (
-                selectedIndustry.name
+              {selectedSegment ? (
+                selectedSegment.name
               ) : (
-                <span className="text-muted-foreground">Select or create industry...</span>
+                <span className="text-muted-foreground">Select or create segment...</span>
               )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -101,7 +101,7 @@ export const IndustryComboboxInput = (props: IndustryComboboxInputProps) => {
           <PopoverContent className="w-full p-0">
         <Command shouldFilter={false}>
           <CommandInput
-            placeholder="Search industries..."
+            placeholder="Search segments..."
             value={searchQuery}
             onValueChange={setSearchQuery}
           />
@@ -110,16 +110,16 @@ export const IndustryComboboxInput = (props: IndustryComboboxInputProps) => {
               <CommandEmpty>Loading...</CommandEmpty>
             ) : (
               <>
-                {filteredIndustries.length === 0 && !showCreateOption && (
-                  <CommandEmpty>No industry found.</CommandEmpty>
+                {filteredSegments.length === 0 && !showCreateOption && (
+                  <CommandEmpty>No segment found.</CommandEmpty>
                 )}
                 <CommandGroup>
-                  {filteredIndustries.map((industry) => (
+                  {filteredSegments.map((segment) => (
                     <CommandItem
-                      key={industry.id}
-                      value={industry.id}
+                      key={segment.id}
+                      value={segment.id}
                       onSelect={() => {
-                        field.onChange(industry.id === field.value ? "" : industry.id);
+                        field.onChange(segment.id === field.value ? "" : segment.id);
                         setOpen(false);
                         setSearchQuery("");
                       }}
@@ -127,16 +127,16 @@ export const IndustryComboboxInput = (props: IndustryComboboxInputProps) => {
                       <Check
                         className={cn(
                           "mr-2 h-4 w-4",
-                          field.value === industry.id ? "opacity-100" : "opacity-0"
+                          field.value === segment.id ? "opacity-100" : "opacity-0"
                         )}
                       />
-                      {industry.name}
+                      {segment.name}
                     </CommandItem>
                   ))}
                   {showCreateOption && (
                     <CommandItem
                       value={`create-${searchQuery}`}
-                      onSelect={() => handleCreateIndustry(searchQuery)}
+                      onSelect={() => handleCreateSegment(searchQuery)}
                       className="text-primary"
                     >
                       <Plus className="mr-2 h-4 w-4" />
