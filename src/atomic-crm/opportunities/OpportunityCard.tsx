@@ -83,33 +83,11 @@ export const OpportunityCardContent = ({
                 {opportunity.priority}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground mb-0.5">
-              {opportunity.amount.toLocaleString("en-US", {
-                notation: "compact",
-                style: "currency",
-                currency: "USD",
-                currencyDisplay: "narrowSymbol",
-                minimumSignificantDigits: 3,
-              })}
-              {opportunity.opportunity_context ? `, ${opportunity.opportunity_context}` : ""}
-            </p>
-            {opportunity.products && opportunity.products.length > 0 && (
-              <p className="text-xs text-muted-foreground mb-0.5">
-                Products: {opportunity.products.length === 1
-                  ? opportunity.products[0].product_name
-                  : `${opportunity.products[0].product_name} +${opportunity.products.length - 1} more`}
-              </p>
+            {opportunity.principal_organization_id && (
+              <Badge variant="outline" className="text-xs px-1 py-0">
+                Principal
+              </Badge>
             )}
-            <div className="flex justify-between items-center">
-              <span className="text-xs text-muted-foreground">
-                {opportunity.probability}%
-              </span>
-              {opportunity.principal_organization_id && (
-                <Badge variant="outline" className="text-xs px-1 py-0">
-                  Principal
-                </Badge>
-              )}
-            </div>
           </div>
         </CardContent>
       </Card>

@@ -38,7 +38,7 @@ export const OrganizationType = () => {
       {record.priority && (
         <Badge
           className={
-            priorityColors[record.priority] || "bg-gray-200 text-gray-800"
+            priorityColors[record.priority] || "bg-muted text-muted-foreground"
           }
           variant="default"
         >
@@ -88,7 +88,7 @@ export const OrganizationPriorityChip = () => {
 
   return (
     <Badge
-      className={`${priorityColors[record.priority] || "bg-gray-200 text-gray-800"} text-xs`}
+      className={`${priorityColors[record.priority] || "bg-muted text-muted-foreground"} text-xs`}
       variant="default"
     >
       {record.priority}

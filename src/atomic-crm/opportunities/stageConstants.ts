@@ -30,7 +30,7 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
     value: "initial_outreach",
     label: "Initial Outreach",
-    color: "var(--teal)",
+    color: "var(--tag-teal-bg)",
     description: "First contact and follow-up",
   },
   {

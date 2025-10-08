@@ -10,7 +10,7 @@ export class OpportunitiesService {
 
   /**
    * Unarchive an opportunity and reorder all opportunities in the same stage
-   * This is critical for drag-drop Kanban functionality - maintains proper index ordering
+   * This is critical for Kanban board functionality - maintains proper index ordering within columns
    * @param opportunity The opportunity to unarchive
    * @returns Promise resolving to array of updated opportunities
    */

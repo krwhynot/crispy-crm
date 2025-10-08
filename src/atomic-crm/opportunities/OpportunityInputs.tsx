@@ -2,9 +2,7 @@ import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-in
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { TextInput } from "@/components/admin/text-input";
-import { NumberInput } from "@/components/admin/number-input";
 import { SelectInput } from "@/components/admin/select-input";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
@@ -13,8 +11,6 @@ import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/Autoco
 import {
   OPPORTUNITY_STAGE_CHOICES,
 } from "./stageConstants";
-import { OpportunityProductsInput } from "./OpportunityProductsInput";
-import { OpportunityContextInput } from "./OpportunityContextInput";
 import { useAutoGenerateName } from "./useAutoGenerateName";
 import { LeadSourceInput } from "./LeadSourceInput";
 
@@ -23,18 +19,11 @@ export const OpportunityInputs = ({ mode }: { mode: "create" | "edit" }) => {
     <div className="flex flex-col gap-2 p-3">
       <OpportunityInfoInputs mode={mode} />
 
-      <OpportunitySalesInputs />
-
       <OpportunityClassificationInputs />
 
       <OpportunityOrganizationInputs />
 
       <OpportunityContactsInput />
-
-      {/* Only show products section in create mode - edit mode has dedicated Products tab */}
-      {mode === "create" && (
-        <OpportunityProductsSection />
-      )}
     </div>
   );
 };
@@ -67,40 +56,13 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
         />
       </div>
       <TextInput source="description" multiline rows={1} helperText={false} />
-    </div>
-  );
-};
-
-// Sales & Financial Information section
-const OpportunitySalesInputs = () => {
-  return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Sales & Financial Information</h3>
-      <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
-        <TextInput
-          source="expected_closing_date"
-          label="Expected Closing Date *"
-          helperText={false}
-          type="date"
-          defaultValue={new Date().toISOString().split("T")[0]}
-        />
-
-        <NumberInput
-          source="amount"
-          label="Budget *"
-          defaultValue={0}
-          helperText={false}
-        />
-
-        <NumberInput
-          source="probability"
-          label="Probability (%) *"
-          min={0}
-          max={100}
-          defaultValue={50}
-          helperText={false}
-        />
-      </div>
+      <TextInput
+        source="expected_closing_date"
+        label="Expected Closing Date *"
+        helperText={false}
+        type="date"
+        defaultValue={new Date().toISOString().split("T")[0]}
+      />
     </div>
   );
 };
@@ -110,7 +72,7 @@ const OpportunityClassificationInputs = () => {
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium mb-2">Classification & Tracking</h3>
-      <div className="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         <SelectInput
           source="stage"
           label="Stage *"
@@ -131,8 +93,6 @@ const OpportunityClassificationInputs = () => {
           defaultValue="medium"
           helperText={false}
         />
-
-        <OpportunityContextInput />
 
         <LeadSourceInput />
       </div>
@@ -190,16 +150,6 @@ const OpportunityContactsInput = () => {
           helperText={false}
         />
       </ReferenceArrayInput>
-    </div>
-  );
-};
-
-// Products section
-const OpportunityProductsSection = () => {
-  return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Product Line Items</h3>
-      <OpportunityProductsInput />
     </div>
   );
 };

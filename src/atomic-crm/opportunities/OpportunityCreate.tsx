@@ -82,14 +82,6 @@ const OpportunityCreate = () => {
     <CreateBase
       mutationOptions={{ onSuccess }}
       redirect={false}
-      transform={(data) => {
-        // Extract products to products_to_sync field for RPC processing
-        const { products, ...opportunityData } = data;
-        return {
-          ...opportunityData,
-          products_to_sync: products || [],
-        };
-      }}
       mutationMode="pessimistic"
     >
       <div className="mt-2 flex lg:mr-72">
@@ -99,16 +91,9 @@ const OpportunityCreate = () => {
               opportunity_owner_id: identity?.id,
               account_manager_id: identity?.id,
               contact_ids: [],
-              products: [],
               index: 0,
               priority: "medium",
-              probability: 50,
               stage: "new_lead",
-              expected_closing_date: new Date(
-                Date.now() + 90 * 24 * 60 * 60 * 1000
-              )
-                .toISOString()
-                .split("T")[0],
             }}
           >
             <Card>

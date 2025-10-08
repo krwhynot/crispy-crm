@@ -156,7 +156,7 @@ export function applyFullTextSearch(columns: readonly string[], shouldAddSoftDel
     // Apply soft delete filter automatically for supported resources (unless it's a view)
     const softDeleteFilter = params.filter?.includeDeleted || !shouldAddSoftDeleteFilter
       ? {}
-      : { deleted_at: null };
+      : { "deleted_at@is": null };
 
     return {
       ...params,
@@ -187,12 +187,12 @@ export function getDatabaseResource(
   if (operation === "list" || operation === "one") {
     const summaryResource = `${actualResource}_summary`;
     if (
-      resource === "opportunities" ||
       resource === "organizations" ||
       resource === "contacts"
     ) {
       return summaryResource;
     }
+    // Note: opportunities_summary removed for MVP - query base table directly
   }
 
   return actualResource;
@@ -233,7 +233,7 @@ export function applySearchParams(
       ...params,
       filter: {
         ...transformedFilter,
-        deleted_at: null,
+        "deleted_at@is": null,
       },
     };
   }
@@ -251,7 +251,7 @@ export function applySearchParams(
 
   // If no searchable fields configured, apply basic soft delete only
   if (searchableFields.length === 0) {
-    const softDeleteFilter = needsSoftDeleteFilter ? { deleted_at: null } : {};
+    const softDeleteFilter = needsSoftDeleteFilter ? { "deleted_at@is": null } : {};
     return {
       ...params,
       filter: {

@@ -5,7 +5,6 @@ import {
   ShowBase,
   useDataProvider,
   useNotify,
-  useRecordContext,
   useRedirect,
   useRefresh,
   useShowContext,
@@ -15,8 +14,6 @@ import { useMatch, useNavigate } from "react-router-dom";
 
 import { OpportunitiesService } from "../services";
 
-import { ArrayField } from "@/components/admin/array-field";
-import { DataTable } from "@/components/admin/data-table";
 import { ReferenceArrayField } from "@/components/admin/reference-array-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
@@ -78,9 +75,8 @@ const OpportunityShowContent = () => {
           />
 
           <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="products">Products</TabsTrigger>
               <TabsTrigger value="notes">Notes & Activity</TabsTrigger>
             </TabsList>
 
@@ -101,28 +97,6 @@ const OpportunityShowContent = () => {
                       <Badge variant="destructive">Past</Badge>
                     ) : null}
                   </div>
-                </div>
-
-                <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                    Budget
-                  </span>
-                  <span className="text-sm">
-                    {record.amount.toLocaleString("en-US", {
-                      notation: "compact",
-                      style: "currency",
-                      currency: "USD",
-                      currencyDisplay: "narrowSymbol",
-                      minimumSignificantDigits: 3,
-                    })}
-                  </span>
-                </div>
-
-                <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                    Probability
-                  </span>
-                  <span className="text-sm">{record.probability}%</span>
                 </div>
 
                 <div className="flex flex-col min-w-[150px]">
@@ -154,17 +128,8 @@ const OpportunityShowContent = () => {
                 </div>
               </div>
 
-              {(record.opportunity_context || record.opportunity_owner_id || record.account_manager_id || record.lead_source) && (
+              {(record.opportunity_owner_id || record.account_manager_id || record.lead_source) && (
                 <div className="flex gap-8 mb-4">
-                  {record.opportunity_context && (
-                    <div className="flex flex-col min-w-[150px]">
-                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                        Opportunity Context
-                      </span>
-                      <span className="text-sm">{record.opportunity_context}</span>
-                    </div>
-                  )}
-
                   {record.opportunity_owner_id && (
                     <div className="flex flex-col min-w-[150px]">
                       <span className="text-xs text-muted-foreground tracking-wide uppercase">
@@ -282,41 +247,6 @@ const OpportunityShowContent = () => {
                     Description
                   </span>
                   <p className="text-sm leading-6">{record.description}</p>
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Products Tab */}
-            <TabsContent value="products" className="pt-4">
-              {record.products && record.products.length > 0 ? (
-                <div>
-                  <ArrayField source="products">
-                    <DataTable bulkActionButtons={false} rowClick={false}>
-                      <DataTable.Col source="product_name" label="Product" />
-                      <DataTable.Col source="quantity" />
-                      <DataTable.NumberCol
-                        source="unit_price"
-                        label="Unit Price"
-                        options={{
-                          style: "currency",
-                          currency: "USD",
-                        }}
-                      />
-                      <DataTable.NumberCol
-                        source="extended_price"
-                        label="Extended Price"
-                        options={{
-                          style: "currency",
-                          currency: "USD",
-                        }}
-                      />
-                      <DataTable.Col source="notes" />
-                    </DataTable>
-                  </ArrayField>
-                </div>
-              ) : (
-                <div className="text-sm text-muted-foreground">
-                  No products added yet.
                 </div>
               )}
             </TabsContent>

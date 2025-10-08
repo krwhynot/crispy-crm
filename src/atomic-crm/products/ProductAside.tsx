@@ -39,10 +39,10 @@ export const ProductAside = () => {
     discontinued: "bg-red-500",
     pending: "bg-yellow-500",
     seasonal: "bg-blue-500",
-    out_of_stock: "bg-gray-500",
+    out_of_stock: "bg-muted",
   };
 
-  const statusColor = record.status ? statusColors[record.status] : "bg-gray-500";
+  const statusColor = record.status ? statusColors[record.status] : "bg-muted";
 
   return (
     <Card className="p-6 space-y-4">
@@ -103,7 +103,7 @@ export const ProductAside = () => {
                 <TrendingUp className="w-3 h-3" />
                 Margin
               </span>
-              <span className="text-sm font-medium text-green-600">
+              <span className="text-sm font-medium text-success-default">
                 {((record.list_price - record.cost_per_unit) / record.list_price * 100).toFixed(1)}%
               </span>
             </div>

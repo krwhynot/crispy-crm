@@ -81,11 +81,6 @@ export const ContactListContent = () => {
                     <TextField source="name" />
                   </ReferenceField>
                 )}
-                {contact.nb_tasks
-                  ? ` - ${contact.nb_tasks} task${
-                      contact.nb_tasks > 1 ? "s" : ""
-                    }`
-                  : ""}
                 &nbsp;&nbsp;
                 <TagsList />
               </div>

@@ -245,7 +245,7 @@ export const WhatsNew = () => {
       case "opportunities":
         return "bg-blue-100 text-blue-800";
       case "contacts":
-        return "bg-green-100 text-green-800";
+        return "bg-success-subtle text-success-default";
       case "organizations":
         return "bg-purple-100 text-purple-800";
       case "activities":
@@ -253,7 +253,7 @@ export const WhatsNew = () => {
       case "b2b":
         return "bg-red-100 text-red-800";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-muted text-foreground";
     }
   };
 
@@ -295,7 +295,7 @@ export const WhatsNew = () => {
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground">{feature.description}</p>
                   {completedFeatures.has(feature.id) && (
-                    <div className="flex items-center gap-2 text-green-600">
+                    <div className="flex items-center gap-2 text-success-default">
                       <CheckCircle className="h-4 w-4" />
                       <span className="text-sm font-medium">
                         Tour Completed
@@ -336,7 +336,7 @@ export const WhatsNew = () => {
             <CardContent className="space-y-6">
               {selectedFeature.steps && selectedFeature.steps.length > 0 ? (
                 <>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{
@@ -437,7 +437,7 @@ export const WhatsNew = () => {
                       <div className="text-left">
                         <div className="font-medium">{feature.title}</div>
                         {completedFeatures.has(feature.id) && (
-                          <CheckCircle className="h-3 w-3 text-green-600 mt-1" />
+                          <CheckCircle className="h-3 w-3 text-success-default mt-1" />
                         )}
                       </div>
                     </div>
@@ -461,7 +461,7 @@ export const WhatsNew = () => {
                 <div className="space-y-2">
                   <a
                     href="/help/migration-guide"
-                    className="block p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+                    className="block p-3 rounded-lg border hover:bg-secondary transition-colors"
                   >
                     <div className="font-medium">Migration Guide</div>
                     <div className="text-sm text-muted-foreground">
@@ -470,7 +470,7 @@ export const WhatsNew = () => {
                   </a>
                   <a
                     href="/help/opportunities"
-                    className="block p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+                    className="block p-3 rounded-lg border hover:bg-secondary transition-colors"
                   >
                     <div className="font-medium">Opportunities Help</div>
                     <div className="text-sm text-muted-foreground">
@@ -479,7 +479,7 @@ export const WhatsNew = () => {
                   </a>
                   <a
                     href="/help/b2b-workflows"
-                    className="block p-3 rounded-lg border hover:bg-gray-50 transition-colors"
+                    className="block p-3 rounded-lg border hover:bg-secondary transition-colors"
                   >
                     <div className="font-medium">B2B Workflows</div>
                     <div className="text-sm text-muted-foreground">
