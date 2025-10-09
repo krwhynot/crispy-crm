@@ -184,7 +184,8 @@ describe("Opportunity Validation Schemas", () => {
       const multipleIds = {
         ...validOpportunity,
         contact_ids: ["contact-1", "contact-2"],
-        company_ids: ["company-1", "company-2"],
+        customer_organization_id: "org-1",
+        principal_organization_id: "org-2",
       };
       expect(() => opportunitySchema.parse(multipleIds)).not.toThrow();
     });

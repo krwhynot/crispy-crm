@@ -1,5 +1,5 @@
 // Generated TypeScript types for Supabase database
-// Generated at: 2025-10-07T19:30:43.259Z
+// Generated at: 2025-10-09T02:46:17.796Z
 
 export interface Database {
   public: {
@@ -113,86 +113,6 @@ export interface Database {
           date?: string;
         };
       };
-      contact_organization_details: {
-        Row: {
-          id: string | null;
-          contact_id: number | null;
-          organization_id: number | null;
-          is_primary: boolean | null;
-          is_primary_decision_maker: boolean | null;
-          relationship_start_date: string | null;
-          relationship_end_date: string | null;
-          relationship_notes: string | null;
-          first_name: string | null;
-          last_name: string | null;
-          name: string | null;
-          title: string | null;
-          department: string | null;
-          email: any | null;
-          phone: any | null;
-          linkedin_url: string | null;
-          twitter_handle: string | null;
-          tags: any[] | null;
-          last_seen: string | null;
-          first_seen: string | null;
-          sales_id: number | null;
-          created_at: string | null;
-          updated_at: string | null;
-          company_name: string | null;
-        };
-        Insert: {
-          id?: string | null;
-          contact_id?: number | null;
-          organization_id?: number | null;
-          is_primary?: boolean | null;
-          is_primary_decision_maker?: boolean | null;
-          relationship_start_date?: string | null;
-          relationship_end_date?: string | null;
-          relationship_notes?: string | null;
-          first_name?: string | null;
-          last_name?: string | null;
-          name?: string | null;
-          title?: string | null;
-          department?: string | null;
-          email?: any | null;
-          phone?: any | null;
-          linkedin_url?: string | null;
-          twitter_handle?: string | null;
-          tags?: any[] | null;
-          last_seen?: string | null;
-          first_seen?: string | null;
-          sales_id?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          company_name?: string | null;
-        };
-        Update: {
-          id?: string | null;
-          contact_id?: number | null;
-          organization_id?: number | null;
-          is_primary?: boolean | null;
-          is_primary_decision_maker?: boolean | null;
-          relationship_start_date?: string | null;
-          relationship_end_date?: string | null;
-          relationship_notes?: string | null;
-          first_name?: string | null;
-          last_name?: string | null;
-          name?: string | null;
-          title?: string | null;
-          department?: string | null;
-          email?: any | null;
-          phone?: any | null;
-          linkedin_url?: string | null;
-          twitter_handle?: string | null;
-          tags?: any[] | null;
-          last_seen?: string | null;
-          first_seen?: string | null;
-          sales_id?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          company_name?: string | null;
-        };
-      };
       contact_organizations: {
         Row: {
           id: number;
@@ -304,6 +224,7 @@ export interface Database {
           last_seen: string | null;
           gender: string | null;
           tags: any[] | null;
+          organization_id: number | null;
         };
         Insert: {
           id?: number;
@@ -333,6 +254,7 @@ export interface Database {
           last_seen?: string | null;
           gender?: string | null;
           tags?: any[] | null;
+          organization_id?: number | null;
         };
         Update: {
           id?: number;
@@ -362,6 +284,7 @@ export interface Database {
           last_seen?: string | null;
           gender?: string | null;
           tags?: any[] | null;
+          organization_id?: number | null;
         };
       };
       contacts_summary: {
@@ -393,7 +316,7 @@ export interface Database {
           last_seen: string | null;
           gender: string | null;
           tags: any[] | null;
-          organization_ids: any[] | null;
+          organization_id: number | null;
           company_name: string | null;
         };
         Insert: {
@@ -424,7 +347,7 @@ export interface Database {
           last_seen?: string | null;
           gender?: string | null;
           tags?: any[] | null;
-          organization_ids?: any[] | null;
+          organization_id?: number | null;
           company_name?: string | null;
         };
         Update: {
@@ -455,28 +378,8 @@ export interface Database {
           last_seen?: string | null;
           gender?: string | null;
           tags?: any[] | null;
-          organization_ids?: any[] | null;
+          organization_id?: number | null;
           company_name?: string | null;
-        };
-      };
-      industries: {
-        Row: {
-          id: string;
-          name: string;
-          created_at: string;
-          created_by: string | null;
-        };
-        Insert: {
-          id?: string;
-          name: string;
-          created_at?: string;
-          created_by?: string | null;
-        };
-        Update: {
-          id?: string;
-          name?: string;
-          created_at?: string;
-          created_by?: string | null;
         };
       };
       interaction_participants: {
@@ -554,9 +457,6 @@ export interface Database {
           stage: any | null;
           status: any | null;
           priority: any | null;
-          probability: number | null;
-          amount: number | null;
-          opportunity_context: string | null;
           index: number | null;
           estimated_close_date: string | null;
           actual_close_date: string | null;
@@ -578,7 +478,7 @@ export interface Database {
           deleted_at: string | null;
           search_tsv: string | null;
           tags: any[] | null;
-          account_manager_id: string | null;
+          account_manager_id: number | null;
           lead_source: string | null;
         };
         Insert: {
@@ -588,9 +488,6 @@ export interface Database {
           stage?: any | null;
           status?: any | null;
           priority?: any | null;
-          probability?: number | null;
-          amount?: number | null;
-          opportunity_context?: string | null;
           index?: number | null;
           estimated_close_date?: string | null;
           actual_close_date?: string | null;
@@ -612,7 +509,7 @@ export interface Database {
           deleted_at?: string | null;
           search_tsv?: string | null;
           tags?: any[] | null;
-          account_manager_id?: string | null;
+          account_manager_id?: number | null;
           lead_source?: string | null;
         };
         Update: {
@@ -622,9 +519,6 @@ export interface Database {
           stage?: any | null;
           status?: any | null;
           priority?: any | null;
-          probability?: number | null;
-          amount?: number | null;
-          opportunity_context?: string | null;
           index?: number | null;
           estimated_close_date?: string | null;
           actual_close_date?: string | null;
@@ -646,124 +540,8 @@ export interface Database {
           deleted_at?: string | null;
           search_tsv?: string | null;
           tags?: any[] | null;
-          account_manager_id?: string | null;
+          account_manager_id?: number | null;
           lead_source?: string | null;
-        };
-      };
-      opportunities_summary: {
-        Row: {
-          id: number | null;
-          name: string | null;
-          description: string | null;
-          stage: any | null;
-          status: any | null;
-          priority: any | null;
-          probability: number | null;
-          amount: number | null;
-          opportunity_context: string | null;
-          index: number | null;
-          estimated_close_date: string | null;
-          actual_close_date: string | null;
-          customer_organization_id: number | null;
-          principal_organization_id: number | null;
-          distributor_organization_id: number | null;
-          founding_interaction_id: number | null;
-          stage_manual: boolean | null;
-          status_manual: boolean | null;
-          next_action: string | null;
-          next_action_date: string | null;
-          competition: string | null;
-          decision_criteria: string | null;
-          contact_ids: any[] | null;
-          opportunity_owner_id: number | null;
-          created_at: string | null;
-          updated_at: string | null;
-          created_by: number | null;
-          deleted_at: string | null;
-          search_tsv: string | null;
-          tags: any[] | null;
-          customer_name: string | null;
-          principal_name: string | null;
-          distributor_name: string | null;
-          sales_rep_name: string | null;
-          item_count: number | null;
-          total_amount: number | null;
-        };
-        Insert: {
-          id?: number | null;
-          name?: string | null;
-          description?: string | null;
-          stage?: any | null;
-          status?: any | null;
-          priority?: any | null;
-          probability?: number | null;
-          amount?: number | null;
-          opportunity_context?: string | null;
-          index?: number | null;
-          estimated_close_date?: string | null;
-          actual_close_date?: string | null;
-          customer_organization_id?: number | null;
-          principal_organization_id?: number | null;
-          distributor_organization_id?: number | null;
-          founding_interaction_id?: number | null;
-          stage_manual?: boolean | null;
-          status_manual?: boolean | null;
-          next_action?: string | null;
-          next_action_date?: string | null;
-          competition?: string | null;
-          decision_criteria?: string | null;
-          contact_ids?: any[] | null;
-          opportunity_owner_id?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          created_by?: number | null;
-          deleted_at?: string | null;
-          search_tsv?: string | null;
-          tags?: any[] | null;
-          customer_name?: string | null;
-          principal_name?: string | null;
-          distributor_name?: string | null;
-          sales_rep_name?: string | null;
-          item_count?: number | null;
-          total_amount?: number | null;
-        };
-        Update: {
-          id?: number | null;
-          name?: string | null;
-          description?: string | null;
-          stage?: any | null;
-          status?: any | null;
-          priority?: any | null;
-          probability?: number | null;
-          amount?: number | null;
-          opportunity_context?: string | null;
-          index?: number | null;
-          estimated_close_date?: string | null;
-          actual_close_date?: string | null;
-          customer_organization_id?: number | null;
-          principal_organization_id?: number | null;
-          distributor_organization_id?: number | null;
-          founding_interaction_id?: number | null;
-          stage_manual?: boolean | null;
-          status_manual?: boolean | null;
-          next_action?: string | null;
-          next_action_date?: string | null;
-          competition?: string | null;
-          decision_criteria?: string | null;
-          contact_ids?: any[] | null;
-          opportunity_owner_id?: number | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          created_by?: number | null;
-          deleted_at?: string | null;
-          search_tsv?: string | null;
-          tags?: any[] | null;
-          customer_name?: string | null;
-          principal_name?: string | null;
-          distributor_name?: string | null;
-          sales_rep_name?: string | null;
-          item_count?: number | null;
-          total_amount?: number | null;
         };
       };
       opportunityNotes: {
@@ -842,77 +620,6 @@ export interface Database {
           deleted_at?: string | null;
         };
       };
-      opportunity_products: {
-        Row: {
-          id: number;
-          opportunity_id: number;
-          product_id: number | null;
-          product_id_reference: number | null;
-          product_name: string;
-          product_category: string | null;
-          quantity: number | null;
-          unit_price: number | null;
-          extended_price: number | null;
-          discount_percent: number | null;
-          final_price: number | null;
-          price_tier_id: number | null;
-          cost_per_unit: number | null;
-          margin_percent: number | null;
-          total_weight: number | null;
-          special_pricing_applied: boolean | null;
-          pricing_notes: string | null;
-          notes: string | null;
-          created_at: string | null;
-          updated_at: string | null;
-          created_by: number | null;
-        };
-        Insert: {
-          id?: number;
-          opportunity_id: number;
-          product_id?: number | null;
-          product_id_reference?: number | null;
-          product_name: string;
-          product_category?: string | null;
-          quantity?: number | null;
-          unit_price?: number | null;
-          extended_price?: number | null;
-          discount_percent?: number | null;
-          final_price?: number | null;
-          price_tier_id?: number | null;
-          cost_per_unit?: number | null;
-          margin_percent?: number | null;
-          total_weight?: number | null;
-          special_pricing_applied?: boolean | null;
-          pricing_notes?: string | null;
-          notes?: string | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          created_by?: number | null;
-        };
-        Update: {
-          id?: number;
-          opportunity_id?: number;
-          product_id?: number | null;
-          product_id_reference?: number | null;
-          product_name?: string;
-          product_category?: string | null;
-          quantity?: number | null;
-          unit_price?: number | null;
-          extended_price?: number | null;
-          discount_percent?: number | null;
-          final_price?: number | null;
-          price_tier_id?: number | null;
-          cost_per_unit?: number | null;
-          margin_percent?: number | null;
-          total_weight?: number | null;
-          special_pricing_applied?: boolean | null;
-          pricing_notes?: string | null;
-          notes?: string | null;
-          created_at?: string | null;
-          updated_at?: string | null;
-          created_by?: number | null;
-        };
-      };
       organizations: {
         Row: {
           id: number;
@@ -921,7 +628,6 @@ export interface Database {
           is_principal: boolean | null;
           is_distributor: boolean | null;
           parent_organization_id: number | null;
-          segment: string | null;
           priority: string | null;
           website: string | null;
           address: string | null;
@@ -946,7 +652,7 @@ export interface Database {
           context_links: any | null;
           description: string | null;
           tax_identifier: string | null;
-          industry_id: string;
+          segment_id: string | null;
         };
         Insert: {
           id?: number;
@@ -955,7 +661,6 @@ export interface Database {
           is_principal?: boolean | null;
           is_distributor?: boolean | null;
           parent_organization_id?: number | null;
-          segment?: string | null;
           priority?: string | null;
           website?: string | null;
           address?: string | null;
@@ -980,7 +685,7 @@ export interface Database {
           context_links?: any | null;
           description?: string | null;
           tax_identifier?: string | null;
-          industry_id: string;
+          segment_id?: string | null;
         };
         Update: {
           id?: number;
@@ -989,7 +694,6 @@ export interface Database {
           is_principal?: boolean | null;
           is_distributor?: boolean | null;
           parent_organization_id?: number | null;
-          segment?: string | null;
           priority?: string | null;
           website?: string | null;
           address?: string | null;
@@ -1014,7 +718,7 @@ export interface Database {
           context_links?: any | null;
           description?: string | null;
           tax_identifier?: string | null;
-          industry_id?: string;
+          segment_id?: string | null;
         };
       };
       organizations_summary: {
@@ -1024,11 +728,16 @@ export interface Database {
           organization_type: any | null;
           is_principal: boolean | null;
           is_distributor: boolean | null;
-          segment: string | null;
           priority: string | null;
-          industry_id: string | null;
+          segment_id: string | null;
           annual_revenue: number | null;
           employee_count: number | null;
+          phone: string | null;
+          website: string | null;
+          postal_code: string | null;
+          city: string | null;
+          state: string | null;
+          description: string | null;
           created_at: string | null;
           nb_opportunities: number | null;
           nb_contacts: number | null;
@@ -1040,11 +749,16 @@ export interface Database {
           organization_type?: any | null;
           is_principal?: boolean | null;
           is_distributor?: boolean | null;
-          segment?: string | null;
           priority?: string | null;
-          industry_id?: string | null;
+          segment_id?: string | null;
           annual_revenue?: number | null;
           employee_count?: number | null;
+          phone?: string | null;
+          website?: string | null;
+          postal_code?: string | null;
+          city?: string | null;
+          state?: string | null;
+          description?: string | null;
           created_at?: string | null;
           nb_opportunities?: number | null;
           nb_contacts?: number | null;
@@ -1056,11 +770,16 @@ export interface Database {
           organization_type?: any | null;
           is_principal?: boolean | null;
           is_distributor?: boolean | null;
-          segment?: string | null;
           priority?: string | null;
-          industry_id?: string | null;
+          segment_id?: string | null;
           annual_revenue?: number | null;
           employee_count?: number | null;
+          phone?: string | null;
+          website?: string | null;
+          postal_code?: string | null;
+          city?: string | null;
+          state?: string | null;
+          description?: string | null;
           created_at?: string | null;
           nb_opportunities?: number | null;
           nb_contacts?: number | null;
@@ -1314,38 +1033,6 @@ export interface Database {
           updated_at?: string | null;
         };
       };
-      product_performance: {
-        Row: {
-          id: number | null;
-          name: string | null;
-          sku: string | null;
-          category: any | null;
-          opportunity_count: number | null;
-          total_quantity_sold: number | null;
-          total_revenue: number | null;
-          avg_discount: number | null;
-        };
-        Insert: {
-          id?: number | null;
-          name?: string | null;
-          sku?: string | null;
-          category?: any | null;
-          opportunity_count?: number | null;
-          total_quantity_sold?: number | null;
-          total_revenue?: number | null;
-          avg_discount?: number | null;
-        };
-        Update: {
-          id?: number | null;
-          name?: string | null;
-          sku?: string | null;
-          category?: any | null;
-          opportunity_count?: number | null;
-          total_quantity_sold?: number | null;
-          total_revenue?: number | null;
-          avg_discount?: number | null;
-        };
-      };
       product_pricing_models: {
         Row: {
           id: number;
@@ -1565,6 +1252,26 @@ export interface Database {
           is_admin?: boolean | null;
           deleted_at?: string | null;
           disabled?: boolean | null;
+        };
+      };
+      segments: {
+        Row: {
+          id: string;
+          name: string;
+          created_at: string;
+          created_by: string | null;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          created_at?: string;
+          created_by?: string | null;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          created_at?: string;
+          created_by?: string | null;
         };
       };
       tags: {

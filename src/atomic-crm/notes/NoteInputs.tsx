@@ -53,7 +53,7 @@ export const NoteInputs = () => {
           helperText={false}
           type="datetime-local"
           className="text-primary"
-          defaultValue={formatDateForInput()}
+          // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
         />
         <FileInput source="attachments" multiple>
           <FileField source="src" title="title" target="_blank" />

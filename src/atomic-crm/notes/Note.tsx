@@ -85,17 +85,24 @@ export const Note = ({
       onMouseLeave={() => setHover(false)}
     >
       <div className="flex items-center space-x-4 w-full">
-        {resource === "contactNote" ? (
+        {resource === "contactNotes" ? (
           <Avatar width={20} height={20} />
-        ) : (
+        ) : resource === "opportunityNotes" ? (
           <ReferenceField
-            source="company_id"
-            reference="organizations"
-            link="show"
+            source="opportunity_id"
+            reference="opportunities"
+            record={note}
+            link={false}
           >
-            <OrganizationAvatar width={20} height={20} />
+            <ReferenceField
+              source="customer_organization_id"
+              reference="organizations"
+              link="show"
+            >
+              <OrganizationAvatar width={20} height={20} />
+            </ReferenceField>
           </ReferenceField>
-        )}
+        ) : null}
         <div className="inline-flex h-full items-center text-sm text-muted-foreground">
           <ReferenceField
             record={note}

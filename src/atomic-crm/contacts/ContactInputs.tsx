@@ -119,7 +119,7 @@ const ContactPersonalInformationInputs = () => {
             label={false}
             optionText="id"
             choices={personalInfoTypes}
-            defaultValue="Work"
+            // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
             className="w-24 min-w-24"
           />
         </SimpleFormIterator>
@@ -144,7 +144,7 @@ const ContactPersonalInformationInputs = () => {
             label={false}
             optionText="id"
             choices={personalInfoTypes}
-            defaultValue="Work"
+            // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
             className="w-24 min-w-24"
           />
         </SimpleFormIterator>

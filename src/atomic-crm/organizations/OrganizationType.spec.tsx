@@ -27,7 +27,7 @@ const mockCompanies = [
     stateAbbr: 'CA',
     revenue: 50000000,
     size: 'Large',
-    parent_company_id: null,
+    parent_organization_id: null,
     is_principal: false,
     is_distributor: false,
     created_at: '2024-01-15T10:00:00Z'
@@ -46,7 +46,7 @@ const mockCompanies = [
     stateAbbr: 'TX',
     revenue: 100000000,
     size: 'Large',
-    parent_company_id: null,
+    parent_organization_id: null,
     is_principal: true,
     is_distributor: false,
     created_at: '2024-01-10T10:00:00Z'
@@ -65,7 +65,7 @@ const mockCompanies = [
     stateAbbr: 'IL',
     revenue: 25000000,
     size: 'Medium',
-    parent_company_id: null,
+    parent_organization_id: null,
     is_principal: false,
     is_distributor: true,
     created_at: '2024-01-20T10:00:00Z'
@@ -84,7 +84,7 @@ const mockCompanies = [
     stateAbbr: 'CO',
     revenue: 5000000,
     size: 'Small',
-    parent_company_id: null,
+    parent_organization_id: null,
     is_principal: false,
     is_distributor: false,
     created_at: '2024-02-01T10:00:00Z'
@@ -103,7 +103,7 @@ const mockCompanies = [
     stateAbbr: 'WA',
     revenue: 15000000,
     size: 'Medium',
-    parent_company_id: null,
+    parent_organization_id: null,
     is_principal: false,
     is_distributor: false,
     created_at: '2024-01-25T10:00:00Z'
@@ -402,7 +402,7 @@ describe('Company Organization Type Support', () => {
         ...mockCompanies[0],
         id: 10,
         name: 'Acme Subsidiary',
-        parent_company_id: 1
+        parent_organization_id: 1
       };
 
       mockDataProvider.getOne.mockResolvedValue({
@@ -726,12 +726,12 @@ describe('Company Organization Type Support', () => {
         ...mockCompanies[0],
         id: 10,
         name: 'Child Company',
-        parent_company_id: parentCompany.id
+        parent_organization_id: parentCompany.id
       };
 
       // Child company should have valid parent reference
-      expect(childCompany.parent_company_id).toBe(parentCompany.id);
-      expect(parentCompany.parent_company_id).toBeNull(); // Parent has no parent
+      expect(childCompany.parent_organization_id).toBe(parentCompany.id);
+      expect(parentCompany.parent_organization_id).toBeNull(); // Parent has no parent
     });
 
     it('should support organization type transitions', async () => {

@@ -44,21 +44,18 @@ describe("OpportunityListContent", () => {
       id: 1,
       name: "Tech Deal",
       stage: "new_lead",
-      opportunity_context: "Technology",
       priority: "high",
     }),
     createMockOpportunity({
       id: 2,
       name: "Healthcare Deal",
       stage: "demo_scheduled",
-      opportunity_context: "Healthcare",
       priority: "medium",
     }),
     createMockOpportunity({
       id: 3,
       name: "Closed Deal",
       stage: "closed_won",
-      opportunity_context: "Finance",
       priority: "low",
     }),
   ];
@@ -294,11 +291,6 @@ describe("OpportunityList dynamic filter choices", () => {
     const mockDataProvider = {
       getList: vi.fn().mockResolvedValue({
         data: [
-          { opportunity_context: "Retail" },
-          { opportunity_context: "Manufacturing" },
-          { opportunity_context: "Retail" }, // Duplicate to test uniqueness
-          { opportunity_context: null }, // Null value to test filtering
-          { opportunity_context: "" }, // Empty string to test filtering
         ],
         total: 5,
       }),
@@ -309,13 +301,11 @@ describe("OpportunityList dynamic filter choices", () => {
       const { data } = await mockDataProvider.getList('opportunities', {
         pagination: { page: 1, perPage: 1000 },
         filter: { "deleted_at@is": null },
-        sort: { field: 'opportunity_context', order: 'ASC' }
       });
 
       // Extract unique, non-null contexts
       const uniqueContexts = [...new Set(
         data
-          .map((opportunity: any) => opportunity.opportunity_context)
           .filter((context: string) => context && context.trim() !== '')
       )];
 

@@ -95,6 +95,7 @@ export const filterableFields: Record<string, string[]> = {
     "account_manager_id",
     "lead_source",
     "tags",            // Array field
+    "created_by",      // Added: creator/owner field (equivalent to sales_id in other resources)
     "created_at",
     "updated_at",
     "q",               // Special: full-text search parameter
@@ -144,37 +145,36 @@ export const filterableFields: Record<string, string[]> = {
   // Tasks resource
   tasks: [
     "id",
-    "text",
+    "title",            // Changed from "text" to match database column
     "type",
     "contact_id",
-    "organization_id",
     "opportunity_id",
     "due_date",
-    "done_date",
+    "completed_at",     // Changed from "done_date" to match database column
     "sales_id",
     "created_at",
     "updated_at",
   ],
 
   // Contact Notes resource
-  contact_notes: [
+  contactNotes: [
     "id",
     "contact_id",
     "text",
     "date",
-    "status",
+    "attachments",     // Array field
     "sales_id",
     "created_at",
     "updated_at",
   ],
 
   // Opportunity Notes resource
-  opportunity_notes: [
+  opportunityNotes: [
     "id",
     "opportunity_id",
     "text",
     "date",
-    "status",
+    "attachments",     // Array field
     "sales_id",
     "created_at",
     "updated_at",

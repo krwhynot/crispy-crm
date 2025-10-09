@@ -16,7 +16,7 @@ import type { Segment } from "../../../validation/segments";
 // Import all validation schemas
 import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
 import { validateOrganizationForSubmission } from "../../../validation/organizations";
-import { validateOpportunityForm } from "../../../validation/opportunities";
+import { validateOpportunityForm, validateCreateOpportunity, validateUpdateOpportunity } from "../../../validation/opportunities";
 import {
   validateCreateContactNote,
   validateUpdateContactNote,
@@ -78,8 +78,8 @@ export class ValidationService {
       update: async (data: unknown) => validateOrganizationForSubmission(data),
     },
     opportunities: {
-      create: async (data: unknown) => validateOpportunityForm(data),
-      update: async (data: unknown) => validateOpportunityForm(data),
+      create: async (data: unknown) => validateCreateOpportunity(data),
+      update: async (data: unknown) => validateUpdateOpportunity(data),
     },
     products: {
       create: async (data: unknown) => validateProductForm(data),

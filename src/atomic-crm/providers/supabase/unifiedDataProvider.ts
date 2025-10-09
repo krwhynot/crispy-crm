@@ -377,9 +377,6 @@ export const unifiedDataProvider: DataProvider = {
 
       // Special handling for opportunities
       if (resource === "opportunities") {
-        // Remove opportunity_context field - not managed by UI
-        delete processedData.opportunity_context;
-
         // Handle products sync if present
         if (processedData.products_to_sync) {
           const products = processedData.products_to_sync;
@@ -434,9 +431,6 @@ export const unifiedDataProvider: DataProvider = {
 
       // Special handling for opportunities
       if (resource === "opportunities") {
-        // Remove opportunity_context field - not managed by UI
-        delete processedData.opportunity_context;
-
         // Handle products sync if present
         if (processedData.products_to_sync) {
           // CRITICAL: Check previousData.products exists (Issue 0.1)

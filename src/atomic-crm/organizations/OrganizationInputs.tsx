@@ -109,7 +109,7 @@ export const OrganizationInputs = () => {
                 { id: "distributor", name: "Distributor" },
                 { id: "unknown", name: "Unknown" },
               ]}
-              defaultValue="unknown"
+              // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
               helperText="Required field"
               emptyText="Select organization type"
             />

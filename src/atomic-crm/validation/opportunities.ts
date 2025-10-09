@@ -48,6 +48,9 @@ export const leadSourceSchema = z.enum([
 // Main opportunity schema with comprehensive validation
 // This schema serves as the single source of truth for all opportunity validation
 // per Engineering Constitution - all validation happens at API boundary only
+//
+// Fields with .default() provide business logic defaults that will be used
+// by forms via schema.parse({}) - see Constitution #5: FORM STATE DERIVED FROM TRUTH
 export const opportunitySchema = z
   .object({
     id: z.union([z.string(), z.number()]).optional(),
@@ -70,12 +73,13 @@ export const opportunitySchema = z
     description: z.string().optional().nullable(),
     estimated_close_date: z
       .string()
-      .min(1, "Expected closing date is required"),
+      .min(1, "Expected closing date is required")
+      .default(() => new Date().toISOString().split("T")[0]),
     actual_close_date: z.string().optional().nullable(),
     opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
     account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
     lead_source: leadSourceSchema.optional().nullable(),
-    index: z.number().optional().nullable(),
+    index: z.number().default(0),
     founding_interaction_id: z
       .union([z.string(), z.number()])
       .optional()

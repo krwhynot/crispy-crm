@@ -28,7 +28,7 @@ export function ActivityLogOpportunityNoteCreated({
             link={false}
           >
             <ReferenceField
-              source="company_id"
+              source="customer_organization_id"
               reference="organizations"
               link={false}
             >
@@ -62,7 +62,7 @@ export function ActivityLogOpportunityNoteCreated({
                   link={false}
                 >
                   <ReferenceField
-                    source="company_id"
+                    source="customer_organization_id"
                     reference="organizations"
                     link="show"
                   />

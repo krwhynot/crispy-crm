@@ -62,7 +62,8 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
         label="Expected Closing Date *"
         helperText={false}
         type="date"
-        defaultValue={new Date().toISOString().split("T")[0]}
+        // NOTE: defaultValue removed - now handled by form-level defaultValues from schema
+        // Per Constitution #5: Never use defaultValue on inputs with React Hook Form
       />
     </div>
   );
@@ -78,7 +79,7 @@ const OpportunityClassificationInputs = () => {
           source="stage"
           label="Stage *"
           choices={OPPORTUNITY_STAGE_CHOICES}
-          defaultValue="new_lead"
+          // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
           helperText={false}
         />
 
@@ -91,7 +92,7 @@ const OpportunityClassificationInputs = () => {
             { id: "high", name: "High" },
             { id: "critical", name: "Critical" },
           ]}
-          defaultValue="medium"
+          // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
           helperText={false}
         />
 

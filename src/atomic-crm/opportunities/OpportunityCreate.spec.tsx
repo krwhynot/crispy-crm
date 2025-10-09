@@ -534,7 +534,6 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
         expect.objectContaining({
           data: expect.objectContaining({
             name: 'Software Deal',
-            opportunity_context: 'Software'
           })
         })
       );

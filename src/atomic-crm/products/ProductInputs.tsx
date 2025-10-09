@@ -88,7 +88,7 @@ const ProductDetailInputs = () => {
       <SelectInput
         source="unit_of_measure"
         label="Unit of Measure"
-        defaultValue="each"
+        // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
         choices={[
           { id: "each", name: "Each" },
           { id: "case", name: "Case" },
@@ -124,7 +124,7 @@ const ProductPricingInputs = () => {
         <SelectInput
           source="currency_code"
           label="Currency"
-          defaultValue="USD"
+          // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
           choices={[
             { id: "USD", name: "USD" },
             { id: "EUR", name: "EUR" },
@@ -157,7 +157,7 @@ const ProductInventoryInputs = () => {
         source="minimum_order_quantity"
         label="Minimum Order Quantity"
         placeholder="1"
-        defaultValue={1}
+        // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
         helperText="Minimum units required per order"
         step={1}
         min={1}

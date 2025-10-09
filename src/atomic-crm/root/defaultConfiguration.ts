@@ -25,14 +25,14 @@ export const defaultDealCategories = [
 ];
 
 export const defaultOpportunityStages = [
-  { value: "lead", label: "Lead" },
-  { value: "qualified", label: "Qualified" },
-  { value: "needs_analysis", label: "Needs Analysis" },
-  { value: "proposal", label: "Proposal" },
-  { value: "negotiation", label: "Negotiation" },
+  { value: "new_lead", label: "New Lead" },
+  { value: "initial_outreach", label: "Initial Outreach" },
+  { value: "sample_visit_offered", label: "Sample Visit Offered" },
+  { value: "awaiting_response", label: "Awaiting Response" },
+  { value: "feedback_logged", label: "Feedback Logged" },
+  { value: "demo_scheduled", label: "Demo Scheduled" },
   { value: "closed_won", label: "Closed Won" },
   { value: "closed_lost", label: "Closed Lost" },
-  { value: "nurturing", label: "Nurturing" },
 ];
 
 export const defaultOpportunityCategories = [
