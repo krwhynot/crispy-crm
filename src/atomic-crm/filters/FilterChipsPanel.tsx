@@ -16,11 +16,11 @@ interface FilterChipsPanelProps {
 export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
   const { filterValues, removeFilterValue } = useFilterManagement();
 
-  // Extract organization IDs from filter values
+  // Extract organization IDs from filter values and convert to strings
   const organizationIds = filterValues?.customer_organization_id
     ? Array.isArray(filterValues.customer_organization_id)
-      ? filterValues.customer_organization_id
-      : [filterValues.customer_organization_id]
+      ? filterValues.customer_organization_id.map(String)
+      : [String(filterValues.customer_organization_id)]
     : undefined;
 
   // Use custom hook for organization name fetching

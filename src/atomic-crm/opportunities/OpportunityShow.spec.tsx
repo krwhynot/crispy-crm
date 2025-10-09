@@ -22,7 +22,6 @@ const mockOpportunity = {
   expected_closing_date: "2024-03-15",
   created_at: "2024-01-15T10:00:00Z",
   updated_at: "2024-02-01T15:30:00Z",
-  opportunity_context: "Software",
   customer_organization_id: 1,
   principal_organization_id: 2,
   distributor_organization_id: 3,

@@ -78,7 +78,7 @@ export const OpportunitiesPipeline = () => {
           }
           leftAvatar={(opportunity) => (
             <ReferenceField
-              source="company_id"
+              source="customer_organization_id"
               record={opportunity}
               reference="organizations"
               resource="opportunities"

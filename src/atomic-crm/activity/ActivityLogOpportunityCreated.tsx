@@ -28,7 +28,7 @@ export function ActivityLogOpportunityCreated({
           </Link>{" "}
           {context !== "company" && (
             <>
-              to company {activity.company_id}{" "}
+              to organization {activity.customer_organization_id}{" "}
               <RelativeDate date={activity.date} />
             </>
           )}

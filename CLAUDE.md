@@ -10,10 +10,17 @@ Core principles to prevent debates & ensure consistency:
 2. **SINGLE SOURCE OF TRUTH**: One data provider (Supabase), one validation layer (Zod at API boundary)
 3. **BOY SCOUT RULE**: Fix inconsistencies when editing files
 4. **VALIDATION**: Zod schemas at API boundary only (`src/atomic-crm/validation/`)
-5. **TYPESCRIPT**: `interface` for objects/classes, `type` for unions/intersections
-6. **FORMS**: Always use admin layer (`src/components/admin/`) for validation/errors
-7. **COLORS**: Semantic CSS variables only (--primary, --destructive). Never use hex codes
-8. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
+5. **FORM STATE DERIVED FROM TRUTH**: React Hook Form `defaultValues` MUST be generated from Zod schema
+   - **Implementation**: Use `zodSchema.partial().parse({})` to extract only fields with `.default()` values
+   - **Define defaults in Zod schema** using `.default()` method for fields with business logic defaults
+   - **Merge schema defaults with runtime values** (e.g., `{ ...schema.partial().parse({}), user_id: identity.id }`)
+   - **Rationale**: Prevents drift between UI and validation, ensures forms initialize in valid state
+   - **Anti-Pattern**: Never use `defaultValue` prop on input components - React Hook Form controlled inputs ignore it
+   - **Reference Implementation**: See `OpportunityCreate.tsx` and `opportunities.ts` validation schema
+6. **TYPESCRIPT**: `interface` for objects/classes, `type` for unions/intersections
+7. **FORMS**: Always use admin layer (`src/components/admin/`) for validation/errors
+8. **COLORS**: Semantic CSS variables only (--primary, --destructive). Never use hex codes
+9. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
 
 # Parallel Agent Decomposition
 

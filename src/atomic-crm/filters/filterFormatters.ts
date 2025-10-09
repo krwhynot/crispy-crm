@@ -47,9 +47,6 @@ export const formatFilterLabel = (
     case FILTER_KEYS.PRIORITY:
       return formatPriorityLabel(String(value));
 
-    case FILTER_KEYS.CATEGORY:
-      return formatCategoryLabel(String(value));
-
     case FILTER_KEYS.CUSTOMER_ORGANIZATION:
       return getOrganizationName ? getOrganizationName(String(value)) : `Organization #${value}`;
 

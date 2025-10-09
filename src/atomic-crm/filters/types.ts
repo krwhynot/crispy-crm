@@ -129,7 +129,6 @@ export const isValidFilterValue = (value: any): value is FilterValue => {
 export const FILTER_KEYS = {
   STAGE: 'stage',
   PRIORITY: 'priority',
-  OPPORTUNITY_CONTEXT: 'opportunity_context',
   CUSTOMER_ORGANIZATION: 'customer_organization_id',
   ONLY_MINE: 'only_mine',
   SEARCH: 'q',

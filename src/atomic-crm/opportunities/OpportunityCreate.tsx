@@ -15,6 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { GetListResult } from "ra-core";
 import { OpportunityInputs } from "./OpportunityInputs";
 import type { Opportunity } from "../types";
+import { opportunitySchema } from "../validation/opportunities";
 
 const OpportunityCreate = () => {
   const { identity } = useGetIdentity();
@@ -78,6 +79,17 @@ const OpportunityCreate = () => {
     redirect(`/opportunities/${opportunity.id}/show`);
   };
 
+  // Generate defaults from schema, then merge with identity-specific values
+  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+  // Use .partial() to make all fields optional during default generation
+  // This extracts only fields with .default() (stage, priority, index, estimated_close_date)
+  // Required fields without defaults (name, contact_ids) remain undefined - user must fill them
+  const formDefaults = {
+    ...opportunitySchema.partial().parse({}),
+    opportunity_owner_id: identity?.id,
+    account_manager_id: identity?.id,
+  };
+
   return (
     <CreateBase
       mutationOptions={{ onSuccess }}
@@ -86,16 +98,7 @@ const OpportunityCreate = () => {
     >
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">
-          <Form
-            defaultValues={{
-              opportunity_owner_id: identity?.id,
-              account_manager_id: identity?.id,
-              contact_ids: [],
-              index: 0,
-              priority: "medium",
-              stage: "new_lead",
-            }}
-          >
+          <Form defaultValues={formDefaults}>
             <Card>
               <CardContent>
                 <OpportunityInputs mode="create" />

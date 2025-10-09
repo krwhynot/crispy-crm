@@ -39,11 +39,11 @@ const ContactShowContent = () => {
                   {record.organizations?.find((org) => org.is_primary) && (
                     <ReferenceField
                       record={{
-                        company_id: record.organizations.find(
+                        organization_id: record.organizations.find(
                           (org) => org.is_primary,
                         )?.organization_id,
                       }}
-                      source="company_id"
+                      source="organization_id"
                       reference="organizations"
                       link="show"
                     >
@@ -56,11 +56,11 @@ const ContactShowContent = () => {
                 {record.organizations?.find((org) => org.is_primary) && (
                   <ReferenceField
                     record={{
-                      company_id: record.organizations.find(
+                      organization_id: record.organizations.find(
                         (org) => org.is_primary,
                       )?.organization_id,
                     }}
-                    source="company_id"
+                    source="organization_id"
                     reference="organizations"
                     link="show"
                     className="no-underline"
@@ -84,8 +84,8 @@ const ContactShowContent = () => {
                     >
                       <div className="flex-1">
                         <ReferenceField
-                          record={{ company_id: org.organization_id }}
-                          source="company_id"
+                          record={{ organization_id: org.organization_id }}
+                          source="organization_id"
                           reference="organizations"
                           link="show"
                           className="font-medium"

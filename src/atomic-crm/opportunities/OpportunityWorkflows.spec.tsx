@@ -50,14 +50,14 @@ const mockContacts = [
     first_name: "John",
     last_name: "Doe",
     title: "CTO",
-    company_id: 1,
+    organization_id: 1,
   },
   {
     id: 2,
     first_name: "Jane",
     last_name: "Smith",
     title: "VP Engineering",
-    company_id: 1,
+    organization_id: 1,
   },
 ];
 

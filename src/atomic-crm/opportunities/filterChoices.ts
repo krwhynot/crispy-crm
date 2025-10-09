@@ -38,12 +38,6 @@ export const opportunityFilters: Record<string, FilterConfig> = {
     type: 'reference',
     reference: 'organizations',
   },
-  opportunity_context: {
-    key: 'opportunity_context',
-    label: 'Opportunity Context',
-    type: 'multiselect',
-    dynamicChoices: true,
-  },
   priority: {
     key: 'priority',
     label: 'Priority',

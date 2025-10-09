@@ -22,7 +22,6 @@ const mockOpportunities = [
     customer_organization_id: 1,
     contact_ids: [1, 2],
     created_at: "2024-01-15T10:00:00Z",
-    opportunity_context: "Software",
   },
   {
     id: 2,
@@ -35,7 +34,6 @@ const mockOpportunities = [
     customer_organization_id: 2,
     contact_ids: [3],
     created_at: "2024-02-01T10:00:00Z",
-    opportunity_context: "Hardware",
   },
   {
     id: 3,
@@ -48,7 +46,6 @@ const mockOpportunities = [
     customer_organization_id: 3,
     contact_ids: [4, 5, 6],
     created_at: "2024-01-20T10:00:00Z",
-    opportunity_context: "Services",
   },
 ];
 
@@ -319,7 +316,6 @@ describe("OpportunityList", () => {
         "opportunities_summary",
         expect.objectContaining({
           filter: expect.objectContaining({
-            opportunity_context: "Software",
           }),
         }),
       );

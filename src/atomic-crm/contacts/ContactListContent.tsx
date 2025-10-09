@@ -70,11 +70,11 @@ export const ContactListContent = () => {
                 {contact.organizations?.find((org: any) => org.is_primary) && (
                   <ReferenceField
                     record={{
-                      company_id: contact.organizations.find(
+                      organization_id: contact.organizations.find(
                         (org: any) => org.is_primary,
                       )?.organization_id,
                     }}
-                    source="company_id"
+                    source="organization_id"
                     reference="organizations"
                     link={false}
                   >

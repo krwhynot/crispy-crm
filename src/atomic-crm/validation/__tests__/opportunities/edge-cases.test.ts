@@ -65,7 +65,8 @@ describe("Opportunity Business Rules and Edge Cases", () => {
       const multiContactOpp = {
         name: "Multi-stakeholder Deal",
         contact_ids: ["contact-1", "contact-2", "contact-3", "contact-4"],
-        company_ids: ["company-1", "company-2"],
+        customer_organization_id: "org-1",
+        principal_organization_id: "org-2",
         expected_closing_date: "2024-12-31",
         stage: "demo_scheduled",
         amount: 100000,
@@ -73,7 +74,8 @@ describe("Opportunity Business Rules and Edge Cases", () => {
 
       const result = opportunitySchema.parse(multiContactOpp);
       expect(result.contact_ids).toHaveLength(4);
-      expect(result.company_ids).toHaveLength(2);
+      expect(result.customer_organization_id).toBe("org-1");
+      expect(result.principal_organization_id).toBe("org-2");
     });
 
     it("should validate opportunity lifecycle", () => {
@@ -183,7 +185,9 @@ describe("Opportunity Business Rules and Edge Cases", () => {
         name: "Maximal Opportunity",
         description: "A".repeat(1000),
         contact_ids: ["c1", "c2", "c3", "c4", "c5"],
-        company_ids: ["comp1", "comp2"],
+        customer_organization_id: "comp1",
+        principal_organization_id: "comp2",
+        distributor_organization_id: "comp3",
         stage: "demo_scheduled",
         status: "active",
         priority: "critical",

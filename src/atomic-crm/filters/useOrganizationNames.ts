@@ -30,7 +30,7 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
         });
 
         const newMap = data.reduce((acc: Record<string, string>, org: any) => {
-          acc[org.id] = org.name;
+          acc[String(org.id)] = org.name;
           return acc;
         }, {});
 

@@ -29,7 +29,7 @@ export function ActivityLogContactCreated({
             {contact.first_name} {contact.last_name}
           </Link>
           {" "}
-          {context !== "company" && <>to company {activity.company_id}</>}
+          {context !== "company" && <>to organization {activity.customer_organization_id}</>}
         </span>
         {context === "company" && (
           <span className="text-muted-foreground text-sm">
