@@ -37,7 +37,9 @@ export const formatCategoryLabel = (value: string): string => {
 export const formatFilterLabel = (
   key: string,
   value: SingleFilterValue,
-  getOrganizationName?: (id: string) => string
+  getOrganizationName?: (id: string) => string,
+  getSalesName?: (id: string) => string,
+  getTagName?: (id: string) => string
 ): string => {
   // Handle special cases
   switch (key) {
@@ -47,8 +49,20 @@ export const formatFilterLabel = (
     case FILTER_KEYS.PRIORITY:
       return formatPriorityLabel(String(value));
 
+    case FILTER_KEYS.TAGS:
+      // Opportunities store tag names directly (text[])
+      // Contacts store tag IDs (bigint[]) - need lookup
+      if (getTagName) {
+        return getTagName(String(value));
+      }
+      // Fallback: value is already a name for opportunities
+      return String(value);
+
     case FILTER_KEYS.CUSTOMER_ORGANIZATION:
       return getOrganizationName ? getOrganizationName(String(value)) : `Organization #${value}`;
+
+    case FILTER_KEYS.OPPORTUNITY_OWNER:
+      return getSalesName ? getSalesName(String(value)) : `Sales #${value}`;
 
     default:
       // Generic formatting for unknown filters

@@ -139,9 +139,7 @@ const OpportunityShowContent = () => {
                         source="opportunity_owner_id"
                         reference="sales"
                         link={false}
-                      >
-                        <span className="text-sm">{record.opportunity_owner_id}</span>
-                      </ReferenceField>
+                      />
                     </div>
                   )}
 
@@ -154,9 +152,7 @@ const OpportunityShowContent = () => {
                         source="account_manager_id"
                         reference="sales"
                         link={false}
-                      >
-                        <span className="text-sm">{record.account_manager_id}</span>
-                      </ReferenceField>
+                      />
                     </div>
                   )}
 
@@ -183,11 +179,7 @@ const OpportunityShowContent = () => {
                     source="customer_organization_id"
                     reference="organizations"
                     link="show"
-                  >
-                    <span className="text-sm">
-                      {record.customer_organization_id}
-                    </span>
-                  </ReferenceField>
+                  />
                 </div>
 
                 {record.principal_organization_id && (
@@ -199,11 +191,7 @@ const OpportunityShowContent = () => {
                       source="principal_organization_id"
                       reference="organizations"
                       link="show"
-                    >
-                      <span className="text-sm">
-                        {record.principal_organization_id}
-                      </span>
-                    </ReferenceField>
+                    />
                   </div>
                 )}
 
@@ -216,11 +204,7 @@ const OpportunityShowContent = () => {
                       source="distributor_organization_id"
                       reference="organizations"
                       link="show"
-                    >
-                      <span className="text-sm">
-                        {record.distributor_organization_id}
-                      </span>
-                    </ReferenceField>
+                    />
                   </div>
                 )}
               </div>

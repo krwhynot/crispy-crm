@@ -11,6 +11,13 @@ import { AddTask } from "../tasks/AddTask";
 import { TasksListEmpty } from "./TasksListEmpty";
 import { TasksListFilter } from "./TasksListFilter";
 
+const trackDashboardEvent = (cardType: string) => {
+  console.log(`dashboard_card_click: ${cardType}`, {
+    timestamp: new Date().toISOString(),
+    viewport: window.innerWidth < 768 ? 'mobile' : 'desktop'
+  });
+};
+
 const today = new Date();
 const todayDayOfWeek = getDay(today);
 const isBeforeFriday = todayDayOfWeek < 5; // Friday is represented by 5
@@ -51,16 +58,19 @@ export const TasksList = () => {
         </h2>
         <AddTask display="icon" selectContact />
       </div>
-      <Card className="p-4 mb-2">
-        <div className="flex flex-col gap-4">
+      <Card
+        className="bg-card border border-border shadow-sm rounded-xl p-4 mb-2 cursor-pointer"
+        onClick={() => trackDashboardEvent('tasks')}
+      >
+        <div className="flex flex-col gap-4 max-h-[320px] overflow-y-auto">
           <TasksListEmpty />
-          <TasksListFilter title="Overdue" filter={taskFilters.overdue} />
-          <TasksListFilter title="Today" filter={taskFilters.today} />
-          <TasksListFilter title="Tomorrow" filter={taskFilters.tomorrow} />
+          <TasksListFilter title="Overdue" filter={taskFilters.overdue} defaultOpen={true} />
+          <TasksListFilter title="Today" filter={taskFilters.today} defaultOpen={true} />
+          <TasksListFilter title="Tomorrow" filter={taskFilters.tomorrow} defaultOpen={false} />
           {isBeforeFriday && (
-            <TasksListFilter title="This week" filter={taskFilters.thisWeek} />
+            <TasksListFilter title="This week" filter={taskFilters.thisWeek} defaultOpen={false} />
           )}
-          <TasksListFilter title="Later" filter={taskFilters.later} />
+          <TasksListFilter title="Later" filter={taskFilters.later} defaultOpen={false} />
         </div>
       </Card>
     </div>

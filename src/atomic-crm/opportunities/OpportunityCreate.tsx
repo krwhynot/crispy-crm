@@ -83,11 +83,14 @@ const OpportunityCreate = () => {
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // Use .partial() to make all fields optional during default generation
   // This extracts only fields with .default() (stage, priority, index, estimated_close_date)
-  // Required fields without defaults (name, contact_ids) remain undefined - user must fill them
+  // Required fields without defaults must be initialized for proper form field behavior:
+  // - contact_ids: [] (empty array for AutocompleteArrayInput, validation still requires min 1)
+  // - name: user must fill (text input works fine with undefined)
   const formDefaults = {
     ...opportunitySchema.partial().parse({}),
     opportunity_owner_id: identity?.id,
     account_manager_id: identity?.id,
+    contact_ids: [], // Initialize as empty array for ReferenceArrayInput
   };
 
   return (

@@ -43,7 +43,7 @@ export const OpportunityListContent = () => {
   if (isPending) return null;
 
   return (
-    <div className="flex gap-4 overflow-x-auto">
+    <div className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-[var(--border)] shadow-inner">
       {visibleStages.map((stage) => (
         <OpportunityColumn
           stage={stage.value}

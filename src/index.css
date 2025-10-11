@@ -151,6 +151,18 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Shadow system - 3-tier elevation (light mode) */
+  --shadow-card-1: 0 1px 3px oklch(0 0 0 / 0.12);         /* Subtle elevation */
+  --shadow-card-2: 0 2px 6px oklch(0 0 0 / 0.15);         /* Medium elevation */
+  --shadow-card-3: 0 3px 8px oklch(0 0 0 / 0.18);         /* Prominent elevation */
+  --shadow-card-1-hover: 0 2px 6px oklch(0 0 0 / 0.18);
+  --shadow-card-2-hover: 0 4px 12px oklch(0 0 0 / 0.25);
+  --shadow-card-3-hover: 0 6px 16px oklch(0 0 0 / 0.3);
+
+  /* Column shadows */
+  --shadow-col: 0 2px 6px oklch(0 0 0 / 0.15);
+  --shadow-col-inner: inset 0 1px 2px oklch(0 0 0 / 0.03);
 }
 
 .dark {
@@ -254,6 +266,18 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Shadow system - 3-tier elevation (dark mode) - stronger for readability */
+  --shadow-card-1: 0 2px 4px oklch(0 0 0 / 0.35);
+  --shadow-card-2: 0 3px 6px oklch(0 0 0 / 0.40);
+  --shadow-card-3: 0 4px 8px oklch(0 0 0 / 0.45);
+  --shadow-card-1-hover: 0 3px 8px oklch(0 0 0 / 0.45);
+  --shadow-card-2-hover: 0 5px 14px oklch(0 0 0 / 0.50);
+  --shadow-card-3-hover: 0 7px 18px oklch(0 0 0 / 0.55);
+
+  /* Column shadows - dark mode */
+  --shadow-col: 0 3px 10px oklch(0 0 0 / 0.40);
+  --shadow-col-inner: inset 0 1px 2px oklch(0 0 0 / 0.08);
 }
 
 a,

@@ -2,6 +2,8 @@ import { cn } from "@/lib/utils";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { FilterChip } from "./FilterChip";
 import { useOrganizationNames } from "./useOrganizationNames";
+import { useSalesNames } from "./useSalesNames";
+import { useTagNames } from "./useTagNames";
 import { formatFilterLabel, flattenFilterValues } from "./filterFormatters";
 import { useFilterManagement } from "./useFilterManagement";
 
@@ -23,8 +25,24 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
       : [String(filterValues.customer_organization_id)]
     : undefined;
 
-  // Use custom hook for organization name fetching
+  // Extract sales IDs from filter values and convert to strings
+  const salesIds = filterValues?.opportunity_owner_id
+    ? Array.isArray(filterValues.opportunity_owner_id)
+      ? filterValues.opportunity_owner_id.map(String)
+      : [String(filterValues.opportunity_owner_id)]
+    : undefined;
+
+  // Extract tag IDs from filter values and convert to strings
+  const tagIds = filterValues?.tags
+    ? Array.isArray(filterValues.tags)
+      ? filterValues.tags.map(String)
+      : [String(filterValues.tags)]
+    : undefined;
+
+  // Use custom hooks for name fetching
   const { getOrganizationName } = useOrganizationNames(organizationIds);
+  const { getSalesName } = useSalesNames(salesIds);
+  const { getTagName } = useTagNames(tagIds);
 
   // Flatten and prepare filter values for display
   const filterChips = flattenFilterValues(filterValues || {});
@@ -49,7 +67,13 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
           <AccordionContent className="pb-3">
             <div className="flex flex-wrap gap-2">
               {filterChips.map((chip, index) => {
-                const label = formatFilterLabel(chip.key, chip.value, getOrganizationName);
+                const label = formatFilterLabel(
+                  chip.key,
+                  chip.value,
+                  getOrganizationName,
+                  getSalesName,
+                  getTagName
+                );
 
                 return (
                   <FilterChip

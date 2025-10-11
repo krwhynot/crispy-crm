@@ -1,8 +1,8 @@
 import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRedirect } from "ra-core";
-import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 
 export const OpportunityCard = ({
@@ -57,38 +57,58 @@ export const OpportunityCardContent = ({
 
   return (
     <div
-      className="cursor-pointer"
+      className="cursor-pointer group rounded-lg"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
     >
-      <Card className="py-2 transition-all duration-200 shadow-sm hover:shadow-md">
-        <CardContent className="px-3 flex">
+      <Card className="p-3 transition-[box-shadow,border-color,transform] duration-150 shadow-[var(--shadow-card-2)] group-hover:shadow-[var(--shadow-card-2-hover)] motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:scale-[1.01] group-hover:border-[var(--primary)] group-focus-visible:shadow-[var(--shadow-card-2-hover)] motion-safe:group-focus-visible:-translate-y-0.5 motion-safe:group-focus-visible:scale-[1.01] group-focus-visible:border-[var(--primary)] group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-active:scale-[0.98] touch-manipulation border border-[var(--input)]">
+        <CardContent className="flex flex-col gap-2">
+          {/* Line 1: Opportunity Name */}
+          <p
+            className="text-sm font-semibold line-clamp-2 break-words leading-snug"
+            title={opportunity.name}
+            aria-label={opportunity.name}
+          >
+            {opportunity.name}
+          </p>
+
+          {/* Line 2: Customer Name */}
           <ReferenceField
             source="customer_organization_id"
             record={opportunity}
             reference="organizations"
             link={false}
           >
-            <OrganizationAvatar width={16} height={16} />
+            <TextField
+              source="name"
+              className="text-xs text-muted-foreground line-clamp-1"
+            />
           </ReferenceField>
-          <div className="ml-2 flex-1">
-            <div className="flex justify-between items-start mb-1">
-              <p className="text-xs font-medium line-clamp-2">{opportunity.name}</p>
-              <Badge
-                variant={getPriorityVariant(opportunity.priority)}
-                className="text-xs ml-1 px-1 py-0"
-              >
-                {opportunity.priority}
-              </Badge>
-            </div>
-            {opportunity.principal_organization_id && (
-              <Badge variant="outline" className="text-xs px-1 py-0">
-                Principal
-              </Badge>
-            )}
-          </div>
+
+          {/* Line 3: Product Name */}
+          {opportunity.principal_organization_id && (
+            <ReferenceField
+              source="principal_organization_id"
+              record={opportunity}
+              reference="organizations"
+              link={false}
+            >
+              <TextField
+                source="name"
+                className="text-xs text-muted-foreground line-clamp-1"
+              />
+            </ReferenceField>
+          )}
+
+          {/* Line 4: Priority */}
+          <Badge
+            variant={getPriorityVariant(opportunity.priority)}
+            className="text-xs px-2 py-0.5 capitalize w-fit"
+          >
+            {opportunity.priority}
+          </Badge>
         </CardContent>
       </Card>
     </div>

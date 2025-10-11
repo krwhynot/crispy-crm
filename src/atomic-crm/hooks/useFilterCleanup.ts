@@ -30,7 +30,10 @@ export const useFilterCleanup = (resource: string) => {
   const [, storeApi] = useStore();
 
   useEffect(() => {
-    const key = `RaStore.${resource}.listParams`;
+    // IMPORTANT: Key must match the store name initialized in CRM.tsx (line 123)
+    // where React Admin store is configured with storeName="CRM", resulting in
+    // localStorage keys like "RaStoreCRM.{resource}.listParams"
+    const key = `RaStoreCRM.${resource}.listParams`;
     const storedParams = localStorage.getItem(key);
 
     if (!storedParams) {
