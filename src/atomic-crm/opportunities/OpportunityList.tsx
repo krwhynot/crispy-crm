@@ -1,12 +1,8 @@
 import { useEffect } from "react";
-import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
-import { ReferenceInput } from "@/components/admin/reference-input";
 import { FilterButton } from "@/components/admin/filter-form";
-import { SearchInput } from "@/components/admin/search-input";
-import { MultiSelectInput } from "@/components/admin/multi-select-input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 
 import {
@@ -21,49 +17,9 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { OpportunityArchivedList } from "./OpportunityArchivedList";
 import { OpportunityEmpty } from "./OpportunityEmpty";
 import { OpportunityListContent } from "./OpportunityListContent";
-import { OnlyMineInput } from "./OnlyMineInput";
-import { OPPORTUNITY_STAGE_CHOICES } from "./stageConstants";
 import { FilterChipsPanel } from "../filters/FilterChipsPanel";
-
-// Helper functions for default stage management
-const getInitialStageFilter = (): string[] | undefined => {
-  // 1. Check URL parameters (highest priority)
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlFilter = urlParams.get('filter');
-  if (urlFilter) {
-    try {
-      const parsed = JSON.parse(urlFilter);
-      if (parsed.stage) {
-        // Handle both array and single value for backward compatibility
-        return Array.isArray(parsed.stage) ? parsed.stage : [parsed.stage];
-      }
-    } catch {
-      // Invalid JSON in URL, continue to next fallback
-    }
-  }
-
-  // 2. Check localStorage preferences
-  const hiddenStages = JSON.parse(
-    localStorage.getItem('opportunity_hidden_stages') ||
-    '["closed_won", "closed_lost"]'
-  );
-
-  // 3. Return visible stages (all except hidden) - hardcoded defaults
-  return OPPORTUNITY_STAGE_CHOICES
-    .map(choice => choice.id)
-    .filter(stage => !hiddenStages.includes(stage));
-};
-
-const updateStagePreferences = (selectedStages: string[]): void => {
-  const allStages = OPPORTUNITY_STAGE_CHOICES.map(choice => choice.id);
-  const hiddenStages = allStages.filter(stage => !selectedStages.includes(stage));
-
-  // Only update localStorage if the hidden stages include closed stages
-  // This prevents overwriting user preferences when they temporarily select all stages
-  if (hiddenStages.length > 0) {
-    localStorage.setItem('opportunity_hidden_stages', JSON.stringify(hiddenStages));
-  }
-};
+import { useOpportunityFilters } from "../filters/useOpportunityFilters";
+import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 
 const OpportunityList = () => {
   const { identity } = useGetIdentity();
@@ -72,29 +28,7 @@ const OpportunityList = () => {
 
   if (!identity) return null;
 
-  const opportunityFilters = [
-    <SearchInput source="q" alwaysOn />,
-    <ReferenceInput source="customer_organization_id" reference="organizations">
-      <AutocompleteArrayInput label={false} placeholder="Customer Organization" />
-    </ReferenceInput>,
-    <MultiSelectInput
-      source="priority"
-      emptyText="Priority"
-      choices={[
-        { id: "low", name: "Low" },
-        { id: "medium", name: "Medium" },
-        { id: "high", name: "High" },
-        { id: "critical", name: "Critical" },
-      ]}
-    />,
-    <MultiSelectInput
-      source="stage"
-      emptyText="Stage"
-      choices={OPPORTUNITY_STAGE_CHOICES}
-      defaultValue={getInitialStageFilter()}
-    />,
-    <OnlyMineInput source="opportunity_owner_id" alwaysOn />,
-  ];
+  const opportunityFilters = useOpportunityFilters();
 
   return (
     <List
@@ -129,7 +63,7 @@ const OpportunityLayout = () => {
   // Monitor stage filter changes and update localStorage preferences
   useEffect(() => {
     if (filterValues?.stage && Array.isArray(filterValues.stage)) {
-      updateStagePreferences(filterValues.stage);
+      saveStagePreferences(filterValues.stage);
     }
   }, [filterValues?.stage]);
 

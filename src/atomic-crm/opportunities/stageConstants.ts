@@ -8,6 +8,7 @@ export interface OpportunityStage {
   label: string;
   color: string;
   description: string;
+  elevation: 1 | 2 | 3; // Visual depth: 1=subtle, 2=medium, 3=prominent
 }
 
 export type OpportunityStageValue =
@@ -26,48 +27,56 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     label: "New Lead",
     color: "var(--info-subtle)",
     description: "Initial prospect identification",
+    elevation: 3, // Prominent - new opportunities should stand out
   },
   {
     value: "initial_outreach",
     label: "Initial Outreach",
     color: "var(--tag-teal-bg)",
     description: "First contact and follow-up",
+    elevation: 2, // Medium - active engagement
   },
   {
     value: "sample_visit_offered",
     label: "Sample/Visit Offered",
     color: "var(--warning-subtle)",
     description: "Product sampling and visit scheduling",
+    elevation: 2, // Medium - active opportunity
   },
   {
     value: "awaiting_response",
     label: "Awaiting Response",
-    color: "var(--purple)",
+    color: "var(--tag-purple-bg)",
     description: "Following up after sample delivery",
+    elevation: 1, // Subtle - waiting state
   },
   {
     value: "feedback_logged",
     label: "Feedback Logged",
-    color: "var(--blue)",
+    color: "var(--tag-blue-bg)",
     description: "Recording customer feedback",
+    elevation: 2, // Medium - active analysis
   },
   {
     value: "demo_scheduled",
     label: "Demo Scheduled",
     color: "var(--success-subtle)",
     description: "Planning product demonstrations",
+    elevation: 3, // Prominent - important milestone
   },
   {
     value: "closed_won",
     label: "Closed - Won",
     color: "var(--success-strong)",
     description: "Successful deal completion",
+    elevation: 2, // Medium - completed but notable
   },
   {
     value: "closed_lost",
     label: "Closed - Lost",
     color: "var(--error-subtle)",
     description: "Lost opportunity",
+    elevation: 1, // Subtle - less emphasis on lost deals
   },
 ];
 
@@ -85,6 +94,11 @@ export function getOpportunityStageColor(stageValue: string): string {
 export function getOpportunityStageDescription(stageValue: string): string {
   const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
   return stage?.description || "";
+}
+
+export function getOpportunityStageElevation(stageValue: string): 1 | 2 | 3 {
+  const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
+  return stage?.elevation || 2; // Default to medium elevation
 }
 
 export function isActiveStage(stageValue: string): boolean {

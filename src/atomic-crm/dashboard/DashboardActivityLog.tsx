@@ -2,6 +2,13 @@ import { Card } from "@/components/ui/card";
 import { Clock } from "lucide-react";
 import { ActivityLog } from "../activity/ActivityLog";
 
+const trackDashboardEvent = (cardType: string) => {
+  console.log(`dashboard_card_click: ${cardType}`, {
+    timestamp: new Date().toISOString(),
+    viewport: window.innerWidth < 768 ? 'mobile' : 'desktop'
+  });
+};
+
 export function DashboardActivityLog() {
   return (
     <div className="flex flex-col">
@@ -13,7 +20,10 @@ export function DashboardActivityLog() {
           Latest Activity
         </h2>
       </div>
-      <Card className="mb-2 p-6">
+      <Card
+        className="mb-2 p-4 cursor-pointer"
+        onClick={() => trackDashboardEvent('activity')}
+      >
         <ActivityLog pageSize={10} />
       </Card>
     </div>

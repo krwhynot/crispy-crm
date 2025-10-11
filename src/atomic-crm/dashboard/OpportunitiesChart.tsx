@@ -2,6 +2,7 @@ import { format, startOfMonth } from "date-fns";
 import { DollarSign } from "lucide-react";
 import { useGetList } from "ra-core";
 import { lazy, memo, Suspense, useMemo } from "react";
+import { Card } from "@/components/ui/card";
 
 const ResponsiveBar = lazy(() =>
   import("@nivo/bar").then(module => ({ default: module.ResponsiveBar }))
@@ -24,6 +25,13 @@ const threeMonthsAgo = new Date(
 
 const DEFAULT_LOCALE = "en-US";
 const CURRENCY = "USD";
+
+const trackDashboardEvent = (cardType: string) => {
+  console.log(`dashboard_card_click: ${cardType}`, {
+    timestamp: new Date().toISOString(),
+    viewport: window.innerWidth < 768 ? 'mobile' : 'desktop'
+  });
+};
 
 export const OpportunitiesChart = memo(() => {
   const acceptedLanguages = navigator
@@ -98,7 +106,10 @@ export const OpportunitiesChart = memo(() => {
     { min: 0, max: 0 },
   );
   return (
-    <div className="flex flex-col">
+    <Card
+      className="bg-card border border-border shadow-sm rounded-xl p-4 cursor-pointer"
+      onClick={() => trackDashboardEvent('chart')}
+    >
       <div className="flex items-center mb-4">
         <div className="mr-3 flex">
           <DollarSign className="text-muted-foreground w-6 h-6" />
@@ -218,6 +229,6 @@ export const OpportunitiesChart = memo(() => {
           />
         </Suspense>
       </div>
-    </div>
+    </Card>
   );
 });

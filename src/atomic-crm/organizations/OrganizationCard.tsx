@@ -37,13 +37,18 @@ export const OrganizationCard = (props: { record?: Company }) => {
         id: record.id,
         type: "show",
       })}
-      className="no-underline"
+      className="no-underline group"
     >
-      <Card className="h-[200px] flex flex-col justify-between p-4 hover:bg-muted">
+      <Card className="h-[200px] flex flex-col justify-between p-4
+                       bg-card border border-border rounded-xl
+                       shadow-sm hover:shadow-md
+                       transition-shadow duration-200
+                       motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01]
+                       hover:border-primary/20">
         <div className="flex flex-col items-center gap-1">
           <OrganizationAvatar />
           <div className="text-center mt-1">
-            <h6 className="text-sm font-medium">{record.name}</h6>
+            <h6 className="text-sm font-medium group-hover:text-foreground transition-colors">{record.name}</h6>
             {record.segment_id && (
               <ReferenceField source="segment_id" reference="segments" link={false}>
                 <TextField source="name" className="text-xs text-muted-foreground" />

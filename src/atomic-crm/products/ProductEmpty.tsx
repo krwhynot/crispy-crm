@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export const ProductEmpty = () => {
   return (
-    <Card className="max-w-md mx-auto mt-16">
+    <Card className="max-w-md mx-auto mt-16 bg-card border border-border shadow-sm rounded-xl">
       <CardContent className="flex flex-col items-center justify-center p-8 text-center">
         <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
           <Package className="w-8 h-8 text-primary" />

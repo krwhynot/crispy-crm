@@ -14,6 +14,6 @@ $ARGUMENTS
 
 ## Response Guidelines
 1. Investigate the relevant code, using the sql tool as necessary to investigate the database
-2. Use the perplexity tool to perform any research necessary (unlikely)
+2. Use the perplexity tool to perform any research necessary
 3. ULTRATHINK on the information you have so far. Only ultrathink after performing the previous steps. Do not skip ultrathinking.
 4. Respond to to me. Do not write code.

@@ -14,6 +14,13 @@ import { SimpleList } from "../simple-list/SimpleList";
 import { Avatar } from "../contacts/Avatar";
 import type { Contact } from "../types";
 
+const trackDashboardEvent = (cardType: string) => {
+  console.log(`dashboard_card_click: ${cardType}`, {
+    timestamp: new Date().toISOString(),
+    viewport: window.innerWidth < 768 ? 'mobile' : 'desktop'
+  });
+};
+
 export const HotContacts = () => {
   const { identity } = useGetIdentity();
   const {
@@ -57,7 +64,10 @@ export const HotContacts = () => {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <Card className="py-0">
+      <Card
+        className="bg-card border border-border shadow-sm rounded-xl py-0 cursor-pointer"
+        onClick={() => trackDashboardEvent('contacts')}
+      >
         <SimpleList<Contact>
           linkType="show"
           data={contactData}

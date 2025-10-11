@@ -423,9 +423,10 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getResourceName(resource);
 
       // Validate and process data
+      // Include id in data BEFORE validation (updateSchemas require id)
       const processedData = await processForDatabase(
         resource,
-        params.data,
+        { ...params.data, id: params.id },
         "update",
       );
 
