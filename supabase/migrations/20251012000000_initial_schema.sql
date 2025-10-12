@@ -20,13 +20,13 @@ CREATE EXTENSION IF NOT EXISTS "pg_trgm";
 -- =====================================================================
 
 -- Activity types
-CREATE TYPE IF NOT EXISTS activity_type AS ENUM (
+CREATE TYPE activity_type AS ENUM (
     'engagement',
     'interaction'
 );
 
 -- Contact roles
-CREATE TYPE IF NOT EXISTS contact_role AS ENUM (
+CREATE TYPE contact_role AS ENUM (
     'decision_maker',
     'influencer',
     'buyer',
@@ -38,7 +38,7 @@ CREATE TYPE IF NOT EXISTS contact_role AS ENUM (
 );
 
 -- Interaction types
-CREATE TYPE IF NOT EXISTS interaction_type AS ENUM (
+CREATE TYPE interaction_type AS ENUM (
     'call',
     'email',
     'meeting',
@@ -53,7 +53,7 @@ CREATE TYPE IF NOT EXISTS interaction_type AS ENUM (
 );
 
 -- Opportunity stages (food service pipeline)
-CREATE TYPE IF NOT EXISTS opportunity_stage AS ENUM (
+CREATE TYPE opportunity_stage AS ENUM (
     'new_lead',
     'initial_outreach',
     'sample_visit_offered',
@@ -65,7 +65,7 @@ CREATE TYPE IF NOT EXISTS opportunity_stage AS ENUM (
 );
 
 -- Opportunity status
-CREATE TYPE IF NOT EXISTS opportunity_status AS ENUM (
+CREATE TYPE opportunity_status AS ENUM (
     'active',
     'on_hold',
     'nurturing',
@@ -74,7 +74,7 @@ CREATE TYPE IF NOT EXISTS opportunity_status AS ENUM (
 );
 
 -- Organization types
-CREATE TYPE IF NOT EXISTS organization_type AS ENUM (
+CREATE TYPE organization_type AS ENUM (
     'customer',
     'principal',
     'distributor',
@@ -85,7 +85,7 @@ CREATE TYPE IF NOT EXISTS organization_type AS ENUM (
 );
 
 -- Pricing model types
-CREATE TYPE IF NOT EXISTS pricing_model_type AS ENUM (
+CREATE TYPE pricing_model_type AS ENUM (
     'fixed',
     'tiered',
     'volume',
@@ -94,7 +94,7 @@ CREATE TYPE IF NOT EXISTS pricing_model_type AS ENUM (
 );
 
 -- Priority levels
-CREATE TYPE IF NOT EXISTS priority_level AS ENUM (
+CREATE TYPE priority_level AS ENUM (
     'low',
     'medium',
     'high',
@@ -102,7 +102,7 @@ CREATE TYPE IF NOT EXISTS priority_level AS ENUM (
 );
 
 -- Product categories (food service)
-CREATE TYPE IF NOT EXISTS product_category AS ENUM (
+CREATE TYPE product_category AS ENUM (
     'beverages',
     'dairy',
     'frozen',
@@ -125,7 +125,7 @@ CREATE TYPE IF NOT EXISTS product_category AS ENUM (
 );
 
 -- Product status
-CREATE TYPE IF NOT EXISTS product_status AS ENUM (
+CREATE TYPE product_status AS ENUM (
     'active',
     'discontinued',
     'seasonal',
@@ -135,7 +135,7 @@ CREATE TYPE IF NOT EXISTS product_status AS ENUM (
 );
 
 -- Storage temperature requirements
-CREATE TYPE IF NOT EXISTS storage_temperature AS ENUM (
+CREATE TYPE storage_temperature AS ENUM (
     'frozen',
     'refrigerated',
     'cool',
@@ -144,7 +144,7 @@ CREATE TYPE IF NOT EXISTS storage_temperature AS ENUM (
 );
 
 -- Units of measure
-CREATE TYPE IF NOT EXISTS unit_of_measure AS ENUM (
+CREATE TYPE unit_of_measure AS ENUM (
     'each',
     'case',
     'pallet',
@@ -700,7 +700,7 @@ DECLARE
     t text;
     tables text[] := ARRAY[
         'organizations', 'contacts', 'opportunities', 'activities', 'tasks',
-        '"contactNotes"', '"opportunityNotes"', 'tags', 'contact_organizations',
+        'contactNotes', 'opportunityNotes', 'tags', 'contact_organizations',
         'opportunity_participants', 'interaction_participants', 'contact_preferred_principals',
         'products', 'product_category_hierarchy', 'product_pricing_tiers',
         'product_pricing_models', 'product_inventory', 'product_features',
@@ -1007,17 +1007,44 @@ INSERT INTO public.migration_history (
 );
 
 -- =====================================================================
--- SECTION 11: STORAGE BUCKETS (from migration #3 & #4)
+-- SECTION 11: STORAGE BUCKETS
 -- =====================================================================
 
--- Create attachments storage bucket (handled via Supabase Dashboard or CLI)
--- INSERT INTO storage.buckets (id, name, public) VALUES ('attachments', 'attachments', false);
+-- Create attachments storage bucket for avatars, logos, and file attachments
+-- Note: File size limits and MIME types are configured via Supabase config.toml or Dashboard
+INSERT INTO storage.buckets (id, name)
+VALUES ('attachments', 'attachments')
+ON CONFLICT (id) DO NOTHING;  -- Idempotent: skip if bucket already exists
 
--- Storage policies are managed through Supabase Dashboard
+-- Storage RLS Policies for authenticated users
+-- Drop existing policies if they exist, then create new ones (idempotent)
+DROP POLICY IF EXISTS "Authenticated users can upload attachments" ON storage.objects;
+CREATE POLICY "Authenticated users can upload attachments"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'attachments');
+
+DROP POLICY IF EXISTS "Authenticated users can view attachments" ON storage.objects;
+CREATE POLICY "Authenticated users can view attachments"
+ON storage.objects FOR SELECT
+TO authenticated
+USING (bucket_id = 'attachments');
+
+DROP POLICY IF EXISTS "Authenticated users can update attachments" ON storage.objects;
+CREATE POLICY "Authenticated users can update attachments"
+ON storage.objects FOR UPDATE
+TO authenticated
+USING (bucket_id = 'attachments' AND auth.uid() = owner);
+
+DROP POLICY IF EXISTS "Authenticated users can delete attachments" ON storage.objects;
+CREATE POLICY "Authenticated users can delete attachments"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (bucket_id = 'attachments' AND auth.uid() = owner);
 
 -- =====================================================================
 -- END OF CONSOLIDATED MIGRATION
 -- =====================================================================
--- This represents the complete schema as of 2025-01-27
--- Consolidated from 68 previous migrations (20250923012432 - 20250926125832)
--- =====================================================================-- CI/CD optimization test - Sun Oct  5 20:57:19 CDT 2025
+-- This represents the complete schema as of 2025-10-12
+-- Consolidated from 34 previous migrations + storage compatibility fix
+-- =====================================================================
