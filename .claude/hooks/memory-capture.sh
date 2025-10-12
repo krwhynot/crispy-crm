@@ -1,23 +1,46 @@
-#!/bin/bash
-# Auto-capture memory after significant tool usage
+#!/usr/bin/env bash
+# memory-capture.sh - Logs file changes for memory review
+#
+# USAGE:
+# 1. This hook runs automatically after Write/Edit/MultiEdit
+# 2. Logs entries to .claude/memory-capture.log
+# 3. Claude reviews log periodically during conversations
+# 4. User can trigger: "review memory log" or "check recent changes"
+# 5. Claude creates memory entities via mcp__memory__create_entities
+#
+# Follows CLAUDE.md Memory Management Protocol
 
-# Get the project directory
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+set -euo pipefail
 
-# Only capture for Write/Edit operations (avoid noise)
-if [[ "$CLAUDE_TOOL_NAME" =~ ^(Write|Edit|MultiEdit)$ ]]; then
+# Read JSON input from stdin
+input=$(cat)
 
-  # Get changed files from payload
-  CHANGED_FILES="${CLAUDE_CHANGED_FILES:-unknown}"
-  TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+# Extract fields (fallback if jq not available)
+file_path=$(echo "$input" | grep -oP '"file_path"\s*:\s*"\K[^"]+' || echo "unknown")
+tool_name=$(echo "$input" | grep -oP '"tool_name"\s*:\s*"\K[^"]+' || echo "unknown")
 
-  # Create a simple log entry
-  echo "[$TIMESTAMP] Tool: $CLAUDE_TOOL_NAME, Files: $CHANGED_FILES" >> "$PROJECT_DIR/.claude/memory-log.txt"
-
-  # TODO: Add actual MCP memory tool call here
-  # This would require calling a Node.js/Python script that uses the MCP memory API
-  # Example: node "$PROJECT_DIR/.claude/hooks/create-memory.js" "$CHANGED_FILES"
-
+# Skip if no file path identified
+if [ "$file_path" = "unknown" ]; then
+  exit 0
 fi
+
+# Classify by file extension/path
+type="code"
+[[ "$file_path" == *.sql ]] && type="migration"
+[[ "$file_path" == *.md ]] && type="documentation"
+[[ "$file_path" == *config* ]] && type="configuration"
+[[ "$file_path" == *settings* ]] && type="configuration"
+[[ "$file_path" == *.json ]] && type="configuration"
+[[ "$file_path" == *.toml ]] && type="configuration"
+[[ "$file_path" == *.yaml ]] && type="configuration"
+[[ "$file_path" == *.yml ]] && type="configuration"
+
+# Get project directory
+project_dir="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+
+# Log to memory capture file
+log_file="$project_dir/.claude/memory-capture.log"
+timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+echo "[$timestamp] [$type] $tool_name: $file_path" >> "$log_file"
 
 exit 0
