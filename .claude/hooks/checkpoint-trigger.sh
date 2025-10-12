@@ -18,6 +18,9 @@ fi
 
 # Ensure checkpoint manager exists
 if [ ! -x "${HOME}/.claude/checkpoint-manager.sh" ]; then
+  # Log an error for easier debugging, but exit cleanly to not block the tool.
+  log_file="${CLAUDE_PROJECT_DIR:-$(pwd)}/.claude/hooks.log"
+  echo "$(date --iso-8601=seconds) - ERROR: checkpoint-manager.sh not found or not executable at ${HOME}/.claude/checkpoint-manager.sh" >> "$log_file"
   exit 0
 fi
 
