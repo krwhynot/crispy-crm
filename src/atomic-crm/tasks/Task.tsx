@@ -13,8 +13,8 @@ import {
   addDays,
   addWeeks,
   format,
+  isAfter,
   isBefore,
-  isSameOrBefore,
   parseISO,
   startOfDay,
   startOfToday,
@@ -36,34 +36,22 @@ export const Task = ({
   const notify = useNotify();
   const queryClient = useQueryClient();
 
-  // Date helper functions for intelligent postpone menu
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  // Date helper functions for intelligent postpone menu using date-fns
+  const today = startOfToday();
+  // Handle both ISO strings and date-only strings like "2025-10-12"
+  const taskDueDate = startOfDay(new Date(task.due_date));
+  const tomorrow = addDays(today, 1);
 
-  const taskDueDate = new Date(task.due_date);
-  taskDueDate.setHours(0, 0, 0, 0);
-
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
-  // Calculate next Monday (start of next week)
-  const nextMonday = new Date(today);
-  const daysUntilMonday = (8 - today.getDay()) % 7 || 7;
-  nextMonday.setDate(today.getDate() + daysUntilMonday);
+  // Calculate next Monday (start of next week). weekStartsOn: 1 ensures Monday is the start.
+  const nextMonday = startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 });
 
   // Check if task can be postponed
-  const canPostponeTomorrow = taskDueDate <= today;
-  const canPostponeNextWeek = taskDueDate < nextMonday;
+  const canPostponeTomorrow = !isAfter(taskDueDate, today);
+  const canPostponeNextWeek = isBefore(taskDueDate, nextMonday);
 
-  // Format dates for display
-  const formatDate = (date: Date) => {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
-  };
-
-  const tomorrowFormatted = formatDate(tomorrow);
-  const nextMondayFormatted = formatDate(nextMonday);
+  // Format dates for display using date-fns
+  const tomorrowFormatted = format(tomorrow, "EEE, MMM d");
+  const nextMondayFormatted = format(nextMonday, "EEE, MMM d");
 
   const [openEdit, setOpenEdit] = useState(false);
 
@@ -185,7 +173,7 @@ export const Task = ({
                     id: task.id,
                     data: {
                       ...task, // Include all existing task fields
-                      due_date: tomorrow.toISOString().slice(0, 10),
+                      due_date: format(tomorrow, "yyyy-MM-dd"),
                     },
                     previousData: task,
                   });
@@ -202,7 +190,7 @@ export const Task = ({
                     id: task.id,
                     data: {
                       ...task, // Include all existing task fields
-                      due_date: nextMonday.toISOString().slice(0, 10),
+                      due_date: format(nextMonday, "yyyy-MM-dd"),
                     },
                     previousData: task,
                   });
