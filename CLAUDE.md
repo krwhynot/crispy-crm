@@ -22,11 +22,11 @@ Core principles to prevent debates & ensure consistency:
 8. **COLORS**: Semantic CSS variables only (--primary, --destructive). Never use hex codes
 9. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
 
-# Parallel Agent Decomposition
+## Parallel Agent Decomposition
 
 **MANDATORY**: For ANY complex task or problem, immediately decompose into parallel-executable subtasks.
 
-## Execution Pattern
+### Execution Pattern
 1. **Analyze** - Break the problem into 3-7 independent components
 2. **Assign** - Create parallel agents, each with a specific research/implementation focus:
    - Agent 1: Database/backend investigation
@@ -35,21 +35,19 @@ Core principles to prevent debates & ensure consistency:
    - Agent 4+: Additional specialized aspects
 3. **Synthesize** - Combine findings into cohesive solution
 
-## Trigger Words
+### Trigger Words
 When you see: "implement", "research", "analyze", "build", "investigate", "plan", "design"
 → Immediately decompose for parallel execution
 
-## Example Decomposition
+### Example Decomposition
 Task: "Add new dashboard feature"
 Parallel Agents:
+- Agent 1: Research existing dashboard patterns in /src/atomic-crm/
+- Agent 2: Analyze required database schema changes
+- Agent 3: Investigate relevant shadcn/ui components
+- Agent 4: Review similar features for UX patterns
 
-Agent 1: Research existing dashboard patterns in /src/atomic-crm/
-Agent 2: Analyze required database schema changes
-Agent 3: Investigate relevant shadcn/ui components
-Agent 4: Review similar features for UX patterns
-
-
-## Critical Rules
+### Critical Rules
 - Never work sequentially when parallel is possible
 - Each agent must have clear, independent scope
 - Agents write findings to `.docs/plans/[feature]/[aspect].md`
@@ -71,16 +69,31 @@ npm run preview          # Preview production build locally
 ```bash
 npm test                 # Run tests in watch mode
 npm run test:ci          # Run tests once (for CI)
+npm run test:coverage    # Generate coverage report
+npm run test:unit        # Run only unit tests
+npm run test:ui          # Launch Vitest UI for visual exploration
 npm run test:performance # Run performance benchmarks
 npm run test:load        # Run load tests
 ```
 
-**Testing Documentation**: Comprehensive testing strategy documented in `.docs/plans/ui-ux-testing-automation/`:
-- `requirements.md` - Testing strategy with critical gaps (RBAC, API errors, cleanup, selectors, a11y)
-- `shared.md` - Testing patterns and architecture
-- `react-admin-patterns.research.md` - React Admin-specific patterns
-- `env-and-auth.research.md` - Environment and authorization testing
-- `existing-test-setup.research.md` - Current Vitest configuration
+**Coverage Baseline**: 70% across all metrics (statements, branches, functions, lines)
+
+**Testing Documentation**: Comprehensive testing strategy documented in `.docs/testing/`:
+- `TESTING.md` - Complete testing overview and strategy
+- `WRITING_TESTS.md` - Patterns, examples, and best practices
+- `FLAKY_TEST_POLICY.md` - Handling unreliable tests
+
+**Test Organization**:
+- Unit tests: `*.test.ts` or `*.test.tsx` files (anywhere in `src/`)
+- Integration tests: `src/tests/integration/`
+- E2E tests: `tests/e2e/` (Playwright)
+- Fixtures: `tests/fixtures/` - Opportunity-based test data
+
+**Testing Patterns**:
+- Use semantic selectors: `getByRole` > `data-testid` > avoid CSS/text selectors
+- Follow patterns from `.docs/testing/WRITING_TESTS.md`
+- Tests must pass before merging
+- Flaky tests must be fixed or marked appropriately per policy
 
 ### Code Quality
 ```bash
@@ -99,11 +112,28 @@ npm run prod:start       # Build and start production server locally
 npm run prod:deploy      # Deploy to production (GitHub Pages)
 ```
 
+### Supabase Local Development
+```bash
+npm run supabase:local:start      # Start local Supabase instance
+npm run supabase:local:stop       # Stop local Supabase instance
+npm run supabase:local:restart    # Restart local Supabase instance
+npm run supabase:local:db:reset   # Reset local database to migrations
+npm run supabase:local:status     # Show local Supabase status
+npm run supabase:local:studio     # Echo Studio URL (http://localhost:54323)
+```
+
+**Local Supabase Services**:
+- Dashboard: http://localhost:54323/
+- REST API: http://127.0.0.1:54321
+- Storage: http://localhost:54323/project/default/storage/buckets/attachments
+- Email testing (Inbucket): http://localhost:54324/
+
 ### Development Utilities
 ```bash
 npm run seed:data             # Insert test data
 npm run seed:data:dry-run     # Preview test data
 npm run seed:data:clean       # Clean and regenerate test data
+npm run seed:products         # Seed product data
 npm run cache:clear           # Clear application caches
 npm run cache:clear:dry-run   # Preview cache clear
 npm run search:reindex        # Reindex search data
@@ -135,6 +165,7 @@ When working with the database, use the Supabase Lite MCP tools:
 - **Backend**: Supabase (PostgreSQL + Auth + Storage + Edge Functions)
 - **Validation**: Zod schemas at API boundaries
 - **State**: React Admin store + React Query
+- **Testing**: Vitest + React Testing Library + Playwright
 
 ### Application Entry Point
 - `src/main.tsx` → `src/App.tsx` → `src/atomic-crm/root/CRM.tsx`
@@ -151,11 +182,39 @@ Unified Supabase data provider at `src/atomic-crm/providers/supabase/unifiedData
 - Consolidates transformation logic (was 4+ layers, now 2 max)
 - Error logging and resource-specific transformations built-in
 
+**Key Design Decision**: The unified data provider consolidates:
+1. Base Supabase operations (via `ra-supabase-core`)
+2. Resource-specific transformations
+3. Validation (via Zod schemas)
+4. Error logging and handling
+5. Soft delete support
+6. JSONB array field normalization
+7. Full-text search integration
+
+### Service Layer Architecture
+Three-tier service architecture for complex operations:
+
+**Tier 1: Decomposed Services** (`src/atomic-crm/providers/supabase/services/`)
+- `ValidationService` - Schema validation with detailed error messages
+- `TransformService` - Data transformation, JSONB normalization, attachment handling
+- `StorageService` - Supabase Storage operations for avatars/attachments
+
+**Tier 2: Business Logic Services** (`src/atomic-crm/services/`)
+- `SalesService` - Sales record creation and management
+- `OpportunitiesService` - Opportunity operations and product syncing
+- `ActivitiesService` - Activity and interaction tracking
+- `JunctionsService` - Many-to-many relationship management
+
+**Tier 3: Data Provider Integration**
+- Services instantiated in `unifiedDataProvider.ts`
+- Business logic services receive base data provider
+- Decomposed services are framework-agnostic utilities
+
 ### Component Architecture
 Three-tier system:
-1. **Base** (`src/components/ui/`): shadcn/ui primitives
-2. **Admin** (`src/components/admin/`): React Admin integration layer
-3. **Feature** (`src/atomic-crm/`): Business logic components
+1. **Base** (`src/components/ui/`): shadcn/ui primitives (Button, Input, Card, etc.)
+2. **Admin** (`src/components/admin/`): React Admin integration layer (form inputs with validation)
+3. **Feature** (`src/atomic-crm/`): Business logic components (List, Show, Edit, Create views)
 
 ### Feature Module Pattern
 Each entity follows consistent structure:
@@ -169,23 +228,38 @@ src/atomic-crm/[feature]/
 └── [Feature]Inputs.tsx # Shared form inputs
 ```
 
+**Resource Registration**: All resources registered in `src/atomic-crm/root/CRM.tsx` via `<Resource>` components:
+- `opportunities` - Full CRUD views
+- `contacts` - Full CRUD views
+- `organizations` - Full CRUD views (companies)
+- `products` - Full CRUD views
+- `sales` - Custom sales recording view
+- `contactNotes` / `opportunityNotes` - No views (used via data provider)
+- `tasks` - No views (embedded in other entities)
+- `tags` - No views (used via selects)
+- `segments` - No views (future feature)
+
 ### Database Schema
 Opportunities-based CRM with key tables:
-- `opportunities` - Sales pipeline (multi-stakeholder support)
-- `companies` - Organizations with hierarchies
+- `opportunities` - Sales pipeline with multi-stakeholder support, stage tracking
+- `companies` - Organizations with hierarchies, industry, employee count
 - `contacts` - People with JSONB arrays for emails/phones (e.g., `[{"email":"x@y.com"}]`)
 - `contact_organizations` - Many-to-many relationships with primary flag, decision maker status, and relationship dates
-- `activities` - Engagements and interactions
+- `opportunity_products` - Junction table linking opportunities to products with quantities
+- `activities` - Engagements (standalone) and interactions (opportunity-linked)
 - `tasks` - Action items with type enum (call, email, meeting, todo, follow_up)
 - `contact_notes` / `opportunity_notes` - Entity-specific notes
 - `tags` - Flexible tagging system
+- `sales` - Sales records for reporting
 - RLS: Simple `auth.role() = 'authenticated'` on all tables
 - Soft deletes via `deleted_at` timestamps
 - Views: `contacts_summary` (denormalized contact data with company names)
 
+**Migration Location**: `supabase/migrations/` with timestamp naming
+
 ### Validation Layer
 Zod schemas in `src/atomic-crm/validation/` (API boundary only):
-- `opportunities.ts` - Probability, amount, stage validation
+- `opportunities.ts` - Stage, status, priority, probability, amount validation
 - `organizations.ts` - URL and LinkedIn validation
 - `contacts.ts` - Email/phone JSONB array validation
 - `tasks.ts` - Type enum and status validation
@@ -194,29 +268,40 @@ Zod schemas in `src/atomic-crm/validation/` (API boundary only):
 - `products.ts` - Product validation
 All validation integrated into `unifiedDataProvider.ts` before database operations
 
+**Validation Pattern**:
+1. Define Zod schema in `src/atomic-crm/validation/[resource].ts`
+2. Export schema for use in forms and data provider
+3. Use `.default()` on fields that need form defaults
+4. Extract defaults via `zodSchema.partial().parse({})`
+5. Validation happens in `ValidationService` before database operations
+
 ### Key Patterns
 - **Resource Registration**: All resources in `src/atomic-crm/root/CRM.tsx`
 - **Kanban Board**: Stage-based visualization using index field for opportunity ordering within columns
 - **Multi-Org Contacts**: Junction table `contact_organizations` with primary flag, decision maker status, and relationship tracking
-- **Junction Table Sync**: Contacts/organizations synced via `sync_contact_organizations` RPC (similar to opportunities/products pattern)
+- **Junction Table Sync**: Contacts/organizations and opportunities/products synced via RPC functions
 - **Activity Types**: Engagements (standalone) vs Interactions (opportunity-linked)
 - **Filter System**: Multi-select filters with JSONB array fields in `src/atomic-crm/filters/`
 - **Avatar Storage**: Supabase Storage buckets for avatars/logos, handled by `avatar.utils.ts`
 - **Configuration**: Global app config via `ConfigurationProvider` in `CRM.tsx`
+- **Lazy Loading**: Feature components lazy-loaded via `React.lazy()` in `index.ts` exports
 
 ### Environment Variables
 ```bash
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your_anon_key
-OPPORTUNITY_DEFAULT_STAGE=lead
-OPPORTUNITY_PIPELINE_STAGES=lead,qualified,proposal,closed_won,closed_lost
+OPPORTUNITY_DEFAULT_STAGE=new_lead
+OPPORTUNITY_PIPELINE_STAGES=new_lead,initial_outreach,sample_visit_offered,awaiting_response,feedback_logged,demo_scheduled,closed_won,closed_lost
 ```
 
-### Recent Migration
+### Recent Migration (v0.2.0)
 System migrated from "deals" to "opportunities":
 - Fresh schema, no backward compatibility
 - All references updated throughout codebase
 - Environment variables renamed from `DEAL_*` to `OPPORTUNITY_*`
+- Enhanced schema with multiple participants, activity tracking
+- Many-to-many relationships for contacts/organizations
+- Test fixtures updated to opportunity structure
 
 ## Memory Management Protocol
 
