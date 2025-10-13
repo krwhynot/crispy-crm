@@ -108,6 +108,8 @@ export const ContactListFilter = () => {
           value={{ sales_id: identity?.id }}
         />
       </FilterCategory>
+        </div>
+      </Card>
     </div>
   );
 };
