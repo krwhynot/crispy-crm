@@ -53,6 +53,39 @@ Parallel Agents:
 - Agents write findings to `.docs/plans/[feature]/[aspect].md`
 - Main thread synthesizes after parallel completion
 
+## Supabase Development Philosophy
+
+**PRIMARY WORKFLOW: Docker-Based Local Development**
+
+This project uses Docker-based local Supabase for all development work. This approach:
+- Enables fast, offline development
+- Prevents production database accidents
+- Supports migration-as-code workflows
+- Allows easy database resets and testing
+- Mirrors production environment safely
+
+**When to Use Each Approach:**
+- **Docker Local (DEFAULT)**: Daily development, testing, migrations, schema changes
+- **Remote Cloud (DEPLOY ONLY)**: `npm run supabase:deploy` for production releases
+- **MCP Tools (EMERGENCY)**: Production debugging ONLY - high risk, use with caution
+
+**Environment Files:**
+- `.env.local` → Docker local development (THIS IS YOUR DEFAULT)
+- `.env.development` → Remote cloud (deployment reference only)
+
+### Database Operation Decision Tree
+
+```
+Need to:                      Use:
+───────────────────────────────────────────────────────────
+Create/modify schema       → Docker: npm run supabase:local:db:reset
+Test migrations            → Docker: Local instance
+Deploy to production       → Remote: npm run supabase:deploy
+Debug prod issue           → MCP Tools (CAUTION: read-only when possible)
+Seed test data             → Docker: npm run seed:data
+Query exploration          → Docker: Studio at http://localhost:54323
+```
+
 ## Build & Development Commands
 
 **IMPORTANT**: All build operations use npm scripts only. No Makefile or other build tools.
