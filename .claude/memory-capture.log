@@ -34,3 +34,4 @@
 [2025-10-13 20:18:48] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
 [2025-10-13 20:18:58] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013201530_remove_subcategory_column.sql
 [2025-10-13 20:35:38] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013201328_remove_unused_product_columns.sql
+[2025-10-13 20:47:00] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
