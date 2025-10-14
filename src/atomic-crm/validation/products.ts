@@ -58,7 +58,6 @@ export const productSchema = z.object({
   // Optional fields with defaults
   status: productStatusSchema.default("active"),
   description: z.string().optional(),
-  subcategory: z.string().optional(),
 
   // Pricing fields with defaults
   currency_code: currencyCodeSchema.default("USD"),
