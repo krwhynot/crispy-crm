@@ -19,7 +19,6 @@ export const ProductInputs = () => {
         </div>
         <Separator orientation={isMobile ? "horizontal" : "vertical"} />
         <div className="flex flex-col gap-8 flex-1">
-          <ProductInventoryInputs />
           <ProductClassificationInputs />
         </div>
       </div>
@@ -37,21 +36,13 @@ const ProductBasicInputs = () => {
         placeholder="Product name"
         label="Product Name *"
       />
-      <div className="flex gap-4">
-        <TextInput
-          source="sku"
-          className="flex-1"
-          helperText="Required field"
-          placeholder="SKU-123"
-          label="SKU *"
-        />
-        <TextInput
-          source="brand"
-          className="flex-1"
-          placeholder="Brand name"
-          label="Brand"
-        />
-      </div>
+      <TextInput
+        source="sku"
+        className="w-full"
+        helperText="Required field"
+        placeholder="SKU-123"
+        label="SKU *"
+      />
       <TextInput
         source="description"
         multiline
@@ -82,7 +73,6 @@ const ProductDetailInputs = () => {
       <SelectInput
         source="unit_of_measure"
         label="Unit of Measure"
-        // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
         choices={[
           { id: "each", name: "Each" },
           { id: "case", name: "Case" },
@@ -92,11 +82,7 @@ const ProductDetailInputs = () => {
           { id: "liter", name: "Liter" },
           { id: "gallon", name: "Gallon" },
           { id: "dozen", name: "Dozen" },
-          { id: "pallet", name: "Pallet" },
-          { id: "hour", name: "Hour" },
-          { id: "license", name: "License" },
         ]}
-        helperText="What the price refers to"
       />
     </div>
   );
@@ -132,33 +118,10 @@ const ProductPricingInputs = () => {
           className="w-32"
         />
       </div>
-      <NumberInput
-        source="cost_per_unit"
-        label="Cost per Unit"
-        placeholder="0.00"
-        helperText="Your cost from supplier"
-        step={0.01}
-      />
     </div>
   );
 };
 
-const ProductInventoryInputs = () => {
-  return (
-    <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Order Requirements</h6>
-      <NumberInput
-        source="minimum_order_quantity"
-        label="Minimum Order Quantity"
-        placeholder="1"
-        // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
-        helperText="Minimum units required per order"
-        step={1}
-        min={1}
-      />
-    </div>
-  );
-};
 
 const ProductClassificationInputs = () => {
   const productCategories = [

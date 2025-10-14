@@ -19,3 +19,13 @@
 [2025-10-13 13:59:30] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/ui/card-elevation.stories.tsx
 [2025-10-13 14:00:13] [documentation] Write: /home/krwhynot/projects/crispy-crm/.docs/design-system/phase2-extraction-guide.md
 [2025-10-13 20:07:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-13 20:07:10] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
+[2025-10-13 20:07:42] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-13 20:07:42] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-13 20:07:43] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-13 20:07:59] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-13 20:08:00] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
+[2025-10-13 20:08:12] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-13 20:08:25] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCreate.tsx
+[2025-10-13 20:08:26] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCreate.tsx
+[2025-10-13 20:13:48] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013201328_remove_unused_product_columns.sql

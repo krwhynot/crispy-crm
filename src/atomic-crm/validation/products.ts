@@ -58,18 +58,12 @@ export const productSchema = z.object({
   // Optional fields with defaults
   status: productStatusSchema.default("active"),
   description: z.string().optional(),
-  brand: z.string().optional(),
-  manufacturer_part_number: z.string().optional(),
   subcategory: z.string().optional(),
 
-  // B2B fields with defaults
+  // Pricing fields with defaults
   currency_code: currencyCodeSchema.default("USD"),
   unit_of_measure: unitOfMeasureSchema,
-  minimum_order_quantity: z.number().int().min(1, "Minimum order must be at least 1").default(1),
-
-  // Pricing fields (optional but must be positive if provided)
   list_price: z.number().min(0, "Price must be positive").optional(),
-  cost_per_unit: z.number().min(0, "Cost must be positive").optional(),
 
   // Food/health specific fields (kept for flexibility)
   certifications: z.array(z.string()).optional(),
