@@ -19,10 +19,6 @@
 -- - All functions, views, RLS policies, and triggers
 -- =====================================================================
 
-WARN: no SMS provider is enabled. Disabling phone login
-Initialising login role...
-Dumping schemas from remote database...
-
 
 
 SET statement_timeout = 0;
