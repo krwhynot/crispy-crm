@@ -30,6 +30,9 @@ BEGIN
     confirmation_token,
     recovery_token,
     email_change_token_new,
+    email_change_token_current,
+    email_change,
+    reauthentication_token,
     is_super_admin
   ) VALUES (
     '00000000-0000-0000-0000-000000000000',
@@ -46,12 +49,16 @@ BEGIN
     '',
     '',
     '',
+    '',  -- email_change_token_current
+    '',  -- email_change (must be empty string, not NULL)
+    '',  -- reauthentication_token
     false
   );
 
   -- Create corresponding identity record in auth.identities
   INSERT INTO auth.identities (
     id,
+    provider_id,
     user_id,
     identity_data,
     provider,
@@ -60,10 +67,13 @@ BEGIN
     updated_at
   ) VALUES (
     gen_random_uuid(),
+    'test@example.com',  -- provider_id is the email for email provider
     new_user_id,
     jsonb_build_object(
       'sub', new_user_id::text,
-      'email', 'test@example.com'
+      'email', 'test@example.com',
+      'email_verified', true,
+      'phone_verified', false
     ),
     'email',
     now(),
