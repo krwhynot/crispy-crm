@@ -79,12 +79,6 @@ const ProductDetailInputs = () => {
           helperText="Select the supplier organization"
         />
       </ReferenceInput>
-      <TextInput
-        source="manufacturer_part_number"
-        label="Manufacturer Part Number"
-        placeholder="MFG-12345"
-        helperText="External product identifier"
-      />
       <SelectInput
         source="unit_of_measure"
         label="Unit of Measure"
