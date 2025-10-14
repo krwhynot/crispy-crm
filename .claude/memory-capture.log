@@ -52,3 +52,5 @@
 [2025-10-13 21:22:42] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/add-more-test-data.js
 [2025-10-13 21:23:08] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/add-more-test-data.js
 [2025-10-13 21:34:56] [migration] Write: /home/krwhynot/projects/crispy-crm/scripts/create-test-user.sql
+[2025-10-13 21:35:59] [migration] Edit: /home/krwhynot/projects/crispy-crm/scripts/create-test-user.sql
+[2025-10-13 21:40:12] [migration] Edit: /home/krwhynot/projects/crispy-crm/scripts/create-test-user.sql
