@@ -54,13 +54,16 @@
     "supabase:local:status": "npx supabase status",
     "supabase:local:db:reset": "npx supabase db reset",
     "supabase:local:studio": "echo 'Supabase Studio: http://localhost:54323'",
+    "db:migrate": "npx supabase db reset",
+    "db:studio": "echo 'Supabase Studio: http://localhost:54323' && open http://localhost:54323 || xdg-open http://localhost:54323 || echo 'Please visit http://localhost:54323'",
     "supabase:deploy": "npx supabase db push && npx supabase functions deploy",
     "prod:start": "npm run build && npm run supabase:deploy && npx serve -l tcp://127.0.0.1:3000 dist",
     "prod:deploy": "npm run build && npm run supabase:deploy && npm run ghpages:deploy",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",
-    "chromatic:ci": "chromatic --only-changed --exit-once-uploaded"
+    "chromatic:ci": "chromatic --only-changed --exit-once-uploaded",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
@@ -156,6 +159,7 @@
     "eslint-plugin-storybook": "^9.0.13",
     "eslint-plugin-tailwindcss": "^4.0.0-beta.0",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.0",
     "ora": "^8.1.1",
     "prettier": "^3.6.2",
