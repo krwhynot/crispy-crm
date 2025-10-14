@@ -35,3 +35,11 @@
 [2025-10-13 20:18:58] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013201530_remove_subcategory_column.sql
 [2025-10-13 20:35:38] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013201328_remove_unused_product_columns.sql
 [2025-10-13 20:47:00] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-10-13 20:47:25] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-10-13 20:47:53] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-10-13 20:48:23] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-10-13 20:49:07] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-10-13 20:49:25] [code] Edit: /home/krwhynot/projects/crispy-crm/.env.local
+[2025-10-13 20:49:49] [code] Edit: /home/krwhynot/projects/crispy-crm/.env.production.example
+[2025-10-13 20:51:26] [code] Edit: /home/krwhynot/projects/crispy-crm/.gitignore
+[2025-10-13 20:53:40] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json

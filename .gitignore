@@ -16,12 +16,15 @@
 
 # misc
 .DS_Store
-.env.local
-.env.production
-.env.development.local
-.env.test.local
-.env.production.local
 .eslintcache
+
+# Environment files
+# .env.local - COMMITTED (contains safe Docker demo keys for local development)
+.env.production              # Actual production secrets (NEVER commit)
+.env.development.local       # Local development overrides
+.env.test.local             # Local test overrides
+.env.production.local       # Local production overrides
+# .env.production.example - COMMITTED (reference template for deployment)
 
 npm-debug.log*
 yarn-debug.log*

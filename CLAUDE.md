@@ -138,13 +138,6 @@ npm run prettier:apply   # Auto-fix Prettier formatting
 npm run validate:colors  # Validate semantic color usage
 ```
 
-### Database & Deployment
-```bash
-npm run supabase:deploy  # Deploy database migrations and functions
-npm run prod:start       # Build and start production server locally
-npm run prod:deploy      # Deploy to production (GitHub Pages)
-```
-
 ### Supabase Local Development
 ```bash
 npm run supabase:local:start      # Start local Supabase instance
@@ -160,6 +153,110 @@ npm run supabase:local:studio     # Echo Studio URL (http://localhost:54323)
 - REST API: http://127.0.0.1:54321
 - Storage: http://localhost:54323/project/default/storage/buckets/attachments
 - Email testing (Inbucket): http://localhost:54324/
+
+## Common Development Workflows
+
+### Starting a New Development Session
+
+```bash
+# 1. Start Docker-based Supabase (one time per session)
+npm run supabase:local:start
+
+# 2. Verify it's running
+npm run supabase:local:status
+
+# 3. Start your dev server
+npm run dev
+
+# Your app now points to: http://localhost:54321 (Docker Supabase)
+```
+
+### Creating a Database Migration
+
+```bash
+# 1. Make sure local Supabase is running
+npm run supabase:local:status
+
+# 2. Create migration file (manual)
+# Create: supabase/migrations/YYYYMMDDHHMMSS_description.sql
+
+# 3. Apply migration locally
+npm run supabase:local:db:reset
+
+# 4. Test in Supabase Studio
+open http://localhost:54323
+
+# 5. Verify migration in code
+npm run dev  # Check if app works
+
+# 6. Commit migration to git
+git add supabase/migrations/
+git commit -m "feat(db): add migration for X"
+
+# 7. Deploy to production (when ready)
+npm run supabase:deploy
+```
+
+### Testing Database Changes Safely
+
+```bash
+# Experiment freely - local database is disposable!
+
+# Reset to clean state anytime:
+npm run supabase:local:db:reset
+
+# Try different approaches without risk:
+npm run supabase:local:db:reset  # Approach 1
+# ... test ...
+npm run supabase:local:db:reset  # Approach 2
+# ... test again ...
+```
+
+### Deploying to Production
+
+```bash
+# 1. Ensure migrations work locally
+npm run supabase:local:db:reset
+npm run dev  # Verify app works
+
+# 2. Run tests
+npm test
+
+# 3. Build check
+npm run build
+
+# 4. Deploy (pushes migrations + functions)
+npm run supabase:deploy
+
+# This connects to: aaqnanddcqvfiwhshndl.supabase.co
+```
+
+### Troubleshooting
+
+**"Connection refused" errors:**
+```bash
+# Check if Docker containers are running
+npm run supabase:local:status
+
+# Restart if needed
+npm run supabase:local:restart
+```
+
+**"Wrong environment" (accidentally using production):**
+```bash
+# Verify your .env file:
+cat .env.local | grep VITE_SUPABASE_URL
+# Should show: http://localhost:54321
+
+# If it shows the remote URL, you're using wrong file!
+```
+
+### Database & Deployment
+```bash
+npm run supabase:deploy  # Deploy database migrations and functions
+npm run prod:start       # Build and start production server locally
+npm run prod:deploy      # Deploy to production (GitHub Pages)
+```
 
 ### Development Utilities
 ```bash
@@ -178,15 +275,6 @@ npm run migrate:rollback      # Rollback to previous state
 npm run migrate:validate      # Validate migration success
 npm run migrate:status        # Check migration status
 ```
-
-### MCP Tool Access
-When working with the database, use the Supabase Lite MCP tools:
-- `mcp__supabase-lite__list_tables` - List database tables
-- `mcp__supabase-lite__execute_sql` - Execute queries (SELECT/INSERT/UPDATE/DELETE)
-- `mcp__supabase-lite__apply_migration` - Apply DDL migrations (CREATE/ALTER/DROP)
-- `mcp__supabase-lite__generate_typescript_types` - Generate types
-- `mcp__supabase-lite__get_logs` - View service logs (api/postgres/auth/storage/realtime)
-- `mcp__supabase-lite__get_advisors` - Security and performance recommendations
 
 ## Development Status
 **NOT PRODUCTION** - Development environment only. All data is test data and can be modified/deleted.
@@ -335,6 +423,71 @@ System migrated from "deals" to "opportunities":
 - Enhanced schema with multiple participants, activity tracking
 - Many-to-many relationships for contacts/organizations
 - Test fixtures updated to opportunity structure
+
+## MCP Tools: Emergency Production Access
+
+**WARNING: Use ONLY for production emergencies**
+
+### When MCP Tools Are Appropriate
+
+MCP tools provide direct database access. Use **ONLY** for:
+
+1. **Production Debugging** (Read-only preferred)
+   - Investigating live issues that can't be reproduced locally
+   - Querying production data patterns for analysis
+   - Example: `mcp__supabase-lite__execute_sql` with SELECT queries
+
+2. **Emergency Hotfixes** (Extreme caution)
+   - Critical data fixes that can't wait for migration deployment
+   - Requires: Database backup first, peer review, rollback plan
+   - Better: Deploy via migration when possible
+
+3. **Schema Inspection** (Safe)
+   - `mcp__supabase-lite__list_tables` - View production schema
+   - `mcp__supabase-lite__get_advisors` - Performance recommendations
+
+### MCP Safety Protocol
+
+**Before ANY production MCP operation:**
+
+1. Verify you MEAN to access production (check VITE_SUPABASE_URL)
+2. Use read-only queries when possible (SELECT, not UPDATE/DELETE)
+3. Test query syntax on Docker local first
+4. Have rollback plan if modifying data
+5. Document what you're doing and why
+
+**Example - Safe Production Query:**
+```typescript
+// GOOD: Read-only production analysis
+mcp__supabase-lite__execute_sql:
+"SELECT COUNT(*), stage FROM opportunities WHERE deleted_at IS NULL GROUP BY stage"
+
+// BAD: Direct production modification
+mcp__supabase-lite__execute_sql:
+"UPDATE opportunities SET stage = 'closed_won' WHERE ..." // Use migration instead!
+```
+
+### Why Docker Local Is Preferred
+
+| Scenario | Docker Local | MCP Production |
+|----------|-------------|----------------|
+| Schema changes | Safe, version controlled | Risky, no rollback |
+| Data exploration | Fast, offline | Slow, requires internet |
+| Testing | Isolated, repeatable | Affects real data |
+| Learning | Break things safely | Can corrupt production |
+| Migration testing | Easy reset | No easy undo |
+
+**Default Answer:** "Can I use MCP for this?" → NO, use Docker local instead
+
+### Available MCP Tools
+
+**Database Operations:**
+- `mcp__supabase-lite__list_tables` - List database tables
+- `mcp__supabase-lite__execute_sql` - Execute queries (SELECT/INSERT/UPDATE/DELETE)
+- `mcp__supabase-lite__apply_migration` - Apply DDL migrations (CREATE/ALTER/DROP)
+- `mcp__supabase-lite__generate_typescript_types` - Generate types
+- `mcp__supabase-lite__get_logs` - View service logs (api/postgres/auth/storage/realtime)
+- `mcp__supabase-lite__get_advisors` - Security and performance recommendations
 
 ## Memory Management Protocol
 
