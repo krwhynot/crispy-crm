@@ -158,6 +158,9 @@ class AdditionalDataSeeder {
 
       const org = {
         name: companyName,
+        organization_type: "principal", // Mark as principal organization
+        is_principal: true, // Flag as principal for product linking
+        is_distributor: false,
         industry: orgType,
         segment: faker.helpers.arrayElement(["SMB", "Mid-Market", "Enterprise"]),
         priority: faker.helpers.arrayElement(["A", "B", "C", "D"]),
@@ -173,7 +176,7 @@ class AdditionalDataSeeder {
         annual_revenue: faker.number.int({ min: 500000, max: 50000000 }),
         employee_count: faker.number.int({ min: 10, max: 2000 }),
         founded_year: faker.number.int({ min: 1990, max: 2024 }),
-        description: faker.helpers.arrayElement([
+        notes: faker.helpers.arrayElement([
           "Serving fresh, locally-sourced cuisine",
           "Crafting premium beverages since 2010",
           "Your trusted food service partner",
@@ -185,7 +188,6 @@ class AdditionalDataSeeder {
           "Award-winning culinary experiences",
           "Fresh from our kitchen to your table",
         ]),
-        notes: faker.helpers.maybe(() => faker.lorem.sentence(), { probability: 0.3 }),
         created_at: faker.date.past({ years: 2 }),
         updated_at: faker.date.recent(),
       };
@@ -258,12 +260,7 @@ class AdditionalDataSeeder {
       const template = PRODUCT_IDEAS[i % PRODUCT_IDEAS.length];
       const principal = faker.helpers.arrayElement(this.allOrganizations);
 
-      const costPerUnit = faker.number.float({ min: 1, max: 50, fractionDigits: 2 });
-      const listPrice = faker.number.float({
-        min: costPerUnit * 1.5,
-        max: costPerUnit * 3,
-        fractionDigits: 2
-      });
+      const listPrice = faker.number.float({ min: 5, max: 150, fractionDigits: 2 });
 
       const productAllergens = faker.helpers.maybe(
         () => faker.helpers.arrayElements(ALLERGENS, { min: 1, max: 3 }),
@@ -275,15 +272,15 @@ class AdditionalDataSeeder {
         { probability: 0.3 }
       ) || [];
 
+      // Include brand in product name since brand column was removed
+      const fullProductName = `${template.brand} ${template.name}`;
+
       const product = {
         principal_id: principal.id,
-        name: template.name,
+        name: fullProductName,
         sku: `${template.brand.substring(0, 3).toUpperCase()}-${faker.string.alphanumeric(6).toUpperCase()}`,
         category: template.category,
-        subcategory: template.subcategory,
-        brand: template.brand,
         description: faker.commerce.productDescription(),
-        cost_per_unit: costPerUnit,
         list_price: listPrice,
         status: faker.helpers.weightedArrayElement([
           { weight: 80, value: "active" },
@@ -295,11 +292,8 @@ class AdditionalDataSeeder {
         allergens: productAllergens,
         ingredients: this.generateIngredients(template.category),
         nutritional_info: this.generateNutrition(),
-        marketing_description: `Premium ${template.name} from ${template.brand} - perfect for your F&B operations`,
-        currency_code: "USD",
-        unit_of_measure: faker.helpers.arrayElement(["EA", "LB", "KG", "OZ", "GAL", "L", "CASE", "BOX"]),
-        minimum_order_quantity: faker.helpers.arrayElement([1, 6, 12, 24, 50]),
-        manufacturer_part_number: faker.string.alphanumeric(10).toUpperCase(),
+        marketing_description: `Premium ${template.name} - perfect for your F&B operations`,
+        unit_of_measure: faker.helpers.arrayElement(["each", "case", "pound", "ounce", "gallon", "liter", "kilogram"]),
         created_at: faker.date.past({ years: 1 }),
         updated_at: faker.date.recent(),
       };
