@@ -1,9 +1,0 @@
-{
-    "total_migrations": 68,
-    "date_range": {
-        "first": "20250923012432",
-        "last": "20250926125832"
-    },
-    "consolidated_to": "20250127000000_consolidated_fresh_schema",
-    "archive_reason": "Migration consolidation to reduce technical debt"
-}
