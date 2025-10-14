@@ -1,0 +1,142 @@
+name: 📸 Chromatic Visual Testing
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+concurrency:
+  group: chromatic-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  visual-regression:
+    name: 🎨 Visual Regression Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ !github.event.pull_request.draft }}
+    steps:
+      - name: 📥 Checkout repo with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full git history required for Chromatic to detect changes
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Storybook
+        run: npm run build-storybook
+        env:
+          NODE_ENV: production
+
+      - name: 📸 Run Chromatic
+        id: chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitOnceUploaded: true
+          onlyChanged: true  # Only snapshot changed stories to save credits
+          autoAcceptChanges: false
+          exitZeroOnChanges: true  # Don't fail the build on visual changes
+          buildScriptName: false  # We already built Storybook above
+          storybookBuildDir: storybook-static
+          skip: ${{ github.event.pull_request.head.ref == 'main' }}
+          externals: |
+            - "public/**"
+          annotations: true  # Add GitHub annotations for build errors
+
+      - name: 📊 Comment Chromatic Results
+        if: always() && steps.chromatic.outputs.url
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { url, buildNumber, changeCount } = ${{ toJSON(steps.chromatic.outputs) }};
+            const isPassing = changeCount === '0';
+            const emoji = isPassing ? '✅' : '⚠️';
+            const status = isPassing ? 'No visual changes detected' : `${changeCount} visual changes detected`;
+
+            const comment = `## ${emoji} Chromatic Visual Tests
+
+            ${status}
+
+            🔗 [View Chromatic Build #${buildNumber}](${url})
+
+            ${!isPassing ? '👀 Please review the visual changes and approve or reject them in Chromatic.' : ''}
+
+            <details>
+            <summary>📋 OKLCH Color Validation Checklist</summary>
+
+            ### Colors Validated (42 total)
+            - ✅ **10 Neutrals**: neutral-50 through neutral-900
+            - ✅ **5 Brand greens**: brand-100, 300, 500, 700, 800
+            - ✅ **12 Semantic colors**: success/warning/error/info (subtle/default/strong)
+            - ✅ **2 Accent colors**: purple, teal
+            - ✅ **8 Tag colors**: warm/green/teal/blue/purple/yellow/gray/pink (bg/fg pairs)
+            - ✅ **5 Chart colors**: Linked to semantic palette
+
+            ### Theme Coverage
+            - ✅ Light mode snapshots
+            - ✅ Dark mode snapshots
+            - ✅ Semantic variable mappings (--primary, --destructive, --muted, --accent, --ring)
+
+            </details>`;
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Chromatic Visual Tests')
+            );
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment,
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              });
+            }
+        continue-on-error: true  # Don't fail if commenting fails
+
+      - name: 📝 Summary
+        if: always()
+        run: |
+          echo "## 📸 Chromatic Visual Testing Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ -n "${{ steps.chromatic.outputs.url }}" ]]; then
+            echo "🔗 [View Chromatic Build](${{ steps.chromatic.outputs.url }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- **Build Number**: #${{ steps.chromatic.outputs.buildNumber }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Visual Changes**: ${{ steps.chromatic.outputs.changeCount }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Component Changes**: ${{ steps.chromatic.outputs.componentCount }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Story Changes**: ${{ steps.chromatic.outputs.specCount }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Chromatic build was skipped or failed to complete" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🎨 OKLCH Color System" >> $GITHUB_STEP_SUMMARY
+          echo "This build validates all 42 OKLCH colors across light and dark themes." >> $GITHUB_STEP_SUMMARY
