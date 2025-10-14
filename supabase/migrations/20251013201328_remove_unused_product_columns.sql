@@ -24,11 +24,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Drop dependent views first (product_catalog depends on brand column)
+DROP VIEW IF EXISTS product_catalog CASCADE;
+
 -- Drop unused columns from products table
 ALTER TABLE public.products
-    DROP COLUMN IF EXISTS brand,
-    DROP COLUMN IF EXISTS cost_per_unit,
-    DROP COLUMN IF EXISTS min_order_quantity;
+    DROP COLUMN IF EXISTS brand CASCADE,
+    DROP COLUMN IF EXISTS cost_per_unit CASCADE,
+    DROP COLUMN IF EXISTS min_order_quantity CASCADE;
 
 -- Note: unit_of_measure kept with default 'each' (MVP requirement)
 -- Note: list_price kept (required for sales)
