@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Detect if new migrations were added after git pull
+if git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD 2>/dev/null | grep -q "supabase/migrations/"; then
+  # ANSI colors for visibility
+  RED='\033[0;31m'
+  YELLOW='\033[1;33m'
+  NC='\033[0m' # No Color
+
+  echo ""
+  echo "${YELLOW}========================================================${NC}"
+  echo "${RED}⚠️  New database migrations detected!${NC}"
+  echo "${YELLOW}========================================================${NC}"
+  echo "Your local database schema might be out of date."
+  echo ""
+  echo "Run: ${YELLOW}npm run db:migrate${NC}"
+  echo ""
+  echo "${RED}NOTE: This will reset your local Docker database.${NC}"
+  echo "${YELLOW}========================================================${NC}"
+  echo ""
+fi
+
+exit 0
