@@ -2,6 +2,9 @@
 -- Issue: email_change and email_change_token_new allow NULL without defaults
 -- This causes "converting NULL to string is unsupported" errors in GoTrue v2.179.0
 
+-- Grant postgres user necessary permissions to modify auth schema
+GRANT ALL ON TABLE auth.users TO postgres;
+
 -- Fix email_change column
 -- Step 1: Update existing NULL values to empty strings
 UPDATE auth.users
