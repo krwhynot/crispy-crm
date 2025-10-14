@@ -163,16 +163,10 @@ const ProductClassificationInputs = () => {
         choices={productCategories}
         helperText="Required field"
       />
-      <TextInput
-        source="subcategory"
-        label="Subcategory"
-        placeholder="Optional subcategory"
-      />
       <SelectInput
         source="status"
         label="Status *"
         choices={productStatuses}
-        helperText="Product availability status"
       />
     </div>
   );
