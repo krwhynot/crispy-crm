@@ -94,3 +94,6 @@
 [2025-10-15 13:21:24] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
 [2025-10-15 13:35:11] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
 [2025-10-15 14:01:12] [documentation] Write: /home/krwhynot/projects/crispy-crm/supabase_workflow_overview.md
+[2025-10-15 14:02:35] [documentation] Write: /home/krwhynot/projects/crispy-crm/supabase_troubleshooting.md
+[2025-10-15 14:03:33] [documentation] Write: /home/krwhynot/projects/crispy-crm/supabase_commands_reference.md
+[2025-10-15 14:23:47] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/supabase/data_sync_workflows.md
