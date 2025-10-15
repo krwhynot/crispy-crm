@@ -67,26 +67,13 @@ const OPPORTUNITY_CATEGORIES = [
 const OPPORTUNITY_STATUSES = ["open", "won", "lost", "stalled"];
 
 // Food & Beverage organization types
+// Valid organization_type enum values from database schema
 const FB_ORGANIZATION_TYPES = [
-  "Quick Service Restaurant",
-  "Fine Dining",
-  "Fast Casual",
-  "Food Manufacturing",
-  "Beverage Production",
-  "Food Distribution",
-  "Catering & Events",
-  "Food Technology",
-  "Craft Beverage",
-  "Specialty Foods",
-  "Organic & Natural Foods",
-  "Plant-Based Foods",
-  "Restaurant Chain",
-  "Brewery",
-  "Winery",
-  "Coffee Roaster",
-  "Bakery Chain",
-  "Ghost Kitchen",
-  "Food Wholesaler",
+  "customer",
+  "principal",
+  "distributor",
+  "prospect",
+  "partner",
 ];
 
 // F&B company names by category
@@ -334,8 +321,7 @@ class SeedDataGenerator {
 
       const org = {
         name: companyName,
-        industry: orgType,
-        segment: faker.helpers.arrayElement(["SMB", "Mid-Market", "Enterprise"]),
+        organization_type: orgType,
         priority: faker.helpers.arrayElement(["A", "B", "C", "D"]), // A=Highest, D=Lowest
         website: `https://${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
         address: faker.location.streetAddress(true),
@@ -348,7 +334,7 @@ class SeedDataGenerator {
         annual_revenue: faker.number.int({ min: 500000, max: 50000000 }),
         employee_count: faker.number.int({ min: 10, max: 2000 }),
         founded_year: faker.number.int({ min: 1990, max: 2023 }),
-        description: faker.helpers.arrayElement([
+        notes: faker.helpers.arrayElement([
           "Serving fresh, locally-sourced cuisine",
           "Crafting premium beverages since 2010",
           "Your trusted food service partner",
@@ -380,7 +366,7 @@ class SeedDataGenerator {
       const department = faker.helpers.arrayElement(FB_DEPARTMENTS);
 
       const contact = {
-        id: faker.string.uuid(),
+        name: `${firstName} ${lastName}`,
         first_name: firstName,
         last_name: lastName,
         email: faker.internet.email({ firstName, lastName }),
@@ -391,15 +377,13 @@ class SeedDataGenerator {
         title: title,
         department: department,
         linkedin_url: `https://linkedin.com/in/${firstName.toLowerCase()}-${lastName.toLowerCase()}`,
-        avatar: faker.image.avatar(),
-        background: faker.helpers.arrayElement([
+        notes: faker.helpers.arrayElement([
           `${faker.number.int({ min: 5, max: 25 })} years of F&B industry experience. Specializes in ${department.toLowerCase()}.`,
           `Passionate about culinary excellence and operational efficiency. Background in ${department.toLowerCase()}.`,
           `Proven track record in ${department.toLowerCase()}. Known for innovation and cost control.`,
           `Industry veteran with expertise in ${department.toLowerCase()}. Committed to food safety and quality.`,
           `Results-driven professional in ${department.toLowerCase()}. Focus on sustainable operations.`,
         ]),
-        status: faker.helpers.arrayElement(["active", "inactive", "lead"]),
         created_at: faker.date.past({ years: 2 }),
         updated_at: faker.date.recent(),
       };
@@ -505,7 +489,6 @@ class SeedDataGenerator {
     for (let i = 0; i < count; i++) {
       const activityType = faker.helpers.arrayElement(ACTIVITY_TYPES);
       const activity = {
-        id: faker.string.uuid(),
         type: activityType,
         subject: this.getActivitySubject(activityType),
         description: faker.lorem.paragraph(),
@@ -526,7 +509,6 @@ class SeedDataGenerator {
             ? faker.helpers.arrayElement(this.generatedData.opportunities).id
             : null,
         contact_id: faker.helpers.arrayElement(this.generatedData.contacts).id,
-        assigned_to: faker.string.uuid(), // Would be actual user in production
         due_date: faker.date.future({ years: 0.5 }),
         completed_at: Math.random() > 0.5 ? faker.date.recent() : null,
         interaction_type: faker.helpers.arrayElement(INTERACTION_TYPES),
@@ -559,7 +541,6 @@ class SeedDataGenerator {
       const isOpportunityNote = Math.random() > 0.4;
 
       const note = {
-        id: faker.string.uuid(),
         text: faker.lorem.paragraphs({ min: 1, max: 3 }),
         type: faker.helpers.arrayElement([
           "general",
@@ -568,7 +549,6 @@ class SeedDataGenerator {
           "email",
           "internal",
         ]),
-        created_by: faker.string.uuid(), // Would be actual user in production
         created_at: faker.date.past({ years: 0.5 }),
         updated_at: faker.date.recent(),
       };
