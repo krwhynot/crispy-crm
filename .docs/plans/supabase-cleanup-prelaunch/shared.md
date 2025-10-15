@@ -103,12 +103,13 @@ The Atomic CRM uses a **local-first development workflow** with Supabase providi
 ### Critical for Test User Creation & Sync
 - **`auth.users`** - Supabase authentication table (cannot be directly modified, requires Edge Functions or CLI)
 - **`public.sales`** - User management table synced from auth.users via triggers
-- **`public.test_user_metadata`** - **NEW TABLE TO CREATE**: Tracks test users with role and data counts
+- **`public.test_user_metadata`** - **NEW TABLE TO CREATE**: Tracks test users with role and data counts (simple tracking, no complex audit logging)
 
 ### Critical for Sync Operations
-- **`public.sync_operations_log`** - **NEW TABLE TO CREATE**: Tracks sync operations for debugging and audit
 - **`public.migration_history`** - Migration tracking (supplemental to Supabase's built-in tracking)
 - **`public.segments`** - Industry segments (uses uuid PK instead of bigint)
+
+**Note**: Requirements originally specified `sync_operations_log` table, but this is over-engineered for pre-launch test data. Use simple console logging instead.
 
 ### Core CRM Entities (Will Be Synced)
 - **`public.contacts`**, **`public.organizations`**, **`public.opportunities`**
