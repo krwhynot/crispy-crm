@@ -24,7 +24,7 @@
     "migrate:production": "node ./scripts/migrate-production.js",
     "migrate:execute": "node ./scripts/migration-execute.js",
     "migrate:dry-run": "node ./scripts/migration-dry-run.js",
-    "migrate:backup": "node ./scripts/migration-backup.js",
+    "migrate:backup": "./scripts/migration/backup.sh",
     "migrate:rollback": "node ./scripts/migration-rollback.js",
     "migrate:cleanup": "node ./scripts/migration-cleanup.js",
     "migrate:validate": "node ./scripts/post-migration-validation.js",
@@ -63,7 +63,14 @@
     "build-storybook": "storybook build",
     "chromatic": "chromatic --exit-zero-on-changes",
     "chromatic:ci": "chromatic --only-changed --exit-once-uploaded",
-    "prepare": "node -e \"if (process.env.CI !== 'true') { try { require('child_process').execSync('husky', {stdio: 'inherit'}) } catch (e) { } }\""
+    "prepare": "node -e \"if (process.env.CI !== 'true') { try { require('child_process').execSync('husky', {stdio: 'inherit'}) } catch (e) { } }\"",
+    "// === Development Sync Scripts ===": "",
+    "dev:sync:push": "./scripts/dev/sync-local-to-cloud.sh",
+    "dev:users:create": "./scripts/dev/create-test-users.sh",
+    "dev:reset": "./scripts/dev/reset-environment.sh",
+    "dev:verify": "./scripts/dev/verify-environment.sh",
+    "// === Migration Scripts ===": "",
+    "migrate:deploy": "./scripts/migration/deploy-safe.sh"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",

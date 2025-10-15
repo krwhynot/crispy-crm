@@ -6,12 +6,13 @@ A complete guide for setting up and managing Supabase in both local Docker and c
 
 1. [Prerequisites](#prerequisites)
 2. [Local Docker Supabase Setup](#local-docker-supabase-setup)
-3. [Cloud Supabase Setup](#cloud-supabase-setup)
-4. [Migration Workflow: Local to Cloud](#migration-workflow-local-to-cloud)
-5. [Environment Management](#environment-management)
-6. [Best Practices](#best-practices)
-7. [CI/CD Integration](#cicd-integration)
-8. [Project Structure](#project-structure)
+3. [Pre-Launch Development Workflow (Current Implementation)](#pre-launch-development-workflow-current-implementation)
+4. [Cloud Supabase Setup](#cloud-supabase-setup)
+5. [Migration Workflow: Local to Cloud](#migration-workflow-local-to-cloud)
+6. [Environment Management](#environment-management)
+7. [Best Practices](#best-practices)
+8. [CI/CD Integration](#cicd-integration)
+9. [Project Structure](#project-structure)
 
 ## Prerequisites
 
@@ -148,6 +149,166 @@ npx supabase db reset
 # Or apply specific migrations
 npx supabase migration up
 ```
+
+## Pre-Launch Development Workflow (Current Implementation)
+
+This section outlines the streamlined workflow for development during the pre-launch phase, optimizing for rapid iteration and testing.
+
+### Quick Start
+
+Follow these steps to get up and running with a fully configured development environment:
+
+1. **Start Local Supabase**
+   ```bash
+   npm run supabase:local:start
+   ```
+
+2. **Create Test Users**
+   ```bash
+   # Reset database and apply all migrations
+   npm run supabase:local:db:reset
+
+   # Test users are automatically created via seed data
+   ```
+
+3. **Push to Cloud** (optional)
+   ```bash
+   npm run supabase:deploy
+   ```
+
+### Test User Credentials
+
+The following test users are automatically created with sample data for testing different user scenarios:
+
+| Email | Password | Role | Contacts | Organizations | Opportunities |
+|-------|----------|------|----------|---------------|---------------|
+| admin@test.local | Test123! | Admin | 100 | 50 | 75 |
+| director@test.local | Test123! | Director | 60 | 30 | 40 |
+| manager@test.local | Test123! | Manager | 40 | 20 | 25 |
+| sales@test.local | Test123! | Sales Rep | 20 | 10 | 15 |
+| viewer@test.local | Test123! | Read-only | 10 | 5 | 5 |
+
+**Note**: All test users use the same password for convenience during development. These accounts should only be used in local/staging environments.
+
+### Sync Operations
+
+Manage synchronization between local and cloud environments:
+
+#### When to Sync
+- **After local schema changes**: Push migrations to cloud
+- **After team member changes**: Pull remote changes to local
+- **Before major features**: Ensure environments are aligned
+
+#### How to Verify Sync Status
+```bash
+# Check current migration status
+npx supabase migration list
+
+# Compare local and remote schemas
+npx supabase db diff
+
+# Verify environment status
+npm run supabase:local:status
+```
+
+#### Rollback from Backup
+```bash
+# Create backup before risky operations
+npx supabase db dump > backup_$(date +%Y%m%d_%H%M%S).sql
+
+# Restore from backup if needed
+psql postgresql://postgres:postgres@localhost:54322/postgres < backup_20240101_120000.sql
+
+# Reset to clean state
+npm run supabase:local:db:reset
+```
+
+### Environment Reset
+
+Reset your local environment when you need a fresh start:
+
+#### When to Reset
+- Testing from a clean state
+- After failed migration attempts
+- When switching between feature branches
+- Resolving data inconsistencies
+
+#### Reset Process
+```bash
+# Full reset (drops and recreates database)
+npm run supabase:local:db:reset
+
+# Confirmation: This command will prompt for confirmation
+# Time estimate: ~30-60 seconds depending on seed data volume
+```
+
+**Warning**: Reset will delete all local data. Export any important test data before resetting.
+
+### Storage Service Status
+
+**Current Status**: The storage service is enabled in local Docker environment but may have limitations.
+
+#### Known Limitations
+- File uploads work locally but may not sync to cloud
+- Maximum file size: 50MB (configurable in config.toml)
+- Supported buckets: avatars (public), documents (private)
+
+#### Workaround if Storage is Disabled
+If you encounter storage issues locally:
+1. Test file uploads directly in cloud environment
+2. Use cloud project for storage-intensive testing
+3. Mock storage calls in unit tests
+
+For investigation notes and updates, see: `supabase/config.toml` storage configuration section.
+
+### Script Reference
+
+#### Essential NPM Scripts
+```bash
+# Local Development
+npm run supabase:local:start    # Start Docker containers
+npm run supabase:local:stop     # Stop Docker containers
+npm run supabase:local:status   # Check service status
+npm run supabase:local:db:reset # Reset database
+
+# Studio Access
+npm run db:studio              # Open Studio in browser (http://localhost:54323)
+npm run supabase:local:studio   # Shows Studio URL
+
+# Deployment
+npm run supabase:deploy         # Push to cloud (migrations + functions)
+
+# Development Shortcuts
+npm run dev:local              # Reset DB + start Vite dev server
+npm run dev:check              # Quick status check
+
+# Development Sync Scripts
+npm run dev:sync:push          # Sync local changes to cloud
+npm run dev:users:create       # Create test users
+npm run dev:reset              # Reset environment
+npm run dev:verify             # Verify environment setup
+
+# Migration Scripts
+npm run migrate:deploy         # Deploy migrations safely
+npm run migrate:backup         # Backup database before migration
+npm run migrate:status         # Check migration status
+npm run migrate:verify         # Verify migration success
+```
+
+#### Direct Supabase CLI Commands
+```bash
+# Migration Management
+npx supabase migration new <name>  # Create new migration
+npx supabase migration list        # List all migrations
+npx supabase db diff              # Compare local vs remote
+
+# Environment Management
+npx supabase link --project-ref <ref>  # Link to cloud project
+npx supabase db pull                   # Pull remote schema
+npx supabase db push                   # Push local changes
+```
+
+For additional scripts and detailed documentation, refer to the project's package.json scripts section.
 
 ## Cloud Supabase Setup
 
