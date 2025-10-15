@@ -1,16 +1,18 @@
-# Supabase Infrastructure Cleanup - Pre-Launch Edition
+# Supabase Infrastructure Cleanup - Pre-Launch Edition (Simplified)
 
 **Feature ID**: `supabase-cleanup-prelaunch`
 **Created**: 2025-10-15
-**Status**: Requirements Complete
-**Estimated Effort**: 5-7 days
+**Simplified**: 2025-10-15 (removed over-engineered monitoring/logging per Engineering Constitution)
+**Status**: Requirements Complete - Simplified
+**Estimated Effort**: 3-4 days (reduced from 5-7 via simplification)
 **Type**: Infrastructure / DevOps
+**Engineering Constitution Compliance**: ✅ Fully Compliant
 
 ---
 
 ## 1. Feature Summary
 
-Complete overhaul of Supabase development infrastructure to align with documented best practices for pre-launch workflow. Implements local-first development with automated test user creation (3 roles), bidirectional sync scripts, CI/CD pipeline with manual approval gates, organized script structure by lifecycle phase, and consolidated tooling that leverages existing validation framework. Focuses on developer velocity and environment parity (local ↔ cloud) without data anonymization overhead since all data is test data pre-launch.
+**Simplified approach to Supabase development infrastructure** for pre-launch workflow. Implements local-first development with automated test user creation (3 roles), simple sync script, and basic CI/CD validation. Focuses on **6 essential scripts** that solve actual pain points: test user creation, sync, verify, reset, backup, and deploy. Avoids over-engineering by using existing Supabase CLI tools instead of custom monitoring, console logging instead of database audit tables, and simple validation instead of manual approval gates.
 
 ---
 
@@ -28,14 +30,14 @@ Complete overhaul of Supabase development infrastructure to align with documente
 - **I want to** automatically create 3 test users (Admin, Sales Director, Account Manager) with realistic test data
 - **So that** I can test role-based permissions and workflows without manual user setup
 
-**US-3: Safe Production Deployments**
+**US-3: Safe Deployments**
 - **As a** developer
-- **I want** CI/CD to validate migrations, require manual approval, and auto-rollback on failure
-- **So that** I never accidentally break the production database
+- **I want** CI/CD to validate migrations automatically with backups before deployment
+- **So that** I catch schema issues before they reach production
 
 **US-4: Clear Script Organization**
 - **As a** developer
-- **I want** scripts organized by purpose (dev/, migration/, monitoring/) with intuitive names
+- **I want** scripts organized by purpose (dev/, migration/) with intuitive names
 - **So that** I know exactly which script to run for each task
 
 **US-5: Quick Environment Reset**
@@ -111,63 +113,31 @@ CREATE INDEX idx_test_user_metadata_user_id ON public.test_user_metadata(user_id
 CREATE INDEX idx_test_user_metadata_role ON public.test_user_metadata(role);
 ```
 
-#### Migration: `20251016000001_add_sync_log_table.sql`
+**Note**: Original plan included `sync_operations_log` table for audit tracking. This was **removed as over-engineered** per Engineering Constitution. Console logging with timestamps is sufficient for pre-launch test data sync operations.
 
-```sql
--- Track sync operations for debugging and audit
-CREATE TABLE IF NOT EXISTS public.sync_operations_log (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  operation_type TEXT NOT NULL CHECK (operation_type IN ('local_to_cloud', 'cloud_to_local', 'backup', 'restore')),
-  direction TEXT NOT NULL CHECK (direction IN ('push', 'pull', 'bidirectional')),
-  initiated_by TEXT,
-  started_at TIMESTAMPTZ DEFAULT NOW(),
-  completed_at TIMESTAMPTZ,
-  status TEXT NOT NULL CHECK (status IN ('running', 'completed', 'failed', 'cancelled')),
-  records_affected JSONB DEFAULT '{}'::jsonb,
-  error_message TEXT,
-  metadata JSONB DEFAULT '{}'::jsonb
-);
-
--- RLS policies
-ALTER TABLE public.sync_operations_log ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Sync log readable by authenticated users"
-  ON public.sync_operations_log FOR SELECT
-  USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Sync log writable by service role"
-  ON public.sync_operations_log FOR ALL
-  USING (auth.role() = 'service_role');
-
--- Index for performance
-CREATE INDEX idx_sync_log_started_at ON public.sync_operations_log(started_at DESC);
-CREATE INDEX idx_sync_log_status ON public.sync_operations_log(status);
-```
-
-### 3.4 Script Structure
+### 3.4 Script Structure (Simplified)
 
 #### New Directory Organization
 
 ```
 scripts/
 ├── dev/
-│   ├── sync-local-to-cloud.sh           # Push local test data to cloud
 │   ├── create-test-users.sh             # Create 3-role test users with data
-│   ├── reset-environment.sh             # Clean slate for both envs
-│   └── verify-environment.sh            # Check local/cloud parity
+│   ├── sync-local-to-cloud.sh           # Push local test data to cloud (with backup)
+│   ├── verify-environment.sh            # Check local/cloud parity (simple count comparison)
+│   └── reset-environment.sh             # Clean slate for both envs
 ├── migration/
-│   ├── backup.sh                        # Timestamped DB backups
-│   ├── validate.sh                      # Pre-migration validation
-│   ├── deploy-safe.sh                   # Deploy with rollback
-│   └── rollback.sh                      # Rollback last migration
-├── monitoring/
-│   ├── health-check.sh                  # Quick status (exit code)
-│   ├── status-report.sh                 # Detailed diagnostics
-│   └── performance-check.sh             # Query performance metrics
+│   ├── backup.sh                        # Simple pg_dump wrapper with timestamps
+│   └── deploy-safe.sh                   # Backup + deploy + verify
 └── supabase/
-    ├── storage-fix-investigation.md     # Storage service fix attempts
+    ├── storage-fix-investigation.md     # Storage service fix attempts (30min timebox)
     └── README.md                        # Script usage guide
 ```
+
+**Removed (Over-Engineered)**:
+- ~~monitoring/~~ directory - Use `npx supabase status` directly
+- ~~migration/validate.sh~~ - Use existing `npm run validate:pre-migration`
+- ~~migration/rollback.sh~~ - Use `npx supabase db reset` for local, cloud has automated backups
 
 #### Script Details
 
@@ -236,8 +206,7 @@ TRUNCATE TABLE
   public.segments,
   public.tags,
   public.tasks,
-  public.test_user_metadata,
-  public.sync_operations_log
+  public.test_user_metadata
 CASCADE;
 EOF
 
@@ -271,29 +240,16 @@ psql "$LOCAL_DB" -t -c "
     raw_user_meta_data = EXCLUDED.raw_user_meta_data;
 "
 
-# Step 6: Log sync operation
-psql "$CLOUD_DB" << EOF
-INSERT INTO public.sync_operations_log (
-  operation_type,
-  direction,
-  initiated_by,
-  started_at,
-  completed_at,
-  status,
-  metadata
-) VALUES (
-  'local_to_cloud',
-  'push',
-  '$(whoami)',
-  NOW() - INTERVAL '1 minute',
-  NOW(),
-  'completed',
-  '{"backup_file": "cloud_backup_$TIMESTAMP.sql"}'::jsonb
-);
-EOF
+# Step 6: Log sync operation (console only, no database logging)
+echo ""
+echo "📋 Sync Summary:"
+echo "   Operation: local_to_cloud"
+echo "   Initiated by: $(whoami)"
+echo "   Timestamp: $TIMESTAMP"
+echo "   Backup: cloud_backup_$TIMESTAMP.sql"
+echo ""
 
 # Step 7: Verify counts
-echo ""
 echo "✅ Sync complete! Verifying..."
 ./scripts/dev/verify-environment.sh
 

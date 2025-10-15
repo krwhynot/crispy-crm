@@ -2,9 +2,13 @@
 
 **Plan ID**: `supabase-cleanup-prelaunch`
 **Created**: 2025-10-15
+**Simplified**: 2025-10-15 (removed over-engineered monitoring/logging per Engineering Constitution)
+**Estimated Effort**: 3-4 days (reduced from 5-7 days via simplification)
 **Purpose**: Comprehensive reference for implementing pre-launch Supabase infrastructure improvements
 
-This document consolidates architectural knowledge, file references, patterns, and documentation needed to implement the automated test user creation, local-to-cloud sync, CI/CD pipeline, and script organization improvements outlined in requirements.md.
+This document consolidates architectural knowledge, file references, patterns, and documentation needed to implement the automated test user creation, local-to-cloud sync, simple CI/CD validation, and script organization improvements outlined in requirements.md.
+
+**Simplification Note**: Original requirements specified monitoring scripts, sync operation logging, manual approval gates, and performance tracking. These have been removed as over-engineered for pre-launch test data. Focus is on **6 simple scripts** that solve actual pain points: test user creation, sync, verify, reset, backup, and deploy.
 
 ## Architecture Overview
 
@@ -303,6 +307,16 @@ console.log(chalk.red("✖ Error"));
 
 ## Critical Gotchas & Common Pitfalls
 
+### 0. **ANTI-PATTERN: Over-Engineering Pre-Launch Infrastructure**
+**Issue**: Requirements originally specified monitoring scripts, sync operation logs, manual approval gates, and performance tracking.
+**Why This Is Over-Engineering**: All data is test data pre-launch. Complex monitoring/logging adds maintenance burden without value.
+**Simplified Approach**:
+- Use `npx supabase status` instead of custom health checks
+- Use console logs instead of database sync operation tracking
+- Use simple CI/CD validation instead of manual approval gates
+- Use existing `validate:pre-migration` instead of new validation scripts
+**Rule**: Start simple. Add complexity only when pain is felt, not anticipated.
+
 ### 1. Auth Table Access Restrictions
 **Issue**: `auth.users` cannot be directly modified via PostgREST API.
 **Solution**: Use Edge Functions (`supabase/functions/users`) with service role key or `supabase auth admin` CLI commands.
@@ -359,40 +373,37 @@ console.log(chalk.red("✖ Error"));
 
 Use this checklist to track progress on the supabase-cleanup-prelaunch plan:
 
-### Phase 1: Foundation (Day 1-2)
-- [ ] Create directory structure (`scripts/dev/`, `scripts/migration/`, `scripts/monitoring/`)
+### Phase 1: Foundation (Day 1)
+- [ ] Create directory structure (`scripts/dev/`, `scripts/migration/`)
 - [ ] Create migration: `20251016000000_add_test_users_metadata.sql`
-- [ ] Create migration: `20251016000001_add_sync_log_table.sql`
-- [ ] Apply migrations locally and to cloud
+- [ ] Apply migration locally and to cloud
 - [ ] Create `.env.production` template
 
-### Phase 2: Core Scripts (Day 2-4)
+### Phase 2: Core Scripts (Day 2-3)
 - [ ] Create `scripts/dev/create-test-users.sh` - Test with local first
 - [ ] Create `scripts/dev/sync-local-to-cloud.sh` - Test with small dataset
-- [ ] Create `scripts/dev/verify-environment.sh` - Validate sync works
+- [ ] Create `scripts/dev/verify-environment.sh` - Simple count comparison
 - [ ] Create `scripts/dev/reset-environment.sh` - Test full cycle
-- [ ] Create `scripts/migration/backup.sh`
-- [ ] Create `scripts/migration/validate.sh`
-- [ ] Create `scripts/migration/deploy-safe.sh`
-- [ ] Create `scripts/migration/rollback.sh`
+- [ ] Create `scripts/migration/backup.sh` - Simple pg_dump wrapper
+- [ ] Create `scripts/migration/deploy-safe.sh` - Backup + deploy + verify
 
-### Phase 3: Monitoring & Tooling (Day 4-5)
-- [ ] Create `scripts/monitoring/health-check.sh`
-- [ ] Create `scripts/monitoring/status-report.sh`
-- [ ] Update `package.json` with new npm scripts
-- [ ] Test all scripts end-to-end
-
-### Phase 4: CI/CD (Day 5-6)
-- [ ] Create `.github/workflows/supabase-deploy.yml`
-- [ ] Configure GitHub environment for manual approval
+### Phase 3: CI/CD & Documentation (Day 3-4)
+- [ ] Create `.github/workflows/supabase-deploy.yml` - Validation only, no manual approval
 - [ ] Add required secrets to GitHub
-- [ ] Test CI/CD with dummy migration
-
-### Phase 5: Documentation & Polish (Day 6-7)
-- [ ] Storage service investigation (30min timebox)
 - [ ] Create `scripts/supabase/README.md`
 - [ ] Update `docs/supabase/supabase_workflow_overview.md`
-- [ ] Final end-to-end test
+- [ ] Storage service investigation (30min timebox)
+- [ ] Test all scripts end-to-end
+
+**Removed from original plan (over-engineered):**
+- ~~monitoring/ directory~~ - Use `npx supabase status` directly
+- ~~health-check.sh~~ - Use `npx supabase status --output json`
+- ~~status-report.sh~~ - Over-engineered for pre-launch
+- ~~performance-check.sh~~ - Not needed pre-launch
+- ~~rollback.sh~~ - Use `npx supabase db reset` for local, cloud has backups
+- ~~validate.sh~~ - Use existing `npm run validate:pre-migration`
+- ~~sync_operations_log table~~ - Console logging sufficient for test data
+- ~~Manual approval gates in CI/CD~~ - Start simple, add if needed
 
 ---
 
@@ -428,18 +439,16 @@ OPPORTUNITY_PIPELINE_STAGES=new_lead,initial_outreach,sample_visit_offered,await
 
 ## Success Criteria
 
-### Scripts
-- ✅ All 10 new scripts created and executable
-- ✅ All scripts have error handling and clear output
+### Scripts (6 total, down from 13)
+- ✅ Core scripts created: create-test-users.sh, sync-local-to-cloud.sh, verify-environment.sh, reset-environment.sh, backup.sh, deploy-safe.sh
+- ✅ All scripts have error handling and clear console output
 - ✅ Scripts work on both local and cloud targets
-- ✅ Dry-run mode supported universally
-- ✅ Backup created before all destructive operations
+- ✅ Backup created before sync and deploy operations
 
-### CI/CD
-- ✅ GitHub Actions workflow enabled and passing
-- ✅ Manual approval gate working
-- ✅ Dry-run step catches schema issues
-- ✅ Post-deployment validation runs automatically
+### CI/CD (Simple Validation)
+- ✅ GitHub Actions workflow validates migrations automatically
+- ✅ Workflow fails if validation errors detected
+- ✅ No manual approval gates (keep it simple)
 
 ### Test Users
 - ✅ 3 test users auto-created with role-specific data
@@ -451,14 +460,9 @@ OPPORTUNITY_PIPELINE_STAGES=new_lead,initial_outreach,sample_visit_offered,await
 
 ### Sync Operations
 - ✅ Local → Cloud sync works without data loss
-- ✅ Verification shows matching counts
+- ✅ Verification script shows matching counts
 - ✅ Auth users sync with passwords intact
-- ✅ Sync operation log tracks history
-
-### Monitoring
-- ✅ Health checks return proper exit codes
-- ✅ Status reports show accurate metrics
-- ✅ Sync operation log provides debugging info
+- ✅ Console logs provide sync operation details (no database logging)
 
 ---
 
@@ -472,31 +476,42 @@ npm run dev:users:create              # Create 3 test users locally
 npm run seed:data                     # Generate test data
 ```
 
-### Sync Operations (To Be Implemented)
+### Sync Operations (New - Simple)
 ```bash
-npm run dev:sync:push -- --force      # Push local data to cloud
-npm run dev:verify                    # Verify local/cloud parity
-npm run dev:reset                     # Reset both environments
+npm run dev:sync:push -- --force      # Push local data to cloud (with backup)
+npm run dev:verify                    # Verify local/cloud parity (table counts)
+npm run dev:reset                     # Reset both environments (clean slate)
 ```
 
-### Migration & Deployment
+### Migration & Deployment (Simplified)
 ```bash
-npm run validate:pre-migration        # Run validation framework
-npm run migrate:production            # Production migration
-npm run migrate:validate              # Post-migration validation
-npm run supabase:deploy               # Deploy migrations + functions
+npm run validate:pre-migration        # Run existing validation framework
+npm run migrate:backup                # Create timestamped pg_dump
+npm run migrate:deploy                # Backup + deploy + verify
+npm run supabase:deploy               # Deploy migrations + functions (existing)
 ```
 
-### Monitoring (To Be Implemented)
+### Status Checking (Use Existing Tools)
 ```bash
-npm run monitor:health                # Quick health check
-npm run monitor:health -- cloud       # Check cloud health
-npm run monitor:status -- cloud       # Detailed status report
+npx supabase status                   # Local Supabase status
+npx supabase status --output json     # JSON format for scripting
+npm run supabase:local:status         # Alias for supabase status
 ```
 
 ---
 
-**Document Version**: 1.0
+**Document Version**: 2.0 (Simplified)
 **Last Updated**: 2025-10-15
 **Maintained By**: Claude Code (Sonnet 4.5)
 **Status**: Complete - Ready for Implementation
+**Engineering Constitution Compliance**: ✅ Fully Compliant
+
+### Changelog
+- **v2.0 (2025-10-15)**: Removed over-engineered elements per Engineering Constitution
+  - Removed `sync_operations_log` table (console logging sufficient)
+  - Removed monitoring scripts (use `npx supabase status` instead)
+  - Removed manual approval gates in CI/CD (start simple)
+  - Removed separate validation/rollback scripts (use existing tools)
+  - Reduced from 13 scripts to 6 core scripts
+  - Reduced timeline from 5-7 days to 3-4 days
+- **v1.0 (2025-10-15)**: Initial comprehensive reference with all research findings
