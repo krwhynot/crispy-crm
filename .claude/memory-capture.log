@@ -151,3 +151,12 @@
 [2025-10-15 16:21:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/tags/edge-cases.test.ts
 [2025-10-15 16:22:39] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/tags/edge-cases.test.ts
 [2025-10-15 18:05:19] [code] Write: /home/krwhynot/projects/crispy-crm/.env.production
+[2025-10-15 18:05:23] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/dev/.gitkeep
+[2025-10-15 18:05:26] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/migration/.gitkeep
+[2025-10-15 18:05:28] [code] Edit: /home/krwhynot/projects/crispy-crm/.gitignore
+[2025-10-15 18:05:30] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/supabase/.gitkeep
+[2025-10-15 18:05:33] [code] Edit: /home/krwhynot/projects/crispy-crm/.gitignore
+[2025-10-15 18:05:41] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251016000000_add_test_users_metadata.sql
+[2025-10-15 18:05:51] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/migration/backup.sh
+[2025-10-15 18:05:57] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/dev/verify-environment.sh
+[2025-10-15 18:10:40] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/migration/deploy-safe.sh
