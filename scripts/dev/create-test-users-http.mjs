@@ -1,22 +1,12 @@
 #!/usr/bin/env node
 /**
- * Create Test Users Script (Node.js version using Supabase Admin SDK)
- * ====================================================================
- * Creates 3 test users with role-specific data using Supabase Admin API:
- * - Admin: Full access with extensive test data (100 contacts, 50 orgs, 75 opps)
- * - Sales Director: Moderate data (60 contacts, 30 orgs, 40 opps)
- * - Account Manager: Minimal data (40 contacts, 20 orgs, 25 opps)
- *
- * This version uses the Supabase Admin SDK which properly handles:
- * - Password hashing with bcrypt
- * - Email confirmation
- * - Auth triggers for sales table sync
- * - Metadata storage
+ * Create Test Users Script (HTTP API version)
+ * ===================================================================
+ * Creates 3 test users using direct Auth Admin API HTTP calls
+ * Works around Supabase JS SDK JWT issues by calling the REST API directly
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { execSync } from 'child_process';
-import { createHash } from 'crypto';
 
 // =====================================================================
 // Configuration
@@ -28,10 +18,10 @@ const config = {
   managerEmail: process.env.TEST_MANAGER_EMAIL || 'manager@test.local',
   password: process.env.TEST_USER_PASSWORD || 'TestPass123!',
 
-  // Local Supabase credentials
-  // Service role key from `npx supabase status --output json`
+  // Local Supabase credentials (get from: npx supabase status)
   supabaseUrl: process.env.VITE_SUPABASE_URL || 'http://localhost:54321',
-  supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.lPtBhvYyMlr1ivNO2yY99Nby5DSQTdIM5r2n3_CiUus'
+  // New CLI format: use "Secret key" from npx supabase status (not the old SERVICE_ROLE_KEY JWT)
+  serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || 'sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz'
 };
 
 // Role-specific data volumes
@@ -42,7 +32,7 @@ const dataVolumes = {
 };
 
 // =====================================================================
-// Colors for Console Output
+// Colors
 // =====================================================================
 
 const colors = {
@@ -71,6 +61,78 @@ function heading(msg) {
 }
 
 // =====================================================================
+// HTTP Helper Functions
+// =====================================================================
+
+async function createAuthUser(email, password, fullName, role) {
+  const response = await fetch(`${config.supabaseUrl}/auth/v1/admin/users`, {
+    method: 'POST',
+    headers: {
+      'apikey': config.serviceRoleKey,
+      'Authorization': `Bearer ${config.serviceRoleKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: {
+        full_name: fullName,
+        role
+      }
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HTTP ${response.status}: ${errorText}`);
+  }
+
+  return await response.json();
+}
+
+async function listAuthUsers() {
+  const response = await fetch(`${config.supabaseUrl}/auth/v1/admin/users`, {
+    method: 'GET',
+    headers: {
+      'apikey': config.serviceRoleKey,
+      'Authorization': `Bearer ${config.serviceRoleKey}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to list users: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.users || [];
+}
+
+function getUserIdFromDatabase(email) {
+  const result = execSync(
+    `docker exec supabase_db_crispy-crm psql -U postgres -d postgres -t -c "SELECT id FROM auth.users WHERE email = '${email}';"`,
+    { encoding: 'utf-8' }
+  );
+  return result.trim();
+}
+
+function updateSalesPermissions(userIds) {
+  const { adminId, directorId, managerId } = userIds;
+
+  execSync(
+    `docker exec supabase_db_crispy-crm psql -U postgres -d postgres -c "UPDATE public.sales SET is_admin = true WHERE user_id = '${adminId}'::uuid; UPDATE public.sales SET is_admin = false WHERE user_id IN ('${directorId}'::uuid, '${managerId}'::uuid);"`,
+    { stdio: 'inherit' }
+  );
+}
+
+function recordMetadata(userId, role, volumes) {
+  execSync(
+    `docker exec supabase_db_crispy-crm psql -U postgres -d postgres -c "INSERT INTO public.test_user_metadata (user_id, role, created_by, test_data_counts, last_sync_at) VALUES ('${userId}'::uuid, '${role}', 'create-test-users-http.mjs', '{\\"contacts\\":${volumes.contacts},\\"organizations\\":${volumes.orgs},\\"opportunities\\":${volumes.opportunities},\\"activities\\":${volumes.activities},\\"tasks\\":${volumes.tasks},\\"notes\\":${volumes.notes}}'::jsonb, NOW()) ON CONFLICT (user_id) DO UPDATE SET last_sync_at = NOW(), test_data_counts = EXCLUDED.test_data_counts;"`,
+    { stdio: 'inherit' }
+  );
+}
+
+// =====================================================================
 // Main Script
 // =====================================================================
 
@@ -79,20 +141,7 @@ async function main() {
   console.log(`   Supabase URL: ${config.supabaseUrl}`);
   console.log('');
 
-  // Create Supabase admin client
-  const supabase = createClient(config.supabaseUrl, config.supabaseServiceKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    },
-    global: {
-      headers: {
-        apikey: config.supabaseServiceKey
-      }
-    }
-  });
-
-  console.log('1️⃣  Creating auth users via Supabase Admin API...');
+  console.log('1️⃣  Creating auth users via HTTP Auth Admin API...');
   console.log('');
 
   const users = [
@@ -107,39 +156,22 @@ async function main() {
     info(`Creating ${user.role}: ${user.email}...`);
 
     try {
-      const { data, error: createError } = await supabase.auth.admin.createUser({
-        email: user.email,
-        password: config.password,
-        email_confirm: true,
-        user_metadata: {
-          full_name: user.fullName,
-          role: user.role
-        }
-      });
-
-      if (createError) {
-        if (createError.message?.includes('already registered')) {
-          info(`User ${user.email} already exists, fetching...`);
-
-          // Fetch existing user
-          const { data: existingUsers } = await supabase.auth.admin.listUsers();
-          const existingUser = existingUsers.users?.find(u => u.email === user.email);
-
-          if (existingUser) {
-            createdUsers.push({ ...user, id: existingUser.id });
-            success(`Found existing user: ${user.email}`);
-          } else {
-            error(`Could not find existing user: ${user.email}`);
-          }
+      const result = await createAuthUser(user.email, config.password, user.fullName, user.role);
+      createdUsers.push({ ...user, id: result.id });
+      success(`Created user: ${user.email} (ID: ${result.id})`);
+    } catch (err) {
+      if (err.message.includes('already registered') || err.message.includes('duplicate')) {
+        info(`User ${user.email} already exists, fetching ID...`);
+        const userId = getUserIdFromDatabase(user.email);
+        if (userId) {
+          createdUsers.push({ ...user, id: userId });
+          success(`Found existing user: ${user.email} (ID: ${userId})`);
         } else {
-          throw createError;
+          error(`Could not find user ${user.email}`);
         }
       } else {
-        createdUsers.push({ ...user, id: data.user.id });
-        success(`Created user: ${user.email}`);
+        error(`Failed to create ${user.email}: ${err.message}`);
       }
-    } catch (err) {
-      error(`Failed to create ${user.email}: ${err.message}`);
     }
   }
 
@@ -147,7 +179,6 @@ async function main() {
   console.log('2️⃣  Updating sales records with permissions...');
   console.log('');
 
-  // Get user IDs
   const adminUser = createdUsers.find(u => u.role === 'admin');
   const directorUser = createdUsers.find(u => u.role === 'sales_director');
   const managerUser = createdUsers.find(u => u.role === 'account_manager');
@@ -162,31 +193,18 @@ async function main() {
   console.log(`   Manager:  ${managerUser.id}`);
   console.log('');
 
-  // Update sales table to set admin flag
-  const { error: updateError } = await supabase.rpc('exec_sql', {
-    query: `
-      UPDATE public.sales SET is_admin = true WHERE user_id = '${adminUser.id}'::uuid;
-      UPDATE public.sales SET is_admin = false WHERE user_id IN ('${directorUser.id}'::uuid, '${managerUser.id}'::uuid);
-    `
-  }).catch(() => {
-    // RPC might not exist, use direct query instead
-    return supabase
-      .from('sales')
-      .update({ is_admin: true })
-      .eq('user_id', adminUser.id);
+  updateSalesPermissions({
+    adminId: adminUser.id,
+    directorId: directorUser.id,
+    managerId: managerUser.id
   });
 
-  if (updateError) {
-    info(`Note: Could not update sales records via RPC, will update after seed data generation`);
-  } else {
-    success('Sales records updated with permissions');
-  }
-
+  success('Sales records updated with permissions');
   console.log('');
+
   console.log('3️⃣  Generating test data...');
   console.log('');
 
-  // Generate test data for each user using existing seed-data.js
   for (const user of createdUsers) {
     const volumes = dataVolumes[user.role];
     info(`Generating ${user.role} data (${volumes.contacts} contacts, ${volumes.orgs} orgs, ${volumes.opportunities} opportunities)...`);
@@ -205,7 +223,7 @@ async function main() {
       );
       success(`Generated ${user.role} test data`);
     } catch (err) {
-      error(`Failed to generate test data for ${user.role}: ${err.message}`);
+      error(`Failed to generate test data for ${user.role}`);
     }
   }
 
@@ -213,41 +231,15 @@ async function main() {
   console.log('4️⃣  Recording test user metadata...');
   console.log('');
 
-  // Record metadata for each user
   for (const user of createdUsers) {
     const volumes = dataVolumes[user.role];
-
-    const { error: metadataError } = await supabase
-      .from('test_user_metadata')
-      .upsert({
-        user_id: user.id,
-        role: user.role,
-        created_by: 'create-test-users.mjs',
-        test_data_counts: {
-          contacts: volumes.contacts,
-          organizations: volumes.orgs,
-          opportunities: volumes.opportunities,
-          activities: volumes.activities,
-          tasks: volumes.tasks,
-          notes: volumes.notes
-        },
-        last_sync_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id'
-      });
-
-    if (metadataError) {
-      console.error(`Warning: Could not record metadata for ${user.email}:`, metadataError);
-    }
+    recordMetadata(user.id, user.role, volumes);
   }
 
   success('Test user metadata recorded');
   console.log('');
 
-  // =====================================================================
   // Summary
-  // =====================================================================
-
   heading('✅ Test users created successfully!');
   console.log('');
   console.log('📧 Login Credentials:');
