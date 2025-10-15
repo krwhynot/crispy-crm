@@ -23,27 +23,36 @@ const header = {
   typ: 'JWT'
 };
 
-// JWT Payload - service role with far-future expiry
-const payload = {
-  iss: 'http://127.0.0.1:54321/auth/v1',
-  role: 'service_role',
-  exp: 1983812996  // Year 2032
-};
+// Function to generate JWT
+function generateJWT(role) {
+  const payload = {
+    iss: 'http://127.0.0.1:54321/auth/v1',
+    role: role,
+    exp: 1983812996  // Year 2032
+  };
 
-// Create JWT
-const headerB64 = base64url(JSON.stringify(header));
-const payloadB64 = base64url(JSON.stringify(payload));
-const signatureInput = `${headerB64}.${payloadB64}`;
+  const headerB64 = base64url(JSON.stringify(header));
+  const payloadB64 = base64url(JSON.stringify(payload));
+  const signatureInput = `${headerB64}.${payloadB64}`;
 
-// Sign with HMAC-SHA256
-const signature = createHmac('sha256', JWT_SECRET)
-  .update(signatureInput)
-  .digest('base64')
-  .replace(/\+/g, '-')
-  .replace(/\//g, '_')
-  .replace(/=/g, '');
+  const signature = createHmac('sha256', JWT_SECRET)
+    .update(signatureInput)
+    .digest('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
 
-const jwt = `${signatureInput}.${signature}`;
+  return `${signatureInput}.${signature}`;
+}
 
-console.log('Generated Service Role JWT:');
-console.log(jwt);
+// Generate both tokens
+const serviceRoleJWT = generateJWT('service_role');
+const anonJWT = generateJWT('anon');
+
+console.log('Generated JWTs for custom jwt_secret:');
+console.log('');
+console.log('SERVICE_ROLE_KEY:');
+console.log(serviceRoleJWT);
+console.log('');
+console.log('ANON_KEY:');
+console.log(anonJWT);
