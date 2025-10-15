@@ -135,52 +135,42 @@ Successfully implemented 6 essential scripts for local-first Supabase developmen
 
 ## Known Issues & Workarounds
 
-### Issue #1: Auth User Creation Blocked
+### Issue #1: Auth User Creation - ✅ RESOLVED
 
-**Problem**: Cannot create test users automatically due to Supabase CLI version limitations
+**Status**: ✅ **RESOLVED** - Automated user creation now works
+
+**Problem**: JWT signature mismatch prevented automated test user creation
 
 **Root Cause**:
-- Current CLI version: v2.45.5
-- Required for `auth admin` commands: v2.46+
-- JWT signature mismatch when using service role key
+- Custom `jwt_secret` in `supabase/config.toml` requires custom-signed JWTs
+- Environment variables (`.env.local`) contained default Supabase demo JWTs
+- These demo JWTs were signed with different secret, causing signature validation failures
 
-**Impact**: Medium - Manual user creation required for now
+**Resolution**:
+1. Upgraded Supabase CLI from v2.45.5 to v2.51.0
+2. Created `scripts/dev/generate-jwt.mjs` to generate properly signed JWTs
+3. Updated `.env.local` with correctly signed JWTs matching custom `jwt_secret`
+4. Created `scripts/dev/create-test-users-http.mjs` using HTTP Auth Admin API
 
-**Workarounds**:
-
-**Option A: Manual User Creation via Supabase Studio** (Recommended for now)
-1. Open http://localhost:54323 (local) or cloud Studio
-2. Navigate to Authentication → Users
-3. Click "Add User"
-4. Create three users:
-   - Email: `admin@test.local`, Password: `TestPass123!`
-   - Email: `director@test.local`, Password: `TestPass123!`
-   - Email: `manager@test.local`, Password: `TestPass123!`
-5. Run seed-data.js manually for each user:
-   ```bash
-   TEST_USER_ID=<admin-uuid> SEED_ORGANIZATION_COUNT=50 SEED_CONTACT_COUNT=100 node scripts/seed-data.js
-   TEST_USER_ID=<director-uuid> SEED_ORGANIZATION_COUNT=30 SEED_CONTACT_COUNT=60 node scripts/seed-data.js
-   TEST_USER_ID=<manager-uuid> SEED_ORGANIZATION_COUNT=20 SEED_CONTACT_COUNT=40 node scripts/seed-data.js
-   ```
-
-**Option B: Upgrade Supabase CLI** (Recommended for long-term)
+**Usage**:
 ```bash
-# Upgrade to latest CLI
-npm update supabase
+# Automated (recommended)
+node scripts/dev/create-test-users-http.mjs
 
-# Verify version
-npx supabase --version  # Should be v2.51.0 or higher
-
-# Test auth commands
-npx supabase auth admin create-user --email=admin@test.local --password=TestPass123! --confirm
+# Or via npm script
+npm run dev:users:create
 ```
 
-**Option C: Use Edge Functions** (Most robust, requires deployment)
-- Deploy `supabase/functions/users` to cloud
-- Call with service role key to create users
-- Maintains full automation
+**Test Users Created**:
+- ✅ admin@test.local (ID: 68496117-91d0-413b-a7ac-a0680fb8eb02)
+- ✅ director@test.local (ID: ecef1f7e-e41b-4ea9-8bb0-fc2af7472ffd)
+- ✅ manager@test.local (ID: fb4875d4-7cc8-4a1d-b0d0-534b02b6b166)
 
-**Recommendation**: Use Option A (manual creation) for immediate needs, implement Option B (CLI upgrade) in next sprint.
+**Note**: If you change `jwt_secret` in `config.toml`, regenerate JWTs with:
+```bash
+node scripts/dev/generate-jwt.mjs
+# Then update .env.local with the new keys
+```
 
 ---
 

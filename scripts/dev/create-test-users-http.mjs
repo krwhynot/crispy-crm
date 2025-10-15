@@ -18,10 +18,10 @@ const config = {
   managerEmail: process.env.TEST_MANAGER_EMAIL || 'manager@test.local',
   password: process.env.TEST_USER_PASSWORD || 'TestPass123!',
 
-  // Local Supabase credentials (get from: npx supabase status)
-  supabaseUrl: process.env.VITE_SUPABASE_URL || 'http://localhost:54321',
-  // New CLI format: use "Secret key" from npx supabase status (not the old SERVICE_ROLE_KEY JWT)
-  serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || 'sb_secret_N7UND0UgjKTVK-Uodkm0Hg_xSvEMPvz'
+  // Local Supabase credentials
+  supabaseUrl: process.env.VITE_SUPABASE_URL || 'http://127.0.0.1:54321',
+  // JWT signed with jwt_secret from config.toml (generate via: node scripts/dev/generate-jwt.mjs)
+  serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjU0MzIxL2F1dGgvdjEiLCJyb2xlIjoic2VydmljZV9yb2xlIiwiZXhwIjoxOTgzODEyOTk2fQ.U0zvx3STRzPjpTCJk6YPwJovSK9XYb_bZNeRVNyoBMA'
 };
 
 // Role-specific data volumes
@@ -65,22 +65,27 @@ function heading(msg) {
 // =====================================================================
 
 async function createAuthUser(email, password, fullName, role) {
-  const response = await fetch(`${config.supabaseUrl}/auth/v1/admin/users`, {
+  const url = `${config.supabaseUrl}/auth/v1/admin/users`;
+  const body = JSON.stringify({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: {
+      full_name: fullName,
+      role
+    }
+  });
+
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
-      'apikey': config.serviceRoleKey,
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${config.serviceRoleKey}`,
-      'Content-Type': 'application/json'
+      'apikey': config.serviceRoleKey
     },
-    body: JSON.stringify({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: {
-        full_name: fullName,
-        role
-      }
-    })
+    body: body,
+    // Disable automatic header manipulation
+    redirect: 'manual'
   });
 
   if (!response.ok) {
@@ -139,6 +144,7 @@ function recordMetadata(userId, role, volumes) {
 async function main() {
   heading('👥 Creating test users with role-specific data...');
   console.log(`   Supabase URL: ${config.supabaseUrl}`);
+  console.log(`   Using JWT: ${config.serviceRoleKey.substring(0, 50)}...`);
   console.log('');
 
   console.log('1️⃣  Creating auth users via HTTP Auth Admin API...');
