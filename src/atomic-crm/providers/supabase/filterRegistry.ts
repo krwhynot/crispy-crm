@@ -38,6 +38,7 @@ export const filterableFields: Record<string, string[]> = {
     "sales_id",
     "created_at",
     "updated_at",
+    "deleted_at",      // Soft delete timestamp
     "last_seen",
     "first_seen",
     "gender",
