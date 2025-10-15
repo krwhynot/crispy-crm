@@ -86,3 +86,4 @@
 [2025-10-15 11:57:22] [migration] Write: /home/krwhynot/projects/crispy-crm/complete_data_import.sql
 [2025-10-15 11:59:51] [documentation] Write: /home/krwhynot/projects/crispy-crm/MIGRATION_REPORT.md
 [2025-10-15 12:19:03] [code] Write: /home/krwhynot/projects/crispy-crm/supabase/.env
+[2025-10-15 13:21:14] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
