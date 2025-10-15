@@ -82,3 +82,7 @@
 [2025-10-15 11:53:09] [migration] Write: /home/krwhynot/projects/crispy-crm/auth_user_import.sql
 [2025-10-15 11:53:54] [configuration] Edit: /home/krwhynot/projects/crispy-crm/supabase/config.toml
 [2025-10-15 11:55:41] [migration] Write: /home/krwhynot/projects/crispy-crm/import_public_data.sql
+[2025-10-15 11:56:11] [code] Write: /home/krwhynot/projects/crispy-crm/bulk_export_import.sh
+[2025-10-15 11:57:22] [migration] Write: /home/krwhynot/projects/crispy-crm/complete_data_import.sql
+[2025-10-15 11:59:51] [documentation] Write: /home/krwhynot/projects/crispy-crm/MIGRATION_REPORT.md
+[2025-10-15 12:19:03] [code] Write: /home/krwhynot/projects/crispy-crm/supabase/.env
