@@ -506,8 +506,7 @@ TRUNCATE TABLE
   public.segments,
   public.tags,
   public.tasks,
-  public.test_user_metadata,
-  public.sync_operations_log
+  public.test_user_metadata
 CASCADE;
 
 DELETE FROM auth.users WHERE email LIKE '%@test.local';
@@ -723,137 +722,9 @@ else
 fi
 ```
 
-##### `scripts/monitoring/health-check.sh`
+**Note**: Original plan included `scripts/monitoring/health-check.sh` and `scripts/monitoring/status-report.sh`. These were **removed as over-engineered** per Engineering Constitution. Use `npx supabase status` for health checks and simple psql queries for status reporting.
 
-**Purpose**: Quick health check with exit code
-
-```bash
-#!/bin/bash
-
-TARGET="${1:-local}"
-
-if [[ "$TARGET" == "cloud" ]]; then
-  DB_URL="${DATABASE_URL_PRODUCTION}"
-  API_URL="${VITE_SUPABASE_URL}"
-else
-  DB_URL="postgresql://postgres:postgres@localhost:54322/postgres"
-  API_URL="http://localhost:54321"
-fi
-
-# Check 1: Database connection
-if ! psql "$DB_URL" -c "SELECT 1;" > /dev/null 2>&1; then
-  echo "❌ Database connection failed"
-  exit 1
-fi
-
-# Check 2: API reachable
-if ! curl -sf "$API_URL/rest/v1/" > /dev/null 2>&1; then
-  echo "❌ API unreachable"
-  exit 1
-fi
-
-# Check 3: Test users exist
-USER_COUNT=$(psql "$DB_URL" -t -c "SELECT COUNT(*) FROM auth.users WHERE email LIKE '%@test.local';")
-if [[ "$USER_COUNT" -lt 3 ]]; then
-  echo "⚠️  Test users missing ($USER_COUNT/3)"
-  exit 1
-fi
-
-echo "✅ $TARGET environment healthy"
-exit 0
-```
-
-##### `scripts/monitoring/status-report.sh`
-
-**Purpose**: Detailed diagnostic report
-
-```bash
-#!/bin/bash
-
-TARGET="${1:-local}"
-
-if [[ "$TARGET" == "cloud" ]]; then
-  DB_URL="${DATABASE_URL_PRODUCTION}"
-  LABEL="CLOUD"
-else
-  DB_URL="postgresql://postgres:postgres@localhost:54322/postgres"
-  LABEL="LOCAL"
-fi
-
-echo "📊 $LABEL Environment Status Report"
-echo "   Generated: $(date)"
-echo ""
-
-# Database info
-echo "🗄️  Database:"
-psql "$DB_URL" -c "
-  SELECT
-    current_database() as database,
-    version() as postgres_version,
-    pg_size_pretty(pg_database_size(current_database())) as size;
-"
-
-# Table counts
-echo ""
-echo "📋 Table Counts:"
-psql "$DB_URL" -c "
-  SELECT
-    schemaname || '.' || tablename as table_name,
-    n_tup_ins as inserts,
-    n_tup_upd as updates,
-    n_tup_del as deletes,
-    n_live_tup as current_rows
-  FROM pg_stat_user_tables
-  WHERE schemaname = 'public'
-  ORDER BY n_live_tup DESC
-  LIMIT 15;
-"
-
-# Auth users
-echo ""
-echo "👥 Auth Users:"
-psql "$DB_URL" -c "
-  SELECT
-    email,
-    email_confirmed_at IS NOT NULL as confirmed,
-    created_at
-  FROM auth.users
-  WHERE email LIKE '%@test.local'
-  ORDER BY created_at;
-"
-
-# Recent sync operations
-echo ""
-echo "🔄 Recent Sync Operations:"
-psql "$DB_URL" -c "
-  SELECT
-    operation_type,
-    direction,
-    status,
-    started_at,
-    completed_at
-  FROM public.sync_operations_log
-  ORDER BY started_at DESC
-  LIMIT 5;
-" 2>/dev/null || echo "   (Sync log table not found)"
-
-# Connection stats
-echo ""
-echo "🔗 Connections:"
-psql "$DB_URL" -c "
-  SELECT
-    datname,
-    numbackends as active_connections,
-    xact_commit as transactions,
-    blks_read as disk_reads,
-    blks_hit as cache_hits,
-    ROUND(100.0 * blks_hit / NULLIF(blks_hit + blks_read, 0), 2) as cache_hit_ratio
-  FROM pg_stat_database
-  WHERE datname = current_database();
-"
-```
-
-### 3.5 CI/CD Pipeline
+### 3.5 CI/CD Pipeline (Simplified)
 
 #### `.github/workflows/supabase-deploy.yml`
 
@@ -939,23 +810,11 @@ jobs:
             *.sql
           retention-days: 7
 
-  approve:
-    name: Manual Approval
-    needs: dry-run
-    runs-on: ubuntu-latest
-    environment: production-supabase
-
-    steps:
-      - name: Approval checkpoint
-        run: |
-          echo "🎯 Deployment approved by ${{ github.actor }}"
-          echo "   Commit: ${{ github.sha }}"
-          echo "   Time: $(date)"
-
   deploy:
     name: Deploy to Production
-    needs: approve
+    needs: dry-run
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'  # Only manual triggers
 
     steps:
       - uses: actions/checkout@v4
@@ -1003,41 +862,10 @@ jobs:
         if: failure()
         run: |
           echo "❌ Deployment failed!"
-          echo "   Rollback command: psql \$DATABASE_URL < backups/migrations/cloud_backup_*.sql"
-
-  post-deploy:
-    name: Post-Deployment Checks
-    needs: deploy
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Health check
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION }}
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-        run: ./scripts/monitoring/health-check.sh cloud
-
-      - name: Generate status report
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION }}
-        run: ./scripts/monitoring/status-report.sh cloud > deployment-report.txt
-
-      - name: Upload status report
-        uses: actions/upload-artifact@v4
-        with:
-          name: post-deployment-report
-          path: deployment-report.txt
-          retention-days: 30
+          echo "   Check logs and consider rollback if needed"
 ```
+
+**Removed**: Manual approval job and post-deploy monitoring checks. Start simple - add manual approval via GitHub environment settings if needed later.
 
 ### 3.6 Storage Service Investigation
 
@@ -1068,7 +896,7 @@ jobs:
 **Fallback**:
 Document that storage doesn't work locally, use cloud for file upload testing.
 
-### 3.7 Package.json Updates
+### 3.7 Package.json Updates (Simplified)
 
 ```json
 {
@@ -1080,24 +908,19 @@ Document that storage doesn't work locally, use cloud for file upload testing.
     "dev:verify": "./scripts/dev/verify-environment.sh",
 
     "// === Migration Scripts ===": "",
-    "migration:backup": "./scripts/migration/backup.sh",
-    "migration:validate": "./scripts/migration/validate.sh",
-    "migration:deploy": "./scripts/migration/deploy-safe.sh",
-    "migration:rollback": "./scripts/migration/rollback.sh",
-
-    "// === Monitoring Scripts ===": "",
-    "monitor:health": "./scripts/monitoring/health-check.sh",
-    "monitor:status": "./scripts/monitoring/status-report.sh",
-    "monitor:perf": "./scripts/monitoring/performance-check.sh",
+    "migrate:backup": "./scripts/migration/backup.sh",
+    "migrate:deploy": "./scripts/migration/deploy-safe.sh",
 
     "// === Legacy (keep for backward compatibility) ===": "",
-    "supabase:deploy": "npm run migration:deploy -- cloud",
+    "supabase:deploy": "npx supabase db push && npx supabase functions deploy",
     "supabase:local:start": "npx supabase start",
     "supabase:local:stop": "npx supabase stop",
     "supabase:local:status": "npx supabase status"
   }
 }
 ```
+
+**Removed**: Monitoring scripts (use `npx supabase status` directly), validate/rollback scripts (use existing tools)
 
 ### 3.8 Environment Variables
 
@@ -1469,34 +1292,30 @@ $ npm run monitor:status -- cloud
 
 ---
 
-## 5. Success Metrics
+## 5. Success Metrics (Simplified)
 
 ### 5.1 Implementation Complete When:
 
-**Scripts**:
-- ✅ All 10 new scripts created and executable
-- ✅ All scripts have error handling and clear output
+**Scripts** (6 total, down from 13):
+- ✅ Core 6 scripts created and executable: create-test-users, sync-local-to-cloud, verify-environment, reset-environment, backup, deploy-safe
+- ✅ All scripts have error handling and clear console output
 - ✅ Scripts work on both local and cloud targets
 
-**CI/CD**:
-- ✅ GitHub Actions workflow enabled and passing
-- ✅ Manual approval gate working
+**CI/CD** (Simple Validation):
+- ✅ GitHub Actions workflow validates migrations automatically
 - ✅ Dry-run step catches schema issues
+- ✅ Workflow fails on validation errors
 
 **Test Users**:
 - ✅ 3 test users auto-created with role-specific data
 - ✅ Login works in both local and cloud
-- ✅ Each user has correct permission level
+- ✅ Each user has correct permission level (admin, director, manager)
 
 **Sync**:
 - ✅ Local → Cloud sync works without data loss
-- ✅ Verification shows matching counts
+- ✅ Verification script shows matching counts
 - ✅ Auth users sync with passwords intact
-
-**Monitoring**:
-- ✅ Health checks return proper exit codes
-- ✅ Status reports show accurate metrics
-- ✅ Sync operation log tracks history
+- ✅ Console logs provide sync operation details (no database logging)
 
 **Documentation**:
 - ✅ README.md explains all scripts
@@ -1508,16 +1327,21 @@ $ npm run monitor:status -- cloud
 - **Sync operation**: < 2 minutes for typical test dataset (200 contacts, 100 orgs, 140 opps)
 - **Test user creation**: < 30 seconds for all 3 users + data
 - **Environment reset**: < 3 minutes for full reset both envs
-- **CI/CD pipeline**: < 5 minutes from push to deployment (excluding manual approval wait)
-- **Health check**: < 5 seconds response time
+- **CI/CD pipeline**: < 5 minutes from push to validation complete
 
 ### 5.3 Quality Metrics
 
 - **Script reliability**: 100% success rate on clean environments
 - **Error handling**: All scripts have clear error messages and non-zero exit codes on failure
 - **Idempotency**: All scripts can be run multiple times safely
-- **Backup coverage**: 100% of destructive operations create backups first
+- **Backup coverage**: 100% of destructive operations create backups first (sync, reset, deploy)
 - **Documentation coverage**: Every script documented with purpose, usage, and examples
+
+**Removed Metrics** (Over-Engineered):
+- ~~Manual approval gate working~~ - Removed manual approval
+- ~~Health check performance~~ - Use `npx supabase status`
+- ~~Status report accuracy~~ - No custom reports
+- ~~Sync operation log tracking~~ - Console logging only
 
 ---
 
@@ -1580,37 +1404,35 @@ $ npm run monitor:status -- cloud
 
 ## 7. Implementation Order
 
-### Phase 1: Foundation (Day 1-2)
-1. Create directory structure (`scripts/dev/`, `scripts/migration/`, `scripts/monitoring/`)
-2. Create database migrations (test_user_metadata, sync_operations_log)
-3. Apply migrations locally and to cloud
+### Phase 1: Foundation (Day 1)
+1. Create directory structure (`scripts/dev/`, `scripts/migration/`)
+2. Create migration: `20251016000000_add_test_users_metadata.sql`
+3. Apply migration locally and to cloud
 4. Create `.env.production` template
 
-### Phase 2: Core Scripts (Day 2-4)
+### Phase 2: Core Scripts (Day 2-3)
 1. `create-test-users.sh` - Test with local first
 2. `sync-local-to-cloud.sh` - Test with small dataset
-3. `verify-environment.sh` - Validate sync works
+3. `verify-environment.sh` - Simple count comparison
 4. `reset-environment.sh` - Test full cycle
-5. Migration scripts (backup, validate, deploy-safe, rollback)
+5. `backup.sh` - Simple pg_dump wrapper
+6. `deploy-safe.sh` - Backup + deploy + verify
 
-### Phase 3: Monitoring & Tooling (Day 4-5)
-1. Health check script
-2. Status report script
-3. Update package.json with new npm scripts
-4. Test all scripts end-to-end
+### Phase 3: CI/CD & Documentation (Day 3-4)
+1. `.github/workflows/supabase-deploy.yml` - Simple validation workflow
+2. Update package.json with new npm scripts
+3. Create `scripts/supabase/README.md`
+4. Update docs/supabase/supabase_workflow_overview.md
+5. Storage service investigation (30min timebox)
+6. Test all scripts end-to-end
 
-### Phase 4: CI/CD (Day 5-6)
-1. Create GitHub Actions workflow
-2. Configure GitHub environment for manual approval
-3. Add required secrets to GitHub
-4. Test CI/CD with dummy migration
+**Removed (Over-Engineered)**:
+- ~~sync_operations_log migration~~ - Console logging sufficient
+- ~~monitoring/ scripts~~ - Use `npx supabase status`
+- ~~validate.sh, rollback.sh~~ - Use existing tools
+- ~~Manual approval gates in CI/CD~~ - Start simple, add if needed
 
-### Phase 5: Documentation & Polish (Day 6-7)
-1. Storage service investigation (30min timebox)
-2. Create `scripts/supabase/README.md`
-3. Update `docs/supabase/supabase_workflow_overview.md`
-4. Create demo video/screenshots (optional)
-5. Final end-to-end test
+**Total Timeline**: 3-4 days (reduced from 5-7 days)
 
 ---
 
@@ -1682,20 +1504,15 @@ $ npm run monitor:status -- cloud
 - [ ] Approve deployment, verify success
 - [ ] Trigger failure scenario, verify rollback offer
 
-**Health Monitoring:**
-- [ ] Health check on healthy system (exit 0)
-- [ ] Health check with stopped database (exit 1)
-- [ ] Status report shows accurate counts
-
 ---
 
-## 11. Rollback Plan
+## 11. Rollback Plan (Simplified)
 
 If implementation causes issues:
 
 **Database Changes:**
-- Migrations can be reverted using `rollback.sh`
-- New tables (test_user_metadata, sync_operations_log) can be dropped without affecting existing features
+- `test_user_metadata` table can be dropped without affecting existing features
+- No sync_operations_log table (removed as over-engineered)
 
 **Scripts:**
 - New scripts are additive, don't modify existing functionality
@@ -1731,6 +1548,46 @@ Once real users exist:
 8. **Secret Rotation** - Automated credential updates
 9. **Multi-Region** - Geo-replication for performance/redundancy
 10. **Blue/Green Deployments** - Zero-downtime migrations
+
+---
+
+## Changelog
+
+### v2.0 - Simplified (2025-10-15)
+**Engineering Constitution Compliance Improvements**
+
+**Removed Over-Engineered Elements:**
+1. **`sync_operations_log` database table** - Console logging with timestamps is sufficient for pre-launch test data
+2. **`scripts/monitoring/` directory** (3 scripts) - Use built-in `npx supabase status` instead
+3. **Manual approval gates in CI/CD** - Start simple, add GitHub environment approval later if needed
+4. **`migration/validate.sh`** - Use existing `npm run validate:pre-migration`
+5. **`migration/rollback.sh`** - Use `npx supabase db reset` for local; cloud has automated backups
+
+**Impact:**
+- Scripts reduced from 13 → 6 (54% reduction)
+- Timeline reduced from 5-7 days → 3-4 days (40% faster)
+- Database migrations reduced from 2 → 1
+- Implementation phases reduced from 5 → 3
+
+**Core Simplifications:**
+- CI/CD: Removed manual approval job, removed post-deploy monitoring checks
+- Monitoring: Removed custom health-check.sh and status-report.sh scripts
+- Validation: Reuse existing validation framework instead of duplicating
+- Logging: Console output with timestamps instead of database audit trails
+- Script organization: Removed `monitoring/` directory entirely
+
+**Retained (Essential):**
+- 6 core scripts solving real pain points: create-test-users, sync-local-to-cloud, verify-environment, reset-environment, backup, deploy-safe
+- Simple CI/CD validation workflow (validate + dry-run + deploy)
+- Test user automation with role-specific data volumes
+- Local-to-cloud sync capability with backup
+- Basic verification and reset functionality
+
+### v1.0 - Initial (2025-10-15)
+- Comprehensive infrastructure plan with monitoring, logging, and manual approval gates
+- 13 scripts across 3 directories (dev/, migration/, monitoring/)
+- 2 database migrations (test_user_metadata, sync_operations_log)
+- 5-phase implementation timeline over 5-7 days
 
 ---
 
