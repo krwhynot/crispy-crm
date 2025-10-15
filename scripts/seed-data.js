@@ -342,7 +342,6 @@ class SeedDataGenerator {
         city: faker.location.city(),
         state: faker.location.state(),
         postal_code: faker.location.zipCode(),
-        country: "United States",
         linkedin_url: `https://linkedin.com/company/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
         phone: faker.phone.number(),
         email: `info@${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,

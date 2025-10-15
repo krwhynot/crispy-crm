@@ -166,7 +166,7 @@ async function main() {
       createdUsers.push({ ...user, id: result.id });
       success(`Created user: ${user.email} (ID: ${result.id})`);
     } catch (err) {
-      if (err.message.includes('already registered') || err.message.includes('duplicate')) {
+      if (err.message.includes('already registered') || err.message.includes('duplicate') || err.message.includes('email_exists')) {
         info(`User ${user.email} already exists, fetching ID...`);
         const userId = getUserIdFromDatabase(user.email);
         if (userId) {
