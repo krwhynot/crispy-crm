@@ -15,7 +15,7 @@ import { z } from "zod";
 describe("Tag Edge Cases and Business Rules", () => {
   describe("validateTagUniqueness", () => {
     const existingTags: Tag[] = [
-      { id: 1, name: "Existing Tag", color: "red" },
+      { id: 1, name: "Existing Tag", color: "warm" },
       { id: 2, name: "Another Tag", color: "blue" },
       { id: 3, name: "Case Test", color: "green" },
     ];
@@ -55,18 +55,18 @@ describe("Tag Edge Cases and Business Rules", () => {
     it("should validate and normalize tag data", () => {
       const inputData = {
         name: "  Important Tag  ",
-        color: "red",
+        color: "warm",
       };
 
       const result = validateTagForSubmission(inputData);
       expect(result.name).toBe("Important Tag");
-      expect(result.color).toBe("red");
+      expect(result.color).toBe("warm");
     });
 
     it("should throw for invalid submission data", () => {
       const invalidData = {
         name: "",
-        color: "red",
+        color: "warm",
       };
 
       expect(() => validateTagForSubmission(invalidData)).toThrow(z.ZodError);
@@ -85,24 +85,15 @@ describe("Tag Edge Cases and Business Rules", () => {
 
   describe("Business Rules", () => {
     it("should enforce semantic color system", () => {
+      // Valid semantic colors in the CRM's simplified color system
       const semanticColors = [
-        "red",
-        "orange",
-        "amber",
+        "warm",
         "yellow",
-        "lime",
-        "green",
-        "emerald",
-        "teal",
-        "cyan",
-        "sky",
-        "blue",
-        "indigo",
-        "violet",
-        "purple",
-        "fuchsia",
         "pink",
-        "rose",
+        "green",
+        "teal",
+        "blue",
+        "purple",
         "gray",
       ];
 
@@ -148,7 +139,7 @@ describe("Tag Edge Cases and Business Rules", () => {
 
     it("should handle tag categorization", () => {
       const categoryTags = [
-        { name: "High Priority", color: "red" },
+        { name: "High Priority", color: "warm" },
         { name: "In Progress", color: "yellow" },
         { name: "Completed", color: "green" },
         { name: "Archived", color: "gray" },
@@ -164,7 +155,7 @@ describe("Tag Edge Cases and Business Rules", () => {
     it("should provide clear error messages", () => {
       const testCases = [
         {
-          data: { name: "", color: "red" },
+          data: { name: "", color: "warm" },
           expectedError: "Tag name is required",
         },
         {
@@ -183,8 +174,11 @@ describe("Tag Edge Cases and Business Rules", () => {
           tagSchema.parse(data);
           expect.fail("Should have thrown error");
         } catch (error) {
+          expect(error).toBeInstanceOf(z.ZodError);
           if (error instanceof z.ZodError) {
-            const message = error.errors[0].message;
+            expect(error.issues).toBeDefined();
+            expect(error.issues.length).toBeGreaterThan(0);
+            const message = error.issues[0].message;
             expect(message).toBe(expectedError);
           }
         }

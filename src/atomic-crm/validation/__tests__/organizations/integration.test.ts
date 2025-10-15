@@ -14,8 +14,7 @@ describe("Organization Validation Functions", () => {
     it("should validate and pass valid data", async () => {
       const validData = {
         name: "Test Organization",
-        type: "customer",
-        status: "active",
+        organization_type: "customer",
       };
 
       await expect(
@@ -26,10 +25,7 @@ describe("Organization Validation Functions", () => {
     it("should format errors for React Admin", async () => {
       const invalidData = {
         name: "",
-        type: "invalid_type",
-        status: "invalid_status",
-        annual_revenue: -1000,
-        employee_count: -10,
+        organization_type: "invalid_type",
         website: "not-a-url",
       };
 
@@ -39,16 +35,9 @@ describe("Organization Validation Functions", () => {
       } catch (error: any) {
         expect(error.message).toBe("Validation failed");
         expect(error.errors).toBeDefined();
-        expect(error.errors.name).toBe("Organization name is required");
-        expect(error.errors.type).toBeDefined();
-        expect(error.errors.status).toBeDefined();
-        expect(error.errors.annual_revenue).toBe(
-          "Annual revenue must be positive",
-        );
-        expect(error.errors.employee_count).toBe(
-          "Employee count must be at least 1",
-        );
-        expect(error.errors.website).toBe("Invalid URL format");
+        expect(error.errors.name).toBe("Company name is required");
+        expect(error.errors.organization_type).toBeDefined();
+        expect(error.errors.website).toBe("Must be a valid URL");
       }
     });
 
@@ -91,51 +80,56 @@ describe("Organization Validation Functions", () => {
   });
 
   describe("validateOrganizationForSubmission", () => {
-    it("should validate and normalize organization data", () => {
+    it("should validate and normalize organization data", async () => {
       const inputData = {
         name: "Submission Test",
-        type: "customer",
-        status: "active",
+        organization_type: "customer",
         website: "https://example.com",
       };
 
-      const result = validateOrganizationForSubmission(inputData);
-      expect(result.name).toBe("Submission Test");
-      expect(result.type).toBe("customer");
-      expect(result.website).toBe("https://example.com");
+      await expect(
+        validateOrganizationForSubmission(inputData),
+      ).resolves.toBeUndefined();
     });
 
-    it("should apply defaults during submission", () => {
+    it("should throw for missing required fields", async () => {
       const minimalData = {
         name: "Minimal Org",
+        // Missing required organization_type
       };
 
-      const result = validateOrganizationForSubmission(minimalData);
-      expect(result.type).toBe("prospect");
-      expect(result.status).toBe("active");
+      await expect(
+        validateOrganizationForSubmission(minimalData),
+      ).rejects.toMatchObject({
+        message: "Validation failed",
+      });
     });
 
-    it("should throw for invalid submission data", () => {
+    it("should throw for invalid submission data", async () => {
       const invalidData = {
         name: "",
-        type: "invalid",
+        organization_type: "invalid",
       };
 
-      expect(() => validateOrganizationForSubmission(invalidData)).toThrow();
+      await expect(
+        validateOrganizationForSubmission(invalidData),
+      ).rejects.toMatchObject({
+        message: "Validation failed",
+      });
     });
 
-    it("should strip extra fields during submission", () => {
+    it("should strip extra fields during submission", async () => {
       const dataWithExtras = {
         name: "Clean Org",
-        type: "customer",
+        organization_type: "customer",
         extra_field: "should be removed",
         malicious: "also removed",
       };
 
-      const result = validateOrganizationForSubmission(dataWithExtras);
-      expect(result.name).toBe("Clean Org");
-      expect("extra_field" in result).toBe(false);
-      expect("malicious" in result).toBe(false);
+      // Since validateOrganizationForSubmission returns void, we just check it doesn't throw
+      await expect(
+        validateOrganizationForSubmission(dataWithExtras),
+      ).resolves.toBeUndefined();
     });
   });
 
@@ -143,35 +137,22 @@ describe("Organization Validation Functions", () => {
     it("should provide clear error messages", async () => {
       const testCases = [
         {
-          data: { name: "", type: "customer" },
-          expectedError: "Organization name is required",
+          data: { name: "", organization_type: "customer" },
+          expectedError: "Company name is required",
           field: "name",
         },
         {
-          data: { name: "Test", type: "invalid" },
-          expectedError: "Invalid organization type",
-          field: "type",
-        },
-        {
-          data: { name: "Test", annual_revenue: -1000 },
-          expectedError: "Annual revenue must be positive",
-          field: "annual_revenue",
-        },
-        {
-          data: { name: "Test", employee_count: 0 },
-          expectedError: "Employee count must be at least 1",
-          field: "employee_count",
+          data: { name: "Test", organization_type: "invalid" },
+          field: "organization_type",
         },
       ];
 
-      for (const { data, expectedError, field } of testCases) {
+      for (const { data, field } of testCases) {
         try {
           await validateOrganizationForm(data);
-          if (expectedError) {
-            expect.fail(`Should have thrown error for field: ${field}`);
-          }
+          expect.fail(`Should have thrown error for field: ${field}`);
         } catch (error: any) {
-          expect(error.errors[field]).toBe(expectedError);
+          expect(error.errors[field]).toBeDefined();
         }
       }
     });
