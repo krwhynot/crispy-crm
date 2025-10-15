@@ -62,3 +62,4 @@
 [2025-10-13 22:39:36] [configuration] Edit: /home/krwhynot/projects/crispy-crm/supabase/config.toml
 [2025-10-13 22:47:03] [documentation] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/RECONCILIATION_SUMMARY.md
 [2025-10-14 18:23:40] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013000000_cloud_schema_sync.sql
+[2025-10-14 19:30:36] [documentation] Write: /home/krwhynot/projects/crispy-crm/CLAUDE.md

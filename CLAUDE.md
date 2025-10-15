@@ -2,542 +2,286 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Engineering Constitution
+## Project Overview
 
-Core principles to prevent debates & ensure consistency:
+Atomic CRM is a full-featured, open-source CRM built with React, shadcn-admin-kit, and Supabase. The application manages contacts, organizations, opportunities (formerly deals), tasks, and notes with a modern, type-safe frontend and a PostgreSQL backend.
 
-1. **NO OVER-ENGINEERING**: No circuit breakers, health monitoring, or backward compatibility. Fail fast.
-2. **SINGLE SOURCE OF TRUTH**: One data provider (Supabase), one validation layer (Zod at API boundary)
-3. **BOY SCOUT RULE**: Fix inconsistencies when editing files
-4. **VALIDATION**: Zod schemas at API boundary only (`src/atomic-crm/validation/`)
-5. **FORM STATE DERIVED FROM TRUTH**: React Hook Form `defaultValues` MUST be generated from Zod schema
-   - **Implementation**: Use `zodSchema.partial().parse({})` to extract only fields with `.default()` values
-   - **Define defaults in Zod schema** using `.default()` method for fields with business logic defaults
-   - **Merge schema defaults with runtime values** (e.g., `{ ...schema.partial().parse({}), user_id: identity.id }`)
-   - **Rationale**: Prevents drift between UI and validation, ensures forms initialize in valid state
-   - **Anti-Pattern**: Never use `defaultValue` prop on input components - React Hook Form controlled inputs ignore it
-   - **Reference Implementation**: See `OpportunityCreate.tsx` and `opportunities.ts` validation schema
-6. **TYPESCRIPT**: `interface` for objects/classes, `type` for unions/intersections
-7. **FORMS**: Always use admin layer (`src/components/admin/`) for validation/errors
-8. **COLORS**: Semantic CSS variables only (--primary, --destructive). Never use hex codes
-9. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
+**Live Demo**: https://marmelab.com/atomic-crm-demo
+**Stack**: React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind CSS 4
 
-## Parallel Agent Decomposition
+## Essential Commands
 
-**MANDATORY**: For ANY complex task or problem, immediately decompose into parallel-executable subtasks.
-
-### Execution Pattern
-1. **Analyze** - Break the problem into 3-7 independent components
-2. **Assign** - Create parallel agents, each with a specific research/implementation focus:
-   - Agent 1: Database/backend investigation
-   - Agent 2: Frontend/UI patterns
-   - Agent 3: Similar features/existing patterns
-   - Agent 4+: Additional specialized aspects
-3. **Synthesize** - Combine findings into cohesive solution
-
-### Trigger Words
-When you see: "implement", "research", "analyze", "build", "investigate", "plan", "design"
-→ Immediately decompose for parallel execution
-
-### Example Decomposition
-Task: "Add new dashboard feature"
-Parallel Agents:
-- Agent 1: Research existing dashboard patterns in /src/atomic-crm/
-- Agent 2: Analyze required database schema changes
-- Agent 3: Investigate relevant shadcn/ui components
-- Agent 4: Review similar features for UX patterns
-
-### Critical Rules
-- Never work sequentially when parallel is possible
-- Each agent must have clear, independent scope
-- Agents write findings to `.docs/plans/[feature]/[aspect].md`
-- Main thread synthesizes after parallel completion
-
-## Supabase Development Philosophy
-
-**PRIMARY WORKFLOW: Docker-Based Local Development**
-
-This project uses Docker-based local Supabase for all development work. This approach:
-- Enables fast, offline development
-- Prevents production database accidents
-- Supports migration-as-code workflows
-- Allows easy database resets and testing
-- Mirrors production environment safely
-
-**When to Use Each Approach:**
-- **Docker Local (DEFAULT)**: Daily development, testing, migrations, schema changes
-- **Remote Cloud (DEPLOY ONLY)**: `npm run supabase:deploy` for production releases
-- **MCP Tools (EMERGENCY)**: Production debugging ONLY - high risk, use with caution
-
-**Environment Files:**
-- `.env.local` → Docker local development (THIS IS YOUR DEFAULT)
-- `.env.development` → Remote cloud (deployment reference only)
-
-### Database Operation Decision Tree
-
-```
-Need to:                      Use:
-───────────────────────────────────────────────────────────
-Create/modify schema       → Docker: npm run supabase:local:db:reset
-Test migrations            → Docker: Local instance
-Deploy to production       → Remote: npm run supabase:deploy
-Debug prod issue           → MCP Tools (CAUTION: read-only when possible)
-Seed test data             → Docker: npm run seed:data
-Query exploration          → Docker: Studio at http://localhost:54323
-```
-
-## Build & Development Commands
-
-**IMPORTANT**: All build operations use npm scripts only. No Makefile or other build tools.
-This project previously used a Makefile but it was removed per Engineering Constitution Rule #2 (SINGLE SOURCE OF TRUTH).
-
-### Development
+### Development Workflow
 ```bash
-npm run dev              # Start development server (port 5173)
-npm run build            # Build for production (TypeScript check + Vite build)
-npm run preview          # Preview production build locally
-```
-
-### Testing
-```bash
+npm run dev              # Start dev server (http://localhost:5173)
+npm run build            # TypeScript check + production build
+npm run preview          # Preview production build
 npm test                 # Run tests in watch mode
 npm run test:ci          # Run tests once (for CI)
-npm run test:coverage    # Generate coverage report
-npm run test:unit        # Run only unit tests
-npm run test:ui          # Launch Vitest UI for visual exploration
-npm run test:performance # Run performance benchmarks
-npm run test:load        # Run load tests
-```
-
-**Coverage Baseline**: 70% across all metrics (statements, branches, functions, lines)
-
-**Testing Documentation**: Comprehensive testing strategy documented in `.docs/testing/`:
-- `TESTING.md` - Complete testing overview and strategy
-- `WRITING_TESTS.md` - Patterns, examples, and best practices
-- `FLAKY_TEST_POLICY.md` - Handling unreliable tests
-
-**Test Organization**:
-- Unit tests: `*.test.ts` or `*.test.tsx` files (anywhere in `src/`)
-- Integration tests: `src/tests/integration/`
-- E2E tests: `tests/e2e/` (Playwright)
-- Fixtures: `tests/fixtures/` - Opportunity-based test data
-
-**Testing Patterns**:
-- Use semantic selectors: `getByRole` > `data-testid` > avoid CSS/text selectors
-- Follow patterns from `.docs/testing/WRITING_TESTS.md`
-- Tests must pass before merging
-- Flaky tests must be fixed or marked appropriately per policy
-
-### Code Quality
-```bash
-npm run lint             # Check linting and formatting
-npm run lint:check       # Check ESLint only
+npm run lint             # Check linting + formatting
 npm run lint:apply       # Auto-fix ESLint issues
-npm run prettier:check   # Check Prettier formatting
-npm run prettier:apply   # Auto-fix Prettier formatting
-npm run validate:colors  # Validate semantic color usage
+npm run prettier:apply   # Auto-fix formatting
 ```
 
-### Supabase Local Development
+### Database & Supabase
 ```bash
-npm run supabase:local:start      # Start local Supabase instance
-npm run supabase:local:stop       # Stop local Supabase instance
-npm run supabase:local:restart    # Restart local Supabase instance
-npm run supabase:local:db:reset   # Reset local database to migrations
-npm run supabase:local:status     # Show local Supabase status
-npm run supabase:local:studio     # Echo Studio URL (http://localhost:54323)
+# Local Supabase (Docker-based)
+npm run supabase:local:start   # Start local Supabase
+npm run supabase:local:stop    # Stop local Supabase
+npm run supabase:local:status  # Check status
+npx supabase db reset          # Reset local DB + run migrations
+
+# Remote Supabase
+npm run supabase:deploy        # Push migrations + deploy edge functions
+npx supabase db push           # Push migrations only
+npx supabase migration new <name>  # Create new migration
+
+# Access points
+# - Studio: http://localhost:54323
+# - REST API: http://localhost:54321
+# - Email testing: http://localhost:54324
 ```
 
-**Local Supabase Services**:
-- Dashboard: http://localhost:54323/
-- REST API: http://127.0.0.1:54321
-- Storage: http://localhost:54323/project/default/storage/buckets/attachments
-- Email testing (Inbucket): http://localhost:54324/
-
-## Common Development Workflows
-
-### Starting a New Development Session
-
+### Development Scripts
 ```bash
-# 1. Start Docker-based Supabase (one time per session)
-npm run supabase:local:start
-
-# 2. Verify it's running
-npm run supabase:local:status
-
-# 3. Start your dev server
-npm run dev
-
-# Your app now points to: http://localhost:54321 (Docker Supabase)
+npm run seed:data              # Insert test data
+npm run seed:data:clean        # Clean + regenerate test data
+npm run cache:clear            # Clear application caches
+npm run search:reindex         # Reindex search data
+npm run migrate:production     # Execute production migration
+npm run validate:colors        # Validate semantic color usage
 ```
-
-### Creating a Database Migration
-
-```bash
-# 1. Make sure local Supabase is running
-npm run supabase:local:status
-
-# 2. Create migration file (manual)
-# Create: supabase/migrations/YYYYMMDDHHMMSS_description.sql
-
-# 3. Apply migration locally
-npm run supabase:local:db:reset
-
-# 4. Test in Supabase Studio
-open http://localhost:54323
-
-# 5. Verify migration in code
-npm run dev  # Check if app works
-
-# 6. Commit migration to git
-git add supabase/migrations/
-git commit -m "feat(db): add migration for X"
-
-# 7. Deploy to production (when ready)
-npm run supabase:deploy
-```
-
-### Testing Database Changes Safely
-
-```bash
-# Experiment freely - local database is disposable!
-
-# Reset to clean state anytime:
-npm run supabase:local:db:reset
-
-# Try different approaches without risk:
-npm run supabase:local:db:reset  # Approach 1
-# ... test ...
-npm run supabase:local:db:reset  # Approach 2
-# ... test again ...
-```
-
-### Deploying to Production
-
-```bash
-# 1. Ensure migrations work locally
-npm run supabase:local:db:reset
-npm run dev  # Verify app works
-
-# 2. Run tests
-npm test
-
-# 3. Build check
-npm run build
-
-# 4. Deploy (pushes migrations + functions)
-npm run supabase:deploy
-
-# This connects to: aaqnanddcqvfiwhshndl.supabase.co
-```
-
-### Troubleshooting
-
-**"Connection refused" errors:**
-```bash
-# Check if Docker containers are running
-npm run supabase:local:status
-
-# Restart if needed
-npm run supabase:local:restart
-```
-
-**"Wrong environment" (accidentally using production):**
-```bash
-# Verify your .env file:
-cat .env.local | grep VITE_SUPABASE_URL
-# Should show: http://localhost:54321
-
-# If it shows the remote URL, you're using wrong file!
-```
-
-### Database & Deployment
-```bash
-npm run supabase:deploy  # Deploy database migrations and functions
-npm run prod:start       # Build and start production server locally
-npm run prod:deploy      # Deploy to production (GitHub Pages)
-```
-
-### Development Utilities
-```bash
-npm run seed:data             # Insert test data
-npm run seed:data:dry-run     # Preview test data
-npm run seed:data:clean       # Clean and regenerate test data
-npm run seed:products         # Seed product data
-npm run cache:clear           # Clear application caches
-npm run cache:clear:dry-run   # Preview cache clear
-npm run search:reindex        # Reindex search data
-npm run search:reindex:dry-run # Preview reindex
-npm run migrate:production    # Execute production migration
-npm run migrate:dry-run       # Preview migration changes
-npm run migrate:backup        # Backup before migration
-npm run migrate:rollback      # Rollback to previous state
-npm run migrate:validate      # Validate migration success
-npm run migrate:status        # Check migration status
-```
-
-## Development Status
-**NOT PRODUCTION** - Development environment only. All data is test data and can be modified/deleted.
 
 ## Architecture Overview
 
-### Core Stack
-- **Frontend**: React 19 + React Admin 5 + shadcn/ui + Tailwind CSS 4
-- **Backend**: Supabase (PostgreSQL + Auth + Storage + Edge Functions)
-- **Validation**: Zod schemas at API boundaries
-- **State**: React Admin store + React Query
-- **Testing**: Vitest + React Testing Library + Playwright
+### Frontend Structure
 
-### Application Entry Point
-- `src/main.tsx` → `src/App.tsx` → `src/atomic-crm/root/CRM.tsx`
-- `CRM.tsx` wraps React Admin's `<Admin>` component with configuration
-- Resources registered via `<Resource>` components in `CRM.tsx`
-- Custom routes for settings, password reset, etc. via `<CustomRoutes>`
+**Entry Points:**
+- `src/main.tsx` � `src/App.tsx` � `src/atomic-crm/root/CRM.tsx`
+- The `<CRM>` component is the root that configures the entire application
+- All customization happens via props to `<CRM>` in `src/App.tsx`
 
-### Data Provider Architecture
-Unified Supabase data provider at `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`:
-- Implements React Admin DataProvider interface
-- All CRUD operations go through this single provider
-- Zod validation integrated at API boundaries before database calls
-- File attachments managed via Supabase Storage
-- Consolidates transformation logic (was 4+ layers, now 2 max)
-- Error logging and resource-specific transformations built-in
+**Module Organization (`src/atomic-crm/`):**
+- **contacts/** - Contact management (List/Show/Edit/Create views)
+- **organizations/** - Company/organization management
+- **opportunities/** - Sales pipeline (formerly "deals", migrated in v0.2.0)
+- **products/** - Product catalog
+- **sales/** - Sales rep management
+- **tasks/** - Task tracking
+- **dashboard/** - Analytics and charts
+- **layout/** - App shell, navigation, sidebar
+- **providers/supabase/** - Data layer (dataProvider, authProvider)
+- **components/** - Shared UI components
+- **hooks/** - Custom React hooks
+- **validation/** - Zod schemas for forms
 
-**Key Design Decision**: The unified data provider consolidates:
-1. Base Supabase operations (via `ra-supabase-core`)
-2. Resource-specific transformations
-3. Validation (via Zod schemas)
-4. Error logging and handling
-5. Soft delete support
-6. JSONB array field normalization
-7. Full-text search integration
+**Key Patterns:**
+- Each resource module exports lazy-loaded components via `index.ts`
+- Resources use React Admin's List/Show/Edit/Create pattern
+- All components use TypeScript for type safety
+- Forms use `react-hook-form` + Zod validation
+- UI components from `@/components/ui` (shadcn-based)
 
-### Service Layer Architecture
-Three-tier service architecture for complex operations:
+### Data Layer (Supabase Integration)
 
-**Tier 1: Decomposed Services** (`src/atomic-crm/providers/supabase/services/`)
-- `ValidationService` - Schema validation with detailed error messages
-- `TransformService` - Data transformation, JSONB normalization, attachment handling
-- `StorageService` - Supabase Storage operations for avatars/attachments
+**Data Provider:** `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+- Custom React Admin data provider built on `ra-supabase-core`
+- Handles filtering, pagination, sorting, relationships
+- Filter registry for complex queries: `filterRegistry.ts`
 
-**Tier 2: Business Logic Services** (`src/atomic-crm/services/`)
-- `SalesService` - Sales record creation and management
-- `OpportunitiesService` - Opportunity operations and product syncing
-- `ActivitiesService` - Activity and interaction tracking
-- `JunctionsService` - Many-to-many relationship management
+**Auth Provider:** `src/atomic-crm/providers/supabase/authProvider.ts`
+- Manages authentication via Supabase Auth
+- Supports Google, Azure, Keycloak, Auth0 integrations
 
-**Tier 3: Data Provider Integration**
-- Services instantiated in `unifiedDataProvider.ts`
-- Business logic services receive base data provider
-- Decomposed services are framework-agnostic utilities
+**Database Architecture:**
+- **Views** - Database views aggregate data (e.g., `contacts_summary` includes task counts)
+- **Triggers** - Auto-sync user data from `auth.users` to `sales` table
+- **Edge Functions** (`supabase/functions/`) - User management, email webhooks
+- **Migrations** (`supabase/migrations/`) - Schema versioning
 
-### Component Architecture
-Three-tier system:
-1. **Base** (`src/components/ui/`): shadcn/ui primitives (Button, Input, Card, etc.)
-2. **Admin** (`src/components/admin/`): React Admin integration layer (form inputs with validation)
-3. **Feature** (`src/atomic-crm/`): Business logic components (List, Show, Edit, Create views)
+### Configuration System
 
-### Feature Module Pattern
-Each entity follows consistent structure:
-```
-src/atomic-crm/[feature]/
-├── index.ts            # Resource config for React Admin
-├── [Feature]List.tsx   # List view with filters
-├── [Feature]Show.tsx   # Detail view
-├── [Feature]Edit.tsx   # Edit form
-├── [Feature]Create.tsx # Create form
-└── [Feature]Inputs.tsx # Shared form inputs
+**ConfigurationContext** (`src/atomic-crm/root/ConfigurationContext.tsx`):
+- Centralized app configuration via React Context
+- Controls: contact gender options, opportunity stages/categories, note statuses, task types, logos, themes
+- Customize in `src/App.tsx` by passing props to `<CRM>`
+
+Example customization:
+```tsx
+<CRM
+  title="My Custom CRM"
+  opportunityStages={[
+    { value: 'lead', label: 'New Lead' },
+    { value: 'qualified', label: 'Qualified' }
+  ]}
+  contactGender={[{ value: 'male', label: 'He' }]}
+/>
 ```
 
-**Resource Registration**: All resources registered in `src/atomic-crm/root/CRM.tsx` via `<Resource>` components:
-- `opportunities` - Full CRUD views
-- `contacts` - Full CRUD views
-- `organizations` - Full CRUD views (companies)
-- `products` - Full CRUD views
-- `sales` - Custom sales recording view
-- `contactNotes` / `opportunityNotes` - No views (used via data provider)
-- `tasks` - No views (embedded in other entities)
-- `tags` - No views (used via selects)
-- `segments` - No views (future feature)
+### Important Architectural Decisions
 
-### Database Schema
-Opportunities-based CRM with key tables:
-- `opportunities` - Sales pipeline with multi-stakeholder support, stage tracking
-- `companies` - Organizations with hierarchies, industry, employee count
-- `contacts` - People with JSONB arrays for emails/phones (e.g., `[{"email":"x@y.com"}]`)
-- `contact_organizations` - Many-to-many relationships with primary flag, decision maker status, and relationship dates
-- `opportunity_products` - Junction table linking opportunities to products with quantities
-- `activities` - Engagements (standalone) and interactions (opportunity-linked)
-- `tasks` - Action items with type enum (call, email, meeting, todo, follow_up)
-- `contact_notes` / `opportunity_notes` - Entity-specific notes
-- `tags` - Flexible tagging system
-- `sales` - Sales records for reporting
-- RLS: Simple `auth.role() = 'authenticated'` on all tables
-- Soft deletes via `deleted_at` timestamps
-- Views: `contacts_summary` (denormalized contact data with company names)
+1. **Database Views Over Client-Side Joins**: Complex queries use PostgreSQL views (defined in migrations) to reduce HTTP overhead and simplify frontend code.
 
-**Migration Location**: `supabase/migrations/` with timestamp naming
+2. **Lazy Loading**: All resource components are lazy-loaded to optimize initial bundle size. See chunk splitting in `vite.config.ts:120-185`.
 
-### Validation Layer
-Zod schemas in `src/atomic-crm/validation/` (API boundary only):
-- `opportunities.ts` - Stage, status, priority, probability, amount validation
-- `organizations.ts` - URL and LinkedIn validation
-- `contacts.ts` - Email/phone JSONB array validation
-- `tasks.ts` - Type enum and status validation
-- `notes.ts` - Contact/opportunity note validation
-- `tags.ts` - Tag creation and update validation
-- `products.ts` - Product validation
-All validation integrated into `unifiedDataProvider.ts` before database operations
+3. **No User Deletion**: Users can only be disabled (via Supabase ban feature) to prevent data loss.
 
-**Validation Pattern**:
-1. Define Zod schema in `src/atomic-crm/validation/[resource].ts`
-2. Export schema for use in forms and data provider
-3. Use `.default()` on fields that need form defaults
-4. Extract defaults via `zodSchema.partial().parse({})`
-5. Validation happens in `ValidationService` before database operations
+4. **Edge Functions for User Management**: Supabase lacks public user CRUD endpoints, so `supabase/functions/users` handles user creation/updates with permission checks.
 
-### Key Patterns
-- **Resource Registration**: All resources in `src/atomic-crm/root/CRM.tsx`
-- **Kanban Board**: Stage-based visualization using index field for opportunity ordering within columns
-- **Multi-Org Contacts**: Junction table `contact_organizations` with primary flag, decision maker status, and relationship tracking
-- **Junction Table Sync**: Contacts/organizations and opportunities/products synced via RPC functions
-- **Activity Types**: Engagements (standalone) vs Interactions (opportunity-linked)
-- **Filter System**: Multi-select filters with JSONB array fields in `src/atomic-crm/filters/`
-- **Avatar Storage**: Supabase Storage buckets for avatars/logos, handled by `avatar.utils.ts`
-- **Configuration**: Global app config via `ConfigurationProvider` in `CRM.tsx`
-- **Lazy Loading**: Feature components lazy-loaded via `React.lazy()` in `index.ts` exports
+5. **Triggers for Auth Sync**: Database trigger syncs `auth.users` � `sales` table for fields like `first_name`, `last_name`.
 
-### Environment Variables
+6. **Path Alias**: `@/*` maps to `src/*` (see `tsconfig.json:12`, `vite.config.ts:216`)
+
+## Migration Notes (v0.2.0)
+
+**Deal � Opportunity Rename:**
+- All `deals` entities renamed to `opportunities`
+- Environment variables: `DEAL_*` � `OPPORTUNITY_*`
+- Props: `dealStages` � `opportunityStages`, `dealCategories` � `opportunityCategories`
+- Database schema enhanced with participants, activity tracking, interaction history
+- Many-to-many contacts � organizations
+
+**Backward Compatibility:** Legacy deal endpoints remain functional during transition.
+
+## Testing
+
+**Framework:** Vitest + React Testing Library
+**Coverage Requirement:** 70% across all metrics (statements, branches, functions, lines)
+
+```bash
+npm test                 # Watch mode
+npm run test:coverage    # Generate coverage report
+npm run test:ui          # Launch Vitest UI
+npm run test:e2e         # Run Playwright E2E tests
+npm run test:performance # Performance benchmarks
+```
+
+**Test Location:**
+- Unit/integration: `src/**/*.test.{ts,tsx}`
+- E2E: `tests/e2e/`
+- Fixtures: `tests/fixtures/`
+
+**Testing Docs:**
+- `.docs/testing/TESTING.md` - Overview
+- `.docs/testing/WRITING_TESTS.md` - Patterns and examples
+- `.docs/testing/FLAKY_TEST_POLICY.md` - Handling unreliable tests
+
+## Environment Variables
+
+**Required for Development:**
+```bash
+VITE_SUPABASE_URL=http://localhost:54321
+VITE_SUPABASE_ANON_KEY=<local_anon_key>
+```
+
+**Required for Production:**
 ```bash
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your_anon_key
+VITE_SUPABASE_ANON_KEY=<your_anon_key>
+```
+
+**Optional:**
+```bash
+SUPABASE_SERVICE_ROLE_KEY=<service_role_key>  # For MCP tools
+DATABASE_URL=<postgres_connection_string>     # For migrations
 OPPORTUNITY_DEFAULT_STAGE=new_lead
-OPPORTUNITY_PIPELINE_STAGES=new_lead,initial_outreach,sample_visit_offered,awaiting_response,feedback_logged,demo_scheduled,closed_won,closed_lost
+OPPORTUNITY_PIPELINE_STAGES=new_lead,qualified,won,lost
 ```
 
-### Recent Migration (v0.2.0)
-System migrated from "deals" to "opportunities":
-- Fresh schema, no backward compatibility
-- All references updated throughout codebase
-- Environment variables renamed from `DEAL_*` to `OPPORTUNITY_*`
-- Enhanced schema with multiple participants, activity tracking
-- Many-to-many relationships for contacts/organizations
-- Test fixtures updated to opportunity structure
+See `.env.example` for full list.
 
-## MCP Tools: Emergency Production Access
+## Code Quality & Conventions
 
-**WARNING: Use ONLY for production emergencies**
+1. **Type Safety**: All code uses TypeScript strict mode. Avoid `any`.
+2. **Path Imports**: Use `@/` alias for imports (e.g., `import { Button } from "@/components/ui/button"`)
+3. **Lazy Loading**: Resource components MUST be lazy-loaded (see `src/atomic-crm/contacts/index.ts:4-7`)
+4. **Form Validation**: Use Zod schemas in `src/atomic-crm/validation/`
+5. **Semantic Colors**: Run `npm run validate:colors` to ensure Tailwind color usage follows semantic token system
+6. **Linting**: Auto-fix before committing: `npm run lint:apply && npm run prettier:apply`
 
-### When MCP Tools Are Appropriate
+## Common Development Tasks
 
-MCP tools provide direct database access. Use **ONLY** for:
+### Adding a New Resource
+1. Create module in `src/atomic-crm/<resource-name>/`
+2. Create List/Show/Edit/Create components (lazy-loaded)
+3. Export via `index.ts` with `recordRepresentation`
+4. Register in `src/atomic-crm/root/CRM.tsx`: `<Resource name="resource-name" {...resourceModule} />`
+5. Add database migration: `npx supabase migration new add_<resource>_table`
+6. Update data provider filters if needed in `filterRegistry.ts`
 
-1. **Production Debugging** (Read-only preferred)
-   - Investigating live issues that can't be reproduced locally
-   - Querying production data patterns for analysis
-   - Example: `mcp__supabase-lite__execute_sql` with SELECT queries
+### Creating Database Migrations
+```bash
+# Local-first approach (recommended)
+npx supabase migration new <migration_name>
+# Edit supabase/migrations/<timestamp>_<migration_name>.sql
+npx supabase migration up           # Apply locally
+npx supabase db push                # Push to remote
 
-2. **Emergency Hotfixes** (Extreme caution)
-   - Critical data fixes that can't wait for migration deployment
-   - Requires: Database backup first, peer review, rollback plan
-   - Better: Deploy via migration when possible
-
-3. **Schema Inspection** (Safe)
-   - `mcp__supabase-lite__list_tables` - View production schema
-   - `mcp__supabase-lite__get_advisors` - Performance recommendations
-
-### MCP Safety Protocol
-
-**Before ANY production MCP operation:**
-
-1. Verify you MEAN to access production (check VITE_SUPABASE_URL)
-2. Use read-only queries when possible (SELECT, not UPDATE/DELETE)
-3. Test query syntax on Docker local first
-4. Have rollback plan if modifying data
-5. Document what you're doing and why
-
-**Example - Safe Production Query:**
-```typescript
-// GOOD: Read-only production analysis
-mcp__supabase-lite__execute_sql:
-"SELECT COUNT(*), stage FROM opportunities WHERE deleted_at IS NULL GROUP BY stage"
-
-// BAD: Direct production modification
-mcp__supabase-lite__execute_sql:
-"UPDATE opportunities SET stage = 'closed_won' WHERE ..." // Use migration instead!
+# Remote-first approach
+# Make changes in Supabase Dashboard, then:
+npx supabase db diff | npx supabase migration new <migration_name>
+npx supabase migration up
 ```
 
-### Why Docker Local Is Preferred
+**Important:** If you modify contact/organization schema, update CSV import logic in `src/contacts/useContactImport.tsx` and sample files.
 
-| Scenario | Docker Local | MCP Production |
-|----------|-------------|----------------|
-| Schema changes | Safe, version controlled | Risky, no rollback |
-| Data exploration | Fast, offline | Slow, requires internet |
-| Testing | Isolated, repeatable | Affects real data |
-| Learning | Break things safely | Can corrupt production |
-| Migration testing | Easy reset | No easy undo |
+### Customizing the CRM
 
-**Default Answer:** "Can I use MCP for this?" → NO, use Docker local instead
+All customization happens via props to the `<CRM>` component in `src/App.tsx`. Available props:
+- `contactGender: ContactGender[]`
+- `opportunityStages: OpportunityStage[]`
+- `opportunityCategories: string[]`
+- `noteStatuses: NoteStatus[]`
+- `taskTypes: string[]`
+- `title: string`
+- `lightModeLogo: string`
+- `darkModeLogo: string`
+- `disableTelemetry: boolean`
+- `dataProvider: DataProvider` (override default)
+- `authProvider: AuthProvider` (override default)
 
-### Available MCP Tools
+See `doc/developer/customizing.md` for detailed examples.
 
-**Database Operations:**
-- `mcp__supabase-lite__list_tables` - List database tables
-- `mcp__supabase-lite__execute_sql` - Execute queries (SELECT/INSERT/UPDATE/DELETE)
-- `mcp__supabase-lite__apply_migration` - Apply DDL migrations (CREATE/ALTER/DROP)
-- `mcp__supabase-lite__generate_typescript_types` - Generate types
-- `mcp__supabase-lite__get_logs` - View service logs (api/postgres/auth/storage/realtime)
-- `mcp__supabase-lite__get_advisors` - Security and performance recommendations
+## Build & Deployment
 
-## Memory Management Protocol
+**Production Build:**
+```bash
+npm run build            # Outputs to dist/
+npm run prod:start       # Build + deploy DB + serve locally
+npm run prod:deploy      # Build + deploy DB + deploy to GitHub Pages
+```
 
-### Automatic Memory Storage
-Claude MUST use the Memory MCP tools to automatically store knowledge when:
+**Optimization Features:**
+- Manual chunk splitting (see `vite.config.ts:123-185`)
+- Tree-shaking with Terser (drops console.log in production)
+- Source maps disabled in production (7.7MB savings)
+- Pre-bundled dependencies via `optimizeDeps` (see `vite.config.ts:10-62`)
 
-1. **Architectural Decisions** - Technology choices, pattern decisions, structural changes
-   - Entity type: `architectural-decision`
-   - Include: rationale, date, affected components, alternatives considered
+**Deployment Targets:**
+- GitHub Pages (configured in `scripts/ghpages-deploy.mjs`)
+- Vercel (base path set to `/` in `vite.config.ts:220`)
 
-2. **Bug Fixes** - After fixing any bug
-   - Entity type: `bug-fix`
-   - Include: symptoms, root cause, solution, affected files
+## Key Files Reference
 
-3. **New Features** - When implementing features
-   - Entity type: `feature`
-   - Include: requirements, implementation approach, key files, dependencies
+| File | Purpose |
+|------|---------|
+| `src/App.tsx` | Entry point - customize CRM here |
+| `src/atomic-crm/root/CRM.tsx` | Root component - app configuration |
+| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | Data layer logic |
+| `src/atomic-crm/providers/supabase/authProvider.ts` | Authentication logic |
+| `supabase/migrations/` | Database schema versions |
+| `supabase/functions/` | Edge functions (user mgmt, email webhooks) |
+| `vite.config.ts` | Build config, chunk splitting, aliases |
+| `.env.example` | Environment variable template |
+| `doc/developer/architecture-choices.md` | Why certain patterns exist |
 
-4. **Database Changes** - Migrations, schema modifications
-   - Entity type: `database-change`
-   - Include: migration name, reason, affected tables, breaking changes
+## Documentation
 
-5. **Performance Optimizations** - Query improvements, caching, code optimizations
-   - Entity type: `optimization`
-   - Include: bottleneck identified, solution, metrics improvement
+User docs: `doc/user/`
+Developer docs: `doc/developer/`
+Testing docs: `.docs/testing/`
 
-6. **API Changes** - Endpoint additions/modifications, contract changes
-   - Entity type: `api-change`
-   - Include: endpoint, change type, reason, affected clients
+## Support
 
-7. **Engineering Constitution Violations Fixed** - When fixing code that violates principles
-   - Entity type: `constitution-fix`
-   - Include: violation type, location, fix applied
-
-### Automatic Memory Recall
-Before starting ANY task, Claude MUST:
-1. Use `mcp__memory__search_nodes` to find related entities
-2. Use `mcp__memory__open_nodes` to load relevant context
-3. Reference prior decisions in responses (e.g., "Per our 2025-01-28 decision...")
-4. Check for related bug-fixes to avoid regressions
-5. Ensure consistency with established patterns
-
-### Memory Operations
-- **After completing work**: Create entities and relations for key decisions
-- **Before answering questions**: Search memory for relevant context
-- **When encountering inconsistencies**: Check memory for established patterns
-- **Confirm memory saved**: Display "✓ Memory updated: [entity names]" after storage
-
-### Memory Format Requirements
-- **Observations**: Always include date (YYYY-MM-DD) as first observation
-- **Relations**: Use active voice (e.g., "implements", "depends_on", "fixes")
-- **Tags**: Add relevant tags to observations for searchability
-- **File Paths**: Use absolute paths in observations when referencing code
+- Report issues: https://github.com/marmelab/atomic-crm/issues
+- License: MIT (courtesy of Marmelab)
