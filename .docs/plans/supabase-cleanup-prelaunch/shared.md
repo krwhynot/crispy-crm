@@ -403,7 +403,9 @@ Use this checklist to track progress on the supabase-cleanup-prelaunch plan:
 - ~~rollback.sh~~ - Use `npx supabase db reset` for local, cloud has backups
 - ~~validate.sh~~ - Use existing `npm run validate:pre-migration`
 - ~~sync_operations_log table~~ - Console logging sufficient for test data
-- ~~Manual approval gates in CI/CD~~ - Start simple, add if needed
+- ~~Complex approval job in CI/CD~~ - Replaced with simpler `workflow_dispatch` manual trigger
+
+**Important**: Production deployment is still manual via `workflow_dispatch` trigger. We simplified the approval mechanism, not removed the safety gate.
 
 ---
 
@@ -510,8 +512,9 @@ npm run supabase:local:status         # Alias for supabase status
 - **v2.0 (2025-10-15)**: Removed over-engineered elements per Engineering Constitution
   - Removed `sync_operations_log` table (console logging sufficient)
   - Removed monitoring scripts (use `npx supabase status` instead)
-  - Removed manual approval gates in CI/CD (start simple)
+  - Replaced complex approval job with simpler `workflow_dispatch` manual trigger (manual safety gate retained)
   - Removed separate validation/rollback scripts (use existing tools)
   - Reduced from 13 scripts to 6 core scripts
   - Reduced timeline from 5-7 days to 3-4 days
+  - **Clarification**: Production deployment is still manual - `workflow_dispatch` trigger prevents automatic deployment
 - **v1.0 (2025-10-15)**: Initial comprehensive reference with all research findings

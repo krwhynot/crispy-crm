@@ -1185,14 +1185,14 @@ $ git push origin main
 ✓ Dry Run (45s)
   └─ Migration preview generated
 
-⏸️  Manual Approval (waiting)
-  └─ Review required in GitHub UI
+⏸️  Workflow pauses (automatic deployments disabled)
+  └─ Deployment requires manual trigger via workflow_dispatch
 ```
 
-**Maintainer reviews and approves in GitHub:**
+**Maintainer manually triggers deployment from GitHub Actions UI:**
 
 ```
-✓ Manual Approval (approved by @krwhynot)
+🚀 Deploy (triggered manually by @krwhynot via workflow_dispatch)
 
 ✓ Deploy (2m 15s)
   └─ Backup created
@@ -1200,10 +1200,10 @@ $ git push origin main
   └─ Edge functions deployed
   └─ Post-validation passed
 
-✓ Post-Deploy Checks (30s)
-  └─ Health check: PASS
-  └─ Status report uploaded
+✅ Deployment complete
 ```
+
+**Note**: The `workflow_dispatch` trigger IS the safety gate - deployments cannot run automatically. This is simpler than a formal approval job but equally safe.
 
 ### 4.3 Environment Reset Flow
 
@@ -1235,60 +1235,48 @@ Type 'RESET' to confirm: RESET
    Both local and cloud have fresh test data.
 ```
 
-### 4.4 Health Monitoring Flow
+### 4.4 Environment Status Checking (Simplified)
 
-**Quick health check:**
-
-```bash
-$ npm run monitor:health
-
-✅ local environment healthy
-
-$ npm run monitor:health -- cloud
-
-✅ cloud environment healthy
-```
-
-**Detailed status report:**
+**Quick health check using Supabase CLI:**
 
 ```bash
-$ npm run monitor:status -- cloud
+$ npx supabase status
 
-📊 CLOUD Environment Status Report
-   Generated: 2025-10-16 14:45:32
-
-🗄️  Database:
- database        | postgres_version           | size
-─────────────────┼────────────────────────────┼─────────
- postgres        | PostgreSQL 15.1 on x86_64  | 47 MB
-
-📋 Table Counts:
- table_name              | inserts | updates | deletes | current_rows
-─────────────────────────┼─────────┼─────────┼─────────┼─────────────
- public.activities       |     400 |      12 |       0 |          400
- public.contacts         |     200 |      45 |       0 |          200
- public.opportunities    |     140 |      23 |       0 |          140
- public.organizations    |     100 |      10 |       0 |          100
- ...
-
-👥 Auth Users:
- email                   | confirmed | created_at
-─────────────────────────┼───────────┼─────────────────────
- admin@test.local        | t         | 2025-10-16 14:30:22
- director@test.local     | t         | 2025-10-16 14:30:23
- manager@test.local      | t         | 2025-10-16 14:30:24
-
-🔄 Recent Sync Operations:
- operation_type   | direction | status    | started_at          | completed_at
-──────────────────┼───────────┼───────────┼─────────────────────┼─────────────────────
- local_to_cloud   | push      | completed | 2025-10-16 14:30:15 | 2025-10-16 14:31:02
- local_to_cloud   | push      | completed | 2025-10-15 09:15:30 | 2025-10-15 09:16:12
-
-🔗 Connections:
- datname  | active_connections | transactions | disk_reads | cache_hits | cache_hit_ratio
-──────────┼────────────────────┼──────────────┼────────────┼────────────┼─────────────────
- postgres |                  5 |       12,453 |        234 |     98,766 |           99.76
+API URL: http://localhost:54321
+GraphQL URL: http://localhost:54321/graphql/v1
+DB URL: postgresql://postgres:postgres@localhost:54322/postgres
+Studio URL: http://localhost:54323
+Inbucket URL: http://localhost:54324
+JWT secret: super-secret-jwt-token-with-at-least-32-characters-long
+anon key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+service_role key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
+
+**Check table counts using verify script:**
+
+```bash
+$ npm run dev:verify
+
+🔍 Verifying Local vs Cloud Environment Parity
+
+LOCAL (http://localhost:54321):
+  Contacts: 200
+  Organizations: 100
+  Opportunities: 140
+  Activities: 400
+  Test Users: 3
+
+CLOUD (https://aaqnanddcqvfiwhshndl.supabase.co):
+  Contacts: 200
+  Organizations: 100
+  Opportunities: 140
+  Activities: 400
+  Test Users: 3
+
+✅ Environments match! All counts are identical.
+```
+
+**Note**: Custom monitoring scripts (`monitor:health`, `monitor:status`) were removed as over-engineered. Use `npx supabase status` for health checks and `npm run dev:verify` for environment parity verification.
 
 ---
 
@@ -1572,8 +1560,8 @@ Once real users exist:
 - Implementation phases reduced from 5 → 3
 
 **Core Simplifications:**
-- CI/CD: Removed manual approval job, removed post-deploy monitoring checks
-- Monitoring: Removed custom health-check.sh and status-report.sh scripts
+- CI/CD: Replaced complex approval job with simpler `workflow_dispatch` trigger (manual deployment retained); removed post-deploy monitoring checks
+- Monitoring: Removed custom health-check.sh and status-report.sh scripts (use `npx supabase status` instead)
 - Validation: Reuse existing validation framework instead of duplicating
 - Logging: Console output with timestamps instead of database audit trails
 - Script organization: Removed `monitoring/` directory entirely
