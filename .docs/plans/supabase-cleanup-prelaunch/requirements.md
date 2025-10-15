@@ -1559,9 +1559,11 @@ Once real users exist:
 **Removed Over-Engineered Elements:**
 1. **`sync_operations_log` database table** - Console logging with timestamps is sufficient for pre-launch test data
 2. **`scripts/monitoring/` directory** (3 scripts) - Use built-in `npx supabase status` instead
-3. **Manual approval gates in CI/CD** - Start simple, add GitHub environment approval later if needed
+3. **Complex approval job in CI/CD** - Replaced with simpler `workflow_dispatch` manual trigger (manual safety gate retained)
 4. **`migration/validate.sh`** - Use existing `npm run validate:pre-migration`
 5. **`migration/rollback.sh`** - Use `npx supabase db reset` for local; cloud has automated backups
+
+**Important Clarification:** Production deployment is still manual - triggered via GitHub Actions UI using `workflow_dispatch`. We replaced a complex approval job with a simpler manual trigger, not removed safety gates entirely.
 
 **Impact:**
 - Scripts reduced from 13 → 6 (54% reduction)

@@ -9,6 +9,26 @@ Atomic CRM is a full-featured, open-source CRM built with React, shadcn-admin-ki
 **Live Demo**: https://marmelab.com/atomic-crm-demo
 **Stack**: React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind CSS 4
 
+## Engineering Constitution
+
+Core principles to prevent debates & ensure consistency:
+
+1. **NO OVER-ENGINEERING**: No circuit breakers, health monitoring, or backward compatibility. Fail fast.
+2. **SINGLE SOURCE OF TRUTH**: One data provider (Supabase), one validation layer (Zod at API boundary)
+3. **BOY SCOUT RULE**: Fix inconsistencies when editing files
+4. **VALIDATION**: Zod schemas at API boundary only (`src/atomic-crm/validation/`)
+5. **FORM STATE DERIVED FROM TRUTH**: React Hook Form `defaultValues` MUST be generated from Zod schema
+   - **Implementation**: Use `zodSchema.partial().parse({})` to extract only fields with `.default()` values
+   - **Define defaults in Zod schema** using `.default()` method for fields with business logic defaults
+   - **Merge schema defaults with runtime values** (e.g., `{ ...schema.partial().parse({}), user_id: identity.id }`)
+   - **Rationale**: Prevents drift between UI and validation, ensures forms initialize in valid state
+   - **Anti-Pattern**: Never use `defaultValue` prop on input components - React Hook Form controlled inputs ignore it
+   - **Reference Implementation**: See `OpportunityCreate.tsx` and `opportunities.ts` validation schema
+6. **TYPESCRIPT**: `interface` for objects/classes, `type` for unions/intersections
+7. **FORMS**: Always use admin layer (`src/components/admin/`) for validation/errors
+8. **COLORS**: Semantic CSS variables only (--primary, --destructive). Never use hex codes
+9. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
+
 ## Essential Commands
 
 ### Development Workflow
@@ -57,7 +77,7 @@ npm run validate:colors        # Validate semantic color usage
 ### Frontend Structure
 
 **Entry Points:**
-- `src/main.tsx` ’ `src/App.tsx` ’ `src/atomic-crm/root/CRM.tsx`
+- `src/main.tsx` ï¿½ `src/App.tsx` ï¿½ `src/atomic-crm/root/CRM.tsx`
 - The `<CRM>` component is the root that configures the entire application
 - All customization happens via props to `<CRM>` in `src/App.tsx`
 
@@ -128,18 +148,18 @@ Example customization:
 
 4. **Edge Functions for User Management**: Supabase lacks public user CRUD endpoints, so `supabase/functions/users` handles user creation/updates with permission checks.
 
-5. **Triggers for Auth Sync**: Database trigger syncs `auth.users` ’ `sales` table for fields like `first_name`, `last_name`.
+5. **Triggers for Auth Sync**: Database trigger syncs `auth.users` ï¿½ `sales` table for fields like `first_name`, `last_name`.
 
 6. **Path Alias**: `@/*` maps to `src/*` (see `tsconfig.json:12`, `vite.config.ts:216`)
 
 ## Migration Notes (v0.2.0)
 
-**Deal ’ Opportunity Rename:**
+**Deal ï¿½ Opportunity Rename:**
 - All `deals` entities renamed to `opportunities`
-- Environment variables: `DEAL_*` ’ `OPPORTUNITY_*`
-- Props: `dealStages` ’ `opportunityStages`, `dealCategories` ’ `opportunityCategories`
+- Environment variables: `DEAL_*` ï¿½ `OPPORTUNITY_*`
+- Props: `dealStages` ï¿½ `opportunityStages`, `dealCategories` ï¿½ `opportunityCategories`
 - Database schema enhanced with participants, activity tracking, interaction history
-- Many-to-many contacts ” organizations
+- Many-to-many contacts ï¿½ organizations
 
 **Backward Compatibility:** Legacy deal endpoints remain functional during transition.
 
