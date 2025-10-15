@@ -41,7 +41,7 @@ const isLinkedinUrl = z.string().refine(
       return false;
     }
   },
-  { message: "URL must be from linkedin.com" },
+  { message: "Must be a valid LinkedIn company URL" },
 );
 
 // Main company/organization schema with comprehensive validation
@@ -166,3 +166,6 @@ export async function validateUpdateOrganization(data: any): Promise<void> {
     throw error;
   }
 }
+
+// Alias for form validation (used in tests)
+export const validateOrganizationForm = validateOrganizationForSubmission;
