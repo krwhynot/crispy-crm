@@ -25,6 +25,8 @@
 .env.test.local             # Local test overrides
 .env.production.local       # Local production overrides
 # .env.production.example - COMMITTED (reference template for deployment)
+.env.migration              # Migration-specific credentials
+.env.staging                # Staging environment credentials
 
 npm-debug.log*
 yarn-debug.log*
@@ -53,4 +55,8 @@ storybook-static
 # Debug scripts (may contain credentials)
 debug-*.js
 debug-*.ts
-.env.migration
+
+# Backup and sync operation files
+backups/
+*.sql.backup
+logs/sync-operations/
