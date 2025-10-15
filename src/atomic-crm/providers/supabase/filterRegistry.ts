@@ -15,7 +15,7 @@
  * Example: "last_seen" allows "last_seen@gte", "last_seen@lte", etc.
  *
  * Schema Source: Derived from actual database columns via supabase-lite MCP tools
- * Last Updated: 2025-10-08
+ * Last Updated: 2025-10-15
  */
 
 export const filterableFields: Record<string, string[]> = {
@@ -71,6 +71,7 @@ export const filterableFields: Record<string, string[]> = {
     "segment_id",
     "created_at",
     "updated_at",
+    "deleted_at",      // Soft delete timestamp
     "q",               // Special: full-text search parameter
   ],
 
@@ -99,6 +100,7 @@ export const filterableFields: Record<string, string[]> = {
     "created_by",      // Added: creator/owner field (equivalent to sales_id in other resources)
     "created_at",
     "updated_at",
+    "deleted_at",      // Soft delete timestamp
     "q",               // Special: full-text search parameter
   ],
 
@@ -119,6 +121,7 @@ export const filterableFields: Record<string, string[]> = {
     "tags",            // Array field
     "created_at",
     "updated_at",
+    "deleted_at",      // Soft delete timestamp
     "created_by",
   ],
 
@@ -140,6 +143,7 @@ export const filterableFields: Record<string, string[]> = {
     "email",
     "administrator",
     "disabled",
+    "deleted_at",      // Soft delete timestamp
     "avatar",
   ],
 
