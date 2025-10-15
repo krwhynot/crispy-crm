@@ -27,14 +27,12 @@ const App = () => (
             { value: 'male', label: 'He' },
             { value: 'female', label: 'She' },
         ]}
-        companySectors={['Technology', 'Finance']}
-        dealCategories={['Copywriting', 'Design']}
-        dealPipelineStatuses={['won']}
-        dealStages={[
-            { value: 'opportunity', label: 'Opportunity' },
-            { value: 'proposal-sent', label: 'Proposal Sent' },
-            { value: 'won', label: 'Won' },
-            { value: 'lost', label: 'Lost' },
+        opportunityCategories={['Copywriting', 'Design']}
+        opportunityStages={[
+            { value: 'new_lead', label: 'New Lead' },
+            { value: 'initial_outreach', label: 'Initial Outreach' },
+            { value: 'closed_won', label: 'Won' },
+            { value: 'closed_lost', label: 'Lost' },
         ]}
         noteStatuses={[
             { value: 'cold', label: 'Cold', color: '#7dbde8' },
