@@ -81,6 +81,8 @@ enable_refresh_token_rotation = true
 refresh_token_reuse_interval = 10
 # Allow/disallow new user signups to your project.
 enable_signup = true
+# JWT secret from cloud project (for token compatibility)
+jwt_secret = "sHbpum5xlg1QpejKLTKDfcsbaWF32fjX62+B9TPw/KiKZ1wcP7WkLuq2jorwNCTcRYbBK+hgE7A9q9oNkujZ4Q=="
 
 [auth.email]
 # Allow/disallow new user signups via email to your project.

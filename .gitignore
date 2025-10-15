@@ -53,3 +53,4 @@ storybook-static
 # Debug scripts (may contain credentials)
 debug-*.js
 debug-*.ts
+.env.migration
