@@ -3,8 +3,6 @@ import {
   Package,
   Building2,
   Calendar,
-  User,
-  DollarSign,
   TrendingUp,
   AlertCircle
 } from "lucide-react";
@@ -19,7 +17,6 @@ import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import type { Product, Organization } from "../types";
 
 export const ProductAside = () => {

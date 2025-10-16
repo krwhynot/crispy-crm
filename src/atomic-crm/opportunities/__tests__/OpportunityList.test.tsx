@@ -291,6 +291,11 @@ describe("OpportunityList dynamic filter choices", () => {
     const mockDataProvider = {
       getList: vi.fn().mockResolvedValue({
         data: [
+          "Retail",
+          "Manufacturing",
+          "Retail", // Duplicate to test uniqueness
+          null,     // Null to test filtering
+          "",       // Empty to test filtering
         ],
         total: 5,
       }),

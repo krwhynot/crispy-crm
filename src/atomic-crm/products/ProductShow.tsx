@@ -1,28 +1,23 @@
-import { formatDistance } from "date-fns";
 import { Package, DollarSign, Truck, BarChart3 } from "lucide-react";
 import {
-  RecordContextProvider,
   ShowBase,
-  useListContext,
   useRecordContext,
   useShowContext,
 } from "ra-core";
 import {
-  Link as RouterLink,
-  useLocation,
   useMatch,
   useNavigate,
 } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ReferenceManyField } from "@/components/admin/reference-many-field";
-import { SortButton } from "@/components/admin/sort-button";
+
+
 import { Badge } from "@/components/ui/badge";
 
-import { ActivityLog } from "../activity/ActivityLog";
-import { Status } from "../misc/Status";
-import type { Product, Organization } from "../types";
+
+
+import type { Product } from "../types";
 import { ProductAside } from "./ProductAside";
 
 const ProductShow = () => (

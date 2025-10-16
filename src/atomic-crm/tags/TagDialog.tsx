@@ -91,7 +91,6 @@ export function TagDialog({
               <Label htmlFor="tag-name">Tag name</Label>
               <Input
                 id="tag-name"
-                autoFocus
                 value={newTagName}
                 onChange={handleNewTagNameChange}
                 placeholder="Enter tag name"
