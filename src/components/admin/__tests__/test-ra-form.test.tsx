@@ -1,7 +1,7 @@
 import { describe, test, expect, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { Form as RaForm, SaveContextProvider } from "ra-core";
+import { Form, SaveContextProvider } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import React from "react";
 
@@ -20,9 +20,9 @@ describe("Test React Admin Form", () => {
 
     renderWithAdminContext(
       <SaveContextProvider value={saveContext}>
-        <RaForm defaultValues={{}}>
+        <Form defaultValues={{}}>
           <TestComponent />
-        </RaForm>
+        </Form>
       </SaveContextProvider>
     );
 

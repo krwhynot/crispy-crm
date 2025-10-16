@@ -19,12 +19,18 @@ export const NoteAttachments = ({ note }: { note: ContactNote | OpportunityNote 
         <div className="grid grid-cols-4 gap-8">
           {imageAttachments.map((attachment: AttachmentNote, index: number) => (
             <div key={index}>
-              <img
-                src={attachment.src}
-                alt={attachment.title}
-                className="w-[200px] h-[100px] object-cover cursor-pointer object-left border border-border"
+              <button
+                type="button"
+                className="p-0 border-0 bg-transparent"
                 onClick={() => window.open(attachment.src, "_blank")}
-              />
+                aria-label={`Open ${attachment.title} in new window`}
+              >
+                <img
+                  src={attachment.src}
+                  alt={attachment.title}
+                  className="w-[200px] h-[100px] object-cover cursor-pointer object-left border border-border"
+                />
+              </button>
             </div>
           ))}
         </div>

@@ -10,6 +10,9 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
   const [organizationMap, setOrganizationMap] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
+  // Create a stable key for dependency array
+  const organizationIdsKey = organizationIds?.join(',') || '';
+
   useEffect(() => {
     if (!organizationIds || organizationIds.length === 0) {
       return;
@@ -43,7 +46,7 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
     };
 
     fetchOrganizationNames();
-  }, [organizationIds?.join(',')]); // Re-run when IDs change
+  }, [organizationIdsKey, dataProvider, organizationMap]); // Include all dependencies
 
   /**
    * Get organization name by ID with fallback

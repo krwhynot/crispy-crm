@@ -14,7 +14,7 @@ import {
   required,
   minLength,
   maxLength,
-  Form as RaForm,
+  Form,
   SaveContextProvider,
 } from "ra-core";
 import React from "react";
@@ -37,10 +37,10 @@ const FormWrapper = ({
 
   return (
     <SaveContextProvider value={saveContext}>
-      <RaForm defaultValues={defaultValues}>
+      <Form defaultValues={defaultValues}>
         {children}
         <button type="submit">Submit</button>
-      </RaForm>
+      </Form>
     </SaveContextProvider>
   );
 };

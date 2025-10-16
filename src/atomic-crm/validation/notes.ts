@@ -266,3 +266,20 @@ export function formatDateForInput(date?: Date | string): string {
   const d = date ? new Date(date) : new Date();
   return d.toISOString().slice(0, 16);
 }
+
+/**
+ * Transform note date to ISO format with milliseconds
+ * @param date - Date string to transform
+ * @returns Date in ISO format with milliseconds
+ */
+export function transformNoteDate(date: string): string {
+  return new Date(date).toISOString();
+}
+
+/**
+ * Get current note date in format YYYY-MM-DDTHH:MM
+ * @returns Current date/time formatted for input
+ */
+export function getCurrentNoteDate(): string {
+  return formatDateForInput(new Date());
+}

@@ -10,6 +10,9 @@ export const useSalesNames = (salesIds: string[] | undefined) => {
   const [salesMap, setSalesMap] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
+  // Create a stable key for dependency array
+  const salesIdsKey = salesIds?.join(',') || '';
+
   useEffect(() => {
     if (!salesIds || salesIds.length === 0) {
       return;
@@ -43,7 +46,7 @@ export const useSalesNames = (salesIds: string[] | undefined) => {
     };
 
     fetchSalesNames();
-  }, [salesIds?.join(',')]); // Re-run when IDs change
+  }, [salesIdsKey, dataProvider, salesMap]); // Include all dependencies
 
   /**
    * Get sales person name by ID with fallback

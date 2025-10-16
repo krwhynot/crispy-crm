@@ -63,8 +63,7 @@ export const TasksListFilter = ({
         </ResourceContextProvider>
         {total > listContext.perPage && (
           <div className="flex justify-center">
-            <a
-              href="#"
+            <button
               onClick={(e) => {
                 listContext.setPerPage(listContext.perPage + 10);
                 e.preventDefault();
@@ -72,7 +71,7 @@ export const TasksListFilter = ({
               className="text-sm underline hover:no-underline"
             >
               Load more
-            </a>
+            </button>
           </div>
         )}
       </CollapsibleContent>
