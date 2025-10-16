@@ -46,8 +46,8 @@ describe("Organization Validation Schemas", () => {
       organization_type: "customer",
       website: "https://example.com",
       segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
-      annual_revenue: 1000000,
-      employee_count: 50,
+      // Note: annual_revenue, employee_count, founded_year removed from validation
+      // These fields exist in DB but are not user-editable via forms
     };
 
     it("should accept valid organization data", () => {
@@ -143,39 +143,8 @@ describe("Organization Validation Schemas", () => {
       ).toThrow(z.ZodError);
     });
 
-    it("should validate numeric fields", () => {
-      // Valid numbers
-      expect(() =>
-        organizationSchema.parse({
-          ...validOrganization,
-          annual_revenue: 1000000,
-          employee_count: 100,
-        }),
-      ).not.toThrow();
-
-      expect(() =>
-        organizationSchema.parse({
-          ...validOrganization,
-          annual_revenue: 0,
-          employee_count: 1,
-        }),
-      ).not.toThrow();
-
-      // Invalid numbers
-      expect(() =>
-        organizationSchema.parse({
-          ...validOrganization,
-          annual_revenue: -1000,
-        }),
-      ).toThrow(z.ZodError);
-
-      expect(() =>
-        organizationSchema.parse({
-          ...validOrganization,
-          employee_count: 0,
-        }),
-      ).toThrow(z.ZodError);
-    });
+    // Numeric field validation removed - annual_revenue, employee_count, founded_year
+    // are not part of form validation as they have no UI inputs
 
     it("should accept both string and number IDs", () => {
       expect(() =>
@@ -297,10 +266,7 @@ describe("Organization Validation Schemas", () => {
         updateOrganizationSchema.parse({ id: "org-1", organization_type: "principal" }),
       ).not.toThrow();
       expect(() =>
-        updateOrganizationSchema.parse({
-          id: "org-1",
-          annual_revenue: 2000000,
-        }),
+        updateOrganizationSchema.parse({ id: "org-1", website: "https://example.com" }),
       ).not.toThrow();
       expect(() =>
         updateOrganizationSchema.parse({ id: "org-1" }),
@@ -318,14 +284,14 @@ describe("Organization Validation Schemas", () => {
       expect(() =>
         updateOrganizationSchema.parse({
           id: "org-1",
-          annual_revenue: -1000,
+          website: "not-a-url",
         }),
       ).toThrow(z.ZodError);
 
       expect(() =>
         updateOrganizationSchema.parse({
           id: "org-1",
-          website: "not-a-url",
+          linkedin_url: "https://facebook.com/page",
         }),
       ).toThrow(z.ZodError);
     });

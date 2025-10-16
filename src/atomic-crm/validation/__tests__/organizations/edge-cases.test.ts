@@ -22,60 +22,14 @@ describe("Organization Business Rules and Edge Cases", () => {
       expect(result.name).toBe("Child Organization");
     });
 
-    it("should validate organization lifecycle", () => {
-      const statusTransitions = [
-        { from: "pending", to: "active" },
-        { from: "active", to: "inactive" },
-        { from: "inactive", to: "active" },
-        { from: "active", to: "suspended" },
-        { from: "suspended", to: "active" },
-      ];
+    // Organization lifecycle/status field does not exist in current schema
+    // Tests removed as they reference non-existent fields
 
-      statusTransitions.forEach(({ from, to }) => {
-        const org = {
-          name: "Status Test Org",
-          status: from,
-        };
+    // Multi-sector organizations test removed - 'sectors' field does not exist in schema
+    // Schema uses 'segment_id' for single segment classification
 
-        const result = organizationSchema.parse(org);
-        expect(result.status).toBe(from);
-
-        const updated = { ...org, status: to };
-        expect(() => organizationSchema.parse(updated)).not.toThrow();
-      });
-    });
-
-    it("should handle multi-sector organizations", () => {
-      const multiSectorOrg = {
-        name: "Diversified Corp",
-        type: "customer",
-        segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
-        sectors: ["technology", "finance", "healthcare", "retail"],
-      };
-
-      const result = organizationSchema.parse(multiSectorOrg);
-      expect(result.sectors).toHaveLength(4);
-      expect(result.segment_id).toBe("562062be-c15b-417f-b2a1-d4a643d69d52");
-    });
-
-    it("should validate organization size metrics", () => {
-      const sizeCategories = [
-        { employee_count: 5, size: "startup" },
-        { employee_count: 50, size: "small" },
-        { employee_count: 250, size: "medium" },
-        { employee_count: 1000, size: "large" },
-        { employee_count: 10000, size: "enterprise" },
-      ];
-
-      sizeCategories.forEach(({ employee_count }) => {
-        const org = {
-          name: `Org with ${employee_count} employees`,
-          employee_count,
-        };
-
-        expect(() => organizationSchema.parse(org)).not.toThrow();
-      });
-    });
+    // Organization size metrics (employee_count) removed from validation
+    // These fields exist in DB but are not validated as they're not user-editable via forms
 
     it("should handle international organizations", () => {
       const internationalOrg = {
@@ -90,17 +44,8 @@ describe("Organization Business Rules and Edge Cases", () => {
       expect(() => organizationSchema.parse(internationalOrg)).not.toThrow();
     });
 
-    it("should validate financial metrics", () => {
-      const financialData = {
-        name: "Financial Test Org",
-        annual_revenue: 5000000,
-        market_cap: 20000000,
-        funding_stage: "Series B",
-        total_funding: 15000000,
-      };
-
-      expect(() => organizationSchema.parse(financialData)).not.toThrow();
-    });
+    // Financial metrics (annual_revenue) removed from validation
+    // These fields exist in DB but are not validated as they're not user-editable via forms
 
     it("should handle organization relationships", () => {
       const orgWithRelationships = {
@@ -146,27 +91,26 @@ describe("Organization Business Rules and Edge Cases", () => {
 
       const result = organizationSchema.parse(minimalOrg);
       expect(result.name).toBe("Minimal");
-      expect(result.type).toBeDefined(); // Should have default
-      expect(result.status).toBeDefined(); // Should have default
+      expect(result.organization_type).toBe("unknown"); // Should have default
+      expect(result.priority).toBe("C"); // Should have default
     });
 
     it("should handle organizations with maximum data", () => {
       const maximalOrg = {
         name: "Maximal Organization",
-        type: "customer",
-        status: "active",
+        organization_type: "customer",
         description: "A".repeat(1000),
         website: "https://example.com",
         linkedin_url: "https://linkedin.com/company/maximal",
         segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
-        sectors: ["tech", "saas", "cloud", "ai", "ml"],
-        annual_revenue: 1000000000,
-        employee_count: 50000,
-        founded_year: 1990,
-        tags: ["tag1", "tag2", "tag3", "tag4", "tag5"],
+        // annual_revenue, employee_count, founded_year removed - not validated
         parent_id: "parent-123",
-        logo: "https://example.com/logo.png",
-        address: "123 Main St, City, State 12345",
+        address: "123 Main St",
+        city: "Cityville",
+        state: "CA",
+        postal_code: "12345",
+        phone: "555-1234",
+        priority: "A",
       };
 
       expect(() => organizationSchema.parse(maximalOrg)).not.toThrow();

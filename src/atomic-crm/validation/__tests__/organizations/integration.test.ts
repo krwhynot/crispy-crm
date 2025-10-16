@@ -94,8 +94,8 @@ describe("Organization Validation Functions", () => {
 
     it("should throw for missing required fields", async () => {
       const minimalData = {
-        name: "Minimal Org",
-        // Missing required organization_type
+        // Missing required 'name' field
+        organization_type: "customer",
       };
 
       await expect(
