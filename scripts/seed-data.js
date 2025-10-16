@@ -64,7 +64,7 @@ const OPPORTUNITY_CATEGORIES = [
 ];
 
 // Opportunity statuses
-const OPPORTUNITY_STATUSES = ["open", "won", "lost", "stalled"];
+const OPPORTUNITY_STATUSES = ["active", "on_hold", "nurturing", "stalled", "expired"];
 
 // Food & Beverage organization types
 // Valid organization_type enum values from database schema
@@ -773,10 +773,11 @@ class SeedDataGenerator {
 
   // Helper methods
   getStatusForStage(stage) {
-    if (stage === "closed_won") return "won";
-    if (stage === "closed_lost") return "lost";
+    // Map opportunity stages to valid status enum values
+    if (stage === "closed_won" || stage === "closed_lost") return "expired";
     if (stage === "awaiting_response") return "stalled";
-    return "open";
+    if (stage === "feedback_logged") return "nurturing";
+    return "active"; // Default for new_lead, initial_outreach, sample_visit_offered, demo_scheduled
   }
 
   getProbabilityForStage(stage) {
