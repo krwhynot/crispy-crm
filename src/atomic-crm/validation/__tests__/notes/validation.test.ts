@@ -96,7 +96,6 @@ describe("Note Validation Schemas", () => {
         text: "Note without contact",
         date: "2024-01-15T10:00:00Z",
         sales_id: "user-456",
-        status: "completed",
       };
 
       expect(() => contactNoteSchema.parse(withoutContactId)).toThrow(
@@ -104,23 +103,11 @@ describe("Note Validation Schemas", () => {
       );
     });
 
-    it("should require status", () => {
-      const withoutStatus = {
-        text: "Note without status",
-        date: "2024-01-15T10:00:00Z",
-        contact_id: "contact-123",
-        sales_id: "user-456",
-      };
-
-      expect(() => contactNoteSchema.parse(withoutStatus)).toThrow(z.ZodError);
-    });
-
     it("should require sales_id", () => {
       const withoutSalesId = {
         text: "Note without sales",
         date: "2024-01-15T10:00:00Z",
         contact_id: "contact-123",
-        status: "completed",
       };
 
       expect(() => contactNoteSchema.parse(withoutSalesId)).toThrow(z.ZodError);
@@ -132,7 +119,6 @@ describe("Note Validation Schemas", () => {
         date: "2024-01-15T10:00:00Z",
         contact_id: 123,
         sales_id: 456,
-        status: "completed",
       };
 
       expect(() => contactNoteSchema.parse(withNumberIds)).not.toThrow();
@@ -179,7 +165,7 @@ describe("Note Validation Schemas", () => {
     });
 
     it("should not require status field", () => {
-      // Unlike contact notes, opportunity notes don't have a status field
+      // Notes don't have a status field (removed during migration)
       expect(() =>
         opportunityNoteSchema.parse(validOpportunityNote),
       ).not.toThrow();
@@ -206,7 +192,6 @@ describe("Note Validation Schemas", () => {
           date: "2024-01-15T10:00:00Z",
           contact_id: "contact-123",
           sales_id: "user-456",
-          status: "completed",
         };
 
         const result = validateCreateContactNote(validData);
@@ -220,7 +205,6 @@ describe("Note Validation Schemas", () => {
           date: "2024-01-15T10:00:00Z",
           contact_id: "contact-123",
           sales_id: "user-456",
-          status: "completed",
         };
 
         expect(() => validateCreateContactNote(invalidData)).toThrow(
