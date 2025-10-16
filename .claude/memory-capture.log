@@ -235,3 +235,4 @@
 [2025-10-15 19:32:09] [documentation] Edit: /home/krwhynot/projects/crispy-crm/scripts/supabase/README.md
 [2025-10-15 19:32:23] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 [2025-10-15 19:41:59] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251016004137_add_test_user_metadata_constraint.sql
+[2025-10-15 19:47:03] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/dev/sync-local-to-cloud.sh
