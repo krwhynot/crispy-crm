@@ -1,125 +1,104 @@
 /**
  * Tests for contact helper schemas
- * Focus: Email, phone, and status validation
+ * Focus: Email and phone validation schemas for JSONB arrays
+ * Per "UI as source of truth" principle: only validates fields with UI inputs in ContactInputs.tsx
  */
 
 import { describe, it, expect } from "vitest";
 import {
-  phoneNumberSchema,
-  emailSchema,
-  contactStatusSchema,
+  emailAndTypeSchema,
+  phoneNumberAndTypeSchema,
+  personalInfoTypeSchema,
 } from "../../contacts";
 import { z } from "zod";
 
 describe("Contact Helper Schemas", () => {
-  describe("phoneNumberSchema", () => {
-    it("should accept valid phone numbers", () => {
-      const validPhones = [
-        { mobile: "+1-555-123-4567" },
-        { office: "555-123-4567" },
-        { home: "(555) 123-4567" },
-        { mobile: "+44 20 1234 5678" },
-        { office: "1234567890" },
-      ];
-
-      validPhones.forEach((phone) => {
-        expect(() => phoneNumberSchema.parse(phone)).not.toThrow();
-      });
-    });
-
-    it("should handle multiple phone types", () => {
-      const multiplePhones = {
-        mobile: "+1-555-123-4567",
-        office: "555-987-6543",
-        home: "555-456-7890",
-        fax: "555-111-2222",
-      };
-
-      const result = phoneNumberSchema.parse(multiplePhones);
-      expect(result.mobile).toBe("+1-555-123-4567");
-      expect(result.office).toBe("555-987-6543");
-      expect(result.home).toBe("555-456-7890");
-    });
-
-    it("should allow optional phone fields", () => {
-      const minimalPhone = {
-        mobile: "555-123-4567",
-      };
-
-      const result = phoneNumberSchema.parse(minimalPhone);
-      expect(result.mobile).toBe("555-123-4567");
-      expect(result.office).toBeUndefined();
-    });
-
-    it("should handle empty object", () => {
-      expect(() => phoneNumberSchema.parse({})).not.toThrow();
-    });
-  });
-
-  describe("emailSchema", () => {
-    it("should accept valid email addresses", () => {
+  describe("emailAndTypeSchema", () => {
+    it("should accept valid email with type", () => {
       const validEmails = [
-        { primary: "user@example.com" },
-        { primary: "john.doe@company.org" },
-        { work: "contact@business.co.uk" },
-        { personal: "user+tag@example.com" },
+        { email: "user@example.com", type: "Work" as const },
+        { email: "john.doe@company.org", type: "Home" as const },
+        { email: "contact@business.co.uk", type: "Other" as const },
       ];
 
-      validEmails.forEach((email) => {
-        expect(() => emailSchema.parse(email)).not.toThrow();
+      validEmails.forEach((emailData) => {
+        expect(() => emailAndTypeSchema.parse(emailData)).not.toThrow();
       });
     });
 
     it("should reject invalid email formats", () => {
       const invalidEmails = [
-        { primary: "not-an-email" },
-        { primary: "@example.com" },
-        { primary: "user@" },
-        { work: "user @example.com" },
+        { email: "not-an-email", type: "Work" as const },
+        { email: "@example.com", type: "Work" as const },
+        { email: "user@", type: "Work" as const },
       ];
 
-      invalidEmails.forEach((email) => {
-        expect(() => emailSchema.parse(email)).toThrow(z.ZodError);
+      invalidEmails.forEach((emailData) => {
+        expect(() => emailAndTypeSchema.parse(emailData)).toThrow(z.ZodError);
       });
     });
 
-    it("should handle multiple email types", () => {
-      const multipleEmails = {
-        primary: "primary@example.com",
-        work: "work@company.com",
-        personal: "personal@gmail.com",
-      };
-
-      const result = emailSchema.parse(multipleEmails);
-      expect(result.primary).toBe("primary@example.com");
-      expect(result.work).toBe("work@company.com");
-      expect(result.personal).toBe("personal@gmail.com");
-    });
-
-    it("should allow optional email fields", () => {
-      const minimalEmail = {
-        primary: "user@example.com",
-      };
-
-      const result = emailSchema.parse(minimalEmail);
-      expect(result.primary).toBe("user@example.com");
-      expect(result.work).toBeUndefined();
+    it("should provide default type", () => {
+      const emailWithoutType = { email: "user@example.com" };
+      const result = emailAndTypeSchema.parse(emailWithoutType);
+      expect(result.type).toBe("Work");
     });
   });
 
-  describe("contactStatusSchema", () => {
-    it("should accept valid statuses", () => {
-      const validStatuses = ["active", "inactive", "blocked", "pending"];
+  describe("phoneNumberAndTypeSchema", () => {
+    it("should accept valid phone numbers with type", () => {
+      const validPhones = [
+        { number: "+1-555-123-4567", type: "Work" as const },
+        { number: "555-123-4567", type: "Home" as const },
+        { number: "(555) 123-4567", type: "Other" as const },
+      ];
 
-      validStatuses.forEach((status) => {
-        expect(() => contactStatusSchema.parse(status)).not.toThrow();
+      validPhones.forEach((phone) => {
+        expect(() => phoneNumberAndTypeSchema.parse(phone)).not.toThrow();
       });
     });
 
-    it("should reject invalid statuses", () => {
-      expect(() => contactStatusSchema.parse("enabled")).toThrow(z.ZodError);
-      expect(() => contactStatusSchema.parse("disabled")).toThrow(z.ZodError);
-      expect(() => contactStatusSchema.parse("archived")).toThrow(z.ZodError);
+    it("should provide default type", () => {
+      const phoneWithoutType = { number: "555-123-4567" };
+      const result = phoneNumberAndTypeSchema.parse(phoneWithoutType);
+      expect(result.type).toBe("Work");
+    });
+
+    it("should accept any phone number format", () => {
+      // Phone numbers are not validated for format, just stored as strings
+      const phones = [
+        { number: "1234567890" },
+        { number: "+44 20 1234 5678" },
+        { number: "555.123.4567" },
+        { number: "ext. 123" },
+      ];
+
+      phones.forEach((phone) => {
+        expect(() => phoneNumberAndTypeSchema.parse(phone)).not.toThrow();
+      });
     });
   });
+
+  describe("personalInfoTypeSchema", () => {
+    it("should accept valid types", () => {
+      const validTypes = ["Work", "Home", "Other"];
+
+      validTypes.forEach((type) => {
+        expect(() => personalInfoTypeSchema.parse(type)).not.toThrow();
+      });
+    });
+
+    it("should reject invalid types", () => {
+      expect(() => personalInfoTypeSchema.parse("Office")).toThrow(z.ZodError);
+      expect(() => personalInfoTypeSchema.parse("Mobile")).toThrow(z.ZodError);
+      expect(() => personalInfoTypeSchema.parse("Personal")).toThrow(z.ZodError);
+    });
+  });
+
+  // Note: phoneNumberSchema and emailSchema are legacy backward-compatibility helpers
+  // They're simple z.record(z.string()).optional() schemas for old object format
+  // New code should use emailAndTypeSchema and phoneNumberAndTypeSchema arrays
+
+  // contactStatusSchema tests removed - schema no longer exists per 'UI as truth' principle
+  // Status field has no UI input in ContactInputs.tsx, so validation was removed
 });
