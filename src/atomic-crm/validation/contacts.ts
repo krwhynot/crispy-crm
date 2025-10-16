@@ -65,48 +65,34 @@ export const contactOrganizationSchema = z
     return true;
   });
 
-// Base contact schema without transformations
+// Base contact schema - validates only fields that have UI inputs in ContactInputs.tsx
+// Per "UI as source of truth" principle: we only validate what users can actually input
 const contactBaseSchema = z.object({
   // Primary key
   id: z.union([z.string(), z.number()]).optional(),
 
-  // Name fields (name is required, first/last are optional)
+  // Name fields - ContactIdentityInputs (required in UI)
   name: z.string().optional(), // Computed from first + last
   first_name: z.string().optional().nullable(),
   last_name: z.string().optional().nullable(),
 
-  // Contact information - JSONB fields in DB
+  // Contact information - ContactPersonalInformationInputs
+  // JSONB arrays in database: email and phone
   email: z.array(emailAndTypeSchema).default([]),
   phone: z.array(phoneNumberAndTypeSchema).default([]),
 
-  // Professional information
+  // Professional information - ContactPositionInputs
   title: z.string().optional().nullable(),
   department: z.string().optional().nullable(),
 
-  // Address fields
-  address: z.string().optional().nullable(),
-  city: z.string().optional().nullable(),
-  state: z.string().optional().nullable(),
-  postal_code: z.string().optional().nullable(),
-  country: z.string().optional().nullable().default("USA"),
-
-  // Personal information
-  birthday: z.string().optional().nullable(), // Date field
-  gender: z.string().optional().nullable(),
-
-  // Social media
+  // Social media - ContactMiscInputs
   linkedin_url: isLinkedinUrl,
-  twitter_handle: z.string().optional().nullable(),
 
-  // Additional fields
-  notes: z.string().optional().nullable(),
-  tags: z.array(z.union([z.string(), z.number()])).optional().default([]),
-
-  // Relationships
+  // Relationships - ContactPositionInputs
   sales_id: z.union([z.string(), z.number()]).optional().nullable(),
   organization_id: z.union([z.string(), z.number()]).optional().nullable(),
 
-  // Timestamps
+  // System fields (readonly, not validated)
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
   created_by: z.union([z.string(), z.number()]).optional().nullable(),
@@ -114,27 +100,26 @@ const contactBaseSchema = z.object({
   first_seen: z.string().optional(),
   last_seen: z.string().optional(),
 
-  // Search (readonly)
-  search_tsv: z.any().optional(),
-
-  // Legacy/test fields that might be in tests but not in DB
-  middle_name: z.string().optional().nullable(),
-  status: z.string().optional().default("active"),
-  background: z.string().optional().nullable(),
-  has_newsletter: z.boolean().optional().default(false),
+  // Avatar field (managed by ImageEditorField, not validated)
   avatar: z.any().optional(), // Partial<RAFile>
 
-  // Support for old test format - email/phone as objects
+  // Support for legacy test format - email/phone as objects (backward compatibility)
   email_object: z.record(z.string()).optional(),
   phone_number: z.record(z.string()).optional(),
 
-  // Many-to-many organization support (for tests)
-  organization_ids: z.array(z.union([z.string(), z.number()])).optional(),
-  primary_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
-
-  // Calculated fields (readonly)
+  // Calculated/readonly fields (not user input)
   nb_tasks: z.number().optional(),
   company_name: z.string().optional().nullable(),
+  search_tsv: z.any().optional(),
+
+  // Note: The following fields exist in database but are NOT validated
+  // because they have no UI input fields in ContactInputs.tsx:
+  // - address, city, state, postal_code, country (address fields - no UI inputs)
+  // - birthday, gender (personal info - no UI inputs)
+  // - twitter_handle (social media - no UI input)
+  // - notes (no UI input)
+  // - tags (no UI input)
+  // These may be populated via CSV import or future features.
 });
 
 // Helper function to transform data
