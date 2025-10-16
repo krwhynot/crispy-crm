@@ -13,7 +13,7 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import {
   required,
   ReferenceInput,
-  Form as RaForm,
+  Form,
   AdminContext,
   RecordContextProvider,
   ResourceContextProvider,
@@ -46,10 +46,10 @@ const FormWrapper = ({
       <ResourceContextProvider value={resource}>
         <RecordContextProvider value={defaultValues}>
           <SaveContextProvider value={saveContext}>
-            <RaForm defaultValues={defaultValues}>
+            <Form defaultValues={defaultValues}>
               {children}
               <button type="submit">Submit</button>
-            </RaForm>
+            </Form>
           </SaveContextProvider>
         </RecordContextProvider>
       </ResourceContextProvider>

@@ -1,5 +1,5 @@
 import type { FilterValues} from "./types";
-import { FilterPrecedence, FILTER_KEYS } from "./types";
+import { FILTER_KEYS } from "./types";
 
 /**
  * Filter precedence utilities

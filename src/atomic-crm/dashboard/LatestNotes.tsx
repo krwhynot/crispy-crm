@@ -5,7 +5,7 @@ import { useGetIdentity, useGetList } from "ra-core";
 
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
-import type { Contact, ContactNote, OpportunityNote } from "../types";
+import type { Contact, ContactNote } from "../types";
 
 export const LatestNotes = () => {
   const { identity } = useGetIdentity();

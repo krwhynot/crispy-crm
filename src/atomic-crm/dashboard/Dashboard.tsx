@@ -9,14 +9,14 @@ import { QuickAdd } from "./QuickAdd";
 
 export const Dashboard = () => {
   const {
-    data: dataContact,
-    total: totalContact,
+    data: _dataContact,
+    total: _totalContact,
     isPending: isPendingContact,
   } = useGetList<Contact>("contacts", {
     pagination: { page: 1, perPage: 1 },
   });
 
-  const { total: totalContactNotes, isPending: isPendingContactNotes } =
+  const { total: _totalContactNotes, isPending: isPendingContactNotes } =
     useGetList<ContactNote>("contactNotes", {
       pagination: { page: 1, perPage: 1 },
     });
