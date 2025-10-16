@@ -227,10 +227,7 @@ class ProductSeeder {
         name,
         sku: `${brand.substring(0, 3).toUpperCase()}-${faker.string.alphanumeric(6).toUpperCase()}`,
         category,
-        subcategory,
-        brand,
         description: faker.commerce.productDescription(),
-        cost_per_unit: costPerUnit,
         list_price: listPrice,
         status: faker.helpers.weightedArrayElement([
           { weight: 80, value: "active" },

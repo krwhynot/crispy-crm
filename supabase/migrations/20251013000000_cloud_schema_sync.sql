@@ -639,11 +639,13 @@ CREATE OR REPLACE FUNCTION "public"."products_search_trigger"() RETURNS "trigger
     AS $$
 BEGIN
     NEW.search_tsv := to_tsvector('english',
-        coalesce(NEW.name, '') || ' ' || 
-        coalesce(NEW.sku, '') || ' ' || 
+        coalesce(NEW.name, '') || ' ' ||
+        coalesce(NEW.sku, '') || ' ' ||
         coalesce(NEW.manufacturer_part_number, '') || ' ' ||
-        coalesce(NEW.brand, '') || ' ' ||
-        coalesce(NEW.description, '')
+        coalesce(NEW.description, '') || ' ' ||
+        coalesce(NEW.category::text, '') || ' ' ||
+        coalesce(NEW.ingredients, '') || ' ' ||
+        coalesce(NEW.marketing_description, '')
     );
     RETURN NEW;
 END;
@@ -943,10 +945,12 @@ BEGIN
             COALESCE(NEW.name, '') || ' ' ||
             COALESCE(NEW.description, '') || ' ' ||
             COALESCE(NEW.sku, '') || ' ' ||
-            COALESCE(NEW.brand, '') || ' ' ||
             COALESCE(NEW.category::TEXT, '') || ' ' ||
-            COALESCE(NEW.subcategory, '') || ' ' ||
-            COALESCE(array_to_string(NEW.certifications, ' '), '')
+            COALESCE(NEW.ingredients, '') || ' ' ||
+            COALESCE(NEW.marketing_description, '') || ' ' ||
+            COALESCE(NEW.manufacturer_part_number, '') || ' ' ||
+            COALESCE(array_to_string(NEW.certifications, ' '), '') || ' ' ||
+            COALESCE(array_to_string(NEW.allergens, ' '), '')
         );
     END IF;
     RETURN NEW;

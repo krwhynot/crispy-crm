@@ -184,6 +184,40 @@ export const filterableFields: Record<string, string[]> = {
     "created_at",
     "updated_at",
   ],
+
+  // Segments resource
+  segments: [
+    "id",
+    "name",
+    "created_at",
+    "created_by",
+  ],
+
+  // Products resource
+  products: [
+    "id",
+    "principal_id",
+    "name",
+    "description",
+    "sku",
+    "category",
+    "list_price",
+    "status",
+    "certifications",  // Array field
+    "allergens",       // Array field
+    "ingredients",
+    "marketing_description",
+    "created_at",
+    "updated_at",
+    "created_by",
+    "updated_by",
+    "deleted_at",      // Soft delete timestamp
+    "currency_code",
+    "unit_of_measure",
+    "minimum_order_quantity",
+    "manufacturer_part_number",
+    "q",               // Special: full-text search parameter
+  ],
 };
 
 /**
