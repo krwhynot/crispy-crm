@@ -1,4 +1,4 @@
-# Supabase Data Sync Workflows
+s# Supabase Data Sync Workflows
 
 A detailed guide for synchronizing data between Cloud and Local Supabase environments, with different approaches for pre-launch and post-launch phases.
 
