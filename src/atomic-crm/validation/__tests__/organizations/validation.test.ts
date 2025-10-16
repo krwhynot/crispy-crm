@@ -67,8 +67,7 @@ describe("Organization Validation Schemas", () => {
   describe("organizationSchema", () => {
     const validOrganization = {
       name: "Test Organization",
-      type: "customer",
-      status: "active",
+      organization_type: "customer",
       website: "https://example.com",
       segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
       annual_revenue: 1000000,

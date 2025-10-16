@@ -72,6 +72,13 @@ npm run dev:users:create
   ```
 - `.env.production` configured with cloud credentials
 - Local Supabase running with test data
+- **IPv6 network access** (Supabase uses IPv6-only database connections)
+
+**Known Limitation - WSL2/IPv6:**
+- Supabase cloud databases use IPv6-only addresses
+- WSL2 doesn't enable IPv6 by default, causing connection failures
+- **Workaround**: Enable IPv6 in `/etc/wsl.conf` or run sync from cloud CI/CD
+- **Alternative**: Use Supabase CLI (`npx supabase db push`) for schema sync (already working)
 
 Synchronize your local development data to the cloud instance:
 
