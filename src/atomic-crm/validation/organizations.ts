@@ -66,9 +66,9 @@ export const organizationSchema = z.object({
   description: z.string().optional().nullable(),
   context_links: z.array(isValidUrl).optional(),
 
-  // Financial and size metrics
-  annual_revenue: z.number().nonnegative("Annual revenue must be 0 or greater").optional(),
-  employee_count: z.number().int().min(1, "Employee count must be at least 1").optional(),
+  // Note: annual_revenue, employee_count, and founded_year exist in the database
+  // but are intentionally excluded from validation as they have no UI input fields.
+  // These may be populated via future CSV import or API integration features.
 
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("unknown"), // Default matches database

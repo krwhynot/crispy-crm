@@ -14,12 +14,16 @@ import {
   required,
   ReferenceInput,
   Form as RaForm,
-  CreateBase
+  AdminContext,
+  RecordContextProvider,
+  ResourceContextProvider,
+  SaveContextProvider,
+  testDataProvider
 } from "ra-core";
 import React from "react";
 
 // Wrapper component to provide all necessary contexts for testing
-// Use CreateBase and React Admin's Form to set up all contexts properly
+// Uses AdminContext to provide complete React Admin environment
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -31,13 +35,25 @@ const FormWrapper = ({
   onSubmit?: (data: any) => void;
   resource?: string;
 }) => {
+  const saveContext = {
+    save: onSubmit,
+    saving: false,
+    mutationMode: "pessimistic" as const
+  };
+
   return (
-    <CreateBase resource={resource} record={defaultValues}>
-      <RaForm defaultValues={defaultValues} onSubmit={onSubmit}>
-        {children}
-        <button type="submit">Submit</button>
-      </RaForm>
-    </CreateBase>
+    <AdminContext dataProvider={testDataProvider()}>
+      <ResourceContextProvider value={resource}>
+        <RecordContextProvider value={defaultValues}>
+          <SaveContextProvider value={saveContext}>
+            <RaForm defaultValues={defaultValues}>
+              {children}
+              <button type="submit">Submit</button>
+            </RaForm>
+          </SaveContextProvider>
+        </RecordContextProvider>
+      </ResourceContextProvider>
+    </AdminContext>
   );
 };
 
