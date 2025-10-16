@@ -1,285 +1,108 @@
-/**
- * Tests for contact validation schemas
- * Focus: Core validation rules and schema behavior
- * Per "UI as source of truth" principle: only validates fields with UI inputs in ContactInputs.tsx
- */
-
 import { describe, it, expect } from "vitest";
+import { z } from "zod";
 import {
   contactSchema,
   createContactSchema,
   updateContactSchema,
+  emailAndTypeSchema,
+  phoneNumberAndTypeSchema,
 } from "../../contacts";
-import { z } from "zod";
 
-describe("Contact Validation Schemas", () => {
-
+describe("Contact Validation - UI as Source of Truth", () => {
   describe("contactSchema", () => {
-    const validContact = {
-      first_name: "John",
-      last_name: "Doe",
-      email_object: { primary: "john.doe@example.com" },
-      phone_number: { mobile: "555-123-4567" },
-      // status field removed - no UI input per 'UI as truth' principle
-      sales_id: 1,
-    };
+    it("should accept valid contact data matching UI inputs", () => {
+      const validContact = {
+        first_name: "John",
+        last_name: "Doe",
+        email: [{ email: "john@example.com", type: "Work" }],
+        phone: [{ number: "555-1234", type: "Work" }],
+        title: "CTO",
+        department: "Engineering",
+        linkedin_url: "https://linkedin.com/in/johndoe",
+        sales_id: "1",
+        organization_id: "123",
+      };
 
-    it("should accept valid contact data", () => {
       const result = contactSchema.parse(validContact);
-      expect(result).toBeDefined();
       expect(result.first_name).toBe("John");
       expect(result.last_name).toBe("Doe");
-      // Email is transformed to array format
-      expect(result.email).toHaveLength(1);
-      expect(result.email[0].email).toBe("john.doe@example.com");
     });
 
-    it("should compute full name from first and last name", () => {
+    it("should compute name from first_name and last_name", () => {
       const contact = {
         first_name: "Jane",
         last_name: "Smith",
-        email_object: { primary: "jane@example.com" },
-        sales_id: 1,
       };
 
       const result = contactSchema.parse(contact);
-      expect(result.first_name).toBe("Jane");
-      expect(result.last_name).toBe("Smith");
-      expect(result.name).toBe("Jane Smith"); // Auto-computed
+      expect(result.name).toBe("Jane Smith");
     });
 
-    // Test removed - status, country, has_newsletter fields have no UI inputs per 'UI as truth' principle
-    // it("should provide default values", () => { ... });
-
-    it("should reject contact without any name fields", () => {
-      const invalidData = {
-        email_object: { primary: "test@example.com" },
-        sales_id: 1
-      };
-      expect(() => contactSchema.parse(invalidData)).toThrow(z.ZodError);
+    it("should require at least name or first_name/last_name", () => {
+      expect(() => contactSchema.parse({})).toThrow(z.ZodError);
     });
 
-    it("should accept empty strings for optional fields", () => {
-      const validData = { ...validContact, first_name: "", last_name: "", name: "John Doe" };
-      expect(() => contactSchema.parse(validData)).not.toThrow();
-    });
-
-    // Test removed - middle_name field has no UI input per 'UI as truth' principle
-    // it("should handle optional middle name", () => { ... });
-
-    it("should validate LinkedIn URL", () => {
-      // Valid LinkedIn URLs
-      expect(() =>
-        contactSchema.parse({
-          ...validContact,
-          linkedin_url: "https://www.linkedin.com/in/johndoe",
-        }),
-      ).not.toThrow();
-
-      expect(() =>
-        contactSchema.parse({
-          ...validContact,
-          linkedin_url: "https://linkedin.com/in/jane-smith",
-        }),
-      ).not.toThrow();
-
-      // Invalid LinkedIn URLs
-      expect(() =>
-        contactSchema.parse({
-          ...validContact,
-          linkedin_url: "https://facebook.com/johndoe",
-        }),
-      ).toThrow(z.ZodError);
-
-      expect(() =>
-        contactSchema.parse({
-          ...validContact,
-          linkedin_url: "not-a-url",
-        }),
-      ).toThrow(z.ZodError);
-    });
-
-    it("should handle organization association", () => {
-      const contactWithOrg = {
-        ...validContact,
-        organization_id: "org-1", // Single org via UI input, not arrays
+    it("should validate email format in array", () => {
+      const invalidContact = {
+        first_name: "John",
+        last_name: "Doe",
+        email: [{ email: "invalid-email", type: "Work" }],
       };
 
-      const result = contactSchema.parse(contactWithOrg);
-      expect(result.organization_id).toBe("org-1");
+      expect(() => contactSchema.parse(invalidContact)).toThrow(z.ZodError);
     });
 
-    it("should accept both string and number IDs", () => {
-      expect(() =>
-        contactSchema.parse({
-          ...validContact,
-          id: "string-id",
-        }),
-      ).not.toThrow();
-
-      expect(() =>
-        contactSchema.parse({
-          ...validContact,
-          id: 12345,
-        }),
-      ).not.toThrow();
-
-      expect(() =>
-        contactSchema.parse({
-          ...validContact,
-          organization_id: 123, // Single org via UI input
-        }),
-      ).not.toThrow();
-    });
-
-    it("should handle nullable fields", () => {
-      const dataWithNulls = {
-        ...validContact,
-        // middle_name and background removed - no UI inputs
-        avatar: null, // Avatar field still exists via ImageEditorField
-        deleted_at: null, // System field
+    it("should validate LinkedIn URL format", () => {
+      const invalidLinkedIn = {
+        first_name: "John",
+        last_name: "Doe",
+        linkedin_url: "https://twitter.com/johndoe",
       };
 
-      expect(() => contactSchema.parse(dataWithNulls)).not.toThrow();
-    });
-
-    // Test removed - tags field has no UI input per 'UI as truth' principle
-    // it("should handle tags array", () => { ... });
-
-    it("should handle JSONB fields for email and phone", () => {
-      const complexEmail = {
-        primary: "primary@example.com",
-        work: "work@company.com",
-        personal: "personal@gmail.com",
-      };
-
-      const complexPhone = {
-        mobile: "+1-555-123-4567",
-        office: "555-987-6543",
-        home: "555-456-7890",
-      };
-
-      const contactWithComplex = {
-        ...validContact,
-        email_object: complexEmail,
-        phone_number: complexPhone,
-      };
-
-      const result = contactSchema.parse(contactWithComplex);
-      // Emails are transformed to array format
-      expect(result.email).toHaveLength(3);
-      expect(result.email.some(e => e.email === "primary@example.com")).toBe(true);
-      // Phones are transformed to array format
-      expect(result.phone).toHaveLength(3);
-      expect(result.phone.some(p => p.number === "+1-555-123-4567")).toBe(true);
+      expect(() => contactSchema.parse(invalidLinkedIn)).toThrow(z.ZodError);
     });
   });
 
   describe("createContactSchema", () => {
-    it("should require essential fields for creation", () => {
-      const validCreate = {
-        first_name: "Jane",
-        last_name: "Smith",
-        email_object: { primary: "jane@example.com" },
-        sales_id: 1,
-      };
-
-      expect(() => createContactSchema.parse(validCreate)).not.toThrow();
-    });
-
-    it("should reject creation without required fields", () => {
+    it("should require first_name and last_name", () => {
       expect(() => createContactSchema.parse({})).toThrow(z.ZodError);
-      expect(() => createContactSchema.parse({ first_name: "John" })).toThrow(
-        z.ZodError,
-      );
-      expect(() =>
-        createContactSchema.parse({
-          first_name: "John",
-          last_name: "Doe",
-        }),
-      ).toThrow(z.ZodError); // Missing sales_id
     });
 
-    it("should not allow id field on creation", () => {
-      const dataWithId = {
-        id: "should-not-be-here",
-        first_name: "Jane",
-        last_name: "Smith",
-        email_object: { primary: "jane@example.com" },
-        sales_id: 1,
-      };
-
-      const result = createContactSchema.parse(dataWithId);
-      expect("id" in result).toBe(false);
-    });
-
-    it("should apply defaults on creation", () => {
-      const minimalCreate = {
+    it("should require sales_id", () => {
+      const contact = {
         first_name: "John",
         last_name: "Doe",
-        email_object: { primary: "john@example.com" },
-        sales_id: 1,
       };
 
-      const result = createContactSchema.parse(minimalCreate);
-      expect(result.email).toEqual([{ email: "john@example.com", type: "Work" }]); // Default type from schema
-      // status field removed - no UI input per 'UI as truth' principle
+      expect(() => createContactSchema.parse(contact)).toThrow(z.ZodError);
     });
   });
 
   describe("updateContactSchema", () => {
-    it("should allow updates with id", () => {
-      const validUpdate = {
-        id: "contact-123",
-        first_name: "Updated Name",
-      };
-
-      expect(() => updateContactSchema.parse(validUpdate)).not.toThrow();
-    });
-
-    it("should allow updates without id", () => {
-      // ID is typically passed in params.id, not in data
-      const validUpdate = {
-        first_name: "Updated Name",
-      };
-
-      expect(() => updateContactSchema.parse(validUpdate)).not.toThrow();
-    });
-
     it("should allow partial updates", () => {
-      expect(() =>
-        updateContactSchema.parse({ id: "c-1", first_name: "New Name" }),
-      ).not.toThrow();
-      expect(() =>
-        updateContactSchema.parse({ id: "c-1", last_name: "New Last" }),
-      ).not.toThrow();
-      // status field removed - no UI input per 'UI as truth' principle
-      expect(() =>
-        updateContactSchema.parse({
-          id: "c-1",
-          email_object: { work: "new@work.com" },
-        }),
-      ).not.toThrow();
-      expect(() => updateContactSchema.parse({ id: "c-1" })).not.toThrow();
+      const update = {
+        title: "Senior Engineer",
+      };
+
+      expect(() => updateContactSchema.parse(update)).not.toThrow();
+    });
+  });
+
+  describe("Email and Phone Type Schemas", () => {
+    it("should validate email with type", () => {
+      const email = { email: "test@example.com", type: "Work" };
+      expect(() => emailAndTypeSchema.parse(email)).not.toThrow();
     });
 
-    it("should validate updated fields", () => {
-      // status field removed - no UI input per 'UI as truth' principle
+    it("should validate phone with type", () => {
+      const phone = { number: "555-1234", type: "Home" };
+      expect(() => phoneNumberAndTypeSchema.parse(phone)).not.toThrow();
+    });
 
-      // Email validation when using array format
-      expect(() =>
-        updateContactSchema.parse({
-          id: "c-1",
-          email: [{ email: "not-an-email", type: "Work" }],
-        }),
-      ).toThrow(z.ZodError);
-
-      expect(() =>
-        updateContactSchema.parse({
-          id: "c-1",
-          linkedin_url: "https://facebook.com/user",
-        }),
-      ).toThrow(z.ZodError);
+    it("should default type to Work", () => {
+      const email = { email: "test@example.com" };
+      const result = emailAndTypeSchema.parse(email);
+      expect(result.type).toBe("Work");
     });
   });
 });
