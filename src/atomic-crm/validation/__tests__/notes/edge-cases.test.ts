@@ -91,7 +91,6 @@ describe("Note Edge Cases and Error Handling", () => {
         date: "2024-01-15",
         contact_id: "c-1",
         sales_id: "u-1",
-        status: "completed",
         attachments: [{ src: "not-a-url", title: "Invalid" }],
       };
 
@@ -110,7 +109,6 @@ describe("Note Edge Cases and Error Handling", () => {
             date: "2024-01-15",
             contact_id: "c-1",
             sales_id: "u-1",
-            status: "done",
           },
           expectedError: "Note text is required",
         },
@@ -120,7 +118,6 @@ describe("Note Edge Cases and Error Handling", () => {
             date: "",
             contact_id: "c-1",
             sales_id: "u-1",
-            status: "done",
           },
           expectedError: "Date is required",
         },
@@ -130,7 +127,6 @@ describe("Note Edge Cases and Error Handling", () => {
             date: "2024-01-15",
             contact_id: "",
             sales_id: "u-1",
-            status: "done",
           },
           expectedError: "Contact ID is required",
         },
@@ -140,19 +136,8 @@ describe("Note Edge Cases and Error Handling", () => {
             date: "2024-01-15",
             contact_id: "c-1",
             sales_id: "",
-            status: "done",
           },
           expectedError: "Sales ID is required",
-        },
-        {
-          data: {
-            text: "Note",
-            date: "2024-01-15",
-            contact_id: "c-1",
-            sales_id: "u-1",
-            status: "",
-          },
-          expectedError: "Status is required",
         },
       ];
 

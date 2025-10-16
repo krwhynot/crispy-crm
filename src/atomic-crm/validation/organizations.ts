@@ -65,10 +65,10 @@ export const organizationSchema = z.object({
   context_links: z.array(isValidUrl).optional(),
 
   // Organization-specific fields
-  organization_type: organizationTypeSchema, // Required field
+  organization_type: organizationTypeSchema.default("prospect"), // Default to prospect
   is_principal: z.boolean().optional(),
   is_distributor: z.boolean().optional(),
-  priority: companyPrioritySchema.optional(),
+  priority: companyPrioritySchema.default("C"),
 
   // Computed fields (readonly)
   nb_contacts: z.number().optional(),

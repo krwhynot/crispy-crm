@@ -17,7 +17,6 @@ describe("Note API Boundary Integration", () => {
       date: "2024-01-15T10:00:00Z",
       contact_id: "contact-123",
       sales_id: "user-456",
-      status: "completed",
       malicious_field: "should be stripped",
     };
 
@@ -32,7 +31,6 @@ describe("Note API Boundary Integration", () => {
       date: "2024-01-15T10:00:00Z",
       contact_id: 123, // Number instead of string
       sales_id: 456, // Number instead of string
-      status: "completed",
     };
 
     const result = contactNoteSchema.parse(apiPayload);

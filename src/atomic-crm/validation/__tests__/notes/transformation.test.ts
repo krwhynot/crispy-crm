@@ -28,7 +28,6 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15T10:00:00Z",
           contact_id: "contact-123",
           sales_id: "user-456",
-          status: "pending",
         };
 
         expect(() => createContactNoteSchema.parse(validCreate)).not.toThrow();
@@ -41,7 +40,6 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15T10:00:00Z",
           contact_id: "contact-123",
           sales_id: "user-456",
-          status: "pending",
         };
 
         const result = createContactNoteSchema.parse(dataWithId);
@@ -54,7 +52,6 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15T10:00:00Z",
           contact_id: "contact-123",
           sales_id: "user-456",
-          status: "completed",
           attachments: [
             { src: "https://example.com/contract.pdf", title: "Contract" },
           ],
@@ -172,7 +169,6 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15T10:00:00",
           contact_id: "contact-123",
           sales_id: "user-456",
-          status: "completed",
         };
 
         const result = validateContactNoteForSubmission(inputData);
@@ -240,7 +236,6 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15",
           contact_id: "c-1",
           sales_id: "u-1",
-          status: "completed",
           attachments: [{ src: "https://example.com/file.pdf", title: "File" }],
         };
 
@@ -253,7 +248,6 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15",
           contact_id: "c-1",
           sales_id: "u-1",
-          status: "completed",
         };
 
         expect(noteHasAttachments(noteWithoutAttachments)).toBe(false);
@@ -265,7 +259,6 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15",
           contact_id: "c-1",
           sales_id: "u-1",
-          status: "completed",
           attachments: [],
         };
 
