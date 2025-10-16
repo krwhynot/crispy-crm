@@ -10,8 +10,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TextInput } from "../text-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { required, minLength, maxLength, SaveContextProvider, ResourceContextProvider, RecordContextProvider } from "ra-core";
-import { useForm, FormProvider } from "react-hook-form";
+import { required, minLength, maxLength, Form as RaForm, SaveContextProvider } from "ra-core";
 import React from "react";
 
 // Wrapper component to provide all necessary contexts for testing
@@ -26,11 +25,6 @@ const FormWrapper = ({
   onSubmit?: (data: any) => void;
   resource?: string;
 }) => {
-  const form = useForm({
-    defaultValues,
-    mode: "onChange"
-  });
-
   const saveContext = {
     save: onSubmit,
     saving: false,
@@ -38,18 +32,16 @@ const FormWrapper = ({
   };
 
   return (
-    <ResourceContextProvider value={resource}>
-      <RecordContextProvider value={defaultValues}>
-        <SaveContextProvider value={saveContext}>
-          <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              {children}
-              <button type="submit">Submit</button>
-            </form>
-          </FormProvider>
-        </SaveContextProvider>
-      </RecordContextProvider>
-    </ResourceContextProvider>
+    <SaveContextProvider value={saveContext}>
+      <RaForm
+        defaultValues={defaultValues}
+        onSubmit={onSubmit}
+        record={defaultValues}
+      >
+        {children}
+        <button type="submit">Submit</button>
+      </RaForm>
+    </SaveContextProvider>
   );
 };
 
