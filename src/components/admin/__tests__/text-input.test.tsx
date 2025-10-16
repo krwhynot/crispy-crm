@@ -10,10 +10,19 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TextInput } from "../text-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { required, minLength, maxLength, Form as RaForm, SaveContextProvider } from "ra-core";
+import {
+  required,
+  minLength,
+  maxLength,
+  Form as RaForm,
+  RecordContextProvider,
+  ResourceContextProvider,
+  SaveContextProvider
+} from "ra-core";
 import React from "react";
 
 // Wrapper component to provide all necessary contexts for testing
+// Need to provide all contexts that React Admin's Form expects
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -32,16 +41,19 @@ const FormWrapper = ({
   };
 
   return (
-    <SaveContextProvider value={saveContext}>
-      <RaForm
-        defaultValues={defaultValues}
-        onSubmit={onSubmit}
-        record={defaultValues}
-      >
-        {children}
-        <button type="submit">Submit</button>
-      </RaForm>
-    </SaveContextProvider>
+    <ResourceContextProvider value={resource}>
+      <RecordContextProvider value={defaultValues}>
+        <SaveContextProvider value={saveContext}>
+          <RaForm
+            defaultValues={defaultValues}
+            onSubmit={onSubmit}
+          >
+            {children}
+            <button type="submit">Submit</button>
+          </RaForm>
+        </SaveContextProvider>
+      </RecordContextProvider>
+    </ResourceContextProvider>
   );
 };
 
@@ -50,7 +62,8 @@ describe("TextInput", () => {
     renderWithAdminContext(
       <FormWrapper resource="contacts">
         <TextInput source="name" label="Name" />
-      </FormWrapper>
+      </FormWrapper>,
+      { resource: "contacts" }
     );
 
     expect(screen.getByText("Name")).toBeInTheDocument();
