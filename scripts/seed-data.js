@@ -623,27 +623,16 @@ class SeedDataGenerator {
 
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
-        console.log(`Attempting to insert ${this.generatedData.organizations.length} organizations...`);
         const { data: insertedOrgs, error } = await this.supabase
           .from("organizations")
           .insert(this.generatedData.organizations)
           .select();
-
-        console.log(`Insert response - error:`, error);
-        console.log(`Insert response - data count:`, insertedOrgs?.length || 0);
-
         if (error) throw error;
-
-        if (!insertedOrgs || insertedOrgs.length === 0) {
-          throw new Error('No organizations were inserted - data is null or empty');
-        }
 
         // Update organizations with their database-assigned IDs
         this.generatedData.organizations.forEach((org, index) => {
           org.id = insertedOrgs[index].id;
         });
-
-        console.log(`Successfully updated ${insertedOrgs.length} organizations with database IDs`);
       }
 
       // Insert contacts

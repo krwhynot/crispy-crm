@@ -16,12 +16,15 @@
 
 | Script Name | Purpose | Usage | Location |
 |------------|---------|-------|----------|
-| **create-test-users.sh** | Creates 3 test users with role-specific data (admin, director, manager) | `./scripts/dev/create-test-users.sh [DB_URL]` | `scripts/dev/` |
+| **create-test-users-http.mjs** ⭐ | Creates 3 test users with role-specific data via HTTP Auth Admin API | `npm run dev:users:create` | `scripts/dev/` |
+| **generate-jwt.mjs** | Generates custom-signed JWTs for local Supabase instance | `node scripts/dev/generate-jwt.mjs` | `scripts/dev/` |
 | **sync-local-to-cloud.sh** | Synchronizes local development data to cloud Supabase instance | `./scripts/dev/sync-local-to-cloud.sh` | `scripts/dev/` |
 | **verify-environment.sh** | Validates environment setup and data integrity | `./scripts/dev/verify-environment.sh [local\|cloud]` | `scripts/dev/` |
 | **reset-environment.sh** | Resets database to clean state with fresh migrations | `npx supabase db reset` | Built-in command |
 | **backup.sh** | Creates database backups before major operations | `./scripts/migration/backup.sh [environment]` | `scripts/migration/` |
 | **deploy-safe.sh** | Deploys migrations with validation and rollback capability | `./scripts/migration/deploy-safe.sh` | `scripts/migration/` |
+
+**Note:** ⭐ marks the recommended working version. Deprecated scripts (create-test-users.sh v1/v2, create-test-users.mjs SDK version) are kept for reference only.
 
 ## Common Workflows
 
@@ -36,8 +39,8 @@ npm run supabase:local:start
 # 2. Verify local environment is running
 npm run supabase:local:status
 
-# 3. Create test users with sample data
-./scripts/dev/create-test-users.sh
+# 3. Create test users with role-specific sample data
+npm run dev:users:create
 
 # 4. Verify setup
 ./scripts/dev/verify-environment.sh local
@@ -45,9 +48,15 @@ npm run supabase:local:status
 
 **Expected Output:**
 ```
+✅ Test users created successfully!
+   Admin:           admin@test.local (100 contacts, 50 orgs, 75 opportunities, 200 activities)
+   Sales Director:  director@test.local (60 contacts, 30 orgs, 40 opportunities, 120 activities)
+   Account Manager: manager@test.local (40 contacts, 20 orgs, 25 opportunities, 80 activities)
+   Password:        TestPass123!
+
 ✓ Supabase local instance running on port 54321
-✓ Created 3 test users with roles: admin, director, manager
-✓ Environment verification passed: 15 contacts, 8 organizations, 10 opportunities
+✓ All 3 test users created with role-specific data volumes
+✓ Data successfully inserted into local database
 ```
 
 ### Pushing Local Data to Cloud
@@ -105,29 +114,35 @@ Resetting database...
 
 ### Creating Test Users
 
-Create test users with different permission levels:
+Create test users with role-specific data volumes via HTTP Auth Admin API:
 
 ```bash
-# Using default configuration
-./scripts/dev/create-test-users.sh
+# Recommended: Using npm script (handles all environment variables)
+npm run dev:users:create
 
-# With custom database URL
-./scripts/dev/create-test-users.sh "postgresql://postgres:password@localhost:5432/mydb"
+# Alternative: Direct execution (requires SUPABASE_SERVICE_ROLE_KEY in env)
+node scripts/dev/create-test-users-http.mjs
 
 # With custom emails (via environment variables)
 export TEST_ADMIN_EMAIL="custom-admin@example.com"
 export TEST_DIRECTOR_EMAIL="custom-director@example.com"
 export TEST_MANAGER_EMAIL="custom-manager@example.com"
 export TEST_USER_PASSWORD="SecurePass456!"
-./scripts/dev/create-test-users.sh
+npm run dev:users:create
 ```
 
-**Created Users:**
-| Email | Role | Password | Data Volume |
-|-------|------|----------|-------------|
-| admin@test.local | Admin | TestPass123! | Full dataset (all contacts, orgs, opportunities) |
-| director@test.local | Sales Director | TestPass123! | Read all, write own (moderate dataset) |
-| manager@test.local | Account Manager | TestPass123! | Read/write own only (minimal dataset) |
+**Created Users & Data Volumes:**
+| Email | Role | Password | Organizations | Contacts | Opportunities | Activities | Notes |
+|-------|------|----------|---------------|----------|---------------|------------|-------|
+| admin@test.local | Admin | TestPass123! | 50 | 100 | 75 | 200 | 150 |
+| director@test.local | Sales Director | TestPass123! | 30 | 60 | 40 | 120 | 90 |
+| manager@test.local | Account Manager | TestPass123! | 20 | 40 | 25 | 80 | 60 |
+
+**Important Notes:**
+- All test user emails end with `@test.local` for easy identification
+- Data is generated using faker.js with realistic F&B industry examples
+- Service role JWT must be properly signed with your custom `jwt_secret` from `supabase/config.toml`
+- If JWT signature errors occur, regenerate with: `node scripts/dev/generate-jwt.mjs`
 
 ### Safe Migration Deployment
 
@@ -440,6 +455,49 @@ npm run test:e2e:production
 curl https://[your-project].supabase.co/rest/v1/ -H "apikey: $VITE_SUPABASE_ANON_KEY" -w "\nResponse time: %{time_total}s\n"
 ```
 
+## Schema Alignment & Maintenance
+
+### Seed Data Schema Alignment (Completed 2025-10-16)
+
+The `scripts/seed-data.js` script has been fully aligned with the database schema through 15 systematic fixes. All schema mismatches have been resolved and verified against both local and cloud databases.
+
+**Key Alignment Areas:**
+- ✅ **Organizations:** Updated field names, enum values, removed deprecated columns
+- ✅ **Contacts:** Fixed required fields, removed avatar/background/status, added name field
+- ✅ **Opportunities:** Removed amount/probability/category, updated status enum values
+- ✅ **Activities:** Complete rewrite for new schema (activity_type, interaction types, constraints)
+- ✅ **Notes:** Fixed table names (camelCase), updated schema (removed type, added date)
+
+**Index-Based ID Mapping Pattern:**
+The seed script uses a two-phase insertion pattern to handle foreign key relationships:
+1. Generate data with index references (e.g., `_contact_index`, `_org_index`)
+2. Insert parent records and retrieve database-assigned IDs
+3. Map indices to real IDs before inserting child records
+
+This pattern is used for:
+- Contact → Organization relationships
+- Activity → Contact/Organization/Opportunity relationships
+- Notes → Contact/Opportunity relationships
+
+**Schema Verification:**
+```bash
+# Verify local schema matches cloud
+docker exec supabase_db_crispy-crm psql -U postgres -d postgres -c "\d public.organizations"
+
+# Check enum values
+docker exec supabase_db_crispy-crm psql -U postgres -d postgres -c \
+  "SELECT enumlabel FROM pg_enum WHERE enumtypid = 'organization_type'::regtype;"
+```
+
+**Troubleshooting Seed Data Issues:**
+If you encounter schema errors when running `npm run dev:users:create`:
+1. Check that your local database is up-to-date: `npx supabase db reset`
+2. Verify enum values match between local and cloud
+3. Check that JWTs are properly signed: `node scripts/dev/generate-jwt.mjs`
+4. Review error messages for missing/wrong columns and compare with actual schema
+
+For detailed schema alignment history, see `scripts/supabase/IMPLEMENTATION-SUMMARY.md`.
+
 ## Additional Resources
 
 - [Supabase CLI Documentation](https://supabase.com/docs/guides/cli)
@@ -447,3 +505,4 @@ curl https://[your-project].supabase.co/rest/v1/ -H "apikey: $VITE_SUPABASE_ANON
 - [GitHub Actions Deployment](https://docs.github.com/en/actions/deployment/about-deployments)
 - [Project Architecture Documentation](../../doc/developer/architecture-choices.md)
 - [Testing Guide](../../.docs/testing/TESTING.md)
+- [Implementation Summary](./IMPLEMENTATION-SUMMARY.md) - Detailed changelog of Supabase infrastructure improvements
