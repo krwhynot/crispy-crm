@@ -24,7 +24,7 @@ export async function debugAuth() {
   console.log('\n=== TESTING DATABASE ACCESS ===');
 
   // Test sales table (needed for auth)
-  const { data: salesData, error: salesError } = await supabase
+  const { data: _salesData, error: salesError } = await supabase
     .from('sales')
     .select('id')
     .limit(1);
@@ -32,7 +32,7 @@ export async function debugAuth() {
   if (salesError) console.error('Sales error:', salesError);
 
   // Test tasks table (reported as failing)
-  const { data: tasksData, error: tasksError } = await supabase
+  const { data: _tasksData, error: tasksError } = await supabase
     .from('tasks')
     .select('id')
     .limit(1);
@@ -40,7 +40,7 @@ export async function debugAuth() {
   if (tasksError) console.error('Tasks error:', tasksError);
 
   // Test contacts table
-  const { data: contactsData, error: contactsError } = await supabase
+  const { data: _contactsData, error: contactsError } = await supabase
     .from('contacts')
     .select('id')
     .limit(1);

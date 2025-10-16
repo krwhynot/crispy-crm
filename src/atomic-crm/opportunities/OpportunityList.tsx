@@ -25,10 +25,9 @@ const OpportunityList = () => {
   const { identity } = useGetIdentity();
   const getResourceLabel = useGetResourceLabel();
   const resourceLabel = getResourceLabel("opportunities", 2);
+  const opportunityFilters = useOpportunityFilters();
 
   if (!identity) return null;
-
-  const opportunityFilters = useOpportunityFilters();
 
   return (
     <List

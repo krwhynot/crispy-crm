@@ -6,7 +6,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
 import { Button } from "@/components/ui/button";
-import { getCurrentDate, formatDateForInput } from "../validation/notes";
+import { getCurrentDate } from "../validation/notes";
 
 export const NoteInputs = () => {
   const [displayMore, setDisplayMore] = useState(false);
