@@ -10,10 +10,18 @@ import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SelectInput } from "../select-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { required, ReferenceInput, Form as RaForm } from "ra-core";
+import {
+  required,
+  ReferenceInput,
+  Form as RaForm,
+  RecordContextProvider,
+  ResourceContextProvider,
+  SaveContextProvider
+} from "ra-core";
 import React from "react";
 
 // Wrapper component to provide all necessary contexts for testing
+// Need to provide all contexts that React Admin's Form expects
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -25,15 +33,26 @@ const FormWrapper = ({
   onSubmit?: (data: any) => void;
   resource?: string;
 }) => {
+  const saveContext = {
+    save: onSubmit,
+    saving: false,
+    mutationMode: "pessimistic" as const
+  };
+
   return (
-    <RaForm
-      defaultValues={defaultValues}
-      onSubmit={onSubmit}
-      record={defaultValues}
-    >
-      {children}
-      <button type="submit">Submit</button>
-    </RaForm>
+    <ResourceContextProvider value={resource}>
+      <RecordContextProvider value={defaultValues}>
+        <SaveContextProvider value={saveContext}>
+          <RaForm
+            defaultValues={defaultValues}
+            onSubmit={onSubmit}
+          >
+            {children}
+            <button type="submit">Submit</button>
+          </RaForm>
+        </SaveContextProvider>
+      </RecordContextProvider>
+    </ResourceContextProvider>
   );
 };
 
