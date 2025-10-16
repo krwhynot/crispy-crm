@@ -33,17 +33,7 @@ INSERT INTO auth.users (
   ''
 );
 
--- Create sales record for admin user
-INSERT INTO sales (user_id, first_name, last_name, email, is_admin, created_at, updated_at)
-VALUES (
-  'd3129876-b1fe-40eb-9980-64f5f73c64d6',
-  'Admin',
-  'User',
-  'admin@test.com',
-  true,
-  NOW(),
-  NOW()
-);
+-- Note: Sales record is auto-created by database trigger when auth.users is inserted
 
 -- Insert 5 Principal Organizations
 INSERT INTO organizations (name, organization_type, priority, website, phone, email, notes, is_principal, created_at, updated_at)
@@ -120,7 +110,7 @@ WITH principal_ids AS (
 )
 INSERT INTO products (principal_id, name, sku, category, description, list_price, status, currency_code, unit_of_measure, minimum_order_quantity, created_at, updated_at)
 SELECT
-  principal_id,
+  principal_ids.id,
   product_name,
   sku,
   category::product_category,
