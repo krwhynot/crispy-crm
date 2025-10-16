@@ -349,7 +349,8 @@ class SeedDataGenerator {
           "Award-winning culinary experiences",
           "Fresh from our kitchen to your table",
         ]),
-        notes: faker.helpers.maybe(() => faker.lorem.sentence(), { probability: 0.3 }),
+        sales_id: CONFIG.TEST_USER_ID, // Link to test user if provided
+        created_by: CONFIG.TEST_USER_ID, // Track creator if provided
         created_at: faker.date.past({ years: 2 }),
         updated_at: faker.date.recent(),
       };
@@ -466,6 +467,8 @@ class SeedDataGenerator {
           "Customer support and training",
           "Mobile accessibility for managers",
         ]),
+        opportunity_owner_id: CONFIG.TEST_USER_ID, // Link to test user if provided
+        created_by: CONFIG.TEST_USER_ID, // Track creator if provided
         created_at: faker.date.past({ years: 1 }),
         updated_at: faker.date.recent(),
       };
@@ -514,6 +517,7 @@ class SeedDataGenerator {
             ], { min: 1, max: 3 })
           : null,
         tags: faker.helpers.arrayElements(["important", "follow-up", "urgent", "demo", "pricing"], { min: 0, max: 2 }),
+        created_by: CONFIG.TEST_USER_ID, // Track creator if provided
       };
 
       this.generatedData.activities.push(activity);
@@ -531,6 +535,7 @@ class SeedDataGenerator {
       const note = {
         text: faker.lorem.paragraphs({ min: 1, max: 3 }),
         date: faker.date.past({ years: 0.5 }),
+        sales_id: CONFIG.TEST_USER_ID, // Link to test user if provided
       };
 
       if (isOpportunityNote) {
