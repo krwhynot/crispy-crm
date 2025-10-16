@@ -279,9 +279,9 @@ class SeedDataGenerator {
     try {
       // Delete in reverse dependency order (keep tags)
       await this.supabase.from("activities").delete().gte("id", 0);
-      await this.supabase.from("opportunity_notes").delete().gte("id", 0);
+      await this.supabase.from("opportunityNotes").delete().gte("id", 0);
       await this.supabase.from("opportunities").delete().gte("id", 0);
-      await this.supabase.from("contact_notes").delete().gte("id", 0);
+      await this.supabase.from("contactNotes").delete().gte("id", 0);
       await this.supabase.from("contact_organizations").delete().gte("id", 0);
       await this.supabase.from("contacts").delete().gte("id", 0);
       await this.supabase.from("organizations").delete().gte("id", 0);
@@ -474,47 +474,42 @@ class SeedDataGenerator {
   generateActivities(count = CONFIG.ACTIVITY_COUNT) {
     this.spinner.start(`Generating ${count} activities...`);
 
-    for (let i = 0; i < count; i++) {
-      const activityType = faker.helpers.arrayElement(ACTIVITY_TYPES);
-      const activity = {
-        type: activityType,
-        subject: this.getActivitySubject(activityType),
-        description: faker.lorem.paragraph(),
-        status: faker.helpers.arrayElement([
-          "pending",
-          "in_progress",
-          "completed",
-          "cancelled",
-        ]),
-        priority: faker.helpers.arrayElement([
-          "low",
-          "medium",
-          "high",
-          "critical",
-        ]),
-        opportunity_id:
-          Math.random() > 0.3
-            ? faker.helpers.arrayElement(this.generatedData.opportunities).id
-            : null,
-        contact_id: faker.helpers.arrayElement(this.generatedData.contacts).id,
-        due_date: faker.date.future({ years: 0.5 }),
-        completed_at: Math.random() > 0.5 ? faker.date.recent() : null,
-        interaction_type: faker.helpers.arrayElement(INTERACTION_TYPES),
-        outcome: Math.random() > 0.5 ? faker.lorem.sentence() : null,
-        created_at: faker.date.past({ years: 0.5 }),
-        updated_at: faker.date.recent(),
-      };
+    const interactionTypes = ["call", "email", "meeting", "demo", "proposal", "follow_up", "trade_show", "site_visit", "contract_review", "check_in", "social"];
 
-      // Add participants for meetings/calls
-      if (["meeting", "call"].includes(activityType)) {
-        activity.participants = faker.helpers
-          .arrayElements(this.generatedData.contacts, { min: 2, max: 4 })
-          .map((contact) => ({
-            contact_id: contact.id,
-            participated: Math.random() > 0.2,
-            notes: Math.random() > 0.5 ? faker.lorem.sentence() : null,
-          }));
-      }
+    for (let i = 0; i < count; i++) {
+      const interactionType = faker.helpers.arrayElement(interactionTypes);
+      const hasOpportunity = Math.random() > 0.3;
+
+      // Store indices instead of IDs (IDs won't exist until after insertion)
+      const _contact_index = faker.number.int({ min: 0, max: this.generatedData.contacts.length - 1 });
+      const _org_index = faker.number.int({ min: 0, max: this.generatedData.organizations.length - 1 });
+      const _opp_index = hasOpportunity ? faker.number.int({ min: 0, max: this.generatedData.opportunities.length - 1 }) : null;
+
+      const activity = {
+        activity_type: hasOpportunity ? "interaction" : "engagement",
+        type: interactionType,
+        subject: this.getActivitySubject(interactionType),
+        description: faker.lorem.paragraph(),
+        activity_date: faker.date.past({ years: 0.5 }),
+        duration_minutes: faker.helpers.arrayElement([15, 30, 45, 60, 90, 120]),
+        _contact_index,  // Temporary - will be replaced with contact_id after insertion
+        _org_index,      // Temporary - will be replaced with organization_id after insertion
+        _opp_index,      // Temporary - will be replaced with opportunity_id after insertion
+        follow_up_required: Math.random() > 0.6,
+        follow_up_date: Math.random() > 0.6 ? faker.date.future({ years: 0.2 }) : null,
+        follow_up_notes: Math.random() > 0.7 ? faker.lorem.sentence() : null,
+        outcome: Math.random() > 0.5 ? faker.lorem.sentence() : null,
+        sentiment: faker.helpers.arrayElement(["positive", "neutral", "negative"]),
+        location: interactionType === "meeting" ? faker.location.city() : null,
+        attendees: ["meeting", "call"].includes(interactionType)
+          ? faker.helpers.arrayElements([
+              faker.person.fullName(),
+              faker.person.fullName(),
+              faker.person.fullName()
+            ], { min: 1, max: 3 })
+          : null,
+        tags: faker.helpers.arrayElements(["important", "follow-up", "urgent", "demo", "pricing"], { min: 0, max: 2 }),
+      };
 
       this.generatedData.activities.push(activity);
     }
@@ -545,12 +540,12 @@ class SeedDataGenerator {
         note.opportunity_id = faker.helpers.arrayElement(
           this.generatedData.opportunities,
         ).id;
-        note.table = "opportunity_notes";
+        note.table = "opportunityNotes";
       } else {
         note.contact_id = faker.helpers.arrayElement(
           this.generatedData.contacts,
         ).id;
-        note.table = "contact_notes";
+        note.table = "contactNotes";
       }
 
       this.generatedData.notes.push(note);
@@ -704,12 +699,18 @@ class SeedDataGenerator {
 
       // Insert activities
       if (this.generatedData.activities.length > 0) {
-        const activitiesWithoutParticipants = this.generatedData.activities.map(
-          ({ participants, ...activity }) => activity,
+        // Map indices to actual IDs and remove temporary fields
+        const activitiesWithRealIds = this.generatedData.activities.map(
+          ({ _contact_index, _org_index, _opp_index, ...activity }) => ({
+            ...activity,
+            contact_id: this.generatedData.contacts[_contact_index].id,
+            organization_id: this.generatedData.organizations[_org_index].id,
+            opportunity_id: _opp_index !== null ? this.generatedData.opportunities[_opp_index].id : null,
+          }),
         );
         const { data: insertedActivities, error } = await this.supabase
           .from("activities")
-          .insert(activitiesWithoutParticipants)
+          .insert(activitiesWithRealIds)
           .select();
         if (error) throw error;
 
@@ -721,23 +722,23 @@ class SeedDataGenerator {
 
       // Insert notes
       const opportunityNotes = this.generatedData.notes
-        .filter((note) => note.table === "opportunity_notes")
+        .filter((note) => note.table === "opportunityNotes")
         .map(({ table, ...note }) => note);
 
       const contactNotes = this.generatedData.notes
-        .filter((note) => note.table === "contact_notes")
+        .filter((note) => note.table === "contactNotes")
         .map(({ table, ...note }) => note);
 
       if (opportunityNotes.length > 0) {
         const { error } = await this.supabase
-          .from("opportunity_notes")
+          .from("opportunityNotes")
           .insert(opportunityNotes);
         if (error) throw error;
       }
 
       if (contactNotes.length > 0) {
         const { error } = await this.supabase
-          .from("contact_notes")
+          .from("contactNotes")
           .insert(contactNotes);
         if (error) throw error;
       }
