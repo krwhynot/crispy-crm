@@ -60,3 +60,4 @@ debug-*.ts
 backups/
 *.sql.backup
 logs/sync-operations/
+scripts/dev/test-fetch.mjs

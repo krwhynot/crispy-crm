@@ -53,15 +53,12 @@ describe('Data Provider Schema Validation', () => {
       const { data, error } = await supabase
         .from('contacts_summary')
         .select('nb_tasks')
-        .limit(1)
-        .single();
+        .limit(1);
 
       // This should fail with a column not found error
       expect(error).toBeTruthy();
-      if (error) {
-        expect(error.message).toContain('column');
-        expect(error.message).toContain('does not exist');
-      }
+      expect(error?.message).toContain('column');
+      expect(error?.message).toContain('does not exist');
     });
 
     it('should validate all fields used in filter operations', async () => {

@@ -9,7 +9,6 @@ import {
   createOrganizationSchema,
   updateOrganizationSchema,
   organizationTypeSchema,
-  organizationStatusSchema,
 } from "../../organizations";
 import { z } from "zod";
 
@@ -21,10 +20,9 @@ describe("Organization Validation Schemas", () => {
           "customer",
           "prospect",
           "partner",
-          "vendor",
-          "competitor",
-          "investor",
-          "other",
+          "principal",
+          "distributor",
+          "unknown",
         ];
 
         validTypes.forEach((type) => {
@@ -33,33 +31,11 @@ describe("Organization Validation Schemas", () => {
       });
 
       it("should reject invalid organization types", () => {
-        const invalidTypes = ["", "client", "supplier", "employee", "unknown"];
+        const invalidTypes = ["", "client", "supplier", "employee", "vendor", "competitor", "investor", "other"];
 
         invalidTypes.forEach((type) => {
           expect(() => organizationTypeSchema.parse(type)).toThrow(z.ZodError);
         });
-      });
-    });
-
-    describe("organizationStatusSchema", () => {
-      it("should accept valid statuses", () => {
-        const validStatuses = ["active", "inactive", "pending", "suspended"];
-
-        validStatuses.forEach((status) => {
-          expect(() => organizationStatusSchema.parse(status)).not.toThrow();
-        });
-      });
-
-      it("should reject invalid statuses", () => {
-        expect(() => organizationStatusSchema.parse("enabled")).toThrow(
-          z.ZodError,
-        );
-        expect(() => organizationStatusSchema.parse("disabled")).toThrow(
-          z.ZodError,
-        );
-        expect(() => organizationStatusSchema.parse("archived")).toThrow(
-          z.ZodError,
-        );
       });
     });
   });
@@ -340,7 +316,7 @@ describe("Organization Validation Schemas", () => {
         updateOrganizationSchema.parse({ id: "org-1", name: "New Name" }),
       ).not.toThrow();
       expect(() =>
-        updateOrganizationSchema.parse({ id: "org-1", type: "vendor" }),
+        updateOrganizationSchema.parse({ id: "org-1", organization_type: "principal" }),
       ).not.toThrow();
       expect(() =>
         updateOrganizationSchema.parse({
@@ -357,7 +333,7 @@ describe("Organization Validation Schemas", () => {
       expect(() =>
         updateOrganizationSchema.parse({
           id: "org-1",
-          type: "invalid_type",
+          organization_type: "invalid_type",
         }),
       ).toThrow(z.ZodError);
 
