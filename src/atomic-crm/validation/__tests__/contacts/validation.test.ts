@@ -17,9 +17,10 @@ describe("Contact Validation Schemas", () => {
     const validContact = {
       first_name: "John",
       last_name: "Doe",
-      email: { primary: "john.doe@example.com" },
+      email_object: { primary: "john.doe@example.com" },
       phone_number: { mobile: "555-123-4567" },
       status: "active",
+      sales_id: 1,
     };
 
     it("should accept valid contact data", () => {
@@ -27,40 +28,50 @@ describe("Contact Validation Schemas", () => {
       expect(result).toBeDefined();
       expect(result.first_name).toBe("John");
       expect(result.last_name).toBe("Doe");
-      expect(result.email?.primary).toBe("john.doe@example.com");
+      // Email is transformed to array format
+      expect(result.email).toHaveLength(1);
+      expect(result.email[0].email).toBe("john.doe@example.com");
     });
 
     it("should compute full name from first and last name", () => {
       const contact = {
         first_name: "Jane",
         last_name: "Smith",
-        email: { primary: "jane@example.com" },
+        email_object: { primary: "jane@example.com" },
+        sales_id: 1,
       };
 
       const result = contactSchema.parse(contact);
       expect(result.first_name).toBe("Jane");
       expect(result.last_name).toBe("Smith");
+      expect(result.name).toBe("Jane Smith"); // Auto-computed
     });
 
     it("should provide default values", () => {
       const minimalContact = {
         first_name: "John",
         last_name: "Doe",
-        email: { primary: "john@example.com" },
+        email_object: { primary: "john@example.com" },
+        sales_id: 1,
       };
 
       const result = contactSchema.parse(minimalContact);
       expect(result.status).toBe("active");
+      expect(result.country).toBe("USA");
+      expect(result.has_newsletter).toBe(false);
     });
 
-    it("should reject empty first name", () => {
-      const invalidData = { ...validContact, first_name: "" };
+    it("should reject contact without any name fields", () => {
+      const invalidData = {
+        email_object: { primary: "test@example.com" },
+        sales_id: 1
+      };
       expect(() => contactSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
-    it("should reject empty last name", () => {
-      const invalidData = { ...validContact, last_name: "" };
-      expect(() => contactSchema.parse(invalidData)).toThrow(z.ZodError);
+    it("should accept empty strings for optional fields", () => {
+      const validData = { ...validContact, first_name: "", last_name: "", name: "John Doe" };
+      expect(() => contactSchema.parse(validData)).not.toThrow();
     });
 
     it("should handle optional middle name", () => {
@@ -179,13 +190,17 @@ describe("Contact Validation Schemas", () => {
 
       const contactWithComplex = {
         ...validContact,
-        email: complexEmail,
+        email_object: complexEmail,
         phone_number: complexPhone,
       };
 
       const result = contactSchema.parse(contactWithComplex);
-      expect(result.email).toEqual(complexEmail);
-      expect(result.phone_number).toEqual(complexPhone);
+      // Emails are transformed to array format
+      expect(result.email).toHaveLength(3);
+      expect(result.email.some(e => e.email === "primary@example.com")).toBe(true);
+      // Phones are transformed to array format
+      expect(result.phone).toHaveLength(3);
+      expect(result.phone.some(p => p.number === "+1-555-123-4567")).toBe(true);
     });
   });
 
@@ -194,7 +209,8 @@ describe("Contact Validation Schemas", () => {
       const validCreate = {
         first_name: "Jane",
         last_name: "Smith",
-        email: { primary: "jane@example.com" },
+        email_object: { primary: "jane@example.com" },
+        sales_id: 1,
       };
 
       expect(() => createContactSchema.parse(validCreate)).not.toThrow();
@@ -210,7 +226,7 @@ describe("Contact Validation Schemas", () => {
           first_name: "John",
           last_name: "Doe",
         }),
-      ).toThrow(z.ZodError);
+      ).toThrow(z.ZodError); // Missing sales_id
     });
 
     it("should not allow id field on creation", () => {
@@ -218,7 +234,8 @@ describe("Contact Validation Schemas", () => {
         id: "should-not-be-here",
         first_name: "Jane",
         last_name: "Smith",
-        email: { primary: "jane@example.com" },
+        email_object: { primary: "jane@example.com" },
+        sales_id: 1,
       };
 
       const result = createContactSchema.parse(dataWithId);
@@ -229,7 +246,8 @@ describe("Contact Validation Schemas", () => {
       const minimalCreate = {
         first_name: "John",
         last_name: "Doe",
-        email: { primary: "john@example.com" },
+        email_object: { primary: "john@example.com" },
+        sales_id: 1,
       };
 
       const result = createContactSchema.parse(minimalCreate);
@@ -238,7 +256,7 @@ describe("Contact Validation Schemas", () => {
   });
 
   describe("updateContactSchema", () => {
-    it("should require id for updates", () => {
+    it("should allow updates with id", () => {
       const validUpdate = {
         id: "contact-123",
         first_name: "Updated Name",
@@ -247,14 +265,13 @@ describe("Contact Validation Schemas", () => {
       expect(() => updateContactSchema.parse(validUpdate)).not.toThrow();
     });
 
-    it("should reject updates without id", () => {
-      const invalidUpdate = {
+    it("should allow updates without id", () => {
+      // ID is typically passed in params.id, not in data
+      const validUpdate = {
         first_name: "Updated Name",
       };
 
-      expect(() => updateContactSchema.parse(invalidUpdate)).toThrow(
-        z.ZodError,
-      );
+      expect(() => updateContactSchema.parse(validUpdate)).not.toThrow();
     });
 
     it("should allow partial updates", () => {
@@ -270,24 +287,26 @@ describe("Contact Validation Schemas", () => {
       expect(() =>
         updateContactSchema.parse({
           id: "c-1",
-          email: { work: "new@work.com" },
+          email_object: { work: "new@work.com" },
         }),
       ).not.toThrow();
       expect(() => updateContactSchema.parse({ id: "c-1" })).not.toThrow();
     });
 
     it("should validate updated fields", () => {
+      // Status validation is now flexible - accepts any string
       expect(() =>
         updateContactSchema.parse({
           id: "c-1",
-          status: "invalid_status",
+          status: "any_status",
         }),
-      ).toThrow(z.ZodError);
+      ).not.toThrow();
 
+      // Email validation when using array format
       expect(() =>
         updateContactSchema.parse({
           id: "c-1",
-          email: { primary: "not-an-email" },
+          email: [{ email: "not-an-email", type: "Work" }],
         }),
       ).toThrow(z.ZodError);
 
