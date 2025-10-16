@@ -15,26 +15,19 @@ import {
   minLength,
   maxLength,
   Form as RaForm,
-  AdminContext,
-  RecordContextProvider,
-  ResourceContextProvider,
   SaveContextProvider,
-  testDataProvider
 } from "ra-core";
 import React from "react";
 
-// Wrapper component to provide all necessary contexts for testing
-// Uses AdminContext to provide complete React Admin environment
+// Simplified FormWrapper - relies on renderWithAdminContext for providers
 const FormWrapper = ({
   children,
   defaultValues = {},
   onSubmit = vi.fn(),
-  resource = "test"
 }: {
   children: React.ReactNode;
   defaultValues?: any;
   onSubmit?: (data: any) => void;
-  resource?: string;
 }) => {
   const saveContext = {
     save: onSubmit,
@@ -43,18 +36,12 @@ const FormWrapper = ({
   };
 
   return (
-    <AdminContext dataProvider={testDataProvider()}>
-      <ResourceContextProvider value={resource}>
-        <RecordContextProvider value={defaultValues}>
-          <SaveContextProvider value={saveContext}>
-            <RaForm defaultValues={defaultValues}>
-              {children}
-              <button type="submit">Submit</button>
-            </RaForm>
-          </SaveContextProvider>
-        </RecordContextProvider>
-      </ResourceContextProvider>
-    </AdminContext>
+    <SaveContextProvider value={saveContext}>
+      <RaForm defaultValues={defaultValues}>
+        {children}
+        <button type="submit">Submit</button>
+      </RaForm>
+    </SaveContextProvider>
   );
 };
 
