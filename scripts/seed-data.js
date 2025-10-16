@@ -388,20 +388,11 @@ class SeedDataGenerator {
         updated_at: faker.date.recent(),
       };
 
-      // Assign to 1-3 random organizations
-      contact.organizations = faker.helpers
-        .arrayElements(this.generatedData.organizations, { min: 1, max: 3 })
-        .map((org) => ({
-          organization_id: org.id,
-          is_primary: false,
-          role: contact.title,
-          started_at: faker.date.past({ years: 1 }),
-        }));
-
-      // Set one as primary
-      if (contact.organizations.length > 0) {
-        contact.organizations[0].is_primary = true;
-      }
+      // Store ONE organization index to link after insertion (unique constraint)
+      contact._org_index = faker.number.int({
+        min: 0,
+        max: this.generatedData.organizations.length - 1
+      });
 
       this.generatedData.contacts.push(contact);
     }
@@ -425,12 +416,9 @@ class SeedDataGenerator {
 
       const opportunity = {
         name: `${org.name} - ${product}`,
-        category: faker.helpers.arrayElement(OPPORTUNITY_CATEGORIES),
         stage,
         status,
         priority: faker.helpers.arrayElement(["low", "medium", "high", "critical"]), // These are enum values
-        amount: faker.number.int({ min: 5000, max: 250000 }),
-        probability: this.getProbabilityForStage(stage),
         estimated_close_date: faker.date.future({ years: 1 }),
         customer_organization_id: org.id,
         contact_ids: selectedContacts.map(c => c.id),
@@ -652,30 +640,43 @@ class SeedDataGenerator {
 
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
-        const { error } = await this.supabase
+        const { data: insertedOrgs, error } = await this.supabase
           .from("organizations")
-          .insert(this.generatedData.organizations);
+          .insert(this.generatedData.organizations)
+          .select();
         if (error) throw error;
+
+        // Update organizations with their database-assigned IDs
+        this.generatedData.organizations.forEach((org, index) => {
+          org.id = insertedOrgs[index].id;
+        });
       }
 
       // Insert contacts
       if (this.generatedData.contacts.length > 0) {
-        const contactsWithoutOrgs = this.generatedData.contacts.map(
-          ({ organizations, ...contact }) => contact,
+        const contactsWithoutTempData = this.generatedData.contacts.map(
+          ({ _org_index, ...contact }) => contact,
         );
-        const { error } = await this.supabase
+        const { data: insertedContacts, error } = await this.supabase
           .from("contacts")
-          .insert(contactsWithoutOrgs);
+          .insert(contactsWithoutTempData)
+          .select();
         if (error) throw error;
 
-        // Insert contact-organization relationships
+        // Update contacts with their database-assigned IDs
+        this.generatedData.contacts.forEach((contact, index) => {
+          contact.id = insertedContacts[index].id;
+        });
+
+        // Insert contact-organization relationships (one per contact)
         const contactOrgs = [];
         this.generatedData.contacts.forEach((contact) => {
-          contact.organizations.forEach((org) => {
-            contactOrgs.push({
-              contact_id: contact.id,
-              ...org,
-            });
+          const org = this.generatedData.organizations[contact._org_index];
+          contactOrgs.push({
+            contact_id: contact.id,
+            organization_id: org.id,
+            is_primary: true, // Only one organization, so it's primary
+            relationship_start_date: faker.date.past({ years: 1 }),
           });
         });
 
@@ -689,10 +690,16 @@ class SeedDataGenerator {
 
       // Insert opportunities
       if (this.generatedData.opportunities.length > 0) {
-        const { error } = await this.supabase
+        const { data: insertedOpps, error } = await this.supabase
           .from("opportunities")
-          .insert(this.generatedData.opportunities);
+          .insert(this.generatedData.opportunities)
+          .select();
         if (error) throw error;
+
+        // Update opportunities with their database-assigned IDs
+        this.generatedData.opportunities.forEach((opp, index) => {
+          opp.id = insertedOpps[index].id;
+        });
       }
 
       // Insert activities
@@ -700,10 +707,16 @@ class SeedDataGenerator {
         const activitiesWithoutParticipants = this.generatedData.activities.map(
           ({ participants, ...activity }) => activity,
         );
-        const { error } = await this.supabase
+        const { data: insertedActivities, error } = await this.supabase
           .from("activities")
-          .insert(activitiesWithoutParticipants);
+          .insert(activitiesWithoutParticipants)
+          .select();
         if (error) throw error;
+
+        // Update activities with their database-assigned IDs
+        this.generatedData.activities.forEach((activity, index) => {
+          activity.id = insertedActivities[index].id;
+        });
       }
 
       // Insert notes
