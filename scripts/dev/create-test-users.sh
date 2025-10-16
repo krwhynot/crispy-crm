@@ -236,20 +236,20 @@ $PSQL_CMD << EOF
 -- Create or update sales records
 -- The auth triggers should handle this, but we ensure they exist
 INSERT INTO public.sales (
-  id,
+  user_id,
   first_name,
   last_name,
   email,
-  administrator
+  is_admin
 ) VALUES
   ('$ADMIN_ID'::uuid, 'Admin', 'User', '$ADMIN_EMAIL', true),
   ('$DIRECTOR_ID'::uuid, 'Sales', 'Director', '$DIRECTOR_EMAIL', false),
   ('$MANAGER_ID'::uuid, 'Account', 'Manager', '$MANAGER_EMAIL', false)
-ON CONFLICT (id) DO UPDATE SET
+ON CONFLICT (user_id) DO UPDATE SET
   first_name = EXCLUDED.first_name,
   last_name = EXCLUDED.last_name,
   email = EXCLUDED.email,
-  administrator = EXCLUDED.administrator,
+  is_admin = EXCLUDED.is_admin,
   updated_at = NOW();
 EOF
 
