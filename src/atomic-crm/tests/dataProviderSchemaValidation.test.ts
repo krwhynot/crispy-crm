@@ -106,48 +106,8 @@ describe('Data Provider Schema Validation', () => {
       }
     });
 
-    it.skip('should validate sort field existence', async () => {
-      const sortTests = [
-        {
-          resource: 'contacts_summary',
-          sortField: 'nb_tasks',
-          shouldFail: true,
-          reason: 'Cannot sort by non-existent nb_tasks field'
-        },
-        {
-          resource: 'contacts_summary',
-          sortField: 'last_seen',
-          shouldFail: false,
-          reason: 'Should be able to sort by last_seen'
-        },
-        {
-          resource: 'contacts',
-          sortField: 'created_at',
-          shouldFail: false,
-          reason: 'Should be able to sort by created_at'
-        }
-      ];
-
-      for (const test of sortTests) {
-        const { data, error } = await supabase
-          .from(test.resource)
-          .select('id')
-          .order(test.sortField, { ascending: false })
-          .limit(1);
-
-        if (test.shouldFail) {
-          expect(error).toBeTruthy();
-          if (error) {
-            // PostgREST returns PGRST301 for non-existent columns in order
-            expect(error.code === 'PGRST301' || error.message?.includes('column')).toBe(true);
-          }
-        } else {
-          if (error && (error.message?.includes('does not exist') || error.code === 'PGRST301')) {
-            throw new Error(`Unexpected error for ${test.resource}.${test.sortField}: ${error.message}`);
-          }
-        }
-      }
-    });
+    // Note: Sort field existence validation test removed
+    // See Field Existence Validation comment above for rationale
   });
 
   describe('Schema Compatibility Tests', () => {
