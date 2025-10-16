@@ -1,6 +1,7 @@
 /**
  * Tests for contact validation schemas
  * Focus: Core validation rules and schema behavior
+ * Per "UI as source of truth" principle: only validates fields with UI inputs in ContactInputs.tsx
  */
 
 import { describe, it, expect } from "vitest";
@@ -19,7 +20,7 @@ describe("Contact Validation Schemas", () => {
       last_name: "Doe",
       email_object: { primary: "john.doe@example.com" },
       phone_number: { mobile: "555-123-4567" },
-      status: "active",
+      // status field removed - no UI input per 'UI as truth' principle
       sales_id: 1,
     };
 
@@ -47,19 +48,8 @@ describe("Contact Validation Schemas", () => {
       expect(result.name).toBe("Jane Smith"); // Auto-computed
     });
 
-    it("should provide default values", () => {
-      const minimalContact = {
-        first_name: "John",
-        last_name: "Doe",
-        email_object: { primary: "john@example.com" },
-        sales_id: 1,
-      };
-
-      const result = contactSchema.parse(minimalContact);
-      expect(result.status).toBe("active");
-      expect(result.country).toBe("USA");
-      expect(result.has_newsletter).toBe(false);
-    });
+    // Test removed - status, country, has_newsletter fields have no UI inputs per 'UI as truth' principle
+    // it("should provide default values", () => { ... });
 
     it("should reject contact without any name fields", () => {
       const invalidData = {
@@ -74,15 +64,8 @@ describe("Contact Validation Schemas", () => {
       expect(() => contactSchema.parse(validData)).not.toThrow();
     });
 
-    it("should handle optional middle name", () => {
-      const contactWithMiddle = {
-        ...validContact,
-        middle_name: "Michael",
-      };
-
-      const result = contactSchema.parse(contactWithMiddle);
-      expect(result.middle_name).toBe("Michael");
-    });
+    // Test removed - middle_name field has no UI input per 'UI as truth' principle
+    // it("should handle optional middle name", () => { ... });
 
     it("should validate LinkedIn URL", () => {
       // Valid LinkedIn URLs
@@ -116,16 +99,14 @@ describe("Contact Validation Schemas", () => {
       ).toThrow(z.ZodError);
     });
 
-    it("should handle organization associations", () => {
-      const contactWithOrgs = {
+    it("should handle organization association", () => {
+      const contactWithOrg = {
         ...validContact,
-        organization_ids: ["org-1", "org-2", "org-3"],
-        primary_organization_id: "org-1",
+        organization_id: "org-1", // Single org via UI input, not arrays
       };
 
-      const result = contactSchema.parse(contactWithOrgs);
-      expect(result.organization_ids).toHaveLength(3);
-      expect(result.primary_organization_id).toBe("org-1");
+      const result = contactSchema.parse(contactWithOrg);
+      expect(result.organization_id).toBe("org-1");
     });
 
     it("should accept both string and number IDs", () => {
@@ -146,8 +127,7 @@ describe("Contact Validation Schemas", () => {
       expect(() =>
         contactSchema.parse({
           ...validContact,
-          organization_ids: ["org-1", "org-2"],
-          primary_organization_id: 123,
+          organization_id: 123, // Single org via UI input
         }),
       ).not.toThrow();
     });
@@ -155,25 +135,16 @@ describe("Contact Validation Schemas", () => {
     it("should handle nullable fields", () => {
       const dataWithNulls = {
         ...validContact,
-        middle_name: null,
-        avatar: null,
-        background: null,
-        deleted_at: null,
+        // middle_name and background removed - no UI inputs
+        avatar: null, // Avatar field still exists via ImageEditorField
+        deleted_at: null, // System field
       };
 
       expect(() => contactSchema.parse(dataWithNulls)).not.toThrow();
     });
 
-    it("should handle tags array", () => {
-      const contactWithTags = {
-        ...validContact,
-        tags: ["tag1", "tag2", "tag3"],
-      };
-
-      const result = contactSchema.parse(contactWithTags);
-      expect(result.tags).toEqual(["tag1", "tag2", "tag3"]);
-      expect(result.tags).toHaveLength(3);
-    });
+    // Test removed - tags field has no UI input per 'UI as truth' principle
+    // it("should handle tags array", () => { ... });
 
     it("should handle JSONB fields for email and phone", () => {
       const complexEmail = {
@@ -251,7 +222,8 @@ describe("Contact Validation Schemas", () => {
       };
 
       const result = createContactSchema.parse(minimalCreate);
-      expect(result.status).toBe("active");
+      expect(result.email).toEqual([{ email: "john@example.com", type: "Work" }]); // Default type from schema
+      // status field removed - no UI input per 'UI as truth' principle
     });
   });
 
@@ -281,9 +253,7 @@ describe("Contact Validation Schemas", () => {
       expect(() =>
         updateContactSchema.parse({ id: "c-1", last_name: "New Last" }),
       ).not.toThrow();
-      expect(() =>
-        updateContactSchema.parse({ id: "c-1", status: "inactive" }),
-      ).not.toThrow();
+      // status field removed - no UI input per 'UI as truth' principle
       expect(() =>
         updateContactSchema.parse({
           id: "c-1",
@@ -294,13 +264,7 @@ describe("Contact Validation Schemas", () => {
     });
 
     it("should validate updated fields", () => {
-      // Status validation is now flexible - accepts any string
-      expect(() =>
-        updateContactSchema.parse({
-          id: "c-1",
-          status: "any_status",
-        }),
-      ).not.toThrow();
+      // status field removed - no UI input per 'UI as truth' principle
 
       // Email validation when using array format
       expect(() =>

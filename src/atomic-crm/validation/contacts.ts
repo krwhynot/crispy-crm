@@ -42,7 +42,7 @@ export const phoneNumberAndTypeSchema = z.object({
 // These schemas handle the old object-based email/phone format
 export const phoneNumberSchema = z.record(z.string()).optional();
 export const emailSchema = z.record(z.string()).optional();
-export const contactStatusSchema = z.enum(["active", "inactive", "blocked", "pending"]);
+// Note: contactStatusSchema removed - 'status' field has no UI input
 
 // Contact-Organization relationship schema
 export const contactOrganizationSchema = z

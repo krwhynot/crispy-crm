@@ -1,6 +1,7 @@
 /**
  * Tests for contact business rules and edge cases
  * Focus: Business logic, relationships, and special scenarios
+ * Per "UI as source of truth" principle: only validates fields with UI inputs in ContactInputs.tsx
  */
 
 import { describe, it, expect } from "vitest";
@@ -10,70 +11,40 @@ import {
 
 describe("Contact Business Rules and Edge Cases", () => {
   describe("Business Rules", () => {
-    it("should handle contact-organization relationships", () => {
-      const contactWithMultipleOrgs = {
+    it("should handle contact-organization relationship", () => {
+      const contactWithOrg = {
         first_name: "John",
         last_name: "Doe",
-        email: { primary: "john@example.com" },
-        organization_ids: ["org-1", "org-2", "org-3"],
-        primary_organization_id: "org-1",
+        email: [{ email: "john@example.com", type: "Work" }],
+        organization_id: "org-1", // Single org via UI input, not arrays
       };
 
-      const result = contactSchema.parse(contactWithMultipleOrgs);
-      expect(result.organization_ids).toContain("org-1");
-      expect(result.primary_organization_id).toBe("org-1");
+      const result = contactSchema.parse(contactWithOrg);
+      expect(result.organization_id).toBe("org-1");
     });
 
-    it("should validate contact lifecycle status", () => {
-      const statusTransitions = [
-        { status: "active" },
-        { status: "inactive" },
-        { status: "blocked" },
-        { status: "pending" },
-      ];
+    // Test removed - status field has no UI input per 'UI as truth' principle
+    // it("should validate contact lifecycle status", () => { ... });
 
-      statusTransitions.forEach(({ status }) => {
-        const contact = {
-          first_name: "Test",
-          last_name: "User",
-          email: { primary: "test@example.com" },
-          status,
-        };
-
-        expect(() => contactSchema.parse(contact)).not.toThrow();
-      });
-    });
-
-    it("should handle contact communication preferences", () => {
-      const contactWithPreferences = {
+    it("should handle contact with multiple emails and phones", () => {
+      const contactWithMultiple = {
         first_name: "John",
         last_name: "Doe",
-        email: {
-          primary: "john@example.com",
-          work: "john@work.com",
-        },
-        phone_number: {
-          mobile: "555-123-4567",
-          office: "555-987-6543",
-        },
-        preferred_contact_method: "email",
-        do_not_contact: false,
+        email: [
+          { email: "john@example.com", type: "Work" },
+          { email: "john@personal.com", type: "Home" },
+        ],
+        phone: [
+          { number: "555-123-4567", type: "Work" },
+          { number: "555-987-6543", type: "Home" },
+        ],
+        // preferred_contact_method and do_not_contact fields removed - no UI inputs
       };
 
-      expect(() => contactSchema.parse(contactWithPreferences)).not.toThrow();
+      expect(() => contactSchema.parse(contactWithMultiple)).not.toThrow();
     });
 
-    it("should validate contact data privacy fields", () => {
-      const contactWithPrivacy = {
-        first_name: "John",
-        last_name: "Doe",
-        email: { primary: "john@example.com" },
-        gdpr_consent: true,
-        marketing_consent: false,
-        data_retention_date: "2025-12-31",
-      };
-
-      expect(() => contactSchema.parse(contactWithPrivacy)).not.toThrow();
-    });
+    // Test removed - gdpr_consent, marketing_consent, data_retention_date fields have no UI inputs per 'UI as truth' principle
+    // it("should validate contact data privacy fields", () => { ... });
   });
 });
