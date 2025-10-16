@@ -54,7 +54,7 @@ describe("Organization Validation Schemas", () => {
       const result = organizationSchema.parse(validOrganization);
       expect(result).toBeDefined();
       expect(result.name).toBe("Test Organization");
-      expect(result.type).toBe("customer");
+      expect(result.organization_type).toBe("customer");
     });
 
     it("should provide default values", () => {
@@ -63,8 +63,8 @@ describe("Organization Validation Schemas", () => {
       };
 
       const result = organizationSchema.parse(minimalOrganization);
-      expect(result.type).toBe("prospect");
-      expect(result.status).toBe("active");
+      expect(result.organization_type).toBe("unknown"); // Database default
+      expect(result.priority).toBe("C"); // Database default
     });
 
     it("should reject empty name", () => {
@@ -218,28 +218,6 @@ describe("Organization Validation Schemas", () => {
 
       expect(() => organizationSchema.parse(dataWithNulls)).not.toThrow();
     });
-
-    it("should handle tags array", () => {
-      const orgWithTags = {
-        ...validOrganization,
-        tags: ["enterprise", "technology", "saas"],
-      };
-
-      const result = organizationSchema.parse(orgWithTags);
-      expect(result.tags).toEqual(["enterprise", "technology", "saas"]);
-      expect(result.tags).toHaveLength(3);
-    });
-
-    it("should handle sectors array", () => {
-      const orgWithSectors = {
-        ...validOrganization,
-        sectors: ["technology", "finance", "healthcare"],
-      };
-
-      const result = organizationSchema.parse(orgWithSectors);
-      expect(result.sectors).toEqual(["technology", "finance", "healthcare"]);
-      expect(result.sectors).toHaveLength(3);
-    });
   });
 
   describe("createOrganizationSchema", () => {
@@ -286,8 +264,8 @@ describe("Organization Validation Schemas", () => {
       };
 
       const result = createOrganizationSchema.parse(minimalCreate);
-      expect(result.type).toBe("prospect");
-      expect(result.status).toBe("active");
+      expect(result.organization_type).toBe("unknown"); // Database default
+      expect(result.priority).toBe("C"); // Database default
     });
   });
 

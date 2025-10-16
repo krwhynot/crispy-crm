@@ -20,8 +20,9 @@ export const organizationTypeSchema = z.enum([
 export const companyPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
 // URL validation regex from CompanyInputs
+// Protocol (http:// or https://) is REQUIRED for valid URLs
 const URL_REGEX =
-  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
 
 // Custom validators
@@ -50,7 +51,8 @@ const isLinkedinUrl = z.string().refine(
 export const organizationSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
   name: z.string().min(1, "Company name is required"),
-  logo: z.any().optional(), // RAFile type
+  logo: z.any().optional().nullable(), // RAFile type
+  parent_id: z.union([z.string(), z.number()]).optional().nullable(), // Maps to parent_organization_id in database
   // Updated field names to match database schema
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.optional(),
@@ -61,14 +63,18 @@ export const organizationSchema = z.object({
   city: z.string().optional(),
   state: z.string().optional(), // was: stateAbbr
   sales_id: z.union([z.string(), z.number()]).optional(),
-  description: z.string().optional(),
+  description: z.string().optional().nullable(),
   context_links: z.array(isValidUrl).optional(),
 
+  // Financial and size metrics
+  annual_revenue: z.number().nonnegative("Annual revenue must be 0 or greater").optional(),
+  employee_count: z.number().int().min(1, "Employee count must be at least 1").optional(),
+
   // Organization-specific fields
-  organization_type: organizationTypeSchema.default("prospect"), // Default to prospect
+  organization_type: organizationTypeSchema.default("unknown"), // Default matches database
   is_principal: z.boolean().optional(),
   is_distributor: z.boolean().optional(),
-  priority: companyPrioritySchema.default("C"),
+  priority: companyPrioritySchema.default("C"), // Default matches database
 
   // Computed fields (readonly)
   nb_contacts: z.number().optional(),
