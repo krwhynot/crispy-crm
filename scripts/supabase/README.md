@@ -61,6 +61,18 @@ npm run dev:users:create
 
 ### Pushing Local Data to Cloud
 
+**Prerequisites:**
+- PostgreSQL client tools (`pg_dump`, `psql`) must be installed:
+  ```bash
+  # Ubuntu/Debian
+  sudo apt-get install postgresql-client
+
+  # macOS
+  brew install postgresql
+  ```
+- `.env.production` configured with cloud credentials
+- Local Supabase running with test data
+
 Synchronize your local development data to the cloud instance:
 
 ```bash
@@ -70,8 +82,8 @@ cat .env.production | grep SUPABASE
 # 2. Create backup of cloud data
 ./scripts/migration/backup.sh cloud
 
-# 3. Sync local to cloud
-./scripts/dev/sync-local-to-cloud.sh
+# 3. Sync local to cloud (requires --force flag for safety)
+./scripts/dev/sync-local-to-cloud.sh --force
 
 # 4. Verify cloud environment
 ./scripts/dev/verify-environment.sh cloud
