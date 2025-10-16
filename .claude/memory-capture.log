@@ -399,3 +399,4 @@
 [2025-10-16 14:51:14] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013000000_cloud_schema_sync.sql
 [2025-10-16 14:51:29] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251013000000_cloud_schema_sync.sql
 [2025-10-16 15:00:44] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
+[2025-10-16 15:10:54] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
