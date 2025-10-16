@@ -1,6 +1,7 @@
 /**
  * Tests for contact validation functions and React Admin integration
  * Focus: Validation functions, form validation, and error formatting
+ * Per "UI as source of truth" principle: only validates fields with UI inputs in ContactInputs.tsx
  */
 
 import { describe, it, expect } from "vitest";
@@ -16,7 +17,7 @@ describe("Contact Validation Functions", () => {
       const validData = {
         first_name: "John",
         last_name: "Doe",
-        email: { primary: "john@example.com" },
+        email: [{ email: "john@example.com", type: "Work" }], // Array format per new schema
       };
 
       await expect(validateContactForm(validData)).resolves.toBeUndefined();
@@ -24,9 +25,7 @@ describe("Contact Validation Functions", () => {
 
     it("should format errors for React Admin", async () => {
       const invalidData = {
-        first_name: "",
-        last_name: "",
-        email: { primary: "not-an-email" },
+        // Name fields are required
         linkedin_url: "not-a-url",
       };
 
@@ -36,9 +35,8 @@ describe("Contact Validation Functions", () => {
       } catch (error: any) {
         expect(error.message).toBe("Validation failed");
         expect(error.errors).toBeDefined();
-        expect(error.errors.first_name).toBe("First name is required");
-        expect(error.errors.last_name).toBe("Last name is required");
-        expect(error.errors["email.primary"]).toBeDefined();
+        expect(error.errors.name).toBeDefined(); // Name validation error
+        expect(error.errors.linkedin_url).toBeDefined(); // Invalid URL
       }
     });
 
@@ -46,18 +44,18 @@ describe("Contact Validation Functions", () => {
       const invalidData = {
         first_name: "John",
         last_name: "Doe",
-        email: {
-          primary: "invalid",
-          work: "also-invalid",
-        },
+        email: [
+          { email: "invalid", type: "Work" },
+          { email: "also-invalid", type: "Home" },
+        ],
       };
 
       try {
         await validateContactForm(invalidData);
         expect.fail("Should have thrown validation error");
       } catch (error: any) {
-        expect(error.errors["email.primary"]).toBeDefined();
-        expect(error.errors["email.work"]).toBeDefined();
+        expect(error.errors["email.0.email"]).toBeDefined();
+        expect(error.errors["email.1.email"]).toBeDefined();
       }
     });
   });
@@ -67,16 +65,18 @@ describe("Contact Validation Functions", () => {
       const validData = {
         first_name: "Jane",
         last_name: "Smith",
-        email: { primary: "jane@example.com" },
+        email: [{ email: "jane@example.com", type: "Work" }], // Array format per new schema
+        sales_id: 1, // Required for creation
       };
 
       await expect(validateCreateContact(validData)).resolves.toBeUndefined();
     });
 
-    it("should require email for creation", async () => {
+    it("should require email and sales_id for creation", async () => {
       const dataWithoutEmail = {
         first_name: "Jane",
         last_name: "Smith",
+        // Missing email and sales_id
       };
 
       try {
@@ -85,6 +85,7 @@ describe("Contact Validation Functions", () => {
       } catch (error: any) {
         expect(error.message).toBe("Validation failed");
         expect(error.errors.email).toBeDefined();
+        expect(error.errors.sales_id).toBeDefined();
       }
     });
   });
@@ -92,25 +93,19 @@ describe("Contact Validation Functions", () => {
   describe("validateUpdateContact", () => {
     it("should validate update data", async () => {
       const validData = {
-        id: "contact-123",
+        // ID is not required for updates (passed in params.id by React Admin)
         first_name: "Updated",
       };
 
       await expect(validateUpdateContact(validData)).resolves.toBeUndefined();
     });
 
-    it("should reject update without id", async () => {
-      const invalidData = {
-        first_name: "Updated",
+    it("should allow partial updates", async () => {
+      const partialData = {
+        last_name: "Updated",
       };
 
-      try {
-        await validateUpdateContact(invalidData);
-        expect.fail("Should have thrown validation error");
-      } catch (error: any) {
-        expect(error.message).toBe("Validation failed");
-        expect(error.errors.id).toBeDefined();
-      }
+      await expect(validateUpdateContact(partialData)).resolves.toBeUndefined();
     });
   });
 
@@ -119,35 +114,29 @@ describe("Contact Validation Functions", () => {
       const testCases = [
         {
           data: {
-            first_name: "",
-            last_name: "Doe",
-            email: { primary: "test@example.com" },
+            // Missing all name fields
+            email: [{ email: "test@example.com", type: "Work" }],
           },
-          expectedError: "First name is required",
-          field: "first_name",
-        },
-        {
-          data: {
-            first_name: "John",
-            last_name: "",
-            email: { primary: "test@example.com" },
-          },
-          expectedError: "Last name is required",
-          field: "last_name",
-        },
-        {
-          data: { first_name: "John", last_name: "Doe", email: {} },
-          expectedError: "At least one email is required",
-          field: "email",
+          expectedError: "Either name or first_name/last_name must be provided",
+          field: "name",
         },
         {
           data: {
             first_name: "John",
             last_name: "Doe",
-            email: { primary: "invalid" },
+            email: [{ email: "invalid", type: "Work" }], // Invalid email format
           },
-          expectedError: "Invalid email format",
-          field: "email.primary",
+          expectedError: "Must be a valid email address",
+          field: "email.0.email",
+        },
+        {
+          data: {
+            first_name: "John",
+            last_name: "Doe",
+            linkedin_url: "not-a-url", // Invalid LinkedIn URL
+          },
+          expectedError: "URL must be from linkedin.com",
+          field: "linkedin_url",
         },
       ];
 

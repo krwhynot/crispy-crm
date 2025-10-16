@@ -38,11 +38,8 @@ export const phoneNumberAndTypeSchema = z.object({
   type: personalInfoTypeSchema.default("Work"),
 });
 
-// Helper schemas for backward compatibility with tests
-// These schemas handle the old object-based email/phone format
-export const phoneNumberSchema = z.record(z.string()).optional();
-export const emailSchema = z.record(z.string()).optional();
-// Note: contactStatusSchema removed - 'status' field has no UI input
+// Note: Legacy schemas removed per Engineering Constitution #1 (NO BACKWARD COMPATIBILITY)
+// phoneNumberSchema, emailSchema, contactStatusSchema - use emailAndTypeSchema and phoneNumberAndTypeSchema instead
 
 // Contact-Organization relationship schema
 export const contactOrganizationSchema = z
@@ -103,47 +100,21 @@ const contactBaseSchema = z.object({
   // Avatar field (managed by ImageEditorField, not validated)
   avatar: z.any().optional(), // Partial<RAFile>
 
-  // Support for legacy test format - email/phone as objects (backward compatibility)
-  email_object: z.record(z.string()).optional(),
-  phone_number: z.record(z.string()).optional(),
-
   // Calculated/readonly fields (not user input)
   nb_tasks: z.number().optional(),
   company_name: z.string().optional().nullable(),
   search_tsv: z.any().optional(),
 
   // Note: The following fields exist in database but are NOT validated
-  // because they have no UI input fields in ContactInputs.tsx:
-  // - address, city, state, postal_code, country (address fields - no UI inputs)
-  // - birthday, gender (personal info - no UI inputs)
-  // - twitter_handle (social media - no UI input)
-  // - notes (no UI input)
-  // - tags (no UI input)
-  // These may be populated via CSV import or future features.
+  // because they have no UI input fields in ContactInputs.tsx (per "UI as truth" principle):
+  // - address, city, state, postal_code, country
+  // - birthday, gender
+  // - twitter_handle
+  // - notes, tags
 });
 
 // Helper function to transform data
 function transformContactData(data: any) {
-  // Transform legacy email object format to array format
-  if (data.email_object && typeof data.email_object === 'object' && !Array.isArray(data.email)) {
-    const emailArray = Object.entries(data.email_object).map(([type, email]) => ({
-      email: email as string,
-      type: type === 'primary' || type === 'work' ? 'Work' :
-            type === 'personal' ? 'Home' : 'Other' as "Work" | "Home" | "Other"
-    }));
-    data.email = emailArray;
-  }
-
-  // Transform legacy phone object format to array format
-  if (data.phone_number && typeof data.phone_number === 'object' && !Array.isArray(data.phone)) {
-    const phoneArray = Object.entries(data.phone_number).map(([type, number]) => ({
-      number: number as string,
-      type: type === 'mobile' || type === 'office' ? 'Work' :
-            type === 'home' ? 'Home' : 'Other' as "Work" | "Home" | "Other"
-    }));
-    data.phone = phoneArray;
-  }
-
   // Compute name from first + last if not provided
   if (!data.name && (data.first_name || data.last_name)) {
     data.name = [data.first_name, data.last_name].filter(Boolean).join(' ') || 'Unknown';
