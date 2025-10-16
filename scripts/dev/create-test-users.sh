@@ -76,7 +76,7 @@ if [[ "$DB_URL" == *"localhost"* ]] || [[ "$DB_URL" == *"127.0.0.1"* ]]; then
     # Check if Docker container is running
     if docker ps --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
         info_msg "Using Docker container: ${CONTAINER_NAME}"
-        PSQL_CMD="docker exec ${CONTAINER_NAME} psql -U postgres -d postgres"
+        PSQL_CMD="docker exec -i ${CONTAINER_NAME} psql -U postgres -d postgres"
     else
         error_exit "Docker container ${CONTAINER_NAME} is not running. Start it with: npm run supabase:local:start"
     fi
@@ -260,11 +260,28 @@ else
 fi
 
 # =====================================================================
-# Step 3: Generate Role-Specific Test Data
+# Step 3: Get Sales IDs for Data Generation
 # =====================================================================
 
 echo ""
-echo "3️⃣  Generating test data..."
+echo "3️⃣  Looking up sales IDs..."
+
+# Query the bigint sales.id values that were just created
+ADMIN_SALES_ID=$($PSQL_CMD -t -c "SELECT id FROM sales WHERE user_id = '$ADMIN_ID'::uuid" | tr -d ' ')
+DIRECTOR_SALES_ID=$($PSQL_CMD -t -c "SELECT id FROM sales WHERE user_id = '$DIRECTOR_ID'::uuid" | tr -d ' ')
+MANAGER_SALES_ID=$($PSQL_CMD -t -c "SELECT id FROM sales WHERE user_id = '$MANAGER_ID'::uuid" | tr -d ' ')
+
+success_msg "Sales IDs retrieved:"
+echo "   Admin:    $ADMIN_SALES_ID"
+echo "   Director: $DIRECTOR_SALES_ID"
+echo "   Manager:  $MANAGER_SALES_ID"
+
+# =====================================================================
+# Step 4: Generate Role-Specific Test Data
+# =====================================================================
+
+echo ""
+echo "4️⃣  Generating test data..."
 
 # Set environment variables for local Supabase connection
 export VITE_SUPABASE_URL="${VITE_SUPABASE_URL:-http://localhost:54321}"
