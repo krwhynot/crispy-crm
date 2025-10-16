@@ -202,12 +202,11 @@ class ProductSeeder {
 
       const name = template?.name || `${faker.commerce.productAdjective()} ${faker.commerce.product()}`;
       const brand = template?.brand || faker.company.name();
-      const subcategory = template?.subcategory || faker.commerce.department();
+      // Note: brand and subcategory fields don't exist in database schema - used only for SKU generation
 
-      const costPerUnit = faker.number.float({ min: 1, max: 50, fractionDigits: 2 });
       const listPrice = faker.number.float({
-        min: costPerUnit * 1.5,
-        max: costPerUnit * 3,
+        min: 5,
+        max: 150,
         fractionDigits: 2
       });
 
