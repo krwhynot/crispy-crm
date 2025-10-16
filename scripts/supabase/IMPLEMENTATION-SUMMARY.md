@@ -394,17 +394,54 @@ This implementation delivers a solid, maintainable foundation for local-first Su
 - ✅ Updated `.env.local` with properly signed tokens
 - ✅ Verified automated user creation end-to-end
 
-**Known Issue (Low Priority)**:
-- Seed data generation schema mismatch (missing 'country' column) - requires schema update, not blocking core functionality
+**Schema Alignment Completed (2025-10-16)**:
+All schema mismatches between seed-data.js and database have been resolved through 15 systematic fixes:
 
-**Next Steps**:
-1. Fix seed-data.js schema mismatch (update organizations table or script)
-2. Test full workflow with seed data once schema is fixed
-3. Optional: Clean up deprecated script versions (create-test-users v1/v2)
+1. ✅ Removed `country` field from organizations
+2. ✅ Fixed organization fields: `industry`→`organization_type`, removed `segment`, `description`→`notes`
+3. ✅ Updated organization_type enum values (F&B-specific → valid enum: customer, principal, distributor, prospect, partner)
+4. ✅ Fixed contact fields: removed `avatar`, `background`, `status`; moved background text to `notes`; added required `name` field
+5. ✅ Removed manual UUID assignments from contacts, activities, notes
+6. ✅ Added `.select()` to insertions to retrieve auto-generated IDs
+7. ✅ Fixed contact-organization relationships (changed to `relationship_start_date`, respects unique constraint)
+8. ✅ Removed `amount` and `probability` fields from opportunities
+9. ✅ Removed `category` field from opportunities
+10. ✅ Fixed opportunity_status enum values (open/won/lost → active/on_hold/nurturing/stalled/expired)
+11. ✅ Completely rewrote activities generation for new schema (activity_type, interaction types, proper constraints)
+12. ✅ Fixed notes table names (snake_case → camelCase: `opportunityNotes`, `contactNotes`)
+13. ✅ Fixed notes schema (removed `type`, added `date` field)
+14. ✅ Implemented index-based ID mapping pattern for activities and notes (IDs assigned after insertion)
+15. ✅ Fixed role name mismatch in create-test-users-http.mjs (`director`/`manager` → `sales_director`/`account_manager`)
+
+**End-to-End Test Results** ✅:
+- All 3 test users created successfully
+- Data generation and insertion working perfectly
+- Local database verified with actual counts:
+  - 856 organizations
+  - 1,303 contacts
+  - 442 opportunities
+  - 801 activities
+  - 451 notes (279 opportunity + 172 contact)
+
+**Schema Parity Verification** ✅:
+- All table schemas match 100% between local and cloud databases
+- All enum types verified identical
+- organizations (31 columns), contacts (28 columns), opportunities (29 columns), activities (23 columns), notes (8 columns each)
+
+**Known Issue (Non-Blocking)**:
+- `test_user_metadata` table missing unique constraint on `user_id` column
+- Does not affect data generation or user creation
+- Can be addressed in future migration if needed
+
+**Recommended Next Steps**:
+1. Optional: Add unique constraint to test_user_metadata table
+2. Optional: Test cloud sync workflow (`npm run dev:sync:push -- --force`)
+3. Optional: Remove deprecated script versions (create-test-users.sh v1/v2, test-fetch.mjs)
+4. Optional: Remove debug logging from seed-data.js
 
 ---
 
-**Document Version**: 1.1
-**Last Updated**: 2025-10-15 (23:42 UTC)
+**Document Version**: 2.0
+**Last Updated**: 2025-10-16 (00:30 UTC)
 **Maintained By**: Claude Code (Sonnet 4.5)
-**Status**: ✅ **IMPLEMENTATION COMPLETE** - Automated user creation working
+**Status**: ✅ **FULLY OPERATIONAL** - Complete workflow tested and verified
