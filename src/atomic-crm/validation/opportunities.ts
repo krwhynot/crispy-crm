@@ -71,13 +71,20 @@ export const opportunitySchema = z
     status: opportunityStatusSchema.optional().nullable(),
     priority: opportunityPrioritySchema.nullable().default("medium"),
     description: z.string().optional().nullable(),
+    // Support both field names for compatibility
     estimated_close_date: z
       .string()
       .min(1, "Expected closing date is required")
-      .default(() => new Date().toISOString().split("T")[0]),
+      .optional(),
+    expected_closing_date: z
+      .string()
+      .min(1, "Expected closing date is required")
+      .optional(),
     actual_close_date: z.string().optional().nullable(),
+    closed_date: z.string().optional().nullable(),
     opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
     account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
+    sales_rep_id: z.union([z.string(), z.number()]).optional().nullable(),
     lead_source: leadSourceSchema.optional().nullable(),
     index: z.number().default(0),
     founding_interaction_id: z
@@ -88,8 +95,23 @@ export const opportunitySchema = z
     status_manual: z.boolean().optional().nullable(),
     next_action: z.string().optional().nullable(),
     next_action_date: z.string().optional().nullable(),
+    next_step: z.string().optional().nullable(),
     competition: z.string().optional().nullable(),
     decision_criteria: z.string().optional().nullable(),
+    // Add missing fields from tests
+    amount: z
+      .number()
+      .min(0, "Amount must be positive")
+      .default(0),
+    probability: z
+      .number()
+      .min(0, "Probability must be between 0 and 100")
+      .max(100, "Probability must be between 0 and 100")
+      .default(50),
+    tags: z.array(z.string()).optional().nullable(),
+    competitor_ids: z.array(z.union([z.string(), z.number()])).optional().nullable(),
+    loss_reason: z.string().optional().nullable(),
+    team_members: z.array(z.union([z.string(), z.number()])).optional().nullable(),
 
     deleted_at: z.string().optional().nullable(),
 
@@ -110,6 +132,19 @@ export const opportunitySchema = z
       );
     }
     return true;
+  })
+  .transform((data) => {
+    // Normalize date field names
+    if (data.expected_closing_date && !data.estimated_close_date) {
+      data.estimated_close_date = data.expected_closing_date;
+    }
+    if (data.closed_date && !data.actual_close_date) {
+      data.actual_close_date = data.closed_date;
+    }
+    if (data.sales_rep_id && !data.opportunity_owner_id) {
+      data.opportunity_owner_id = data.sales_rep_id;
+    }
+    return data;
   });
 
 // Type inference
@@ -143,6 +178,7 @@ export async function validateOpportunityForm(data: any): Promise<void> {
 }
 
 // Create-specific schema (stricter requirements)
+// Note: We check for either expected_closing_date or estimated_close_date
 export const createOpportunitySchema = opportunitySchema
   .omit({
     id: true,
@@ -153,8 +189,14 @@ export const createOpportunitySchema = opportunitySchema
   .required({
     name: true,
     contact_ids: true,
-    estimated_close_date: true,
-  });
+  })
+  .refine(
+    (data) => data.expected_closing_date || data.estimated_close_date,
+    {
+      message: "Expected closing date is required",
+      path: ["expected_closing_date"],
+    }
+  );
 
 // Update-specific schema (more flexible)
 export const updateOpportunitySchema = opportunitySchema.partial().required({
