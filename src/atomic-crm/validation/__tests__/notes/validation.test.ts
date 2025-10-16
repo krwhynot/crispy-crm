@@ -73,14 +73,12 @@ describe("Note Validation Schemas", () => {
       date: "2024-01-15T10:00:00Z",
       contact_id: "contact-123",
       sales_id: "user-456",
-      status: "completed",
     };
 
     it("should accept valid contact note", () => {
       const result = contactNoteSchema.parse(validContactNote);
       expect(result.text).toBe("Called customer about renewal");
       expect(result.contact_id).toBe("contact-123");
-      expect(result.status).toBe("completed");
     });
 
     it("should reject empty text", () => {
