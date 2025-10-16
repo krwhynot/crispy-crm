@@ -295,7 +295,7 @@ SEED_CONTACT_COUNT=100 \
 SEED_OPPORTUNITY_COUNT=75 \
 SEED_ACTIVITY_COUNT=200 \
 SEED_PRODUCT_COUNT=100 \
-TEST_USER_ID="$ADMIN_ID" \
+TEST_USER_ID="$ADMIN_SALES_ID" \
 node /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 
 if [ $? -eq 0 ]; then
@@ -312,7 +312,7 @@ SEED_CONTACT_COUNT=60 \
 SEED_OPPORTUNITY_COUNT=40 \
 SEED_ACTIVITY_COUNT=120 \
 SEED_PRODUCT_COUNT=0 \
-TEST_USER_ID="$DIRECTOR_ID" \
+TEST_USER_ID="$DIRECTOR_SALES_ID" \
 node /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 
 if [ $? -eq 0 ]; then
@@ -329,7 +329,7 @@ SEED_CONTACT_COUNT=40 \
 SEED_OPPORTUNITY_COUNT=25 \
 SEED_ACTIVITY_COUNT=80 \
 SEED_PRODUCT_COUNT=0 \
-TEST_USER_ID="$MANAGER_ID" \
+TEST_USER_ID="$MANAGER_SALES_ID" \
 node /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 
 if [ $? -eq 0 ]; then
@@ -339,11 +339,11 @@ else
 fi
 
 # =====================================================================
-# Step 4: Track Test User Metadata
+# Step 5: Track Test User Metadata
 # =====================================================================
 
 echo ""
-echo "4️⃣  Recording test user metadata..."
+echo "5️⃣  Recording test user metadata..."
 
 $PSQL_CMD << EOF
 -- Create metadata table if it doesn't exist
