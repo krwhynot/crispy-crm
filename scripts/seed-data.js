@@ -26,6 +26,9 @@ dotenv.config();
 
 // Configuration
 const CONFIG = {
+  // Test user ID (bigint sales.id for linking data to specific test user)
+  TEST_USER_ID: process.env.TEST_USER_ID ? parseInt(process.env.TEST_USER_ID) : null,
+
   // Default counts
   ORGANIZATION_COUNT: parseInt(process.env.SEED_ORGANIZATION_COUNT || "50"),
   CONTACT_COUNT: parseInt(process.env.SEED_CONTACT_COUNT || "100"),
@@ -384,6 +387,8 @@ class SeedDataGenerator {
           `Industry veteran with expertise in ${department.toLowerCase()}. Committed to food safety and quality.`,
           `Results-driven professional in ${department.toLowerCase()}. Focus on sustainable operations.`,
         ]),
+        sales_id: CONFIG.TEST_USER_ID, // Link to test user if provided
+        created_by: CONFIG.TEST_USER_ID, // Track creator if provided
         created_at: faker.date.past({ years: 2 }),
         updated_at: faker.date.recent(),
       };
