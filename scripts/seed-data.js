@@ -525,26 +525,14 @@ class SeedDataGenerator {
 
       const note = {
         text: faker.lorem.paragraphs({ min: 1, max: 3 }),
-        type: faker.helpers.arrayElement([
-          "general",
-          "meeting",
-          "call",
-          "email",
-          "internal",
-        ]),
-        created_at: faker.date.past({ years: 0.5 }),
-        updated_at: faker.date.recent(),
+        date: faker.date.past({ years: 0.5 }),
       };
 
       if (isOpportunityNote) {
-        note.opportunity_id = faker.helpers.arrayElement(
-          this.generatedData.opportunities,
-        ).id;
+        note._opp_index = faker.number.int({ min: 0, max: this.generatedData.opportunities.length - 1 });
         note.table = "opportunityNotes";
       } else {
-        note.contact_id = faker.helpers.arrayElement(
-          this.generatedData.contacts,
-        ).id;
+        note._contact_index = faker.number.int({ min: 0, max: this.generatedData.contacts.length - 1 });
         note.table = "contactNotes";
       }
 
@@ -635,16 +623,27 @@ class SeedDataGenerator {
 
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
+        console.log(`Attempting to insert ${this.generatedData.organizations.length} organizations...`);
         const { data: insertedOrgs, error } = await this.supabase
           .from("organizations")
           .insert(this.generatedData.organizations)
           .select();
+
+        console.log(`Insert response - error:`, error);
+        console.log(`Insert response - data count:`, insertedOrgs?.length || 0);
+
         if (error) throw error;
+
+        if (!insertedOrgs || insertedOrgs.length === 0) {
+          throw new Error('No organizations were inserted - data is null or empty');
+        }
 
         // Update organizations with their database-assigned IDs
         this.generatedData.organizations.forEach((org, index) => {
           org.id = insertedOrgs[index].id;
         });
+
+        console.log(`Successfully updated ${insertedOrgs.length} organizations with database IDs`);
       }
 
       // Insert contacts
@@ -723,11 +722,17 @@ class SeedDataGenerator {
       // Insert notes
       const opportunityNotes = this.generatedData.notes
         .filter((note) => note.table === "opportunityNotes")
-        .map(({ table, ...note }) => note);
+        .map(({ table, _opp_index, ...note }) => ({
+          ...note,
+          opportunity_id: this.generatedData.opportunities[_opp_index].id,
+        }));
 
       const contactNotes = this.generatedData.notes
         .filter((note) => note.table === "contactNotes")
-        .map(({ table, ...note }) => note);
+        .map(({ table, _contact_index, ...note }) => ({
+          ...note,
+          contact_id: this.generatedData.contacts[_contact_index].id,
+        }));
 
       if (opportunityNotes.length > 0) {
         const { error } = await this.supabase

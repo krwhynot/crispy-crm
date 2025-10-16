@@ -27,8 +27,8 @@ const config = {
 // Role-specific data volumes
 const dataVolumes = {
   admin: { orgs: 50, contacts: 100, opportunities: 75, activities: 200, tasks: 100, notes: 150 },
-  director: { orgs: 30, contacts: 60, opportunities: 40, activities: 120, tasks: 60, notes: 90 },
-  manager: { orgs: 20, contacts: 40, opportunities: 25, activities: 80, tasks: 40, notes: 60 }
+  sales_director: { orgs: 30, contacts: 60, opportunities: 40, activities: 120, tasks: 60, notes: 90 },
+  account_manager: { orgs: 20, contacts: 40, opportunities: 25, activities: 80, tasks: 40, notes: 60 }
 };
 
 // =====================================================================
