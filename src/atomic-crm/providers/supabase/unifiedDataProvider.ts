@@ -248,7 +248,7 @@ export const unifiedDataProvider: DataProvider = {
   ): Promise<any> {
     return wrapMethod("getList", resource, params, async () => {
       // Create a mutable copy of params to potentially modify filters
-      let processedParams = { ...params };
+      const processedParams = { ...params };
 
       // CRITICAL: Validate and clean filters BEFORE applying search parameters
       // This prevents 400 errors from stale cached filters referencing non-existent columns

@@ -123,6 +123,16 @@ export class TransformService {
   };
 
   /**
+   * Check if a resource has a transformer configured
+   * @param resource The resource to check
+   * @returns True if the resource has a transformer
+   */
+  hasTransform(resource: string): boolean {
+    return resource in this.transformerRegistry &&
+           this.transformerRegistry[resource]?.transform !== undefined;
+  }
+
+  /**
    * Transform data for a specific resource
    * @param resource The resource being transformed
    * @param data The data to transform
