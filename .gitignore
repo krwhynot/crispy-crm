@@ -61,3 +61,6 @@ backups/
 *.sql.backup
 logs/sync-operations/
 scripts/dev/test-fetch.mjs
+
+# Supabase seed files with real user data
+supabase/cloud_users.sql
