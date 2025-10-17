@@ -756,3 +756,4 @@
 [2025-10-17 14:09:29] [configuration] Edit: /home/krwhynot/projects/crispy-crm/public/manifest.json
 [2025-10-17 14:12:45] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251017141210_migrate_colors_to_semantic.sql
 [2025-10-17 14:13:10] [documentation] Edit: /home/krwhynot/projects/crispy-crm/.docs/plans/mfb-garden-theme/IMPLEMENTATION.md
+[2025-10-17 14:48:02] [code] Edit: /home/krwhynot/projects/crispy-crm/.env
