@@ -166,7 +166,7 @@ Then update semantic color test preparation (around line 330) to call `resolveCo
 - Expect 34+ passing tests (16 tags + 14 semantic + 4 focus)
 - Check `color-contrast-report.json` includes primary, secondary, destructive tests
 
-**Gotcha**: If using Option A, ensure recursion depth limit to prevent infinite loops on circular references.
+**Gotcha**: Ensure recursion depth limit to prevent infinite loops on circular references. DO NOT use hardcoded OKLCH values in tests - this creates technical debt and defeats the purpose of validating the actual CSS variable implementation.
 
 ---
 
@@ -291,6 +291,8 @@ className="... rounded-xl ..."
 
 **Gotcha**: `rounded-lg` = 8px in new system (because `--radius` changed). Upgrade to `rounded-xl` for dialogs (12px) to create visual hierarchy.
 
+**ACCESSIBILITY WARNING**: If Task 3.2 introduces hover lift effects (`transform: translateY(-2px)`), wrap them in a `@media (prefers-reduced-motion: no-preference)` query to respect user motion preferences.
+
 ---
 
 #### Task 3.2: Update Shadow Opacity for Cream Background [Depends on: 1.1]
@@ -321,6 +323,17 @@ Increase opacity 25-30% for visibility on warm cream background:
 
 **Gotcha**: Dark mode shadows (in `.dark` block) should use higher opacity (35-55%) for visibility on dark backgrounds. Update those in Phase 6.
 
+**ACCESSIBILITY NOTE**: If adding hover effects with `transform: translateY(-2px)`, wrap in a media query:
+```css
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover, .btn:hover {
+    transform: translateY(-2px);
+    transition: all 200ms ease;
+  }
+}
+```
+This respects users with vestibular disorders who prefer reduced motion.
+
 ---
 
 #### Task 3.3: Fix Hardcoded Colors in Overlays [Depends on: 1.1]
@@ -336,11 +349,22 @@ Files to Modify:
 - `/home/krwhynot/projects/crispy-crm/src/components/admin/bulk-actions-toolbar.tsx`
 - `/home/krwhynot/projects/crispy-crm/src/index.css`
 
-**Step 1: Add semantic overlay variable (src/index.css after line 96)**
+**Step 1: Add semantic overlay variable (src/index.css)**
+
+**1a. Add to :root block (after line 96)**
 ```css
 /* Overlay/backdrop colors */
 --overlay: oklch(0 0 0 / 50%);         /* Black 50% opacity for modals */
 --overlay-light: oklch(0 0 0 / 30%);   /* Lighter overlay variant */
+```
+
+**1b. Add to @theme bridge (after line 28)**
+```css
+@theme inline {
+  /* ... existing color variables ... */
+  --color-overlay: var(--overlay);
+  --color-overlay-light: var(--overlay-light);
+}
 ```
 
 **Step 2: Fix Dialog overlay (src/components/ui/dialog.tsx line ~39)**
@@ -349,7 +373,7 @@ Files to Modify:
 className="... bg-black/50"
 
 // AFTER
-className="... bg-[var(--overlay)]"
+className="... bg-overlay"
 ```
 
 **Step 3: Fix Sheet overlay (src/components/ui/sheet.tsx line ~39)**
@@ -370,7 +394,7 @@ className="... bg-card"
 - Open sheet component: same overlay behavior
 - Select multiple items in list: bulk actions toolbar should use card background color
 
-**Gotcha**: `bg-[var(--overlay)]` uses arbitrary value syntax because `--overlay` is not in `@theme` bridge. Alternative: add to bridge or use `bg-black/50` but define `--overlay` for documentation purposes.
+**Gotcha**: Adding `--overlay` to the `@theme` bridge enables clean utility class usage (`bg-overlay`) instead of arbitrary value syntax (`bg-[var(--overlay)]`). This is more maintainable and consistent with the project's semantic token architecture.
 
 ---
 
@@ -625,23 +649,20 @@ Increase hue by 10° for warmer appearance:
 --tag-pink-fg: oklch(20% 0.02 350.2);
 ```
 
-**Step 2: Add 5 new earth-tone tags (src/index.css after line 154)**
+**Step 2: Add 4 new earth-tone tags (src/index.css after line 154)**
 ```css
-/* NEW earth-tone tags */
---tag-terracotta-bg: oklch(88% 0.075 76);
---tag-terracotta-fg: oklch(30% 0.110 76);
+/* NEW earth-tone tags (per requirements.md lines 202-226) */
+--tag-clay-bg: oklch(92% 0.04 48);          /* Terracotta/clay */
+--tag-clay-fg: oklch(20% 0.02 48);
 
---tag-sage-bg: oklch(92% 0.055 145);
---tag-sage-fg: oklch(30% 0.095 145);
+--tag-sage-bg: oklch(94% 0.03 112);         /* Olive green/sage */
+--tag-sage-fg: oklch(20% 0.02 112);
 
---tag-olive-bg: oklch(88% 0.065 120);
---tag-olive-fg: oklch(25% 0.105 120);
+--tag-amber-bg: oklch(96% 0.04 80);         /* Golden amber */
+--tag-amber-fg: oklch(20% 0.02 80);
 
---tag-amber-bg: oklch(90% 0.095 85);
---tag-amber-fg: oklch(30% 0.125 85);
-
---tag-rust-bg: oklch(86% 0.085 30);
---tag-rust-fg: oklch(28% 0.115 30);
+--tag-cocoa-bg: oklch(90% 0.04 74);         /* Brown/cocoa */
+--tag-cocoa-fg: oklch(20% 0.02 74);
 ```
 
 **Step 3: Add tag types to TypeScript (src/lib/color-types.ts)**
@@ -656,11 +677,10 @@ export type TagColor =
   | 'yellow'
   | 'gray'
   | 'pink'
-  | 'terracotta'  // NEW
-  | 'sage'        // NEW
-  | 'olive'       // NEW
-  | 'amber'       // NEW
-  | 'rust';       // NEW
+  | 'clay'    // NEW (terracotta)
+  | 'sage'    // NEW (olive green)
+  | 'amber'   // NEW (golden)
+  | 'cocoa';  // NEW (brown)
 ```
 
 **Step 4: Export new tag colors (src/atomic-crm/tags/colors.ts)**
@@ -675,21 +695,20 @@ export const tagColors: TagColor[] = [
   'yellow',
   'gray',
   'pink',
-  'terracotta',  // NEW
-  'sage',        // NEW
-  'olive',       // NEW
-  'amber',       // NEW
-  'rust',        // NEW
+  'clay',    // NEW (terracotta)
+  'sage',    // NEW (olive green)
+  'amber',   // NEW (golden)
+  'cocoa',   // NEW (brown)
 ];
 ```
 
 **Validation:**
 - Create contact with each tag color: verify background/foreground contrast
-- Run `npm run validate:colors`: all 13 tag tests should pass (was 8)
+- Run `npm run validate:colors`: all 12 tag tests should pass (8 existing + 4 new)
 - Check tag picker UI: new colors should appear in dropdown
 - Test dark mode: tags should remain readable
 
-**Gotcha**: Tag utility classes are auto-generated from CSS variables (lines 392-430 in index.css). New tags should work automatically without manual class definitions.
+**Gotcha**: Tag utility classes are auto-generated from CSS variables (lines 392-430 in index.css). New tags should work automatically without manual class definitions. Note: Total is 12 tags (8 + 4), not 13 as originally stated.
 
 ---
 
@@ -727,6 +746,39 @@ Files to Modify:
 - Compare to main content area: sidebar should be distinct but harmonious
 
 **Gotcha**: Sidebar background is only 1% lighter than main background (98% vs 99%). This is intentional for subtle differentiation. More contrast creates visual "boxiness".
+
+---
+
+#### Task 5.3: Validate Kanban Stage Colors [Depends on: 4.3]
+
+**READ THESE BEFORE TASK**
+- `/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/stageConstants.ts` (lines 24-81: Stage color definitions)
+- `/home/krwhynot/projects/crispy-crm/.docs/plans/mfb-garden-theme/requirements.md` (lines 387-396: Kanban color expectations)
+
+**Instructions**
+
+Files to Validate (NO modifications needed):
+- `/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/stageConstants.ts`
+
+**Context**: Kanban stage colors use semantic variables (`var(--info-subtle)`, `var(--warning-subtle)`, `var(--success-subtle)`, etc.) which will auto-update when Task 4.3 (Update Semantic State Colors) completes. This task validates the colors look appropriate for the earth-tone theme.
+
+**Validation Steps:**
+1. Navigate to Opportunities Pipeline (Kanban view)
+2. Verify each stage has appropriate earth-tone color:
+   - **new_lead**: Uses `var(--info-subtle)` - should show sage-teal tint
+   - **initial_outreach**: Uses `var(--tag-teal-bg)` - should show shifted warmer teal
+   - **sample_visit_offered**: Uses `var(--warning-subtle)` - should show golden amber tint
+   - **awaiting_response**: Uses `var(--tag-purple-bg)` - should show shifted warmer purple
+   - **feedback_logged**: Uses `var(--tag-blue-bg)` - should show shifted warmer blue
+   - **demo_scheduled**: Uses `var(--success-subtle)` - should show MFB lime green tint
+   - **closed_won**: Uses `var(--success-strong)` - should show darker MFB lime green
+   - **closed_lost**: Uses `var(--error-subtle)` - should show terracotta/rust tint
+
+3. Check visual hierarchy: elevation property ensures new opportunities and important milestones stand out
+4. Test dark mode: stage colors should remain distinct and readable
+5. Screenshot Kanban board in both light and dark modes
+
+**Gotcha**: Stages use a mix of semantic state colors AND direct tag colors. This is intentional for visual variety. All colors will automatically update when their source variables change in Phase 4.3.
 
 ---
 
@@ -845,11 +897,45 @@ Files to Modify:
 ```
 
 **Step 7: Update tag colors for dark mode**
-Invert background/foreground for all 13 tag colors:
+Invert background/foreground for all 12 tag colors (8 existing + 4 new):
 ```css
+/* Existing tags - inverted */
 --tag-warm-bg: oklch(25% 0.041 79.5);
 --tag-warm-fg: oklch(85% 0.02 79.5);
-/* ... repeat for all 13 tags ... */
+
+--tag-green-bg: oklch(22% 0.023 159.3);
+--tag-green-fg: oklch(88% 0.02 159.3);
+
+--tag-teal-bg: oklch(24% 0.023 206.7);
+--tag-teal-fg: oklch(86% 0.02 206.7);
+
+--tag-blue-bg: oklch(26% 0.033 275.6);
+--tag-blue-fg: oklch(84% 0.02 275.6);
+
+--tag-purple-bg: oklch(25% 0.034 304.6);
+--tag-purple-fg: oklch(85% 0.02 304.6);
+
+--tag-yellow-bg: oklch(28% 0.026 118.8);
+--tag-yellow-fg: oklch(92% 0.02 118.8);
+
+--tag-gray-bg: oklch(25% 0 0);
+--tag-gray-fg: oklch(85% 0 0);
+
+--tag-pink-bg: oklch(26% 0.043 350.2);
+--tag-pink-fg: oklch(84% 0.02 350.2);
+
+/* NEW earth-tone tags - inverted */
+--tag-clay-bg: oklch(28% 0.04 48);
+--tag-clay-fg: oklch(82% 0.02 48);
+
+--tag-sage-bg: oklch(24% 0.03 112);
+--tag-sage-fg: oklch(86% 0.02 112);
+
+--tag-amber-bg: oklch(30% 0.04 80);
+--tag-amber-fg: oklch(88% 0.02 80);
+
+--tag-cocoa-bg: oklch(28% 0.04 74);
+--tag-cocoa-fg: oklch(82% 0.02 74);
 ```
 
 **Step 8: Adjust shadows for dark mode**
@@ -950,7 +1036,7 @@ No files to modify. Perform visual inspection.
 3. **Contacts List**
    - [ ] Table background warm cream
    - [ ] Row hover shows light sage tint
-   - [ ] Tags display 13 colors (8 shifted + 5 new)
+   - [ ] Tags display 12 colors (8 shifted + 4 new: clay, sage, amber, cocoa)
    - [ ] Action buttons styled correctly
 
 4. **Contact Detail Page**
@@ -1027,7 +1113,7 @@ Use browser DevTools or contrast checker tool:
 - [ ] Primary button text: 4.5:1+ (white on MFB green)
 - [ ] Body text on cream: 4.5:1+ (dark on cream)
 - [ ] Focus rings: 3:1+ (MFB lime on cream)
-- [ ] Tags: 4.5:1+ (all 13 color pairs)
+- [ ] Tags: 4.5:1+ (all 12 color pairs)
 
 **Gotcha**: Warm cream background is 99% lightness - very close to white. Some text may need darkening to meet 4.5:1 ratio. Target 5:1+ for safety margin.
 
@@ -1060,7 +1146,7 @@ Files to Modify:
 - **Neutrals**: Warm gray with beige tint at hue 85° (vs. original cool gray at 285°)
 - **Background**: Warm cream oklch(99% 0.015 85) = #FEFEF9 (vs. stark white)
 - **Charts**: 8-color earth-tone palette (warm tan, lime green, terracotta, sage, amber, sage-teal, eggplant, mushroom)
-- **Tags**: 13 color options (8 shifted 10° warmer + 5 new earth tones: terracotta, sage, olive, amber, rust)
+- **Tags**: 12 color options (8 shifted 10° warmer + 4 new earth tones: clay, sage, amber, cocoa)
 
 **Key Features**:
 - **Three-tier hierarchy**: Brand foundation → Semantic tokens → Component-specific
@@ -1156,11 +1242,13 @@ Include:
 
 ### Parallel Execution Strategy
 
-**Optimal Agent Assignment (4 agents):**
-- **Agent A**: Phase 1 (Core Colors) → Phase 6 (Dark Mode) → Phase 7 (Testing) [Critical path]
-- **Agent B**: Phase 2 (Typography) [Starts after Phase 1] → Phase 8.1 (CLAUDE.md) [After Phase 6]
-- **Agent C**: Phase 3 (Component Patterns) [Starts after Phase 1] → Phase 7.2 (Visual Testing) [After Phase 6]
-- **Agent D**: Phase 4 (Charts) + Phase 5 (Tags/Sidebar) [Starts after Phase 1] → Phase 8.2 (Theme Docs) [After Phase 6]
+**Optimal Agent Assignment (4 agents) - BALANCED WORKLOAD:**
+- **Agent A (Critical Path)**: Phase 1 (Core Colors) → Phase 6 (Dark Mode)
+- **Agent B**: Phase 2 (Typography) → Phase 5 (Tags/Sidebar) [Starts after Phase 1]
+- **Agent C**: Phase 3 (Component Patterns) → Phase 7 (Testing)
+- **Agent D**: Phase 4 (Charts) → Phase 8 (All Documentation)
+
+This balancing addresses the original overload on Agent A and underload on Agent B identified in the Zen review.
 
 **Optimal Agent Assignment (2 agents):**
 - **Agent A**: Phase 1 → Phase 6 → Phase 7 [Critical path, no parallelization]
@@ -1169,6 +1257,47 @@ Include:
 **Single Agent Execution:**
 - Follow phases 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 sequentially
 - Estimated 32-42 hours (no time savings from parallelization)
+
+### Merge and Integration Strategy (CRITICAL for Parallel Execution)
+
+**Problem**: Phases 2, 3, 4, and 5 all modify `src/index.css` concurrently, creating high risk of complex merge conflicts that can negate time savings from parallelization.
+
+**Solution**:
+
+1. **Create Separate Feature Branches**:
+   - Agent A: Works directly on `feature/brand-green-color-migration` (critical path)
+   - Agent B: Creates `feature/phase2-typography` branch from main migration branch
+   - Agent C: Creates `feature/phase3-components` branch from main migration branch
+   - Agent D: Creates `feature/phase4-charts` branch from main migration branch
+
+2. **Commit Frequently**:
+   - Each agent commits after completing individual steps (not just full tasks)
+   - Use descriptive commit messages: "feat(colors): update brand-700 for WCAG AA"
+
+3. **Regular Rebasing**:
+   - After Phase 1 merges, Agents B/C/D immediately rebase their branches
+   - Before submitting PR, each agent rebases against latest migration branch
+   - Command: `git fetch origin feature/brand-green-color-migration && git rebase origin/feature/brand-green-color-migration`
+
+4. **Designate Lead Integrator**:
+   - **Agent A** (on critical path) acts as lead integrator
+   - Agent A reviews and resolves merge conflicts in `src/index.css` as parallel phases complete
+   - Agent A has final authority on resolving conflicting color definitions
+
+5. **Conflict Resolution Protocol**:
+   - If merge conflict in `src/index.css`, use **line number ranges** to identify ownership:
+     - Lines 1-96: Phase 1 (Agent A) - foundation and semantic tokens
+     - Lines 97-184: Phase 4 (Agent D) - semantic state colors and charts
+     - Lines 138-154: Phase 5 (Agent B) - tag colors
+     - Lines 173-184: Phase 5 (Agent B) - sidebar colors
+   - Typography changes (Phase 2) go in `@theme` block (lines 6-42) and `@layer base` section - low conflict risk
+
+6. **Integration Checkpoints**:
+   - **After Phase 1**: All agents rebase, verify no conflicts
+   - **After Phases 2-5 complete**: Agent A integrates all branches sequentially in order: 2 → 3 → 4 → 5
+   - **After Phase 6**: All agents rebase for testing phase
+
+**Alternative (Lower Risk)**: If team is unfamiliar with git rebase, run phases sequentially: 1 → 2&3&4&5 (in any order) → 6 → 7 → 8. This increases timeline to 24-28 hours but eliminates merge conflict risk.
 
 ### Common Pitfalls to Avoid
 
@@ -1205,7 +1334,19 @@ If critical issues discovered during Phase 7:
 
 ---
 
-**Last Updated**: 2025-01-17
-**Status**: Ready for parallel execution
-**Estimated Total Time**: 26-38 hours (with 4-agent parallelization: 12-18 hours elapsed)
+**Last Updated**: 2025-01-17 (Revised after Zen technical review)
+**Status**: Ready for parallel execution ✅
+**Estimated Total Time**: 26-38 hours (with 4-agent balanced parallelization: 12-18 hours elapsed)
 **Next Step**: Assign tasks to agents, begin Phase 1 (Core Colors)
+
+**Revision History**:
+- **v1.0** (2025-01-17): Initial plan creation with 17 tasks across 8 phases
+- **v1.1** (2025-01-17): Post-Zen review revisions:
+  - Fixed tag colors (clay/sage/amber/cocoa per requirements, not terracotta/olive/rust)
+  - Added Task 5.3 (Kanban stage color validation)
+  - Mandated validation script Option A only (removed Option B)
+  - Explicitly listed all 12 dark mode tag colors
+  - Fixed overlay implementation to use @theme bridge
+  - Added accessibility gotchas for reduced motion
+  - Added comprehensive merge/rebase strategy
+  - Rebalanced agent workload (Agent B now gets Phase 5)
