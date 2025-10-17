@@ -20,11 +20,18 @@ const ProductShow = lazy(() =>
   }))
 );
 
+const ProductEdit = lazy(() =>
+  import("./ProductEdit").then((module) => ({
+    default: module.ProductEdit,
+  }))
+);
+
 const resource: ResourceProps = {
   name: "products",
   list: ProductList,
   create: ProductCreate,
   show: ProductShow,
+  edit: ProductEdit,
   icon: Package,
   options: {
     label: "Products",

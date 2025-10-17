@@ -27,7 +27,7 @@ Core principles to prevent debates & ensure consistency:
    - **Reference Implementation**: See `OpportunityCreate.tsx` and `opportunities.ts` validation schema
 6. **TYPESCRIPT**: `interface` for objects/classes, `type` for unions/intersections
 7. **FORMS**: Always use admin layer (`src/components/admin/`) for validation/errors
-8. **COLORS**: Semantic CSS variables only (--primary, --destructive). Never use hex codes
+8. **COLORS**: Semantic CSS variables only (--primary, --brand-700, --destructive). Never use hex codes or direct OKLCH values in components.
 9. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
 
 ## Essential Commands
