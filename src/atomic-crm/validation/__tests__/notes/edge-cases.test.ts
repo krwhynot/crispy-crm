@@ -147,8 +147,12 @@ describe("Note Edge Cases and Error Handling", () => {
           expect.fail("Should have thrown error");
         } catch (error) {
           if (error instanceof z.ZodError) {
-            const message = error.errors[0].message;
+            expect(error.issues).toBeDefined();
+            expect(error.issues.length).toBeGreaterThan(0);
+            const message = error.issues[0]?.message;
             expect(message).toBe(expectedError);
+          } else {
+            throw error;
           }
         }
       });

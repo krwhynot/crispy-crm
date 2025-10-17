@@ -153,12 +153,13 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
       });
 
       // Check that the filter was transformed correctly
-      // Note: opportunities_summary is a view, so deleted_at is NOT added
+      // Note: opportunities uses base table, so deleted_at IS added for soft delete
       expect(mockGetList).toHaveBeenCalledWith(
-        "opportunities_summary",
+        "opportunities",
         expect.objectContaining({
           filter: {
             "stage@in": "(qualified,proposal,negotiation)",
+            "deleted_at@is": null,
           },
         }),
       );
@@ -168,7 +169,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
       await unifiedDataProvider.getList("contacts", {
         filter: {
           "tags@cs": "{5}",
-          "amount@gte": 1000,
+          "last_seen@gte": "2024-01-01",
         },
         sort: { field: "id", order: "ASC" },
         pagination: { page: 1, perPage: 10 },
@@ -180,7 +181,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         expect.objectContaining({
           filter: {
             "tags@cs": "{5}",
-            "amount@gte": 1000,
+            "last_seen@gte": "2024-01-01",
           },
         }),
       );
@@ -190,7 +191,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
       await unifiedDataProvider.getList("contacts", {
         filter: {
           tags: [],
-          name: "John",
+          first_name: "John",
         },
         sort: { field: "id", order: "ASC" },
         pagination: { page: 1, perPage: 10 },
@@ -201,7 +202,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         "contacts_summary",
         expect.objectContaining({
           filter: {
-            name: "John",
+            first_name: "John",
           },
         }),
       );
@@ -252,7 +253,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         "contacts_summary",
         expect.objectContaining({
           filter: {
-            "phone@cs": "{\"+1234567890\",\"+0987654321\"}",
+            "phone@cs": "{+1234567890,+0987654321}",
           },
         }),
       );
@@ -276,7 +277,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         expect.objectContaining({
           filter: {
             "tags@cs": "{4,5,6}",
-            deleted_at: null,
+            "deleted_at@is": null,
           },
         }),
       );

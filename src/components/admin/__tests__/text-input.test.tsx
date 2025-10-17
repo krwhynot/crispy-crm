@@ -14,12 +14,12 @@ import {
   required,
   minLength,
   maxLength,
-  Form,
   SaveContextProvider,
 } from "ra-core";
+import { useForm, FormProvider } from "react-hook-form";
 import React from "react";
 
-// Simplified FormWrapper - relies on renderWithAdminContext for providers
+// FormWrapper that provides proper React Hook Form context
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -35,12 +35,20 @@ const FormWrapper = ({
     mutationMode: "pessimistic" as const
   };
 
+  // Create form instance with react-hook-form
+  const form = useForm({
+    defaultValues,
+    mode: "onChange"
+  });
+
   return (
     <SaveContextProvider value={saveContext}>
-      <Form defaultValues={defaultValues}>
-        {children}
-        <button type="submit">Submit</button>
-      </Form>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          {children}
+          <button type="submit">Submit</button>
+        </form>
+      </FormProvider>
     </SaveContextProvider>
   );
 };
@@ -48,7 +56,7 @@ const FormWrapper = ({
 describe("TextInput", () => {
   test("renders with label and input", () => {
     renderWithAdminContext(
-      <FormWrapper resource="contacts">
+      <FormWrapper>
         <TextInput source="name" label="Name" />
       </FormWrapper>,
       { resource: "contacts" }
@@ -63,9 +71,10 @@ describe("TextInput", () => {
     const onSubmit = vi.fn();
 
     renderWithAdminContext(
-      <FormWrapper onSubmit={onSubmit} resource="contacts">
+      <FormWrapper onSubmit={onSubmit}>
         <TextInput source="email" label="Email" />
-      </FormWrapper>
+      </FormWrapper>,
+      { resource: "contacts" }
     );
 
     const input = screen.getByRole("textbox");
@@ -87,14 +96,14 @@ describe("TextInput", () => {
     const user = userEvent.setup();
 
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="email"
           label="Email"
           validate={[required(), minLength(5)]}
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const submitButton = screen.getByText("Submit");
@@ -118,14 +127,14 @@ describe("TextInput", () => {
 
   test("shows required field indicator when field is required", () => {
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="name"
           label="Name"
           validate={required()}
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     // React Admin adds an asterisk to required fields
@@ -135,14 +144,14 @@ describe("TextInput", () => {
 
   test("renders textarea in multiline mode", () => {
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="description"
           label="Description"
           multiline
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const textarea = document.querySelector("textarea");
@@ -161,7 +170,7 @@ describe("TextInput", () => {
           multiline
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const textarea = document.querySelector("textarea") as HTMLTextAreaElement;
@@ -182,14 +191,14 @@ describe("TextInput", () => {
 
   test("respects disabled and readOnly props", () => {
     const { rerender } = renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="name"
           label="Name"
           disabled
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     let input = screen.getByRole("textbox") as HTMLInputElement;
@@ -197,7 +206,7 @@ describe("TextInput", () => {
 
     // Test readOnly
     rerender(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="name"
           label="Name"
@@ -219,7 +228,7 @@ describe("TextInput", () => {
           type="date"
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -236,7 +245,7 @@ describe("TextInput", () => {
           type="datetime-local"
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const input = screen.getByRole("textbox") as HTMLInputElement;
@@ -246,14 +255,14 @@ describe("TextInput", () => {
 
   test("displays helper text when provided", () => {
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="email"
           label="Email"
           helperText="Enter your email address"
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     expect(screen.getByText("Enter your email address")).toBeInTheDocument();
@@ -261,13 +270,13 @@ describe("TextInput", () => {
 
   test("hides label when label prop is false", () => {
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="hidden_label"
           label={false}
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     // Should not render label
@@ -277,14 +286,14 @@ describe("TextInput", () => {
 
   test("applies custom className", () => {
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="custom"
           label="Custom"
           className="custom-class"
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const formField = document.querySelector('[data-slot="form-item"]');
@@ -295,7 +304,7 @@ describe("TextInput", () => {
     const user = userEvent.setup();
 
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="username"
           label="Username"
@@ -306,7 +315,7 @@ describe("TextInput", () => {
           ]}
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const input = screen.getByRole("textbox");
@@ -346,13 +355,13 @@ describe("TextInput", () => {
 
   test("preserves form field name from source prop", () => {
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="contact.email"
           label="Contact Email"
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const formField = document.querySelector('[data-slot="form-item"]');
@@ -366,14 +375,14 @@ describe("TextInput", () => {
     const user = userEvent.setup();
 
     renderWithAdminContext(
-      <FormWrapper resource="test">
+      <FormWrapper>
         <TextInput
           source="email"
           label="Email"
           validate={required()}
         />
       </FormWrapper>,
-
+      { resource: "test" }
     );
 
     const submitButton = screen.getByText("Submit");

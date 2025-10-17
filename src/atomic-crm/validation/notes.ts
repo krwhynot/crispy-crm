@@ -194,7 +194,14 @@ export function validateContactNoteForSubmission(data: unknown): ContactNote {
 export function validateOpportunityNoteForSubmission(
   data: unknown,
 ): OpportunityNote {
-  return opportunityNoteSchema.parse(data);
+  const validated = opportunityNoteSchema.parse(data);
+
+  // Transform date to ISO format with milliseconds
+  if (validated.date) {
+    validated.date = transformNoteDate(validated.date);
+  }
+
+  return validated;
 }
 
 /**
