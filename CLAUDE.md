@@ -30,6 +30,25 @@ Core principles to prevent debates & ensure consistency:
 8. **COLORS**: Semantic CSS variables only (--primary, --brand-700, --destructive). Never use hex codes or direct OKLCH values in components.
 9. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
 
+## Color System
+
+**Brand Identity**: Atomic CRM uses a brand-green OKLCH color system with split-complementary harmony.
+
+**Color Architecture**:
+- **Primary Brand**: Green at hue 125° (--brand-500 through --brand-800)
+- **Accent Colors**: Purple at hue 295° and Teal at hue 180° for visual harmony
+- **Neutrals**: Cool-toned grayscale at hue 284-288° (--neutral-50 through --neutral-900)
+- **Charts**: Strategic color usage (neutral for baseline, brand-green for "our data", accents for categories)
+
+**Design Philosophy**:
+- Primary buttons use --brand-700 (#5a7030) for WCAG AA compliance (5.5:1 contrast with white)
+- Focus rings use --brand-500 (brand identity color)
+- Navigation uses neutral backgrounds with brand-green accents for active states
+- All colors defined in OKLCH for perceptual uniformity
+
+**Migration Date**: October 2024 (from grayscale to brand-green system)
+**Archived Specs**: See `docs/archive/2025-10-color-system-preview/` for original design exploration
+
 ## Essential Commands
 
 ### Development Workflow

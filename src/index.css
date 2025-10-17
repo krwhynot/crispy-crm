@@ -44,29 +44,56 @@
 :root {
   --radius: 0.625rem;
 
-  /* Foundation colors */
-  --background: oklch(1 0 0);              /* Pure white */
-  --foreground: oklch(0.145 0 0);          /* Near black */
-  --card: oklch(1 0 0);                    /* White card surface */
-  --card-foreground: oklch(0.145 0 0);     /* Black text on cards */
-  --popover: oklch(1 0 0);                 /* White popover */
-  --popover-foreground: oklch(0.145 0 0);  /* Black popover text */
+  /* Core Neutrals - OKLCH format with cool undertone */
+  --neutral-50:  oklch(97.1% 0.002 284.5);  /* Lightest - backgrounds */
+  --neutral-100: oklch(88.4% 0.005 284.8);  /* Subtle backgrounds */
+  --neutral-200: oklch(80.2% 0.007 285.2);  /* Borders, dividers */
+  --neutral-300: oklch(72.1% 0.009 285.6);  /* Inactive elements */
+  --neutral-400: oklch(63.9% 0.011 286.0);  /* Muted text */
+  --neutral-500: oklch(55.8% 0.013 286.4);  /* Secondary text */
+  --neutral-600: oklch(47.7% 0.015 286.8);  /* Body text */
+  --neutral-700: oklch(39.6% 0.017 287.2);  /* Headings */
+  --neutral-800: oklch(31.5% 0.019 287.6);  /* Dark text */
+  --neutral-900: oklch(23.4% 0.021 288.0);  /* Near black */
 
-  /* Interactive colors - GRAYSCALE */
-  --primary: oklch(0.205 0 0);             /* Very dark gray */
-  --primary-foreground: oklch(0.985 0 0);  /* Near white */
-  --secondary: oklch(0.97 0 0);            /* Light gray */
-  --secondary-foreground: oklch(0.205 0 0);/* Dark gray */
-  --muted: oklch(0.97 0 0);                /* Light gray (muted surfaces) */
-  --muted-foreground: oklch(0.52 0 0);     /* Medium gray text */
-  --accent: oklch(0.97 0 0);               /* Light gray (accents/hovers) */
-  --accent-foreground: oklch(0.205 0 0);   /* Dark gray */
-  --destructive: oklch(0.577 0.245 27.325);/* Red for errors/delete */
+  /* Primary Brand Colors - OKLCH format (hue 125°) */
+  --brand-100: oklch(92% 0.08 125);         /* Light green tint */
+  --brand-300: oklch(85% 0.12 125);         /* Soft green */
+  --brand-500: oklch(74% 0.12 125);         /* Brand identity */
+  --brand-650: oklch(60% 0.11 125);         /* Button hover state */
+  --brand-700: oklch(50% 0.10 125);         /* Primary CTAs (WCAG compliant) */
+  --brand-750: oklch(45% 0.095 125);        /* Button active state */
+  --brand-800: oklch(35% 0.08 125);         /* Pressed/dark states */
+
+  /* Accent Colors - OKLCH format */
+  --accent-purple: oklch(50% 0.20 295);           /* Purple accent (reduced chroma) */
+  --accent-purple-light: oklch(85% 0.10 295);     /* Light purple variant */
+  --accent-teal:   oklch(70% 0.12 180);           /* Teal accent (reduced chroma) */
+  --accent-teal-light: oklch(90% 0.06 180);       /* Light teal variant */
+
+  /* Foundation colors (semantic mappings) */
+  --background: var(--neutral-50);              /* Pure white-ish */
+  --foreground: var(--neutral-700);             /* Dark text */
+  --card: var(--neutral-50);                    /* Card surface */
+  --card-foreground: var(--neutral-700);        /* Card text */
+  --popover: var(--neutral-50);                 /* Popover surface */
+  --popover-foreground: var(--neutral-700);     /* Popover text */
+
+  /* Interactive colors */
+  --primary: var(--brand-700);                  /* Primary buttons (WCAG) */
+  --primary-foreground: oklch(0.985 0 0);       /* White text on primary */
+  --secondary: var(--neutral-100);              /* Secondary buttons */
+  --secondary-foreground: var(--neutral-700);   /* Dark text on secondary */
+  --muted: var(--neutral-200);                  /* Muted surfaces */
+  --muted-foreground: var(--neutral-400);       /* Muted text */
+  --accent: var(--accent-purple);               /* Accent color */
+  --accent-foreground: oklch(0.985 0 0);        /* White text on accent */
+  --destructive: oklch(0.577 0.245 27.325);     /* Red for errors/delete */
 
   /* Borders and focus */
-  --border: oklch(0.922 0 0);              /* Light gray borders */
-  --input: oklch(0.922 0 0);               /* Light gray input borders */
-  --ring: oklch(0.60 0 0);                 /* Medium gray focus ring */
+  --border: var(--neutral-200);                 /* Borders */
+  --input: var(--neutral-200);                  /* Input borders */
+  --ring: var(--brand-500);                     /* Focus ring (brand identity) */
 
   /* Success states (green) */
   --success-subtle: oklch(90% 0.06 145);
@@ -136,21 +163,25 @@
   --loading-overlay: oklch(100% 0 0 / 60%);
 
   /* Chart Colors */
-  --chart-1: oklch(0.646 0.222 41.116);  /* Orange */
-  --chart-2: oklch(0.6 0.118 184.704);   /* Teal/Cyan */
-  --chart-3: oklch(0.398 0.07 227.392);  /* Blue */
-  --chart-4: oklch(0.488 0.243 264.376); /* Purple */
-  --chart-5: oklch(0.556 0.238 31.042);  /* Red-Orange */
+  --chart-1: var(--neutral-600);         /* Baseline data (neutral) */
+  --chart-2: var(--brand-500);           /* Our performance (brand green) */
+  --chart-3: var(--accent-teal);         /* Alternative data (teal) */
+  --chart-4: var(--accent-purple);       /* Special data (purple) */
+  --chart-5: var(--warning-default);     /* Warning/important data */
+  --chart-disabled: oklch(85% 0.005 285); /* Disabled/muted data */
 
   /* Sidebar Colors */
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: var(--neutral-100);                     /* Sidebar background */
+  --sidebar-foreground: var(--neutral-700);          /* Sidebar text */
+  --sidebar-primary: var(--brand-700);               /* Primary items */
+  --sidebar-primary-foreground: oklch(0.985 0 0);    /* White text */
+  --sidebar-accent: var(--neutral-200);              /* Accent/hover */
+  --sidebar-accent-foreground: var(--neutral-700);   /* Dark text */
+  --sidebar-border: var(--neutral-200);              /* Borders */
+  --sidebar-ring: var(--brand-500);                  /* Focus ring */
+  --sidebar-active-bg: var(--brand-100);             /* Active item background */
+  --sidebar-active-text: var(--brand-700);           /* Active item text */
+  --sidebar-active-indicator: var(--brand-700);      /* Active indicator */
 
   /* Shadow system - 3-tier elevation (light mode) */
   --shadow-card-1: 0 1px 3px oklch(0 0 0 / 0.12);         /* Subtle elevation */
@@ -166,25 +197,56 @@
 }
 
 .dark {
-  /* Dark mode inverts most values */
-  --background: oklch(0.145 0 0);          /* Near black */
-  --foreground: oklch(0.985 0 0);          /* Near white */
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);             /* Light gray (inverted) */
-  --primary-foreground: oklch(0.205 0 0);  /* Dark gray */
-  --secondary: oklch(0.205 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.646 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Inverted Neutrals - OKLCH format */
+  --neutral-50:  oklch(23.4% 0.021 288.0);  /* Darkest (was 900) */
+  --neutral-100: oklch(31.5% 0.019 287.6);  /* Dark (was 800) */
+  --neutral-200: oklch(39.6% 0.017 287.2);  /* (was 700) */
+  --neutral-300: oklch(47.7% 0.015 286.8);  /* (was 600) */
+  --neutral-400: oklch(55.8% 0.013 286.4);  /* (was 500) */
+  --neutral-500: oklch(63.9% 0.011 286.0);  /* (was 400) */
+  --neutral-600: oklch(72.1% 0.009 285.6);  /* (was 300) */
+  --neutral-700: oklch(80.2% 0.007 285.2);  /* (was 200) */
+  --neutral-800: oklch(88.4% 0.005 284.8);  /* (was 100) */
+  --neutral-900: oklch(97.1% 0.002 284.5);  /* Lightest (was 50) */
+
+  /* Adjusted Brand Colors for Dark Mode */
+  --brand-100: oklch(26.3% 0.048 125);      /* Darker tint */
+  --brand-300: oklch(45.9% 0.083 125);      /* Darker soft */
+  --brand-500: oklch(74% 0.12 125);         /* Keep identity color */
+  --brand-650: oklch(70% 0.12 125);         /* Hover state (lighter in dark) */
+  --brand-700: oklch(65% 0.12 125);         /* Primary (lighter for dark bg) */
+  --brand-750: oklch(60% 0.11 125);         /* Active state */
+  --brand-800: var(--brand-300);            /* Use lighter for hover */
+
+  /* Adjusted Accent Colors for Dark Mode */
+  --accent-purple: oklch(72% 0.18 295);           /* Lighter purple */
+  --accent-purple-light: oklch(85% 0.08 295);     /* Light variant */
+  --accent-teal:   oklch(75% 0.10 180);           /* Lighter teal */
+  --accent-teal-light: oklch(90% 0.05 180);       /* Light variant */
+
+  /* Foundation colors (semantic mappings) */
+  --background: var(--neutral-50);          /* Dark background */
+  --foreground: var(--neutral-900);         /* Light text */
+  --card: var(--neutral-100);              /* Card surface */
+  --card-foreground: var(--neutral-900);    /* Card text */
+  --popover: var(--neutral-100);           /* Popover surface */
+  --popover-foreground: var(--neutral-900); /* Popover text */
+
+  /* Interactive colors */
+  --primary: var(--brand-700);              /* Primary buttons */
+  --primary-foreground: oklch(0.985 0 0);   /* White text */
+  --secondary: var(--neutral-200);          /* Secondary buttons */
+  --secondary-foreground: var(--neutral-900); /* Light text */
+  --muted: var(--neutral-200);             /* Muted surfaces */
+  --muted-foreground: var(--neutral-600);   /* Muted text */
+  --accent: var(--accent-purple);          /* Accent color */
+  --accent-foreground: oklch(0.985 0 0);    /* White text */
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.556 0 0);
+
+  /* Borders and focus */
+  --border: oklch(1 0 0 / 15%);            /* Transparent white border */
+  --input: oklch(1 0 0 / 15%);             /* Input borders */
+  --ring: var(--brand-500);                /* Focus ring */
 
   /* Success states - dark mode */
   --success-subtle: oklch(25% 0.08 145);
@@ -253,19 +315,26 @@
   --loading-spinner: oklch(55% 0 0);
   --loading-overlay: oklch(0% 0 0 / 60%);
 
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.556 0.238 31.042);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Chart Colors - Dark Mode */
+  --chart-1: var(--neutral-600);         /* Baseline data */
+  --chart-2: var(--brand-500);           /* Our performance */
+  --chart-3: var(--accent-teal);         /* Alternative data */
+  --chart-4: var(--accent-purple);       /* Special data */
+  --chart-5: var(--warning-default);     /* Warning/important */
+  --chart-disabled: oklch(35% 0.005 285); /* Disabled/muted */
+
+  /* Sidebar Colors - Dark Mode */
+  --sidebar: var(--neutral-100);                     /* Sidebar background */
+  --sidebar-foreground: var(--neutral-900);          /* Sidebar text */
+  --sidebar-primary: var(--brand-700);               /* Primary items */
+  --sidebar-primary-foreground: oklch(0.985 0 0);    /* White text */
+  --sidebar-accent: var(--neutral-200);              /* Accent/hover */
+  --sidebar-accent-foreground: var(--neutral-900);   /* Light text */
+  --sidebar-border: oklch(1 0 0 / 10%);             /* Border */
+  --sidebar-ring: var(--brand-500);                  /* Focus ring */
+  --sidebar-active-bg: var(--brand-100);             /* Active background */
+  --sidebar-active-text: var(--brand-700);           /* Active text */
+  --sidebar-active-indicator: var(--brand-700);      /* Active indicator */
 
   /* Shadow system - 3-tier elevation (dark mode) - stronger for readability */
   --shadow-card-1: 0 2px 4px oklch(0 0 0 / 0.35);
