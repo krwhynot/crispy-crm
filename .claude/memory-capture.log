@@ -750,3 +750,9 @@
 [2025-10-17 14:00:38] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/login-page.tsx
 [2025-10-17 14:00:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/supabase/layout.tsx
 [2025-10-17 14:08:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/lib/color-types.ts
+[2025-10-17 14:08:19] [code] Edit: /home/krwhynot/projects/crispy-crm/src/lib/color-types.ts
+[2025-10-17 14:08:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/index.css
+[2025-10-17 14:08:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/index.css
+[2025-10-17 14:09:29] [configuration] Edit: /home/krwhynot/projects/crispy-crm/public/manifest.json
+[2025-10-17 14:12:45] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251017141210_migrate_colors_to_semantic.sql
+[2025-10-17 14:13:10] [documentation] Edit: /home/krwhynot/projects/crispy-crm/.docs/plans/mfb-garden-theme/IMPLEMENTATION.md

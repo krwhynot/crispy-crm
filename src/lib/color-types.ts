@@ -97,22 +97,22 @@ export const SEMANTIC_COLORS: Record<TagColorName, SemanticColorToken> = {
   clay: {
     name: 'clay',
     cssClass: 'tag-clay',
-    hexFallback: '#d9b89c',
+    hexFallback: '#f0d9c0', // Corrected to match oklch(92% 0.04 48)
   },
   sage: {
     name: 'sage',
     cssClass: 'tag-sage',
-    hexFallback: '#c8d5b9',
+    hexFallback: '#e8eedf', // Corrected to match oklch(94% 0.03 112)
   },
   amber: {
     name: 'amber',
     cssClass: 'tag-amber',
-    hexFallback: '#f5e6d3',
+    hexFallback: '#f9eeda', // Corrected to match oklch(96% 0.04 80)
   },
   cocoa: {
     name: 'cocoa',
     cssClass: 'tag-cocoa',
-    hexFallback: '#d4c5b9',
+    hexFallback: '#e9dcd0', // Corrected to match oklch(90% 0.04 74)
   },
 };
 

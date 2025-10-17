@@ -303,6 +303,7 @@
 
   /* Adjusted Accent Colors for Dark Mode */
   --accent-purple: oklch(56% 0.18 295);           /* Darker purple for WCAG AA with white text */
+  --destructive-dark: oklch(70.4% 0.191 22.216);  /* Foundational token for dark destructive */
 
   /* Foundation colors (semantic mappings) */
   --background: var(--neutral-50);          /* Dark background */
@@ -321,7 +322,7 @@
   --muted-foreground: var(--neutral-600);   /* Muted text */
   --accent: var(--accent-purple);          /* Accent color */
   --accent-foreground: oklch(0.985 0 0);    /* White text */
-  --destructive: oklch(0.704 0.191 22.216);
+  --destructive: var(--destructive-dark);
 
   /* Overlay/backdrop colors - dark mode */
   --overlay: oklch(0 0 0 / 70%);              /* Higher opacity in dark mode */
