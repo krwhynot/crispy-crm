@@ -3,19 +3,20 @@
  */
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { AdminContext } from 'ra-core';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useForm, FormProvider } from 'react-hook-form';
 import type { Company } from '../types';
 import { ConfigurationContext } from '../root/ConfigurationContext';
 
-// Mock useRecordContext to provide a default record
+// Import AdminContext before the mock
+import { AdminContext } from 'ra-core';
+
+// Mock only useRecordContext
 vi.mock('ra-core', async () => {
   const actual = await vi.importActual('ra-core');
   return {
     ...actual,
-    AdminContext: actual.AdminContext,
     useRecordContext: vi.fn(() => ({ id: 1, name: 'Test Org' })),
   };
 });
