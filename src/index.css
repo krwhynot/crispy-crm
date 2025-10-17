@@ -69,13 +69,32 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/*
+ * Paper Cream Color System (MFB Garden Theme)
+ *
+ * Background Philosophy:
+ * - Main background: oklch(97.5% 0.010 92) - "paper cream"
+ * - Reduced from 99% to 97.5% lightness for better card separation
+ * - Hue shifted from 85° to 92° for true cream (less greenish yellow)
+ * - Chroma reduced from 0.015 to 0.010 for subtle, not saturated warmth
+ *
+ * Benefits:
+ * - White cards (100% L) now have 2.5-point contrast delta (clearly elevated)
+ * - Shadows visible at normal opacity (0.08-0.12 vs previous 0.16-0.24)
+ * - Borders and dividers perceptible without harsh lines
+ * - Background feels warm but doesn't dominate visual hierarchy
+ * - Reduced eye strain on extended use
+ *
+ * Migrated: October 2025 (from oklch(99% 0.015 85))
+ */
+
 :root {
   --radius: 0.5rem;  /* 8px - MFB organic aesthetic */
 
-  /* Core Neutrals - OKLCH format with warm undertone (hue 85°) */
-  --neutral-50:  oklch(97.8% 0.008 85);  /* Lightest - backgrounds */
-  --neutral-100: oklch(95.5% 0.010 85);  /* Subtle backgrounds */
-  --neutral-200: oklch(90.2% 0.012 85);  /* Borders, dividers */
+  /* Core Neutrals - OKLCH format with paper cream undertone (hue 92° for consistency) */
+  --neutral-50:  oklch(97.8% 0.008 92);  /* Lightest - card backgrounds */
+  --neutral-100: oklch(95.5% 0.010 92);  /* Subtle backgrounds */
+  --neutral-200: oklch(90% 0.005 92);    /* Borders, dividers - matched to paper cream hue */
   --neutral-300: oklch(84.3% 0.015 85);  /* Inactive elements */
   --neutral-400: oklch(71.6% 0.018 85);  /* Muted text */
   --neutral-500: oklch(57.7% 0.020 85);  /* Secondary text */
@@ -249,12 +268,12 @@
   --chart-8-stroke: oklch(35% 0.012 85);
 
   /* Chart support tokens */
-  --chart-gridline: oklch(90% 0.015 85);       /* Subtle warm gridlines */
+  --chart-gridline: oklch(90% 0.010 92);       /* Subtle paper cream gridlines */
   --chart-axis-text: var(--muted-foreground);  /* Axis labels */
   --chart-disabled: oklch(78% 0.008 85);       /* Disabled/muted data */
 
-  /* Sidebar Colors - Warm cream tint */
-  --sidebar: oklch(98% 0.012 85);                    /* Warm cream tint background */
+  /* Sidebar Colors - Paper cream tint (slightly lighter than main background) */
+  --sidebar: oklch(98% 0.010 92);                    /* Subtle paper cream tint */
   --sidebar-foreground: var(--neutral-700);          /* Sidebar text */
   --sidebar-primary: var(--brand-700);               /* Primary items (MFB green) */
   --sidebar-primary-foreground: oklch(99% 0.015 85); /* Warm white text */
@@ -266,17 +285,17 @@
   --sidebar-active-text: var(--brand-700);           /* Active text: MFB green */
   --sidebar-active-indicator: var(--brand-700);      /* Active indicator: MFB green */
 
-  /* Shadow system - 3-tier elevation (light mode) - Enhanced for cream background */
-  --shadow-card-1: 0 1px 3px oklch(0 0 0 / 0.16);         /* Subtle elevation (+33%) */
-  --shadow-card-2: 0 2px 6px oklch(0 0 0 / 0.20);         /* Medium elevation (+33%) */
-  --shadow-card-3: 0 3px 8px oklch(0 0 0 / 0.24);         /* Prominent elevation (+33%) */
-  --shadow-card-1-hover: 0 2px 6px oklch(0 0 0 / 0.24);   /* (+33%) */
-  --shadow-card-2-hover: 0 4px 12px oklch(0 0 0 / 0.32);  /* (+28%) */
-  --shadow-card-3-hover: 0 6px 16px oklch(0 0 0 / 0.36);  /* (+20%) */
+  /* Shadow system - 3-tier elevation (light mode) - Optimized for paper cream background */
+  --shadow-card-1: 0 1px 2px 0 oklch(0 0 0 / 0.06), 0 1px 3px 0 oklch(0 0 0 / 0.10);        /* Subtle elevation */
+  --shadow-card-2: 0 4px 6px -1px oklch(0 0 0 / 0.08), 0 2px 4px -2px oklch(0 0 0 / 0.12);  /* Medium elevation */
+  --shadow-card-3: 0 10px 15px -3px oklch(0 0 0 / 0.10), 0 4px 6px -4px oklch(0 0 0 / 0.12); /* Prominent elevation */
+  --shadow-card-1-hover: 0 2px 4px 0 oklch(0 0 0 / 0.08), 0 2px 6px 0 oklch(0 0 0 / 0.12);
+  --shadow-card-2-hover: 0 8px 12px -2px oklch(0 0 0 / 0.10), 0 4px 8px -3px oklch(0 0 0 / 0.14);
+  --shadow-card-3-hover: 0 20px 25px -5px oklch(0 0 0 / 0.12), 0 8px 10px -6px oklch(0 0 0 / 0.14);
 
-  /* Column shadows */
-  --shadow-col: 0 2px 6px oklch(0 0 0 / 0.15);
-  --shadow-col-inner: inset 0 1px 2px oklch(0 0 0 / 0.03);
+  /* Column shadows - Optimized for paper cream background */
+  --shadow-col: 0 2px 6px oklch(0 0 0 / 0.12);
+  --shadow-col-inner: inset 0 1px 2px oklch(0 0 0 / 0.05);
 }
 
 .dark {
