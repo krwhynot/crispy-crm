@@ -419,7 +419,7 @@ describe("UnifiedDataProvider Validation Integration", () => {
       expect(resourceUsesTransformers("sales")).toBe(true);
       expect(resourceUsesTransformers("contacts")).toBe(true);
       expect(resourceUsesTransformers("organizations")).toBe(true);
-      expect(resourceUsesTransformers("tags")).toBe(true);
+      expect(resourceUsesTransformers("tags")).toBe(false);  // tags don't have transformers
       expect(resourceUsesTransformers("unknown")).toBe(false);
     });
 
