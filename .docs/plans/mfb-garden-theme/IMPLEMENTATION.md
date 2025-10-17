@@ -59,6 +59,70 @@ The MFB Garden Theme migration successfully transformed Atomic CRM from a clinic
 
 ---
 
+## 🗄️ Data Migration Strategy
+
+### Database Color Migration
+
+The `tags` table stores color values that must be migrated from legacy formats (hex codes, Tailwind utilities) to semantic color names.
+
+**Migration File**: `supabase/migrations/20251017141210_migrate_colors_to_semantic.sql`
+
+### Migration Steps
+
+1. **Backup Creation**: Automatically creates `tags_color_backup` table before any modifications
+2. **Hex Mapping**: Converts hex codes using `map_hex_to_semantic()` function (mirrors `HEX_TO_SEMANTIC_MAP`)
+3. **Tailwind Mapping**: Converts Tailwind utilities (e.g., 'blue-500' → 'blue')
+4. **Default Fallback**: Sets remaining invalid colors to 'gray'
+5. **Constraint Addition**: Adds CHECK constraint to enforce valid semantic names
+6. **Backup Retention**: Keeps backup table for rollback capability
+
+### Supported Migrations
+
+| Legacy Format | Semantic Name | Example |
+|---------------|---------------|---------|
+| Hex codes | warm, yellow, pink, etc. | #eddcd2 → warm |
+| Tailwind utilities | blue, green, teal, etc. | blue-500 → blue |
+| Invalid values | gray (default) | invalid → gray |
+
+### Rollback Procedure
+
+If migration issues occur, restore from backup:
+
+```sql
+UPDATE public.tags t
+SET color = b.color, updated_at = NOW()
+FROM public.tags_color_backup b
+WHERE t.id = b.id;
+```
+
+### Post-Migration Cleanup
+
+After verifying successful migration:
+
+```sql
+-- Remove backup table
+DROP TABLE IF EXISTS public.tags_color_backup;
+
+-- Remove mapping functions
+DROP FUNCTION IF EXISTS map_hex_to_semantic(TEXT);
+DROP FUNCTION IF EXISTS map_tailwind_to_semantic(TEXT);
+```
+
+### Migration Execution
+
+```bash
+# Local database
+npm run supabase:local:start
+npx supabase migration up
+
+# Production database (with confirmation)
+npm run db:cloud:push
+```
+
+**Important**: The migration is idempotent and safe to run multiple times.
+
+---
+
 ## 🔧 Implementation Details
 
 ### Phase 1: Brand Foundation (Tier 1)
