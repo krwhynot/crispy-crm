@@ -1,16 +1,16 @@
 {
-  "timestamp": "2025-10-17T18:22:02.541Z",
+  "timestamp": "2025-10-17T18:49:02.508Z",
   "summary": {
     "totalTests": 17,
-    "passed": 16,
-    "failed": 1,
+    "passed": 17,
+    "failed": 0,
     "warnings": 0
   },
   "passed": [
     {
       "mode": "light",
       "test": "Tag warm",
-      "ratio": "14.34",
+      "ratio": "14.28",
       "minRatio": 4.5,
       "bg": "tag-warm-bg",
       "fg": "tag-warm-fg"
@@ -18,7 +18,7 @@
     {
       "mode": "light",
       "test": "Tag green",
-      "ratio": "15.62",
+      "ratio": "15.72",
       "minRatio": 4.5,
       "bg": "tag-green-bg",
       "fg": "tag-green-fg"
@@ -26,7 +26,7 @@
     {
       "mode": "light",
       "test": "Tag teal",
-      "ratio": "15.32",
+      "ratio": "15.33",
       "minRatio": 4.5,
       "bg": "tag-teal-bg",
       "fg": "tag-teal-fg"
@@ -34,7 +34,7 @@
     {
       "mode": "light",
       "test": "Tag blue",
-      "ratio": "14.69",
+      "ratio": "14.68",
       "minRatio": 4.5,
       "bg": "tag-blue-bg",
       "fg": "tag-blue-fg"
@@ -42,7 +42,7 @@
     {
       "mode": "light",
       "test": "Tag purple",
-      "ratio": "15.10",
+      "ratio": "14.95",
       "minRatio": 4.5,
       "bg": "tag-purple-bg",
       "fg": "tag-purple-fg"
@@ -50,7 +50,7 @@
     {
       "mode": "light",
       "test": "Tag yellow",
-      "ratio": "17.19",
+      "ratio": "17.28",
       "minRatio": 4.5,
       "bg": "tag-yellow-bg",
       "fg": "tag-yellow-fg"
@@ -66,7 +66,7 @@
     {
       "mode": "light",
       "test": "Tag pink",
-      "ratio": "14.70",
+      "ratio": "14.62",
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
@@ -74,7 +74,7 @@
     {
       "mode": "dark",
       "test": "Tag warm",
-      "ratio": "9.90",
+      "ratio": "9.88",
       "minRatio": 4.5,
       "bg": "tag-warm-bg",
       "fg": "tag-warm-fg"
@@ -82,7 +82,7 @@
     {
       "mode": "dark",
       "test": "Tag green",
-      "ratio": "10.75",
+      "ratio": "10.76",
       "minRatio": 4.5,
       "bg": "tag-green-bg",
       "fg": "tag-green-fg"
@@ -90,7 +90,7 @@
     {
       "mode": "dark",
       "test": "Tag teal",
-      "ratio": "10.10",
+      "ratio": "10.16",
       "minRatio": 4.5,
       "bg": "tag-teal-bg",
       "fg": "tag-teal-fg"
@@ -98,7 +98,7 @@
     {
       "mode": "dark",
       "test": "Tag blue",
-      "ratio": "10.30",
+      "ratio": "10.33",
       "minRatio": 4.5,
       "bg": "tag-blue-bg",
       "fg": "tag-blue-fg"
@@ -106,7 +106,7 @@
     {
       "mode": "dark",
       "test": "Tag purple",
-      "ratio": "10.06",
+      "ratio": "10.10",
       "minRatio": 4.5,
       "bg": "tag-purple-bg",
       "fg": "tag-purple-fg"
@@ -114,7 +114,7 @@
     {
       "mode": "dark",
       "test": "Tag yellow",
-      "ratio": "8.62",
+      "ratio": "8.55",
       "minRatio": 4.5,
       "bg": "tag-yellow-bg",
       "fg": "tag-yellow-fg"
@@ -130,22 +130,20 @@
     {
       "mode": "dark",
       "test": "Tag pink",
-      "ratio": "10.08",
+      "ratio": "10.15",
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
-    }
-  ],
-  "failed": [
+    },
     {
       "mode": "dark",
       "test": "Accent elements",
-      "ratio": "2.57",
+      "ratio": "4.81",
       "minRatio": 4.5,
       "bg": "accent",
-      "fg": "accent-foreground",
-      "message": "Contrast ratio 2.57:1 is below WCAG AA minimum of 4.5:1"
+      "fg": "accent-foreground"
     }
   ],
+  "failed": [],
   "warnings": []
 }
