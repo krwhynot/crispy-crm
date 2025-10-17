@@ -475,3 +475,8 @@
 [2025-10-16 21:00:18] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 [2025-10-16 21:02:52] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 [2025-10-16 21:27:27] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/db/safe-cloud-push.sh
+[2025-10-16 21:27:27] [documentation] Write: /home/krwhynot/projects/crispy-crm/scripts/db/PRODUCTION-WARNING.md
+[2025-10-16 21:27:39] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-16 21:27:55] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-10-16 21:30:03] [documentation] Write: /home/krwhynot/projects/crispy-crm/scripts/db/SUPABASE-WORKFLOW-GUIDE.md
+[2025-10-16 21:35:24] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/SUPABASE-ADVISOR-REPORT.md
