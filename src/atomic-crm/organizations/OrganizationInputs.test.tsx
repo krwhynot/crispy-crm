@@ -9,12 +9,13 @@ import { useForm, FormProvider } from 'react-hook-form';
 import type { Company } from '../types';
 import { ConfigurationContext } from '../root/ConfigurationContext';
 
-// Import AdminContext before the mock
-import { AdminContext } from 'ra-core';
+// Use a different approach - don't mock ra-core, just mock useRecordContext
+import { AdminContext, useRecordContext } from 'ra-core';
+import { vi } from 'vitest';
 
-// Mock only useRecordContext
-vi.mock('ra-core', async () => {
-  const actual = await vi.importActual('ra-core');
+// Mock the specific hook without mocking the entire module
+vi.mock('ra-core', async (importOriginal) => {
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     useRecordContext: vi.fn(() => ({ id: 1, name: 'Test Org' })),
