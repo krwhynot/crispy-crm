@@ -176,7 +176,14 @@ export function validateAttachments(attachments: unknown[]): Attachment[] {
  * @returns Transformed note data ready for database
  */
 export function validateContactNoteForSubmission(data: unknown): ContactNote {
-  return contactNoteSchema.parse(data);
+  const validated = contactNoteSchema.parse(data);
+
+  // Transform date to ISO format with milliseconds
+  if (validated.date) {
+    validated.date = transformNoteDate(validated.date);
+  }
+
+  return validated;
 }
 
 /**
