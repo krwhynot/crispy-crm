@@ -82,7 +82,7 @@
   --popover-foreground: var(--neutral-700);     /* Popover text */
 
   /* Interactive colors */
-  --primary: var(--brand-700);                  /* Primary buttons (MFB green) */
+  --primary: var(--accent-clay-600);            /* Clay orange for buttons - WCAG AA compliant */
   --primary-foreground: oklch(0.985 0 0);       /* White text on primary */
   --secondary: var(--neutral-100);              /* Secondary buttons */
   --secondary-foreground: var(--neutral-700);   /* Dark text on secondary */
