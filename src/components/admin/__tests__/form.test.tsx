@@ -466,14 +466,12 @@ describe("SaveButton", () => {
     const user = userEvent.setup();
 
     // Save should reject with validation errors, not resolve
-    const saveWithErrors = vi.fn().mockRejectedValue({
-      body: {
-        errors: {
-          email: "Invalid email format",
-          username: "Username already exists"
-        }
-      }
-    });
+    const saveWithErrors = vi.fn().mockImplementation(() =>
+      Promise.resolve({
+        email: "Invalid email format",
+        username: "Username already exists"
+      })
+    );
 
     const errorSaveContext = {
       ...saveContext,
@@ -489,24 +487,10 @@ describe("SaveButton", () => {
         form.setValue("email", "invalid", { shouldDirty: true });
       }, [form]);
 
-      // Handle save errors and set them on the form
-      const handleSubmit = React.useCallback(async (values: any) => {
-        try {
-          await errorSaveContext.save(values);
-        } catch (error: any) {
-          // Set errors on the form
-          if (error?.body?.errors) {
-            Object.entries(error.body.errors).forEach(([field, message]) => {
-              form.setError(field as any, { message: message as string });
-            });
-          }
-        }
-      }, [form]);
-
       return (
         <SaveContextProvider value={errorSaveContext}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <form>
               <FormField id="email" name="email">
                 <input {...form.register("email")} />
                 <FormError />
@@ -515,7 +499,7 @@ describe("SaveButton", () => {
                 <input {...form.register("username")} />
                 <FormError />
               </FormField>
-              <SaveButton type="button" onClick={() => handleSubmit(form.getValues())} />
+              <SaveButton type="button" />
             </form>
           </Form>
         </SaveContextProvider>
@@ -529,6 +513,12 @@ describe("SaveButton", () => {
 
     await waitFor(() => {
       expect(saveWithErrors).toHaveBeenCalled();
+    });
+
+    // Wait for errors to be displayed
+    await waitFor(() => {
+      expect(screen.getByText("Invalid email format")).toBeInTheDocument();
+      expect(screen.getByText("Username already exists")).toBeInTheDocument();
     });
   });
 
