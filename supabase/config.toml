@@ -154,3 +154,48 @@ s3_region = "env(S3_REGION)"
 s3_access_key = "env(S3_ACCESS_KEY)"
 # Configures AWS_SECRET_ACCESS_KEY for S3 bucket
 s3_secret_key = "env(S3_SECRET_KEY)"
+
+# ============================================================================
+# REMOTE ENVIRONMENT CONFIGURATION
+# ============================================================================
+# Configure environment-specific settings for staging and production.
+# This enables CI/CD workflows and environment-specific configurations.
+# See: https://supabase.com/docs/guides/deployment/branching/configuration
+
+# Production Environment
+[remotes.production]
+project_id = "aaqnanddcqvfiwhshndl"
+
+# Production-specific database settings
+[remotes.production.db]
+# Higher pool size for production workload
+pool_size = 20
+# Production uses more conservative row limits for safety
+# max_rows = 500  # Uncomment to limit max rows in production
+
+# Production seed configuration
+[remotes.production.db.seed]
+# IMPORTANT: Disable seeding on production to prevent accidental data loss
+enabled = false
+# If you ever need to seed production (usually not recommended):
+# sql_paths = ["./supabase/seeds/production.sql"]
+
+# Production API settings
+[remotes.production.api]
+# Keep default max_rows or set a conservative limit
+# max_rows = 500  # Uncomment to override default
+
+# Staging Environment (Placeholder)
+# Uncomment and configure when you create a staging Supabase project
+# [remotes.staging]
+# project_id = "your-staging-project-ref"
+#
+# [remotes.staging.db]
+# pool_size = 15
+#
+# [remotes.staging.db.seed]
+# enabled = true
+# sql_paths = ["./supabase/seed.sql"]
+#
+# [remotes.staging.api]
+# max_rows = 1000
