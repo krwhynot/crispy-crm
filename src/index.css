@@ -8,6 +8,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Typography */
+  --font-sans: 'Nunito', 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -31,6 +35,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -42,7 +49,7 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.5rem;  /* 8px - MFB organic aesthetic */
 
   /* Core Neutrals - OKLCH format with warm undertone (hue 85°) */
   --neutral-50:  oklch(97.8% 0.008 85);  /* Lightest - backgrounds */
@@ -97,15 +104,15 @@
   --input: var(--neutral-200);                  /* Input borders */
   --ring: var(--brand-500);                     /* Focus ring uses brand identity color */
 
-  /* Success states (green) */
-  --success-subtle: oklch(90% 0.06 145);
-  --success-default: oklch(63% 0.14 145);
-  --success-strong: oklch(50% 0.15 145);
-  --success-bg: oklch(95% 0.04 145);
-  --success-border: oklch(80% 0.08 145);
-  --success-hover: oklch(68% 0.13 145);
-  --success-active: oklch(58% 0.145 145);
-  --success-disabled: oklch(75% 0.05 145);
+  /* Success states (green) - shifted to warmer hue 135° */
+  --success-subtle: oklch(92% 0.08 135);
+  --success-default: oklch(56% 0.125 135);
+  --success-strong: oklch(48% 0.130 135);
+  --success-bg: oklch(95% 0.05 135);
+  --success-border: oklch(78% 0.10 135);
+  --success-hover: oklch(60% 0.122 135);
+  --success-active: oklch(52% 0.127 135);
+  --success-disabled: oklch(72% 0.06 135);
 
   /* Warning states (orange/yellow) */
   --warning-subtle: oklch(95% 0.08 85);
@@ -170,6 +177,9 @@
   --chart-3: var(--accent-teal);         /* Alternative data (teal) */
   --chart-4: var(--accent-purple);       /* Special data (purple) */
   --chart-5: var(--warning-default);     /* Warning/important data */
+  --chart-6: var(--accent-teal);         /* Pending/in-progress (will be sage-teal) */
+  --chart-7: oklch(45% 0.08 320);        /* Lost/negative data (muted eggplant) */
+  --chart-8: var(--neutral-500);         /* Overflow/miscellaneous */
   --chart-disabled: oklch(85% 0.005 285); /* Disabled/muted data */
 
   /* Sidebar Colors */
@@ -185,13 +195,13 @@
   --sidebar-active-text: var(--brand-700);           /* Active item text */
   --sidebar-active-indicator: var(--brand-700);      /* Active indicator */
 
-  /* Shadow system - 3-tier elevation (light mode) */
-  --shadow-card-1: 0 1px 3px oklch(0 0 0 / 0.12);         /* Subtle elevation */
-  --shadow-card-2: 0 2px 6px oklch(0 0 0 / 0.15);         /* Medium elevation */
-  --shadow-card-3: 0 3px 8px oklch(0 0 0 / 0.18);         /* Prominent elevation */
-  --shadow-card-1-hover: 0 2px 6px oklch(0 0 0 / 0.18);
-  --shadow-card-2-hover: 0 4px 12px oklch(0 0 0 / 0.25);
-  --shadow-card-3-hover: 0 6px 16px oklch(0 0 0 / 0.3);
+  /* Shadow system - 3-tier elevation (light mode) - Enhanced for cream background */
+  --shadow-card-1: 0 1px 3px oklch(0 0 0 / 0.16);         /* Subtle elevation (+33%) */
+  --shadow-card-2: 0 2px 6px oklch(0 0 0 / 0.20);         /* Medium elevation (+33%) */
+  --shadow-card-3: 0 3px 8px oklch(0 0 0 / 0.24);         /* Prominent elevation (+33%) */
+  --shadow-card-1-hover: 0 2px 6px oklch(0 0 0 / 0.24);   /* (+33%) */
+  --shadow-card-2-hover: 0 4px 12px oklch(0 0 0 / 0.32);  /* (+28%) */
+  --shadow-card-3-hover: 0 6px 16px oklch(0 0 0 / 0.36);  /* (+20%) */
 
   /* Column shadows */
   --shadow-col: 0 2px 6px oklch(0 0 0 / 0.15);
@@ -387,6 +397,7 @@ input[type="time"] {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
   }
 }
 

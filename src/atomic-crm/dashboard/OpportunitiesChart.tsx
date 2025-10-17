@@ -125,9 +125,9 @@ export const OpportunitiesChart = memo(() => {
           indexBy="date"
           keys={["won", "pending", "lost"]}
           colors={[
-            "var(--success-default)",
-            "var(--info-default)",
-            "var(--error-default)",
+            "var(--chart-2)",
+            "var(--chart-6)",
+            "var(--chart-7)",
           ]}
           margin={{ top: 30, right: 50, bottom: 30, left: 0 }}
           padding={0.3}
@@ -207,7 +207,7 @@ export const OpportunitiesChart = memo(() => {
                 axis: "y",
                 value: 0,
                 lineStyle: { strokeOpacity: 0 },
-                textStyle: { fill: "var(--success-default)" },
+                textStyle: { fill: "var(--chart-2)" },
                 legend: "Won",
                 legendPosition: "top-left",
                 legendOrientation: "vertical",
@@ -216,10 +216,10 @@ export const OpportunitiesChart = memo(() => {
                 axis: "y",
                 value: 0,
                 lineStyle: {
-                  stroke: "var(--error-default)",
+                  stroke: "var(--chart-7)",
                   strokeWidth: 1,
                 },
-                textStyle: { fill: "var(--error-default)" },
+                textStyle: { fill: "var(--chart-7)" },
                 legend: "Lost",
                 legendPosition: "bottom-left",
                 legendOrientation: "vertical",
