@@ -285,6 +285,30 @@
   --sidebar-active-text: var(--brand-700);           /* Active text: MFB green */
   --sidebar-active-indicator: var(--brand-700);      /* Active indicator: MFB green */
 
+  /* Warm-Tinted Shadow System (Zen Recommendations) */
+  /* Shadow ink with subtle warmth matching canvas hue - prevents "soot" appearance */
+  --shadow-ink: oklch(30% 0.010 92);
+
+  /* Stroke System - Hairline borders for card edge definition */
+  --stroke-card: oklch(93% 0.004 92);        /* 1px border around elevated cards */
+  --stroke-card-hover: oklch(91% 0.006 92);  /* Slightly darker on hover */
+
+  /* Divider System - Internal separators */
+  --divider-subtle: oklch(96% 0.004 92);     /* On white surfaces, internal dividers */
+  --divider-strong: oklch(94.5% 0.004 92);   /* Section separators */
+
+  /* Text Hierarchy - Improved contrast for widget titles and metrics */
+  --text-title: oklch(22% 0.01 92);          /* Widget titles, headings - darker with warm tint */
+  --text-metric: oklch(18% 0.01 92);         /* Metric numbers - darkest for emphasis */
+  --text-body: oklch(29% 0 0);               /* Standard body text */
+  --text-subtle: oklch(41% 0 0);             /* Timestamps, metadata */
+
+  /* Avatar Micro-Elevation - Ring + shadow + highlight for depth */
+  --avatar-shadow:
+    0 0 0 1px oklch(93% 0.004 92),
+    0 1px 2px 0 var(--shadow-ink) / 0.10;
+  --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.30);
+
   /* Shadow system - 3-tier elevation (light mode) - Optimized for paper cream background */
   --shadow-card-1: 0 1px 2px 0 oklch(0 0 0 / 0.06), 0 1px 3px 0 oklch(0 0 0 / 0.10);        /* Subtle elevation */
   --shadow-card-2: 0 4px 6px -1px oklch(0 0 0 / 0.08), 0 2px 4px -2px oklch(0 0 0 / 0.12);  /* Medium elevation */
