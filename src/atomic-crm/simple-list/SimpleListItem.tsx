@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 export const SimpleListItem = <RecordType extends RaRecord = any>(
   props: SimpleListItemProps<RecordType>,
 ) => {
-  const { children, linkType, rowClick, style } = props;
+  const { children, linkType, rowClick, style, rowIndex } = props;
   const resource = useResourceContext(props);
   const record = useRecordContext<RecordType>(props);
   const navigate = useNavigate();
@@ -50,13 +50,15 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
 
   if (!record) return null;
 
+  const dividerClass = rowIndex > 0 ? "border-t border-[color:var(--divider-subtle)]" : "";
+
   if (isFunctionLink) {
     return (
-      <li className="w-full">
+      <li className={`w-full ${dividerClass}`}>
         <button
           onClick={handleClick}
           style={style}
-          className="w-full text-left hover:bg-muted focus: bg-muted focus:outline-none"
+          className="w-full text-left hover:bg-[oklch(99%_0.006_92)] focus:bg-[oklch(99%_0.006_92)] focus:outline-none transition-colors"
         >
           {children}
         </button>
@@ -66,11 +68,11 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
 
   if (pathForRecord) {
     return (
-      <li className="w-full">
+      <li className={`w-full ${dividerClass}`}>
         <Link
           to={pathForRecord}
           style={style}
-          className="block w-full hover:bg-muted focus:bg-muted focus:outline-none"
+          className="block w-full hover:bg-[oklch(99%_0.006_92)] focus:bg-[oklch(99%_0.006_92)] focus:outline-none transition-colors"
         >
           {children}
         </Link>
@@ -78,7 +80,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
     );
   }
 
-  return <li className="w-full">{children}</li>;
+  return <li className={`w-full ${dividerClass}`}>{children}</li>;
 };
 
 export type FunctionToElement<RecordType extends RaRecord = any> = (

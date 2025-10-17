@@ -33,17 +33,20 @@ export const MiniPipeline = () => {
     <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
       <div className="flex items-center mb-3">
         <div className="mr-3 flex">
-          <TrendingUp className="text-muted-foreground w-6 h-6" />
+          <TrendingUp className="text-[color:var(--text-subtle)] w-6 h-6" />
         </div>
-        <h2 className="text-sm font-semibold tracking-wide uppercase text-muted-foreground">
+        <h2 className="text-sm font-semibold tracking-wide uppercase text-[color:var(--text-title)]">
           Pipeline
         </h2>
       </div>
-      <div className="space-y-2">
-        {stageCounts.map((stage) => (
-          <div key={stage.label} className="flex items-center justify-between">
-            <span className="text-sm">{stage.label}</span>
-            <span className="text-sm font-medium">{stage.count}</span>
+      <div className="space-y-0">
+        {stageCounts.map((stage, index) => (
+          <div
+            key={stage.label}
+            className={`flex items-center justify-between py-3 ${index > 0 ? 'border-t border-[color:var(--divider-subtle)]' : ''}`}
+          >
+            <span className="text-sm text-[color:var(--text-body)]">{stage.label}</span>
+            <span className="text-xl font-bold tabular-nums text-[color:var(--text-metric)]">{stage.count}</span>
           </div>
         ))}
       </div>
