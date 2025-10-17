@@ -123,9 +123,9 @@
   /* Foundation colors (semantic mappings) */
   --background: oklch(97.5% 0.010 92);          /* Paper cream - subtle warmth, improved card separation */
   --foreground: oklch(20% 0.012 85);            /* Slightly warmer dark text */
-  --card: var(--neutral-50);                    /* Card surface */
+  --card: oklch(100% 0 0);                      /* Pure white - material layering principle */
   --card-foreground: var(--neutral-700);        /* Card text */
-  --popover: var(--neutral-50);                 /* Popover surface */
+  --popover: oklch(100% 0 0);                   /* Pure white popover surface */
   --popover-foreground: var(--neutral-700);     /* Popover text */
 
   /* Interactive colors */
