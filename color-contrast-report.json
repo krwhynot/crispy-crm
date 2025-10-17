@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-10-08T03:40:57.545Z",
+  "timestamp": "2025-10-17T05:05:12.119Z",
   "summary": {
-    "totalTests": 16,
-    "passed": 16,
+    "totalTests": 32,
+    "passed": 32,
     "failed": 0,
     "warnings": 0
   },
@@ -72,6 +72,70 @@
       "fg": "tag-pink-fg"
     },
     {
+      "mode": "light",
+      "test": "Primary button",
+      "ratio": "17.18",
+      "minRatio": 4.5,
+      "bg": "primary",
+      "fg": "primary-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Secondary button",
+      "ratio": "16.44",
+      "minRatio": 4.5,
+      "bg": "secondary",
+      "fg": "secondary-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Accent elements",
+      "ratio": "16.44",
+      "minRatio": 4.5,
+      "bg": "accent",
+      "fg": "accent-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Muted elements",
+      "ratio": "5.04",
+      "minRatio": 4.5,
+      "bg": "muted",
+      "fg": "muted-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Card content",
+      "ratio": "19.80",
+      "minRatio": 4.5,
+      "bg": "card",
+      "fg": "card-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Popover content",
+      "ratio": "19.80",
+      "minRatio": 4.5,
+      "bg": "popover",
+      "fg": "popover-foreground"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on background",
+      "ratio": "3.95",
+      "minRatio": 3,
+      "bg": "background",
+      "fg": "ring"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on cards",
+      "ratio": "3.95",
+      "minRatio": 3,
+      "bg": "card",
+      "fg": "ring"
+    },
+    {
       "mode": "dark",
       "test": "Tag warm",
       "ratio": "9.90",
@@ -134,6 +198,70 @@
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Primary button",
+      "ratio": "14.23",
+      "minRatio": 4.5,
+      "bg": "primary",
+      "fg": "primary-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Secondary button",
+      "ratio": "17.18",
+      "minRatio": 4.5,
+      "bg": "secondary",
+      "fg": "secondary-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Accent elements",
+      "ratio": "14.50",
+      "minRatio": 4.5,
+      "bg": "accent",
+      "fg": "accent-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Muted elements",
+      "ratio": "4.62",
+      "minRatio": 4.5,
+      "bg": "muted",
+      "fg": "muted-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Card content",
+      "ratio": "18.97",
+      "minRatio": 4.5,
+      "bg": "card",
+      "fg": "card-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Popover content",
+      "ratio": "18.97",
+      "minRatio": 4.5,
+      "bg": "popover",
+      "fg": "popover-foreground"
+    },
+    {
+      "mode": "dark",
+      "test": "Focus ring on background",
+      "ratio": "4.18",
+      "minRatio": 3,
+      "bg": "background",
+      "fg": "ring"
+    },
+    {
+      "mode": "dark",
+      "test": "Focus ring on cards",
+      "ratio": "4.18",
+      "minRatio": 3,
+      "bg": "card",
+      "fg": "ring"
     }
   ],
   "failed": [],
