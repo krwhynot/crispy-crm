@@ -36,7 +36,7 @@ export const ProductAside = () => {
     discontinued: "bg-red-500",
     pending: "bg-yellow-500",
     seasonal: "bg-blue-500",
-    out_of_stock: "bg-muted",
+    limited_availability: "bg-orange-500",
   };
 
   const statusColor = record.status ? statusColors[record.status] : "bg-muted";
@@ -198,26 +198,6 @@ export const ProductAside = () => {
         </>
       )}
 
-      {record.status === "out_of_stock" && (
-        <>
-          <Separator />
-          <div className="bg-yellow-500/10 p-3 rounded-md">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-yellow-600">
-                  Out of Stock
-                </p>
-                {record.lead_time_days && (
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Expected lead time: {record.lead_time_days} days
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        </>
-      )}
     </Card>
   );
 };

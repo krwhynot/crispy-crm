@@ -749,6 +749,9 @@ class SeedDataGenerator {
 
       this.spinner.succeed("Data inserted successfully");
 
+      // Ensure all auth users have sales profiles (CRITICAL FIX)
+      await this.ensureAuthUserProfiles();
+
       // Print summary
       console.log(chalk.green("\n✨ Seed data generation complete!"));
       console.log(
@@ -773,6 +776,60 @@ class SeedDataGenerator {
       this.spinner.fail(`Failed to insert data: ${error.message}`);
       console.error(error);
       process.exit(1);
+    }
+  }
+
+  async ensureAuthUserProfiles() {
+    this.spinner.start("Ensuring auth users have sales profiles...");
+
+    try {
+      // Get all auth users
+      const { data: authUsers, error: authError } = await this.supabase.rpc('get_auth_users');
+
+      if (authError) {
+        // If RPC doesn't exist, use direct query (requires service role key)
+        const { data: users, error } = await this.supabase.auth.admin.listUsers();
+        if (error) throw error;
+
+        if (!users || users.users.length === 0) {
+          this.spinner.succeed("No auth users found");
+          return;
+        }
+
+        // Check which users are missing sales profiles
+        const { data: existingProfiles } = await this.supabase
+          .from("sales")
+          .select("user_id");
+
+        const existingUserIds = new Set(existingProfiles?.map(p => p.user_id) || []);
+        const missingUsers = users.users.filter(u => !existingUserIds.has(u.id));
+
+        if (missingUsers.length === 0) {
+          this.spinner.succeed("All auth users have sales profiles");
+          return;
+        }
+
+        // Create missing sales profiles
+        const newProfiles = missingUsers.map(user => ({
+          user_id: user.id,
+          email: user.email,
+          first_name: user.user_metadata?.first_name || user.email?.split('@')[0] || 'User',
+          last_name: user.user_metadata?.last_name || 'Account',
+          is_admin: true, // Default to admin for development
+        }));
+
+        const { error: insertError } = await this.supabase
+          .from("sales")
+          .insert(newProfiles);
+
+        if (insertError) throw insertError;
+
+        this.spinner.succeed(`Created ${missingUsers.length} missing sales profile(s)`);
+        console.log(chalk.gray(`  Fixed profiles for: ${missingUsers.map(u => u.email).join(', ')}`));
+      }
+    } catch (error) {
+      this.spinner.warn(`Could not verify sales profiles: ${error.message}`);
+      console.log(chalk.yellow("  ⚠️  You may need to manually create sales profiles for auth users"));
     }
   }
 

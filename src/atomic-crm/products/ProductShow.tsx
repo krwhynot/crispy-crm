@@ -50,7 +50,7 @@ const ProductShowContent = () => {
     discontinued: "destructive",
     pending: "secondary",
     seasonal: "outline",
-    out_of_stock: "destructive",
+    limited_availability: "secondary",
   };
 
   return (
