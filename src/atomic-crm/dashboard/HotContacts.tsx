@@ -65,7 +65,7 @@ export const HotContacts = () => {
         </TooltipProvider>
       </div>
       <Card
-        className="bg-card border border-border shadow-sm rounded-xl py-0 cursor-pointer"
+        className="rounded-xl py-0 cursor-pointer"
         onClick={() => trackDashboardEvent('contacts')}
       >
         <SimpleList<Contact>

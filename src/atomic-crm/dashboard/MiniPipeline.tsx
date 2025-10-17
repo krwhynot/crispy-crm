@@ -30,7 +30,7 @@ export const MiniPipeline = () => {
   if (isPending) return null;
 
   return (
-    <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
+    <Card className="rounded-xl p-4">
       <div className="flex items-center mb-3">
         <div className="mr-3 flex">
           <TrendingUp className="text-[color:var(--text-subtle)] w-6 h-6" />

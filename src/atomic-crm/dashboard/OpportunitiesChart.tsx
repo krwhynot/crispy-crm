@@ -107,19 +107,19 @@ export const OpportunitiesChart = memo(() => {
   );
   return (
     <Card
-      className="bg-card border border-border shadow-sm rounded-xl p-4 cursor-pointer"
+      className="rounded-xl p-4 cursor-pointer"
       onClick={() => trackDashboardEvent('chart')}
     >
       <div className="flex items-center mb-4">
         <div className="mr-3 flex">
-          <DollarSign className="text-muted-foreground w-6 h-6" />
+          <DollarSign className="text-[color:var(--text-subtle)] w-6 h-6" />
         </div>
-        <h2 className="text-xl font-semibold text-muted-foreground">
+        <h2 className="text-xl font-semibold text-[color:var(--text-title)] uppercase tracking-tight">
           Upcoming Opportunity Revenue
         </h2>
       </div>
       <div className="h-[400px]">
-        <Suspense fallback={<div className="h-full flex items-center justify-center text-muted-foreground">Loading chart...</div>}>
+        <Suspense fallback={<div className="h-full flex items-center justify-center text-[color:var(--text-subtle)]">Loading chart...</div>}>
           <ResponsiveBar
           data={months}
           indexBy="date"
