@@ -6,34 +6,27 @@
  */
 
 import { describe, test, expect, vi } from "vitest";
-import { screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SelectInput } from "../select-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import {
   required,
   ReferenceInput,
-  Form,
-  AdminContext,
-  RecordContextProvider,
-  ResourceContextProvider,
-  SaveContextProvider,
-  testDataProvider
+  SaveContextProvider
 } from "ra-core";
+import { useForm, FormProvider } from "react-hook-form";
 import React from "react";
 
-// Wrapper component to provide all necessary contexts for testing
-// Uses AdminContext to provide complete React Admin environment
+// FormWrapper that provides proper React Hook Form context
 const FormWrapper = ({
   children,
   defaultValues = {},
-  onSubmit = vi.fn(),
-  resource = "test"
+  onSubmit = vi.fn()
 }: {
   children: React.ReactNode;
   defaultValues?: any;
   onSubmit?: (data: any) => void;
-  resource?: string;
 }) => {
   const saveContext = {
     save: onSubmit,
@@ -41,19 +34,21 @@ const FormWrapper = ({
     mutationMode: "pessimistic" as const
   };
 
+  // Create form instance with react-hook-form
+  const form = useForm({
+    defaultValues,
+    mode: "onChange"
+  });
+
   return (
-    <AdminContext dataProvider={testDataProvider()}>
-      <ResourceContextProvider value={resource}>
-        <RecordContextProvider value={defaultValues}>
-          <SaveContextProvider value={saveContext}>
-            <Form defaultValues={defaultValues}>
-              {children}
-              <button type="submit">Submit</button>
-            </Form>
-          </SaveContextProvider>
-        </RecordContextProvider>
-      </ResourceContextProvider>
-    </AdminContext>
+    <SaveContextProvider value={saveContext}>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          {children}
+          <button type="submit">Submit</button>
+        </form>
+      </FormProvider>
+    </SaveContextProvider>
   );
 };
 
@@ -70,7 +65,7 @@ describe("SelectInput", () => {
     const user = userEvent.setup();
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
@@ -97,7 +92,7 @@ describe("SelectInput", () => {
     const onSubmit = vi.fn();
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities" onSubmit={onSubmit}>
+      <FormWrapper onSubmit={onSubmit}>
         <SelectInput
           source="stage"
           label="Stage"
@@ -146,7 +141,7 @@ describe("SelectInput", () => {
     };
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <ReferenceInput source="contact_id" reference="contacts">
           <SelectInput label="Contact" />
         </ReferenceInput>
@@ -154,7 +149,7 @@ describe("SelectInput", () => {
       {
         resource: "opportunities",
         dataProvider: mockDataProvider
-      },
+      }
     );
 
     // Wait for data to load
@@ -181,7 +176,7 @@ describe("SelectInput", () => {
     const onSubmit = vi.fn();
 
     const { rerender } = renderWithAdminContext(
-      <FormWrapper resource="opportunities" defaultValues={{ stage: "lead" }} onSubmit={onSubmit}>
+      <FormWrapper defaultValues={{ stage: "lead" }} onSubmit={onSubmit}>
         <SelectInput
           source="stage"
           label="Stage"
@@ -197,7 +192,7 @@ describe("SelectInput", () => {
 
     // Change the value programmatically (simulating external update)
     rerender(
-      <FormWrapper resource="opportunities" defaultValues={{ stage: "qualified" }} onSubmit={onSubmit}>
+      <FormWrapper defaultValues={{ stage: "qualified" }} onSubmit={onSubmit}>
         <SelectInput
           source="stage"
           label="Stage"
@@ -217,7 +212,7 @@ describe("SelectInput", () => {
     const user = userEvent.setup();
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
@@ -240,7 +235,7 @@ describe("SelectInput", () => {
     const user = userEvent.setup();
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
@@ -282,7 +277,7 @@ describe("SelectInput", () => {
     ];
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
@@ -310,7 +305,7 @@ describe("SelectInput", () => {
     ];
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="custom"
           label="Custom Select"
@@ -334,7 +329,7 @@ describe("SelectInput", () => {
 
   test("shows loading skeleton while choices are loading", () => {
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
@@ -374,7 +369,7 @@ describe("SelectInput", () => {
     };
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="status"
           label="Status"
@@ -385,7 +380,7 @@ describe("SelectInput", () => {
       {
         resource: "tasks",
         i18nProvider: mockI18nProvider
-      },
+      }
     );
 
     const trigger = screen.getByRole("combobox");
@@ -403,7 +398,7 @@ describe("SelectInput", () => {
     const handleChange = vi.fn();
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
@@ -427,7 +422,7 @@ describe("SelectInput", () => {
 
   test("applies custom className", () => {
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
