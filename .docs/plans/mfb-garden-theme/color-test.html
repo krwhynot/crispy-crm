@@ -136,8 +136,8 @@
             --neutral-800: oklch(95.5% 0.010 85);
             --neutral-900: oklch(97.8% 0.008 85);
 
-            --brand-700: oklch(65% 0.125 100);
-            --brand-500: oklch(75% 0.130 100);
+            --brand-700: oklch(65% 0.125 125);
+            --brand-500: oklch(75% 0.130 125);
 
             --accent-clay-500: oklch(63% 0.095 76);
 
@@ -505,55 +505,55 @@
             </div>
         </div>
 
-        <h2>Brand Colors - MFB Lime Green (Hue 100°)</h2>
+        <h2>Brand Colors - MFB Lime Green (Hue 125°)</h2>
         <div class="color-grid">
             <div class="color-swatch">
                 <div class="color-sample" style="background: var(--brand-100)"></div>
                 <div class="color-info">
                     <div class="color-name">brand-100</div>
-                    <div class="color-value">oklch(92% 0.08 100)</div>
+                    <div class="color-value">oklch(92% 0.08 125)</div>
                 </div>
             </div>
             <div class="color-swatch">
                 <div class="color-sample" style="background: var(--brand-300)"></div>
                 <div class="color-info">
                     <div class="color-name">brand-300</div>
-                    <div class="color-value">oklch(85% 0.12 100)</div>
+                    <div class="color-value">oklch(85% 0.12 125)</div>
                 </div>
             </div>
             <div class="color-swatch">
                 <div class="color-sample" style="background: var(--brand-500)"></div>
                 <div class="color-info">
                     <div class="color-name">brand-500</div>
-                    <div class="color-value">oklch(72% 0.132 100) #7CB342</div>
+                    <div class="color-value">oklch(72% 0.132 125) #7CB342</div>
                 </div>
             </div>
             <div class="color-swatch">
                 <div class="color-sample" style="background: var(--brand-650)"></div>
                 <div class="color-info">
                     <div class="color-name">brand-650</div>
-                    <div class="color-value">oklch(64% 0.128 100)</div>
+                    <div class="color-value">oklch(64% 0.128 125)</div>
                 </div>
             </div>
             <div class="color-swatch">
                 <div class="color-sample" style="background: var(--brand-700)"></div>
                 <div class="color-info">
                     <div class="color-name">brand-700</div>
-                    <div class="color-value">oklch(56% 0.125 100) WCAG AA</div>
+                    <div class="color-value">oklch(56% 0.125 125) WCAG AA</div>
                 </div>
             </div>
             <div class="color-swatch">
                 <div class="color-sample" style="background: var(--brand-750)"></div>
                 <div class="color-info">
                     <div class="color-name">brand-750</div>
-                    <div class="color-value">oklch(52% 0.120 100)</div>
+                    <div class="color-value">oklch(52% 0.120 125)</div>
                 </div>
             </div>
             <div class="color-swatch">
                 <div class="color-sample" style="background: var(--brand-800)"></div>
                 <div class="color-info">
                     <div class="color-name">brand-800</div>
-                    <div class="color-value">oklch(48% 0.115 100)</div>
+                    <div class="color-value">oklch(48% 0.115 125)</div>
                 </div>
             </div>
         </div>
@@ -696,22 +696,75 @@
             </p>
         </div>
 
-        <h2>Background Color Comparison</h2>
+        <h2>Background & Card Color Comparison</h2>
+
         <div class="component-demo">
+            <h3>Option A: Current Plan (Original MFB Proposal)</h3>
+            <div style="background: #FEFEF9; padding: 2rem; border-radius: var(--radius); border: 1px solid #ddd;">
+                <p style="color: var(--neutral-700); margin-bottom: 1rem;">
+                    <strong>Background:</strong> #FEFEF9 (oklch(99% 0.015 85)) - Very light warm cream<br/>
+                    <strong>Cards:</strong> oklch(97.8% 0.008 85) - Slightly darker warm white
+                </p>
+                <div style="background: oklch(97.8% 0.008 85); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-card-2);">
+                    <h4 style="margin: 0 0 0.5rem 0; color: var(--brand-700);">Sample Card</h4>
+                    <p style="margin: 0; color: var(--neutral-600);">This is how cards look on the planned background. Subtle contrast, bright and clean.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-demo">
+            <h3>Option B: Your Preference (Warmer Earth Tones)</h3>
+            <div style="background: #fffbf1; padding: 2rem; border-radius: var(--radius); border: 1px solid #ddd;">
+                <p style="color: var(--neutral-700); margin-bottom: 1rem;">
+                    <strong>Background:</strong> #fffbf1 - More yellow/warm cream<br/>
+                    <strong>Cards:</strong> #faf7f2 - Warmer beige with more depth
+                </p>
+                <div style="background: #faf7f2; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-card-2);">
+                    <h4 style="margin: 0 0 0.5rem 0; color: var(--brand-700);">Sample Card</h4>
+                    <p style="margin: 0; color: var(--neutral-600);">This is how cards look with your preferred colors. Stronger earthy feel, more beige warmth.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="component-demo">
+            <h3>Side-by-Side Comparison</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
                 <div>
-                    <h3>Current (Cool White)</h3>
-                    <div style="background: oklch(97.1% 0.002 284.5); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border);">
-                        <p style="color: oklch(39.6% 0.017 287.2);">Cool undertone with hue 285°. Professional and clean, but lacks warmth.</p>
+                    <h4>Option A: Plan (#FEFEF9 + neutral-50)</h4>
+                    <div style="background: #FEFEF9; padding: 1.5rem; border-radius: var(--radius); min-height: 200px;">
+                        <div style="background: oklch(97.8% 0.008 85); padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-card-1); margin-bottom: 1rem;">
+                            <div style="font-weight: 600; color: var(--brand-700); margin-bottom: 0.5rem;">Contact Card</div>
+                            <div style="font-size: 0.875rem; color: var(--neutral-600);">John Smith</div>
+                            <div style="font-size: 0.75rem; color: var(--neutral-500);">john@example.com</div>
+                        </div>
+                        <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: calc(var(--radius) / 2); font-weight: 600; cursor: pointer;">Primary Action</button>
                     </div>
                 </div>
                 <div>
-                    <h3>MFB (Warm Cream)</h3>
-                    <div style="background: oklch(99% 0.015 85); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border);">
-                        <p style="color: oklch(20% 0.012 85);">Warm undertone with hue 85°. Inviting, organic, farm-to-table aesthetic.</p>
+                    <h4>Option B: Your Preference (#fffbf1 + #faf7f2)</h4>
+                    <div style="background: #fffbf1; padding: 1.5rem; border-radius: var(--radius); min-height: 200px;">
+                        <div style="background: #faf7f2; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-card-1); margin-bottom: 1rem;">
+                            <div style="font-weight: 600; color: var(--brand-700); margin-bottom: 0.5rem;">Contact Card</div>
+                            <div style="font-size: 0.875rem; color: var(--neutral-600);">John Smith</div>
+                            <div style="font-size: 0.75rem; color: var(--neutral-500);">john@example.com</div>
+                        </div>
+                        <button style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: calc(var(--radius) / 2); font-weight: 600; cursor: pointer;">Primary Action</button>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="insight-box">
+            <h3>★ Color Comparison Insights ─────────────────────────────────────</h3>
+            <ul>
+                <li><strong>Option A (Plan):</strong> Lighter, brighter, more "fresh" feel. Lower contrast between background and cards.</li>
+                <li><strong>Option B (Your Preference):</strong> Warmer, earthier, more "natural" feel. Stronger layering with better card definition.</li>
+                <li><strong>Accessibility Note:</strong> Both options maintain WCAG AA compliance for text, but Option B's stronger contrast may improve readability.</li>
+                <li><strong>Consider:</strong> Option B (#fffbf1 + #faf7f2) aligns better with "Garden to Table" earthy aesthetic.</li>
+            </ul>
+            <p style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.875rem; color: var(--neutral-600);">
+                ─────────────────────────────────────────────────
+            </p>
         </div>
 
         <footer style="margin-top: 4rem; padding: 2rem; text-align: center; border-top: 2px solid var(--border);">
