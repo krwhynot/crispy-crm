@@ -108,7 +108,7 @@ WITH principal_ids AS (
   ORDER BY id
   LIMIT 5
 )
-INSERT INTO products (principal_id, name, sku, category, description, list_price, status, currency_code, unit_of_measure, minimum_order_quantity, created_at, updated_at)
+INSERT INTO products (principal_id, name, sku, category, description, list_price, status, currency_code, unit_of_measure, created_at, updated_at)
 SELECT
   principal_ids.id,
   product_name,
@@ -119,47 +119,46 @@ SELECT
   'active'::product_status,
   'USD',
   unit_of_measure,
-  minimum_order_quantity,
   NOW(),
   NOW()
 FROM principal_ids
 CROSS JOIN LATERAL (
   VALUES
     -- Heritage Creamery Foods products (rn=1)
-    (1, 'Organic Whole Milk', 'HER-MLK001', 'dairy', 'Fresh organic whole milk from grass-fed cows', 4.99, 'GAL', 12),
-    (1, 'Greek Yogurt Plain', 'HER-YOG001', 'dairy', 'Thick and creamy Greek yogurt with live cultures', 6.49, 'EA', 24),
-    (1, 'Sharp Cheddar Cheese', 'HER-CHZ001', 'dairy', 'Aged sharp cheddar cheese block', 8.99, 'LB', 6),
-    (1, 'Heavy Whipping Cream', 'HER-CRM001', 'dairy', 'Ultra-pasteurized heavy cream', 5.99, 'QT', 12),
-    (1, 'Vanilla Ice Cream', 'HER-ICE001', 'dairy', 'Premium vanilla ice cream', 7.99, 'GAL', 6),
+    (1, 'Organic Whole Milk', 'HER-MLK001', 'dairy', 'Fresh organic whole milk from grass-fed cows', 4.99, 'GAL'),
+    (1, 'Greek Yogurt Plain', 'HER-YOG001', 'dairy', 'Thick and creamy Greek yogurt with live cultures', 6.49, 'EA'),
+    (1, 'Sharp Cheddar Cheese', 'HER-CHZ001', 'dairy', 'Aged sharp cheddar cheese block', 8.99, 'LB'),
+    (1, 'Heavy Whipping Cream', 'HER-CRM001', 'dairy', 'Ultra-pasteurized heavy cream', 5.99, 'QT'),
+    (1, 'Vanilla Ice Cream', 'HER-ICE001', 'dairy', 'Premium vanilla ice cream', 7.99, 'GAL'),
 
     -- Pacific Catch Seafood products (rn=2)
-    (2, 'Atlantic Salmon Fillet', 'PAC-SAL001', 'seafood', 'Fresh Atlantic salmon fillets', 18.99, 'LB', 10),
-    (2, 'Wild Caught Shrimp', 'PAC-SHR001', 'seafood', 'Large wild-caught shrimp', 16.99, 'LB', 10),
-    (2, 'Cod Fillet', 'PAC-COD001', 'seafood', 'Premium Atlantic cod fillets', 14.99, 'LB', 10),
-    (2, 'Tuna Steak', 'PAC-TUN001', 'seafood', 'Sushi-grade yellowfin tuna steaks', 22.99, 'LB', 8),
-    (2, 'Lobster Tail', 'PAC-LOB001', 'seafood', 'Cold water lobster tails', 28.99, 'EA', 12),
+    (2, 'Atlantic Salmon Fillet', 'PAC-SAL001', 'seafood', 'Fresh Atlantic salmon fillets', 18.99, 'LB'),
+    (2, 'Wild Caught Shrimp', 'PAC-SHR001', 'seafood', 'Large wild-caught shrimp', 16.99, 'LB'),
+    (2, 'Cod Fillet', 'PAC-COD001', 'seafood', 'Premium Atlantic cod fillets', 14.99, 'LB'),
+    (2, 'Tuna Steak', 'PAC-TUN001', 'seafood', 'Sushi-grade yellowfin tuna steaks', 22.99, 'LB'),
+    (2, 'Lobster Tail', 'PAC-LOB001', 'seafood', 'Cold water lobster tails', 28.99, 'EA'),
 
     -- Artisan Pantry Foods products (rn=3)
-    (3, 'Organic Ketchup', 'ART-KET001', 'condiments', 'Organic tomato ketchup', 4.49, 'CASE', 12),
-    (3, 'Dijon Mustard', 'ART-MUS001', 'condiments', 'Stone-ground Dijon mustard', 5.99, 'CASE', 12),
-    (3, 'Sriracha Hot Sauce', 'ART-SRI001', 'condiments', 'Premium sriracha hot sauce', 6.49, 'CASE', 12),
-    (3, 'Balsamic Vinegar', 'ART-BAL001', 'oils_vinegars', 'Aged balsamic vinegar', 12.99, 'EA', 6),
-    (3, 'Soy Sauce', 'ART-SOY001', 'condiments', 'Naturally brewed soy sauce', 4.99, 'CASE', 12),
+    (3, 'Organic Ketchup', 'ART-KET001', 'condiments', 'Organic tomato ketchup', 4.49, 'CASE'),
+    (3, 'Dijon Mustard', 'ART-MUS001', 'condiments', 'Stone-ground Dijon mustard', 5.99, 'CASE'),
+    (3, 'Sriracha Hot Sauce', 'ART-SRI001', 'condiments', 'Premium sriracha hot sauce', 6.49, 'CASE'),
+    (3, 'Balsamic Vinegar', 'ART-BAL001', 'oils_vinegars', 'Aged balsamic vinegar', 12.99, 'EA'),
+    (3, 'Soy Sauce', 'ART-SOY001', 'condiments', 'Naturally brewed soy sauce', 4.99, 'CASE'),
 
     -- Mountain Spring Beverage Group products (rn=4)
-    (4, 'Cold Brew Coffee', 'MSB-COF001', 'beverages', 'Premium cold brew coffee concentrate', 12.99, 'EA', 12),
-    (4, 'Organic Green Tea', 'MSB-TEA001', 'beverages', 'Organic green tea leaves', 8.99, 'BOX', 24),
-    (4, 'Sparkling Mineral Water', 'MSB-WAT001', 'beverages', 'Naturally carbonated mineral water', 1.99, 'CASE', 24),
-    (4, 'Energy Boost Drink', 'MSB-ENE001', 'beverages', 'Natural energy drink', 3.49, 'CASE', 24),
-    (4, 'Kombucha Ginger Lemon', 'MSB-KOM001', 'beverages', 'Organic kombucha with ginger', 4.99, 'CASE', 12),
+    (4, 'Cold Brew Coffee', 'MSB-COF001', 'beverages', 'Premium cold brew coffee concentrate', 12.99, 'EA'),
+    (4, 'Organic Green Tea', 'MSB-TEA001', 'beverages', 'Organic green tea leaves', 8.99, 'BOX'),
+    (4, 'Sparkling Mineral Water', 'MSB-WAT001', 'beverages', 'Naturally carbonated mineral water', 1.99, 'CASE'),
+    (4, 'Energy Boost Drink', 'MSB-ENE001', 'beverages', 'Natural energy drink', 3.49, 'CASE'),
+    (4, 'Kombucha Ginger Lemon', 'MSB-KOM001', 'beverages', 'Organic kombucha with ginger', 4.99, 'CASE'),
 
     -- Farm Fresh Provisions products (rn=5)
-    (5, 'French Fries', 'FFP-FRI001', 'frozen', 'Crispy straight-cut French fries', 5.99, 'CASE', 6),
-    (5, 'Mixed Vegetables', 'FFP-VEG001', 'frozen', 'Flash-frozen mixed vegetables', 4.49, 'CASE', 12),
-    (5, 'Romaine Lettuce', 'FFP-LET001', 'fresh_produce', 'Fresh romaine lettuce hearts', 3.99, 'CASE', 24),
-    (5, 'Vine Tomatoes', 'FFP-TOM001', 'fresh_produce', 'Fresh vine-ripened tomatoes', 4.99, 'LB', 20),
-    (5, 'Baby Carrots', 'FFP-CAR001', 'fresh_produce', 'Fresh baby carrots', 3.49, 'CASE', 24)
-) AS products(principal_rn, product_name, sku, category, description, list_price, unit_of_measure, minimum_order_quantity)
+    (5, 'French Fries', 'FFP-FRI001', 'frozen', 'Crispy straight-cut French fries', 5.99, 'CASE'),
+    (5, 'Mixed Vegetables', 'FFP-VEG001', 'frozen', 'Flash-frozen mixed vegetables', 4.49, 'CASE'),
+    (5, 'Romaine Lettuce', 'FFP-LET001', 'fresh_produce', 'Fresh romaine lettuce hearts', 3.99, 'CASE'),
+    (5, 'Vine Tomatoes', 'FFP-TOM001', 'fresh_produce', 'Fresh vine-ripened tomatoes', 4.99, 'LB'),
+    (5, 'Baby Carrots', 'FFP-CAR001', 'fresh_produce', 'Fresh baby carrots', 3.49, 'CASE')
+) AS products(principal_rn, product_name, sku, category, description, list_price, unit_of_measure)
 WHERE principal_ids.rn = products.principal_rn;
 SET session_replication_role = replica;
 
