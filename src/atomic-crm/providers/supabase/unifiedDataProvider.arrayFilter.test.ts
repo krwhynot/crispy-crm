@@ -52,6 +52,8 @@ vi.mock("./supabase", () => ({
 // Mock validation and services
 vi.mock("../../validation/opportunities", () => ({
   validateOpportunityForm: vi.fn(),
+  validateCreateOpportunity: vi.fn(),
+  validateUpdateOpportunity: vi.fn(),
 }));
 
 vi.mock("../../validation/organizations", () => ({
@@ -60,10 +62,14 @@ vi.mock("../../validation/organizations", () => ({
 
 vi.mock("../../validation/contacts", () => ({
   validateContactForm: vi.fn(),
+  validateCreateContact: vi.fn(),
+  validateUpdateContact: vi.fn(),
+  validateContactOrganization: vi.fn(),
 }));
 
 vi.mock("../../validation/products", () => ({
   validateProductForm: vi.fn(),
+  validateOpportunityProduct: vi.fn(),
 }));
 
 vi.mock("../../validation/tags", () => ({
@@ -74,10 +80,41 @@ vi.mock("../../validation/tags", () => ({
 vi.mock("../../validation/notes", () => ({
   validateContactNoteForSubmission: vi.fn(),
   validateOpportunityNoteForSubmission: vi.fn(),
+  validateCreateContactNote: vi.fn(),
+  validateUpdateContactNote: vi.fn(),
+  validateCreateOpportunityNote: vi.fn(),
+  validateUpdateOpportunityNote: vi.fn(),
 }));
 
 vi.mock("../../validation/tasks", () => ({
   validateTaskForSubmission: vi.fn(),
+  validateCreateTask: vi.fn(),
+  validateUpdateTask: vi.fn(),
+  validateTaskWithReminder: vi.fn(),
+}));
+
+vi.mock("../../validation/sales", () => ({
+  validateSalesForm: vi.fn(),
+  validateCreateSales: vi.fn(),
+  validateUpdateSales: vi.fn(),
+}));
+
+vi.mock("../../validation/activities", () => ({
+  validateActivitiesForm: vi.fn(),
+  validateCreateActivities: vi.fn(),
+  validateUpdateActivities: vi.fn(),
+  validateEngagementsForm: vi.fn(),
+  validateCreateEngagements: vi.fn(),
+  validateUpdateEngagements: vi.fn(),
+  validateInteractionsForm: vi.fn(),
+  validateCreateInteractions: vi.fn(),
+  validateUpdateInteractions: vi.fn(),
+}));
+
+vi.mock("../../validation/segments", () => ({
+  validateCreateSegment: vi.fn(),
+  validateUpdateSegment: vi.fn(),
+  validateSegmentForSubmission: vi.fn(),
 }));
 
 vi.mock("../../services", () => ({
