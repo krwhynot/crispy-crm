@@ -57,14 +57,14 @@
   --neutral-900: oklch(21.7% 0.010 85);  /* Near black */
   --neutral-950: oklch(13.1% 0.008 85);  /* Darkest */
 
-  /* Primary Brand Colors - MFB Lime Green (hue 100°) */
-  --brand-100: oklch(92% 0.08 100);         /* Light lime tint */
-  --brand-300: oklch(85% 0.12 100);         /* Soft lime */
-  --brand-500: oklch(72% 0.132 100);        /* Brand identity #7CB342 */
-  --brand-650: oklch(64% 0.128 100);        /* Hover state */
-  --brand-700: oklch(56% 0.125 100);        /* Primary CTAs - DARKENED for WCAG AA on cream */
-  --brand-750: oklch(52% 0.120 100);        /* Active state */
-  --brand-800: oklch(48% 0.115 100);        /* Pressed/dark states */
+  /* Primary Brand Colors - MFB Lime Green (hue 125° - CORRECTED) */
+  --brand-100: oklch(92% 0.08 125);         /* Light lime tint */
+  --brand-300: oklch(85% 0.12 125);         /* Soft lime */
+  --brand-500: oklch(72% 0.132 125);        /* #7CB342 identity color */
+  --brand-650: oklch(64% 0.128 125);        /* Hover state */
+  --brand-700: oklch(56% 0.125 125);        /* For accents only - NOT primary buttons */
+  --brand-750: oklch(52% 0.120 125);        /* Active state */
+  --brand-800: oklch(48% 0.115 125);        /* Pressed/dark states */
 
   /* Accent Colors - Clay/Terracotta (hue 76°) */
   --accent-clay-700: oklch(52% 0.120 76);         /* Dark clay */

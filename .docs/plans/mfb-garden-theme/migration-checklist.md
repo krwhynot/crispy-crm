@@ -72,9 +72,9 @@
 #### D. Replace Semantic Colors
 - [ ] **Success** (keep green but adjust for warm background)
   ```css
-  --success: oklch(56% 0.125 100);
+  --success: oklch(56% 0.125 145);  /* Success green, different from brand */
   --success-foreground: oklch(99% 0.015 85);
-  --success-subtle: oklch(92% 0.08 100);
+  --success-subtle: oklch(92% 0.08 145);
   ```
 
 - [ ] **Warning** (adjust for AA compliance)
@@ -473,9 +473,9 @@
     --accent-clay-300: oklch(85% 0.060 76);
 
     /* Semantic Colors (adjusted for dark) */
-    --success: oklch(62% 0.110 100);
+    --success: oklch(62% 0.110 145);  /* Success green, not brand */
     --success-foreground: oklch(15% 0.012 85);
-    --success-subtle: oklch(22% 0.08 100);
+    --success-subtle: oklch(22% 0.08 145);
 
     --warning: oklch(75% 0.125 85);
     --warning-foreground: oklch(15% 0.012 85);
@@ -579,7 +579,7 @@
 - [ ] **Login Page**
   - [ ] Background is warm cream
   - [ ] Form inputs have rounded corners
-  - [ ] Primary button uses MFB green
+  - [ ] Primary button uses clay orange (accent-clay-600)
   - [ ] Hover effects work smoothly
 
 - [ ] **Dashboard**
@@ -686,7 +686,8 @@
   **Brand Identity**: Atomic CRM uses the MFB "Garden to Table" theme, a warm earth-tone OKLCH color system inspired by agricultural roots.
 
   **Color Architecture**:
-  - **Primary Brand**: MFB Lime Green at hue 100° (--brand-500 through --brand-800)
+  - **Primary Brand**: MFB Lime Green at hue 125° (--brand-500 through --brand-800) - for logos/branding
+  - **Primary Buttons**: Clay Orange at hue 76° (--accent-clay-600) - for CTAs and interactive elements
   - **Accent Colors**: Terracotta/Clay at hue 76° (--accent-clay-500)
   - **Neutrals**: Warm gray at hue 85° (beige-tinted for food industry aesthetics)
   - **Background**: Warm cream oklch(99% 0.015 85) instead of stark white

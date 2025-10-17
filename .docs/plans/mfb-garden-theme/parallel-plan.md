@@ -58,14 +58,14 @@ Files to Modify:
 --brand-500: oklch(74% 0.12 125);
 --brand-700: oklch(50% 0.10 125);
 
-/* NEW - MFB lime green (hue 100°) */
---brand-100: oklch(92% 0.08 100);
---brand-300: oklch(85% 0.12 100);
---brand-500: oklch(72% 0.132 100);   /* #7CB342 identity color */
---brand-650: oklch(64% 0.128 100);   /* Hover state */
---brand-700: oklch(56% 0.125 100);   /* Primary CTAs - DARKENED for WCAG AA on cream */
---brand-750: oklch(52% 0.120 100);   /* Active state */
---brand-800: oklch(48% 0.115 100);   /* Pressed/dark states */
+/* NEW - MFB lime green (hue 125°) - CORRECTED */
+--brand-100: oklch(92% 0.08 125);
+--brand-300: oklch(85% 0.12 125);
+--brand-500: oklch(72% 0.132 125);   /* #7CB342 identity color */
+--brand-650: oklch(64% 0.128 125);   /* Hover state */
+--brand-700: oklch(56% 0.125 125);   /* For accents only - NOT primary buttons */
+--brand-750: oklch(52% 0.120 125);   /* Active state */
+--brand-800: oklch(48% 0.115 125);   /* Pressed/dark states */
 ```
 
 **Step 2: Replace Neutral Scale (lines 47-57)**
@@ -106,10 +106,12 @@ Replace purple/teal with clay orange
 **Step 5: Update Semantic Tokens (lines 83-96)**
 ONLY update `--primary` and `--accent` - others cascade automatically
 ```css
---primary: var(--brand-700);           /* Now points to darkened MFB green */
---accent: var(--accent-clay-500);      /* Now points to clay orange */
---ring: var(--brand-500);              /* Focus ring uses identity color */
+--primary: var(--accent-clay-600);     /* Clay orange for buttons - WCAG AA compliant */
+--accent: var(--accent-clay-500);      /* Clay orange for accents */
+--ring: var(--brand-500);              /* Focus ring uses lime green identity color */
 ```
+
+**CRITICAL:** Primary buttons use clay orange, NOT lime green! Brand-700 looks olive and lime green fails WCAG AA contrast on cream background.
 
 **Validation Before Committing:**
 - Run `npm run dev` and verify no CSS parsing errors
@@ -477,8 +479,8 @@ Add 8-color earth-tone palette with dual tokens (fill + stroke):
 
 /* Chart 2: MFB Lime Green (Our Data/Primary) */
 --chart-2: var(--brand-500);                 /* Semantic reference */
---chart-2-fill: oklch(72% 0.132 100);        /* #7CB342 */
---chart-2-stroke: oklch(35% 0.132 100);      /* Dark green for AA */
+--chart-2-fill: oklch(72% 0.132 125);        /* #7CB342 */
+--chart-2-stroke: oklch(35% 0.132 125);      /* Dark green for AA */
 
 /* Chart 3: Terracotta/Clay (Revenue/High Priority) */
 --chart-3: oklch(63% 0.110 76);              /* Clay orange */
@@ -540,16 +542,16 @@ Files to Modify:
 
 **Update state color families (lines 98-136)**
 
-**Success states (green) - shift to match MFB lime:**
+**Success states (green) - use distinct success green (145°), NOT brand lime:**
 ```css
---success-subtle: oklch(92% 0.08 100);       /* Lighter MFB lime */
---success-default: oklch(56% 0.125 100);     /* Same as --brand-700 for consistency */
---success-strong: oklch(48% 0.130 100);      /* Darker variant */
---success-bg: oklch(95% 0.05 100);           /* Light lime tint */
---success-border: oklch(78% 0.10 100);       /* Medium lime */
---success-hover: oklch(60% 0.122 100);
---success-active: oklch(52% 0.127 100);
---success-disabled: oklch(72% 0.06 100);
+--success-subtle: oklch(92% 0.08 145);       /* Success green */
+--success-default: oklch(56% 0.125 145);     /* Distinct from brand */
+--success-strong: oklch(48% 0.130 145);      /* Darker variant */
+--success-bg: oklch(95% 0.05 145);           /* Light green tint */
+--success-border: oklch(78% 0.10 145);       /* Medium green */
+--success-hover: oklch(60% 0.122 145);
+--success-active: oklch(52% 0.127 145);
+--success-disabled: oklch(72% 0.06 145);
 ```
 
 **Warning states (orange/amber) - shift to golden amber:**
@@ -820,13 +822,13 @@ Files to Modify:
 **Step 2: Lighten brand colors for dark background visibility**
 ```css
 /* Brand Colors - Lighter for dark mode */
---brand-100: oklch(30% 0.08 100);         /* Inverted/darkened */
---brand-300: oklch(45% 0.12 100);
---brand-500: oklch(75% 0.130 100);        /* Lighter MFB lime */
---brand-650: oklch(68% 0.125 100);
---brand-700: oklch(62% 0.122 100);        /* Primary CTAs lighter */
---brand-750: oklch(58% 0.118 100);
---brand-800: oklch(50% 0.112 100);
+--brand-100: oklch(30% 0.08 125);         /* Inverted/darkened */
+--brand-300: oklch(45% 0.12 125);
+--brand-500: oklch(75% 0.130 125);        /* Lighter MFB lime */
+--brand-650: oklch(68% 0.125 125);
+--brand-700: oklch(62% 0.122 125);        /* For accents in dark mode */
+--brand-750: oklch(58% 0.118 125);
+--brand-800: oklch(50% 0.112 125);
 ```
 
 **Step 3: Desaturate accent clay for dark mode**
@@ -850,11 +852,11 @@ Files to Modify:
 
 **Step 5: Adjust semantic state colors for dark mode**
 ```css
-/* Success - Lighter for visibility */
---success-subtle: oklch(22% 0.08 100);
---success-default: oklch(62% 0.122 100);  /* Lighter MFB lime */
---success-strong: oklch(70% 0.125 100);
---success-bg: oklch(20% 0.05 100);
+/* Success - Lighter for visibility, distinct from brand */
+--success-subtle: oklch(22% 0.08 145);
+--success-default: oklch(62% 0.122 145);  /* Success green, not brand */
+--success-strong: oklch(70% 0.125 145);
+--success-bg: oklch(20% 0.05 145);
 
 /* Warning - Lighter golden amber */
 --warning-subtle: oklch(25% 0.055 85);
@@ -1141,7 +1143,8 @@ Files to Modify:
 **Brand Identity**: Atomic CRM uses the MFB "Garden to Table" theme, a warm earth-tone OKLCH color system inspired by agricultural and food industry aesthetics.
 
 **Color Architecture**:
-- **Primary Brand**: MFB Lime Green at hue 100° (#7CB342) - vibrant garden green for CTAs and brand identity
+- **Primary Brand**: MFB Lime Green at hue 125° (#7CB342) - vibrant garden green for logos and brand identity
+- **Primary Buttons**: Clay Orange at hue 76° (accent-clay-600) - for CTAs and interactive elements (WCAG AA compliant)
 - **Accent Colors**: Terracotta/Clay at hue 76° (#EA580C) for warmth and organic feel
 - **Neutrals**: Warm gray with beige tint at hue 85° (vs. original cool gray at 285°)
 - **Background**: Warm cream oklch(99% 0.015 85) = #FEFEF9 (vs. stark white)
@@ -1154,10 +1157,12 @@ Files to Modify:
 - **Algorithmic dark mode**: Inverted neutrals with +10-20% lightness adjustment
 - **Typography**: Nunito font family (Google Fonts) for friendly, organic aesthetic
 - **WCAG AA compliance**: All 34 color pairs tested (4.5:1 text, 3:1 non-text)
-- **Semantic token abstraction**: Components use --primary, not --brand-700
+- **Semantic token abstraction**: Components use --primary (clay orange), not --brand-700
 
 **Design Philosophy**:
-- Primary buttons use --brand-700 (oklch 56% 0.125 100) for WCAG AA compliance on cream background
+- **CRITICAL**: Primary buttons use --accent-clay-600 (oklch 58% 0.115 76) for WCAG AA compliance
+- Brand lime green (--brand-700) looks olive at 56% lightness - reserved for accents only
+- Lime green --brand-500 fails WCAG AA contrast on cream (3.7:1) - used for logos/focus rings only
 - Focus rings use --brand-500 (brand identity color)
 - Sidebar uses warm cream tint for subtle differentiation
 - Shadows increased 25-30% opacity for visibility on cream background
@@ -1192,9 +1197,9 @@ Files to Create:
 **File 1: color-palette.md**
 Document all 180+ color tokens with:
 - Token name (e.g., `--brand-700`)
-- OKLCH value (e.g., `oklch(56% 0.125 100)`)
+- OKLCH value (e.g., `oklch(56% 0.125 125)`)
 - Hex equivalent (e.g., `#5a7030`)
-- Usage guidance (e.g., "Primary CTAs, WCAG AA compliant on cream")
+- Usage guidance (e.g., "For accents only - NOT primary buttons")
 - Visual description (e.g., "Darkened lime green")
 
 **File 2: component-patterns.md**
