@@ -14,14 +14,45 @@ Migrate Atomic CRM from the current brand-green OKLCH color system to the MFB "G
 
 **Key Changes:**
 - **Background**: Cool white → Warm cream (#FEFEF9)
-- **Primary Brand**: Dark olive green (hue 125°) → Lime garden green (#7CB342, hue 100°)
+- **Primary Brand**: Dark olive green (hue 125°) → Lime garden green (#7CB342, hue 125°) - for logo/branding
+- **Primary Buttons**: Dark olive → Clay orange (accent-clay-600) - for CTAs and interactive elements
 - **Accent**: Vibrant purple → Clay orange (#EA580C)
 - **Typography**: System fonts → Nunito (Google Fonts)
 - **Aesthetic**: Professional/corporate → Organic/artisanal
 
 ---
 
-## 2. User Stories
+## 2. Key Design Decisions (Finalized)
+
+**⚠️ IMPORTANT: These decisions are FINAL to prevent confusion during implementation**
+
+### Decision 1: Background & Cards (Option A - CONFIRMED)
+- **Background:** `oklch(99% 0.015 85)` = #FEFEF9 (warm cream)
+- **Cards:** `oklch(97.8% 0.008 85)` = var(--neutral-50) (subtle warm white)
+- **Rationale:** Maintains consistent hue (85°) across palette, subtle card contrast, fresh feel
+
+### Decision 2: Lime Green Hue (125° - CORRECTED)
+- **Correct Hue:** 125° (true lime green)
+- **WRONG Hue:** ~~100°~~ (looks brown/olive - rejected)
+- **Brand-500:** oklch(72% 0.132 125) = #7CB342 (brand identity color)
+- **Usage:** Logos, focus rings, charts, accents - **NOT primary buttons**
+
+### Decision 3: Primary Button Color (Clay Orange - FINAL)
+- **Primary Buttons:** Clay orange = oklch(58% 0.115 76) = accent-clay-600
+- **Why NOT Lime Green:**
+  - Brand-500 (72% lightness) fails WCAG AA contrast (3.7:1)
+  - Brand-700 (56% lightness) looks olive/forest green, NOT lime
+- **Solution:** Use clay orange for CTAs (passes WCAG AA at 4.5:1+)
+- **Semantic Token:** `--primary: var(--accent-clay-600)`
+
+### Decision 4: Color Role Separation
+- **Lime Green (brand-500, hue 125°):** Brand identity, logos, focus rings (--ring), charts
+- **Clay Orange (accent-clay-600, hue 76°):** Primary buttons (--primary), CTAs, interactive elements
+- **Dark Lime (brand-700):** Use sparingly for accents only, never for primary buttons
+
+---
+
+## 3. User Stories
 
 ### Primary Users: Food Broker Staff & Agricultural Business Teams
 
@@ -43,9 +74,9 @@ Migrate Atomic CRM from the current brand-green OKLCH color system to the MFB "G
 
 ---
 
-## 3. Technical Approach
+## 4. Technical Approach
 
-### 3.1 Frontend Components
+### 4.1 Frontend Components
 
 #### **A. Core Color System** (`src/index.css`)
 
@@ -59,32 +90,41 @@ Migrate Atomic CRM from the current brand-green OKLCH color system to the MFB "G
 
 **Target State**:
 ```css
-/* MFB Garden to Table System */
---brand-700: oklch(56% 0.125 100);   /* Darkened for WCAG AA */
---brand-500: oklch(72% 0.132 100);   /* Lime green #7CB342 */
---background: oklch(99% 0.015 85);   /* Warm cream #FEFEF9 */
---accent-clay: oklch(63% 0.110 76);  /* Clay orange #EA580C */
+/* MFB Garden to Table System - FINAL APPROVED */
+--brand-700: oklch(56% 0.125 125);   /* Dark lime for accents (NOT primary buttons) */
+--brand-500: oklch(72% 0.132 125);   /* True lime green #7CB342 - brand identity */
+--background: oklch(99% 0.015 85);   /* Warm cream #FEFEF9 - CONFIRMED */
+--card: oklch(97.8% 0.008 85);       /* Subtle card contrast - CONFIRMED */
+
+/* Primary Actions use Clay Orange */
+--primary: oklch(58% 0.115 76);      /* Clay orange for buttons - WCAG AA compliant */
+--accent-clay-600: oklch(58% 0.115 76);
+--accent-clay-500: oklch(63% 0.110 76);  /* Clay orange #EA580C */
 ```
 
 **Changes Required**:
 1. **Brand Colors** (lines 60-66):
-   - Replace green hue 125° → 100° (garden green)
+   - **CORRECTED:** Keep hue 125° (NOT 100° - that looks brown!)
    - Increase chroma from 0.10 → 0.132 (more vibrant)
-   - Adjust lightness for WCAG compliance on cream
+   - **Important:** Brand-700 (56% lightness) looks olive/forest green, NOT lime
+   - **Solution:** Reserve lime green for branding, logos, focus rings - NOT primary buttons
 
 2. **Neutrals** (lines 48-57):
    - Shift cool undertone (284°) → warm undertone (85°)
-   - Increase chroma slightly (0.002 → 0.015)
+   - Background: oklch(99% 0.015 85) - CONFIRMED as final choice
+   - Cards: var(--neutral-50) = oklch(97.8% 0.008 85) - CONFIRMED
    - Maintain 10-shade scale (neutral-50 through neutral-900)
 
-3. **Accent Colors** (lines 69-72):
+3. **Accent Colors - PRIMARY BUTTONS** (lines 69-72):
    - Replace purple (295°) → clay orange (76°)
-   - Reduce chroma (0.20 → 0.110) for earth-tone feel
-   - Add light variant for backgrounds
+   - **Key Decision:** Use clay-600 (58% lightness) for primary buttons
+   - Passes WCAG AA (4.5:1+) while maintaining vibrant earth tone
+   - Add light variants for backgrounds (clay-300, clay-400)
 
 4. **Semantic Tokens** (lines 83-96):
-   - Remap --primary to darkened MFB green (56% lightness)
-   - Update --ring to maintain focus visibility
+   - **CRITICAL:** Remap --primary to clay orange (58% lightness), NOT brand-700
+   - --ring: Keep brand-500 (lime green) for focus visibility
+   - --accent: Use clay-500 for secondary accent uses
    - Adjust --muted-foreground for cream background contrast
 
 #### **B. Typography System**
@@ -274,19 +314,19 @@ body {
 
 ---
 
-### 3.2 API Endpoints
+### 4.2 API Endpoints
 
 **No API changes required**. This is a pure frontend visual migration.
 
 ---
 
-### 3.3 Database Changes
+### 4.3 Database Changes
 
 **No database migrations required**. Color system is entirely CSS-based.
 
 ---
 
-### 3.4 Data Flow Diagram
+### 4.4 Data Flow Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -295,7 +335,7 @@ body {
 │                                                              │
 │  ┌────────────────────────────────────────────────────┐    │
 │  │ MFB Brand Colors (OKLCH)                           │    │
-│  │ - brand-500, brand-700 (lime green hue 100°)       │    │
+│  │ - brand-500, brand-700 (lime green hue 125°)       │    │
 │  │ - accent-clay (orange hue 76°)                     │    │
 │  │ - neutral-50...900 (warm undertone 85°)            │    │
 │  │ - chart-1...8 (earth tone palette)                 │    │
@@ -304,8 +344,9 @@ body {
 │               ↓                                              │
 │  ┌────────────────────────────────────────────────────┐    │
 │  │ Semantic Tokens                                     │    │
-│  │ - --primary: var(--brand-700)                       │    │
-│  │ - --accent: var(--accent-clay)                      │    │
+│  │ - --primary: var(--accent-clay-600) [BUTTONS]      │    │
+│  │ - --ring: var(--brand-500) [FOCUS/BRANDING]        │    │
+│  │ - --accent: var(--accent-clay-500)                 │    │
 │  │ - --background: warm cream                          │    │
 │  └────────────┬───────────────────────────────────────┘    │
 │               │                                              │
@@ -340,11 +381,11 @@ body {
 
 ---
 
-## 4. UI/UX Flow
+## 5. UI/UX Flow
 
 ### Step-by-Step User Experience Changes
 
-#### **4.1 Login Page**
+#### **5.1 Login Page**
 **Before**: Cool white background, green logo, dark buttons
 **After**: Warm cream background, lime green logo, clay orange accent on "Sign In" button
 
@@ -356,7 +397,7 @@ body {
 
 ---
 
-#### **4.2 Dashboard**
+#### **5.2 Dashboard**
 **Before**: Clean, professional, cool-toned charts
 **After**: Organic, warm, earth-tone charts with strategic color meaning
 
@@ -371,7 +412,7 @@ body {
 
 ---
 
-#### **4.3 Contact/Organization Lists**
+#### **5.3 Contact/Organization Lists**
 **Before**: High-contrast white background, clean typography
 **After**: Warm cream background, softer shadows, friendlier font
 
@@ -384,7 +425,7 @@ body {
 
 ---
 
-#### **4.4 Opportunity Pipeline (Kanban)**
+#### **5.4 Opportunity Pipeline (Kanban)**
 **Before**: Cool gray columns, purple accents
 **After**: Warm beige columns, clay orange accents
 
@@ -399,7 +440,7 @@ body {
 
 ---
 
-#### **4.5 Forms & Inputs**
+#### **5.5 Forms & Inputs**
 **Before**: Gray borders, green focus rings
 **After**: Warm borders, lime focus rings with higher contrast
 
@@ -412,7 +453,7 @@ body {
 
 ---
 
-#### **4.6 Dark Mode** (Auto-generated)
+#### **5.6 Dark Mode** (Auto-generated)
 **Before**: Dark gray with cool undertones
 **After**: Dark warm tones (chocolate/espresso aesthetic)
 
@@ -424,7 +465,7 @@ body {
 
 ---
 
-#### **4.7 Navigation/Sidebar**
+#### **5.7 Navigation/Sidebar**
 **Before**: Cool light gray sidebar, dark text
 **After**: Warm cream-tinted sidebar, softer contrast
 
@@ -458,9 +499,9 @@ body {
 
 ---
 
-## 5. Success Metrics
+## 6. Success Metrics
 
-### 5.1 Accessibility Compliance
+### 6.1 Accessibility Compliance
 - ✅ **100% WCAG AA compliance** for all text/background combinations (4.5:1 minimum)
 - ✅ **All interactive elements** pass 3:1 contrast requirement
 - ✅ **Focus indicators** clearly visible on cream background
@@ -472,7 +513,7 @@ npm run validate:colors
 # Expected output: ✅ Passed: 16/16 tests
 ```
 
-### 5.2 Visual Regression
+### 6.2 Visual Regression
 - ✅ **141+ components render correctly** on cream background
 - ✅ **No broken layouts** due to color changes
 - ✅ **Charts display legibly** with earth-tone palette
@@ -484,7 +525,7 @@ npm run test:visual
 # Compare before/after screenshots
 ```
 
-### 5.3 Performance
+### 6.3 Performance
 - ✅ **Nunito font loads** within 2 seconds (using `font-display: swap`)
 - ✅ **No layout shift** during font loading (use fallback system font)
 - ✅ **CSS bundle size** remains under 50KB (color variables don't add significant weight)
@@ -496,7 +537,7 @@ npm run build
 # Lighthouse performance audit
 ```
 
-### 5.4 Brand Consistency
+### 6.4 Brand Consistency
 - ✅ **Color palette matches** MFB style guide exactly
 - ✅ **Typography** uses Nunito at specified weights (400, 500, 600, 700)
 - ✅ **Component patterns** follow MFB guidelines (8px radius, soft shadows)
@@ -504,7 +545,7 @@ npm run build
 
 **Validation Method**: Manual design review with stakeholder approval
 
-### 5.5 Developer Experience
+### 6.5 Developer Experience
 - ✅ **Semantic tokens remain unchanged** (--primary, --accent, etc.)
 - ✅ **No component code changes required** (colors update automatically)
 - ✅ **Dark mode works without additional code**
@@ -519,7 +560,7 @@ npm run dev
 
 ---
 
-## 6. Out of Scope
+## 7. Out of Scope
 
 ### Explicitly NOT included in this migration:
 
@@ -569,24 +610,24 @@ npm run dev
 
 ---
 
-## 7. Technical Requirements
+## 8. Technical Requirements
 
-### 7.1 Browser Support
+### 8.1 Browser Support
 - ✅ **OKLCH color space**: Chrome 111+, Safari 16.4+, Firefox 113+
 - ✅ **CSS custom properties**: All modern browsers
 - ✅ **Fallback**: Not required (drop legacy browser support per project decision)
 
-### 7.2 Dependencies
+### 8.2 Dependencies
 - **Google Fonts API**: Nunito font family
 - **No new npm packages** required
 - **Existing**: `validate-colors.js` script for WCAG testing
 
-### 7.3 Build System
+### 8.3 Build System
 - **No Vite config changes** required
 - **CSS processed normally** via Tailwind CSS 4
 - **PostCSS**: No additional plugins needed
 
-### 7.4 Testing Requirements
+### 8.4 Testing Requirements
 - **Unit tests**: No changes (visual-only migration)
 - **Visual regression**: Playwright snapshots required
 - **Accessibility**: Automated WCAG testing via axe-core
@@ -594,7 +635,7 @@ npm run dev
 
 ---
 
-## 8. File Modification Summary
+## 9. File Modification Summary
 
 ### Critical Path (3 files):
 1. `/home/krwhynot/projects/crispy-crm/src/index.css` (~150 lines changed)
@@ -616,7 +657,7 @@ npm run dev
 
 ---
 
-## 9. Risk Assessment
+## 10. Risk Assessment
 
 | Risk | Likelihood | Impact | Mitigation |
 |------|-----------|--------|------------|
@@ -629,7 +670,7 @@ npm run dev
 
 ---
 
-## 10. Implementation Timeline
+## 11. Implementation Timeline
 
 ### Phase 1: Core Colors (Day 1-2, 8-12 hours)
 - [ ] Update brand colors in `src/index.css`
@@ -685,7 +726,7 @@ npm run dev
 
 ---
 
-## 11. Acceptance Criteria
+## 12. Acceptance Criteria
 
 ### Must-Have (Blocking Launch):
 - ✅ All WCAG AA contrast ratios pass (4.5:1 text, 3:1 non-text)
@@ -712,7 +753,7 @@ npm run dev
 
 ---
 
-## 12. Open Questions
+## 13. Open Questions
 
 **None** - All decisions confirmed:
 1. ✅ Accessibility: Darken primary overall (Option B)
@@ -728,7 +769,7 @@ npm run dev
 
 ---
 
-## 13. Related Documents
+## 14. Related Documents
 
 - **Migration Checklist**: `.docs/plans/mfb-garden-theme/migration-checklist.md`
 - **Testing Guide**: `.docs/plans/mfb-garden-theme/testing-guide.md`
@@ -738,7 +779,7 @@ npm run dev
 
 ---
 
-## 14. Sign-Off
+## 15. Sign-Off
 
 **Prepared By**: Claude Code (AI Assistant)
 **Reviewed By**: [Pending User Approval]
