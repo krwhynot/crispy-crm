@@ -17,7 +17,7 @@ export const ContactList = () => {
             >
               {contact.first_name} {contact.last_name}
             </RouterLink>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-[color:var(--text-subtle)]">
               {contact.title}
               {contact.title && contact.company_name && " at "}
               {contact.company_name}

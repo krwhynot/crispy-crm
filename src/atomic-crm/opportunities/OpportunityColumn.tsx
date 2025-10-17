@@ -38,7 +38,7 @@ export const OpportunityColumn = ({
           style={{ borderBottom: `2px solid ${getOpportunityStageColor(stage)}` }}
         >
           {getOpportunityStageLabel(stage)}
-          <span className="text-[11px] text-muted-foreground ml-1 font-normal">
+          <span className="text-[11px] text-[color:var(--text-subtle)] ml-1 font-normal">
             ({opportunities.length})
           </span>
         </h3>

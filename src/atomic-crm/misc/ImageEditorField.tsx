@@ -156,7 +156,7 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
             {...getRootProps()}
           >
             <input {...getInputProps()} />
-            <p className="text-muted-foreground">
+            <p className="text-[color:var(--text-subtle)]">
               Drop a file to upload, or click to select it.
             </p>
           </div>

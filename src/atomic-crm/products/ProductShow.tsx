@@ -64,7 +64,7 @@ const ProductShowContent = () => {
             <div className="flex items-start gap-3">
               <div className="flex-1">
                 <h1 className="text-3xl font-semibold">{record.name}</h1>
-                <div className="text-sm text-muted-foreground mt-1">
+                <div className="text-sm text-[color:var(--text-subtle)] mt-1">
                   SKU: {record.sku}
                 </div>
               </div>
@@ -90,7 +90,7 @@ const ProductShowContent = () => {
               </div>
             </div>
             {record.description && (
-              <p className="text-muted-foreground">{record.description}</p>
+              <p className="text-[color:var(--text-subtle)]">{record.description}</p>
             )}
           </div>
         </div>
@@ -142,19 +142,19 @@ const ProductOverviewTab = () => {
           </h3>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <p className="text-sm text-muted-foreground">List Price</p>
+              <p className="text-sm text-[color:var(--text-subtle)]">List Price</p>
               <p className="text-lg font-semibold">
                 ${record.list_price?.toFixed(2) || "0.00"}
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Cost per Unit</p>
+              <p className="text-sm text-[color:var(--text-subtle)]">Cost per Unit</p>
               <p className="text-lg font-semibold">
                 ${record.cost_per_unit?.toFixed(2) || "0.00"}
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Margin</p>
+              <p className="text-sm text-[color:var(--text-subtle)]">Margin</p>
               <p className="text-lg font-semibold">
                 {record.list_price && record.cost_per_unit
                   ? `${(
@@ -168,7 +168,7 @@ const ProductOverviewTab = () => {
           </div>
           {record.map_price && (
             <div className="mt-4 pt-4 border-t">
-              <p className="text-sm text-muted-foreground">MAP Price</p>
+              <p className="text-sm text-[color:var(--text-subtle)]">MAP Price</p>
               <p className="text-lg font-semibold">
                 ${record.map_price.toFixed(2)}
               </p>
@@ -187,31 +187,31 @@ const ProductOverviewTab = () => {
           <div className="grid grid-cols-2 gap-4">
             {record.category && (
               <div>
-                <p className="text-sm text-muted-foreground">Category</p>
+                <p className="text-sm text-[color:var(--text-subtle)]">Category</p>
                 <p className="font-medium">{record.category.replace(/_/g, ' ')}</p>
               </div>
             )}
             {record.subcategory && (
               <div>
-                <p className="text-sm text-muted-foreground">Subcategory</p>
+                <p className="text-sm text-[color:var(--text-subtle)]">Subcategory</p>
                 <p className="font-medium">{record.subcategory}</p>
               </div>
             )}
             {record.brand && (
               <div>
-                <p className="text-sm text-muted-foreground">Brand</p>
+                <p className="text-sm text-[color:var(--text-subtle)]">Brand</p>
                 <p className="font-medium">{record.brand}</p>
               </div>
             )}
             {record.upc && (
               <div>
-                <p className="text-sm text-muted-foreground">UPC</p>
+                <p className="text-sm text-[color:var(--text-subtle)]">UPC</p>
                 <p className="font-medium">{record.upc}</p>
               </div>
             )}
             {record.unit_of_measure && (
               <div>
-                <p className="text-sm text-muted-foreground">Unit of Measure</p>
+                <p className="text-sm text-[color:var(--text-subtle)]">Unit of Measure</p>
                 <p className="font-medium">{record.unit_of_measure}</p>
               </div>
             )}
@@ -233,7 +233,7 @@ const ProductDetailsTab = () => {
         <Card>
           <CardContent className="pt-6">
             <h3 className="font-medium mb-4">Description</h3>
-            <p className="text-muted-foreground whitespace-pre-wrap">
+            <p className="text-[color:var(--text-subtle)] whitespace-pre-wrap">
               {record.description}
             </p>
           </CardContent>
@@ -247,31 +247,31 @@ const ProductDetailsTab = () => {
           <div className="space-y-3">
             {record.sku && (
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">SKU</span>
+                <span className="text-sm text-[color:var(--text-subtle)]">SKU</span>
                 <span className="text-sm font-medium">{record.sku}</span>
               </div>
             )}
             {record.upc && (
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">UPC/Barcode</span>
+                <span className="text-sm text-[color:var(--text-subtle)]">UPC/Barcode</span>
                 <span className="text-sm font-medium">{record.upc}</span>
               </div>
             )}
             {record.unit_of_measure && (
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Unit of Measure</span>
+                <span className="text-sm text-[color:var(--text-subtle)]">Unit of Measure</span>
                 <span className="text-sm font-medium">{record.unit_of_measure}</span>
               </div>
             )}
             {record.category && (
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Category</span>
+                <span className="text-sm text-[color:var(--text-subtle)]">Category</span>
                 <span className="text-sm font-medium">{record.category.replace(/_/g, ' ')}</span>
               </div>
             )}
             {record.subcategory && (
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Subcategory</span>
+                <span className="text-sm text-[color:var(--text-subtle)]">Subcategory</span>
                 <span className="text-sm font-medium">{record.subcategory}</span>
               </div>
             )}
@@ -292,7 +292,7 @@ const ProductActivityTab = () => {
       <Card>
         <CardContent className="pt-6">
           <h3 className="font-medium mb-4">Activity Log</h3>
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-[color:var(--text-subtle)]">
             <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
             <p>No activity recorded yet</p>
             <p className="text-sm mt-1">Product-related activities will appear here</p>

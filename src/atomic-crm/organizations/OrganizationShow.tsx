@@ -149,7 +149,7 @@ const ContactsIterator = () => {
             <RouterLink
               to={`/contacts/${contact.id}/show`}
               state={{ from: location.pathname }}
-              className="flex items-center justify-between hover:bg-muted py-2 transition-colors"
+              className="flex items-center justify-between hover:bg-[oklch(99%_0.006_92)] py-2 transition-colors"
             >
               <div className="mr-4">
                 <Avatar />
@@ -158,7 +158,7 @@ const ContactsIterator = () => {
                 <div className="font-medium">
                   {`${contact.first_name} ${contact.last_name}`}
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-[color:var(--text-subtle)]">
                   {contact.title}
                   {contact.nb_tasks
                     ? ` - ${contact.nb_tasks} task${
@@ -171,7 +171,7 @@ const ContactsIterator = () => {
               </div>
               {contact.last_seen && (
                 <div className="text-right">
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-[color:var(--text-subtle)]">
                     last activity {formatDistance(contact.last_seen, now)} ago{" "}
                     <Status status={contact.status} />
                   </div>
@@ -222,11 +222,11 @@ const OpportunitiesIterator = () => {
           <div key={opportunity.id} className="p-0 text-sm">
             <RouterLink
               to={`/opportunities/${opportunity.id}/show`}
-              className="flex items-center justify-between hover:bg-muted py-2 px-4 transition-colors"
+              className="flex items-center justify-between hover:bg-[oklch(99%_0.006_92)] py-2 px-4 transition-colors"
             >
               <div className="flex-1 min-w-0">
                 <div className="font-medium">{opportunity.name}</div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-[color:var(--text-subtle)]">
                   {findOpportunityLabel(opportunityStages, opportunity.stage)},{" "}
                   {opportunity.amount.toLocaleString("en-US", {
                     notation: "compact",
@@ -239,7 +239,7 @@ const OpportunitiesIterator = () => {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-[color:var(--text-subtle)]">
                   last activity {formatDistance(opportunity.updated_at, now)}{" "}
                   ago{" "}
                 </div>

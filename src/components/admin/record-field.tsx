@@ -49,7 +49,7 @@ export const RecordField = <
         <div
           className={cn(
             variant === "inline" ? "block min-w-50" : "text-xs",
-            "text-muted-foreground",
+            "text-[color:var(--text-subtle)]",
           )}
         >
           <FieldTitle

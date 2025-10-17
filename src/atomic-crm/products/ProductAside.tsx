@@ -39,7 +39,7 @@ export const ProductAside = () => {
     limited_availability: "bg-orange-500",
   };
 
-  const statusColor = record.status ? statusColors[record.status] : "bg-muted";
+  const statusColor = record.status ? statusColors[record.status] : "bg-muted-foreground";
 
   return (
     <Card className="p-6 space-y-4">
@@ -67,7 +67,7 @@ export const ProductAside = () => {
 
       {/* Status */}
       <div>
-        <h4 className="text-sm font-medium mb-2 text-muted-foreground">Status</h4>
+        <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">Status</h4>
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${statusColor}`} />
           <span className="capitalize">{record.status || "Unknown"}</span>
@@ -78,7 +78,7 @@ export const ProductAside = () => {
 
       {/* Price Summary */}
       <div>
-        <h4 className="text-sm font-medium mb-2 text-muted-foreground">Pricing</h4>
+        <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">Pricing</h4>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm">List Price</span>
@@ -89,7 +89,7 @@ export const ProductAside = () => {
           {record.cost_per_unit && (
             <div className="flex justify-between items-center">
               <span className="text-sm">Cost</span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-[color:var(--text-subtle)]">
                 ${record.cost_per_unit.toFixed(2)}
               </span>
             </div>
@@ -114,7 +114,7 @@ export const ProductAside = () => {
       {principal && (
         <>
           <div>
-            <h4 className="text-sm font-medium mb-2 text-muted-foreground">
+            <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">
               Supplier
             </h4>
             <Link
@@ -126,11 +126,11 @@ export const ProductAside = () => {
               className="hover:underline"
             >
               <div className="flex items-start gap-2">
-                <Building2 className="w-4 h-4 mt-0.5 text-muted-foreground" />
+                <Building2 className="w-4 h-4 mt-0.5 text-[color:var(--text-subtle)]" />
                 <div>
                   <p className="text-sm font-medium">{principal.name}</p>
                   {principal.segment && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[color:var(--text-subtle)]">
                       {principal.segment}
                     </p>
                   )}
@@ -145,14 +145,14 @@ export const ProductAside = () => {
 
       {/* Metadata */}
       <div>
-        <h4 className="text-sm font-medium mb-2 text-muted-foreground">
+        <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">
           Information
         </h4>
         <div className="space-y-2">
           <div className="flex items-start gap-2">
-            <Calendar className="w-4 h-4 mt-0.5 text-muted-foreground" />
+            <Calendar className="w-4 h-4 mt-0.5 text-[color:var(--text-subtle)]" />
             <div className="text-sm">
-              <p className="text-muted-foreground">Created</p>
+              <p className="text-[color:var(--text-subtle)]">Created</p>
               {record.created_at && (
                 <p className="font-medium">
                   {formatDistanceToNow(new Date(record.created_at), {
@@ -164,9 +164,9 @@ export const ProductAside = () => {
           </div>
           {record.updated_at && record.updated_at !== record.created_at && (
             <div className="flex items-start gap-2">
-              <Calendar className="w-4 h-4 mt-0.5 text-muted-foreground" />
+              <Calendar className="w-4 h-4 mt-0.5 text-[color:var(--text-subtle)]" />
               <div className="text-sm">
-                <p className="text-muted-foreground">Last Updated</p>
+                <p className="text-[color:var(--text-subtle)]">Last Updated</p>
                 <p className="font-medium">
                   {formatDistanceToNow(new Date(record.updated_at), {
                     addSuffix: true,
@@ -189,7 +189,7 @@ export const ProductAside = () => {
                 <p className="text-sm font-medium text-destructive">
                   Product Discontinued
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-[color:var(--text-subtle)] mt-1">
                   This product is no longer available for ordering
                 </p>
               </div>

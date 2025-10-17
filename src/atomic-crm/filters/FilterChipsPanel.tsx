@@ -59,7 +59,7 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
           <AccordionTrigger className="py-2 hover:no-underline">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Active Filters</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[color:var(--text-subtle)]">
                 ({filterChips.length} filter{filterChips.length !== 1 ? 's' : ''})
               </span>
             </div>

@@ -40,7 +40,7 @@ export const ProductCard = (props: { record?: Product }) => {
           </div>
           <div className="text-center mt-1">
             <h6 className="text-sm font-medium line-clamp-1 group-hover:text-foreground transition-colors">{record.name}</h6>
-            <p className="text-xs text-muted-foreground">SKU: {record.sku}</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">SKU: {record.sku}</p>
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
               {record.status && (
                 <Badge
@@ -61,7 +61,7 @@ export const ProductCard = (props: { record?: Product }) => {
         <div className="flex flex-col gap-1">
           {record.list_price && (
             <div className="flex items-center justify-center gap-0.5">
-              <DollarSign className="w-3 h-3 text-muted-foreground" />
+              <DollarSign className="w-3 h-3 text-[color:var(--text-subtle)]" />
               <span className="text-sm font-medium">
                 ${record.list_price.toFixed(2)}
               </span>
@@ -69,8 +69,8 @@ export const ProductCard = (props: { record?: Product }) => {
           )}
           {record.last_promoted_at && (
             <div className="flex items-center justify-center gap-0.5">
-              <TrendingUp className="w-3 h-3 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">
+              <TrendingUp className="w-3 h-3 text-[color:var(--text-subtle)]" />
+              <span className="text-xs text-[color:var(--text-subtle)]">
                 {formatDistanceToNow(new Date(record.last_promoted_at), {
                   addSuffix: true,
                 })}

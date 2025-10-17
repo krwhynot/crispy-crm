@@ -84,7 +84,7 @@ const OpportunityShowContent = () => {
             <TabsContent value="details" className="pt-4">
               <div className="flex gap-8 mb-4">
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                     Expected closing date
                   </span>
                   <div className="flex items-center gap-2">
@@ -100,7 +100,7 @@ const OpportunityShowContent = () => {
                 </div>
 
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                     Stage
                   </span>
                   <span className="text-sm">
@@ -109,7 +109,7 @@ const OpportunityShowContent = () => {
                 </div>
 
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                     Priority
                   </span>
                   <Badge
@@ -132,7 +132,7 @@ const OpportunityShowContent = () => {
                 <div className="flex gap-8 mb-4">
                   {record.opportunity_owner_id && (
                     <div className="flex flex-col min-w-[150px]">
-                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                      <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                         Opportunity Owner
                       </span>
                       <ReferenceField
@@ -145,7 +145,7 @@ const OpportunityShowContent = () => {
 
                   {record.account_manager_id && (
                     <div className="flex flex-col min-w-[150px]">
-                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                      <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                         Account Manager
                       </span>
                       <ReferenceField
@@ -158,7 +158,7 @@ const OpportunityShowContent = () => {
 
                   {record.lead_source && (
                     <div className="flex flex-col min-w-[150px]">
-                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                      <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                         Lead Source
                       </span>
                       <span className="text-sm">
@@ -172,7 +172,7 @@ const OpportunityShowContent = () => {
               {/* Organization Details */}
               <div className="flex gap-8 mb-4">
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                     Customer Organization
                   </span>
                   <ReferenceField
@@ -184,7 +184,7 @@ const OpportunityShowContent = () => {
 
                 {record.principal_organization_id && (
                   <div className="flex flex-col min-w-[150px]">
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                       Principal Organization
                     </span>
                     <ReferenceField
@@ -197,7 +197,7 @@ const OpportunityShowContent = () => {
 
                 {record.distributor_organization_id && (
                   <div className="flex flex-col min-w-[150px]">
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
+                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                       Distributor Organization
                     </span>
                     <ReferenceField
@@ -212,7 +212,7 @@ const OpportunityShowContent = () => {
               {!!record.contact_ids?.length && (
                 <div className="mb-4">
                   <div className="flex flex-col">
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2">
+                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase mb-2">
                       Contacts
                     </span>
                     <ReferenceArrayField
@@ -227,7 +227,7 @@ const OpportunityShowContent = () => {
 
               {record.description && (
                 <div className="mb-4 whitespace-pre-line">
-                  <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2 block">
+                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase mb-2 block">
                     Description
                   </span>
                   <p className="text-sm leading-6">{record.description}</p>

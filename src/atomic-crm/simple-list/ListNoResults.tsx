@@ -16,7 +16,7 @@ export const ListNoResults = (props: ListNoResultsProps) => {
   }
   return (
     <div className="p-6">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-[color:var(--text-subtle)]">
         {filterValues && setFilters && Object.keys(filterValues).length > 0 ? (
           <>
             {translate("ra.navigation.no_filtered_results", {

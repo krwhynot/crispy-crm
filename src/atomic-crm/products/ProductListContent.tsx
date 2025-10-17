@@ -27,7 +27,7 @@ export const ProductListContent = () => {
 
   if (!products || products.length === 0) {
     return (
-      <div className="p-8 text-center text-muted-foreground">
+      <div className="p-8 text-center text-[color:var(--text-subtle)]">
         No products found. Create your first product to get started.
       </div>
     );
@@ -39,7 +39,7 @@ export const ProductListContent = () => {
         <RecordContextProvider key={product.id} value={product}>
           <Link
             to={`/products/${product.id}/show`}
-            className="block p-4 hover:bg-muted/50 transition-colors"
+            className="block p-4 hover:bg-[oklch(99%_0.006_92)] transition-colors"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1">
@@ -47,12 +47,12 @@ export const ProductListContent = () => {
                   <h3 className="font-semibold text-lg">
                     {product.name || "Untitled Product"}
                   </h3>
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-sm text-[color:var(--text-subtle)]">
                     SKU: {product.sku || "N/A"}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-6 mt-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-6 mt-2 text-sm text-[color:var(--text-subtle)]">
                   <span>Brand: {product.brand || "N/A"}</span>
                   <span>Status: {product.status || "Active"}</span>
                   {product.list_price && (
@@ -68,7 +68,7 @@ export const ProductListContent = () => {
                   </p>
                 )}
 
-                <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
+                <div className="flex items-center gap-4 mt-3 text-xs text-[color:var(--text-subtle)]">
                   {product.last_promoted_at && (
                     <span>
                       Last promoted{" "}

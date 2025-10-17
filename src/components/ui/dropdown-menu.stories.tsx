@@ -389,7 +389,7 @@ export const WithInsetItems: Story = {
 export const KeyboardNavigation: Story = {
   render: () => (
     <div>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
         Click the button and use arrow keys, Tab, Enter, and Escape to navigate
       </p>
       <DropdownMenu>

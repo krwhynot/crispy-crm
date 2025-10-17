@@ -75,7 +75,7 @@ export const Default: Story = {
           onValueChange={setValue}
           placeholder="Select framework..."
         />
-        <p className="mt-4 text-sm text-muted-foreground">Selected: {value || 'None'}</p>
+        <p className="mt-4 text-sm text-[color:var(--text-subtle)]">Selected: {value || 'None'}</p>
       </div>
     );
   },
@@ -167,7 +167,7 @@ export const MultiSelect: Story = {
           onValueChange={setValues}
           placeholder="Select languages..."
         />
-        <p className="mt-4 text-sm text-muted-foreground">
+        <p className="mt-4 text-sm text-[color:var(--text-subtle)]">
           Selected: {values.length > 0 ? values.join(', ') : 'None'}
         </p>
       </div>
@@ -208,7 +208,7 @@ export const InteractiveSearch: Story = {
 
     return (
       <div>
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
           Search count: {searchCount} | Selected: {value || 'None'}
         </p>
         <Combobox
@@ -242,7 +242,7 @@ export const KeyboardNavigation: Story = {
 
     return (
       <div>
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
           Use Tab to focus, Space/Enter to open, arrows to navigate, Enter to select
         </p>
         <Combobox
@@ -256,7 +256,7 @@ export const KeyboardNavigation: Story = {
             <p className="text-sm font-medium">Selection History:</p>
             <ul className="mt-2 space-y-1">
               {history.map((item, index) => (
-                <li key={index} className="text-sm text-muted-foreground">
+                <li key={index} className="text-sm text-[color:var(--text-subtle)]">
                   {index + 1}. {frameworks.find((f) => f.value === item)?.label}
                 </li>
               ))}

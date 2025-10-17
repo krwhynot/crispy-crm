@@ -205,7 +205,7 @@ describe("FormDescription", () => {
 
     const description = screen.getByText("Must be at least 8 characters");
     expect(description).toHaveAttribute("id", "password-description");
-    expect(description).toHaveClass("text-muted-foreground", "text-sm");
+    expect(description).toHaveClass("text-[color:var(--text-subtle)]", "text-sm");
   });
 });
 

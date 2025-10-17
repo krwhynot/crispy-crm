@@ -337,7 +337,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
           )}
         >
           {label != null && label !== false && (
-            <p className="text-sm text-muted-foreground mb-2">{label}</p>
+            <p className="text-sm text-[color:var(--text-subtle)] mb-2">{label}</p>
           )}
           <SourceContextProvider value={sourceContext}>
             <RecordContextProvider value={record}>

@@ -313,6 +313,9 @@
   --divider-subtle: oklch(96% 0.004 92);     /* On white surfaces, internal dividers */
   --divider-strong: oklch(94.5% 0.004 92);   /* Section separators */
 
+  /* Interactive Surface System - Hover/focus states */
+  --surface-interactive-hover: oklch(99% 0.006 92);  /* Warm hover tint for interactive elements */
+
   /* Text Hierarchy - Improved contrast for widget titles and metrics */
   --text-title: oklch(22% 0.01 92);          /* Widget titles, headings - darker with warm tint */
   --text-metric: oklch(18% 0.01 92);         /* Metric numbers - darkest for emphasis */
