@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paper Cream Shadow System Test - Atomic CRM</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* ===== WARM-TINTED SYSTEM ===== */
+    .warm-system {
+      --surface-canvas: oklch(97.5% 0.010 92);
+      --surface-card: oklch(100% 0 0);
+
+      /* Warm shadow ink */
+      --shadow-ink: oklch(30% 0.010 92);
+
+      /* Strokes & Dividers */
+      --stroke-card: oklch(93% 0.004 92);
+      --divider-subtle: oklch(96% 0.004 92);
+      --divider-strong: oklch(94.5% 0.004 92);
+
+      /* Elevation System */
+      --elevation-1:
+        0 1px 2px 0 oklch(30% 0.010 92 / 0.10),
+        0 4px 8px -2px oklch(30% 0.010 92 / 0.16);
+
+      --elevation-2:
+        0 2px 3px 0 oklch(30% 0.010 92 / 0.12),
+        0 8px 16px -4px oklch(30% 0.010 92 / 0.18);
+
+      --elevation-3:
+        0 3px 6px -2px oklch(30% 0.010 92 / 0.14),
+        0 16px 24px -8px oklch(30% 0.010 92 / 0.20);
+
+      /* Avatar Micro-Elevation */
+      --avatar-shadow:
+        0 0 0 1px oklch(93% 0.004 92),
+        0 1px 2px 0 oklch(30% 0.010 92 / 0.10);
+      --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.30);
+
+      /* Text Hierarchy */
+      --text-title: oklch(22% 0.01 92);
+      --text-metric: oklch(18% 0.01 92);
+      --text-body: oklch(29% 0 0);
+      --text-subtle: oklch(41% 0 0);
+
+      /* Brand Colors */
+      --brand-500: oklch(72% 0.132 125);
+      --accent-clay-600: oklch(58% 0.115 76);
+    }
+
+    /* ===== NEUTRAL SYSTEM ===== */
+    .neutral-system {
+      --surface-canvas: oklch(97.5% 0.010 92);
+      --surface-card: oklch(100% 0 0);
+
+      /* Neutral shadow ink */
+      --shadow-ink: oklch(30% 0 0);
+
+      /* Strokes & Dividers */
+      --stroke-card: oklch(93% 0.004 92);
+      --divider-subtle: oklch(96% 0.004 92);
+      --divider-strong: oklch(94.5% 0.004 92);
+
+      /* Elevation System */
+      --elevation-1:
+        0 1px 2px 0 oklch(30% 0 0 / 0.10),
+        0 4px 8px -2px oklch(30% 0 0 / 0.16);
+
+      --elevation-2:
+        0 2px 3px 0 oklch(30% 0 0 / 0.12),
+        0 8px 16px -4px oklch(30% 0 0 / 0.18);
+
+      --elevation-3:
+        0 3px 6px -2px oklch(30% 0 0 / 0.14),
+        0 16px 24px -8px oklch(30% 0 0 / 0.20);
+
+      /* Avatar Micro-Elevation */
+      --avatar-shadow:
+        0 0 0 1px oklch(93% 0.004 92),
+        0 1px 2px 0 oklch(30% 0 0 / 0.10);
+      --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.30);
+
+      /* Text Hierarchy */
+      --text-title: oklch(22% 0.01 92);
+      --text-metric: oklch(18% 0.01 92);
+      --text-body: oklch(29% 0 0);
+      --text-subtle: oklch(41% 0 0);
+
+      /* Brand Colors */
+      --brand-500: oklch(72% 0.132 125);
+      --accent-clay-600: oklch(58% 0.115 76);
+    }
+
+    /* ===== LAYOUT ===== */
+    .system-section {
+      background: var(--surface-canvas);
+      min-height: 100vh;
+      padding: 3rem 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      color: var(--text-title);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      color: var(--text-subtle);
+      font-size: 1.125rem;
+      margin-bottom: 3rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      color: var(--text-title);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    /* ===== CARD COMPONENTS ===== */
+    .card {
+      background: var(--surface-card);
+      border: 1px solid var(--stroke-card);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card.elevation-1 {
+      box-shadow: var(--elevation-1);
+    }
+
+    .card.elevation-2 {
+      box-shadow: var(--elevation-2);
+    }
+
+    .card.elevation-3 {
+      box-shadow: var(--elevation-3);
+    }
+
+    .card.hoverable:hover {
+      box-shadow: var(--elevation-2);
+    }
+
+    .card-title {
+      color: var(--text-title);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-body {
+      color: var(--text-body);
+      font-size: 0.875rem;
+    }
+
+    /* ===== WIDGET COMPONENTS ===== */
+    .widget {
+      background: var(--surface-card);
+      border: 1px solid var(--stroke-card);
+      box-shadow: var(--elevation-1);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .widget-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--divider-subtle);
+    }
+
+    .widget-title {
+      color: var(--text-title);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .widget-icon {
+      width: 1rem;
+      height: 1rem;
+      opacity: 0.7;
+    }
+
+    .widget-body {
+      padding: 1rem 1.5rem;
+    }
+
+    /* ===== CONTACT LIST ===== */
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 150ms;
+    }
+
+    .contact-item:hover {
+      background: oklch(99% 0.006 92);
+    }
+
+    .contact-item + .contact-item {
+      border-top: 1px solid var(--divider-subtle);
+    }
+
+    .avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, var(--brand-500), oklch(64% 0.128 125));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+      box-shadow: var(--avatar-shadow), var(--avatar-highlight);
+      flex-shrink: 0;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contact-name {
+      color: var(--text-body);
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .contact-role {
+      color: var(--text-subtle);
+      font-size: 0.75rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ===== METRICS WIDGET ===== */
+    .metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+    }
+
+    .metric-row + .metric-row {
+      border-top: 1px solid var(--divider-subtle);
+    }
+
+    .metric-label {
+      color: var(--text-body);
+      font-size: 0.875rem;
+    }
+
+    .metric-value {
+      color: var(--text-metric);
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===== ACTIVITY FEED ===== */
+    .activity-item {
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 150ms;
+    }
+
+    .activity-item:hover {
+      background: oklch(99% 0.006 92);
+    }
+
+    .activity-item + .activity-item {
+      border-top: 1px solid var(--divider-subtle);
+    }
+
+    .activity-text {
+      color: var(--text-body);
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .activity-time {
+      color: var(--text-subtle);
+      font-size: 0.75rem;
+    }
+
+    /* ===== PRIMARY BUTTON ===== */
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--accent-clay-600);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px var(--stroke-card),
+        0 1px 2px 0 var(--shadow-ink, oklch(30% 0.010 92)) / 0.12,
+        0 4px 8px -2px var(--shadow-ink, oklch(30% 0.010 92)) / 0.16;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .primary-button:hover {
+      box-shadow: var(--elevation-2), 0 0 0 1px var(--stroke-card);
+      transform: translateY(-1px);
+    }
+
+    .primary-button:active {
+      box-shadow: var(--elevation-1), 0 0 0 1px var(--stroke-card);
+      transform: translateY(0);
+    }
+
+    /* ===== ELEVATION DEMO ===== */
+    .elevation-demo {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .elevation-card {
+      background: var(--surface-card);
+      border: 1px solid var(--stroke-card);
+      border-radius: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .elevation-label {
+      color: var(--text-title);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .elevation-description {
+      color: var(--text-subtle);
+      font-size: 0.75rem;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      height: 1px;
+      background: var(--divider-subtle);
+      margin: 2rem 0;
+    }
+
+    .divider-strong {
+      height: 1px;
+      background: var(--divider-strong);
+      margin: 2rem 0;
+    }
+
+    /* ===== COMPARISON TOGGLE ===== */
+    .comparison-header {
+      background: oklch(95% 0.015 92);
+      padding: 1rem 2rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 2px solid var(--divider-strong);
+    }
+
+    .system-label {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: white;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      font-size: 1.125rem;
+      box-shadow: 0 2px 4px oklch(0 0 0 / 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- WARM-TINTED SYSTEM -->
+  <div class="system-section warm-system">
+    <div class="comparison-header warm-system">
+      <span class="system-label">🌾 Warm-Tinted Shadow System</span>
+    </div>
+
+    <div class="container">
+      <h1 class="page-title">Shadow & Hierarchy System Test</h1>
+      <p class="page-subtitle">Paper Cream Background: oklch(97.5% 0.010 92) • Shadow Ink: oklch(30% 0.010 92)</p>
+
+      <!-- ELEVATION DEMO -->
+      <h2 class="section-title">Elevation Tiers</h2>
+      <div class="elevation-demo">
+        <div class="elevation-card elevation-1">
+          <div class="elevation-label">Elevation 1</div>
+          <div class="elevation-description">Static cards, default widgets</div>
+        </div>
+        <div class="elevation-card elevation-2">
+          <div class="elevation-label">Elevation 2</div>
+          <div class="elevation-description">Hover states, interactive panels</div>
+        </div>
+        <div class="elevation-card elevation-3">
+          <div class="elevation-label">Elevation 3</div>
+          <div class="elevation-description">Modals, floating menus</div>
+        </div>
+      </div>
+
+      <!-- WIDGETS GRID -->
+      <div class="grid">
+        <!-- Hot Contacts Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <h3 class="widget-title">
+              <svg class="widget-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+              </svg>
+              Hot Contacts
+            </h3>
+          </div>
+          <div class="widget-body">
+            <div class="contact-item">
+              <div class="avatar">ED</div>
+              <div class="contact-info">
+                <div class="contact-name">Emily Davis</div>
+                <div class="contact-role">Account Manager at Organic Origins</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="avatar">LM</div>
+              <div class="contact-info">
+                <div class="contact-name">Lisa Martinez</div>
+                <div class="contact-role">Sales Director at Farm Fresh Foods</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="avatar">MG</div>
+              <div class="contact-info">
+                <div class="contact-name">Maria Garcia</div>
+                <div class="contact-role">Executive Chef at Mountain View Cafe</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Metrics Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <h3 class="widget-title">
+              <svg class="widget-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+              </svg>
+              Pipeline
+            </h3>
+          </div>
+          <div class="widget-body">
+            <div class="metric-row">
+              <span class="metric-label">Active Opportunities</span>
+              <span class="metric-value">9</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Closed Won</span>
+              <span class="metric-value">1</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Closed Lost</span>
+              <span class="metric-value">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Activity Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <h3 class="widget-title">
+              <svg class="widget-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+              </svg>
+              Latest Activity
+            </h3>
+          </div>
+          <div class="widget-body">
+            <div class="activity-item">
+              <div class="activity-text">Sales ID: added opportunity Harvest Moon - Q4 Menu Launch</div>
+              <div class="activity-time">today at 4:43 PM</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-text">Sales ID: added opportunity Green Valley - Distribution Agreement</div>
+              <div class="activity-time">today at 4:43 PM</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-text">Sales ID: added opportunity Farm Fresh - Wholesale Partnership</div>
+              <div class="activity-time">today at 4:43 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD VARIATIONS -->
+      <h2 class="section-title">Card Variations</h2>
+      <div class="grid">
+        <div class="card elevation-1">
+          <h3 class="card-title">Static Card (E1)</h3>
+          <p class="card-body">Default elevation for content cards. Uses E1 shadow + 1px stroke.</p>
+        </div>
+
+        <div class="card elevation-1 hoverable">
+          <h3 class="card-title">Hoverable Card (E1 → E2)</h3>
+          <p class="card-body">Hover over this card to see it lift to E2. Used for interactive widgets.</p>
+        </div>
+
+        <div class="card elevation-2">
+          <h3 class="card-title">Elevated Card (E2)</h3>
+          <p class="card-body">Medium elevation for important content or modal backgrounds.</p>
+        </div>
+      </div>
+
+      <div class="divider-strong"></div>
+
+      <!-- PRIMARY ACTIONS -->
+      <h2 class="section-title">Primary Actions</h2>
+      <div style="display: flex; gap: 1rem;">
+        <button class="primary-button">
+          <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+          </svg>
+          New Contact
+        </button>
+        <button class="primary-button">
+          <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+          </svg>
+          New Opportunity
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEUTRAL SYSTEM -->
+  <div class="system-section neutral-system">
+    <div class="comparison-header neutral-system">
+      <span class="system-label">⚪ Neutral Shadow System</span>
+    </div>
+
+    <div class="container">
+      <h1 class="page-title">Shadow & Hierarchy System Test</h1>
+      <p class="page-subtitle">Paper Cream Background: oklch(97.5% 0.010 92) • Shadow Ink: oklch(30% 0 0)</p>
+
+      <!-- ELEVATION DEMO -->
+      <h2 class="section-title">Elevation Tiers</h2>
+      <div class="elevation-demo">
+        <div class="elevation-card elevation-1">
+          <div class="elevation-label">Elevation 1</div>
+          <div class="elevation-description">Static cards, default widgets</div>
+        </div>
+        <div class="elevation-card elevation-2">
+          <div class="elevation-label">Elevation 2</div>
+          <div class="elevation-description">Hover states, interactive panels</div>
+        </div>
+        <div class="elevation-card elevation-3">
+          <div class="elevation-label">Elevation 3</div>
+          <div class="elevation-description">Modals, floating menus</div>
+        </div>
+      </div>
+
+      <!-- WIDGETS GRID -->
+      <div class="grid">
+        <!-- Hot Contacts Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <h3 class="widget-title">
+              <svg class="widget-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+              </svg>
+              Hot Contacts
+            </h3>
+          </div>
+          <div class="widget-body">
+            <div class="contact-item">
+              <div class="avatar">ED</div>
+              <div class="contact-info">
+                <div class="contact-name">Emily Davis</div>
+                <div class="contact-role">Account Manager at Organic Origins</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="avatar">LM</div>
+              <div class="contact-info">
+                <div class="contact-name">Lisa Martinez</div>
+                <div class="contact-role">Sales Director at Farm Fresh Foods</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="avatar">MG</div>
+              <div class="contact-info">
+                <div class="contact-name">Maria Garcia</div>
+                <div class="contact-role">Executive Chef at Mountain View Cafe</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Metrics Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <h3 class="widget-title">
+              <svg class="widget-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+              </svg>
+              Pipeline
+            </h3>
+          </div>
+          <div class="widget-body">
+            <div class="metric-row">
+              <span class="metric-label">Active Opportunities</span>
+              <span class="metric-value">9</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Closed Won</span>
+              <span class="metric-value">1</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Closed Lost</span>
+              <span class="metric-value">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Activity Widget -->
+        <div class="widget">
+          <div class="widget-header">
+            <h3 class="widget-title">
+              <svg class="widget-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+              </svg>
+              Latest Activity
+            </h3>
+          </div>
+          <div class="widget-body">
+            <div class="activity-item">
+              <div class="activity-text">Sales ID: added opportunity Harvest Moon - Q4 Menu Launch</div>
+              <div class="activity-time">today at 4:43 PM</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-text">Sales ID: added opportunity Green Valley - Distribution Agreement</div>
+              <div class="activity-time">today at 4:43 PM</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-text">Sales ID: added opportunity Farm Fresh - Wholesale Partnership</div>
+              <div class="activity-time">today at 4:43 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD VARIATIONS -->
+      <h2 class="section-title">Card Variations</h2>
+      <div class="grid">
+        <div class="card elevation-1">
+          <h3 class="card-title">Static Card (E1)</h3>
+          <p class="card-body">Default elevation for content cards. Uses E1 shadow + 1px stroke.</p>
+        </div>
+
+        <div class="card elevation-1 hoverable">
+          <h3 class="card-title">Hoverable Card (E1 → E2)</h3>
+          <p class="card-body">Hover over this card to see it lift to E2. Used for interactive widgets.</p>
+        </div>
+
+        <div class="card elevation-2">
+          <h3 class="card-title">Elevated Card (E2)</h3>
+          <p class="card-body">Medium elevation for important content or modal backgrounds.</p>
+        </div>
+      </div>
+
+      <div class="divider-strong"></div>
+
+      <!-- PRIMARY ACTIONS -->
+      <h2 class="section-title">Primary Actions</h2>
+      <div style="display: flex; gap: 1rem;">
+        <button class="primary-button">
+          <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+          </svg>
+          New Contact
+        </button>
+        <button class="primary-button">
+          <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+          </svg>
+          New Opportunity
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
