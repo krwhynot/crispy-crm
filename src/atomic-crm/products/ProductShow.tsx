@@ -99,10 +99,9 @@ const ProductShowContent = () => {
       <div className="grid grid-cols-3 gap-6">
         <div className="col-span-2">
           <Tabs value={currentTab} onValueChange={handleTabChange}>
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="inventory">Inventory</TabsTrigger>
               <TabsTrigger value="activity">Activity</TabsTrigger>
             </TabsList>
 
@@ -112,10 +111,6 @@ const ProductShowContent = () => {
 
             <TabsContent value="details" className="mt-6">
               <ProductDetailsTab />
-            </TabsContent>
-
-            <TabsContent value="inventory" className="mt-6">
-              <ProductInventoryTab />
             </TabsContent>
 
             <TabsContent value="activity" className="mt-6">
