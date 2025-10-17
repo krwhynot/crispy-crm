@@ -32,22 +32,48 @@ Core principles to prevent debates & ensure consistency:
 
 ## Color System
 
-**Brand Identity**: Atomic CRM uses a brand-green OKLCH color system with split-complementary harmony.
+**Brand Identity**: Atomic CRM uses the **MFB "Garden to Table" Theme** - a warm earth-tone OKLCH color system with organic aesthetic and WCAG AA accessibility.
 
 **Color Architecture**:
-- **Primary Brand**: Green at hue 125° (--brand-500 through --brand-800)
-- **Accent Colors**: Purple at hue 295° and Teal at hue 180° for visual harmony
-- **Neutrals**: Cool-toned grayscale at hue 284-288° (--neutral-50 through --neutral-900)
-- **Charts**: Strategic color usage (neutral for baseline, brand-green for "our data", accents for categories)
+- **Primary Brand**: Lime Green at hue 125° (#7CB342 - --brand-500 identity color)
+- **Primary Actions**: Clay Orange at hue 76° (--accent-clay-600) for buttons - WCAG AA compliant with white text
+- **Accent Colors**: Terracotta (hue 76°), Purple (hue 295°), Teal (hue 180°) for visual hierarchy
+- **Neutrals**: Warm-toned grayscale at hue 85° (--neutral-50 through --neutral-900)
+- **Background**: Warm cream oklch(99% 0.015 85) - #FEFEF9 for organic feel
+- **Typography**: Nunito font family for friendly, approachable design
+
+**Chart Palette** (Earth-Tone System):
+- Chart 1: Warm Tan (baseline/benchmark)
+- Chart 2: MFB Lime Green (primary data)
+- Chart 3: Terracotta/Clay (revenue/high priority)
+- Chart 4: Sage/Olive (secondary/neutral)
+- Chart 5: Golden Amber (warning/attention)
+- Chart 6: Sage-Teal (cool counterpoint)
+- Chart 7: Eggplant (deep neutral/inactive)
+- Chart 8: Mushroom Gray (fallback)
+
+**Tag System** (12 Colors):
+- Original 8: warm, green, teal, blue, purple, yellow, gray, pink (shifted +10° warmer)
+- New 4: clay, sage, amber, cocoa (earth-tone additions)
 
 **Design Philosophy**:
-- Primary buttons use --brand-700 (#5a7030) for WCAG AA compliance (5.5:1 contrast with white)
-- Focus rings use --brand-500 (brand identity color)
-- Navigation uses neutral backgrounds with brand-green accents for active states
+- Primary buttons use clay orange (--accent-clay-600) for WCAG AA compliance (5.5:1 contrast)
+- Focus rings use lime green (--brand-500) for brand identity
+- Corner radius: 8px (organic aesthetic)
+- Shadows: Enhanced opacity for cream background visibility
+- Dark mode: Full palette with inverted neutrals and WCAG-compliant contrast
 - All colors defined in OKLCH for perceptual uniformity
 
-**Migration Date**: October 2024 (from grayscale to brand-green system)
-**Archived Specs**: See `docs/archive/2025-10-color-system-preview/` for original design exploration
+**Three-Tier Color Hierarchy**:
+1. **Brand Foundation** (Tier 1): Core brand and accent colors in src/index.css
+2. **Semantic Tokens** (Tier 2): Functional mappings (--primary, --success, --error)
+3. **Component Colors** (Tier 3): Component-specific overrides
+
+**Migration Dates**:
+- October 2024: Grayscale → Brand-Green system
+- January 2025: **MFB Garden Theme** (earth tones, warm cream, Nunito, 8px radius)
+
+**Archived Specs**: See `.docs/archive/` and `.docs/plans/mfb-garden-theme/` for design exploration
 
 ## Essential Commands
 
