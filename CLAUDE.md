@@ -52,16 +52,26 @@ npm run supabase:local:stop    # Stop local Supabase
 npm run supabase:local:status  # Check status
 npx supabase db reset          # Reset local DB + run migrations
 
-# Remote Supabase
+# Cloud/Production Supabase ⚠️ IMPORTANT
+npm run db:cloud:push          # SAFE: Push migrations with confirmations
+npm run db:cloud:diff          # Show pending changes (read-only)
+npm run db:cloud:status        # Show migration status
 npm run supabase:deploy        # Push migrations + deploy edge functions
-npx supabase db push           # Push migrations only
 npx supabase migration new <name>  # Create new migration
+
+# ❌ NEVER RUN ON PRODUCTION
+# npx supabase db reset --linked  # DELETES ALL DATA INCLUDING USERS!
 
 # Access points
 # - Studio: http://localhost:54323
 # - REST API: http://localhost:54321
 # - Email testing: http://localhost:54324
 ```
+
+**⚠️ CRITICAL: Production Database Safety**
+- See `scripts/db/PRODUCTION-WARNING.md` for complete safety guide
+- ALWAYS use `npm run db:cloud:push` for production migrations
+- NEVER use `npx supabase db reset --linked` - it deletes all data including auth.users
 
 ### Development Scripts
 ```bash
