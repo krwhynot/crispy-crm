@@ -32,6 +32,7 @@ export type SemanticColorToken = {
 /**
  * Legacy hex color to semantic color mapping
  * Used during the migration transition period
+ * @deprecated This map is for transitional purposes only. All new development should use semantic color names. This will be removed after data migration is complete.
  */
 export const HEX_TO_SEMANTIC_MAP: Record<string, TagColorName> = {
   '#eddcd2': 'warm',

@@ -303,9 +303,6 @@
 
   /* Adjusted Accent Colors for Dark Mode */
   --accent-purple: oklch(56% 0.18 295);           /* Darker purple for WCAG AA with white text */
-  --accent-purple-light: oklch(85% 0.08 295);     /* Light variant */
-  --accent-teal:   oklch(75% 0.10 180);           /* Lighter teal */
-  --accent-teal-light: oklch(90% 0.05 180);       /* Light variant */
 
   /* Foundation colors (semantic mappings) */
   --background: var(--neutral-50);          /* Dark background */
