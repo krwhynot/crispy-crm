@@ -783,26 +783,38 @@ class SeedDataGenerator {
     this.spinner.start("Ensuring auth users have sales profiles...");
 
     try {
-      // Get all auth users
-      const { data: authUsers, error: authError } = await this.supabase.rpc('get_auth_users');
+      // Use raw SQL to find auth users without sales profiles
+      const { data: orphanedUsers, error } = await this.supabase.rpc('exec_sql', {
+        sql: `
+          SELECT
+            u.id,
+            u.email,
+            u.raw_user_meta_data->>'first_name' as first_name,
+            u.raw_user_meta_data->>'last_name' as last_name
+          FROM auth.users u
+          LEFT JOIN sales s ON s.user_id = u.id
+          WHERE s.id IS NULL
+        `
+      });
 
-      if (authError) {
-        // If RPC doesn't exist, use direct query (requires service role key)
-        const { data: users, error } = await this.supabase.auth.admin.listUsers();
-        if (error) throw error;
+      if (error) {
+        // Fallback: just try to select from both tables and do the join in JS
+        const { data: authUsers } = await this.supabase
+          .schema('auth')
+          .from('users')
+          .select('id, email, raw_user_meta_data');
 
-        if (!users || users.users.length === 0) {
+        const { data: salesProfiles } = await this.supabase
+          .from('sales')
+          .select('user_id');
+
+        if (!authUsers || authUsers.length === 0) {
           this.spinner.succeed("No auth users found");
           return;
         }
 
-        // Check which users are missing sales profiles
-        const { data: existingProfiles } = await this.supabase
-          .from("sales")
-          .select("user_id");
-
-        const existingUserIds = new Set(existingProfiles?.map(p => p.user_id) || []);
-        const missingUsers = users.users.filter(u => !existingUserIds.has(u.id));
+        const existingUserIds = new Set(salesProfiles?.map(p => p.user_id) || []);
+        const missingUsers = authUsers.filter(u => !existingUserIds.has(u.id));
 
         if (missingUsers.length === 0) {
           this.spinner.succeed("All auth users have sales profiles");
@@ -810,13 +822,18 @@ class SeedDataGenerator {
         }
 
         // Create missing sales profiles
-        const newProfiles = missingUsers.map(user => ({
-          user_id: user.id,
-          email: user.email,
-          first_name: user.user_metadata?.first_name || user.email?.split('@')[0] || 'User',
-          last_name: user.user_metadata?.last_name || 'Account',
-          is_admin: true, // Default to admin for development
-        }));
+        const newProfiles = missingUsers.map(user => {
+          const firstName = user.raw_user_meta_data?.first_name || user.email?.split('@')[0] || 'User';
+          const lastName = user.raw_user_meta_data?.last_name || 'Account';
+
+          return {
+            user_id: user.id,
+            email: user.email,
+            first_name: firstName,
+            last_name: lastName,
+            is_admin: true,
+          };
+        });
 
         const { error: insertError } = await this.supabase
           .from("sales")
@@ -826,7 +843,32 @@ class SeedDataGenerator {
 
         this.spinner.succeed(`Created ${missingUsers.length} missing sales profile(s)`);
         console.log(chalk.gray(`  Fixed profiles for: ${missingUsers.map(u => u.email).join(', ')}`));
+        return;
       }
+
+      if (!orphanedUsers || orphanedUsers.length === 0) {
+        this.spinner.succeed("All auth users have sales profiles");
+        return;
+      }
+
+      // Create missing sales profiles
+      const newProfiles = orphanedUsers.map(user => ({
+        user_id: user.id,
+        email: user.email,
+        first_name: user.first_name || user.email?.split('@')[0] || 'User',
+        last_name: user.last_name || 'Account',
+        is_admin: true,
+      }));
+
+      const { error: insertError } = await this.supabase
+        .from("sales")
+        .insert(newProfiles);
+
+      if (insertError) throw insertError;
+
+      this.spinner.succeed(`Created ${orphanedUsers.length} missing sales profile(s)`);
+      console.log(chalk.gray(`  Fixed profiles for: ${orphanedUsers.map(u => u.email).join(', ')}`));
+
     } catch (error) {
       this.spinner.warn(`Could not verify sales profiles: ${error.message}`);
       console.log(chalk.yellow("  ⚠️  You may need to manually create sales profiles for auth users"));
