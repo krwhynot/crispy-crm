@@ -11,8 +11,8 @@ export const ProductEmpty = () => {
         </div>
         <h3 className="text-lg font-semibold mb-2">No Products Yet</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Start building your product catalog. Add your first product to track inventory,
-          pricing, and sales opportunities.
+          Start building your product catalog. Add your first product to track
+          pricing and sales opportunities.
         </p>
         <CreateButton label="Add First Product" />
       </CardContent>

@@ -28,15 +28,20 @@ export const productCategorySchema = z.enum([
   "other",
 ]);
 
+// Export the enum values for form components (Constitution Rule #5)
+export const PRODUCT_CATEGORIES = productCategorySchema.options;
+
 // Product status enum matching database
 export const productStatusSchema = z.enum([
   "active",
   "discontinued",
   "seasonal",
   "coming_soon",
-  "out_of_stock",
   "limited_availability",
 ]);
+
+// Export the enum values for form components (Constitution Rule #5)
+export const PRODUCT_STATUSES = productStatusSchema.options;
 
 // Currency code validation (3-letter ISO codes)
 export const currencyCodeSchema = z.string()

@@ -1,4 +1,4 @@
-import { Package, DollarSign, Truck, BarChart3 } from "lucide-react";
+import { Package, DollarSign, BarChart3 } from "lucide-react";
 import {
   ShowBase,
   useRecordContext,
@@ -282,59 +282,6 @@ const ProductDetailsTab = () => {
   );
 };
 
-const ProductInventoryTab = () => {
-  const record = useRecordContext<Product>();
-  if (!record) return null;
-
-  return (
-    <div className="space-y-6">
-      {/* Inventory Settings Card */}
-      <Card>
-        <CardContent className="pt-6">
-          <h3 className="font-medium mb-4 flex items-center gap-2">
-            <Truck className="w-4 h-4" />
-            Inventory Settings
-          </h3>
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Min Order Quantity</p>
-              <p className="text-lg font-semibold">
-                {record.min_order_quantity || "1"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Units per Case</p>
-              <p className="text-lg font-semibold">
-                {record.units_per_case || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Lead Time</p>
-              <p className="text-lg font-semibold">
-                {record.lead_time_days ? `${record.lead_time_days} days` : "N/A"}
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Stock Information */}
-      <Card>
-        <CardContent className="pt-6">
-          <h3 className="font-medium mb-4 flex items-center gap-2">
-            <BarChart3 className="w-4 h-4" />
-            Stock Information
-          </h3>
-          <div className="text-center py-8 text-muted-foreground">
-            <Package className="w-12 h-12 mx-auto mb-3 opacity-50" />
-            <p>Stock tracking not yet implemented</p>
-            <p className="text-sm mt-1">Inventory levels will be displayed here</p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
 
 const ProductActivityTab = () => {
   const record = useRecordContext<Product>();
