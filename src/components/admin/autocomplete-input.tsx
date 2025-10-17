@@ -188,7 +188,7 @@ export const AutocompleteInput = (
                 {selectedChoice ? (
                   getInputText(selectedChoice)
                 ) : (
-                  <span className="text-muted-foreground">{placeholder}</span>
+                  <span className="text-[color:var(--text-subtle)]">{placeholder}</span>
                 )}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>

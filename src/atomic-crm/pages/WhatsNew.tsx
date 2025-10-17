@@ -259,7 +259,7 @@ export const WhatsNew = () => {
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold">What's New in Atomic CRM</h1>
-        <p className="text-muted-foreground">
+        <p className="text-[color:var(--text-subtle)]">
           Discover the powerful new features and enhancements from your
           migration
         </p>
@@ -291,7 +291,7 @@ export const WhatsNew = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <p className="text-[color:var(--text-subtle)]">{feature.description}</p>
                   {completedFeatures.has(feature.id) && (
                     <div className="flex items-center gap-2 text-success-default">
                       <CheckCircle className="h-4 w-4" />
@@ -347,7 +347,7 @@ export const WhatsNew = () => {
                     <h3 className="text-xl font-semibold">
                       {selectedFeature.steps[currentStep].title}
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-[color:var(--text-subtle)]">
                       {selectedFeature.steps[currentStep].description}
                     </p>
 
@@ -405,7 +405,7 @@ export const WhatsNew = () => {
                 </>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-muted-foreground">
+                  <p className="text-[color:var(--text-subtle)]">
                     Select a feature from the overview tab to start the
                     interactive tour.
                   </p>
@@ -462,7 +462,7 @@ export const WhatsNew = () => {
                     className="block p-3 rounded-lg border hover:bg-secondary transition-colors"
                   >
                     <div className="font-medium">Migration Guide</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-[color:var(--text-subtle)]">
                       Complete guide to the migration changes
                     </div>
                   </a>
@@ -471,7 +471,7 @@ export const WhatsNew = () => {
                     className="block p-3 rounded-lg border hover:bg-secondary transition-colors"
                   >
                     <div className="font-medium">Opportunities Help</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-[color:var(--text-subtle)]">
                       Learn about enhanced opportunity management
                     </div>
                   </a>
@@ -480,7 +480,7 @@ export const WhatsNew = () => {
                     className="block p-3 rounded-lg border hover:bg-secondary transition-colors"
                   >
                     <div className="font-medium">B2B Workflows</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-[color:var(--text-subtle)]">
                       Principal-distributor relationship guide
                     </div>
                   </a>
@@ -546,7 +546,7 @@ export const WhatsNew = () => {
                 <CardTitle>Support & Feedback</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-[color:var(--text-subtle)]">
                   Need help with the new features or have feedback about the
                   migration?
                 </p>

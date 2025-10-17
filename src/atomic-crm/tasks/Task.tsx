@@ -122,10 +122,10 @@ export const Task = ({
               )}
               {task.title}
               {task.description && (
-                <span className="text-muted-foreground"> - {task.description}</span>
+                <span className="text-[color:var(--text-subtle)]"> - {task.description}</span>
               )}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-[color:var(--text-subtle)]">
               due&nbsp;
               <DateField source="due_date" record={task} />
               {showContact && (
@@ -134,7 +134,7 @@ export const Task = ({
                   reference="contacts"
                   record={task}
                   link="show"
-                  className="inline text-sm text-muted-foreground"
+                  className="inline text-sm text-[color:var(--text-subtle)]"
                   render={({ referenceRecord }) => {
                     if (!referenceRecord) return null;
                     return (

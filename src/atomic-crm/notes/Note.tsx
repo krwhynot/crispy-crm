@@ -103,7 +103,7 @@ export const Note = ({
             </ReferenceField>
           </ReferenceField>
         ) : null}
-        <div className="inline-flex h-full items-center text-sm text-muted-foreground">
+        <div className="inline-flex h-full items-center text-sm text-[color:var(--text-subtle)]">
           <ReferenceField
             record={note}
             resource={resource}
@@ -155,7 +155,7 @@ export const Note = ({
           </TooltipProvider>
         </span>
         <div className="flex-1"></div>
-        <span className="text-sm text-muted-foreground">
+        <span className="text-sm text-[color:var(--text-subtle)]">
           <RelativeDate date={note.created_at} />
         </span>
       </div>

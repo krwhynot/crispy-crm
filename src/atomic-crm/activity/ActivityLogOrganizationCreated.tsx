@@ -21,7 +21,7 @@ export function ActivityLogOrganizationCreated({
       <div className="flex flex-row space-x-1 items-center w-full">
         <OrganizationAvatar width={20} height={20} record={organization} />
 
-        <div className="text-sm text-muted-foreground flex-grow">
+        <div className="text-sm text-[color:var(--text-subtle)] flex-grow">
           <ReferenceField
             source="sales_id"
             reference="sales"
@@ -40,7 +40,7 @@ export function ActivityLogOrganizationCreated({
           )}
         </div>
         {context === "organization" && (
-          <span className="text-muted-foreground text-sm">
+          <span className="text-[color:var(--text-subtle)] text-sm">
             <RelativeDate date={activity.date} />
           </span>
         )}

@@ -13,7 +13,7 @@ export const OrganizationEmpty = () => {
       <img src="./img/empty.svg" alt="No organizations found" />
       <div className="flex flex-col gap-0 items-center">
         <h6 className="text-lg font-bold">No organizations found</h6>
-        <p className="text-sm text-center text-muted-foreground mb-4">
+        <p className="text-sm text-center text-[color:var(--text-subtle)] mb-4">
           It seems your organization list is empty.
         </p>
       </div>

@@ -52,7 +52,7 @@ export const HotContacts = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="ml-auto text-muted-foreground"
+                className="ml-auto text-[color:var(--text-subtle)]"
                 asChild
               >
                 <Link to="/contacts/create">

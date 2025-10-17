@@ -83,7 +83,7 @@ export const OpportunityCardContent = ({
           >
             <TextField
               source="name"
-              className="text-xs text-muted-foreground line-clamp-1"
+              className="text-xs text-[color:var(--text-subtle)] line-clamp-1"
             />
           </ReferenceField>
 
@@ -97,7 +97,7 @@ export const OpportunityCardContent = ({
             >
               <TextField
                 source="name"
-                className="text-xs text-muted-foreground line-clamp-1"
+                className="text-xs text-[color:var(--text-subtle)] line-clamp-1"
               />
             </ReferenceField>
           )}

@@ -118,7 +118,7 @@ export const WithLabelDescription: Story = {
       <Checkbox id="marketing" />
       <div className="grid gap-1.5 leading-none">
         <Label htmlFor="marketing">Marketing emails</Label>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-[color:var(--text-subtle)]">
           Receive emails about new products and features.
         </p>
       </div>
@@ -172,7 +172,7 @@ export const Controlled: Story = {
             />
             <Label htmlFor="controlled">Controlled checkbox</Label>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[color:var(--text-subtle)]">
             State: {checked ? 'Checked' : 'Unchecked'}
           </p>
         </div>
@@ -215,7 +215,7 @@ export const CheckboxGroup: Story = {
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[color:var(--text-subtle)]">
             Selected: {selectedItems.join(', ') || 'None'}
           </p>
         </div>
@@ -239,7 +239,7 @@ export const WithAriaDescribedBy: Story = {
         <Checkbox id="described" aria-describedby="description" />
         <Label htmlFor="described">Notifications</Label>
       </div>
-      <p id="description" className="text-sm text-muted-foreground">
+      <p id="description" className="text-sm text-[color:var(--text-subtle)]">
         Get notified when someone follows you
       </p>
     </div>
@@ -250,7 +250,7 @@ export const WithAriaDescribedBy: Story = {
 export const Focused: Story = {
   render: () => (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">Tab to focus the checkbox</p>
+      <p className="text-sm text-[color:var(--text-subtle)]">Tab to focus the checkbox</p>
       <Checkbox autoFocus />
     </div>
   ),

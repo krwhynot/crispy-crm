@@ -18,8 +18,8 @@ export function ActivityLogOpportunityCreated({
     <div className="p-0">
       <div className="flex flex-row space-x-1 items-center w-full">
         <div className="w-5 h-5 bg-loading-pulse rounded-full" />
-        <div className="text-sm text-muted-foreground flex-grow">
-          <span className="text-muted-foreground text-sm">
+        <div className="text-sm text-[color:var(--text-subtle)] flex-grow">
+          <span className="text-[color:var(--text-subtle)] text-sm">
             Sales ID: {activity.sales_id}
           </span>{" "}
           added opportunity{" "}
@@ -34,7 +34,7 @@ export function ActivityLogOpportunityCreated({
           )}
         </div>
         {context === "company" && (
-          <span className="text-muted-foreground text-sm">
+          <span className="text-[color:var(--text-subtle)] text-sm">
             <RelativeDate date={activity.date} />
           </span>
         )}

@@ -37,7 +37,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
         <ArrayField source="email">
           <SingleFieldList className="flex-col">
             <PersonalInfoRow
-              icon={<Mail className="w-4 h-4 text-muted-foreground" />}
+              icon={<Mail className="w-4 h-4 text-[color:var(--text-subtle)]" />}
               primary={<EmailField source="email" />}
             />
           </SingleFieldList>
@@ -45,10 +45,10 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
 
         {record.linkedin_url && (
           <PersonalInfoRow
-            icon={<Linkedin className="w-4 h-4 text-muted-foreground" />}
+            icon={<Linkedin className="w-4 h-4 text-[color:var(--text-subtle)]" />}
             primary={
               <a
-                className="underline hover:no-underline text-sm text-muted-foreground"
+                className="underline hover:no-underline text-sm text-[color:var(--text-subtle)]"
                 href={record.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -62,7 +62,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
         <ArrayField source="phone">
           <SingleFieldList className="flex-col">
             <PersonalInfoRow
-              icon={<Phone className="w-4 h-4 text-muted-foreground" />}
+              icon={<Phone className="w-4 h-4 text-[color:var(--text-subtle)]" />}
               primary={<TextField source="number" />}
               showType
             />
@@ -75,7 +75,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
                 <PersonalInfoRow
                   key={genderOption.value}
                   icon={
-                    <genderOption.icon className="w-4 h-4 text-muted-foreground" />
+                    <genderOption.icon className="w-4 h-4 text-[color:var(--text-subtle)]" />
                   }
                   primary={<span>{genderOption.label}</span>}
                 />
@@ -86,7 +86,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           .filter(Boolean)}
       </AsideSection>
       <AsideSection title="Contact info">
-        <div className="text-muted-foreground">
+        <div className="text-[color:var(--text-subtle)]">
           <span className="text-sm">Added on</span>{" "}
           <DateField
             source="first_seen"
@@ -94,7 +94,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           />
         </div>
 
-        <div className="text-muted-foreground">
+        <div className="text-[color:var(--text-subtle)]">
           <span className="text-sm">Last activity on</span>{" "}
           <DateField
             source="last_seen"
@@ -102,7 +102,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           />
         </div>
 
-        <div className="text-muted-foreground">
+        <div className="text-[color:var(--text-subtle)]">
           Followed by{" "}
           <ReferenceField source="sales_id" reference="sales">
             <SaleName />
@@ -145,7 +145,7 @@ const PersonalInfoRow = ({
         <WithRecord
           render={(row) =>
             row.type !== "Other" && (
-              <TextField source="type" className="text-muted-foreground" />
+              <TextField source="type" className="text-[color:var(--text-subtle)]" />
             )
           }
         />

@@ -112,15 +112,15 @@ export const TopSide: Story = {
         <div className="flex flex-col gap-2 py-4">
           <div className="rounded-lg border bg-card p-3">
             <p className="text-sm font-medium">New message received</p>
-            <p className="text-xs text-muted-foreground">2 minutes ago</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">2 minutes ago</p>
           </div>
           <div className="rounded-lg border bg-card p-3">
             <p className="text-sm font-medium">Update available</p>
-            <p className="text-xs text-muted-foreground">1 hour ago</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">1 hour ago</p>
           </div>
           <div className="rounded-lg border bg-card p-3">
             <p className="text-sm font-medium">Backup completed</p>
-            <p className="text-xs text-muted-foreground">3 hours ago</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">3 hours ago</p>
           </div>
         </div>
       </SheetContent>
@@ -163,7 +163,7 @@ export const Controlled: Story = {
 
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-[color:var(--text-subtle)]">
           Animation State: <span className="font-mono font-semibold">{animationState}</span>
         </div>
         <Sheet
@@ -223,7 +223,7 @@ export const WithScrollableContent: Story = {
           {Array.from({ length: 20 }, (_, i) => (
             <div key={i} className="mb-4">
               <h3 className="mb-2 font-semibold">Section {i + 1}</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[color:var(--text-subtle)]">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
                 ad minim veniam, quis nostrud exercitation ullamco laboris.
@@ -381,22 +381,22 @@ export const SemanticColors: Story = {
         <div className="space-y-4 py-4">
           <div className="rounded-lg border border-border bg-background p-3">
             <p className="text-sm font-medium">Default Border & Background</p>
-            <p className="text-xs text-muted-foreground">Using --border and --background</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">Using --border and --background</p>
           </div>
 
           <div className="rounded-lg border border-primary bg-primary/10 p-3">
             <p className="text-sm font-medium text-primary">Primary Accent</p>
-            <p className="text-xs text-muted-foreground">Using --primary for emphasis</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">Using --primary for emphasis</p>
           </div>
 
           <div className="rounded-lg border border-destructive bg-destructive/10 p-3">
             <p className="text-sm font-medium text-destructive">Destructive State</p>
-            <p className="text-xs text-muted-foreground">Using --destructive for warnings</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">Using --destructive for warnings</p>
           </div>
 
           <div className="rounded-lg border border-secondary bg-secondary p-3">
             <p className="text-sm font-medium text-secondary-foreground">Secondary Style</p>
-            <p className="text-xs text-muted-foreground">Using --secondary colors</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">Using --secondary colors</p>
           </div>
         </div>
         <SheetFooter>

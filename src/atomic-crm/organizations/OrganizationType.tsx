@@ -17,7 +17,7 @@ const priorityColors = {
   A: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
   B: "bg-primary text-primary-foreground hover:bg-primary/90",
   C: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-  D: "bg-muted text-muted-foreground hover:bg-muted/90",
+  D: "bg-muted text-[color:var(--text-subtle)] hover:bg-muted/90",
 };
 
 export const OrganizationType = () => {
@@ -28,7 +28,7 @@ export const OrganizationType = () => {
     <div className="flex items-center gap-2">
       {/* Organization Type */}
       {record.organization_type && (
-        <span className="text-sm font-medium text-muted-foreground">
+        <span className="text-sm font-medium text-[color:var(--text-subtle)]">
           {organizationTypeLabels[record.organization_type] ||
             record.organization_type}
         </span>
@@ -38,7 +38,7 @@ export const OrganizationType = () => {
       {record.priority && (
         <Badge
           className={
-            priorityColors[record.priority] || "bg-muted text-muted-foreground"
+            priorityColors[record.priority] || "bg-muted text-[color:var(--text-subtle)]"
           }
           variant="default"
         >
@@ -81,7 +81,7 @@ export const OrganizationPriorityChip = () => {
 
   return (
     <Badge
-      className={`${priorityColors[record.priority] || "bg-muted text-muted-foreground"} text-xs`}
+      className={`${priorityColors[record.priority] || "bg-muted text-[color:var(--text-subtle)]"} text-xs`}
       variant="default"
     >
       {record.priority}

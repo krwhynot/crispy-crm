@@ -123,7 +123,7 @@ export const SingleWithDefault: Story = {
 export const NonCollapsible: Story = {
   render: () => (
     <div className="w-[450px] space-y-4">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-[color:var(--text-subtle)]">
         This accordion always keeps one item open (collapsible=false)
       </p>
       <Accordion type="single" defaultValue="item-1" className="w-full">
@@ -266,7 +266,7 @@ export const AnimationStates: Story = {
       <div className="w-[450px] space-y-4">
         <div className="rounded-lg border bg-secondary/10 p-3">
           <p className="text-sm font-medium">Animation States Monitor</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-[color:var(--text-subtle)]">
             Open items: {openItems.length > 0 ? openItems.join(', ') : 'None'}
           </p>
         </div>
@@ -460,7 +460,7 @@ export const SettingsPanel: Story = {
 export const Responsive: Story = {
   render: () => (
     <div className="w-full max-w-[700px]">
-      <p className="mb-4 text-sm text-muted-foreground">
+      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
         This accordion adapts to different screen sizes
       </p>
       <Accordion type="single" collapsible className="w-full">
@@ -477,11 +477,11 @@ export const Responsive: Story = {
               <div className="grid gap-2 sm:grid-cols-2">
                 <div className="rounded border p-2">
                   <p className="text-xs font-medium">Mobile</p>
-                  <p className="text-xs text-muted-foreground">Full width</p>
+                  <p className="text-xs text-[color:var(--text-subtle)]">Full width</p>
                 </div>
                 <div className="rounded border p-2">
                   <p className="text-xs font-medium">Desktop</p>
-                  <p className="text-xs text-muted-foreground">Constrained width</p>
+                  <p className="text-xs text-[color:var(--text-subtle)]">Constrained width</p>
                 </div>
               </div>
             </div>

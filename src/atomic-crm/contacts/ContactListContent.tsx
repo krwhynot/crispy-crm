@@ -57,7 +57,7 @@ export const ContactListContent = () => {
                   {/* Stretched link overlay: makes entire card clickable */}
                   <span className="absolute inset-0" aria-hidden="true" />
                 </Link>
-                <div className="text-xs text-muted-foreground truncate">
+                <div className="text-xs text-[color:var(--text-subtle)] truncate">
                   {contact.title}
                   {contact.department && ` - ${contact.department}`}
                   {contact.title &&
@@ -85,7 +85,7 @@ export const ContactListContent = () => {
 
             {/* Right meta: Last activity */}
             {contact.last_seen && (
-              <div className="text-xs text-muted-foreground shrink-0 relative z-10">
+              <div className="text-xs text-[color:var(--text-subtle)] shrink-0 relative z-10">
                 <div title={contact.last_seen}>
                   {!isSmall && "last activity "}
                   {formatRelative(contact.last_seen, now)}{" "}
@@ -99,7 +99,7 @@ export const ContactListContent = () => {
 
       {contacts.length === 0 && (
         <div className="p-8 text-center bg-muted/30 border border-border rounded-xl shadow-sm">
-          <p className="text-sm text-muted-foreground">No contacts found</p>
+          <p className="text-sm text-[color:var(--text-subtle)]">No contacts found</p>
         </div>
       )}
     </div>

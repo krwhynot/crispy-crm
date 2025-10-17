@@ -93,7 +93,7 @@ export const SegmentComboboxInput = (props: SegmentComboboxInputProps) => {
               {selectedSegment ? (
                 selectedSegment.name
               ) : (
-                <span className="text-muted-foreground">Select or create segment...</span>
+                <span className="text-[color:var(--text-subtle)]">Select or create segment...</span>
               )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>

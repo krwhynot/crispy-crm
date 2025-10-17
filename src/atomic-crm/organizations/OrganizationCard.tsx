@@ -51,7 +51,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
             <h6 className="text-sm font-medium group-hover:text-foreground transition-colors">{record.name}</h6>
             {record.segment_id && (
               <ReferenceField source="segment_id" reference="segments" link={false}>
-                <TextField source="name" className="text-xs text-muted-foreground" />
+                <TextField source="name" className="text-xs text-[color:var(--text-subtle)]" />
               </ReferenceField>
             )}
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
@@ -78,22 +78,22 @@ export const OrganizationCard = (props: { record?: Company }) => {
         <div className="flex flex-row w-full justify-between gap-2">
           {record.nb_contacts ? (
             <div className="flex items-center gap-0.5">
-              <Building2 className="w-4 h-4 text-muted-foreground" />
+              <Building2 className="w-4 h-4 text-[color:var(--text-subtle)]" />
               <span className="text-sm font-medium">
                 {record.nb_contacts}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[color:var(--text-subtle)]">
                 {record.nb_contacts > 1 ? "contacts" : "contact"}
               </span>
             </div>
           ) : null}
           {record.nb_opportunities ? (
             <div className="flex items-center gap-0.5">
-              <DollarSign className="w-4 h-4 text-muted-foreground" />
+              <DollarSign className="w-4 h-4 text-[color:var(--text-subtle)]" />
               <span className="text-sm font-medium">
                 {record.nb_opportunities}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[color:var(--text-subtle)]">
                 {record.nb_opportunities > 1 ? "opportunities" : "opportunity"}
               </span>
             </div>

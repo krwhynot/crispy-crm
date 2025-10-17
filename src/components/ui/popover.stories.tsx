@@ -41,7 +41,7 @@ export const Default: Story = {
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Dimensions</h4>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[color:var(--text-subtle)]">
               Set the dimensions for the layer.
             </p>
           </div>
@@ -82,7 +82,7 @@ export const IconTrigger: Story = {
       <PopoverContent>
         <div className="space-y-2">
           <h4 className="font-medium">Information</h4>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[color:var(--text-subtle)]">
             This popover is triggered by an icon button. It's useful for providing additional
             context without cluttering the interface.
           </p>
@@ -191,7 +191,7 @@ export const Controlled: Story = {
           <PopoverContent>
             <div className="space-y-2">
               <h4 className="font-medium">Controlled Popover</h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[color:var(--text-subtle)]">
                 This popover's open state is controlled programmatically.
               </p>
               <Button onClick={() => setOpen(false)} size="sm">
@@ -219,7 +219,7 @@ export const ComplexContent: Story = {
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Settings</h4>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[color:var(--text-subtle)]">
               Manage your application preferences.
             </p>
           </div>
@@ -269,7 +269,7 @@ export const UserProfile: Story = {
             </div>
             <div>
               <p className="text-sm font-medium">John Doe</p>
-              <p className="text-xs text-muted-foreground">john@example.com</p>
+              <p className="text-xs text-[color:var(--text-subtle)]">john@example.com</p>
             </div>
           </div>
           <div className="border-t pt-2">
@@ -302,7 +302,7 @@ export const HelpPopover: Story = {
         <div className="space-y-3">
           <div>
             <h4 className="font-medium mb-1">Need help?</h4>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[color:var(--text-subtle)]">
               Here are some resources to get you started.
             </p>
           </div>
@@ -347,7 +347,7 @@ export const DatePicker: Story = {
               </div>
               <div className="grid grid-cols-7 gap-1 text-center text-xs">
                 {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-                  <div key={day} className="font-medium text-muted-foreground">
+                  <div key={day} className="font-medium text-[color:var(--text-subtle)]">
                     {day}
                   </div>
                 ))}
@@ -411,7 +411,7 @@ export const KeyboardNavigation: Story = {
 
     return (
       <div>
-        <p className="mb-4 text-sm text-muted-foreground">
+        <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
           Tab to focus trigger, Space/Enter to open, Escape to close
         </p>
         <Popover>
@@ -422,7 +422,7 @@ export const KeyboardNavigation: Story = {
             <div className="space-y-4">
               <div>
                 <h4 className="font-medium mb-2">Keyboard Test</h4>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[color:var(--text-subtle)]">
                   Tab through the form fields below. Press Escape to close.
                 </p>
               </div>
@@ -442,7 +442,7 @@ export const KeyboardNavigation: Story = {
                 <Button className="w-full">Submit (Tab here, then Escape)</Button>
               </div>
               {value && (
-                <p className="text-sm text-muted-foreground">You typed: {value}</p>
+                <p className="text-sm text-[color:var(--text-subtle)]">You typed: {value}</p>
               )}
             </div>
           </PopoverContent>

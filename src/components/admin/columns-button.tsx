@@ -185,11 +185,11 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
               })}
               className="pr-8"
             />
-            <Search className="absolute right-2 top-2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute right-2 top-2 h-4 w-4 text-[color:var(--text-subtle)]" />
             {columnFilter && (
               <button
                 onClick={() => setColumnFilter("")}
-                className="absolute right-8 top-2 h-4 w-4 text-muted-foreground"
+                className="absolute right-8 top-2 h-4 w-4 text-[color:var(--text-subtle)]"
                 aria-label="Clear"
               >
                 ×

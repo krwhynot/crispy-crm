@@ -30,7 +30,7 @@ const ContactShowContent = () => {
                 <h5 className="text-xl font-semibold">
                   {record.first_name} {record.last_name}
                 </h5>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-[color:var(--text-subtle)]">
                   {record.title}
                   {record.department && ` - ${record.department}`}
                   {record.title &&

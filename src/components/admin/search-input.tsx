@@ -21,7 +21,7 @@ export const SearchInput = (inProps: SearchInputProps) => {
         placeholder={translate("ra.action.search")}
         {...rest}
       />
-      <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+      <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[color:var(--text-subtle)] pointer-events-none" />
     </div>
   );
 };
