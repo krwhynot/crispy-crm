@@ -33,11 +33,11 @@
   --brand-700: oklch(50% 0.10 125);
 
   /* NEW */
-  --brand-700: oklch(56% 0.125 100);  /* Darkened for WCAG AA */
-  --brand-600: oklch(64% 0.128 100);
-  --brand-500: oklch(72% 0.132 100);  /* #7CB342 converted */
-  --brand-400: oklch(80% 0.120 100);
-  --brand-300: oklch(88% 0.100 100);
+  --brand-700: oklch(56% 0.125 125);  /* Darkened for WCAG AA */
+  --brand-600: oklch(64% 0.128 125);
+  --brand-500: oklch(72% 0.132 125);  /* #7CB342 converted */
+  --brand-400: oklch(80% 0.120 125);
+  --brand-300: oklch(88% 0.100 125);
   ```
 
 #### B. Replace Accent Colors
