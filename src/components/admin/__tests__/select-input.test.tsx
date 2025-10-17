@@ -260,8 +260,9 @@ describe("SelectInput", () => {
       expect(trigger).toHaveTextContent("Lead");
     });
 
-    // Click the clear button (X icon)
-    const clearButton = screen.getByRole("button");
+    // Click the clear button (X icon) - it's a div with role="button" inside the select trigger
+    const clearButton = trigger.querySelector('[role="button"]') as HTMLElement;
+    expect(clearButton).toBeInTheDocument();
     await user.click(clearButton);
 
     await waitFor(() => {
