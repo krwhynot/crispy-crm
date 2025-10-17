@@ -13,12 +13,14 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import {
   required,
   ReferenceInput,
-  SaveContextProvider
+  SaveContextProvider,
+  Form as RaForm
 } from "ra-core";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { Form } from "../form";
 import React from "react";
 
-// FormWrapper that provides proper React Hook Form context
+// FormWrapper that provides both React Admin Form context and React Hook Form FormProvider
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -34,7 +36,6 @@ const FormWrapper = ({
     mutationMode: "pessimistic" as const
   };
 
-  // Create form instance with react-hook-form
   const form = useForm({
     defaultValues,
     mode: "onChange"
@@ -42,12 +43,12 @@ const FormWrapper = ({
 
   return (
     <SaveContextProvider value={saveContext}>
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+      <RaForm defaultValues={defaultValues} onSubmit={onSubmit}>
+        <Form {...form}>
           {children}
           <button type="submit">Submit</button>
-        </form>
-      </FormProvider>
+        </Form>
+      </RaForm>
     </SaveContextProvider>
   );
 };
@@ -439,7 +440,7 @@ describe("SelectInput", () => {
 
   test("displays helper text when provided", () => {
     renderWithAdminContext(
-      <FormWrapper resource="opportunities">
+      <FormWrapper>
         <SelectInput
           source="stage"
           label="Stage"
@@ -459,7 +460,7 @@ describe("SelectInput", () => {
 
     expect(() => {
       renderWithAdminContext(
-        <FormWrapper resource="opportunities">
+        <FormWrapper>
           {/* @ts-ignore - Intentionally omitting source to test error */}
           <SelectInput
             label="Invalid"
@@ -478,7 +479,7 @@ describe("SelectInput", () => {
     const onSubmit = vi.fn();
 
     renderWithAdminContext(
-      <FormWrapper resource="opportunities" defaultValues={{ stage: "lead" }} onSubmit={onSubmit}>
+      <FormWrapper defaultValues={{ stage: "lead" }} onSubmit={onSubmit}>
         <SelectInput
           source="stage"
           label="Stage"

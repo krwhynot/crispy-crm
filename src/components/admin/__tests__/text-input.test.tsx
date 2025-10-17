@@ -15,11 +15,13 @@ import {
   minLength,
   maxLength,
   SaveContextProvider,
+  Form as RaForm,
 } from "ra-core";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { Form } from "../form";
 import React from "react";
 
-// FormWrapper that provides proper React Hook Form context
+// FormWrapper that provides both React Admin Form context and React Hook Form FormProvider
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -35,7 +37,6 @@ const FormWrapper = ({
     mutationMode: "pessimistic" as const
   };
 
-  // Create form instance with react-hook-form
   const form = useForm({
     defaultValues,
     mode: "onChange"
@@ -43,12 +44,12 @@ const FormWrapper = ({
 
   return (
     <SaveContextProvider value={saveContext}>
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+      <RaForm defaultValues={defaultValues} onSubmit={onSubmit}>
+        <Form {...form}>
           {children}
           <button type="submit">Submit</button>
-        </form>
-      </FormProvider>
+        </Form>
+      </RaForm>
     </SaveContextProvider>
   );
 };
