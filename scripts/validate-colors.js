@@ -143,9 +143,10 @@ function extractColorsFromCss() {
       continue;
     }
 
-    // Extract color variables only within blocks
+    // Extract color variables only within blocks (including var() references)
     if (inRootBlock || inDarkBlock) {
-      const varMatch = line.match(/--([a-z-]+):\s*(oklch\([^)]+\))/);
+      // Match both direct OKLCH values and var() references
+      const varMatch = line.match(/--([a-z-]+):\s*(oklch\([^)]+\)|var\(--[a-z-]+\))/);
       if (varMatch) {
         const [, varName, colorValue] = varMatch;
         colors[currentMode][varName] = colorValue;
@@ -154,6 +155,29 @@ function extractColorsFromCss() {
   }
 
   return colors;
+}
+
+// Resolve CSS variable references recursively with depth limit
+function resolveColorVar(varName, colorMap, depth = 0) {
+  // Prevent infinite loops with depth limit
+  if (depth > 10) {
+    console.warn(`Warning: Circular reference detected for variable --${varName}`);
+    return null;
+  }
+
+  const value = colorMap.get(varName);
+  if (!value) return null;
+
+  // If value is direct OKLCH, return it
+  if (value.startsWith('oklch(')) return value;
+
+  // If value is var() reference, resolve recursively
+  const varMatch = value.match(/var\(--([a-z-]+)\)/);
+  if (varMatch) {
+    return resolveColorVar(varMatch[1], colorMap, depth + 1);
+  }
+
+  return null;
 }
 
 // Validate contrast ratios
@@ -323,9 +347,13 @@ async function validateContrast() {
     console.log(`\n📋 Testing ${mode.toUpperCase()} mode semantic colors:`);
     console.log("─".repeat(50));
 
+    // Convert colors object to Map for resolveColorVar
+    const colorMap = new Map(Object.entries(colors[mode]));
+
     for (const test of semanticTests) {
-      const bgColor = colors[mode][test.bg];
-      const fgColor = colors[mode][test.fg];
+      // Resolve var() references recursively
+      const bgColor = resolveColorVar(test.bg, colorMap) || colors[mode][test.bg];
+      const fgColor = resolveColorVar(test.fg, colorMap) || colors[mode][test.fg];
 
       if (!bgColor || !fgColor) {
         // Skip if colors don't exist in this mode
