@@ -81,7 +81,7 @@ export const LatestNotes = () => {
                 })}
               </div>
               <div>
-                <p className="text-sm line-clamp-3 overflow-hidden">
+                <p className="text-sm text-[color:var(--text-body)] line-clamp-3 overflow-hidden">
                   {note.text}
                 </p>
               </div>

@@ -18,7 +18,7 @@ export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove }) => {
   };
 
   return (
-    <div className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md bg-muted hover:bg-[oklch(99%_0.006_92)] transition-colors">
+    <div className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md bg-muted hover:bg-[var(--surface-interactive-hover)] transition-colors">
       <span className="truncate max-w-[200px]">{label}</span>
       <Button
         variant="ghost"

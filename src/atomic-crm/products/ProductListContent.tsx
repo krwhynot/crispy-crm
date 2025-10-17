@@ -39,7 +39,7 @@ export const ProductListContent = () => {
         <RecordContextProvider key={product.id} value={product}>
           <Link
             to={`/products/${product.id}/show`}
-            className="block p-4 hover:bg-[oklch(99%_0.006_92)] transition-colors"
+            className="block p-4 hover:bg-[var(--surface-interactive-hover)] transition-colors"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1">

@@ -12,12 +12,13 @@ const organizationTypeLabels: Record<OrganizationType, string> = {
   unknown: "Unknown",
 };
 
-// Priority colors for visual distinction using semantic variables
+// Priority colors for visual distinction using semantic state colors
+// Follows urgency spectrum: Red (high) → Amber (medium-high) → Gray (medium) → Light gray (low)
 const priorityColors = {
-  A: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-  B: "bg-primary text-primary-foreground hover:bg-primary/90",
-  C: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-  D: "bg-muted text-[color:var(--text-subtle)] hover:bg-muted/90",
+  A: "bg-destructive text-white hover:bg-destructive/90",                          // High priority: Red
+  B: "border-transparent bg-[var(--warning-default)] text-white hover:bg-[var(--warning-hover)]",  // Medium-High: Amber
+  C: "bg-secondary text-secondary-foreground hover:bg-secondary/90",               // Medium: Neutral gray
+  D: "bg-muted text-[color:var(--text-subtle)] hover:bg-muted/90",                // Low: Light gray
 };
 
 export const OrganizationType = () => {
