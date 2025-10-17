@@ -749,7 +749,7 @@ Files to Modify:
 
 ---
 
-#### Task 5.3: Validate Kanban Stage Colors [Depends on: 4.3]
+#### Task 5.3: Validate Kanban Stage Colors [Depends on: 4.3, 5.1]
 
 **READ THESE BEFORE TASK**
 - `/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/stageConstants.ts` (lines 24-81: Stage color definitions)
@@ -760,7 +760,7 @@ Files to Modify:
 Files to Validate (NO modifications needed):
 - `/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/stageConstants.ts`
 
-**Context**: Kanban stage colors use semantic variables (`var(--info-subtle)`, `var(--warning-subtle)`, `var(--success-subtle)`, etc.) which will auto-update when Task 4.3 (Update Semantic State Colors) completes. This task validates the colors look appropriate for the earth-tone theme.
+**Context**: Kanban stage colors use semantic variables (`var(--info-subtle)`, `var(--warning-subtle)`, `var(--success-subtle)`, etc.) AND direct tag variables (`var(--tag-teal-bg)`, `var(--tag-purple-bg)`, etc.). These will auto-update when Task 4.3 (Update Semantic State Colors) and Task 5.1 (Expand Tag Color System) complete. This task validates the colors look appropriate for the earth-tone theme.
 
 **Validation Steps:**
 1. Navigate to Opportunities Pipeline (Kanban view)
@@ -778,7 +778,7 @@ Files to Validate (NO modifications needed):
 4. Test dark mode: stage colors should remain distinct and readable
 5. Screenshot Kanban board in both light and dark modes
 
-**Gotcha**: Stages use a mix of semantic state colors AND direct tag colors. This is intentional for visual variety. All colors will automatically update when their source variables change in Phase 4.3.
+**Gotcha**: Stages use a mix of semantic state colors AND direct tag colors. This is intentional for visual variety. All colors will automatically update when their source variables change in Tasks 4.3 and 5.1. Lead integrator should ensure both tasks are completed and merged before this validation begins.
 
 ---
 
@@ -1350,3 +1350,7 @@ If critical issues discovered during Phase 7:
   - Added accessibility gotchas for reduced motion
   - Added comprehensive merge/rebase strategy
   - Rebalanced agent workload (Agent B now gets Phase 5)
+- **v1.2** (2025-01-17): Post-Zen final validation:
+  - Fixed tag count in Task 7.2 testing checklist (12, not 13)
+  - Clarified Task 5.3 dual dependency on Tasks 4.3 AND 5.1
+  - Added lead integrator coordination note for Task 5.3
