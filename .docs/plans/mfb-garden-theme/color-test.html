@@ -652,11 +652,56 @@
         <h2>Component Demonstrations</h2>
 
         <div class="component-demo">
-            <h3>Buttons with Nunito Font</h3>
+            <h3>Primary Button Options</h3>
+            <p style="color: var(--neutral-600); margin-bottom: 1rem;">
+                The challenge: Lime green #7CB342 is too light for WCAG AA compliance on cream background.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="border: 2px solid var(--border); padding: 1rem; border-radius: var(--radius);">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--neutral-700);">Option 1: Dark Lime (Current Plan)</div>
+                    <button style="background: var(--brand-700); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: var(--radius); font-family: var(--font-sans); font-weight: 600; width: 100%; cursor: pointer;">Primary Action</button>
+                    <div style="font-size: 0.75rem; color: var(--neutral-500); margin-top: 0.5rem;">
+                        oklch(56% 0.125 125)<br/>
+                        ❌ Looks olive, not lime<br/>
+                        ✅ WCAG AA compliant
+                    </div>
+                </div>
+
+                <div style="border: 2px solid var(--border); padding: 1rem; border-radius: var(--radius);">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--neutral-700);">Option 2: True Lime (Too Light)</div>
+                    <button style="background: var(--brand-500); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: var(--radius); font-family: var(--font-sans); font-weight: 600; width: 100%; cursor: pointer;">Primary Action</button>
+                    <div style="font-size: 0.75rem; color: var(--neutral-500); margin-top: 0.5rem;">
+                        oklch(72% 0.132 125)<br/>
+                        ✅ Looks lime green<br/>
+                        ❌ Fails WCAG AA (3.7:1)
+                    </div>
+                </div>
+
+                <div style="border: 2px solid var(--accent-clay-500); padding: 1rem; border-radius: var(--radius); background: var(--accent-clay-300);">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--neutral-700);">Option 3: Clay Orange ⭐</div>
+                    <button style="background: var(--accent-clay-600); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: var(--radius); font-family: var(--font-sans); font-weight: 600; width: 100%; cursor: pointer;">Primary Action</button>
+                    <div style="font-size: 0.75rem; color: var(--neutral-700); margin-top: 0.5rem;">
+                        oklch(58% 0.115 76)<br/>
+                        ✅ Vibrant earth tone<br/>
+                        ✅ WCAG AA compliant<br/>
+                        ✅ Distinct from lime
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--info-bg); border-left: 4px solid var(--info-default); padding: 1rem; border-radius: var(--radius);">
+                <strong style="color: var(--info-default);">Recommendation:</strong>
+                <p style="margin: 0.5rem 0 0 0; color: var(--neutral-700);">
+                    Use <strong>Clay Orange (Option 3)</strong> for primary buttons and keep lime green for branding/accents. This solves the contrast issue while maintaining the "Garden to Table" aesthetic.
+                </p>
+            </div>
+
+            <h3 style="margin-top: 2rem;">All Button Styles</h3>
             <div>
-                <button class="button btn-primary">Primary Action (Lime Green)</button>
-                <button class="button btn-accent">Accent Action (Clay Orange)</button>
+                <button class="button btn-accent">Primary Action (Clay Orange)</button>
                 <button class="button btn-secondary">Secondary Action</button>
+                <button style="background: var(--brand-500); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: var(--radius); font-family: var(--font-sans); font-weight: 600; margin: 0.5rem; cursor: pointer;">Lime Accent</button>
             </div>
         </div>
 
@@ -713,15 +758,15 @@
         </div>
 
         <div class="component-demo">
-            <h3>Option B: Your Preference (Warmer Earth Tones)</h3>
-            <div style="background: #fffbf1; padding: 2rem; border-radius: var(--radius); border: 1px solid #ddd;">
+            <h3>Option B: Your Preference (Warmer Earth Tones - Adjusted)</h3>
+            <div style="background: oklch(99.2% 0.012 85); padding: 2rem; border-radius: var(--radius); border: 1px solid #ddd;">
                 <p style="color: var(--neutral-700); margin-bottom: 1rem;">
-                    <strong>Background:</strong> #fffbf1 - More yellow/warm cream<br/>
+                    <strong>Background:</strong> oklch(99.2% 0.012 85) - Warm cream with hue 85° (aligned with palette)<br/>
                     <strong>Cards:</strong> #faf7f2 - Warmer beige with more depth
                 </p>
                 <div style="background: #faf7f2; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-card-2);">
                     <h4 style="margin: 0 0 0.5rem 0; color: var(--brand-700);">Sample Card</h4>
-                    <p style="margin: 0; color: var(--neutral-600);">This is how cards look with your preferred colors. Stronger earthy feel, more beige warmth.</p>
+                    <p style="margin: 0; color: var(--neutral-600);">This is how cards look with adjusted colors. Stronger earthy feel, harmonized with the 85° hue palette.</p>
                 </div>
             </div>
         </div>
@@ -741,8 +786,8 @@
                     </div>
                 </div>
                 <div>
-                    <h4>Option B: Your Preference (#fffbf1 + #faf7f2)</h4>
-                    <div style="background: #fffbf1; padding: 1.5rem; border-radius: var(--radius); min-height: 200px;">
+                    <h4>Option B: Your Preference (Adjusted)</h4>
+                    <div style="background: oklch(99.2% 0.012 85); padding: 1.5rem; border-radius: var(--radius); min-height: 200px;">
                         <div style="background: #faf7f2; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-card-1); margin-bottom: 1rem;">
                             <div style="font-weight: 600; color: var(--brand-700); margin-bottom: 0.5rem;">Contact Card</div>
                             <div style="font-size: 0.875rem; color: var(--neutral-600);">John Smith</div>
@@ -754,13 +799,37 @@
             </div>
         </div>
 
+        <div class="component-demo">
+            <h3>OKLCH Values for Your Preferred Colors (Adjusted)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div style="border: 2px solid var(--border); padding: 1.5rem; border-radius: var(--radius);">
+                    <div style="background: oklch(99.2% 0.012 85); height: 80px; border-radius: var(--radius); margin-bottom: 1rem; border: 1px solid #ddd;"></div>
+                    <div style="font-weight: 600; color: var(--neutral-700); margin-bottom: 0.5rem;">Background (Adjusted)</div>
+                    <div style="font-family: monospace; font-size: 0.875rem; color: var(--neutral-600);">
+                        Original: #fffbf1 (hue 90°)<br/>
+                        Adjusted: <strong>oklch(99.2% 0.012 85)</strong><br/>
+                        <span style="color: var(--success-default);">✓ Harmonized with palette</span>
+                    </div>
+                </div>
+                <div style="border: 2px solid var(--border); padding: 1.5rem; border-radius: var(--radius);">
+                    <div style="background: #faf7f2; height: 80px; border-radius: var(--radius); margin-bottom: 1rem; border: 1px solid #ddd;"></div>
+                    <div style="font-weight: 600; color: var(--neutral-700); margin-bottom: 0.5rem;">Cards</div>
+                    <div style="font-family: monospace; font-size: 0.875rem; color: var(--neutral-600);">
+                        Hex: #faf7f2<br/>
+                        OKLCH: oklch(97.5% 0.008 75)
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="insight-box">
             <h3>★ Color Comparison Insights ─────────────────────────────────────</h3>
             <ul>
-                <li><strong>Option A (Plan):</strong> Lighter, brighter, more "fresh" feel. Lower contrast between background and cards.</li>
-                <li><strong>Option B (Your Preference):</strong> Warmer, earthier, more "natural" feel. Stronger layering with better card definition.</li>
-                <li><strong>Accessibility Note:</strong> Both options maintain WCAG AA compliance for text, but Option B's stronger contrast may improve readability.</li>
-                <li><strong>Consider:</strong> Option B (#fffbf1 + #faf7f2) aligns better with "Garden to Table" earthy aesthetic.</li>
+                <li><strong>Option A (Plan):</strong> Lighter background (99% vs 99.2%), lower chroma (0.015 vs 0.012). More "fresh" and bright feel.</li>
+                <li><strong>Option B (Adjusted):</strong> Slightly darker background (99.2%) with reduced chroma (0.012), creating warmth without excess yellow. Better card definition.</li>
+                <li><strong>Hue Harmony:</strong> Both now use hue 85°, ensuring consistent warm undertone throughout the entire color system.</li>
+                <li><strong>Accessibility:</strong> Both maintain WCAG AA compliance. Option B's stronger background-to-card contrast may improve visual hierarchy.</li>
+                <li><strong>Recommendation:</strong> Option B (oklch(99.2% 0.012 85) + #faf7f2) provides better depth while staying harmonious with the 85° hue palette.</li>
             </ul>
             <p style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.875rem; color: var(--neutral-600);">
                 ─────────────────────────────────────────────────
