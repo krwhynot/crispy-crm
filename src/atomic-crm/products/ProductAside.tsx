@@ -142,34 +142,6 @@ export const ProductAside = () => {
         </>
       )}
 
-      {/* Inventory Info */}
-      <div>
-        <h4 className="text-sm font-medium mb-2 text-muted-foreground">
-          Inventory
-        </h4>
-        <div className="space-y-2">
-          {record.min_order_quantity && (
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Min Order</span>
-              <span className="text-sm">{record.min_order_quantity} units</span>
-            </div>
-          )}
-          {record.lead_time_days !== null && record.lead_time_days !== undefined && (
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Lead Time</span>
-              <span className="text-sm">{record.lead_time_days} days</span>
-            </div>
-          )}
-          {record.units_per_case && (
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Units/Case</span>
-              <span className="text-sm">{record.units_per_case}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <Separator />
 
       {/* Metadata */}
       <div>

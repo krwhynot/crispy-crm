@@ -5,6 +5,7 @@ import { NumberInput } from "@/components/admin/number-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { PRODUCT_STATUSES } from "../validation/products";
 
 export const ProductInputs = () => {
   const isMobile = useIsMobile();
@@ -146,13 +147,11 @@ const ProductClassificationInputs = () => {
     { id: "other", name: "Other" },
   ];
 
-  const productStatuses = [
-    { id: "active", name: "Active" },
-    { id: "discontinued", name: "Discontinued" },
-    { id: "pending", name: "Pending" },
-    { id: "seasonal", name: "Seasonal" },
-    { id: "out_of_stock", name: "Out of Stock" },
-  ];
+  // Derive status choices from Zod schema (Constitution Rule #5: Single Source of Truth)
+  const productStatuses = PRODUCT_STATUSES.map((status) => ({
+    id: status,
+    name: status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+  }));
 
   return (
     <div className="flex flex-col gap-4">

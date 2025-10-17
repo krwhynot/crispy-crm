@@ -452,3 +452,15 @@
 [2025-10-16 18:08:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/tags/TagDialog.tsx
 [2025-10-16 18:11:19] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/__tests__/test-ra-form.test.tsx
 [2025-10-16 20:37:16] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductShow.tsx
+[2025-10-16 20:37:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductShow.tsx
+[2025-10-16 20:37:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductShow.tsx
+[2025-10-16 20:37:46] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductAside.tsx
+[2025-10-16 20:38:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-16 20:38:17] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductEmpty.tsx
+[2025-10-16 20:38:27] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
+[2025-10-16 20:39:02] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251017013837_remove_inventory_features.sql
+[2025-10-16 20:39:23] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251017013837_remove_inventory_features.sql
+[2025-10-16 20:41:50] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
+[2025-10-16 20:41:50] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-16 20:42:00] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-16 20:42:23] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
