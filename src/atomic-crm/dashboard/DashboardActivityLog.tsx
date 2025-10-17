@@ -14,9 +14,9 @@ export function DashboardActivityLog() {
     <div className="flex flex-col">
       <div className="flex items-center mb-2">
         <div className="mr-3 flex">
-          <Clock className="text-muted-foreground w-6 h-6" />
+          <Clock className="text-[color:var(--text-subtle)] w-6 h-6" />
         </div>
-        <h2 className="text-xl font-semibold text-muted-foreground">
+        <h2 className="text-xl font-semibold text-[color:var(--text-title)] uppercase tracking-tight">
           Latest Activity
         </h2>
       </div>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const QuickAdd = () => {
   return (
-    <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
+    <Card className="rounded-xl p-4">
       <div className="flex justify-around gap-4">
         <Button variant="outline" size="sm" asChild>
           <Link to="/contacts/create">

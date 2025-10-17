@@ -41,9 +41,9 @@ export const HotContacts = () => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center">
         <div className="mr-3 flex">
-          <Users className="text-muted-foreground w-6 h-6" />
+          <Users className="text-[color:var(--text-subtle)] w-6 h-6" />
         </div>
-        <h2 className="text-xl font-semibold text-muted-foreground">
+        <h2 className="text-xl font-semibold text-[color:var(--text-title)] uppercase tracking-tight">
           Hot Contacts
         </h2>
         <TooltipProvider>
