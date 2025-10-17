@@ -137,7 +137,7 @@ Files to Modify:
 
 **Problem**: Script only extracts direct OKLCH definitions, skipping semantic colors like `--primary: var(--brand-700)`
 
-**Solution Option A - Quick Fix (15 minutes):**
+**Solution (MANDATORY - 15 minutes):**
 Enhance regex to resolve CSS variable chains recursively. Add after line 320:
 
 ```javascript
@@ -160,17 +160,6 @@ function resolveColorVar(varName, colorMap) {
 ```
 
 Then update semantic color test preparation (around line 330) to call `resolveColorVar()` instead of direct map lookup.
-
-**Solution Option B - Manual Override (5 minutes):**
-Add earth-tone OKLCH values directly to test pairs instead of resolving `var()` references:
-
-```javascript
-const semanticPairs = [
-  { bg: 'oklch(56% 0.125 100)', fg: 'oklch(99% 0.015 85)', name: 'primary-button' },
-  { bg: 'oklch(95.5% 0.010 85)', fg: 'oklch(38.1% 0.015 85)', name: 'secondary-button' },
-  // ... etc
-];
-```
 
 **Validation:**
 - Run `npm run validate:colors` after fix
