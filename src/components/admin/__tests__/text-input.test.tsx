@@ -17,11 +17,10 @@ import {
   SaveContextProvider,
   Form as RaForm,
 } from "ra-core";
-import { useForm } from "react-hook-form";
-import { Form } from "../form";
 import React from "react";
 
-// FormWrapper that provides both React Admin Form context and React Hook Form FormProvider
+// FormWrapper that provides React Admin Form context
+// RaForm includes FormProvider internally which our form components use
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -37,18 +36,17 @@ const FormWrapper = ({
     mutationMode: "pessimistic" as const
   };
 
-  const form = useForm({
-    defaultValues,
-    mode: "onChange"
-  });
-
+  // RaForm provides FormProvider internally which is required for our custom form components
+  // (FormField, FormLabel, FormControl, FormError) to work properly
   return (
     <SaveContextProvider value={saveContext}>
-      <RaForm defaultValues={defaultValues} onSubmit={onSubmit}>
-        <Form {...form}>
-          {children}
-          <button type="submit">Submit</button>
-        </Form>
+      <RaForm
+        defaultValues={defaultValues}
+        onSubmit={onSubmit}
+        mode="onChange"
+      >
+        {children}
+        <button type="submit">Submit</button>
       </RaForm>
     </SaveContextProvider>
   );
@@ -88,7 +86,8 @@ describe("TextInput", () => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
           email: "test@example.com"
-        })
+        }),
+        expect.anything() // React Hook Form also passes the event
       );
     });
   });
@@ -110,9 +109,9 @@ describe("TextInput", () => {
     const submitButton = screen.getByText("Submit");
     await user.click(submitButton);
 
-    // Should show required error
+    // Should show required error (English translation is "Required")
     await waitFor(() => {
-      expect(screen.getByText(/required/i)).toBeInTheDocument();
+      expect(screen.getByText("Required")).toBeInTheDocument();
     });
 
     // Type insufficient characters
@@ -120,9 +119,9 @@ describe("TextInput", () => {
     await user.type(input, "abc");
     await user.click(submitButton);
 
-    // Should show minLength error
+    // Should show minLength error (English translation is "Must be %{min} characters at least")
     await waitFor(() => {
-      expect(screen.getByText(/at least 5 characters/i)).toBeInTheDocument();
+      expect(screen.getByText("Must be 5 characters at least")).toBeInTheDocument();
     });
   });
 
@@ -185,7 +184,8 @@ describe("TextInput", () => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
           notes: multilineText
-        })
+        }),
+        expect.anything() // React Hook Form also passes the event
       );
     });
   });
@@ -349,7 +349,7 @@ describe("TextInput", () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      const errors = screen.queryByText(/Username/);
+      const errors = screen.queryByText(/Username is required|Username must/);
       expect(errors).not.toBeInTheDocument();
     });
   });
@@ -389,6 +389,12 @@ describe("TextInput", () => {
     const submitButton = screen.getByText("Submit");
     await user.click(submitButton);
 
+    // Wait for validation error to appear first
+    await waitFor(() => {
+      expect(screen.getByText("Required")).toBeInTheDocument();
+    });
+
+    // Then check the error state attributes
     await waitFor(() => {
       const label = document.querySelector('[data-slot="form-label"]');
       expect(label).toHaveAttribute("data-error", "true");
