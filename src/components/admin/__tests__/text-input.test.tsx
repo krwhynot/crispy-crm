@@ -15,12 +15,12 @@ import {
   minLength,
   maxLength,
   SaveContextProvider,
-  Form as RaForm,
+  Form,
 } from "ra-core";
 import React from "react";
 
 // FormWrapper that provides React Admin Form context
-// RaForm includes FormProvider internally which our form components use
+// The Form from ra-core provides FormProvider internally which our form components use
 const FormWrapper = ({
   children,
   defaultValues = {},
@@ -36,18 +36,18 @@ const FormWrapper = ({
     mutationMode: "pessimistic" as const
   };
 
-  // RaForm provides FormProvider internally which is required for our custom form components
+  // Form from ra-core provides FormProvider internally which is required for our custom form components
   // (FormField, FormLabel, FormControl, FormError) to work properly
   return (
     <SaveContextProvider value={saveContext}>
-      <RaForm
+      <Form
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         mode="onChange"
       >
         {children}
         <button type="submit">Submit</button>
-      </RaForm>
+      </Form>
     </SaveContextProvider>
   );
 };

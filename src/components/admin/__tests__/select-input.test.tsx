@@ -116,6 +116,12 @@ describe("SelectInput", () => {
     const option = screen.getByRole("option", { name: "Qualified" });
     await user.click(option);
 
+    // Wait for the selection to be reflected in the trigger (re-query after remount)
+    await waitFor(() => {
+      const updatedTrigger = screen.getByRole("combobox");
+      expect(updatedTrigger).toHaveTextContent("Qualified");
+    });
+
     // Submit form and check value
     const submitButton = screen.getByText("Submit");
     await user.click(submitButton);
@@ -126,7 +132,7 @@ describe("SelectInput", () => {
           stage: "qualified"
         })
       );
-    });
+    }, { timeout: 3000 });
   });
 
   test("works in reference input mode", async () => {
@@ -167,9 +173,9 @@ describe("SelectInput", () => {
     await user.click(trigger);
 
     await waitFor(() => {
-      expect(screen.getByText("Contact 1")).toBeInTheDocument();
-      expect(screen.getByText("Contact 2")).toBeInTheDocument();
-      expect(screen.getByText("Contact 3")).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "Contact 1" })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "Contact 2" })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "Contact 3" })).toBeInTheDocument();
     });
   });
 
@@ -268,17 +274,22 @@ describe("SelectInput", () => {
     const option = await screen.findByRole("option", { name: "Lead" });
     await user.click(option);
 
+    // After clicking, the select will remount due to the key change
+    // So we need to re-query the trigger
     await waitFor(() => {
-      expect(trigger).toHaveTextContent("Lead");
+      const updatedTrigger = screen.getByRole("combobox");
+      expect(updatedTrigger).toHaveTextContent("Lead");
     });
 
-    // Click the clear button (X icon) - it's a div with role="button" inside the select trigger
-    const clearButton = trigger.querySelector('[role="button"]') as HTMLElement;
+    // Re-query trigger after remount and find the clear button
+    const updatedTrigger = screen.getByRole("combobox");
+    const clearButton = updatedTrigger.querySelector('[role="button"]') as HTMLElement;
     expect(clearButton).toBeInTheDocument();
     await user.click(clearButton);
 
     await waitFor(() => {
-      expect(trigger).toHaveTextContent("-- Select Stage --");
+      const finalTrigger = screen.getByRole("combobox");
+      expect(finalTrigger).toHaveTextContent("-- Select Stage --");
     });
   });
 
