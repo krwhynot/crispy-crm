@@ -130,7 +130,8 @@ describe("SelectInput", () => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
           stage: "qualified"
-        })
+        }),
+        expect.anything() // React Admin Form passes event as second parameter
       );
     }, { timeout: 3000 });
   });
@@ -530,8 +531,9 @@ describe("SelectInput", () => {
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          stage: ""
-        })
+          stage: null // SelectInput clears to null, not empty string
+        }),
+        expect.anything() // React Admin Form passes event as second parameter
       );
     });
   });

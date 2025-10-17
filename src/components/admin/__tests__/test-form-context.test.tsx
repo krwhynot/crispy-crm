@@ -19,20 +19,33 @@ const TestComponent = () => {
   return <div data-testid="context-status">{contextStatus}</div>;
 };
 
+// FormWrapper that provides both React Admin Form context and React Hook Form FormProvider
+const FormWrapper = ({ children }: { children: React.ReactNode }) => {
+  const saveContext = {
+    save: () => {},
+    saving: false,
+    mutationMode: "pessimistic" as const
+  };
+
+  const methods = useForm({ defaultValues: {} });
+
+  return (
+    <SaveContextProvider value={saveContext}>
+      <RaForm defaultValues={{}} onSubmit={() => {}}>
+        <Form {...methods}>
+          {children}
+        </Form>
+      </RaForm>
+    </SaveContextProvider>
+  );
+};
+
 describe("React Admin Form FormProvider", () => {
   test("provides FormProvider context", () => {
-    const saveContext = {
-      save: () => {},
-      saving: false,
-      mutationMode: "pessimistic" as const
-    };
-
     renderWithAdminContext(
-      <SaveContextProvider value={saveContext}>
-        <Form defaultValues={{}} onSubmit={() => {}}>
-          <TestComponent />
-        </Form>
-      </SaveContextProvider>
+      <FormWrapper>
+        <TestComponent />
+      </FormWrapper>
     );
 
     const status = screen.getByTestId("context-status");
