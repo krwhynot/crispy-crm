@@ -57,44 +57,45 @@
   --neutral-900: oklch(21.7% 0.010 85);  /* Near black */
   --neutral-950: oklch(13.1% 0.008 85);  /* Darkest */
 
-  /* Primary Brand Colors - OKLCH format (hue 125°) */
-  --brand-100: oklch(92% 0.08 125);         /* Light green tint */
-  --brand-300: oklch(85% 0.12 125);         /* Soft green */
-  --brand-500: oklch(74% 0.12 125);         /* Brand identity */
-  --brand-650: oklch(60% 0.11 125);         /* Button hover state */
-  --brand-700: oklch(50% 0.10 125);         /* Primary CTAs (WCAG compliant) */
-  --brand-750: oklch(45% 0.095 125);        /* Button active state */
-  --brand-800: oklch(35% 0.08 125);         /* Pressed/dark states */
+  /* Primary Brand Colors - MFB Lime Green (hue 100°) */
+  --brand-100: oklch(92% 0.08 100);         /* Light lime tint */
+  --brand-300: oklch(85% 0.12 100);         /* Soft lime */
+  --brand-500: oklch(72% 0.132 100);        /* Brand identity #7CB342 */
+  --brand-650: oklch(64% 0.128 100);        /* Hover state */
+  --brand-700: oklch(56% 0.125 100);        /* Primary CTAs - DARKENED for WCAG AA on cream */
+  --brand-750: oklch(52% 0.120 100);        /* Active state */
+  --brand-800: oklch(48% 0.115 100);        /* Pressed/dark states */
 
-  /* Accent Colors - OKLCH format */
-  --accent-purple: oklch(50% 0.20 295);           /* Purple accent (reduced chroma) */
-  --accent-purple-light: oklch(85% 0.10 295);     /* Light purple variant */
-  --accent-teal:   oklch(70% 0.12 180);           /* Teal accent (reduced chroma) */
-  --accent-teal-light: oklch(90% 0.06 180);       /* Light teal variant */
+  /* Accent Colors - Clay/Terracotta (hue 76°) */
+  --accent-clay-700: oklch(52% 0.120 76);         /* Dark clay */
+  --accent-clay-600: oklch(58% 0.115 76);         /* Medium-dark clay */
+  --accent-clay-500: oklch(63% 0.110 76);         /* Clay orange #EA580C */
+  --accent-clay-400: oklch(72% 0.095 76);         /* Light clay */
+  --accent-clay-300: oklch(82% 0.075 76);         /* Very light clay */
 
   /* Foundation colors (semantic mappings) */
-  --background: var(--neutral-50);              /* Pure white-ish */
-  --foreground: var(--neutral-700);             /* Dark text */
+  --background: oklch(99% 0.015 85);            /* Warm cream #FEFEF9 */
+  --foreground: oklch(20% 0.012 85);            /* Slightly warmer dark text */
   --card: var(--neutral-50);                    /* Card surface */
   --card-foreground: var(--neutral-700);        /* Card text */
   --popover: var(--neutral-50);                 /* Popover surface */
   --popover-foreground: var(--neutral-700);     /* Popover text */
 
   /* Interactive colors */
-  --primary: var(--brand-700);                  /* Primary buttons (WCAG) */
+  --primary: var(--brand-700);                  /* Primary buttons (MFB green) */
   --primary-foreground: oklch(0.985 0 0);       /* White text on primary */
   --secondary: var(--neutral-100);              /* Secondary buttons */
   --secondary-foreground: var(--neutral-700);   /* Dark text on secondary */
   --muted: var(--neutral-200);                  /* Muted surfaces */
   --muted-foreground: var(--neutral-400);       /* Muted text */
-  --accent: var(--accent-purple);               /* Accent color */
+  --accent: var(--accent-clay-500);             /* Accent color (clay orange) */
   --accent-foreground: oklch(0.985 0 0);        /* White text on accent */
   --destructive: oklch(0.577 0.245 27.325);     /* Red for errors/delete */
 
   /* Borders and focus */
   --border: var(--neutral-200);                 /* Borders */
   --input: var(--neutral-200);                  /* Input borders */
-  --ring: var(--brand-500);                     /* Focus ring (brand identity) */
+  --ring: var(--brand-500);                     /* Focus ring uses brand identity color */
 
   /* Success states (green) */
   --success-subtle: oklch(90% 0.06 145);
