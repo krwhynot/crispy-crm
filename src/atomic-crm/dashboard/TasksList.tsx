@@ -51,15 +51,15 @@ export const TasksList = () => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center">
         <div className="mr-3 flex">
-          <CheckSquare className="text-muted-foreground w-6 h-6" />
+          <CheckSquare className="text-[color:var(--text-subtle)] w-6 h-6" />
         </div>
-        <h2 className="text-xl font-semibold text-muted-foreground flex-1">
+        <h2 className="text-xl font-semibold text-[color:var(--text-title)] uppercase tracking-tight flex-1">
           Upcoming Tasks
         </h2>
         <AddTask display="icon" selectContact />
       </div>
       <Card
-        className="bg-card border border-border shadow-sm rounded-xl p-4 mb-2 cursor-pointer"
+        className="rounded-xl p-4 mb-2 cursor-pointer"
         onClick={() => trackDashboardEvent('tasks')}
       >
         <div className="flex flex-col gap-4 max-h-[320px] overflow-y-auto">
