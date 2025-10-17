@@ -173,3 +173,18 @@ window.scrollTo = () => {};
 
 // Mock HTMLElement.prototype.scrollIntoView
 HTMLElement.prototype.scrollIntoView = () => {};
+
+// Mock Pointer Capture API for Radix UI Select component
+// jsdom doesn't support these methods, but Radix UI's Select uses them
+// This prevents "target.hasPointerCapture is not a function" errors in tests
+if (!HTMLElement.prototype.hasPointerCapture) {
+  HTMLElement.prototype.hasPointerCapture = vi.fn(() => false);
+}
+
+if (!HTMLElement.prototype.setPointerCapture) {
+  HTMLElement.prototype.setPointerCapture = vi.fn();
+}
+
+if (!HTMLElement.prototype.releasePointerCapture) {
+  HTMLElement.prototype.releasePointerCapture = vi.fn();
+}
