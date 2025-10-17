@@ -23,7 +23,14 @@ const DEFAULT_VISIBLE_STAGES = OPPORTUNITY_STAGE_CHOICES
 export const getStoredStagePreferences = (): string[] => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : DEFAULT_VISIBLE_STAGES;
+    if (!stored) return DEFAULT_VISIBLE_STAGES;
+
+    const parsed = JSON.parse(stored);
+    // Handle corrupted data (null, non-array values)
+    if (!Array.isArray(parsed)) {
+      return DEFAULT_VISIBLE_STAGES;
+    }
+    return parsed;
   } catch {
     return DEFAULT_VISIBLE_STAGES;
   }

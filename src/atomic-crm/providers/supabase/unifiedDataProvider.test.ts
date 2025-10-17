@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { unifiedDataProvider, validationRegistry } from "./unifiedDataProvider";
+import { unifiedDataProvider } from "./unifiedDataProvider";
 
 // Mock the base supabase provider
 vi.mock("ra-supabase-core", () => ({
@@ -39,6 +39,22 @@ vi.mock("../../validation/opportunities", () => ({
       };
     }
   }),
+  validateCreateOpportunity: vi.fn().mockImplementation(async (data) => {
+    if (!data.name) {
+      throw {
+        message: "Validation failed",
+        errors: { name: "Opportunity name is required" },
+      };
+    }
+  }),
+  validateUpdateOpportunity: vi.fn().mockImplementation(async (data) => {
+    if (data.name === "") {
+      throw {
+        message: "Validation failed",
+        errors: { name: "Opportunity name cannot be empty" },
+      };
+    }
+  }),
 }));
 
 vi.mock("../../validation/organizations", () => ({
@@ -66,6 +82,25 @@ vi.mock("../../validation/contacts", () => ({
       };
     }
   }),
+  validateCreateContact: vi.fn().mockImplementation(async (data) => {
+    if (!data.first_name && !data.last_name) {
+      throw {
+        message: "Validation failed",
+        errors: {
+          first_name: "At least first or last name is required",
+          last_name: "At least first or last name is required",
+        },
+      };
+    }
+  }),
+  validateUpdateContact: vi.fn().mockImplementation(async (data) => {
+    // Update validation is more permissive
+    return;
+  }),
+  validateContactOrganization: vi.fn().mockImplementation(async (data) => {
+    // Mock for contact organization validation
+    return;
+  }),
 }));
 
 vi.mock("../../validation/tags", () => ({
@@ -79,6 +114,113 @@ vi.mock("../../validation/tags", () => ({
     if (!data.id) {
       throw new Error("Tag ID is required for update");
     }
+    return data;
+  }),
+}));
+
+// Mock notes validation functions
+vi.mock("../../validation/notes", () => ({
+  validateCreateContactNote: vi.fn().mockImplementation((data) => {
+    // Mock validation logic if needed
+    return data;
+  }),
+  validateUpdateContactNote: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateCreateOpportunityNote: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateUpdateOpportunityNote: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateContactNoteForSubmission: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateOpportunityNoteForSubmission: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+}));
+
+// Mock products validation functions
+vi.mock("../../validation/products", () => ({
+  validateProductForm: vi.fn().mockImplementation(async (data) => {
+    // Mock validation logic if needed
+    return;
+  }),
+  validateOpportunityProduct: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+}));
+
+// Mock sales validation functions
+vi.mock("../../validation/sales", () => ({
+  validateSalesForm: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateCreateSales: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateUpdateSales: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+}));
+
+// Mock activities validation functions
+vi.mock("../../validation/activities", () => ({
+  validateActivitiesForm: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateCreateActivities: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateUpdateActivities: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateEngagementsForm: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateCreateEngagements: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateUpdateEngagements: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateInteractionsForm: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateCreateInteractions: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+  validateUpdateInteractions: vi.fn().mockImplementation(async (data) => {
+    return;
+  }),
+}));
+
+// Mock segments validation functions
+vi.mock("../../validation/segments", () => ({
+  validateCreateSegment: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateUpdateSegment: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateSegmentForSubmission: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+}));
+
+// Mock tasks validation functions
+vi.mock("../../validation/tasks", () => ({
+  validateCreateTask: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateUpdateTask: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateTaskWithReminder: vi.fn().mockImplementation((data) => {
+    return data;
+  }),
+  validateTaskForSubmission: vi.fn().mockImplementation((data, isUpdate = false) => {
     return data;
   }),
 }));
@@ -216,11 +358,13 @@ describe("UnifiedDataProvider Validation Integration", () => {
   });
 
   describe("Registry", () => {
-    it("should have validation registered for key resources", () => {
-      expect(validationRegistry.opportunities).toBeDefined();
-      expect(validationRegistry.organizations).toBeDefined();
-      expect(validationRegistry.contacts).toBeDefined();
-      expect(validationRegistry.tags).toBeDefined();
+    it("should have validation registered for key resources", async () => {
+      const { resourceUsesValidation } = await import("./unifiedDataProvider");
+
+      expect(resourceUsesValidation("opportunities")).toBe(true);
+      expect(resourceUsesValidation("organizations")).toBe(true);
+      expect(resourceUsesValidation("contacts")).toBe(true);
+      expect(resourceUsesValidation("tags")).toBe(true);
       // Note: companies is an alias that maps to organizations, so no separate entry
     });
 

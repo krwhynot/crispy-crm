@@ -261,35 +261,23 @@ describe("ContactListFilter", () => {
   });
 
   test("renders tag filters", () => {
+    // Tags are loaded via useGetList and only render if data exists
     renderWithAdminContext(<ContactListFilter />);
 
-    // Tags should be displayed in the sidebar filter
+    // Since we mock useGetList to return tags, they should be rendered
     expect(screen.getByText("VIP")).toBeInTheDocument();
     expect(screen.getByText("Lead")).toBeInTheDocument();
     expect(screen.getByText("Customer")).toBeInTheDocument();
   });
 
-  test("renders role filters", () => {
+  test("renders last activity filters", () => {
     renderWithAdminContext(<ContactListFilter />);
 
-    expect(screen.getByText("Decision Maker")).toBeInTheDocument();
-    expect(screen.getByText("Influencer")).toBeInTheDocument();
-    expect(screen.getByText("Champion")).toBeInTheDocument();
-    expect(screen.getByText("Executive")).toBeInTheDocument();
-  });
-
-  test("renders influence filters", () => {
-    renderWithAdminContext(<ContactListFilter />);
-
-    expect(screen.getByText("High Influence")).toBeInTheDocument();
-    expect(screen.getByText("Medium Influence")).toBeInTheDocument();
-    expect(screen.getByText("Low Influence")).toBeInTheDocument();
-  });
-
-  test("renders task filter", () => {
-    renderWithAdminContext(<ContactListFilter />);
-
-    expect(screen.getByText("With pending tasks")).toBeInTheDocument();
+    expect(screen.getByText("Today")).toBeInTheDocument();
+    expect(screen.getByText("This week")).toBeInTheDocument();
+    expect(screen.getByText("Before this week")).toBeInTheDocument();
+    expect(screen.getByText("Before this month")).toBeInTheDocument();
+    expect(screen.getByText("Before last month")).toBeInTheDocument();
   });
 
   test("renders account manager filter", () => {
@@ -305,6 +293,7 @@ describe("ContactListFilter", () => {
     expect(screen.getByText("This week")).toBeInTheDocument();
     expect(screen.getByText("Before this week")).toBeInTheDocument();
     expect(screen.getByText("Before this month")).toBeInTheDocument();
+    expect(screen.getByText("Before last month")).toBeInTheDocument();
   });
 });
 

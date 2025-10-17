@@ -15,6 +15,7 @@ vi.mock('ra-core', async () => {
   const actual = await vi.importActual('ra-core');
   return {
     ...actual,
+    AdminContext: actual.AdminContext,
     useRecordContext: vi.fn(() => ({ id: 1, name: 'Test Org' })),
   };
 });
