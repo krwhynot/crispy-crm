@@ -6,7 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Atomic CRM is a full-featured, open-source CRM built with React, shadcn-admin-kit, and Supabase. The application manages contacts, organizations, opportunities (formerly deals), tasks, and notes with a modern, type-safe frontend and a PostgreSQL backend.
 
-**Live Demo**: https://marmelab.com/atomic-crm-demo
+NOTE: WE ARE NOT LIVE AND IN PRELAUNCH PHASE
+
 **Stack**: React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind CSS 4
 
 ## Engineering Constitution
