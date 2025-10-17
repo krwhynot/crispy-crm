@@ -70,7 +70,7 @@
 }
 
 /*
- * Paper Cream Color System (MFB Garden Theme)
+ * Paper Cream Color System + Warm-Tinted Shadow System (MFB Garden Theme)
  *
  * Background Philosophy:
  * - Main background: oklch(97.5% 0.010 92) - "paper cream"
@@ -78,14 +78,30 @@
  * - Hue shifted from 85° to 92° for true cream (less greenish yellow)
  * - Chroma reduced from 0.015 to 0.010 for subtle, not saturated warmth
  *
+ * Material Layering Principle:
+ * - Background (97.5%) = Warm cream desk/table surface
+ * - Cards (100%) = Pure white papers/objects on the surface
+ * - Shadows = Natural light creating depth
+ * - Delta: 2.5 points provides clear visual separation
+ *
+ * Warm-Tinted Shadow System (Zen Recommendations):
+ * - Shadow ink: oklch(30% 0.010 92) - matches canvas hue, prevents "soot"
+ * - Dual-layer shadows with negative spread for tight, realistic depth
+ * - Three elevation tiers (E1, E2, E3) for hierarchy
+ * - 1px stroke system (--stroke-card) for edge definition
+ * - Avatar micro-elevation with ring + shadow + highlight
+ * - Text hierarchy tokens for improved widget titles and metrics
+ *
  * Benefits:
- * - White cards (100% L) now have 2.5-point contrast delta (clearly elevated)
- * - Shadows visible at normal opacity (0.08-0.12 vs previous 0.16-0.24)
- * - Borders and dividers perceptible without harsh lines
- * - Background feels warm but doesn't dominate visual hierarchy
+ * - White cards clearly elevated with 2.5-point lightness delta
+ * - Warm-tinted shadows harmonize with cream background
+ * - Strokes provide edge definition without harsh lines
+ * - Text hierarchy creates clear visual priority
  * - Reduced eye strain on extended use
  *
- * Migrated: October 2025 (from oklch(99% 0.015 85))
+ * Migrated:
+ * - October 2025: Paper cream background (from oklch(99% 0.015 85))
+ * - October 2025: Warm-tinted shadow system + pure white cards
  */
 
 :root {
@@ -309,17 +325,60 @@
     0 1px 2px 0 var(--shadow-ink) / 0.10;
   --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.30);
 
-  /* Shadow system - 3-tier elevation (light mode) - Optimized for paper cream background */
-  --shadow-card-1: 0 1px 2px 0 oklch(0 0 0 / 0.06), 0 1px 3px 0 oklch(0 0 0 / 0.10);        /* Subtle elevation */
-  --shadow-card-2: 0 4px 6px -1px oklch(0 0 0 / 0.08), 0 2px 4px -2px oklch(0 0 0 / 0.12);  /* Medium elevation */
-  --shadow-card-3: 0 10px 15px -3px oklch(0 0 0 / 0.10), 0 4px 6px -4px oklch(0 0 0 / 0.12); /* Prominent elevation */
-  --shadow-card-1-hover: 0 2px 4px 0 oklch(0 0 0 / 0.08), 0 2px 6px 0 oklch(0 0 0 / 0.12);
-  --shadow-card-2-hover: 0 8px 12px -2px oklch(0 0 0 / 0.10), 0 4px 8px -3px oklch(0 0 0 / 0.14);
-  --shadow-card-3-hover: 0 20px 25px -5px oklch(0 0 0 / 0.12), 0 8px 10px -6px oklch(0 0 0 / 0.14);
+  /*
+   * Usage Guide:
+   *
+   * CARDS - Apply elevation + stroke for depth:
+   *   .card {
+   *     box-shadow: var(--elevation-1);
+   *     border: 1px solid var(--stroke-card);
+   *   }
+   *   .card:hover { box-shadow: var(--elevation-2); }
+   *
+   * AVATARS - Use micro-elevation system:
+   *   .avatar {
+   *     box-shadow: var(--avatar-shadow), var(--avatar-highlight);
+   *     border-radius: 9999px;
+   *   }
+   *
+   * DIVIDERS - Choose based on context:
+   *   .divider { background: var(--divider-subtle); height: 1px; }
+   *   .section-divider { background: var(--divider-strong); height: 1px; }
+   *
+   * TEXT HIERARCHY - Use semantic text colors:
+   *   .widget-title { color: var(--text-title); font-weight: 600; }
+   *   .metric-value { color: var(--text-metric); font-weight: 700; }
+   *   .body-text { color: var(--text-body); }
+   *   .timestamp { color: var(--text-subtle); }
+   */
+
+  /* Elevation System (Light Mode) - Warm-tinted dual-layer shadows */
+  /* Elevation 1: Static content cards, default widgets */
+  --elevation-1:
+    0 1px 2px 0 var(--shadow-ink) / 0.10,
+    0 4px 8px -2px var(--shadow-ink) / 0.16;
+
+  /* Elevation 2: Interactive widgets (hover), important panels */
+  --elevation-2:
+    0 2px 3px 0 var(--shadow-ink) / 0.12,
+    0 8px 16px -4px var(--shadow-ink) / 0.18;
+
+  /* Elevation 3: Modals, floating menus, maximum prominence */
+  --elevation-3:
+    0 3px 6px -2px var(--shadow-ink) / 0.14,
+    0 16px 24px -8px var(--shadow-ink) / 0.20;
+
+  /* Legacy shadow tokens - map to elevation system for backward compatibility */
+  --shadow-card-1: var(--elevation-1);
+  --shadow-card-2: var(--elevation-2);
+  --shadow-card-3: var(--elevation-3);
+  --shadow-card-1-hover: var(--elevation-2);
+  --shadow-card-2-hover: var(--elevation-3);
+  --shadow-card-3-hover: var(--elevation-3);
 
   /* Column shadows - Optimized for paper cream background */
-  --shadow-col: 0 2px 6px oklch(0 0 0 / 0.12);
-  --shadow-col-inner: inset 0 1px 2px oklch(0 0 0 / 0.05);
+  --shadow-col: 0 2px 6px var(--shadow-ink) / 0.12;
+  --shadow-col-inner: inset 0 1px 2px var(--shadow-ink) / 0.05;
 }
 
 .dark {
