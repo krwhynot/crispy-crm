@@ -13,7 +13,11 @@ export type TagColorName =
   | 'teal'
   | 'blue'
   | 'purple'
-  | 'gray';
+  | 'gray'
+  | 'clay'
+  | 'sage'
+  | 'amber'
+  | 'cocoa';
 
 /**
  * Semantic color tokens for theme colors
@@ -89,6 +93,26 @@ export const SEMANTIC_COLORS: Record<TagColorName, SemanticColorToken> = {
     cssClass: 'tag-gray',
     hexFallback: '#f0efeb',
   },
+  clay: {
+    name: 'clay',
+    cssClass: 'tag-clay',
+    hexFallback: '#d9b89c',
+  },
+  sage: {
+    name: 'sage',
+    cssClass: 'tag-sage',
+    hexFallback: '#c8d5b9',
+  },
+  amber: {
+    name: 'amber',
+    cssClass: 'tag-amber',
+    hexFallback: '#f5e6d3',
+  },
+  cocoa: {
+    name: 'cocoa',
+    cssClass: 'tag-cocoa',
+    hexFallback: '#d4c5b9',
+  },
 };
 
 /**
@@ -103,4 +127,8 @@ export const VALID_TAG_COLORS: TagColorName[] = [
   'yellow',
   'gray',
   'pink',
+  'clay',
+  'sage',
+  'amber',
+  'cocoa',
 ];
