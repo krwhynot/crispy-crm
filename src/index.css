@@ -44,17 +44,18 @@
 :root {
   --radius: 0.625rem;
 
-  /* Core Neutrals - OKLCH format with cool undertone */
-  --neutral-50:  oklch(97.1% 0.002 284.5);  /* Lightest - backgrounds */
-  --neutral-100: oklch(88.4% 0.005 284.8);  /* Subtle backgrounds */
-  --neutral-200: oklch(80.2% 0.007 285.2);  /* Borders, dividers */
-  --neutral-300: oklch(72.1% 0.009 285.6);  /* Inactive elements */
-  --neutral-400: oklch(63.9% 0.011 286.0);  /* Muted text */
-  --neutral-500: oklch(55.8% 0.013 286.4);  /* Secondary text */
-  --neutral-600: oklch(47.7% 0.015 286.8);  /* Body text */
-  --neutral-700: oklch(39.6% 0.017 287.2);  /* Headings */
-  --neutral-800: oklch(31.5% 0.019 287.6);  /* Dark text */
-  --neutral-900: oklch(23.4% 0.021 288.0);  /* Near black */
+  /* Core Neutrals - OKLCH format with warm undertone (hue 85°) */
+  --neutral-50:  oklch(97.8% 0.008 85);  /* Lightest - backgrounds */
+  --neutral-100: oklch(95.5% 0.010 85);  /* Subtle backgrounds */
+  --neutral-200: oklch(90.2% 0.012 85);  /* Borders, dividers */
+  --neutral-300: oklch(84.3% 0.015 85);  /* Inactive elements */
+  --neutral-400: oklch(71.6% 0.018 85);  /* Muted text */
+  --neutral-500: oklch(57.7% 0.020 85);  /* Secondary text */
+  --neutral-600: oklch(46.0% 0.018 85);  /* Body text */
+  --neutral-700: oklch(38.1% 0.015 85);  /* Headings */
+  --neutral-800: oklch(28.5% 0.012 85);  /* Dark text */
+  --neutral-900: oklch(21.7% 0.010 85);  /* Near black */
+  --neutral-950: oklch(13.1% 0.008 85);  /* Darkest */
 
   /* Primary Brand Colors - OKLCH format (hue 125°) */
   --brand-100: oklch(92% 0.08 125);         /* Light green tint */
