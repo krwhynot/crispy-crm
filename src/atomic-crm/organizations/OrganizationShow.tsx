@@ -149,7 +149,7 @@ const ContactsIterator = () => {
             <RouterLink
               to={`/contacts/${contact.id}/show`}
               state={{ from: location.pathname }}
-              className="flex items-center justify-between hover:bg-[oklch(99%_0.006_92)] py-2 transition-colors"
+              className="flex items-center justify-between hover:bg-[var(--surface-interactive-hover)] py-2 transition-colors"
             >
               <div className="mr-4">
                 <Avatar />
@@ -222,7 +222,7 @@ const OpportunitiesIterator = () => {
           <div key={opportunity.id} className="p-0 text-sm">
             <RouterLink
               to={`/opportunities/${opportunity.id}/show`}
-              className="flex items-center justify-between hover:bg-[oklch(99%_0.006_92)] py-2 px-4 transition-colors"
+              className="flex items-center justify-between hover:bg-[var(--surface-interactive-hover)] py-2 px-4 transition-colors"
             >
               <div className="flex-1 min-w-0">
                 <div className="font-medium">{opportunity.name}</div>

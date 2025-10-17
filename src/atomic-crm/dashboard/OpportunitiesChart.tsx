@@ -141,7 +141,7 @@ export const OpportunitiesChart = memo(() => {
           enableGridY={false}
           enableLabel={false}
           tooltip={({ value, indexValue }) => (
-            <div className="p-2 bg-secondary rounded shadow flex items-center gap-1 text-secondary-foreground">
+            <div className="p-2 bg-secondary rounded shadow-[var(--elevation-1)] flex items-center gap-1 text-secondary-foreground">
               <strong>{indexValue}: </strong>
               {value > 0 ? "+" : ""}
               {value.toLocaleString(acceptedLanguages.at(0) ?? DEFAULT_LOCALE, {
@@ -156,12 +156,12 @@ export const OpportunitiesChart = memo(() => {
             style: {
               ticks: {
                 text: {
-                  fill: "var(--color-muted-foreground)",
+                  fill: "var(--text-subtle)",
                 },
               },
               legend: {
                 text: {
-                  fill: "var(--color-muted-foreground)",
+                  fill: "var(--text-subtle)",
                 },
               },
             },
@@ -174,12 +174,12 @@ export const OpportunitiesChart = memo(() => {
             style: {
               ticks: {
                 text: {
-                  fill: "var(--color-muted-foreground)",
+                  fill: "var(--text-subtle)",
                 },
               },
               legend: {
                 text: {
-                  fill: "var(--color-muted-foreground)",
+                  fill: "var(--text-subtle)",
                 },
               },
             },
@@ -191,12 +191,12 @@ export const OpportunitiesChart = memo(() => {
             style: {
               ticks: {
                 text: {
-                  fill: "var(--color-muted-foreground)",
+                  fill: "var(--text-subtle)",
                 },
               },
               legend: {
                 text: {
-                  fill: "var(--color-muted-foreground)",
+                  fill: "var(--text-subtle)",
                 },
               },
             },
