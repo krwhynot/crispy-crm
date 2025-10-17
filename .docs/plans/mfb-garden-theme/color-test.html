@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MFB Garden to Table Theme - Color System Test Page">
+    <title>MFB "Garden to Table" Color System Test</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Reset and Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* MFB Garden Theme Color Variables */
+        :root {
+            --radius: 0.5rem;
+            --font-sans: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+            /* Core Neutrals - Warm undertone (hue 85°) */
+            --neutral-50:  oklch(97.8% 0.008 85);  /* Lightest - backgrounds */
+            --neutral-100: oklch(95.5% 0.010 85);  /* Subtle backgrounds */
+            --neutral-200: oklch(90.2% 0.012 85);  /* Borders, dividers */
+            --neutral-300: oklch(84.3% 0.015 85);  /* Inactive elements */
+            --neutral-400: oklch(71.6% 0.018 85);  /* Muted text */
+            --neutral-500: oklch(57.7% 0.020 85);  /* Secondary text */
+            --neutral-600: oklch(46.0% 0.018 85);  /* Body text */
+            --neutral-700: oklch(38.1% 0.015 85);  /* Headings */
+            --neutral-800: oklch(28.5% 0.012 85);  /* Dark text */
+            --neutral-900: oklch(21.7% 0.010 85);  /* Near black */
+
+            /* Primary Brand - MFB Lime Green (hue 125°) */
+            --brand-100: oklch(92% 0.08 125);      /* Light lime tint */
+            --brand-300: oklch(85% 0.12 125);      /* Soft lime */
+            --brand-500: oklch(72% 0.132 125);     /* Brand identity #7CB342 */
+            --brand-650: oklch(64% 0.128 125);     /* Hover state */
+            --brand-700: oklch(56% 0.125 125);     /* Primary CTAs - DARKENED for WCAG AA */
+            --brand-750: oklch(52% 0.120 125);     /* Active state */
+            --brand-800: oklch(48% 0.115 125);     /* Pressed/dark states */
+
+            /* Accent Colors - Clay/Terracotta (hue 76°) */
+            --accent-clay-700: oklch(52% 0.120 76);   /* Dark clay */
+            --accent-clay-600: oklch(58% 0.115 76);   /* Medium-dark clay */
+            --accent-clay-500: oklch(63% 0.110 76);   /* Clay orange #EA580C */
+            --accent-clay-400: oklch(72% 0.095 76);   /* Light clay */
+            --accent-clay-300: oklch(82% 0.075 76);   /* Very light clay */
+
+            /* Foundation colors (semantic mappings) */
+            --background: oklch(99% 0.015 85);            /* Warm cream #FEFEF9 */
+            --foreground: oklch(20% 0.012 85);            /* Warm dark text */
+            --card: var(--neutral-50);
+            --card-foreground: var(--neutral-700);
+            --primary: var(--brand-700);
+            --primary-foreground: oklch(0.985 0 0);
+            --accent: var(--accent-clay-500);
+            --accent-foreground: oklch(0.985 0 0);
+            --border: var(--neutral-200);
+            --ring: var(--brand-500);
+
+            /* State Colors */
+            --success-default: oklch(63% 0.14 145);
+            --success-bg: oklch(95% 0.04 145);
+            --warning-default: oklch(70% 0.145 85);
+            --warning-bg: oklch(97% 0.05 85);
+            --info-default: oklch(60% 0.145 230);
+            --info-bg: oklch(96% 0.04 230);
+            --error-default: oklch(60% 0.145 25);
+            --error-bg: oklch(96% 0.05 25);
+
+            /* Chart Colors - Earth Tone Palette */
+            --chart-1-fill: #8B6E44;    /* Warm tan/soil */
+            --chart-1-stroke: #5D4A2F;
+            --chart-2-fill: #7CB342;    /* MFB lime green */
+            --chart-2-stroke: #2F6A1F;
+            --chart-3-fill: #C35A2E;    /* Terracotta/clay */
+            --chart-3-stroke: #7A3519;
+            --chart-4-fill: #718B3A;    /* Sage/olive */
+            --chart-4-stroke: #41531E;
+            --chart-5-fill: #B77700;    /* Golden amber */
+            --chart-5-stroke: #6C4A00;
+            --chart-6-fill: #3F7F72;    /* Sage-teal */
+            --chart-6-stroke: #245249;
+            --chart-7-fill: #6B4B6B;    /* Eggplant */
+            --chart-7-stroke: #49344A;
+            --chart-8-fill: #6E6A5E;    /* Mushroom gray */
+            --chart-8-stroke: #4A473F;
+
+            /* Tag Colors - Shifted 10° warmer + new earth tones */
+            --tag-warm-bg: oklch(92.1% 0.041 79.5);
+            --tag-warm-fg: oklch(20% 0.02 79.5);
+            --tag-green-bg: oklch(95% 0.023 159.3);
+            --tag-green-fg: oklch(20% 0.02 159.3);
+            --tag-teal-bg: oklch(94.2% 0.023 206.7);
+            --tag-teal-fg: oklch(20% 0.02 206.7);
+            --tag-blue-bg: oklch(92.9% 0.033 275.6);
+            --tag-blue-fg: oklch(20% 0.02 275.6);
+            --tag-purple-bg: oklch(93.8% 0.034 304.6);
+            --tag-purple-fg: oklch(20% 0.02 304.6);
+            --tag-yellow-bg: oklch(98.1% 0.026 118.8);
+            --tag-yellow-fg: oklch(20% 0.02 118.8);
+            --tag-gray-bg: oklch(94.7% 0 0);
+            --tag-gray-fg: oklch(20% 0 0);
+            --tag-pink-bg: oklch(93.5% 0.043 360.2);
+            --tag-pink-fg: oklch(20% 0.02 360.2);
+            --tag-clay-bg: oklch(92% 0.04 48);
+            --tag-clay-fg: oklch(20% 0.02 48);
+            --tag-sage-bg: oklch(94% 0.03 112);
+            --tag-sage-fg: oklch(20% 0.02 112);
+            --tag-amber-bg: oklch(96% 0.04 80);
+            --tag-amber-fg: oklch(20% 0.02 80);
+            --tag-cocoa-bg: oklch(90% 0.04 74);
+            --tag-cocoa-fg: oklch(20% 0.02 74);
+
+            /* Shadows - Increased opacity for cream background */
+            --shadow-card-1: 0 1px 3px oklch(0 0 0 / 0.16);
+            --shadow-card-2: 0 2px 6px oklch(0 0 0 / 0.20);
+            --shadow-card-3: 0 3px 8px oklch(0 0 0 / 0.24);
+        }
+
+        /* Dark Theme */
+        .dark {
+            --neutral-50:  oklch(21.7% 0.010 85);
+            --neutral-100: oklch(28.5% 0.012 85);
+            --neutral-200: oklch(38.1% 0.015 85);
+            --neutral-300: oklch(46.0% 0.018 85);
+            --neutral-400: oklch(57.7% 0.020 85);
+            --neutral-500: oklch(71.6% 0.018 85);
+            --neutral-600: oklch(84.3% 0.015 85);
+            --neutral-700: oklch(90.2% 0.012 85);
+            --neutral-800: oklch(95.5% 0.010 85);
+            --neutral-900: oklch(97.8% 0.008 85);
+
+            --brand-700: oklch(65% 0.125 100);
+            --brand-500: oklch(75% 0.130 100);
+
+            --accent-clay-500: oklch(63% 0.095 76);
+
+            --background: oklch(20% 0.015 85);
+            --foreground: oklch(95% 0.015 85);
+            --border: oklch(1 0 0 / 15%);
+
+            --shadow-card-1: 0 2px 4px oklch(0 0 0 / 0.35);
+            --shadow-card-2: 0 3px 6px oklch(0 0 0 / 0.40);
+            --shadow-card-3: 0 4px 10px oklch(0 0 0 / 0.45);
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card-2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--brand-700);
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--brand-700);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+            color: var(--neutral-700);
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--neutral-600);
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .theme-toggle button {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-card-1);
+            transition: all 200ms ease;
+        }
+
+        .theme-toggle button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card-2);
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .color-swatch {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-card-1);
+            transition: all 200ms ease;
+        }
+
+        .color-swatch:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card-2);
+        }
+
+        .color-sample {
+            height: 80px;
+            width: 100%;
+        }
+
+        .color-info {
+            padding: 0.75rem;
+        }
+
+        .color-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            color: var(--neutral-700);
+        }
+
+        .color-value {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+        }
+
+        .component-demo {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card-2);
+            margin: 2rem 0;
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            border: none;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 200ms ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            box-shadow: var(--shadow-card-1);
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--shadow-card-2);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--accent-foreground);
+            box-shadow: var(--shadow-card-1);
+        }
+
+        .btn-accent:hover {
+            box-shadow: var(--shadow-card-2);
+        }
+
+        .btn-secondary {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            border: 1px solid var(--border);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: calc(var(--radius) / 2);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.25rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            border-left: 4px solid;
+            margin: 1rem 0;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            border-color: var(--success-default);
+            color: var(--success-default);
+        }
+
+        .alert-warning {
+            background: var(--warning-bg);
+            border-color: var(--warning-default);
+            color: var(--warning-default);
+        }
+
+        .alert-info {
+            background: var(--info-bg);
+            border-color: var(--info-default);
+            color: var(--info-default);
+        }
+
+        .alert-error {
+            background: var(--error-bg);
+            border-color: var(--error-default);
+            color: var(--error-default);
+        }
+
+        .chart-demo {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .chart-color {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card-1);
+        }
+
+        .chart-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--neutral-600);
+            text-align: center;
+        }
+
+        .insight-box {
+            background: var(--brand-100);
+            border: 2px solid var(--brand-500);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .insight-box h3 {
+            color: var(--brand-700);
+            margin-top: 0;
+        }
+
+        .insight-box ul {
+            margin: 1rem 0 0 1.5rem;
+        }
+
+        .insight-box li {
+            margin: 0.5rem 0;
+            color: var(--neutral-700);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MFB "Garden to Table" Color System</h1>
+            <p class="subtitle">Interactive Color Test Page</p>
+        </header>
+
+        <div class="theme-toggle">
+            <button onclick="toggleTheme()">Toggle Dark Mode</button>
+        </div>
+
+        <div class="insight-box">
+            <h3>★ Insight ─────────────────────────────────────</h3>
+            <ul>
+                <li><strong>Warm Earth Aesthetic:</strong> The MFB theme shifts from cool professional tones to warm, organic earth colors that evoke freshness and natural food.</li>
+                <li><strong>OKLCH Color Space:</strong> All colors use OKLCH for perceptual uniformity, ensuring consistent lightness across different hues (crucial for accessibility).</li>
+                <li><strong>Semantic Token Architecture:</strong> Three-tier system (Foundation → Semantic → Component) means changing brand colors automatically updates all 141+ components.</li>
+            </ul>
+            <p style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.875rem; color: var(--neutral-600);">
+                ─────────────────────────────────────────────────
+            </p>
+        </div>
+
+        <h2>Neutrals - Warm Undertone (Hue 85°)</h2>
+        <div class="color-grid">
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-50)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-50</div>
+                    <div class="color-value">oklch(97.8% 0.008 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-100)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-100</div>
+                    <div class="color-value">oklch(95.5% 0.010 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-200)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-200</div>
+                    <div class="color-value">oklch(90.2% 0.012 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-300)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-300</div>
+                    <div class="color-value">oklch(84.3% 0.015 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-400)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-400</div>
+                    <div class="color-value">oklch(71.6% 0.018 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-500)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-500</div>
+                    <div class="color-value">oklch(57.7% 0.020 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-600)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-600</div>
+                    <div class="color-value">oklch(46.0% 0.018 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-700)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-700</div>
+                    <div class="color-value">oklch(38.1% 0.015 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-800)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-800</div>
+                    <div class="color-value">oklch(28.5% 0.012 85)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--neutral-900)"></div>
+                <div class="color-info">
+                    <div class="color-name">neutral-900</div>
+                    <div class="color-value">oklch(21.7% 0.010 85)</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Brand Colors - MFB Lime Green (Hue 100°)</h2>
+        <div class="color-grid">
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--brand-100)"></div>
+                <div class="color-info">
+                    <div class="color-name">brand-100</div>
+                    <div class="color-value">oklch(92% 0.08 100)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--brand-300)"></div>
+                <div class="color-info">
+                    <div class="color-name">brand-300</div>
+                    <div class="color-value">oklch(85% 0.12 100)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--brand-500)"></div>
+                <div class="color-info">
+                    <div class="color-name">brand-500</div>
+                    <div class="color-value">oklch(72% 0.132 100) #7CB342</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--brand-650)"></div>
+                <div class="color-info">
+                    <div class="color-name">brand-650</div>
+                    <div class="color-value">oklch(64% 0.128 100)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--brand-700)"></div>
+                <div class="color-info">
+                    <div class="color-name">brand-700</div>
+                    <div class="color-value">oklch(56% 0.125 100) WCAG AA</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--brand-750)"></div>
+                <div class="color-info">
+                    <div class="color-name">brand-750</div>
+                    <div class="color-value">oklch(52% 0.120 100)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--brand-800)"></div>
+                <div class="color-info">
+                    <div class="color-name">brand-800</div>
+                    <div class="color-value">oklch(48% 0.115 100)</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Accent Colors - Clay/Terracotta (Hue 76°)</h2>
+        <div class="color-grid">
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--accent-clay-300)"></div>
+                <div class="color-info">
+                    <div class="color-name">accent-clay-300</div>
+                    <div class="color-value">oklch(82% 0.075 76)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--accent-clay-400)"></div>
+                <div class="color-info">
+                    <div class="color-name">accent-clay-400</div>
+                    <div class="color-value">oklch(72% 0.095 76)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--accent-clay-500)"></div>
+                <div class="color-info">
+                    <div class="color-name">accent-clay-500</div>
+                    <div class="color-value">oklch(63% 0.110 76) #EA580C</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--accent-clay-600)"></div>
+                <div class="color-info">
+                    <div class="color-name">accent-clay-600</div>
+                    <div class="color-value">oklch(58% 0.115 76)</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-sample" style="background: var(--accent-clay-700)"></div>
+                <div class="color-info">
+                    <div class="color-name">accent-clay-700</div>
+                    <div class="color-value">oklch(52% 0.120 76)</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Chart Colors - Earth Tone Palette</h2>
+        <div class="chart-demo">
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-1-fill)"></div>
+                <div class="chart-label">Warm Tan<br/>(Soil/Baseline)</div>
+            </div>
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-2-fill)"></div>
+                <div class="chart-label">Lime Green<br/>(Our Data)</div>
+            </div>
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-3-fill)"></div>
+                <div class="chart-label">Terracotta<br/>(Category)</div>
+            </div>
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-4-fill)"></div>
+                <div class="chart-label">Sage/Olive<br/>(Category)</div>
+            </div>
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-5-fill)"></div>
+                <div class="chart-label">Golden Amber<br/>(Warning)</div>
+            </div>
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-6-fill)"></div>
+                <div class="chart-label">Sage Teal<br/>(Cool Accent)</div>
+            </div>
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-7-fill)"></div>
+                <div class="chart-label">Eggplant<br/>(Deep Neutral)</div>
+            </div>
+            <div class="chart-color">
+                <div class="chart-swatch" style="background: var(--chart-8-fill)"></div>
+                <div class="chart-label">Mushroom<br/>(Totals)</div>
+            </div>
+        </div>
+
+        <h2>Tag Colors - Expanded with Earth Tones</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0;">
+            <span class="tag" style="background: var(--tag-warm-bg); color: var(--tag-warm-fg)">Warm</span>
+            <span class="tag" style="background: var(--tag-green-bg); color: var(--tag-green-fg)">Green</span>
+            <span class="tag" style="background: var(--tag-teal-bg); color: var(--tag-teal-fg)">Teal</span>
+            <span class="tag" style="background: var(--tag-blue-bg); color: var(--tag-blue-fg)">Blue</span>
+            <span class="tag" style="background: var(--tag-purple-bg); color: var(--tag-purple-fg)">Purple</span>
+            <span class="tag" style="background: var(--tag-yellow-bg); color: var(--tag-yellow-fg)">Yellow</span>
+            <span class="tag" style="background: var(--tag-gray-bg); color: var(--tag-gray-fg)">Gray</span>
+            <span class="tag" style="background: var(--tag-pink-bg); color: var(--tag-pink-fg)">Pink</span>
+            <span class="tag" style="background: var(--tag-clay-bg); color: var(--tag-clay-fg)">Clay</span>
+            <span class="tag" style="background: var(--tag-sage-bg); color: var(--tag-sage-fg)">Sage</span>
+            <span class="tag" style="background: var(--tag-amber-bg); color: var(--tag-amber-fg)">Amber</span>
+            <span class="tag" style="background: var(--tag-cocoa-bg); color: var(--tag-cocoa-fg)">Cocoa</span>
+        </div>
+
+        <h2>Component Demonstrations</h2>
+
+        <div class="component-demo">
+            <h3>Buttons with Nunito Font</h3>
+            <div>
+                <button class="button btn-primary">Primary Action (Lime Green)</button>
+                <button class="button btn-accent">Accent Action (Clay Orange)</button>
+                <button class="button btn-secondary">Secondary Action</button>
+            </div>
+        </div>
+
+        <div class="component-demo">
+            <h3>State Alerts</h3>
+            <div class="alert alert-success">
+                <strong>Success:</strong> Your changes have been saved successfully.
+            </div>
+            <div class="alert alert-warning">
+                <strong>Warning:</strong> This action requires confirmation.
+            </div>
+            <div class="alert alert-info">
+                <strong>Info:</strong> New features are available in this update.
+            </div>
+            <div class="alert alert-error">
+                <strong>Error:</strong> Unable to complete the requested operation.
+            </div>
+        </div>
+
+        <div class="component-demo">
+            <h3>Typography Samples (Nunito)</h3>
+            <p style="font-weight: 400;">Regular (400): The quick brown fox jumps over the lazy dog.</p>
+            <p style="font-weight: 500;">Medium (500): The quick brown fox jumps over the lazy dog.</p>
+            <p style="font-weight: 600;">Semibold (600): The quick brown fox jumps over the lazy dog.</p>
+            <p style="font-weight: 700;">Bold (700): The quick brown fox jumps over the lazy dog.</p>
+        </div>
+
+        <div class="insight-box">
+            <h3>★ Design Insights ─────────────────────────────────────</h3>
+            <ul>
+                <li><strong>Accessibility First:</strong> Brand-700 (56% lightness) darkened specifically to achieve 4.5:1 contrast ratio on cream background (#FEFEF9).</li>
+                <li><strong>Strategic Color Meaning:</strong> Chart-2 (lime green) reserved for "our performance" data creates brand association in analytics.</li>
+                <li><strong>Hover Lift Effect:</strong> Buttons and cards use <code>transform: translateY(-2px)</code> for organic, tactile interaction feel.</li>
+            </ul>
+            <p style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; font-size: 0.875rem; color: var(--neutral-600);">
+                ─────────────────────────────────────────────────
+            </p>
+        </div>
+
+        <h2>Background Color Comparison</h2>
+        <div class="component-demo">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h3>Current (Cool White)</h3>
+                    <div style="background: oklch(97.1% 0.002 284.5); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                        <p style="color: oklch(39.6% 0.017 287.2);">Cool undertone with hue 285°. Professional and clean, but lacks warmth.</p>
+                    </div>
+                </div>
+                <div>
+                    <h3>MFB (Warm Cream)</h3>
+                    <div style="background: oklch(99% 0.015 85); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                        <p style="color: oklch(20% 0.012 85);">Warm undertone with hue 85°. Inviting, organic, farm-to-table aesthetic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer style="margin-top: 4rem; padding: 2rem; text-align: center; border-top: 2px solid var(--border);">
+            <p style="color: var(--neutral-500); font-size: 0.875rem;">
+                MFB "Garden to Table" Theme Test Page • Generated for Color System Migration<br/>
+                Font: Nunito (Google Fonts) • Color Space: OKLCH
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+    </script>
+</body>
+</html>
