@@ -5,23 +5,28 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import type { Company } from '../types';
 import { ConfigurationContext } from '../root/ConfigurationContext';
-
-// Use a different approach - don't mock ra-core, just mock useRecordContext
-import { AdminContext, useRecordContext } from 'ra-core';
 import { vi } from 'vitest';
 
-// Mock the specific hook without mocking the entire module
-vi.mock('ra-core', async (importOriginal) => {
-  const actual = await importOriginal() as any;
+// Mock useRecordContext from ra-core
+vi.mock('ra-core', async () => {
+  const actual = await vi.importActual<typeof import('ra-core')>('ra-core');
   return {
     ...actual,
     useRecordContext: vi.fn(() => ({ id: 1, name: 'Test Org' })),
   };
 });
 
+// Import ra-core components after mock definition
+import {
+  CoreAdminContext as AdminContext,
+  useRecordContext,
+  SaveContextProvider,
+  Form as RaForm
+} from 'ra-core';
+import { Form } from '@/components/admin/form';
 import { OrganizationInputs } from './OrganizationInputs';
 
 const mockDataProvider = {
