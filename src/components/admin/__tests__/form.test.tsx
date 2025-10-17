@@ -672,9 +672,9 @@ describe("SaveButton", () => {
     await user.click(button);
 
     await waitFor(() => {
-      // The save function should be called with the transformed data
+      // The save function should be called with original data and transform as an option
       expect(mockSave).toHaveBeenCalledWith(
-        { name: "test", transformed: true },
+        { name: "test" },
         expect.objectContaining({ transform })
       );
     });
