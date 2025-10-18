@@ -122,6 +122,11 @@ const OpportunityShowContent = () => {
                             ? "secondary"
                             : "outline"
                     }
+                    className={
+                      record.priority === "high"
+                        ? "border-transparent bg-[var(--warning-default)] text-white hover:bg-[var(--warning-hover)]"
+                        : ""
+                    }
                   >
                     {record.priority}
                   </Badge>
