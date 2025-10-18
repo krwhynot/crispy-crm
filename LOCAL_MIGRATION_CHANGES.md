@@ -1,209 +1,218 @@
-# Local Development Customizations
+# Local Development Database Setup
 
-**Created:** 2025-10-18
-**Purpose:** Document local-specific changes to reapply after cloud-to-local migration
+**Last Updated:** 2025-10-18
+**Status:** ✅ Working - Database fully configured with shared team access
 
 ---
 
-## Overview
+## Current Database State
 
-This document tracks all local-only customizations that differ from the cloud/production database. After pulling a fresh schema from cloud, these changes must be reapplied.
+Your local database is configured with:
+- ✅ Fresh cloud schema (consolidated Oct 18, 2025)
+- ✅ Auth triggers for automatic user-sales sync
+- ✅ Shared team access (contacts, orgs, opportunities shared)
+- ✅ Personal task lists (tasks are private per user)
+- ✅ Audit trail (created_by, updated_by, created_at, updated_at)
+- ✅ Helper function for clean RLS policies
 
-## Local-Specific Files to Preserve
+---
 
-### 1. Environment Configuration
+## Active Migrations
 
-**File:** `.env.local`
+These migrations are currently applied (in order):
 
+1. **20251018152315_cloud_schema_fresh.sql** - Base schema from cloud
+2. **20251018203500_update_rls_for_shared_team_access.sql** - RLS policies
+3. **20251018204500_add_helper_function_and_audit_trail.sql** - Helper + audit
+4. **20251018210000_add_created_by_audit_field.sql** - Created_by column
+5. **20251018211500_restore_auth_triggers_and_backfill.sql** ⚠️ **CRITICAL**
+
+---
+
+## ⚠️ CRITICAL: Auth Triggers Migration
+
+**File:** `20251018211500_restore_auth_triggers_and_backfill.sql`
+
+**DO NOT DELETE THIS FILE!**
+
+This migration restores triggers on `auth.users` that cannot be dumped by Supabase CLI tools. These triggers:
+- Auto-create sales records when users sign up
+- Keep auth.users and sales table in sync
+- Are ESSENTIAL for the app to function
+
+**Why it's critical:**
+- Supabase's `db dump --schema public` excludes auth schema objects
+- Without this migration, new users won't get sales records
+- App will show blank pages (the issue we just fixed)
+
+---
+
+## Test User
+
+**Email:** `admin@test.com`
+**Password:** `password123`
+**Sales ID:** 1
+**User ID:** `d3129876-b1fe-40eb-9980-64f5f73c64d6`
+
+This user is auto-created by `supabase/seed.sql` with sample data.
+
+---
+
+## Local-Specific Configuration
+
+### Environment Variables (.env.local)
 ```bash
-# Local Supabase Configuration
 VITE_SUPABASE_URL=http://127.0.0.1:54321
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
-
-# Application Configuration
-APP_NAME=Atomic CRM (Local)
-APP_VERSION=0.1.0
 ```
 
-**Action:** Keep this file - it's already local-specific
-
----
-
-### 2. Test Data Seeding
-
-**File:** `supabase/seed.sql`
-
-Contains:
-- Test user: `admin@test.com` / `password123`
-- 5 Principal organizations (Heritage Creamery Foods, etc.)
-- Sample contacts, opportunities, products
-- Task and note examples
-
-**Action:** Preserve this entire file - it's for local development only
-
----
-
-### 3. Supabase Configuration
-
-**File:** `supabase/config.toml`
-
-**Local-specific settings:**
-
+### Supabase Config (supabase/config.toml)
 ```toml
-[studio]
-api_url = "http://127.0.0.1"  # Local API URL
-
 [auth]
 site_url = "http://localhost:5173/"
-additional_redirect_urls = ["https://localhost:5173/auth-callback.html"]
 
 [storage]
-enabled = false  # Disabled due to CLI/Storage API version mismatch
+enabled = false  # Disabled due to version mismatch
 
 [remotes.production]
-project_id = "aaqnanddcqvfiwhshndl"  # Cloud production reference
+project_id = "aaqnanddcqvfiwhshndl"
 ```
 
-**Action:** Keep these local overrides
+---
+
+## Common Commands
+
+### Reset Database (Applies All Migrations + Seed Data)
+```bash
+npx supabase db reset
+```
+This will:
+1. Drop and recreate the database
+2. Apply all migrations in order
+3. Run `supabase/seed.sql` to create test user and sample data
+4. Create sales record for test user (via auth trigger)
+
+### Check Migration Status
+```bash
+npx supabase migration list
+```
+
+### Access Supabase Studio
+```bash
+# Open browser to:
+http://localhost:54323
+```
 
 ---
 
-## Migrations to Verify After Cloud Pull
+## Migration Best Practices
 
-After pulling from cloud, verify these migrations exist (they should be in cloud already):
+### ✅ Safe Operations
 
-1. ✅ `20251013000000_cloud_schema_sync.sql` - Base schema
-2. ✅ `20251015014019_restore_auth_triggers.sql` - Auth user triggers
-3. ✅ `20251016000000_add_test_users_metadata.sql` - Test metadata table
-4. ✅ `20251016004137_add_test_user_metadata_constraint.sql` - Unique constraint
-5. ✅ `20251016175722_fix_security_definer_views.sql` - View security
-6. ✅ `20251016175758_fix_function_search_paths.sql` - Function paths
-7. ✅ `20251017013837_remove_inventory_features.sql` - Inventory cleanup
-8. ✅ `20251017141210_migrate_colors_to_semantic.sql` - Color migration
-9. ✅ `20251018031206_remove_unused_org_fields.sql` - Org field cleanup
-10. ✅ `20251018104712_remove_deprecated_organization_flags.sql` - Flag cleanup
-11. ✅ `20251018104713_remove_unused_feature_columns.sql` - Feature cleanup
-12. ✅ `20251018181819_remove_seasonal_and_limited_availability_statuses.sql` - Status cleanup
+```bash
+# Pull changes from cloud (read-only)
+npx supabase db pull --linked
 
-**Action:** If any are missing, they may have been local-only and need to be pushed to cloud first
+# Check differences before pushing
+npx supabase db diff
 
----
+# Push with confirmation prompts
+npx supabase db push --linked
 
-## Local-Only Migrations (Not in Cloud)
+# Reset local only
+npx supabase db reset
+```
 
-**Check if these migrations exist in cloud before cleanup:**
+### ❌ Dangerous Operations
 
-- `supabase/migrations/.env` - This seems incorrect (shouldn't have .env in migrations)
-- `RECONCILIATION_SUMMARY.md` - Documentation file (not a migration)
+```bash
+# NEVER run this - deletes production data!
+npx supabase db reset --linked
 
-**Action:** Remove these non-migration files from migrations directory
-
----
-
-## Database Schema Differences
-
-### Known Local-Only Changes
-
-None identified - all schema changes should be in cloud already.
-
-### Test Users
-
-**Local test accounts** (created by seed.sql):
-- `admin@test.com` / `password123` (sales_id will be auto-assigned)
-
-**Action:** These are created by seed.sql, no migration needed
-
----
-
-## Steps to Reapply After Migration
-
-1. **Pull fresh schema from cloud:**
-   ```bash
-   npx supabase db pull --linked
-   ```
-
-2. **Verify migrations match cloud:**
-   ```bash
-   npx supabase db diff
-   ```
-   (Should show no differences if all local migrations were already pushed)
-
-3. **Reset local database:**
-   ```bash
-   npx supabase db reset
-   ```
-   This will:
-   - Apply all migrations
-   - Run seed.sql automatically
-   - Create test users and sample data
-
-4. **Verify test user exists:**
-   ```sql
-   SELECT email FROM auth.users WHERE email = 'admin@test.com';
-   ```
-
-5. **Test login with** `admin@test.com` / `password123`
-
----
-
-## Critical Notes
-
-⚠️ **NEVER run `npx supabase db reset --linked`** - This will wipe production data!
-
-✅ **Safe commands:**
-- `npx supabase db reset` (local only)
-- `npx supabase db pull --linked` (read-only from cloud)
-- `npx supabase db push --linked` (with confirmation prompts)
+# NEVER consolidate migrations this way again:
+rm supabase/migrations/*
+npx supabase db dump --linked --schema public
+# ^ This loses auth triggers!
+```
 
 ---
 
 ## Troubleshooting
 
-### If PGRST301 errors persist after migration:
+### Blank Pages After Login
+**Symptom:** User can log in but sees blank pages
+**Cause:** Missing auth triggers (users have no sales records)
+**Fix:** Verify `20251018211500_restore_auth_triggers_and_backfill.sql` exists and is applied
 
-1. Stop all containers: `npx supabase stop`
-2. Remove Docker volumes: `docker volume rm $(docker volume ls -q --filter label=com.supabase.cli.project=crispy-crm)`
-3. Start fresh: `npx supabase start`
-4. Reset database: `npx supabase db reset`
+### PGRST301 Errors
+**Symptom:** "No suitable key or wrong key type"
+**Cause:** PostgREST schema cache corruption
+**Fix:** Stop Supabase, remove Docker volumes, restart:
+```bash
+npx supabase stop
+docker volume rm $(docker volume ls -q --filter label=com.supabase.cli.project=crispy-crm)
+npx supabase start
+npx supabase db reset
+```
 
-### If schema is out of sync:
-
-1. Check cloud migrations: `npx supabase migration list --linked`
-2. Compare with local: `npx supabase migration list`
-3. Pull any missing migrations: `npx supabase db pull --linked`
-
----
-
-## Files to Keep (Do Not Delete)
-
-- ✅ `.env.local` - Local environment variables
-- ✅ `supabase/seed.sql` - Test data
-- ✅ `supabase/config.toml` - Supabase configuration
-- ✅ `supabase/migrations/` - All migration files (will be refreshed)
-
-## Files to Remove Before Migration
-
-- ❌ `supabase/migrations/.env` - Invalid file in migrations
-- ❌ `supabase/migrations/RECONCILIATION_SUMMARY.md` - Documentation (not a migration)
-- ❌ Docker volumes (will be recreated)
+### Login Fails with "Invalid credentials"
+**Check:** Are you using `admin@test.com` not `account@gmail.com`?
+**Check:** Password is `password123` (set in seed.sql)
 
 ---
 
-## Post-Migration Verification Checklist
+## Verification Checklist
 
-- [ ] Supabase starts without errors: `npx supabase status`
-- [ ] Migrations applied successfully: Check for NOTICE/ERROR messages
-- [ ] Test user exists: Query `auth.users` for `admin@test.com`
-- [ ] Sample data loaded: Check organizations, contacts, opportunities tables
-- [ ] App connects: Visit `http://localhost:5173/debug.html`
-- [ ] Login works: Use `admin@test.com` / `password123`
-- [ ] API queries return data: Test Sales/Contacts/Organizations queries
-- [ ] No PGRST301 errors: Check connection test in debug.html
+After `npx supabase db reset`, verify:
+
+- [ ] Supabase starts: `npx supabase status`
+- [ ] Migrations applied: Check for errors during reset
+- [ ] Test user exists: Visit debug.html, login with admin@test.com
+- [ ] Sales record exists: "Test Sales Query" should return 1 record
+- [ ] Sample data loaded: 5 organizations should exist
+- [ ] App works: Visit http://localhost:5173, no blank pages
 
 ---
 
-**Document Status:** ✅ Complete
-**Last Updated:** 2025-10-18
-**Next Action:** Proceed to Phase 2 (Cleanup)
+## Architecture Notes
+
+### Data Model
+
+```
+auth.users (Supabase managed)
+    ↓ [TRIGGER: on_auth_user_created]
+sales (Application data - 1:1 with users)
+    ↓ [FOREIGN KEYS]
+contacts, organizations, opportunities (Shared team data)
+tasks (Personal data - filtered by sales_id)
+```
+
+### Access Control
+
+- **Shared Resources:** contacts, organizations, opportunities, products, notes
+  - Policy: `USING (true)` - Everyone can see/edit all records
+
+- **Personal Resources:** tasks
+  - Policy: `USING (sales_id = public.get_current_sales_id())` - Only creator
+
+### Audit Trail
+
+All shared resources track:
+- `created_by` - Sales ID who created (set on INSERT via DEFAULT)
+- `created_at` - When created
+- `updated_by` - Sales ID who last modified (set on UPDATE via trigger)
+- `updated_at` - When last modified
+
+---
+
+## For More Information
+
+- **Supabase Docs:** https://supabase.com/docs
+- **CLI Reference:** https://supabase.com/docs/reference/cli
+- **Local Development:** https://supabase.com/docs/guides/local-development
+
+---
+
+**Document Status:** ✅ Current and Complete
+**Next Review:** When adding new migrations or changing architecture
