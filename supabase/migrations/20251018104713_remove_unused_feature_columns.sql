@@ -202,3 +202,19 @@ BEGIN
     RETURN NEW;
 END;
 $$;
+
+-- CRITICAL: Also update products_search_trigger function from base migration
+CREATE OR REPLACE FUNCTION products_search_trigger() RETURNS trigger
+    LANGUAGE plpgsql
+    SET search_path TO 'public'
+    AS $$
+BEGIN
+    NEW.search_tsv := to_tsvector('english',
+        coalesce(NEW.name, '') || ' ' ||
+        coalesce(NEW.sku, '') || ' ' ||
+        coalesce(NEW.description, '') || ' ' ||
+        coalesce(NEW.category::text, '')
+    );
+    RETURN NEW;
+END;
+$$;

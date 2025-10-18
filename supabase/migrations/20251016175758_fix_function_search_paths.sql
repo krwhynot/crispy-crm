@@ -46,6 +46,7 @@ $$;
 ALTER FUNCTION public.update_products_search() OWNER TO postgres;
 
 -- Fix update_search_tsv function
+-- Updated to exclude columns that will be removed in schema cleanup
 CREATE OR REPLACE FUNCTION public.update_search_tsv()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -56,7 +57,6 @@ BEGIN
         NEW.search_tsv := to_tsvector('english',
             COALESCE(NEW.name, '') || ' ' ||
             COALESCE(NEW.website, '') || ' ' ||
-            COALESCE(NEW.address, '') || ' ' ||
             COALESCE(NEW.city, '') || ' ' ||
             COALESCE(NEW.state, '')
         );
@@ -73,21 +73,14 @@ BEGIN
     ELSIF TG_TABLE_NAME = 'opportunities' THEN
         NEW.search_tsv := to_tsvector('english',
             COALESCE(NEW.name, '') || ' ' ||
-            COALESCE(NEW.description, '') || ' ' ||
-            COALESCE(NEW.next_action, '')
-            -- REMOVED: opportunity_context (column doesn't exist)
+            COALESCE(NEW.description, '')
         );
     ELSIF TG_TABLE_NAME = 'products' THEN
         NEW.search_tsv := to_tsvector('english',
             COALESCE(NEW.name, '') || ' ' ||
             COALESCE(NEW.description, '') || ' ' ||
             COALESCE(NEW.sku, '') || ' ' ||
-            COALESCE(NEW.category::TEXT, '') || ' ' ||
-            COALESCE(NEW.ingredients, '') || ' ' ||
-            COALESCE(NEW.marketing_description, '') || ' ' ||
-            COALESCE(NEW.manufacturer_part_number, '') || ' ' ||
-            COALESCE(array_to_string(NEW.certifications, ' '), '') || ' ' ||
-            COALESCE(array_to_string(NEW.allergens, ' '), '')
+            COALESCE(NEW.category::TEXT, '')
         );
     END IF;
     RETURN NEW;

@@ -70,15 +70,16 @@ export const productSchema = z.object({
   list_price: z.number().min(0, "Price must be positive").optional(),
 
   // Food/health specific fields (kept for flexibility)
-  certifications: z.array(z.string()).optional(),
-  allergens: z.array(z.string()).optional(),
-  ingredients: z.string().optional(),
-  nutritional_info: z.record(z.any()).optional(),
-  marketing_description: z.string().optional(),
+  // NOTE: Using .nullish() to accept both undefined and null values
+  certifications: z.array(z.string()).nullish(),
+  allergens: z.array(z.string()).nullish(),
+  ingredients: z.string().nullish(),
+  nutritional_info: z.record(z.any()).nullish(),
+  marketing_description: z.string().nullish(),
 
   // System fields (handled automatically)
-  created_by: z.number().int().optional(),
-  updated_by: z.number().int().optional(),
+  created_by: z.number().int().nullish(),
+  updated_by: z.number().int().nullish(),
 });
 
 // Validation function for React Admin
