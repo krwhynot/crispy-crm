@@ -34,9 +34,7 @@ export const ProductAside = () => {
   const statusColors: Record<string, string> = {
     active: "bg-green-500",
     discontinued: "bg-red-500",
-    pending: "bg-yellow-500",
-    seasonal: "bg-blue-500",
-    limited_availability: "bg-orange-500",
+    coming_soon: "bg-blue-500",
   };
 
   const statusColor = record.status ? statusColors[record.status] : "bg-muted-foreground";

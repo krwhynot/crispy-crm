@@ -48,9 +48,7 @@ const ProductShowContent = () => {
   const statusColors: Record<string, string> = {
     active: "default",
     discontinued: "destructive",
-    pending: "secondary",
-    seasonal: "outline",
-    limited_availability: "secondary",
+    coming_soon: "secondary",
   };
 
   return (
