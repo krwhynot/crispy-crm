@@ -125,10 +125,32 @@ export const createOpportunitySchema = opportunityBaseSchema
     estimated_close_date: true,
   });
 
-// Update-specific schema (more flexible)
-export const updateOpportunitySchema = opportunityBaseSchema.partial().required({
-  id: true,
-});
+// Update-specific schema (more flexible for partial updates)
+// IMPORTANT: React Admin sends only "dirty" fields during update (fields that changed).
+// This means if you update priority, the payload might only contain {id, priority},
+// without contact_ids. We need to handle two cases:
+// 1. contact_ids NOT in payload (partial update of other fields) → ALLOW
+// 2. contact_ids IN payload but empty [] → REJECT (can't remove all contacts)
+export const updateOpportunitySchema = opportunityBaseSchema
+  .partial()
+  .required({
+    id: true,
+  })
+  .refine(
+    (data) => {
+      // Only validate contact_ids if it's actually being updated
+      // If contact_ids is undefined/missing, this is a partial update of other fields - allow it
+      if (data.contact_ids === undefined) {
+        return true;
+      }
+      // If contact_ids IS provided, it must not be empty (can't remove all contacts)
+      return Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
+    },
+    {
+      message: "At least one contact is required",
+      path: ["contact_ids"],
+    }
+  );
 
 // Export validation functions for specific operations
 export async function validateCreateOpportunity(data: any): Promise<void> {
@@ -152,9 +174,21 @@ export async function validateCreateOpportunity(data: any): Promise<void> {
 
 export async function validateUpdateOpportunity(data: any): Promise<void> {
   try {
+    // DEBUG: Log the actual data being validated
+    console.log('[validateUpdateOpportunity] Validating data:', {
+      hasContactIds: 'contact_ids' in data,
+      contactIdsValue: data.contact_ids,
+      contactIdsType: typeof data.contact_ids,
+      isArray: Array.isArray(data.contact_ids),
+      allKeys: Object.keys(data),
+    });
+
     updateOpportunitySchema.parse(data);
+
+    console.log('[validateUpdateOpportunity] Validation passed ✓');
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.error('[validateUpdateOpportunity] Validation failed:', error.issues);
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
         const path = err.path.join(".");
