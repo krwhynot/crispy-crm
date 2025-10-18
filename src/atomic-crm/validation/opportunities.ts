@@ -175,21 +175,9 @@ export async function validateCreateOpportunity(data: any): Promise<void> {
 
 export async function validateUpdateOpportunity(data: any): Promise<void> {
   try {
-    // TEMP DEBUG: Verify useMemo fix is loaded
-    console.log('[validateUpdateOpportunity] Data received:', {
-      hasContactIds: 'contact_ids' in data,
-      contactIdsValue: data.contact_ids,
-      isArray: Array.isArray(data.contact_ids),
-      length: Array.isArray(data.contact_ids) ? data.contact_ids.length : 'N/A',
-      allKeys: Object.keys(data),
-      timestamp: new Date().toISOString(),
-    });
-
     updateOpportunitySchema.parse(data);
-    console.log('[validateUpdateOpportunity] ✓ Validation passed');
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error('[validateUpdateOpportunity] ✗ Validation failed:', error.issues);
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
         const path = err.path.join(".");

@@ -171,11 +171,7 @@ const OpportunityContactsInput = () => {
   // Root cause: Filter object recreation triggers React Admin to re-fetch choices,
   // which briefly clears selected values during the fetch cycle
   const contactFilter = useMemo(
-    () => {
-      const filter = customerOrganizationId ? { organization_id: customerOrganizationId } : {};
-      console.log('[OpportunityContactsInput] useMemo filter created:', filter, 'orgId:', customerOrganizationId);
-      return filter;
-    },
+    () => (customerOrganizationId ? { organization_id: customerOrganizationId } : {}),
     [customerOrganizationId]
   );
 
