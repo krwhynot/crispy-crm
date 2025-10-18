@@ -1,23 +1,3 @@
--- =====================================================================
--- Crispy CRM - Cloud Schema Sync
--- Generated: 2025-10-13
--- Source: Production cloud database (aaqnanddcqvfiwhshndl.supabase.co)
--- =====================================================================
--- This migration was created by dumping the complete production schema
--- using: supabase db dump --linked --schema public
---
--- IMPORTANT: This is the single source of truth for the database schema.
--- All previous migrations have been archived.
---
--- This schema includes all cloud production changes:
--- - organizations.context_links (JSONB array of related URLs)
--- - organizations.description, tax_identifier
--- - contacts.organization_id (direct foreign key)
--- - opportunities.opportunity_owner_id
--- - contactNotes.date
--- - tasks.title
--- - All functions, views, RLS policies, and triggers
--- =====================================================================
 
 
 
@@ -175,7 +155,6 @@ CREATE TYPE "public"."product_status" AS ENUM (
     'discontinued',
     'seasonal',
     'coming_soon',
-    'out_of_stock',
     'limited_availability'
 );
 
@@ -412,6 +391,7 @@ ALTER TABLE "public"."segments" OWNER TO "postgres";
 
 CREATE OR REPLACE FUNCTION "public"."get_or_create_segment"("p_name" "text") RETURNS SETOF "public"."segments"
     LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO 'public', 'pg_temp'
     AS $$
 BEGIN
   -- Try to insert, skip if duplicate
@@ -895,6 +875,7 @@ ALTER FUNCTION "public"."update_organizations_search_tsv"() OWNER TO "postgres";
 
 CREATE OR REPLACE FUNCTION "public"."update_products_search"() RETURNS "trigger"
     LANGUAGE "plpgsql"
+    SET "search_path" TO 'public', 'pg_temp'
     AS $$
 BEGIN
     NEW.search_tsv := to_tsvector('english',
@@ -913,6 +894,7 @@ ALTER FUNCTION "public"."update_products_search"() OWNER TO "postgres";
 
 CREATE OR REPLACE FUNCTION "public"."update_search_tsv"() RETURNS "trigger"
     LANGUAGE "plpgsql"
+    SET "search_path" TO 'public', 'pg_temp'
     AS $$
 BEGIN
     IF TG_TABLE_NAME = 'organizations' THEN
@@ -1142,7 +1124,7 @@ CREATE TABLE IF NOT EXISTS "public"."activities" (
     "updated_at" timestamp with time zone DEFAULT "now"(),
     "created_by" bigint,
     "deleted_at" timestamp with time zone,
-    CONSTRAINT "activities_sentiment_check" CHECK ((("sentiment")::"text" = ANY ((ARRAY['positive'::character varying, 'neutral'::character varying, 'negative'::character varying])::"text"[]))),
+    CONSTRAINT "activities_sentiment_check" CHECK ((("sentiment")::"text" = ANY (ARRAY[('positive'::character varying)::"text", ('neutral'::character varying)::"text", ('negative'::character varying)::"text"]))),
     CONSTRAINT "check_has_contact_or_org" CHECK ((("contact_id" IS NOT NULL) OR ("organization_id" IS NOT NULL))),
     CONSTRAINT "check_interaction_has_opportunity" CHECK (((("activity_type" = 'interaction'::"public"."activity_type") AND ("opportunity_id" IS NOT NULL)) OR ("activity_type" = 'engagement'::"public"."activity_type")))
 );
@@ -1362,7 +1344,7 @@ CREATE TABLE IF NOT EXISTS "public"."organizations" (
     "description" "text",
     "tax_identifier" "text",
     "segment_id" "uuid",
-    CONSTRAINT "organizations_priority_check" CHECK ((("priority")::"text" = ANY ((ARRAY['A'::character varying, 'B'::character varying, 'C'::character varying, 'D'::character varying])::"text"[])))
+    CONSTRAINT "organizations_priority_check" CHECK ((("priority")::"text" = ANY (ARRAY[('A'::character varying)::"text", ('B'::character varying)::"text", ('C'::character varying)::"text", ('D'::character varying)::"text"])))
 );
 
 
@@ -1609,7 +1591,7 @@ CREATE TABLE IF NOT EXISTS "public"."opportunity_participants" (
     "created_by" bigint,
     "deleted_at" timestamp with time zone,
     CONSTRAINT "opportunity_participants_commission_rate_check" CHECK ((("commission_rate" >= (0)::numeric) AND ("commission_rate" <= (1)::numeric))),
-    CONSTRAINT "opportunity_participants_role_check" CHECK ((("role")::"text" = ANY ((ARRAY['customer'::character varying, 'principal'::character varying, 'distributor'::character varying, 'partner'::character varying, 'competitor'::character varying])::"text"[])))
+    CONSTRAINT "opportunity_participants_role_check" CHECK ((("role")::"text" = ANY (ARRAY[('customer'::character varying)::"text", ('principal'::character varying)::"text", ('distributor'::character varying)::"text", ('partner'::character varying)::"text", ('competitor'::character varying)::"text"])))
 );
 
 
@@ -1772,41 +1754,6 @@ ALTER SEQUENCE "public"."product_features_id_seq" OWNED BY "public"."product_fea
 
 
 
-CREATE TABLE IF NOT EXISTS "public"."product_inventory" (
-    "id" bigint NOT NULL,
-    "product_id" bigint NOT NULL,
-    "warehouse_location" "text",
-    "quantity_on_hand" integer DEFAULT 0,
-    "quantity_committed" integer DEFAULT 0,
-    "quantity_available" integer GENERATED ALWAYS AS (("quantity_on_hand" - "quantity_committed")) STORED,
-    "reorder_point" integer,
-    "reorder_quantity" integer,
-    "last_restock_date" "date",
-    "next_restock_date" "date",
-    "lot_numbers" "jsonb",
-    "updated_at" timestamp with time zone DEFAULT "now"(),
-    CONSTRAINT "non_negative_inventory" CHECK ((("quantity_on_hand" >= 0) AND ("quantity_committed" >= 0)))
-);
-
-
-ALTER TABLE "public"."product_inventory" OWNER TO "postgres";
-
-
-CREATE SEQUENCE IF NOT EXISTS "public"."product_inventory_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE "public"."product_inventory_id_seq" OWNER TO "postgres";
-
-
-ALTER SEQUENCE "public"."product_inventory_id_seq" OWNED BY "public"."product_inventory"."id";
-
-
-
 CREATE TABLE IF NOT EXISTS "public"."product_pricing_models" (
     "id" bigint NOT NULL,
     "product_id" bigint NOT NULL,
@@ -1901,17 +1848,15 @@ CREATE TABLE IF NOT EXISTS "public"."products" (
     "search_tsv" "tsvector",
     "currency_code" "text" DEFAULT 'USD'::"text",
     "unit_of_measure" "text" DEFAULT 'each'::"text",
-    "minimum_order_quantity" integer DEFAULT 1,
     "manufacturer_part_number" "text",
-    CONSTRAINT "check_currency_code" CHECK (("currency_code" ~ '^[A-Z]{3}$'::"text")),
-    CONSTRAINT "check_minimum_order_quantity" CHECK (("minimum_order_quantity" > 0))
+    CONSTRAINT "check_currency_code" CHECK (("currency_code" ~ '^[A-Z]{3}$'::"text"))
 );
 
 
 ALTER TABLE "public"."products" OWNER TO "postgres";
 
 
-COMMENT ON TABLE "public"."products" IS 'MVP product schema - focused on essential fields for food product sales';
+COMMENT ON TABLE "public"."products" IS 'Products table - inventory features removed on 2025-10-17. Removed: minimum_order_quantity column, out_of_stock status. Dropped table: product_inventory';
 
 
 
@@ -2045,6 +1990,21 @@ ALTER SEQUENCE "public"."tasks_id_seq" OWNED BY "public"."tasks"."id";
 
 
 
+CREATE TABLE IF NOT EXISTS "public"."test_user_metadata" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "user_id" "uuid",
+    "role" "text" NOT NULL,
+    "created_by" "text" DEFAULT 'automated_script'::"text",
+    "created_at" timestamp with time zone DEFAULT "now"(),
+    "last_sync_at" timestamp with time zone,
+    "test_data_counts" "jsonb" DEFAULT '{"notes": 0, "tasks": 0, "contacts": 0, "activities": 0, "opportunities": 0, "organizations": 0}'::"jsonb",
+    CONSTRAINT "test_user_metadata_role_check" CHECK (("role" = ANY (ARRAY['admin'::"text", 'sales_director'::"text", 'account_manager'::"text"])))
+);
+
+
+ALTER TABLE "public"."test_user_metadata" OWNER TO "postgres";
+
+
 ALTER TABLE ONLY "public"."activities" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."activities_id_seq"'::"regclass");
 
 
@@ -2098,10 +2058,6 @@ ALTER TABLE ONLY "public"."product_distributor_authorizations" ALTER COLUMN "id"
 
 
 ALTER TABLE ONLY "public"."product_features" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."product_features_id_seq"'::"regclass");
-
-
-
-ALTER TABLE ONLY "public"."product_inventory" ALTER COLUMN "id" SET DEFAULT "nextval"('"public"."product_inventory_id_seq"'::"regclass");
 
 
 
@@ -2214,11 +2170,6 @@ ALTER TABLE ONLY "public"."product_features"
 
 
 
-ALTER TABLE ONLY "public"."product_inventory"
-    ADD CONSTRAINT "product_inventory_pkey" PRIMARY KEY ("id");
-
-
-
 ALTER TABLE ONLY "public"."product_pricing_models"
     ADD CONSTRAINT "product_pricing_models_pkey" PRIMARY KEY ("id");
 
@@ -2259,6 +2210,11 @@ ALTER TABLE ONLY "public"."tasks"
 
 
 
+ALTER TABLE ONLY "public"."test_user_metadata"
+    ADD CONSTRAINT "test_user_metadata_pkey" PRIMARY KEY ("id");
+
+
+
 ALTER TABLE ONLY "public"."contact_organizations"
     ADD CONSTRAINT "unique_contact_organization_active" EXCLUDE USING "btree" ("contact_id" WITH =, "organization_id" WITH =) WHERE (("deleted_at" IS NULL));
 
@@ -2276,6 +2232,15 @@ ALTER TABLE ONLY "public"."product_distributor_authorizations"
 
 ALTER TABLE ONLY "public"."products"
     ADD CONSTRAINT "unique_sku_per_principal" UNIQUE ("principal_id", "sku", "deleted_at");
+
+
+
+ALTER TABLE ONLY "public"."test_user_metadata"
+    ADD CONSTRAINT "unique_user_id" UNIQUE ("user_id");
+
+
+
+COMMENT ON CONSTRAINT "unique_user_id" ON "public"."test_user_metadata" IS 'Ensures each user can only have one metadata record';
 
 
 
@@ -2400,18 +2365,6 @@ CREATE INDEX "idx_interaction_participants_contact" ON "public"."interaction_par
 
 
 CREATE INDEX "idx_interaction_participants_organization" ON "public"."interaction_participants" USING "btree" ("organization_id");
-
-
-
-CREATE INDEX "idx_inventory_available" ON "public"."product_inventory" USING "btree" ("quantity_available");
-
-
-
-CREATE INDEX "idx_inventory_product_id" ON "public"."product_inventory" USING "btree" ("product_id");
-
-
-
-CREATE INDEX "idx_inventory_reorder" ON "public"."product_inventory" USING "btree" ("product_id") WHERE ("quantity_available" <= "reorder_point");
 
 
 
@@ -2564,6 +2517,14 @@ CREATE INDEX "idx_tasks_opportunity_id" ON "public"."tasks" USING "btree" ("oppo
 
 
 CREATE INDEX "idx_tasks_reminder_date" ON "public"."tasks" USING "btree" ("reminder_date") WHERE ("completed" = false);
+
+
+
+CREATE INDEX "idx_test_user_metadata_role" ON "public"."test_user_metadata" USING "btree" ("role");
+
+
+
+CREATE INDEX "idx_test_user_metadata_user_id" ON "public"."test_user_metadata" USING "btree" ("user_id");
 
 
 
@@ -2785,11 +2746,6 @@ ALTER TABLE ONLY "public"."product_features"
 
 
 
-ALTER TABLE ONLY "public"."product_inventory"
-    ADD CONSTRAINT "product_inventory_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE CASCADE;
-
-
-
 ALTER TABLE ONLY "public"."product_pricing_models"
     ADD CONSTRAINT "product_pricing_models_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "public"."sales"("id");
 
@@ -2840,6 +2796,11 @@ ALTER TABLE ONLY "public"."tasks"
 
 
 
+ALTER TABLE ONLY "public"."test_user_metadata"
+    ADD CONSTRAINT "test_user_metadata_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
+
+
+
 CREATE POLICY "Allow authenticated read access" ON "public"."segments" FOR SELECT TO "authenticated" USING (true);
 
 
@@ -2849,6 +2810,14 @@ CREATE POLICY "Allow authenticated users to create" ON "public"."segments" FOR I
 
 
 CREATE POLICY "Enable read for authenticated users on migration_history" ON "public"."migration_history" FOR SELECT TO "authenticated" USING (("auth"."role"() = 'authenticated'::"text"));
+
+
+
+CREATE POLICY "Test metadata readable by authenticated users" ON "public"."test_user_metadata" FOR SELECT USING (("auth"."role"() = 'authenticated'::"text"));
+
+
+
+CREATE POLICY "Test metadata writable by service role" ON "public"."test_user_metadata" USING (("auth"."role"() = 'service_role'::"text"));
 
 
 
@@ -2904,10 +2873,6 @@ CREATE POLICY "authenticated_delete_product_distributor_authorizations" ON "publ
 
 
 CREATE POLICY "authenticated_delete_product_features" ON "public"."product_features" FOR DELETE TO "authenticated" USING (("auth"."uid"() IS NOT NULL));
-
-
-
-CREATE POLICY "authenticated_delete_product_inventory" ON "public"."product_inventory" FOR DELETE TO "authenticated" USING (("auth"."uid"() IS NOT NULL));
 
 
 
@@ -2984,10 +2949,6 @@ CREATE POLICY "authenticated_insert_product_distributor_authorizations" ON "publ
 
 
 CREATE POLICY "authenticated_insert_product_features" ON "public"."product_features" FOR INSERT TO "authenticated" WITH CHECK (("auth"."uid"() IS NOT NULL));
-
-
-
-CREATE POLICY "authenticated_insert_product_inventory" ON "public"."product_inventory" FOR INSERT TO "authenticated" WITH CHECK (("auth"."uid"() IS NOT NULL));
 
 
 
@@ -3071,10 +3032,6 @@ CREATE POLICY "authenticated_select_product_features" ON "public"."product_featu
 
 
 
-CREATE POLICY "authenticated_select_product_inventory" ON "public"."product_inventory" FOR SELECT TO "authenticated" USING (("auth"."uid"() IS NOT NULL));
-
-
-
 CREATE POLICY "authenticated_select_product_pricing_models" ON "public"."product_pricing_models" FOR SELECT TO "authenticated" USING (("auth"."uid"() IS NOT NULL));
 
 
@@ -3151,10 +3108,6 @@ CREATE POLICY "authenticated_update_product_features" ON "public"."product_featu
 
 
 
-CREATE POLICY "authenticated_update_product_inventory" ON "public"."product_inventory" FOR UPDATE TO "authenticated" USING (("auth"."uid"() IS NOT NULL)) WITH CHECK (("auth"."uid"() IS NOT NULL));
-
-
-
 CREATE POLICY "authenticated_update_product_pricing_models" ON "public"."product_pricing_models" FOR UPDATE TO "authenticated" USING (("auth"."uid"() IS NOT NULL)) WITH CHECK (("auth"."uid"() IS NOT NULL));
 
 
@@ -3218,9 +3171,6 @@ ALTER TABLE "public"."product_distributor_authorizations" ENABLE ROW LEVEL SECUR
 ALTER TABLE "public"."product_features" ENABLE ROW LEVEL SECURITY;
 
 
-ALTER TABLE "public"."product_inventory" ENABLE ROW LEVEL SECURITY;
-
-
 ALTER TABLE "public"."product_pricing_models" ENABLE ROW LEVEL SECURITY;
 
 
@@ -3240,6 +3190,9 @@ ALTER TABLE "public"."tags" ENABLE ROW LEVEL SECURITY;
 
 
 ALTER TABLE "public"."tasks" ENABLE ROW LEVEL SECURITY;
+
+
+ALTER TABLE "public"."test_user_metadata" ENABLE ROW LEVEL SECURITY;
 
 
 REVOKE USAGE ON SCHEMA "public" FROM PUBLIC;
@@ -3310,6 +3263,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE "public"."organizations" TO "authenti
 
 
 GRANT SELECT ON TABLE "public"."contacts_summary" TO "authenticated";
+GRANT SELECT ON TABLE "public"."contacts_summary" TO "service_role";
 GRANT SELECT ON TABLE "public"."contacts_summary" TO "anon";
 
 
@@ -3359,6 +3313,7 @@ GRANT USAGE ON SEQUENCE "public"."organizations_id_seq" TO "authenticated";
 
 
 GRANT SELECT ON TABLE "public"."organizations_summary" TO "authenticated";
+GRANT SELECT ON TABLE "public"."organizations_summary" TO "service_role";
 GRANT SELECT ON TABLE "public"."organizations_summary" TO "anon";
 
 
@@ -3384,14 +3339,6 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE "public"."product_features" TO "authe
 
 
 GRANT USAGE ON SEQUENCE "public"."product_features_id_seq" TO "authenticated";
-
-
-
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE "public"."product_inventory" TO "authenticated";
-
-
-
-GRANT USAGE ON SEQUENCE "public"."product_inventory_id_seq" TO "authenticated";
 
 
 
