@@ -958,3 +958,4 @@
 [2025-10-18 15:34:20] [code] Edit: /home/krwhynot/projects/crispy-crm/public/debug.html
 [2025-10-18 15:34:22] [code] Edit: /home/krwhynot/projects/crispy-crm/public/debug.html
 [2025-10-18 15:40:22] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018203500_update_rls_for_shared_team_access.sql
+[2025-10-18 15:45:54] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018204500_add_helper_function_and_audit_trail.sql
