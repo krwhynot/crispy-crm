@@ -32,12 +32,11 @@ export const productCategorySchema = z.enum([
 export const PRODUCT_CATEGORIES = productCategorySchema.options;
 
 // Product status enum matching database
+// Removed: seasonal, limited_availability (2025-10-18)
 export const productStatusSchema = z.enum([
   "active",
   "discontinued",
-  "seasonal",
   "coming_soon",
-  "limited_availability",
 ]);
 
 // Export the enum values for form components (Constitution Rule #5)

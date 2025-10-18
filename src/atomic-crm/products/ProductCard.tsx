@@ -4,6 +4,7 @@ import { useCreatePath, useRecordContext } from "ra-core";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
+import { cn } from "@/lib/utils";
 
 import type { Product } from "../types";
 
@@ -45,10 +46,13 @@ export const ProductCard = (props: { record?: Product }) => {
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
               {record.status && (
                 <Badge
-                  variant={statusColors[record.status] as any}
-                  className="text-xs px-1 py-0"
+                  variant={statusColors[record.status] === "warning" ? "outline" : statusColors[record.status] as any}
+                  className={cn(
+                    "text-xs px-1 py-0",
+                    statusColors[record.status] === "warning" && "border-amber-600 bg-amber-50 text-amber-900 dark:bg-amber-950 dark:text-amber-200"
+                  )}
                 >
-                  {record.status}
+                  {record.status.replace(/_/g, ' ')}
                 </Badge>
               )}
               {record.brand && (
