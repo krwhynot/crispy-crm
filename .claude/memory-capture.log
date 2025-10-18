@@ -999,3 +999,6 @@
 [2025-10-18 17:45:22] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/ui/alert-dialog.tsx
 [2025-10-18 17:46:02] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/ui/scroll-area.tsx
 [2025-10-18 18:29:19] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationType.tsx
+[2025-10-18 18:33:02] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018232818_remove_deprecated_organization_fields.sql
+[2025-10-18 18:33:11] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018232818_remove_deprecated_organization_fields.sql
+[2025-10-18 18:41:33] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/opportunityUtils.spec.ts
