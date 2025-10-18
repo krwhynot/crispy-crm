@@ -296,6 +296,12 @@
                 } else {
                     log('api-output', `✅ Query successful! Found ${count} record(s)`, 'success');
                     log('api-output', JSON.stringify(data, null, 2), 'success');
+
+                    // Store sales_id for next queries
+                    if (data && data.length > 0) {
+                        window.currentSalesId = data[0].id;
+                        log('api-output', `\n💾 Stored sales_id: ${window.currentSalesId}`, 'info');
+                    }
                 }
             } catch (err) {
                 log('api-output', `❌ Exception: ${err.message}`, 'error');
