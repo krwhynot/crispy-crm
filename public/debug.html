@@ -313,20 +313,17 @@
             log('api-output', '=== Testing Contacts Query ===', 'info');
 
             try {
-                const { data: session } = await supabase.auth.getSession();
-
-                if (!session.session) {
-                    log('api-output', '⚠️  Not logged in', 'warning');
+                if (!window.currentSalesId) {
+                    log('api-output', '⚠️  Run "Test Sales Query" first to get sales_id', 'warning');
                     return;
                 }
 
-                const userId = session.session.user.id;
-                log('api-output', `Querying for user_id: ${userId}`, 'info');
+                log('api-output', `Querying for sales_id: ${window.currentSalesId}`, 'info');
 
                 const { data, error, count } = await supabase
                     .from('contacts')
-                    .select('id, first_name, last_name, email, user_id', { count: 'exact' })
-                    .eq('user_id', userId)
+                    .select('id, first_name, last_name, email, sales_id', { count: 'exact' })
+                    .eq('sales_id', window.currentSalesId)
                     .limit(10);
 
                 if (error) {
@@ -346,20 +343,17 @@
             log('api-output', '=== Testing Organizations Query ===', 'info');
 
             try {
-                const { data: session } = await supabase.auth.getSession();
-
-                if (!session.session) {
-                    log('api-output', '⚠️  Not logged in', 'warning');
+                if (!window.currentSalesId) {
+                    log('api-output', '⚠️  Run "Test Sales Query" first to get sales_id', 'warning');
                     return;
                 }
 
-                const userId = session.session.user.id;
-                log('api-output', `Querying for user_id: ${userId}`, 'info');
+                log('api-output', `Querying for sales_id: ${window.currentSalesId}`, 'info');
 
                 const { data, error, count } = await supabase
                     .from('organizations')
-                    .select('id, name, user_id', { count: 'exact' })
-                    .eq('user_id', userId)
+                    .select('id, name, sales_id', { count: 'exact' })
+                    .eq('sales_id', window.currentSalesId)
                     .limit(10);
 
                 if (error) {
