@@ -83,8 +83,6 @@ export const filterableFields: Record<string, string[]> = {
     "id",
     "name",
     "organization_type",
-    "is_principal",
-    "is_distributor",
     "parent_organization_id",
     "priority",
     "website",
@@ -257,6 +255,13 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
   const allowedFields = filterableFields[resource];
   if (!allowedFields) {
     return false; // Unknown resource, consider invalid
+  }
+
+  // PostgREST logical operators have no field prefix - whitelist them
+  // These are special operators used for combining conditions
+  const POSTGREST_LOGICAL_OPERATORS = ['@or', '@and', '@not'];
+  if (POSTGREST_LOGICAL_OPERATORS.includes(filterKey)) {
+    return true;
   }
 
   // Extract base field name, handling React Admin's filter operators
