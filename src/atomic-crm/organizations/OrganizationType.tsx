@@ -46,19 +46,6 @@ export const OrganizationType = () => {
           Priority {record.priority}
         </Badge>
       )}
-
-      {/* Special Flags */}
-      {record.is_principal && (
-        <Badge variant="outline">
-          Principal
-        </Badge>
-      )}
-
-      {record.is_distributor && (
-        <Badge variant="outline">
-          Distributor
-        </Badge>
-      )}
     </div>
   );
 };
