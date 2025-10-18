@@ -45,12 +45,7 @@ const OpportunityEditForm = () => {
   return (
     <Form
       className="flex flex-1 flex-col gap-4 pb-2"
-      defaultValues={{
-        ...record,
-        // Ensure contact_ids is always an array, never null/undefined
-        // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-        contact_ids: record.contact_ids || [],
-      }}
+      defaultValues={record}
       key={record.id} // Force remount when record changes
     >
       <Card>
