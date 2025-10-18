@@ -42,7 +42,7 @@ const Header = () => {
                 alt={title}
               />
               <img
-                className="[.dark_&]:hidden h-6"
+                className="[.dark_&]:hidden h-6 brightness-0 saturate-100 opacity-90"
                 src={lightModeLogo}
                 alt={title}
               />
