@@ -980,11 +980,15 @@ class SeedDataGenerator {
 
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
+        console.log(chalk.gray(`  Inserting ${this.generatedData.organizations.length} organizations...`));
         const { data: insertedOrgs, error } = await this.supabase
           .from("organizations")
           .insert(this.generatedData.organizations)
           .select();
-        if (error) throw error;
+        if (error) {
+          console.error(chalk.red("Failed to insert organizations:"), error);
+          throw error;
+        }
 
         // Update organizations with their database-assigned IDs
         this.generatedData.organizations.forEach((org, index) => {
