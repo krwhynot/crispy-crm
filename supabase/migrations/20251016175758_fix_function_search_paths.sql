@@ -26,6 +26,7 @@ ALTER FUNCTION public.get_or_create_segment(text) OWNER TO postgres;
 COMMENT ON FUNCTION public.get_or_create_segment(text) IS 'Get or create a segment by name. Returns the segment record (new or existing). Case-insensitive lookup.';
 
 -- Fix update_products_search function
+-- Updated to exclude columns that will be removed in schema cleanup
 CREATE OR REPLACE FUNCTION public.update_products_search()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -35,8 +36,7 @@ BEGIN
     NEW.search_tsv := to_tsvector('english',
         COALESCE(NEW.name, '') || ' ' ||
         COALESCE(NEW.description, '') || ' ' ||
-        COALESCE(NEW.sku, '') || ' ' ||
-        COALESCE(NEW.marketing_description, '')
+        COALESCE(NEW.sku, '')
     );
     RETURN NEW;
 END;

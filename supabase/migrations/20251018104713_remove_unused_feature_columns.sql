@@ -2,9 +2,10 @@
 -- Phase 2: Clean up columns that are not exposed in UI edit forms
 -- Created: 2025-10-18
 --
--- Context: Schema cleanup based on UI edit form analysis
--- Total: 50 columns removed across 6 tables
--- Impact: Reduces schema complexity by ~28%
+-- Context: Schema cleanup based on UI edit form AND codebase analysis
+-- Verified each column for usage in backend validation, filtering, and UI display
+-- Total: 37 columns removed across 6 tables (Contacts: 10, Orgs: 7, Opps: 11, Tasks: 3, Products: 6, Sales: 0)
+-- Impact: Reduces schema complexity by ~20%
 
 -- ============================================================================
 -- CONTACTS TABLE: Remove 10 unused columns
@@ -73,7 +74,23 @@ ALTER TABLE organizations
   DROP COLUMN IF EXISTS notes,
   DROP COLUMN IF EXISTS tax_identifier;
 
-COMMENT ON TABLE organizations IS 'Organizations table - Removed 7 unused columns (parent_organization_id, email, annual_revenue, employee_count, founded_year, notes, tax_identifier) on 2025-10-18';
+-- Update search trigger function to remove reference to dropped columns
+CREATE OR REPLACE FUNCTION update_organizations_search_tsv() RETURNS trigger
+    LANGUAGE plpgsql
+    SET search_path TO 'public'
+    AS $$
+BEGIN
+    NEW.search_tsv :=
+        setweight(to_tsvector('english', COALESCE(NEW.name, '')), 'A') ||
+        setweight(to_tsvector('english', COALESCE(NEW.description, '')), 'B') ||
+        setweight(to_tsvector('english', COALESCE(NEW.city, '')), 'C') ||
+        setweight(to_tsvector('english', COALESCE(NEW.state, '')), 'C') ||
+        setweight(to_tsvector('english', COALESCE(NEW.website, '')), 'D');
+    RETURN NEW;
+END;
+$$;
+
+COMMENT ON TABLE organizations IS 'Organizations table - Removed is_principal, is_distributor (replaced by organization_type enum), and 7 other unused columns on 2025-10-18';
 
 -- ============================================================================
 -- OPPORTUNITIES TABLE: Remove 11 unused columns
@@ -122,11 +139,66 @@ ALTER TABLE products
 COMMENT ON TABLE products IS 'Products table - Removed 6 unused columns (certifications, allergens, ingredients, nutritional_info, marketing_description, manufacturer_part_number) on 2025-10-18';
 
 -- ============================================================================
--- SALES TABLE: Remove 2 unused columns
+-- SALES TABLE: No columns to remove
 -- ============================================================================
--- Not exposed in SalesInputs.tsx edit form
-ALTER TABLE sales
-  DROP COLUMN IF EXISTS phone,
-  DROP COLUMN IF EXISTS avatar_url;
+-- NOTE: phone, avatar_url, is_admin all used in validation/sales.ts Zod schema
+-- These columns are NOT exposed in edit forms but ARE used in validation layer
+-- Keeping all columns per codebase analysis
 
-COMMENT ON TABLE sales IS 'Sales table - Removed 2 unused columns (phone, avatar_url) on 2025-10-18';
+COMMENT ON TABLE sales IS 'Sales table - No unused columns found after codebase analysis on 2025-10-18';
+
+-- ============================================================================
+-- UPDATE SEARCH TRIGGER FUNCTIONS
+-- ============================================================================
+-- Fix generic search function to remove references to all dropped columns
+CREATE OR REPLACE FUNCTION update_search_tsv() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF TG_TABLE_NAME = 'organizations' THEN
+        NEW.search_tsv := to_tsvector('english',
+            COALESCE(NEW.name, '') || ' ' ||
+            COALESCE(NEW.website, '') || ' ' ||
+            COALESCE(NEW.city, '') || ' ' ||
+            COALESCE(NEW.state, '')
+        );
+    ELSIF TG_TABLE_NAME = 'contacts' THEN
+        NEW.search_tsv := to_tsvector('english',
+            COALESCE(NEW.name, '') || ' ' ||
+            COALESCE(NEW.first_name, '') || ' ' ||
+            COALESCE(NEW.last_name, '') || ' ' ||
+            COALESCE(NEW.title, '') || ' ' ||
+            COALESCE(NEW.department, '') || ' ' ||
+            COALESCE(NEW.email::text, '') || ' ' ||
+            COALESCE(NEW.phone::text, '')
+        );
+    ELSIF TG_TABLE_NAME = 'opportunities' THEN
+        NEW.search_tsv := to_tsvector('english',
+            COALESCE(NEW.name, '') || ' ' ||
+            COALESCE(NEW.description, '')
+        );
+    ELSIF TG_TABLE_NAME = 'products' THEN
+        NEW.search_tsv := to_tsvector('english',
+            COALESCE(NEW.name, '') || ' ' ||
+            COALESCE(NEW.description, '') || ' ' ||
+            COALESCE(NEW.sku, '') || ' ' ||
+            COALESCE(NEW.category::TEXT, '')
+        );
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+-- Also update the legacy update_products_search function (if it exists)
+CREATE OR REPLACE FUNCTION update_products_search() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    NEW.search_tsv := to_tsvector('english',
+        COALESCE(NEW.name, '') || ' ' ||
+        COALESCE(NEW.description, '') || ' ' ||
+        COALESCE(NEW.sku, '')
+    );
+    RETURN NEW;
+END;
+$$;

@@ -47,5 +47,5 @@ GRANT SELECT ON organizations_summary TO authenticated;
 GRANT SELECT ON organizations_summary TO service_role;
 GRANT SELECT ON organizations_summary TO anon;
 
--- Add comment documenting the change
-COMMENT ON VIEW organizations_summary IS 'Denormalized view of organizations. Removed is_principal and is_distributor columns on 2025-10-18.';
+-- Add comment documenting the view
+COMMENT ON VIEW organizations_summary IS 'Denormalized view of organizations with counts and searchable fields.';
