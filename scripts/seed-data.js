@@ -69,6 +69,21 @@ const OPPORTUNITY_CATEGORIES = [
 // Opportunity statuses
 const OPPORTUNITY_STATUSES = ["active", "on_hold", "nurturing", "stalled", "expired"];
 
+// Opportunity priority levels
+const OPPORTUNITY_PRIORITIES = ["low", "medium", "high", "critical"];
+
+// Lead sources
+const LEAD_SOURCES = [
+  "referral",
+  "trade_show",
+  "website",
+  "cold_call",
+  "email_campaign",
+  "social_media",
+  "partner",
+  "existing_customer",
+];
+
 // Food & Beverage organization types
 // Valid organization_type enum values from database schema
 const FB_ORGANIZATION_TYPES = [
@@ -77,6 +92,69 @@ const FB_ORGANIZATION_TYPES = [
   "distributor",
   "prospect",
   "partner",
+  "unknown",
+];
+
+// Contact genders
+const CONTACT_GENDERS = ["male", "female", "other", "prefer_not_to_say"];
+
+// Contact phone/email types
+const PERSONAL_INFO_TYPES = ["Work", "Home", "Other"];
+
+// Task types
+const TASK_TYPES = [
+  "Call",
+  "Email",
+  "Meeting",
+  "Follow-up",
+  "Proposal",
+  "Discovery",
+  "Administrative",
+  "None",
+];
+
+// Task priorities
+const TASK_PRIORITIES = ["low", "medium", "high", "critical"];
+
+// Activity sentiments
+const ACTIVITY_SENTIMENTS = ["positive", "neutral", "negative"];
+
+// Product categories
+const PRODUCT_CATEGORIES = [
+  "beverages",
+  "dairy",
+  "frozen",
+  "fresh_produce",
+  "meat_poultry",
+  "seafood",
+  "dry_goods",
+  "snacks",
+  "condiments",
+  "baking_supplies",
+  "spices_seasonings",
+  "canned_goods",
+  "pasta_grains",
+  "oils_vinegars",
+  "sweeteners",
+  "cleaning_supplies",
+  "paper_products",
+  "equipment",
+  "other",
+];
+
+// Product statuses
+const PRODUCT_STATUSES = [
+  "active",
+  "discontinued",
+  "seasonal",
+  "coming_soon",
+  "limited_availability",
+];
+
+// US states for realistic addresses
+const US_STATES = [
+  "CA", "TX", "FL", "NY", "PA", "IL", "OH", "GA", "NC", "MI",
+  "NJ", "VA", "WA", "AZ", "MA", "TN", "IN", "MO", "MD", "WI",
 ];
 
 // F&B company names by category
