@@ -138,13 +138,27 @@ export const updateOpportunitySchema = opportunityBaseSchema
   })
   .refine(
     (data) => {
+      // DEBUG: Enhanced logging for contact_ids validation
+      console.log('[updateOpportunitySchema.refine] Checking contact_ids:', {
+        exists: 'contact_ids' in data,
+        value: data.contact_ids,
+        isUndefined: data.contact_ids === undefined,
+        isNull: data.contact_ids === null,
+        isArray: Array.isArray(data.contact_ids),
+        length: Array.isArray(data.contact_ids) ? data.contact_ids.length : 'N/A',
+      });
+
       // Only validate contact_ids if it's actually being updated
       // If contact_ids is undefined/missing, this is a partial update of other fields - allow it
       if (data.contact_ids === undefined) {
+        console.log('[updateOpportunitySchema.refine] contact_ids is undefined - ALLOWING partial update');
         return true;
       }
+
       // If contact_ids IS provided, it must not be empty (can't remove all contacts)
-      return Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
+      const isValid = Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
+      console.log('[updateOpportunitySchema.refine] contact_ids validation result:', isValid);
+      return isValid;
     },
     {
       message: "At least one contact is required",
