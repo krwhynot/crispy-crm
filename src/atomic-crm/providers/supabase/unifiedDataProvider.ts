@@ -432,6 +432,21 @@ export const unifiedDataProvider: DataProvider = {
 
       // Special handling for opportunities
       if (resource === "opportunities") {
+        // Safety net: prevent sending empty contact_ids array when it wasn't changed
+        // Root cause: Form state management can incorrectly include contact_ids: []
+        // in the update payload even when the user only changed other fields.
+        // This safety net catches that edge case and preserves database values.
+        // See: OpportunityEdit.tsx for the primary fix (removed defensive || [])
+        if (processedData.contact_ids !== undefined) {
+          if (Array.isArray(processedData.contact_ids) && processedData.contact_ids.length === 0) {
+            console.warn(
+              "[DataProvider Safety Net] Dropping empty contact_ids from update payload. " +
+              "This indicates a form state bug - the field was not changed but was included. " +
+              "Database values will be preserved via PATCH semantics."
+            );
+            delete processedData.contact_ids;
+          }
+        }
         // Handle products sync if present
         if (processedData.products_to_sync) {
           // CRITICAL: Check previousData.products exists (Issue 0.1)
