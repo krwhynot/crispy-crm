@@ -8,13 +8,20 @@ import type { Organization } from "../types";
 
 export const ProductListFilter = () => {
   // Fetch principal organizations dynamically
-  // Refetch every 10 seconds to pick up new principals
-  const { data: principals } = useGetList<Organization>("organizations", {
-    filter: { organization_type: "principal" },
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "name", order: "ASC" },
-    meta: { refetchInterval: 10000 }, // Refresh every 10 seconds
-  });
+  // Auto-refresh to pick up new principals when organizations are updated
+  const { data: principals, refetch } = useGetList<Organization>(
+    "organizations",
+    {
+      filter: { organization_type: "principal" },
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
+    },
+    {
+      // React Query options - refetch when window regains focus
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+    }
+  );
   const productStatuses = [
     { id: "active", name: "Active" },
     { id: "discontinued", name: "Discontinued" },
