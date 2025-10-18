@@ -56,7 +56,7 @@
     "supabase:local:status": "npx supabase status",
     "supabase:local:db:reset": "npx supabase db reset",
     "supabase:local:studio": "echo 'Supabase Studio: http://localhost:54323'",
-    "db:migrate": "npx supabase db reset",
+    "db:local:reset": "npx supabase db reset",
     "db:studio": "echo 'Supabase Studio: http://localhost:54323' && open http://localhost:54323 || xdg-open http://localhost:54323 || echo 'Please visit http://localhost:54323'",
     "supabase:deploy": "npx supabase db push && npx supabase functions deploy",
     "db:cloud:push": "./scripts/db/safe-cloud-push.sh",
