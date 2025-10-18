@@ -427,8 +427,6 @@ class SeedDataGenerator {
         linkedin_url: `https://linkedin.com/company/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
         phone: faker.phone.number("(###) ###-####"),
         email: `info@${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
-        annual_revenue: faker.number.int({ min: 500000, max: 50000000 }),
-        employee_count: faker.number.int({ min: 10, max: 2000 }),
         founded_year: faker.number.int({ min: 1990, max: 2023 }),
         notes: faker.helpers.arrayElement([
           "Serving fresh, locally-sourced cuisine",
@@ -876,7 +874,7 @@ class SeedDataGenerator {
       const product = {
         name: productName,
         sku: `${category.substring(0, 3).toUpperCase()}-${faker.string.alphanumeric({ length: 8, casing: 'upper' })}`,
-        principal_id: principal.id,
+        _principal_index: principalIndex, // Temporary - will be replaced with principal_id after insertion
         category: category,
         status: status,
         description: faker.commerce.productDescription(),
@@ -1112,9 +1110,16 @@ class SeedDataGenerator {
 
       // Insert products
       if (this.generatedData.products && this.generatedData.products.length > 0) {
+        // Map indices to actual IDs and remove temporary fields
+        const productsWithRealIds = this.generatedData.products.map(
+          ({ _principal_index, ...product }) => ({
+            ...product,
+            principal_id: this.generatedData.organizations[_principal_index].id,
+          }),
+        );
         const { data: insertedProducts, error } = await this.supabase
           .from("products")
-          .insert(this.generatedData.products)
+          .insert(productsWithRealIds)
           .select();
         if (error) throw error;
 
