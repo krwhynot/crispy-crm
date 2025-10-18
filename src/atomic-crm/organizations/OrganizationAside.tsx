@@ -105,7 +105,7 @@ const ContextInfo = ({ record }: { record: Company }) => {
     { id: "D", name: "D - Low Priority" },
   ];
 
-  if (!record.annual_revenue && !record.id) {
+  if (!record.id) {
     return null;
   }
 
@@ -131,16 +131,6 @@ const ContextInfo = ({ record }: { record: Company }) => {
           <ReferenceField source="segment_id" reference="segments" link={false}>
             <TextField source="name" />
           </ReferenceField>
-        </span>
-      )}
-      {record.employee_count && (
-        <span>
-          Employee Count: <SelectField source="employee_count" choices={sizes} />
-        </span>
-      )}
-      {record.annual_revenue && (
-        <span>
-          Annual Revenue: <TextField source="annual_revenue" />
         </span>
       )}
     </AsideSection>

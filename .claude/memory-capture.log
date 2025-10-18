@@ -856,3 +856,13 @@
 [2025-10-17 21:32:18] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 [2025-10-17 21:32:19] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 [2025-10-17 22:12:20] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
+[2025-10-17 22:12:32] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018031206_remove_unused_org_fields.sql
+[2025-10-17 22:13:06] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationAside.tsx
+[2025-10-17 22:13:07] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-17 22:13:29] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018031206_remove_unused_org_fields.sql
+[2025-10-17 22:13:29] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
+[2025-10-17 22:13:31] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-17 22:13:38] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
+[2025-10-17 22:14:06] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018031206_remove_unused_org_fields.sql
+[2025-10-17 22:16:38] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
+[2025-10-18 09:15:03] [code] Edit: /home/krwhynot/projects/crispy-crm/src/index.css

@@ -427,7 +427,6 @@ class SeedDataGenerator {
         linkedin_url: `https://linkedin.com/company/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
         phone: faker.phone.number("(###) ###-####"),
         email: `info@${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
-        founded_year: faker.number.int({ min: 1990, max: 2023 }),
         notes: faker.helpers.arrayElement([
           "Serving fresh, locally-sourced cuisine",
           "Crafting premium beverages since 2010",
@@ -1008,12 +1007,16 @@ class SeedDataGenerator {
 
       // Insert contacts
       if (this.generatedData.contacts.length > 0) {
-        const contactsWithoutTempData = this.generatedData.contacts.map(
-          ({ _org_index, ...contact }) => contact,
+        // Map indices to actual organization IDs and remove temporary fields
+        const contactsWithRealIds = this.generatedData.contacts.map(
+          ({ _org_index, ...contact }) => ({
+            ...contact,
+            organization_id: this.generatedData.organizations[_org_index].id,
+          }),
         );
         const { data: insertedContacts, error } = await this.supabase
           .from("contacts")
-          .insert(contactsWithoutTempData)
+          .insert(contactsWithRealIds)
           .select();
         if (error) throw error;
 
@@ -1022,24 +1025,8 @@ class SeedDataGenerator {
           contact.id = insertedContacts[index].id;
         });
 
-        // Insert contact-organization relationships (one per contact)
-        const contactOrgs = [];
-        this.generatedData.contacts.forEach((contact) => {
-          const org = this.generatedData.organizations[contact._org_index];
-          contactOrgs.push({
-            contact_id: contact.id,
-            organization_id: org.id,
-            is_primary: true, // Only one organization, so it's primary
-            relationship_start_date: faker.date.past({ years: 1 }),
-          });
-        });
-
-        if (contactOrgs.length > 0) {
-          const { error: orgError } = await this.supabase
-            .from("contact_organizations")
-            .insert(contactOrgs);
-          if (orgError) throw orgError;
-        }
+        // Note: contact_organizations junction table is DEPRECATED
+        // Contacts now use the organization_id field directly for their primary organization
       }
 
       // Insert opportunities

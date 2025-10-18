@@ -66,10 +66,6 @@ export const organizationSchema = z.object({
   description: z.string().optional().nullable(),
   context_links: z.array(isValidUrl).optional(),
 
-  // Note: annual_revenue, employee_count, and founded_year exist in the database
-  // but are intentionally excluded from validation as they have no UI input fields.
-  // These may be populated via future CSV import or API integration features.
-
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("unknown"), // Default matches database
   is_principal: z.boolean().optional(),
