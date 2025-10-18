@@ -68,8 +68,6 @@ export const organizationSchema = z.object({
 
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("unknown"), // Default matches database
-  is_principal: z.boolean().optional(),
-  is_distributor: z.boolean().optional(),
   priority: companyPrioritySchema.default("C"), // Default matches database
 
   // Computed fields (readonly)
