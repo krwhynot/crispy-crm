@@ -17,9 +17,11 @@ export const ProductListFilter = () => {
       sort: { field: "name", order: "ASC" },
     },
     {
-      // React Query options - refetch when window regains focus
+      // React Query options - aggressive refetch to ensure fresh data
       refetchOnWindowFocus: true,
       refetchOnMount: true,
+      staleTime: 0, // Always consider data stale - refetch immediately
+      cacheTime: 1000 * 60, // Keep in cache for 1 minute
     }
   );
   const productStatuses = [
