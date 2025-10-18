@@ -36,7 +36,8 @@ INSERT INTO auth.users (
 -- Note: Sales record is auto-created by database trigger when auth.users is inserted
 
 -- Insert 5 Principal Organizations
-INSERT INTO organizations (name, organization_type, priority, website, phone, email, notes, is_principal, created_at, updated_at)
+-- Removed columns: email, notes (dropped in cleanup), is_principal (replaced by organization_type enum)
+INSERT INTO organizations (name, organization_type, priority, website, phone, description, created_at, updated_at)
 VALUES
   (
     'Heritage Creamery Foods',
@@ -44,9 +45,7 @@ VALUES
     'A',
     'https://heritagecreamery.com',
     '555-0101',
-    'info@heritagecreamery.com',
     'Premium dairy products manufacturer specializing in organic milk, cheese, and yogurt. Family-owned since 1985.',
-    true,
     NOW(),
     NOW()
   ),
@@ -56,9 +55,7 @@ VALUES
     'A',
     'https://pacificcatch.com',
     '555-0102',
-    'sales@pacificcatch.com',
     'Sustainable seafood supplier offering wild-caught fish, shellfish, and value-added seafood products.',
-    true,
     NOW(),
     NOW()
   ),
@@ -68,9 +65,7 @@ VALUES
     'B',
     'https://artisanpantry.com',
     '555-0103',
-    'contact@artisanpantry.com',
     'Gourmet condiments, sauces, and specialty food items. Known for organic ingredients and innovative flavors.',
-    true,
     NOW(),
     NOW()
   ),
@@ -80,9 +75,7 @@ VALUES
     'A',
     'https://mountainspring.com',
     '555-0104',
-    'sales@mountainspring.com',
     'Natural beverage manufacturer - sparkling water, cold brew coffee, and organic teas.',
-    true,
     NOW(),
     NOW()
   ),
@@ -92,9 +85,7 @@ VALUES
     'B',
     'https://farmfreshprovisions.com',
     '555-0105',
-    'wholesale@farmfreshprovisions.com',
     'Frozen and fresh produce supplier. Specializes in farm-to-table ingredients and seasonal offerings.',
-    true,
     NOW(),
     NOW()
   );
