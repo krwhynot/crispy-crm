@@ -954,3 +954,7 @@
 [2025-10-18 15:13:35] [code] Edit: /home/krwhynot/projects/crispy-crm/public/debug.html
 [2025-10-18 15:20:16] [documentation] Write: /home/krwhynot/projects/crispy-crm/LOCAL_MIGRATION_CHANGES.md
 [2025-10-18 15:29:42] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-18 15:30:23] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-18 15:34:20] [code] Edit: /home/krwhynot/projects/crispy-crm/public/debug.html
+[2025-10-18 15:34:22] [code] Edit: /home/krwhynot/projects/crispy-crm/public/debug.html
+[2025-10-18 15:40:22] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018203500_update_rls_for_shared_team_access.sql

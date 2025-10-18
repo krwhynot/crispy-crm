@@ -373,20 +373,17 @@
             log('api-output', '=== Testing Opportunities Query ===', 'info');
 
             try {
-                const { data: session } = await supabase.auth.getSession();
-
-                if (!session.session) {
-                    log('api-output', '⚠️  Not logged in', 'warning');
+                if (!window.currentSalesId) {
+                    log('api-output', '⚠️  Run "Test Sales Query" first to get sales_id', 'warning');
                     return;
                 }
 
-                const userId = session.session.user.id;
-                log('api-output', `Querying for user_id: ${userId}`, 'info');
+                log('api-output', `Querying for opportunity_owner_id: ${window.currentSalesId}`, 'info');
 
                 const { data, error, count } = await supabase
                     .from('opportunities')
-                    .select('id, name, user_id', { count: 'exact' })
-                    .eq('user_id', userId)
+                    .select('id, name, opportunity_owner_id', { count: 'exact' })
+                    .eq('opportunity_owner_id', window.currentSalesId)
                     .limit(10);
 
                 if (error) {
@@ -416,20 +413,46 @@
                 const userId = session.session.user.id;
                 log('rls-output', `Current user_id: ${userId}`, 'info');
 
-                // Test each table
-                const tables = ['contacts', 'organizations', 'opportunities', 'tasks', 'notes'];
+                // Get sales_id for this user
+                const { data: salesData } = await supabase
+                    .from('sales')
+                    .select('id')
+                    .eq('user_id', userId)
+                    .single();
 
-                for (const table of tables) {
-                    log('rls-output', `\n📋 Testing ${table}...`, 'info');
+                if (!salesData) {
+                    log('rls-output', '❌ No sales record found for user', 'error');
+                    return;
+                }
 
-                    const { data, error, count } = await supabase
-                        .from(table)
-                        .select('user_id', { count: 'exact', head: true });
+                const salesId = salesData.id;
+                log('rls-output', `Sales ID: ${salesId}`, 'info');
+
+                // Test each table with correct columns
+                const tableTests = [
+                    { table: 'contacts', filter: { sales_id: salesId } },
+                    { table: 'organizations', filter: { sales_id: salesId } },
+                    { table: 'opportunities', filter: { opportunity_owner_id: salesId } },
+                    { table: 'tasks', filter: { sales_id: salesId } },
+                    { table: 'notes', filter: null } // notes doesn't have sales_id
+                ];
+
+                for (const test of tableTests) {
+                    log('rls-output', `\n📋 Testing ${test.table}...`, 'info');
+
+                    let query = supabase.from(test.table).select('*', { count: 'exact', head: true });
+
+                    if (test.filter) {
+                        const [key, value] = Object.entries(test.filter)[0];
+                        query = query.eq(key, value);
+                    }
+
+                    const { error, count } = await query;
 
                     if (error) {
-                        log('rls-output', `  ❌ ${table}: ${error.message}`, 'error');
+                        log('rls-output', `  ❌ ${test.table}: ${error.message}`, 'error');
                     } else {
-                        log('rls-output', `  ✅ ${table}: ${count} accessible records`, 'success');
+                        log('rls-output', `  ✅ ${test.table}: ${count} accessible records`, 'success');
                     }
                 }
 
