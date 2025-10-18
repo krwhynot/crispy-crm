@@ -165,13 +165,27 @@ const OpportunityOrganizationInputs = () => {
 const OpportunityContactsInput = () => {
   const customerOrganizationId = useWatch({ name: "customer_organization_id" });
 
+  // Memoize the filter object to prevent unnecessary re-renders and value clearing
+  // See Engineering Constitution #1: NO OVER-ENGINEERING - this simple fix prevents
+  // ReferenceArrayInput from clearing contact_ids when other fields update
+  // Root cause: Filter object recreation triggers React Admin to re-fetch choices,
+  // which briefly clears selected values during the fetch cycle
+  const contactFilter = useMemo(
+    () => {
+      const filter = customerOrganizationId ? { organization_id: customerOrganizationId } : {};
+      console.log('[OpportunityContactsInput] useMemo filter created:', filter, 'orgId:', customerOrganizationId);
+      return filter;
+    },
+    [customerOrganizationId]
+  );
+
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium mb-2">Contacts *</h3>
       <ReferenceArrayInput
         source="contact_ids"
         reference="contacts_summary"
-        filter={customerOrganizationId ? { organization_id: customerOrganizationId } : {}}
+        filter={contactFilter}
       >
         <AutocompleteArrayInput
           label={false}

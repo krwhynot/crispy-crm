@@ -138,27 +138,14 @@ export const updateOpportunitySchema = opportunityBaseSchema
   })
   .refine(
     (data) => {
-      // DEBUG: Enhanced logging for contact_ids validation
-      console.log('[updateOpportunitySchema.refine] Checking contact_ids:', {
-        exists: 'contact_ids' in data,
-        value: data.contact_ids,
-        isUndefined: data.contact_ids === undefined,
-        isNull: data.contact_ids === null,
-        isArray: Array.isArray(data.contact_ids),
-        length: Array.isArray(data.contact_ids) ? data.contact_ids.length : 'N/A',
-      });
-
       // Only validate contact_ids if it's actually being updated
       // If contact_ids is undefined/missing, this is a partial update of other fields - allow it
       if (data.contact_ids === undefined) {
-        console.log('[updateOpportunitySchema.refine] contact_ids is undefined - ALLOWING partial update');
         return true;
       }
 
       // If contact_ids IS provided, it must not be empty (can't remove all contacts)
-      const isValid = Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
-      console.log('[updateOpportunitySchema.refine] contact_ids validation result:', isValid);
-      return isValid;
+      return Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
     },
     {
       message: "At least one contact is required",
@@ -188,21 +175,21 @@ export async function validateCreateOpportunity(data: any): Promise<void> {
 
 export async function validateUpdateOpportunity(data: any): Promise<void> {
   try {
-    // DEBUG: Log the actual data being validated
-    console.log('[validateUpdateOpportunity] Validating data:', {
+    // TEMP DEBUG: Verify useMemo fix is loaded
+    console.log('[validateUpdateOpportunity] Data received:', {
       hasContactIds: 'contact_ids' in data,
       contactIdsValue: data.contact_ids,
-      contactIdsType: typeof data.contact_ids,
       isArray: Array.isArray(data.contact_ids),
+      length: Array.isArray(data.contact_ids) ? data.contact_ids.length : 'N/A',
       allKeys: Object.keys(data),
+      timestamp: new Date().toISOString(),
     });
 
     updateOpportunitySchema.parse(data);
-
-    console.log('[validateUpdateOpportunity] Validation passed ✓');
+    console.log('[validateUpdateOpportunity] ✓ Validation passed');
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error('[validateUpdateOpportunity] Validation failed:', error.issues);
+      console.error('[validateUpdateOpportunity] ✗ Validation failed:', error.issues);
       const formattedErrors: Record<string, string> = {};
       error.issues.forEach((err) => {
         const path = err.path.join(".");
