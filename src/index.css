@@ -90,18 +90,24 @@
  * - Three elevation tiers (E1, E2, E3) for hierarchy
  * - 1px stroke system (--stroke-card) for edge definition
  * - Avatar micro-elevation with ring + shadow + highlight
- * - Text hierarchy tokens for improved widget titles and metrics
+ * - Text hierarchy tokens with complete warm-tinting:
+ *   • --text-title: oklch(22% 0.01 92) - headings
+ *   • --text-metric: oklch(18% 0.01 92) - numbers/emphasis
+ *   • --text-body: oklch(29% 0.008 92) - warm brown body text
+ *   • --text-subtle: oklch(41% 0.006 92) - warm gray metadata
  *
  * Benefits:
  * - White cards clearly elevated with 2.5-point lightness delta
- * - Warm-tinted shadows harmonize with cream background
+ * - Warm-tinted shadows harmonize with cream background (prevents "soot" appearance)
+ * - Warm-tinted text creates complete cohesive color story (no visual dissonance)
  * - Strokes provide edge definition without harsh lines
  * - Text hierarchy creates clear visual priority
- * - Reduced eye strain on extended use
+ * - Reduced eye strain on extended use (consistent warm color temperature)
  *
  * Migrated:
- * - October 2025: Paper cream background (from oklch(99% 0.015 85))
- * - October 2025: Warm-tinted shadow system + pure white cards
+ * - October 2024: Paper cream background (from oklch(99% 0.015 85))
+ * - October 2024: Warm-tinted shadow system + pure white cards
+ * - October 2024: Complete warm-tinted text hierarchy (Zen recommendations)
  */
 
 :root {
@@ -317,10 +323,11 @@
   --surface-interactive-hover: oklch(99% 0.006 92);  /* Warm hover tint for interactive elements */
 
   /* Text Hierarchy - Improved contrast for widget titles and metrics */
+  /* Zen Recommendation: Warm-tint all text for complete cohesion with paper cream background */
   --text-title: oklch(22% 0.01 92);          /* Widget titles, headings - darker with warm tint */
   --text-metric: oklch(18% 0.01 92);         /* Metric numbers - darkest for emphasis */
-  --text-body: oklch(29% 0 0);               /* Standard body text */
-  --text-subtle: oklch(41% 0 0);             /* Timestamps, metadata */
+  --text-body: oklch(29% 0.008 92);          /* Standard body text - subtle warm brown instead of neutral gray */
+  --text-subtle: oklch(41% 0.006 92);        /* Timestamps, metadata - maintains readability with warmth */
 
   /* Avatar Micro-Elevation - Ring + shadow + highlight for depth */
   --avatar-shadow:
