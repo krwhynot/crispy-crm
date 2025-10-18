@@ -416,8 +416,8 @@ class SeedDataGenerator {
       const org = {
         name: companyName,
         organization_type: orgType,
-        is_principal: orgType === "principal",
-        is_distributor: orgType === "distributor",
+        // Note: is_principal and is_distributor removed in migration 20251018104712
+        // organization_type enum now handles this distinction
         priority: priority, // A=Highest, D=Lowest
         website: `https://${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
         address: faker.location.streetAddress(),
@@ -426,19 +426,7 @@ class SeedDataGenerator {
         postal_code: faker.location.zipCode("#####"),
         linkedin_url: `https://linkedin.com/company/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
         phone: faker.phone.number("(###) ###-####"),
-        email: `info@${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
-        notes: faker.helpers.arrayElement([
-          "Serving fresh, locally-sourced cuisine",
-          "Crafting premium beverages since 2010",
-          "Your trusted food service partner",
-          "Innovation in every bite",
-          "Farm-to-table excellence",
-          "Quality ingredients, exceptional taste",
-          "Sustainable food solutions",
-          "Bringing communities together through food",
-          "Award-winning culinary experiences",
-          "Fresh from our kitchen to your table",
-        ]),
+        // Note: email and notes fields removed from organizations table
         description: faker.company.catchPhrase(),
         context_links: faker.helpers.arrayElements([
           `https://example.com/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/products`,
