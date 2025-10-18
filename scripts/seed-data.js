@@ -433,11 +433,10 @@ class SeedDataGenerator {
           `https://example.com/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/catalog`,
           `https://example.com/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/about`,
         ], { min: 0, max: 2 }),
-        tax_identifier: Math.random() > 0.5 ? `${faker.number.int({ min: 10, max: 99 })}-${faker.number.int({ min: 1000000, max: 9999999 })}` : null,
+        // Note: tax_identifier removed - doesn't exist in database schema
         sales_id: CONFIG.TEST_USER_ID, // Link to test user if provided
         created_by: CONFIG.TEST_USER_ID, // Track creator if provided
-        created_at: faker.date.past({ years: 2 }),
-        updated_at: faker.date.recent(),
+        // Note: created_at and updated_at auto-managed by database triggers
       };
       this.generatedData.organizations.push(org);
     }
