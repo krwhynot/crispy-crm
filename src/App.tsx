@@ -29,6 +29,12 @@ import { CRM } from "@/atomic-crm/root/CRM";
  *    />
  * );
  */
-const App = () => <CRM />;
+const App = () => (
+  <CRM
+    lightModeLogo="/logos/mfb-logo.webp"
+    darkModeLogo="/logos/mfb-logo.webp"
+    title="MFB Master Food Brokers"
+  />
+);
 
 export default App;
