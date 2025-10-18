@@ -414,8 +414,11 @@
   --brand-750: oklch(55% 0.095 142);        /* Active state */
   --brand-800: var(--brand-300);            /* Use lighter for hover */
 
-  /* Adjusted Accent Colors for Dark Mode */
-  --accent-purple: oklch(56% 0.18 295);           /* Darker purple for WCAG AA with white text */
+  /* Adjusted Accent Colors for Dark Mode - Clay for consistency */
+  --accent-clay-700-dark: oklch(65% 0.105 72);    /* Lightened clay for dark backgrounds */
+  --accent-clay-600-dark: oklch(70% 0.100 72);    /* Medium-light clay */
+  --accent-clay-500-dark: oklch(75% 0.095 72);    /* Light clay */
+
   --destructive-dark: oklch(70.4% 0.191 22.216);  /* Foundational token for dark destructive */
 
   /* Foundation colors (semantic mappings) */
@@ -432,9 +435,9 @@
   --secondary: var(--neutral-200);          /* Secondary buttons */
   --secondary-foreground: var(--neutral-900); /* Light text */
   --muted: var(--neutral-200);             /* Muted surfaces */
-  --muted-foreground: var(--neutral-600);   /* Muted text */
-  --accent: var(--accent-purple);          /* Accent color */
-  --accent-foreground: oklch(0.985 0 0);    /* White text */
+  --muted-foreground: var(--neutral-700);   /* Muted text - 8:1 contrast (was neutral-600) */
+  --accent: var(--accent-clay-600-dark);    /* Clay accent for brand consistency */
+  --accent-foreground: oklch(12% 0.02 72);  /* Very dark text for accessibility */
   --destructive: var(--destructive-dark);
 
   /* Overlay/backdrop colors - dark mode */
@@ -579,21 +582,30 @@
   --sidebar-accent-foreground: var(--neutral-900);   /* Light text */
   --sidebar-border: oklch(1 0 0 / 10%);             /* Border */
   --sidebar-ring: oklch(55% 0.095 142);              /* Brightened focus ring */
-  --sidebar-active-bg: var(--brand-100);             /* Active background */
-  --sidebar-active-text: var(--brand-700);           /* Active text - forest green */
+  --sidebar-active-bg: var(--brand-50);              /* Active background - darker for 6.4:1 contrast */
+  --sidebar-active-text: var(--brand-700);           /* Active text - forest green (60% lightness) */
   --sidebar-active-indicator: var(--brand-700);      /* Active indicator */
 
-  /* Shadow system - 3-tier elevation (dark mode) - stronger for readability */
-  --shadow-card-1: 0 2px 4px oklch(0 0 0 / 0.35);
-  --shadow-card-2: 0 3px 6px oklch(0 0 0 / 0.40);
-  --shadow-card-3: 0 4px 8px oklch(0 0 0 / 0.45);
-  --shadow-card-1-hover: 0 3px 8px oklch(0 0 0 / 0.45);
-  --shadow-card-2-hover: 0 5px 14px oklch(0 0 0 / 0.50);
-  --shadow-card-3-hover: 0 7px 18px oklch(0 0 0 / 0.55);
+  /* Dark Mode Shadow Ink - Cool-tinted to match neutral hue (287°) */
+  --shadow-ink-dark: oklch(10% 0.015 287);           /* Very dark cool-tinted shadow */
 
-  /* Column shadows - dark mode */
-  --shadow-col: 0 3px 10px oklch(0 0 0 / 0.40);
-  --shadow-col-inner: inset 0 1px 2px oklch(0 0 0 / 0.08);
+  /* Shadow system - 3-tier elevation (dark mode) with cool tinting */
+  --shadow-card-1: 0 2px 4px var(--shadow-ink-dark) / 0.35;
+  --shadow-card-2: 0 3px 6px var(--shadow-ink-dark) / 0.40;
+  --shadow-card-3: 0 4px 8px var(--shadow-ink-dark) / 0.45;
+  --shadow-card-1-hover: 0 3px 8px var(--shadow-ink-dark) / 0.45;
+  --shadow-card-2-hover: 0 5px 14px var(--shadow-ink-dark) / 0.50;
+  --shadow-card-3-hover: 0 7px 18px var(--shadow-ink-dark) / 0.55;
+
+  /* Column shadows - dark mode with cool tinting */
+  --shadow-col: 0 3px 10px var(--shadow-ink-dark) / 0.40;
+  --shadow-col-inner: inset 0 1px 2px var(--shadow-ink-dark) / 0.08;
+
+  /* Text Hierarchy - Dark Mode (Inverted for readability) */
+  --text-metric: oklch(97% 0.002 287);       /* Numbers/emphasis - brightest (15:1 contrast) */
+  --text-title: oklch(90% 0.004 286);        /* Headings - very light (12:1 contrast) */
+  --text-body: oklch(88% 0.005 285);         /* Standard body text (11:1 contrast) */
+  --text-subtle: oklch(80% 0.007 285);       /* Timestamps, metadata (8:1 contrast) */
 }
 
 a,
