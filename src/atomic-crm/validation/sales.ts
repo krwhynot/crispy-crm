@@ -13,7 +13,7 @@ export const salesSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
   email: z.string().email("Must be a valid email address"),
-  phone: z.string().optional(),
+  phone: z.string().nullish(),
   avatar_url: z.string().url("Must be a valid URL").optional().nullable(),
   user_id: z.string().uuid("Must be a valid UUID").optional(),
   is_admin: z.boolean().default(false),

@@ -15,8 +15,9 @@ export const ProductCard = (props: { record?: Product }) => {
   const statusColors: Record<string, string> = {
     active: "default",
     discontinued: "destructive",
-    pending: "secondary",
     seasonal: "outline",
+    coming_soon: "secondary",
+    limited_availability: "warning", // Custom orange variant
   };
 
   return (

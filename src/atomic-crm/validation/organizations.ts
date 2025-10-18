@@ -55,16 +55,16 @@ export const organizationSchema = z.object({
   parent_id: z.union([z.string(), z.number()]).optional().nullable(), // Maps to parent_organization_id in database
   // Updated field names to match database schema
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
-  linkedin_url: isLinkedinUrl.optional(),
-  website: isValidUrl.optional(),
-  phone: z.string().optional(), // was: phone_number
-  address: z.string().optional(),
-  postal_code: z.string().optional(), // was: zipcode
-  city: z.string().optional(),
-  state: z.string().optional(), // was: stateAbbr
-  sales_id: z.union([z.string(), z.number()]).optional(),
+  linkedin_url: isLinkedinUrl.nullish(),
+  website: isValidUrl.nullish(),
+  phone: z.string().nullish(), // was: phone_number
+  address: z.string().nullish(),
+  postal_code: z.string().nullish(), // was: zipcode
+  city: z.string().nullish(),
+  state: z.string().nullish(), // was: stateAbbr
+  sales_id: z.union([z.string(), z.number()]).nullish(),
   description: z.string().optional().nullable(),
-  context_links: z.array(isValidUrl).optional(),
+  context_links: z.array(isValidUrl).nullish(),
 
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("unknown"), // Default matches database
