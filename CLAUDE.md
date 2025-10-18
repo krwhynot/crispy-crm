@@ -286,20 +286,67 @@ See `.env.example` for full list.
 6. Update data provider filters if needed in `filterRegistry.ts`
 
 ### Creating Database Migrations
-```bash
-# Local-first approach (recommended)
-npx supabase migration new <migration_name>
-# Edit supabase/migrations/<timestamp>_<migration_name>.sql
-npx supabase migration up           # Apply locally
-npx supabase db push                # Push to remote
 
-# Remote-first approach
-# Make changes in Supabase Dashboard, then:
-npx supabase db diff | npx supabase migration new <migration_name>
-npx supabase migration up
+**⚠️ CRITICAL WARNING: Auth Schema Exclusions**
+
+Supabase's `db dump` and `db diff` commands **exclude the `auth` schema by design**. This means:
+- Triggers on `auth.users` will NOT be captured
+- Functions used by auth triggers must be manually documented
+- Auth-related objects require separate migration files
+
+See `supabase/migrations/20251018211500_restore_auth_triggers_and_backfill.sql` for example.
+
+#### Option A: Migration-First (Recommended)
+
+```bash
+# 1. Create new migration
+npx supabase migration new <migration_name>
+
+# 2. Edit the generated SQL file
+# Location: supabase/migrations/YYYYMMDDHHMMSS_<migration_name>.sql
+
+# 3. Test locally
+npx supabase db reset
+
+# 4. Verify app works
+npm run dev
+
+# 5. Push to production
+npm run db:cloud:push  # Safer than direct db push
 ```
 
-**Important:** If you modify contact/organization schema, update CSV import logic in `src/contacts/useContactImport.tsx` and sample files.
+#### Option B: Studio-First (Use Sparingly)
+
+```bash
+# 1. Make changes in Supabase Studio (http://localhost:54323)
+
+# 2. Generate migration
+npx supabase db diff | npx supabase migration new <migration_name>
+
+# ⚠️ CRITICAL: Manually review generated migration!
+# - Check if you modified auth schema (triggers, auth.users)
+# - If yes, manually add those changes to the migration
+# - Use git history or Dashboard to find auth object definitions
+
+# 3. Test locally
+npx supabase db reset
+
+# 4. Push to production
+npm run db:cloud:push
+```
+
+**Verification Checklist:**
+After any migration, verify:
+- ✓ Migration applied: `npx supabase migration list`
+- ✓ No errors during reset: Check output
+- ✓ Test user works: Login via debug.html
+- ✓ App loads: http://localhost:5173 shows no blank pages
+
+**Important Notes:**
+- If you modify contact/organization schema, update CSV import logic in `src/contacts/useContactImport.tsx` and sample files
+- Never consolidate migrations by dumping schema - this loses auth triggers
+- See `LOCAL_MIGRATION_CHANGES.md` for complete local development guide
+- See `scripts/db/PRODUCTION-WARNING.md` for cloud deployment safety
 
 ### Customizing the CRM
 
