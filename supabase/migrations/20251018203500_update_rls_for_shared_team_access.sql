@@ -120,30 +120,57 @@ CREATE POLICY authenticated_delete_tasks ON tasks
   USING (sales_id IN (SELECT id FROM sales WHERE user_id = auth.uid()));
 
 -- ============================================================================
--- NOTES: Shared Access (Assuming notes are also shared)
+-- CONTACT NOTES: Shared Access
 -- ============================================================================
--- Note: If notes should be personal, change 'true' to check ownership
 
-DROP POLICY IF EXISTS authenticated_select_notes ON notes;
-CREATE POLICY authenticated_select_notes ON notes
+DROP POLICY IF EXISTS authenticated_select_contactNotes ON "contactNotes";
+CREATE POLICY authenticated_select_contactNotes ON "contactNotes"
   FOR SELECT
   TO authenticated
   USING (true);
 
-DROP POLICY IF EXISTS authenticated_insert_notes ON notes;
-CREATE POLICY authenticated_insert_notes ON notes
+DROP POLICY IF EXISTS authenticated_insert_contactNotes ON "contactNotes";
+CREATE POLICY authenticated_insert_contactNotes ON "contactNotes"
   FOR INSERT
   TO authenticated
   WITH CHECK (true);
 
-DROP POLICY IF EXISTS authenticated_update_notes ON notes;
-CREATE POLICY authenticated_update_notes ON notes
+DROP POLICY IF EXISTS authenticated_update_contactNotes ON "contactNotes";
+CREATE POLICY authenticated_update_contactNotes ON "contactNotes"
   FOR UPDATE
   TO authenticated
   USING (true);
 
-DROP POLICY IF EXISTS authenticated_delete_notes ON notes;
-CREATE POLICY authenticated_delete_notes ON notes
+DROP POLICY IF EXISTS authenticated_delete_contactNotes ON "contactNotes";
+CREATE POLICY authenticated_delete_contactNotes ON "contactNotes"
+  FOR DELETE
+  TO authenticated
+  USING (true);
+
+-- ============================================================================
+-- OPPORTUNITY NOTES: Shared Access
+-- ============================================================================
+
+DROP POLICY IF EXISTS authenticated_select_opportunityNotes ON "opportunityNotes";
+CREATE POLICY authenticated_select_opportunityNotes ON "opportunityNotes"
+  FOR SELECT
+  TO authenticated
+  USING (true);
+
+DROP POLICY IF EXISTS authenticated_insert_opportunityNotes ON "opportunityNotes";
+CREATE POLICY authenticated_insert_opportunityNotes ON "opportunityNotes"
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS authenticated_update_opportunityNotes ON "opportunityNotes";
+CREATE POLICY authenticated_update_opportunityNotes ON "opportunityNotes"
+  FOR UPDATE
+  TO authenticated
+  USING (true);
+
+DROP POLICY IF EXISTS authenticated_delete_opportunityNotes ON "opportunityNotes";
+CREATE POLICY authenticated_delete_opportunityNotes ON "opportunityNotes"
   FOR DELETE
   TO authenticated
   USING (true);

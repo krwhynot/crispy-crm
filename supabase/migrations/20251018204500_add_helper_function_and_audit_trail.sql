@@ -16,8 +16,9 @@
 
 -- Create helper function to get the sales_id for the current authenticated user
 -- This simplifies RLS policies from complex subqueries to simple equality checks
-CREATE OR REPLACE FUNCTION auth.get_current_sales_id()
-RETURNS uuid
+-- Note: Function is in public schema since migrations can't modify auth schema
+CREATE OR REPLACE FUNCTION public.get_current_sales_id()
+RETURNS bigint
 LANGUAGE sql
 SECURITY DEFINER
 SET search_path = public, auth
@@ -27,10 +28,10 @@ AS $$
 $$;
 
 -- Grant execute permission to authenticated users
-GRANT EXECUTE ON FUNCTION auth.get_current_sales_id() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_current_sales_id() TO authenticated;
 
 -- Add comment explaining the function's purpose
-COMMENT ON FUNCTION auth.get_current_sales_id() IS
+COMMENT ON FUNCTION public.get_current_sales_id() IS
   'Returns the sales_id for the currently authenticated user. Used in RLS policies for cleaner code.';
 
 -- ============================================================================
@@ -44,25 +45,25 @@ DROP POLICY IF EXISTS authenticated_select_tasks ON tasks;
 CREATE POLICY authenticated_select_tasks ON tasks
   FOR SELECT
   TO authenticated
-  USING (sales_id = auth.get_current_sales_id());
+  USING (sales_id = public.get_current_sales_id());
 
 DROP POLICY IF EXISTS authenticated_insert_tasks ON tasks;
 CREATE POLICY authenticated_insert_tasks ON tasks
   FOR INSERT
   TO authenticated
-  WITH CHECK (sales_id = auth.get_current_sales_id());
+  WITH CHECK (sales_id = public.get_current_sales_id());
 
 DROP POLICY IF EXISTS authenticated_update_tasks ON tasks;
 CREATE POLICY authenticated_update_tasks ON tasks
   FOR UPDATE
   TO authenticated
-  USING (sales_id = auth.get_current_sales_id());
+  USING (sales_id = public.get_current_sales_id());
 
 DROP POLICY IF EXISTS authenticated_delete_tasks ON tasks;
 CREATE POLICY authenticated_delete_tasks ON tasks
   FOR DELETE
   TO authenticated
-  USING (sales_id = auth.get_current_sales_id());
+  USING (sales_id = public.get_current_sales_id());
 
 -- ============================================================================
 -- AUDIT TRAIL: Add updated_by Column
@@ -73,35 +74,42 @@ CREATE POLICY authenticated_delete_tasks ON tasks
 
 -- Contacts
 ALTER TABLE contacts
-  ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES sales(id) ON DELETE SET NULL;
+  ADD COLUMN IF NOT EXISTS updated_by bigint REFERENCES sales(id) ON DELETE SET NULL;
 
 COMMENT ON COLUMN contacts.updated_by IS
   'Sales rep who last updated this contact. Auto-populated by trigger.';
 
 -- Organizations
 ALTER TABLE organizations
-  ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES sales(id) ON DELETE SET NULL;
+  ADD COLUMN IF NOT EXISTS updated_by bigint REFERENCES sales(id) ON DELETE SET NULL;
 
 COMMENT ON COLUMN organizations.updated_by IS
   'Sales rep who last updated this organization. Auto-populated by trigger.';
 
 -- Opportunities
 ALTER TABLE opportunities
-  ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES sales(id) ON DELETE SET NULL;
+  ADD COLUMN IF NOT EXISTS updated_by bigint REFERENCES sales(id) ON DELETE SET NULL;
 
 COMMENT ON COLUMN opportunities.updated_by IS
   'Sales rep who last updated this opportunity. Auto-populated by trigger.';
 
--- Notes
-ALTER TABLE notes
-  ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES sales(id) ON DELETE SET NULL;
+-- Contact Notes
+ALTER TABLE "contactNotes"
+  ADD COLUMN IF NOT EXISTS updated_by bigint REFERENCES sales(id) ON DELETE SET NULL;
 
-COMMENT ON COLUMN notes.updated_by IS
-  'Sales rep who last updated this note. Auto-populated by trigger.';
+COMMENT ON COLUMN "contactNotes".updated_by IS
+  'Sales rep who last updated this contact note. Auto-populated by trigger.';
+
+-- Opportunity Notes
+ALTER TABLE "opportunityNotes"
+  ADD COLUMN IF NOT EXISTS updated_by bigint REFERENCES sales(id) ON DELETE SET NULL;
+
+COMMENT ON COLUMN "opportunityNotes".updated_by IS
+  'Sales rep who last updated this opportunity note. Auto-populated by trigger.';
 
 -- Products
 ALTER TABLE products
-  ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES sales(id) ON DELETE SET NULL;
+  ADD COLUMN IF NOT EXISTS updated_by bigint REFERENCES sales(id) ON DELETE SET NULL;
 
 COMMENT ON COLUMN products.updated_by IS
   'Sales rep who last updated this product. Auto-populated by trigger.';
@@ -119,7 +127,7 @@ SET search_path = public, auth
 AS $$
 BEGIN
   -- Set updated_by to the current user's sales_id
-  NEW.updated_by := auth.get_current_sales_id();
+  NEW.updated_by := public.get_current_sales_id();
   RETURN NEW;
 END;
 $$;
@@ -152,10 +160,17 @@ CREATE TRIGGER set_updated_by_opportunities
   FOR EACH ROW
   EXECUTE FUNCTION public.set_updated_by();
 
--- Notes
-DROP TRIGGER IF EXISTS set_updated_by_notes ON notes;
-CREATE TRIGGER set_updated_by_notes
-  BEFORE UPDATE ON notes
+-- Contact Notes
+DROP TRIGGER IF EXISTS set_updated_by_contactNotes ON "contactNotes";
+CREATE TRIGGER set_updated_by_contactNotes
+  BEFORE UPDATE ON "contactNotes"
+  FOR EACH ROW
+  EXECUTE FUNCTION public.set_updated_by();
+
+-- Opportunity Notes
+DROP TRIGGER IF EXISTS set_updated_by_opportunityNotes ON "opportunityNotes";
+CREATE TRIGGER set_updated_by_opportunityNotes
+  BEFORE UPDATE ON "opportunityNotes"
   FOR EACH ROW
   EXECUTE FUNCTION public.set_updated_by();
 
