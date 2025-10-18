@@ -118,18 +118,24 @@ export const createOpportunitySchema = opportunityBaseSchema
     updated_at: true,
     deleted_at: true,
   })
+  .extend({
+    // Require at least one contact for new opportunities
+    contact_ids: z
+      .array(z.union([z.string(), z.number()]))
+      .min(1, "At least one contact is required"),
+  })
   .required({
     name: true,
-    contact_ids: true,
     estimated_close_date: true,
   });
 
 // Update-specific schema (more flexible for partial updates)
-// IMPORTANT: React Admin sends only "dirty" fields during update (fields that changed).
-// This means if you update priority, the payload might only contain {id, priority},
-// without contact_ids. We need to handle two cases:
-// 1. contact_ids NOT in payload (partial update of other fields) → ALLOW
-// 2. contact_ids IN payload but empty [] → REJECT (can't remove all contacts)
+// IMPORTANT: React Admin v5 sends ALL form fields during update, not just dirty fields.
+// This means if you update priority, the payload will contain {id, priority, contact_ids: [], ...all fields}.
+// The base schema therefore must not have strict constraints that fail on default/empty values.
+// We handle two cases via .refine():
+// 1. contact_ids NOT in payload (undefined) → ALLOW (partial update of other fields)
+// 2. contact_ids IN payload but empty [] → REJECT (user explicitly removing all contacts)
 export const updateOpportunitySchema = opportunityBaseSchema
   .partial()
   .required({
