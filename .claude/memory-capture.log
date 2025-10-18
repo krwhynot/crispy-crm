@@ -893,3 +893,5 @@
 [2025-10-18 09:29:33] [code] Edit: /home/krwhynot/projects/crispy-crm/src/App.tsx
 [2025-10-18 09:31:20] [code] Edit: /home/krwhynot/projects/crispy-crm/src/App.tsx
 [2025-10-18 10:24:06] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Header.tsx
+[2025-10-18 10:26:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Header.tsx
+[2025-10-18 10:47:22] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104712_remove_deprecated_organization_flags.sql
