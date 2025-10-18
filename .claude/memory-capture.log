@@ -973,3 +973,4 @@
 [2025-10-18 15:51:05] [code] Edit: /home/krwhynot/projects/crispy-crm/public/debug.html
 [2025-10-18 15:54:19] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018210000_add_created_by_audit_field.sql
 [2025-10-18 16:04:09] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018211500_restore_auth_triggers_and_backfill.sql
+[2025-10-18 16:13:19] [documentation] Write: /home/krwhynot/projects/crispy-crm/LOCAL_MIGRATION_CHANGES.md
