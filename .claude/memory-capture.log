@@ -990,3 +990,8 @@
 [2025-10-18 16:45:55] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
 [2025-10-18 16:47:28] [documentation] Write: /home/krwhynot/projects/crispy-crm/CLAUDE.md
 [2025-10-18 17:02:12] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-18 17:02:45] [documentation] Edit: /home/krwhynot/projects/crispy-crm/scripts/db/PRODUCTION-WARNING.md
+[2025-10-18 17:03:06] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-10-18 17:03:42] [documentation] Edit: /home/krwhynot/projects/crispy-crm/LOCAL_MIGRATION_CHANGES.md
+[2025-10-18 17:04:11] [documentation] Edit: /home/krwhynot/projects/crispy-crm/scripts/db/SUPABASE-WORKFLOW-GUIDE.md
+[2025-10-18 17:40:46] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/__tests__/select-input.test.tsx

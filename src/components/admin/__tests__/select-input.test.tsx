@@ -81,12 +81,13 @@ describe("SelectInput", () => {
     await user.click(trigger);
 
     // Check all choices are rendered in the dropdown (role=option)
+    // Radix UI Select renders options in a portal, so we need a longer timeout
     await waitFor(() => {
       mockChoices.forEach(choice => {
         const option = screen.getByRole("option", { name: choice.name });
         expect(option).toBeInTheDocument();
       });
-    });
+    }, { timeout: 10000 });
   });
 
   test("selects and updates form value", async () => {

@@ -20,7 +20,7 @@ See [Engineering Constitution](docs/claude/engineering-constitution.md) for comp
 3. **BOY SCOUT RULE**: Fix inconsistencies when editing files
 4. **FORM STATE FROM SCHEMA**: Use `zodSchema.partial().parse({})` for defaults
 5. **SEMANTIC COLORS ONLY**: CSS variables (--primary, --brand-700), never hex codes
-6. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS
+6. **MIGRATIONS**: Always use `npx supabase migration new <name>` to generate correctly timestamped files
 
 ## Database Workflows ⚠️ CRITICAL
 

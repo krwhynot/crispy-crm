@@ -53,6 +53,12 @@ cat supabase/migrations/TIMESTAMP_sync_schema.sql
 
 # 4. Apply to production safely
 npm run db:cloud:push
+
+# 5. ⚠️ CRITICAL: Manually verify auth schema changes!
+# The `db diff` command EXCLUDES the `auth` schema. If you created
+# triggers on `auth.users` or functions called by those triggers,
+# you MUST manually add them to the migration file.
+# See: supabase/migrations/20251018211500_restore_auth_triggers_and_backfill.sql
 ```
 
 ## 🚨 What Went Wrong Before
