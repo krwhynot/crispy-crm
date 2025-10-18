@@ -311,19 +311,12 @@
         window.testContactsQuery = async function() {
             clear('api-output');
             log('api-output', '=== Testing Contacts Query ===', 'info');
+            log('api-output', '📋 Shared Team Access: All team members can see all contacts', 'info');
 
             try {
-                if (!window.currentSalesId) {
-                    log('api-output', '⚠️  Run "Test Sales Query" first to get sales_id', 'warning');
-                    return;
-                }
-
-                log('api-output', `Querying for sales_id: ${window.currentSalesId}`, 'info');
-
                 const { data, error, count } = await supabase
                     .from('contacts')
                     .select('id, first_name, last_name, email, sales_id', { count: 'exact' })
-                    .eq('sales_id', window.currentSalesId)
                     .limit(10);
 
                 if (error) {
@@ -341,19 +334,12 @@
         window.testOrganizationsQuery = async function() {
             clear('api-output');
             log('api-output', '=== Testing Organizations Query ===', 'info');
+            log('api-output', '📋 Shared Team Access: All team members can see all organizations', 'info');
 
             try {
-                if (!window.currentSalesId) {
-                    log('api-output', '⚠️  Run "Test Sales Query" first to get sales_id', 'warning');
-                    return;
-                }
-
-                log('api-output', `Querying for sales_id: ${window.currentSalesId}`, 'info');
-
                 const { data, error, count } = await supabase
                     .from('organizations')
                     .select('id, name, sales_id', { count: 'exact' })
-                    .eq('sales_id', window.currentSalesId)
                     .limit(10);
 
                 if (error) {
@@ -371,19 +357,12 @@
         window.testOpportunitiesQuery = async function() {
             clear('api-output');
             log('api-output', '=== Testing Opportunities Query ===', 'info');
+            log('api-output', '📋 Shared Team Access: All team members can see all opportunities', 'info');
 
             try {
-                if (!window.currentSalesId) {
-                    log('api-output', '⚠️  Run "Test Sales Query" first to get sales_id', 'warning');
-                    return;
-                }
-
-                log('api-output', `Querying for opportunity_owner_id: ${window.currentSalesId}`, 'info');
-
                 const { data, error, count } = await supabase
                     .from('opportunities')
                     .select('id, name, opportunity_owner_id', { count: 'exact' })
-                    .eq('opportunity_owner_id', window.currentSalesId)
                     .limit(10);
 
                 if (error) {
@@ -401,6 +380,9 @@
         window.testRLS = async function() {
             clear('rls-output');
             log('rls-output', '=== Testing RLS Policies ===', 'info');
+            log('rls-output', '📋 Shared Team Architecture:', 'info');
+            log('rls-output', '  • Contacts, Organizations, Opportunities, Products: SHARED (everyone)', 'info');
+            log('rls-output', '  • Tasks: PERSONAL (only creator can see)', 'info');
 
             try {
                 const { data: session } = await supabase.auth.getSession();
@@ -411,7 +393,7 @@
                 }
 
                 const userId = session.session.user.id;
-                log('rls-output', `Current user_id: ${userId}`, 'info');
+                log('rls-output', `\nCurrent user_id: ${userId}`, 'info');
 
                 // Get sales_id for this user
                 const { data: salesData } = await supabase
@@ -426,33 +408,64 @@
                 }
 
                 const salesId = salesData.id;
-                log('rls-output', `Sales ID: ${salesId}`, 'info');
+                log('rls-output', `Sales ID: ${salesId}\n`, 'info');
 
-                // Test each table with correct columns
-                const tableTests = [
-                    { table: 'contacts', filter: { sales_id: salesId } },
-                    { table: 'organizations', filter: { sales_id: salesId } },
-                    { table: 'opportunities', filter: { opportunity_owner_id: salesId } },
-                    { table: 'tasks', filter: { sales_id: salesId } },
-                    { table: 'notes', filter: null } // notes doesn't have sales_id
+                // Test shared tables (no filter - everyone sees all)
+                const sharedTableTests = [
+                    { table: 'contacts', description: 'Shared - All Contacts' },
+                    { table: 'organizations', description: 'Shared - All Organizations' },
+                    { table: 'opportunities', description: 'Shared - All Opportunities' },
+                    { table: 'products', description: 'Shared - Product Catalog' },
+                    { table: 'contactNotes', description: 'Shared - Contact Notes' },
+                    { table: 'opportunityNotes', description: 'Shared - Opportunity Notes' }
                 ];
 
-                for (const test of tableTests) {
-                    log('rls-output', `\n📋 Testing ${test.table}...`, 'info');
+                log('rls-output', '=== Testing Shared Tables (No Filters) ===', 'info');
+                for (const test of sharedTableTests) {
+                    log('rls-output', `\n📋 ${test.description}...`, 'info');
 
-                    let query = supabase.from(test.table).select('*', { count: 'exact', head: true });
-
-                    if (test.filter) {
-                        const [key, value] = Object.entries(test.filter)[0];
-                        query = query.eq(key, value);
-                    }
-
-                    const { error, count } = await query;
+                    const { error, count } = await supabase
+                        .from(test.table)
+                        .select('*', { count: 'exact', head: true });
 
                     if (error) {
                         log('rls-output', `  ❌ ${test.table}: ${error.message}`, 'error');
                     } else {
                         log('rls-output', `  ✅ ${test.table}: ${count} accessible records`, 'success');
+                    }
+                }
+
+                // Test personal tasks (filtered by sales_id)
+                log('rls-output', '\n\n=== Testing Personal Tables (With Filters) ===', 'info');
+                log('rls-output', `\n📋 Personal Tasks (sales_id=${salesId})...`, 'info');
+
+                const { error: tasksError, count: tasksCount } = await supabase
+                    .from('tasks')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('sales_id', salesId);
+
+                if (tasksError) {
+                    log('rls-output', `  ❌ tasks: ${tasksError.message}`, 'error');
+                } else {
+                    log('rls-output', `  ✅ tasks: ${tasksCount} accessible records (personal only)`, 'success');
+                }
+
+                // Test that user can't see other users' tasks
+                log('rls-output', '\n\n=== Testing RLS Protection ===', 'info');
+                log('rls-output', `\n📋 Trying to access ALL tasks (should only see own)...`, 'info');
+
+                const { error: allTasksError, count: allTasksCount } = await supabase
+                    .from('tasks')
+                    .select('*', { count: 'exact', head: true });
+
+                if (allTasksError) {
+                    log('rls-output', `  ❌ Error: ${allTasksError.message}`, 'error');
+                } else {
+                    log('rls-output', `  ✅ Query succeeded: ${allTasksCount} tasks visible`, 'success');
+                    if (allTasksCount === tasksCount) {
+                        log('rls-output', `  ✅ RLS working correctly: Can only see own tasks`, 'success');
+                    } else {
+                        log('rls-output', `  ⚠️  Unexpected: Seeing more tasks than expected!`, 'warning');
                     }
                 }
 
