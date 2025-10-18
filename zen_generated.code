@@ -1,3 +1,9 @@
+<GENERATED-CODE>
+I will now provide the necessary code changes for `opportunities.ts`.
+
+1.  **Update `src/atomic-crm/validation/opportunities.ts`**: Adjust the schemas to correctly layer the validation constraints for create and update operations.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/validation/opportunities.ts>
 import { z } from "zod";
 
 /**
@@ -63,6 +69,7 @@ const opportunityBaseSchema = z.object({
   account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
 
   // OpportunityContactsInput fields
+  // REMOVED .min(1) constraint to allow update schema to handle this logic in .refine()
   contact_ids: z
     .array(z.union([z.string(), z.number()])),
 
@@ -122,14 +129,19 @@ export const createOpportunitySchema = opportunityBaseSchema
     name: true,
     contact_ids: true,
     estimated_close_date: true,
+  })
+  // Explicitly add back the .min(1) constraint for creation
+  .extend({
+    contact_ids: z
+      .array(z.union([z.string(), z.number()]))
+      .min(1, "At least one contact is required"),
   });
 
 // Update-specific schema (more flexible for partial updates)
-// IMPORTANT: React Admin sends only "dirty" fields during update (fields that changed).
-// This means if you update priority, the payload might only contain {id, priority},
-// without contact_ids. We need to handle two cases:
-// 1. contact_ids NOT in payload (partial update of other fields) → ALLOW
-// 2. contact_ids IN payload but empty [] → REJECT (can't remove all contacts)
+// IMPORTANT: React Admin v5 sends the entire form record on update, not just dirty fields.
+// This means we must handle cases where a field like `contact_ids` is submitted as `[]`
+// even if the user didn't edit it. The dataProvider has a safety net to remove this key
+// before validation, so this schema must allow `contact_ids` to be `undefined`.
 export const updateOpportunitySchema = opportunityBaseSchema
   .partial()
   .required({
@@ -137,13 +149,13 @@ export const updateOpportunitySchema = opportunityBaseSchema
   })
   .refine(
     (data) => {
-      // Only validate contact_ids if it's actually being updated
-      // If contact_ids is undefined/missing, this is a partial update of other fields - allow it
+      // This logic is now reachable and correctly handles the update case.
+      // If the dataProvider safety net removed `contact_ids`, it will be undefined and pass.
       if (data.contact_ids === undefined) {
         return true;
       }
 
-      // If contact_ids IS provided, it must not be empty (can't remove all contacts)
+      // If `contact_ids` IS provided (e.g., user manually cleared the field), it must not be empty.
       return Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
     },
     {
@@ -190,3 +202,5 @@ export async function validateUpdateOpportunity(data: any): Promise<void> {
     throw error;
   }
 }
+</UPDATED_EXISTING_FILE>
+</GENERATED-CODE>
