@@ -321,6 +321,8 @@ class SeedDataGenerator {
       activities: [],
       notes: [],
       tags: [],
+      tasks: [],
+      products: [],
     };
     this.spinner = ora();
   }
@@ -359,12 +361,14 @@ class SeedDataGenerator {
 
     try {
       // Delete in reverse dependency order (keep tags)
+      await this.supabase.from("tasks").delete().gte("id", 0);
       await this.supabase.from("activities").delete().gte("id", 0);
       await this.supabase.from("opportunityNotes").delete().gte("id", 0);
       await this.supabase.from("opportunities").delete().gte("id", 0);
       await this.supabase.from("contactNotes").delete().gte("id", 0);
       await this.supabase.from("contact_organizations").delete().gte("id", 0);
       await this.supabase.from("contacts").delete().gte("id", 0);
+      await this.supabase.from("products").delete().gte("id", 0);
       await this.supabase.from("organizations").delete().gte("id", 0);
       // Keep tags - they're managed separately
 
@@ -398,19 +402,30 @@ class SeedDataGenerator {
               "Eatery",
             ])}`;
 
-      const orgType = faker.helpers.arrayElement(FB_ORGANIZATION_TYPES);
+      // Ensure ALL organization types are used at least once
+      const orgType = i < FB_ORGANIZATION_TYPES.length
+        ? FB_ORGANIZATION_TYPES[i]
+        : faker.helpers.arrayElement(FB_ORGANIZATION_TYPES);
+
+      // Ensure ALL priority levels are used at least once
+      const priority = i < 4 ? ["A", "B", "C", "D"][i] : faker.helpers.arrayElement(["A", "B", "C", "D"]);
+
+      const state = faker.helpers.arrayElement(US_STATES);
+      const city = faker.location.city();
 
       const org = {
         name: companyName,
         organization_type: orgType,
-        priority: faker.helpers.arrayElement(["A", "B", "C", "D"]), // A=Highest, D=Lowest
+        is_principal: orgType === "principal",
+        is_distributor: orgType === "distributor",
+        priority: priority, // A=Highest, D=Lowest
         website: `https://${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
-        address: faker.location.streetAddress(true),
-        city: faker.location.city(),
-        state: faker.location.state(),
-        postal_code: faker.location.zipCode(),
+        address: faker.location.streetAddress(),
+        city: city,
+        state: state,
+        postal_code: faker.location.zipCode("#####"),
         linkedin_url: `https://linkedin.com/company/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
-        phone: faker.phone.number(),
+        phone: faker.phone.number("(###) ###-####"),
         email: `info@${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
         annual_revenue: faker.number.int({ min: 500000, max: 50000000 }),
         employee_count: faker.number.int({ min: 10, max: 2000 }),
@@ -427,6 +442,13 @@ class SeedDataGenerator {
           "Award-winning culinary experiences",
           "Fresh from our kitchen to your table",
         ]),
+        description: faker.company.catchPhrase(),
+        context_links: faker.helpers.arrayElements([
+          `https://example.com/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/products`,
+          `https://example.com/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/catalog`,
+          `https://example.com/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}/about`,
+        ], { min: 0, max: 2 }),
+        tax_identifier: Math.random() > 0.5 ? `${faker.number.int({ min: 10, max: 99 })}-${faker.number.int({ min: 1000000, max: 9999999 })}` : null,
         sales_id: CONFIG.TEST_USER_ID, // Link to test user if provided
         created_by: CONFIG.TEST_USER_ID, // Track creator if provided
         created_at: faker.date.past({ years: 2 }),
@@ -447,18 +469,70 @@ class SeedDataGenerator {
       const title = faker.helpers.arrayElement(FB_JOB_TITLES);
       const department = faker.helpers.arrayElement(FB_DEPARTMENTS);
 
+      // Ensure ALL genders are used at least once
+      const gender = i < CONTACT_GENDERS.length
+        ? CONTACT_GENDERS[i]
+        : faker.helpers.arrayElement(CONTACT_GENDERS);
+
+      const state = faker.helpers.arrayElement(US_STATES);
+      const city = faker.location.city();
+
+      // Ensure ALL personal info types are used for email and phone
+      const emailType = i < PERSONAL_INFO_TYPES.length
+        ? PERSONAL_INFO_TYPES[i]
+        : faker.helpers.arrayElement(PERSONAL_INFO_TYPES);
+
+      const phoneType = i < PERSONAL_INFO_TYPES.length
+        ? PERSONAL_INFO_TYPES[i]
+        : faker.helpers.arrayElement(PERSONAL_INFO_TYPES);
+
       const contact = {
         name: `${firstName} ${lastName}`,
         first_name: firstName,
         last_name: lastName,
-        email: faker.internet.email({ firstName, lastName }),
-        phone: {
-          primary: faker.phone.number(),
-          mobile: Math.random() > 0.5 ? faker.phone.number() : null,
-        },
+        // JSONB array format for email
+        email: [
+          {
+            email: faker.internet.email({ firstName, lastName }).toLowerCase(),
+            type: emailType,
+          },
+          // Some contacts have multiple emails
+          ...(Math.random() > 0.7
+            ? [
+                {
+                  email: faker.internet.email({ firstName, lastName }).toLowerCase(),
+                  type: faker.helpers.arrayElement(PERSONAL_INFO_TYPES),
+                },
+              ]
+            : []),
+        ],
+        // JSONB array format for phone
+        phone: [
+          {
+            number: faker.phone.number("(###) ###-####"),
+            type: phoneType,
+          },
+          // Some contacts have mobile numbers
+          ...(Math.random() > 0.5
+            ? [
+                {
+                  number: faker.phone.number("(###) ###-####"),
+                  type: "Mobile",
+                },
+              ]
+            : []),
+        ],
         title: title,
         department: department,
-        linkedin_url: `https://linkedin.com/in/${firstName.toLowerCase()}-${lastName.toLowerCase()}`,
+        gender: gender,
+        birthday: Math.random() > 0.5 ? faker.date.birthdate({ min: 25, max: 65, mode: 'age' }).toISOString().split('T')[0] : null,
+        address: Math.random() > 0.3 ? faker.location.streetAddress() : null,
+        city: Math.random() > 0.3 ? city : null,
+        state: Math.random() > 0.3 ? state : null,
+        postal_code: Math.random() > 0.3 ? faker.location.zipCode("#####") : null,
+        country: Math.random() > 0.7 ? faker.location.countryCode() : "USA",
+        linkedin_url: Math.random() > 0.2 ? `https://linkedin.com/in/${firstName.toLowerCase()}-${lastName.toLowerCase()}-${faker.string.alphanumeric(6)}` : null,
+        twitter_handle: Math.random() > 0.7 ? `@${firstName.toLowerCase()}${lastName.toLowerCase()}${faker.number.int({ min: 1, max: 999 })}` : null,
         notes: faker.helpers.arrayElement([
           `${faker.number.int({ min: 5, max: 25 })} years of F&B industry experience. Specializes in ${department.toLowerCase()}.`,
           `Passionate about culinary excellence and operational efficiency. Background in ${department.toLowerCase()}.`,
@@ -472,7 +546,7 @@ class SeedDataGenerator {
         updated_at: faker.date.recent(),
       };
 
-      // Store ONE organization index to link after insertion (unique constraint)
+      // Store ONE organization index to link after insertion
       contact._org_index = faker.number.int({
         min: 0,
         max: this.generatedData.organizations.length - 1
@@ -488,23 +562,55 @@ class SeedDataGenerator {
     this.spinner.start(`Generating ${count} F&B opportunities...`);
 
     for (let i = 0; i < count; i++) {
-      const stage = faker.helpers.arrayElement(CONFIG.PIPELINE_STAGES);
-      const status = this.getStatusForStage(stage);
+      // Ensure ALL stages are used at least once
+      const stage = i < CONFIG.PIPELINE_STAGES.length
+        ? CONFIG.PIPELINE_STAGES[i]
+        : faker.helpers.arrayElement(CONFIG.PIPELINE_STAGES);
+
+      // Ensure ALL statuses are used at least once
+      const status = i < OPPORTUNITY_STATUSES.length
+        ? OPPORTUNITY_STATUSES[i]
+        : this.getStatusForStage(stage);
+
+      // Ensure ALL priorities are used at least once
+      const priority = i < OPPORTUNITY_PRIORITIES.length
+        ? OPPORTUNITY_PRIORITIES[i]
+        : faker.helpers.arrayElement(OPPORTUNITY_PRIORITIES);
+
+      // Ensure ALL lead sources are used at least once
+      const leadSource = i < LEAD_SOURCES.length
+        ? LEAD_SOURCES[i]
+        : faker.helpers.arrayElement(LEAD_SOURCES);
+
       const org = faker.helpers.arrayElement(this.generatedData.organizations);
       const product = faker.helpers.arrayElement(FB_PRODUCTS);
+
+      // Get a principal and distributor if available
+      const principalOrgs = this.generatedData.organizations.filter(o => o.organization_type === "principal");
+      const distributorOrgs = this.generatedData.organizations.filter(o => o.organization_type === "distributor");
 
       const selectedContacts = faker.helpers.arrayElements(
         this.generatedData.contacts,
         { min: 1, max: 3 }
       );
 
+      const isClosed = stage === "closed_won" || stage === "closed_lost";
+
       const opportunity = {
         name: `${org.name} - ${product}`,
         stage,
         status,
-        priority: faker.helpers.arrayElement(["low", "medium", "high", "critical"]), // These are enum values
-        estimated_close_date: faker.date.future({ years: 1 }),
+        priority: priority,
+        lead_source: leadSource,
+        estimated_close_date: isClosed ? faker.date.past({ years: 0.5 }) : faker.date.future({ years: 1 }),
+        actual_close_date: isClosed ? faker.date.recent({ days: 30 }) : null,
         customer_organization_id: org.id,
+        principal_organization_id: principalOrgs.length > 0 && Math.random() > 0.5
+          ? faker.helpers.arrayElement(principalOrgs).id
+          : null,
+        distributor_organization_id: distributorOrgs.length > 0 && Math.random() > 0.7
+          ? faker.helpers.arrayElement(distributorOrgs).id
+          : null,
         contact_ids: selectedContacts.map(c => c.id),
         index: i, // For Kanban board ordering
         description: faker.helpers.arrayElement([
@@ -519,7 +625,7 @@ class SeedDataGenerator {
           "Current POS system outdated, need modern cloud-based solution",
           "Menu engineering and recipe costing needs for 15+ locations",
         ]),
-        next_action: faker.helpers.arrayElement([
+        next_action: !isClosed ? faker.helpers.arrayElement([
           "Schedule product demo at flagship location with kitchen staff",
           "Send ROI analysis and case studies from similar F&B clients",
           "Set up 30-day trial at busiest location to prove value",
@@ -530,8 +636,8 @@ class SeedDataGenerator {
           "Prepare proposal for multi-location rollout plan",
           "Demo waste tracking features to sustainability team",
           "Walk through food safety compliance reporting",
-        ]),
-        next_action_date: faker.date.future({ years: 0.5 }),
+        ]) : null,
+        next_action_date: !isClosed ? faker.date.future({ years: 0.5 }) : null,
         competition: faker.helpers.arrayElement([
           ...FB_COMPETITORS,
           null,
@@ -545,7 +651,12 @@ class SeedDataGenerator {
           "Customer support and training",
           "Mobile accessibility for managers",
         ]),
+        tags: faker.helpers.arrayElements(
+          ["urgent", "high-value", "competitive", "renewal", "expansion"],
+          { min: 0, max: 3 }
+        ),
         opportunity_owner_id: CONFIG.TEST_USER_ID, // Link to test user if provided
+        account_manager_id: CONFIG.TEST_USER_ID, // Link to test user if provided
         created_by: CONFIG.TEST_USER_ID, // Track creator if provided
         created_at: faker.date.past({ years: 1 }),
         updated_at: faker.date.recent(),
@@ -563,7 +674,16 @@ class SeedDataGenerator {
     const interactionTypes = ["call", "email", "meeting", "demo", "proposal", "follow_up", "trade_show", "site_visit", "contract_review", "check_in", "social"];
 
     for (let i = 0; i < count; i++) {
-      const interactionType = faker.helpers.arrayElement(interactionTypes);
+      // Ensure ALL interaction types are used at least once
+      const interactionType = i < interactionTypes.length
+        ? interactionTypes[i]
+        : faker.helpers.arrayElement(interactionTypes);
+
+      // Ensure ALL sentiments are used at least once
+      const sentiment = i < ACTIVITY_SENTIMENTS.length
+        ? ACTIVITY_SENTIMENTS[i]
+        : faker.helpers.arrayElement(ACTIVITY_SENTIMENTS);
+
       const hasOpportunity = Math.random() > 0.3;
 
       // Store indices instead of IDs (IDs won't exist until after insertion)
@@ -571,30 +691,42 @@ class SeedDataGenerator {
       const _org_index = faker.number.int({ min: 0, max: this.generatedData.organizations.length - 1 });
       const _opp_index = hasOpportunity ? faker.number.int({ min: 0, max: this.generatedData.opportunities.length - 1 }) : null;
 
+      const requiresFollowUp = Math.random() > 0.6;
+
       const activity = {
         activity_type: hasOpportunity ? "interaction" : "engagement",
         type: interactionType,
         subject: this.getActivitySubject(interactionType),
         description: faker.lorem.paragraph(),
         activity_date: faker.date.past({ years: 0.5 }),
-        duration_minutes: faker.helpers.arrayElement([15, 30, 45, 60, 90, 120]),
+        duration_minutes: faker.helpers.arrayElement([15, 30, 45, 60, 90, 120, null]),
         _contact_index,  // Temporary - will be replaced with contact_id after insertion
         _org_index,      // Temporary - will be replaced with organization_id after insertion
         _opp_index,      // Temporary - will be replaced with opportunity_id after insertion
-        follow_up_required: Math.random() > 0.6,
-        follow_up_date: Math.random() > 0.6 ? faker.date.future({ years: 0.2 }) : null,
-        follow_up_notes: Math.random() > 0.7 ? faker.lorem.sentence() : null,
-        outcome: Math.random() > 0.5 ? faker.lorem.sentence() : null,
-        sentiment: faker.helpers.arrayElement(["positive", "neutral", "negative"]),
-        location: interactionType === "meeting" ? faker.location.city() : null,
-        attendees: ["meeting", "call"].includes(interactionType)
+        follow_up_required: requiresFollowUp,
+        follow_up_date: requiresFollowUp ? faker.date.future({ years: 0.2 }) : null,
+        follow_up_notes: requiresFollowUp && Math.random() > 0.5 ? faker.lorem.sentence() : null,
+        outcome: Math.random() > 0.4 ? faker.lorem.sentence() : null,
+        sentiment: sentiment,
+        location: ["meeting", "demo", "site_visit", "trade_show"].includes(interactionType)
+          ? `${faker.location.city()}, ${faker.helpers.arrayElement(US_STATES)}`
+          : null,
+        attendees: ["meeting", "call", "demo"].includes(interactionType)
           ? faker.helpers.arrayElements([
               faker.person.fullName(),
               faker.person.fullName(),
+              faker.person.fullName(),
               faker.person.fullName()
-            ], { min: 1, max: 3 })
+            ], { min: 1, max: 4 })
           : null,
-        tags: faker.helpers.arrayElements(["important", "follow-up", "urgent", "demo", "pricing"], { min: 0, max: 2 }),
+        attachments: Math.random() > 0.7
+          ? faker.helpers.arrayElements([
+              `https://example.com/docs/presentation-${faker.string.alphanumeric(8)}.pdf`,
+              `https://example.com/docs/contract-${faker.string.alphanumeric(8)}.pdf`,
+              `https://example.com/docs/proposal-${faker.string.alphanumeric(8)}.pdf`,
+            ], { min: 1, max: 2 })
+          : null,
+        tags: faker.helpers.arrayElements(["important", "follow-up", "urgent", "demo", "pricing", "technical"], { min: 0, max: 3 }),
         created_by: CONFIG.TEST_USER_ID, // Track creator if provided
       };
 
@@ -613,6 +745,12 @@ class SeedDataGenerator {
       const note = {
         text: faker.lorem.paragraphs({ min: 1, max: 3 }),
         date: faker.date.past({ years: 0.5 }),
+        attachments: Math.random() > 0.8
+          ? faker.helpers.arrayElements([
+              `https://example.com/files/note-${faker.string.alphanumeric(8)}.pdf`,
+              `https://example.com/files/attachment-${faker.string.alphanumeric(8)}.docx`,
+            ], { min: 1, max: 2 })
+          : null,
         sales_id: CONFIG.TEST_USER_ID, // Link to test user if provided
       };
 
@@ -628,6 +766,153 @@ class SeedDataGenerator {
     }
 
     this.spinner.succeed(`Generated ${count} notes`);
+  }
+
+  generateTasks(count = 50) {
+    this.spinner.start(`Generating ${count} tasks...`);
+
+    for (let i = 0; i < count; i++) {
+      // Ensure ALL task types are used at least once
+      const taskType = i < TASK_TYPES.length
+        ? TASK_TYPES[i]
+        : faker.helpers.arrayElement(TASK_TYPES);
+
+      // Ensure ALL task priorities are used at least once
+      const priority = i < TASK_PRIORITIES.length
+        ? TASK_PRIORITIES[i]
+        : faker.helpers.arrayElement(TASK_PRIORITIES);
+
+      const isCompleted = Math.random() > 0.6;
+      const hasReminder = !isCompleted && Math.random() > 0.7;
+
+      const task = {
+        title: faker.helpers.arrayElement([
+          `Follow up with ${faker.person.firstName()}`,
+          "Send proposal document",
+          "Schedule demo call",
+          "Review contract terms",
+          "Prepare pricing quote",
+          "Update CRM records",
+          "Research competitor pricing",
+          "Send thank you email",
+          "Prepare presentation slides",
+          "Book meeting room",
+        ]),
+        description: Math.random() > 0.5 ? faker.lorem.paragraph() : null,
+        type: taskType,
+        priority: priority,
+        due_date: isCompleted
+          ? faker.date.past({ years: 0.2 })
+          : faker.date.future({ years: 0.5 }),
+        reminder_date: hasReminder
+          ? faker.date.future({ years: 0.3 })
+          : null,
+        completed: isCompleted,
+        completed_at: isCompleted ? faker.date.recent({ days: 30 }) : null,
+        _contact_index: faker.number.int({ min: 0, max: this.generatedData.contacts.length - 1 }),
+        _opp_index: Math.random() > 0.4
+          ? faker.number.int({ min: 0, max: this.generatedData.opportunities.length - 1 })
+          : null,
+        sales_id: CONFIG.TEST_USER_ID,
+      };
+
+      this.generatedData.tasks = this.generatedData.tasks || [];
+      this.generatedData.tasks.push(task);
+    }
+
+    this.spinner.succeed(`Generated ${count} tasks`);
+  }
+
+  generateProducts(count = 100) {
+    this.spinner.start(`Generating ${count} F&B products...`);
+
+    // Get principal organizations indices to link products to
+    const principalOrgIndices = this.generatedData.organizations
+      .map((org, index) => org.organization_type === "principal" ? index : null)
+      .filter(index => index !== null);
+
+    if (principalOrgIndices.length === 0) {
+      this.spinner.warn("No principal organizations found - skipping product generation");
+      return;
+    }
+
+    for (let i = 0; i < count; i++) {
+      // Ensure ALL product categories are used at least once
+      const category = i < PRODUCT_CATEGORIES.length
+        ? PRODUCT_CATEGORIES[i]
+        : faker.helpers.arrayElement(PRODUCT_CATEGORIES);
+
+      // Ensure ALL product statuses are used at least once
+      const status = i < PRODUCT_STATUSES.length
+        ? PRODUCT_STATUSES[i]
+        : faker.helpers.arrayElement(PRODUCT_STATUSES);
+
+      const principalIndex = faker.helpers.arrayElement(principalOrgIndices);
+
+      const productNames = {
+        beverages: ["Craft Cola", "Artisan Lemonade", "Premium Orange Juice", "Sparkling Water"],
+        dairy: ["Organic Whole Milk", "Greek Yogurt", "Aged Cheddar", "Butter Blend"],
+        frozen: ["Premium Ice Cream", "Frozen Vegetables", "Frozen Pizza", "Breakfast Sausage"],
+        fresh_produce: ["Organic Tomatoes", "Fresh Lettuce Mix", "Sweet Corn", "Avocados"],
+        meat_poultry: ["Free-Range Chicken", "Grass-Fed Beef", "Pork Tenderloin", "Turkey Breast"],
+        seafood: ["Wild Salmon", "Jumbo Shrimp", "Fresh Tuna", "Lobster Tails"],
+        dry_goods: ["Organic Flour", "Brown Rice", "Quinoa", "Pasta"],
+        snacks: ["Trail Mix", "Potato Chips", "Granola Bars", "Mixed Nuts"],
+        condiments: ["Organic Ketchup", "Dijon Mustard", "BBQ Sauce", "Hot Sauce"],
+        baking_supplies: ["Vanilla Extract", "Baking Powder", "Chocolate Chips", "Yeast"],
+        spices_seasonings: ["Black Pepper", "Sea Salt", "Garlic Powder", "Italian Seasoning"],
+        canned_goods: ["Diced Tomatoes", "Black Beans", "Chicken Broth", "Tuna"],
+        pasta_grains: ["Penne Pasta", "Jasmine Rice", "Couscous", "Farro"],
+        oils_vinegars: ["Extra Virgin Olive Oil", "Balsamic Vinegar", "Canola Oil", "Apple Cider Vinegar"],
+        sweeteners: ["Organic Honey", "Maple Syrup", "Cane Sugar", "Agave Nectar"],
+        cleaning_supplies: ["Dish Soap", "All-Purpose Cleaner", "Sanitizer", "Degreaser"],
+        paper_products: ["Paper Towels", "Napkins", "Toilet Paper", "Wax Paper"],
+        equipment: ["Commercial Blender", "Food Processor", "Chef's Knife", "Cutting Board"],
+        other: ["Aluminum Foil", "Plastic Wrap", "Storage Containers", "Trash Bags"],
+      };
+
+      const productName = faker.helpers.arrayElement(productNames[category] || ["Generic Product"]);
+
+      const product = {
+        name: productName,
+        sku: `${category.substring(0, 3).toUpperCase()}-${faker.string.alphanumeric({ length: 8, casing: 'upper' })}`,
+        principal_id: principal.id,
+        category: category,
+        status: status,
+        description: faker.commerce.productDescription(),
+        list_price: parseFloat(faker.commerce.price({ min: 5, max: 500, dec: 2 })),
+        currency_code: "USD",
+        unit_of_measure: faker.helpers.arrayElement(["each", "lb", "kg", "oz", "gal", "case", "box"]),
+        manufacturer_part_number: Math.random() > 0.5 ? `MPN-${faker.string.alphanumeric({ length: 10, casing: 'upper' })}` : null,
+        certifications: faker.helpers.arrayElements(
+          ["Organic", "Non-GMO", "Gluten-Free", "Kosher", "Halal", "Fair Trade"],
+          { min: 0, max: 3 }
+        ),
+        allergens: faker.helpers.arrayElements(
+          ["Milk", "Eggs", "Fish", "Shellfish", "Tree Nuts", "Peanuts", "Wheat", "Soybeans"],
+          { min: 0, max: 2 }
+        ),
+        ingredients: Math.random() > 0.5 ? faker.lorem.sentence() : null,
+        nutritional_info: Math.random() > 0.6
+          ? {
+              calories: faker.number.int({ min: 50, max: 500 }),
+              protein: `${faker.number.int({ min: 1, max: 30 })}g`,
+              carbs: `${faker.number.int({ min: 5, max: 50 })}g`,
+              fat: `${faker.number.int({ min: 1, max: 20 })}g`,
+            }
+          : null,
+        marketing_description: Math.random() > 0.5 ? faker.company.catchPhrase() : null,
+        created_by: CONFIG.TEST_USER_ID,
+        updated_by: CONFIG.TEST_USER_ID,
+        created_at: faker.date.past({ years: 1 }),
+        updated_at: faker.date.recent(),
+      };
+
+      this.generatedData.products = this.generatedData.products || [];
+      this.generatedData.products.push(product);
+    }
+
+    this.spinner.succeed(`Generated ${count} F&B products`);
   }
 
   generateTags(count = CONFIG.TAG_COUNT) {
@@ -825,6 +1110,42 @@ class SeedDataGenerator {
         if (error) throw error;
       }
 
+      // Insert products
+      if (this.generatedData.products && this.generatedData.products.length > 0) {
+        const { data: insertedProducts, error } = await this.supabase
+          .from("products")
+          .insert(this.generatedData.products)
+          .select();
+        if (error) throw error;
+
+        // Update products with their database-assigned IDs
+        this.generatedData.products.forEach((product, index) => {
+          product.id = insertedProducts[index].id;
+        });
+      }
+
+      // Insert tasks
+      if (this.generatedData.tasks && this.generatedData.tasks.length > 0) {
+        // Map indices to actual IDs and remove temporary fields
+        const tasksWithRealIds = this.generatedData.tasks.map(
+          ({ _contact_index, _opp_index, ...task }) => ({
+            ...task,
+            contact_id: this.generatedData.contacts[_contact_index].id,
+            opportunity_id: _opp_index !== null ? this.generatedData.opportunities[_opp_index].id : null,
+          }),
+        );
+        const { data: insertedTasks, error } = await this.supabase
+          .from("tasks")
+          .insert(tasksWithRealIds)
+          .select();
+        if (error) throw error;
+
+        // Update tasks with their database-assigned IDs
+        this.generatedData.tasks.forEach((task, index) => {
+          task.id = insertedTasks[index].id;
+        });
+      }
+
       this.spinner.succeed("Data inserted successfully");
 
       // Ensure all auth users have sales profiles (CRITICAL FIX)
@@ -849,6 +1170,8 @@ class SeedDataGenerator {
         chalk.gray(`  Activities: ${this.generatedData.activities.length}`),
       );
       console.log(chalk.gray(`  Notes: ${this.generatedData.notes.length}`));
+      console.log(chalk.gray(`  Products: ${this.generatedData.products?.length || 0}`));
+      console.log(chalk.gray(`  Tasks: ${this.generatedData.tasks?.length || 0}`));
       console.log(chalk.gray(`  Tags: ${this.generatedData.tags.length}`));
     } catch (error) {
       this.spinner.fail(`Failed to insert data: ${error.message}`);
@@ -1044,11 +1367,13 @@ class SeedDataGenerator {
       // Override counts if --count provided
       const count = CONFIG.COUNT ? parseInt(CONFIG.COUNT) : null;
 
-      // Generate data
+      // Generate data in dependency order
       this.generateOrganizations(count || CONFIG.ORGANIZATION_COUNT);
+      this.generateProducts(count || 100); // Generate products after organizations
       this.generateContacts(count || CONFIG.CONTACT_COUNT);
       this.generateOpportunities(count || CONFIG.OPPORTUNITY_COUNT);
       this.generateActivities(count || CONFIG.ACTIVITY_COUNT);
+      this.generateTasks(count || 50); // Generate tasks after contacts and opportunities
       this.generateNotes(count || CONFIG.NOTE_COUNT);
       // Skip tags - already in database
       // this.generateTags(count || CONFIG.TAG_COUNT);
