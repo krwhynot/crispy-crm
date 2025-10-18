@@ -202,6 +202,8 @@ npx supabase db pull           # Pull latest from cloud
 npx supabase db reset          # Apply to local
 ```
 
+⚠️ **Warning:** `npx supabase db pull` will overwrite uncommitted local migration files. If you have local schema changes that aren't in version control, commit them first or use `npx supabase db diff` to save them before pulling.
+
 ### Testing Migrations Before Production
 
 ```bash

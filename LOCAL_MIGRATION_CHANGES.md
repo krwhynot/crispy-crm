@@ -140,10 +140,10 @@ http://localhost:54323
 npx supabase db pull --linked
 
 # Check differences before pushing
-npx supabase db diff
+npx supabase db diff --linked
 
 # Push with confirmation prompts
-npx supabase db push --linked
+npx supabase db push
 
 # Reset local only
 npx supabase db reset
