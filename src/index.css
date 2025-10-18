@@ -135,12 +135,12 @@
   --brand-750: oklch(28% 0.075 142);        /* #244A00 - Active state */
   --brand-800: oklch(24% 0.070 142);        /* #1E3F00 - Darkest pressed state */
 
-  /* Accent Colors - Clay/Terracotta (hue 76°) */
-  --accent-clay-700: oklch(52% 0.120 76);         /* Dark clay */
-  --accent-clay-600: oklch(58% 0.115 76);         /* Medium-dark clay */
-  --accent-clay-500: oklch(63% 0.110 76);         /* Clay orange #EA580C */
-  --accent-clay-400: oklch(72% 0.095 76);         /* Light clay */
-  --accent-clay-300: oklch(82% 0.075 76);         /* Very light clay */
+  /* Accent Colors - Clay/Terracotta (hue 72° - warmed for harmony with forest green) */
+  --accent-clay-700: oklch(52% 0.105 72);         /* #B8640A - Dark clay */
+  --accent-clay-600: oklch(58% 0.100 72);         /* #C97316 - Medium-dark clay */
+  --accent-clay-500: oklch(63% 0.095 72);         /* #D97E1F - Clay orange */
+  --accent-clay-400: oklch(72% 0.080 72);         /* #E9A958 - Light clay */
+  --accent-clay-300: oklch(82% 0.060 72);         /* #F4D4A8 - Very light clay */
 
   /* Foundation colors (semantic mappings) */
   --background: oklch(97.5% 0.010 92);          /* Paper cream - subtle warmth, improved card separation */
@@ -151,8 +151,8 @@
   --popover-foreground: var(--neutral-700);     /* Popover text */
 
   /* Interactive colors */
-  --primary: var(--accent-clay-600);            /* Clay orange for buttons - WCAG AA compliant */
-  --primary-foreground: oklch(0.985 0 0);       /* White text on primary */
+  --primary: var(--brand-500);                  /* Forest green for buttons - WCAG AAA compliant (10.8:1) */
+  --primary-foreground: oklch(99% 0 0);         /* White text on primary */
   --secondary: var(--neutral-100);              /* Secondary buttons */
   --secondary-foreground: var(--neutral-700);   /* Dark text on secondary */
   --muted: var(--neutral-200);                  /* Muted surfaces */
@@ -168,17 +168,17 @@
   /* Borders and focus */
   --border: var(--neutral-200);                 /* Borders */
   --input: var(--neutral-200);                  /* Input borders */
-  --ring: var(--brand-500);                     /* Focus ring uses brand identity color */
+  --ring: oklch(55% 0.095 142);                 /* #4D9900 - Brightened focus ring for visibility */
 
-  /* Success states (green) - shifted to warmer hue 135° */
-  --success-subtle: oklch(92% 0.08 135);
-  --success-default: oklch(56% 0.125 135);
-  --success-strong: oklch(48% 0.130 135);
-  --success-bg: oklch(95% 0.05 135);
-  --success-border: oklch(78% 0.10 135);
-  --success-hover: oklch(60% 0.122 135);
-  --success-active: oklch(52% 0.127 135);
-  --success-disabled: oklch(72% 0.06 135);
+  /* Success states (emerald green) - hue 155° to differentiate from forest green brand */
+  --success-subtle: oklch(92% 0.08 155);
+  --success-default: oklch(56% 0.115 155);      /* #10B981 - Brighter emerald */
+  --success-strong: oklch(48% 0.120 155);
+  --success-bg: oklch(95% 0.05 155);
+  --success-border: oklch(78% 0.090 155);
+  --success-hover: oklch(60% 0.112 155);
+  --success-active: oklch(52% 0.117 155);
+  --success-disabled: oklch(72% 0.06 155);
 
   /* Warning states (golden amber) - kept at warm hue 85° */
   --warning-subtle: oklch(94% 0.055 85);
@@ -254,20 +254,20 @@
   --chart-1-fill: oklch(55% 0.035 60);         /* Light fill */
   --chart-1-stroke: oklch(37% 0.035 60);       /* Darker stroke for AA */
 
-  /* Chart 2: MFB Lime Green (Our Data/Primary) */
-  --chart-2: var(--brand-500);                 /* Semantic reference */
-  --chart-2-fill: oklch(72% 0.132 125);        /* #7CB342 */
-  --chart-2-stroke: oklch(35% 0.132 125);      /* Dark green for AA */
+  /* Chart 2: Forest Green (Our Data/Primary) - Brightened for visibility */
+  --chart-2: oklch(52% 0.095 142);             /* #4A8D00 - Brightened from brand-500 */
+  --chart-2-fill: oklch(52% 0.095 142);        /* Lightened for chart visibility */
+  --chart-2-stroke: oklch(35% 0.085 142);      /* #2D6600 - Darker stroke for AA */
 
-  /* Chart 3: Terracotta/Clay (Revenue/High Priority) */
-  --chart-3: oklch(63% 0.110 76);              /* Clay orange */
-  --chart-3-fill: oklch(70% 0.110 76);
-  --chart-3-stroke: oklch(40% 0.110 76);
+  /* Chart 3: Terracotta/Clay (Revenue/High Priority) - Adjusted for harmony */
+  --chart-3: oklch(63% 0.095 72);              /* Adjusted clay orange */
+  --chart-3-fill: oklch(70% 0.095 72);
+  --chart-3-stroke: oklch(40% 0.095 72);
 
-  /* Chart 4: Sage/Olive (Secondary/Neutral) */
-  --chart-4: oklch(60% 0.065 120);             /* Sage green */
-  --chart-4-fill: oklch(68% 0.065 120);
-  --chart-4-stroke: oklch(38% 0.065 120);
+  /* Chart 4: Sage/Olive (Secondary/Neutral) - Harmonized with forest green */
+  --chart-4: oklch(60% 0.060 138);             /* Sage shifted closer to brand hue */
+  --chart-4-fill: oklch(68% 0.060 138);
+  --chart-4-stroke: oklch(38% 0.060 138);
 
   /* Chart 5: Golden Amber (Warning/Attention) */
   --chart-5: oklch(70% 0.125 85);              /* Golden amber */
@@ -294,18 +294,18 @@
   --chart-axis-text: var(--muted-foreground);  /* Axis labels */
   --chart-disabled: oklch(78% 0.008 85);       /* Disabled/muted data */
 
-  /* Sidebar Colors - Paper cream tint (slightly lighter than main background) */
+  /* Sidebar Colors - Paper cream tint with forest green accents */
   --sidebar: oklch(98% 0.010 92);                    /* Subtle paper cream tint */
   --sidebar-foreground: var(--neutral-700);          /* Sidebar text */
-  --sidebar-primary: var(--brand-700);               /* Primary items (MFB green) */
+  --sidebar-primary: var(--brand-700);               /* #2B5600 - Primary items (forest green) */
   --sidebar-primary-foreground: oklch(99% 0.015 85); /* Warm white text */
-  --sidebar-accent: oklch(96% 0.025 100);            /* Light lime tint for hover */
+  --sidebar-accent: oklch(96% 0.025 100);            /* Light hover tint */
   --sidebar-accent-foreground: var(--neutral-700);   /* Dark text */
   --sidebar-border: var(--neutral-200);              /* Warm border */
-  --sidebar-ring: var(--brand-500);                  /* Focus ring (identity color) */
-  --sidebar-active-bg: oklch(96% 0.025 125);         /* Active item: light lime tint */
-  --sidebar-active-text: var(--brand-700);           /* Active text: MFB green */
-  --sidebar-active-indicator: var(--brand-700);      /* Active indicator: MFB green */
+  --sidebar-ring: oklch(55% 0.095 142);              /* Brightened focus ring */
+  --sidebar-active-bg: oklch(93% 0.025 142);         /* #E8F5E9 - Active item: light sage */
+  --sidebar-active-text: var(--brand-700);           /* #2B5600 - Active text: forest green */
+  --sidebar-active-indicator: var(--brand-650);      /* #3D7A00 - Active indicator bar */
 
   /* Warm-Tinted Shadow System (Zen Recommendations) */
   /* Shadow ink with subtle warmth matching canvas hue - prevents "soot" appearance */
@@ -404,13 +404,14 @@
   --neutral-800: oklch(88.4% 0.005 284.8);  /* (was 100) */
   --neutral-900: oklch(97.1% 0.002 284.5);  /* Lightest (was 50) */
 
-  /* Adjusted Brand Colors for Dark Mode */
-  --brand-100: oklch(26.3% 0.048 125);      /* Darker tint */
-  --brand-300: oklch(45.9% 0.083 125);      /* Darker soft */
-  --brand-500: oklch(74% 0.12 125);         /* Keep identity color */
-  --brand-650: oklch(70% 0.12 125);         /* Hover state (lighter in dark) */
-  --brand-700: oklch(65% 0.12 125);         /* Primary (lighter for dark bg) */
-  --brand-750: oklch(60% 0.11 125);         /* Active state */
+  /* Adjusted Brand Colors for Dark Mode - Forest Green */
+  --brand-50: oklch(20% 0.050 142);         /* Extra dark for high-contrast backgrounds */
+  --brand-100: oklch(26% 0.055 142);        /* Darkest tint */
+  --brand-300: oklch(45% 0.075 142);        /* Medium dark */
+  --brand-500: oklch(55% 0.095 142);        /* Lightened for visibility */
+  --brand-650: oklch(50% 0.090 142);        /* Hover state (darker in dark mode) */
+  --brand-700: oklch(60% 0.100 142);        /* Primary (lighter for dark bg) */
+  --brand-750: oklch(55% 0.095 142);        /* Active state */
   --brand-800: var(--brand-300);            /* Use lighter for hover */
 
   /* Adjusted Accent Colors for Dark Mode */
@@ -426,8 +427,8 @@
   --popover-foreground: var(--neutral-900); /* Popover text */
 
   /* Interactive colors */
-  --primary: var(--brand-700);              /* Primary buttons */
-  --primary-foreground: oklch(0.985 0 0);   /* White text */
+  --primary: var(--brand-700);              /* Primary buttons - forest green */
+  --primary-foreground: oklch(12% 0.02 142); /* Very dark green text (12:1 contrast) */
   --secondary: var(--neutral-200);          /* Secondary buttons */
   --secondary-foreground: var(--neutral-900); /* Light text */
   --muted: var(--neutral-200);             /* Muted surfaces */
@@ -443,17 +444,17 @@
   /* Borders and focus */
   --border: oklch(1 0 0 / 15%);            /* Transparent white border */
   --input: oklch(1 0 0 / 15%);             /* Input borders */
-  --ring: var(--brand-500);                /* Focus ring */
+  --ring: oklch(55% 0.095 142);            /* Focus ring - same brightness as light mode */
 
-  /* Success states - dark mode (warmer hue 135°) */
-  --success-subtle: oklch(25% 0.08 135);
-  --success-default: oklch(55% 0.14 135);
-  --success-strong: oklch(65% 0.13 135);
-  --success-bg: oklch(20% 0.06 135);
-  --success-border: oklch(40% 0.1 135);
-  --success-hover: oklch(50% 0.145 135);
-  --success-active: oklch(60% 0.135 135);
-  --success-disabled: oklch(35% 0.05 135);
+  /* Success states - dark mode (emerald hue 155° to differentiate from brand) */
+  --success-subtle: oklch(25% 0.08 155);
+  --success-default: oklch(55% 0.12 155);
+  --success-strong: oklch(65% 0.11 155);
+  --success-bg: oklch(20% 0.06 155);
+  --success-border: oklch(40% 0.10 155);
+  --success-hover: oklch(50% 0.13 155);
+  --success-active: oklch(60% 0.12 155);
+  --success-disabled: oklch(35% 0.05 155);
 
   /* Warning states - dark mode */
   --warning-subtle: oklch(25% 0.09 85);
@@ -529,20 +530,20 @@
   --chart-1-fill: oklch(65% 0.035 60);
   --chart-1-stroke: oklch(85% 0.035 60);       /* Light stroke for dark bg */
 
-  /* Chart 2: MFB Lime Green (Our Data/Primary) - Auto-updates */
-  --chart-2: var(--brand-500);                 /* Semantic reference */
-  --chart-2-fill: oklch(75% 0.130 125);
-  --chart-2-stroke: oklch(88% 0.130 125);
+  /* Chart 2: Forest Green (Our Data/Primary) - Lightened for dark mode */
+  --chart-2: oklch(65% 0.095 142);             /* Lighter forest green */
+  --chart-2-fill: oklch(65% 0.095 142);
+  --chart-2-stroke: oklch(85% 0.095 142);
 
-  /* Chart 3: Terracotta/Clay (Revenue/High Priority) - Lighter */
-  --chart-3: oklch(72% 0.100 76);              /* Lighter clay */
-  --chart-3-fill: oklch(72% 0.100 76);
-  --chart-3-stroke: oklch(85% 0.100 76);
+  /* Chart 3: Terracotta/Clay (Revenue/High Priority) - Adjusted for harmony */
+  --chart-3: oklch(72% 0.095 72);              /* Lighter adjusted clay */
+  --chart-3-fill: oklch(72% 0.095 72);
+  --chart-3-stroke: oklch(85% 0.095 72);
 
-  /* Chart 4: Sage/Olive (Secondary/Neutral) - Lighter */
-  --chart-4: oklch(70% 0.065 120);
-  --chart-4-fill: oklch(70% 0.065 120);
-  --chart-4-stroke: oklch(85% 0.065 120);
+  /* Chart 4: Sage/Olive (Secondary/Neutral) - Harmonized with forest green */
+  --chart-4: oklch(70% 0.060 138);
+  --chart-4-fill: oklch(70% 0.060 138);
+  --chart-4-stroke: oklch(85% 0.060 138);
 
   /* Chart 5: Golden Amber (Warning/Attention) - Lighter */
   --chart-5: oklch(78% 0.118 85);
@@ -569,17 +570,17 @@
   --chart-axis-text: var(--muted-foreground);
   --chart-disabled: oklch(35% 0.008 85);       /* Disabled/muted data */
 
-  /* Sidebar Colors - Dark Mode */
+  /* Sidebar Colors - Dark Mode with Forest Green */
   --sidebar: var(--neutral-100);                     /* Sidebar background */
   --sidebar-foreground: var(--neutral-900);          /* Sidebar text */
-  --sidebar-primary: var(--brand-700);               /* Primary items */
-  --sidebar-primary-foreground: oklch(0.985 0 0);    /* White text */
+  --sidebar-primary: var(--brand-700);               /* Primary items - forest green */
+  --sidebar-primary-foreground: oklch(12% 0.02 142); /* Dark green text */
   --sidebar-accent: var(--neutral-200);              /* Accent/hover */
   --sidebar-accent-foreground: var(--neutral-900);   /* Light text */
   --sidebar-border: oklch(1 0 0 / 10%);             /* Border */
-  --sidebar-ring: var(--brand-500);                  /* Focus ring */
+  --sidebar-ring: oklch(55% 0.095 142);              /* Brightened focus ring */
   --sidebar-active-bg: var(--brand-100);             /* Active background */
-  --sidebar-active-text: var(--brand-700);           /* Active text */
+  --sidebar-active-text: var(--brand-700);           /* Active text - forest green */
   --sidebar-active-indicator: var(--brand-700);      /* Active indicator */
 
   /* Shadow system - 3-tier elevation (dark mode) - stronger for readability */
