@@ -1,79 +1,116 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (AI agent) when working with this repository.
 
 ## Project Overview
 
 Atomic CRM is a full-featured, open-source CRM built with React, shadcn-admin-kit, and Supabase. The application manages contacts, organizations, opportunities (formerly deals), tasks, and notes with a modern, type-safe frontend and a PostgreSQL backend.
 
-NOTE: WE ARE NOT LIVE AND IN PRELAUNCH PHASE
+**Status:** Pre-launch phase (not live)
 
-**Stack**: React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind CSS 4
+**Stack:** React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind CSS 4
 
-## Engineering Constitution
+## Core Principles
 
-Core principles to prevent debates & ensure consistency:
+See [Engineering Constitution](docs/claude/engineering-constitution.md) for complete details.
 
-1. **NO OVER-ENGINEERING**: No circuit breakers, health monitoring, or backward compatibility. Fail fast.
-2. **SINGLE SOURCE OF TRUTH**: One data provider (Supabase), one validation layer (Zod at API boundary)
+**Critical Rules:**
+1. **NO OVER-ENGINEERING**: Fail fast, no circuit breakers
+2. **SINGLE SOURCE OF TRUTH**: Supabase + Zod at API boundary
 3. **BOY SCOUT RULE**: Fix inconsistencies when editing files
-4. **VALIDATION**: Zod schemas at API boundary only (`src/atomic-crm/validation/`)
-5. **FORM STATE DERIVED FROM TRUTH**: React Hook Form `defaultValues` MUST be generated from Zod schema
-   - **Implementation**: Use `zodSchema.partial().parse({})` to extract only fields with `.default()` values
-   - **Define defaults in Zod schema** using `.default()` method for fields with business logic defaults
-   - **Merge schema defaults with runtime values** (e.g., `{ ...schema.partial().parse({}), user_id: identity.id }`)
-   - **Rationale**: Prevents drift between UI and validation, ensures forms initialize in valid state
-   - **Anti-Pattern**: Never use `defaultValue` prop on input components - React Hook Form controlled inputs ignore it
-   - **Reference Implementation**: See `OpportunityCreate.tsx` and `opportunities.ts` validation schema
-6. **TYPESCRIPT**: `interface` for objects/classes, `type` for unions/intersections
-7. **FORMS**: Always use admin layer (`src/components/admin/`) for validation/errors
-8. **COLORS**: Semantic CSS variables only (--primary, --brand-700, --destructive). Never use hex codes or direct OKLCH values in components.
-9. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS (e.g., `20250126000000_migration_name.sql`)
+4. **FORM STATE FROM SCHEMA**: Use `zodSchema.partial().parse({})` for defaults
+5. **SEMANTIC COLORS ONLY**: CSS variables (--primary, --brand-700), never hex codes
+6. **MIGRATIONS**: Timestamp format YYYYMMDDHHMMSS
 
-## Color System
+## Database Workflows ⚠️ CRITICAL
 
-**Brand Identity**: Atomic CRM uses the **MFB "Garden to Table" Theme** - a warm earth-tone OKLCH color system with organic aesthetic and WCAG AA accessibility.
+### Local Development
 
-**Color Architecture**:
-- **Primary Brand**: Lime Green at hue 125° (#7CB342 - --brand-500 identity color)
-- **Primary Actions**: Clay Orange at hue 76° (--accent-clay-600) for buttons - WCAG AA compliant with white text
-- **Accent Colors**: Terracotta (hue 76°), Purple (hue 295°), Teal (hue 180°) for visual hierarchy
-- **Neutrals**: Warm-toned grayscale at hue 85° (--neutral-50 through --neutral-900)
-- **Background**: Warm cream oklch(99% 0.015 85) - #FEFEF9 for organic feel
-- **Typography**: Nunito font family for friendly, approachable design
+```bash
+npm run supabase:local:start   # Start Docker containers
+npx supabase db reset          # Reset local DB (SAFE - local only)
+npm run dev                    # Start dev server
+```
 
-**Chart Palette** (Earth-Tone System):
-- Chart 1: Warm Tan (baseline/benchmark)
-- Chart 2: MFB Lime Green (primary data)
-- Chart 3: Terracotta/Clay (revenue/high priority)
-- Chart 4: Sage/Olive (secondary/neutral)
-- Chart 5: Golden Amber (warning/attention)
-- Chart 6: Sage-Teal (cool counterpoint)
-- Chart 7: Eggplant (deep neutral/inactive)
-- Chart 8: Mushroom Gray (fallback)
+**Access Points:**
+- Studio: http://localhost:54323
+- REST API: http://localhost:54321
+- Email testing: http://localhost:54324
 
-**Tag System** (12 Colors):
-- Original 8: warm, green, teal, blue, purple, yellow, gray, pink (shifted +10° warmer)
-- New 4: clay, sage, amber, cocoa (earth-tone additions)
+### Cloud/Production Deployment ⚠️
 
-**Design Philosophy**:
-- Primary buttons use clay orange (--accent-clay-600) for WCAG AA compliance (5.5:1 contrast)
-- Focus rings use lime green (--brand-500) for brand identity
-- Corner radius: 8px (organic aesthetic)
-- Shadows: Enhanced opacity for cream background visibility
-- Dark mode: Full palette with inverted neutrals and WCAG-compliant contrast
-- All colors defined in OKLCH for perceptual uniformity
+```bash
+npm run db:cloud:push          # SAFE: Shows diff + requires confirmation
+npx supabase db push           # SAFE: Only applies new migrations
+npm run db:cloud:diff          # SAFE: Preview changes (read-only)
+```
 
-**Three-Tier Color Hierarchy**:
-1. **Brand Foundation** (Tier 1): Core brand and accent colors in src/index.css
-2. **Semantic Tokens** (Tier 2): Functional mappings (--primary, --success, --error)
-3. **Component Colors** (Tier 3): Component-specific overrides
+**❌ NEVER RUN ON PRODUCTION:**
+```bash
+npx supabase db reset --linked  # DELETES ALL DATA INCLUDING USERS!
+```
 
-**Migration Dates**:
-- October 2024: Grayscale → Brand-Green system
-- January 2025: **MFB Garden Theme** (earth tones, warm cream, Nunito, 8px radius)
+### Creating Migrations
 
-**Archived Specs**: See `.docs/archive/` and `.docs/plans/mfb-garden-theme/` for design exploration
+**Recommended: Migration-First Approach**
+
+```bash
+# 1. Create migration file
+npx supabase migration new <descriptive_name>
+
+# 2. Edit: supabase/migrations/YYYYMMDDHHMMSS_<name>.sql
+# Add your SQL changes
+
+# 3. Test locally
+npx supabase db reset
+
+# 4. Verify app works
+npm run dev
+
+# 5. Deploy to production
+npm run db:cloud:push
+```
+
+**Example Migration:**
+```sql
+-- supabase/migrations/20250126143000_add_projects_table.sql
+CREATE TABLE projects (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own projects"
+  ON projects FOR SELECT
+  USING (auth.uid() = user_id);
+```
+
+### ⚠️ Auth Schema Exclusion Warning
+
+Supabase's `db diff` and `db dump` commands **exclude the `auth` schema by design**:
+- Triggers on `auth.users` will NOT be captured
+- Functions used by auth triggers must be manually added to migrations
+- Always verify auth-related objects after running `db diff`
+
+**Example: Missing auth trigger**
+```sql
+-- Must manually add to migration if you create auth triggers
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION create_sales_from_user();
+```
+
+### Complete Database Documentation
+
+**Comprehensive Guides:**
+- [Supabase Workflow Overview](docs/supabase/supabase_workflow_overview.md) ⭐ **Complete local + cloud guide**
+- [Production Safety Guide](scripts/db/PRODUCTION-WARNING.md) ⚠️ **Must read before production changes**
+- [Migration Business Rules](docs/database/migration-business-rules.md)
+- [Supabase Commands Reference](docs/supabase/supabase_commands_reference.md)
+- [Troubleshooting Guide](docs/supabase/supabase_troubleshooting.md)
 
 ## Essential Commands
 
