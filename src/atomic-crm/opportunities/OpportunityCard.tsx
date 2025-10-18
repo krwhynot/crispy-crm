@@ -40,18 +40,23 @@ export const OpportunityCardContent = ({
     }
   };
 
-  const getPriorityVariant = (priority: string) => {
+  // Priority badge styling - follows urgency spectrum
+  // Critical (red) → High (amber) → Medium (gray) → Low (outline)
+  const getPriorityBadgeProps = (priority: string) => {
     switch (priority) {
       case "critical":
-        return "destructive";
+        return { variant: "destructive" as const, className: "" };
       case "high":
-        return "default";
+        return {
+          variant: "default" as const,
+          className: "border-transparent bg-[var(--warning-default)] text-white hover:bg-[var(--warning-hover)]"
+        };
       case "medium":
-        return "secondary";
+        return { variant: "secondary" as const, className: "" };
       case "low":
-        return "outline";
+        return { variant: "outline" as const, className: "" };
       default:
-        return "outline";
+        return { variant: "outline" as const, className: "" };
     }
   };
 
@@ -104,8 +109,8 @@ export const OpportunityCardContent = ({
 
           {/* Line 4: Priority */}
           <Badge
-            variant={getPriorityVariant(opportunity.priority)}
-            className="text-xs px-2 py-0.5 capitalize w-fit"
+            variant={getPriorityBadgeProps(opportunity.priority).variant}
+            className={`text-xs px-2 py-0.5 capitalize w-fit ${getPriorityBadgeProps(opportunity.priority).className}`}
           >
             {opportunity.priority}
           </Badge>
