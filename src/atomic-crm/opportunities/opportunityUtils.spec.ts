@@ -315,13 +315,11 @@ describe("Opportunity Utils", () => {
     it("should validate principal organization requirements", () => {
       const principalOrg = {
         organization_type: "principal",
-        is_principal: true,
         name: "Principal Company",
         sector: "Technology",
       };
 
       expect(principalOrg.organization_type).toBe("principal");
-      expect(principalOrg.is_principal).toBe(true);
       expect(principalOrg.name).toBeTruthy();
       expect(principalOrg.sector).toBeTruthy();
     });
@@ -329,13 +327,11 @@ describe("Opportunity Utils", () => {
     it("should validate distributor organization requirements", () => {
       const distributorOrg = {
         organization_type: "distributor",
-        is_distributor: true,
         name: "Distributor Company",
         sector: "Distribution",
       };
 
       expect(distributorOrg.organization_type).toBe("distributor");
-      expect(distributorOrg.is_distributor).toBe(true);
       expect(distributorOrg.name).toBeTruthy();
       expect(distributorOrg.sector).toBeTruthy();
     });
