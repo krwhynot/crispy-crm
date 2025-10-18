@@ -72,8 +72,14 @@ git commit -m "Add feature_name migration"
 # 2. Generate migration from diff
 npx supabase db diff -f feature_name
 
-# 3. Review generated migration
+# 3. ⚠️ CRITICAL: Review generated migration
 cat supabase/migrations/<timestamp>_feature_name.sql
+
+# ⚠️ CHECK: Did you modify auth schema?
+# - Triggers on auth.users?
+# - Functions called by auth triggers?
+# These will NOT be in the generated migration!
+# Manually add them using git history or Dashboard as reference.
 
 # 4. Test locally
 npx supabase db reset
@@ -82,6 +88,52 @@ npx supabase db reset
 git add supabase/migrations/
 git commit -m "Add feature_name"
 ```
+
+---
+
+## ⚠️ CRITICAL: Auth Schema Exclusions
+
+### The Problem
+
+Supabase's `db dump` and `db diff` commands **exclude the `auth` schema by design** for security reasons. This means:
+
+❌ **NOT Captured by Automated Tools:**
+- Triggers on `auth.users`
+- Functions used by auth triggers
+- Policies on auth tables
+- Auth schema modifications
+
+✅ **Captured by Automated Tools:**
+- Public schema tables, functions, policies
+- RLS policies on public tables
+- Indexes, constraints, views
+
+### Real-World Impact
+
+**Example:** The auth triggers issue (Oct 2025)
+```sql
+-- This trigger is CRITICAL for the app to work
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+```
+
+When we consolidated migrations using `npx supabase db dump`, this trigger was **excluded**, causing:
+- ❌ New users had no sales records
+- ❌ App showed blank pages after login
+- ❌ 1:1 mapping between auth.users and sales table broken
+
+### The Solution
+
+**When modifying auth schema objects:**
+
+1. **Create manual migration file** - Never rely on `db diff`
+2. **Document in comments** - Add big warnings like in `20251018211500_restore_auth_triggers_and_backfill.sql`
+3. **Test thoroughly** - Verify auth flow works after migration
+4. **Preserve separately** - Never delete these migrations when consolidating
+
+**Reference:** See `supabase/migrations/20251018211500_restore_auth_triggers_and_backfill.sql` for example.
 
 ---
 
@@ -301,7 +353,7 @@ ALTER TABLE users
 
 ## 🚨 What We Learned
 
-### The Mistake
+### Mistake #1: Production Database Reset
 
 ```bash
 npx supabase db reset --linked  # ❌ This destroyed all users
@@ -313,8 +365,7 @@ npx supabase db reset --linked  # ❌ This destroyed all users
 3. Lost all production data
 4. Re-applied migrations to empty database
 
-### The Correct Approach
-
+**The Correct Approach:**
 ```bash
 npx supabase db push  # ✅ Only applies new migrations
 ```
@@ -324,6 +375,34 @@ npx supabase db push  # ✅ Only applies new migrations
 2. Applies only missing migrations
 3. Preserves all existing data
 4. Keeps user accounts intact
+
+### Mistake #2: Migration Consolidation Without Auth Triggers
+
+```bash
+# ❌ This loses auth triggers
+rm supabase/migrations/*
+npx supabase db dump --linked --schema public > migrations/new_base.sql
+```
+
+**What happened:**
+1. Dumped public schema only (auth excluded)
+2. Lost triggers on auth.users
+3. New users couldn't get sales records
+4. App showed blank pages after login
+
+**The Correct Approach:**
+```bash
+# ✅ Manual migration for auth triggers
+npx supabase migration new restore_auth_triggers
+# Then manually add trigger creation SQL
+# Reference: supabase/migrations/20251018211500_restore_auth_triggers_and_backfill.sql
+```
+
+**What this does:**
+1. Preserves auth schema modifications
+2. Documents triggers in version control
+3. Ensures 1:1 user-sales mapping works
+4. App functions correctly after signup
 
 ---
 

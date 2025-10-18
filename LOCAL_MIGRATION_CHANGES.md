@@ -83,6 +83,21 @@ project_id = "aaqnanddcqvfiwhshndl"
 
 ## Common Commands
 
+### Create New Migration
+```bash
+# 1. Create migration file
+npx supabase migration new <migration_name>
+
+# 2. Edit the generated SQL file
+# Location: supabase/migrations/YYYYMMDDHHMMSS_<migration_name>.sql
+
+# 3. Apply locally and test
+npx supabase db reset
+npm run dev
+```
+
+⚠️ **Auth Schema Warning**: If your migration modifies `auth.users` triggers or functions, manually add those changes. `db diff` won't capture them!
+
 ### Reset Database (Applies All Migrations + Seed Data)
 ```bash
 npx supabase db reset
@@ -96,6 +111,16 @@ This will:
 ### Check Migration Status
 ```bash
 npx supabase migration list
+```
+
+### Push to Cloud (Production)
+```bash
+# Use safe script with confirmations
+npm run db:cloud:push
+
+# Or manual (shows diff first)
+npx supabase db diff --linked
+npx supabase db push
 ```
 
 ### Access Supabase Studio
