@@ -895,3 +895,10 @@
 [2025-10-18 10:24:06] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Header.tsx
 [2025-10-18 10:26:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Header.tsx
 [2025-10-18 10:47:22] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104712_remove_deprecated_organization_flags.sql
+[2025-10-18 10:47:41] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104713_remove_unused_feature_columns.sql
+[2025-10-18 10:47:56] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104714_resolve_field_name_mismatches.sql
+[2025-10-18 10:48:48] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104712_remove_deprecated_organization_flags.sql
+[2025-10-18 10:49:45] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104713_remove_unused_feature_columns.sql
+[2025-10-18 10:52:02] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104712_remove_deprecated_organization_flags.sql
+[2025-10-18 10:52:22] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104713_remove_unused_feature_columns.sql
+[2025-10-18 10:52:23] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251018104713_remove_unused_feature_columns.sql
