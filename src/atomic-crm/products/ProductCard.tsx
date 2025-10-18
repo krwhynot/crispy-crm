@@ -16,9 +16,7 @@ export const ProductCard = (props: { record?: Product }) => {
   const statusColors: Record<string, string> = {
     active: "default",
     discontinued: "destructive",
-    seasonal: "outline",
     coming_soon: "secondary",
-    limited_availability: "warning", // Custom orange variant
   };
 
   return (
@@ -46,11 +44,8 @@ export const ProductCard = (props: { record?: Product }) => {
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
               {record.status && (
                 <Badge
-                  variant={statusColors[record.status] === "warning" ? "outline" : statusColors[record.status] as any}
-                  className={cn(
-                    "text-xs px-1 py-0",
-                    statusColors[record.status] === "warning" && "border-amber-600 bg-amber-50 text-amber-900 dark:bg-amber-950 dark:text-amber-200"
-                  )}
+                  variant={statusColors[record.status] as any}
+                  className="text-xs px-1 py-0"
                 >
                   {record.status.replace(/_/g, ' ')}
                 </Badge>

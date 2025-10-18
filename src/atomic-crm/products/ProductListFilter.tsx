@@ -1,16 +1,24 @@
-import { Package, Tag, DollarSign, Building2, TrendingUp } from "lucide-react";
-import { FilterLiveForm } from "ra-core";
+import { Package, Tag, DollarSign, Building2 } from "lucide-react";
+import { FilterLiveForm, useGetList } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
+import type { Organization } from "../types";
 
 export const ProductListFilter = () => {
+  // Fetch principal organizations dynamically
+  // Refetch every 10 seconds to pick up new principals
+  const { data: principals } = useGetList<Organization>("organizations", {
+    filter: { organization_type: "principal" },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+    meta: { refetchInterval: 10000 }, // Refresh every 10 seconds
+  });
   const productStatuses = [
     { id: "active", name: "Active" },
     { id: "discontinued", name: "Discontinued" },
-    { id: "pending", name: "Pending" },
-    { id: "seasonal", name: "Seasonal" },
+    { id: "coming_soon", name: "Coming Soon" },
   ];
 
   const categories = [
@@ -29,12 +37,6 @@ export const ProductListFilter = () => {
     { id: "100-500", name: "$100 - $500" },
     { id: "500-1000", name: "$500 - $1000" },
     { id: "1000+", name: "Over $1000" },
-  ];
-
-  const promotionalStatus = [
-    { id: "promoted_this_week", name: "Promoted This Week" },
-    { id: "needs_promotion", name: "Needs Promotion" },
-    { id: "never_promoted", name: "Never Promoted" },
   ];
 
   return (
@@ -85,30 +87,21 @@ export const ProductListFilter = () => {
         ))}
       </FilterCategory>
 
-      <FilterCategory
-        icon={<TrendingUp className="h-4 w-4" />}
-        label="Promotional Status"
-      >
-        {promotionalStatus.map((status) => (
-          <ToggleFilterButton
-            key={status.id}
-            className="w-full justify-between"
-            label={status.name}
-            value={{ promotional_status: status.id }}
-          />
-        ))}
-      </FilterCategory>
-
-      <FilterCategory
-        icon={<Building2 className="h-4 w-4" />}
-        label="Principal"
-      >
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="TechCorp Solutions"
-          value={{ principal_id: 3 }}
-        />
-      </FilterCategory>
+      {principals && principals.length > 0 && (
+        <FilterCategory
+          icon={<Building2 className="h-4 w-4" />}
+          label="Principal/Supplier"
+        >
+          {principals.map((principal) => (
+            <ToggleFilterButton
+              key={principal.id}
+              className="w-full justify-between"
+              label={principal.name}
+              value={{ principal_id: principal.id }}
+            />
+          ))}
+        </FilterCategory>
+      )}
     </div>
   );
 };
