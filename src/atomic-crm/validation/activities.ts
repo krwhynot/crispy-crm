@@ -29,6 +29,21 @@ export const interactionTypeSchema = z.enum([
 // Sentiment enum
 export const sentimentSchema = z.enum(["positive", "neutral", "negative"]);
 
+// Interaction type options for UI components
+export const INTERACTION_TYPE_OPTIONS = [
+  { value: "call", label: "Call" },
+  { value: "email", label: "Email" },
+  { value: "meeting", label: "Meeting" },
+  { value: "demo", label: "Demo" },
+  { value: "proposal", label: "Proposal" },
+  { value: "follow_up", label: "Follow Up" },
+  { value: "trade_show", label: "Trade Show" },
+  { value: "site_visit", label: "Site Visit" },
+  { value: "contract_review", label: "Contract Review" },
+  { value: "check_in", label: "Check In" },
+  { value: "social", label: "Social" },
+] as const;
+
 // Base schema without refinements - can be extended
 const baseActivitiesSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
