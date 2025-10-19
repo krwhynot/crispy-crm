@@ -48,7 +48,7 @@ const isLinkedinUrl = z.string().refine(
 // per Engineering Constitution - all validation happens at API boundary only
 export const organizationSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
-  name: z.string().min(1, "Company name is required"),
+  name: z.string().min(1, "Organization name is required"),
   logo: z.any().optional().nullable(), // RAFile type
   parent_id: z.union([z.string(), z.number()]).optional().nullable(), // Maps to parent_organization_id in database
   // Updated field names to match database schema

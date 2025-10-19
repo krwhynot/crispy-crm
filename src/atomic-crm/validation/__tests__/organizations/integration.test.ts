@@ -52,7 +52,7 @@ describe("Organization Validation Functions", () => {
         expect.fail("Should have thrown validation error");
       } catch (error: any) {
         expect(error.errors.linkedin_url).toBe(
-          "Must be a valid LinkedIn company URL",
+          "Must be a valid LinkedIn organization URL",
         );
       }
     });
@@ -138,7 +138,7 @@ describe("Organization Validation Functions", () => {
       const testCases = [
         {
           data: { name: "", organization_type: "customer" },
-          expectedError: "Company name is required",
+          expectedError: "Organization name is required",
           field: "name",
         },
         {
