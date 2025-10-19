@@ -245,7 +245,7 @@ describe('Data Provider Schema Validation', () => {
         'contacts',
         'contacts_summary',
         'opportunities',
-        'companies',
+        'organizations',
         'activities',
         'tasks',
         'notes',

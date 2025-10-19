@@ -418,7 +418,7 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
     });
   });
 
-  it('should filter principal companies', async () => {
+  it('should filter principal organizations', async () => {
     render(
       <TestWrapper>
         <OrganizationList />
@@ -446,7 +446,7 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
     });
   });
 
-  it('should filter distributor companies', async () => {
+  it('should filter distributor organizations', async () => {
     render(
       <TestWrapper>
         <OrganizationList />
@@ -684,7 +684,7 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
     });
   });
 
-  it('should display special indicators for principal and distributor companies', async () => {
+  it('should display special indicators for principal and distributor organizations', async () => {
     render(
       <TestWrapper>
         <OrganizationList />
@@ -699,7 +699,7 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
       const distributorRow = screen.getByText('Tech Distributors Ltd').closest('tr');
       expect(distributorRow).toBeInTheDocument();
 
-      // These companies should have special visual indicators
+      // These organizations should have special visual indicators
       expect(screen.getByText('Principal')).toBeInTheDocument();
       expect(screen.getByText('Distributor')).toBeInTheDocument();
     });
