@@ -258,7 +258,7 @@ function getValidFields(table: string): string[] {
       'created_at', 'updated_at'
     ],
     'opportunities': [
-      'id', 'name', 'stage', 'amount', 'company_id', 'probability',
+      'id', 'name', 'stage', 'amount', 'customer_organization_id', 'probability',
       'expected_close_date'
     ]
   };

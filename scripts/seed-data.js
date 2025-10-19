@@ -83,7 +83,6 @@ const LEAD_SOURCES = [
   "cold_call",
   "email_campaign",
   "social_media",
-  "partner",
   "existing_customer",
 ];
 
