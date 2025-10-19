@@ -6,10 +6,18 @@ import type { Company, OrganizationType } from "../types";
 const organizationTypeLabels: Record<OrganizationType, string> = {
   customer: "Customer",
   prospect: "Prospect",
-  partner: "Partner",
   principal: "Principal",
   distributor: "Distributor",
   unknown: "Unknown",
+};
+
+// Organization type colors using MFB Garden to Table theme
+const organizationTypeColors: Record<OrganizationType, string> = {
+  customer: "bg-[color:var(--tag-warm-bg)] text-[color:var(--tag-warm-fg)]",
+  prospect: "bg-[color:var(--tag-sage-bg)] text-[color:var(--tag-sage-fg)]",
+  principal: "bg-[color:var(--tag-purple-bg)] text-[color:var(--tag-purple-fg)]",
+  distributor: "bg-[color:var(--tag-teal-bg)] text-[color:var(--tag-teal-fg)]",
+  unknown: "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]",
 };
 
 // Priority colors for visual distinction using semantic state colors
@@ -29,10 +37,12 @@ export const OrganizationType = () => {
     <div className="flex items-center gap-2">
       {/* Organization Type */}
       {record.organization_type && (
-        <span className="text-sm font-medium text-[color:var(--text-subtle)]">
+        <Badge
+          className={`text-xs px-2 py-0.5 ${organizationTypeColors[record.organization_type] || organizationTypeColors.unknown}`}
+        >
           {organizationTypeLabels[record.organization_type] ||
             record.organization_type}
-        </span>
+        </Badge>
       )}
 
       {/* Priority Badge */}
@@ -56,7 +66,9 @@ export const OrganizationTypeChip = () => {
   if (!record?.organization_type) return null;
 
   return (
-    <Badge variant="secondary" className="text-xs">
+    <Badge
+      className={`text-xs px-1 py-0 ${organizationTypeColors[record.organization_type] || organizationTypeColors.unknown}`}
+    >
       {organizationTypeLabels[record.organization_type]}
     </Badge>
   );
