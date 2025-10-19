@@ -50,8 +50,7 @@ describe("Organization Business Rules and Edge Cases", () => {
     it("should handle organization relationships", () => {
       const orgWithRelationships = {
         name: "Connected Org",
-        type: "partner",
-        partner_level: "Gold",
+        type: "principal",
         referral_source: "existing_customer",
         account_manager: "user-123",
       };
