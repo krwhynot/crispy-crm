@@ -187,7 +187,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
         });
       }
 
-      if (resource === "companies") {
+      if (resource === "organizations") {
         return Promise.resolve({
           data: mockOrganizations,
           total: mockOrganizations.length,
@@ -198,7 +198,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     });
 
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === "companies") {
+      if (resource === "organizations") {
         return Promise.resolve({
           data: mockOrganizations.filter((org) => params.ids.includes(org.id)),
         });

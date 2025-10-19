@@ -981,6 +981,11 @@ class SeedDataGenerator {
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
         console.log(chalk.gray(`  Inserting ${this.generatedData.organizations.length} organizations...`));
+
+        // Debug: Log first organization to inspect data structure
+        console.log(chalk.yellow("DEBUG - First organization object:"));
+        console.log(JSON.stringify(this.generatedData.organizations[0], null, 2));
+
         const { data: insertedOrgs, error } = await this.supabase
           .from("organizations")
           .insert(this.generatedData.organizations)

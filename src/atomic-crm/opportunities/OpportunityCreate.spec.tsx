@@ -126,7 +126,7 @@ describe('OpportunityCreate - Lifecycle Stages and B2B Features', () => {
 
     // Mock getList for organizations
     mockDataProvider.getList.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
+      if (resource === 'organizations') {
         return Promise.resolve({
           data: mockOrganizations,
           total: mockOrganizations.length,
