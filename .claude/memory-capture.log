@@ -1180,3 +1180,5 @@
 [2025-10-19 17:50:05] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/pages/WhatsNew.tsx
 [2025-10-19 17:50:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/organizations/edge-cases.test.ts
 [2025-10-19 17:56:10] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251019000000_remove_partner_organization_type.sql
+[2025-10-19 18:00:19] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251019000000_remove_partner_organization_type.sql
+[2025-10-19 18:01:18] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251019000000_remove_partner_organization_type.sql
