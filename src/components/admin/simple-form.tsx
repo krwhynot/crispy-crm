@@ -33,7 +33,7 @@ export const FormToolbar = ({
   <div
     {...rest}
     className={cn(
-      "sticky pt-4 pb-4 md:block md:pt-2 md:pb-0 bottom-0 bg-white",
+      "sticky pt-4 pb-4 px-6 md:block md:pt-2 md:pb-0 bottom-0 bg-white",
       className,
     )}
     role="toolbar"
