@@ -24,12 +24,14 @@ export const ContactListFilter = () => {
   return (
     <div className="w-52 min-w-52 order-first">
       <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search name, company..." />
       </FilterLiveForm>
 
-      <FilterCategory label="Last activity" icon={<Clock />}>
+      <div className="border-b border-border my-2" />
+
+      <FilterCategory label="Last activity" icon={<Clock className="h-4 w-4" />}>
         <ToggleFilterButton
           className="w-full justify-between"
           label="Today"
@@ -75,7 +77,7 @@ export const ContactListFilter = () => {
         />
       </FilterCategory>
 
-      <FilterCategory label="Tags" icon={<Tag />}>
+      <FilterCategory label="Tags" icon={<Tag className="h-4 w-4" />}>
         {data &&
           data.map((record) => (
             <ToggleFilterButton
