@@ -44,11 +44,14 @@ export const ToggleFilterButton = ({
       className={cn(
         "cursor-pointer",
         "flex flex-row items-center gap-2 px-2.5",
+        "min-w-0", // Allow text truncation
         className,
       )}
       size={size}
     >
-      {typeof label === "string" ? translate(label, { _: label }) : label}
+      <span className="truncate">
+        {typeof label === "string" ? translate(label, { _: label }) : label}
+      </span>
       {isSelected && (multiselect ? <Check className="h-4 w-4 opacity-50" /> : <CircleX className="opacity-50" />)}
     </Button>
   );
