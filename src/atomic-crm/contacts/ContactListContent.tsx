@@ -47,18 +47,19 @@ export const ContactListContent = () => {
                 className="relative z-10 shrink-0"
               />
               <Avatar className="shrink-0" />
-              <div className="flex-1 min-w-0 flex items-baseline gap-1.5 flex-wrap">
+              <div className="flex-1 min-w-0">
                 {/* Name becomes the semantic link with stretched overlay */}
                 <Link
                   to={`/contacts/${contact.id}/show`}
-                  className="font-medium text-sm text-primary hover:underline focus:outline-none shrink-0"
+                  className="font-medium text-sm text-primary hover:underline focus:outline-none block"
                 >
                   {`${contact.first_name} ${contact.last_name ?? ""}`}
                   {/* Stretched link overlay: makes entire card clickable */}
                   <span className="absolute inset-0" aria-hidden="true" />
                 </Link>
-                <span className="text-xs text-[color:var(--text-subtle)] opacity-50">·</span>
-                <div className="text-xs text-[color:var(--text-subtle)] flex items-center gap-1 flex-wrap">
+
+                {/* Position info on second line */}
+                <div className="text-xs text-[color:var(--text-subtle)] flex items-center gap-1 flex-wrap mt-0.5">
                   {/* Group Title & Department together */}
                   {contact.title && <span>{contact.title}</span>}
                   {contact.title && contact.department && <span>, </span>}

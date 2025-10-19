@@ -14,12 +14,12 @@ export const SearchInput = (inProps: SearchInputProps) => {
   }
 
   return (
-    <div className="flex flex-grow relative mt-auto w-fit">
+    <div className="relative w-full">
       <TextInput
         label={false}
         helperText={false}
         placeholder={translate("ra.action.search")}
-        className="pr-10"
+        className="pr-10 w-full"
         {...rest}
       />
       <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[color:var(--text-subtle)] pointer-events-none" />
