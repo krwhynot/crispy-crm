@@ -423,7 +423,7 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getResourceName(resource);
 
       // Prepare data for validation
-      let dataToProcess = { ...params.data, id: params.id };
+      const dataToProcess = { ...params.data, id: params.id };
 
       // Validate and process data
       const processedData = await processForDatabase(

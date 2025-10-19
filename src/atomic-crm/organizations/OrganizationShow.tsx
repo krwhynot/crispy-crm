@@ -1,5 +1,5 @@
 import { formatDistance } from "date-fns";
-import { UserPlus } from "lucide-react";
+import { UserPlus, Briefcase } from "lucide-react";
 import {
   RecordContextProvider,
   ShowBase,
@@ -123,7 +123,13 @@ const OrganizationShowContent = () => {
                   >
                     <OpportunitiesIterator />
                   </ReferenceManyField>
-                ) : null}
+                ) : (
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-row justify-end space-x-2 mt-1">
+                      <CreateRelatedOpportunityButton />
+                    </div>
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </CardContent>
@@ -200,6 +206,26 @@ const CreateRelatedContactButton = () => {
       >
         <UserPlus className="h-4 w-4" />
         Add contact
+      </RouterLink>
+    </Button>
+  );
+};
+
+const CreateRelatedOpportunityButton = () => {
+  const organization = useRecordContext<Company>();
+  return (
+    <Button variant="outline" asChild size="sm" className="h-9">
+      <RouterLink
+        to="/opportunities/create"
+        state={
+          organization
+            ? { record: { customer_organization_id: organization.id } }
+            : undefined
+        }
+        className="flex items-center gap-2"
+      >
+        <Briefcase className="h-4 w-4" />
+        Add opportunity
       </RouterLink>
     </Button>
   );
