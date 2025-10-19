@@ -66,37 +66,6 @@ const mockOrganizations = [
   },
   {
     id: 4,
-    name: 'Partner Services Co',
-    sector: 'Services',
-    organization_type: 'partner',
-    priority: 'C',
-    website: 'https://partnerservices.com',
-    phone_number: '+1-555-0400',
-    address: '321 Service Road',
-    city: 'Denver',
-    zipcode: '80202',
-    stateAbbr: 'CO',
-    revenue: 5000000,
-    size: 'Small',
-    parent_organization_id: null,
-    created_at: '2024-02-01T10:00:00Z'
-  },
-  {
-    id: 5,
-    name: 'Prospect Alliance Inc',
-    sector: 'Technology',
-    organization_type: 'prospect',
-    priority: 'B',
-    website: 'https://prospectalliance.com',
-    phone_number: '+1-555-0500',
-    address: '555 Prospect Plaza',
-    city: 'Seattle',
-    zipcode: '98101',
-    stateAbbr: 'WA',
-    revenue: 15000000,
-    size: 'Medium',
-    parent_organization_id: null,
-    created_at: '2024-01-25T10:00:00Z'
   }
 ];
 
@@ -641,7 +610,7 @@ describe('Organization Type Support', () => {
       const newOrganizationData = {
         name: 'New Tech Partner',
         sector: 'Technology',
-        organization_type: 'partner',
+        organization_type: 'prospect',
         priority: 'B',
         website: 'https://newtechpartner.com',
         revenue: 10000000,
@@ -660,7 +629,7 @@ describe('Organization Type Support', () => {
     it('should update organization type', async () => {
       const updatedOrganizationData = {
         ...mockOrganizations[0],
-        organization_type: 'partner', // Changed from customer to partner
+        organization_type: 'prospect', // Changed from customer to partner
         priority: 'B' // Changed priority as well
       };
 

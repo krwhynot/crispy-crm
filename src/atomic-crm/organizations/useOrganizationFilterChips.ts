@@ -11,7 +11,6 @@ interface FilterChip {
 const organizationTypeMap = {
   customer: "Customer",
   prospect: "Prospect",
-  partner: "Partner",
   principal: "Principal",
   distributor: "Distributor",
   unknown: "Unknown",

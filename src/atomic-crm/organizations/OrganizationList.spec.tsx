@@ -61,34 +61,6 @@ const mockOrganizations = [
   },
   {
     id: 4,
-    name: 'Partner Services Co',
-    sector: 'Services',
-    organization_type: 'partner',
-    priority: 'C',
-    size: 'Small',
-    revenue: 5000000,
-    website: 'https://partnerservices.com',
-    phone_number: '+1-555-0400',
-    address: '321 Service Road',
-    city: 'Denver',
-    stateAbbr: 'CO',
-    created_at: '2024-02-01T10:00:00Z',
-    sales_id: 1
-  },
-  {
-    id: 5,
-    name: 'Prospect Tech Inc',
-    sector: 'Technology',
-    organization_type: 'prospect',
-    priority: 'B',
-    size: 'Medium',
-    revenue: 15000000,
-    website: 'https://prospecttech.com',
-    phone_number: '+1-555-0500',
-    address: '555 Prospect Plaza',
-    city: 'Seattle',
-    stateAbbr: 'WA',
-    created_at: '2024-01-25T10:00:00Z',
     sales_id: 2
   }
 ];
@@ -285,7 +257,7 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
       expect(screen.getByText('Customer')).toBeInTheDocument();
       expect(screen.getByText('Principal')).toBeInTheDocument();
       expect(screen.getByText('Distributor')).toBeInTheDocument();
-      expect(screen.getByText('Partner')).toBeInTheDocument();
+      
       expect(screen.getByText('Prospect')).toBeInTheDocument();
     });
   });

@@ -94,7 +94,6 @@ const FB_ORGANIZATION_TYPES = [
   "principal",
   "distributor",
   "prospect",
-  "partner",
   "unknown",
 ];
 

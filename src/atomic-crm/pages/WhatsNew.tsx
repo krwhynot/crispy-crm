@@ -119,7 +119,7 @@ const newFeatures: FeatureTour[] = [
       {
         title: "Organization Types",
         description:
-          "Classify organizations as Customer, Principal, Distributor, Prospect, Vendor, Partner, or Unknown.",
+          "Classify organizations as Customer, Principal, Distributor, Prospect, or Unknown.",
         action: "Review your top organizations and set appropriate types",
         tip: "Types help with filtering and reporting on different relationship categories.",
       },
