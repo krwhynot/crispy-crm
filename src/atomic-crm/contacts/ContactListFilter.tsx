@@ -13,6 +13,7 @@ import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { getTagColorClass } from "../tags/tag-colors";
+import { SidebarActiveFilters } from "./SidebarActiveFilters";
 
 export const ContactListFilter = () => {
   const { identity } = useGetIdentity();
@@ -24,13 +25,20 @@ export const ContactListFilter = () => {
   return (
     <div className="w-52 min-w-52 order-first">
       <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
+      {/* Search - Always visible */}
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search contacts..." />
       </FilterLiveForm>
 
-      <div className="border-b border-border my-2" />
+      {/* Active Filters - Conditional */}
+      <SidebarActiveFilters />
 
+      {/* Divider */}
+      <div className="border-b border-border" />
+
+      {/* Collapsible Filter Sections */}
+      <div className="flex flex-col gap-2">
       <FilterCategory label="Last activity" icon={<Clock className="h-4 w-4" />}>
         <ToggleFilterButton
           className="w-full justify-between"
@@ -110,6 +118,7 @@ export const ContactListFilter = () => {
           value={{ sales_id: identity?.id }}
         />
       </FilterCategory>
+      </div>
         </div>
       </Card>
     </div>
