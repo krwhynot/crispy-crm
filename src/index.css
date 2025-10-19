@@ -210,33 +210,33 @@
   --error-active: oklch(54% 0.132 25);
   --error-disabled: oklch(72% 0.070 25);
 
-  /* Tag colors - improved readability with better contrast and chroma */
-  --tag-warm-bg: oklch(90% 0.055 80);
-  --tag-warm-fg: oklch(25% 0.02 85);
-  --tag-green-bg: oklch(91% 0.045 155);
-  --tag-green-fg: oklch(25% 0.02 85);
-  --tag-teal-bg: oklch(89% 0.04 200);
-  --tag-teal-fg: oklch(25% 0.02 85);
-  --tag-blue-bg: oklch(88% 0.05 270);
-  --tag-blue-fg: oklch(25% 0.02 85);
-  --tag-purple-bg: oklch(90% 0.05 305);
-  --tag-purple-fg: oklch(25% 0.02 85);
-  --tag-yellow-bg: oklch(95% 0.07 110);
-  --tag-yellow-fg: oklch(25% 0.02 85);
-  --tag-gray-bg: oklch(92% 0.01 85);
-  --tag-gray-fg: oklch(25% 0.02 85);
-  --tag-pink-bg: oklch(91% 0.06 15);
-  --tag-pink-fg: oklch(25% 0.02 85);
+  /* Tag colors - V2: More aggressive contrast for better readability */
+  --tag-warm-bg: oklch(87% 0.07 80);
+  --tag-warm-fg: oklch(20% 0.02 85);
+  --tag-green-bg: oklch(88% 0.06 155);
+  --tag-green-fg: oklch(20% 0.02 85);
+  --tag-teal-bg: oklch(86% 0.05 200);
+  --tag-teal-fg: oklch(20% 0.02 85);
+  --tag-blue-bg: oklch(85% 0.06 270);
+  --tag-blue-fg: oklch(20% 0.02 85);
+  --tag-purple-bg: oklch(87% 0.06 305);
+  --tag-purple-fg: oklch(20% 0.02 85);
+  --tag-yellow-bg: oklch(92% 0.10 110);
+  --tag-yellow-fg: oklch(20% 0.02 85);
+  --tag-gray-bg: oklch(90% 0.015 85);
+  --tag-gray-fg: oklch(20% 0.02 85);
+  --tag-pink-bg: oklch(89% 0.07 15);
+  --tag-pink-fg: oklch(20% 0.02 85);
 
-  /* Earth-tone tags with improved saturation */
-  --tag-clay-bg: oklch(88% 0.06 50);
-  --tag-clay-fg: oklch(25% 0.02 85);
-  --tag-sage-bg: oklch(90% 0.04 120);
-  --tag-sage-fg: oklch(25% 0.02 85);
-  --tag-amber-bg: oklch(93% 0.065 85);
-  --tag-amber-fg: oklch(25% 0.02 85);
-  --tag-cocoa-bg: oklch(87% 0.05 75);
-  --tag-cocoa-fg: oklch(25% 0.02 85);
+  /* Earth-tone tags with stronger saturation */
+  --tag-clay-bg: oklch(85% 0.075 50);
+  --tag-clay-fg: oklch(20% 0.02 85);
+  --tag-sage-bg: oklch(87% 0.05 120);
+  --tag-sage-fg: oklch(20% 0.02 85);
+  --tag-amber-bg: oklch(90% 0.08 85);
+  --tag-amber-fg: oklch(20% 0.02 85);
+  --tag-cocoa-bg: oklch(83% 0.06 75);
+  --tag-cocoa-fg: oklch(20% 0.02 85);
 
   /* Loading states */
   --loading-surface: oklch(97% 0 0);
@@ -489,33 +489,33 @@
   --error-active: oklch(60% 0.143 25);
   --error-disabled: oklch(40% 0.06 25);
 
-  /* Tag colors - dark mode (shifted +10° warmer) */
-  --tag-warm-bg: oklch(35% 0.08 79.5);
-  --tag-warm-fg: oklch(95% 0.02 79.5);
-  --tag-green-bg: oklch(32% 0.07 159.3);
-  --tag-green-fg: oklch(95% 0.02 159.3);
-  --tag-teal-bg: oklch(33% 0.07 206.7);
-  --tag-teal-fg: oklch(95% 0.02 206.7);
-  --tag-blue-bg: oklch(34% 0.09 275.6);
-  --tag-blue-fg: oklch(95% 0.02 275.6);
-  --tag-purple-bg: oklch(35% 0.09 304.6);
-  --tag-purple-fg: oklch(95% 0.02 304.6);
-  --tag-yellow-bg: oklch(38% 0.08 118.8);
-  --tag-yellow-fg: oklch(95% 0.02 118.8);
-  --tag-gray-bg: oklch(30% 0 0);
-  --tag-gray-fg: oklch(95% 0 0);
-  --tag-pink-bg: oklch(35% 0.09 0.2);
-  --tag-pink-fg: oklch(95% 0.02 0.2);
+  /* Tag colors - dark mode with improved contrast */
+  --tag-warm-bg: oklch(36% 0.08 80);
+  --tag-warm-fg: oklch(95% 0.02 85);
+  --tag-green-bg: oklch(34% 0.07 155);
+  --tag-green-fg: oklch(95% 0.02 85);
+  --tag-teal-bg: oklch(33% 0.07 200);
+  --tag-teal-fg: oklch(95% 0.02 85);
+  --tag-blue-bg: oklch(32% 0.08 270);
+  --tag-blue-fg: oklch(95% 0.02 85);
+  --tag-purple-bg: oklch(36% 0.08 305);
+  --tag-purple-fg: oklch(95% 0.02 85);
+  --tag-yellow-bg: oklch(40% 0.09 110);
+  --tag-yellow-fg: oklch(95% 0.02 85);
+  --tag-gray-bg: oklch(35% 0.01 85);
+  --tag-gray-fg: oklch(95% 0.02 85);
+  --tag-pink-bg: oklch(36% 0.09 15);
+  --tag-pink-fg: oklch(95% 0.02 85);
 
-  /* New earth-tone tags - dark mode */
-  --tag-clay-bg: oklch(32% 0.08 48);
-  --tag-clay-fg: oklch(95% 0.02 48);
-  --tag-sage-bg: oklch(34% 0.06 112);
-  --tag-sage-fg: oklch(95% 0.02 112);
-  --tag-amber-bg: oklch(36% 0.08 80);
-  --tag-amber-fg: oklch(95% 0.02 80);
-  --tag-cocoa-bg: oklch(30% 0.08 74);
-  --tag-cocoa-fg: oklch(95% 0.02 74);
+  /* Earth-tone tags - dark mode with improved saturation */
+  --tag-clay-bg: oklch(32% 0.09 50);
+  --tag-clay-fg: oklch(95% 0.02 85);
+  --tag-sage-bg: oklch(35% 0.07 120);
+  --tag-sage-fg: oklch(95% 0.02 85);
+  --tag-amber-bg: oklch(38% 0.09 85);
+  --tag-amber-fg: oklch(95% 0.02 85);
+  --tag-cocoa-bg: oklch(30% 0.08 75);
+  --tag-cocoa-fg: oklch(95% 0.02 85);
 
   /* Loading states - dark mode */
   --loading-surface: oklch(20% 0 0);
