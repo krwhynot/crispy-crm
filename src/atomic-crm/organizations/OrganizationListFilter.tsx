@@ -24,6 +24,16 @@ export const OrganizationListFilter = () => {
     { id: "unknown", name: "Unknown" },
   ];
 
+  // Organization type colors using MFB Garden to Table theme
+  const organizationTypeColors: Record<string, string> = {
+    customer: "secondary",      // Warm tan - welcoming
+    prospect: "secondary",      // Sage/olive - growth
+    partner: "secondary",       // Teal - collaborative
+    principal: "default",       // Eggplant/purple - important/primary
+    distributor: "secondary",   // Golden amber - active/connected
+    unknown: "outline",         // Mushroom gray - neutral
+  };
+
   const priorities = [
     { id: "A", name: "A - High" },
     { id: "B", name: "B - Medium-High" },
