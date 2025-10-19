@@ -26,7 +26,7 @@ export const ContactListFilter = () => {
       <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
         <div className="flex flex-col gap-2">
       <FilterLiveForm>
-        <SearchInput source="q" placeholder="Search name, company..." />
+        <SearchInput source="q" placeholder="Search contacts..." />
       </FilterLiveForm>
 
       <div className="border-b border-border my-2" />
