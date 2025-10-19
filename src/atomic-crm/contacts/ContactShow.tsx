@@ -2,14 +2,12 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShowBase, useShowContext } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { NoteCreate, NotesIterator } from "../notes";
 import type { Contact } from "../types";
 import { Avatar } from "./Avatar";
 import { ContactAside } from "./ContactAside";
-import { ContactOpportunities } from "./ContactOpportunities";
 
 export const ContactShow = () => (
   <ShowBase>
