@@ -1,4 +1,4 @@
-import { Linkedin, Mail, Phone } from "lucide-react";
+import { Briefcase, Building2, Linkedin, Mail, Phone } from "lucide-react";
 import { useRecordContext, WithRecord } from "ra-core";
 import { AddTask } from "../tasks/AddTask";
 import { TasksIterator } from "../tasks/TasksIterator";
@@ -85,6 +85,29 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           })
           .filter(Boolean)}
       </AsideSection>
+
+      <AsideSection title="Position">
+        <div className="flex flex-col gap-1">
+          {record.organization_id && (
+            <div className="text-base font-bold text-[color:var(--text)]">
+              <ReferenceField source="organization_id" reference="organizations">
+                <TextField source="name" />
+              </ReferenceField>
+            </div>
+          )}
+          {record.department && (
+            <div className="text-sm font-semibold text-[color:var(--text)]">
+              {record.department}
+            </div>
+          )}
+          {record.title && (
+            <div className="text-sm text-[color:var(--text-subtle)]">
+              {record.title}
+            </div>
+          )}
+        </div>
+      </AsideSection>
+
       <AsideSection title="Contact info">
         <div className="text-[color:var(--text-subtle)]">
           <span className="text-sm">Added on</span>{" "}
