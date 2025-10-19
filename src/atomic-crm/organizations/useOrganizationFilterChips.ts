@@ -18,10 +18,10 @@ const organizationTypeMap = {
 };
 
 const priorityMap = {
-  A: "A - High Priority",
-  B: "B - Medium-High Priority",
-  C: "C - Medium Priority",
-  D: "D - Low Priority",
+  A: "A - High",
+  B: "B - Medium-High",
+  C: "C - Medium",
+  D: "D - Low",
 };
 
 export const useOrganizationFilterChips = () => {
