@@ -309,3 +309,16 @@ export async function validateCreateInteractions(data: any): Promise<void> {
 export async function validateUpdateInteractions(data: any): Promise<void> {
   return validateInteractionsForm(data);
 }
+
+// Activity note form schema - simplified schema for quick note capture
+// Used for adding notes directly from opportunity stages
+export const activityNoteFormSchema = z.object({
+  activity_date: z.coerce.date(),
+  type: interactionTypeSchema,
+  contact_id: z.coerce.number().nullable().optional(),
+  stage: z.string(),
+  subject: z.string().min(1, "Subject is required"),
+});
+
+// Type inference for activity note form
+export type ActivityNoteFormData = z.infer<typeof activityNoteFormSchema>;

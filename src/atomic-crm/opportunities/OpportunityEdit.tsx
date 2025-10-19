@@ -13,6 +13,7 @@ import { OpportunityInputs } from "./OpportunityInputs";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { NoteCreate, NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
+import { ActivityNoteForm } from "./ActivityNoteForm";
 
 const OpportunityEdit = () => {
   const queryClient = useQueryClient();
@@ -65,11 +66,13 @@ const OpportunityEditForm = () => {
             <TabsContent value="notes">
               <div className="m-4">
                 <Separator className="mb-4" />
+                <ActivityNoteForm opportunity={record} />
+                <Separator className="my-6" />
                 <ReferenceManyField
                   target="opportunity_id"
                   reference="opportunityNotes"
                   sort={{ field: "created_at", order: "DESC" }}
-                  empty={<NoteCreate reference={"opportunities"} />}
+                  empty={null}
                 >
                   <NotesIterator reference="opportunities" />
                 </ReferenceManyField>
