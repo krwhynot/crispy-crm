@@ -41,7 +41,7 @@ export const ContactInputs = () => {
 const ContactIdentityInputs = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Identity</h6>
+      <h6 className="text-lg font-semibold">Contact Name</h6>
       <TextInput source="first_name" label="First Name *" helperText="Required field" />
       <TextInput source="last_name" label="Last Name *" helperText="Required field" />
     </div>
