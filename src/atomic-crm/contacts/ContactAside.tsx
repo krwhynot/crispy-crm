@@ -1,4 +1,4 @@
-import { Briefcase, Building2, Linkedin, Mail, Phone } from "lucide-react";
+import { Linkedin, Mail, Phone } from "lucide-react";
 import { useRecordContext, WithRecord } from "ra-core";
 import { AddTask } from "../tasks/AddTask";
 import { TasksIterator } from "../tasks/TasksIterator";
@@ -87,21 +87,23 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
       </AsideSection>
 
       <AsideSection title="Position">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2 p-3 rounded-md bg-[color:var(--background-subtle)] border-l-[3px] border-[color:var(--border)]">
           {record.organization_id && (
-            <div className="text-base font-bold text-[color:var(--text)]">
+            <div className="text-lg font-bold text-[color:var(--text)] mb-1">
               <ReferenceField source="organization_id" reference="organizations">
                 <TextField source="name" />
               </ReferenceField>
             </div>
           )}
           {record.department && (
-            <div className="text-sm font-semibold text-[color:var(--text)]">
+            <div className="text-[15px] font-medium text-[color:var(--text)] leading-tight">
+              <span className="text-sm text-[color:var(--text-subtle)]">Dept: </span>
               {record.department}
             </div>
           )}
           {record.title && (
-            <div className="text-sm text-[color:var(--text-subtle)]">
+            <div className="text-sm text-[color:var(--text-subtle)] leading-tight mt-0.5">
+              <span>Title: </span>
               {record.title}
             </div>
           )}
