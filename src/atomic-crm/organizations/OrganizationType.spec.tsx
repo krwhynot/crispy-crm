@@ -11,8 +11,8 @@ import { OrganizationShow } from './OrganizationShow';
 import { OrganizationList } from './OrganizationList';
 import { ConfigurationContext } from '../root/ConfigurationContext';
 
-// Mock companies with organization types
-const mockCompanies = [
+// Mock organizations with organization types
+const mockOrganizations = [
   {
     id: 1,
     name: 'Acme Corp',
@@ -28,8 +28,6 @@ const mockCompanies = [
     revenue: 50000000,
     size: 'Large',
     parent_organization_id: null,
-    is_principal: false,
-    is_distributor: false,
     created_at: '2024-01-15T10:00:00Z'
   },
   {
@@ -47,8 +45,6 @@ const mockCompanies = [
     revenue: 100000000,
     size: 'Large',
     parent_organization_id: null,
-    is_principal: true,
-    is_distributor: false,
     created_at: '2024-01-10T10:00:00Z'
   },
   {
@@ -66,8 +62,6 @@ const mockCompanies = [
     revenue: 25000000,
     size: 'Medium',
     parent_organization_id: null,
-    is_principal: false,
-    is_distributor: true,
     created_at: '2024-01-20T10:00:00Z'
   },
   {
@@ -85,8 +79,6 @@ const mockCompanies = [
     revenue: 5000000,
     size: 'Small',
     parent_organization_id: null,
-    is_principal: false,
-    is_distributor: false,
     created_at: '2024-02-01T10:00:00Z'
   },
   {
@@ -104,8 +96,6 @@ const mockCompanies = [
     revenue: 15000000,
     size: 'Medium',
     parent_organization_id: null,
-    is_principal: false,
-    is_distributor: false,
     created_at: '2024-01-25T10:00:00Z'
   }
 ];
@@ -190,18 +180,6 @@ describe('Company Organization Type Support', () => {
           if (params.filter.sector) {
             filteredCompanies = filteredCompanies.filter(company =>
               company.sector === params.filter.sector
-            );
-          }
-
-          if (params.filter.is_principal) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.is_principal === params.filter.is_principal
-            );
-          }
-
-          if (params.filter.is_distributor) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.is_distributor === params.filter.is_distributor
             );
           }
 
@@ -544,16 +522,16 @@ describe('Company Organization Type Support', () => {
         expect(screen.getByText('Acme Corp')).toBeInTheDocument();
       });
 
-      // Apply principal filter
-      const principalFilter = screen.getByLabelText(/is principal/i);
-      fireEvent.change(principalFilter, { target: { checked: true } });
+      // Apply principal organization type filter
+      const orgTypeFilter = screen.getByLabelText(/organization type/i);
+      fireEvent.change(orgTypeFilter, { target: { value: 'principal' } });
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
           'companies',
           expect.objectContaining({
             filter: expect.objectContaining({
-              is_principal: true
+              organization_type: 'principal'
             })
           })
         );
@@ -572,16 +550,16 @@ describe('Company Organization Type Support', () => {
         expect(screen.getByText('Acme Corp')).toBeInTheDocument();
       });
 
-      // Apply distributor filter
-      const distributorFilter = screen.getByLabelText(/is distributor/i);
-      fireEvent.change(distributorFilter, { target: { checked: true } });
+      // Apply distributor organization type filter
+      const orgTypeFilter = screen.getByLabelText(/organization type/i);
+      fireEvent.change(orgTypeFilter, { target: { value: 'distributor' } });
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
           'companies',
           expect.objectContaining({
             filter: expect.objectContaining({
-              is_distributor: true
+              organization_type: 'distributor'
             })
           })
         );
@@ -704,7 +682,7 @@ describe('Company Organization Type Support', () => {
       const principalCompany = mockCompanies.find(c => c.organization_type === 'principal');
 
       expect(principalCompany).toBeDefined();
-      expect(principalCompany?.is_principal).toBe(true);
+      expect(principalCompany?.organization_type).toBe('principal');
       expect(principalCompany?.name).toBeTruthy();
       expect(principalCompany?.sector).toBeTruthy();
     });
@@ -714,7 +692,7 @@ describe('Company Organization Type Support', () => {
       const distributorCompany = mockCompanies.find(c => c.organization_type === 'distributor');
 
       expect(distributorCompany).toBeDefined();
-      expect(distributorCompany?.is_distributor).toBe(true);
+      expect(distributorCompany?.organization_type).toBe('distributor');
       expect(distributorCompany?.name).toBeTruthy();
       expect(distributorCompany?.sector).toBeTruthy();
     });

@@ -61,16 +61,14 @@ const mockOrganizations = [
     name: 'Principal Solutions Inc',
     organization_type: 'principal',
     priority: 'A',
-    segment: 'Enterprise',
-    is_principal: true
+    segment: 'Enterprise'
   },
   {
     id: 3,
     name: 'Tech Distributors Ltd',
     organization_type: 'distributor',
     priority: 'B',
-    segment: 'Channel Partner',
-    is_distributor: true
+    segment: 'Channel Partner'
   }
 ];
 

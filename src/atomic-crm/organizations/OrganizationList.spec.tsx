@@ -24,8 +24,6 @@ const mockOrganizations = [
     address: '123 Tech Street',
     city: 'San Francisco',
     stateAbbr: 'CA',
-    is_principal: false,
-    is_distributor: false,
     created_at: '2024-01-15T10:00:00Z',
     sales_id: 1
   },
@@ -42,8 +40,6 @@ const mockOrganizations = [
     address: '456 Principal Ave',
     city: 'Austin',
     stateAbbr: 'TX',
-    is_principal: true,
-    is_distributor: false,
     created_at: '2024-01-10T10:00:00Z',
     sales_id: 1
   },
@@ -60,8 +56,6 @@ const mockOrganizations = [
     address: '789 Distribution Way',
     city: 'Chicago',
     stateAbbr: 'IL',
-    is_principal: false,
-    is_distributor: true,
     created_at: '2024-01-20T10:00:00Z',
     sales_id: 2
   },
@@ -78,8 +72,6 @@ const mockOrganizations = [
     address: '321 Service Road',
     city: 'Denver',
     stateAbbr: 'CO',
-    is_principal: false,
-    is_distributor: false,
     created_at: '2024-02-01T10:00:00Z',
     sales_id: 1
   },
@@ -96,8 +88,6 @@ const mockOrganizations = [
     address: '555 Prospect Plaza',
     city: 'Seattle',
     stateAbbr: 'WA',
-    is_principal: false,
-    is_distributor: false,
     created_at: '2024-01-25T10:00:00Z',
     sales_id: 2
   }
@@ -204,18 +194,6 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
           if (params.filter.size) {
             filteredOrganizations = filteredOrganizations.filter(organization =>
               organization.size === params.filter.size
-            );
-          }
-
-          if (params.filter.is_principal !== undefined) {
-            filteredOrganizations = filteredOrganizations.filter(organization =>
-              organization.is_principal === params.filter.is_principal
-            );
-          }
-
-          if (params.filter.is_distributor !== undefined) {
-            filteredOrganizations = filteredOrganizations.filter(organization =>
-              organization.is_distributor === params.filter.is_distributor
             );
           }
 
@@ -480,16 +458,16 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
       expect(screen.getByText('Acme Corp')).toBeInTheDocument();
     });
 
-    // Apply principal filter
-    const principalFilter = screen.getByLabelText(/is principal/i);
-    fireEvent.click(principalFilter);
+    // Apply principal organization type filter
+    const orgTypeFilter = screen.getByLabelText(/organization type/i);
+    fireEvent.change(orgTypeFilter, { target: { value: 'principal' } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
         'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
-            is_principal: true
+            organization_type: 'principal'
           })
         })
       );
@@ -508,16 +486,16 @@ describe('OrganizationList - Enhanced Organization Features (Unified Provider)',
       expect(screen.getByText('Acme Corp')).toBeInTheDocument();
     });
 
-    // Apply distributor filter
-    const distributorFilter = screen.getByLabelText(/is distributor/i);
-    fireEvent.click(distributorFilter);
+    // Apply distributor organization type filter
+    const orgTypeFilter = screen.getByLabelText(/organization type/i);
+    fireEvent.change(orgTypeFilter, { target: { value: 'distributor' } });
 
     await waitFor(() => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
         'organizations',
         expect.objectContaining({
           filter: expect.objectContaining({
-            is_distributor: true
+            organization_type: 'distributor'
           })
         })
       );
