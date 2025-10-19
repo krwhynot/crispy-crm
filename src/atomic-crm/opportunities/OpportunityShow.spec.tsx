@@ -199,7 +199,7 @@ describe("OpportunityShow - Unified Provider", () => {
 
     // Mock getMany for references
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === "companies") {
+      if (resource === "organizations") {
         return Promise.resolve({
           data: mockCompanies.filter((c) => params.ids.includes(c.id)),
         });

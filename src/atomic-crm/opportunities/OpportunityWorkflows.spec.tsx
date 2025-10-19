@@ -87,7 +87,7 @@ describe("Opportunity Lifecycle Workflows", () => {
     vi.clearAllMocks();
 
     mockDataProvider.getList.mockImplementation((resource) => {
-      if (resource === "companies") {
+      if (resource === "organizations") {
         return Promise.resolve({
           data: mockCompanies,
           total: mockCompanies.length,
@@ -103,7 +103,7 @@ describe("Opportunity Lifecycle Workflows", () => {
     });
 
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === "companies") {
+      if (resource === "organizations") {
         return Promise.resolve({
           data: mockCompanies.filter((c) => params.ids.includes(c.id)),
         });

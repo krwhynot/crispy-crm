@@ -125,7 +125,7 @@ describe("OpportunityList", () => {
           total: mockOpportunities.length,
         });
       }
-      if (resource === "companies") {
+      if (resource === "organizations") {
         return Promise.resolve({
           data: mockCompanies,
           total: mockCompanies.length,
@@ -141,7 +141,7 @@ describe("OpportunityList", () => {
     });
 
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === "companies") {
+      if (resource === "organizations") {
         return Promise.resolve({
           data: mockCompanies.filter((c) => params.ids.includes(c.id)),
         });
