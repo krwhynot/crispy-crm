@@ -19,7 +19,7 @@ describe("Organization Validation Schemas", () => {
         const validTypes = [
           "customer",
           "prospect",
-          "partner",
+          "prospect",
           "principal",
           "distributor",
           "unknown",

@@ -22,7 +22,7 @@ const mockOrganizations = [
     id: 2,
     name: "Tech Partners Ltd",
     sector: "Software",
-    organization_type: "partner",
+    organization_type: "prospect",
   },
   {
     id: 3,

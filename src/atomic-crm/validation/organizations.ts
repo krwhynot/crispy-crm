@@ -10,7 +10,6 @@ import { z } from "zod";
 export const organizationTypeSchema = z.enum([
   "customer",
   "prospect",
-  "partner",
   "principal",
   "distributor",
   "unknown",

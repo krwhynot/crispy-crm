@@ -109,7 +109,7 @@ export type OpportunityParticipant = {
   id: Identifier;
   opportunity_id: Identifier;
   organization_id: Identifier;
-  role: "customer" | "principal" | "distributor" | "partner" | "competitor";
+  role: "customer" | "principal" | "distributor" | "competitor";
   is_primary: boolean;
   commission_rate?: number;
   territory?: string;
