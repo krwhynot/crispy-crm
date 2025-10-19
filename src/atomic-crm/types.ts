@@ -14,7 +14,6 @@ import type { OpportunityStageValue } from "./opportunities/stageConstants";
 export type OrganizationType =
   | "customer"
   | "prospect"
-  | "partner"
   | "principal"
   | "distributor"
   | "unknown";

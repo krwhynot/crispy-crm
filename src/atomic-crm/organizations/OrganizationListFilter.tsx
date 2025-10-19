@@ -18,7 +18,6 @@ export const OrganizationListFilter = () => {
   const organizationTypes = [
     { id: "customer", name: "Customer" },
     { id: "prospect", name: "Prospect" },
-    { id: "partner", name: "Partner" },
     { id: "principal", name: "Principal" },
     { id: "distributor", name: "Distributor" },
     { id: "unknown", name: "Unknown" },
@@ -28,9 +27,8 @@ export const OrganizationListFilter = () => {
   const organizationTypeColors: Record<string, string> = {
     customer: "secondary",      // Warm tan - welcoming
     prospect: "secondary",      // Sage/olive - growth
-    partner: "secondary",       // Teal - collaborative
     principal: "default",       // Eggplant/purple - important/primary
-    distributor: "secondary",   // Golden amber - active/connected
+    distributor: "secondary",   // Teal - active/connected
     unknown: "outline",         // Mushroom gray - neutral
   };
 
@@ -69,15 +67,29 @@ export const OrganizationListFilter = () => {
               icon={<Tag className="h-4 w-4" />}
               label="Organization Type"
             >
-              {organizationTypes.map((type) => (
-                <ToggleFilterButton
-                  multiselect
-                  key={type.id}
-                  className="w-full justify-between"
-                  label={type.name}
-                  value={{ organization_type: type.id }}
-                />
-              ))}
+              {organizationTypes.map((type) => {
+                const colorClass = {
+                  customer: "bg-[color:var(--tag-warm-bg)] text-[color:var(--tag-warm-fg)]",
+                  prospect: "bg-[color:var(--tag-sage-bg)] text-[color:var(--tag-sage-fg)]",
+                  principal: "bg-[color:var(--tag-purple-bg)] text-[color:var(--tag-purple-fg)]",
+                  distributor: "bg-[color:var(--tag-teal-bg)] text-[color:var(--tag-teal-fg)]",
+                  unknown: "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]",
+                }[type.id] || "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]";
+
+                return (
+                  <ToggleFilterButton
+                    multiselect
+                    key={type.id}
+                    className="w-full justify-between"
+                    label={
+                      <Badge className={`text-xs px-1 py-0 ${colorClass}`}>
+                        {type.name}
+                      </Badge>
+                    }
+                    value={{ organization_type: type.id }}
+                  />
+                );
+              })}
             </FilterCategory>
 
             <FilterCategory icon={<Star className="h-4 w-4" />} label="Priority">

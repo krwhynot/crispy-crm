@@ -92,7 +92,6 @@ const ContextInfo = ({ record }: { record: Company }) => {
   const organizationTypeChoices = [
     { id: "customer", name: "Customer" },
     { id: "prospect", name: "Prospect" },
-    { id: "partner", name: "Partner" },
     { id: "principal", name: "Principal" },
     { id: "distributor", name: "Distributor" },
     { id: "unknown", name: "Unknown" },

@@ -104,7 +104,6 @@ export const OrganizationInputs = () => {
               choices={[
                 { id: "customer", name: "Customer" },
                 { id: "prospect", name: "Prospect" },
-                { id: "partner", name: "Partner" },
                 { id: "principal", name: "Principal" },
                 { id: "distributor", name: "Distributor" },
                 { id: "unknown", name: "Unknown" },
