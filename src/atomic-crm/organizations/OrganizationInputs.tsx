@@ -55,7 +55,7 @@ export const OrganizationInputs = () => {
   };
 
   return (
-    <Tabs defaultValue="general" className="w-full">
+    <Tabs defaultValue="general" className="w-full mt-6">
       <TabsList>
         <TabsTrigger
           value="general"
