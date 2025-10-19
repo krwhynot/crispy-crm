@@ -48,8 +48,8 @@ const ContactSelectField = ({
         control={control}
         render={({ field }) => (
           <Select
-            value={field.value?.toString() || ""}
-            onValueChange={(value) => field.onChange(value ? Number(value) : null)}
+            value={field.value?.toString() || "none"}
+            onValueChange={(value) => field.onChange(value === "none" ? null : Number(value))}
             disabled={isPending}
           >
             <SelectTrigger id="contact_id">
@@ -137,7 +137,7 @@ export const ActivityNoteForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="space-y-4">
       {/* Grid layout for date, type, contact, and stage */}
       <div className="grid grid-cols-4 gap-4">
         {/* Date Picker */}
@@ -267,13 +267,14 @@ export const ActivityNoteForm = ({
       {/* Submit Button */}
       <div className="flex justify-end">
         <Button
-          type="submit"
+          type="button"
+          onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
           className="bg-[color:var(--primary)] text-[color:var(--primary-foreground)] hover:bg-[color:var(--primary)]/90"
         >
           {isSubmitting ? "Creating..." : "Add Activity"}
         </Button>
       </div>
-    </form>
+    </div>
   );
 };
