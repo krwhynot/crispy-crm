@@ -431,13 +431,13 @@ export const organizationSchema = z.object({
   organization_type: organizationTypeSchema, // Required
   is_principal: z.boolean().optional(),
   is_distributor: z.boolean().optional(),
-  priority: companyPrioritySchema.optional(),
+  priority: organizationPrioritySchema.optional(),
 })
 ```
 
 **Enum Schemas** (Lines 10-20):
 - `organizationTypeSchema` - 6 types: customer, prospect, partner, principal, distributor, unknown
-- `companyPrioritySchema` - 4 priorities: A, B, C, D
+- `organizationPrioritySchema` - 4 priorities: A, B, C, D
 
 **CORRECT**: Validation properly uses UUID validation for segment_id.
 

@@ -252,7 +252,7 @@ describe('Organization Type Support', () => {
       });
     });
 
-    it('should render parent company reference selector', async () => {
+    it('should render parent organization reference selector', async () => {
       render(
         <TestWrapper>
           <OrganizationInputs />
@@ -423,7 +423,7 @@ describe('Organization Type Support', () => {
       });
     });
 
-    it('should filter companies by organization type', async () => {
+    it('should filter organizations by organization type', async () => {
       render(
         <TestWrapper>
           <OrganizationList />
@@ -451,7 +451,7 @@ describe('Organization Type Support', () => {
       });
     });
 
-    it('should filter companies by priority level', async () => {
+    it('should filter organizations by priority level', async () => {
       render(
         <TestWrapper>
           <OrganizationList />
@@ -479,7 +479,7 @@ describe('Organization Type Support', () => {
       });
     });
 
-    it('should filter principal companies specifically', async () => {
+    it('should filter principal organizations specifically', async () => {
       render(
         <TestWrapper>
           <OrganizationList />
@@ -507,7 +507,7 @@ describe('Organization Type Support', () => {
       });
     });
 
-    it('should filter distributor companies specifically', async () => {
+    it('should filter distributor organizations specifically', async () => {
       render(
         <TestWrapper>
           <OrganizationList />
@@ -535,7 +535,7 @@ describe('Organization Type Support', () => {
       });
     });
 
-    it('should search companies across all fields', async () => {
+    it('should search organizations across all fields', async () => {
       render(
         <TestWrapper>
           <OrganizationList />

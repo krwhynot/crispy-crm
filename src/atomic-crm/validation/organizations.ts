@@ -1,9 +1,8 @@
 import { z } from "zod";
 
 /**
- * Organization/Company validation schemas and functions
- * Implements validation rules from CompanyInputs.tsx
- * Note: File named "organizations" to match unifiedDataProvider imports, but uses "Company" in schemas for backward compatibility
+ * Organization validation schemas and functions
+ * Implements validation rules from OrganizationInputs.tsx
  */
 
 // Organization type enum
@@ -15,10 +14,10 @@ export const organizationTypeSchema = z.enum([
   "unknown",
 ]);
 
-// Company priority enum
-export const companyPrioritySchema = z.enum(["A", "B", "C", "D"]);
+// Organization priority enum
+export const organizationPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
-// URL validation regex from CompanyInputs
+// URL validation regex from OrganizationInputs
 // Protocol (http:// or https://) is REQUIRED for valid URLs
 const URL_REGEX =
   /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
@@ -41,10 +40,10 @@ const isLinkedinUrl = z.string().refine(
       return false;
     }
   },
-  { message: "Must be a valid LinkedIn company URL" },
+  { message: "Must be a valid LinkedIn organization URL" },
 );
 
-// Main company/organization schema with comprehensive validation
+// Main organization schema with comprehensive validation
 // This schema serves as the single source of truth for all organization validation
 // per Engineering Constitution - all validation happens at API boundary only
 export const organizationSchema = z.object({
@@ -67,7 +66,7 @@ export const organizationSchema = z.object({
 
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("unknown"), // Default matches database
-  priority: companyPrioritySchema.default("C"), // Default matches database
+  priority: organizationPrioritySchema.default("C"), // Default matches database
 
   // Computed fields (readonly)
   nb_contacts: z.number().optional(),

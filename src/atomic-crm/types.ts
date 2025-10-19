@@ -17,7 +17,9 @@ export type OrganizationType =
   | "principal"
   | "distributor"
   | "unknown";
-export type CompanyPriority = "A" | "B" | "C" | "D";
+
+// Organization priority type (canonical name)
+export type OrganizationPriority = "A" | "B" | "C" | "D";
 
 // SignUpData type removed - all users created through Sales management
 

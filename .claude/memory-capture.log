@@ -1185,3 +1185,13 @@
 [2025-10-19 18:01:59] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251019000000_remove_partner_organization_type.sql
 [2025-10-19 18:02:45] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
 [2025-10-19 18:13:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/tests/dataProviderErrors.test.ts
+[2025-10-19 18:13:44] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/tests/dataProviderSchemaValidation.test.ts
+[2025-10-19 18:13:51] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-19 18:13:56] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-19 18:14:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-19 18:14:18] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-19 18:14:23] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-19 18:14:34] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/types.ts
+[2025-10-19 18:18:07] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-19 18:18:30] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-10-19 18:21:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/organizations/integration.test.ts

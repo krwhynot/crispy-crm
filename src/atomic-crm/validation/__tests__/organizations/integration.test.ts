@@ -35,7 +35,7 @@ describe("Organization Validation Functions", () => {
       } catch (error: any) {
         expect(error.message).toBe("Validation failed");
         expect(error.errors).toBeDefined();
-        expect(error.errors.name).toBe("Company name is required");
+        expect(error.errors.name).toBe("Organization name is required");
         expect(error.errors.organization_type).toBeDefined();
         expect(error.errors.website).toBe("Must be a valid URL");
       }
