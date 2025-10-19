@@ -19,6 +19,7 @@ export const SearchInput = (inProps: SearchInputProps) => {
         label={false}
         helperText={false}
         placeholder={translate("ra.action.search")}
+        className="pr-10"
         {...rest}
       />
       <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[color:var(--text-subtle)] pointer-events-none" />

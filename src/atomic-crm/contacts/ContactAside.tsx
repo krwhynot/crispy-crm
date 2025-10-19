@@ -15,12 +15,10 @@ import { DateField } from "@/components/admin/date-field";
 import { EmailField } from "@/components/admin/email-field";
 import type { ReactNode } from "react";
 import { AsideSection } from "../misc/AsideSection";
-import { useConfigurationContext } from "../root/ConfigurationContext";
 import { SaleName } from "../sales/SaleName";
 import type { Contact } from "../types";
 
 export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
-  const { contactGender } = useConfigurationContext();
   const record = useRecordContext<Contact>();
   if (!record) return null;
   return (
@@ -68,22 +66,6 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
             />
           </SingleFieldList>
         </ArrayField>
-        {contactGender
-          .map((genderOption) => {
-            if (record.gender === genderOption.value) {
-              return (
-                <PersonalInfoRow
-                  key={genderOption.value}
-                  icon={
-                    <genderOption.icon className="w-4 h-4 text-[color:var(--text-subtle)]" />
-                  }
-                  primary={<span>{genderOption.label}</span>}
-                />
-              );
-            }
-            return null;
-          })
-          .filter(Boolean)}
       </AsideSection>
 
       <AsideSection title="Position">
