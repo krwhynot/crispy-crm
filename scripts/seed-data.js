@@ -22,6 +22,9 @@ import ora from "ora";
 import dotenv from "dotenv";
 
 // Load environment variables
+// Load .env.local first (overrides .env)
+dotenv.config({ path: ".env.local", override: true });
+// Then load .env as fallback
 dotenv.config();
 
 // Configuration
@@ -338,9 +341,6 @@ class SeedDataGenerator {
         "Missing required environment variables: VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY",
       );
     }
-
-    console.log(chalk.gray("Supabase URL:"), supabaseUrl);
-    console.log(chalk.gray("Service Key (first 60 chars):"), supabaseServiceKey?.substring(0, 60) + "...");
 
     this.supabase = createClient(supabaseUrl, supabaseServiceKey, {
       auth: {
@@ -984,11 +984,6 @@ class SeedDataGenerator {
       // Insert organizations
       if (this.generatedData.organizations.length > 0) {
         console.log(chalk.gray(`  Inserting ${this.generatedData.organizations.length} organizations...`));
-
-        // Debug: Log first organization to inspect data structure
-        console.log(chalk.yellow("DEBUG - First organization object:"));
-        console.log(JSON.stringify(this.generatedData.organizations[0], null, 2));
-
         const { data: insertedOrgs, error } = await this.supabase
           .from("organizations")
           .insert(this.generatedData.organizations)
