@@ -339,6 +339,9 @@ class SeedDataGenerator {
       );
     }
 
+    console.log(chalk.gray("Supabase URL:"), supabaseUrl);
+    console.log(chalk.gray("Service Key (first 60 chars):"), supabaseServiceKey?.substring(0, 60) + "...");
+
     this.supabase = createClient(supabaseUrl, supabaseServiceKey, {
       auth: {
         autoRefreshToken: false,
