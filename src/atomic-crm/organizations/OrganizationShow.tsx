@@ -73,13 +73,13 @@ const OrganizationShowContent = () => {
                       : `${record.nb_contacts} Contacts`
                     : "No Contacts"}
                 </TabsTrigger>
-                {record.nb_opportunities ? (
-                  <TabsTrigger value="opportunities">
-                    {record.nb_opportunities === 1
+                <TabsTrigger value="opportunities">
+                  {record.nb_opportunities
+                    ? record.nb_opportunities === 1
                       ? "1 opportunity"
-                      : `${record.nb_opportunities} opportunities`}
-                  </TabsTrigger>
-                ) : null}
+                      : `${record.nb_opportunities} opportunities`
+                    : "No Opportunities"}
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="activity" className="pt-2">
                 <ActivityLog
