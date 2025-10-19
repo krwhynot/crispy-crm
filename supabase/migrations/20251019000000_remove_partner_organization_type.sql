@@ -1,6 +1,5 @@
--- Remove 'partner' from organization_type enum values
--- This migration updates the enum type to remove 'partner' and migrates existing records
--- PostgreSQL doesn't allow removing enum values directly, so we must create a new type
+-- Remove 'partner' from organization_type enum values and lead_source check constraint
+-- This migration removes 'partner' from all data types across the schema
 
 -- Step 1: Migrate existing 'partner' organization records to 'prospect' BEFORE type change
 -- This is safe as 'prospect' is the closest semantic equivalent to 'partner'
@@ -16,40 +15,12 @@ SET role = 'principal'::"text",
     updated_at = NOW()
 WHERE role = 'partner'::"text";
 
--- Step 3: Remove 'partner' from opportunities.lead_source enum by recreating the type
--- First, create new enum without 'partner'
-CREATE TYPE "public"."lead_source_type_new" AS ENUM (
-    'referral',
-    'trade_show',
-    'website',
-    'cold_call',
-    'email_campaign',
-    'social_media',
-    'existing_customer'
-);
+-- Step 3: Update opportunities.lead_source CHECK constraint to remove 'partner' option
+ALTER TABLE opportunities
+DROP CONSTRAINT IF EXISTS opportunities_lead_source_check;
 
--- Alter the column to use text temporarily
-ALTER TABLE opportunities ALTER COLUMN lead_source TYPE text;
-
--- Drop the old enum
-DROP TYPE "public"."lead_source_type";
-
--- Create new enum with correct name
-CREATE TYPE "public"."lead_source_type" AS ENUM (
-    'referral',
-    'trade_show',
-    'website',
-    'cold_call',
-    'email_campaign',
-    'social_media',
-    'existing_customer'
-);
-
--- Convert column back to new enum type
-ALTER TABLE opportunities ALTER COLUMN lead_source TYPE "public"."lead_source_type" USING lead_source::"public"."lead_source_type";
-
--- Drop temporary type
-DROP TYPE IF EXISTS "public"."lead_source_type_new";
+ALTER TABLE opportunities
+ADD CONSTRAINT opportunities_lead_source_check CHECK ((lead_source = ANY (ARRAY['referral'::text, 'trade_show'::text, 'website'::text, 'cold_call'::text, 'email_campaign'::text, 'social_media'::text, 'existing_customer'::text])));
 
 -- Step 4: Update opportunity_participants role constraint to reject 'partner'
 ALTER TABLE opportunity_participants
