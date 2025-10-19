@@ -154,47 +154,47 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe('Company Organization Type Support', () => {
+describe('Organization Type Support', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Mock getList for companies
+    // Mock getList for organizations
     mockDataProvider.getList.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
-        let filteredCompanies = [...mockCompanies];
+      if (resource === 'organizations') {
+        let filteredOrganizations = [...mockOrganizations];
 
         // Apply filters
         if (params.filter) {
           if (params.filter.organization_type) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.organization_type === params.filter.organization_type
+            filteredOrganizations = filteredOrganizations.filter(org =>
+              org.organization_type === params.filter.organization_type
             );
           }
 
           if (params.filter.priority) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.priority === params.filter.priority
+            filteredOrganizations = filteredOrganizations.filter(org =>
+              org.priority === params.filter.priority
             );
           }
 
           if (params.filter.sector) {
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.sector === params.filter.sector
+            filteredOrganizations = filteredOrganizations.filter(org =>
+              org.sector === params.filter.sector
             );
           }
 
           if (params.filter.q) {
             const query = params.filter.q.toLowerCase();
-            filteredCompanies = filteredCompanies.filter(company =>
-              company.name.toLowerCase().includes(query) ||
-              company.sector?.toLowerCase().includes(query)
+            filteredOrganizations = filteredOrganizations.filter(org =>
+              org.name.toLowerCase().includes(query) ||
+              org.sector?.toLowerCase().includes(query)
             );
           }
         }
 
         return Promise.resolve({
-          data: filteredCompanies,
-          total: filteredCompanies.length,
+          data: filteredOrganizations,
+          total: filteredOrganizations.length,
         });
       }
 
@@ -208,19 +208,19 @@ describe('Company Organization Type Support', () => {
       return Promise.resolve({ data: [], total: 0 });
     });
 
-    // Mock getOne for company
+    // Mock getOne for organization
     mockDataProvider.getOne.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
-        const company = mockCompanies.find(c => c.id === params.id);
-        return company ? Promise.resolve({ data: company }) : Promise.reject(new Error('Not found'));
+      if (resource === 'organizations') {
+        const organization = mockOrganizations.find(c => c.id === params.id);
+        return organization ? Promise.resolve({ data: organization }) : Promise.reject(new Error('Not found'));
       }
       return Promise.reject(new Error('Not found'));
     });
 
     mockDataProvider.getMany.mockImplementation((resource, params) => {
-      if (resource === 'companies') {
+      if (resource === 'organizations') {
         return Promise.resolve({
-          data: mockCompanies.filter(c => params.ids.includes(c.id)),
+          data: mockOrganizations.filter(c => params.ids.includes(c.id)),
         });
       }
       if (resource === 'sales') {
@@ -240,11 +240,11 @@ describe('Company Organization Type Support', () => {
     });
   });
 
-  describe('CompanyInputs - Organization Type Fields', () => {
+  describe('OrganizationInputs - Organization Type Fields', () => {
     it('should render organization type selector with all options', async () => {
       render(
         <TestWrapper>
-          <CompanyInputs />
+          <OrganizationInputs />
         </TestWrapper>
       );
 
@@ -266,7 +266,7 @@ describe('Company Organization Type Support', () => {
     it('should render priority selector with A/B/C/D levels', async () => {
       render(
         <TestWrapper>
-          <CompanyInputs />
+          <OrganizationInputs />
         </TestWrapper>
       );
 
@@ -286,7 +286,7 @@ describe('Company Organization Type Support', () => {
     it('should render parent company reference selector', async () => {
       render(
         <TestWrapper>
-          <CompanyInputs />
+          <OrganizationInputs />
         </TestWrapper>
       );
 
@@ -296,7 +296,7 @@ describe('Company Organization Type Support', () => {
     it('should render revenue and tax identifier fields', async () => {
       render(
         <TestWrapper>
-          <CompanyInputs />
+          <OrganizationInputs />
         </TestWrapper>
       );
 
@@ -307,7 +307,7 @@ describe('Company Organization Type Support', () => {
     it('should have proper section organization with Context heading', async () => {
       render(
         <TestWrapper>
-          <CompanyInputs />
+          <OrganizationInputs />
         </TestWrapper>
       );
 
@@ -319,15 +319,15 @@ describe('Company Organization Type Support', () => {
     });
   });
 
-  describe('CompanyShow - Organization Type Display', () => {
-    it('should display organization type for customer company', async () => {
+  describe('OrganizationShow - Organization Type Display', () => {
+    it('should display organization type for customer organization', async () => {
       mockDataProvider.getOne.mockResolvedValue({
-        data: mockCompanies[0] // Acme Corp - customer
+        data: mockOrganizations[0] // Acme Corp - customer
       });
 
       render(
         <TestWrapper>
-          <CompanyShow />
+          <OrganizationShow />
         </TestWrapper>
       );
 
@@ -339,14 +339,14 @@ describe('Company Organization Type Support', () => {
       });
     });
 
-    it('should display organization type for principal company', async () => {
+    it('should display organization type for principal organization', async () => {
       mockDataProvider.getOne.mockResolvedValue({
-        data: mockCompanies[1] // Principal Solutions Inc - principal
+        data: mockOrganizations[1] // Principal Solutions Inc - principal
       });
 
       render(
         <TestWrapper>
-          <CompanyShow />
+          <OrganizationShow />
         </TestWrapper>
       );
 
@@ -357,14 +357,14 @@ describe('Company Organization Type Support', () => {
       });
     });
 
-    it('should display organization type for distributor company', async () => {
+    it('should display organization type for distributor organization', async () => {
       mockDataProvider.getOne.mockResolvedValue({
-        data: mockCompanies[2] // Tech Distributors Ltd - distributor
+        data: mockOrganizations[2] // Tech Distributors Ltd - distributor
       });
 
       render(
         <TestWrapper>
-          <CompanyShow />
+          <OrganizationShow />
         </TestWrapper>
       );
 
@@ -375,25 +375,25 @@ describe('Company Organization Type Support', () => {
       });
     });
 
-    it('should display company hierarchy when parent company exists', async () => {
-      const subsidiaryCompany = {
-        ...mockCompanies[0],
+    it('should display organization hierarchy when parent organization exists', async () => {
+      const subsidiaryOrganization = {
+        ...mockOrganizations[0],
         id: 10,
         name: 'Acme Subsidiary',
         parent_organization_id: 1
       };
 
       mockDataProvider.getOne.mockResolvedValue({
-        data: subsidiaryCompany
+        data: subsidiaryOrganization
       });
 
       mockDataProvider.getMany.mockResolvedValue({
-        data: [mockCompanies[0]] // Parent company
+        data: [mockOrganizations[0]] // Parent organization
       });
 
       render(
         <TestWrapper>
-          <CompanyShow />
+          <OrganizationShow />
         </TestWrapper>
       );
 
@@ -405,12 +405,12 @@ describe('Company Organization Type Support', () => {
 
     it('should display financial information correctly', async () => {
       mockDataProvider.getOne.mockResolvedValue({
-        data: mockCompanies[1] // Principal Solutions with revenue
+        data: mockOrganizations[1] // Principal Solutions with revenue
       });
 
       render(
         <TestWrapper>
-          <CompanyShow />
+          <OrganizationShow />
         </TestWrapper>
       );
 
@@ -421,11 +421,11 @@ describe('Company Organization Type Support', () => {
     });
   });
 
-  describe('CompanyList - Organization Type Filtering', () => {
-    it('should render company list with organization types', async () => {
+  describe('OrganizationList - Organization Type Filtering', () => {
+    it('should render organization list with organization types', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -441,7 +441,7 @@ describe('Company Organization Type Support', () => {
     it('should display organization types in the list', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -457,7 +457,7 @@ describe('Company Organization Type Support', () => {
     it('should filter companies by organization type', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -472,7 +472,7 @@ describe('Company Organization Type Support', () => {
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          'companies',
+          'organizations',
           expect.objectContaining({
             filter: expect.objectContaining({
               organization_type: 'principal'
@@ -485,7 +485,7 @@ describe('Company Organization Type Support', () => {
     it('should filter companies by priority level', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -500,7 +500,7 @@ describe('Company Organization Type Support', () => {
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          'companies',
+          'organizations',
           expect.objectContaining({
             filter: expect.objectContaining({
               priority: 'A'
@@ -513,7 +513,7 @@ describe('Company Organization Type Support', () => {
     it('should filter principal companies specifically', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -528,7 +528,7 @@ describe('Company Organization Type Support', () => {
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          'companies',
+          'organizations',
           expect.objectContaining({
             filter: expect.objectContaining({
               organization_type: 'principal'
@@ -541,7 +541,7 @@ describe('Company Organization Type Support', () => {
     it('should filter distributor companies specifically', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -556,7 +556,7 @@ describe('Company Organization Type Support', () => {
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          'companies',
+          'organizations',
           expect.objectContaining({
             filter: expect.objectContaining({
               organization_type: 'distributor'
@@ -569,7 +569,7 @@ describe('Company Organization Type Support', () => {
     it('should search companies across all fields', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -584,7 +584,7 @@ describe('Company Organization Type Support', () => {
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          'companies',
+          'organizations',
           expect.objectContaining({
             filter: expect.objectContaining({
               q: 'Principal'
@@ -597,7 +597,7 @@ describe('Company Organization Type Support', () => {
     it('should handle sorting by organization type', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -612,7 +612,7 @@ describe('Company Organization Type Support', () => {
 
       await waitFor(() => {
         expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          'companies',
+          'organizations',
           expect.objectContaining({
             sort: { field: 'organization_type', order: 'ASC' }
           })
@@ -623,7 +623,7 @@ describe('Company Organization Type Support', () => {
     it('should display priority levels visually', async () => {
       render(
         <TestWrapper>
-          <CompanyList />
+          <OrganizationList />
         </TestWrapper>
       );
 
@@ -637,8 +637,8 @@ describe('Company Organization Type Support', () => {
   });
 
   describe('Organization Type Workflows', () => {
-    it('should create company with organization type', async () => {
-      const newCompanyData = {
+    it('should create organization with organization type', async () => {
+      const newOrganizationData = {
         name: 'New Tech Partner',
         sector: 'Technology',
         organization_type: 'partner',
@@ -648,85 +648,85 @@ describe('Company Organization Type Support', () => {
         size: 'Medium'
       };
 
-      await mockDataProvider.create('companies', {
-        data: newCompanyData
+      await mockDataProvider.create('organizations', {
+        data: newOrganizationData
       });
 
-      expect(mockDataProvider.create).toHaveBeenCalledWith('companies', {
-        data: newCompanyData
+      expect(mockDataProvider.create).toHaveBeenCalledWith('organizations', {
+        data: newOrganizationData
       });
     });
 
-    it('should update company organization type', async () => {
-      const updatedCompanyData = {
-        ...mockCompanies[0],
+    it('should update organization type', async () => {
+      const updatedOrganizationData = {
+        ...mockOrganizations[0],
         organization_type: 'partner', // Changed from customer to partner
         priority: 'B' // Changed priority as well
       };
 
-      await mockDataProvider.update('companies', {
+      await mockDataProvider.update('organizations', {
         id: 1,
-        data: updatedCompanyData,
-        previousData: mockCompanies[0]
+        data: updatedOrganizationData,
+        previousData: mockOrganizations[0]
       });
 
-      expect(mockDataProvider.update).toHaveBeenCalledWith('companies', {
+      expect(mockDataProvider.update).toHaveBeenCalledWith('organizations', {
         id: 1,
-        data: updatedCompanyData,
-        previousData: mockCompanies[0]
+        data: updatedOrganizationData,
+        previousData: mockOrganizations[0]
       });
     });
 
     it('should validate principal organization requirements', async () => {
       // Test that principal organizations have required fields
-      const principalCompany = mockCompanies.find(c => c.organization_type === 'principal');
+      const principalOrganization = mockOrganizations.find(c => c.organization_type === 'principal');
 
-      expect(principalCompany).toBeDefined();
-      expect(principalCompany?.organization_type).toBe('principal');
-      expect(principalCompany?.name).toBeTruthy();
-      expect(principalCompany?.sector).toBeTruthy();
+      expect(principalOrganization).toBeDefined();
+      expect(principalOrganization?.organization_type).toBe('principal');
+      expect(principalOrganization?.name).toBeTruthy();
+      expect(principalOrganization?.sector).toBeTruthy();
     });
 
     it('should validate distributor organization requirements', async () => {
       // Test that distributor organizations have required fields
-      const distributorCompany = mockCompanies.find(c => c.organization_type === 'distributor');
+      const distributorOrganization = mockOrganizations.find(c => c.organization_type === 'distributor');
 
-      expect(distributorCompany).toBeDefined();
-      expect(distributorCompany?.organization_type).toBe('distributor');
-      expect(distributorCompany?.name).toBeTruthy();
-      expect(distributorCompany?.sector).toBeTruthy();
+      expect(distributorOrganization).toBeDefined();
+      expect(distributorOrganization?.organization_type).toBe('distributor');
+      expect(distributorOrganization?.name).toBeTruthy();
+      expect(distributorOrganization?.sector).toBeTruthy();
     });
 
     it('should handle organization hierarchy validation', async () => {
       // Test parent-child relationship validation
-      const parentCompany = mockCompanies[0];
-      const childCompany = {
-        ...mockCompanies[0],
+      const parentOrganization = mockOrganizations[0];
+      const childOrganization = {
+        ...mockOrganizations[0],
         id: 10,
-        name: 'Child Company',
-        parent_organization_id: parentCompany.id
+        name: 'Child Organization',
+        parent_organization_id: parentOrganization.id
       };
 
-      // Child company should have valid parent reference
-      expect(childCompany.parent_organization_id).toBe(parentCompany.id);
-      expect(parentCompany.parent_organization_id).toBeNull(); // Parent has no parent
+      // Child organization should have valid parent reference
+      expect(childOrganization.parent_organization_id).toBe(parentOrganization.id);
+      expect(parentOrganization.parent_organization_id).toBeNull(); // Parent has no parent
     });
 
     it('should support organization type transitions', async () => {
       // Test changing from prospect to customer
       const prospectToCustomer = {
-        ...mockCompanies[0],
+        ...mockOrganizations[0],
         organization_type: 'customer', // Was prospect, now customer
         priority: 'A' // Upgraded priority
       };
 
-      await mockDataProvider.update('companies', {
+      await mockDataProvider.update('organizations', {
         id: 1,
         data: prospectToCustomer,
-        previousData: { ...mockCompanies[0], organization_type: 'prospect' }
+        previousData: { ...mockOrganizations[0], organization_type: 'prospect' }
       });
 
-      expect(mockDataProvider.update).toHaveBeenCalledWith('companies', {
+      expect(mockDataProvider.update).toHaveBeenCalledWith('organizations', {
         id: 1,
         data: prospectToCustomer,
         previousData: expect.objectContaining({
@@ -737,8 +737,8 @@ describe('Company Organization Type Support', () => {
 
     it('should aggregate organization types for reporting', async () => {
       // Test organization type metrics
-      const orgTypeCounts = mockCompanies.reduce((counts, company) => {
-        counts[company.organization_type] = (counts[company.organization_type] || 0) + 1;
+      const orgTypeCounts = mockOrganizations.reduce((counts, org) => {
+        counts[org.organization_type] = (counts[org.organization_type] || 0) + 1;
         return counts;
       }, {} as Record<string, number>);
 
@@ -751,8 +751,8 @@ describe('Company Organization Type Support', () => {
       });
 
       // Test priority distribution
-      const priorityCounts = mockCompanies.reduce((counts, company) => {
-        counts[company.priority] = (counts[company.priority] || 0) + 1;
+      const priorityCounts = mockOrganizations.reduce((counts, org) => {
+        counts[org.priority] = (counts[org.priority] || 0) + 1;
         return counts;
       }, {} as Record<string, number>);
 

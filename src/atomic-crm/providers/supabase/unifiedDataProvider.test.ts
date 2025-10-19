@@ -292,11 +292,11 @@ describe("UnifiedDataProvider Validation Integration", () => {
       });
     });
 
-    it("should validate companies (alias for organizations) on create", async () => {
-      // Companies maps to organizations resource, which doesn't have validation registered
+    it("should validate organizations on create", async () => {
+      // Organizations resource doesn't have validation registered
       // So this should pass through to the base provider
       await expect(
-        unifiedDataProvider.create("companies", {
+        unifiedDataProvider.create("organizations", {
           data: { website: "https://example.com" },
         }),
       ).resolves.toMatchObject({
