@@ -1056,3 +1056,7 @@
 [2025-10-18 23:08:22] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-org-insert.js
 [2025-10-18 23:08:38] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-org-select.js
 [2025-10-18 23:15:16] [code] Edit: /home/krwhynot/projects/crispy-crm/.env
+[2025-10-18 23:18:12] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/generate-jwt-keys.js
+[2025-10-18 23:18:43] [code] Edit: /home/krwhynot/projects/crispy-crm/.env
+[2025-10-18 23:20:10] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-direct-jwt.js
+[2025-10-18 23:20:47] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-data.js
