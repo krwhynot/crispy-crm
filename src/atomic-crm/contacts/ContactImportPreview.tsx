@@ -106,9 +106,9 @@ export function ContactImportPreview({
           return {
             row: index + 1,
             valid: false,
-            errors: error.errors.map((e) => ({
-              field: e.path.join("."),
-              message: e.message,
+            errors: error.issues.map((issue) => ({
+              field: issue.path.join("."),
+              message: issue.message,
             })),
           };
         }
