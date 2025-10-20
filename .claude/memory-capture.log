@@ -1199,3 +1199,5 @@
 [2025-10-19 18:21:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/organizations/integration.test.ts
 [2025-10-19 18:21:44] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
 [2025-10-19 19:17:20] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251020001702_add_organizations_summary_rls_policies.sql
+[2025-10-19 19:18:01] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251020001702_add_organizations_summary_rls_policies.sql
+[2025-10-19 19:23:18] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251020002305_fix_contacts_summary_security_invoker.sql
