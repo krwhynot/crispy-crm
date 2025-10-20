@@ -69,36 +69,58 @@ export function usePapaParse<T>({
 
       const importId = importIdRef.current;
       Papa.parse<T>(file, {
-        header: false, // Parse without headers first
+        header: false, // We'll manually handle headers after skipping rows
         skipEmptyLines: true,
-        preview: previewRowCount, // Limit rows if in preview mode
+        preview: previewRowCount ? previewRowCount + 2 : undefined, // Add 2 for skipped rows
         async complete(results) {
           if (importIdRef.current !== importId) {
             return;
           }
 
-          // Transform headers if a transformation function is provided
-          let data = results.data;
-          if (transformHeaders && results.meta && results.meta.fields) {
-            const originalHeaders = results.meta.fields;
-            const transformedHeaders = transformHeaders(originalHeaders);
+          // Skip first 2 instruction rows and use row 3 as headers
+          const rawData = results.data as any[][];
+          if (rawData.length < 3) {
+            setImporter({
+              state: "error",
+              errorMessage: "CSV file is too short (less than 3 rows)",
+            });
+            return;
+          }
 
-            // Transform each row to use the new header names
-            data = results.data.map((row: any) => {
-              const transformedRow: any = {};
-              originalHeaders.forEach((originalHeader, index) => {
-                const newHeader = transformedHeaders[index] || originalHeader;
-                if (originalHeader in row) {
-                  transformedRow[newHeader] = row[originalHeader];
-                }
+          // Row 3 (index 2) contains the actual headers
+          const headers = rawData[2] as string[];
+
+          // Rows 4+ (index 3+) contain the data
+          const dataRows = rawData.slice(3);
+
+          // Convert to objects using headers
+          const data = dataRows.map(row => {
+            const obj: any = {};
+            headers.forEach((header, index) => {
+              obj[header] = row[index];
+            });
+            return obj as T;
+          });
+
+          // Transform headers if a transformation function is provided
+          let transformedData = data; // Start with untransformed data
+          if (transformHeaders) {
+            const transformedHeaders = transformHeaders(headers);
+
+            // Remap data with transformed headers
+            transformedData = data.map((row: any) => {
+              const newRow: any = {};
+              headers.forEach((oldHeader, index) => {
+                const newHeader = transformedHeaders[index] || oldHeader;
+                newRow[newHeader] = row[oldHeader];
               });
-              return transformedRow as T;
+              return newRow as T;
             });
           }
 
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
-            onPreview(data);
+            onPreview(transformedData);
             setImporter({
               state: "idle",
             });
@@ -107,19 +129,19 @@ export function usePapaParse<T>({
 
           setImporter({
             state: "running",
-            rowCount: data.length,
+            rowCount: transformedData.length,
             errorCount: results.errors.length,
             importCount: 0,
             remainingTime: null,
           });
 
           let totalTime = 0;
-          for (let i = 0; i < data.length; i += batchSize) {
+          for (let i = 0; i < transformedData.length; i += batchSize) {
             if (importIdRef.current !== importId) {
               return;
             }
 
-            const batch = data.slice(i, i + batchSize);
+            const batch = transformedData.slice(i, i + batchSize);
             try {
               const start = Date.now();
               await processBatch(batch);
@@ -133,7 +155,7 @@ export function usePapaParse<T>({
                     ...previous,
                     importCount,
                     remainingTime:
-                      meanTime * (data.length - importCount),
+                      meanTime * (transformedData.length - importCount),
                   };
                 }
                 return previous;
