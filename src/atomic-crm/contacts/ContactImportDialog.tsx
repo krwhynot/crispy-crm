@@ -328,7 +328,7 @@ export function ContactImportDialog({
       {/* Preview Dialog (when feature flag is enabled) */}
       {ENABLE_IMPORT_PREVIEW && showPreview && previewData && (
         <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogContent className="max-w-6xl max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Import Preview</DialogTitle>
             </DialogHeader>
