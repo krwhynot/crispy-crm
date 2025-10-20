@@ -138,16 +138,20 @@ Maintain the existing caching strategy for organizations and tags.
 - `/src/atomic-crm/contacts/ContactImportDialog.tsx` - Current state machine
 - `/src/atomic-crm/contacts/ContactImportPreview.tsx` - Preview component (from 1.3)
 - `/src/atomic-crm/contacts/ContactImportResult.tsx` - Result component (from 1.4)
-- `/.docs/plans/csv-import-export-enhancement/ui-implementation-plan.md` - State machine design
+- `/src/atomic-crm/misc/usePapaParse.tsx` - Existing state types
 
 **Instructions**
 
 Files to Modify:
 - `/src/atomic-crm/contacts/ContactImportDialog.tsx`
 
-Add new states to the FSM:
-- `previewing` state after parsing
-- `confirmed` state after user confirms preview
+Track preview state separately from the parser state machine:
+```typescript
+const [showPreview, setShowPreview] = useState(false);
+const [previewConfirmed, setPreviewConfirmed] = useState(false);
+```
+
+DO NOT modify the `Import` type in `usePapaParse.tsx` - keep it backward compatible. Instead, manage preview flow in the dialog component.
 
 Integrate the new preview and result components. Add feature flag `ENABLE_IMPORT_PREVIEW` (default: false) to allow gradual rollout.
 
@@ -185,6 +189,30 @@ Update the exporter function to use canonical header names that match import exp
 - Flatten phone JSONB to `phone_work`, `phone_home`, `phone_other` columns
 
 This ensures exported CSVs can be re-imported without manual header changes.
+
+### Task 1.9: Data Provider Dry-Run Support [OPTIONAL - Depends on: none]
+
+**READ THESE BEFORE TASK**
+- `/src/atomic-crm/providers/supabase/unifiedDataProvider.ts` - Data provider implementation
+- `/src/atomic-crm/providers/supabase/services/ValidationService.ts` - Validation service
+- `/src/atomic-crm/providers/supabase/services/TransformService.ts` - Transform service
+
+**Instructions**
+
+Files to Modify:
+- `/src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+
+**NOTE**: This task is OPTIONAL. If not implemented, preview validation will use client-side Zod schemas directly (Task 1.3).
+
+Add dry-run support to the create method:
+```typescript
+if (params.meta?.dryRun) {
+  const processedData = await processForDatabase(resource, params.data, "create");
+  return { data: { ...processedData, id: 'dry-run-provisional' } };
+}
+```
+
+This allows preview validation through the data provider without database writes, maintaining the "Zod at API boundary" principle. However, this is a nice-to-have enhancement - the system works without it.
 
 ## Phase 2: Advanced Features (Conditional Implementation)
 
@@ -288,9 +316,9 @@ Create functionality to:
 ### Critical Success Factors
 - **Backward Compatibility**: All Phase 1 changes must not break existing imports. Use optional parameters and feature flags.
 - **Field Name Mapping**: Always map to ContactImportSchema fields (`email_work`), NOT database fields (`email` JSONB)
-- **Validation Boundary**: Respect "Zod at API boundary" - don't duplicate validation logic in preview
-- **State Machine Integrity**: Never allow impossible state transitions in the import dialog FSM
-- **Error Resilience**: Use `Promise.allSettled` not `Promise.all` to capture individual row failures
+- **Validation Approach**: For preview, use client-side validation with imported Zod schemas. Dry-run support in data provider is optional (Task 1.9).
+- **State Management**: Track preview state separately from parser state - don't modify core `Import` type in usePapaParse
+- **Error Resilience**: Change `Promise.all` to `Promise.allSettled` in useContactImport to capture individual row failures
 
 ### Performance Considerations
 - **Preview Performance**: Parse only first 10 rows for preview to keep response under 3 seconds
