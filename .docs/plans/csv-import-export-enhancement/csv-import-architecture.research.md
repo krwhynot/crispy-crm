@@ -600,6 +600,13 @@ type usePapaParseProps<T> = {
 };
 ```
 
+**CRITICAL IMPLEMENTATION NOTE**:
+The `processBatch` implementation in `useContactImport` MUST use `Promise.allSettled` instead of `Promise.all` when processing individual contacts within the batch. This ensures:
+- All rows in a batch are attempted even if some fail
+- Individual row errors are collected and returned in the `errors` array
+- The `successCount` accurately reflects only successful imports
+Without this change, a single row error would fail the entire batch and prevent error collection for other rows.
+
 **Reusability**: Generic `<T>` allows use for any CSV import (contacts, organizations, opportunities, etc.). Currently only used for contacts but designed for expansion.
 
 ### useContactImport Hook Signature

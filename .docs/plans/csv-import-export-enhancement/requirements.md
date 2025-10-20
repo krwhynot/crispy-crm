@@ -373,14 +373,23 @@ CREATE POLICY "Users can manage own saved mappings"
 
    • 2,140 contacts will be imported
    • 5 contacts will be skipped (missing organization)
-   • 12 new organizations will be created
-   • 3 new tags will be created
+   • 12 new organizations will be created [Show Details ▼]
+     - Acme Corporation
+     - TechStart Inc.
+     - Global Solutions Ltd.
+     - ... (9 more)
+   • 3 new tags will be created [Show Details ▼]
+     - high-priority
+     - enterprise
+     - follow-up
 
    ⚠️ Warnings:
    - Row 23: Missing organization name
    - Row 45: Missing organization name
    - Row 67: Invalid email format
    ```
+
+   **Note:** The [Show Details] links are collapsible sections that display the full list of new entities to be created, allowing users to catch typos or duplicates before import
 
 5. User reviews and clicks:
    - **"Continue Import"** → Proceeds to Step 3
@@ -587,10 +596,20 @@ successRate = (importsWithZeroErrors / totalImportAttempts) * 100
 - **Caching:** Maintain existing org/tag caching strategy (85% reduction)
 - **Batch size:** Keep at 10 contacts per batch (proven effective)
 - **Browser limits:** Document 5000-row soft limit (Phase 2 for larger)
+- **File size warning:** Display non-blocking alert for files > 10MB warning of potential browser performance issues
+- **Memory protection:** Recommend splitting large files for better performance
+
+### Security Considerations
+- **CSV Formula Injection Protection:** Prepend single quote to values starting with `=`, `+`, `-`, `@` to prevent spreadsheet formula execution
+- **XSS Prevention:** Strip all HTML tags from imported string fields using defense-in-depth approach
+- **Client-side parsing:** All CSV processing happens in browser (no server uploads) for enhanced security
+- **Input sanitization:** Apply before data provider calls in `useContactImport.tsx`
 
 ### Documentation Updates
 - Update `docs/import-contacts.md` with new workflow
 - Add column alias examples to user documentation
+- Document "fail-forward" behavior (no rollbacks on partial failures)
+- Explain duplicate creation risk on re-import attempts
 - Provide troubleshooting guide for common errors
 - Update sample CSV template with best practices
 

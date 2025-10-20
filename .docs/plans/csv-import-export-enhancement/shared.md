@@ -80,7 +80,15 @@ The CSV import/export system follows a layered architecture with clear separatio
 
 **Validate-Then-Transform Flow**: Critical data provider pattern where validation happens FIRST on original field names, transformation happens SECOND (file uploads, field renames, timestamps). Reversing this breaks validation. See `/src/atomic-crm/providers/supabase/unifiedDataProvider.ts` and Issue 0.4 fix.
 
-**ZEN GAP FIX - Preview Validation Pattern**: To respect "Zod at API boundary only" principle, preview validation should use data provider with dry-run flag: `dataProvider.create("contacts", { data, meta: { dryRun: true } })` rather than duplicating validation logic.
+**ZEN GAP FIX - Preview Validation Pattern (DryRun Contract)**:
+To respect "Zod at API boundary only" principle, preview validation MUST use data provider with dry-run flag: `dataProvider.create("contacts", { data, meta: { dryRun: true } })` rather than duplicating validation logic.
+
+**Technical Contract for `meta: { dryRun: true }`**:
+- When `dryRun: true` is passed, the data provider MUST execute the full validation and transformation pipeline (`processForDatabase` function)
+- On success: Return `{ data: { ...processedData, id: 'dry-run-provisional-id' } }` with fully transformed data that would have been sent to database
+- On failure: Throw standard React Admin formatted validation error exactly as it would for real operations
+- Database operations MUST NOT be executed - no commits, no transactions
+- This enables frontend to verify data validity and see transformation results without database side effects
 
 **Registry-Based Services**: ValidationService and TransformService use resource→method→function lookup tables enabling extensible, maintainable service architecture. See `/src/atomic-crm/providers/supabase/services/ValidationService.ts:71-146`.
 
