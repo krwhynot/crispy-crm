@@ -12,6 +12,8 @@ The CSV import/export system follows a layered architecture with clear separatio
 - `/src/atomic-crm/contacts/contacts_export.csv`: Sample CSV template showing expected format
 
 ### New Components (Phase 1)
+**📖 Detailed Implementation**: See [ui-implementation-plan.md](ui-implementation-plan.md) for complete component specifications, code examples, and UI patterns.
+
 - `/src/atomic-crm/contacts/columnAliases.ts`: Column mapping registry with 50+ common header variations and name splitting utility
 - `/src/atomic-crm/contacts/ContactImportPreview.tsx`: Pre-import validation modal showing column mappings, sample data, and warnings
 - `/src/atomic-crm/contacts/ContactImportResult.tsx`: Enhanced error reporting modal with detailed per-row error messages
@@ -70,7 +72,7 @@ The CSV import/export system follows a layered architecture with clear separatio
 
 ## Relevant Patterns
 
-**State Machine Pattern**: The import dialog implements a 5-state FSM (idle→parsing→running→complete/error) preventing impossible UI states like "showing progress while idle". See `/src/atomic-crm/misc/usePapaParse.tsx:4-25` for type definitions.
+**State Machine Pattern**: The import dialog implements a 6-state FSM (idle→parsing→previewing→running→complete/error) preventing impossible UI states like "showing progress while idle". Full implementation with state transitions and guards documented in [ui-implementation-plan.md](ui-implementation-plan.md#state-machine-implementation). See `/src/atomic-crm/misc/usePapaParse.tsx:4-25` for existing type definitions.
 
 **Batch Processing with ETA**: Sequential batching (default 10 records) prevents API overload while calculating estimated time remaining based on mean processing time per batch. See `/src/atomic-crm/misc/usePapaParse.tsx:76-111`.
 
@@ -107,6 +109,8 @@ To respect "Zod at API boundary only" principle, preview validation MUST use dat
 **Semantic Colors Only**: UI components and validation schemas enforce semantic color variables (--primary, --brand-700) never hex codes. Tags accept hex in CSV but transform to semantic names. See `/src/atomic-crm/validation/tags.ts:18-102`.
 
 ## Relevant Docs
+
+**`.docs/plans/csv-import-export-enhancement/ui-implementation-plan.md`**: Read for detailed UI component implementations, state machine design, Material-UI patterns, accessibility requirements, and complete code examples for all import dialog components.
 
 **`/docs/import-contacts.md`**: Read when implementing import UI flow, understanding state machine transitions, or debugging import errors.
 
