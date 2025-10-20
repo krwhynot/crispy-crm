@@ -364,6 +364,18 @@ export const unifiedDataProvider: DataProvider = {
         "create",
       );
 
+      // Check for preview/dry-run mode
+      if (params.meta?.dryRun === true) {
+        // In dry-run mode, return the processed data without database operations
+        // This allows validation and transformation without side effects
+        return {
+          data: {
+            ...processedData,
+            id: 'dry-run-provisional-id',
+          },
+        };
+      }
+
       // Special handling for segments - use RPC for get_or_create
       if (resource === "segments") {
         const { data, error} = await supabase
