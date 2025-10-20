@@ -22,7 +22,19 @@ npm run db:cloud:push     # Deploy migrations to cloud
 
 ## 📦 Section 1: Local Development Setup
 
-### 1.1 Start Local Supabase
+### 1.1 Configure Environment
+
+```bash
+# Use the local configuration
+cp .env.local .env
+```
+
+This sets up:
+- Local Supabase URL: `http://127.0.0.1:54321`
+- Local database connection
+- Test credentials
+
+### 1.2 Start Local Supabase
 
 ```bash
 npm run db:local:start
@@ -73,23 +85,98 @@ npx supabase migration new add_feature_name
 # Location: supabase/migrations/YYYYMMDDHHMMSS_add_feature_name.sql
 ```
 
-Example migration:
+### ⚠️ CRITICAL: Migration Checklist
+
+**Every table migration MUST include:**
+- [ ] **RLS enabled** - `ALTER TABLE table_name ENABLE ROW LEVEL SECURITY;`
+- [ ] **RLS policies** - At minimum: SELECT, INSERT, UPDATE, DELETE
+- [ ] **Indexes** - For foreign keys and frequently queried columns
+- [ ] **Timestamps** - created_at, updated_at
+- [ ] **Soft delete** - deleted_at column (if applicable)
+- [ ] **Audit fields** - created_by, updated_by (link to sales.id)
+- [ ] **Comments** - Document the table/column purpose
+
+**Complete migration example:**
 ```sql
--- Add new table
+-- Create table with all required fields
 CREATE TABLE projects (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  description TEXT,
+
+  -- Foreign keys
+  organization_id BIGINT REFERENCES organizations(id) ON DELETE CASCADE,
+  sales_id BIGINT REFERENCES sales(id),
+
+  -- Audit fields
+  created_by BIGINT REFERENCES sales(id) DEFAULT get_current_sales_id(),
+  updated_by BIGINT REFERENCES sales(id),
+
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  deleted_at TIMESTAMPTZ,
+
+  -- Search
+  search_tsv TSVECTOR
 );
 
--- Add RLS
+-- CRITICAL: Enable RLS (without this, table is wide open!)
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 
--- Add policy
-CREATE POLICY "Users can view own projects"
+-- CRITICAL: Add RLS policies for each operation
+CREATE POLICY "Users can view their projects"
   ON projects FOR SELECT
-  USING (auth.uid() = user_id);
+  TO authenticated
+  USING (sales_id = get_current_sales_id());
+
+CREATE POLICY "Users can create projects"
+  ON projects FOR INSERT
+  TO authenticated
+  WITH CHECK (sales_id = get_current_sales_id());
+
+CREATE POLICY "Users can update their projects"
+  ON projects FOR UPDATE
+  TO authenticated
+  USING (sales_id = get_current_sales_id());
+
+CREATE POLICY "Users can delete their projects"
+  ON projects FOR DELETE
+  TO authenticated
+  USING (sales_id = get_current_sales_id());
+
+-- Add indexes for performance
+CREATE INDEX idx_projects_organization_id ON projects(organization_id);
+CREATE INDEX idx_projects_sales_id ON projects(sales_id);
+CREATE INDEX idx_projects_deleted_at ON projects(deleted_at) WHERE deleted_at IS NULL;
+
+-- Add triggers for automatic updates
+CREATE TRIGGER set_updated_by_projects
+  BEFORE UPDATE ON projects
+  FOR EACH ROW
+  EXECUTE FUNCTION set_updated_by();
+
+CREATE TRIGGER update_projects_updated_at
+  BEFORE UPDATE ON projects
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- Document the table
+COMMENT ON TABLE projects IS 'Project management for opportunities and tasks';
+COMMENT ON COLUMN projects.search_tsv IS 'Full text search vector';
+
+-- Grant permissions
+GRANT SELECT, INSERT, UPDATE, DELETE ON projects TO authenticated;
+```
+
+**For Views:**
+```sql
+CREATE VIEW projects_summary
+WITH (security_invoker = true) -- CRITICAL: Use security_invoker, not security_definer
+AS
+SELECT ... FROM projects ...;
+
+GRANT SELECT ON projects_summary TO authenticated;
 ```
 
 ### Option B: Studio-First (For Experiments)
@@ -119,12 +206,23 @@ npm run dev
 
 ## 🚀 Section 3: Cloud Deployment
 
-### 3.1 Pre-Deployment Checklist
+### 3.1 Configure Cloud Environment
+
+```bash
+# Use the cloud configuration
+cp .env.cloud .env
+
+# Add your service role key if needed (for migrations)
+# Get from: https://supabase.com/dashboard/project/YOUR_PROJECT/settings/api
+```
+
+### 3.2 Pre-Deployment Checklist
 
 - [ ] Migration tested locally (`npm run db:local:reset`)
 - [ ] App works with migration (`npm run dev`)
 - [ ] Migration file reviewed for DROP statements
 - [ ] Git changes committed
+- [ ] Cloud credentials configured
 
 ### 3.2 Deploy to Cloud
 
