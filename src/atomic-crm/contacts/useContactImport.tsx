@@ -211,9 +211,11 @@ export function useContactImport() {
               return { rowNumber, success: true };
             } else {
               // Step 1: Create the contact record
+              console.log("Creating contact:", contactPayload);
               const contactResponse = await dataProvider.create("contacts", {
                 data: contactPayload,
               });
+              console.log("Contact created:", contactResponse);
 
               const contactId = contactResponse.data.id;
 

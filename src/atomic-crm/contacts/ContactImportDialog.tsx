@@ -118,25 +118,37 @@ export function ContactImportDialog({
     }
   }, [processBatchHook]);
 
-  const { importer, parseCsv, reset } = usePapaParse<ContactImportSchema>({
+  // Two separate importers: one for preview, one for actual import
+  const previewImporter = usePapaParse<ContactImportSchema>({
+    transformHeaders: transformHeaders,
+    onPreview: onPreview,
+    previewRowCount: 100,
+  });
+
+  const actualImporter = usePapaParse<ContactImportSchema>({
     batchSize: 10,
     processBatch,
-    transformHeaders: ENABLE_IMPORT_PREVIEW ? transformHeaders : undefined,
-    onPreview: ENABLE_IMPORT_PREVIEW ? onPreview : undefined,
-    previewRowCount: ENABLE_IMPORT_PREVIEW ? 100 : undefined,
+    transformHeaders: transformHeaders,
+    // No preview callbacks - this does the actual import
   });
+
+  // Use the appropriate importer based on whether preview is enabled
+  const { importer, parseCsv, reset } = ENABLE_IMPORT_PREVIEW
+    ? previewImporter
+    : actualImporter;
 
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
-    if (importer.state === "complete") {
+    // Monitor actualImporter for completion (not the preview one)
+    if (actualImporter.importer.state === "complete") {
       refresh();
       // Show enhanced result dialog if we have result data
       if (importResult) {
         setShowResult(true);
       }
     }
-  }, [importer.state, refresh, importResult]);
+  }, [actualImporter.importer.state, refresh, importResult]);
 
   const handleFileChange = (file: File | null) => {
     setFile(file);
@@ -158,16 +170,11 @@ export function ContactImportDialog({
   const handlePreviewContinue = () => {
     setShowPreview(false);
     setPreviewConfirmed(true);
-    // Re-parse the file without preview mode to trigger actual import
+    // Use the actualImporter to parse the file for real import
     if (file) {
-      // Temporarily disable preview for the actual import
-      const actualImporter = usePapaParse<ContactImportSchema>({
-        batchSize: 10,
-        processBatch,
-        transformHeaders: transformHeaders,
-        // No preview callbacks this time - do actual import
-      });
       actualImporter.parseCsv(file);
+    } else {
+      console.error("Cannot continue import: file is missing");
     }
   };
 
@@ -176,11 +183,13 @@ export function ContactImportDialog({
     setShowPreview(false);
     setPreviewData(null);
     setParsedData([]);
-    reset();
+    previewImporter.reset();
+    actualImporter.reset();
   };
 
   const handleClose = () => {
-    reset();
+    previewImporter.reset();
+    actualImporter.reset();
     setShowPreview(false);
     setShowResult(false);
     setPreviewData(null);
@@ -191,7 +200,8 @@ export function ContactImportDialog({
 
   const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    reset();
+    previewImporter.reset();
+    actualImporter.reset();
     setShowPreview(false);
     setPreviewData(null);
     setParsedData([]);
