@@ -256,7 +256,20 @@ npx supabase db push --skip-diff
 
 ## 🔧 Section 4: Troubleshooting
 
-### Common Issues
+### Common Migration Mistakes
+
+| Mistake | Consequence | Fix |
+|---------|-------------|-----|
+| **Forgot RLS** | Table wide open, no security | Always add `ALTER TABLE x ENABLE ROW LEVEL SECURITY` |
+| **No RLS policies** | 403 errors, users can't access data | Add policies for SELECT, INSERT, UPDATE, DELETE |
+| **Wrong policy function** | Data leaks between users | Use `get_current_sales_id()` not `auth.uid()` |
+| **No indexes** | Slow queries | Index foreign keys and WHERE clause columns |
+| **No audit fields** | Can't track who changed data | Add created_by, updated_by linked to sales.id |
+| **SECURITY DEFINER on views** | Bypasses RLS, security risk | Use `WITH (security_invoker = true)` |
+| **No soft delete** | Can't recover deleted data | Add deleted_at TIMESTAMPTZ column |
+| **Missing GRANT** | Permission denied errors | Add `GRANT SELECT, INSERT... TO authenticated` |
+
+### Common Runtime Issues
 
 | Issue | Solution |
 |-------|----------|
