@@ -24,7 +24,7 @@ import { useEffect, useState, useCallback } from "react";
 import * as sampleCsv from "./contacts_export.csv?raw";
 
 // Feature flag for enhanced import preview
-const ENABLE_IMPORT_PREVIEW = false;
+const ENABLE_IMPORT_PREVIEW = true;
 
 const SAMPLE_URL = `data:text/csv;name=crm_contacts_sample.csv;charset=utf-8,${encodeURIComponent(
   sampleCsv.default,
@@ -158,9 +158,16 @@ export function ContactImportDialog({
   const handlePreviewContinue = () => {
     setShowPreview(false);
     setPreviewConfirmed(true);
-    // Now process the actual import with the stored parsed data
-    if (parsedData.length > 0) {
-      processBatch(parsedData);
+    // Re-parse the file without preview mode to trigger actual import
+    if (file) {
+      // Temporarily disable preview for the actual import
+      const actualImporter = usePapaParse<ContactImportSchema>({
+        batchSize: 10,
+        processBatch,
+        transformHeaders: transformHeaders,
+        // No preview callbacks this time - do actual import
+      });
+      actualImporter.parseCsv(file);
     }
   };
 
