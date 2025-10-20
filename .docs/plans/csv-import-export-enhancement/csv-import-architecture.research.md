@@ -63,6 +63,34 @@ type Import =
 
 **Pattern**: Classic FSM prevents impossible states (e.g., "showing progress while idle"). UI renders conditionally based on current state.
 
+**ZEN GAP FIX - FSM Evolution for Phase 1**:
+```typescript
+// Enhanced FSM with backward compatibility
+type Import =
+  | { state: "idle" }
+  | { state: "parsing" }
+  | { state: "previewing";               // NEW (optional based on feature flag)
+      preview: {
+        headers: string[];
+        mappings: ColumnMapping[];
+        sampleRows: ContactImportSchema[];
+        warnings: ImportWarning[];
+      }
+    }
+  | { state: "confirmed" }                // NEW (user approved preview)
+  | { state: "running" | "complete";
+      rowCount: number;
+      importCount: number;
+      errorCount: number;
+      errors: ImportError[];              // ZEN FIX: Add detailed errors, not just count
+      remainingTime: number | null;
+    }
+  | { state: "error"; error: Error };
+
+// Feature flag controls whether preview states are used
+const ENABLE_IMPORT_PREVIEW = false; // Initially false for backward compatibility
+```
+
 ### Batch Processing Strategy
 
 ```typescript
@@ -550,6 +578,26 @@ function usePapaParse<T>({
     reset: () => void
   };
 }
+```
+
+**ZEN GAP FIX - Enhanced Hook Interface (Backward Compatible)**:
+```typescript
+type usePapaParseProps<T> = {
+  batchSize?: number;                    // Default: 10
+  processBatch(batch: T[]): Promise<{
+    successCount: number;
+    errors: ImportError[];                // ZEN FIX: Return errors for tracking
+  }>;
+
+  // NEW OPTIONAL parameters for Phase 1 (all optional for backward compatibility)
+  transformHeaders?: (headers: string[]) => string[];
+  onPreview?: (preview: {
+    headers: string[];
+    rows: T[];
+    mappings: ColumnMapping[];
+  }) => Promise<boolean>;                 // Returns true to continue, false to cancel
+  previewRowCount?: number;               // Default: 0 (no preview)
+};
 ```
 
 **Reusability**: Generic `<T>` allows use for any CSV import (contacts, organizations, opportunities, etc.). Currently only used for contacts but designed for expansion.

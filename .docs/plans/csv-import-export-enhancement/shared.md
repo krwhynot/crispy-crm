@@ -55,10 +55,10 @@ The CSV import/export system follows a layered architecture with clear separatio
 ## Relevant Tables
 
 ### Core Tables
-- `contacts`: Stores contact records with JSONB email/phone arrays, organization_id FK (new pattern), tags bigint array
+- `contacts`: Stores contact records with JSONB email/phone arrays, NO organization_id FK, tags bigint array
 - `organizations`: Organization master data with organization_type enum, priority (A/B/C/D), segment_id FK
 - `tags`: Tag master data with unique name constraint, color (semantic names), usage_count
-- `contact_organizations`: Junction table for contact-org relationships (deprecated for new imports, but still used for multi-org historical data)
+- `contact_organizations`: Junction table for contact-org relationships (PRIMARY pattern - NOT deprecated, used for ALL contact-org relationships)
 
 ### Summary Views (Performance)
 - `contacts_summary`: Optimized view for list operations with aggregated data
@@ -79,6 +79,8 @@ The CSV import/export system follows a layered architecture with clear separatio
 **Controlled Dialog Pattern**: All dialogs use controlled state (parent manages `open` prop) enabling programmatic close after async operations and state reset on close. See `/src/atomic-crm/contacts/ContactImportButton.tsx` for implementation.
 
 **Validate-Then-Transform Flow**: Critical data provider pattern where validation happens FIRST on original field names, transformation happens SECOND (file uploads, field renames, timestamps). Reversing this breaks validation. See `/src/atomic-crm/providers/supabase/unifiedDataProvider.ts` and Issue 0.4 fix.
+
+**ZEN GAP FIX - Preview Validation Pattern**: To respect "Zod at API boundary only" principle, preview validation should use data provider with dry-run flag: `dataProvider.create("contacts", { data, meta: { dryRun: true } })` rather than duplicating validation logic.
 
 **Registry-Based Services**: ValidationService and TransformService use resource→method→function lookup tables enabling extensible, maintainable service architecture. See `/src/atomic-crm/providers/supabase/services/ValidationService.ts:71-146`.
 

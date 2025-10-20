@@ -221,6 +221,45 @@ async function processForDatabase<T>(
 - Transformation can rename fields safely after validation (e.g., `products_to_sync`)
 - Referenced in Issue 0.4 as critical fix
 
+## ZEN GAP FIX - Preview Validation Strategy
+
+### Respecting "Zod at API Boundary Only" Principle
+
+**Problem:** Preview validation seems to violate the "single source of truth" principle by validating before the API boundary.
+
+**Solution:** Use data provider with dry-run flag to maintain architectural consistency:
+
+```typescript
+// CORRECT: Preview validation through data provider
+async function validatePreview(rows: ContactImportSchema[]) {
+  const validationResults = await Promise.all(
+    rows.map(row =>
+      dataProvider.create("contacts", {
+        data: row,
+        meta: { dryRun: true }  // New meta flag prevents DB writes
+      }).then(
+        () => ({ valid: true, row }),
+        (error) => ({ valid: false, row, error })
+      )
+    )
+  );
+  return validationResults;
+}
+
+// WRONG: Duplicating validation logic
+async function validatePreview(rows: ContactImportSchema[]) {
+  // DON'T duplicate Zod schemas outside data provider
+  const results = rows.map(row => contactSchema.parse(row));
+  return results;
+}
+```
+
+**Benefits:**
+- Single source of truth for validation logic
+- Preview validation exactly matches actual import validation
+- No risk of validation drift between preview and import
+- Respects fail-fast principle (validation errors are surfaced immediately)
+
 ## Edge Cases & Gotchas
 
 ### 1. Name Field Computation (Contacts)
@@ -457,10 +496,12 @@ export async function getContactAvatar(record: Partial<Contact>): Promise<string
 // - notes, tags
 ```
 
-**CSV Import Gotcha:**
-- CSV import bypasses UI, so may need to relax this rule
-- Consider creating `importContactSchema` that allows additional fields
-- Or warn users that unmapped columns will be ignored
+**ZEN GAP FIX - CSV Import Exception:**
+- CSV import uses `ContactImportSchema` interface, NOT database Contact type
+- Maps to existing UI-visible fields only (respecting UI as truth)
+- Column aliases map to ContactImportSchema fields, not DB fields
+- Example: "Email" → `email_work` (not `email` JSONB array)
+- This maintains the principle while allowing CSV flexibility
 
 ## Error Handling
 
