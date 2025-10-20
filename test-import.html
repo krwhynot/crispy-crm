@@ -194,10 +194,40 @@
             parseStatus.innerHTML = '<div class="status info">⏳ Parsing CSV...</div>';
 
             Papa.parse(file, {
-                header: true,
+                header: false,  // Parse as array of arrays first
                 skipEmptyLines: true,
-                skipFirstNLines: 2,  // THIS IS THE FIX WE ADDED
                 complete: function(results) {
+                    // Manually skip first 2 instruction rows
+                    const rawData = results.data;
+                    if (rawData.length < 3) {
+                        log('CSV file too short (less than 3 rows)', 'error');
+                        parseStatus.innerHTML = '<div class="status error">❌ CSV file too short</div>';
+                        return;
+                    }
+
+                    // Row 3 (index 2) contains headers
+                    const headers = rawData[2];
+
+                    // Rows 4+ (index 3+) contain data
+                    const dataRows = rawData.slice(3);
+
+                    // Convert to objects
+                    const data = dataRows.map(row => {
+                        const obj = {};
+                        headers.forEach((header, index) => {
+                            obj[header] = row[index];
+                        });
+                        return obj;
+                    });
+
+                    // Create a results object with the corrected structure
+                    results = {
+                        data: data,
+                        meta: { fields: headers },
+                        errors: results.errors
+                    };
+
+                    // Continue with normal processing
                     log('CSV parsing complete!', 'success');
                     log('Total rows: ' + results.data.length, 'info');
                     log('Headers: ' + JSON.stringify(results.meta.fields), 'info');
