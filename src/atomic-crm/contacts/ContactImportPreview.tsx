@@ -26,7 +26,7 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DialogFooter } from "@/components/ui/dialog";
 import { contactSchema } from "@/atomic-crm/validation/contacts";
-import type { z } from "zod";
+import { z } from "zod";
 
 // Types for preview data
 export interface ColumnMapping {
