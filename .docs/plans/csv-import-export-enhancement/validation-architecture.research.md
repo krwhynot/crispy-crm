@@ -294,6 +294,13 @@ function transformContactData(data: any) {
 - Must handle both `name` column AND separate `first_name`/`last_name` columns
 - Fallback to 'Unknown' if all three are empty
 
+**Import Field Precedence Rules (CRITICAL FOR CSV IMPORT)**:
+When a CSV contains multiple name-related columns, the following precedence MUST be applied:
+1. **Dedicated fields take priority**: If both `first_name` and `last_name` columns are present and mapped, use them directly (ignore `name` column)
+2. **Full name splitting as fallback**: Only if `first_name` and `last_name` are NOT provided, use the `name` column and apply splitting logic
+3. **Rationale**: Explicit data (first/last) is more accurate than inferred data (split from full name)
+4. **Implementation**: The `transformContactData` function should check for presence of `first_name`/`last_name` BEFORE attempting to split the `name` field
+
 ### 2. Email Array Validation Complexity
 
 **Issue:** createContactSchema requires at least one email, but array could be empty or have invalid entries
