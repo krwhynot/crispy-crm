@@ -328,6 +328,8 @@ CREATE POLICY "Users can manage own saved mappings"
 
 ## 4. UI/UX Flow
 
+**📖 Complete UI Implementation Details**: See [ui-implementation-plan.md](ui-implementation-plan.md) for detailed component specifications, state machine design, code examples, and accessibility requirements.
+
 ### Phase 1: Enhanced Import Flow
 
 **Step 1: File Upload (Unchanged)**
@@ -573,6 +575,13 @@ successRate = (importsWithZeroErrors / totalImportAttempts) * 100
 ---
 
 ## 7. Implementation Notes
+
+### UI Component Implementation
+- **Complete Guide**: [ui-implementation-plan.md](ui-implementation-plan.md)
+- **Component Architecture**: 7 new components in `src/atomic-crm/contacts/`
+- **State Machine**: 6-state FSM preventing impossible UI states
+- **Material-UI**: All components use MUI + React Admin patterns
+- **Accessibility**: Full ARIA support, keyboard navigation, screen reader friendly
 
 ### Git Branch Strategy
 - Create feature branch: `feature/csv-import-enhancement`
