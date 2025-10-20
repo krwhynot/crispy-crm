@@ -64,15 +64,19 @@ Enhance the CSV import/export system to handle real-world CSV file variations, e
 
 1. **`src/atomic-crm/contacts/columnAliases.ts`** - Column mapping registry
    ```typescript
+   // ZEN GAP FIX: Map to ContactImportSchema fields, NOT database fields
    export const COLUMN_ALIASES: Record<string, string[]> = {
+     // Maps to CSV import fields, not DB fields
      organization_name: ['Organizations', 'Company', 'Organizations (DropDown)', ...],
      first_name: ['First Name', 'First', 'Given Name', ...],
+     email_work: ['Email', 'E-mail', 'Email Address', 'Work Email', ...],  // NOT 'email'!
+     email_home: ['Personal Email', 'Home Email', ...],  // NOT 'email'!
      // ... all field mappings
    };
 
    export function normalizeHeader(header: string): string;
    export function findCanonicalField(userHeader: string): string | null;
-   export function splitFullName(fullName: string): {firstName: string, lastName: string};
+   // REMOVED: splitFullName - reuse existing transformContactData instead
    ```
 
 2. **`src/atomic-crm/contacts/ContactImportPreview.tsx`** - Validation preview modal
@@ -84,8 +88,11 @@ Enhance the CSV import/export system to handle real-world CSV file variations, e
      newOrganizations: number;
      columnMappings: Array<{ userColumn: string; crmField: string | null }>;
      warnings: Array<{ row: number; message: string }>;
-     sampleData: Array<{ original: Record<string, string>; mapped: Contact }>;
+     sampleData: Array<{ original: Record<string, string>; mapped: ContactImportSchema }>; // ZEN FIX: Not Contact type
    }
+
+   // ZEN GAP FIX: Preview validation respects "Zod at API boundary" principle
+   // Use dry-run through data provider for validation (no double validation)
    ```
 
 3. **`src/atomic-crm/contacts/ContactImportResult.tsx`** - Enhanced error reporting modal
@@ -114,9 +121,11 @@ Enhance the CSV import/export system to handle real-world CSV file variations, e
    - Add OPTIONAL preview mode callback (parse first 10 rows only)
    - **ZEN GAP FIX:** All new parameters are optional to maintain backward compatibility
 
-6. **`src/atomic-crm/contacts/ContactImportDialog.tsx`** - Add preview step
+6. **`src/atomic-crm/contacts/ContactImportDialog.tsx`** - Add preview step (FEATURE FLAGGED)
    - New workflow: File Upload → Preview → Import → Results
-   - State machine: `idle` → `previewing` → `confirmed` → `running` → `complete`
+   - State machine: `idle` → `parsing` → `previewing` → `confirmed` → `running` → `complete`
+   - **ZEN GAP FIX:** Keep existing FSM states, add new ones as extensions
+   - **ZEN GAP FIX:** Feature flag `ENABLE_IMPORT_PREVIEW` (default: false initially)
    - Show column mappings before import
    - Display validation warnings
 
@@ -187,7 +196,7 @@ Enhance the CSV import/export system to handle real-world CSV file variations, e
 #### Database Changes
 
 **None required** - Phase 1 uses existing schema:
-- `contacts` table (with organization_id FK)
+- `contacts` table (NO organization_id FK - ZEN GAP FIX: uses junction table pattern)
 - `organizations` table
 - `tags` table
 - `contact_organizations` junction (for multi-org support)
@@ -538,8 +547,10 @@ successRate = (importsWithZeroErrors / totalImportAttempts) * 100
 🚫 **Multi-Tenant RLS for Imports**
 - Reason: Current system uses team-shared access model (all users see all data)
 
-🚫 **Importing to Deprecated `contact_organizations` Junction Table**
-- Reason: New pattern uses `contacts.organization_id` FK directly
+✅ **Data Model**: Contact-Organization Relationships
+- Implementation: The import process will exclusively use the existing `contact_organizations` junction table
+- Rationale: This junction table is the PRIMARY pattern (NOT deprecated) and supports many-to-many relationships
+- Note: A contact can be associated with multiple organizations, which is a common business requirement
 
 🚫 **AI-Powered Column Detection** (GPT-4 for header matching)
 - Reason: Over-engineering, alias registry covers common variations
