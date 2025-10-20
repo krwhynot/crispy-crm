@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Import Diagnostic Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 { color: #333; }
+        h2 { color: #666; margin-top: 0; }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th { background: #f8f9fa; font-weight: 600; }
+        .log {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-entry { margin: 2px 0; }
+        .log-info { color: #61afef; }
+        .log-success { color: #98c379; }
+        .log-error { color: #e06c75; }
+        .log-warning { color: #e5c07b; }
+    </style>
+</head>
+<body>
+    <h1>🔍 CSV Import Diagnostic Test</h1>
+
+    <div class="container">
+        <h2>Step 1: Environment Check</h2>
+        <div id="envStatus"></div>
+        <button onclick="checkEnvironment()">Check Environment</button>
+    </div>
+
+    <div class="container">
+        <h2>Step 2: CSV File Upload & Parse</h2>
+        <input type="file" id="csvFile" accept=".csv" />
+        <button onclick="parseCSV()" id="parseBtn" disabled>Parse CSV</button>
+        <div id="parseStatus"></div>
+        <div id="csvPreview"></div>
+    </div>
+
+    <div class="container">
+        <h2>Step 3: Supabase Connection Test</h2>
+        <button onclick="testSupabaseConnection()">Test Connection</button>
+        <div id="supabaseStatus"></div>
+    </div>
+
+    <div class="container">
+        <h2>Step 4: Authentication Test</h2>
+        <input type="email" id="email" placeholder="Email" style="padding: 8px; margin-right: 10px;" />
+        <input type="password" id="password" placeholder="Password" style="padding: 8px; margin-right: 10px;" />
+        <button onclick="testAuth()">Sign In</button>
+        <button onclick="checkAuthStatus()">Check Auth Status</button>
+        <div id="authStatus"></div>
+    </div>
+
+    <div class="container">
+        <h2>Step 5: Test Single Contact Insert</h2>
+        <button onclick="testInsert()" id="insertBtn" disabled>Insert Test Contact</button>
+        <div id="insertStatus"></div>
+    </div>
+
+    <div class="container">
+        <h2>Console Log</h2>
+        <button onclick="clearLog()">Clear Log</button>
+        <div id="logContainer" class="log"></div>
+    </div>
+
+    <script>
+        let parsedData = [];
+        let supabase = null;
+
+        // Logging system
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(`[${type.toUpperCase()}]`, message);
+        }
+
+        function clearLog() {
+            document.getElementById('logContainer').innerHTML = '';
+        }
+
+        // Step 1: Environment Check
+        function checkEnvironment() {
+            const envStatus = document.getElementById('envStatus');
+            let html = '';
+
+            log('Checking environment...', 'info');
+
+            // Check Papa Parse
+            if (typeof Papa !== 'undefined') {
+                html += '<div class="status success">✅ Papa Parse loaded (v' + Papa.VERSION + ')</div>';
+                log('Papa Parse loaded: v' + Papa.VERSION, 'success');
+            } else {
+                html += '<div class="status error">❌ Papa Parse not loaded</div>';
+                log('Papa Parse NOT loaded', 'error');
+            }
+
+            // Check Supabase
+            if (typeof supabase !== 'undefined' && supabase !== null) {
+                html += '<div class="status success">✅ Supabase JS loaded</div>';
+                log('Supabase JS loaded', 'success');
+            } else {
+                html += '<div class="status warning">⚠️ Supabase client not initialized yet</div>';
+                log('Supabase client not initialized', 'warning');
+            }
+
+            // Browser info
+            html += '<div class="status info">ℹ️ Browser: ' + navigator.userAgent + '</div>';
+            log('Browser: ' + navigator.userAgent, 'info');
+
+            envStatus.innerHTML = html;
+        }
+
+        // Enable file upload
+        document.getElementById('csvFile').addEventListener('change', function() {
+            document.getElementById('parseBtn').disabled = !this.files.length;
+        });
+
+        // Step 2: Parse CSV
+        function parseCSV() {
+            const file = document.getElementById('csvFile').files[0];
+            if (!file) {
+                log('No file selected', 'error');
+                return;
+            }
+
+            log('Starting CSV parse for: ' + file.name, 'info');
+            log('File size: ' + (file.size / 1024).toFixed(2) + ' KB', 'info');
+
+            const parseStatus = document.getElementById('parseStatus');
+            parseStatus.innerHTML = '<div class="status info">⏳ Parsing CSV...</div>';
+
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                skipFirstNLines: 2,  // THIS IS THE FIX WE ADDED
+                complete: function(results) {
+                    log('CSV parsing complete!', 'success');
+                    log('Total rows: ' + results.data.length, 'info');
+                    log('Headers: ' + JSON.stringify(results.meta.fields), 'info');
+
+                    parsedData = results.data;
+
+                    let html = '<div class="status success">✅ CSV parsed successfully!</div>';
+                    html += '<p><strong>Total rows:</strong> ' + results.data.length + '</p>';
+                    html += '<p><strong>Headers:</strong> ' + results.meta.fields.join(', ') + '</p>';
+
+                    // Show first 5 rows
+                    if (results.data.length > 0) {
+                        html += '<h3>First 5 Rows:</h3>';
+                        html += '<table><thead><tr>';
+                        results.meta.fields.forEach(field => {
+                            html += '<th>' + field + '</th>';
+                        });
+                        html += '</tr></thead><tbody>';
+
+                        results.data.slice(0, 5).forEach((row, i) => {
+                            html += '<tr>';
+                            results.meta.fields.forEach(field => {
+                                html += '<td>' + (row[field] || '') + '</td>';
+                            });
+                            html += '</tr>';
+                        });
+
+                        html += '</tbody></table>';
+                    }
+
+                    document.getElementById('csvPreview').innerHTML = html;
+                    parseStatus.innerHTML = '<div class="status success">✅ Parse complete</div>';
+                    document.getElementById('insertBtn').disabled = false;
+
+                    log('First row data: ' + JSON.stringify(results.data[0]), 'info');
+                },
+                error: function(error) {
+                    log('CSV parse error: ' + error.message, 'error');
+                    parseStatus.innerHTML = '<div class="status error">❌ Parse failed: ' + error.message + '</div>';
+                }
+            });
+        }
+
+        // Step 3: Test Supabase Connection
+        function testSupabaseConnection() {
+            log('Initializing Supabase client...', 'info');
+
+            const supabaseUrl = 'http://127.0.0.1:54321';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTYsImlhdCI6MTc2MDg0NzUwOH0.0Z9-f-9quQT5cENWwAvBFc3mXEv5diDJNwq8ycCogcI';
+
+            supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+            log('Supabase URL: ' + supabaseUrl, 'info');
+            log('Testing connection...', 'info');
+
+            const supabaseStatus = document.getElementById('supabaseStatus');
+            supabaseStatus.innerHTML = '<div class="status info">⏳ Testing connection...</div>';
+
+            // Try a simple query
+            supabase
+                .from('contacts')
+                .select('id', { count: 'exact', head: true })
+                .then(({ count, error }) => {
+                    if (error) {
+                        log('Connection test failed: ' + error.message, 'error');
+                        supabaseStatus.innerHTML = '<div class="status error">❌ Connection failed: ' + error.message + '</div>';
+                    } else {
+                        log('Connection successful!', 'success');
+                        log('Current contact count: ' + (count || 0), 'info');
+                        supabaseStatus.innerHTML = '<div class="status success">✅ Connected! Current contacts: ' + (count || 0) + '</div>';
+                    }
+                });
+        }
+
+        // Step 4: Authentication
+        async function testAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                log('Please enter email and password', 'error');
+                return;
+            }
+
+            if (!supabase) {
+                log('Supabase not initialized. Run connection test first.', 'error');
+                return;
+            }
+
+            log('Attempting sign in...', 'info');
+            const authStatus = document.getElementById('authStatus');
+            authStatus.innerHTML = '<div class="status info">⏳ Signing in...</div>';
+
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                log('Sign in failed: ' + error.message, 'error');
+                authStatus.innerHTML = '<div class="status error">❌ Sign in failed: ' + error.message + '</div>';
+            } else {
+                log('Sign in successful!', 'success');
+                log('User ID: ' + data.user.id, 'info');
+                log('Email: ' + data.user.email, 'info');
+                authStatus.innerHTML = '<div class="status success">✅ Signed in as: ' + data.user.email + '<br>User ID: ' + data.user.id + '</div>';
+            }
+        }
+
+        async function checkAuthStatus() {
+            if (!supabase) {
+                log('Supabase not initialized', 'error');
+                return;
+            }
+
+            log('Checking auth status...', 'info');
+
+            const { data: { session } } = await supabase.auth.getSession();
+
+            const authStatus = document.getElementById('authStatus');
+
+            if (session) {
+                log('User is authenticated', 'success');
+                log('User ID: ' + session.user.id, 'info');
+                authStatus.innerHTML = '<div class="status success">✅ Authenticated as: ' + session.user.email + '</div>';
+            } else {
+                log('User is NOT authenticated', 'warning');
+                authStatus.innerHTML = '<div class="status warning">⚠️ Not authenticated. Please sign in.</div>';
+            }
+        }
+
+        // Step 5: Test Insert
+        async function testInsert() {
+            if (!supabase) {
+                log('Supabase not initialized', 'error');
+                return;
+            }
+
+            if (parsedData.length === 0) {
+                log('No parsed data available', 'error');
+                return;
+            }
+
+            log('Testing insert with first CSV row...', 'info');
+
+            const insertStatus = document.getElementById('insertStatus');
+            insertStatus.innerHTML = '<div class="status info">⏳ Attempting insert...</div>';
+
+            // Get first row
+            const firstRow = parsedData[0];
+            log('First row data: ' + JSON.stringify(firstRow), 'info');
+
+            // Extract name from "FULL NAME (FIRST, LAST)" column
+            const fullName = firstRow['FULL NAME (FIRST, LAST)'] || '';
+            const nameParts = fullName.trim().split(/\s+/);
+
+            let firstName = '';
+            let lastName = '';
+
+            if (nameParts.length === 1) {
+                lastName = nameParts[0];
+            } else if (nameParts.length >= 2) {
+                firstName = nameParts[0];
+                lastName = nameParts.slice(1).join(' ');
+            }
+
+            const email = firstRow['EMAIL'] ? [{
+                email: firstRow['EMAIL'],
+                type: 'Work'
+            }] : [];
+
+            const phone = firstRow['PHONE'] ? [{
+                phone: firstRow['PHONE'],
+                type: 'Work'
+            }] : [];
+
+            const contactData = {
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                phone: phone,
+                tags: []
+            };
+
+            log('Inserting contact: ' + JSON.stringify(contactData), 'info');
+
+            const { data, error } = await supabase
+                .from('contacts')
+                .insert(contactData)
+                .select();
+
+            if (error) {
+                log('Insert FAILED: ' + error.message, 'error');
+                log('Error code: ' + error.code, 'error');
+                log('Error details: ' + JSON.stringify(error), 'error');
+
+                let html = '<div class="status error">❌ Insert failed!</div>';
+                html += '<pre>' + JSON.stringify(error, null, 2) + '</pre>';
+
+                if (error.code === '42501') {
+                    html += '<div class="status warning">⚠️ RLS Policy Error: You must be signed in to insert contacts!</div>';
+                }
+
+                insertStatus.innerHTML = html;
+            } else {
+                log('Insert SUCCESS!', 'success');
+                log('Created contact ID: ' + data[0].id, 'success');
+
+                let html = '<div class="status success">✅ Insert successful!</div>';
+                html += '<pre>' + JSON.stringify(data[0], null, 2) + '</pre>';
+                insertStatus.innerHTML = html;
+            }
+        }
+
+        // Initialize
+        log('Diagnostic page loaded', 'success');
+        log('Ready to test!', 'info');
+    </script>
+</body>
+</html>
