@@ -24,51 +24,26 @@ See [Engineering Constitution](docs/claude/engineering-constitution.md) for comp
 
 ## Database Workflows ⚠️ CRITICAL
 
-### Local Development
+**📖 See [docs/supabase/WORKFLOW.md](docs/supabase/WORKFLOW.md) for the complete database workflow guide.**
+
+### Quick Reference
 
 ```bash
-npm run supabase:local:start   # Start Docker containers
-npx supabase db reset          # Reset local DB (SAFE - local only)
-npm run dev                    # Start dev server
-```
+# Local Development
+npm run db:local:start    # Start local Supabase
+npm run db:local:reset    # Reset & seed database
+npm run dev               # Start UI (uses local DB)
 
-**Access Points:**
-- Studio: http://localhost:54323
-- REST API: http://localhost:54321
-- Email testing: http://localhost:54324
+# Creating Migrations
+npx supabase migration new <name>  # Create migration file
 
-### Cloud/Production Deployment ⚠️
-
-```bash
-npm run db:cloud:push          # SAFE: Shows diff + requires confirmation
-npx supabase db push           # SAFE: Only applies new migrations
-npm run db:cloud:diff          # SAFE: Preview changes (read-only)
+# Cloud Deployment
+npm run db:cloud:push     # Deploy migrations to cloud
 ```
 
 **❌ NEVER RUN ON PRODUCTION:**
 ```bash
 npx supabase db reset --linked  # DELETES ALL DATA INCLUDING USERS!
-```
-
-### Creating Migrations
-
-**Recommended: Migration-First Approach**
-
-```bash
-# 1. Create migration file
-npx supabase migration new <descriptive_name>
-
-# 2. Edit: supabase/migrations/YYYYMMDDHHMMSS_<name>.sql
-# Add your SQL changes
-
-# 3. Test locally
-npx supabase db reset
-
-# 4. Verify app works
-npm run dev
-
-# 5. Deploy to production
-npm run db:cloud:push
 ```
 
 **Example Migration:**
@@ -105,12 +80,10 @@ CREATE TRIGGER on_auth_user_created
 
 ### Complete Database Documentation
 
-**Comprehensive Guides:**
-- [Supabase Workflow Overview](docs/supabase/supabase_workflow_overview.md) ⭐ **Complete local + cloud guide**
+**Single Source of Truth:**
+- [Supabase Workflow Guide](docs/supabase/WORKFLOW.md) ⭐ **THE ONLY GUIDE YOU NEED**
 - [Production Safety Guide](scripts/db/PRODUCTION-WARNING.md) ⚠️ **Must read before production changes**
 - [Migration Business Rules](docs/database/migration-business-rules.md)
-- [Supabase Commands Reference](docs/supabase/supabase_commands_reference.md)
-- [Troubleshooting Guide](docs/supabase/supabase_troubleshooting.md)
 
 ## Essential Commands
 
