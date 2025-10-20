@@ -70,28 +70,31 @@ export function usePapaParse<T>({
       const importId = importIdRef.current;
       Papa.parse<T>(file, {
         header: false, // We'll manually handle headers after skipping rows
-        skipEmptyLines: true,
-        preview: previewRowCount ? previewRowCount + 3 : undefined, // Add 3 for skipped rows
+        skipEmptyLines: true, // This auto-skips line 3 (empty row)
+        preview: previewRowCount ? previewRowCount + 2 : undefined, // Add 2 for skipped rows
         async complete(results) {
           if (importIdRef.current !== importId) {
             return;
           }
 
-          // Skip first 3 rows (2 instruction rows + 1 empty row) and use row 4 as headers
+          // With skipEmptyLines, Papa Parse structure is:
+          // rawData[0] = Lines 1-2 (instruction rows)
+          // rawData[1] = Lines 4-8 (header row - multiline cells combined)
+          // rawData[2+] = Line 9+ (data rows)
           const rawData = results.data as any[][];
-          if (rawData.length < 4) {
+          if (rawData.length < 3) {
             setImporter({
               state: "error",
-              errorMessage: "CSV file is too short (less than 4 rows)",
+              errorMessage: "CSV file is too short (less than 3 rows)",
             });
             return;
           }
 
-          // Row 4 (index 3) contains the actual headers
-          const headers = rawData[3] as string[];
+          // Row 2 (index 1) contains the actual headers (multiline cells are combined by Papa Parse)
+          const headers = rawData[1] as string[];
 
-          // Rows 5+ (index 4+) contain the data
-          const dataRows = rawData.slice(4);
+          // Rows 3+ (index 2+) contain the data
+          const dataRows = rawData.slice(2);
 
           // Convert to objects using headers
           const data = dataRows.map(row => {
