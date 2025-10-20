@@ -69,9 +69,8 @@ export function usePapaParse<T>({
 
       const importId = importIdRef.current;
       Papa.parse<T>(file, {
-        header: true,
+        header: false, // Parse without headers first
         skipEmptyLines: true,
-        skipFirstNLines: 2, // Skip instruction rows at the top of the CSV
         preview: previewRowCount, // Limit rows if in preview mode
         async complete(results) {
           if (importIdRef.current !== importId) {
