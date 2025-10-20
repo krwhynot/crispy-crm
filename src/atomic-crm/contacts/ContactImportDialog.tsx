@@ -55,16 +55,23 @@ export function ContactImportDialog({
   // Transform headers using column aliases
   const transformHeaders = useCallback((headers: string[]) => {
     const mappings = mapHeadersToFields(headers);
-    // Return transformed headers based on mappings
-    return headers.map(header => {
+    const transformedHeaders: string[] = [];
+
+    // Build list of transformed headers
+    headers.forEach(header => {
       const mapped = mappings[header];
+
       // Handle special cases like full name split
       if (mapped === '_full_name_split_') {
-        // This will need special handling in the data transformation
-        return header;
+        // For full name columns, we'll handle splitting in data transformation
+        // Mark this header so we can identify it later
+        transformedHeaders.push('_full_name_source_');
+      } else {
+        transformedHeaders.push(mapped || header);
       }
-      return mapped || header;
     });
+
+    return transformedHeaders;
   }, []);
 
   // Handle preview mode
