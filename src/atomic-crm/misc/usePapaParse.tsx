@@ -71,27 +71,27 @@ export function usePapaParse<T>({
       Papa.parse<T>(file, {
         header: false, // We'll manually handle headers after skipping rows
         skipEmptyLines: true,
-        preview: previewRowCount ? previewRowCount + 2 : undefined, // Add 2 for skipped rows
+        preview: previewRowCount ? previewRowCount + 3 : undefined, // Add 3 for skipped rows
         async complete(results) {
           if (importIdRef.current !== importId) {
             return;
           }
 
-          // Skip first 2 instruction rows and use row 3 as headers
+          // Skip first 3 rows (2 instruction rows + 1 empty row) and use row 4 as headers
           const rawData = results.data as any[][];
-          if (rawData.length < 3) {
+          if (rawData.length < 4) {
             setImporter({
               state: "error",
-              errorMessage: "CSV file is too short (less than 3 rows)",
+              errorMessage: "CSV file is too short (less than 4 rows)",
             });
             return;
           }
 
-          // Row 3 (index 2) contains the actual headers
-          const headers = rawData[2] as string[];
+          // Row 4 (index 3) contains the actual headers
+          const headers = rawData[3] as string[];
 
-          // Rows 4+ (index 3+) contain the data
-          const dataRows = rawData.slice(3);
+          // Rows 5+ (index 4+) contain the data
+          const dataRows = rawData.slice(4);
 
           // Convert to objects using headers
           const data = dataRows.map(row => {
@@ -112,7 +112,28 @@ export function usePapaParse<T>({
               const newRow: any = {};
               headers.forEach((oldHeader, index) => {
                 const newHeader = transformedHeaders[index] || oldHeader;
-                newRow[newHeader] = row[oldHeader];
+
+                // Handle full name splitting
+                if (newHeader === '_full_name_source_') {
+                  const fullName = row[oldHeader] || '';
+                  const nameParts = fullName.trim().split(/\s+/);
+
+                  if (nameParts.length === 0 || fullName.trim() === '') {
+                    // Empty name
+                    newRow.first_name = '';
+                    newRow.last_name = '';
+                  } else if (nameParts.length === 1) {
+                    // Only one name part - treat as last name
+                    newRow.first_name = '';
+                    newRow.last_name = nameParts[0];
+                  } else {
+                    // Multiple parts - first is first name, rest is last name
+                    newRow.first_name = nameParts[0];
+                    newRow.last_name = nameParts.slice(1).join(' ');
+                  }
+                } else {
+                  newRow[newHeader] = row[oldHeader];
+                }
               });
               return newRow as T;
             });
