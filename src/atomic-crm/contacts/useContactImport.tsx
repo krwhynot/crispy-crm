@@ -100,6 +100,7 @@ export function useContactImport() {
   const processBatch = useCallback(
     async (batch: ContactImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
       const { preview = false, onProgress } = options;
+      console.log("processBatch called with:", { batchSize: batch.length, preview, options });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
@@ -282,7 +283,7 @@ export function useContactImport() {
 
       const endTime = new Date();
 
-      return {
+      const result = {
         totalProcessed,
         successCount,
         skippedCount,
@@ -292,6 +293,9 @@ export function useContactImport() {
         startTime,
         endTime,
       };
+
+      console.log("processBatch returning:", result);
+      return result;
     },
     [dataProvider, getOrganizations, getTags, identity?.id, today],
   );
