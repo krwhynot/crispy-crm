@@ -12,6 +12,7 @@ import type { Organization, Contact, Sale, Tag } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactImportButton } from "./ContactImportButton";
+import { ContactExportTemplateButton } from "./ContactExportTemplateButton";
 import { ContactListContent } from "./ContactListContent";
 import { ContactListFilter } from "./ContactListFilter";
 import { TopToolbar } from "../layout/TopToolbar";
@@ -65,6 +66,7 @@ const ContactListActions = () => (
   <TopToolbar>
     <SortButton fields={["first_name", "last_name", "last_seen"]} />
     <ContactImportButton />
+    <ContactExportTemplateButton />
     <ExportButton exporter={exporter} />
     <CreateButton />
   </TopToolbar>
@@ -100,41 +102,51 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
       (org) => org.is_primary,
     );
 
-    const exportedContact = {
-      ...contact,
-      company: primaryOrganization?.organization_id
+    // Build the export object with canonical field names matching import expectations
+    const exportedContact: any = {
+      // Core identity fields
+      first_name: contact.first_name,
+      last_name: contact.last_name,
+      gender: contact.gender,
+      title: contact.title,
+
+      // Organization fields - using canonical names from columnAliases.ts
+      organization_name: primaryOrganization?.organization_id
         ? organizations[primaryOrganization.organization_id]?.name
         : undefined,
-      sales: `${sales[contact.sales_id].first_name} ${
-        sales[contact.sales_id].last_name
-      }`,
-      tags: contact.tags.map((tagId) => tags[tagId].name).join(", "),
+      organization_role: primaryOrganization?.job_title || undefined,
+
+      // Email fields - flattened for import compatibility
       email_work: contact.email?.find((email) => email.type === "Work")?.email,
       email_home: contact.email?.find((email) => email.type === "Home")?.email,
-      email_other: contact.email?.find((email) => email.type === "Other")
-        ?.email,
-      email: JSON.stringify(contact.email),
-      email_fts: undefined,
+      email_other: contact.email?.find((email) => email.type === "Other")?.email,
+
+      // Phone fields - flattened for import compatibility
       phone_work: contact.phone?.find((phone) => phone.type === "Work")?.number,
       phone_home: contact.phone?.find((phone) => phone.type === "Home")?.number,
-      phone_other: contact.phone?.find((phone) => phone.type === "Other")
-        ?.number,
-      phone: JSON.stringify(contact.phone),
-      phone_fts: undefined,
-      // New multi-organization fields
+      phone_other: contact.phone?.find((phone) => phone.type === "Other")?.number,
+
+      // Other standard fields
+      avatar: contact.avatar,
+      first_seen: contact.first_seen,
+      last_seen: contact.last_seen,
+      tags: contact.tags.map((tagId) => tags[tagId].name).join(", "),
+      linkedin_url: contact.linkedin_url,
+
+      // Additional fields that may be useful but aren't in import schema
+      sales: `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`,
       department: contact.department || "",
       is_primary_contact: primaryOrganization ? "Yes" : "No",
-      organizations: contact.organizations
-        ? JSON.stringify(contact.organizations)
-        : "[]",
-      total_organizations: contact.organizations
-        ? contact.organizations.length
-        : 0,
+      total_organizations: contact.organizations?.length || 0,
+
+      // ID fields for reference
+      id: contact.id,
+      sales_id: contact.sales_id,
     };
-    delete exportedContact.email_fts;
-    delete exportedContact.phone_fts;
+
     return exportedContact;
   });
+
   return jsonExport(contacts, {}, (_err: any, csv: string) => {
     downloadCSV(csv, "contacts");
   });

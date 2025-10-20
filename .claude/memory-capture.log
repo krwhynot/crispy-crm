@@ -1250,3 +1250,13 @@
 [2025-10-20 11:04:07] [documentation] Edit: /home/krwhynot/projects/crispy-crm/.docs/plans/csv-import-export-enhancement/parallel-plan.md
 [2025-10-20 11:04:23] [documentation] Edit: /home/krwhynot/projects/crispy-crm/.docs/plans/csv-import-export-enhancement/parallel-plan.md
 [2025-10-20 11:12:22] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactExportTemplateButton.tsx
+[2025-10-20 11:12:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactList.tsx
+[2025-10-20 11:12:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactList.tsx
+[2025-10-20 11:13:24] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportResult.tsx
+[2025-10-20 11:13:27] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/columnAliases.ts
+[2025-10-20 11:14:08] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportPreview.tsx
+[2025-10-20 11:16:50] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-20 11:17:03] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
+[2025-10-20 11:17:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactList.tsx
+[2025-10-20 11:17:15] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-20 11:17:24] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx

@@ -2,6 +2,7 @@ import type { DataProvider } from "ra-core";
 import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Organization, Tag } from "../types";
+import { mapHeadersToFields, isFullNameColumn, findCanonicalField } from "./columnAliases";
 
 export interface ContactImportSchema {
   first_name: string;
@@ -23,6 +24,28 @@ export interface ContactImportSchema {
   linkedin_url?: string;
 }
 
+export interface ImportError {
+  row: number;
+  data: any;
+  reason: string;
+}
+
+export interface ImportResult {
+  totalProcessed: number;
+  successCount: number;
+  skippedCount: number;
+  failedCount: number;
+  errors: ImportError[];
+  duration: number;
+  startTime: Date;
+  endTime: Date;
+}
+
+export interface ImportOptions {
+  preview?: boolean;  // If true, validate only without database writes
+  onProgress?: (current: number, total: number) => void;  // Progress callback
+}
+
 export function useContactImport() {
   const today = new Date().toISOString();
   const { identity } = useGetIdentity();
@@ -36,18 +59,20 @@ export function useContactImport() {
     [dataProvider],
   );
   const getOrganizations = useCallback(
-    async (names: string[]) =>
-      fetchRecordsWithCache<Organization>(
-        "organizations",
-        organizationsCache,
-        names,
-        (name) => ({
-          name,
-          created_at: new Date().toISOString(),
-          sales_id: identity?.id,
-        }),
-        dataProvider,
-      ),
+    async (names: string[], preview = false) =>
+      preview
+        ? validateOrganizationNames(names)
+        : fetchRecordsWithCache<Organization>(
+            "organizations",
+            organizationsCache,
+            names,
+            (name) => ({
+              name,
+              created_at: new Date().toISOString(),
+              sales_id: identity?.id,
+            }),
+            dataProvider,
+          ),
     [organizationsCache, identity?.id, dataProvider],
   );
 
@@ -56,22 +81,31 @@ export function useContactImport() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const tagsCache = useMemo(() => new Map<string, Tag>(), [dataProvider]);
   const getTags = useCallback(
-    async (names: string[]) =>
-      fetchRecordsWithCache<Tag>(
-        "tags",
-        tagsCache,
-        names,
-        (name) => ({
-          name,
-          color: "gray",
-        }),
-        dataProvider,
-      ),
+    async (names: string[], preview = false) =>
+      preview
+        ? validateTagNames(names)
+        : fetchRecordsWithCache<Tag>(
+            "tags",
+            tagsCache,
+            names,
+            (name) => ({
+              name,
+              color: "gray",
+            }),
+            dataProvider,
+          ),
     [tagsCache, dataProvider],
   );
 
   const processBatch = useCallback(
-    async (batch: ContactImportSchema[]) => {
+    async (batch: ContactImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
+      const { preview = false, onProgress } = options;
+      const startTime = new Date();
+      const errors: ImportError[] = [];
+      let successCount = 0;
+      let skippedCount = 0;
+      let failedCount = 0;
+      const totalProcessed = batch.length;
       const [organizations, tags] = await Promise.all([
         getOrganizations(
           batch

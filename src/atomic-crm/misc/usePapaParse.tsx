@@ -30,11 +30,23 @@ type usePapaParseProps<T> = {
 
   // processBatch returns the number of imported items
   processBatch(batch: T[]): Promise<void>;
+
+  // Optional: Transform headers during parsing (e.g., apply column aliases)
+  transformHeaders?: (headers: string[]) => string[];
+
+  // Optional: Callback for preview mode - receives parsed preview data
+  onPreview?: (rows: T[]) => void;
+
+  // Optional: Parse only first N rows for preview mode
+  previewRowCount?: number;
 };
 
 export function usePapaParse<T>({
   batchSize = 10,
   processBatch,
+  transformHeaders,
+  onPreview,
+  previewRowCount,
 }: usePapaParseProps<T>) {
   const importIdRef = useRef<number>(0);
 
@@ -59,8 +71,24 @@ export function usePapaParse<T>({
       Papa.parse<T>(file, {
         header: true,
         skipEmptyLines: true,
+        transformHeader: transformHeaders ? (header) => {
+          // Apply header transformation if provided
+          const headers = [header];
+          const transformed = transformHeaders(headers);
+          return transformed[0] || header;
+        } : undefined,
+        preview: previewRowCount, // Limit rows if in preview mode
         async complete(results) {
           if (importIdRef.current !== importId) {
+            return;
+          }
+
+          // If in preview mode, call onPreview callback and return early
+          if (onPreview && previewRowCount) {
+            onPreview(results.data);
+            setImporter({
+              state: "idle",
+            });
             return;
           }
 
@@ -133,7 +161,7 @@ export function usePapaParse<T>({
         dynamicTyping: true,
       });
     },
-    [batchSize, processBatch],
+    [batchSize, processBatch, transformHeaders, onPreview, previewRowCount],
   );
 
   return useMemo(
