@@ -107,11 +107,12 @@ Enhance the CSV import/export system to handle real-world CSV file variations, e
 
 **Modified Components:**
 
-5. **`src/atomic-crm/misc/usePapaParse.tsx`** - Enhanced CSV parsing
-   - Add header transformation via `columnAliases`
+5. **`src/atomic-crm/misc/usePapaParse.tsx`** - Enhanced CSV parsing (BACKWARD COMPATIBLE)
+   - Add OPTIONAL header transformation via `columnAliases`
    - Detect multi-line headers (skip instruction rows)
-   - Handle full name splitting
-   - Add preview mode (parse first 10 rows only)
+   - NO full name splitting here (reuse existing `transformContactData`)
+   - Add OPTIONAL preview mode callback (parse first 10 rows only)
+   - **ZEN GAP FIX:** All new parameters are optional to maintain backward compatibility
 
 6. **`src/atomic-crm/contacts/ContactImportDialog.tsx`** - Add preview step
    - New workflow: File Upload → Preview → Import → Results
