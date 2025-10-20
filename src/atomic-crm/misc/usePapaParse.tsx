@@ -71,21 +71,34 @@ export function usePapaParse<T>({
       Papa.parse<T>(file, {
         header: true,
         skipEmptyLines: true,
-        transformHeader: transformHeaders ? (header) => {
-          // Apply header transformation if provided
-          const headers = [header];
-          const transformed = transformHeaders(headers);
-          return transformed[0] || header;
-        } : undefined,
         preview: previewRowCount, // Limit rows if in preview mode
         async complete(results) {
           if (importIdRef.current !== importId) {
             return;
           }
 
+          // Transform headers if a transformation function is provided
+          let data = results.data;
+          if (transformHeaders && results.meta && results.meta.fields) {
+            const originalHeaders = results.meta.fields;
+            const transformedHeaders = transformHeaders(originalHeaders);
+
+            // Transform each row to use the new header names
+            data = results.data.map((row: any) => {
+              const transformedRow: any = {};
+              originalHeaders.forEach((originalHeader, index) => {
+                const newHeader = transformedHeaders[index] || originalHeader;
+                if (originalHeader in row) {
+                  transformedRow[newHeader] = row[originalHeader];
+                }
+              });
+              return transformedRow as T;
+            });
+          }
+
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
-            onPreview(results.data);
+            onPreview(data);
             setImporter({
               state: "idle",
             });
@@ -94,19 +107,19 @@ export function usePapaParse<T>({
 
           setImporter({
             state: "running",
-            rowCount: results.data.length,
+            rowCount: data.length,
             errorCount: results.errors.length,
             importCount: 0,
             remainingTime: null,
           });
 
           let totalTime = 0;
-          for (let i = 0; i < results.data.length; i += batchSize) {
+          for (let i = 0; i < data.length; i += batchSize) {
             if (importIdRef.current !== importId) {
               return;
             }
 
-            const batch = results.data.slice(i, i + batchSize);
+            const batch = data.slice(i, i + batchSize);
             try {
               const start = Date.now();
               await processBatch(batch);
@@ -120,7 +133,7 @@ export function usePapaParse<T>({
                     ...previous,
                     importCount,
                     remainingTime:
-                      meanTime * (results.data.length - importCount),
+                      meanTime * (data.length - importCount),
                   };
                 }
                 return previous;

@@ -106,18 +106,25 @@ export function useContactImport() {
       let skippedCount = 0;
       let failedCount = 0;
       const totalProcessed = batch.length;
+      // Report progress if callback provided
+      if (onProgress) {
+        onProgress(0, totalProcessed);
+      }
+
       const [organizations, tags] = await Promise.all([
         getOrganizations(
           batch
             .map((contact) => contact.organization_name?.trim())
             .filter((name) => name),
+          preview,
         ),
-        getTags(batch.flatMap((batch) => parseTags(batch.tags))),
+        getTags(batch.flatMap((batch) => parseTags(batch.tags)), preview),
       ]);
 
-      await Promise.all(
-        batch.map(
-          async ({
+      // Process all contacts with Promise.allSettled for better error tracking
+      const results = await Promise.allSettled(
+        batch.map(async (contactData, index) => {
+          const {
             first_name,
             last_name,
             gender,
@@ -134,12 +141,17 @@ export function useContactImport() {
             organization_role,
             tags: tagNames,
             linkedin_url,
-          }) => {
+          } = contactData;
+
+          const rowNumber = index + 1;
+
+          try {
             const email = [
               { email: email_work, type: "Work" },
               { email: email_home, type: "Home" },
               { email: email_other, type: "Other" },
             ].filter(({ email }) => email);
+
             const phone = [
               { number: phone_work, type: "Work" },
               { number: phone_home, type: "Home" },
@@ -147,69 +159,137 @@ export function useContactImport() {
             ].filter(({ number }) => number);
 
             const trimmedOrgName = organization_name?.trim();
-            // Fail fast: Ensure a primary organization name is provided
+
+            // Validation: Ensure a primary organization name is provided
             if (!trimmedOrgName) {
-              console.warn(
-                `Skipping contact ${first_name} ${last_name} due to missing primary organization name.`,
-              );
-              return Promise.resolve(); // Skip processing this contact
+              throw new Error("Missing primary organization name");
             }
 
-            const organization = organizations.get(trimmedOrgName);
+            // In preview mode, just validate the organization exists in our map
+            if (preview) {
+              if (!organizations.has(trimmedOrgName)) {
+                throw new Error(`Organization "${trimmedOrgName}" would need to be created`);
+              }
+            } else {
+              const organization = organizations.get(trimmedOrgName);
 
-            // Fail fast: If organization doesn't exist and couldn't be created, skip
-            if (!organization?.id) {
-              console.error(
-                `Failed to find or create organization "${trimmedOrgName}" for contact ${first_name} ${last_name}. Skipping contact.`,
-              );
-              return Promise.resolve();
+              // If organization doesn't exist and couldn't be created, fail
+              if (!organization?.id) {
+                throw new Error(`Failed to find or create organization "${trimmedOrgName}"`);
+              }
             }
 
             const tagList = parseTags(tagNames)
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 
-            // Step 1: Create the contact record
-            const contactResponse = await dataProvider.create("contacts", {
-              data: {
-                first_name,
-                last_name,
-                gender,
-                title,
-                email,
-                phone,
-                first_seen: first_seen
-                  ? new Date(first_seen).toISOString()
-                  : today,
-                last_seen: last_seen
-                  ? new Date(last_seen).toISOString()
-                  : today,
-                tags: tagList.map((tag) => tag.id),
-                sales_id: identity?.id,
-                linkedin_url,
-              },
-            });
+            const contactPayload = {
+              first_name,
+              last_name,
+              gender,
+              title,
+              email,
+              phone,
+              first_seen: first_seen
+                ? new Date(first_seen).toISOString()
+                : today,
+              last_seen: last_seen
+                ? new Date(last_seen).toISOString()
+                : today,
+              tags: preview ? [] : tagList.map((tag) => tag.id),
+              sales_id: identity?.id,
+              linkedin_url,
+            };
 
-            const contactId = contactResponse.data.id;
-
-            // Step 2: Create the contact_organization junction table entry
-            if (contactId) {
-              await dataProvider.create("contact_organizations", {
-                data: {
-                  contact_id: contactId,
-                  organization_id: organization.id,
-                  is_primary: true, // Imported organization is primary
-                  role: organization_role || "decision_maker", // Default role
-                },
+            if (preview) {
+              // Validate contact using data provider's dry-run mode
+              await dataProvider.create("contacts", {
+                data: contactPayload,
+                meta: { dryRun: true },
               });
+              // In preview mode, we don't need to validate contact_organizations
+              return { rowNumber, success: true };
             } else {
-              console.error(
-                `Failed to retrieve contact ID for ${first_name} ${last_name}. Cannot link to organization.`,
-              );
+              // Step 1: Create the contact record
+              const contactResponse = await dataProvider.create("contacts", {
+                data: contactPayload,
+              });
+
+              const contactId = contactResponse.data.id;
+
+              // Step 2: Create the contact_organization junction table entry
+              if (contactId) {
+                const organization = organizations.get(trimmedOrgName);
+                if (organization?.id) {
+                  await dataProvider.create("contact_organizations", {
+                    data: {
+                      contact_id: contactId,
+                      organization_id: organization.id,
+                      is_primary: true, // Imported organization is primary
+                      role: organization_role || "decision_maker", // Default role
+                    },
+                  });
+                }
+              } else {
+                throw new Error("Failed to retrieve contact ID after creation");
+              }
+
+              return { rowNumber, success: true };
             }
-          },
-        ),
+          } catch (error: any) {
+            // Return error details for this row
+            return {
+              rowNumber,
+              success: false,
+              error: error.message || "Unknown error",
+              data: contactData,
+            };
+          } finally {
+            // Report progress after each contact
+            if (onProgress) {
+              onProgress(index + 1, totalProcessed);
+            }
+          }
+        }),
       );
+
+      // Process results and categorize them
+      results.forEach((result, index) => {
+        if (result.status === "fulfilled") {
+          const value = result.value as any;
+          if (value.success) {
+            successCount++;
+          } else {
+            failedCount++;
+            errors.push({
+              row: value.rowNumber,
+              data: value.data,
+              reason: value.error,
+            });
+          }
+        } else {
+          // Promise rejected (shouldn't happen with our try-catch, but handle it)
+          failedCount++;
+          errors.push({
+            row: index + 1,
+            data: batch[index],
+            reason: result.reason?.message || result.reason || "Unknown error",
+          });
+        }
+      });
+
+      const endTime = new Date();
+
+      return {
+        totalProcessed,
+        successCount,
+        skippedCount,
+        failedCount,
+        errors,
+        duration: endTime.getTime() - startTime.getTime(),
+        startTime,
+        endTime,
+      };
     },
     [dataProvider, getOrganizations, getTags, identity?.id, today],
   );
@@ -266,3 +346,45 @@ const parseTags = (tags: string) =>
     ?.split(",")
     ?.map((tag: string) => tag.trim())
     ?.filter((tag: string) => tag) ?? [];
+
+/**
+ * Validate organization names for preview mode
+ * Returns a Map similar to fetchRecordsWithCache but without database operations
+ */
+const validateOrganizationNames = async (names: string[]): Promise<Map<string, Organization>> => {
+  const trimmedNames = [...new Set(names.map((name) => name.trim()))];
+  const result = new Map<string, Organization>();
+
+  // In preview mode, we just create placeholder organizations
+  // to indicate they would be created during actual import
+  for (const name of trimmedNames) {
+    result.set(name, {
+      id: `preview-org-${name}`,
+      name,
+      created_at: new Date().toISOString(),
+    } as Organization);
+  }
+
+  return result;
+};
+
+/**
+ * Validate tag names for preview mode
+ * Returns a Map similar to fetchRecordsWithCache but without database operations
+ */
+const validateTagNames = async (names: string[]): Promise<Map<string, Tag>> => {
+  const trimmedNames = [...new Set(names.map((name) => name.trim()))];
+  const result = new Map<string, Tag>();
+
+  // In preview mode, we just create placeholder tags
+  // to indicate they would be created during actual import
+  for (const name of trimmedNames) {
+    result.set(name, {
+      id: `preview-tag-${name}`,
+      name,
+      color: "gray",
+    } as Tag);
+  }
+
+  return result;
+};
