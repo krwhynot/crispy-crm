@@ -107,8 +107,8 @@ export function useContactImport() {
 
   const processBatch = useCallback(
     async (batch: ContactImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
-      const { preview = false, onProgress } = options;
-      console.log("processBatch called with:", { batchSize: batch.length, preview, options });
+      const { preview = false, onProgress, startingRow = 1 } = options;
+      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, options });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
@@ -133,7 +133,7 @@ export function useContactImport() {
       // Process all contacts with Promise.allSettled for better error tracking
       const results = await Promise.allSettled(
         batch.map(async (contactData, index) => {
-          const rowNumber = index + 1;
+          const rowNumber = startingRow + index;  // Absolute row number in CSV file
           const rowErrors: FieldError[] = [];
 
           // 1. Validate with Zod schema first to catch ALL format/presence errors

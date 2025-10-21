@@ -66,6 +66,7 @@ export function ContactImportDialog({
     errors: [],
     startTime: null,
   });
+  const rowOffsetRef = React.useRef(0);  // Track absolute row position in CSV file
 
   // Transform headers using column aliases
   const transformHeaders = useCallback((headers: string[]) => {
@@ -125,7 +126,7 @@ export function ContactImportDialog({
 
   // Enhanced processBatch wrapper with result accumulation across batches
   const processBatch = useCallback(async (batch: ContactImportSchema[]) => {
-    console.log('🔵 [IMPORT DEBUG] processBatch called with', batch.length, 'contacts');
+    console.log('🔵 [IMPORT DEBUG] processBatch called with', batch.length, 'contacts, starting at row', rowOffsetRef.current + 1);
 
     // Set start time on first batch
     if (!accumulatedResultRef.current.startTime) {
@@ -136,10 +137,13 @@ export function ContactImportDialog({
       console.log('🔵 [IMPORT DEBUG] Calling processBatchHook...');
       const result = await processBatchHook(batch, {
         preview: false,
+        startingRow: rowOffsetRef.current + 1,  // Pass correct starting row for this batch
         onProgress: (current, total) => {
           // Progress tracking could be added here
         }
       });
+
+      rowOffsetRef.current += batch.length;  // Increment offset for next batch
 
       console.log('🔵 [IMPORT DEBUG] processBatchHook completed. Result:', result);
 
@@ -156,11 +160,24 @@ export function ContactImportDialog({
         failedCount: accumulatedResultRef.current.failedCount,
         errorCount: accumulatedResultRef.current.errors.length,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("🔴 [IMPORT DEBUG] Batch processing error:", error);
+      const errorMessage = error.message || "A critical error occurred during batch processing.";
+      const batchStartRow = rowOffsetRef.current + 1;
+
+      // Add an error entry for each contact in the failed batch
+      batch.forEach((contactData, index) => {
+        accumulatedResultRef.current.errors.push({
+          row: batchStartRow + index,
+          data: contactData,
+          errors: [{ field: "batch_processing", message: errorMessage }],
+        });
+      });
+
       // Count entire batch as failed
       accumulatedResultRef.current.totalProcessed += batch.length;
       accumulatedResultRef.current.failedCount += batch.length;
+      rowOffsetRef.current += batch.length;  // Ensure offset is still incremented
     }
   }, [processBatchHook]);
 
@@ -243,6 +260,7 @@ export function ContactImportDialog({
       errors: [],
       startTime: null,
     };
+    rowOffsetRef.current = 0;  // Reset row offset for new import
 
     setShowPreview(false);
     setPreviewConfirmed(true);
@@ -282,6 +300,7 @@ export function ContactImportDialog({
       errors: [],
       startTime: null,
     };
+    rowOffsetRef.current = 0;  // Reset row offset
 
     onClose();
   };
