@@ -54,7 +54,11 @@ export function ContactImportDialog({
 
   // Transform headers using column aliases
   const transformHeaders = useCallback((headers: string[]) => {
+    console.log('📋 [HEADER DEBUG] Original CSV headers:', headers);
+
     const mappings = mapHeadersToFields(headers);
+    console.log('📋 [HEADER DEBUG] Header mappings:', mappings);
+
     const transformedHeaders: string[] = [];
 
     // Build list of transformed headers
@@ -71,12 +75,16 @@ export function ContactImportDialog({
       }
     });
 
+    console.log('📋 [HEADER DEBUG] Transformed headers:', transformedHeaders);
     return transformedHeaders;
   }, []);
 
   // Handle preview mode
   const onPreview = useCallback((rows: ContactImportSchema[]) => {
     if (!ENABLE_IMPORT_PREVIEW) return;
+
+    console.log('📊 [PREVIEW DEBUG] First parsed row:', JSON.stringify(rows[0], null, 2));
+    console.log('📊 [PREVIEW DEBUG] Total rows:', rows.length);
 
     // Store parsed data for later use
     setParsedData(rows);
