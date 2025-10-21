@@ -28,7 +28,7 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
     skipEmptyLines: true,
     dynamicTyping: true,
   });
-  const contacts = parseRawCsvData(parseResult.data);
+  const { contacts } = parseRawCsvData(parseResult.data);
 
   beforeEach(async () => {
     // Clean up contacts table before each test

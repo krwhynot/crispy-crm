@@ -18,6 +18,7 @@ import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
+import { getHeaderMappingDescription } from "./columnAliases";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
@@ -75,11 +76,14 @@ export function ContactImportDialog({
   const rowOffsetRef = React.useRef(0);  // Track absolute row position in CSV file
 
   // Handle preview mode
-  const onPreview = useCallback((rows: ContactImportSchema[]) => {
+  const onPreview = useCallback((data: { rows: ContactImportSchema[]; headers: string[] }) => {
     if (!ENABLE_IMPORT_PREVIEW) return;
+
+    const { rows, headers } = data;
 
     console.log('📊 [PREVIEW DEBUG] First parsed row:', JSON.stringify(rows[0], null, 2));
     console.log('📊 [PREVIEW DEBUG] Total rows:', rows.length);
+    console.log('📊 [PREVIEW DEBUG] Headers:', headers.length);
 
     // Store parsed data for later use
     setParsedData(rows);
@@ -91,9 +95,12 @@ export function ContactImportDialog({
     console.log('📊 [DATA QUALITY] Organizations without contacts:', organizationsWithoutContacts.length);
     console.log('📊 [DATA QUALITY] Contacts without contact info:', contactsWithoutContactInfo.length);
 
-    // Generate preview data
+    // Generate preview data with header mappings
     const preview: PreviewData = {
-      mappings: [], // This would be populated from the header mappings
+      mappings: headers.map(header => ({
+        header: header || '(empty)',
+        mappedTo: getHeaderMappingDescription(header),
+      })),
       sampleRows: rows.slice(0, 5),
       validCount: rows.length, // This would be calculated based on validation
       skipCount: 0,
