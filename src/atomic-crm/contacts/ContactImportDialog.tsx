@@ -48,9 +48,24 @@ export function ContactImportDialog({
   const [previewData, setPreviewData] = useState<PreviewData | null>(null);
   const [parsedData, setParsedData] = useState<ContactImportSchema[]>([]);
 
-  // Import result state
+  // Import result state - accumulate across all batches
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const accumulatedResultRef = React.useRef<{
+    totalProcessed: number;
+    successCount: number;
+    skippedCount: number;
+    failedCount: number;
+    errors: ImportError[];
+    startTime: Date | null;
+  }>({
+    totalProcessed: 0,
+    successCount: 0,
+    skippedCount: 0,
+    failedCount: 0,
+    errors: [],
+    startTime: null,
+  });
 
   // Transform headers using column aliases
   const transformHeaders = useCallback((headers: string[]) => {
