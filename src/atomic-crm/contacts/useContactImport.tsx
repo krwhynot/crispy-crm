@@ -156,11 +156,26 @@ export function useContactImport() {
           }
 
           try {
+            // Validate required name fields first
+            if (!first_name?.trim() && !last_name?.trim()) {
+              throw new Error("Missing contact name: First name and last name are required");
+            }
+
             const email = [
               { email: email_work, type: "Work" },
               { email: email_home, type: "Home" },
               { email: email_other, type: "Other" },
             ].filter(({ email }) => email);
+
+            // Validate email format for each email entry
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            for (const emailEntry of email) {
+              if (emailEntry.email && !emailRegex.test(emailEntry.email)) {
+                throw new Error(
+                  `Invalid email format: "${emailEntry.email}" is not a valid email address. Expected format: name@domain.com`
+                );
+              }
+            }
 
             const phone = [
               { number: phone_work, type: "Work" },
@@ -172,7 +187,7 @@ export function useContactImport() {
 
             // Validation: Ensure a primary organization name is provided
             if (!trimmedOrgName) {
-              throw new Error("Missing primary organization name");
+              throw new Error("Missing organization name: Organization is required for all contacts");
             }
 
             // In preview mode, just validate the organization exists in our map
