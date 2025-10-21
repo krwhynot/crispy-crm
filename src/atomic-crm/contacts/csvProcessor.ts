@@ -9,12 +9,7 @@
 
 import type { ContactImportSchema } from './useContactImport';
 import { mapHeadersToFields } from './columnAliases';
-
-/**
- * Constant used by columnAliases.ts to mark full name columns
- * columnAliases.ts imports this constant to ensure consistency
- */
-export const FULL_NAME_SPLIT_MARKER = '_full_name_split_';
+import { FULL_NAME_SPLIT_MARKER } from './csvConstants';
 
 /**
  * Split a full name string into first and last name components
@@ -59,8 +54,9 @@ export function splitFullName(fullName: string): { first_name: string; last_name
  *
  * @param headers - Original CSV header row
  * @returns Array of transformed header names (same length as input)
+ * @private - Internal helper function, not exported
  */
-export function transformHeaders(headers: string[]): string[] {
+function transformHeaders(headers: string[]): string[] {
   const mappings = mapHeadersToFields(headers);
 
   return headers.map(header => {
