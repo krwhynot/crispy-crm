@@ -1406,3 +1406,5 @@
 [2025-10-21 02:42:18] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/test-csv-import.mjs
 [2025-10-21 03:20:01] [code] Write: /home/krwhynot/projects/crispy-crm/data/import_test_focused.csv
 [2025-10-21 05:04:58] [code] Write: /home/krwhynot/projects/crispy-crm/data/import_test_focused.csv
+[2025-10-21 05:05:53] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/verify-import-results.sh
+[2025-10-21 05:18:00] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-import-e2e.mjs
