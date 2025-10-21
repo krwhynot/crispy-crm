@@ -192,7 +192,7 @@ export function usePapaParse<T>({
             error,
           });
         },
-        dynamicTyping: true,
+        dynamicTyping: false, // Keep all values as strings to avoid type conversion issues (e.g., phone numbers)
       });
     },
     [batchSize, processBatch, onPreview, previewRowCount],
