@@ -1303,3 +1303,10 @@
 [2025-10-20 18:44:31] [code] Write: /home/krwhynot/projects/crispy-crm/test-papa-parse.js
 [2025-10-20 18:45:07] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
 [2025-10-20 19:00:15] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-20 19:02:54] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-20 19:04:06] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-10-20 19:04:11] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-10-20 19:04:17] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-20 19:04:24] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-20 19:04:30] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-20 19:24:37] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251021002357_add_role_and_purchase_influence_to_contact_organizations.sql

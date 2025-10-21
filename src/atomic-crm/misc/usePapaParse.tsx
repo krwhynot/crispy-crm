@@ -29,7 +29,7 @@ type usePapaParseProps<T> = {
   batchSize?: number;
 
   // processBatch returns the number of imported items (optional - required for actual import, not for preview)
-  processBatch?: (batch: T[]): Promise<void>;
+  processBatch?: (batch: T[]) => Promise<void>;
 
   // Optional: Transform headers during parsing (e.g., apply column aliases)
   transformHeaders?: (headers: string[]) => string[];
@@ -63,6 +63,10 @@ export function usePapaParse<T>({
 
   const parseCsv = useCallback(
     (file: File) => {
+      console.log('📄 [PAPA PARSE DEBUG] parseCsv called for file:', file.name);
+      console.log('📄 [PAPA PARSE DEBUG] Preview mode:', !!previewRowCount, 'Preview count:', previewRowCount);
+      console.log('📄 [PAPA PARSE DEBUG] Has processBatch:', !!processBatch);
+
       setImporter({
         state: "parsing",
       });
@@ -73,6 +77,7 @@ export function usePapaParse<T>({
         skipEmptyLines: true, // This auto-skips line 3 (empty row)
         preview: previewRowCount ? previewRowCount + 2 : undefined, // Add 2 for skipped rows
         async complete(results) {
+          console.log('📄 [PAPA PARSE DEBUG] Parse complete. Rows:', results.data.length);
           if (importIdRef.current !== importId) {
             return;
           }
@@ -145,9 +150,22 @@ export function usePapaParse<T>({
 
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
+            console.log('📄 [PAPA PARSE DEBUG] Preview mode - calling onPreview with', transformedData.length, 'rows');
             onPreview(transformedData);
             setImporter({
               state: "idle",
+            });
+            return;
+          }
+
+          console.log('📄 [PAPA PARSE DEBUG] NOT preview mode - starting actual import');
+          console.log('📄 [PAPA PARSE DEBUG] processBatch exists:', !!processBatch);
+
+          if (!processBatch) {
+            console.error('🔴 [PAPA PARSE DEBUG] ERROR: processBatch is undefined! Cannot import.');
+            setImporter({
+              state: "error",
+              error: new Error('processBatch function not provided'),
             });
             return;
           }
@@ -160,6 +178,8 @@ export function usePapaParse<T>({
             remainingTime: null,
           });
 
+          console.log('📄 [PAPA PARSE DEBUG] Starting batch processing. Total rows:', transformedData.length, 'Batch size:', batchSize);
+
           let totalTime = 0;
           for (let i = 0; i < transformedData.length; i += batchSize) {
             if (importIdRef.current !== importId) {
@@ -168,9 +188,12 @@ export function usePapaParse<T>({
 
             const batch = transformedData.slice(i, i + batchSize);
             try {
+              console.log('📄 [PAPA PARSE DEBUG] Processing batch', (i / batchSize) + 1, '- contacts:', batch.length);
               const start = Date.now();
               await processBatch(batch);
-              totalTime += Date.now() - start;
+              const elapsed = Date.now() - start;
+              totalTime += elapsed;
+              console.log('📄 [PAPA PARSE DEBUG] Batch completed in', elapsed, 'ms');
 
               const meanTime = totalTime / (i + batch.length);
               setImporter((previous) => {
