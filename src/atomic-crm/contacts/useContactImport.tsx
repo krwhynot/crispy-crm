@@ -10,14 +10,12 @@ export interface ContactImportSchema {
   gender?: string;
   title?: string;
   organization_name: string; // Primary organization (mandatory)
-  organization_role?: string; // Role at organization (optional)
   email_work?: string;
   email_home?: string;
   email_other?: string;
   phone_work?: string;
   phone_home?: string;
   phone_other?: string;
-  avatar?: string;
   first_seen?: string;
   last_seen?: string;
   tags?: string;
@@ -139,7 +137,6 @@ export function useContactImport() {
             first_seen,
             last_seen,
             organization_name,
-            organization_role,
             tags: tagNames,
             linkedin_url,
           } = contactData;
