@@ -274,6 +274,13 @@ export const importContactSchema = z
       z.undefined(),
       z.string(),
     ]).optional().nullable(),
+    // Avatar field - allow URL strings for importing avatar images
+    avatar: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
   })
   .superRefine((data, ctx) => {
     // Require at least first name or last name
