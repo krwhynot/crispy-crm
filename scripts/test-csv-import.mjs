@@ -167,39 +167,145 @@ function transformData(rawData) {
   });
 }
 
-function validateContacts(contacts) {
+// Data quality analysis functions
+function findOrganizationsWithoutContacts(contacts) {
+  const orgOnlyEntries = [];
+
+  contacts.forEach((contact, index) => {
+    const hasOrgName = contact.organization_name && String(contact.organization_name).trim();
+    const hasFirstName = contact.first_name && String(contact.first_name).trim();
+    const hasLastName = contact.last_name && String(contact.last_name).trim();
+
+    // If has organization but NO contact person
+    if (hasOrgName && !hasFirstName && !hasLastName) {
+      orgOnlyEntries.push({
+        organization_name: String(contact.organization_name).trim(),
+        row: index + 4, // +3 for header rows, +1 for 1-indexed
+      });
+    }
+  });
+
+  return orgOnlyEntries;
+}
+
+function findContactsWithoutContactInfo(contacts) {
+  const contactsWithoutInfo = [];
+
+  contacts.forEach((contact, index) => {
+    const hasFirstName = contact.first_name && String(contact.first_name).trim();
+    const hasLastName = contact.last_name && String(contact.last_name).trim();
+    const hasName = hasFirstName || hasLastName;
+
+    // Check all email fields
+    const hasEmail = (
+      (contact.email_work && String(contact.email_work).trim()) ||
+      (contact.email_home && String(contact.email_home).trim()) ||
+      (contact.email_other && String(contact.email_other).trim())
+    );
+
+    // Check all phone fields
+    const hasPhone = (
+      (contact.phone_work && String(contact.phone_work).trim()) ||
+      (contact.phone_home && String(contact.phone_home).trim()) ||
+      (contact.phone_other && String(contact.phone_other).trim())
+    );
+
+    // If has name but NO email AND NO phone
+    if (hasName && !hasEmail && !hasPhone) {
+      const name = [
+        hasFirstName ? String(contact.first_name).trim() : '',
+        hasLastName ? String(contact.last_name).trim() : ''
+      ].filter(Boolean).join(' ') || 'Unknown';
+
+      contactsWithoutInfo.push({
+        name,
+        organization_name: contact.organization_name ? String(contact.organization_name).trim() : '',
+        row: index + 4,
+      });
+    }
+  });
+
+  return contactsWithoutInfo;
+}
+
+function validateContacts(contacts, options = {}) {
+  const { importOrganizationsWithoutContacts = false, importContactsWithoutContactInfo = false } = options;
+
   const results = {
     total: contacts.length,
     success: 0,
     failed: 0,
     errors: [],
     errorTypes: {},
+    transformations: {
+      orgOnlyAutoFilled: 0,
+      contactsWithoutInfoImported: 0,
+    },
   };
 
   contacts.forEach((contact, index) => {
     const rowNumber = index + 4; // Account for 3 header rows + 1-indexed
-    const validationResult = importContactSchema.safeParse(contact);
+
+    // Apply data quality transformations
+    let transformedContact = { ...contact };
+
+    // Check if this is an organization-only entry
+    const isOrgOnlyEntry = (
+      transformedContact.organization_name &&
+      !transformedContact.first_name?.toString().trim() &&
+      !transformedContact.last_name?.toString().trim()
+    );
+
+    // Auto-fill placeholder contact if user approved
+    if (isOrgOnlyEntry && importOrganizationsWithoutContacts) {
+      transformedContact.first_name = "General";
+      transformedContact.last_name = "Contact";
+      results.transformations.orgOnlyAutoFilled++;
+    }
+
+    const validationResult = importContactSchema.safeParse(transformedContact);
 
     if (validationResult.success) {
       results.success++;
     } else {
-      results.failed++;
-      const errorReasons = validationResult.error.issues.map(issue => {
-        const field = issue.path.join('.');
-        const message = issue.message;
+      // Filter errors based on data quality decisions
+      const relevantErrors = validationResult.error.issues.filter(issue => {
+        const fieldPath = issue.path.join('.');
+        const isMissingNameError = (
+          (fieldPath === "first_name" || fieldPath === "last_name") &&
+          issue.message.includes("Either first name or last name must be provided")
+        );
 
-        // Track error types
-        const errorKey = `${field}: ${message}`;
-        results.errorTypes[errorKey] = (results.errorTypes[errorKey] || 0) + 1;
+        // Skip this error if user approved org-only entries
+        if (isMissingNameError && isOrgOnlyEntry && importOrganizationsWithoutContacts) {
+          return false;
+        }
 
-        return `${field}: ${message}`;
-      }).join('; ');
-
-      results.errors.push({
-        row: rowNumber,
-        data: contact,
-        reasons: errorReasons,
+        return true;
       });
+
+      if (relevantErrors.length === 0) {
+        // All errors were filtered out - count as success
+        results.success++;
+      } else {
+        results.failed++;
+        const errorReasons = relevantErrors.map(issue => {
+          const field = issue.path.join('.');
+          const message = issue.message;
+
+          // Track error types
+          const errorKey = `${field}: ${message}`;
+          results.errorTypes[errorKey] = (results.errorTypes[errorKey] || 0) + 1;
+
+          return `${field}: ${message}`;
+        }).join('; ');
+
+        results.errors.push({
+          row: rowNumber,
+          data: transformedContact,
+          reasons: errorReasons,
+        });
+      }
     }
   });
 
