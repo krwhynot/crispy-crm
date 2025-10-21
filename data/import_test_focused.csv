@@ -1,11 +1,15 @@
-INSTRUCTIONS: This row will be skipped during import
-
-Header Row (will be skipped)
-FULL NAME (FIRST, LAST),Organizations (DropDown),POSITION (DropDown),EMAIL,PHONE,LINKEDIN,NOTES
-"John Doe","Valid Corp","CEO","john.doe@valid.com","555-0101","https://linkedin.com/in/johndoe","Complete contact with all fields"
-,"Org Only Inc.","","","","","Organization without any contact person"
-"Jane Smith","Incomplete LLC","Manager","","","","Contact with name and org, but no email or phone"
-"Peter Jones","Email Only Corp","Director","peter.jones@email.com","","https://linkedin.com/in/peterjones","Contact with email but no phone"
-"Mary Johnson","Phone Only Co","VP","","555-0104","","Contact with phone but no email"
-"Susan Williams","Another Valid Org","CFO","susan.w@valid.com","555-0105","","Complete contact"
-,"Second Org Only","","","","","Another organization-only entry"
+Contacts,,Instructions:,"Enter your test contacts below. This is a focused test file with 7 rows covering all scenarios.",,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+"PRIORITY
+(Formula)","FULL NAME (FIRST, LAST)",Organizations (DropDown),"POSITION
+(DropDown)",EMAIL,PHONE,"ACCT. MANAGER
+(DropDown)",LINKEDIN,"STREET ADDRESS",CITY,STATE,"ZIP CODE",COUNTRY,TAGS,NOTES,"FIRST SEEN
+(Date)","LAST SEEN
+(Date)"
+A,"John Doe","Valid Corp",CEO,john.doe@valid.com,555-0101,,https://linkedin.com/in/johndoe,,,,,,,Complete contact with all fields,,
+B,,"Org Only Inc.",,,,,,,,,,,,Organization without any contact person,,
+C,"Jane Smith","Incomplete LLC",Manager,,,,,,,,,,,"Contact with name and org, but no email or phone",,
+D,"Peter Jones","Email Only Corp",Director,peter.jones@email.com,,,https://linkedin.com/in/peterjones,,,,,,,Contact with email but no phone,,
+E,"Mary Johnson","Phone Only Co",VP,,555-0104,,,,,,,,,"Contact with phone but no email",,
+A,"Susan Williams","Another Valid Org",CFO,susan.w@valid.com,555-0105,,,,,,,,,,
+B,,"Second Org Only",,,,,,,,,,,,Another organization-only entry,,
