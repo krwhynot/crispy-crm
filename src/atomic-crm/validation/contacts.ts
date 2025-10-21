@@ -105,12 +105,15 @@ const contactBaseSchema = z.object({
   company_name: z.string().optional().nullable(),
   search_tsv: z.any().optional(),
 
+  // Notes field - text field for additional contact information
+  notes: z.string().optional().nullable(),
+
   // Note: The following fields exist in database but are NOT validated
   // because they have no UI input fields in ContactInputs.tsx (per "UI as truth" principle):
   // - address, city, state, postal_code, country
   // - birthday, gender
   // - twitter_handle
-  // - notes, tags
+  // - tags (array field handled separately)
 });
 
 // Helper function to transform data

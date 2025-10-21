@@ -345,6 +345,26 @@ export const COLUMN_ALIASES: Record<string, string[]> = {
     'li url',
     'li_url',
   ],
+
+  // Notes field
+  notes: [
+    'notes',
+    'note',
+    'comments',
+    'comment',
+    'description',
+    'remarks',
+    'remark',
+    'memo',
+    'memos',
+    'additional info',
+    'additional_info',
+    'additional information',
+    'details',
+    'detail',
+    'observations',
+    'observation',
+  ],
 };
 
 /**
