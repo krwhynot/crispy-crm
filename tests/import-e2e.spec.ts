@@ -1,0 +1,194 @@
+/**
+ * End-to-End Import Test (Simulates Browser Import Flow)
+ * Tests the data quality feature without requiring browser interaction
+ *
+ * This test imports the actual application logic from the shared module
+ * to ensure we're testing the real implementation, not a duplicate.
+ */
+
+import { describe, it, expect } from 'vitest';
+import fs from 'fs';
+import Papa from 'papaparse';
+import {
+  applyDataQualityTransformations,
+  validateTransformedContacts,
+} from '../src/atomic-crm/contacts/contactImport.logic';
+import type { ContactImportSchema } from '../src/atomic-crm/contacts/useContactImport';
+
+// ============================================================================
+// COLUMN MAPPING AND DATA TRANSFORMATION
+// These are CSV-specific transformations not in the shared logic
+// ============================================================================
+
+const COLUMN_ALIASES: Record<string, string> = {
+  'Organizations': 'organization_name',
+  'Organizations (DropDown)': 'organization_name',
+  'Company': 'organization_name',
+  'Organization': 'organization_name',
+  'FULL NAME (FIRST, LAST)': '_full_name_source_',
+  'Full Name': '_full_name_source_',
+  'Name': '_full_name_source_',
+  'EMAIL': 'email_work',
+  'Email': 'email_work',
+  'Work Email': 'email_work',
+  'PHONE': 'phone_work',
+  'Phone': 'phone_work',
+  'Work Phone': 'phone_work',
+  'POSITION': 'title',
+  'POSITION (DropDown)': 'title',
+  'Position': 'title',
+  'Title': 'title',
+  'LINKEDIN': 'linkedin_url',
+  'LinkedIn': 'linkedin_url',
+  'NOTES': 'notes',
+  'Notes': 'notes',
+};
+
+function mapHeadersToFields(headers: string[]): Record<string, string> {
+  const mapped: Record<string, string> = {};
+  headers.forEach(header => {
+    if (!header) return;
+    const normalized = String(header).trim();
+    mapped[header] = COLUMN_ALIASES[normalized] || normalized.toLowerCase().replace(/\s+/g, '_');
+  });
+  return mapped;
+}
+
+function transformHeaders(headers: string[]): string[] {
+  const mappings = mapHeadersToFields(headers);
+  return headers.map(header => {
+    if (!header) return header;
+    return mappings[header] || header;
+  });
+}
+
+function transformData(rawData: any[][]): ContactImportSchema[] {
+  if (rawData.length < 4) {
+    throw new Error('CSV file too short');
+  }
+
+  const headers = rawData[2];
+  const transformedHeaders = transformHeaders(headers);
+  const dataRows = rawData.slice(3);
+
+  return dataRows.map(row => {
+    const obj: any = {};
+    transformedHeaders.forEach((header, index) => {
+      // Handle full name splitting
+      if (header === '_full_name_source_') {
+        const fullName = row[index] || '';
+        const nameParts = fullName.trim().split(/\s+/);
+
+        if (nameParts.length === 0 || fullName.trim() === '') {
+          obj.first_name = '';
+          obj.last_name = '';
+        } else if (nameParts.length === 1) {
+          obj.first_name = '';
+          obj.last_name = nameParts[0];
+        } else {
+          obj.first_name = nameParts[0];
+          obj.last_name = nameParts.slice(1).join(' ');
+        }
+      } else {
+        obj[header] = row[index];
+      }
+    });
+    return obj as ContactImportSchema;
+  });
+}
+
+// ============================================================================
+// TESTS
+// ============================================================================
+
+describe('CSV Import - Data Quality Feature (E2E)', () => {
+  const csvPath = './data/import_test_focused.csv';
+  const csvContent = fs.readFileSync(csvPath, 'utf-8');
+  const parseResult = Papa.parse(csvContent, {
+    header: false,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+  });
+  const contacts = transformData(parseResult.data);
+
+  it('should have parsed 7 contact rows from CSV', () => {
+    expect(contacts).toHaveLength(7);
+  });
+
+  describe('Test 1: Strict Mode (No Data Quality Decisions)', () => {
+    it('should validate 5 contacts and fail 2 org-only entries', () => {
+      // In strict mode, no transformations are applied
+      const { successful, failed } = validateTransformedContacts(contacts);
+
+      expect(successful).toHaveLength(5);
+      expect(failed).toHaveLength(2);
+
+      // Both failures should be org-only entries (rows 2 and 7 in CSV, indices 1 and 6 in array)
+      const failedIndices = failed.map(f => f.originalIndex).sort();
+      expect(failedIndices).toEqual([1, 6]); // Rows 5 and 10 in CSV (index 1 and 6 in array)
+
+      // All failures should have "Either first name or last name must be provided" error
+      failed.forEach(failure => {
+        const hasNameError = failure.errors.some(
+          e => e.message.includes("Either first name or last name must be provided")
+        );
+        expect(hasNameError).toBe(true);
+      });
+    });
+  });
+
+  describe('Test 2: Auto-Fill Organizations (Data Quality Feature)', () => {
+    it('should auto-fill placeholder contacts and validate all 7 entries', () => {
+      // Apply transformations
+      const { transformedContacts, autoFilledCount } = applyDataQualityTransformations(contacts, {
+        importOrganizationsWithoutContacts: true,
+        importContactsWithoutContactInfo: false,
+      });
+
+      // Validate the transformed data
+      const { successful, failed } = validateTransformedContacts(transformedContacts);
+
+      expect(successful).toHaveLength(7);
+      expect(failed).toHaveLength(0);
+      expect(autoFilledCount).toBe(2);
+
+      // Verify auto-filled contacts have "General Contact" name
+      const autoFilledContacts = transformedContacts.filter(
+        c => c.first_name === "General" && c.last_name === "Contact"
+      );
+      expect(autoFilledContacts).toHaveLength(2);
+
+      // Verify they have organization names
+      autoFilledContacts.forEach(contact => {
+        expect(contact.organization_name).toBeTruthy();
+        expect(typeof contact.organization_name).toBe('string');
+        expect((contact.organization_name as string).trim().length).toBeGreaterThan(0);
+      });
+    });
+  });
+
+  describe('Data Quality Summary', () => {
+    it('should demonstrate improved success rate with data quality feature', () => {
+      // Strict mode
+      const strictValidation = validateTransformedContacts(contacts);
+      const strictSuccessRate = (strictValidation.successful.length / contacts.length) * 100;
+
+      // Auto-fill mode
+      const { transformedContacts } = applyDataQualityTransformations(contacts, {
+        importOrganizationsWithoutContacts: true,
+        importContactsWithoutContactInfo: false,
+      });
+      const autoFillValidation = validateTransformedContacts(transformedContacts);
+      const autoFillSuccessRate = (autoFillValidation.successful.length / contacts.length) * 100;
+
+      console.log('\n📊 Data Quality Feature Impact:');
+      console.log(`   Strict Mode:    ${strictSuccessRate.toFixed(1)}% success (${strictValidation.successful.length}/${contacts.length})`);
+      console.log(`   Auto-Fill Mode: ${autoFillSuccessRate.toFixed(1)}% success (${autoFillValidation.successful.length}/${contacts.length})`);
+      console.log(`   Improvement:    +${(autoFillSuccessRate - strictSuccessRate).toFixed(1)}% (${autoFillValidation.successful.length - strictValidation.successful.length} more contacts)\n`);
+
+      // The data quality feature should improve success rate
+      expect(autoFillSuccessRate).toBeGreaterThan(strictSuccessRate);
+      expect(autoFillSuccessRate).toBe(100); // All contacts should validate with auto-fill
+    });
+  });
+});

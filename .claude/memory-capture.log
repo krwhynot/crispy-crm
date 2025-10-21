@@ -1409,3 +1409,10 @@
 [2025-10-21 05:05:53] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/verify-import-results.sh
 [2025-10-21 05:18:00] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-import-e2e.mjs
 [2025-10-21 05:37:15] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/contactImport.logic.ts
+[2025-10-21 05:37:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
+[2025-10-21 05:38:47] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
+[2025-10-21 05:39:24] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-10-21 05:39:35] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-10-21 05:40:12] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/test-import-e2e.mjs
+[2025-10-21 05:41:45] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-import-e2e.test.ts
+[2025-10-21 05:45:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/contactImport.logic.ts

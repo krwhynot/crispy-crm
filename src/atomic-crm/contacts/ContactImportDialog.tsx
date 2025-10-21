@@ -18,6 +18,7 @@ import { mapHeadersToFields } from "./columnAliases";
 import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
+import { isOrganizationOnlyEntry } from "./contactImport.logic";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
@@ -602,12 +603,7 @@ function findOrganizationsWithoutContacts(rows: ContactImportSchema[]): Array<{ 
   const orgOnlyEntries: Array<{ organization_name: string; row: number }> = [];
 
   rows.forEach((row, index) => {
-    const hasOrgName = row.organization_name && String(row.organization_name).trim();
-    const hasFirstName = row.first_name && String(row.first_name).trim();
-    const hasLastName = row.last_name && String(row.last_name).trim();
-
-    // If has organization but NO contact person
-    if (hasOrgName && !hasFirstName && !hasLastName) {
+    if (isOrganizationOnlyEntry(row)) {
       orgOnlyEntries.push({
         organization_name: String(row.organization_name).trim(),
         row: index + 4, // +3 for header rows, +1 for 1-indexed

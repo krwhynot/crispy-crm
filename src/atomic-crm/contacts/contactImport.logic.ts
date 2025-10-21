@@ -22,6 +22,29 @@ export function isOrganizationOnlyEntry(contact: Partial<ContactImportSchema>): 
 }
 
 /**
+ * Checks if a contact has a name but lacks any contact information (email or phone).
+ * @param contact The contact data to check.
+ * @returns True if the contact has a name but no contact info.
+ */
+export function isContactWithoutContactInfo(contact: Partial<ContactImportSchema>): boolean {
+  const hasFirstName = contact.first_name && String(contact.first_name).trim();
+  const hasLastName = contact.last_name && String(contact.last_name).trim();
+  const hasName = hasFirstName || hasLastName;
+
+  const hasEmail =
+    (contact.email_work && String(contact.email_work).trim()) ||
+    (contact.email_home && String(contact.email_home).trim()) ||
+    (contact.email_other && String(contact.email_other).trim());
+
+  const hasPhone =
+    (contact.phone_work && String(contact.phone_work).trim()) ||
+    (contact.phone_home && String(contact.phone_home).trim()) ||
+    (contact.phone_other && String(contact.phone_other).trim());
+
+  return !!(hasName && !hasEmail && !hasPhone);
+}
+
+/**
  * Applies data quality transformations to a set of contacts based on user decisions.
  * Currently handles auto-filling placeholder contacts for organization-only entries.
  *
