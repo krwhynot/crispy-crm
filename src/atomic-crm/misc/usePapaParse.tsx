@@ -32,8 +32,8 @@ type usePapaParseProps<T> = {
   // processBatch returns the number of imported items (optional - required for actual import, not for preview)
   processBatch?: (batch: T[]) => Promise<void>;
 
-  // Optional: Callback for preview mode - receives parsed preview data and headers
-  onPreview?: (data: { rows: T[]; headers: string[] }) => void;
+  // Optional: Callback for preview mode - receives parsed preview data, headers, and raw data rows
+  onPreview?: (data: { rows: T[]; headers: string[]; rawDataRows?: any[][] }) => void;
 
   // Optional: Parse only first N rows for preview mode
   previewRowCount?: number;
@@ -99,7 +99,9 @@ export function usePapaParse<T>({
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
             console.log('📄 [PAPA PARSE DEBUG] Preview mode - calling onPreview with', transformedData.length, 'rows and', headers.length, 'headers');
-            onPreview({ rows: transformedData, headers });
+            // Pass raw data rows (skip first 3 rows: instructions, empty, headers)
+            const rawDataRows = (results.data as any[][]).slice(3);
+            onPreview({ rows: transformedData, headers, rawDataRows });
             setImporter({
               state: "idle",
             });

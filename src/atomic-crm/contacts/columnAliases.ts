@@ -583,3 +583,36 @@ export function validateRequiredMappings(mappings: Record<string, string | null>
 
   return missingFields;
 }
+
+/**
+ * Get all available ContactImportSchema fields for dropdown selection
+ * Returns an array of field names that can be mapped to CSV columns
+ */
+export function getAvailableFields(): string[] {
+  // Extract all unique field names from COLUMN_ALIASES
+  const fieldNames = Object.keys(COLUMN_ALIASES);
+
+  // Sort alphabetically for better UX
+  return fieldNames.sort();
+}
+
+/**
+ * Get available fields with display names for dropdown options
+ * Returns an array of {value, label} objects
+ */
+export function getAvailableFieldsWithLabels(): Array<{ value: string; label: string }> {
+  const fields = getAvailableFields();
+
+  return [
+    // Special option for full name splitting
+    {
+      value: FULL_NAME_SPLIT_MARKER,
+      label: 'Full Name (will be split into first + last)',
+    },
+    // All other fields
+    ...fields.map(field => ({
+      value: field,
+      label: field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+    })),
+  ];
+}

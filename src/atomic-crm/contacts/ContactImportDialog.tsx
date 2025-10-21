@@ -18,7 +18,9 @@ import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
-import { getHeaderMappingDescription, findCanonicalField, isFullNameColumn } from "./columnAliases";
+import { getHeaderMappingDescription, findCanonicalField, isFullNameColumn, mapHeadersToFields } from "./columnAliases";
+import { processCsvData } from "./csvProcessor";
+import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
@@ -81,17 +83,21 @@ export function ContactImportDialog({
   const rowOffsetRef = React.useRef(0);  // Track absolute row position in CSV file
 
   // Handle preview mode
-  const onPreview = useCallback((data: { rows: ContactImportSchema[]; headers: string[] }) => {
+  const onPreview = useCallback((data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: any[][] }) => {
     if (!ENABLE_IMPORT_PREVIEW) return;
 
-    const { rows, headers } = data;
+    const { rows, headers, rawDataRows: dataRows } = data;
 
     console.log('📊 [PREVIEW DEBUG] First parsed row:', JSON.stringify(rows[0], null, 2));
     console.log('📊 [PREVIEW DEBUG] Total rows:', rows.length);
     console.log('📊 [PREVIEW DEBUG] Headers:', headers.length);
 
-    // Store parsed data for later use
+    // Store parsed data and raw data for re-processing when user changes mappings
     setParsedData(rows);
+    setRawHeaders(headers);
+    if (dataRows) {
+      setRawDataRows(dataRows);
+    }
 
     // Run data quality analysis
     const organizationsWithoutContacts = findOrganizationsWithoutContacts(rows);
@@ -141,6 +147,133 @@ export function ContactImportDialog({
     setPreviewData(preview);
     setShowPreview(true);
   }, []);
+
+  // Handle user changing a column mapping
+  const handleMappingChange = useCallback((csvHeader: string, targetField: string | null) => {
+    console.log('🔄 [MAPPING CHANGE] User changed mapping:', csvHeader, '→', targetField);
+
+    // Update user overrides
+    setUserOverrides(prev => {
+      const next = new Map(prev);
+      if (targetField === null || targetField === '') {
+        // Clear override → use auto-detection
+        next.delete(csvHeader);
+      } else {
+        next.set(csvHeader, targetField);
+      }
+      return next;
+    });
+
+    // Re-process CSV data with new overrides
+    if (rawHeaders.length > 0 && rawDataRows.length > 0) {
+      // Merge user overrides with auto-detected mappings
+      const autoMappings = mapHeadersToFields(rawHeaders);
+      const mergedMappings: Record<string, string | null> = {};
+
+      rawHeaders.forEach(header => {
+        // Priority: User override > Auto-detection
+        const override = userOverrides.get(header);
+        if (override !== undefined) {
+          mergedMappings[header] = override;
+        } else if (csvHeader === header && targetField) {
+          // Apply the current change immediately
+          mergedMappings[header] = targetField;
+        } else {
+          mergedMappings[header] = autoMappings[header];
+        }
+      });
+
+      // Apply overrides to create transformed headers
+      const transformedHeaders = rawHeaders.map(header => {
+        return mergedMappings[header] || header;
+      });
+
+      // Re-process data with the new mappings
+      const reprocessedContacts = rawDataRows.map(row => {
+        const contact: any = {};
+
+        rawHeaders.forEach((originalHeader, index) => {
+          const transformedHeader = transformedHeaders[index];
+          const value = row[index];
+
+          // Handle full name splitting
+          if (transformedHeader === FULL_NAME_SPLIT_MARKER) {
+            const splitFullName = (fullName: string): { first_name: string; last_name: string } => {
+              if (!fullName || typeof fullName !== 'string') {
+                return { first_name: '', last_name: '' };
+              }
+              const nameParts = fullName.trim().split(/\s+/);
+              if (nameParts.length === 0 || fullName.trim() === '') {
+                return { first_name: '', last_name: '' };
+              } else if (nameParts.length === 1) {
+                return { first_name: '', last_name: nameParts[0] };
+              } else {
+                return {
+                  first_name: nameParts[0],
+                  last_name: nameParts.slice(1).join(' '),
+                };
+              }
+            };
+
+            const { first_name, last_name } = splitFullName(value || '');
+            contact.first_name = first_name;
+            contact.last_name = last_name;
+          } else {
+            contact[transformedHeader] = value;
+          }
+        });
+
+        return contact as ContactImportSchema;
+      });
+
+      // Re-run preview generation with reprocessed data
+      const organizationsWithoutContacts = findOrganizationsWithoutContacts(reprocessedContacts);
+      const contactsWithoutContactInfo = findContactsWithoutContactInfo(reprocessedContacts);
+
+      // Generate new preview data with updated mappings
+      const updatedMappings = rawHeaders.map((header, index) => {
+        const target = mergedMappings[header];
+
+        // Calculate confidence: 1.0 for user override, 0.9 for full name, variable for auto-detection
+        let confidence = 0;
+        if (userOverrides.has(header) || (csvHeader === header && targetField)) {
+          confidence = 1.0; // User override always high confidence
+        } else if (target === FULL_NAME_SPLIT_MARKER) {
+          confidence = 0.9;
+        } else if (target) {
+          confidence = 1.0; // Auto-detected match
+        }
+
+        const sampleValue = reprocessedContacts[0]?.[index] ? String(reprocessedContacts[0][index]).substring(0, 50) : undefined;
+
+        return {
+          source: header || '(empty)',
+          target: target === FULL_NAME_SPLIT_MARKER ? 'first_name + last_name (will be split)' : target,
+          confidence,
+          sampleValue,
+        };
+      });
+
+      const updatedPreview: PreviewData = {
+        mappings: updatedMappings,
+        sampleRows: reprocessedContacts.slice(0, 5),
+        validCount: reprocessedContacts.length,
+        skipCount: 0,
+        totalRows: reprocessedContacts.length,
+        errors: [],
+        warnings: [],
+        newOrganizations: extractNewOrganizations(reprocessedContacts),
+        newTags: extractNewTags(reprocessedContacts),
+        hasErrors: false,
+        lowConfidenceMappings: updatedMappings.filter(m => m.confidence > 0 && m.confidence < 0.8).length,
+        organizationsWithoutContacts,
+        contactsWithoutContactInfo,
+      };
+
+      setParsedData(reprocessedContacts);
+      setPreviewData(updatedPreview);
+    }
+  }, [rawHeaders, rawDataRows, userOverrides]);
 
   // Enhanced processBatch wrapper with result accumulation across batches
   const processBatch = useCallback(async (batch: ContactImportSchema[]) => {
@@ -540,6 +673,8 @@ export function ContactImportDialog({
                 preview={previewData}
                 onContinue={handlePreviewContinue}
                 onCancel={handlePreviewCancel}
+                onMappingChange={handleMappingChange}
+                userOverrides={userOverrides}
               />
             </div>
           </DialogContent>
