@@ -459,22 +459,11 @@ export function findCanonicalField(userHeader: string): string | null {
   }
 
   const normalized = normalizeHeader(userHeader);
-
-  // Empty header after normalization
   if (!normalized) {
     return null;
   }
 
-  // Check each field's aliases
-  for (const [fieldName, aliases] of Object.entries(COLUMN_ALIASES)) {
-    for (const alias of aliases) {
-      if (normalizeHeader(alias) === normalized) {
-        return fieldName;
-      }
-    }
-  }
-
-  return null;
+  return NORMALIZED_ALIAS_MAP.get(normalized) || null;
 }
 
 /**
@@ -486,10 +475,7 @@ export function isFullNameColumn(header: string): boolean {
   }
 
   const normalized = normalizeHeader(header);
-
-  return FULL_NAME_PATTERNS.some(pattern =>
-    normalizeHeader(pattern) === normalized
-  );
+  return NORMALIZED_FULL_NAME_PATTERNS.has(normalized);
 }
 
 /**

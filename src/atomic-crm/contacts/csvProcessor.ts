@@ -85,7 +85,7 @@ export function processCsvData(
     const contact: any = {};
 
     headers.forEach((originalHeader, index) => {
-      const transformedHeader = transformedHeaders[index] || originalHeader;
+      const transformedHeader = transformedHeaders[index];
       const value = row[index];
 
       // Handle full name splitting
