@@ -6,6 +6,8 @@
  * NOT database JSONB fields (email, phone arrays)
  */
 
+import { FULL_NAME_SPLIT_MARKER } from './csvProcessor';
+
 /**
  * Registry mapping ContactImportSchema field names to common CSV header variations
  * All variations are normalized (lowercase, trimmed) for comparison
@@ -509,7 +511,7 @@ export function mapHeadersToFields(headers: string[]): Record<string, string | n
     if (isFullNameColumn(header)) {
       // Full name columns will be handled specially during import
       // Map to both first_name and last_name with a special marker
-      mappings[header] = '_full_name_split_';
+      mappings[header] = FULL_NAME_SPLIT_MARKER;
     } else {
       // Try to find canonical field
       mappings[header] = findCanonicalField(header);
@@ -549,7 +551,7 @@ export function validateRequiredMappings(mappings: Record<string, string | null>
   const mappedFields = new Set(Object.values(mappings).filter(Boolean));
 
   // Check if we have a full name column (which provides first_name + last_name)
-  const hasFullName = Object.values(mappings).includes('_full_name_split_');
+  const hasFullName = Object.values(mappings).includes(FULL_NAME_SPLIT_MARKER);
 
   const missingFields: string[] = [];
 

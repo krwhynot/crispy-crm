@@ -18,7 +18,6 @@ import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
-import { transformHeaders as transformCsvHeaders } from "./csvProcessor";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
@@ -74,14 +73,6 @@ export function ContactImportDialog({
     startTime: null,
   });
   const rowOffsetRef = React.useRef(0);  // Track absolute row position in CSV file
-
-  // Transform headers using centralized logic from csvProcessor
-  const transformHeaders = useCallback((headers: string[]) => {
-    console.log('📋 [HEADER DEBUG] Original CSV headers:', headers);
-    const transformed = transformCsvHeaders(headers);
-    console.log('📋 [HEADER DEBUG] Transformed headers:', transformed);
-    return transformed;
-  }, []);
 
   // Handle preview mode
   const onPreview = useCallback((rows: ContactImportSchema[]) => {
@@ -181,7 +172,6 @@ export function ContactImportDialog({
 
   // Two separate importers: one for preview, one for actual import
   const previewImporter = usePapaParse<ContactImportSchema>({
-    transformHeaders: transformHeaders,
     onPreview: onPreview,
     previewRowCount: 100,
   });
@@ -189,7 +179,6 @@ export function ContactImportDialog({
   const actualImporter = usePapaParse<ContactImportSchema>({
     batchSize: 10,
     processBatch,
-    transformHeaders: transformHeaders,
     // No preview callbacks - this does the actual import
   });
 

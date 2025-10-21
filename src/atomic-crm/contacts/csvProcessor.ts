@@ -12,7 +12,7 @@ import { mapHeadersToFields } from './columnAliases';
 
 /**
  * Constant used by columnAliases.ts to mark full name columns
- * IMPORTANT: Must match the value in columnAliases.ts:512
+ * columnAliases.ts imports this constant to ensure consistency
  */
 export const FULL_NAME_SPLIT_MARKER = '_full_name_split_';
 
