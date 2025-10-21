@@ -1,0 +1,1091 @@
+ 🔍 [STATE DEBUG] actualImporter.importer.state changed to: idle
+ 🔍 [STATE DEBUG] previewImporter.importer.state: idle
+ 🔍 [STATE DEBUG] showPreview: false previewConfirmed: false
+ 🔍 [STATE DEBUG] Accumulated results: Object
+ 🔍 [STATE DEBUG] actualImporter.importer.state changed to: idle
+ 🔍 [STATE DEBUG] previewImporter.importer.state: idle
+ 🔍 [STATE DEBUG] showPreview: false previewConfirmed: false
+ 🔍 [STATE DEBUG] Accumulated results: Object
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+overrideMethod @ installHook.js:1
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+overrideMethod @ installHook.js:1
+ 📄 [PAPA PARSE DEBUG] parseCsv called for file: new-contacts.csv
+ 📄 [PAPA PARSE DEBUG] Preview mode: true Preview count: 100
+ 📄 [PAPA PARSE DEBUG] Has processBatch: false
+ 🔍 [STATE DEBUG] actualImporter.importer.state changed to: idle
+ 🔍 [STATE DEBUG] previewImporter.importer.state: parsing
+ 🔍 [STATE DEBUG] showPreview: false previewConfirmed: false
+ 🔍 [STATE DEBUG] Accumulated results: Object
+ 📄 [PAPA PARSE DEBUG] Parse complete. Rows: 102
+ 📋 [HEADER DEBUG] Original CSV headers: Array(17)
+ 📋 [HEADER DEBUG] Header mappings: Object
+ 📋 [HEADER DEBUG] Transformed headers: Array(17)
+ 📄 [PAPA PARSE DEBUG] Preview mode - calling onPreview with 99 rows
+ 📊 [PREVIEW DEBUG] First parsed row: {
+  "PRIORITY\n(Formula)": "D",
+  "first_name": "",
+  "last_name": "Yu",
+  "organization_name": "2d Restaurant",
+  "organization_role": "Distributor Rep",
+  "email_work": null,
+  "phone_work": null,
+  "ACCT. MANAGER\n(DropDown)": null,
+  "linkedin_url": null,
+  "STREET ADDRESS": null,
+  "CITY": null,
+  "STATE\n(DropDown)": null,
+  "ZIP": null,
+  "notes": null,
+  "Filtered Contacts": "NO PRIORITY",
+  "null": "2d Restaurant|Yu"
+}
+ 📊 [PREVIEW DEBUG] Total rows: 99
+ 🔍 [STATE DEBUG] actualImporter.importer.state changed to: idle
+ 🔍 [STATE DEBUG] previewImporter.importer.state: idle
+ 🔍 [STATE DEBUG] showPreview: true previewConfirmed: false
+ 🔍 [STATE DEBUG] Accumulated results: Object
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+overrideMethod @ installHook.js:1
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+overrideMethod @ installHook.js:1
+ 🚀 [IMPORT DEBUG] handlePreviewContinue called
+ 🚀 [IMPORT DEBUG] File: new-contacts.csv Size: 205161
+ 🚀 [IMPORT DEBUG] Calling actualImporter.parseCsv with file: new-contacts.csv
+ 📄 [PAPA PARSE DEBUG] parseCsv called for file: new-contacts.csv
+ 📄 [PAPA PARSE DEBUG] Preview mode: false Preview count: undefined
+ 📄 [PAPA PARSE DEBUG] Has processBatch: true
+ 🔍 [STATE DEBUG] actualImporter.importer.state changed to: parsing
+ 🔍 [STATE DEBUG] previewImporter.importer.state: idle
+ 🔍 [STATE DEBUG] showPreview: false previewConfirmed: true
+ 🔍 [STATE DEBUG] Accumulated results: Object
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+overrideMethod @ installHook.js:1
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+overrideMethod @ installHook.js:1
+ 📄 [PAPA PARSE DEBUG] Parse complete. Rows: 1986
+ 📋 [HEADER DEBUG] Original CSV headers: Array(17)
+ 📋 [HEADER DEBUG] Header mappings: Object
+ 📋 [HEADER DEBUG] Transformed headers: Array(17)
+ 📄 [PAPA PARSE DEBUG] NOT preview mode - starting actual import
+ 📄 [PAPA PARSE DEBUG] processBatch exists: true
+ 📄 [PAPA PARSE DEBUG] Starting batch processing. Total rows: 1983 Batch size: 10
+ 📄 [PAPA PARSE DEBUG] Processing batch 1 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ 🔍 [STATE DEBUG] actualImporter.importer.state changed to: running
+ 🔍 [STATE DEBUG] previewImporter.importer.state: idle
+ 🔍 [STATE DEBUG] showPreview: false previewConfirmed: true
+ 🔍 [STATE DEBUG] Accumulated results: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 31 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 2 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 11
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 26 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 3 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 21
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 29 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 4 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 31
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 36 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 5 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 41
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 34 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 6 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 51
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 29 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 7 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 61
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 25 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 8 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 71
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 21 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 9 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 81
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/b70828e307f255d800844024c78d97d1560d3ff8b395c00b655a7bf53e4d5f53?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/68899f64061599882c9c648677645817dc14d49bdf03d1ae67d1defd288701af?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/ab5df6aa798fe52cf91d9a38984cc2a8ade35acd33188d3d00bb1860a63e4acf?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://direct-foods.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+direct-foods.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+:5173/#/contacts:1 Access to fetch at 'https://direct-foods.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+direct-foods.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+:5173/#/contacts:1 Access to fetch at 'https://direct-foods.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+direct-foods.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 204 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 10 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 91
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 11 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 101
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 12 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 111
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 26 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 13 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 121
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 22 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 14 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 131
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 21 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 15 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 141
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 16 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 151
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 21 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 17 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 161
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 18 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 171
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 22 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 19 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 181
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 20 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 191
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 21 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 201
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 22 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 211
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 23 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 221
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 24 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 231
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 25 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 241
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 26 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 251
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 27 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 261
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 21 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 28 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 271
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 29 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 281
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 30 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 291
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 31 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 301
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 32 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 311
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 33 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 321
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 34 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 331
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 35 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 341
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 39 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 36 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 351
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/a9602b6fa6c096887bef0edbd1ce76a997007755637ec60d6edd3e6a0da21156?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/4965e38bb97203e0ce860bc49f8063074cfc1fbfbbdd8bdace128df68d26585c?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://patiofoodgroup.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+patiofoodgroup.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+:5173/#/contacts:1 Access to fetch at 'https://patiofoodgroup.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+patiofoodgroup.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 486 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 37 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 361
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 38 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 371
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 39 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 381
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 40 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 391
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 41 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 401
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 42 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 411
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 15 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 43 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 421
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 44 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 431
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 45 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 441
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 46 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 451
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 15 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 47 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 461
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 48 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 471
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 49 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 481
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 50 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 491
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 51 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 501
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 52 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 511
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 53 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 521
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 54 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 531
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 55 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 541
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 56 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 551
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 57 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 561
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 58 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 571
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 59 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 581
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 60 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 591
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 61 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 601
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ 🔴 [IMPORT DEBUG] Batch processing error: 
+overrideMethod @ installHook.js:1
+ 📄 [PAPA PARSE DEBUG] Batch completed in 0 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 62 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 611
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 63 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 621
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 1 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 64 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 631
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 65 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 641
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 66 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 651
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 67 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 661
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 68 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 671
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 43 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 69 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 681
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 70 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 691
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 71 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 701
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 72 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 711
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 73 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 721
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 15 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 74 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 731
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 75 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 741
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 21 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 76 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 751
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 22 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 77 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 761
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 24 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 78 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 771
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 79 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 781
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 80 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 791
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 81 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 801
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 82 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 811
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 21 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 83 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 821
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 21 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 84 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 831
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/1e338b8f588ab2bd4d0d892ad92d7f62df26c31e086cde3e7bc0db8755bfa57d?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://gfs.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: The 'Access-Control-Allow-Origin' header has a value 'https://*.paradox.ai' that is not equal to the supplied origin. Have the server send the header with a valid value.
+gfs.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+www.gravatar.com/avatar/d3b2f994201c6964872a3830ae912d19dd6cf9bae30faf1ff9c845e0392249fb?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://gfs.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: The 'Access-Control-Allow-Origin' header has a value 'https://*.paradox.ai' that is not equal to the supplied origin. Have the server send the header with a valid value.
+gfs.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+www.gravatar.com/avatar/b78a288ae16ae42485441ccc94353b1e44eb776798884b0dfe79c0a73bec0b73?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+berkott.net/favicon.ico:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVED
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 99 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 85 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 841
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 86 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 851
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 87 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 861
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 88 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 871
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 28 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 89 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 881
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 90 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 891
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 17 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 91 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 901
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 92 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 911
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 93 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 921
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 94 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 931
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 95 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 941
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 20 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 96 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 951
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 1 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 97 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 961
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 1 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 98 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 971
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 0 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 99 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 981
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 1 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 100 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 991
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 0 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 101 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1001
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 1 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 102 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1011
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 1 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 103 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1021
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/4d78130408c6684bdaa238f3f2ab56226c2813e01e524b5228cdf5de867bdff0?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:54321/rest/v1/contacts:1  Failed to load resource: the server responded with a status of 400 (Bad Request)
+ [DataProvider Error] Object Object
+overrideMethod @ installHook.js:1
+ 
+overrideMethod @ installHook.js:1
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 53 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 104 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1031
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 105 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1041
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 106 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1051
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 18 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 107 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1061
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 22 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 108 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1071
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 19 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 109 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1081
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/ee76e636b7d595e655fc135f873870638e382d25ce0c1b09c215b1561bf9af9f?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/e964728a1e780bf3ec94c24ebca4d00367025db60b86ea9f02d82456aef20fbd?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:54321/rest/v1/contacts:1  Failed to load resource: the server responded with a status of 400 (Bad Request)
+ [DataProvider Error] Object Object
+overrideMethod @ installHook.js:1
+ 
+overrideMethod @ installHook.js:1
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 73 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 110 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1091
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 16 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 111 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1101
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/16b2a0d7d0496715fee6c71999fd8941dfb2c6693b5627d65384c9fee127b583?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/a2dde1eade0cc7425e31e0f8355f7ef26ebe3fa1577eb20fc72e2a5afb5d3747?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/8b5d2745277abb1e3a2e41240384c9094e15c91c4341c8170f43e6c9dbcc8fce?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://sysco.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+sysco.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+:5173/#/contacts:1 Access to fetch at 'https://thelachow.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+thelachow.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+:5173/#/contacts:1 Access to fetch at 'https://pnw.edu/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+pnw.edu/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 59 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 112 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1111
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/e51e4eef45e6a86030f82001afa1678030efa14a722df83ae2cc3c45b3113839?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/aaf4d1eb0051f19900474996bcf854b181c138dd2b76776dd2a22fb2945f6d5a?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/80b3d73c960053945fa107d8a692435905965462ac987b34350d9b04958e61cc?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/c67407cd4584ef0dbb660f91836c3e4a5c70aad5c747b58c0afd8ab8332fc97f?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 65 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 113 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1121
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/a9865b81dd9d85cf57cc18641417eed7b0dd1149d1c257dd39eb43c526adeaab?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+hanovermarriott.com/favicon.ico:1  Failed to load resource: net::ERR_CERT_COMMON_NAME_INVALID
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 290 ms
+ 📄 [PAPA PARSE DEBUG] Processing batch 114 - contacts: 10
+ 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1131
+ 🔵 [IMPORT DEBUG] Calling processBatchHook...
+ processBatch called with: Object
+www.gravatar.com/avatar/e36e744623dd9c58b9309ea3f4e2939ea340fabb35d85cc613ae2421144672e9?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+ processBatch returning: Object
+ 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ 📊 [IMPORT DEBUG] Accumulated totals: Object
+ 📄 [PAPA PARSE DEBUG] Batch completed in 54 ms
+usePapaParse.tsx:191 📄 [PAPA PARSE DEBUG] Processing batch 115 - contacts: 10
+ContactImportDialog.tsx:129 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1141
+ContactImportDialog.tsx:137 🔵 [IMPORT DEBUG] Calling processBatchHook...
+useContactImport.tsx:111 processBatch called with: Object
+www.gravatar.com/avatar/9ac463ce03ef006e4afde0814c47890108331811ea7d59724b8a75385b15a523?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/197df98c93a9d29d16d3f16ebfa07d08ddaa11f6874a4142a4d51d46d45dbb4f?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://elior-na.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+elior-na.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+:5173/#/contacts:1 Access to fetch at 'https://edmundwoo.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+edmundwoo.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+useContactImport.tsx:338 processBatch returning: Object
+ContactImportDialog.tsx:148 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ContactImportDialog.tsx:157 📊 [IMPORT DEBUG] Accumulated totals: Object
+usePapaParse.tsx:196 📄 [PAPA PARSE DEBUG] Batch completed in 246 ms
+usePapaParse.tsx:191 📄 [PAPA PARSE DEBUG] Processing batch 116 - contacts: 10
+ContactImportDialog.tsx:129 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1151
+ContactImportDialog.tsx:137 🔵 [IMPORT DEBUG] Calling processBatchHook...
+useContactImport.tsx:111 processBatch called with: Object
+www.gravatar.com/avatar/1db6a4a35bbcbf2ac37e4cce7ee3cee7bc21e3aebda416cf3f3a2c1ceca81972?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/2bea86b4279413b70f41f0272e8ed0875aa74c70d8f54d0549afb5d67dc17653?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/ca200a5e37310081e3b0114de132896f18ec6428570ea04f644f3229981a3b7a?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+www.gravatar.com/avatar/9ef46ab54fc288fd76021f418aff6911ce72e9b9a4c862407aaedfa6ccb03ebc?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://macados.net/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+macados.net/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+useContactImport.tsx:338 processBatch returning: Object
+ContactImportDialog.tsx:148 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ContactImportDialog.tsx:157 📊 [IMPORT DEBUG] Accumulated totals: Object
+usePapaParse.tsx:196 📄 [PAPA PARSE DEBUG] Batch completed in 65 ms
+usePapaParse.tsx:191 📄 [PAPA PARSE DEBUG] Processing batch 117 - contacts: 10
+ContactImportDialog.tsx:129 🔵 [IMPORT DEBUG] processBatch called with 10 contacts, starting at row 1161
+ContactImportDialog.tsx:137 🔵 [IMPORT DEBUG] Calling processBatchHook...
+useContactImport.tsx:111 processBatch called with: Object
+ContactImportDialog.tsx:206 🔍 [STATE DEBUG] actualImporter.importer.state changed to: idle
+ContactImportDialog.tsx:207 🔍 [STATE DEBUG] previewImporter.importer.state: idle
+ContactImportDialog.tsx:208 🔍 [STATE DEBUG] showPreview: false previewConfirmed: true
+ContactImportDialog.tsx:209 🔍 [STATE DEBUG] Accumulated results: Object
+www.gravatar.com/avatar/dfc19467231acf30fc44638067ab89002b98f19c794d3f8d28e40dbb63725c3a?d=404:1  Failed to load resource: the server responded with a status of 404 ()
+:5173/#/contacts:1 Access to fetch at 'https://frostydogsfoodtruck.com/favicon.ico' from origin 'http://127.0.0.1:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+frostydogsfoodtruck.com/favicon.ico:1  Failed to load resource: net::ERR_FAILED
+useContactImport.tsx:338 processBatch returning: Object
+ContactImportDialog.tsx:148 🔵 [IMPORT DEBUG] processBatchHook completed. Result: Object
+ContactImportDialog.tsx:157 📊 [IMPORT DEBUG] Accumulated totals: Object
+usePapaParse.tsx:196 📄 [PAPA PARSE DEBUG] Batch completed in 271 ms
+supabase.ts:4 🔍 [SUPABASE INIT] Environment variables: {VITE_SUPABASE_URL: 'http://127.0.0.1:54321', VITE_SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIs...', allEnv: {…}}
+supabase.ts:14 Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+overrideMethod @ hook.js:608
+_GoTrueClient @ chunk-MVET3E6E.js?v=44d8f630:6588
+SupabaseAuthClient @ chunk-MVET3E6E.js?v=44d8f630:8815
+_initSupabaseAuthClient @ chunk-MVET3E6E.js?v=44d8f630:9010
+SupabaseClient @ chunk-MVET3E6E.js?v=44d8f630:8884
+createClient @ chunk-MVET3E6E.js?v=44d8f630:9052
+(anonymous) @ supabase.ts:14
