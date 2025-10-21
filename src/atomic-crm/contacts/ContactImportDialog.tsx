@@ -15,7 +15,7 @@ import { usePapaParse } from "../misc/usePapaParse";
 import type { ContactImportSchema, ImportResult } from "./useContactImport";
 import { useContactImport } from "./useContactImport";
 import { mapHeadersToFields } from "./columnAliases";
-import type { PreviewData } from "./ContactImportPreview";
+import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 
@@ -49,6 +49,10 @@ export function ContactImportDialog({
   const [previewConfirmed, setPreviewConfirmed] = useState(false);
   const [previewData, setPreviewData] = useState<PreviewData | null>(null);
   const [parsedData, setParsedData] = useState<ContactImportSchema[]>([]);
+  const [dataQualityDecisions, setDataQualityDecisions] = useState<DataQualityDecisions>({
+    importOrganizationsWithoutContacts: false,
+    importContactsWithoutContactInfo: false,
+  });
 
   // Import result state - accumulate across all batches
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
@@ -107,6 +111,13 @@ export function ContactImportDialog({
     // Store parsed data for later use
     setParsedData(rows);
 
+    // Run data quality analysis
+    const organizationsWithoutContacts = findOrganizationsWithoutContacts(rows);
+    const contactsWithoutContactInfo = findContactsWithoutContactInfo(rows);
+
+    console.log('📊 [DATA QUALITY] Organizations without contacts:', organizationsWithoutContacts.length);
+    console.log('📊 [DATA QUALITY] Contacts without contact info:', contactsWithoutContactInfo.length);
+
     // Generate preview data
     const preview: PreviewData = {
       mappings: [], // This would be populated from the header mappings
@@ -120,6 +131,8 @@ export function ContactImportDialog({
       newTags: extractNewTags(rows),
       hasErrors: false,
       lowConfidenceMappings: 0,
+      organizationsWithoutContacts,
+      contactsWithoutContactInfo,
     };
 
     setPreviewData(preview);
@@ -136,10 +149,11 @@ export function ContactImportDialog({
     }
 
     try {
-      console.log('🔵 [IMPORT DEBUG] Calling processBatchHook...');
+      console.log('🔵 [IMPORT DEBUG] Calling processBatchHook with data quality decisions:', dataQualityDecisions);
       const result = await processBatchHook(batch, {
         preview: false,
         startingRow: rowOffsetRef.current + 1,  // Pass correct starting row for this batch
+        dataQualityDecisions,  // Pass user's data quality decisions
         onProgress: (current, total) => {
           // Progress tracking could be added here
         }
@@ -181,7 +195,7 @@ export function ContactImportDialog({
       accumulatedResultRef.current.failedCount += batch.length;
       rowOffsetRef.current += batch.length;  // Ensure offset is still incremented
     }
-  }, [processBatchHook]);
+  }, [processBatchHook, dataQualityDecisions]);
 
   // Two separate importers: one for preview, one for actual import
   const previewImporter = usePapaParse<ContactImportSchema>({
@@ -260,9 +274,12 @@ export function ContactImportDialog({
   };
 
   // Handle preview confirmation
-  const handlePreviewContinue = () => {
-    console.log('🚀 [IMPORT DEBUG] handlePreviewContinue called');
+  const handlePreviewContinue = (decisions: DataQualityDecisions) => {
+    console.log('🚀 [IMPORT DEBUG] handlePreviewContinue called with decisions:', decisions);
     console.log('🚀 [IMPORT DEBUG] File:', file?.name, 'Size:', file?.size);
+
+    // Store data quality decisions for validation logic
+    setDataQualityDecisions(decisions);
 
     // Reset accumulated results for new import
     accumulatedResultRef.current = {
@@ -577,4 +594,68 @@ function extractNewTags(rows: ContactImportSchema[]): string[] {
     }
   });
   return Array.from(tags);
+}
+
+// Helper function to find organizations without contact persons
+// These are rows with organization_name but no first_name AND no last_name
+function findOrganizationsWithoutContacts(rows: ContactImportSchema[]): Array<{ organization_name: string; row: number }> {
+  const orgOnlyEntries: Array<{ organization_name: string; row: number }> = [];
+
+  rows.forEach((row, index) => {
+    const hasOrgName = row.organization_name && String(row.organization_name).trim();
+    const hasFirstName = row.first_name && String(row.first_name).trim();
+    const hasLastName = row.last_name && String(row.last_name).trim();
+
+    // If has organization but NO contact person
+    if (hasOrgName && !hasFirstName && !hasLastName) {
+      orgOnlyEntries.push({
+        organization_name: String(row.organization_name).trim(),
+        row: index + 4, // +3 for header rows, +1 for 1-indexed
+      });
+    }
+  });
+
+  return orgOnlyEntries;
+}
+
+// Helper function to find contacts without email or phone
+// These are contacts with a name but missing ALL email fields AND ALL phone fields
+function findContactsWithoutContactInfo(rows: ContactImportSchema[]): Array<{ name: string; organization_name: string; row: number }> {
+  const contactsWithoutInfo: Array<{ name: string; organization_name: string; row: number }> = [];
+
+  rows.forEach((row, index) => {
+    const hasFirstName = row.first_name && String(row.first_name).trim();
+    const hasLastName = row.last_name && String(row.last_name).trim();
+    const hasName = hasFirstName || hasLastName;
+
+    // Check all email fields
+    const hasEmail = (
+      (row.email_work && String(row.email_work).trim()) ||
+      (row.email_home && String(row.email_home).trim()) ||
+      (row.email_other && String(row.email_other).trim())
+    );
+
+    // Check all phone fields
+    const hasPhone = (
+      (row.phone_work && String(row.phone_work).trim()) ||
+      (row.phone_home && String(row.phone_home).trim()) ||
+      (row.phone_other && String(row.phone_other).trim())
+    );
+
+    // If has name but NO email AND NO phone
+    if (hasName && !hasEmail && !hasPhone) {
+      const name = [
+        hasFirstName ? String(row.first_name).trim() : '',
+        hasLastName ? String(row.last_name).trim() : ''
+      ].filter(Boolean).join(' ') || 'Unknown';
+
+      contactsWithoutInfo.push({
+        name,
+        organization_name: row.organization_name ? String(row.organization_name).trim() : '',
+        row: index + 4, // +3 for header rows, +1 for 1-indexed
+      });
+    }
+  });
+
+  return contactsWithoutInfo;
 }

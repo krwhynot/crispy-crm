@@ -48,10 +48,16 @@ export interface ImportResult {
   endTime: Date;
 }
 
+export interface DataQualityDecisions {
+  importOrganizationsWithoutContacts: boolean;
+  importContactsWithoutContactInfo: boolean;
+}
+
 export interface ImportOptions {
   preview?: boolean;  // If true, validate only without database writes
   onProgress?: (current: number, total: number) => void;  // Progress callback
   startingRow?: number;  // The absolute starting row number for this batch (1-indexed)
+  dataQualityDecisions?: DataQualityDecisions;  // User decisions about data quality issues
 }
 
 export function useContactImport() {
@@ -107,8 +113,8 @@ export function useContactImport() {
 
   const processBatch = useCallback(
     async (batch: ContactImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
-      const { preview = false, onProgress, startingRow = 1 } = options;
-      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, options });
+      const { preview = false, onProgress, startingRow = 1, dataQualityDecisions } = options;
+      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, options, dataQualityDecisions });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
@@ -136,12 +142,40 @@ export function useContactImport() {
           const rowNumber = startingRow + index;  // Absolute row number in CSV file
           const rowErrors: FieldError[] = [];
 
-          // 1. Validate with Zod schema first to catch ALL format/presence errors
-          const validationResult = importContactSchema.safeParse(contactData);
+          // 1. Apply data quality transformations based on user decisions
+          let transformedContactData = { ...contactData };
+
+          // Check if this is an organization-only entry (has org but no first/last name)
+          const isOrgOnlyEntry = (
+            transformedContactData.organization_name &&
+            !transformedContactData.first_name?.toString().trim() &&
+            !transformedContactData.last_name?.toString().trim()
+          );
+
+          // If user approved org-only entries, auto-fill placeholder contact
+          if (isOrgOnlyEntry && dataQualityDecisions?.importOrganizationsWithoutContacts) {
+            transformedContactData.first_name = "General";
+            transformedContactData.last_name = "Contact";
+            console.log(`📝 [DATA QUALITY] Auto-filled placeholder contact for org: ${transformedContactData.organization_name}`);
+          }
+
+          // 2. Validate with Zod schema to catch ALL format/presence errors
+          const validationResult = importContactSchema.safeParse(transformedContactData);
           if (!validationResult.success) {
             validationResult.error.issues.forEach((issue) => {
               const fieldPath = issue.path.join(".");
-              const fieldValue = issue.path.reduce((obj: any, key) => obj?.[key], contactData);
+              const fieldValue = issue.path.reduce((obj: any, key) => obj?.[key], transformedContactData);
+
+              // Check if this is a "missing name" error and user approved org-only imports
+              const isMissingNameError = (
+                fieldPath === "first_name" || fieldPath === "last_name"
+              ) && issue.message.includes("Either first name or last name must be provided");
+
+              // Skip this error if user approved org-only entries (we'll auto-fill it)
+              if (isMissingNameError && isOrgOnlyEntry && dataQualityDecisions?.importOrganizationsWithoutContacts) {
+                return; // Skip adding this error
+              }
+
               rowErrors.push({
                 field: fieldPath,
                 message: issue.message,
@@ -167,9 +201,9 @@ export function useContactImport() {
             tags: tagNames,
             linkedin_url,
             notes,
-          } = contactData;
+          } = transformedContactData;
 
-          // 2. Perform logic-based validation (e.g., organization existence)
+          // 3. Perform logic-based validation (e.g., organization existence)
           // Ensure organization_name is a string before calling .trim()
           const trimmedOrgName = typeof organization_name === 'string'
             ? organization_name.trim()
@@ -195,17 +229,17 @@ export function useContactImport() {
             }
           }
 
-          // 3. If any errors were found, bail early and report ALL of them
+          // 4. If any errors were found, bail early and report ALL of them
           if (rowErrors.length > 0) {
             return {
               rowNumber,
               success: false,
               errors: rowErrors,
-              data: contactData,
+              data: transformedContactData,
             };
           }
 
-          // 4. If all validations pass, proceed with creating the payload
+          // 5. If all validations pass, proceed with creating the payload
           try {
 
             const email = [
@@ -256,7 +290,7 @@ export function useContactImport() {
 
             return { rowNumber, success: true };
           } catch (error: any) {
-            // 5. Catch errors from dataProvider (e.g., unique constraints, additional validation)
+            // 6. Catch errors from dataProvider (e.g., unique constraints, additional validation)
             const finalErrors: FieldError[] = [];
 
             if (error instanceof ZodError) {
@@ -264,7 +298,7 @@ export function useContactImport() {
                 finalErrors.push({
                   field: issue.path.join("."),
                   message: issue.message,
-                  value: issue.path.reduce((obj: any, key) => obj?.[key], contactData),
+                  value: issue.path.reduce((obj: any, key) => obj?.[key], transformedContactData),
                 });
               });
             } else if (error.body?.errors) {
@@ -286,7 +320,7 @@ export function useContactImport() {
               rowNumber,
               success: false,
               errors: finalErrors,
-              data: contactData,
+              data: transformedContactData,
             };
           } finally {
             if (onProgress) {

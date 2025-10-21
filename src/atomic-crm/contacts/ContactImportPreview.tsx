@@ -15,6 +15,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -59,9 +61,14 @@ export interface PreviewData {
   contactsWithoutContactInfo: Array<{ name: string; organization_name: string; row: number }>;
 }
 
+export interface DataQualityDecisions {
+  importOrganizationsWithoutContacts: boolean;
+  importContactsWithoutContactInfo: boolean;
+}
+
 interface ContactImportPreviewProps {
   preview: PreviewData;
-  onContinue: () => void;
+  onContinue: (decisions: DataQualityDecisions) => void;
   onCancel: () => void;
   onRemap?: () => void; // Phase 2 feature
 }
@@ -78,6 +85,14 @@ export function ContactImportPreview({
     errors: false,
     warnings: false,
     sampleData: false,
+    organizationsWithoutContacts: false,
+    contactsWithoutContactInfo: false,
+  });
+
+  // Data quality decisions state
+  const [dataQualityDecisions, setDataQualityDecisions] = useState<DataQualityDecisions>({
+    importOrganizationsWithoutContacts: false,
+    importContactsWithoutContactInfo: false,
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -503,6 +518,179 @@ export function ContactImportPreview({
         </Collapsible>
       )}
 
+      {/* Data Quality Decision: Organizations Without Contacts */}
+      {preview.organizationsWithoutContacts && preview.organizationsWithoutContacts.length > 0 && (
+        <Collapsible open={expandedSections.organizationsWithoutContacts}>
+          <Card className="border-blue-200">
+            <CollapsibleTrigger asChild>
+              <CardHeader
+                className="cursor-pointer"
+                onClick={() => toggleSection("organizationsWithoutContacts")}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Building2 className="h-4 w-4 text-blue-500" />
+                    <CardTitle className="text-blue-700">
+                      Organizations Without Contact Person
+                    </CardTitle>
+                    <Badge variant="outline" className="border-blue-500 text-blue-700">
+                      {preview.organizationsWithoutContacts.length}
+                    </Badge>
+                  </div>
+                  {expandedSections.organizationsWithoutContacts ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </div>
+                <CardDescription>
+                  CSV rows with organization names but no contact person
+                </CardDescription>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent className="space-y-4">
+                <Alert>
+                  <HelpCircle className="h-4 w-4" />
+                  <AlertTitle>What happens if I import these?</AlertTitle>
+                  <AlertDescription>
+                    A placeholder contact named "General Contact" will be created for each organization.
+                    This allows you to maintain organizational records even without specific contact details.
+                  </AlertDescription>
+                </Alert>
+
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="import-orgs-without-contacts"
+                    checked={dataQualityDecisions.importOrganizationsWithoutContacts}
+                    onCheckedChange={(checked) =>
+                      setDataQualityDecisions((prev) => ({
+                        ...prev,
+                        importOrganizationsWithoutContacts: checked === true,
+                      }))
+                    }
+                  />
+                  <Label
+                    htmlFor="import-orgs-without-contacts"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Create placeholder contacts for these {preview.organizationsWithoutContacts.length} organizations
+                  </Label>
+                </div>
+
+                <div className="max-h-40 overflow-y-auto space-y-1">
+                  {preview.organizationsWithoutContacts.slice(0, 20).map((org, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-2 text-sm p-2 bg-blue-50 rounded"
+                    >
+                      <Building2 className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">{org.organization_name}</span>
+                        <span className="text-gray-600"> (Row {org.row})</span>
+                      </div>
+                    </div>
+                  ))}
+                  {preview.organizationsWithoutContacts.length > 20 && (
+                    <div className="text-sm text-gray-600 text-center pt-2">
+                      ... and {preview.organizationsWithoutContacts.length - 20} more
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
+      )}
+
+      {/* Data Quality Decision: Contacts Without Contact Info */}
+      {preview.contactsWithoutContactInfo && preview.contactsWithoutContactInfo.length > 0 && (
+        <Collapsible open={expandedSections.contactsWithoutContactInfo}>
+          <Card className="border-yellow-200">
+            <CollapsibleTrigger asChild>
+              <CardHeader
+                className="cursor-pointer"
+                onClick={() => toggleSection("contactsWithoutContactInfo")}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4 text-yellow-500" />
+                    <CardTitle className="text-yellow-700">
+                      Contacts Without Email or Phone
+                    </CardTitle>
+                    <Badge variant="outline" className="border-yellow-500 text-yellow-700">
+                      {preview.contactsWithoutContactInfo.length}
+                    </Badge>
+                  </div>
+                  {expandedSections.contactsWithoutContactInfo ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </div>
+                <CardDescription>
+                  Contacts missing both email and phone information
+                </CardDescription>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent className="space-y-4">
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTitle>Limited Usefulness</AlertTitle>
+                  <AlertDescription>
+                    These contacts have no email or phone number, which significantly limits their value in a CRM.
+                    You can still import them, but you won't be able to contact them through standard channels.
+                  </AlertDescription>
+                </Alert>
+
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="import-contacts-without-info"
+                    checked={dataQualityDecisions.importContactsWithoutContactInfo}
+                    onCheckedChange={(checked) =>
+                      setDataQualityDecisions((prev) => ({
+                        ...prev,
+                        importContactsWithoutContactInfo: checked === true,
+                      }))
+                    }
+                  />
+                  <Label
+                    htmlFor="import-contacts-without-info"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Import these {preview.contactsWithoutContactInfo.length} contacts anyway
+                  </Label>
+                </div>
+
+                <div className="max-h-40 overflow-y-auto space-y-1">
+                  {preview.contactsWithoutContactInfo.slice(0, 20).map((contact, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start gap-2 text-sm p-2 bg-yellow-50 rounded"
+                    >
+                      <User className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">{contact.name}</span>
+                        {contact.organization_name && (
+                          <span className="text-gray-600"> at {contact.organization_name}</span>
+                        )}
+                        <span className="text-gray-600"> (Row {contact.row})</span>
+                      </div>
+                    </div>
+                  ))}
+                  {preview.contactsWithoutContactInfo.length > 20 && (
+                    <div className="text-sm text-gray-600 text-center pt-2">
+                      ... and {preview.contactsWithoutContactInfo.length - 20} more
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
+      )}
+
       {/* Actions */}
       <DialogFooter className="gap-2">
         <Button variant="outline" onClick={onCancel}>
@@ -515,7 +703,7 @@ export function ContactImportPreview({
         )}
         <Button
           variant="default"
-          onClick={onContinue}
+          onClick={() => onContinue(dataQualityDecisions)}
           disabled={preview.validCount === 0}
         >
           Continue Import ({preview.validCount} contacts)
