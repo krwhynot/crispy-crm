@@ -6,6 +6,8 @@ import {
   Tag,
   ChevronDown,
   ChevronUp,
+  AlertTriangle,
+  Copy,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -21,19 +23,50 @@ import {
 } from "@/components/ui/table";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DialogFooter } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 // Types for preview data
+export interface ColumnMapping {
+  source: string;
+  target: string | null;
+  confidence: number;
+  sampleValue?: string;
+}
+
+export interface DuplicateGroup {
+  indices: number[];
+  name: string;
+  count: number;
+}
+
 export interface PreviewData {
+  mappings: ColumnMapping[];
   sampleRows: any[];
   validCount: number;
   totalRows: number;
   newTags: string[];
+  duplicates?: DuplicateGroup[];
+  lowConfidenceMappings: number;
+}
+
+export interface DataQualityDecisions {
+  skipDuplicates: boolean;
 }
 
 interface OrganizationImportPreviewProps {
   preview: PreviewData;
-  onContinue: () => void;
+  onContinue: (decisions: DataQualityDecisions) => void;
   onCancel: () => void;
+  onMappingChange?: (csvHeader: string, targetField: string | null) => void;
+  userOverrides?: Map<string, string | null>;
 }
 
 export function OrganizationImportPreview({
