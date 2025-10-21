@@ -116,7 +116,8 @@ const importContactSchema = z
 function mapHeadersToFields(headers) {
   const mapped = {};
   headers.forEach(header => {
-    const normalized = header.trim();
+    if (!header) return; // Skip null/undefined headers
+    const normalized = String(header).trim();
     mapped[header] = COLUMN_ALIASES[normalized] || normalized.toLowerCase().replace(/\s+/g, '_');
   });
   return mapped;
@@ -124,7 +125,10 @@ function mapHeadersToFields(headers) {
 
 function transformHeaders(headers) {
   const mappings = mapHeadersToFields(headers);
-  return headers.map(header => mappings[header] || header);
+  return headers.map(header => {
+    if (!header) return header; // Keep null/undefined as-is
+    return mappings[header] || header;
+  });
 }
 
 function transformData(rawData) {
