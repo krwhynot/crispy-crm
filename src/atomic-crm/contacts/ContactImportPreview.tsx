@@ -282,9 +282,10 @@ export function ContactImportPreview({
                   const isUserOverride = userOverrides?.has(mapping.source);
 
                   // Get the actual value to display (handle full name marker)
+                  // Use special marker for "no mapping" to avoid empty string (Radix UI doesn't allow empty values)
                   const displayValue = mapping.target === 'first_name + last_name (will be split)'
                     ? FULL_NAME_SPLIT_MARKER
-                    : mapping.target || '';
+                    : mapping.target || '__no_mapping__';
 
                   return (
                     <TableRow key={index} className={isUserOverride ? 'bg-blue-50' : ''}>
@@ -304,14 +305,15 @@ export function ContactImportPreview({
                           <Select
                             value={displayValue}
                             onValueChange={(value) => {
-                              onMappingChange(mapping.source, value || null);
+                              // Convert special marker back to null for "no mapping"
+                              onMappingChange(mapping.source, value === '__no_mapping__' ? null : value);
                             }}
                           >
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="(No mapping)" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">(No mapping)</SelectItem>
+                              <SelectItem value="__no_mapping__">(No mapping)</SelectItem>
                               {availableFieldOptions.map((option) => (
                                 <SelectItem key={option.value} value={option.value}>
                                   {option.label}
