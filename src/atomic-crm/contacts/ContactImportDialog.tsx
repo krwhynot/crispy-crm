@@ -338,40 +338,85 @@ export function ContactImportDialog({
             </DialogHeader>
 
             <div className="flex flex-col space-y-2">
-              {importer.state === "running" && (
-                <div className="flex flex-col gap-2">
-                  <Alert>
-                    <AlertDescription className="flex flex-row gap-4">
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      The import is running, please do not close this tab.
-                    </AlertDescription>
-                  </Alert>
+              {/* Show progress for actualImporter when importing after preview, or regular importer otherwise */}
+              {((actualImporter.importer.state === "running" && ENABLE_IMPORT_PREVIEW && previewConfirmed) ||
+                (importer.state === "running" && !ENABLE_IMPORT_PREVIEW)) && (() => {
+                // Use the appropriate importer based on context
+                const activeImporter = (ENABLE_IMPORT_PREVIEW && previewConfirmed)
+                  ? actualImporter.importer
+                  : importer;
 
-                  <div className="text-sm">
-                    Imported{" "}
-                    <strong>
-                      {importer.importCount} / {importer.rowCount}
-                    </strong>{" "}
-                    contacts, with <strong>{importer.errorCount}</strong> errors.
-                    {importer.remainingTime !== null && (
-                      <>
-                        {" "}
-                        Estimated remaining time:{" "}
-                        <strong>
-                          {millisecondsToTime(importer.remainingTime)}
-                        </strong>
-                        .{" "}
+                return (
+                <Card className="border-primary/20">
+                  <CardContent className="pt-6 space-y-4">
+                    {/* Progress Header */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                        <span className="font-medium">Processing CSV Import</span>
+                      </div>
+                      <div className="ml-auto">
                         <button
                           onClick={handleReset}
-                          className="text-red-600 underline hover:text-red-800"
+                          className="text-sm text-destructive hover:underline"
                         >
-                          Stop import
+                          Cancel Import
                         </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
+                      </div>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="space-y-2">
+                      <Progress value={(activeImporter.importCount / activeImporter.rowCount) * 100} className="h-3" />
+                      <div className="flex justify-between text-sm text-muted-foreground">
+                        <span>
+                          Batch {Math.ceil(activeImporter.importCount / 10) || 1} of {Math.ceil(activeImporter.rowCount / 10)}
+                        </span>
+                        <span>
+                          {Math.round((activeImporter.importCount / activeImporter.rowCount) * 100)}% Complete
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Statistics */}
+                    <div className="grid grid-cols-3 gap-4 pt-2">
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">Processed</p>
+                        <p className="text-2xl font-bold text-primary">
+                          {activeImporter.importCount}
+                        </p>
+                        <p className="text-xs text-muted-foreground">of {activeImporter.rowCount} contacts</p>
+                      </div>
+
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">Errors</p>
+                        <p className="text-2xl font-bold text-destructive">
+                          {activeImporter.errorCount}
+                        </p>
+                        <p className="text-xs text-muted-foreground">failed imports</p>
+                      </div>
+
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">Time Remaining</p>
+                        <p className="text-2xl font-bold">
+                          {activeImporter.remainingTime !== null
+                            ? millisecondsToTime(activeImporter.remainingTime)
+                            : "Calculating..."}
+                        </p>
+                        <p className="text-xs text-muted-foreground">estimated</p>
+                      </div>
+                    </div>
+
+                    {/* Warning Message */}
+                    <Alert className="border-warning/50 bg-warning/10">
+                      <AlertDescription className="text-sm">
+                        Please keep this tab open until the import completes
+                      </AlertDescription>
+                    </Alert>
+                  </CardContent>
+                </Card>
+                );
+              })()}
 
               {importer.state === "error" && (
                 <Alert variant="destructive">
@@ -382,14 +427,41 @@ export function ContactImportDialog({
                 </Alert>
               )}
 
-              {importer.state === "complete" && !ENABLE_IMPORT_PREVIEW && (
-                <Alert>
-                  <AlertDescription>
-                    Contacts import complete. Imported {importer.importCount}{" "}
-                    contacts, with {importer.errorCount} errors
-                  </AlertDescription>
-                </Alert>
-              )}
+              {/* Show completion for both actualImporter (with preview) and importer (without preview) */}
+              {((actualImporter.importer.state === "complete" && ENABLE_IMPORT_PREVIEW) ||
+                (importer.state === "complete" && !ENABLE_IMPORT_PREVIEW)) && (() => {
+                // Use the appropriate importer based on context
+                const completedImporter = (ENABLE_IMPORT_PREVIEW && actualImporter.importer.state === "complete")
+                  ? actualImporter.importer
+                  : importer;
+
+                return (
+                <Card className="border-success/20 bg-success/5">
+                  <CardContent className="pt-6">
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <CheckCircle2 className="h-12 w-12 text-success" />
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-semibold">Import Complete!</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Successfully processed {completedImporter.importCount} contacts
+                        </p>
+                      </div>
+                      <div className="flex gap-4 text-sm">
+                        <div className="flex items-center gap-1">
+                          <Users className="h-4 w-4 text-success" />
+                          <span className="font-medium">{completedImporter.importCount} imported</span>
+                        </div>
+                        {completedImporter.errorCount > 0 && (
+                          <div className="flex items-center gap-1">
+                            <span className="text-destructive">• {completedImporter.errorCount} errors</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                );
+              })()}
 
               {importer.state === "idle" && (
                 <>
