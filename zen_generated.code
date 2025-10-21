@@ -1,3 +1,13 @@
+<GENERATED-CODE>
+I will update `src/atomic-crm/contacts/columnAliases.ts` to pre-compute normalized lookup tables.
+
+1.  **Update `src/atomic-crm/contacts/columnAliases.ts`**:
+    *   Create `NORMALIZED_ALIAS_MAP`: A `Map` that stores a one-time computed mapping from every normalized alias to its canonical field name.
+    *   Create `NORMALIZED_FULL_NAME_PATTERNS`: A `Set` that stores the normalized versions of all full name patterns.
+    *   Rewrite `findCanonicalField` to use a simple `Map.get()` lookup, changing its complexity from O(N) to O(1).
+    *   Rewrite `isFullNameColumn` to use a `Set.has()` check, also changing its complexity from O(N) to O(1).
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/contacts/columnAliases.ts>
 /**
  * Column Alias Registry for CSV Import
  * Maps common CSV header variations to ContactImportSchema fields
@@ -449,6 +459,7 @@ const NORMALIZED_FULL_NAME_PATTERNS: Set<string> = new Set(
 
 // --- End Optimizations ---
 
+
 /**
  * Find the canonical ContactImportSchema field name for a user-provided header
  * Returns null if no match is found
@@ -459,22 +470,11 @@ export function findCanonicalField(userHeader: string): string | null {
   }
 
   const normalized = normalizeHeader(userHeader);
-
-  // Empty header after normalization
   if (!normalized) {
     return null;
   }
 
-  // Check each field's aliases
-  for (const [fieldName, aliases] of Object.entries(COLUMN_ALIASES)) {
-    for (const alias of aliases) {
-      if (normalizeHeader(alias) === normalized) {
-        return fieldName;
-      }
-    }
-  }
-
-  return null;
+  return NORMALIZED_ALIAS_MAP.get(normalized) || null;
 }
 
 /**
@@ -486,10 +486,7 @@ export function isFullNameColumn(header: string): boolean {
   }
 
   const normalized = normalizeHeader(header);
-
-  return FULL_NAME_PATTERNS.some(pattern =>
-    normalizeHeader(pattern) === normalized
-  );
+  return NORMALIZED_FULL_NAME_PATTERNS.has(normalized);
 }
 
 /**
@@ -597,3 +594,5 @@ export function validateRequiredMappings(mappings: Record<string, string | null>
 
   return missingFields;
 }
+</UPDATED_EXISTING_FILE>
+</GENERATED-CODE>
