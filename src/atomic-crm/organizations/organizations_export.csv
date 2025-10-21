@@ -1,0 +1,4 @@
+name,organization_type,priority,segment,linkedin_url,website,phone,address,postal_code,city,state,description,tags
+Acme Corporation,customer,A,Technology,https://www.linkedin.com/company/acme,https://www.acme.com,555-123-4567,"123 Main St",10001,New York,NY,Leading technology provider,"enterprise, tech"
+Beta Industries,prospect,B,Manufacturing,https://www.linkedin.com/company/beta,https://www.beta.com,555-234-5678,"456 Oak Ave",90210,Los Angeles,CA,Manufacturing solutions,"manufacturing, industrial"
+Gamma Solutions,customer,A,Services,https://www.linkedin.com/company/gamma,https://www.gamma.com,555-345-6789,"789 Pine Rd",60601,Chicago,IL,Professional services,"consulting, services"
