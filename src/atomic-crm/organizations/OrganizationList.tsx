@@ -9,6 +9,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { ImageList } from "./GridList";
+import { OrganizationImportButton } from "./OrganizationImportButton";
 
 export const OrganizationList = () => {
   const { identity } = useGetIdentity();
@@ -47,6 +48,7 @@ const OrganizationListActions = () => {
   return (
     <TopToolbar>
       <SortButton fields={["name", "created_at", "nb_contacts"]} />
+      <OrganizationImportButton />
       <ExportButton />
       <CreateButton label="New Organization" />
     </TopToolbar>
