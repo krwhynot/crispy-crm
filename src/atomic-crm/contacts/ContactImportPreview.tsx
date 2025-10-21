@@ -87,6 +87,7 @@ export function ContactImportPreview({
     sampleData: false,
     organizationsWithoutContacts: false,
     contactsWithoutContactInfo: false,
+    skippedColumns: false,
   });
 
   // Data quality decisions state
@@ -139,6 +140,10 @@ export function ContactImportPreview({
 
   const sampleValidation = validateSampleRows();
   const validSamples = sampleValidation.filter((r) => r.valid).length;
+
+  // Split mappings into mapped and skipped for better UX
+  const mappedColumns = preview.mappings.filter(m => m.target !== null);
+  const skippedColumns = preview.mappings.filter(m => m.target === null);
 
   return (
     <div className="flex flex-col gap-4">
@@ -194,57 +199,106 @@ export function ContactImportPreview({
         </AlertDescription>
       </Alert>
 
-      {/* Column Mappings Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Column Mappings</CardTitle>
-          <CardDescription>
-            How your CSV columns will map to CRM fields
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>CSV Column</TableHead>
-                <TableHead className="text-center w-12">
-                  <ArrowRight className="h-4 w-4 mx-auto" />
-                </TableHead>
-                <TableHead>CRM Field</TableHead>
-                <TableHead className="text-center">Confidence</TableHead>
-                <TableHead>Sample Value</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {preview.mappings.map((mapping, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-mono text-sm">
-                    {mapping.source}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <ArrowRight className="h-3 w-3 mx-auto text-gray-400" />
-                  </TableCell>
-                  <TableCell>
-                    {mapping.target ? (
-                      <Badge variant="outline" className="font-mono">
+      {/* Column Mappings Card - Show only mapped columns */}
+      {mappedColumns.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Column Mappings</CardTitle>
+            <CardDescription>
+              {mappedColumns.length} CSV column{mappedColumns.length !== 1 ? 's' : ''} will be imported
+              {skippedColumns.length > 0 && ` • ${skippedColumns.length} column${skippedColumns.length !== 1 ? 's' : ''} will be skipped`}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>CSV Column</TableHead>
+                  <TableHead className="text-center w-12">
+                    <ArrowRight className="h-4 w-4 mx-auto" />
+                  </TableHead>
+                  <TableHead>CRM Field</TableHead>
+                  <TableHead>Sample Value</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {mappedColumns.map((mapping, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-mono text-sm text-gray-600">
+                      {mapping.source}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <ArrowRight className="h-3 w-3 mx-auto text-gray-400" />
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="font-mono text-xs">
                         {mapping.target}
                       </Badge>
-                    ) : (
-                      <Badge variant="secondary">Skipped</Badge>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {getConfidenceIcon(mapping.confidence)}
-                  </TableCell>
-                  <TableCell className="text-sm text-gray-600 max-w-[200px] truncate">
-                    {mapping.sampleValue || "-"}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                    </TableCell>
+                    <TableCell className="text-sm text-gray-600 max-w-[200px] truncate">
+                      {mapping.sampleValue || <span className="text-gray-400">-</span>}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Skipped Columns - Collapsible */}
+      {skippedColumns.length > 0 && (
+        <Collapsible open={expandedSections.skippedColumns}>
+          <Card className="border-gray-200">
+            <CollapsibleTrigger asChild>
+              <CardHeader
+                className="cursor-pointer"
+                onClick={() => toggleSection("skippedColumns")}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-gray-400" />
+                    <CardTitle className="text-gray-600">Skipped Columns</CardTitle>
+                    <Badge variant="secondary">{skippedColumns.length}</Badge>
+                  </div>
+                  {expandedSections.skippedColumns ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </div>
+                <CardDescription>
+                  These CSV columns don't match any CRM fields and will be ignored
+                </CardDescription>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>CSV Column</TableHead>
+                      <TableHead>Sample Value</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {skippedColumns.map((mapping, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-mono text-sm text-gray-500">
+                          {mapping.source}
+                        </TableCell>
+                        <TableCell className="text-sm text-gray-400 max-w-[300px] truncate">
+                          {mapping.sampleValue || "-"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
+      )}
 
       {/* Sample Data Preview */}
       <Collapsible open={expandedSections.sampleData}>

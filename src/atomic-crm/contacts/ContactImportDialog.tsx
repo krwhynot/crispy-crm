@@ -55,6 +55,11 @@ export function ContactImportDialog({
     importContactsWithoutContactInfo: false,
   });
 
+  // Interactive column mapping state
+  const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(new Map());
+  const [rawHeaders, setRawHeaders] = useState<string[]>([]);
+  const [rawDataRows, setRawDataRows] = useState<any[][]>([]);
+
   // Import result state - accumulate across all batches
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -96,11 +101,29 @@ export function ContactImportDialog({
     console.log('📊 [DATA QUALITY] Contacts without contact info:', contactsWithoutContactInfo.length);
 
     // Generate preview data with header mappings
+    const mappings = headers.map((header, index) => {
+      const canonicalField = findCanonicalField(header);
+      const isFullName = isFullNameColumn(header);
+      const target = canonicalField || (isFullName ? 'first_name + last_name (will be split)' : null);
+
+      // Calculate confidence: 1.0 for exact matches, 0.9 for full name patterns, 0 for no match
+      let confidence = 0;
+      if (canonicalField) confidence = 1.0;
+      else if (isFullName) confidence = 0.9;
+
+      // Get sample value from first row if available
+      const sampleValue = rows[0]?.[index] ? String(rows[0][index]).substring(0, 50) : undefined;
+
+      return {
+        source: header || '(empty)',
+        target,
+        confidence,
+        sampleValue,
+      };
+    });
+
     const preview: PreviewData = {
-      mappings: headers.map(header => ({
-        header: header || '(empty)',
-        mappedTo: getHeaderMappingDescription(header),
-      })),
+      mappings,
       sampleRows: rows.slice(0, 5),
       validCount: rows.length, // This would be calculated based on validation
       skipCount: 0,
@@ -110,7 +133,7 @@ export function ContactImportDialog({
       newOrganizations: extractNewOrganizations(rows),
       newTags: extractNewTags(rows),
       hasErrors: false,
-      lowConfidenceMappings: 0,
+      lowConfidenceMappings: mappings.filter(m => m.confidence > 0 && m.confidence < 0.8).length,
       organizationsWithoutContacts,
       contactsWithoutContactInfo,
     };
