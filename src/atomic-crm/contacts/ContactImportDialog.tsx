@@ -18,7 +18,7 @@ import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
-import { getHeaderMappingDescription } from "./columnAliases";
+import { getHeaderMappingDescription, findCanonicalField, isFullNameColumn } from "./columnAliases";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
