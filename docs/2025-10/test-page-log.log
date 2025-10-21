@@ -1,0 +1,648 @@
+ Test page loaded. Click "Start Import" to begin.
+ 🚀 Starting import of 2145 rows (batch size: 10, error rate: 15%)
+ 🔵 Processing batch 1 (10 contacts, starting at row 1)
+ ✅ Batch 1 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 10 processed, 8 success, 2 failed
+ 🔵 Processing batch 2 (10 contacts, starting at row 11)
+ ✅ Batch 2 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 20 processed, 16 success, 4 failed
+ 🔵 Processing batch 3 (10 contacts, starting at row 21)
+ ✅ Batch 3 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 30 processed, 25 success, 5 failed
+ 🔵 Processing batch 4 (10 contacts, starting at row 31)
+ ✅ Batch 4 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 40 processed, 32 success, 8 failed
+ 🔵 Processing batch 5 (10 contacts, starting at row 41)
+ ✅ Batch 5 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 50 processed, 39 success, 11 failed
+ 🔵 Processing batch 6 (10 contacts, starting at row 51)
+ ✅ Batch 6 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 60 processed, 47 success, 13 failed
+ 🔵 Processing batch 7 (10 contacts, starting at row 61)
+ ✅ Batch 7 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 70 processed, 55 success, 15 failed
+ 🔵 Processing batch 8 (10 contacts, starting at row 71)
+ ✅ Batch 8 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 80 processed, 65 success, 15 failed
+ 🔵 Processing batch 9 (10 contacts, starting at row 81)
+ ✅ Batch 9 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 90 processed, 73 success, 17 failed
+ 🔵 Processing batch 10 (10 contacts, starting at row 91)
+ ✅ Batch 10 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 100 processed, 83 success, 17 failed
+ 🔵 Processing batch 11 (10 contacts, starting at row 101)
+ ✅ Batch 11 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 110 processed, 92 success, 18 failed
+ 🔵 Processing batch 12 (10 contacts, starting at row 111)
+ ✅ Batch 12 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 120 processed, 100 success, 20 failed
+ 🔵 Processing batch 13 (10 contacts, starting at row 121)
+ ✅ Batch 13 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 130 processed, 109 success, 21 failed
+ 🔵 Processing batch 14 (10 contacts, starting at row 131)
+ ✅ Batch 14 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 140 processed, 118 success, 22 failed
+ 🔵 Processing batch 15 (10 contacts, starting at row 141)
+ ✅ Batch 15 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 150 processed, 127 success, 23 failed
+ 🔵 Processing batch 16 (10 contacts, starting at row 151)
+ ✅ Batch 16 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 160 processed, 133 success, 27 failed
+ 🔵 Processing batch 17 (10 contacts, starting at row 161)
+ ✅ Batch 17 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 170 processed, 142 success, 28 failed
+ 🔵 Processing batch 18 (10 contacts, starting at row 171)
+ ✅ Batch 18 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 180 processed, 150 success, 30 failed
+ 🔵 Processing batch 19 (10 contacts, starting at row 181)
+ ✅ Batch 19 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 190 processed, 159 success, 31 failed
+ 🔵 Processing batch 20 (10 contacts, starting at row 191)
+ ✅ Batch 20 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 200 processed, 165 success, 35 failed
+ 🔵 Processing batch 21 (10 contacts, starting at row 201)
+ ✅ Batch 21 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 210 processed, 172 success, 38 failed
+ 🔵 Processing batch 22 (10 contacts, starting at row 211)
+ ✅ Batch 22 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 220 processed, 181 success, 39 failed
+ 🔵 Processing batch 23 (10 contacts, starting at row 221)
+ ✅ Batch 23 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 230 processed, 191 success, 39 failed
+ 🔵 Processing batch 24 (10 contacts, starting at row 231)
+ ✅ Batch 24 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 240 processed, 201 success, 39 failed
+ 🔵 Processing batch 25 (10 contacts, starting at row 241)
+ ✅ Batch 25 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 250 processed, 210 success, 40 failed
+ 🔵 Processing batch 26 (10 contacts, starting at row 251)
+ ✅ Batch 26 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 260 processed, 219 success, 41 failed
+ 🔵 Processing batch 27 (10 contacts, starting at row 261)
+ ✅ Batch 27 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 270 processed, 228 success, 42 failed
+ 🔵 Processing batch 28 (10 contacts, starting at row 271)
+ ✅ Batch 28 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 280 processed, 237 success, 43 failed
+ 🔵 Processing batch 29 (10 contacts, starting at row 281)
+ ✅ Batch 29 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 290 processed, 247 success, 43 failed
+ 🔵 Processing batch 30 (10 contacts, starting at row 291)
+ ✅ Batch 30 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 300 processed, 254 success, 46 failed
+ 🔵 Processing batch 31 (10 contacts, starting at row 301)
+ ✅ Batch 31 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 310 processed, 262 success, 48 failed
+ 🔵 Processing batch 32 (10 contacts, starting at row 311)
+ ✅ Batch 32 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 320 processed, 272 success, 48 failed
+ 🔵 Processing batch 33 (10 contacts, starting at row 321)
+ ✅ Batch 33 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 330 processed, 279 success, 51 failed
+ 🔵 Processing batch 34 (10 contacts, starting at row 331)
+ ✅ Batch 34 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 340 processed, 288 success, 52 failed
+ 🔵 Processing batch 35 (10 contacts, starting at row 341)
+ ✅ Batch 35 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 350 processed, 296 success, 54 failed
+ 🔵 Processing batch 36 (10 contacts, starting at row 351)
+ ✅ Batch 36 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 360 processed, 306 success, 54 failed
+ 🔵 Processing batch 37 (10 contacts, starting at row 361)
+ ✅ Batch 37 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 370 processed, 314 success, 56 failed
+ 🔵 Processing batch 38 (10 contacts, starting at row 371)
+ ✅ Batch 38 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 380 processed, 323 success, 57 failed
+ 🔵 Processing batch 39 (10 contacts, starting at row 381)
+ ✅ Batch 39 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 390 processed, 332 success, 58 failed
+ 🔵 Processing batch 40 (10 contacts, starting at row 391)
+ ✅ Batch 40 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 400 processed, 341 success, 59 failed
+ 🔵 Processing batch 41 (10 contacts, starting at row 401)
+ ✅ Batch 41 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 410 processed, 349 success, 61 failed
+ 🔵 Processing batch 42 (10 contacts, starting at row 411)
+ ✅ Batch 42 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 420 processed, 358 success, 62 failed
+ 🔵 Processing batch 43 (10 contacts, starting at row 421)
+ ✅ Batch 43 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 430 processed, 367 success, 63 failed
+ 🔵 Processing batch 44 (10 contacts, starting at row 431)
+ ✅ Batch 44 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 440 processed, 375 success, 65 failed
+ 🔵 Processing batch 45 (10 contacts, starting at row 441)
+ ✅ Batch 45 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 450 processed, 385 success, 65 failed
+ 🔵 Processing batch 46 (10 contacts, starting at row 451)
+ ✅ Batch 46 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 460 processed, 393 success, 67 failed
+ 🔵 Processing batch 47 (10 contacts, starting at row 461)
+ ✅ Batch 47 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 470 processed, 403 success, 67 failed
+ 🔵 Processing batch 48 (10 contacts, starting at row 471)
+ ✅ Batch 48 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 480 processed, 410 success, 70 failed
+ 🔵 Processing batch 49 (10 contacts, starting at row 481)
+ ✅ Batch 49 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 490 processed, 419 success, 71 failed
+ 🔵 Processing batch 50 (10 contacts, starting at row 491)
+ ✅ Batch 50 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 500 processed, 428 success, 72 failed
+ 🔵 Processing batch 51 (10 contacts, starting at row 501)
+ ✅ Batch 51 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 510 processed, 436 success, 74 failed
+ 🔵 Processing batch 52 (10 contacts, starting at row 511)
+ ✅ Batch 52 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 520 processed, 445 success, 75 failed
+ 🔵 Processing batch 53 (10 contacts, starting at row 521)
+ ✅ Batch 53 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 530 processed, 454 success, 76 failed
+ 🔵 Processing batch 54 (10 contacts, starting at row 531)
+ ✅ Batch 54 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 540 processed, 463 success, 77 failed
+ 🔵 Processing batch 55 (10 contacts, starting at row 541)
+ ✅ Batch 55 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 550 processed, 473 success, 77 failed
+ 🔵 Processing batch 56 (10 contacts, starting at row 551)
+ ✅ Batch 56 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 560 processed, 480 success, 80 failed
+ 🔵 Processing batch 57 (10 contacts, starting at row 561)
+ ✅ Batch 57 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 570 processed, 489 success, 81 failed
+ 🔵 Processing batch 58 (10 contacts, starting at row 571)
+ ✅ Batch 58 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 580 processed, 498 success, 82 failed
+ 🔵 Processing batch 59 (10 contacts, starting at row 581)
+ ✅ Batch 59 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 590 processed, 508 success, 82 failed
+ 🔵 Processing batch 60 (10 contacts, starting at row 591)
+ ✅ Batch 60 complete: 5 success, 5 failed
+ 📊 Accumulated totals: 600 processed, 513 success, 87 failed
+ 🔵 Processing batch 61 (10 contacts, starting at row 601)
+ ✅ Batch 61 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 610 processed, 520 success, 90 failed
+ 🔵 Processing batch 62 (10 contacts, starting at row 611)
+ ✅ Batch 62 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 620 processed, 529 success, 91 failed
+ 🔵 Processing batch 63 (10 contacts, starting at row 621)
+ ✅ Batch 63 complete: 5 success, 5 failed
+ 📊 Accumulated totals: 630 processed, 534 success, 96 failed
+ 🔵 Processing batch 64 (10 contacts, starting at row 631)
+ ✅ Batch 64 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 640 processed, 542 success, 98 failed
+ 🔵 Processing batch 65 (10 contacts, starting at row 641)
+ ✅ Batch 65 complete: 5 success, 5 failed
+ 📊 Accumulated totals: 650 processed, 547 success, 103 failed
+ 🔵 Processing batch 66 (10 contacts, starting at row 651)
+ ✅ Batch 66 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 660 processed, 555 success, 105 failed
+ 🔵 Processing batch 67 (10 contacts, starting at row 661)
+ ✅ Batch 67 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 670 processed, 565 success, 105 failed
+ 🔵 Processing batch 68 (10 contacts, starting at row 671)
+ ✅ Batch 68 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 680 processed, 574 success, 106 failed
+ 🔵 Processing batch 69 (10 contacts, starting at row 681)
+ ✅ Batch 69 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 690 processed, 582 success, 108 failed
+ 🔵 Processing batch 70 (10 contacts, starting at row 691)
+ ✅ Batch 70 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 700 processed, 590 success, 110 failed
+ 🔵 Processing batch 71 (10 contacts, starting at row 701)
+ ✅ Batch 71 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 710 processed, 596 success, 114 failed
+ 🔵 Processing batch 72 (10 contacts, starting at row 711)
+ ✅ Batch 72 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 720 processed, 605 success, 115 failed
+ 🔵 Processing batch 73 (10 contacts, starting at row 721)
+ ✅ Batch 73 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 730 processed, 614 success, 116 failed
+ 🔵 Processing batch 74 (10 contacts, starting at row 731)
+ ✅ Batch 74 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 740 processed, 623 success, 117 failed
+ 🔵 Processing batch 75 (10 contacts, starting at row 741)
+ ✅ Batch 75 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 750 processed, 630 success, 120 failed
+ 🔵 Processing batch 76 (10 contacts, starting at row 751)
+ ✅ Batch 76 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 760 processed, 639 success, 121 failed
+ 🔵 Processing batch 77 (10 contacts, starting at row 761)
+ ✅ Batch 77 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 770 processed, 647 success, 123 failed
+ 🔵 Processing batch 78 (10 contacts, starting at row 771)
+ ✅ Batch 78 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 780 processed, 656 success, 124 failed
+ 🔵 Processing batch 79 (10 contacts, starting at row 781)
+ ✅ Batch 79 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 790 processed, 666 success, 124 failed
+ 🔵 Processing batch 80 (10 contacts, starting at row 791)
+ ✅ Batch 80 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 800 processed, 676 success, 124 failed
+ 🔵 Processing batch 81 (10 contacts, starting at row 801)
+ ✅ Batch 81 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 810 processed, 682 success, 128 failed
+ 🔵 Processing batch 82 (10 contacts, starting at row 811)
+ ✅ Batch 82 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 820 processed, 688 success, 132 failed
+ 🔵 Processing batch 83 (10 contacts, starting at row 821)
+ ✅ Batch 83 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 830 processed, 695 success, 135 failed
+ 🔵 Processing batch 84 (10 contacts, starting at row 831)
+ ✅ Batch 84 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 840 processed, 704 success, 136 failed
+ 🔵 Processing batch 85 (10 contacts, starting at row 841)
+ ✅ Batch 85 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 850 processed, 714 success, 136 failed
+ 🔵 Processing batch 86 (10 contacts, starting at row 851)
+ ✅ Batch 86 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 860 processed, 722 success, 138 failed
+ 🔵 Processing batch 87 (10 contacts, starting at row 861)
+ ✅ Batch 87 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 870 processed, 731 success, 139 failed
+ 🔵 Processing batch 88 (10 contacts, starting at row 871)
+ ✅ Batch 88 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 880 processed, 740 success, 140 failed
+ 🔵 Processing batch 89 (10 contacts, starting at row 881)
+ ✅ Batch 89 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 890 processed, 748 success, 142 failed
+ 🔵 Processing batch 90 (10 contacts, starting at row 891)
+ ✅ Batch 90 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 900 processed, 757 success, 143 failed
+ 🔵 Processing batch 91 (10 contacts, starting at row 901)
+ ✅ Batch 91 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 910 processed, 766 success, 144 failed
+ 🔵 Processing batch 92 (10 contacts, starting at row 911)
+ ✅ Batch 92 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 920 processed, 776 success, 144 failed
+ 🔵 Processing batch 93 (10 contacts, starting at row 921)
+ ✅ Batch 93 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 930 processed, 784 success, 146 failed
+ 🔵 Processing batch 94 (10 contacts, starting at row 931)
+ ✅ Batch 94 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 940 processed, 792 success, 148 failed
+ 🔵 Processing batch 95 (10 contacts, starting at row 941)
+ ✅ Batch 95 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 950 processed, 802 success, 148 failed
+ 🔵 Processing batch 96 (10 contacts, starting at row 951)
+ ✅ Batch 96 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 960 processed, 808 success, 152 failed
+ 🔵 Processing batch 97 (10 contacts, starting at row 961)
+ ✅ Batch 97 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 970 processed, 818 success, 152 failed
+ 🔵 Processing batch 98 (10 contacts, starting at row 971)
+ ✅ Batch 98 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 980 processed, 828 success, 152 failed
+ 🔵 Processing batch 99 (10 contacts, starting at row 981)
+ ✅ Batch 99 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 990 processed, 836 success, 154 failed
+ 🔵 Processing batch 100 (10 contacts, starting at row 991)
+ ✅ Batch 100 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1000 processed, 844 success, 156 failed
+ 🔵 Processing batch 101 (10 contacts, starting at row 1001)
+ ✅ Batch 101 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1010 processed, 853 success, 157 failed
+ 🔵 Processing batch 102 (10 contacts, starting at row 1011)
+ ✅ Batch 102 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1020 processed, 862 success, 158 failed
+ 🔵 Processing batch 103 (10 contacts, starting at row 1021)
+ ✅ Batch 103 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1030 processed, 871 success, 159 failed
+ 🔵 Processing batch 104 (10 contacts, starting at row 1031)
+ ✅ Batch 104 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1040 processed, 879 success, 161 failed
+ 🔵 Processing batch 105 (10 contacts, starting at row 1041)
+ ✅ Batch 105 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1050 processed, 887 success, 163 failed
+ 🔵 Processing batch 106 (10 contacts, starting at row 1051)
+ ✅ Batch 106 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1060 processed, 896 success, 164 failed
+ 🔵 Processing batch 107 (10 contacts, starting at row 1061)
+ ✅ Batch 107 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1070 processed, 903 success, 167 failed
+ 🔵 Processing batch 108 (10 contacts, starting at row 1071)
+ ✅ Batch 108 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1080 processed, 913 success, 167 failed
+ 🔵 Processing batch 109 (10 contacts, starting at row 1081)
+ ✅ Batch 109 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1090 processed, 922 success, 168 failed
+ 🔵 Processing batch 110 (10 contacts, starting at row 1091)
+ ✅ Batch 110 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1100 processed, 930 success, 170 failed
+ 🔵 Processing batch 111 (10 contacts, starting at row 1101)
+ ✅ Batch 111 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1110 processed, 939 success, 171 failed
+ 🔵 Processing batch 112 (10 contacts, starting at row 1111)
+ ✅ Batch 112 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1120 processed, 948 success, 172 failed
+ 🔵 Processing batch 113 (10 contacts, starting at row 1121)
+ ✅ Batch 113 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1130 processed, 956 success, 174 failed
+ 🔵 Processing batch 114 (10 contacts, starting at row 1131)
+ ✅ Batch 114 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1140 processed, 965 success, 175 failed
+ 🔵 Processing batch 115 (10 contacts, starting at row 1141)
+ ✅ Batch 115 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1150 processed, 975 success, 175 failed
+ 🔵 Processing batch 116 (10 contacts, starting at row 1151)
+ ✅ Batch 116 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1160 processed, 985 success, 175 failed
+ 🔵 Processing batch 117 (10 contacts, starting at row 1161)
+ ✅ Batch 117 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1170 processed, 993 success, 177 failed
+ 🔵 Processing batch 118 (10 contacts, starting at row 1171)
+ ✅ Batch 118 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1180 processed, 1002 success, 178 failed
+ 🔵 Processing batch 119 (10 contacts, starting at row 1181)
+ ✅ Batch 119 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1190 processed, 1011 success, 179 failed
+ 🔵 Processing batch 120 (10 contacts, starting at row 1191)
+ ✅ Batch 120 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1200 processed, 1020 success, 180 failed
+ 🔵 Processing batch 121 (10 contacts, starting at row 1201)
+ ✅ Batch 121 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1210 processed, 1030 success, 180 failed
+ 🔵 Processing batch 122 (10 contacts, starting at row 1211)
+ ✅ Batch 122 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1220 processed, 1039 success, 181 failed
+ 🔵 Processing batch 123 (10 contacts, starting at row 1221)
+ ✅ Batch 123 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1230 processed, 1047 success, 183 failed
+ 🔵 Processing batch 124 (10 contacts, starting at row 1231)
+ ✅ Batch 124 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1240 processed, 1055 success, 185 failed
+ 🔵 Processing batch 125 (10 contacts, starting at row 1241)
+ ✅ Batch 125 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1250 processed, 1065 success, 185 failed
+ 🔵 Processing batch 126 (10 contacts, starting at row 1251)
+ ✅ Batch 126 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1260 processed, 1074 success, 186 failed
+ 🔵 Processing batch 127 (10 contacts, starting at row 1261)
+ ✅ Batch 127 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1270 processed, 1083 success, 187 failed
+ 🔵 Processing batch 128 (10 contacts, starting at row 1271)
+ ✅ Batch 128 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1280 processed, 1091 success, 189 failed
+ 🔵 Processing batch 129 (10 contacts, starting at row 1281)
+ ✅ Batch 129 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1290 processed, 1100 success, 190 failed
+ 🔵 Processing batch 130 (10 contacts, starting at row 1291)
+ ✅ Batch 130 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1300 processed, 1109 success, 191 failed
+ 🔵 Processing batch 131 (10 contacts, starting at row 1301)
+ ✅ Batch 131 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1310 processed, 1119 success, 191 failed
+ 🔵 Processing batch 132 (10 contacts, starting at row 1311)
+ ✅ Batch 132 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1320 processed, 1127 success, 193 failed
+ 🔵 Processing batch 133 (10 contacts, starting at row 1321)
+ ✅ Batch 133 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1330 processed, 1137 success, 193 failed
+ 🔵 Processing batch 134 (10 contacts, starting at row 1331)
+ ✅ Batch 134 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1340 processed, 1147 success, 193 failed
+ 🔵 Processing batch 135 (10 contacts, starting at row 1341)
+ ✅ Batch 135 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1350 processed, 1156 success, 194 failed
+ 🔵 Processing batch 136 (10 contacts, starting at row 1351)
+ ✅ Batch 136 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 1360 processed, 1162 success, 198 failed
+ 🔵 Processing batch 137 (10 contacts, starting at row 1361)
+ ✅ Batch 137 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1370 processed, 1171 success, 199 failed
+ 🔵 Processing batch 138 (10 contacts, starting at row 1371)
+ ✅ Batch 138 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1380 processed, 1181 success, 199 failed
+ 🔵 Processing batch 139 (10 contacts, starting at row 1381)
+ ✅ Batch 139 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1390 processed, 1190 success, 200 failed
+ 🔵 Processing batch 140 (10 contacts, starting at row 1391)
+ ✅ Batch 140 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1400 processed, 1199 success, 201 failed
+ 🔵 Processing batch 141 (10 contacts, starting at row 1401)
+ ✅ Batch 141 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1410 processed, 1208 success, 202 failed
+ 🔵 Processing batch 142 (10 contacts, starting at row 1411)
+ ✅ Batch 142 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1420 processed, 1215 success, 205 failed
+ 🔵 Processing batch 143 (10 contacts, starting at row 1421)
+ ✅ Batch 143 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1430 processed, 1222 success, 208 failed
+ 🔵 Processing batch 144 (10 contacts, starting at row 1431)
+ ✅ Batch 144 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1440 processed, 1232 success, 208 failed
+ 🔵 Processing batch 145 (10 contacts, starting at row 1441)
+ ✅ Batch 145 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1450 processed, 1240 success, 210 failed
+ 🔵 Processing batch 146 (10 contacts, starting at row 1451)
+ ✅ Batch 146 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1460 processed, 1250 success, 210 failed
+ 🔵 Processing batch 147 (10 contacts, starting at row 1461)
+ ✅ Batch 147 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1470 processed, 1260 success, 210 failed
+ 🔵 Processing batch 148 (10 contacts, starting at row 1471)
+ ✅ Batch 148 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1480 processed, 1268 success, 212 failed
+ 🔵 Processing batch 149 (10 contacts, starting at row 1481)
+ ✅ Batch 149 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1490 processed, 1277 success, 213 failed
+ 🔵 Processing batch 150 (10 contacts, starting at row 1491)
+ ✅ Batch 150 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1500 processed, 1287 success, 213 failed
+ 🔵 Processing batch 151 (10 contacts, starting at row 1501)
+ ✅ Batch 151 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1510 processed, 1296 success, 214 failed
+ 🔵 Processing batch 152 (10 contacts, starting at row 1511)
+ ✅ Batch 152 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1520 processed, 1306 success, 214 failed
+ 🔵 Processing batch 153 (10 contacts, starting at row 1521)
+ ✅ Batch 153 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1530 processed, 1315 success, 215 failed
+ 🔵 Processing batch 154 (10 contacts, starting at row 1531)
+ ✅ Batch 154 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1540 processed, 1323 success, 217 failed
+ 🔵 Processing batch 155 (10 contacts, starting at row 1541)
+ ✅ Batch 155 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1550 processed, 1332 success, 218 failed
+ 🔵 Processing batch 156 (10 contacts, starting at row 1551)
+ ✅ Batch 156 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1560 processed, 1342 success, 218 failed
+ 🔵 Processing batch 157 (10 contacts, starting at row 1561)
+ ✅ Batch 157 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1570 processed, 1352 success, 218 failed
+ 🔵 Processing batch 158 (10 contacts, starting at row 1571)
+ ✅ Batch 158 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1580 processed, 1361 success, 219 failed
+ 🔵 Processing batch 159 (10 contacts, starting at row 1581)
+ ✅ Batch 159 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1590 processed, 1371 success, 219 failed
+ 🔵 Processing batch 160 (10 contacts, starting at row 1591)
+ ✅ Batch 160 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1600 processed, 1381 success, 219 failed
+ 🔵 Processing batch 161 (10 contacts, starting at row 1601)
+ ✅ Batch 161 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1610 processed, 1391 success, 219 failed
+ 🔵 Processing batch 162 (10 contacts, starting at row 1611)
+ ✅ Batch 162 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1620 processed, 1400 success, 220 failed
+ 🔵 Processing batch 163 (10 contacts, starting at row 1621)
+ ✅ Batch 163 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1630 processed, 1409 success, 221 failed
+ 🔵 Processing batch 164 (10 contacts, starting at row 1631)
+ ✅ Batch 164 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1640 processed, 1418 success, 222 failed
+ 🔵 Processing batch 165 (10 contacts, starting at row 1641)
+ ✅ Batch 165 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1650 processed, 1426 success, 224 failed
+ 🔵 Processing batch 166 (10 contacts, starting at row 1651)
+ ✅ Batch 166 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1660 processed, 1433 success, 227 failed
+ 🔵 Processing batch 167 (10 contacts, starting at row 1661)
+ ✅ Batch 167 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 1670 processed, 1439 success, 231 failed
+ 🔵 Processing batch 168 (10 contacts, starting at row 1671)
+ ✅ Batch 168 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 1680 processed, 1445 success, 235 failed
+ 🔵 Processing batch 169 (10 contacts, starting at row 1681)
+ ✅ Batch 169 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1690 processed, 1453 success, 237 failed
+ 🔵 Processing batch 170 (10 contacts, starting at row 1691)
+ ✅ Batch 170 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1700 processed, 1460 success, 240 failed
+ 🔵 Processing batch 171 (10 contacts, starting at row 1701)
+ ✅ Batch 171 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1710 processed, 1469 success, 241 failed
+ 🔵 Processing batch 172 (10 contacts, starting at row 1711)
+ ✅ Batch 172 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1720 processed, 1478 success, 242 failed
+ 🔵 Processing batch 173 (10 contacts, starting at row 1721)
+ ✅ Batch 173 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1730 processed, 1488 success, 242 failed
+ 🔵 Processing batch 174 (10 contacts, starting at row 1731)
+ ✅ Batch 174 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1740 processed, 1496 success, 244 failed
+ 🔵 Processing batch 175 (10 contacts, starting at row 1741)
+ ✅ Batch 175 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1750 processed, 1506 success, 244 failed
+ 🔵 Processing batch 176 (10 contacts, starting at row 1751)
+ ✅ Batch 176 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1760 processed, 1514 success, 246 failed
+ 🔵 Processing batch 177 (10 contacts, starting at row 1761)
+ ✅ Batch 177 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1770 processed, 1524 success, 246 failed
+ 🔵 Processing batch 178 (10 contacts, starting at row 1771)
+ ✅ Batch 178 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1780 processed, 1533 success, 247 failed
+ 🔵 Processing batch 179 (10 contacts, starting at row 1781)
+ ✅ Batch 179 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1790 processed, 1543 success, 247 failed
+ 🔵 Processing batch 180 (10 contacts, starting at row 1791)
+ ✅ Batch 180 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1800 processed, 1551 success, 249 failed
+ 🔵 Processing batch 181 (10 contacts, starting at row 1801)
+ ✅ Batch 181 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1810 processed, 1558 success, 252 failed
+ 🔵 Processing batch 182 (10 contacts, starting at row 1811)
+ ✅ Batch 182 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1820 processed, 1566 success, 254 failed
+ 🔵 Processing batch 183 (10 contacts, starting at row 1821)
+ ✅ Batch 183 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1830 processed, 1574 success, 256 failed
+ 🔵 Processing batch 184 (10 contacts, starting at row 1831)
+ ✅ Batch 184 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1840 processed, 1583 success, 257 failed
+ 🔵 Processing batch 185 (10 contacts, starting at row 1841)
+ ✅ Batch 185 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1850 processed, 1593 success, 257 failed
+ 🔵 Processing batch 186 (10 contacts, starting at row 1851)
+ ✅ Batch 186 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1860 processed, 1600 success, 260 failed
+ 🔵 Processing batch 187 (10 contacts, starting at row 1861)
+ ✅ Batch 187 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 1870 processed, 1607 success, 263 failed
+ 🔵 Processing batch 188 (10 contacts, starting at row 1871)
+ ✅ Batch 188 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1880 processed, 1617 success, 263 failed
+ 🔵 Processing batch 189 (10 contacts, starting at row 1881)
+ ✅ Batch 189 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1890 processed, 1626 success, 264 failed
+ 🔵 Processing batch 190 (10 contacts, starting at row 1891)
+ ✅ Batch 190 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1900 processed, 1634 success, 266 failed
+ 🔵 Processing batch 191 (10 contacts, starting at row 1901)
+ ✅ Batch 191 complete: 10 success, 0 failed
+ 📊 Accumulated totals: 1910 processed, 1644 success, 266 failed
+ 🔵 Processing batch 192 (10 contacts, starting at row 1911)
+ ✅ Batch 192 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1920 processed, 1653 success, 267 failed
+ 🔵 Processing batch 193 (10 contacts, starting at row 1921)
+ ✅ Batch 193 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1930 processed, 1661 success, 269 failed
+ 🔵 Processing batch 194 (10 contacts, starting at row 1931)
+ ✅ Batch 194 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1940 processed, 1670 success, 270 failed
+ 🔵 Processing batch 195 (10 contacts, starting at row 1941)
+ ✅ Batch 195 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1950 processed, 1678 success, 272 failed
+ 🔵 Processing batch 196 (10 contacts, starting at row 1951)
+ ✅ Batch 196 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1960 processed, 1687 success, 273 failed
+ 🔵 Processing batch 197 (10 contacts, starting at row 1961)
+ ✅ Batch 197 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 1970 processed, 1696 success, 274 failed
+ 🔵 Processing batch 198 (10 contacts, starting at row 1971)
+ ✅ Batch 198 complete: 6 success, 4 failed
+ 📊 Accumulated totals: 1980 processed, 1702 success, 278 failed
+ 🔵 Processing batch 199 (10 contacts, starting at row 1981)
+ ✅ Batch 199 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 1990 processed, 1710 success, 280 failed
+ 🔵 Processing batch 200 (10 contacts, starting at row 1991)
+ ✅ Batch 200 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 2000 processed, 1719 success, 281 failed
+ 🔵 Processing batch 201 (10 contacts, starting at row 2001)
+ ✅ Batch 201 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 2010 processed, 1727 success, 283 failed
+ 🔵 Processing batch 202 (10 contacts, starting at row 2011)
+ ✅ Batch 202 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 2020 processed, 1736 success, 284 failed
+ 🔵 Processing batch 203 (10 contacts, starting at row 2021)
+ ✅ Batch 203 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 2030 processed, 1745 success, 285 failed
+ 🔵 Processing batch 204 (10 contacts, starting at row 2031)
+ ✅ Batch 204 complete: 9 success, 1 failed
+ 📊 Accumulated totals: 2040 processed, 1754 success, 286 failed
+ 🔵 Processing batch 205 (10 contacts, starting at row 2041)
+ ✅ Batch 205 complete: 8 success, 2 failed
+ 📊 Accumulated totals: 2050 processed, 1762 success, 288 failed
+ 🔵 Processing batch 206 (10 contacts, starting at row 2051)
+ ✅ Batch 206 complete: 7 success, 3 failed
+ 📊 Accumulated totals: 2060 processed, 1769 success, 291 failed
+test-batch-accumulation.html:217 🔵 Processing batch 207 (10 contacts, starting at row 2061)
+test-batch-accumulation.html:217 ✅ Batch 207 complete: 8 success, 2 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2070 processed, 1777 success, 293 failed
+test-batch-accumulation.html:217 🔵 Processing batch 208 (10 contacts, starting at row 2071)
+test-batch-accumulation.html:217 ✅ Batch 208 complete: 9 success, 1 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2080 processed, 1786 success, 294 failed
+test-batch-accumulation.html:217 🔵 Processing batch 209 (10 contacts, starting at row 2081)
+test-batch-accumulation.html:217 ✅ Batch 209 complete: 7 success, 3 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2090 processed, 1793 success, 297 failed
+test-batch-accumulation.html:217 🔵 Processing batch 210 (10 contacts, starting at row 2091)
+test-batch-accumulation.html:217 ✅ Batch 210 complete: 10 success, 0 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2100 processed, 1803 success, 297 failed
+test-batch-accumulation.html:217 🔵 Processing batch 211 (10 contacts, starting at row 2101)
+test-batch-accumulation.html:217 ✅ Batch 211 complete: 7 success, 3 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2110 processed, 1810 success, 300 failed
+test-batch-accumulation.html:217 🔵 Processing batch 212 (10 contacts, starting at row 2111)
+test-batch-accumulation.html:217 ✅ Batch 212 complete: 7 success, 3 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2120 processed, 1817 success, 303 failed
+test-batch-accumulation.html:217 🔵 Processing batch 213 (10 contacts, starting at row 2121)
+test-batch-accumulation.html:217 ✅ Batch 213 complete: 9 success, 1 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2130 processed, 1826 success, 304 failed
+test-batch-accumulation.html:217 🔵 Processing batch 214 (10 contacts, starting at row 2131)
+test-batch-accumulation.html:217 ✅ Batch 214 complete: 9 success, 1 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2140 processed, 1835 success, 305 failed
+test-batch-accumulation.html:217 🔵 Processing batch 215 (5 contacts, starting at row 2141)
+test-batch-accumulation.html:217 ✅ Batch 215 complete: 3 success, 2 failed
+test-batch-accumulation.html:217 📊 Accumulated totals: 2145 processed, 1838 success, 307 failed
+test-batch-accumulation.html:217 ✅ Import complete! 2145 total, 1838 success, 307 failed
