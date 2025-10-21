@@ -212,7 +212,9 @@ export function useContactImport() {
               return { rowNumber, success: true };
             } else {
               // Create the contact record with organization_id (matches UI)
-              console.log("Creating contact:", contactPayload);
+              console.log("Creating contact - Name:", first_name, last_name);
+              console.log("Email array:", JSON.stringify(contactPayload.email));
+              console.log("Full payload:", JSON.stringify(contactPayload, null, 2));
               const contactResponse = await dataProvider.create("contacts", {
                 data: contactPayload,
               });
