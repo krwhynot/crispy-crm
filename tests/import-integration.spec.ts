@@ -192,13 +192,23 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
       expect(janeSmith).toBeDefined();
       expect(isContactWithoutContactInfo(janeSmith!)).toBe(true);
 
-      // Should skip 1 contact (Jane Smith)
-      expect(skippedCount).toBe(1);
-      expect(contactsToProcess).toHaveLength(6);
+      // Auto-filled "General Contact" entries also have no contact info!
+      const generalContacts = successful.filter(c => c.first_name === 'General' && c.last_name === 'Contact');
+      expect(generalContacts).toHaveLength(2);
+      generalContacts.forEach(contact => {
+        expect(isContactWithoutContactInfo(contact)).toBe(true);
+      });
 
-      // Jane should NOT be in the processed list
+      // Should skip 3 contacts (Jane + 2 auto-filled General Contact entries)
+      expect(skippedCount).toBe(3);
+      expect(contactsToProcess).toHaveLength(4);
+
+      // Jane and General Contact entries should NOT be in the processed list
       const janeInProcessed = contactsToProcess.find(c => c.first_name === 'Jane' && c.last_name === 'Smith');
       expect(janeInProcessed).toBeUndefined();
+
+      const generalInProcessed = contactsToProcess.filter(c => c.first_name === 'General' && c.last_name === 'Contact');
+      expect(generalInProcessed).toHaveLength(0);
 
       console.log('   ✅ TEST 3 PASSED\n');
     });
