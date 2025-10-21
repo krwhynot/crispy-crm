@@ -5,6 +5,7 @@ import type { Organization, Tag } from "../types";
 import { mapHeadersToFields, isFullNameColumn, findCanonicalField } from "./columnAliases";
 import { importContactSchema } from "../validation/contacts";
 import { ZodError } from "zod";
+import { applyDataQualityTransformations, validateTransformedContacts } from "./contactImport.logic";
 
 export interface ContactImportSchema {
   first_name: string;
@@ -114,75 +115,49 @@ export function useContactImport() {
   const processBatch = useCallback(
     async (batch: ContactImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
       const { preview = false, onProgress, startingRow = 1, dataQualityDecisions } = options;
-      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, options, dataQualityDecisions });
+      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, dataQualityDecisions });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
       let skippedCount = 0;
-      let failedCount = 0;
       const totalProcessed = batch.length;
+
       // Report progress if callback provided
       if (onProgress) {
         onProgress(0, totalProcessed);
       }
 
+      // 1. Apply data quality transformations based on user decisions
+      const { transformedContacts } = applyDataQualityTransformations(batch, dataQualityDecisions);
+
+      // 2. Validate the entire transformed batch
+      const { successful, failed } = validateTransformedContacts(transformedContacts);
+
+      // Immediately add validation failures to the error list
+      failed.forEach(failure => {
+        errors.push({
+          row: startingRow + failure.originalIndex,
+          data: failure.data,
+          errors: failure.errors,
+        });
+      });
+
+      // 3. Fetch related records (organizations, tags) for valid contacts only
       const [organizations, tags] = await Promise.all([
         getOrganizations(
-          batch
+          successful
             .map((contact) => contact.organization_name?.trim())
-            .filter((name) => name),
+            .filter((name): name is string => !!name),
           preview,
         ),
-        getTags(batch.flatMap((batch) => parseTags(batch.tags)), preview),
+        getTags(successful.flatMap((contact) => parseTags(contact.tags)), preview),
       ]);
 
-      // Process all contacts with Promise.allSettled for better error tracking
+      // 4. Process all valid contacts with Promise.allSettled
       const results = await Promise.allSettled(
-        batch.map(async (contactData, index) => {
-          const rowNumber = startingRow + index;  // Absolute row number in CSV file
+        successful.map(async (contactData, index) => {
+          const rowNumber = startingRow + contactData.originalIndex;
           const rowErrors: FieldError[] = [];
-
-          // 1. Apply data quality transformations based on user decisions
-          let transformedContactData = { ...contactData };
-
-          // Check if this is an organization-only entry (has org but no first/last name)
-          const isOrgOnlyEntry = (
-            transformedContactData.organization_name &&
-            !transformedContactData.first_name?.toString().trim() &&
-            !transformedContactData.last_name?.toString().trim()
-          );
-
-          // If user approved org-only entries, auto-fill placeholder contact
-          if (isOrgOnlyEntry && dataQualityDecisions?.importOrganizationsWithoutContacts) {
-            transformedContactData.first_name = "General";
-            transformedContactData.last_name = "Contact";
-            console.log(`📝 [DATA QUALITY] Auto-filled placeholder contact for org: ${transformedContactData.organization_name}`);
-          }
-
-          // 2. Validate with Zod schema to catch ALL format/presence errors
-          const validationResult = importContactSchema.safeParse(transformedContactData);
-          if (!validationResult.success) {
-            validationResult.error.issues.forEach((issue) => {
-              const fieldPath = issue.path.join(".");
-              const fieldValue = issue.path.reduce((obj: any, key) => obj?.[key], transformedContactData);
-
-              // Check if this is a "missing name" error and user approved org-only imports
-              const isMissingNameError = (
-                fieldPath === "first_name" || fieldPath === "last_name"
-              ) && issue.message.includes("Either first name or last name must be provided");
-
-              // Skip this error if user approved org-only entries (we'll auto-fill it)
-              if (isMissingNameError && isOrgOnlyEntry && dataQualityDecisions?.importOrganizationsWithoutContacts) {
-                return; // Skip adding this error
-              }
-
-              rowErrors.push({
-                field: fieldPath,
-                message: issue.message,
-                value: fieldValue,
-              });
-            });
-          }
 
           const {
             first_name,
@@ -201,47 +176,29 @@ export function useContactImport() {
             tags: tagNames,
             linkedin_url,
             notes,
-          } = transformedContactData;
+          } = contactData;
 
-          // 3. Perform logic-based validation (e.g., organization existence)
-          // Ensure organization_name is a string before calling .trim()
-          const trimmedOrgName = typeof organization_name === 'string'
-            ? organization_name.trim()
-            : String(organization_name || '').trim();
-          if (trimmedOrgName) {
-            if (preview) {
-              if (!organizations.has(trimmedOrgName)) {
-                rowErrors.push({
-                  field: "organization_name",
-                  message: `Organization "${trimmedOrgName}" would need to be created`,
-                  value: trimmedOrgName,
-                });
-              }
-            } else {
-              const organization = organizations.get(trimmedOrgName);
-              if (!organization?.id) {
-                rowErrors.push({
-                  field: "organization_name",
-                  message: `Failed to find or create organization "${trimmedOrgName}"`,
-                  value: trimmedOrgName,
-                });
-              }
-            }
+          // Organization logic check
+          const trimmedOrgName = String(organization_name || '').trim();
+          const organization = organizations.get(trimmedOrgName);
+          if (trimmedOrgName && !organization?.id && !preview) {
+            rowErrors.push({
+              field: "organization_name",
+              message: `Failed to find or create organization "${trimmedOrgName}"`,
+              value: trimmedOrgName,
+            });
           }
 
-          // 4. If any errors were found, bail early and report ALL of them
           if (rowErrors.length > 0) {
             return {
               rowNumber,
               success: false,
               errors: rowErrors,
-              data: transformedContactData,
+              data: contactData,
             };
           }
 
-          // 5. If all validations pass, proceed with creating the payload
           try {
-
             const email = [
               { email: email_work, type: "Work" },
               { email: email_home, type: "Home" },
@@ -258,8 +215,6 @@ export function useContactImport() {
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 
-            const organization = organizations.get(trimmedOrgName);
-
             const contactPayload = {
               first_name,
               last_name,
@@ -274,7 +229,7 @@ export function useContactImport() {
               linkedin_url,
               notes,
               organization_id: organization?.id,
-              avatar: undefined, // Explicitly exclude avatar to prevent schema cache errors
+              avatar: undefined,
             };
 
             if (preview) {
@@ -290,24 +245,18 @@ export function useContactImport() {
 
             return { rowNumber, success: true };
           } catch (error: any) {
-            // 6. Catch errors from dataProvider (e.g., unique constraints, additional validation)
+            // Catch errors from dataProvider (e.g., unique constraints)
             const finalErrors: FieldError[] = [];
-
             if (error instanceof ZodError) {
               error.issues.forEach((issue) => {
                 finalErrors.push({
                   field: issue.path.join("."),
                   message: issue.message,
-                  value: issue.path.reduce((obj: any, key) => obj?.[key], transformedContactData),
                 });
               });
             } else if (error.body?.errors) {
-              // Handle structured React Admin validation errors
               for (const [field, message] of Object.entries(error.body.errors)) {
-                finalErrors.push({
-                  field,
-                  message: String(message),
-                });
+                finalErrors.push({ field, message: String(message) });
               }
             } else {
               finalErrors.push({
@@ -315,29 +264,22 @@ export function useContactImport() {
                 message: error.message || "Unknown error during record creation",
               });
             }
-
-            return {
-              rowNumber,
-              success: false,
-              errors: finalErrors,
-              data: transformedContactData,
-            };
+            return { rowNumber, success: false, errors: finalErrors, data: contactData };
           } finally {
             if (onProgress) {
-              onProgress(index + 1, totalProcessed);
+              onProgress(index + 1 + failed.length, totalProcessed);
             }
           }
         }),
       );
 
-      // Process results and categorize them
-      results.forEach((result, index) => {
+      // 5. Tally results
+      results.forEach((result) => {
         if (result.status === "fulfilled") {
           const value = result.value as any;
           if (value.success) {
             successCount++;
           } else {
-            failedCount++;
             errors.push({
               row: value.rowNumber,
               data: value.data,
@@ -345,36 +287,29 @@ export function useContactImport() {
             });
           }
         } else {
-          // Promise rejected (catastrophic failure for this row)
-          failedCount++;
+          // This case is less likely now but kept for safety
           errors.push({
-            row: index + 1,
-            data: batch[index],
-            errors: [
-              {
-                field: "processing",
-                message: result.reason?.message || result.reason || "Unknown processing error",
-              },
-            ],
+            row: 0, // Cannot determine row number here
+            data: {},
+            errors: [{ field: "processing", message: result.reason?.message || "Unknown processing error" }],
           });
         }
       });
 
       const endTime = new Date();
-
-      const result = {
+      const finalResult = {
         totalProcessed,
         successCount,
         skippedCount,
-        failedCount,
+        failedCount: errors.length,
         errors,
         duration: endTime.getTime() - startTime.getTime(),
         startTime,
         endTime,
       };
 
-      console.log("processBatch returning:", result);
-      return result;
+      console.log("processBatch returning:", finalResult);
+      return finalResult;
     },
     [dataProvider, getOrganizations, getTags, identity?.id, today],
   );
