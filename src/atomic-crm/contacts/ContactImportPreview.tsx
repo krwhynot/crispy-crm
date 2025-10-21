@@ -27,8 +27,17 @@ import {
 } from "@/components/ui/table";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DialogFooter } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { contactSchema } from "@/atomic-crm/validation/contacts";
 import { z } from "zod";
+import { getAvailableFieldsWithLabels } from "./columnAliases";
+import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
 
 // Types for preview data
 export interface ColumnMapping {
@@ -71,6 +80,8 @@ interface ContactImportPreviewProps {
   onContinue: (decisions: DataQualityDecisions) => void;
   onCancel: () => void;
   onRemap?: () => void; // Phase 2 feature
+  onMappingChange?: (csvHeader: string, targetField: string | null) => void;
+  userOverrides?: Map<string, string | null>;
 }
 
 export function ContactImportPreview({
@@ -78,6 +89,8 @@ export function ContactImportPreview({
   onContinue,
   onCancel,
   onRemap,
+  onMappingChange,
+  userOverrides,
 }: ContactImportPreviewProps) {
   const [expandedSections, setExpandedSections] = useState({
     organizations: false,
@@ -145,6 +158,26 @@ export function ContactImportPreview({
   const mappedColumns = preview.mappings.filter(m => m.target !== null);
   const skippedColumns = preview.mappings.filter(m => m.target === null);
 
+  // Get available fields for dropdown
+  const availableFieldOptions = getAvailableFieldsWithLabels();
+
+  // Detect duplicate field mappings
+  const targetFieldCounts = new Map<string, number>();
+  const duplicateTargets = new Set<string>();
+
+  preview.mappings.forEach((mapping) => {
+    if (mapping.target && mapping.target !== '(ignored - no matching field)') {
+      const count = targetFieldCounts.get(mapping.target) || 0;
+      targetFieldCounts.set(mapping.target, count + 1);
+
+      if (count + 1 > 1) {
+        duplicateTargets.add(mapping.target);
+      }
+    }
+  });
+
+  const hasDuplicates = duplicateTargets.size > 0;
+
   return (
     <div className="flex flex-col gap-4">
       {/* Summary Alert */}
@@ -199,6 +232,28 @@ export function ContactImportPreview({
         </AlertDescription>
       </Alert>
 
+      {/* Duplicate Mappings Error */}
+      {hasDuplicates && (
+        <Alert variant="destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Duplicate Field Mappings Detected</AlertTitle>
+          <AlertDescription>
+            <div className="flex flex-col gap-2">
+              <p>
+                Multiple CSV columns cannot be mapped to the same CRM field. Please fix the following duplicates:
+              </p>
+              <ul className="list-disc list-inside">
+                {Array.from(duplicateTargets).map((target) => (
+                  <li key={target}>
+                    <strong>{target}</strong> is mapped {targetFieldCounts.get(target)} times
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Column Mappings Card - Show only mapped columns */}
       {mappedColumns.length > 0 && (
         <Card>
@@ -222,24 +277,60 @@ export function ContactImportPreview({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mappedColumns.map((mapping, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-mono text-sm text-gray-600">
-                      {mapping.source}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <ArrowRight className="h-3 w-3 mx-auto text-gray-400" />
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="font-mono text-xs">
-                        {mapping.target}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-sm text-gray-600 max-w-[200px] truncate">
-                      {mapping.sampleValue || <span className="text-gray-400">-</span>}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {mappedColumns.map((mapping, index) => {
+                  // Determine if this mapping is a user override
+                  const isUserOverride = userOverrides?.has(mapping.source);
+
+                  // Get the actual value to display (handle full name marker)
+                  const displayValue = mapping.target === 'first_name + last_name (will be split)'
+                    ? FULL_NAME_SPLIT_MARKER
+                    : mapping.target || '';
+
+                  return (
+                    <TableRow key={index} className={isUserOverride ? 'bg-blue-50' : ''}>
+                      <TableCell className="font-mono text-sm text-gray-600">
+                        {mapping.source}
+                        {isUserOverride && (
+                          <Badge variant="secondary" className="ml-2 text-xs">
+                            Custom
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <ArrowRight className="h-3 w-3 mx-auto text-gray-400" />
+                      </TableCell>
+                      <TableCell>
+                        {onMappingChange ? (
+                          <Select
+                            value={displayValue}
+                            onValueChange={(value) => {
+                              onMappingChange(mapping.source, value || null);
+                            }}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="(No mapping)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="">(No mapping)</SelectItem>
+                              {availableFieldOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <Badge variant="outline" className="font-mono text-xs">
+                            {mapping.target}
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-sm text-gray-600 max-w-[200px] truncate">
+                        {mapping.sampleValue || <span className="text-gray-400">-</span>}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </CardContent>
@@ -758,7 +849,7 @@ export function ContactImportPreview({
         <Button
           variant="default"
           onClick={() => onContinue(dataQualityDecisions)}
-          disabled={preview.validCount === 0}
+          disabled={preview.validCount === 0 || hasDuplicates}
         >
           Continue Import ({preview.validCount} contacts)
         </Button>

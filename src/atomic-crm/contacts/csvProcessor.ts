@@ -103,6 +103,42 @@ export function processCsvData(
 }
 
 /**
+ * Transform raw CSV data with custom mappings (for interactive column mapping)
+ * This allows users to override auto-detected mappings
+ *
+ * @param headers - Original CSV headers
+ * @param dataRows - Raw data rows (arrays of values)
+ * @param customMappings - User-defined mappings (overrides auto-detection)
+ * @returns Array of Contact objects ready for validation and import
+ */
+export function processCsvDataWithMappings(
+  headers: string[],
+  dataRows: any[][],
+  customMappings: Record<string, string | null>
+): ContactImportSchema[] {
+  return dataRows.map(row => {
+    const contact: any = {};
+
+    headers.forEach((originalHeader, index) => {
+      const targetField = customMappings[originalHeader];
+      const value = row[index];
+
+      // Handle full name splitting
+      if (targetField === FULL_NAME_SPLIT_MARKER) {
+        const { first_name, last_name } = splitFullName(value || '');
+        contact.first_name = first_name;
+        contact.last_name = last_name;
+      } else if (targetField) {
+        contact[targetField] = value;
+      }
+      // If targetField is null/undefined, skip this column
+    });
+
+    return contact as ContactImportSchema;
+  });
+}
+
+/**
  * Parse raw Papa Parse results into ContactImportSchema objects
  * Handles the specific structure of our CSV files:
  * - Row 0: Instructions
