@@ -49,6 +49,7 @@ export interface ImportOptions {
   preview?: boolean;
   onProgress?: (current: number, total: number) => void;
   startingRow?: number;
+  dataQualityDecisions?: DataQualityDecisions;
 }
 
 export function useOrganizationImport() {
@@ -78,34 +79,43 @@ export function useOrganizationImport() {
 
   const processBatch = useCallback(
     async (batch: OrganizationImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
-      const { preview = false, onProgress, startingRow = 1 } = options;
-      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow });
+      const { preview = false, onProgress, startingRow = 1, dataQualityDecisions } = options;
+      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, dataQualityDecisions });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
       let skippedCount = 0;
       const totalProcessed = batch.length;
 
+      // Report progress if callback provided
       if (onProgress) {
         onProgress(0, totalProcessed);
       }
 
-      // TODO: Add validation logic when organizationImport.logic.ts is provided by backend agent
-      // For now, we'll do basic validation inline
-      const validatedBatch = batch.map((org, index) => ({
-        ...org,
-        originalIndex: index,
-      }));
+      // 1. Apply data quality transformations based on user decisions
+      const { transformedOrganizations } = applyDataQualityTransformations(batch, dataQualityDecisions);
 
-      // Fetch related records (tags) for valid organizations
+      // 2. Validate the entire transformed batch using business logic
+      const { successful, failed } = validateTransformedOrganizations(transformedOrganizations);
+
+      // Immediately add validation failures to the error list
+      failed.forEach(failure => {
+        errors.push({
+          row: startingRow + failure.originalIndex,
+          data: failure.data,
+          errors: failure.errors,
+        });
+      });
+
+      // 3. Fetch related records (tags) for valid organizations only
       const tags = await getTags(
-        validatedBatch.flatMap((org) => parseTags(org.tags)),
+        successful.flatMap((org) => parseTags(org.tags)),
         preview,
       );
 
-      // Process all organizations with Promise.allSettled
+      // 4. Process all valid organizations with Promise.allSettled
       const results = await Promise.allSettled(
-        validatedBatch.map(async (orgData, index) => {
+        successful.map(async (orgData, index) => {
           const rowNumber = startingRow + orgData.originalIndex;
           const rowErrors: FieldError[] = [];
 
@@ -113,7 +123,7 @@ export function useOrganizationImport() {
             name,
             organization_type,
             priority,
-            segment,
+            segment_id,
             linkedin_url,
             website,
             phone,
@@ -125,14 +135,8 @@ export function useOrganizationImport() {
             tags: tagNames,
           } = orgData;
 
-          // Validate required fields
-          if (!name || !String(name).trim()) {
-            rowErrors.push({
-              field: "name",
-              message: "Organization name is required",
-              value: name,
-            });
-          }
+          // Note: Validation already done by validateTransformedOrganizations
+          // This section is for runtime errors from the data provider
 
           if (rowErrors.length > 0) {
             return {
@@ -144,7 +148,7 @@ export function useOrganizationImport() {
           }
 
           try {
-            const tagList = parseTags(tagNames)
+            const tagList = parseTags(tagNames || '')
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 
@@ -152,7 +156,7 @@ export function useOrganizationImport() {
               name,
               organization_type: organization_type || "unknown",
               priority: priority || "C",
-              segment_id: segment || null, // TODO: Map segment name to segment_id
+              segment_id: segment_id || null,
               linkedin_url: linkedin_url || null,
               website: website || null,
               phone: phone || null,
@@ -201,14 +205,14 @@ export function useOrganizationImport() {
             return { rowNumber, success: false, errors: finalErrors, data: orgData };
           } finally {
             if (onProgress) {
-              onProgress(index + 1, totalProcessed);
+              onProgress(index + 1 + failed.length, totalProcessed);
             }
           }
         }),
       );
 
-      // Tally results
-      results.forEach((result) => {
+      // 5. Tally results
+      results.forEach((result, index) => {
         if (result.status === "fulfilled") {
           const value = result.value as any;
           if (value.success) {
@@ -221,9 +225,12 @@ export function useOrganizationImport() {
             });
           }
         } else {
+          // This promise was rejected. Get the original data for correct row attribution.
+          const failedOrgData = successful[index];
+          const rowNumber = startingRow + failedOrgData.originalIndex;
           errors.push({
-            row: 0,
-            data: {},
+            row: rowNumber,
+            data: failedOrgData,
             errors: [{ field: "processing", message: result.reason?.message || "Unknown processing error" }],
           });
         }

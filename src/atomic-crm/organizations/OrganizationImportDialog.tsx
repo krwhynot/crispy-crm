@@ -8,10 +8,11 @@ import {
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, CheckCircle2, Building2, Upload } from "lucide-react";
-import { useRefresh, useDataProvider, useNotify } from "ra-core";
+import { useRefresh, useNotify } from "ra-core";
 import { useState, useRef } from "react";
 import Papa from "papaparse";
 import { mapHeadersToFields } from "./organizationColumnAliases";
+import { useOrganizationImport, type ImportResult } from "./useOrganizationImport";
 
 type OrganizationImportDialogProps = {
   open: boolean;
@@ -20,20 +21,13 @@ type OrganizationImportDialogProps = {
 
 type ImportState = "idle" | "parsing" | "running" | "complete" | "error";
 
-interface ImportResult {
-  totalProcessed: number;
-  successCount: number;
-  failedCount: number;
-  errors: Array<{ row: number; reason: string; data?: any }>;
-}
-
 export function OrganizationImportDialog({
   open,
   onClose,
 }: OrganizationImportDialogProps) {
   const refresh = useRefresh();
-  const dataProvider = useDataProvider();
   const notify = useNotify();
+  const processBatch = useOrganizationImport();
 
   const [file, setFile] = useState<File | null>(null);
   const [importState, setImportState] = useState<ImportState>("idle");
@@ -83,68 +77,24 @@ export function OrganizationImportDialog({
         setImportProgress({ count: 0, total: mappedRows.length });
         setImportState("running");
 
-        const errors: Array<{ row: number; reason: string; data?: any }> = [];
-        let successCount = 0;
-        let failedCount = 0;
+        try {
+          // Use the hook to process the batch
+          const result = await processBatch(mappedRows, {
+            preview: false,
+            onProgress: (current, total) => {
+              setImportProgress({ count: current, total });
+            },
+            startingRow: 2, // CSV row 2 is first data row (after header)
+          });
 
-        // Process organizations one by one
-        for (let i = 0; i < mappedRows.length; i++) {
-          const row = mappedRows[i];
-          const rowNumber = i + 2; // +2 for header and 0-indexing
-
-          try {
-            // Basic validation - organization name is required
-            if (!row.name || !row.name.trim()) {
-              errors.push({
-                row: rowNumber,
-                reason: "Organization name is required",
-                data: row,
-              });
-              failedCount++;
-              continue;
-            }
-
-            // Prepare organization data
-            const orgData: any = {
-              name: row.name,
-              website: row.website || null,
-              phone: row.phone || null,
-              address: row.address || null,
-              city: row.city || null,
-              state: row.state || null,
-              postal_code: row.postal_code || null,
-              linkedin_url: row.linkedin_url || null,
-              priority: row.priority || "C",
-              organization_type: row.organization_type || "unknown",
-              description: row.description || null,
-            };
-
-            // Create organization
-            await dataProvider.create("organizations", { data: orgData });
-            successCount++;
-          } catch (error: any) {
-            errors.push({
-              row: rowNumber,
-              reason: error.message || "Unknown error",
-              data: row,
-            });
-            failedCount++;
-          }
-
-          // Update progress
-          setImportProgress({ count: i + 1, total: rows.length });
+          // Set final result
+          setImportResult(result);
+          setImportState("complete");
+          refresh();
+        } catch (error: any) {
+          notify(`Import failed: ${error.message}`, { type: "error" });
+          setImportState("error");
         }
-
-        // Set final result
-        setImportResult({
-          totalProcessed: rows.length,
-          successCount,
-          failedCount,
-          errors,
-        });
-
-        setImportState("complete");
-        refresh();
       },
       error: (error) => {
         notify(`Error parsing CSV: ${error.message}`, { type: "error" });
@@ -282,7 +232,8 @@ export function OrganizationImportDialog({
                     {importResult.errors.slice(0, 10).map((error, idx) => (
                       <Alert key={idx} variant="destructive">
                         <AlertDescription>
-                          Row {error.row}: {error.reason}
+                          Row {error.row}:{" "}
+                          {error.errors.map((e) => `${e.field}: ${e.message}`).join(", ")}
                         </AlertDescription>
                       </Alert>
                     ))}

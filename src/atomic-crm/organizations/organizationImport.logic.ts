@@ -30,6 +30,7 @@ export interface OrganizationImportSchema {
   website?: string | null;
   organization_type?: 'customer' | 'prospect' | 'principal' | 'distributor' | 'unknown';
   sales_id?: string | number | null;
+  tags?: string; // Comma-separated tag names (e.g., "VIP,Enterprise,West Coast")
 }
 
 /**
