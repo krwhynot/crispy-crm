@@ -5,7 +5,7 @@ import type { Organization, Tag } from "../types";
 import { mapHeadersToFields, isFullNameColumn, findCanonicalField } from "./columnAliases";
 import { importContactSchema } from "../validation/contacts";
 import { ZodError } from "zod";
-import { applyDataQualityTransformations, validateTransformedContacts } from "./contactImport.logic";
+import { applyDataQualityTransformations, validateTransformedContacts, isContactWithoutContactInfo } from "./contactImport.logic";
 
 export interface ContactImportSchema {
   first_name: string;
@@ -142,20 +142,34 @@ export function useContactImport() {
         });
       });
 
+      // 2.5. Filter out contacts without contact info if user hasn't approved them
+      let contactsToProcess = successful;
+      if (!dataQualityDecisions?.importContactsWithoutContactInfo) {
+        const skippedContacts = new Set<number>();
+        contactsToProcess = successful.filter(contact => {
+          if (isContactWithoutContactInfo(contact)) {
+            skippedContacts.add(contact.originalIndex);
+            return false;
+          }
+          return true;
+        });
+        skippedCount = skippedContacts.size;
+      }
+
       // 3. Fetch related records (organizations, tags) for valid contacts only
       const [organizations, tags] = await Promise.all([
         getOrganizations(
-          successful
+          contactsToProcess
             .map((contact) => contact.organization_name?.trim())
             .filter((name): name is string => !!name),
           preview,
         ),
-        getTags(successful.flatMap((contact) => parseTags(contact.tags)), preview),
+        getTags(contactsToProcess.flatMap((contact) => parseTags(contact.tags)), preview),
       ]);
 
       // 4. Process all valid contacts with Promise.allSettled
       const results = await Promise.allSettled(
-        successful.map(async (contactData, index) => {
+        contactsToProcess.map(async (contactData, index) => {
           const rowNumber = startingRow + contactData.originalIndex;
           const rowErrors: FieldError[] = [];
 

@@ -18,7 +18,7 @@ import { mapHeadersToFields } from "./columnAliases";
 import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
-import { isOrganizationOnlyEntry } from "./contactImport.logic";
+import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
@@ -620,26 +620,9 @@ function findContactsWithoutContactInfo(rows: ContactImportSchema[]): Array<{ na
   const contactsWithoutInfo: Array<{ name: string; organization_name: string; row: number }> = [];
 
   rows.forEach((row, index) => {
-    const hasFirstName = row.first_name && String(row.first_name).trim();
-    const hasLastName = row.last_name && String(row.last_name).trim();
-    const hasName = hasFirstName || hasLastName;
-
-    // Check all email fields
-    const hasEmail = (
-      (row.email_work && String(row.email_work).trim()) ||
-      (row.email_home && String(row.email_home).trim()) ||
-      (row.email_other && String(row.email_other).trim())
-    );
-
-    // Check all phone fields
-    const hasPhone = (
-      (row.phone_work && String(row.phone_work).trim()) ||
-      (row.phone_home && String(row.phone_home).trim()) ||
-      (row.phone_other && String(row.phone_other).trim())
-    );
-
-    // If has name but NO email AND NO phone
-    if (hasName && !hasEmail && !hasPhone) {
+    if (isContactWithoutContactInfo(row)) {
+      const hasFirstName = row.first_name && String(row.first_name).trim();
+      const hasLastName = row.last_name && String(row.last_name).trim();
       const name = [
         hasFirstName ? String(row.first_name).trim() : '',
         hasLastName ? String(row.last_name).trim() : ''

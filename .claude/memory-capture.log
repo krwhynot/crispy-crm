@@ -1416,3 +1416,11 @@
 [2025-10-21 05:40:12] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/test-import-e2e.mjs
 [2025-10-21 05:41:45] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-import-e2e.test.ts
 [2025-10-21 05:45:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/contactImport.logic.ts
+[2025-10-21 05:46:17] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
+[2025-10-21 05:46:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
+[2025-10-21 05:46:48] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
+[2025-10-21 05:47:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-10-21 05:47:25] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-10-21 05:48:08] [code] Write: /home/krwhynot/projects/crispy-crm/tests/contactImport.logic.spec.ts
+[2025-10-21 05:49:00] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-e2e.spec.ts
+[2025-10-21 05:55:41] [code] Write: /home/krwhynot/projects/crispy-crm/tests/import-integration.spec.ts

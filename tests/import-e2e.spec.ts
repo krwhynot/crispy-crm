@@ -167,6 +167,42 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
     });
   });
 
+  describe('Test 3: Contacts Without Contact Info Feature', () => {
+    it('should identify contacts without email or phone', async () => {
+      // Jane Smith (index 2, Row 6 in CSV) has neither email nor phone
+      const { transformedContacts } = applyDataQualityTransformations(contacts, {
+        importOrganizationsWithoutContacts: false,
+        importContactsWithoutContactInfo: false,
+      });
+
+      // Jane Smith should be flagged as having no contact info
+      const janeSmith = transformedContacts[2];
+      expect(janeSmith.first_name).toBe('Jane');
+      expect(janeSmith.last_name).toBe('Smith');
+
+      // Import the helper to verify detection
+      const { isContactWithoutContactInfo } = await import('../src/atomic-crm/contacts/contactImport.logic');
+      expect(isContactWithoutContactInfo(janeSmith)).toBe(true);
+    });
+
+    it('should note: filtering logic is in useContactImport hook, not pure validation', () => {
+      // Note: The actual filtering of contacts without contact info happens in
+      // useContactImport.tsx's processBatch function (lines 145-157).
+      // This test documents the expected behavior but cannot fully test it
+      // without mocking the hook's execution.
+
+      // The validation step allows contacts without contact info (fields are optional)
+      const { successful } = validateTransformedContacts(contacts);
+
+      // Jane Smith passes validation (contact info is optional in schema)
+      const janeSmith = successful.find(c => c.first_name === 'Jane' && c.last_name === 'Smith');
+      expect(janeSmith).toBeDefined();
+
+      // However, in useContactImport.tsx, if importContactsWithoutContactInfo=false,
+      // Jane would be filtered out before processing (skippedCount would be 1)
+    });
+  });
+
   describe('Data Quality Summary', () => {
     it('should demonstrate improved success rate with data quality feature', () => {
       // Strict mode
