@@ -168,10 +168,65 @@ export const contactSchema = contactBaseSchema
     }
   });
 
+// Schema specifically for CSV imports - validates raw string fields from CSV
+export const importContactSchema = z
+  .object({
+    first_name: z.string().optional().nullable(),
+    last_name: z.string().optional().nullable(),
+    organization_name: z
+      .string({ required_error: "Organization name is required" })
+      .trim()
+      .min(1, { message: "Organization name is required" }),
+    email_work: z.string().trim().email("Invalid work email format").optional().or(z.literal("")),
+    email_home: z.string().trim().email("Invalid home email format").optional().or(z.literal("")),
+    email_other: z.string().trim().email("Invalid other email format").optional().or(z.literal("")),
+    phone_work: z.string().optional(),
+    phone_home: z.string().optional(),
+    phone_other: z.string().optional(),
+    linkedin_url: z
+      .string()
+      .optional()
+      .nullable()
+      .refine(
+        (url) => {
+          if (!url) return true;
+          try {
+            const parsedUrl = new URL(url);
+            return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
+          } catch {
+            return false;
+          }
+        },
+        { message: "LinkedIn URL must be a valid URL from linkedin.com" },
+      ),
+    title: z.string().optional(),
+    notes: z.string().optional(),
+    tags: z.string().optional(),
+    first_seen: z.string().optional(),
+    last_seen: z.string().optional(),
+    gender: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    // Require at least first name or last name
+    if (!data.first_name?.trim() && !data.last_name?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["first_name"],
+        message: "Either first name or last name must be provided",
+      });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["last_name"],
+        message: "Either first name or last name must be provided",
+      });
+    }
+  });
+
 // Type inference
 export type ContactInput = z.input<typeof contactSchema>;
 export type Contact = z.infer<typeof contactSchema>;
 export type ContactOrganization = z.infer<typeof contactOrganizationSchema>;
+export type ImportContactInput = z.input<typeof importContactSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where contact validation occurs
