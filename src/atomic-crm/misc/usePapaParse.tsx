@@ -182,9 +182,8 @@ export function usePapaParse<T>({
 
           let totalTime = 0;
           for (let i = 0; i < transformedData.length; i += batchSize) {
-            if (importIdRef.current !== importId) {
-              return;
-            }
+            // Note: Removed importIdRef check that was breaking during React.StrictMode remounts
+            // The check was causing early returns without setting state to "complete"
 
             const batch = transformedData.slice(i, i + batchSize);
             try {
@@ -220,6 +219,8 @@ export function usePapaParse<T>({
               );
             }
           }
+
+          console.log('📄 [PAPA PARSE DEBUG] All batches processed successfully. Setting state to complete.');
 
           setImporter((previous) =>
             previous.state === "running"
