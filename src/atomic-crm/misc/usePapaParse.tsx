@@ -1,6 +1,6 @@
 import * as Papa from "papaparse";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { FULL_NAME_SPLIT_MARKER, splitFullName } from "../atomic-crm/contacts/csvProcessor";
+import { parseRawCsvData } from "../atomic-crm/contacts/csvProcessor";
 
 type Import =
   | {
@@ -32,9 +32,6 @@ type usePapaParseProps<T> = {
   // processBatch returns the number of imported items (optional - required for actual import, not for preview)
   processBatch?: (batch: T[]) => Promise<void>;
 
-  // Optional: Transform headers during parsing (e.g., apply column aliases)
-  transformHeaders?: (headers: string[]) => string[];
-
   // Optional: Callback for preview mode - receives parsed preview data
   onPreview?: (rows: T[]) => void;
 
@@ -45,7 +42,6 @@ type usePapaParseProps<T> = {
 export function usePapaParse<T>({
   batchSize = 10,
   processBatch,
-  transformHeaders,
   onPreview,
   previewRowCount,
 }: usePapaParseProps<T>) {
@@ -83,57 +79,18 @@ export function usePapaParse<T>({
             return;
           }
 
-          // Papa Parse structure (skipEmptyLines only skips rows where ALL cells are empty):
-          // rawData[0] = First instruction row
-          // rawData[1] = Empty row (has empty strings, not skipped)
-          // rawData[2] = Header row (multiline cells like "PRIORITY\n(Formula)" are combined)
-          // rawData[3+] = Data rows
-          const rawData = results.data as any[][];
-          if (rawData.length < 4) {
+          let transformedData: T[];
+          try {
+            // REFACTORED: Use the single source of truth to process raw CSV data.
+            // This replaces ~40 lines of duplicated logic.
+            transformedData = parseRawCsvData(results.data as any[][]) as T[];
+          } catch (error: any) {
+            console.error("🔴 [PAPA PARSE DEBUG] CSV processing error:", error);
             setImporter({
               state: "error",
-              errorMessage: "CSV file is too short (less than 4 rows)",
+              error: error instanceof Error ? error : new Error(String(error)),
             });
             return;
-          }
-
-          // Row 3 (index 2) contains the actual headers (multiline cells are combined by Papa Parse)
-          const headers = rawData[2] as string[];
-
-          // Rows 4+ (index 3+) contain the data
-          const dataRows = rawData.slice(3);
-
-          // Convert to objects using headers
-          const data = dataRows.map(row => {
-            const obj: any = {};
-            headers.forEach((header, index) => {
-              obj[header] = row[index];
-            });
-            return obj as T;
-          });
-
-          // Transform headers if a transformation function is provided
-          let transformedData = data; // Start with untransformed data
-          if (transformHeaders) {
-            const transformedHeaders = transformHeaders(headers);
-
-            // Remap data with transformed headers
-            transformedData = data.map((row: any) => {
-              const newRow: any = {};
-              headers.forEach((oldHeader, index) => {
-                const newHeader = transformedHeaders[index] || oldHeader;
-
-                // Handle full name splitting using centralized logic
-                if (newHeader === FULL_NAME_SPLIT_MARKER) {
-                  const { first_name, last_name } = splitFullName(row[oldHeader] || '');
-                  newRow.first_name = first_name;
-                  newRow.last_name = last_name;
-                } else {
-                  newRow[newHeader] = row[oldHeader];
-                }
-              });
-              return newRow as T;
-            });
           }
 
           // If in preview mode, call onPreview callback and return early
@@ -233,7 +190,7 @@ export function usePapaParse<T>({
         dynamicTyping: true,
       });
     },
-    [batchSize, processBatch, transformHeaders, onPreview, previewRowCount],
+    [batchSize, processBatch, onPreview, previewRowCount],
   );
 
   return useMemo(
