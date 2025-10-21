@@ -170,7 +170,10 @@ export function useContactImport() {
           } = contactData;
 
           // 2. Perform logic-based validation (e.g., organization existence)
-          const trimmedOrgName = organization_name?.trim();
+          // Ensure organization_name is a string before calling .trim()
+          const trimmedOrgName = typeof organization_name === 'string'
+            ? organization_name.trim()
+            : String(organization_name || '').trim();
           if (trimmedOrgName) {
             if (preview) {
               if (!organizations.has(trimmedOrgName)) {

@@ -178,24 +178,25 @@ export const importContactSchema = z
       .string({ required_error: "Organization name is required" })
       .trim()
       .min(1, { message: "Organization name is required" }),
-    // Email fields - allow empty, null, or valid email
+    // Email fields - allow empty, null, or any string (lenient for imports)
+    // We validate email format as a warning but don't reject the import
     email_work: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
-      z.string().trim().email("Invalid work email format"),
+      z.string().trim(), // Accept any string, validate format separately
     ]).optional().nullable(),
     email_home: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
-      z.string().trim().email("Invalid home email format"),
+      z.string().trim(), // Accept any string, validate format separately
     ]).optional().nullable(),
     email_other: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
-      z.string().trim().email("Invalid other email format"),
+      z.string().trim(), // Accept any string, validate format separately
     ]).optional().nullable(),
     // Phone fields - allow empty, null, or any string
     phone_work: z.union([
