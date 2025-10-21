@@ -198,24 +198,27 @@ export const importContactSchema = z
       z.undefined(),
       z.string().trim(), // Accept any string, validate format separately
     ]).optional().nullable(),
-    // Phone fields - allow empty, null, or any string
+    // Phone fields - allow empty, null, string, or number (PapaParse converts numeric strings to numbers)
     phone_work: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
       z.string(),
+      z.number().transform(String), // Convert numbers to strings
     ]).optional().nullable(),
     phone_home: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
       z.string(),
+      z.number().transform(String), // Convert numbers to strings
     ]).optional().nullable(),
     phone_other: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
       z.string(),
+      z.number().transform(String), // Convert numbers to strings
     ]).optional().nullable(),
     // LinkedIn URL - allow empty, null, or valid LinkedIn URL
     linkedin_url: z.union([

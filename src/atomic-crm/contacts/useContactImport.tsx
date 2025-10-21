@@ -240,6 +240,7 @@ export function useContactImport() {
               linkedin_url,
               notes,
               organization_id: organization?.id,
+              avatar: undefined, // Explicitly exclude avatar to prevent schema cache errors
             };
 
             if (preview) {
