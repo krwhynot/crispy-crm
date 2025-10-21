@@ -123,14 +123,14 @@ export function ContactImportDialog({
     setShowPreview(true);
   }, []);
 
-  // Enhanced processBatch wrapper with result tracking
+  // Enhanced processBatch wrapper with result accumulation across batches
   const processBatch = useCallback(async (batch: ContactImportSchema[]) => {
     console.log('🔵 [IMPORT DEBUG] processBatch called with', batch.length, 'contacts');
-    console.log('🔵 [IMPORT DEBUG] First contact in batch:', batch[0]);
-    const startTime = Date.now();
-    let successCount = 0;
-    let errorCount = 0;
-    const errors: any[] = [];
+
+    // Set start time on first batch
+    if (!accumulatedResultRef.current.startTime) {
+      accumulatedResultRef.current.startTime = new Date();
+    }
 
     try {
       console.log('🔵 [IMPORT DEBUG] Calling processBatchHook...');
@@ -142,13 +142,25 @@ export function ContactImportDialog({
       });
 
       console.log('🔵 [IMPORT DEBUG] processBatchHook completed. Result:', result);
-      // Store the result for display
-      setImportResult(result);
-      successCount = result.successCount;
-      errorCount = result.failedCount;
+
+      // Accumulate results across all batches
+      accumulatedResultRef.current.totalProcessed += result.totalProcessed;
+      accumulatedResultRef.current.successCount += result.successCount;
+      accumulatedResultRef.current.skippedCount += result.skippedCount;
+      accumulatedResultRef.current.failedCount += result.failedCount;
+      accumulatedResultRef.current.errors.push(...result.errors);
+
+      console.log('📊 [IMPORT DEBUG] Accumulated totals:', {
+        totalProcessed: accumulatedResultRef.current.totalProcessed,
+        successCount: accumulatedResultRef.current.successCount,
+        failedCount: accumulatedResultRef.current.failedCount,
+        errorCount: accumulatedResultRef.current.errors.length,
+      });
     } catch (error) {
       console.error("🔴 [IMPORT DEBUG] Batch processing error:", error);
-      errorCount = batch.length;
+      // Count entire batch as failed
+      accumulatedResultRef.current.totalProcessed += batch.length;
+      accumulatedResultRef.current.failedCount += batch.length;
     }
   }, [processBatchHook]);
 
@@ -176,13 +188,30 @@ export function ContactImportDialog({
   useEffect(() => {
     // Monitor actualImporter for completion (not the preview one)
     if (actualImporter.importer.state === "complete") {
+      console.log('✅ [IMPORT DEBUG] Import complete! Building final result...');
+
+      const endTime = new Date();
+      const startTime = accumulatedResultRef.current.startTime || endTime;
+
+      // Build final ImportResult from accumulated data
+      const finalResult: ImportResult = {
+        totalProcessed: accumulatedResultRef.current.totalProcessed,
+        successCount: accumulatedResultRef.current.successCount,
+        skippedCount: accumulatedResultRef.current.skippedCount,
+        failedCount: accumulatedResultRef.current.failedCount,
+        errors: accumulatedResultRef.current.errors,
+        duration: endTime.getTime() - startTime.getTime(),
+        startTime: startTime,
+        endTime: endTime,
+      };
+
+      console.log('📋 [IMPORT DEBUG] Final result:', finalResult);
+
+      setImportResult(finalResult);
+      setShowResult(true);
       refresh();
-      // Show enhanced result dialog if we have result data
-      if (importResult) {
-        setShowResult(true);
-      }
     }
-  }, [actualImporter.importer.state, refresh, importResult]);
+  }, [actualImporter.importer.state, refresh]);
 
   const handleFileChange = (file: File | null) => {
     setFile(file);
@@ -204,6 +233,17 @@ export function ContactImportDialog({
   const handlePreviewContinue = () => {
     console.log('🚀 [IMPORT DEBUG] handlePreviewContinue called');
     console.log('🚀 [IMPORT DEBUG] File:', file?.name, 'Size:', file?.size);
+
+    // Reset accumulated results for new import
+    accumulatedResultRef.current = {
+      totalProcessed: 0,
+      successCount: 0,
+      skippedCount: 0,
+      failedCount: 0,
+      errors: [],
+      startTime: null,
+    };
+
     setShowPreview(false);
     setPreviewConfirmed(true);
     // Use the actualImporter to parse the file for real import
@@ -232,6 +272,17 @@ export function ContactImportDialog({
     setPreviewData(null);
     setParsedData([]);
     setImportResult(null);
+
+    // Reset accumulated results
+    accumulatedResultRef.current = {
+      totalProcessed: 0,
+      successCount: 0,
+      skippedCount: 0,
+      failedCount: 0,
+      errors: [],
+      startTime: null,
+    };
+
     onClose();
   };
 
