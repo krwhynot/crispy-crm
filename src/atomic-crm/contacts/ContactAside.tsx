@@ -121,6 +121,14 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
         <TagsListEdit />
       </AsideSection>
 
+      {record.notes && (
+        <AsideSection title="Notes">
+          <div className="text-sm text-[color:var(--text)] whitespace-pre-wrap bg-[color:var(--background-subtle)] p-3 rounded-md border-l-[3px] border-[color:var(--border)]">
+            {record.notes}
+          </div>
+        </AsideSection>
+      )}
+
       <AsideSection title="Tasks">
         <ReferenceManyField
           target="contact_id"

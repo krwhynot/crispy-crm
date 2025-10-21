@@ -178,6 +178,13 @@ const ContactMiscInputs = () => {
           optionText={saleOptionRenderer}
         />
       </ReferenceInput>
+      <TextInput
+        source="notes"
+        label="Notes"
+        multiline
+        rows={4}
+        helperText="Additional information about this contact"
+      />
     </div>
   );
 };

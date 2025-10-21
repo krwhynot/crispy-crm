@@ -140,6 +140,7 @@ export function useContactImport() {
             organization_name,
             tags: tagNames,
             linkedin_url,
+            notes,
           } = contactData;
 
           const rowNumber = index + 1;
@@ -150,6 +151,8 @@ export function useContactImport() {
             console.log("🔍 [CSV DEBUG] email_work:", email_work);
             console.log("🔍 [CSV DEBUG] email_home:", email_home);
             console.log("🔍 [CSV DEBUG] email_other:", email_other);
+            console.log("🔍 [CSV DEBUG] phone_work:", phone_work);
+            console.log("🔍 [CSV DEBUG] notes:", notes);
           }
 
           try {
@@ -209,6 +212,7 @@ export function useContactImport() {
               tags: preview ? [] : tagList.map((tag) => tag.id),
               sales_id: identity?.id,
               linkedin_url,
+              notes,
               organization_id: organization?.id, // Direct FK matches UI form pattern
             };
 
