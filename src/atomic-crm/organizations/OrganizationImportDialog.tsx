@@ -63,7 +63,24 @@ export function OrganizationImportDialog({
       skipEmptyLines: true,
       complete: async (results) => {
         const rows = results.data as any[];
-        setImportProgress({ count: 0, total: rows.length });
+
+        // Map CSV headers to canonical field names
+        const headers = results.meta.fields || [];
+        const columnMapping = mapHeadersToFields(headers);
+
+        // Transform rows using column mapping
+        const mappedRows = rows.map((row) => {
+          const mappedRow: any = {};
+          headers.forEach((header) => {
+            const canonicalField = columnMapping[header];
+            if (canonicalField && row[header]) {
+              mappedRow[canonicalField] = row[header];
+            }
+          });
+          return mappedRow;
+        });
+
+        setImportProgress({ count: 0, total: mappedRows.length });
         setImportState("running");
 
         const errors: Array<{ row: number; reason: string; data?: any }> = [];
@@ -71,13 +88,13 @@ export function OrganizationImportDialog({
         let failedCount = 0;
 
         // Process organizations one by one
-        for (let i = 0; i < rows.length; i++) {
-          const row = rows[i];
+        for (let i = 0; i < mappedRows.length; i++) {
+          const row = mappedRows[i];
           const rowNumber = i + 2; // +2 for header and 0-indexing
 
           try {
             // Basic validation - organization name is required
-            if (!row.name && !row.Name && !row.organization_name && !row["Organization Name"]) {
+            if (!row.name || !row.name.trim()) {
               errors.push({
                 row: rowNumber,
                 reason: "Organization name is required",
@@ -89,21 +106,17 @@ export function OrganizationImportDialog({
 
             // Prepare organization data
             const orgData: any = {
-              name:
-                row.name ||
-                row.Name ||
-                row.organization_name ||
-                row["Organization Name"],
-              website: row.website || row.Website || null,
-              phone: row.phone || row.Phone || row.phone_number || null,
-              address: row.address || row.Address || null,
-              city: row.city || row.City || null,
-              state: row.state || row.State || null,
-              postal_code: row.postal_code || row["Postal Code"] || row.zip || null,
-              linkedin_url: row.linkedin_url || row["LinkedIn URL"] || row.linkedin || null,
-              priority: row.priority || row.Priority || "C",
-              organization_type: row.organization_type || row["Organization Type"] || row.type || "unknown",
-              description: row.description || row.Description || row.notes || null,
+              name: row.name,
+              website: row.website || null,
+              phone: row.phone || null,
+              address: row.address || null,
+              city: row.city || null,
+              state: row.state || null,
+              postal_code: row.postal_code || null,
+              linkedin_url: row.linkedin_url || null,
+              priority: row.priority || "C",
+              organization_type: row.organization_type || "unknown",
+              description: row.description || null,
             };
 
             // Create organization
