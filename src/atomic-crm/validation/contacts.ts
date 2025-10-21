@@ -169,6 +169,7 @@ export const contactSchema = contactBaseSchema
   });
 
 // Schema specifically for CSV imports - validates raw string fields from CSV
+// More permissive than the main schema to handle real-world CSV data
 export const importContactSchema = z
   .object({
     first_name: z.string().optional().nullable(),
@@ -177,19 +178,51 @@ export const importContactSchema = z
       .string({ required_error: "Organization name is required" })
       .trim()
       .min(1, { message: "Organization name is required" }),
-    email_work: z.string().trim().email("Invalid work email format").optional().or(z.literal("")),
-    email_home: z.string().trim().email("Invalid home email format").optional().or(z.literal("")),
-    email_other: z.string().trim().email("Invalid other email format").optional().or(z.literal("")),
-    phone_work: z.string().optional(),
-    phone_home: z.string().optional(),
-    phone_other: z.string().optional(),
-    linkedin_url: z
-      .string()
-      .optional()
-      .nullable()
-      .refine(
+    // Email fields - allow empty, null, or valid email
+    email_work: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string().trim().email("Invalid work email format"),
+    ]).optional().nullable(),
+    email_home: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string().trim().email("Invalid home email format"),
+    ]).optional().nullable(),
+    email_other: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string().trim().email("Invalid other email format"),
+    ]).optional().nullable(),
+    // Phone fields - allow empty, null, or any string
+    phone_work: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    phone_home: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    phone_other: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    // LinkedIn URL - allow empty, null, or valid LinkedIn URL
+    linkedin_url: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string().refine(
         (url) => {
-          if (!url) return true;
           try {
             const parsedUrl = new URL(url);
             return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
@@ -199,12 +232,44 @@ export const importContactSchema = z
         },
         { message: "LinkedIn URL must be a valid URL from linkedin.com" },
       ),
-    title: z.string().optional(),
-    notes: z.string().optional(),
-    tags: z.string().optional(),
-    first_seen: z.string().optional(),
-    last_seen: z.string().optional(),
-    gender: z.string().optional(),
+    ]).optional().nullable(),
+    // Other optional fields - allow empty, null, or any string
+    title: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    notes: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    tags: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    first_seen: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    last_seen: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
+    gender: z.union([
+      z.literal(""),
+      z.literal(null),
+      z.undefined(),
+      z.string(),
+    ]).optional().nullable(),
   })
   .superRefine((data, ctx) => {
     // Require at least first name or last name
