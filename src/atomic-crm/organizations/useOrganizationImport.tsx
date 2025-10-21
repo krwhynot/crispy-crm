@@ -3,26 +3,24 @@ import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Tag } from "../types";
 import { ZodError } from "zod";
+import {
+  applyDataQualityTransformations,
+  validateTransformedOrganizations,
+  type DataQualityDecisions as LogicDataQualityDecisions,
+  type OrganizationImportSchema as LogicOrganizationImportSchema
+} from "./organizationImport.logic";
 
 /**
  * Organization CSV import schema
- * Matches the structure expected from CSV files
+ * Re-exported from business logic for consistency
  */
-export interface OrganizationImportSchema {
-  name: string;
-  organization_type?: string;
-  priority?: string;
-  segment?: string;
-  linkedin_url?: string;
-  website?: string;
-  phone?: string;
-  address?: string;
-  postal_code?: string;
-  city?: string;
-  state?: string;
-  description?: string;
-  tags?: string;
-}
+export type OrganizationImportSchema = LogicOrganizationImportSchema;
+
+/**
+ * Data quality decisions for organization imports
+ * Re-exported from business logic for consistency
+ */
+export type DataQualityDecisions = LogicDataQualityDecisions;
 
 export interface FieldError {
   field: string;
