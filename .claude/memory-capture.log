@@ -1408,3 +1408,4 @@
 [2025-10-21 05:04:58] [code] Write: /home/krwhynot/projects/crispy-crm/data/import_test_focused.csv
 [2025-10-21 05:05:53] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/verify-import-results.sh
 [2025-10-21 05:18:00] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/test-import-e2e.mjs
+[2025-10-21 05:37:15] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/contactImport.logic.ts
