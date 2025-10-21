@@ -335,15 +335,17 @@ export function ContactImportDialog({
       {/* Preview Dialog (when feature flag is enabled) */}
       {ENABLE_IMPORT_PREVIEW && showPreview && previewData && (
         <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
-          <DialogContent className="max-w-6xl max-h-[85vh] overflow-y-auto">
-            <DialogHeader>
+          <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-0">
+            <DialogHeader className="px-6 pt-6 pb-4 border-b">
               <DialogTitle>Import Preview</DialogTitle>
             </DialogHeader>
-            <ContactImportPreview
-              preview={previewData}
-              onContinue={handlePreviewContinue}
-              onCancel={handlePreviewCancel}
-            />
+            <div className="flex-1 overflow-y-auto px-6">
+              <ContactImportPreview
+                preview={previewData}
+                onContinue={handlePreviewContinue}
+                onCancel={handlePreviewCancel}
+              />
+            </div>
           </DialogContent>
         </Dialog>
       )}
