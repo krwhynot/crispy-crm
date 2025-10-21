@@ -9,10 +9,17 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Loader2, CheckCircle2, Building2, Upload } from "lucide-react";
 import { useRefresh, useNotify } from "ra-core";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import Papa from "papaparse";
-import { mapHeadersToFields } from "./organizationColumnAliases";
+import { findCanonicalField, mapHeadersToFields } from "./organizationColumnAliases";
+import { detectDuplicateOrganizations } from "./organizationImport.logic";
 import { useOrganizationImport, type ImportResult, type ImportError } from "./useOrganizationImport";
+import OrganizationImportPreview, {
+  type PreviewData,
+  type DataQualityDecisions,
+  type ColumnMapping,
+  type DuplicateGroup,
+} from "./OrganizationImportPreview";
 
 type OrganizationImportDialogProps = {
   open: boolean;
@@ -35,6 +42,13 @@ export function OrganizationImportDialog({
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Preview state management
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewData, setPreviewData] = useState<PreviewData | null>(null);
+  const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(new Map());
+  const [rawHeaders, setRawHeaders] = useState<string[]>([]);
+  const [rawDataRows, setRawDataRows] = useState<any[]>([]);
+
   // Refs for accumulating results across batches
   const accumulatedResultRef = useRef<{
     totalProcessed: number;
@@ -52,6 +66,183 @@ export function OrganizationImportDialog({
     startTime: null,
   });
   const rowOffsetRef = useRef(0);
+
+  // Derive final mappings by merging auto-detection with user overrides
+  const mergedMappings = useMemo<Record<string, string | null>>(() => {
+    if (rawHeaders.length === 0) return {};
+
+    const autoMappings = mapHeadersToFields(rawHeaders);
+    const finalMappings: Record<string, string | null> = {};
+
+    rawHeaders.forEach(header => {
+      // Priority: User override > Auto-detection
+      finalMappings[header] = userOverrides.get(header) ?? autoMappings[header];
+    });
+
+    return finalMappings;
+  }, [rawHeaders, userOverrides]);
+
+  // Reprocess organizations whenever mappings or raw data change
+  const reprocessedOrganizations = useMemo<any[]>(() => {
+    if (!rawHeaders.length || !rawDataRows.length) {
+      return [];
+    }
+
+    // Transform raw rows using merged mappings
+    return rawDataRows.map((row) => {
+      const mappedRow: any = {};
+      rawHeaders.forEach((header, index) => {
+        const canonicalField = mergedMappings[header];
+        if (canonicalField && row[index] !== undefined && row[index] !== '') {
+          mappedRow[canonicalField] = row[index];
+        }
+      });
+      return mappedRow;
+    });
+  }, [rawHeaders, rawDataRows, mergedMappings]);
+
+  // Derive preview data reactively whenever mappings change
+  const derivedPreviewData = useMemo<PreviewData | null>(() => {
+    if (!rawHeaders.length || !rawDataRows.length) {
+      return previewData;
+    }
+
+    // Generate updated mappings for UI display with confidence scores
+    const updatedMappings: ColumnMapping[] = rawHeaders.map((header, index) => {
+      const target = mergedMappings[header];
+
+      // Calculate confidence: 1.0 for matched (including user overrides), 0.0 for unmapped
+      const confidence = target ? 1.0 : 0.0;
+
+      // Get sample value from first row
+      const sampleValue = rawDataRows[0]?.[index] ? String(rawDataRows[0][index]).substring(0, 50) : undefined;
+
+      return {
+        source: header || '(empty)',
+        target,
+        confidence,
+        sampleValue,
+      };
+    });
+
+    // Detect duplicates in reprocessed data
+    const duplicateReport = detectDuplicateOrganizations(reprocessedOrganizations);
+    const duplicateGroups: DuplicateGroup[] = duplicateReport.duplicates.map(dup => ({
+      indices: dup.indices.map(i => i + 2), // +2 for CSV header row (1-indexed display)
+      name: dup.name,
+      count: dup.count,
+    }));
+
+    // Extract unique tags from reprocessed organizations
+    const newTags = new Set<string>();
+    reprocessedOrganizations.forEach(org => {
+      if (org.tags) {
+        org.tags.split(',').forEach((tag: string) => {
+          const trimmed = tag.trim();
+          if (trimmed) {
+            newTags.add(trimmed);
+          }
+        });
+      }
+    });
+
+    return {
+      mappings: updatedMappings,
+      sampleRows: reprocessedOrganizations.slice(0, 5),
+      validCount: reprocessedOrganizations.length,
+      totalRows: reprocessedOrganizations.length,
+      newTags: Array.from(newTags),
+      duplicates: duplicateGroups.length > 0 ? duplicateGroups : undefined,
+      lowConfidenceMappings: updatedMappings.filter(m => m.confidence === 0).length,
+    };
+  }, [reprocessedOrganizations, mergedMappings, rawHeaders, rawDataRows, previewData]);
+
+  // Handler for user changing a column mapping
+  const handleMappingChange = useCallback((csvHeader: string, targetField: string | null) => {
+    setUserOverrides(prev => {
+      const next = new Map(prev);
+      if (targetField === null || targetField === '') {
+        // Clear override → revert to auto-detection
+        next.delete(csvHeader);
+      } else {
+        next.set(csvHeader, targetField);
+      }
+      return next;
+    });
+  }, []);
+
+  // Handle preview cancellation
+  const handlePreviewCancel = useCallback(() => {
+    setShowPreview(false);
+    setPreviewData(null);
+    setUserOverrides(new Map());
+    setRawHeaders([]);
+    setRawDataRows([]);
+  }, []);
+
+  // Handle preview confirmation and start the actual import
+  const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
+    let organizationsToImport = [...reprocessedOrganizations];
+
+    // Filter out duplicates if user chose to skip them
+    if (decisions.skipDuplicates) {
+      const seenNames = new Set<string>();
+      organizationsToImport = reprocessedOrganizations.filter(org => {
+        if (!org.name) return false;
+        const normalizedName = org.name.toLowerCase().trim();
+        if (seenNames.has(normalizedName)) return false;
+        seenNames.add(normalizedName);
+        return true;
+      });
+    }
+
+    // Reset accumulated results for new import
+    accumulatedResultRef.current = {
+      totalProcessed: 0,
+      successCount: 0,
+      skippedCount: 0,
+      failedCount: 0,
+      errors: [],
+      startTime: null,
+    };
+    rowOffsetRef.current = 0;
+
+    setShowPreview(false);
+    setImportState("running");
+    setImportProgress({ count: 0, total: organizationsToImport.length });
+
+    try {
+      // Process organizations in batches to prevent overwhelming the server
+      const batchSize = 10;
+      for (let i = 0; i < organizationsToImport.length; i += batchSize) {
+        const batch = organizationsToImport.slice(i, i + batchSize);
+        await processBatch(batch);
+        setImportProgress(prev => ({ ...prev, count: i + batch.length }));
+      }
+
+      setImportState("complete");
+
+      // Build final result from accumulated data
+      const endTime = new Date();
+      const startTime = accumulatedResultRef.current.startTime || endTime;
+      const finalResult: ImportResult = {
+        totalProcessed: accumulatedResultRef.current.totalProcessed,
+        successCount: accumulatedResultRef.current.successCount,
+        skippedCount: accumulatedResultRef.current.skippedCount,
+        failedCount: accumulatedResultRef.current.failedCount,
+        errors: accumulatedResultRef.current.errors,
+        duration: endTime.getTime() - startTime.getTime(),
+        startTime: startTime,
+        endTime: endTime,
+      };
+
+      setImportResult(finalResult);
+      refresh();
+    } catch (error: any) {
+      notify(`Import failed: ${error.message}`, { type: "error" });
+      setImportState("error");
+    }
+  }, [reprocessedOrganizations, refresh, notify]);
 
   // Enhanced processBatch wrapper with result accumulation across batches
   const processBatch = useCallback(async (batch: any[]) => {

@@ -69,14 +69,39 @@ interface OrganizationImportPreviewProps {
   userOverrides?: Map<string, string | null>;
 }
 
+// Available fields for mapping
+const getAvailableFieldsWithLabels = () => [
+  { value: "name", label: "Organization Name" },
+  { value: "organization_type", label: "Organization Type" },
+  { value: "priority", label: "Priority" },
+  { value: "segment_id", label: "Segment" },
+  { value: "phone", label: "Phone" },
+  { value: "address", label: "Street Address" },
+  { value: "city", label: "City" },
+  { value: "state", label: "State" },
+  { value: "postal_code", label: "Postal Code" },
+  { value: "linkedin_url", label: "LinkedIn URL" },
+  { value: "website", label: "Website" },
+  { value: "description", label: "Description/Notes" },
+  { value: "tags", label: "Tags" },
+];
+
 export function OrganizationImportPreview({
   preview,
   onContinue,
   onCancel,
+  onMappingChange,
+  userOverrides,
 }: OrganizationImportPreviewProps) {
   const [expandedSections, setExpandedSections] = useState({
+    mappings: preview.lowConfidenceMappings > 0, // Auto-expand if low confidence
+    duplicates: (preview.duplicates?.length || 0) > 0, // Auto-expand if duplicates found
     tags: false,
     sampleData: false,
+  });
+
+  const [dataQualityDecisions, setDataQualityDecisions] = useState<DataQualityDecisions>({
+    skipDuplicates: true, // Default to skipping duplicates
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -85,6 +110,13 @@ export function OrganizationImportPreview({
       [section]: !prev[section],
     }));
   };
+
+  const handleContinue = () => {
+    onContinue(dataQualityDecisions);
+  };
+
+  const availableFields = getAvailableFieldsWithLabels();
+  const duplicateCount = preview.duplicates?.reduce((sum, group) => sum + group.count, 0) || 0;
 
   return (
     <div className="flex flex-col gap-4">
@@ -110,9 +142,197 @@ export function OrganizationImportPreview({
                 </span>
               </div>
             )}
+            {duplicateCount > 0 && (
+              <div className="flex items-center gap-4 text-sm text-orange-600">
+                <span className="flex items-center gap-1">
+                  <Copy className="h-3 w-3" />
+                  {duplicateCount} duplicate entries found
+                </span>
+              </div>
+            )}
           </div>
         </AlertDescription>
       </Alert>
+
+      {/* Column Mappings */}
+      {preview.lowConfidenceMappings > 0 && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Review Column Mappings</AlertTitle>
+          <AlertDescription>
+            {preview.lowConfidenceMappings} column{preview.lowConfidenceMappings > 1 ? 's' : ''} could not be mapped automatically.
+            Please review and adjust the mappings below.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <Collapsible open={expandedSections.mappings}>
+        <Card>
+          <CollapsibleTrigger asChild>
+            <CardHeader
+              className="cursor-pointer"
+              onClick={() => toggleSection("mappings")}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CardTitle>Column Mappings</CardTitle>
+                  {preview.lowConfidenceMappings > 0 && (
+                    <Badge variant="destructive">{preview.lowConfidenceMappings} need review</Badge>
+                  )}
+                </div>
+                {expandedSections.mappings ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" />
+                )}
+              </div>
+              <CardDescription>
+                How CSV columns map to organization fields
+              </CardDescription>
+            </CardHeader>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>CSV Column</TableHead>
+                    <TableHead>Maps To</TableHead>
+                    <TableHead>Sample Value</TableHead>
+                    <TableHead className="w-20">Confidence</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {preview.mappings.map((mapping, index) => {
+                    const currentMapping = userOverrides?.get(mapping.source) !== undefined
+                      ? userOverrides.get(mapping.source)
+                      : mapping.target;
+
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{mapping.source}</TableCell>
+                        <TableCell>
+                          {onMappingChange ? (
+                            <Select
+                              value={currentMapping || "unmapped"}
+                              onValueChange={(value) =>
+                                onMappingChange(mapping.source, value === "unmapped" ? null : value)
+                              }
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="unmapped">
+                                  <span className="text-muted-foreground">Skip this column</span>
+                                </SelectItem>
+                                {availableFields.map((field) => (
+                                  <SelectItem key={field.value} value={field.value}>
+                                    {field.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <span>{currentMapping || "Unmapped"}</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {mapping.sampleValue || "-"}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={mapping.confidence >= 0.8 ? "default" : mapping.confidence >= 0.5 ? "secondary" : "destructive"}
+                          >
+                            {Math.round(mapping.confidence * 100)}%
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
+
+      {/* Duplicates Warning */}
+      {preview.duplicates && preview.duplicates.length > 0 && (
+        <Collapsible open={expandedSections.duplicates}>
+          <Card>
+            <CollapsibleTrigger asChild>
+              <CardHeader
+                className="cursor-pointer"
+                onClick={() => toggleSection("duplicates")}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-orange-600" />
+                    <CardTitle>Duplicate Organizations</CardTitle>
+                    <Badge variant="secondary">{duplicateCount} duplicates</Badge>
+                  </div>
+                  {expandedSections.duplicates ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </div>
+                <CardDescription>
+                  Found {preview.duplicates.length} organization{preview.duplicates.length > 1 ? 's' : ''} with duplicate names
+                </CardDescription>
+              </CardHeader>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <CardContent>
+                <div className="space-y-3">
+                  {preview.duplicates.slice(0, 10).map((group, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                      <div className="flex items-center gap-2">
+                        <Copy className="h-4 w-4 text-orange-600" />
+                        <span className="font-medium">{group.name}</span>
+                      </div>
+                      <Badge variant="secondary">{group.count} occurrences (rows: {group.indices.slice(0, 3).join(", ")}{group.indices.length > 3 ? '...' : ''})</Badge>
+                    </div>
+                  ))}
+                  {preview.duplicates.length > 10 && (
+                    <p className="text-sm text-muted-foreground">
+                      ... and {preview.duplicates.length - 10} more duplicate groups
+                    </p>
+                  )}
+
+                  {/* Data Quality Decision for Duplicates */}
+                  <div className="mt-4 p-3 border rounded-md bg-background">
+                    <div className="flex items-start space-x-2">
+                      <Checkbox
+                        id="skip-duplicates"
+                        checked={dataQualityDecisions.skipDuplicates}
+                        onCheckedChange={(checked) =>
+                          setDataQualityDecisions({
+                            ...dataQualityDecisions,
+                            skipDuplicates: checked as boolean,
+                          })
+                        }
+                      />
+                      <div className="grid gap-1.5 leading-none">
+                        <Label
+                          htmlFor="skip-duplicates"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Skip duplicate organizations
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Only import the first occurrence of each organization name. Recommended to avoid data duplication.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </CollapsibleContent>
+          </Card>
+        </Collapsible>
+      )}
 
       {/* Sample Data Preview */}
       <Collapsible open={expandedSections.sampleData}>
@@ -225,7 +445,7 @@ export function OrganizationImportPreview({
         </Button>
         <Button
           variant="default"
-          onClick={onContinue}
+          onClick={handleContinue}
           disabled={preview.validCount === 0}
         >
           Continue Import ({preview.validCount} organizations)
