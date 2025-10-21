@@ -27,13 +27,75 @@ export function OrganizationImportDialog({
 }: OrganizationImportDialogProps) {
   const refresh = useRefresh();
   const notify = useNotify();
-  const processBatch = useOrganizationImport();
+  const processBatchHook = useOrganizationImport();
 
   const [file, setFile] = useState<File | null>(null);
   const [importState, setImportState] = useState<ImportState>("idle");
   const [importProgress, setImportProgress] = useState({ count: 0, total: 0 });
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Refs for accumulating results across batches
+  const accumulatedResultRef = useRef<{
+    totalProcessed: number;
+    successCount: number;
+    skippedCount: number;
+    failedCount: number;
+    errors: ImportError[];
+    startTime: Date | null;
+  }>({
+    totalProcessed: 0,
+    successCount: 0,
+    skippedCount: 0,
+    failedCount: 0,
+    errors: [],
+    startTime: null,
+  });
+  const rowOffsetRef = useRef(0);
+
+  // Enhanced processBatch wrapper with result accumulation across batches
+  const processBatch = useCallback(async (batch: any[]) => {
+    // Set start time on first batch
+    if (!accumulatedResultRef.current.startTime) {
+      accumulatedResultRef.current.startTime = new Date();
+    }
+
+    try {
+      const result = await processBatchHook(batch, {
+        preview: false,
+        startingRow: rowOffsetRef.current + 2, // +2 for CSV header row
+        onProgress: (current, total) => {
+          setImportProgress(prev => ({ ...prev, count: prev.count + 1 }));
+        }
+      });
+
+      rowOffsetRef.current += batch.length;
+
+      // Accumulate results across all batches
+      accumulatedResultRef.current.totalProcessed += result.totalProcessed;
+      accumulatedResultRef.current.successCount += result.successCount;
+      accumulatedResultRef.current.skippedCount += result.skippedCount;
+      accumulatedResultRef.current.failedCount += result.failedCount;
+      accumulatedResultRef.current.errors.push(...result.errors);
+    } catch (error: any) {
+      const errorMessage = error.message || "A critical error occurred during batch processing.";
+      const batchStartRow = rowOffsetRef.current + 2;
+
+      // Add an error entry for each organization in the failed batch
+      batch.forEach((orgData, index) => {
+        accumulatedResultRef.current.errors.push({
+          row: batchStartRow + index,
+          data: orgData,
+          errors: [{ field: "batch_processing", message: errorMessage }],
+        });
+      });
+
+      // Count entire batch as failed
+      accumulatedResultRef.current.totalProcessed += batch.length;
+      accumulatedResultRef.current.failedCount += batch.length;
+      rowOffsetRef.current += batch.length;
+    }
+  }, [processBatchHook]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
@@ -74,22 +136,46 @@ export function OrganizationImportDialog({
           return mappedRow;
         });
 
+        // Reset accumulated results for new import
+        accumulatedResultRef.current = {
+          totalProcessed: 0,
+          successCount: 0,
+          skippedCount: 0,
+          failedCount: 0,
+          errors: [],
+          startTime: null,
+        };
+        rowOffsetRef.current = 0;
+
         setImportProgress({ count: 0, total: mappedRows.length });
         setImportState("running");
 
         try {
-          // Use the hook to process the batch
-          const result = await processBatch(mappedRows, {
-            preview: false,
-            onProgress: (current, total) => {
-              setImportProgress({ count: current, total });
-            },
-            startingRow: 2, // CSV row 2 is first data row (after header)
-          });
+          // Process organizations in batches to prevent overwhelming the server
+          const batchSize = 10;
+          for (let i = 0; i < mappedRows.length; i += batchSize) {
+            const batch = mappedRows.slice(i, i + batchSize);
+            await processBatch(batch);
+            setImportProgress(prev => ({ ...prev, count: i + batch.length }));
+          }
 
-          // Set final result
-          setImportResult(result);
           setImportState("complete");
+
+          // Build final result from accumulated data
+          const endTime = new Date();
+          const startTime = accumulatedResultRef.current.startTime || endTime;
+          const finalResult: ImportResult = {
+            totalProcessed: accumulatedResultRef.current.totalProcessed,
+            successCount: accumulatedResultRef.current.successCount,
+            skippedCount: accumulatedResultRef.current.skippedCount,
+            failedCount: accumulatedResultRef.current.failedCount,
+            errors: accumulatedResultRef.current.errors,
+            duration: endTime.getTime() - startTime.getTime(),
+            startTime: startTime,
+            endTime: endTime,
+          };
+
+          setImportResult(finalResult);
           refresh();
         } catch (error: any) {
           notify(`Import failed: ${error.message}`, { type: "error" });
@@ -108,6 +194,18 @@ export function OrganizationImportDialog({
     setImportState("idle");
     setImportResult(null);
     setImportProgress({ count: 0, total: 0 });
+
+    // Reset accumulated results
+    accumulatedResultRef.current = {
+      totalProcessed: 0,
+      successCount: 0,
+      skippedCount: 0,
+      failedCount: 0,
+      errors: [],
+      startTime: null,
+    };
+    rowOffsetRef.current = 0;
+
     onClose();
   };
 
