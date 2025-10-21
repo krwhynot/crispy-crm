@@ -28,8 +28,8 @@ type usePapaParseProps<T> = {
   // The import batch size
   batchSize?: number;
 
-  // processBatch returns the number of imported items
-  processBatch(batch: T[]): Promise<void>;
+  // processBatch returns the number of imported items (optional - required for actual import, not for preview)
+  processBatch?: (batch: T[]): Promise<void>;
 
   // Optional: Transform headers during parsing (e.g., apply column aliases)
   transformHeaders?: (headers: string[]) => string[];
@@ -77,24 +77,25 @@ export function usePapaParse<T>({
             return;
           }
 
-          // With skipEmptyLines, Papa Parse structure is:
-          // rawData[0] = Lines 1-2 (instruction rows)
-          // rawData[1] = Lines 4-8 (header row - multiline cells combined)
-          // rawData[2+] = Line 9+ (data rows)
+          // Papa Parse structure (skipEmptyLines only skips rows where ALL cells are empty):
+          // rawData[0] = First instruction row
+          // rawData[1] = Empty row (has empty strings, not skipped)
+          // rawData[2] = Header row (multiline cells like "PRIORITY\n(Formula)" are combined)
+          // rawData[3+] = Data rows
           const rawData = results.data as any[][];
-          if (rawData.length < 3) {
+          if (rawData.length < 4) {
             setImporter({
               state: "error",
-              errorMessage: "CSV file is too short (less than 3 rows)",
+              errorMessage: "CSV file is too short (less than 4 rows)",
             });
             return;
           }
 
-          // Row 2 (index 1) contains the actual headers (multiline cells are combined by Papa Parse)
-          const headers = rawData[1] as string[];
+          // Row 3 (index 2) contains the actual headers (multiline cells are combined by Papa Parse)
+          const headers = rawData[2] as string[];
 
-          // Rows 3+ (index 2+) contain the data
-          const dataRows = rawData.slice(2);
+          // Rows 4+ (index 3+) contain the data
+          const dataRows = rawData.slice(3);
 
           // Convert to objects using headers
           const data = dataRows.map(row => {
