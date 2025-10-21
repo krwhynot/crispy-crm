@@ -3,6 +3,8 @@ import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Organization, Tag } from "../types";
 import { mapHeadersToFields, isFullNameColumn, findCanonicalField } from "./columnAliases";
+import { importContactSchema } from "../validation/contacts";
+import { ZodError } from "zod";
 
 export interface ContactImportSchema {
   first_name: string;
@@ -23,10 +25,16 @@ export interface ContactImportSchema {
   notes?: string; // Contact notes text field
 }
 
+export interface FieldError {
+  field: string;
+  message: string;
+  value?: any;
+}
+
 export interface ImportError {
   row: number;
   data: any;
-  reason: string;
+  errors: FieldError[]; // Changed from 'reason: string' to support multiple errors
 }
 
 export interface ImportResult {
@@ -124,6 +132,23 @@ export function useContactImport() {
       // Process all contacts with Promise.allSettled for better error tracking
       const results = await Promise.allSettled(
         batch.map(async (contactData, index) => {
+          const rowNumber = index + 1;
+          const rowErrors: FieldError[] = [];
+
+          // 1. Validate with Zod schema first to catch ALL format/presence errors
+          const validationResult = importContactSchema.safeParse(contactData);
+          if (!validationResult.success) {
+            validationResult.error.issues.forEach((issue) => {
+              const fieldPath = issue.path.join(".");
+              const fieldValue = issue.path.reduce((obj: any, key) => obj?.[key], contactData);
+              rowErrors.push({
+                field: fieldPath,
+                message: issue.message,
+                value: fieldValue,
+              });
+            });
+          }
+
           const {
             first_name,
             last_name,
@@ -143,23 +168,41 @@ export function useContactImport() {
             notes,
           } = contactData;
 
-          const rowNumber = index + 1;
-
-          // Debug: Log the raw contact data from CSV
-          if (rowNumber === 1) {
-            console.log("🔍 [CSV DEBUG] First contact raw data:", JSON.stringify(contactData, null, 2));
-            console.log("🔍 [CSV DEBUG] email_work:", email_work);
-            console.log("🔍 [CSV DEBUG] email_home:", email_home);
-            console.log("🔍 [CSV DEBUG] email_other:", email_other);
-            console.log("🔍 [CSV DEBUG] phone_work:", phone_work);
-            console.log("🔍 [CSV DEBUG] notes:", notes);
+          // 2. Perform logic-based validation (e.g., organization existence)
+          const trimmedOrgName = organization_name?.trim();
+          if (trimmedOrgName) {
+            if (preview) {
+              if (!organizations.has(trimmedOrgName)) {
+                rowErrors.push({
+                  field: "organization_name",
+                  message: `Organization "${trimmedOrgName}" would need to be created`,
+                  value: trimmedOrgName,
+                });
+              }
+            } else {
+              const organization = organizations.get(trimmedOrgName);
+              if (!organization?.id) {
+                rowErrors.push({
+                  field: "organization_name",
+                  message: `Failed to find or create organization "${trimmedOrgName}"`,
+                  value: trimmedOrgName,
+                });
+              }
+            }
           }
 
+          // 3. If any errors were found, bail early and report ALL of them
+          if (rowErrors.length > 0) {
+            return {
+              rowNumber,
+              success: false,
+              errors: rowErrors,
+              data: contactData,
+            };
+          }
+
+          // 4. If all validations pass, proceed with creating the payload
           try {
-            // Validate required name fields first
-            if (!first_name?.trim() && !last_name?.trim()) {
-              throw new Error("Missing contact name: First name and last name are required");
-            }
 
             const email = [
               { email: email_work, type: "Work" },
@@ -167,48 +210,16 @@ export function useContactImport() {
               { email: email_other, type: "Other" },
             ].filter(({ email }) => email);
 
-            // Validate email format for each email entry
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            for (const emailEntry of email) {
-              if (emailEntry.email && !emailRegex.test(emailEntry.email)) {
-                throw new Error(
-                  `Invalid email format: "${emailEntry.email}" is not a valid email address. Expected format: name@domain.com`
-                );
-              }
-            }
-
             const phone = [
               { number: phone_work, type: "Work" },
               { number: phone_home, type: "Home" },
               { number: phone_other, type: "Other" },
             ].filter(({ number }) => number);
 
-            const trimmedOrgName = organization_name?.trim();
-
-            // Validation: Ensure a primary organization name is provided
-            if (!trimmedOrgName) {
-              throw new Error("Missing organization name: Organization is required for all contacts");
-            }
-
-            // In preview mode, just validate the organization exists in our map
-            if (preview) {
-              if (!organizations.has(trimmedOrgName)) {
-                throw new Error(`Organization "${trimmedOrgName}" would need to be created`);
-              }
-            } else {
-              const organization = organizations.get(trimmedOrgName);
-
-              // If organization doesn't exist and couldn't be created, fail
-              if (!organization?.id) {
-                throw new Error(`Failed to find or create organization "${trimmedOrgName}"`);
-              }
-            }
-
             const tagList = parseTags(tagNames)
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 
-            // Get organization ID for direct FK (UI uses contacts.organization_id)
             const organization = organizations.get(trimmedOrgName);
 
             const contactPayload = {
@@ -218,48 +229,61 @@ export function useContactImport() {
               title,
               email,
               phone,
-              first_seen: first_seen
-                ? new Date(first_seen).toISOString()
-                : today,
-              last_seen: last_seen
-                ? new Date(last_seen).toISOString()
-                : today,
+              first_seen: first_seen ? new Date(first_seen).toISOString() : today,
+              last_seen: last_seen ? new Date(last_seen).toISOString() : today,
               tags: preview ? [] : tagList.map((tag) => tag.id),
               sales_id: identity?.id,
               linkedin_url,
               notes,
-              organization_id: organization?.id, // Direct FK matches UI form pattern
+              organization_id: organization?.id,
             };
 
             if (preview) {
-              // Validate contact using data provider's dry-run mode
               await dataProvider.create("contacts", {
                 data: contactPayload,
                 meta: { dryRun: true },
               });
-              return { rowNumber, success: true };
             } else {
-              // Create the contact record with organization_id (matches UI)
-              console.log("Creating contact - Name:", first_name, last_name);
-              console.log("Email array:", JSON.stringify(contactPayload.email));
-              console.log("Full payload:", JSON.stringify(contactPayload, null, 2));
-              const contactResponse = await dataProvider.create("contacts", {
+              await dataProvider.create("contacts", {
                 data: contactPayload,
               });
-              console.log("Contact created:", contactResponse);
-
-              return { rowNumber, success: true };
             }
+
+            return { rowNumber, success: true };
           } catch (error: any) {
-            // Return error details for this row
+            // 5. Catch errors from dataProvider (e.g., unique constraints, additional validation)
+            const finalErrors: FieldError[] = [];
+
+            if (error instanceof ZodError) {
+              error.issues.forEach((issue) => {
+                finalErrors.push({
+                  field: issue.path.join("."),
+                  message: issue.message,
+                  value: issue.path.reduce((obj: any, key) => obj?.[key], contactData),
+                });
+              });
+            } else if (error.body?.errors) {
+              // Handle structured React Admin validation errors
+              for (const [field, message] of Object.entries(error.body.errors)) {
+                finalErrors.push({
+                  field,
+                  message: String(message),
+                });
+              }
+            } else {
+              finalErrors.push({
+                field: "general",
+                message: error.message || "Unknown error during record creation",
+              });
+            }
+
             return {
               rowNumber,
               success: false,
-              error: error.message || "Unknown error",
+              errors: finalErrors,
               data: contactData,
             };
           } finally {
-            // Report progress after each contact
             if (onProgress) {
               onProgress(index + 1, totalProcessed);
             }
@@ -278,16 +302,21 @@ export function useContactImport() {
             errors.push({
               row: value.rowNumber,
               data: value.data,
-              reason: value.error,
+              errors: value.errors,
             });
           }
         } else {
-          // Promise rejected (shouldn't happen with our try-catch, but handle it)
+          // Promise rejected (catastrophic failure for this row)
           failedCount++;
           errors.push({
             row: index + 1,
             data: batch[index],
-            reason: result.reason?.message || result.reason || "Unknown error",
+            errors: [
+              {
+                field: "processing",
+                message: result.reason?.message || result.reason || "Unknown processing error",
+              },
+            ],
           });
         }
       });
