@@ -203,6 +203,16 @@ export function ContactImportDialog({
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
+    console.log('🔍 [STATE DEBUG] actualImporter.importer.state changed to:', actualImporter.importer.state);
+    console.log('🔍 [STATE DEBUG] previewImporter.importer.state:', previewImporter.importer.state);
+    console.log('🔍 [STATE DEBUG] showPreview:', showPreview, 'previewConfirmed:', previewConfirmed);
+    console.log('🔍 [STATE DEBUG] Accumulated results:', {
+      totalProcessed: accumulatedResultRef.current.totalProcessed,
+      successCount: accumulatedResultRef.current.successCount,
+      failedCount: accumulatedResultRef.current.failedCount,
+      errorCount: accumulatedResultRef.current.errors.length,
+    });
+
     // Monitor actualImporter for completion (not the preview one)
     if (actualImporter.importer.state === "complete") {
       console.log('✅ [IMPORT DEBUG] Import complete! Building final result...');
@@ -223,12 +233,13 @@ export function ContactImportDialog({
       };
 
       console.log('📋 [IMPORT DEBUG] Final result:', finalResult);
+      console.log('📋 [IMPORT DEBUG] About to show result dialog...');
 
       setImportResult(finalResult);
       setShowResult(true);
       refresh();
     }
-  }, [actualImporter.importer.state, refresh]);
+  }, [actualImporter.importer.state, previewImporter.importer.state, showPreview, previewConfirmed, refresh]);
 
   const handleFileChange = (file: File | null) => {
     setFile(file);
