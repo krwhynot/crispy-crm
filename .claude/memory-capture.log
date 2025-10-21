@@ -1311,3 +1311,6 @@
 [2025-10-20 19:04:30] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
 [2025-10-20 19:24:37] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251021002357_add_role_and_purchase_influence_to_contact_organizations.sql
 [2025-10-20 20:02:09] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251021002357_add_role_and_purchase_influence_to_contact_organizations.sql
+[2025-10-20 20:03:48] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251021010257_fix_get_organization_contacts_function.sql
+[2025-10-20 20:05:27] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251021010257_fix_get_organization_contacts_function.sql
+[2025-10-20 20:24:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
