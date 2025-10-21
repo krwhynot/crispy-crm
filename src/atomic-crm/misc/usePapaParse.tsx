@@ -1,6 +1,6 @@
 import * as Papa from "papaparse";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { parseRawCsvData } from "../atomic-crm/contacts/csvProcessor";
+import { parseRawCsvData } from "../contacts/csvProcessor";
 
 type Import =
   | {
@@ -32,8 +32,8 @@ type usePapaParseProps<T> = {
   // processBatch returns the number of imported items (optional - required for actual import, not for preview)
   processBatch?: (batch: T[]) => Promise<void>;
 
-  // Optional: Callback for preview mode - receives parsed preview data
-  onPreview?: (rows: T[]) => void;
+  // Optional: Callback for preview mode - receives parsed preview data and headers
+  onPreview?: (data: { rows: T[]; headers: string[] }) => void;
 
   // Optional: Parse only first N rows for preview mode
   previewRowCount?: number;
@@ -80,10 +80,13 @@ export function usePapaParse<T>({
           }
 
           let transformedData: T[];
+          let headers: string[];
           try {
             // REFACTORED: Use the single source of truth to process raw CSV data.
             // This replaces ~40 lines of duplicated logic.
-            transformedData = parseRawCsvData(results.data as any[][]) as T[];
+            const parseResult = parseRawCsvData(results.data as any[][]);
+            transformedData = parseResult.contacts as T[];
+            headers = parseResult.headers;
           } catch (error: any) {
             console.error("🔴 [PAPA PARSE DEBUG] CSV processing error:", error);
             setImporter({
@@ -95,8 +98,8 @@ export function usePapaParse<T>({
 
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
-            console.log('📄 [PAPA PARSE DEBUG] Preview mode - calling onPreview with', transformedData.length, 'rows');
-            onPreview(transformedData);
+            console.log('📄 [PAPA PARSE DEBUG] Preview mode - calling onPreview with', transformedData.length, 'rows and', headers.length, 'headers');
+            onPreview({ rows: transformedData, headers });
             setImporter({
               state: "idle",
             });

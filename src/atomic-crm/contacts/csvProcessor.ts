@@ -111,10 +111,13 @@ export function processCsvData(
  * - Row 3+: Data
  *
  * @param rawData - Raw data from Papa Parse (array of arrays)
- * @returns Processed contact data
+ * @returns Object containing processed contact data and original headers
  * @throws Error if CSV structure is invalid
  */
-export function parseRawCsvData(rawData: any[][]): ContactImportSchema[] {
+export function parseRawCsvData(rawData: any[][]): {
+  contacts: ContactImportSchema[];
+  headers: string[];
+} {
   if (!Array.isArray(rawData) || rawData.length < 4) {
     throw new Error('CSV file is too short (less than 4 rows)');
   }
@@ -125,5 +128,6 @@ export function parseRawCsvData(rawData: any[][]): ContactImportSchema[] {
   // Rows 4+ (index 3+) contain the data
   const dataRows = rawData.slice(3);
 
-  return processCsvData(headers, dataRows);
+  const contacts = processCsvData(headers, dataRows);
+  return { contacts, headers };
 }

@@ -23,7 +23,7 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
     skipEmptyLines: true,
     dynamicTyping: true,
   });
-  const contacts = parseRawCsvData(parseResult.data);
+  const { contacts } = parseRawCsvData(parseResult.data);
 
   it('should have parsed 10 contact rows from CSV', () => {
     expect(contacts).toHaveLength(10);
