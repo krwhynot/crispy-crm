@@ -220,7 +220,7 @@ export function usePapaParse<T>({
             }
           }
 
-          console.log('📄 [PAPA PARSE DEBUG] All batches processed successfully. Setting state to complete.');
+          console.log('✅ [PAPA PARSE DEBUG] All batches processed successfully. Setting state to complete.');
 
           setImporter((previous) =>
             previous.state === "running"
