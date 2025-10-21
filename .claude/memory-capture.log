@@ -1449,3 +1449,10 @@
 [2025-10-21 06:15:40] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-e2e.spec.ts
 [2025-10-21 06:15:52] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-e2e.spec.ts
 [2025-10-21 06:22:47] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/csvProcessor.ts
+[2025-10-21 06:23:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-21 06:23:26] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/misc/usePapaParse.tsx
+[2025-10-21 06:24:07] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-integration.spec.ts
+[2025-10-21 06:24:15] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-integration.spec.ts
+[2025-10-21 06:24:24] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-e2e.spec.ts
+[2025-10-21 06:24:32] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-e2e.spec.ts
+[2025-10-21 06:30:09] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx

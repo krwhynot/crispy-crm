@@ -13,7 +13,7 @@ import {
   applyDataQualityTransformations,
   validateTransformedContacts,
 } from '../src/atomic-crm/contacts/contactImport.logic';
-import { transformData } from './fixtures/csvTestHelpers';
+import { parseRawCsvData } from '../src/atomic-crm/contacts/csvProcessor';
 
 describe('CSV Import - Data Quality Feature (E2E)', () => {
   const csvPath = './data/import_test_sample.csv';
@@ -23,7 +23,7 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
     skipEmptyLines: true,
     dynamicTyping: true,
   });
-  const contacts = transformData(parseResult.data);
+  const contacts = parseRawCsvData(parseResult.data);
 
   it('should have parsed 10 contact rows from CSV', () => {
     expect(contacts).toHaveLength(10);

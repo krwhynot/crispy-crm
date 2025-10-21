@@ -1,5 +1,6 @@
 import * as Papa from "papaparse";
 import { useCallback, useMemo, useRef, useState } from "react";
+import { FULL_NAME_SPLIT_MARKER, splitFullName } from "../atomic-crm/contacts/csvProcessor";
 
 type Import =
   | {
@@ -122,24 +123,11 @@ export function usePapaParse<T>({
               headers.forEach((oldHeader, index) => {
                 const newHeader = transformedHeaders[index] || oldHeader;
 
-                // Handle full name splitting
-                if (newHeader === '_full_name_source_') {
-                  const fullName = row[oldHeader] || '';
-                  const nameParts = fullName.trim().split(/\s+/);
-
-                  if (nameParts.length === 0 || fullName.trim() === '') {
-                    // Empty name
-                    newRow.first_name = '';
-                    newRow.last_name = '';
-                  } else if (nameParts.length === 1) {
-                    // Only one name part - treat as last name
-                    newRow.first_name = '';
-                    newRow.last_name = nameParts[0];
-                  } else {
-                    // Multiple parts - first is first name, rest is last name
-                    newRow.first_name = nameParts[0];
-                    newRow.last_name = nameParts.slice(1).join(' ');
-                  }
+                // Handle full name splitting using centralized logic
+                if (newHeader === FULL_NAME_SPLIT_MARKER) {
+                  const { first_name, last_name } = splitFullName(row[oldHeader] || '');
+                  newRow.first_name = first_name;
+                  newRow.last_name = last_name;
                 } else {
                   newRow[newHeader] = row[oldHeader];
                 }
