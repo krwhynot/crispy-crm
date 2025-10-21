@@ -181,6 +181,50 @@ export function OrganizationImportDialog({
   }, []);
 
   // Handle preview confirmation and start the actual import
+  // Enhanced processBatch wrapper with result accumulation across batches
+  const processBatch = useCallback(async (batch: any[]) => {
+    // Set start time on first batch
+    if (!accumulatedResultRef.current.startTime) {
+      accumulatedResultRef.current.startTime = new Date();
+    }
+
+    try {
+      const result = await processBatchHook(batch, {
+        preview: false,
+        startingRow: rowOffsetRef.current + 2, // +2 for CSV header row
+        onProgress: (current, total) => {
+          setImportProgress(prev => ({ ...prev, count: prev.count + 1 }));
+        }
+      });
+
+      rowOffsetRef.current += batch.length;
+
+      // Accumulate results across all batches
+      accumulatedResultRef.current.totalProcessed += result.totalProcessed;
+      accumulatedResultRef.current.successCount += result.successCount;
+      accumulatedResultRef.current.skippedCount += result.skippedCount;
+      accumulatedResultRef.current.failedCount += result.failedCount;
+      accumulatedResultRef.current.errors.push(...result.errors);
+    } catch (error: any) {
+      const errorMessage = error.message || "A critical error occurred during batch processing.";
+      const batchStartRow = rowOffsetRef.current + 2;
+
+      // Add an error entry for each organization in the failed batch
+      batch.forEach((orgData, index) => {
+        accumulatedResultRef.current.errors.push({
+          row: batchStartRow + index,
+          data: orgData,
+          errors: [{ field: "batch_processing", message: errorMessage }],
+        });
+      });
+
+      // Count entire batch as failed
+      accumulatedResultRef.current.totalProcessed += batch.length;
+      accumulatedResultRef.current.failedCount += batch.length;
+      rowOffsetRef.current += batch.length;
+    }
+  }, [processBatchHook]);
+
   const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
     let organizationsToImport = [...reprocessedOrganizations];
 
@@ -242,51 +286,7 @@ export function OrganizationImportDialog({
       notify(`Import failed: ${error.message}`, { type: "error" });
       setImportState("error");
     }
-  }, [reprocessedOrganizations, refresh, notify]);
-
-  // Enhanced processBatch wrapper with result accumulation across batches
-  const processBatch = useCallback(async (batch: any[]) => {
-    // Set start time on first batch
-    if (!accumulatedResultRef.current.startTime) {
-      accumulatedResultRef.current.startTime = new Date();
-    }
-
-    try {
-      const result = await processBatchHook(batch, {
-        preview: false,
-        startingRow: rowOffsetRef.current + 2, // +2 for CSV header row
-        onProgress: (current, total) => {
-          setImportProgress(prev => ({ ...prev, count: prev.count + 1 }));
-        }
-      });
-
-      rowOffsetRef.current += batch.length;
-
-      // Accumulate results across all batches
-      accumulatedResultRef.current.totalProcessed += result.totalProcessed;
-      accumulatedResultRef.current.successCount += result.successCount;
-      accumulatedResultRef.current.skippedCount += result.skippedCount;
-      accumulatedResultRef.current.failedCount += result.failedCount;
-      accumulatedResultRef.current.errors.push(...result.errors);
-    } catch (error: any) {
-      const errorMessage = error.message || "A critical error occurred during batch processing.";
-      const batchStartRow = rowOffsetRef.current + 2;
-
-      // Add an error entry for each organization in the failed batch
-      batch.forEach((orgData, index) => {
-        accumulatedResultRef.current.errors.push({
-          row: batchStartRow + index,
-          data: orgData,
-          errors: [{ field: "batch_processing", message: errorMessage }],
-        });
-      });
-
-      // Count entire batch as failed
-      accumulatedResultRef.current.totalProcessed += batch.length;
-      accumulatedResultRef.current.failedCount += batch.length;
-      rowOffsetRef.current += batch.length;
-    }
-  }, [processBatchHook]);
+  }, [reprocessedOrganizations, processBatch, refresh, notify]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
@@ -310,12 +310,16 @@ export function OrganizationImportDialog({
       skipEmptyLines: true,
       complete: async (results) => {
         const rows = results.data as any[];
-
-        // Map CSV headers to canonical field names
         const headers = results.meta.fields || [];
+
+        // Store raw data for re-processing when user changes mappings
+        setRawHeaders(headers);
+        setRawDataRows(rows.map(row => headers.map(h => row[h])));
+
+        // Map CSV headers to canonical field names for initial preview
         const columnMapping = mapHeadersToFields(headers);
 
-        // Transform rows using column mapping
+        // Transform rows using column mapping for initial preview
         const mappedRows = rows.map((row) => {
           const mappedRow: any = {};
           headers.forEach((header) => {
@@ -327,51 +331,60 @@ export function OrganizationImportDialog({
           return mappedRow;
         });
 
-        // Reset accumulated results for new import
-        accumulatedResultRef.current = {
-          totalProcessed: 0,
-          successCount: 0,
-          skippedCount: 0,
-          failedCount: 0,
-          errors: [],
-          startTime: null,
-        };
-        rowOffsetRef.current = 0;
+        // Generate column mappings with confidence scores
+        const mappings: ColumnMapping[] = headers.map((header, index) => {
+          const canonicalField = findCanonicalField(header);
+          const target = canonicalField;
 
-        setImportProgress({ count: 0, total: mappedRows.length });
-        setImportState("running");
+          // Calculate confidence: 1.0 for exact matches, 0.0 for no match
+          const confidence = canonicalField ? 1.0 : 0.0;
 
-        try {
-          // Process organizations in batches to prevent overwhelming the server
-          const batchSize = 10;
-          for (let i = 0; i < mappedRows.length; i += batchSize) {
-            const batch = mappedRows.slice(i, i + batchSize);
-            await processBatch(batch);
-            setImportProgress(prev => ({ ...prev, count: i + batch.length }));
-          }
+          // Get sample value from first row if available
+          const sampleValue = rows[0]?.[header] ? String(rows[0][header]).substring(0, 50) : undefined;
 
-          setImportState("complete");
-
-          // Build final result from accumulated data
-          const endTime = new Date();
-          const startTime = accumulatedResultRef.current.startTime || endTime;
-          const finalResult: ImportResult = {
-            totalProcessed: accumulatedResultRef.current.totalProcessed,
-            successCount: accumulatedResultRef.current.successCount,
-            skippedCount: accumulatedResultRef.current.skippedCount,
-            failedCount: accumulatedResultRef.current.failedCount,
-            errors: accumulatedResultRef.current.errors,
-            duration: endTime.getTime() - startTime.getTime(),
-            startTime: startTime,
-            endTime: endTime,
+          return {
+            source: header || '(empty)',
+            target,
+            confidence,
+            sampleValue,
           };
+        });
 
-          setImportResult(finalResult);
-          refresh();
-        } catch (error: any) {
-          notify(`Import failed: ${error.message}`, { type: "error" });
-          setImportState("error");
-        }
+        // Detect duplicates
+        const duplicateReport = detectDuplicateOrganizations(mappedRows);
+        const duplicateGroups: DuplicateGroup[] = duplicateReport.duplicates.map(dup => ({
+          indices: dup.indices.map(i => i + 2), // +2 for CSV header row (1-indexed display)
+          name: dup.name,
+          count: dup.count,
+        }));
+
+        // Extract unique tags
+        const newTags = new Set<string>();
+        mappedRows.forEach(org => {
+          if (org.tags) {
+            org.tags.split(',').forEach((tag: string) => {
+              const trimmed = tag.trim();
+              if (trimmed) {
+                newTags.add(trimmed);
+              }
+            });
+          }
+        });
+
+        // Generate preview data
+        const preview: PreviewData = {
+          mappings,
+          sampleRows: mappedRows.slice(0, 5),
+          validCount: mappedRows.length,
+          totalRows: mappedRows.length,
+          newTags: Array.from(newTags),
+          duplicates: duplicateGroups.length > 0 ? duplicateGroups : undefined,
+          lowConfidenceMappings: mappings.filter(m => m.confidence === 0).length,
+        };
+
+        setPreviewData(preview);
+        setImportState("idle");
+        setShowPreview(true);
       },
       error: (error) => {
         notify(`Error parsing CSV: ${error.message}`, { type: "error" });
@@ -385,6 +398,13 @@ export function OrganizationImportDialog({
     setImportState("idle");
     setImportResult(null);
     setImportProgress({ count: 0, total: 0 });
+
+    // Reset preview state
+    setShowPreview(false);
+    setPreviewData(null);
+    setUserOverrides(new Map());
+    setRawHeaders([]);
+    setRawDataRows([]);
 
     // Reset accumulated results
     accumulatedResultRef.current = {
@@ -406,8 +426,10 @@ export function OrganizationImportDialog({
       : 0;
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl">
+    <>
+      {/* Main Import Dialog - hide when showing preview */}
+      <Dialog open={open && !showPreview} onOpenChange={handleClose}>
+        <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Building2 className="h-5 w-5" />
@@ -558,5 +580,29 @@ export function OrganizationImportDialog({
         </div>
       </DialogContent>
     </Dialog>
+
+    {/* Preview Dialog */}
+    {showPreview && derivedPreviewData && (
+      <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
+        <DialogContent className="sm:max-w-7xl h-[90vh] flex flex-col p-0">
+          <DialogHeader className="px-6 pt-6 pb-4 border-b">
+            <DialogTitle className="flex items-center gap-2">
+              <Building2 className="h-5 w-5" />
+              Organization Import Preview
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 overflow-y-auto px-6">
+            <OrganizationImportPreview
+              preview={derivedPreviewData}
+              onContinue={handlePreviewContinue}
+              onCancel={handlePreviewCancel}
+              onMappingChange={handleMappingChange}
+              userOverrides={userOverrides}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+    )}
+    </>
   );
 }

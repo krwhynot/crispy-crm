@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { getAvailableFieldsWithLabels } from "./organizationColumnAliases";
 
 // Types for preview data
 export interface ColumnMapping {
