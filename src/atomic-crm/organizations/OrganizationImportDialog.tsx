@@ -9,10 +9,10 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Loader2, CheckCircle2, Building2, Upload } from "lucide-react";
 import { useRefresh, useNotify } from "ra-core";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import Papa from "papaparse";
 import { mapHeadersToFields } from "./organizationColumnAliases";
-import { useOrganizationImport, type ImportResult } from "./useOrganizationImport";
+import { useOrganizationImport, type ImportResult, type ImportError } from "./useOrganizationImport";
 
 type OrganizationImportDialogProps = {
   open: boolean;
