@@ -86,7 +86,7 @@ const supabase = createClient(
 );
 
 describe('CSV Import - Full Integration Test (Real Database)', () => {
-  const csvPath = './data/import_test_focused.csv';
+  const csvPath = './data/import_test_sample.csv';
   const csvContent = fs.readFileSync(csvPath, 'utf-8');
   const parseResult = Papa.parse(csvContent, {
     header: false,
@@ -102,7 +102,7 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
   });
 
   describe('TEST 1: Strict Mode (Both Checkboxes Unchecked)', () => {
-    it('should fail 2 org-only entries and import 5 valid contacts', async () => {
+    it('should fail 2 org-only entries and validate 8 contacts with names', async () => {
       console.log('\n📊 TEST 1: Strict Mode');
 
       // No transformations
@@ -111,12 +111,12 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
       console.log(`   ✅ Valid: ${successful.length}`);
       console.log(`   ❌ Invalid: ${failed.length}`);
 
-      expect(successful).toHaveLength(5);
+      expect(successful).toHaveLength(8);
       expect(failed).toHaveLength(2);
 
-      // Verify failed rows are org-only entries
+      // Verify failed rows are org-only entries (7 Monks Taproom and A.Fusion)
       const failedIndices = failed.map(f => f.originalIndex).sort();
-      expect(failedIndices).toEqual([1, 6]); // Rows 5 and 10 in CSV
+      expect(failedIndices).toEqual([3, 7]); // Rows 7 and 11 in CSV
 
       // Verify all have name errors
       failed.forEach(failure => {
@@ -131,7 +131,7 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
   });
 
   describe('TEST 2: Auto-Fill Organizations (First Checkbox Checked)', () => {
-    it('should auto-fill 2 org-only entries and import all 7 contacts', async () => {
+    it('should auto-fill 2 org-only entries and import all 10 contacts', async () => {
       console.log('\n📊 TEST 2: Auto-Fill Organizations');
 
       // Apply transformations
@@ -148,7 +148,7 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
       console.log(`   ✅ Valid: ${successful.length}`);
       console.log(`   ❌ Invalid: ${failed.length}`);
 
-      expect(successful).toHaveLength(7);
+      expect(successful).toHaveLength(10);
       expect(failed).toHaveLength(0);
       expect(autoFilledCount).toBe(2);
 
@@ -187,10 +187,18 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
       console.log(`   ⏭️  Skipped: ${skippedCount}`);
       console.log(`   📝 To Process: ${contactsToProcess.length}`);
 
-      // Jane Smith should be identified as having no contact info
-      const janeSmith = successful.find(c => c.first_name === 'Jane' && c.last_name === 'Smith');
-      expect(janeSmith).toBeDefined();
-      expect(isContactWithoutContactInfo(janeSmith!)).toBe(true);
+      // Mike, Max, and Figueroa should be identified as having no contact info
+      // Note: Single names go to last_name per the transform logic
+      const mike = successful.find(c => c.last_name === 'Mike');
+      const max = successful.find(c => c.last_name === 'Max');
+      const figueroa = successful.find(c => c.last_name === 'Figueroa');
+
+      expect(mike).toBeDefined();
+      expect(max).toBeDefined();
+      expect(figueroa).toBeDefined();
+      expect(isContactWithoutContactInfo(mike!)).toBe(true);
+      expect(isContactWithoutContactInfo(max!)).toBe(true);
+      expect(isContactWithoutContactInfo(figueroa!)).toBe(true);
 
       // Auto-filled "General Contact" entries also have no contact info!
       const generalContacts = successful.filter(c => c.first_name === 'General' && c.last_name === 'Contact');
@@ -199,13 +207,13 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
         expect(isContactWithoutContactInfo(contact)).toBe(true);
       });
 
-      // Should skip 3 contacts (Jane + 2 auto-filled General Contact entries)
-      expect(skippedCount).toBe(3);
-      expect(contactsToProcess).toHaveLength(4);
+      // Should skip 5 contacts (Mike, Max, Figueroa + 2 auto-filled General Contact entries)
+      expect(skippedCount).toBe(5);
+      expect(contactsToProcess).toHaveLength(5);
 
-      // Jane and General Contact entries should NOT be in the processed list
-      const janeInProcessed = contactsToProcess.find(c => c.first_name === 'Jane' && c.last_name === 'Smith');
-      expect(janeInProcessed).toBeUndefined();
+      // Contacts without email/phone should NOT be in the processed list
+      const mikeInProcessed = contactsToProcess.find(c => c.first_name === 'Mike');
+      expect(mikeInProcessed).toBeUndefined();
 
       const generalInProcessed = contactsToProcess.filter(c => c.first_name === 'General' && c.last_name === 'Contact');
       expect(generalInProcessed).toHaveLength(0);
@@ -215,7 +223,7 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
   });
 
   describe('TEST 4: Import All (Both Checkboxes Checked)', () => {
-    it('should import all 7 contacts with no failures or skips', async () => {
+    it('should import all 10 contacts with no failures or skips', async () => {
       console.log('\n📊 TEST 4: Import All');
 
       // Apply transformations
@@ -234,13 +242,13 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
       console.log(`   🔧 Auto-filled: ${autoFilledCount}`);
       console.log(`   📝 To Process: ${contactsToProcess.length}`);
 
-      expect(successful).toHaveLength(7);
+      expect(successful).toHaveLength(10);
       expect(autoFilledCount).toBe(2);
-      expect(contactsToProcess).toHaveLength(7);
+      expect(contactsToProcess).toHaveLength(10);
 
-      // Jane Smith should be included
-      const janeSmith = contactsToProcess.find(c => c.first_name === 'Jane' && c.last_name === 'Smith');
-      expect(janeSmith).toBeDefined();
+      // Mike should be included (even though no email/phone)
+      const mike = contactsToProcess.find(c => c.first_name === 'Mike');
+      expect(mike).toBeDefined();
 
       // General Contact entries should be included
       const generalContacts = contactsToProcess.filter(
@@ -283,6 +291,11 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
       console.log('  ✅ Optionally skip contacts without email/phone');
       console.log('  ✅ Clear preview with data quality decisions');
       console.log('  ✅ Sequential data flow: Transform → Validate → Filter → Process\n');
+
+      console.log('Real-world data sample:');
+      console.log('  • 5 contacts with email/phone (Tellez, Thor, Rodriguez, Don Smith, GIUSEPPE TENTORI)');
+      console.log('  • 3 contacts without contact info (Mike, Max, Figueroa)');
+      console.log('  • 2 organization-only entries (7 Monks Taproom, A.Fusion)\n');
 
       console.log('='.repeat(60) + '\n');
 

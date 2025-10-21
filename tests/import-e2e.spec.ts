@@ -102,7 +102,7 @@ function transformData(rawData: any[][]): ContactImportSchema[] {
 // ============================================================================
 
 describe('CSV Import - Data Quality Feature (E2E)', () => {
-  const csvPath = './data/import_test_focused.csv';
+  const csvPath = './data/import_test_sample.csv';
   const csvContent = fs.readFileSync(csvPath, 'utf-8');
   const parseResult = Papa.parse(csvContent, {
     header: false,
@@ -111,21 +111,21 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
   });
   const contacts = transformData(parseResult.data);
 
-  it('should have parsed 7 contact rows from CSV', () => {
-    expect(contacts).toHaveLength(7);
+  it('should have parsed 10 contact rows from CSV', () => {
+    expect(contacts).toHaveLength(10);
   });
 
   describe('Test 1: Strict Mode (No Data Quality Decisions)', () => {
-    it('should validate 5 contacts and fail 2 org-only entries', () => {
+    it('should validate 8 contacts and fail 2 org-only entries', () => {
       // In strict mode, no transformations are applied
       const { successful, failed } = validateTransformedContacts(contacts);
 
-      expect(successful).toHaveLength(5);
+      expect(successful).toHaveLength(8);
       expect(failed).toHaveLength(2);
 
-      // Both failures should be org-only entries (rows 2 and 7 in CSV, indices 1 and 6 in array)
+      // Both failures should be org-only entries (7 Monks Taproom and A.Fusion)
       const failedIndices = failed.map(f => f.originalIndex).sort();
-      expect(failedIndices).toEqual([1, 6]); // Rows 5 and 10 in CSV (index 1 and 6 in array)
+      expect(failedIndices).toEqual([3, 7]); // Rows 7 and 11 in CSV (index 3 and 7 in array)
 
       // All failures should have "Either first name or last name must be provided" error
       failed.forEach(failure => {
@@ -138,7 +138,7 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
   });
 
   describe('Test 2: Auto-Fill Organizations (Data Quality Feature)', () => {
-    it('should auto-fill placeholder contacts and validate all 7 entries', () => {
+    it('should auto-fill placeholder contacts and validate all 10 entries', () => {
       // Apply transformations
       const { transformedContacts, autoFilledCount } = applyDataQualityTransformations(contacts, {
         importOrganizationsWithoutContacts: true,
@@ -148,7 +148,7 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
       // Validate the transformed data
       const { successful, failed } = validateTransformedContacts(transformedContacts);
 
-      expect(successful).toHaveLength(7);
+      expect(successful).toHaveLength(10);
       expect(failed).toHaveLength(0);
       expect(autoFilledCount).toBe(2);
 
@@ -169,20 +169,20 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
 
   describe('Test 3: Contacts Without Contact Info Feature', () => {
     it('should identify contacts without email or phone', async () => {
-      // Jane Smith (index 2, Row 6 in CSV) has neither email nor phone
+      // Mike (index 5, Row 9 in CSV) has neither email nor phone
       const { transformedContacts } = applyDataQualityTransformations(contacts, {
         importOrganizationsWithoutContacts: false,
         importContactsWithoutContactInfo: false,
       });
 
-      // Jane Smith should be flagged as having no contact info
-      const janeSmith = transformedContacts[2];
-      expect(janeSmith.first_name).toBe('Jane');
-      expect(janeSmith.last_name).toBe('Smith');
+      // Mike should be flagged as having no contact info
+      const mike = transformedContacts[5];
+      expect(mike.first_name).toBe('Mike');
+      expect(mike.last_name?.trim()).toBe('');
 
       // Import the helper to verify detection
       const { isContactWithoutContactInfo } = await import('../src/atomic-crm/contacts/contactImport.logic');
-      expect(isContactWithoutContactInfo(janeSmith)).toBe(true);
+      expect(isContactWithoutContactInfo(mike)).toBe(true);
     });
 
     it('should note: filtering logic is in useContactImport hook, not pure validation', () => {
@@ -194,12 +194,12 @@ describe('CSV Import - Data Quality Feature (E2E)', () => {
       // The validation step allows contacts without contact info (fields are optional)
       const { successful } = validateTransformedContacts(contacts);
 
-      // Jane Smith passes validation (contact info is optional in schema)
-      const janeSmith = successful.find(c => c.first_name === 'Jane' && c.last_name === 'Smith');
-      expect(janeSmith).toBeDefined();
+      // Mike passes validation (contact info is optional in schema)
+      const mike = successful.find(c => c.first_name === 'Mike');
+      expect(mike).toBeDefined();
 
       // However, in useContactImport.tsx, if importContactsWithoutContactInfo=false,
-      // Jane would be filtered out before processing (skippedCount would be 1)
+      // Mike would be filtered out before processing (skippedCount would be 3: Mike, Max, Figueroa)
     });
   });
 
