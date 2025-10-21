@@ -1,0 +1,226 @@
+<GENERATED-CODE>
+Here are the step-by-step instructions to fix the row numbering and improve error handling.
+
+1.  **Update `useContactImport.tsx`**: We will modify the `ImportOptions` interface and the `processBatch` function to accept a `startingRow` offset. This allows the hook to calculate the correct absolute row number from the original CSV file.
+2.  **Update `ContactImportDialog.tsx`**: We will introduce a new ref, `rowOffsetRef`, to track the number of rows processed so far. This offset will be passed to the `processBatchHook`. We will also enhance the `catch` block to generate detailed error messages for catastrophic batch failures.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/contacts/useContactImport.tsx>
+```typescript
+export interface ImportResult {
+  totalProcessed: number;
+  successCount: number;
+  skippedCount: number;
+  failedCount: number;
+  errors: ImportError[];
+  duration: number;
+  startTime: Date;
+  endTime: Date;
+}
+
+export interface ImportOptions {
+  preview?: boolean; // If true, validate only without database writes
+  onProgress?: (current: number, total: number) => void; // Progress callback
+  startingRow?: number; // The absolute starting row number for this batch
+}
+
+export function useContactImport() {
+  const today = new Date().toISOString();
+/* ... */
+  const processBatch = useCallback(
+    async (batch: ContactImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
+      const { preview = false, onProgress, startingRow = 1 } = options;
+      console.log("processBatch called with:", {
+        batchSize: batch.length,
+        preview,
+        options,
+      });
+      const startTime = new Date();
+      const errors: ImportError[] = [];
+      let successCount = 0;
+/* ... */
+      // Process all contacts with Promise.allSettled for better error tracking
+      const results = await Promise.allSettled(
+        batch.map(async (contactData, index) => {
+          const rowNumber = startingRow + index;
+          const rowErrors: FieldError[] = [];
+
+          // 1. Validate with Zod schema first to catch ALL format/presence errors
+          const validationResult = importContactSchema.safeParse(contactData);
+/* ... */
+```
+</UPDATED_EXISTING_FILE>
+
+Now, let's apply the changes to the dialog component to track and pass the row offset.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/contacts/ContactImportDialog.tsx>
+```typescript
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
+import { Form, useRefresh } from "ra-core";
+import { Link } from "react-router-dom";
+import { usePapaParse } from "../misc/usePapaParse";
+import type { ContactImportSchema, ImportResult, ImportError } from "./useContactImport";
+import { useContactImport } from "./useContactImport";
+import { mapHeadersToFields } from "./columnAliases";
+import type { PreviewData } from "./ContactImportPreview";
+import { ContactImportPreview } from "./ContactImportPreview";
+import { ContactImportResult } from "./ContactImportResult";
+
+import { FileInput } from "@/components/admin/file-input";
+import { FileField } from "@/components/admin/file-field";
+import * as React from "react";
+import { useEffect, useState, useCallback } from "react";
+import * as sampleCsv from "./contacts_export.csv?raw";
+
+// Feature flag for enhanced import preview
+const ENABLE_IMPORT_PREVIEW = true;
+
+const SAMPLE_URL = `data:text/csv;name=crm_contacts_sample.csv;charset=utf-8,${encodeURIComponent(
+  sampleCsv.default,
+)}`;
+
+type ContactImportModalProps = {
+  open: boolean;
+  onClose(): void;
+};
+
+export function ContactImportDialog({
+  open,
+  onClose,
+}: ContactImportModalProps) {
+  const refresh = useRefresh();
+  const processBatchHook = useContactImport();
+
+  // Preview state management (separate from parser state machine)
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewConfirmed, setPreviewConfirmed] = useState(false);
+  const [previewData, setPreviewData] = useState<PreviewData | null>(null);
+  const [parsedData, setParsedData] = useState<ContactImportSchema[]>([]);
+
+  // Import result state - accumulate across all batches
+  const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [showResult, setShowResult] = useState(false);
+  const accumulatedResultRef = React.useRef<{
+    totalProcessed: number;
+    successCount: number;
+    skippedCount: number;
+    failedCount: number;
+    errors: ImportError[];
+    startTime: Date | null;
+  }>({
+    totalProcessed: 0,
+    successCount: 0,
+    skippedCount: 0,
+    failedCount: 0,
+    errors: [],
+    startTime: null,
+  });
+  const rowOffsetRef = React.useRef(0);
+
+  // Transform headers using column aliases
+  const transformHeaders = useCallback((headers: string[]) => {
+    console.log('📋 [HEADER DEBUG] Original CSV headers:', headers);
+/* ... */
+  // Enhanced processBatch wrapper with result accumulation across batches
+  const processBatch = useCallback(async (batch: ContactImportSchema[]) => {
+    console.log('🔵 [IMPORT DEBUG] processBatch called with', batch.length, 'contacts');
+
+    // Set start time on first batch
+    if (!accumulatedResultRef.current.startTime) {
+      accumulatedResultRef.current.startTime = new Date();
+    }
+
+    try {
+      console.log('🔵 [IMPORT DEBUG] Calling processBatchHook...');
+      const result = await processBatchHook(batch, {
+        preview: false,
+        startingRow: rowOffsetRef.current + 1, // Pass the correct starting row
+        onProgress: (current, total) => {
+          // Progress tracking could be added here
+        }
+      });
+
+      rowOffsetRef.current += batch.length; // Increment offset for the next batch
+
+      console.log('🔵 [IMPORT DEBUG] processBatchHook completed. Result:', result);
+
+      // Accumulate results across all batches
+      accumulatedResultRef.current.totalProcessed += result.totalProcessed;
+      accumulatedResultRef.current.successCount += result.successCount;
+      accumulatedResultRef.current.skippedCount += result.skippedCount;
+      accumulatedResultRef.current.failedCount += result.failedCount;
+      accumulatedResultRef.current.errors.push(...result.errors);
+
+      console.log('📊 [IMPORT DEBUG] Accumulated totals:', {
+        totalProcessed: accumulatedResultRef.current.totalProcessed,
+        successCount: accumulatedResultRef.current.successCount,
+        failedCount: accumulatedResultRef.current.failedCount,
+        errorCount: accumulatedResultRef.current.errors.length,
+      });
+    } catch (error: any) {
+      console.error("🔴 [IMPORT DEBUG] Batch processing error:", error);
+      const errorMessage = error.message || "A critical error occurred during batch processing.";
+      const batchStartRow = rowOffsetRef.current + 1;
+
+      // Add an error entry for each item in the failed batch
+      batch.forEach((contactData, index) => {
+        accumulatedResultRef.current.errors.push({
+          row: batchStartRow + index,
+          data: contactData,
+          errors: [{ field: "batch_processing", message: errorMessage }],
+        });
+      });
+
+      // Count entire batch as failed
+      accumulatedResultRef.current.totalProcessed += batch.length;
+      accumulatedResultRef.current.failedCount += batch.length;
+      rowOffsetRef.current += batch.length; // Ensure offset is still incremented
+    }
+  }, [processBatchHook]);
+
+  // Two separate importers: one for preview, one for actual import
+  const previewImporter = usePapaParse<ContactImportSchema>({
+/* ... */
+    // Reset accumulated results for new import
+    accumulatedResultRef.current = {
+      totalProcessed: 0,
+      successCount: 0,
+      skippedCount: 0,
+      failedCount: 0,
+      errors: [],
+      startTime: null,
+    };
+    rowOffsetRef.current = 0; // Reset row offset
+
+    setShowPreview(false);
+    setPreviewConfirmed(true);
+    // Use the actualImporter to parse the file for real import
+/* ... */
+    setImportResult(null);
+
+    // Reset accumulated results
+    accumulatedResultRef.current = {
+      totalProcessed: 0,
+      successCount: 0,
+      skippedCount: 0,
+      failedCount: 0,
+      errors: [],
+      startTime: null,
+    };
+    rowOffsetRef.current = 0; // Reset row offset
+
+    onClose();
+  };
+
+  const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
+/* ... */
+```
+</UPDATED_EXISTING_FILE>
+</GENERATED-CODE>

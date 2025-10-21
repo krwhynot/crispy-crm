@@ -51,6 +51,7 @@ export interface ImportResult {
 export interface ImportOptions {
   preview?: boolean;  // If true, validate only without database writes
   onProgress?: (current: number, total: number) => void;  // Progress callback
+  startingRow?: number;  // The absolute starting row number for this batch (1-indexed)
 }
 
 export function useContactImport() {
