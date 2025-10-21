@@ -12,7 +12,7 @@ import {
   validateTransformedContacts,
   isContactWithoutContactInfo,
 } from '../src/atomic-crm/contacts/contactImport.logic';
-import { transformData } from './fixtures/csvTestHelpers';
+import { parseRawCsvData } from '../src/atomic-crm/contacts/csvProcessor';
 
 // Create Supabase client for direct database access
 const supabase = createClient(
@@ -28,7 +28,7 @@ describe('CSV Import - Full Integration Test (Real Database)', () => {
     skipEmptyLines: true,
     dynamicTyping: true,
   });
-  const contacts = transformData(parseResult.data);
+  const contacts = parseRawCsvData(parseResult.data);
 
   beforeEach(async () => {
     // Clean up contacts table before each test

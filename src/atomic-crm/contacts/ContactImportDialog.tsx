@@ -14,11 +14,11 @@ import { Link } from "react-router-dom";
 import { usePapaParse } from "../misc/usePapaParse";
 import type { ContactImportSchema, ImportResult } from "./useContactImport";
 import { useContactImport } from "./useContactImport";
-import { mapHeadersToFields } from "./columnAliases";
 import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
+import { transformHeaders as transformCsvHeaders } from "./csvProcessor";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
