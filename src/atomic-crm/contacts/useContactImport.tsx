@@ -184,6 +184,9 @@ export function useContactImport() {
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 
+            // Get organization ID for direct FK (UI uses contacts.organization_id)
+            const organization = organizations.get(trimmedOrgName);
+
             const contactPayload = {
               first_name,
               last_name,
@@ -200,6 +203,7 @@ export function useContactImport() {
               tags: preview ? [] : tagList.map((tag) => tag.id),
               sales_id: identity?.id,
               linkedin_url,
+              organization_id: organization?.id, // Direct FK matches UI form pattern
             };
 
             if (preview) {
@@ -208,34 +212,14 @@ export function useContactImport() {
                 data: contactPayload,
                 meta: { dryRun: true },
               });
-              // In preview mode, we don't need to validate contact_organizations
               return { rowNumber, success: true };
             } else {
-              // Step 1: Create the contact record
+              // Create the contact record with organization_id (matches UI)
               console.log("Creating contact:", contactPayload);
               const contactResponse = await dataProvider.create("contacts", {
                 data: contactPayload,
               });
               console.log("Contact created:", contactResponse);
-
-              const contactId = contactResponse.data.id;
-
-              // Step 2: Create the contact_organization junction table entry
-              if (contactId) {
-                const organization = organizations.get(trimmedOrgName);
-                if (organization?.id) {
-                  await dataProvider.create("contact_organizations", {
-                    data: {
-                      contact_id: contactId,
-                      organization_id: organization.id,
-                      is_primary: true, // Imported organization is primary
-                      role: organization_role || "decision_maker", // Default role
-                    },
-                  });
-                }
-              } else {
-                throw new Error("Failed to retrieve contact ID after creation");
-              }
 
               return { rowNumber, success: true };
             }
