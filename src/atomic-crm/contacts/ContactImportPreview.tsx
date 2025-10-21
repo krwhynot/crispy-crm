@@ -54,6 +54,9 @@ export interface PreviewData {
   newTags: string[];
   hasErrors: boolean;
   lowConfidenceMappings: number;
+  // Data quality analysis
+  organizationsWithoutContacts: Array<{ organization_name: string; row: number }>;
+  contactsWithoutContactInfo: Array<{ name: string; organization_name: string; row: number }>;
 }
 
 interface ContactImportPreviewProps {
