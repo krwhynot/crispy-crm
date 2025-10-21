@@ -13,6 +13,8 @@ import {
   AlertCircle,
   AlertTriangle,
   CheckCircle2,
+  ChevronDown,
+  ChevronUp,
   Clock,
   Download,
   FileText,
@@ -20,6 +22,7 @@ import {
   X,
 } from "lucide-react";
 import * as React from "react";
+import { useState } from "react";
 
 export interface ImportError {
   row: number;
@@ -53,12 +56,34 @@ export function ContactImportResult({
   result,
   allowRetry = false,
 }: ContactImportResultProps) {
+  const [expandedErrors, setExpandedErrors] = useState<Set<string>>(new Set());
+
   const successRate = result.totalProcessed > 0
     ? Math.round((result.successCount / result.totalProcessed) * 100)
     : 0;
 
   const hasErrors = result.failedCount > 0 || result.skippedCount > 0;
   const isComplete = result.successCount === result.totalProcessed;
+
+  const toggleErrorGroup = (reason: string) => {
+    setExpandedErrors((prev) => {
+      const next = new Set(prev);
+      if (next.has(reason)) {
+        next.delete(reason);
+      } else {
+        next.add(reason);
+      }
+      return next;
+    });
+  };
+
+  const expandAll = () => {
+    setExpandedErrors(new Set(Array.from(groupedErrors.keys())));
+  };
+
+  const collapseAll = () => {
+    setExpandedErrors(new Set());
+  };
 
   // Format duration in human-readable format
   const formatDuration = (ms: number) => {
@@ -89,15 +114,39 @@ export function ContactImportResult({
   }, [result.errors]);
 
   const handleDownloadErrors = () => {
-    // Create CSV content with error details
+    // Create CSV content with comprehensive error details
     const csvContent = [
-      ["Row", "First Name", "Last Name", "Organization", "Error Reason"],
+      [
+        "Row",
+        "Error Reason",
+        "First Name",
+        "Last Name",
+        "Organization",
+        "Title",
+        "Email (Work)",
+        "Email (Home)",
+        "Email (Other)",
+        "Phone (Work)",
+        "Phone (Home)",
+        "Phone (Other)",
+        "LinkedIn URL",
+        "Notes",
+      ],
       ...result.errors.map((error) => [
         error.row.toString(),
+        error.reason,
         error.data.first_name || "",
         error.data.last_name || "",
         error.data.organization_name || "",
-        error.reason,
+        error.data.title || "",
+        error.data.email_work || "",
+        error.data.email_home || "",
+        error.data.email_other || "",
+        error.data.phone_work || "",
+        error.data.phone_home || "",
+        error.data.phone_other || "",
+        error.data.linkedin_url || "",
+        error.data.notes || "",
       ]),
     ]
       .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
@@ -247,53 +296,108 @@ export function ContactImportResult({
               <div className="flex items-center justify-between">
                 <h3 className="font-medium flex items-center gap-2">
                   <AlertCircle className="h-4 w-4" />
-                  Error Details
+                  Rejected Records ({result.errors.length})
                 </h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleDownloadErrors}
-                  className="gap-2"
-                >
-                  <Download className="h-3 w-3" />
-                  Export Errors
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={expandAll}
+                    className="gap-1 text-xs"
+                  >
+                    Expand All
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={collapseAll}
+                    className="gap-1 text-xs"
+                  >
+                    Collapse All
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleDownloadErrors}
+                    className="gap-2"
+                  >
+                    <Download className="h-3 w-3" />
+                    Export
+                  </Button>
+                </div>
               </div>
 
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {Array.from(groupedErrors.entries()).map(([reason, errors]) => (
-                  <Alert key={reason} variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle className="text-sm">
-                      {reason} ({errors.length} {errors.length === 1 ? "row" : "rows"})
-                    </AlertTitle>
-                    <AlertDescription className="mt-2">
-                      <div className="text-xs space-y-1">
-                        {errors.slice(0, 3).map((error) => (
-                          <div key={error.row} className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">
-                              Row {error.row}
-                            </Badge>
-                            <span className="truncate">
-                              {error.data.first_name} {error.data.last_name}
-                              {error.data.organization_name && (
-                                <span className="text-muted-foreground">
-                                  {" "}
-                                  - {error.data.organization_name}
-                                </span>
-                              )}
-                            </span>
-                          </div>
-                        ))}
-                        {errors.length > 3 && (
-                          <div className="text-muted-foreground">
-                            ... and {errors.length - 3} more
-                          </div>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {Array.from(groupedErrors.entries()).map(([reason, errors]) => {
+                  const isExpanded = expandedErrors.has(reason);
+                  return (
+                    <div key={reason} className="border rounded-lg">
+                      <button
+                        onClick={() => toggleErrorGroup(reason)}
+                        className="w-full flex items-center justify-between p-3 hover:bg-muted/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <AlertCircle className="h-4 w-4 text-red-600" />
+                          <span className="font-medium text-sm text-left">{reason}</span>
+                          <Badge variant="destructive" className="text-xs">
+                            {errors.length} {errors.length === 1 ? "row" : "rows"}
+                          </Badge>
+                        </div>
+                        {isExpanded ? (
+                          <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 text-muted-foreground" />
                         )}
-                      </div>
-                    </AlertDescription>
-                  </Alert>
-                ))}
+                      </button>
+
+                      {isExpanded && (
+                        <div className="border-t p-3 space-y-2 bg-muted/20">
+                          {errors.map((error) => (
+                            <div
+                              key={error.row}
+                              className="flex flex-col gap-1 p-2 bg-background rounded border border-red-200"
+                            >
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="text-xs">
+                                  Row {error.row}
+                                </Badge>
+                                <span className="font-medium text-sm">
+                                  {error.data.first_name || "(no first name)"}{" "}
+                                  {error.data.last_name || "(no last name)"}
+                                </span>
+                              </div>
+                              <div className="text-xs text-muted-foreground space-y-0.5 ml-2">
+                                {error.data.organization_name && (
+                                  <div>
+                                    <span className="font-medium">Organization:</span>{" "}
+                                    {error.data.organization_name}
+                                  </div>
+                                )}
+                                {error.data.email_work && (
+                                  <div>
+                                    <span className="font-medium">Email:</span>{" "}
+                                    {error.data.email_work}
+                                  </div>
+                                )}
+                                {error.data.title && (
+                                  <div>
+                                    <span className="font-medium">Title:</span> {error.data.title}
+                                  </div>
+                                )}
+                                {error.data.phone_work && (
+                                  <div>
+                                    <span className="font-medium">Phone:</span>{" "}
+                                    {error.data.phone_work}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
