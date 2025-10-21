@@ -6,7 +6,7 @@
  * NOT database JSONB fields (email, phone arrays)
  */
 
-import { FULL_NAME_SPLIT_MARKER } from './csvProcessor';
+import { FULL_NAME_SPLIT_MARKER } from './csvConstants';
 
 /**
  * Registry mapping ContactImportSchema field names to common CSV header variations

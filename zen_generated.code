@@ -1,0 +1,280 @@
+<GENERATED-CODE>
+1. Update `src/atomic-crm/contacts/csvProcessor.ts` to return headers from `parseRawCsvData`.
+2. Update `src/atomic-crm/misc/usePapaParse.tsx` to handle the new return type and pass headers to the `onPreview` callback.
+3. Update `src/atomic-crm/contacts/ContactImportDialog.tsx` to use the headers to generate and display column mappings in the preview.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/contacts/csvProcessor.ts>
+/**
+ * Parse raw Papa Parse results into ContactImportSchema objects
+ * Handles the specific structure of our CSV files:
+ * - Row 0: Instructions
+ * - Row 1: Empty row
+ * - Row 2: Headers
+ * - Row 3+: Data
+ *
+ * @param rawData - Raw data from Papa Parse (array of arrays)
+ * @returns Processed contact data and original headers
+ * @throws Error if CSV structure is invalid
+ */
+export function parseRawCsvData(rawData: any[][]): {
+  contacts: ContactImportSchema[];
+  headers: string[];
+} {
+  if (!Array.isArray(rawData) || rawData.length < 4) {
+    throw new Error('CSV file is too short (less than 4 rows)');
+  }
+
+  // Row 3 (index 2) contains the actual headers
+  const headers = rawData[2] as string[];
+
+  // Rows 4+ (index 3+) contain the data
+  const dataRows = rawData.slice(3);
+
+  const contacts = processCsvData(headers, dataRows);
+  return { contacts, headers };
+}
+</UPDATED_EXISTING_FILE>
+
+Now, update `usePapaParse.tsx` to use this new structure.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/misc/usePapaParse.tsx>
+type usePapaParseProps<T> = {
+  // The import batch size
+  batchSize?: number;
+
+  // processBatch returns the number of imported items (optional - required for actual import, not for preview)
+  processBatch?: (batch: T[]) => Promise<void>;
+
+  // Optional: Callback for preview mode - receives parsed preview data and headers
+  onPreview?: (data: { rows: T[]; headers: string[] }) => void;
+
+  // Optional: Parse only first N rows for preview mode
+  previewRowCount?: number;
+};
+
+export function usePapaParse<T>({
+  batchSize = 10,
+  processBatch,
+  onPreview,
+  previewRowCount,
+}: usePapaParseProps<T>) {
+  const importIdRef = useRef<number>(0);
+
+  const [importer, setImporter] = useState<Import>({
+    state: "idle",
+  });
+
+  const reset = useCallback(() => {
+    setImporter({
+      state: "idle",
+    });
+    importIdRef.current += 1;
+  }, []);
+
+  const parseCsv = useCallback(
+    (file: File) => {
+      console.log('📄 [PAPA PARSE DEBUG] parseCsv called for file:', file.name);
+      console.log('📄 [PAPA PARSE DEBUG] Preview mode:', !!previewRowCount, 'Preview count:', previewRowCount);
+      console.log('📄 [PAPA PARSE DEBUG] Has processBatch:', !!processBatch);
+
+      setImporter({
+        state: "parsing",
+      });
+
+      const importId = importIdRef.current;
+      Papa.parse<T>(file, {
+        header: false, // We'll manually handle headers after skipping rows
+        skipEmptyLines: true, // This auto-skips line 3 (empty row)
+        preview: previewRowCount ? previewRowCount + 2 : undefined, // Add 2 for skipped rows
+        async complete(results) {
+          console.log('📄 [PAPA PARSE DEBUG] Parse complete. Rows:', results.data.length);
+          if (importIdRef.current !== importId) {
+            return;
+          }
+
+          let transformedData: T[];
+          let headers: string[];
+          try {
+            // REFACTORED: Use the single source of truth to process raw CSV data.
+            const parseResult = parseRawCsvData(results.data as any[][]);
+            transformedData = parseResult.contacts as T[];
+            headers = parseResult.headers;
+          } catch (error: any) {
+            console.error("🔴 [PAPA PARSE DEBUG] CSV processing error:", error);
+            setImporter({
+              state: "error",
+              error: error instanceof Error ? error : new Error(String(error)),
+            });
+            return;
+          }
+
+          // If in preview mode, call onPreview callback and return early
+          if (onPreview && previewRowCount) {
+            console.log('📄 [PAPA PARSE DEBUG] Preview mode - calling onPreview with', transformedData.length, 'rows and', headers.length, 'headers');
+            onPreview({ rows: transformedData, headers });
+            setImporter({
+              state: "idle",
+            });
+            return;
+          }
+
+          console.log('📄 [PAPA PARSE DEBUG] NOT preview mode - starting actual import');
+          console.log('📄 [PAPA PARSE DEBUG] processBatch exists:', !!processBatch);
+
+          if (!processBatch) {
+            console.error('🔴 [PAPA PARSE DEBUG] ERROR: processBatch is undefined! Cannot import.');
+            setImporter({
+              state: "error",
+              error: new Error('processBatch function not provided'),
+            });
+            return;
+          }
+
+          setImporter({
+            state: "running",
+            rowCount: transformedData.length,
+            errorCount: results.errors.length,
+            importCount: 0,
+            remainingTime: null,
+          });
+
+          console.log('📄 [PAPA PARSE DEBUG] Starting batch processing. Total rows:', transformedData.length, 'Batch size:', batchSize);
+
+          let totalTime = 0;
+          for (let i = 0; i < transformedData.length; i += batchSize) {
+            // Note: Removed importIdRef check that was breaking during React.StrictMode remounts
+            // The check was causing early returns without setting state to "complete"
+
+            const batch = transformedData.slice(i, i + batchSize);
+            try {
+              console.log('📄 [PAPA PARSE DEBUG] Processing batch', (i / batchSize) + 1, '- contacts:', batch.length);
+              const start = Date.now();
+              await processBatch(batch);
+              const elapsed = Date.now() - start;
+              totalTime += elapsed;
+              console.log('📄 [PAPA PARSE DEBUG] Batch completed in', elapsed, 'ms');
+
+              const meanTime = totalTime / (i + batch.length);
+              setImporter((previous) => {
+                if (previous.state === "running") {
+                  const importCount = previous.importCount + batch.length;
+                  return {
+                    ...previous,
+                    importCount,
+                    remainingTime:
+                      meanTime * (transformedData.length - importCount),
+                  };
+                }
+                return previous;
+              });
+            } catch (error) {
+              console.error("Failed to import batch", error);
+              setImporter((previous) =>
+                previous.state === "running"
+                  ? {
+                      ...previous,
+                      errorCount: previous.errorCount + batch.length,
+                    }
+                  : previous,
+              );
+            }
+          }
+
+          console.log('✅ [PAPA PARSE DEBUG] All batches processed successfully. Setting state to complete.');
+
+          setImporter((previous) =>
+            previous.state === "running"
+              ? {
+                  ...previous,
+                  state: "complete",
+                  remainingTime: null,
+                }
+              : previous,
+          );
+        },
+        error(error) {
+          console.error(
+            "CSV parse error:",
+            error instanceof Error ? error.message : String(error),
+          );
+          setImporter({
+            state: "error",
+            error,
+          });
+        },
+        dynamicTyping: true,
+      });
+    },
+    [batchSize, processBatch, onPreview, previewRowCount],
+  );
+
+  return useMemo(
+    () => ({
+      importer,
+      parseCsv,
+      reset,
+    }),
+    [importer, parseCsv, reset],
+  );
+}
+</UPDATED_EXISTING_FILE>
+
+Finally, consume the headers in `ContactImportDialog.tsx` to populate the preview correctly.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/contacts/ContactImportDialog.tsx>
+import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
+import { getHeaderMappingDescription } from "./columnAliases";
+
+import { FileInput } from "@/components/admin/file-input";
+// ... (rest of imports)
+
+// ... (inside ContactImportDialog component)
+
+  // Handle preview mode
+  const onPreview = useCallback((data: { rows: ContactImportSchema[], headers: string[] }) => {
+    if (!ENABLE_IMPORT_PREVIEW) return;
+
+    const { rows, headers } = data;
+
+    console.log('📊 [PREVIEW DEBUG] First parsed row:', JSON.stringify(rows[0], null, 2));
+    console.log('📊 [PREVIEW DEBUG] Total rows:', rows.length);
+
+    // Store parsed data for later use
+    setParsedData(rows);
+
+    // Run data quality analysis
+    const organizationsWithoutContacts = findOrganizationsWithoutContacts(rows);
+    const contactsWithoutContactInfo = findContactsWithoutContactInfo(rows);
+
+    console.log('📊 [DATA QUALITY] Organizations without contacts:', organizationsWithoutContacts.length);
+    console.log('📊 [DATA QUALITY] Contacts without contact info:', contactsWithoutContactInfo.length);
+
+    // Generate preview data
+    const preview: PreviewData = {
+      // FIX: Populate mappings using the headers
+      mappings: headers.map(header => ({
+        header: header || '(empty)',
+        mappedTo: getHeaderMappingDescription(header),
+      })),
+      sampleRows: rows.slice(0, 5),
+      validCount: rows.length, // This would be calculated based on validation
+      skipCount: 0,
+      totalRows: rows.length,
+      errors: [],
+      warnings: [],
+      newOrganizations: extractNewOrganizations(rows),
+      newTags: extractNewTags(rows),
+      hasErrors: false,
+      lowConfidenceMappings: 0,
+      organizationsWithoutContacts,
+      contactsWithoutContactInfo,
+    };
+
+    setPreviewData(preview);
+    setShowPreview(true);
+  }, []);
+
+  // Enhanced processBatch wrapper with result accumulation across batches
+// ... (rest of file is unchanged)
+</UPDATED_EXISTING_FILE>
+</GENERATED-CODE>
