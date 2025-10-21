@@ -20,6 +20,7 @@ export interface ContactImportSchema {
   last_seen?: string;
   tags?: string;
   linkedin_url?: string;
+  notes?: string; // Contact notes text field
 }
 
 export interface ImportError {
@@ -142,6 +143,14 @@ export function useContactImport() {
           } = contactData;
 
           const rowNumber = index + 1;
+
+          // Debug: Log the raw contact data from CSV
+          if (rowNumber === 1) {
+            console.log("🔍 [CSV DEBUG] First contact raw data:", JSON.stringify(contactData, null, 2));
+            console.log("🔍 [CSV DEBUG] email_work:", email_work);
+            console.log("🔍 [CSV DEBUG] email_home:", email_home);
+            console.log("🔍 [CSV DEBUG] email_other:", email_other);
+          }
 
           try {
             const email = [
