@@ -102,12 +102,15 @@ export function ContactImportDialog({
 
   // Enhanced processBatch wrapper with result tracking
   const processBatch = useCallback(async (batch: ContactImportSchema[]) => {
+    console.log('🔵 [IMPORT DEBUG] processBatch called with', batch.length, 'contacts');
+    console.log('🔵 [IMPORT DEBUG] First contact in batch:', batch[0]);
     const startTime = Date.now();
     let successCount = 0;
     let errorCount = 0;
     const errors: any[] = [];
 
     try {
+      console.log('🔵 [IMPORT DEBUG] Calling processBatchHook...');
       const result = await processBatchHook(batch, {
         preview: false,
         onProgress: (current, total) => {
@@ -115,12 +118,13 @@ export function ContactImportDialog({
         }
       });
 
+      console.log('🔵 [IMPORT DEBUG] processBatchHook completed. Result:', result);
       // Store the result for display
       setImportResult(result);
       successCount = result.successCount;
       errorCount = result.failedCount;
     } catch (error) {
-      console.error("Batch processing error:", error);
+      console.error("🔴 [IMPORT DEBUG] Batch processing error:", error);
       errorCount = batch.length;
     }
   }, [processBatchHook]);
@@ -175,10 +179,13 @@ export function ContactImportDialog({
 
   // Handle preview confirmation
   const handlePreviewContinue = () => {
+    console.log('🚀 [IMPORT DEBUG] handlePreviewContinue called');
+    console.log('🚀 [IMPORT DEBUG] File:', file?.name, 'Size:', file?.size);
     setShowPreview(false);
     setPreviewConfirmed(true);
     // Use the actualImporter to parse the file for real import
     if (file) {
+      console.log('🚀 [IMPORT DEBUG] Calling actualImporter.parseCsv with file:', file.name);
       actualImporter.parseCsv(file);
     } else {
       console.error("Cannot continue import: file is missing");
