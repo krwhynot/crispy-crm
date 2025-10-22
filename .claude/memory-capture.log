@@ -1638,3 +1638,6 @@
 [2025-10-22 16:49:11] [documentation] Edit: /tmp/MIGRATION_GUIDE.md
 [2025-10-22 16:49:28] [documentation] Edit: /tmp/MIGRATION_GUIDE.md
 [2025-10-22 17:04:50] [code] Write: /tmp/name_cleanup_script.py
+[2025-10-22 17:05:49] [code] Write: /tmp/create_review_worksheets.py
+[2025-10-22 17:07:31] [documentation] Write: /tmp/NAME_CLEANUP_SUMMARY.md
+[2025-10-22 17:15:02] [code] Write: /tmp/simplified_cleanup_script.py

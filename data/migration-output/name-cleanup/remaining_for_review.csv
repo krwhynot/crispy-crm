@@ -1,0 +1,98 @@
+Row,Original Name,Organization,Current First,Current Last,Current Title,Parse Type,Why Needs Review
+19,Michael campenil - Greco,Arlington Tap House,Michael,Greco,Distributor Rep,multipart,no_rule_matched
+28,VP Community Engagement,Bally's Casino and Hotel,,,VP Community Engagement,job_title_only,no_rule_matched
+29,David Tsirekas Craig Richardson,Batter & Berries,David,Richardson,,multipart,multiple_people_detected
+37,Seth Minton chef de cuisine,Bob Chinn's  Crabhouse,Seth,cuisine,,multipart,no_rule_matched
+41,Pastry Chef Schawecker,Bon Appetit,Pastry,Schawecker,,title_suffix,extract_suffix_title
+44,Chef. Bryant Anderson,Broken barrel bar,Chef.,Anderson,Exec Chef,multipart,no_rule_matched
+45,Chef ERIC WILLIAMS CECILIA CUFF CHEF LAMAR MOORE,Bronzeville WINERY,ERIC,WILLIAMS,Chef,title_with_name,multiple_people_detected
+49,Chris and Susie Maloyan -OWNERS,Butcher and the bear,Chris,-OWNERS,Owner,multipart,multiple_people_detected
+67,Jay Wright General Manager,Club 18 at Mister B's(Evansville and Owensboro,,,Jay Wright General Manager,job_title_only,multiple_people_detected
+81,Nicky P Shannon Tom or George,Danny's,Nicky,George,,multipart,multiple_people_detected
+88,Nick De Astis,Direct Food Services,Nick,Astis,Owner,multipart,no_rule_matched
+94,General Manager Jensen,DosBros,,,General Manager Jensen,title_suffix,extract_suffix_title
+98,Executive Chef Perez,East Bank Club,,,Executive Chef Perez,title_suffix,extract_suffix_title
+103,Jenner Tomaska and wife Katrina Bravo,Esme,Jenner,Bravo,,multipart,multiple_people_detected
+111,GFS Kathy Lyons,FatKats Pizzaeria and Restaurant,GFS,Lyons,,multipart,no_rule_matched
+112,"Key Account Manager, eRetail and Omni",Ferrara Candy Company,Key,Omni,,multipart,multiple_people_detected
+127,Hibachi Chef Senmounnarath,Fujiyama Steakhouse of Japan,Hibachi,Senmounnarath,,title_suffix,extract_suffix_title
+133,Chef Drew Keane Gibsons Group,Gibson's Rosemont,Drew,Keane,Chef,title_with_name,multiple_people_detected
+147,"Joe Doran culinary Director, Ryan Nilson, senior executive culinary Director DUSTIN trip culinary Director",Hogsalt Hospitality Group,,,"Joe Doran culinary Director, Ryan Nilson, senior executive culinary Director DUSTIN trip culinary Director",job_title_only,multiple_people_detected
+161,CEO / Owner Crawford,"J. Mark Enterprises, LLC",,,CEO / Owner Crawford,title_suffix,extract_suffix_title
+162,Corporate Chef Roirdan,"J. Mark Enterprises, LLC",Corporate,Roirdan,,title_suffix,extract_suffix_title
+164,"Owner,Ripley","J. Mark Enterprises, LLC",,,"Owner,Ripley",job_title_only,multiple_people_detected
+178,Foodservice Manager Sampson,La Rabida Childerns Hospital,Foodservice,Sampson,,title_suffix,extract_suffix_title
+190,Exec chef Brian Motyka,Longman &Eagle,Exec,Motyka,Exec Chef,multipart,no_rule_matched
+200,Owner / Chef de Cuisine wennberg,Maple Tree Inn,,,Owner / Chef de Cuisine wennberg,job_title_only,no_rule_matched
+207,Executive Chef moreno,Mexo GR,,,Executive Chef moreno,title_suffix,extract_suffix_title
+208,Venue Management urquiza,Meyer's Castle,Venue,urquiza,,multipart,no_rule_matched
+209,Jesse Rogers Sara Brad,Michael's Pizza,Jesse,Brad,,multipart,multiple_people_detected
+210,Patrick  Gibson 231.410.8730 jordan,Michigan State University,Patrick,jordan,,multipart,embedded_contact_info
+219,Alexis Francis General Manager,Mister B's Pizza and Wings Bowling Green KY,,,Alexis Francis General Manager,job_title_only,multiple_people_detected
+220,Cassie Hagans General Manager,Mister B's Pizza and Wings Bowling Green KY,,,Cassie Hagans General Manager,job_title_only,multiple_people_detected
+222,Chris McGraw General Manager sales.Mrbsmurray@gmail.com,Mister B's Pizza and Wings Murray KY,Chris,sales.Mrbsmurray@gmail.com,,multipart,multiple_people_detected
+228,Jay Baron cell 270-227-8423 muggyshideoutr20052gmail.com,Mugsy's Hideout Murray,Jay,muggyshideoutr20052gmail.com,,multipart,embedded_contact_info
+238,CEO chambers brown,Newport Cafe & Go Grocer,,,CEO chambers brown,job_title_only,no_rule_matched
+253,Cook meyer,One Hope United,,,Cook meyer,job_title_only,no_rule_matched
+254,Lead Cook snow,One Hope United,Lead,snow,,multipart,no_rule_matched
+261,USF Brian Mish,Pappas,USF,Mish,,multipart,no_rule_matched
+269,"Manager, Govt Affairs hurtado",PepsiCo,,,"Manager, Govt Affairs hurtado",job_title_only,multiple_people_detected
+273,"Chefs Cesar, Ryan.d, Pedro.c, Nicole",Pinstripes,Chefs,Nicole,Exec Chef,multipart,multiple_people_detected
+275,Exec chef Elton Mann and  Brady Cohen GM,Planks Tavern on the Water,,,Exec chef Elton Mann and  Brady Cohen GM,job_title_only,multiple_people_detected
+281,Chefs owner Art and Chelsea Jackson,Pleasant House Pub,Chefs,Jackson,Owner,multipart,multiple_people_detected
+290,USF Brian Mish,Provecho,USF,Mish,,multipart,no_rule_matched
+291,"Chef Andreas Gabby, Lex",Public Bar,Andreas,Gabby,Chef,title_with_name,multiple_people_detected
+301,Rob and abby,Rob's Meat,Rob,abby,,multipart,multiple_people_detected
+307,Jim Drewenski alberto,Route 66,Jim,alberto,,multipart,no_rule_matched
+308,Exec Chef John Rudolph,Royal Sonesta Downtown/River North,Exec,Rudolph,Exec Chef,multipart,multiple_people_detected
+314,"Taborski, CEC, CCA, PCII brian",Saz's Hospitality Group,Taborski,brian,,multipart,multiple_people_detected
+315,Jesse Ayello Patrick obrien,Scratch Kitchen,Jesse,obrien,,multipart,no_rule_matched
+317,Creative Eats Officer policarpio,Sfg,Creative,policarpio,,multipart,no_rule_matched
+323,John and a Karen Shields,Smyth,John,Shields,,multipart,multiple_people_detected
+325,Chefs John McLean Martin Murch,Sociale,Chefs,Murch,Exec Chef,multipart,multiple_people_detected
+328,D'Andre Carter and Heather Bublick,Soul and smoke,D'Andre,Bublick,,multipart,multiple_people_detected
+331,General Manager dame,Soupicurean,,,General Manager dame,title_suffix,extract_suffix_title
+337,Owner Christine demacapoulos,STACKED Pancake House,,,Owner Christine demacapoulos,job_title_only,no_rule_matched
+338,Jim Drewenski Suzanne Tim,State Line Pizza,Jim,Tim,,multipart,multiple_people_detected
+339,Brian Mish dave,Station 21,Brian,dave,,multipart,no_rule_matched
+348,"Mike Hemingermiranda, John, it,, Chef Nick",Tavern on Main,Mike,Nick,,multipart,multiple_people_detected
+357,General Manager payerli,The Emily Hotel Chicago,,,General Manager payerli,title_suffix,extract_suffix_title
+363,GFS/Abdale chef Eric,The Rackhouse Tavern,GFS/Abdale,Eric,,title_suffix,extract_suffix_title
+364,USF Brian Mish Chris Pappas,The Ramen District,USF,Pappas,,multipart,multiple_people_detected
+366,Account Manager cope,The Royal Group,Account,cope,,title_suffix,extract_suffix_title
+379,PFG dave and sister Cindy,Town Club,PFG,Cindy,,multipart,multiple_people_detected
+383,Chef and Owner Williams,Trinis Tasty Pastries,and,Owner,Chef,title_with_name,multiple_people_detected
+391,Exec chef Mike hamm owner,Union sushi and bbq bar,,,Exec chef Mike hamm owner,title_suffix,extract_suffix_title
+395,Campus Executive Chef Frank Turchan,University of Michigan,Campus,Turchan,,multipart,multiple_people_detected
+396,Culinary Assistant Director of Catering miller,University of Michigan,Culinary,miller,,multipart,multiple_people_detected
+405,Stephen Gillanders-CHEF/Owner,Valhalla,,,Stephen Gillanders-CHEF/Owner,job_title_only,no_rule_matched
+407,"USF, Testa, GFS",Valparaiso University,USF,GFS,,multipart,multiple_people_detected
+410,GFS/abdale beckley gm,Versailles Food Mart,,,GFS/abdale beckley gm,title_suffix,extract_suffix_title
+412,Greco bob Kara's,Village Squire,Greco,Kara's,,multipart,no_rule_matched
+416,"Chefs Emily Kraszk, John Lipton, Trevor Fleming",Warlord,Chefs,Fleming,Exec Chef,multipart,multiple_people_detected
+420,Brian Mish diane Katie jose,White Rhino,Brian,jose,,multipart,no_rule_matched
+425,Jesse Ayello Marco,WOW Pizzeria,Jesse,Marco,,multipart,no_rule_matched
+449,Jeff & Mike,Briar Ridge,Jeff,Mike,Exec Chef,multipart,multiple_people_detected
+486,Josh and Katie,Fuel Nutrition,Josh,Katie,Owner,multipart,multiple_people_detected
+487,Thomas and Mario,Gemato's Wood Pit BBQ,Thomas,Mario,Owner,multipart,multiple_people_detected
+549,Sue and Tim,At the Office Bar& Grill,Sue,Tim,Owner,multipart,multiple_people_detected
+551,George and Tim,Olivers Bar & Grill,George,Tim,Manager,multipart,multiple_people_detected
+576,emily hazel mitchell,Western Michigan University,emily,mitchell,Manager,multipart,no_rule_matched
+612,On Ja Lee Lashat,5,On,Lashat,Owner,multipart,multiple_people_detected
+616,Sam Butler GFS,Pine Rest,Sam,GFS,Distributor Rep,multipart,no_rule_matched
+654,"Louise, Aaron, Rachel",The Dearborn,Louise,Rachel,Exec Chef,multipart,multiple_people_detected
+658,"""Missy"" Melissa Schrader",Kansas State University,"""Missy""",Schrader,,multipart,no_rule_matched
+665,Mr. Eric Barker,Northwood,Eric,Barker,Mr.,title_with_name,no_rule_matched
+670,Sonny Rodriguez *,Planeterians,Sonny,*,,multipart,no_rule_matched
+681,Mr. Kyle Dearden,US Foods,Kyle,Dearden,Mr.,title_with_name,no_rule_matched
+682,Mark David Garritson,US Foods,Mark,Garritson,,multipart,no_rule_matched
+710,terry and shannon,Classic Cafe,terry,shannon,Owner,multipart,multiple_people_detected
+872,Sue Ann Braley,GAYLORD BOWLING CENTER,Sue,Braley,,multipart,no_rule_matched
+979,Sue Ann Braley,GAYLORD BOWLING CENTER,Sue,Braley,,multipart,no_rule_matched
+1125,Malnar MBA RD LDN,Compass Group: Morrison Health,Malnar,LDN,Regional Manager-Client Success & Innovation,multipart,multiple_people_detected
+1208,Frank ( Chef),Calo Restaurant,Frank,Chef),Exec Chef,multipart,no_rule_matched
+1216,"Cortez, Alvaro ""Cisco""",PFG-Western Suburbs,Cortez,"""Cisco""",Distributor Rep,multipart,multiple_people_detected
+1223,"Vedziovski, Burim ""Brian""",PFG-Western Suburbs,Vedziovski,"""Brian""",Distributor Rep,multipart,multiple_people_detected
+1242,Derrick J. Haight,Gordon Food Service,Derrick,Haight,Manager,multipart,no_rule_matched
+1423,gm.surestaylombard@gmail.com,Sure Stay Plus Hotel,,,gm.surestaylombard@gmail.com,job_title_only,no_rule_matched
+1596,Bryant Mitchell (Mitch),Open Kitchens (Chicago),Bryant,(Mitch),,multipart,no_rule_matched
