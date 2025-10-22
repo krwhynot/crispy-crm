@@ -1648,3 +1648,6 @@
 [2025-10-22 17:29:24] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/DATABASE_MIGRATION_COMPLETE.md
 [2025-10-22 17:32:44] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/DUPLICATE_ORGANIZATIONS_SUMMARY.md
 [2025-10-22 17:39:39] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/DUPLICATE_CLEANUP_REPORT.md
+[2025-10-22 17:42:15] [migration] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/rename_duplicates_with_city.sql
+[2025-10-22 17:43:53] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/ORGANIZATION_RENAMING_COMPLETE.md
+[2025-10-22 17:49:58] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/FILE_CLEANUP_SUMMARY.md
