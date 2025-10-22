@@ -100,7 +100,13 @@ export function OrganizationImportPreview({
   };
 
   const availableFields = getAvailableFieldsWithLabels();
-  const duplicateCount = preview.duplicates?.reduce((sum, group) => sum + group.count, 0) || 0;
+  // Calculate actual duplicate entries (excluding first occurrence of each name)
+  const duplicateCount = preview.duplicates?.reduce((sum, group) => sum + Math.max(0, group.count - 1), 0) || 0;
+
+  // Calculate expected import count based on skip duplicates decision
+  const expectedImportCount = dataQualityDecisions.skipDuplicates
+    ? preview.validCount - duplicateCount
+    : preview.validCount;
 
   return (
     <div className="flex flex-col gap-4">
@@ -115,7 +121,7 @@ export function OrganizationImportPreview({
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
                 <Building2 className="h-3 w-3" />
-                <strong>{preview.validCount}</strong> organizations will be imported
+                <strong>{expectedImportCount}</strong> organizations will be imported
               </span>
             </div>
             {preview.newTags.length > 0 && (
@@ -130,7 +136,10 @@ export function OrganizationImportPreview({
               <div className="flex items-center gap-4 text-sm text-orange-600">
                 <span className="flex items-center gap-1">
                   <Copy className="h-3 w-3" />
-                  {duplicateCount} duplicate entries found
+                  {dataQualityDecisions.skipDuplicates
+                    ? `${duplicateCount} duplicate ${duplicateCount === 1 ? 'entry' : 'entries'} will be skipped`
+                    : `${duplicateCount} duplicate ${duplicateCount === 1 ? 'entry' : 'entries'} detected (will be imported)`
+                  }
                 </span>
               </div>
             )}
@@ -254,7 +263,9 @@ export function OrganizationImportPreview({
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-orange-600" />
                     <CardTitle>Duplicate Organizations</CardTitle>
-                    <Badge variant="secondary">{duplicateCount} duplicates</Badge>
+                    <Badge variant="secondary">
+                      {preview.duplicates.length} name{preview.duplicates.length > 1 ? 's' : ''}, {duplicateCount} duplicate{duplicateCount > 1 ? 's' : ''}
+                    </Badge>
                   </div>
                   {expandedSections.duplicates ? (
                     <ChevronUp className="h-4 w-4" />
@@ -263,7 +274,7 @@ export function OrganizationImportPreview({
                   )}
                 </div>
                 <CardDescription>
-                  Found {preview.duplicates.length} organization{preview.duplicates.length > 1 ? 's' : ''} with duplicate names
+                  {preview.duplicates.length} organization name{preview.duplicates.length > 1 ? 's appear' : ' appears'} multiple times ({duplicateCount} total duplicate {duplicateCount === 1 ? 'entry' : 'entries'})
                 </CardDescription>
               </CardHeader>
             </CollapsibleTrigger>
@@ -276,7 +287,9 @@ export function OrganizationImportPreview({
                         <Copy className="h-4 w-4 text-orange-600" />
                         <span className="font-medium">{group.name}</span>
                       </div>
-                      <Badge variant="secondary">{group.count} occurrences (rows: {group.indices.slice(0, 3).join(", ")}{group.indices.length > 3 ? '...' : ''})</Badge>
+                      <Badge variant="secondary">
+                        {group.count} occurrences (rows: {group.indices.slice(0, 3).map(i => i + 1).join(", ")}{group.indices.length > 3 ? '...' : ''})
+                      </Badge>
                     </div>
                   ))}
                   {preview.duplicates.length > 10 && (
@@ -306,7 +319,7 @@ export function OrganizationImportPreview({
                           Skip duplicate organizations
                         </Label>
                         <p className="text-sm text-muted-foreground">
-                          Only import the first occurrence of each organization name. Recommended to avoid data duplication.
+                          Keep only the first occurrence of each organization name. Later occurrences will be completely ignored (no data merging). Recommended to avoid creating duplicate records.
                         </p>
                       </div>
                     </div>
@@ -430,9 +443,9 @@ export function OrganizationImportPreview({
         <Button
           variant="default"
           onClick={handleContinue}
-          disabled={preview.validCount === 0}
+          disabled={expectedImportCount === 0}
         >
-          Continue Import ({preview.validCount} organizations)
+          Continue Import ({expectedImportCount} organizations)
         </Button>
       </DialogFooter>
     </div>

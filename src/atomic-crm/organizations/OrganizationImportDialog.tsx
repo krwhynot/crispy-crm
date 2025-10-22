@@ -114,8 +114,13 @@ export function OrganizationImportDialog({
       // Calculate confidence: 1.0 for matched (including user overrides), 0.0 for unmapped
       const confidence = target ? 1.0 : 0.0;
 
-      // Get sample value from first row
-      const sampleValue = rawDataRows[0]?.[index] ? String(rawDataRows[0][index]).substring(0, 50) : undefined;
+      // Get sample value from first non-empty value in first 10 rows
+      const sampleValue = rawDataRows
+        .slice(0, 10)
+        .map(row => row[index])
+        .find(val => val !== undefined && val !== null && String(val).trim() !== '')
+        ?.toString()
+        .substring(0, 50);
 
       return {
         source: header || '(empty)',
