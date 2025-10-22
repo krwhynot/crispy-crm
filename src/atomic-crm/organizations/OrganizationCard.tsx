@@ -63,16 +63,15 @@ export const OrganizationCard = (props: { record?: Company }) => {
               </ReferenceField>
             )}
             <div className="flex gap-1 mt-1 justify-center flex-wrap">
-              {record.organization_type &&
-                record.organization_type !== "unknown" && (
-                  <Badge
-                    className={`text-xs px-1 py-0 ${organizationTypeColorClasses[record.organization_type] || organizationTypeColorClasses.unknown}`}
-                  >
-                    <Building2 className="w-3 h-3 mr-0.5" />
-                    {organizationTypeLabels[record.organization_type] ||
-                      record.organization_type}
-                  </Badge>
-                )}
+              {record.organization_type && (
+                <Badge
+                  className={`text-xs px-1 py-0 ${organizationTypeColorClasses[record.organization_type] || organizationTypeColorClasses.unknown}`}
+                >
+                  <Building2 className="w-3 h-3 mr-0.5" />
+                  {organizationTypeLabels[record.organization_type] ||
+                    record.organization_type}
+                </Badge>
+              )}
               {record.priority && (
                 <Badge
                   variant={priorityColors[record.priority] as any}

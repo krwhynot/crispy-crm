@@ -70,23 +70,6 @@ interface OrganizationImportPreviewProps {
   userOverrides?: Map<string, string | null>;
 }
 
-// Available fields for mapping
-const getAvailableFieldsWithLabels = () => [
-  { value: "name", label: "Organization Name" },
-  { value: "organization_type", label: "Organization Type" },
-  { value: "priority", label: "Priority" },
-  { value: "segment_id", label: "Segment" },
-  { value: "phone", label: "Phone" },
-  { value: "address", label: "Street Address" },
-  { value: "city", label: "City" },
-  { value: "state", label: "State" },
-  { value: "postal_code", label: "Postal Code" },
-  { value: "linkedin_url", label: "LinkedIn URL" },
-  { value: "website", label: "Website" },
-  { value: "description", label: "Description/Notes" },
-  { value: "tags", label: "Tags" },
-];
-
 export function OrganizationImportPreview({
   preview,
   onContinue,
