@@ -114,11 +114,24 @@ export function OrganizationImportDialog({
     headers: string[],
     mappings: Record<string, string | null>
   ): Promise<void> => {
-    const accountManagerHeader = Object.keys(mappings).find(h => mappings[h] === 'sales_id');
-    if (!accountManagerHeader) return;
+    console.log('[Import] Starting resolveAccountManagers');
+    console.log('[Import] Headers:', headers);
+    console.log('[Import] Mappings:', mappings);
 
+    const accountManagerHeader = Object.keys(mappings).find(h => mappings[h] === 'sales_id');
+    if (!accountManagerHeader) {
+      console.log('[Import] No account manager header found');
+      return;
+    }
+
+    console.log('[Import] Account manager header:', accountManagerHeader);
     const headerIndex = headers.indexOf(accountManagerHeader);
-    if (headerIndex === -1) return;
+    if (headerIndex === -1) {
+      console.log('[Import] Header index not found');
+      return;
+    }
+
+    console.log('[Import] Header index:', headerIndex);
 
     // 1. Collect all unique text-based names from the sales_id column
     const names = new Set<string>();
@@ -130,7 +143,12 @@ export function OrganizationImportDialog({
       }
     });
 
-    if (names.size === 0) return;
+    console.log('[Import] Unique names found:', Array.from(names));
+
+    if (names.size === 0) {
+      console.log('[Import] No names to process');
+      return;
+    }
 
     const uniqueNames = Array.from(names);
     const firstNames = uniqueNames.map(name => name.split(/\s+/)[0]);
@@ -148,6 +166,8 @@ export function OrganizationImportDialog({
         return;
       }
 
+      console.log('[Import] Existing managers:', existing);
+
       // 3. Populate cache with existing managers and identify new ones
       const existingNames = new Set<string>();
 
@@ -162,7 +182,12 @@ export function OrganizationImportDialog({
         name => !existingNames.has(name.toLowerCase())
       );
 
-      if (newNamesToInsert.length === 0) return;
+      console.log('[Import] New names to insert:', newNamesToInsert);
+
+      if (newNamesToInsert.length === 0) {
+        console.log('[Import] No new names to insert - cache populated:', Object.fromEntries(salesLookupCache.current));
+        return;
+      }
 
       // 4. Batch insert new managers
       const newSalesRecords = newNamesToInsert.map(name => {
@@ -179,6 +204,8 @@ export function OrganizationImportDialog({
         };
       });
 
+      console.log('[Import] Inserting new sales records:', newSalesRecords);
+
       const { data: inserted, error: insertError } = await supabase
         .from('sales')
         .insert(newSalesRecords)
@@ -189,11 +216,15 @@ export function OrganizationImportDialog({
         return;
       }
 
+      console.log('[Import] Inserted managers:', inserted);
+
       // 5. Populate cache with newly created managers
       (inserted || []).forEach(sale => {
         const fullName = `${sale.first_name}${sale.last_name ? ' ' + sale.last_name : ''}`;
         salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
       });
+
+      console.log('[Import] Final cache state:', Object.fromEntries(salesLookupCache.current));
 
     } catch (error) {
       console.error('[Import] Unexpected error resolving account managers:', error);
