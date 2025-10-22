@@ -51,6 +51,10 @@ export function OrganizationImportDialog({
   const [rawDataRows, setRawDataRows] = useState<any[]>([]);
   // Cache for account manager name -> sales_id mappings (useRef avoids re-renders)
   const salesLookupCache = useRef<Map<string, number>>(new Map());
+  // Cache for segment name -> segment_id (UUID) mappings
+  const segmentsLookupCache = useRef<Map<string, string>>(new Map());
+  // Track when account managers and segments have been resolved to trigger reprocessing
+  const [accountManagersResolved, setAccountManagersResolved] = useState(0);
 
   // Refs for accumulating results across batches
   const accumulatedResultRef = useRef<{
@@ -257,7 +261,7 @@ export function OrganizationImportDialog({
     return rawDataRows.map((row) =>
       transformRowData(row, rawHeaders, mergedMappings, salesLookupCache.current)
     );
-  }, [rawHeaders, rawDataRows, mergedMappings, transformRowData]);
+  }, [rawHeaders, rawDataRows, mergedMappings, transformRowData, accountManagersResolved]);
 
   // Derive preview data reactively whenever mappings change
   const derivedPreviewData = useMemo<PreviewData | null>(() => {
@@ -498,6 +502,9 @@ export function OrganizationImportDialog({
         // Clear cache and batch-resolve all account manager names
         salesLookupCache.current.clear();
         await resolveAccountManagers(rawRows, headers, columnMapping);
+
+        // Trigger reprocessing now that account managers are resolved
+        setAccountManagersResolved(prev => prev + 1);
 
         // Transform rows using column mapping - cache is now populated
         const mappedRows = rawRows.map((row) =>
