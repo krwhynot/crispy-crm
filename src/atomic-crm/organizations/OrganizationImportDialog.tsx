@@ -114,24 +114,24 @@ export function OrganizationImportDialog({
     headers: string[],
     mappings: Record<string, string | null>
   ): Promise<void> => {
-    console.log('[Import] Starting resolveAccountManagers');
-    console.log('[Import] Headers:', headers);
-    console.log('[Import] Mappings:', mappings);
+    console.log('[Import] resolveAccountManagers called with', { headerCount: headers.length, rowCount: rows.length });
+    console.log('[Import] Column mappings:', mappings);
 
     const accountManagerHeader = Object.keys(mappings).find(h => mappings[h] === 'sales_id');
     if (!accountManagerHeader) {
-      console.log('[Import] No account manager header found');
+      console.log('[Import] No account manager header found in mappings (no column maps to sales_id)');
       return;
     }
 
-    console.log('[Import] Account manager header:', accountManagerHeader);
+    console.log('[Import] Found account manager header:', accountManagerHeader);
+
     const headerIndex = headers.indexOf(accountManagerHeader);
     if (headerIndex === -1) {
-      console.log('[Import] Header index not found');
+      console.log('[Import] Account manager header not found in headers array');
       return;
     }
 
-    console.log('[Import] Header index:', headerIndex);
+    console.log('[Import] Account manager column index:', headerIndex);
 
     // 1. Collect all unique text-based names from the sales_id column
     const names = new Set<string>();
@@ -143,10 +143,10 @@ export function OrganizationImportDialog({
       }
     });
 
-    console.log('[Import] Unique names found:', Array.from(names));
+    console.log('[Import] Collected unique account manager names:', Array.from(names));
 
     if (names.size === 0) {
-      console.log('[Import] No names to process');
+      console.log('[Import] No account manager names found (all values empty or numeric)');
       return;
     }
 
@@ -166,8 +166,6 @@ export function OrganizationImportDialog({
         return;
       }
 
-      console.log('[Import] Existing managers:', existing);
-
       // 3. Populate cache with existing managers and identify new ones
       const existingNames = new Set<string>();
 
@@ -182,12 +180,7 @@ export function OrganizationImportDialog({
         name => !existingNames.has(name.toLowerCase())
       );
 
-      console.log('[Import] New names to insert:', newNamesToInsert);
-
-      if (newNamesToInsert.length === 0) {
-        console.log('[Import] No new names to insert - cache populated:', Object.fromEntries(salesLookupCache.current));
-        return;
-      }
+      if (newNamesToInsert.length === 0) return;
 
       // 4. Batch insert new managers
       const newSalesRecords = newNamesToInsert.map(name => {
@@ -204,8 +197,6 @@ export function OrganizationImportDialog({
         };
       });
 
-      console.log('[Import] Inserting new sales records:', newSalesRecords);
-
       const { data: inserted, error: insertError } = await supabase
         .from('sales')
         .insert(newSalesRecords)
@@ -216,15 +207,11 @@ export function OrganizationImportDialog({
         return;
       }
 
-      console.log('[Import] Inserted managers:', inserted);
-
       // 5. Populate cache with newly created managers
       (inserted || []).forEach(sale => {
         const fullName = `${sale.first_name}${sale.last_name ? ' ' + sale.last_name : ''}`;
         salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
       });
-
-      console.log('[Import] Final cache state:', Object.fromEntries(salesLookupCache.current));
 
     } catch (error) {
       console.error('[Import] Unexpected error resolving account managers:', error);
@@ -398,17 +385,10 @@ export function OrganizationImportDialog({
   }, [processBatchHook]);
 
   const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
-    console.log('[Import] handlePreviewContinue called');
-    console.log('[Import] Cache state before import:', Object.fromEntries(salesLookupCache.current));
-    console.log('[Import] Reprocessed organizations count:', reprocessedOrganizations.length);
-    console.log('[Import] First 3 reprocessed orgs:', reprocessedOrganizations.slice(0, 3));
-
     // Always drop nameless rows
     let organizationsToImport = reprocessedOrganizations.filter(
       org => org.name && String(org.name).trim() !== ''
     );
-
-    console.log('[Import] After filtering nameless, count:', organizationsToImport.length);
 
     // Optionally skip duplicates (keep first occurrence only)
     if (decisions.skipDuplicates) {
@@ -420,9 +400,6 @@ export function OrganizationImportDialog({
         return true;
       });
     }
-
-    console.log('[Import] Final organizations to import:', organizationsToImport.length);
-    console.log('[Import] Sample organizations:', organizationsToImport.slice(0, 2));
 
     // Reset accumulated results for new import
     accumulatedResultRef.current = {
