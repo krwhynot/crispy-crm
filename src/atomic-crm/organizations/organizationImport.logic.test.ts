@@ -167,7 +167,7 @@ describe('detectDuplicateOrganizations', () => {
     const result = detectDuplicateOrganizations(orgs, 'name');
 
     expect(result.duplicates.length).toBe(2); // Two duplicate groups
-    expect(result.totalDuplicates).toBe(4); // All 4 records are duplicates
+    expect(result.totalDuplicates).toBe(2); // 2 actual duplicate entries (excluding first occurrences)
 
     // Check Acme Corp group
     const acmeGroup = result.duplicates.find(d => d.name.toLowerCase().includes('acme'));
@@ -248,7 +248,7 @@ describe('detectDuplicateOrganizations', () => {
 
     expect(result.duplicates.length).toBe(1);
     expect(result.duplicates[0].count).toBe(100);
-    expect(result.totalDuplicates).toBe(100);
+    expect(result.totalDuplicates).toBe(99); // 100 occurrences = 99 duplicates (excluding first)
   });
 
   it('should throw error for unsupported strategy', () => {
