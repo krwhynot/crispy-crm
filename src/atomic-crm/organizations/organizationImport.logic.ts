@@ -202,11 +202,9 @@ export function detectDuplicateOrganizations(
 /**
  * Apply data quality transformations to organizations based on user decisions
  *
- * Currently a placeholder - organizations don't have the same auto-fill logic as contacts.
- * Reserved for future transformations like:
- * - Standardizing phone formats
- * - Merging duplicate organizations
- * - Normalizing addresses
+ * Transformations include:
+ * - Normalizing invalid priority values to "C" (medium priority)
+ * - Future: Standardizing phone formats, merging duplicates, etc.
  *
  * @param orgs - Array of organizations to transform
  * @param decisions - User's data quality choices
@@ -217,17 +215,50 @@ export function applyDataQualityTransformations(
   decisions: DataQualityDecisions = {}
 ): TransformResult {
   const transformedSet = new Set<number>();
+  const validPriorities = ['A', 'B', 'C', 'D'];
 
-  // For now, just pass through unchanged
-  // Future: Add transformations based on decisions
   const transformedOrganizations = orgs.map((org, index) => {
-    // Example future transformation:
-    // if (decisions.standardizePhoneFormat && org.phone) {
-    //   org.phone = standardizePhone(org.phone);
-    //   transformedSet.add(index);
-    // }
+    const transformed = { ...org };
 
-    return { ...org };
+    // Normalize invalid priority values to "C" (medium priority)
+    if (transformed.priority && !validPriorities.includes(transformed.priority)) {
+      console.log(`[Import] Normalizing invalid priority "${transformed.priority}" to "C" for row ${index + 2}`);
+      transformed.priority = 'C';
+      transformedSet.add(index);
+    }
+
+    // Auto-correct LinkedIn URLs
+    if (transformed.linkedin_url && typeof transformed.linkedin_url === 'string') {
+      const originalUrl = transformed.linkedin_url.trim();
+
+      // Skip if empty
+      if (!originalUrl) {
+        transformed.linkedin_url = null;
+        return transformed;
+      }
+
+      // Add protocol if missing
+      let correctedUrl = originalUrl;
+      if (!originalUrl.startsWith('http://') && !originalUrl.startsWith('https://')) {
+        correctedUrl = 'https://' + originalUrl;
+      }
+
+      // Check if it's a valid LinkedIn URL after correction
+      const linkedinRegex = /^https?:\/\/(?:www\.)?linkedin\.com\//i;
+      if (!linkedinRegex.test(correctedUrl)) {
+        // Not a LinkedIn URL - set to null instead of failing validation
+        console.log(`[Import] Removing invalid LinkedIn URL "${originalUrl}" for row ${index + 2} (not a linkedin.com URL)`);
+        transformed.linkedin_url = null;
+        transformedSet.add(index);
+      } else if (correctedUrl !== originalUrl) {
+        // URL was corrected
+        console.log(`[Import] Auto-corrected LinkedIn URL for row ${index + 2}: "${originalUrl}" -> "${correctedUrl}"`);
+        transformed.linkedin_url = correctedUrl;
+        transformedSet.add(index);
+      }
+    }
+
+    return transformed;
   });
 
   return {
