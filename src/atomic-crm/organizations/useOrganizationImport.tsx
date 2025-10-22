@@ -133,6 +133,7 @@ export function useOrganizationImport() {
             state,
             description,
             tags: tagNames,
+            sales_id,
           } = orgData;
 
           // Note: Validation already done by validateTransformedOrganizations
@@ -165,7 +166,9 @@ export function useOrganizationImport() {
               city: city || null,
               state: state || null,
               description: description || null,
-              tags: preview ? [] : tagList.map((tag) => tag.id),
+              // tags field should be a comma-separated string for validation, not an array
+              // The actual tag relationships are handled by the data provider separately
+              tags: tagNames || undefined,
               sales_id: identity?.id,
               created_at: today,
             };

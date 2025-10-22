@@ -398,10 +398,17 @@ export function OrganizationImportDialog({
   }, [processBatchHook]);
 
   const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
+    console.log('[Import] handlePreviewContinue called');
+    console.log('[Import] Cache state before import:', Object.fromEntries(salesLookupCache.current));
+    console.log('[Import] Reprocessed organizations count:', reprocessedOrganizations.length);
+    console.log('[Import] First 3 reprocessed orgs:', reprocessedOrganizations.slice(0, 3));
+
     // Always drop nameless rows
     let organizationsToImport = reprocessedOrganizations.filter(
       org => org.name && String(org.name).trim() !== ''
     );
+
+    console.log('[Import] After filtering nameless, count:', organizationsToImport.length);
 
     // Optionally skip duplicates (keep first occurrence only)
     if (decisions.skipDuplicates) {
@@ -413,6 +420,9 @@ export function OrganizationImportDialog({
         return true;
       });
     }
+
+    console.log('[Import] Final organizations to import:', organizationsToImport.length);
+    console.log('[Import] Sample organizations:', organizationsToImport.slice(0, 2));
 
     // Reset accumulated results for new import
     accumulatedResultRef.current = {
