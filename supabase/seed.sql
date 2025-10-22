@@ -1,7 +1,11 @@
 -- Seed data for development
 -- This file runs automatically after migrations on `supabase db reset`
+-- Updated to use clean migration CSV data from data/migration-output/
 
--- Create test user (admin@test.com / password123)
+-- ============================================================================
+-- PART 1: Create test user (admin@test.com / password123)
+-- ============================================================================
+
 -- Note: Password is auto-confirmed in local environment
 INSERT INTO auth.users (
   instance_id,
@@ -54,8 +58,167 @@ INSERT INTO auth.users (
 
 -- Note: Sales record is auto-created by database trigger when auth.users is inserted
 
--- Insert 5 Principal Organizations
--- Removed columns: email, notes (dropped in cleanup), is_principal (replaced by organization_type enum)
+-- ============================================================================
+-- PART 2: Import segments from CSV
+-- ============================================================================
+
+-- Create temporary staging table for segments
+CREATE TEMP TABLE segments_staging (
+  name TEXT,
+  created_by TEXT
+);
+
+-- Import segments CSV
+-- Note: COPY FROM requires superuser, so we use COPY FROM PROGRAM
+COPY segments_staging FROM PROGRAM 'cat /home/krwhynot/projects/crispy-crm/data/migration-output/segments_import.csv' CSV HEADER;
+
+-- Migrate segments to production table
+INSERT INTO segments (name, created_by)
+SELECT
+  s.name,
+  CASE
+    WHEN s.created_by = 'system_default' THEN NULL
+    WHEN s.created_by = 'csv_import' THEN 'd3129876-b1fe-40eb-9980-64f5f73c64d6'::uuid
+    ELSE 'd3129876-b1fe-40eb-9980-64f5f73c64d6'::uuid
+  END as created_by
+FROM segments_staging s
+ON CONFLICT (name) DO NOTHING;
+
+-- ============================================================================
+-- PART 3: Import organizations from CSV
+-- ============================================================================
+
+-- Create temporary staging table for organizations
+CREATE TEMP TABLE organizations_staging (
+  name TEXT,
+  organization_type TEXT,
+  priority TEXT,
+  segment_name TEXT,
+  phone TEXT,
+  linkedin_url TEXT,
+  address TEXT,
+  city TEXT,
+  state TEXT,
+  postal_code TEXT,
+  notes TEXT,
+  primary_account_manager TEXT,
+  secondary_account_manager TEXT
+);
+
+-- Import organizations CSV
+COPY organizations_staging FROM PROGRAM 'cat /home/krwhynot/projects/crispy-crm/data/migration-output/organizations_final.csv' CSV HEADER;
+
+-- Migrate organizations to production table
+INSERT INTO organizations (
+  name,
+  organization_type,
+  priority,
+  segment_id,
+  phone,
+  linkedin_url,
+  address,
+  city,
+  state,
+  postal_code,
+  notes,
+  created_at,
+  updated_at
+)
+SELECT
+  o.name,
+  COALESCE(o.organization_type::organization_type, 'unknown'::organization_type),
+  o.priority,
+  s.id as segment_id,
+  o.phone,
+  o.linkedin_url,
+  o.address,
+  o.city,
+  o.state,
+  o.postal_code,
+  o.notes,
+  NOW(),
+  NOW()
+FROM organizations_staging o
+LEFT JOIN segments s ON s.name = o.segment_name
+WHERE o.name IS NOT NULL AND o.name != '';
+
+-- ============================================================================
+-- PART 4: Import contacts from CSV
+-- ============================================================================
+
+-- Create temporary staging table for contacts
+CREATE TEMP TABLE contacts_staging (
+  first_name TEXT,
+  last_name TEXT,
+  name TEXT,
+  title TEXT,
+  email TEXT,
+  phone TEXT,
+  organization_name TEXT,
+  account_manager TEXT,
+  linkedin_url TEXT,
+  address TEXT,
+  city TEXT,
+  state TEXT,
+  postal_code TEXT,
+  notes TEXT
+);
+
+-- Import contacts CSV
+COPY contacts_staging FROM PROGRAM 'cat /home/krwhynot/projects/crispy-crm/data/migration-output/contacts_final.csv' CSV HEADER;
+
+-- Migrate contacts to production table
+INSERT INTO contacts (
+  first_name,
+  last_name,
+  title,
+  email,
+  phone,
+  organization_id,
+  linkedin_url,
+  address,
+  city,
+  state,
+  postal_code,
+  notes,
+  created_at,
+  updated_at
+)
+SELECT
+  NULLIF(TRIM(c.first_name), '') as first_name,
+  NULLIF(TRIM(c.last_name), '') as last_name,
+  NULLIF(TRIM(c.title), '') as title,
+  -- Convert email to JSONB format if present
+  CASE
+    WHEN c.email IS NOT NULL AND TRIM(c.email) != '' THEN
+      FORMAT('[{"type":"main","value":"%s","primary":true}]', TRIM(c.email))::jsonb
+    ELSE '[]'::jsonb
+  END as email,
+  -- Convert phone to JSONB format if present
+  CASE
+    WHEN c.phone IS NOT NULL AND TRIM(c.phone) != '' THEN
+      FORMAT('[{"type":"main","value":"%s","primary":true}]', TRIM(c.phone))::jsonb
+    ELSE '[]'::jsonb
+  END as phone,
+  o.id as organization_id,
+  NULLIF(TRIM(c.linkedin_url), '') as linkedin_url,
+  NULLIF(TRIM(c.address), '') as address,
+  NULLIF(TRIM(c.city), '') as city,
+  NULLIF(TRIM(c.state), '') as state,
+  NULLIF(TRIM(c.postal_code), '') as postal_code,
+  NULLIF(TRIM(c.notes), '') as notes,
+  NOW(),
+  NOW()
+FROM contacts_staging c
+LEFT JOIN organizations o ON o.name = c.organization_name
+WHERE (c.first_name IS NOT NULL OR c.last_name IS NOT NULL)
+  AND TRIM(COALESCE(c.first_name, '') || COALESCE(c.last_name, '')) != '';
+
+-- ============================================================================
+-- PART 5: Insert Principal Organizations and Products
+-- ============================================================================
+-- Keep the original 5 principals and 25 products for product demonstration
+
 INSERT INTO organizations (name, organization_type, priority, website, phone, description, created_at, updated_at)
 VALUES
   (
@@ -107,10 +270,10 @@ VALUES
     'Frozen and fresh produce supplier. Specializes in farm-to-table ingredients and seasonal offerings.',
     NOW(),
     NOW()
-  );
+  )
+ON CONFLICT (name) DO NOTHING;
 
 -- Insert 25 products (5 per principal)
--- Get principal IDs dynamically
 WITH principal_ids AS (
   SELECT id, name, ROW_NUMBER() OVER (ORDER BY id) as rn
   FROM organizations
@@ -169,4 +332,18 @@ CROSS JOIN LATERAL (
     (5, 'Vine Tomatoes', 'FFP-TOM001', 'fresh_produce', 'Fresh vine-ripened tomatoes', 4.99, 'LB'),
     (5, 'Baby Carrots', 'FFP-CAR001', 'fresh_produce', 'Fresh baby carrots', 3.49, 'CASE')
 ) AS products(principal_rn, product_name, sku, category, description, list_price, unit_of_measure)
-WHERE principal_ids.rn = products.principal_rn;
+WHERE principal_ids.rn = products.principal_rn
+ON CONFLICT (sku) DO NOTHING;
+
+-- ============================================================================
+-- VERIFICATION QUERIES (for development debugging)
+-- ============================================================================
+
+-- Uncomment to see import statistics:
+-- SELECT 'Segments imported:' as metric, COUNT(*)::text as count FROM segments
+-- UNION ALL
+-- SELECT 'Organizations imported:', COUNT(*)::text FROM organizations
+-- UNION ALL
+-- SELECT 'Contacts imported:', COUNT(*)::text FROM contacts
+-- UNION ALL
+-- SELECT 'Products imported:', COUNT(*)::text FROM products;
