@@ -1646,3 +1646,5 @@
 [2025-10-22 17:20:58] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/FINAL_MIGRATION_SUMMARY.md
 [2025-10-22 17:21:38] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/QUICK_MIGRATION_SQL.md
 [2025-10-22 17:29:24] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/DATABASE_MIGRATION_COMPLETE.md
+[2025-10-22 17:32:44] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/DUPLICATE_ORGANIZATIONS_SUMMARY.md
+[2025-10-22 17:39:39] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/DUPLICATE_CLEANUP_REPORT.md
