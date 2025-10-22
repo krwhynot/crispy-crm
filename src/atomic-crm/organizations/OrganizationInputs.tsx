@@ -121,6 +121,7 @@ export const OrganizationInputs = () => {
             reference="sales"
             filter={{
               "disabled@neq": true,
+              "user_id@not.is": null, // Only show authenticated users in dropdown
             }}
           >
             <SelectInput
