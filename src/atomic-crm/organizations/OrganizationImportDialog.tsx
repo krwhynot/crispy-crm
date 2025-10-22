@@ -100,7 +100,10 @@ export function OrganizationImportDialog({
             // Text name - lookup in cache
             const normalizedName = value.trim().toLowerCase();
             const salesId = salesCache.get(normalizedName);
-            mappedRow[canonicalField] = salesId ?? value; // Keep original if not in cache
+            if (!salesId) {
+              console.warn(`[Import] Account manager "${value}" not found in cache - setting to null`);
+            }
+            mappedRow[canonicalField] = salesId ?? null; // Fallback to null instead of keeping string
           }
         } else if (canonicalField === 'segment_id' && typeof value === 'string') {
           // Check if it's already a UUID
