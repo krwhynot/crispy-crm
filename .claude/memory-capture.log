@@ -1651,3 +1651,9 @@
 [2025-10-22 17:42:15] [migration] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/rename_duplicates_with_city.sql
 [2025-10-22 17:43:53] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/ORGANIZATION_RENAMING_COMPLETE.md
 [2025-10-22 17:49:58] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/FILE_CLEANUP_SUMMARY.md
+[2025-10-22 17:53:36] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-22 17:54:19] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-22 17:54:20] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-22 17:54:20] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-22 17:54:57] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-22 17:55:03] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
