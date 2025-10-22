@@ -1595,3 +1595,4 @@
 [2025-10-21 20:43:00] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
 [2025-10-21 20:43:15] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
 [2025-10-21 20:46:06] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-10-22 12:23:03] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251022172248_add_account_manager_unique_constraint.sql
