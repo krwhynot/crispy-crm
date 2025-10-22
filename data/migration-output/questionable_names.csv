@@ -1,0 +1,580 @@
+Row,Original Name,First Name,Last Name,Display Name,Parse Type,Organization
+4,Yu,Yu,,Yu,single_name,2d Restaurant
+6,Kidwell,Kidwell,,Kidwell,single_name,A Plus Inc DBA: Noodles Etc
+8,Rose,Rose,,Rose,single_name,A.Fusion
+9,Tellez,Tellez,,Tellez,single_name,"Advanced Accounting Cntr, Ltd"
+10,Figueroa,Figueroa,,Figueroa,single_name,Agents Harmony
+11,Thor,Thor,,Thor,single_name,Alice & Friends-Ashland
+12,Darryl,Darryl,,Darryl,single_name,All Ways Catering
+13,Rodriguez,Rodriguez,,Rodriguez,single_name,Amg
+14,Cornell,Cornell,,Cornell,single_name,Anchored Consulting
+15,President,President,,President,single_name,Angie's
+16,Corso,Corso,,Corso,single_name,Angie's Sports Bar & Pizzeria
+17,Chef Manager Tinaglia,Chef Manager,Tinaglia,Chef Manager Tinaglia,title_multipart,Arami
+18,Jay-GM,Jay-GM,,Jay-GM,single_name,Arlington Tap House
+19,Michael campenil - Greco,Michael,Greco,Michael campenil - Greco,multipart,Arlington Tap House
+21,Mike,Mike,,Mike,single_name,Avgo (Theo's RG)
+22,Max,Max,,Max,single_name,Avgo (Theo's RG)
+24,Balis,Balis,,Balis,single_name,Balis Brothers Catering
+25,Chef Cardelli,Chef Cardelli,,Chef Cardelli,title_with_name,Ballyhoo Hospitality
+28,VP Community Engagement,VP,Engagement,VP Community Engagement,multipart,Bally's Casino and Hotel
+29,David Tsirekas Craig Richardson,David,Richardson,David Tsirekas Craig Richardson,multipart,Batter & Berries
+31,Rosenbush,Rosenbush,,Rosenbush,single_name,Big Red Oven
+36,Ghoman,Ghoman,,Ghoman,single_name,Blue Ridge Hotel partners
+37,Seth Minton chef de cuisine,Seth,cuisine,Seth Minton chef de cuisine,multipart,Bob Chinn's  Crabhouse
+39,Krueger,Krueger,,Krueger,single_name,Boelter
+41,Pastry Chef Schawecker,Pastry,Schawecker,Pastry Chef Schawecker,multipart,Bon Appetit
+42,Owner Dillon,Owner Dillon,,Owner Dillon,title_with_name,BON Manger Catering and Events
+44,Chef. Bryant Anderson,Chef.,Anderson,Chef. Bryant Anderson,multipart,Broken barrel bar
+45,Chef ERIC WILLIAMS CECILIA CUFF CHEF LAMAR MOORE,Chef ERIC,WILLIAMS,Chef ERIC WILLIAMS CECILIA CUFF CHEF LAMAR MOORE,title_multipart,Bronzeville WINERY
+47,Daisy,Daisy,,Daisy,single_name,Bullpen
+48,Chef Saul Ramos,Chef Saul,Ramos,Chef Saul Ramos,title_multipart,Butcher and the bear
+49,Chris and Susie Maloyan -OWNERS,Chris,-OWNERS,Chris and Susie Maloyan -OWNERS,multipart,Butcher and the bear
+59,Nicky P chef Stavo,Nicky,Stavo,Nicky P chef Stavo,multipart,Cheer's Food & Drink
+60,Schmidt,Schmidt,,Schmidt,single_name,Cherry Creek Golf Course
+67,Jay Wright General Manager,Jay,Manager,Jay Wright General Manager,multipart,Club 18 at Mister B's(Evansville and Owensboro
+68,Cromwell,Cromwell,,Cromwell,single_name,Colasanti's / Milford Markets
+72,Stafford,Stafford,,Stafford,single_name,Copper Fox
+73,Chef Bill Kim,Chef Bill,Kim,Chef Bill Kim,title_multipart,Cornerstone Restaurant Group
+74,Derheim,Derheim,,Derheim,single_name,Craft & Crew Hospitality
+75,Juarez,Juarez,,Juarez,single_name,Creekside Restaurant & Bar
+76,Chef owner anthony sitek,Chef owner,anthony,Chef owner anthony sitek,title_multipart,Crown Republic Gastropub
+77,Chef owner anthony sitek,Chef owner,anthony,Chef owner anthony sitek,title_multipart,Crown Republic Gastropub
+78,Namdari,Namdari,,Namdari,single_name,Crushed pizzeria
+79,Bryant,Bryant,,Bryant,single_name,Cynergy Bakes
+80,Chef JOE FRILLMAN,Chef JOE,FRILLMAN,Chef JOE FRILLMAN,title_multipart,Daisies
+81,Nicky P Shannon Tom or George,Nicky,George,Nicky P Shannon Tom or George,multipart,Danny's
+82,Badawy,Badawy,,Badawy,single_name,"Dar Baklava, LLC"
+88,Nick De Astis,Nick,Astis,Nick De Astis,multipart,Direct Food Services
+94,General Manager Jensen,General,Jensen,General Manager Jensen,multipart,DosBros
+95,Tsyhanenko,Tsyhanenko,,Tsyhanenko,single_name,Dots Platform
+96,Brent,Brent,,Brent,single_name,Earl G. Dumplins
+97,Mike,Mike,,Mike,single_name,Earl G. Dumplins
+98,Executive Chef Perez,Executive,Perez,Executive Chef Perez,multipart,East Bank Club
+100,Dave,Dave,,Dave,single_name,El Salto
+103,Jenner Tomaska and wife Katrina Bravo,Jenner,Bravo,Jenner Tomaska and wife Katrina Bravo,multipart,Esme
+104,MacNeil,MacNeil,,MacNeil,single_name,"e-tailer, inc"
+107,Kolasinski,Kolasinski,,Kolasinski,single_name,European Imports
+109,Chef Diguido,Chef Diguido,,Chef Diguido,title_with_name,Farmhouse Academy
+110,DiGuido,DiGuido,,DiGuido,single_name,Farmhouse Academy
+111,GFS Kathy Lyons,GFS,Lyons,GFS Kathy Lyons,multipart,FatKats Pizzaeria and Restaurant
+112,"Key Account Manager, eRetail and Omni",Key,Omni,"Key Account Manager, eRetail and Omni",multipart,Ferrara Candy Company
+114,Hirmez,Hirmez,,Hirmez,single_name,Flik Hospitality
+115,Griffith,Griffith,,Griffith,single_name,Food Export - Midwest
+116,Vasilevski,Vasilevski,,Vasilevski,single_name,Food Export - Midwest
+117,Kuhn,Kuhn,,Kuhn,single_name,"Food Technology Magazine, Institute of Food Technologists"
+118,Miller,Miller,,Miller,single_name,FoodMix
+125,FROEHLICH,FROEHLICH,,FROEHLICH,single_name,Froelichs
+126,Chef Rick Bayless,Chef Rick,Bayless,Chef Rick Bayless,title_multipart,Frontera
+127,Hibachi Chef Senmounnarath,Hibachi,Senmounnarath,Hibachi Chef Senmounnarath,multipart,Fujiyama Steakhouse of Japan
+132,Jose,Jose,,Jose,single_name,Gemato's Wood Pit BBQ
+133,Chef Drew Keane Gibsons Group,Chef Drew,Keane,Chef Drew Keane Gibsons Group,title_multipart,Gibson's Rosemont
+144,Chef Ethan Lim,Chef Ethan,Lim,Chef Ethan Lim,title_multipart,Hermosa
+147,"Joe Doran culinary Director, Ryan Nilson, senior executive culinary Director DUSTIN trip culinary Director",Joe,Director,"Joe Doran culinary Director, Ryan Nilson, senior executive culinary Director DUSTIN trip culinary Director",multipart,Hogsalt Hospitality Group
+152,Tomlinson,Tomlinson,,Tomlinson,single_name,Illinois State University
+161,CEO / Owner Crawford,CEO,Crawford,CEO / Owner Crawford,multipart,"J. Mark Enterprises, LLC"
+162,Corporate Chef Roirdan,Corporate,Roirdan,Corporate Chef Roirdan,multipart,"J. Mark Enterprises, LLC"
+164,"Owner,Ripley",Owner Ripley,,Owner Ripley,title_with_name,"J. Mark Enterprises, LLC"
+171,Streitz,Streitz,,Streitz,single_name,Kelber Catering
+172,Quinn,Quinn,,Quinn,single_name,Kettering Health
+178,Foodservice Manager Sampson,Foodservice,Sampson,Foodservice Manager Sampson,multipart,La Rabida Childerns Hospital
+179,Anthony,Anthony,,Anthony,single_name,LaCoCo's
+182,Owner rubin,Owner rubin,,Owner rubin,title_with_name,Laine Too
+190,Exec chef Brian Motyka,Exec,Motyka,Exec chef Brian Motyka,multipart,Longman &Eagle
+193,Nick,Nick,,Nick,single_name,Lucrezia
+195,Chef Jeff,Chef Jeff,,Chef Jeff,title_with_name,Schulers
+200,Owner / Chef de Cuisine wennberg,Owner /,Chef,Owner / Chef de Cuisine wennberg,title_multipart,Maple Tree Inn
+207,Executive Chef moreno,Executive,moreno,Executive Chef moreno,multipart,Mexo GR
+208,Venue Management urquiza,Venue,urquiza,Venue Management urquiza,multipart,Meyer's Castle
+209,Jesse Rogers Sara Brad,Jesse,Brad,Jesse Rogers Sara Brad,multipart,Michael's Pizza
+210,Patrick  Gibson 231.410.8730 jordan,Patrick,jordan,Patrick  Gibson 231.410.8730 jordan,multipart,Michigan State University
+212,Rahim,Rahim,,Rahim,single_name,Midway Restaurant Dev
+215,Bennett-Harris,Bennett-Harris,,Bennett-Harris,single_name,Milwaukee Area Technical College
+216,Brown,Brown,,Brown,single_name,Milwaukee Area Technical College
+217,Weber,Weber,,Weber,single_name,Minneapolis Public Schools
+218,Jennifer,Jennifer,,Jennifer,single_name,Miss mamies seafood and steaks
+219,Alexis Francis General Manager,Alexis,Manager,Alexis Francis General Manager,multipart,Mister B's Pizza and Wings Bowling Green KY
+220,Cassie Hagans General Manager,Cassie,Manager,Cassie Hagans General Manager,multipart,Mister B's Pizza and Wings Bowling Green KY
+221,Shannon Coughlin owner,Shannon,owner,Shannon Coughlin owner,multipart,Mister B's Pizza and Wings Bowling Green KY
+222,Chris McGraw General Manager sales.Mrbsmurray@gmail.com,Chris,sales.Mrbsmurray@gmail.com,Chris McGraw General Manager sales.Mrbsmurray@gmail.com,multipart,Mister B's Pizza and Wings Murray KY
+223,Moschouris,Moschouris,,Moschouris,single_name,MMD
+224,Rogers,Rogers,,Rogers,single_name,Modern Interiors
+225,Chef Jared Wentworth,Chef Jared,Wentworth,Chef Jared Wentworth,title_multipart,Moody tongue
+226,Co-Owner,Co-Owner,,Co-Owner,single_name,Motor City Soul Food Express
+227,Co-Ownter,Co-Ownter,,Co-Ownter,single_name,Motor City Soul Food Express
+228,Jay Baron cell 270-227-8423 muggyshideoutr20052gmail.com,Jay,muggyshideoutr20052gmail.com,Jay Baron cell 270-227-8423 muggyshideoutr20052gmail.com,multipart,Mugsy's Hideout Murray
+234,Lashay,Lashay,,Lashay,single_name,Native Foods
+235,Owner dia,Owner dia,,Owner dia,title_with_name,Native Foods
+238,CEO chambers brown,CEO,brown,CEO chambers brown,multipart,Newport Cafe & Go Grocer
+254,Lead Cook snow,Lead,snow,Lead Cook snow,multipart,One Hope United
+255,Chef Paul Kahan,Chef Paul,Kahan,Chef Paul Kahan,title_multipart,ONE OFF HOSPITALITY
+256,Chef Tony D,Chef Tony,D,Chef Tony D,title_multipart,ONE OFF HOSPITALITY
+257,GFS,GFS,,GFS,single_name,ONLY FRIES FOOD TRUCK BG
+259,Chef Noah Sandoval-owner,Chef Noah,Sandoval-owner,Chef Noah Sandoval-owner,title_multipart,ORIOLE
+261,USF Brian Mish,USF,Mish,USF Brian Mish,multipart,Pappas
+262,Chef Rick Tramonto,Chef Rick,Tramonto,Chef Rick Tramonto,title_multipart,Parker restaurant Group
+263,Charlie,Charlie,,Charlie,single_name,Parkhurst Dining
+269,"Manager, Govt Affairs hurtado",Manager,hurtado,"Manager, Govt Affairs hurtado",multipart,PepsiCo
+273,"Chefs Cesar, Ryan.d, Pedro.c, Nicole",Chefs,Nicole,"Chefs Cesar, Ryan.d, Pedro.c, Nicole",multipart,Pinstripes
+274,Hady,Hady,,Hady,single_name,Pita Inn
+275,Exec chef Elton Mann and  Brady Cohen GM,Exec,GM,Exec chef Elton Mann and  Brady Cohen GM,multipart,Planks Tavern on the Water
+281,Chefs owner Art and Chelsea Jackson,Chefs,Jackson,Chefs owner Art and Chelsea Jackson,multipart,Pleasant House Pub
+286,Sysco,Sysco,,Sysco,single_name,Postboy
+290,USF Brian Mish,USF,Mish,USF Brian Mish,multipart,Provecho
+291,"Chef Andreas Gabby, Lex",Chef Andreas,Gabby,"Chef Andreas Gabby, Lex",title_multipart,Public Bar
+294,RIVERA,RIVERA,,RIVERA,single_name,PURDUE UNIVERSITY NORTHWEST
+301,Rob and abby,Rob,abby,Rob and abby,multipart,Rob's Meat
+306,Chef Joe Flamm,Chef Joe,Flamm,Chef Joe Flamm,title_multipart,Rose Mary
+307,Jim Drewenski alberto,Jim,alberto,Jim Drewenski alberto,multipart,Route 66
+308,Exec Chef John Rudolph,Exec,Rudolph,Exec Chef John Rudolph,multipart,Royal Sonesta Downtown/River North
+309,Rashid,Rashid,,Rashid,single_name,Rumi Grill Inc
+310,Johnson,Johnson,,Johnson,single_name,S2 City Grill & Daiquiri Bar
+311,Latman,Latman,,Latman,single_name,S2 City Grill & Daiquiri Bar
+314,"Taborski, CEC, CCA, PCII brian",Taborski,brian,"Taborski, CEC, CCA, PCII brian",multipart,Saz's Hospitality Group
+315,Jesse Ayello Patrick obrien,Jesse,obrien,Jesse Ayello Patrick obrien,multipart,Scratch Kitchen
+317,Creative Eats Officer policarpio,Creative,policarpio,Creative Eats Officer policarpio,multipart,Sfg
+319,Joe Spretnjak exec chef,Joe,chef,Joe Spretnjak exec chef,multipart,Signature bar and restaurant
+323,John and a Karen Shields,John,Shields,John and a Karen Shields,multipart,Smyth
+325,Chefs John McLean Martin Murch,Chefs,Murch,Chefs John McLean Martin Murch,multipart,Sociale
+326,Chef Mac,Chef Mac,,Chef Mac,title_with_name,Sociale
+328,D'Andre Carter and Heather Bublick,D'Andre,Bublick,D'Andre Carter and Heather Bublick,multipart,Soul and smoke
+329,Seay,Seay,,Seay,single_name,Soul Veg City
+331,General Manager dame,General,dame,General Manager dame,multipart,Soupicurean
+333,Greco,Greco,,Greco,single_name,Squire Ale House
+334,Greco,Greco,,Greco,single_name,Squire On The Square
+337,Owner Christine demacapoulos,Owner Christine,demacapoulos,Owner Christine demacapoulos,title_multipart,STACKED Pancake House
+338,Jim Drewenski Suzanne Tim,Jim,Tim,Jim Drewenski Suzanne Tim,multipart,State Line Pizza
+339,Brian Mish dave,Brian,dave,Brian Mish dave,multipart,Station 21
+340,Brooks,Brooks,,Brooks,single_name,Steel Plow Burger Co
+341,Todd,Todd,,Todd,single_name,Steel Plow Burger Co
+343,Brad,Brad,,Brad,single_name,Superior
+348,"Mike Hemingermiranda, John, it,, Chef Nick",Mike,Nick,"Mike Hemingermiranda, John, it,, Chef Nick",multipart,Tavern on Main
+349,Owner juju,Owner juju,,Owner juju,title_with_name,Tavvas LLC
+350,Mike Heminger chef rick,Mike,rick,Mike Heminger chef rick,multipart,Teibel's
+351,MATA,MATA,,MATA,single_name,Texas Corral Restaurants
+353,Chef jim Mitchell,Chef jim,Mitchell,Chef jim Mitchell,title_multipart,The Barge
+354,CHEF ANTHONY,CHEF ANTHONY,,CHEF ANTHONY,title_with_name,The BUTLER
+357,General Manager payerli,General,payerli,General Manager payerli,multipart,The Emily Hotel Chicago
+361,Chef Randy Waidner,Chef Randy,Waidner,Chef Randy Waidner,title_multipart,The Patio
+362,MarianTagler,MarianTagler,,MarianTagler,single_name,The Patio
+363,GFS/Abdale chef Eric,GFS/Abdale,Eric,GFS/Abdale chef Eric,multipart,The Rackhouse Tavern
+364,USF Brian Mish Chris Pappas,USF,Pappas,USF Brian Mish Chris Pappas,multipart,The Ramen District
+366,Account Manager cope,Account,cope,Account Manager cope,multipart,The Royal Group
+367,Chef Tim,Chef Tim,,Chef Tim,title_with_name,The Scrambled
+377,Dalip,Dalip,,Dalip,single_name,Top Dog Pizza Pub
+379,PFG dave and sister Cindy,PFG,Cindy,PFG dave and sister Cindy,multipart,Town Club
+381,Owner Karahalios,Owner Karahalios,,Owner Karahalios,title_with_name,Townee Square Restaurant
+383,Chef and Owner Williams,Chef and,Owner,Chef and Owner Williams,title_multipart,Trinis Tasty Pastries
+391,Exec chef Mike hamm owner,Exec,owner,Exec chef Mike hamm owner,multipart,Union sushi and bbq bar
+393,Justin,Justin,,Justin,single_name,University of Dayton
+395,Campus Executive Chef Frank Turchan,Campus,Turchan,Campus Executive Chef Frank Turchan,multipart,University of Michigan
+396,Culinary Assistant Director of Catering miller,Culinary,miller,Culinary Assistant Director of Catering miller,multipart,University of Michigan
+401,Tong,Tong,,Tong,single_name,US FOODS
+406,Chef Jim Charlie,Chef Jim,Charlie,Chef Jim Charlie,title_multipart,Valparaiso University
+407,"USF, Testa, GFS",USF,GFS,"USF, Testa, GFS",multipart,Valparaiso University
+410,GFS/abdale beckley gm,GFS/abdale,gm,GFS/abdale beckley gm,multipart,Versailles Food Mart
+412,Greco bob Kara's,Greco,Kara's,Greco bob Kara's,multipart,Village Squire
+416,"Chefs Emily Kraszk, John Lipton, Trevor Fleming",Chefs,Fleming,"Chefs Emily Kraszk, John Lipton, Trevor Fleming",multipart,Warlord
+420,Brian Mish diane Katie jose,Brian,jose,Brian Mish diane Katie jose,multipart,White Rhino
+422,Van Ermen layna,Van,layna,Van Ermen layna,multipart,Wild Goose
+425,Jesse Ayello Marco,Jesse,Marco,Jesse Ayello Marco,multipart,WOW Pizzeria
+427,Bryak,Bryak,,Bryak,single_name,Zels Great Roast Beef
+429,Abilgail,Abilgail,,Abilgail,single_name,Zels Great Roast Beef
+430,James,James,,James,single_name,ZOGALO FOODS
+432,Cory,Cory,,Cory,single_name,Crust Brewing
+433,Brad,Brad,,Brad,single_name,Crust Brewing
+434,Anna,Anna,,Anna,single_name,Crust Brewing
+436,Dale,Dale,,Dale,single_name,Test 12/2
+438,Chef Matt Combs,Chef Matt,Combs,Chef Matt Combs,title_multipart,Bluegrass Hospitality Group
+441,Lonnie,Lonnie,,Lonnie,single_name,Atlantic Food Distributors
+448,Chetna,Chetna,,Chetna,single_name,Madison's pub and grill
+449,Jeff & Mike,Jeff,Mike,Jeff & Mike,multipart,Briar Ridge
+458,Megan,Megan,,Megan,single_name,Testa Produce
+470,Chef Louis-Radius,Chef Louis-Radius,,Chef Louis-Radius,title_with_name,Pavlou Group
+471,Chef Edward-Maple,Chef Edward-Maple,,Chef Edward-Maple,title_with_name,Pavlou Group
+472,Chef Eddie,Chef Eddie,,Chef Eddie,title_with_name,Blue Oyster
+474,Chef Manny,Chef Manny,,Chef Manny,title_with_name,Weather Mark Tavern
+477,Primo,Primo,,Primo,single_name,Naty's Pizza
+479,Rebecca,Rebecca,,Rebecca,single_name,Club Hawthrone Crestwood
+484,Kyle/Colby,Kyle/Colby,,Kyle/Colby,single_name,Hog Wild
+486,Josh and Katie,Josh,Katie,Josh and Katie,multipart,Fuel Nutrition
+487,Thomas and Mario,Thomas,Mario,Thomas and Mario,multipart,Gemato's Wood Pit BBQ
+488,Xavier,Xavier,,Xavier,single_name,
+490,Chef Bill Barker,Chef Bill,Barker,Chef Bill Barker,title_multipart,Gordon Food Service
+495,Chef Megan Punches,Chef Megan,Punches,Chef Megan Punches,title_multipart,Gordon Food Service
+526,dino,dino,,dino,single_name,texas corner meats
+528,jared,jared,,jared,single_name,high dive
+529,drew,drew,,drew,single_name,Principal
+549,Sue and Tim,Sue,Tim,Sue and Tim,multipart,At the Office Bar& Grill
+550,Emily,Emily,,Emily,single_name,The Point Sports Bar
+551,George and Tim,George,Tim,George and Tim,multipart,Olivers Bar & Grill
+552,Javier,Javier,,Javier,single_name,The Entrance Restaurant
+571,Chef Eric Gillish,Chef Eric,Gillish,Chef Eric Gillish,title_multipart,millenium
+572,dino,dino,,dino,single_name,Texas corner Specialty Meats
+573,chef Matt,chef Matt,,chef Matt,title_with_name,the hub
+574,chef Jeff shaver,chef Jeff,shaver,chef Jeff shaver,title_multipart,shulers
+576,emily hazel mitchell,emily,mitchell,emily hazel mitchell,multipart,Western Michigan University
+587,Chef Tim,Chef Tim,,Chef Tim,title_with_name,Timothy's
+602,Pauley,Pauley,,Pauley,single_name,Salvatores
+603,Jeremymmclain@gmail.som,Jeremymmclain@gmail.som,,Jeremymmclain@gmail.som,single_name,Salvatores
+604,alexvaldez@gmail.com,alexvaldez@gmail.com,,alexvaldez@gmail.com,single_name,Salvatores
+605,Chef Joe Stauffer,Chef Joe,Stauffer,Chef Joe Stauffer,title_multipart,Delmonico
+612,On Ja Lee Lashat,On,Lashat,On Ja Lee Lashat,multipart,5
+616,Sam Butler GFS,Sam,GFS,Sam Butler GFS,multipart,Pine Rest
+635,Chef Trevor,Chef Trevor,,Chef Trevor,title_with_name,Astor Club
+637,Chef Elton,Chef Elton,,Chef Elton,title_with_name,Fairmont Chicago
+638,Chef Rachel,Chef Rachel,,Chef Rachel,title_with_name,The Caterist
+645,Chef Paul,Chef Paul,,Chef Paul,title_with_name,Sunda New Asian
+646,Rachel,Rachel,,Rachel,single_name,Picnic Digital Food Court
+648,Chef Quoc,Chef Quoc,,Chef Quoc,title_with_name,Le Colonial
+649,Chef Jason,Chef Jason,,Chef Jason,title_with_name,Gilt Bar
+650,Chef Brendon,Chef Brendon,,Chef Brendon,title_with_name,Gilt Bar
+652,Willy/Debbie,Willy/Debbie,,Willy/Debbie,single_name,LeTOUR
+653,Angel,Angel,,Angel,single_name,Beatnik on the River
+654,"Louise, Aaron, Rachel",Louise,Rachel,"Louise, Aaron, Rachel",multipart,The Dearborn
+658,"""Missy"" Melissa Schrader","""Missy""",Schrader,"""Missy"" Melissa Schrader",multipart,Kansas State University
+665,Mr. Eric Barker,Mr. Eric,Barker,Mr. Eric Barker,title_multipart,Northwood
+670,Sonny Rodriguez *,Sonny,*,Sonny Rodriguez *,multipart,Planeterians
+681,Mr. Kyle Dearden,Mr. Kyle,Dearden,Mr. Kyle Dearden,title_multipart,US Foods
+682,Mark David Garritson,Mark,Garritson,Mark David Garritson,multipart,US Foods
+692,Chef Andrew Caplinger,Chef Andrew,Caplinger,Chef Andrew Caplinger,title_multipart,Caplinger
+699,Chef Panos,Chef Panos,,Chef Panos,title_with_name,Avli
+704,Chef Curd,Chef Curd,,Chef Curd,title_with_name,Teibel's
+707,Chef Marcus,Chef Marcus,,Chef Marcus,title_with_name,Willow Oaks Golf Club
+708,Chef Jarrod,Chef Jarrod,,Chef Jarrod,title_with_name,Olde Stone Country Club
+710,terry and shannon,terry,shannon,terry and shannon,multipart,Classic Cafe
+728,Chef Leslie Irvin,Chef Leslie,Irvin,Chef Leslie Irvin,title_multipart,Char? 'd Brourbon Kitchen +Bar
+745,Chef Gaetano,Chef Gaetano,,Chef Gaetano,title_with_name,Direct Food Service
+746,Brad,Brad,,Brad,single_name,Wicks
+747,henry,henry,,henry,single_name,salt of the earth
+748,limdsay,limdsay,,limdsay,single_name,saugataco
+749,matt\,matt\,,matt\,single_name,mali
+750,russ,russ,,russ,single_name,Russ
+754,Erin,Erin,,Erin,single_name,Culinary Misfits
+755,Chef JR,Chef JR,,Chef JR,title_with_name,Coppolillo's
+768,Chef Victor,Chef Victor,,Chef Victor,title_with_name,Novo Dolce
+773,Chef Oscar,Chef Oscar,,Chef Oscar,title_with_name,Evil Czech
+779,PWL,PWL,,PWL,single_name,Pizza Wholesale of Lexington
+833,Victor,Victor,,Victor,single_name,Rafeal's Sports Bar
+835,Chef Rob,Chef Rob,,Chef Rob,title_with_name,
+858,Joe,Joe,,Joe,single_name,219 Taproom
+870,Chef Dillon,Chef Dillon,,Chef Dillon,title_with_name,Lucrezia
+872,Sue Ann Braley,Sue,Braley,Sue Ann Braley,multipart,GAYLORD BOWLING CENTER
+880,Chef Brad,Chef Brad,,Chef Brad,title_with_name,Sand Creek CC
+889,Amanda,Amanda,,Amanda,single_name,INDUSTRIAL REVOLUTION
+891,Chef Mario,Chef Mario,,Chef Mario,title_with_name,Gino's Steakhouse
+912,Chef Paul Harmony,Chef Paul,Harmony,Chef Paul Harmony,title_multipart,Zefs Lighthouse Tavern
+924,Chef Alfredo,Chef Alfredo,,Chef Alfredo,title_with_name,Burger and Bowl
+927,Issac,Issac,,Issac,single_name,TAR &Feather Concessions
+929,Chef Shawn Conklin,Chef Shawn,Conklin,Chef Shawn Conklin,title_multipart,Indian Hills Country Club
+930,Chef Shane Macdougall,Chef Shane,Macdougall,Chef Shane Macdougall,title_multipart,Bowling Green Country Club
+939,Chef Tammy,Chef Tammy,,Chef Tammy,title_with_name,Asparagus
+979,Sue Ann Braley,Sue,Braley,Sue Ann Braley,multipart,GAYLORD BOWLING CENTER
+1016,Chef Paul Harmony,Chef Paul,Harmony,Chef Paul Harmony,title_multipart,Zefs Lighthouse Tavern
+1054,CHEF BRAD,CHEF BRAD,,CHEF BRAD,title_with_name,Coppolillo's
+1055,chef Bart,chef Bart,,chef Bart,title_with_name,"Rosebud steakhouse (Munster, IN)"
+1070,Chef Elton Manning,Chef Elton,Manning,Chef Elton Manning,title_multipart,University Center MSU
+1072,Chef Stephany Florek,Chef Stephany,Florek,Chef Stephany Florek,title_multipart,Crown Plaza Lansing
+1073,Chef Trevor Pollok,Chef Trevor,Pollok,Chef Trevor Pollok,title_multipart,University Center MSU
+1074,Grady,Grady,,Grady,single_name,The Army and Navy Club
+1075,Bynum,Bynum,,Bynum,single_name,The Park at Fourteenth
+1076,Tanner,Tanner,,Tanner,single_name,American Culinary Federation
+1077,Clark,Clark,,Clark,single_name,American Frozen Food Institute
+1078,Ingram,Ingram,,Ingram,single_name,Biscottis
+1079,Liong,Liong,,Liong,single_name,blackpearl hospitality
+1080,Dammert,Dammert,,Dammert,single_name,Driftwood Hospitality Management
+1081,Hernandez,Hernandez,,Hernandez,single_name,Elior NA
+1082,Larcada,Larcada,,Larcada,single_name,Mena Catering
+1083,Miller,Miller,,Miller,single_name,The Melting Pot
+1084,Stanzi,Stanzi,,Stanzi,single_name,Troon - Esplanade Golf & Country Club
+1085,akkad,akkad,,akkad,single_name,tryst lounge
+1086,Bethke,Bethke,,Bethke,single_name,"Aramark Services, Inc"
+1087,Summers,Summers,,Summers,single_name,ARCO Design/Build
+1088,BAI,BAI,,BAI,single_name,gekko kitchen commissary inc
+1089,Page,Page,,Page,single_name,Landings Club
+1090,Basit,Basit,,Basit,single_name,RaceTrac
+1091,Becker,Becker,,Becker,single_name,Tandoori Pizza & Wing Co.
+1092,Mask,Mask,,Mask,single_name,Army MWR
+1093,Miller,Miller,,Miller,single_name,Bagel Miller
+1094,Sherlock,Sherlock,,Sherlock,single_name,Eddie Merlots
+1095,Bauwens,Bauwens,,Bauwens,single_name,Exmoor Country Club
+1096,Novak,Novak,,Novak,single_name,"Fireplace Inns, Inc"
+1097,Wheeler,Wheeler,,Wheeler,single_name,Flavorista
+1098,Rauen,Rauen,,Rauen,single_name,R Whittingham Meat Corp
+1099,Lake,Lake,,Lake,single_name,Ready Set Gourmet
+1100,Tseng,Tseng,,Tseng,single_name,Sakamoto Restaurant Inc
+1101,Kraszewski,Kraszewski,,Kraszewski,single_name,School District U-46
+1102,Balis,Balis,,Balis,single_name,Scooby Drew's (Soon to Be) World Famous Pickles
+1103,Leszczynska,Leszczynska,,Leszczynska,single_name,SNAIL CAVIAR
+1104,Lee,Lee,,Lee,single_name,The Food Institute
+1105,Berhe,Berhe,,Berhe,single_name,The Metropolitan Club
+1106,Perry,Perry,,Perry,single_name,Compass Community Living
+1107,Bauman,Bauman,,Bauman,single_name,Purdue Northwest
+1108,Clark,Clark,,Clark,single_name,Purdue University Northwest
+1109,Hogan,Hogan,,Hogan,single_name,Tea Plus Poke
+1110,Sanders,Sanders,,Sanders,single_name,Texas Roadhouse
+1111,Foley,Foley,,Foley,single_name,North Coast Seafoods
+1112,Tran,Tran,,Tran,single_name,Sysco Foods
+1113,Phillips,Phillips,,Phillips,single_name,La Chow
+1114,Rice,Rice,,Rice,single_name,Saval Foodservice
+1115,Vivio,Vivio,,Vivio,single_name,Beyond Juicery & Eatery
+1116,Culver,Culver,,Culver,single_name,Coldbreak
+1117,Florek,Florek,,Florek,single_name,Crowne Plaza Lansing
+1118,Leininger,Leininger,,Leininger,single_name,K&K Catering
+1119,Merz,Merz,,Merz,single_name,Michigan State University
+1120,Bailey,Bailey,,Bailey,single_name,Morrison Living
+1121,Surrock,Surrock,,Surrock,single_name,Stark Provisions
+1122,Carano,Carano,,Carano,single_name,The Corner Social
+1123,Ozdenak,Ozdenak,,Ozdenak,single_name,Ts Food LLC
+1124,Othman,Othman,,Othman,single_name,Mocha Point Coffee Co.
+1125,Malnar MBA RD LDN,Malnar,LDN,Malnar MBA RD LDN,multipart,Compass Group: Morrison Health
+1126,Bastian,Bastian,,Bastian,single_name,Levy Restaurants
+1128,Conklin,Conklin,,Conklin,single_name,UNC Rex Healthcare
+1129,McCutcheon,McCutcheon,,McCutcheon,single_name,NEARNG
+1130,Schmall,Schmall,,Schmall,single_name,NEARNG
+1131,Trilling,Trilling,,Trilling,single_name,Marriott Hanover
+1132,Feig,Feig,,Feig,single_name,Fineline Settings
+1133,Pankovcin,Pankovcin,,Pankovcin,single_name,Lifeworks
+1134,Nielsen,Nielsen,,Nielsen,single_name,Rochester Institute of Technology
+1135,Vitelli,Vitelli,,Vitelli,single_name,Rochester Institute of Technology
+1136,Gunasinghe,Gunasinghe,,Gunasinghe,single_name,Volcora
+1137,Ahmed,Ahmed,,Ahmed,single_name,ARTISAN  PIZZA CAFe
+1138,Brahler,Brahler,,Brahler,single_name,Audrey's Avenue Kitchen & Bar
+1139,Sommer,Sommer,,Sommer,single_name,Boscoes
+1140,Shook,Shook,,Shook,single_name,CuriosiTea Emporium LLC
+1141,Dede,Dede,,Dede,single_name,Station Square
+1142,Malvasi,Malvasi,,Malvasi,single_name,Station Square
+1143,Musumeci,Musumeci,,Musumeci,single_name,Station Square
+1144,Mills,Mills,,Mills,single_name,Taste the World in Cincy LLC
+1145,Santos,Santos,,Santos,single_name,Hal Smith Restaurants
+1146,MEYER,MEYER,,MEYER,single_name,Hal Smith Restaurants
+1147,Vetere,Vetere,,Vetere,single_name,Coughlin's Law
+1148,McLeod,McLeod,,McLeod,single_name,Fleet Landing
+1149,Woo,Woo,,Woo,single_name,Real Food Restaurants Inc
+1150,Garner,Garner,,Garner,single_name,Springdale Hall Club
+1151,Li,Li,,Li,single_name,Chowbus
+1152,Grasso,Grasso,,Grasso,single_name,Elior North America - Dining and Events
+1153,Thomas,Thomas,,Thomas,single_name,Embassy Suites San Antonio Riverwalk
+1154,Tsui,Tsui,,Tsui,single_name,Ka sushi
+1155,Ramirez,Ramirez,,Ramirez,single_name,Legends / Dallas Cowboys
+1156,Punyanitya,Punyanitya,,Punyanitya,single_name,Agile Hospitality
+1157,GRAJEDA,GRAJEDA,,GRAJEDA,single_name,JOINT EXPEDITIONARY BASE LITTLE CREEK
+1158,Pait,Pait,,Pait,single_name,Macados
+1159,Macher,Macher,,Macher,single_name,MACADO'S INC
+1160,Smyrk,Smyrk,,Smyrk,single_name,Pig & Sam Restaurant Group
+1161,Schuster,Schuster,,Schuster,single_name,AJ's Riverside
+1162,Framke,Framke,,Framke,single_name,Fox Hollow Golf Course
+1163,Silvestri,Silvestri,,Silvestri,single_name,Magpies / Fat Cat's / Creekside Jack's
+1164,Moran,Moran,,Moran,single_name,Moran's Pub
+1165,MIKRUT,MIKRUT,,MIKRUT,single_name,UPPER CRUST PIZZERIA & PUB
+1167,Kubeczko,Kubeczko,,Kubeczko,single_name,Fireside Grille
+1168,Jaffrani,Jaffrani,,Jaffrani,single_name,I Dream of Falafel
+1169,Corcoran,Corcoran,,Corcoran,single_name,Country House Restaurant
+1170,OTERO,OTERO,,OTERO,single_name,FROSTY DOGS
+1171,Bateman,Bateman,,Bateman,single_name,Village of Hoffman Estates
+1172,Eng,Eng,,Eng,single_name,Silver Lake Restaurant
+1173,Patel,Patel,,Patel,single_name,Matajini mvp llc
+1174,Kotake,Kotake,,Kotake,single_name,"N.Kotake,Inc"
+1175,Kubira,Kubira,,Kubira,single_name,KT
+1176,Hummitsch,Hummitsch,,Hummitsch,single_name,sip Wine Bar
+1177,Dickstein,Dickstein,,Dickstein,single_name,Lettuce Entertain You
+1178,Magsino,Magsino,,Magsino,single_name,Imperial Surveillance
+1179,Stark,Stark,,Stark,single_name,OCallaghan's
+1180,Miglin,Miglin,,Miglin,single_name,Hailstorm Brewing Company
+1181,Evans,Evans,,Evans,single_name,Trails Edge Brewing Co
+1182,Miller,Miller,,Miller,single_name,Porky's BBQ
+1183,Adams,Adams,,Adams,single_name,Pine Valley Country Club
+1184,NALLY,NALLY,,NALLY,single_name,JOE'S GROUP
+1185,Baisden,Baisden,,Baisden,single_name,Carol's Catering
+1186,Dussault,Dussault,,Dussault,single_name,Chef Jamie's
+1187,Linley,Linley,,Linley,single_name,Michigan State University
+1188,Speed,Speed,,Speed,single_name,Big Daddy's BBQ
+1189,Morris,Morris,,Morris,single_name,The River Merchant
+1190,Kamilaris,Kamilaris,,Kamilaris,single_name,Georgios Restaurants
+1191,Sniegocki,Sniegocki,,Sniegocki,single_name,HVYC
+1195,Domenic,Domenic,,Domenic,single_name,Gibsons
+1197,Chef Nick Hancotte,Chef Nick,Hancotte,Chef Nick Hancotte,title_multipart,Gun Lake Casino
+1198,Elizabeth,Elizabeth,,Elizabeth,single_name,HORROCKS
+1203,David,David,,David,single_name,Jayell BBq
+1208,Frank ( Chef),Frank,Chef),Frank ( Chef),multipart,Calo Restaurant
+1210,Adams,Adams,,Adams,single_name,USF-STREATOR
+1211,Clubb,Clubb,,Clubb,single_name,USF-STREATOR
+1212,Turner,Turner,,Turner,single_name,USF-STREATOR
+1213,Gleim,Gleim,,Gleim,single_name,USF-STREATOR
+1214,Mohnssen,Mohnssen,,Mohnssen,single_name,USF-STREATOR
+1216,"Cortez, Alvaro ""Cisco""",Cortez,"""Cisco""","Cortez, Alvaro ""Cisco""",multipart,PFG-Western Suburbs
+1223,"Vedziovski, Burim ""Brian""",Vedziovski,"""Brian""","Vedziovski, Burim ""Brian""",multipart,PFG-Western Suburbs
+1242,Derrick J. Haight,Derrick,Haight,Derrick J. Haight,multipart,Gordon Food Service
+1276,AMANDALUECK,AMANDALUECK,,AMANDALUECK,single_name,Gordon Food Service
+1284,joseph.cecchini@abbott.com,joseph.cecchini@abbott.com,,joseph.cecchini@abbott.com,single_name,ABBOTT AP6D DEPT GE03
+1286,Jovani.gomez@abbvie.com,Jovani.gomez@abbvie.com,,Jovani.gomez@abbvie.com,single_name,ABBVIE AP30
+1287,tyler.ringer@abbvie.com,tyler.ringer@abbvie.com,,tyler.ringer@abbvie.com,single_name,ABBVIE M1
+1288,addison.kristin@yahoo.com,addison.kristin@yahoo.com,,addison.kristin@yahoo.com,single_name,ACARATH MONTESSORI
+1289,Acihlar@co.door.wi.us,Acihlar@co.door.wi.us,,Acihlar@co.door.wi.us,single_name,AGING AND DISABILITY RESOURCE CENTE
+1290,qirat62@yahoo.com,qirat62@yahoo.com,,qirat62@yahoo.com,single_name,AMERICAN ACCORD FOOD CORPORATION
+1291,amigostacos62656@gmail.com,amigostacos62656@gmail.com,,amigostacos62656@gmail.com,single_name,Ami-Gos Tacos
+1292,angryoctopus36@gmail.com,angryoctopus36@gmail.com,,angryoctopus36@gmail.com,single_name,Angry Octopus
+1293,marisaw@acog-chicago.net,marisaw@acog-chicago.net,,marisaw@acog-chicago.net,single_name,APOSTOLIC CHURCH OF GOD
+1294,jkvelazquezjr@hammond.k12.in.us,jkvelazquezjr@hammond.k12.in.us,,jkvelazquezjr@hammond.k12.in.us,single_name,Area Career Center
+1295,garytaylorassembly@gmail.com,garytaylorassembly@gmail.com,,garytaylorassembly@gmail.com,single_name,ASSEMBLY AMERICAN BAR & CAFE (THE)
+1296,barnstormersshowinfo@gmail.com,barnstormersshowinfo@gmail.com,,barnstormersshowinfo@gmail.com,single_name,Barnstormer's Pizza
+1297,kklug@beverlycc.org,kklug@beverlycc.org,,kklug@beverlycc.org,single_name,Beverly Country Club
+1298,kc111895@gmail.com,kc111895@gmail.com,,kc111895@gmail.com,single_name,BJ'S RESTAURANT
+1299,matt@burlingtontap.com,matt@burlingtontap.com,,matt@burlingtontap.com,single_name,Burlington Tap and Smokehouse
+1300,erica.cheers@outlook.com,erica.cheers@outlook.com,,erica.cheers@outlook.com,single_name,Cheers In Chesterton
+1301,Evan.Tenenholtz@gmail.com,Evan.Tenenholtz@gmail.com,,Evan.Tenenholtz@gmail.com,single_name,Chicago Health Foods
+1302,ira.rose@ymail.com,ira.rose@ymail.com,,ira.rose@ymail.com,single_name,Chicago Health Foods
+1303,hawkshead18@gmail.com,hawkshead18@gmail.com,,hawkshead18@gmail.com,single_name,CLEMENTINE'S SALOON
+1304,Daniel.A.Jaehn@powershealth.org,Daniel.A.Jaehn@powershealth.org,,Daniel.A.Jaehn@powershealth.org,single_name,Community Hospital Food Service
+1305,heather.scott5960@gmail.com,heather.scott5960@gmail.com,,heather.scott5960@gmail.com,single_name,CORNER PUB & GRILL
+1306,Countrytimekettlekorn@gmail.com,Countrytimekettlekorn@gmail.com,,Countrytimekettlekorn@gmail.com,single_name,Countrytime Kettle Korn McHenry
+1307,cremeofthecropcatering@gmail.com,cremeofthecropcatering@gmail.com,,cremeofthecropcatering@gmail.com,single_name,CREME OF THE CROP
+1308,contact@mosswashing.com,contact@mosswashing.com,,contact@mosswashing.com,single_name,CRYSTAL VALLEY CATERING
+1309,daniel.may@drinkswithdabney.com,daniel.may@drinkswithdabney.com,,daniel.may@drinkswithdabney.com,single_name,Dabney & Co
+1310,daniel.may@drinkswithdabney.com,daniel.may@drinkswithdabney.com,,daniel.may@drinkswithdabney.com,single_name,Dabney & Co
+1311,Missy@daydreamerdomes.com,Missy@daydreamerdomes.com,,Missy@daydreamerdomes.com,single_name,Daydreamer Domes
+1312,anthony.lacroix@warnerhospital.org,anthony.lacroix@warnerhospital.org,,anthony.lacroix@warnerhospital.org,single_name,DR JOHN WARNER HOSPITAL
+1313,anthony.lacroix@warnerhospital.org,anthony.lacroix@warnerhospital.org,,anthony.lacroix@warnerhospital.org,single_name,DR JOHN WARNER HOSPITAL
+1314,ale.licea11@gmail.com,ale.licea11@gmail.com,,ale.licea11@gmail.com,single_name,DREAM PALACE BANQUET HALL
+1315,hefedegreat@gmail.com,hefedegreat@gmail.com,,hefedegreat@gmail.com,single_name,Driftless Social
+1316,rccoffey@eiu.edu,rccoffey@eiu.edu,,rccoffey@eiu.edu,single_name,E I U- FOOD COURT
+1317,sjacobs@eiu.edu,sjacobs@eiu.edu,,sjacobs@eiu.edu,single_name,E I U- FOOD COURT
+1318,PALOSEMI000@students.elkhorn.k12.wi.us,PALOSEMI000@students.elkhorn.k12.wi.us,,PALOSEMI000@students.elkhorn.k12.wi.us,single_name,Elkhorn Area High School Culinary A
+1319,debbie.sharpe@gmail.com,debbie.sharpe@gmail.com,,debbie.sharpe@gmail.com,single_name,Elston Ave Food Co. 392959E
+1320,jgronske@epicburger.com,jgronske@epicburger.com,,jgronske@epicburger.com,single_name,EPIC BURGER-PEARSON ST
+1321,ruth.bassett1959@gmail.com,ruth.bassett1959@gmail.com,,ruth.bassett1959@gmail.com,single_name,ESPERANZA SCHOOL
+1322,findfaklandia@gmail.com,findfaklandia@gmail.com,,findfaklandia@gmail.com,single_name,Faklandia Brewing
+1323,findfaklandia@gmail.com,findfaklandia@gmail.com,,findfaklandia@gmail.com,single_name,Faklandia Brewing
+1324,findfaklandia@gmail.com,findfaklandia@gmail.com,,findfaklandia@gmail.com,single_name,Faklandia Brewing
+1325,Tkelly@franciscancommunities.org,Tkelly@franciscancommunities.org,,Tkelly@franciscancommunities.org,single_name,FM - Village at Mercy Creek
+1326,Tkelly@franciscancommunities.org,Tkelly@franciscancommunities.org,,Tkelly@franciscancommunities.org,single_name,FM - Village at Mercy Creek
+1327,burimo@hotmail.com,burimo@hotmail.com,,burimo@hotmail.com,single_name,FORT ATKINSON FAMILY RESTAURANT
+1328,gameonpeotone@gmail.com,gameonpeotone@gmail.com,,gameonpeotone@gmail.com,single_name,GAME ON BAR & GRILL
+1329,adam@gejascafe.com,adam@gejascafe.com,,adam@gejascafe.com,single_name,GEJA'S CAFE
+1330,allie@me.com,allie@me.com,,allie@me.com,single_name,GOBLIN AND THE GROCER
+1331,baldsilentbob70@yahoo.com,baldsilentbob70@yahoo.com,,baldsilentbob70@yahoo.com,single_name,GOBLIN AND THE GROCER
+1332,baldsilentbob70@yahoo.com,baldsilentbob70@yahoo.com,,baldsilentbob70@yahoo.com,single_name,GOBLIN AND THE GROCER
+1333,gina@golfvx.com,gina@golfvx.com,,gina@golfvx.com,single_name,Golf VX
+1334,jun@golfvx.com,jun@golfvx.com,,jun@golfvx.com,single_name,Golf VX
+1335,todd@hairycowbrewing.com,todd@hairycowbrewing.com,,todd@hairycowbrewing.com,single_name,HAIRY COW BREWING COMPANY
+1336,Ksimpson@hampshireparkdistrict.org,Ksimpson@hampshireparkdistrict.org,,Ksimpson@hampshireparkdistrict.org,single_name,Hampshire Township Park District
+1337,jterrell@heartlandalliance.org,jterrell@heartlandalliance.org,,jterrell@heartlandalliance.org,single_name,HEARTLAND HUMAN CARE-SRV GILES CCR
+1338,nbowe@heritageal.com,nbowe@heritageal.com,,nbowe@heritageal.com,single_name,HSL Eau Claire
+1339,adreifke@heritageal.com,adreifke@heritageal.com,,adreifke@heritageal.com,single_name,HSL Muskego
+1340,jlewandowski@heritageal.com,jlewandowski@heritageal.com,,jlewandowski@heritageal.com,single_name,HSL West Allis Assisted
+1341,jeffrey.schoening@independencevillages.com,jeffrey.schoening@independencevillages.com,,jeffrey.schoening@independencevillages.com,single_name,Independence Village of Ames
+1342,daniel.neidlinger@independencevillages.com,daniel.neidlinger@independencevillages.com,,daniel.neidlinger@independencevillages.com,single_name,Independence Village of Avon
+1343,Lsiriphan@independencevillages.com,Lsiriphan@independencevillages.com,,Lsiriphan@independencevillages.com,single_name,Independence Village of Waukee
+1344,aclayton53@ivytech.edu,aclayton53@ivytech.edu,,aclayton53@ivytech.edu,single_name,IVY TECH-E CHICAGO
+1345,kleach27@ivytech.edu,kleach27@ivytech.edu,,kleach27@ivytech.edu,single_name,IVY TECH-E CHICAGO
+1346,bseleb@ivytech.edu,bseleb@ivytech.edu,,bseleb@ivytech.edu,single_name,IVY TECH-E CHICAGO
+1347,mhinojosa5@ivytech.edu,mhinojosa5@ivytech.edu,,mhinojosa5@ivytech.edu,single_name,IVY TECH-E CHICAGO
+1348,bevnovakovic@gmail.com,bevnovakovic@gmail.com,,bevnovakovic@gmail.com,single_name,Jelka Leedle
+1349,jelkallc@gmail.com,jelkallc@gmail.com,,jelkallc@gmail.com,single_name,Jelka Leedle
+1350,jewndorf@stmonicasseniorliving.com,jewndorf@stmonicasseniorliving.com,,jewndorf@stmonicasseniorliving.com,single_name,JULIE WENDORF
+1351,sphillips@athens-213.org,sphillips@athens-213.org,,sphillips@athens-213.org,single_name,Kelly
+1352,nick@kiddieacademyil.com,nick@kiddieacademyil.com,,nick@kiddieacademyil.com,single_name,Kiddie Academy Of Oak Park
+1353,olga@kiddieacademyil.com,olga@kiddieacademyil.com,,olga@kiddieacademyil.com,single_name,Kiddie Academy Of Oak Park
+1354,listwithmekrw@gmail.com,listwithmekrw@gmail.com,,listwithmekrw@gmail.com,single_name,Kimberly Woods
+1355,aaront@kbhouse.org,aaront@kbhouse.org,,aaront@kbhouse.org,single_name,King-Bruwaert House
+1356,ksteffes@kirbyhealth.org,ksteffes@kirbyhealth.org,,ksteffes@kirbyhealth.org,single_name,KIRBY MEDICAL CENTER
+1357,kirk530@gmail.com,kirk530@gmail.com,,kirk530@gmail.com,single_name,KIRK'S BBQ
+1358,fritsch_indy@yahoo.com,fritsch_indy@yahoo.com,,fritsch_indy@yahoo.com,single_name,KNIGHTS OF COLUMBUS #1282
+1359,fritsch_indy@yahoo.com,fritsch_indy@yahoo.com,,fritsch_indy@yahoo.com,single_name,KNIGHTS OF COLUMBUS #1282
+1360,Janette.solana@lgyc.org,Janette.solana@lgyc.org,,Janette.solana@lgyc.org,single_name,L G YOUTH CAMP-GATE 2
+1361,thouke@larabida.org,thouke@larabida.org,,thouke@larabida.org,single_name,LA RABIDA CHILDRENS HOSPITAL
+1362,Lmarcial@anthemmemorycare.com,Lmarcial@anthemmemorycare.com,,Lmarcial@anthemmemorycare.com,single_name,Lemuel Marcial
+1363,angelabrunette@aol.com,angelabrunette@aol.com,,angelabrunette@aol.com,single_name,Louies Waffle House
+1364,madisonpatch97@gmail.com,madisonpatch97@gmail.com,,madisonpatch97@gmail.com,single_name,Ludington Pub
+1365,robin@lutherdale.org,robin@lutherdale.org,,robin@lutherdale.org,single_name,Lutherdale
+1366,grace@lutherdale.org,grace@lutherdale.org,,grace@lutherdale.org,single_name,Lutherdale
+1367,robin@lutherdale.org,robin@lutherdale.org,,robin@lutherdale.org,single_name,Lutherdale
+1368,caitlyn@macandcheeseshop.com,caitlyn@macandcheeseshop.com,,caitlyn@macandcheeseshop.com,single_name,MACS
+1369,caitlyn@macandcheeseshop.com,caitlyn@macandcheeseshop.com,,caitlyn@macandcheeseshop.com,single_name,MACS
+1370,RFamFoods@gmail.com,RFamFoods@gmail.com,,RFamFoods@gmail.com,single_name,Maija's Families Foods
+1371,morgan@mapletreeinnrestaurant.com,morgan@mapletreeinnrestaurant.com,,morgan@mapletreeinnrestaurant.com,single_name,Maple Tree Inn
+1372,morgan@mapletreeinnrestaurant.com,morgan@mapletreeinnrestaurant.com,,morgan@mapletreeinnrestaurant.com,single_name,Maple Tree Inn
+1373,krismcdonald74@icloud.com,krismcdonald74@icloud.com,,krismcdonald74@icloud.com,single_name,MARK III RESTAURANT (THE)
+1374,saboreskitchen@gmail.com,saboreskitchen@gmail.com,,saboreskitchen@gmail.com,single_name,Marrufo's Tacos
+1375,saboreskitchen@gmail.com,saboreskitchen@gmail.com,,saboreskitchen@gmail.com,single_name,Marrufo's Tacos
+1376,troy.thorne@gfs.com,troy.thorne@gfs.com,,troy.thorne@gfs.com,single_name,MARY'S PLACE
+1377,danna.coleman@rhs.care,danna.coleman@rhs.care,,danna.coleman@rhs.care,single_name,MERRILLVILLE REGIONAL MENTAL HEALTH
+1378,danna.coleman@rhs.care,danna.coleman@rhs.care,,danna.coleman@rhs.care,single_name,MERRILLVILLE REGIONAL MENTAL HEALTH
+1379,larhonda.lindsey@rhs.care,larhonda.lindsey@rhs.care,,larhonda.lindsey@rhs.care,single_name,MERRILLVILLE REGIONAL MENTAL HEALTH
+1380,danna.coleman@rhs.care,danna.coleman@rhs.care,,danna.coleman@rhs.care,single_name,MERRILLVILLE REGIONAL MENTAL HEALTH
+1381,Ryan@heardhosp.com,Ryan@heardhosp.com,,Ryan@heardhosp.com,single_name,MILWAUKEE BRAT HOUSE
+1382,cateringandevents@thefigandthepheasant.com,cateringandevents@thefigandthepheasant.com,,cateringandevents@thefigandthepheasant.com,single_name,Moxie Coffee Café Catering
+1383,Laurie.nomellini@central301.net,Laurie.nomellini@central301.net,,Laurie.nomellini@central301.net,single_name,NIIPC- PRAIRIE KNOLLS MIDDLE SCHOOL
+1384,Tabitha.Gibson@central301.net,Tabitha.Gibson@central301.net,,Tabitha.Gibson@central301.net,single_name,NIIPC- PRAIRIE KNOLLS MIDDLE SCHOOL
+1385,hortont@district65.net,hortont@district65.net,,hortont@district65.net,single_name,NIIPC-JOSEPH E HILL ADMIN CENTER
+1386,chefcelena1@yahoo.com,chefcelena1@yahoo.com,,chefcelena1@yahoo.com,single_name,NIVRAM BALMORAL NURSING
+1387,chefcelena1@yahoo.com,chefcelena1@yahoo.com,,chefcelena1@yahoo.com,single_name,NIVRAM BALMORAL NURSING
+1388,sophielima@gmail.com,sophielima@gmail.com,,sophielima@gmail.com,single_name,North Island Catering
+1389,ktinoco@nd.edu,ktinoco@nd.edu,,ktinoco@nd.edu,single_name,Notre Dame-110 South Dining Hall
+1390,ktinoco@nd.edu,ktinoco@nd.edu,,ktinoco@nd.edu,single_name,Notre Dame-110 South Dining Hall
+1391,jdavis@oakcrestdekalb.org,jdavis@oakcrestdekalb.org,,jdavis@oakcrestdekalb.org,single_name,OAKCREST DEKALB AREA RET CTR
+1392,andrea.diaz@psd150.org,andrea.diaz@psd150.org,,andrea.diaz@psd150.org,single_name,Organic Life - Peoria High School
+1393,miguel.plata@noahsarkwaterpark.com,miguel.plata@noahsarkwaterpark.com,,miguel.plata@noahsarkwaterpark.com,single_name,Palace Ent - Adventureland
+1394,tonyaj@paramountarts.com,tonyaj@paramountarts.com,,tonyaj@paramountarts.com,single_name,PARAMOUNT THEATRE
+1395,tonyaj@paramountarts.com,tonyaj@paramountarts.com,,tonyaj@paramountarts.com,single_name,PARAMOUNT THEATRE
+1396,pauliesscheduling@gmail.com,pauliesscheduling@gmail.com,,pauliesscheduling@gmail.com,single_name,Paulies
+1397,bwylie@sblhs.org,bwylie@sblhs.org,,bwylie@sblhs.org,single_name,PEACE MEAL CENTRAL OFFICE
+1398,info@myperiperi.com,info@myperiperi.com,,info@myperiperi.com,single_name,Port of Peri Peri Villa Park IL
+1399,alegion18@aol.com,alegion18@aol.com,,alegion18@aol.com,single_name,POST 18 AMERICAN LEGION
+1400,amazarakos@qualityinnbradley.com,amazarakos@qualityinnbradley.com,,amazarakos@qualityinnbradley.com,single_name,Quality Inn Bradley 367910E
+1401,kr.sanderssmith@gmail.com,kr.sanderssmith@gmail.com,,kr.sanderssmith@gmail.com,single_name,Queen of Peace Retirement
+1402,ryan.quindt@gmail.com,ryan.quindt@gmail.com,,ryan.quindt@gmail.com,single_name,Quindts Towne Lounge
+1403,foodmgr@raderfamilyfarms.com,foodmgr@raderfamilyfarms.com,,foodmgr@raderfamilyfarms.com,single_name,RADER FAMILY FARM
+1404,ahurley@ridgecc.org,ahurley@ridgecc.org,,ahurley@ridgecc.org,single_name,RIDGE COUNTRY CLUB
+1405,jlamey@ridgecc.org,jlamey@ridgecc.org,,jlamey@ridgecc.org,single_name,RIDGE COUNTRY CLUB
+1406,awallace@rockfordrivets.com,awallace@rockfordrivets.com,,awallace@rockfordrivets.com,single_name,Rockford Rivets
+1407,hannas@rockfordrivets.com,hannas@rockfordrivets.com,,hannas@rockfordrivets.com,single_name,Rockford Rivets
+1408,lhagens@organiclifeusa.com,lhagens@organiclifeusa.com,,lhagens@organiclifeusa.com,single_name,Rupley Elementary School
+1409,Christine_A_Hartney@rush.edu,Christine_A_Hartney@rush.edu,,Christine_A_Hartney@rush.edu,single_name,RUSH U MED-GEN KITCHEN PO589563
+1410,donald@hoohaven.org,donald@hoohaven.org,,donald@hoohaven.org,single_name,Sassy Mac Boys
+1411,rockfalls@live.com,rockfalls@live.com,,rockfalls@live.com,single_name,Sassy Mac Boys
+1412,donald@hoohaven.org,donald@hoohaven.org,,donald@hoohaven.org,single_name,Sassy Mac Boys
+1413,pmiller1706@gmail.com,pmiller1706@gmail.com,,pmiller1706@gmail.com,single_name,SAUSAGE KITCHEN
+1414,tsorrentino@sos.org,tsorrentino@sos.org,,tsorrentino@sos.org,single_name,Science Of Spirituality
+1415,sherri.broadnax@yahoo.com,sherri.broadnax@yahoo.com,,sherri.broadnax@yahoo.com,single_name,Something Special by Sherri
+1416,Mikes@spring-brook.com,Mikes@spring-brook.com,,Mikes@spring-brook.com,single_name,SPRING BROOK RESORT 69445E
+1417,Trudyp@spring-brook.com,Trudyp@spring-brook.com,,Trudyp@spring-brook.com,single_name,SPRING BROOK RESORT 69445E
+1418,Mikes@spring-brook.com,Mikes@spring-brook.com,,Mikes@spring-brook.com,single_name,SPRING BROOK RESORT 69445E
+1419,cbennett@squarerootscp.com,cbennett@squarerootscp.com,,cbennett@squarerootscp.com,single_name,SQUARE ROOTS
+1420,kellyrmarks@gmail.com,kellyrmarks@gmail.com,,kellyrmarks@gmail.com,single_name,State Park Little League
+1421,eli.ramos@storypoint.com,eli.ramos@storypoint.com,,eli.ramos@storypoint.com,single_name,Storypoint Of Bolingbrook
+1422,luisflres12345@gmail.com,luisflres12345@gmail.com,,luisflres12345@gmail.com,single_name,Stussy's Diner
+1423,gm.surestaylombard@gmail.com,gm.surestaylombard@gmail.com,,gm.surestaylombard@gmail.com,single_name,Sure Stay Plus Hotel
+1424,mr2007.mf@gmail.com,mr2007.mf@gmail.com,,mr2007.mf@gmail.com,single_name,Taco Depot Crown Point
+1425,faraz@tandoorchicago.com,faraz@tandoorchicago.com,,faraz@tandoorchicago.com,single_name,Tandoor Char House
+1426,faraz@tandoorchicago.com,faraz@tandoorchicago.com,,faraz@tandoorchicago.com,single_name,Tandoor Char House
+1427,tacostaqueromucho@gmail.com,tacostaqueromucho@gmail.com,,tacostaqueromucho@gmail.com,single_name,Taquero Mucho
+1428,spencer@cellardoorbar.com,spencer@cellardoorbar.com,,spencer@cellardoorbar.com,single_name,The Cellar Door
+1429,alyssahartness@gmail.com,alyssahartness@gmail.com,,alyssahartness@gmail.com,single_name,The Ice Cream Shop
+1430,alonso@matrixvenue.com,alonso@matrixvenue.com,,alonso@matrixvenue.com,single_name,The Matrix Room
+1431,alonso@matrixvenue.com,alonso@matrixvenue.com,,alonso@matrixvenue.com,single_name,The Matrix Room
+1432,sabrina32620@hotmail.com,sabrina32620@hotmail.com,,sabrina32620@hotmail.com,single_name,The Pointe at Morris
+1433,sabrina32620@hotmail.com,sabrina32620@hotmail.com,,sabrina32620@hotmail.com,single_name,The Pointe at Morris
+1434,patti.fairmont@gmail.com,patti.fairmont@gmail.com,,patti.fairmont@gmail.com,single_name,The Shores of Fairmont
+1435,patti.fairmont@gmail.com,patti.fairmont@gmail.com,,patti.fairmont@gmail.com,single_name,The Shores of Fairmont
+1436,dluna@southholland.org,dluna@southholland.org,,dluna@southholland.org,single_name,The Village Of South Holland
+1437,kshannon@woodsofcaledonia.com,kshannon@woodsofcaledonia.com,,kshannon@woodsofcaledonia.com,single_name,the woods of Caledonia
+1438,olivera.bezanovic@trinity-health.org,olivera.bezanovic@trinity-health.org,,olivera.bezanovic@trinity-health.org,single_name,THS-Gottlieb Memorial Dietary
+1439,sofia.quirk@trinity-health.org,sofia.quirk@trinity-health.org,,sofia.quirk@trinity-health.org,single_name,THS-GOTTLIEB MEMORIAL DIETARY-H0182
+1440,sofia.quirk@trinity-health.org,sofia.quirk@trinity-health.org,,sofia.quirk@trinity-health.org,single_name,THS-GOTTLIEB MEMORIAL DIETARY-H0182
+1441,Andi.White@saintalphonsus.org,Andi.White@saintalphonsus.org,,Andi.White@saintalphonsus.org,single_name,THS-MERCY MEDICAL CTR-DUBUQUE-H0050
+1442,Jody.mcghee@timber-lee.com,Jody.mcghee@timber-lee.com,,Jody.mcghee@timber-lee.com,single_name,Timber-Lee Ministries
+1443,Jody.mcghee@timber-lee.com,Jody.mcghee@timber-lee.com,,Jody.mcghee@timber-lee.com,single_name,Timber-Lee Ministries
+1444,info@tinyscoffeebar.com,info@tinyscoffeebar.com,,info@tinyscoffeebar.com,single_name,Tinys Coffee Bar
+1445,dsprocurement@housing.illinois.edu,dsprocurement@housing.illinois.edu,,dsprocurement@housing.illinois.edu,single_name,U OF I- HOUSING FOOD STORES
+1448,CHEF NUCK,CHEF NUCK,,CHEF NUCK,title_with_name,Brett Anthony Foods
+1449,Tom.Taylor@sodexo.com,Tom.Taylor@sodexo.com,,Tom.Taylor@sodexo.com,single_name,UIC Catering & Conferences 49852003
+1450,creidy@woodridgeparks.org,creidy@woodridgeparks.org,,creidy@woodridgeparks.org,single_name,VILLAGE GRNS OF WOODRIDGE GOLFCRSE
+1451,andyvallejo90@icloud.com,andyvallejo90@icloud.com,,andyvallejo90@icloud.com,single_name,Wanaki Golf Course
+1452,d52kwidm@d52schools.com,d52kwidm@d52schools.com,,d52kwidm@d52schools.com,single_name,Washington Grade School District 52
+1453,anaples@wc314.org,anaples@wc314.org,,anaples@wc314.org,single_name,West Carroll Middle School
+1454,tdouglas@whd147.org,tdouglas@whd147.org,,tdouglas@whd147.org,single_name,WEST HARVEY SCHOOL DIST 147
+1455,Vwilliams@heritagegolfgroup.com,Vwilliams@heritagegolfgroup.com,,Vwilliams@heritagegolfgroup.com,single_name,White Deer Golf Course
+1456,bernhagen265@gmail.com,bernhagen265@gmail.com,,bernhagen265@gmail.com,single_name,WurstBar Brady St
+1457,jvandyke@wuskowhan.com,jvandyke@wuskowhan.com,,jvandyke@wuskowhan.com,single_name,WUSKOWHAN PLAYERS CLUB
+1596,Bryant Mitchell (Mitch),Bryant,(Mitch),Bryant Mitchell (Mitch),multipart,Open Kitchens (Chicago)
