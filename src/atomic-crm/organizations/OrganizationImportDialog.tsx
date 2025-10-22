@@ -76,13 +76,14 @@ export function OrganizationImportDialog({
 
   /**
    * Helper function to transform raw CSV row data to mapped organization object
-   * Handles special case for sales_id (account manager) field conversion
+   * Handles special cases for sales_id (account manager) and segment_id field conversion
    */
   const transformRowData = useCallback((
     rawRow: any[],
     headers: string[],
     mappings: Record<string, string | null>,
-    cache: Map<string, number>
+    salesCache: Map<string, number>,
+    segmentsCache: Map<string, string>
   ) => {
     const mappedRow: any = {};
     headers.forEach((header, index) => {
@@ -98,8 +99,19 @@ export function OrganizationImportDialog({
           } else {
             // Text name - lookup in cache
             const normalizedName = value.trim().toLowerCase();
-            const salesId = cache.get(normalizedName);
+            const salesId = salesCache.get(normalizedName);
             mappedRow[canonicalField] = salesId ?? value; // Keep original if not in cache
+          }
+        } else if (canonicalField === 'segment_id' && typeof value === 'string') {
+          // Check if it's already a UUID
+          const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+          if (uuidRegex.test(value)) {
+            mappedRow[canonicalField] = value;
+          } else {
+            // Segment name - lookup in cache
+            const normalizedName = value.trim().toLowerCase();
+            const segmentId = segmentsCache.get(normalizedName);
+            mappedRow[canonicalField] = segmentId ?? value; // Keep original if not in cache
           }
         } else {
           mappedRow[canonicalField] = value;
@@ -229,10 +241,118 @@ export function OrganizationImportDialog({
         salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
       });
 
-      console.log('[Import] Final cache state:', Array.from(salesLookupCache.current.entries()));
+      console.log('[Import] Final sales cache state:', Array.from(salesLookupCache.current.entries()));
 
     } catch (error) {
       console.error('[Import] Unexpected error resolving account managers:', error);
+    }
+  }, []);
+
+  /**
+   * Batch resolve and cache all unique segment names from CSV
+   * Creates segments if they don't exist
+   */
+  const resolveSegments = useCallback(async (
+    rows: any[],
+    headers: string[],
+    mappings: Record<string, string | null>
+  ): Promise<void> => {
+    console.log('[Import] resolveSegments called');
+
+    const segmentHeader = Object.keys(mappings).find(h => mappings[h] === 'segment_id');
+    if (!segmentHeader) {
+      console.log('[Import] No segment header found');
+      return;
+    }
+
+    const headerIndex = headers.indexOf(segmentHeader);
+    if (headerIndex === -1) {
+      console.log('[Import] Segment header not found in headers array');
+      return;
+    }
+
+    // Collect all unique segment names
+    const names = new Set<string>();
+    rows.forEach(row => {
+      const value = row[headerIndex];
+      // Only consider non-UUID strings
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (typeof value === 'string' && value.trim() && !uuidRegex.test(value)) {
+        names.add(value.trim());
+      }
+    });
+
+    console.log('[Import] Collected unique segment names:', Array.from(names));
+
+    if (names.size === 0) {
+      console.log('[Import] No segment names to resolve');
+      return;
+    }
+
+    const uniqueNames = Array.from(names);
+
+    try {
+      // Check which segments already exist
+      const { data: existing, error: selectError } = await supabase
+        .from('segments')
+        .select('id, name')
+        .in('name', uniqueNames);
+
+      if (selectError) {
+        console.error('[Import] Error fetching existing segments:', selectError);
+        return;
+      }
+
+      console.log('[Import] Found existing segments:', existing);
+
+      // Populate cache with existing segments
+      const existingNames = new Set<string>();
+      (existing || []).forEach(segment => {
+        const normalizedName = segment.name.toLowerCase();
+        segmentsLookupCache.current.set(normalizedName, segment.id);
+        existingNames.add(normalizedName);
+      });
+
+      // Identify new segments to create
+      const newNamesToInsert = uniqueNames.filter(
+        name => !existingNames.has(name.toLowerCase())
+      );
+
+      console.log('[Import] New segments to insert:', newNamesToInsert);
+
+      if (newNamesToInsert.length === 0) {
+        console.log('[Import] No new segments to insert');
+        return;
+      }
+
+      // Batch insert new segments
+      const newSegments = newNamesToInsert.map(name => ({
+        name: name.trim(),
+      }));
+
+      console.log('[Import] Inserting segments:', newSegments);
+
+      const { data: inserted, error: insertError } = await supabase
+        .from('segments')
+        .insert(newSegments)
+        .select('id, name');
+
+      if (insertError) {
+        console.error('[Import] Error batch-creating segments:', insertError);
+        return;
+      }
+
+      console.log('[Import] Successfully inserted segments:', inserted);
+
+      // Populate cache with newly created segments
+      (inserted || []).forEach(segment => {
+        segmentsLookupCache.current.set(segment.name.toLowerCase(), segment.id);
+      });
+
+      console.log('[Import] Final segments cache state:', Array.from(segmentsLookupCache.current.entries()));
+
+    } catch (error) {
+      console.error('[Import] Unexpected error resolving segments:', error);
     }
   }, []);
 
@@ -259,7 +379,7 @@ export function OrganizationImportDialog({
 
     // Transform raw rows using the centralized helper function
     return rawDataRows.map((row) =>
-      transformRowData(row, rawHeaders, mergedMappings, salesLookupCache.current)
+      transformRowData(row, rawHeaders, mergedMappings, salesLookupCache.current, segmentsLookupCache.current)
     );
   }, [rawHeaders, rawDataRows, mergedMappings, transformRowData, accountManagersResolved]);
 
@@ -499,16 +619,18 @@ export function OrganizationImportDialog({
         // Map CSV headers to canonical field names for initial preview
         const columnMapping = mapHeadersToFields(headers);
 
-        // Clear cache and batch-resolve all account manager names
+        // Clear caches and batch-resolve all account manager names and segments
         salesLookupCache.current.clear();
+        segmentsLookupCache.current.clear();
         await resolveAccountManagers(rawRows, headers, columnMapping);
+        await resolveSegments(rawRows, headers, columnMapping);
 
-        // Trigger reprocessing now that account managers are resolved
+        // Trigger reprocessing now that account managers and segments are resolved
         setAccountManagersResolved(prev => prev + 1);
 
-        // Transform rows using column mapping - cache is now populated
+        // Transform rows using column mapping - caches are now populated
         const mappedRows = rawRows.map((row) =>
-          transformRowData(row, headers, columnMapping, salesLookupCache.current)
+          transformRowData(row, headers, columnMapping, salesLookupCache.current, segmentsLookupCache.current)
         );
 
         // Generate column mappings with confidence scores
