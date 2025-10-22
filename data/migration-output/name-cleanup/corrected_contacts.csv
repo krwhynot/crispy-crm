@@ -1,0 +1,57 @@
+Row,Original Name,Organization,New First Name,New Last Name,New Title,Confidence,Correction Rule
+15,President,Angie's,,,President,high,clear_names_set_title
+17,Chef Manager Tinaglia,Arami,,Tinaglia,Chef,high,parse_chef_title
+18,Jay-GM,Arlington Tap House,,Jay,GM,high,split_hyphen
+42,Owner Dillon,BON Manger Catering and Events,,Dillon,Owner,high,extract_title_and_name
+48,Chef Saul Ramos,Butcher and the bear,Saul,Ramos,Chef,high,parse_chef_title
+56,GM Uldrich,Chapel Street Cafe,,Uldrich,Gm,high,extract_title_and_name
+59,Nicky P chef Stavo,Cheer's Food & Drink,Nicky,P,Chef Stavo,medium,extract_suffix_title
+63,Manager Romano,Chicago winery,,Romano,Manager,high,extract_title_and_name
+73,Chef Bill Kim,Cornerstone Restaurant Group,Bill,Kim,Chef,high,parse_chef_title
+76,Chef owner anthony sitek,Crown Republic Gastropub,Anthony,Sitek,Chef,high,parse_chef_title
+77,Chef owner anthony sitek,Crown Republic Gastropub,Anthony,Sitek,Chef,high,parse_chef_title
+80,Chef JOE FRILLMAN,Daisies,JOE,Frillman,Chef,high,parse_chef_title
+120,Mike Schatzman-Owner,Franklin Room,Mike,Schatzman,Owner,high,split_hyphen
+126,Chef Rick Bayless,Frontera,Rick,Bayless,Chef,high,parse_chef_title
+144,Chef Ethan Lim,Hermosa,Ethan,Lim,Chef,high,parse_chef_title
+163,Executive Chef,"J. Mark Enterprises, LLC",,,Executive Chef,high,clear_names_set_title
+182,Owner rubin,Laine Too,,rubin,Owner,high,extract_title_and_name
+221,Shannon Coughlin owner,Mister B's Pizza and Wings Bowling Green KY,Shannon,Coughlin,Owner,medium,extract_suffix_title
+225,Chef Jared Wentworth,Moody tongue,Jared,Wentworth,Chef,high,parse_chef_title
+226,Co-Owner,Motor City Soul Food Express,,Co,Owner,high,split_hyphen
+235,Owner dia,Native Foods,,dia,Owner,high,extract_title_and_name
+251,Joshua Blevins-GM,Old Irving brewing Company,Joshua,Blevins,GM,high,split_hyphen
+255,Chef Paul Kahan,ONE OFF HOSPITALITY,Paul,Kahan,Chef,high,parse_chef_title
+256,Chef Tony D,ONE OFF HOSPITALITY,Tony,D,Chef,high,parse_chef_title
+259,Chef Noah Sandoval-owner,ORIOLE,Chef,Sandoval,Owner,high,split_hyphen
+262,Chef Rick Tramonto,Parker restaurant Group,Rick,Tramonto,Chef,high,parse_chef_title
+305,CEO jones,Roots & Vine Produce And Cafe,,jones,Ceo,high,extract_title_and_name
+306,Chef Joe Flamm,Rose Mary,Joe,Flamm,Chef,high,parse_chef_title
+316,President hassan,Seoul Bites,,hassan,President,high,extract_title_and_name
+319,Joe Spretnjak exec chef,Signature bar and restaurant,Joe,Spretnjak,Chef,medium,extract_suffix_title
+349,Owner juju,Tavvas LLC,,juju,Owner,high,extract_title_and_name
+350,Mike Heminger chef rick,Teibel's,Mike,Heminger,Chef Rick,medium,extract_suffix_title
+353,Chef jim Mitchell,The Barge,Jim,Mitchell,Chef,high,parse_chef_title
+361,Chef Randy Waidner,The Patio,Randy,Waidner,Chef,high,parse_chef_title
+381,Owner Karahalios,Townee Square Restaurant,,Karahalios,Owner,high,extract_title_and_name
+387,Director brooks,UHC,,brooks,Director,high,extract_title_and_name
+388,Director michael,UHC,,michael,Director,high,extract_title_and_name
+389,Director uldrych,UHC,,uldrych,Director,high,extract_title_and_name
+406,Chef Jim Charlie,Valparaiso University,Jim,Charlie,Chef,high,parse_chef_title
+422,Van Ermen layna,Wild Goose,Van,layna,,high,already_correct
+438,Chef Matt Combs,Bluegrass Hospitality Group,Matt,Combs,Chef,high,parse_chef_title
+490,Chef Bill Barker,Gordon Food Service,Bill,Barker,Chef,high,parse_chef_title
+495,Chef Megan Punches,Gordon Food Service,Megan,Punches,Chef,high,parse_chef_title
+571,Chef Eric Gillish,millenium,Eric,Gillish,Chef,high,parse_chef_title
+574,chef Jeff shaver,shulers,Jeff,Shaver,Chef,high,parse_chef_title
+605,Chef Joe Stauffer,Delmonico,Joe,Stauffer,Chef,high,parse_chef_title
+692,Chef Andrew Caplinger,Caplinger,Andrew,Caplinger,Chef,high,parse_chef_title
+728,Chef Leslie Irvin,Char? 'd Brourbon Kitchen +Bar,Leslie,Irvin,Chef,high,parse_chef_title
+912,Chef Paul Harmony,Zefs Lighthouse Tavern,Paul,Harmony,Chef,high,parse_chef_title
+929,Chef Shawn Conklin,Indian Hills Country Club,Shawn,Conklin,Chef,high,parse_chef_title
+930,Chef Shane Macdougall,Bowling Green Country Club,Shane,Macdougall,Chef,high,parse_chef_title
+1016,Chef Paul Harmony,Zefs Lighthouse Tavern,Paul,Harmony,Chef,high,parse_chef_title
+1070,Chef Elton Manning,University Center MSU,Elton,Manning,Chef,high,parse_chef_title
+1072,Chef Stephany Florek,Crown Plaza Lansing,Stephany,Florek,Chef,high,parse_chef_title
+1073,Chef Trevor Pollok,University Center MSU,Trevor,Pollok,Chef,high,parse_chef_title
+1197,Chef Nick Hancotte,Gun Lake Casino,Nick,Hancotte,Chef,high,parse_chef_title
