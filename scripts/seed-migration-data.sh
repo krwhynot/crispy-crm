@@ -160,13 +160,17 @@ SELECT
   -- Convert email to JSONB format if present
   CASE
     WHEN c.email IS NOT NULL AND TRIM(c.email) != '' THEN
-      FORMAT('[{"type":"main","value":"%s","primary":true}]', TRIM(c.email))::jsonb
+      jsonb_build_array(
+        jsonb_build_object('type', 'main', 'value', TRIM(c.email), 'primary', true)
+      )
     ELSE '[]'::jsonb
   END as email,
   -- Convert phone to JSONB format if present
   CASE
     WHEN c.phone IS NOT NULL AND TRIM(c.phone) != '' THEN
-      FORMAT('[{"type":"main","value":"%s","primary":true}]', TRIM(c.phone))::jsonb
+      jsonb_build_array(
+        jsonb_build_object('type', 'main', 'value', TRIM(c.phone), 'primary', true)
+      )
     ELSE '[]'::jsonb
   END as phone,
   o.id as organization_id,
