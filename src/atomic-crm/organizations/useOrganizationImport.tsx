@@ -169,7 +169,8 @@ export function useOrganizationImport() {
               // tags field should be a comma-separated string for validation, not an array
               // The actual tag relationships are handled by the data provider separately
               tags: tagNames || undefined,
-              sales_id: identity?.id,
+              // Use sales_id from CSV (already resolved to numeric ID) or fallback to current user
+              sales_id: sales_id || identity?.id,
               created_at: today,
             };
 
