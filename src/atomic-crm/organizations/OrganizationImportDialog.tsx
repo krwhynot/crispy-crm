@@ -152,6 +152,7 @@ export function OrganizationImportDialog({
 
     const uniqueNames = Array.from(names);
     const firstNames = uniqueNames.map(name => name.split(/\s+/)[0]);
+    console.log('[Import] First names to check:', firstNames);
 
     try {
       // 2. Check which names already exist in the DB (for user_id IS NULL)
@@ -165,6 +166,8 @@ export function OrganizationImportDialog({
         console.error('[Import] Error fetching existing account managers:', selectError);
         return;
       }
+
+      console.log('[Import] Found existing account managers:', existing);
 
       // 3. Populate cache with existing managers and identify new ones
       const existingNames = new Set<string>();
@@ -180,7 +183,12 @@ export function OrganizationImportDialog({
         name => !existingNames.has(name.toLowerCase())
       );
 
-      if (newNamesToInsert.length === 0) return;
+      console.log('[Import] New account managers to insert:', newNamesToInsert);
+
+      if (newNamesToInsert.length === 0) {
+        console.log('[Import] No new account managers to insert (all already exist)');
+        return;
+      }
 
       // 4. Batch insert new managers
       const newSalesRecords = newNamesToInsert.map(name => {
@@ -197,6 +205,8 @@ export function OrganizationImportDialog({
         };
       });
 
+      console.log('[Import] Inserting sales records:', newSalesRecords);
+
       const { data: inserted, error: insertError } = await supabase
         .from('sales')
         .insert(newSalesRecords)
@@ -207,11 +217,15 @@ export function OrganizationImportDialog({
         return;
       }
 
+      console.log('[Import] Successfully inserted account managers:', inserted);
+
       // 5. Populate cache with newly created managers
       (inserted || []).forEach(sale => {
         const fullName = `${sale.first_name}${sale.last_name ? ' ' + sale.last_name : ''}`;
         salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
       });
+
+      console.log('[Import] Final cache state:', Array.from(salesLookupCache.current.entries()));
 
     } catch (error) {
       console.error('[Import] Unexpected error resolving account managers:', error);

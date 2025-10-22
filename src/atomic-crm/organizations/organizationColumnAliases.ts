@@ -241,6 +241,7 @@ export const ORGANIZATION_COLUMN_ALIASES: Record<string, string[]> = {
  * Normalize a header string for comparison
  * - Converts to lowercase
  * - Trims whitespace
+ * - Removes parentheses and their contents (e.g., "(DropDown)", "(Required)")
  * - Removes special characters (keeping spaces, underscores, hyphens)
  * - Collapses multiple spaces
  */
@@ -252,8 +253,10 @@ export function normalizeHeader(header: string): string {
   return header
     .toLowerCase()
     .trim()
-    // Remove special characters except spaces, underscores, hyphens, parentheses
-    .replace(/[^a-z0-9\s_\-()]/g, ' ')
+    // Remove parentheses and everything inside them (e.g., "(DropDown)" -> "")
+    .replace(/\([^)]*\)/g, ' ')
+    // Remove special characters except spaces, underscores, hyphens
+    .replace(/[^a-z0-9\s_\-]/g, ' ')
     // Collapse multiple spaces to single space
     .replace(/\s+/g, ' ')
     .trim();
