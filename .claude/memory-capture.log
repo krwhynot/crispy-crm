@@ -1644,3 +1644,5 @@
 [2025-10-22 17:16:35] [documentation] Write: data/migration-output/name-cleanup/SIMPLIFIED_IMPLEMENTATION_GUIDE.md
 [2025-10-22 17:19:10] [code] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/name-cleanup/apply_cleanup.py
 [2025-10-22 17:20:58] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/FINAL_MIGRATION_SUMMARY.md
+[2025-10-22 17:21:38] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/QUICK_MIGRATION_SQL.md
+[2025-10-22 17:29:24] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/DATABASE_MIGRATION_COMPLETE.md
