@@ -1,0 +1,10 @@
+Metric,Count,Percentage
+Total Questionable Entries,153,100%
+Keep & Correct (85%+ confidence),55,35.9%
+Move to Notes (<85% confidence),98,64.1%
+,,
+Notes entries WITH email/phone,24,24.5%
+Notes entries WITHOUT email/phone,74,75.5%
+,,
+High Confidence (90%+),53,96.4%
+Medium-High Confidence (85-89%),2,3.6%
