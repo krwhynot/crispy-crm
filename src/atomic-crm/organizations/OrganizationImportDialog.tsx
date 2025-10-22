@@ -71,77 +71,134 @@ export function OrganizationImportDialog({
   const rowOffsetRef = useRef(0);
 
   /**
-   * Upsert account manager by name into sales table
-   * Returns sales_id for the account manager (creates if doesn't exist)
-   * Also caches the result for subsequent lookups
+   * Helper function to transform raw CSV row data to mapped organization object
+   * Handles special case for sales_id (account manager) field conversion
    */
-  const upsertAccountManager = useCallback(async (name: string): Promise<number | null> => {
-    if (!name || typeof name !== 'string') return null;
+  const transformRowData = useCallback((
+    rawRow: any[],
+    headers: string[],
+    mappings: Record<string, string | null>,
+    cache: Map<string, number>
+  ) => {
+    const mappedRow: any = {};
+    headers.forEach((header, index) => {
+      const canonicalField = mappings[header];
+      const value = rawRow[index];
 
-    // Normalize the name for lookup
-    const normalizedName = name.trim().toLowerCase();
+      if (canonicalField && value !== undefined && value !== '') {
+        if (canonicalField === 'sales_id' && typeof value === 'string') {
+          // Check if it's already a number (ID)
+          const numValue = Number(value);
+          if (!isNaN(numValue) && Number.isInteger(numValue)) {
+            mappedRow[canonicalField] = numValue;
+          } else {
+            // Text name - lookup in cache
+            const normalizedName = value.trim().toLowerCase();
+            const salesId = cache.get(normalizedName);
+            mappedRow[canonicalField] = salesId ?? value; // Keep original if not in cache
+          }
+        } else {
+          mappedRow[canonicalField] = value;
+        }
+      }
+    });
+    return mappedRow;
+  }, []);
 
-    // Check cache first
-    if (salesLookupCache.has(normalizedName)) {
-      return salesLookupCache.get(normalizedName)!;
-    }
+  /**
+   * Batch resolve and cache all unique account manager names from CSV
+   * This eliminates per-row database queries and race conditions
+   */
+  const resolveAccountManagers = useCallback(async (
+    rows: any[],
+    headers: string[],
+    mappings: Record<string, string | null>
+  ): Promise<void> => {
+    const accountManagerHeader = Object.keys(mappings).find(h => mappings[h] === 'sales_id');
+    if (!accountManagerHeader) return;
 
-    // Split "FirstName LastName" or just use "FirstName"
-    const nameParts = name.trim().split(/\s+/);
-    const firstName = nameParts[0];
-    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : null;
+    const headerIndex = headers.indexOf(accountManagerHeader);
+    if (headerIndex === -1) return;
+
+    // 1. Collect all unique text-based names from the sales_id column
+    const names = new Set<string>();
+    rows.forEach(row => {
+      const value = row[headerIndex];
+      // Only consider non-numeric strings
+      if (typeof value === 'string' && value.trim() && isNaN(Number(value))) {
+        names.add(value.trim());
+      }
+    });
+
+    if (names.size === 0) return;
+
+    const uniqueNames = Array.from(names);
+    const firstNames = uniqueNames.map(name => name.split(/\s+/)[0]);
 
     try {
-      // Check if account manager with this name already exists (user_id=NULL)
+      // 2. Check which names already exist in the DB (for user_id IS NULL)
       const { data: existing, error: selectError } = await supabase
         .from('sales')
-        .select('id')
-        .eq('first_name', firstName)
-        .is('user_id', null)
-        .maybeSingle();
+        .select('id, first_name, last_name')
+        .in('first_name', firstNames)
+        .is('user_id', null);
 
       if (selectError) {
-        console.error('[Import] Error checking existing account manager:', selectError);
-        return null;
+        console.error('[Import] Error fetching existing account managers:', selectError);
+        return;
       }
 
-      if (existing) {
-        // Account manager already exists, cache and return their ID
-        setSalesLookupCache(prev => new Map(prev).set(normalizedName, existing.id));
-        return existing.id;
-      }
+      // 3. Populate cache with existing managers and identify new ones
+      const existingNames = new Set<string>();
 
-      // Create new account manager
-      const { data: inserted, error: insertError } = await supabase
-        .from('sales')
-        .insert({
+      (existing || []).forEach(sale => {
+        const fullName = `${sale.first_name}${sale.last_name ? ' ' + sale.last_name : ''}`;
+        const normalizedName = fullName.toLowerCase();
+        salesLookupCache.current.set(normalizedName, sale.id);
+        existingNames.add(normalizedName);
+      });
+
+      const newNamesToInsert = uniqueNames.filter(
+        name => !existingNames.has(name.toLowerCase())
+      );
+
+      if (newNamesToInsert.length === 0) return;
+
+      // 4. Batch insert new managers
+      const newSalesRecords = newNamesToInsert.map(name => {
+        const nameParts = name.trim().split(/\s+/);
+        const firstName = nameParts[0];
+        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : null;
+        return {
           first_name: firstName,
           last_name: lastName,
           user_id: null,
           email: `${firstName.toLowerCase()}${lastName ? '.' + lastName.toLowerCase() : ''}@imported.local`,
           is_admin: false,
           disabled: false,
-        })
-        .select('id')
-        .single();
+        };
+      });
+
+      const { data: inserted, error: insertError } = await supabase
+        .from('sales')
+        .insert(newSalesRecords)
+        .select('id, first_name, last_name');
 
       if (insertError) {
-        console.error('[Import] Error creating account manager:', insertError);
-        return null;
+        console.error('[Import] Error batch-creating account managers:', insertError);
+        return;
       }
 
-      const salesId = inserted?.id || null;
-      if (salesId) {
-        // Cache the new sales_id
-        setSalesLookupCache(prev => new Map(prev).set(normalizedName, salesId));
-      }
+      // 5. Populate cache with newly created managers
+      (inserted || []).forEach(sale => {
+        const fullName = `${sale.first_name}${sale.last_name ? ' ' + sale.last_name : ''}`;
+        salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
+      });
 
-      return salesId;
     } catch (error) {
-      console.error('[Import] Unexpected error upserting account manager:', error);
-      return null;
+      console.error('[Import] Unexpected error resolving account managers:', error);
     }
-  }, [salesLookupCache]);
+  }, []);
 
   // Derive final mappings by merging auto-detection with user overrides
   const mergedMappings = useMemo<Record<string, string | null>>(() => {
@@ -164,39 +221,11 @@ export function OrganizationImportDialog({
       return [];
     }
 
-    // Transform raw rows using merged mappings
-    return rawDataRows.map((row) => {
-      const mappedRow: any = {};
-      rawHeaders.forEach((header, index) => {
-        const canonicalField = mergedMappings[header];
-        if (canonicalField && row[index] !== undefined && row[index] !== '') {
-          // Special handling for account manager field
-          if (canonicalField === 'sales_id' && typeof row[index] === 'string') {
-            const value = row[index];
-
-            // Check if it's already a number (ID)
-            const numValue = Number(value);
-            if (!isNaN(numValue) && Number.isInteger(numValue)) {
-              mappedRow[canonicalField] = numValue;
-            } else {
-              // Text name - lookup in cache (should be populated from initial parse)
-              const normalizedName = value.trim().toLowerCase();
-              const salesId = salesLookupCache.get(normalizedName);
-              if (salesId) {
-                mappedRow[canonicalField] = salesId;
-              } else {
-                // Not in cache - keep original value (will fail validation or needs re-parse)
-                mappedRow[canonicalField] = value;
-              }
-            }
-          } else {
-            mappedRow[canonicalField] = row[index];
-          }
-        }
-      });
-      return mappedRow;
-    });
-  }, [rawHeaders, rawDataRows, mergedMappings, salesLookupCache]);
+    // Transform raw rows using the centralized helper function
+    return rawDataRows.map((row) =>
+      transformRowData(row, rawHeaders, mergedMappings, salesLookupCache.current)
+    );
+  }, [rawHeaders, rawDataRows, mergedMappings, transformRowData]);
 
   // Derive preview data reactively whenever mappings change
   const derivedPreviewData = useMemo<PreviewData | null>(() => {
@@ -428,46 +457,19 @@ export function OrganizationImportDialog({
 
         // Store raw data for re-processing when user changes mappings
         setRawHeaders(headers);
-        setRawDataRows(rows.map(row => headers.map(h => row[h])));
+        const rawRows = rows.map(row => headers.map(h => row[h]));
+        setRawDataRows(rawRows);
 
         // Map CSV headers to canonical field names for initial preview
         const columnMapping = mapHeadersToFields(headers);
 
-        // Transform rows using column mapping for initial preview
-        // Process sales_id specially: convert text names to sales record IDs
-        const mappedRows = await Promise.all(
-          rows.map(async (row) => {
-            const mappedRow: any = {};
+        // Clear cache and batch-resolve all account manager names
+        salesLookupCache.current.clear();
+        await resolveAccountManagers(rawRows, headers, columnMapping);
 
-            for (const header of headers) {
-              const canonicalField = columnMapping[header];
-              if (canonicalField && row[header]) {
-                // Special handling for account manager field
-                if (canonicalField === 'sales_id' && typeof row[header] === 'string') {
-                  const value = row[header];
-
-                  // Check if it's already a number (ID)
-                  const numValue = Number(value);
-                  if (!isNaN(numValue) && Number.isInteger(numValue)) {
-                    mappedRow[canonicalField] = numValue;
-                  } else {
-                    // Text name - upsert to sales table
-                    const salesId = await upsertAccountManager(value);
-                    if (salesId) {
-                      mappedRow[canonicalField] = salesId;
-                    } else {
-                      // Keep original value if upsert failed (will fail validation)
-                      mappedRow[canonicalField] = value;
-                    }
-                  }
-                } else {
-                  mappedRow[canonicalField] = row[header];
-                }
-              }
-            }
-
-            return mappedRow;
-          })
+        // Transform rows using column mapping - cache is now populated
+        const mappedRows = rawRows.map((row) =>
+          transformRowData(row, headers, columnMapping, salesLookupCache.current)
         );
 
         // Generate column mappings with confidence scores
