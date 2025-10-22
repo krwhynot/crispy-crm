@@ -288,7 +288,7 @@ export function OrganizationImportPreview({
                         <span className="font-medium">{group.name}</span>
                       </div>
                       <Badge variant="secondary">
-                        {group.count} occurrences (rows: {group.indices.slice(0, 3).map(i => i + 1).join(", ")}{group.indices.length > 3 ? '...' : ''})
+                        {group.count} occurrences (rows: {group.indices.slice(0, 3).join(", ")}{group.indices.length > 3 ? '...' : ''})
                       </Badge>
                     </div>
                   ))}
