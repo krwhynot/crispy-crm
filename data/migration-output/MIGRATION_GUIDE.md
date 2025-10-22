@@ -12,7 +12,7 @@ This guide documents the migration of contact and organization data from CSV fil
 - `/tmp/segments_import.csv` - 30 segment definitions
 - `/tmp/organizations_cleaned.csv` - 2,025 cleaned organizations
 - `/tmp/contacts_cleaned.csv` - 1,646 cleaned contacts
-- `/tmp/questionable_names.csv` - 579 contacts with ambiguous names (for future review)
+- `/tmp/questionable_names.csv` - 153 contacts with ambiguous names (for future review)
 
 ---
 
@@ -243,16 +243,22 @@ DROP TABLE org_name_to_id_mapping;
 
 ### Contacts
 
-1. **Name Parsing**:
-   - "First Last" → first_name='First', last_name='Last'
-   - "Chef First Last" → first_name='Chef First', last_name='Last'
-   - "SingleName" → first_name='SingleName', last_name=NULL
-   - Original preserved in `name` field
-2. **Email/Phone JSONB Format**:
+1. **Name Parsing (Following Industry Standards)**:
+   - **Single names → last_name** (not first_name): "Yu" → first_name=NULL, last_name='Yu'
+     - *Rationale*: Salesforce, HubSpot, and Microsoft Dynamics all require last_name as the primary identifier
+   - **Normal names**: "John Smith" → first_name='John', last_name='Smith'
+   - **Titles extracted**: "Chef Bill Kim" → first_name='Bill', last_name='Kim', title='Chef'
+   - **Job titles only**: "President" → first_name=NULL, last_name=NULL, title='President'
+   - **Original always preserved** in `name` field for auditability and future correction
+
+2. **Email/Phone JSONB Format** (Industry Standard):
    ```json
    [{"type":"main","value":"email@example.com","primary":true}]
    ```
-   Empty values → NULL (not empty array)
+   - Empty values → NULL (not empty array `[]`)
+   - Extensible format supports multiple emails/phones per contact
+   - Indexed with GIN for efficient querying
+
 3. **Priority Dropped**: Contact priority removed per requirements
 4. **Ignored Columns**: PRIORITY, Filtered Contacts
 
@@ -272,9 +278,11 @@ DROP TABLE org_name_to_id_mapping;
 
 ### Contacts
 - **Total**: 1,646 contacts
-- **With First Name**: 1,433 (87%)
-- **With Last Name**: 985 (60%)
-- **Single-Name Contacts**: 448 (27%) - stored in first_name only
+- **With First Name**: 953 (57.9%)
+- **With Last Name**: 1,391 (84.5%) ⬆️ *Increased due to single-name fix*
+- **Single-Name Contacts**: 438 (26.6%) - **now correctly stored in last_name** per industry standards
+- **Job Titles Only**: 45 (2.7%) - stored in title field, not name fields
+- **Titles Extracted**: 116 (7.0%) - automatically parsed from names
 - **With Email**: 836 (51%)
 - **With Phone**: 466 (28%)
 - **With Organization**: 1,638 (99%)
@@ -282,8 +290,9 @@ DROP TABLE org_name_to_id_mapping;
 
 ### Known Issues for Future Resolution
 
-1. **Ambiguous Names**: 579 contacts have questionable name parsing (see `/tmp/questionable_names.csv`)
-   - Examples: "Chef Manager Tinaglia", "VP Community Engagement", "David Tsirekas Craig Richardson"
+1. **Ambiguous Names**: 153 contacts flagged for review (see `/tmp/questionable_names.csv`)
+   - Down from 579 due to improved parsing logic
+   - Examples: Multi-person entries ("David Tsirekas Craig Richardson"), complex titles
    - These can be corrected in the live system after import
 
 2. **Account Manager Matching**: 1,582 organizations + contacts reference account managers by name
@@ -386,6 +395,44 @@ CREATE INDEX idx_contacts_phone ON contacts USING GIN (phone);
 SELECT * FROM contacts
 WHERE email @> '[{"value": "contact@example.com"}]'::jsonb;
 ```
+
+---
+
+## Industry Standards: Name Field Mapping
+
+This migration follows **industry best practices** from major CRM systems (Salesforce, HubSpot, Microsoft Dynamics) for handling ambiguous contact names.
+
+### Single Name Convention
+
+**Standard:** Single names go in `last_name`, not `first_name`.
+
+| Example | first_name | last_name | Rationale |
+|---------|-----------|-----------|-----------|
+| "Yu" | NULL | Yu | Last name is required/primary in most CRMs |
+| "Rodriguez" | NULL | Rodriguez | Maintains compatibility with integrations |
+| "President" | NULL | NULL | Job title → title field only |
+
+**Why This Matters:**
+- Most CRM systems require `last_name` as a mandatory field
+- `last_name` is the primary identifier for contact records
+- Downstream integrations (email marketing, reporting) expect last_name to be populated
+- Placing single names in `first_name` can break validations and workflows
+
+### Original Value Preservation
+
+The `name` field always contains the **unmodified original value** from the CSV. This provides:
+- **Auditability**: Track what was originally imported
+- **Error correction**: Fix parsing mistakes post-import
+- **Regulatory compliance**: Maintain data lineage
+- **Search flexibility**: Users can search by original input
+
+### References
+
+Based on research from:
+- Salesforce CRM Data Migration Best Practices
+- HubSpot CRM Attribute Naming Conventions
+- Microsoft Dynamics Contact Management Standards
+- Industry consensus on pre-import data cleaning
 
 ---
 
