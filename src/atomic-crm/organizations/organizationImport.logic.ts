@@ -189,7 +189,9 @@ export function detectDuplicateOrganizations(
   // Sort by count (descending) for better UX
   duplicates.sort((a, b) => b.count - a.count);
 
-  const totalDuplicates = duplicates.reduce((sum, group) => sum + group.count, 0);
+  // Calculate total duplicate entries (excluding the first occurrence of each name)
+  // e.g., if "Acme" appears 3 times, that's 2 duplicates (not 3)
+  const totalDuplicates = duplicates.reduce((sum, group) => sum + (group.count - 1), 0);
 
   return {
     duplicates,
