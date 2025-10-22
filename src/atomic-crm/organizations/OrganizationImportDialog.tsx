@@ -115,18 +115,22 @@ export function OrganizationImportDialog({
       const confidence = target ? 1.0 : 0.0;
 
       // Get sample value from first non-empty value in first 10 rows
-      const sampleValue = rawDataRows
-        .slice(0, 10)
-        .map(row => row[index])
-        .find(val => val !== undefined && val !== null && String(val).trim() !== '')
-        ?.toString()
-        .substring(0, 50);
+      // If still empty, try up to 50 rows for sparse columns
+      const colValues = rawDataRows.slice(0, 10).map(row => row[index]);
+      let sampleValue = colValues.find(val => val !== undefined && val !== null && String(val).trim() !== '');
+
+      if (sampleValue === undefined) {
+        const deeper = rawDataRows.slice(0, Math.min(50, rawDataRows.length)).map(row => row[index]);
+        sampleValue = deeper.find(val => val !== undefined && val !== null && String(val).trim() !== '');
+      }
+
+      const sample = sampleValue !== undefined ? String(sampleValue).substring(0, 50) : undefined;
 
       return {
         source: header || '(empty)',
         target,
         confidence,
-        sampleValue,
+        sampleValue: sample,
       };
     });
 
@@ -151,14 +155,20 @@ export function OrganizationImportDialog({
       }
     });
 
+    // Count rows with non-empty names (required field)
+    const namedRowsCount = reprocessedOrganizations.filter(
+      o => o.name && String(o.name).trim() !== ''
+    ).length;
+
     return {
       mappings: updatedMappings,
       sampleRows: reprocessedOrganizations.slice(0, 5),
-      validCount: reprocessedOrganizations.length,
+      validCount: namedRowsCount,
       totalRows: reprocessedOrganizations.length,
       newTags: Array.from(newTags),
       duplicates: duplicateGroups.length > 0 ? duplicateGroups : undefined,
       lowConfidenceMappings: updatedMappings.filter(m => m.confidence === 0).length,
+      missingNameCount: reprocessedOrganizations.length - namedRowsCount,
     };
   }, [reprocessedOrganizations, mergedMappings, rawHeaders, rawDataRows, previewData]);
 
@@ -231,14 +241,16 @@ export function OrganizationImportDialog({
   }, [processBatchHook]);
 
   const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
-    let organizationsToImport = [...reprocessedOrganizations];
+    // Always drop nameless rows
+    let organizationsToImport = reprocessedOrganizations.filter(
+      org => org.name && String(org.name).trim() !== ''
+    );
 
-    // Filter out duplicates if user chose to skip them
+    // Optionally skip duplicates (keep first occurrence only)
     if (decisions.skipDuplicates) {
       const seenNames = new Set<string>();
-      organizationsToImport = reprocessedOrganizations.filter(org => {
-        if (!org.name) return false;
-        const normalizedName = org.name.toLowerCase().trim();
+      organizationsToImport = organizationsToImport.filter(org => {
+        const normalizedName = org.name!.toLowerCase().trim();
         if (seenNames.has(normalizedName)) return false;
         seenNames.add(normalizedName);
         return true;
@@ -377,14 +389,20 @@ export function OrganizationImportDialog({
         });
 
         // Generate preview data
+        // Count rows with non-empty names (required field)
+        const namedRowsCount = mappedRows.filter(
+          o => o.name && String(o.name).trim() !== ''
+        ).length;
+
         const preview: PreviewData = {
           mappings,
           sampleRows: mappedRows.slice(0, 5),
-          validCount: mappedRows.length,
+          validCount: namedRowsCount,
           totalRows: mappedRows.length,
           newTags: Array.from(newTags),
           duplicates: duplicateGroups.length > 0 ? duplicateGroups : undefined,
           lowConfidenceMappings: mappings.filter(m => m.confidence === 0).length,
+          missingNameCount: mappedRows.length - namedRowsCount,
         };
 
         setPreviewData(preview);
