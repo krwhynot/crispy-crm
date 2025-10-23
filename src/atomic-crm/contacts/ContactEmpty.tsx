@@ -20,7 +20,7 @@ export const ContactEmpty = () => {
       </div>
       <div className="flex flex-row gap-2">
         <CreateButton label="New Contact" />
-        <ContactImportButton />
+        {/* <ContactImportButton /> */}
       </div>
     </div>
   );
