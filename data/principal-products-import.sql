@@ -22,8 +22,7 @@ VALUES
   ('SWAP', 'principal', 'B', NOW(), NOW()),
   ('Never Better', 'principal', 'B', NOW(), NOW()),
   ('TCFB', 'principal', 'B', NOW(), NOW()),
-  ('Mrs Ressler''s', 'principal', 'B', NOW(), NOW())
-ON CONFLICT (name) DO NOTHING;
+  ('Mrs Ressler''s', 'principal', 'B', NOW(), NOW());
 
 -- Get principal IDs for product insertion
 WITH principals AS (
@@ -98,7 +97,7 @@ CROSS JOIN LATERAL (
     (2, 'Cowboy chips', 'FRIT-COW002', 'frozen', 'CASE'),
 
     -- Better Balance Products (principal_order=3)
-    (3, 'Better Balance hot dogs', 'BBAL-HOT001', 'meat', 'CASE'),
+    (3, 'Better Balance hot dogs', 'BBAL-HOT001', 'meat_poultry', 'CASE'),
     (3, 'Shreds', 'BBAL-SHR001', 'fresh_produce', 'LB'),
     (3, 'Cheese', 'BBAL-CHE001', 'dairy', 'LB'),
     (3, 'Crumble', 'BBAL-CRM001', 'dairy', 'LB'),
@@ -138,7 +137,7 @@ CROSS JOIN LATERAL (
     (11, 'Makhani', 'MCCR-MAK001', 'condiments', 'EA'),
 
     -- Rapid Rasoi Products (principal_order=12)
-    (12, 'Chicken', 'RAPID-CHK001', 'meat', 'LB'),
+    (12, 'Chicken', 'RAPID-CHK001', 'meat_poultry', 'LB'),
 
     -- SWAP Products (principal_order=13)
     (13, '1 oz pouch', 'SWAP-PCH001', 'condiments', 'CASE'),

@@ -42,7 +42,7 @@ const Header = () => {
                 alt={title}
               />
               <img
-                className="[.dark_&]:hidden h-8 brightness-0 saturate-100 opacity-90"
+                className="[.dark_&]:hidden h-8 [filter:invert(27%)_sepia(44%)_saturate(1247%)_hue-rotate(94deg)_brightness(96%)_contrast(101%)]"
                 src={lightModeLogo}
                 alt={title}
               />
