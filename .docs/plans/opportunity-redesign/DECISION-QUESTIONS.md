@@ -425,28 +425,28 @@ Phase 2 (4 weeks):   Add drag-and-drop for desktop users (mobile keeps buttons)
 **Instructions:** Review each question with stakeholders and check the selected option.
 
 ### Q1: CSV Contact Backfill
-- [ ] **Option A - Automatic Backfill** ✅ RECOMMENDED
+- [x] **Option A - Automatic Backfill** ✅ **APPROVED**
 - [ ] Option B - Manual Review
-- **Decision Date:** ____________
-- **Approved By:** ____________
+- **Decision Date:** 2025-10-23
+- **Approved By:** Project Owner
 
 ### Q2: Product Auto-Name
-- [ ] **Option B - Manual Refresh Button** ✅ RECOMMENDED
-- [ ] Option A - Watch Products Array
-- **Decision Date:** ____________
-- **Approved By:** ____________
+- [x] **Option A - Watch Products Array (Full Auto-Generation)** ✅ **APPROVED**
+- [ ] Option B - Manual Refresh Button
+- **Decision Date:** 2025-10-23
+- **Approved By:** Project Owner
 
 ### Q3: View Cache Strategy
-- [ ] **Option A - Transparent View Replacement** ✅ RECOMMENDED
+- [x] **Option A - Transparent View Replacement** ✅ **APPROVED**
 - [ ] Option B - Separate Resource
-- **Decision Date:** ____________
-- **Approved By:** ____________
+- **Decision Date:** 2025-10-23
+- **Approved By:** Project Owner
 
 ### Q4: MVP Ordering Approach
-- [ ] **Option A - Timestamp + Manual Buttons (MVP)** ✅ RECOMMENDED
+- [x] **Option A - Timestamp + Manual Buttons (MVP)** ✅ **APPROVED**
 - [ ] Option B - Full Drag-and-Drop (Delays MVP)
-- **Decision Date:** ____________
-- **Approved By:** ____________
+- **Decision Date:** 2025-10-23
+- **Approved By:** Project Owner
 
 ---
 
