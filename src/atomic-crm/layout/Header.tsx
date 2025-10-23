@@ -41,10 +41,19 @@ const Header = () => {
                 src={darkModeLogo}
                 alt={title}
               />
-              <img
-                className="[.dark_&]:hidden h-8 [filter:invert(27%)_sepia(44%)_saturate(1247%)_hue-rotate(94deg)_brightness(96%)_contrast(101%)]"
-                src={lightModeLogo}
-                alt={title}
+              <div
+                className="[.dark_&]:hidden h-8 w-32 bg-[var(--brand-700)]"
+                style={{
+                  WebkitMaskImage: `url(${lightModeLogo})`,
+                  maskImage: `url(${lightModeLogo})`,
+                  WebkitMaskSize: 'contain',
+                  maskSize: 'contain',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'left center',
+                  maskPosition: 'left center'
+                }}
+                aria-label={title}
               />
             </Link>
             <div>
