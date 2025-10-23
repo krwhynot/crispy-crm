@@ -1,0 +1,1062 @@
+,,,,,,,,,,,,,,,,,,,,
+         Opportunities,,,,,,,,,,Instructions:,"Enter your Opportunities in the table below. An Opportunity is a deal, potential sale, or any other business opportunity. 
+The Opportunities listed here can be referenced via dropdowns in the other input sheets.",,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,"PRIORITY
+(Formula)","Organizations
+(DropDown)",OPPORTUNITY NAME,Start Date,Start of Week,"STATUS
+(DropDown)","STAGE
+(DropDown)",EXP. SOLD-7,PROBABILITY,PRINCIPAL,"PRODUCT
+(DropDown)"," CASES 
+Per Week
+VOLUME","DEAL OWNER
+(DropDown)","SOURCE
+(DropDown)","LOSS REASON
+(DropDown)",Notes,,Helper Lookup,,
+,D,A.Fusion,LTO-Q3 (2024),1/1/2025,12/30/2024,SOLD-7d,SOLD-7,9/15/2024,100.00%,Kaufholds,Unknown,,Q,MFB,,Trying out 2 flavors (original& Jalapeno) w/ table tents,,D,,
+,A,Atlantic Food Distributors ,Curd program,1/1/2025,12/30/2024,Open,SOLD-7,1/1/2025,,Kaufholds,Unknown,50,Gary,Principal,,,,A,,
+,A,Bavarian Inn/cheese trap,kaufholds curdtown,3/8/2025,3/3/2025,Open,SOLD-7,3/15/2025,100.00%,Kaufholds,Dill Pickle,10,Gary,,,Will order dill thru dot/gfs,,A,,
+,A,Big Eds BBQ,Frites Street,1/16/2025,1/13/2025,Open,SOLD-7,2/1/2025,100.00%,Frites Street,Frites street  waffle,,Michell,Principal,,,,A,,
+,A,Caplinger,Annasea and Kaufholds,2/7/2025,2/3/2025,Open,Feedback- received-5,3/1/2025,100.00%,Annasea,Bulk pack,,Gary,,,emailed inviting a sampling,,A,,
+,A,Dukes Alehouse,VAF,1/1/2025,12/30/2024,SOLD-7d,SOLD-7,,99.00%,VAF,All,,Michell,Already Known,,"Chef loved the 3/8"". USF",,A,,
+,A,EuroUSA,Poke,1/1/2025,12/30/2024,Open,Feedback- received-5,12/5/2024,100.00%,Annasea,Unknown,,Gary,Principal,,Street exclusivity and full sales support for $3/cs marketing allowance-paid quarterly billback,,A,,
+,NO PRIORITY,Jesse Oaks ,Kaufhold's,2/17/2025,2/17/2025,SOLD-7d,SOLD-7,2/17/2025,100.00%,Kaufholds,,3,Michell,,,Turned business over to kaufhold's from Molly's cheese curds. ,,0,,
+,NO PRIORITY,North Point ,Kaufhold's,2/3/2025,2/3/2025,SOLD-7d,SOLD-7,2/17/2025,100.00%,Kaufholds,,5,Michell,,,Turned business over to kaufhold's from Molly's cheese curds. ,,0,,
+,A,Pavlou Group,Poke-radius,1/1/2025,12/30/2024,Open,Feedback- received-5,12/11/2024,100.00%,Annasea,Ahi Tuna,,Gary,MFB,,,,A,,
+,NO PRIORITY,Purdue,Bb ,2/17/2025,2/17/2025,SOLD-7d,SOLD-7,,,Better Balance,Better Balance hot dogs,4,Dale,,,Dale was working on this account for months. Kim confirmed on 2/18 that they will be going with the cheese sauce. 4 cases a week/USF.,,0,,
+,NO PRIORITY,Rail House Bar,Kaufhold's,2/3/2025,2/3/2025,SOLD-7d,SOLD-7,2/17/2025,100%%,Kaufholds,,3,Michell,,,Turned business over to kaufhold's from Molly's cheese curds. ,,0,,
+,A+,Testa Produce,VAF,1/1/2025,12/30/2024,SOLD-7d,SOLD-7,,100.00%,VAF,All,,Dale,Appointment,,Working on sampling different flavours. Bought the original. Previously using Anchor. ,,,,
+,A,Timothy's,Poke and FS and VAF,1/16/2025,1/13/2025,Open,SOLD-7,3/1/2025,100.00%,Annasea,Bulk pack,1,Gary,Email,,Pulling from Superior,,,,
+,A,Western Michigan University,better balance hot dog,3/10/2025,3/10/2025,Closed,SOLD-7,4/1/2025,100.00%,Better Balance,,,,,,,,,,
+,A,Al Peake amd Sons,wondejuice and Kaufholds,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,30.00%,Kaufholds,Jalapeno,,Gary,,,,,A,,
+,B,Albanos Pasta,Poke,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,50.00%,Annasea,Ahi Tuna,,Gary,MFB,,Sampled prepped product-not present for tasting,,B,,
+,A,Ashland University,Plant based,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,Purchasing the hot dog thru GFS. ,,A,,
+,A,Ashland University,Land Lovers,1/22/2025,1/20/2025,Open,Sampled/Visited invite-3,2/10/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,Positive Respone,,A,,
+,A,Ashland University,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,NO PRIORITY,At the office Sports Bar& Grill,curds,1/14/2025,1/13/2025,open,Sampled/Visited invite-3,,,,,,,,,,,,,
+,NO PRIORITY,At the office Sports Bar& Grill,curds,1/14/2025,1/13/2025,open,Sampled/Visited invite-3,2/1/2025,,,,,Q,,,,,,,
+,C,Avgo (Theo's RG),opp2,1/1/2025,12/30/2024,On Hold,Sampled/Visited invite-3,12/30/2024,90.00%,Unknown,Unknown,3,Dale,Customer referral,Competitor,New menu for 2025,,C,,
+,C,Avgo (Theo's RG),45620,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2024,,Frites Street,Unknown,6,Dale,Walk-In,,,,C,,
+,A,Baker Street,cheese curds plant based frites,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,75.00%,Frites Street,,,Gary,,,,,A,,
+,NO PRIORITY,Baldwin Richardson University,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,,,
+,A,Barrio,"Vegan, Verticle Acres, ",1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,Michell,,VAF,Chef's Mix,,Michell,,,,,A,,
+,A,BAY CLIFF HEALTH CAMP,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,C,Bloom plant based,Swap ,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/21/2025,50.00%,Better Balance,,,Michell,,,,,C,,
+,C,Bloom plant based,Land Lovers,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/21/2025,50.00%,Better Balance,Better Balance hot dogs,,Michell,,,,,C,,
+,A,Bluegrass Hospitality Group,Poke,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,12/3/2024,50.00%,Annasea,Unknown,100,Brent,Distributor referral,,Gave Chef Manny the PFG Kurd kit. Is excited but the boss is the decision maker. ,,A,,
+,B,Bob Chinn's  Crabhouse,Vertical Acres,1/17/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,,VAF,All,,Michell,Networking,,,,B,,
+,B,Bob Chinn's  Crabhouse,Frites Street ,1/17/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,,Frites Street,Frites street 3/8,,Michell,Networking,,,,B,,
+,B,Bob Chinn's  Crabhouse,Annasea,1/17/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,,Annasea,Bulk pack,,Michell,Networking,,,,B,,
+,A,Briar Ridge,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,40.00%,VAF,All,4/wk,Dale,Distributor referral,,Wanta to set firm meeting before. Xmas. Hoping to visit with Testa rep,,A,,
+,A,Bronson Behavioral Hospital,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,BROWN JUG,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Cameron Mitchell restaurant group,"Poke, cheese curds and Frite street",2/25/2025,2/24/2025,open,Sampled/Visited invite-3,,Timothy,Annasea,Bulk pack,,Brent,,,,,A,,
+,A,CASCADE HILLS COUNTRY CLUB  18682E,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,NO PRIORITY,Char? 'd Brourbon Kitchen +Bar,Cheese Curds,2/25/2025,2/24/2025,open,Sampled/Visited invite-3,,,,,,,,,,,0,,
+,A,Chicago Club,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,30.00%,VAF,All,3/wk,Dale,Distributor referral,,"need to revist w/exec chef, who was not there when we brought samplea",,A,,
+,A,CHURCHILL'S FOOD & SPIRITS,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,COMMUNITY PROGRAMS,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Coppolillo's,"poke, VAF, FS",3/10/2025,3/10/2025,Open,Sampled/Visited invite-3,3/31/2025,80.00%,Frites Street,Frites street 1/4 ,,Gary,,,,,A,,
+,A,Coppolillo's,"poke, VAF, FS",3/10/2025,3/10/2025,Open,Sampled/Visited invite-3,3/31/2025,80.00%,Annasea,Bulk pack,,Gary,,,,,A,,
+,A,CORNELL NYC,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,CRG DINING,Annasea bulk,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,,,Annasea,Unknown,100,Gary,,,,,A,,
+,A,Crowes Nest Café,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Culinary Misfits,"poke, VAF, FS",3/10/2025,3/10/2025,Open,Sampled/Visited invite-3,3/31/2025,75.00%,Annasea,Bulk pack,,Gary,,,,,D,,
+,A,Culinary Misfits,"poke, VAF, FS",3/10/2025,3/10/2025,Open,Sampled/Visited invite-3,3/31/2025,75.00%,Frites Street,Frites street 1/4 ,,Gary,,,,,D,,
+,A,Culinary Misfits,"poke, VAF, FS",3/10/2025,3/10/2025,Open,Sampled/Visited invite-3,3/31/2025,75.00%,VAF,Red Romaine,,Gary,,,,,D,,
+,A,Northern IL U,RR,9/3/2025,9/1/2025,Open,Sampled/Visited invite-3,10/1/2025,85.00%,Rapid Rasoi,,,Gary,,,Email connect while at The Patio McCrum-accepted RR sampling and visit.,,,,
+,A,Northern IL U,Annasea,9/3/2025,9/1/2025,Open,Sampled/Visited invite-3,10/1/2025,85.00%,Annasea,,,Gary,,,Email connect while at The Patio McCrum-accepted RR sampling and visit.,,,,
+,A,Northern IL U,Kaufholds,9/3/2025,9/1/2025,Open,Sampled/Visited invite-3,10/1/2025,85.00%,Kaufholds,,,Gary,,,Email connect while at The Patio McCrum-accepted RR sampling and visit.,,,,
+,A,Delmonico,cheese curds frites,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,50.00%,Frites Street,,,Gary,,,Email connect while at The Patio McCrum-accepted RR sampling and visit.,,A,,
+,NO PRIORITY,Direct Food Services,Annasea bulk pack intro request,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,11/21/2024,50.00%,Annasea,Unknown,100,Gary,MFB,,Received positive feedback. Requested samples. Try for 11/26 meeting,,0,,
+,B,Dog House,Kaufholds,2/18/2025,2/17/2025,open,Sampled/Visited invite-3,3/1/2025,90.00%,Kaufholds,Garlic,,Gary,,,,,B,,
+,A,DOT,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,Double Down Desserts,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,NO PRIORITY,Driftwood Restaurant Barren River Lake SP,Kaufholds,4/23/2025,4/21/2025,,Sampled/Visited invite-3,,,,,,,,,,,,,
+,B,Earl G. Dumplins,Curds garlic  - super special,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,11/25/2024,80.00%,Kaufholds,Unknown,2,Brent,MFB,,Good customer,,B,,
+,A,Fatmans,Kaufhod's ,1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,60.00%,Kaufholds,Original White Cheddar,,Michell,Principal,,,,A,,
+,A,FLAT ROCK CARE CENTER,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,GARLAND LODGE FOOD AND BEVERAGE,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,NO PRIORITY,Gemato's Wood Pit BBQ,Product for menu addition,1/1/2025,12/30/2024,SOLD-7d,Sampled/Visited invite-3,11/13/2024,100.00%,Kaufholds,Original White Cheddar,,Q,MFB,,"Bought Jalapeno, Garlic, & Original Curds",,0,,
+,A,GEORGIA STATE,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,B,Gino's Prime - Dyer,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,50.00%,VAF,All,,Dale,Already Known,,,,B,,
+,A,Gnome Town,cheese curds plant based frites,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,75.00%,Kaufholds,,,Gary,,,,,A,,
+,A,Gordon Food Service,BB AND LL DISTRICT MEETING,1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Better Balance,Better Balance hot dogs,,Gary,Food Show,,,,A,,
+,A,Gordon Food Service,BB AND LL DISTRICT MEETING,1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Better Balance,Better Balance hot dogs,,Gary,Walk-In,,,,A,,
+,A,Gordon Food Service,landlovers,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,30.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,Gordon Food Service,Rapid Rasoi DC stocking,2/25/2025,2/24/2025,open,Sampled/Visited invite-3,2/27/2025,75.00%,Rapid Rasoi,Dehli Tikka Masala,,,,,,,A,,
+,A,Gordon Food Service,rapid Rasoi EPO,2/25/2025,2/24/2025,open,Sampled/Visited invite-3,2/27/2025,75.00%,Rapid Rasoi,Makhani,,,,,,,A,,
+,B,Gyros and More,Kaufholds,2/18/2025,2/17/2025,open,Sampled/Visited invite-3,3/1/2025,90.00%,Kaufholds,Garlic,,Gary,,,W/w Atalntic Distributor Rep JOSH CHAMBERS,,B,,
+,A,Hacienda Calavera,"TCFB, Verticle Acres, ",1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,Michell,,VAF,Chef's Mix,,Michell,,,,,A,,
+,A,HENRY FORD COLLEGE,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,In the Game Hollywood Park,Dessert & Curds,1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,,,,Kaufholds,,,,,,,A,,
+,NO PRIORITY,Indiana University ,OPP4,1/1/2025,12/30/2024,SOLD-7d,Sampled/Visited invite-3,2/1/2025,75.00%,Kaufholds,Unknown,5,Dale,MFB,,Sent email and texted twice Annasea,,,,
+,B,Innsbrook CC,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,,20.00%,VAF,All,,Dale,Already Known,,Chef loved the product. Need to revisit. Cost is an issue with him.,,B,,
+,NO PRIORITY,Jodi's Italian Ice Factory,Jodi's Italian Ice Factory,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/31/2025,60.00%,Unknown,Unknown,,Dale,Walk-In,,I would also smaple the breakfast cubes (homestyle) from Frites Street.,,0,,
+,B,Joys Pizza,Kaufholds,2/18/2025,2/17/2025,open,Sampled/Visited invite-3,3/1/2025,90.00%,Kaufholds,Garlic,,Gary,,,W/w Atalntic Distributor Rep JOSH CHAMBERS,,B,,
+,NO PRIORITY,Kit Kat Lounge ,Frites Street,2/14/2025,2/10/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Frites Street,Frites street 3/8,,Michell,,,Dropped off a sample of 3/8. Lauren is following up. Will get more information from her on 02/19.,,0,,
+,A,Krave,All lines,4/22/2025,4/21/2025,Open,Sampled/Visited invite-3,,,RJC,,,Dale,,,,,,,
+,A,Krave,All lines,4/22/2025,4/21/2025,Open,Sampled/Visited invite-3,,,Ofk,,,Dale,,,,,,,
+,A,Krave,All lines,4/22/2025,4/21/2025,Open,Sampled/Visited invite-3,,,Kaufholds,,,Dale,,,,,,,
+,NO PRIORITY,Lark Restaurant & Bar,Frites Street,2/14/2025,2/10/2025,Open,Sampled/Visited invite-3,3/1/2025,50%%,Frites Street,Frites street 3/8,,Michell,,,Dropped off a sample of 3/8. Lauren is following up. Will get more information from her on 02/19.,,0,,
+,A,LINCOLN LAKE BAPTIST YOUTH CAMP,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,NO PRIORITY,Lola's Tacos & Tequila,Verticle Acres ,1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,30.00%,VAF,Chef's Mix,,Michell,Already Known,,,,0,,
+,NO PRIORITY,Lola's Tacos & Tequila,Better Balance ,1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,20.00%,Better Balance,Better Balance hot dogs,,Michell,Already Known,,,,0,,
+,NO PRIORITY,Lola's Tacos & Tequila,Land Lovers ,1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,20.00%,Better Balance,Better Balance hot dogs,,Michell,Already Known,,,,0,,
+,A,LOUHELEN BAHA'I SCHOOL,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Lucky/s,land lovers,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,30.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,Lucky/s,Curds,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,30.00%,Kaufholds,Original White Cheddar,,Gary,,,,,A,,
+,A,Lucky/s,SWAP,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,30.00%,Better Balance,,,Gary,,,,,A,,
+,A,Mad Anthony - Taylor - 371788E,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,D,Madame Zusus,Better Balance ,1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,2/17/2025,20.00%,Better Balance,Better Balance hot dogs,,Michell,Food Show,,,,D,,
+,D,Madison's pub and grill,Kaufholds ,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,80.00%,Kaufholds,Unknown,3,Dale,Walk-In,,Met with chef and gave him samples. Loved them. Wants 2nd meeting,,D,,
+,A,mali,plant based and curds for gfs,2/25/2025,2/24/2025,open,Sampled/Visited invite-3,2/27/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,MARIA HEALTH CARE CENTER,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Market Fresh Restaurant Group,"`kaufholds `frites street, MCrum",4/22/2025,4/21/2025,Open,Sampled/Visited invite-3,5/31/2025,75.00%,Kaufholds,Sirracha,12,Gary,,,,,,,
+,A,MASON COUNTY CENTRAL SCHOOLS,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,MASON COUNTY CENTRAL SCHOOLS,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,MATADOR'S PIZZA & TAKE OUT,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,NO PRIORITY,Matt and Tonys Columbus,"Poke; Curds, Frite Street",1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,12/15/2024,50.00%,Annasea,Unknown,,Brent,,,CW account. Also liked Frites w/Lauren,,0,,
+,A,MDINING- TEST KITCHEN 689175,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,MDINING- TEST KITCHEN 689175,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Memorial Healthcare - Cafe,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,MESSIAH,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,MICH MED- UNIV HOSPITAL-DOCK 5- 202,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,MICH MED- UNIV HOSPITAL-DOCK 5- 202,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,MICHIGAN STATE POLICE TRAINING DIVI,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Michigan State University,overview,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,50.00%,Kaufholds,Original White Cheddar,,Gary,,,,,A,,
+,A,MICHINDOH CONFERENCE CENTER,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,millenium,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Better Balance,Better Balance hot dogs,,Gary,Walk-In,,top,,A,,
+,A,Mise En Place Culinary Consulting,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,MONROE ST DINER,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,B,Native Foods,Plant based,2/5/2025,2/3/2025,Open,Sampled/Visited invite-3,,70.00%,Better Balance,Better Balance hot dogs,,Dale,,,Chef Dame has sampled; USF account; Abdale option? ,,B,,
+,A,NEW HUDSON INN 371779E,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A+,Northern Hasserot,rapid rasoi,2/10/2025,2/10/2025,Open,Sampled/Visited invite-3,2/17/2025,90.00%,Rapid Rasoi,Dehli Tikka Masala,,Gary,,,Received email from buyer for two cases flr Ashland U. Showcase,,A+,,
+,A+,Northern Hasserot,rapid rasoi,2/10/2025,2/10/2025,Open,Sampled/Visited invite-3,2/17/2025,90.00%,Rapid Rasoi,Makhani,,Gary,,,Received email from buyer for two cases flr Ashland U. Showcase,,A+,,
+,A,Northville Public Schools,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Novo Dolce,Kufholds,3/3/2025,3/3/2025,open,Sampled/Visited invite-3,,,,,,,,,,,,,
+,A,Obi Cai Restaurant Group,cheese curds plant based frites,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,75.00%,Kaufholds,,,Gary,,,,,A,,
+,D,Olivers Bar & Grill,Curds,1/14/2025,1/13/2025,open,Sampled/Visited invite-3,,,,,,,,,,,D,,
+,D,Olivers Bar & Grill,Curds,1/14/2025,1/13/2025,open,Sampled/Visited invite-3,2/1/2025,,,,,Q,,,,,D,,
+,A,One of a Kind Hospitality,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/17/2025,50.00%,VAF,All,,Michell,Distributor referral,,Only buy local and big on sustainability. Green star certified restaurant. ,,A,,
+,A,Pavlou Group,Poke-Maple,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,50.00%,Annasea,Ahi Tuna,,Gary,MFB,,Sampled prepped product-not present for tasting,,A,,
+,A,Pavlou Group,Poke-sub shop,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,50.00%,Annasea,Ahi Tuna,,Gary,MFB,,Sampled prepped product-not present for tasting,,A,,
+,A,PENN STATE,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,NO PRIORITY,Perilla Steakhouse ,Frites Street ,3/19/2025,3/17/2025,Open,Sampled/Visited invite-3,4/30/2025,80.00%,Frites Street,Frites street home fries,,Michell,,,,,,,
+,NO PRIORITY,Piazza Produce,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/31/2025,70.00%,VAF,All,,Gary,Already Known,,Chef Billy loves the product. Waiting for Testa to get the product live able to sell. Should be week of 12/9,,,,
+,A,Pine Rest,"bb, ll, annasea",1/27/2025,1/27/2025,open,Sampled/Visited invite-3,3/1/2025,80.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,Pizza Wholesale of Lexington,Kaufholds,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,A,,
+,A,Planks Tavern on the Water,Cowboy chips,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,75.00%,Frites Street,Unknown,10,Gary,Principal,,Left 5# sample Contacted-phone/email-2 gfs rep . Gfs rep wrote to him on 11/25,,A,,
+,A,Plant Based Coney's,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Proximo,cheese curds plant based frites,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,75.00%,Kaufholds,,,Gary,,,,,A,,
+,NO PRIORITY,PURDUE,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,0,,
+,NO PRIORITY,Ralphie's Fun center,Kaufholds bb hotdog,4/23/2025,4/21/2025,,Sampled/Visited invite-3,,,,,,,,,,,,,
+,A,RED BARON (THE),Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,RHODE ISLAND SCHOOL,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,RIVERWALK GRILL,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Roots Pizza,Never Better,2/19/2025,2/17/2025,Open,Sampled/Visited invite-3,3/14/2025,50.00%,,,,Michell,,,Met with the kitchen staff at the west loop location. They currently use daiya cheese. They also are apart of the 50 restaurant group. I will need to meet with chef at the south loop location.,,A,,
+,A,Russ,BB hot dog and kurds,3/6/2025,3/3/2025,open,Sampled/Visited invite-3,2/27/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,SAGINAW CLUB,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,salt of the earth,plant based and curds for gfs,2/25/2025,2/24/2025,open,Sampled/Visited invite-3,2/27/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,Salvatores,cheese curds,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,50.00%,Kaufholds,,,Gary,,,,,A,,
+,A,saugataco,plant based and curds for gfs,2/25/2025,2/24/2025,open,Sampled/Visited invite-3,2/27/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,shulers,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Better Balance,Better Balance hot dogs,,Gary,Walk-In,,,,A,,
+,B,Side Lot Brewing,Kaufhold's,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,80.00%,Kaufholds,Original White Cheddar,,Michell,,,,,B,,
+,B,Side Lot Brewing,Frites Street ,2/20/2025,2/17/2025,Open,Sampled/Visited invite-3,3/28/2025,30.00%,Frites Street,Frites street 3/8,,Michell,,,,,B,,
+,A,Slymans Deli,cheese curds frites,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,25.00%,Frites Street,,,Gary,,,,,A,,
+,A,SPECTRUM JUVENILE JUSTICE SERVICES,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Spirit Elephant,All Vegan,1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,Michell,,Better Balance,Better Balance hot dogs,,Michell,,,,,A,,
+,A,ST LAWRENCE,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,ST PETER LUTHERAN SCHOOL ACCOUNT,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,B,STACKED Pancake House,Vaf,1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,Dale,,VAF,All,,,,,,,B,,
+,A,SUNY BUFFALO,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,Superior,Annasea bulk,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2024,75.00%,Annasea,Unknown,20,Gary,Principal,,Sampled Brad thru Sean. First retail order will have FS samples near 1/15,,,,
+,A,SYRACUSE,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,NO PRIORITY,Tamburrino's,Kufholds,3/4/2025,3/3/2025,Open,Sampled/Visited invite-3,,,,,,,,,,,,,
+,NO PRIORITY,Tara Mcmurty,"Swap, Better Balance and Land Lovers",4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Telluride Association,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A+,Testa Produce,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,2/28/2025,50.00%,VAF,All,,Dale,Networking,,"Need to revisit with Chef David. GFS account, but Piazza would be a better option. ",,,,
+,C,Texas corner Specialty Meats,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Better Balance,Better Balance hot dogs,,Gary,Walk-In,,,,C,,
+,A,The Duplex,"Vegan, Kaufhold's",1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,Michell,,Better Balance,Better Balance hot dogs,,Michell,,,,,A,,
+,NO PRIORITY,The Entrance Restaurant,curds,1/14/2025,1/13/2025,open,Sampled/Visited invite-3,,,,,,,,,,,0,,
+,NO PRIORITY,The Entrance Restaurant,curds,1/14/2025,1/13/2025,open,Sampled/Visited invite-3,2/1/2025,,,,,Q,,,,,0,,
+,A,The Heartlands,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,The Hoppy Gnome,cheese curds plant based frites,1/22/2025,1/20/2025,open,Sampled/Visited invite-3,2/1/2025,75.00%,Frites Street,,,Gary,,,,,A,,
+,A,the hub,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Better Balance,Better Balance hot dogs,,Gary,Walk-In,,,,A,,
+,A,The Laundry,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,The Lighthouse,Frites Street,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/1/2025,50.00%,Frites Street,Frites street 3/8,,Dale,Distributor referral,,Sampled prepped product-not present for tasting,,A,,
+,A,The Ohio State University,Feb on campus showcase,2/25/2025,2/24/2025,open,demo-cookup-6,2/27/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,The Ohio State University,Feb on campus showcase,2/26/2025,2/24/2025,Open,demo-cookup-6,5/1/2025,65.00%,Annasea,Bulk pack,,Gary,,,,,A,,
+,A,THE PITA POST,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,NO PRIORITY,The Point Sports Bar,"curds, FS",1/14/2025,1/13/2025,open,Sampled/Visited invite-3,,,,,,,,,,,0,,
+,NO PRIORITY,The Point Sports Bar,"curds, FS",1/14/2025,1/13/2025,open,Sampled/Visited invite-3,2/1/2025,,,,,Q,,,,,0,,
+,A,THE SAWMILL GOLF CLUB,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,NO PRIORITY,The Swing Club,Kaufholds,4/21/2025,4/21/2025,,Sampled/Visited invite-3,,90.00%,Kaufholds,,,,,,,,,,
+,A,The Table At Crate ,The Table At Crate ,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,12/4/2024,99.00%,VAF,All,,Michell,Walk-In,,Looking for GFS PFG or Sofo to order thru DOT,,A,,
+,C,The Vault Downtown,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,C,,
+,NO PRIORITY,Tin Caps Milb Team Fort Wayne,"Poke, cheese curds and Frite street",2/25/2025,2/24/2025,open,Sampled/Visited invite-3,,,Annasea,Bulk pack,,Brent,,,,,0,,
+,A,Treetops - Top Of Hill,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Troy Escape,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,U OF RICHMOND,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,U. LYNCHBURG,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,Union Ale House,Union Ale House,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,1/31/2025,70.00%,Kaufholds,Original White Cheddar,5,Michell,Already Known,,"Principal dropdown is not working. This is for The Cheesecake Factory Bakery. I walked-in, I want to sample with them after the holidays per their request.",,A,,
+,A,Union Club,VAF,1/1/2025,12/30/2024,Open,Sampled/Visited invite-3,,,VAF,All,4/wk,Dale,Distributor referral,,,,A,,
+,A,University of Dayton,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,A,,
+,A,VIRGINIA TECH,Annasea bulk,2/26/2025,2/24/2025,Open,Sampled/Visited invite-3,5/1/2025,65.00%,Annasea,Bulk pack,,Dale,,,,,,,
+,NO PRIORITY,Vistro Vegan Fare,"LL, BB, SWAP",3/13/2025,3/10/2025,Open,Sampled/Visited invite-3,,,Better Balance,,,Brent,,,,,,,
+,A,Walker Bros,Cheese Curds,1/13/2025,1/13/2025,Open,Sampled/Visited invite-3,Michell,,Kaufholds,Garlic,,Michell,,,,,,,
+,A,WASHINGTON TWP SCHOOLS WAREHOUSE,Swap,4/1/2025,3/31/2025,Open,Sampled/Visited invite-3,7/1/2025,80.00%,SWAP,,,Gary,,,Lead from GFS show Novi. Sent email to rep and samples availed,,,,
+,A,Western Michigan University,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Better Balance,Better Balance hot dogs,,Gary,Walk-In,,Sold the Better Balance hot dog. ,,,,
+,A,Western Michigan University,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Frites Street,Frites street 1/4 ,,Gary,Walk-In,,,,,,
+NO PRIORITY,A,Western Michigan University,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Annasea,Bulk pack,,Gary,Walk-In,,,,,,
+,A,Western Michigan University,"presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance",1/16/2025,1/13/2025,Open,Sampled/Visited invite-3,3/1/2025,50.00%,Kaufholds,Garlic,,Gary,Walk-In,,,,,,
+,A,Wicks,plant based and curds for gfs,2/25/2025,2/24/2025,open,Sampled/Visited invite-3,2/27/2025,75.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,,,
+,A,Wind Creek Casino,"Vaf, FS, Curds",1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,Dale,,VAF,All,,,,,,,,,
+,A,Wind Creek Casino,FS,1/14/2025,1/13/2025,Open,Sampled/Visited invite-3,Dale,,Frites Street,,,,,,,,,,
+,A,Wind Creek Casino,Wonder Juices,1/27/2025,1/27/2025,Open,Sampled/Visited invite-3,3/3/2025,50.00%,Kayco,,,Dale,,,,,,,
+,A,Wings Etc.,land lovers,2/17/2025,2/17/2025,Open,Sampled/Visited invite-3,2/17/2025,50.00%,Better Balance,Better Balance hot dogs,70,Gary,,,Presented to Josh LL/RR/SWAP/Kurds,,,,
+,A,Wings Etc.,Bb,2/17/2025,2/17/2025,Open,Sampled/Visited invite-3,2/17/2025,50.00%,Better Balance,Better Balance hot dogs,70,Gary,,,Presented to Josh LL/RR/SWAP/Kurds,,,,
+,A,Wings Etc.,rr,2/17/2025,2/17/2025,Open,Sampled/Visited invite-3,2/17/2025,50.00%,Rapid Rasoi,,70,Gary,,,Presented to Josh LL/RR/SWAP/Kurds,,,,
+,A,Wings Etc.,swap,2/17/2025,2/17/2025,Open,Sampled/Visited invite-3,2/17/2025,50.00%,Better Balance,,70,Gary,,,Presented to Josh LL/RR/SWAP/Kurds,,,,
+,NO PRIORITY,Yancey's Gastropub and Brewery,BB amd Kufholds,2/17/2025,2/17/2025,Open,Sampled/Visited invite-3,,,Better Balance,Better Balance hot dogs,,Brent,,,,,,,
+,A,Ziggys,Kaufholds,2/18/2025,2/17/2025,open,Sampled/Visited invite-3,3/1/2025,75.00%,Kaufholds,Garlic,,Gary,,,W/w Atalntic Distributor Rep JOSH CHAMBERS,,,,
+,A,Astor Club,"VAF, FS, Juices",1/27/2025,1/27/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,,,
+,A,Astor Club,"VAF, FS, Juices",1/27/2025,1/27/2025,Open,Lead-discovery-1,,,Frites Street,,,Dale,,,,,,,
+,A,Atlantic Food Distributors ,Kaufholds Kurds Street Program,1/1/2025,12/30/2024,Open,Lead-discovery-1,,,Kaufholds,Unknown,40,Brent,MFB,,,,,,
+,NO PRIORITY,Baldwin Wallace,Presented plant based /kurds,1/20/2025,1/20/2025,Open,Lead-discovery-1,2/1/2025,95.00%,Kaufholds,Garlic,,Gary,Walk-In,,,,,,
+,NO PRIORITY,Barefoot Republic Camp,"plant based, kufholds",2/18/2025,2/17/2025,Open,Lead-discovery-1,,,Better Balance,Better Balance hot dogs,,,,,,,,,
+,A,Beverly CC,"LL, BB, SWAP",3/10/2025,3/10/2025,Open,Lead-discovery-1,3/31/2025,60.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,,,
+,A,BIBIBOP Asian grill,Plant based,1/1/2025,12/30/2024,On Hold,Lead-discovery-1,2/14/2025,45.00%,Better Balance,Better Balance hot dogs,8,Dale,Principal,,,,,,
+,A,cheers in chestertown,"LL, BB, SWAP",3/10/2025,3/10/2025,Open,Lead-discovery-1,3/31/2025,60.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,,,
+,A,Chicago Diner,Vegan,1/1/2025,12/30/2024,On Hold,Lead-discovery-1,2/10/2025,50.00%,Unknown,Unknown,,Michell,Email,,,,A,,
+,A,Classic Cafe,"plant based, indian, annasea",2/18/2025,2/17/2025,Open,Lead-discovery-1,,50.00%,Better Balance,Better Balance hot dogs,,,,,,,A,,
+,NO PRIORITY,Clean Eatz,Clean Eatz,1/1/2025,12/30/2024,Open,Lead-discovery-1,6/1/2025,25.00%,VAF,Unknown,,Michell,Walk-In,,Premier GPO and USF supplied-sent Abdale usf codes,,0,,
+,NO PRIORITY,Direct Food Services,Mrs. Resslers,3/5/2025,3/3/2025,Open,Lead-discovery-1,,,,,,,,,,,0,,
+,NO PRIORITY,Essential Kitchen & Essential Kitchen Cafe ,Better Balance ,1/16/2025,1/13/2025,Open,Lead-discovery-1,2/17/2025,30.00%,Better Balance,Better Balance hot dogs,,Michell,Networking,,,,0,,
+,NO PRIORITY,Essential Kitchen & Essential Kitchen Cafe ,Land Lovers ,1/16/2025,1/13/2025,Open,Lead-discovery-1,2/17/2025,30.00%,Better Balance,Better Balance hot dogs,,Michell,Networking,,,,0,,
+,NO PRIORITY,Essential Kitchen & Essential Kitchen Cafe ,Verticle Acres ,1/16/2025,1/13/2025,Open,Lead-discovery-1,2/17/2025,50.00%,VAF,Chef's Mix,,Michell,Networking,,,,0,,
+,NO PRIORITY,Fabulous Freddies Italian Eatery,Kaufholds ,1/1/2025,12/30/2024,Open,Lead-discovery-1,,50.00%,Kaufholds,Garlic,,Q,Cust Svce,,,,,,
+,A,Fairmont Chicago,"VAF, FS, Juices",1/27/2025,1/27/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,A,,
+,A,Gilt Bar,"VAF, FS, ",2/3/2025,2/3/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,A,,
+,A,goblin and grocer,"LL, BB, SWAP",3/10/2025,3/10/2025,Open,Lead-discovery-1,3/31/2025,60.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,Gordon Food Service,Annasea bulk pack intro request,1/1/2025,12/30/2024,Open,Lead-discovery-1,11/21/2024,25.00%,Annasea,Unknown,100,Gary,MFB,,Identified catman Alex Jacobs and Jessica Farr ,,A,,
+,A,gottleib memorial,"LL, BB, SWAP",3/10/2025,3/10/2025,Open,Lead-discovery-1,3/31/2025,60.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A+,HT Hackney(Paducah),Kaufhold's,2/21/2025,2/17/2025,Open,Lead-discovery-1,,,,,,,,,,,A+,,
+,NO PRIORITY,La Catedral ,La Catedral,1/1/2025,12/30/2024,Open,Lead-discovery-1,2/3/2025,20.00%,Unknown,Unknown,,Michell,Walk-In,,,,0,,
+,NO PRIORITY,La Catedral ,La Catedral,1/1/2025,12/30/2024,Open,Lead-discovery-1,1/24/2025,30.00%,Frites Street,Frites street home fries,,Michell,Walk-In,,,,0,,
+,A,Le Colonial,"VAF, FS, ",2/3/2025,2/3/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,A,,
+,A,LeTOUR,"VAF, FS, ",2/3/2025,2/3/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,A,,
+,A,mercy medical,"LL, BB, SWAP",3/10/2025,3/10/2025,Open,Lead-discovery-1,3/31/2025,60.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,A,Mino's Italian,"VAF, FS, ",2/3/2025,2/3/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,A,,
+,A,Parkhurst Dining,All Abdale ,1/1/2025,12/30/2024,Open,Lead-discovery-1,,,Abdale,Unknown,,Gary,MFB,,,,A,,
+,NO PRIORITY,Powers Health,"Swap, Better Balance and Land Lovers",4/21/2025,4/21/2025,Open,Lead-discovery-1,5/9/2025,80.00%,SWAP,,,Dale,,,demo 4/23,,,,
+,NO PRIORITY,Rafael's Sports Bar,Kaufholds,4/23/2025,4/21/2025,opem,Lead-discovery-1,,,Kaufholds,,,,,,,,,,
+,A,ridge cc,"LL, BB, SWAP",3/10/2025,3/10/2025,Open,Lead-discovery-1,3/31/2025,60.00%,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,D,"Rosebud steakhouse (Munster, IN)",VAF,1/1/2025,12/30/2024,Open,Lead-discovery-1,12/14/2024,100.00%,VAF,All,4/wk,Dale,Distributor referral,,"4 sku's set up; Hyrdo Bibb, Baby Red Romaine, & Mixed. Have appt with Steve Testa and is top Sales Reps on 12/11.",,D,,
+,NO PRIORITY,Spencers Coffee,Wonderjuice,3/13/2025,3/10/2025,Open,Lead-discovery-1,,,,,,,,,,,0,,
+,A+,Sysco Chicago,VAF,1/1/2025,12/30/2024,Open,Lead-discovery-1,2/15/2025,,VAF,All,,Sue,Already Known,,Met Joe while making calls. Need to set up a meeting to discuss further.,,,,
+,NO PRIORITY,The 30 Bird,"LL, BB, SWAP, wonderjuice",3/13/2025,3/10/2025,Open,Lead-discovery-1,,,,,,,,,,,0,,
+,A,The Caterist,"VAF, FS, Juices",1/27/2025,1/27/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,A,,
+,A,Towne & Oak,"VAF, FS, ",2/3/2025,2/3/2025,Open,Lead-discovery-1,,,VAF,,,Dale,,,,,A,,
+,NO PRIORITY,Willow Oaks Golf Club,Plant based,2/17/2025,2/17/2025,open,Lead-discovery-1,,,Better Balance,Better Balance hot dogs,,brent,,,will drop chef samples,,,,
+,A,Artisan Specialty Foods,Annasea bulk,1/1/2025,12/30/2024,Open,Follow-up-4,2/1/2024,50.00%,Annasea,Unknown,200,Dale,MFB,,"Advanced to new vendor application, then send digital for airlines then complete product information on all w bulk pack flavors",,,,
+,NO PRIORITY,Baldwin Wallace,Plant based follow up,1/22/2025,1/20/2025,SOLD-7d,Follow-up-4,1/22/2025,0.00%,Better Balance,Better Balance hot dogs,,Gary,,,Chef did not like the texture. Will not move forward.,,,,
+,C,Bally's Casino and Hotel,Opp1,1/1/2025,12/30/2024,Open,Follow-up-4,12/10/2024,75%s,Unknown,Unknown,4,Brent,Networking,,,,,,
+,A,Crust Brewing,Poke; Curds,1/1/2025,12/30/2024,Open,Follow-up-4,12/31/2024,,Kaufholds,Unknown,4,Dale,Walk-In,,"Great opportunity in Rosemont. Buy curds (think Sysco) the Add spice seasoning. Use Poke, hand-cut at restaurant. Made first connect, offered to revist with samples. Anna is the bartender and identifed Sysco, USF & PFG as suppliers). Need to revisit.",,A,,
+,NO PRIORITY,Gemato's Wood Pit BBQ,Product for menu addition,1/1/2025,12/30/2024,SOLD-7d,Follow-up-4,11/13/2024,100.00%,Kaufholds,Unknown,,Q,MFB,,"Bought Jalapeno, Garlic& Original Curds. ",,0,,
+,D,PFG=Jordan Gottlieb,Cowboy chips and 3/8 =GFS counter,1/1/2025,12/30/2024,Open,Follow-up-4,1/1/2025,80.00%,Frites Street,Unknown,30,Gary,MFB,,Emailed and texted GFS delay  ,,D,,
+,A,Planks Tavern on the Water,Cowboy chips and 3/8 =GFS counter,1/1/2025,12/30/2024,Open,Follow-up-4,1/1/2025,80.00%,Frites Street,Unknown,30,Gary,Principal,,,,A,,
+,A,St. Mary's Hospital, Vertical Acres Farm,1/1/2025,12/30/2024,Open,Follow-up-4,,,VAF,Red Romaine,2,Dale,Walk-In,,Quoted pricing on 12/2,,A,,
+,B,The Harvest Room,VAF,1/1/2025,12/30/2024,Open,Follow-up-4,2/28/2025,50.00%,VAF,All,3/wk,Dale,Distributor referral,,Chris: They sell no hydroponic. It has not sold in the past. MFB will use PIFs and bring opportunities to Sysco.,,B,,
+,A,Timothy's,"VAF, FS, ",1/31/2025,1/27/2025,Open,Follow-up-4,2/15/2025,80.00%,VAF,Chef's Mix,,Gary,,,,,A,,
+,A,Western Michigan University,Annasea/on campus showcase request,1/1/2025,12/30/2024,Open,Follow-up-4,12/15/2024,55.00%,Unknown,Unknown,12,Gary,MFB,,Email noted vactatiom. Follow by phone 11/22,,A,,
+,A,Gordon Food Service,annasea ,3/8/2025,3/3/2025,Open,Feedback- received-5,3/8/2025,65.00%,Annasea,Bulk pack,,Gary,,,,,A,,
+,A,University Center MSU,Kaufholds/FS/Poke,7/8/2025,7/7/2025,Open,Sampled/Visited invite-3,10/1/2025,75.00%,Frites Street,,,Gary,,,Connected to Flip. Wants long hold time and healthiest frites.,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,Indiana University ,rapid rasoi,3/8/2025,3/3/2025,Open,demo-cookup-6,3/28/2025,90.00%,Rapid Rasoi,Dehli Tikka Masala,,Dale,,,,,,,
+,B,Uncommon Ground,Swap,4/22/2025,4/21/2025,,demo-cookup-6,5/9/2025,75.00%,SWAP,,,Dale,,,Owner doesnt like change but chef loves swap,,,,
+,A,3 Monkey's,McCrum,4/22/2025,4/21/2025,Open,Contacted-phone/email-2,,,McCrum,,,,,,,,,,
+,D,A.Fusion,LTO-Q3 (2024),1/1/2025,12/30/2024,SOLD-7d,Contacted-phone/email-2,9/15/2024,100.00%,Kaufholds,Garlic,,Q,MFB,,Trying out 2 flavors (original& Jalapeno) w/ table tents,,,,
+,NO PRIORITY,Baldwin Wallace,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,Will be going with the hot dog. ,,,,
+,B,Blue Oyster,Poke,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,6/1/2025,25.00%,Annasea,Ahi Tuna,,Gary,MFB,,Sent USF CODES ON 150 items from 23 principals,,,,
+,A,Century,HPS,1/13/2025,1/13/2025,Open,Contacted-phone/email-2,Mike Storei,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,,,
+,NO PRIORITY,Curts Cafe,Vertical Acres,1/16/2025,1/13/2025,Open,Contacted-phone/email-2,2/17/2025,20.00%,VAF,Chef's Mix,,Michell,Website,,,,0,,
+,NO PRIORITY,Curts Cafe,Land Lovers ,1/16/2025,1/13/2025,Open,Contacted-phone/email-2,2/17/2025,20.00%,Better Balance,Better Balance hot dogs,,Michell,Website,,,,0,,
+,A,dirty franks,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,NO PRIORITY,Fuel Nutrition,Annasea,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,12/28/2024,25.00%,Annasea,Ahi Tuna,,Brent,Walk-In,,,,0,,
+,A,Gordon Food Service,Annasea bulk pack intro request,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,1/3/2025,60.00%,Kaufholds,Unknown,3,Gary,Food Show,,Sent email to Heidi and Laura. Asked for warehouse slot owner and offered Lipari option. Initial probe.,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,6/1/2025,25.00%,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,6/1/2025,25.00%,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,6/1/2025,25.00%,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,6/1/2025,25.00%,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,A,Gordon Food Service,HPS ,1/7/2025,1/6/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,MFB,,,,A,,
+,NO PRIORITY,Indiana University,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,,,
+,A,Lipari,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,D,Madame Zusus,Verticle Acres ,1/16/2025,1/13/2025,Open,Contacted-phone/email-2,2/17/2025,50.00%,VAF,Chef's Mix,,Michell,Food Show,,,,D,,
+,A,Midwest Foods,VAF,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,,20.00%,VAF,All,,Dale,Networking,,Visited with chef and he is interested. Need to bet him samples. 7 locations. Italian,,A,,
+,A+,Northern Hasserot,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,A+,,
+,A+,Northern Hasserot,HPS,1/13/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,A+,,
+,A,Notre Dame,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,A,,
+,NO PRIORITY,OSU,OPP3,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,2/1/2025,20.00%,TCCF,Unknown,10,Dale,MFB,,Sent email to present Annasea,,,,
+,NO PRIORITY,Parker's,VAF,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,1/13/2025,50.00%,VAF,Red Romaine,,Michell,Networking,,,,0,,
+,NO PRIORITY,Parker's,VAF,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,1/13/2025,50.00%,Frites Street,Frites street 1/2,,Michell,Networking,,,,0,,
+,A+,PFG,,1/14/2025,1/13/2025,Open,Contacted-phone/email-2,Dale,,Kaufholds,Original White Cheddar,,,,,,,A+,,
+,A,Planks Tavern on the Water,"Frites Street 3/8"" and chips",1/1/2025,12/30/2024,On Hold,Contacted-phone/email-2,12/1/2024,90.00%,Frites Street,Unknown,10,Gary,Principal,,Third f/u email since Flip's oversite.pricing still a hurdle. GFS rep Ryan was to meet on 11/14. Emailed status request to Ryan 1,,A,,
+,A+,Raydia,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,A+,,
+,B,Recess,Waffle fries,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,1/1/2025,50.00%,Frites Street,Unknown,20,Michell,Distributor referral,,,,B,,
+,A+,Sysco GR,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,,,,,,,
+,A,The Table At Crate ,The Table At Crate ,1/1/2025,12/30/2024,,Contacted-phone/email-2,,,Annasea,Bulk pack,,Michell,Walk-In,,,,A,,
+,A,University Club of Chicago,VAF,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,1/1/2025,20.00%,VAF,All,3/wk,Dale,Distributor referral,,Need too sample again. Hold up is that they grow their own greens but on a small scale. ,,A,,
+,A,University of Notre Dame,HPS,1/12/2025,1/13/2025,Open,Contacted-phone/email-2,Gary,MFB,Better Balance,Better Balance hot dogs,,Gary,Networking,,,,A,,
+,A,Upper crust ,Abdale,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,1/27/2025,80.00%,Abdale,Unknown,,Gary,Email,,,,A,,
+,NO PRIORITY,Vette City Catering(BG Hot Rods Milb),"fries, plant based, Kaufholds and CCF",2/18/2025,2/17/2025,open,Contacted-phone/email-2,,,Better Balance,Better Balance hot dogs,,Brent,,,,,0,,
+,NO PRIORITY,Weather Mark Tavern,PFG Curds,1/1/2025,12/30/2024,Open,Contacted-phone/email-2,12/5/2024,25.00%,Kaufholds,Unknown,,Q,MFB,,Email invite for sampling,,0,,
+,B,Superdawg Drive-In,Freestreet Original Curds,11/1/2024,10/28/2024,SOLD-7d, Loss Business. Reason?,9/30/2024,80.00%,Abdale,Unknown,1,Brent,Food Show,,needs it for food show,,B,,
+,A,ALINEA,Vertical Acres Farm meeting on 11/2,1/1/2025,12/30/2024,,,,,VAF,Bibb Lettuce,,Dale,MFB,,,,,,
+,A,Donatos Pizza,Kaufholds,,,,,,,,,,,,,,,A,,
+,NO PRIORITY,gorgio,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,Indiana University,Swap,4/22/2025,4/21/2025,,,,,,,,,,,,,,,
+,NO PRIORITY,Indiana University ,VAF,1/1/2025,12/30/2024,,,,,VAF,All,,Gary,Already Known,,,,,,
+,NO PRIORITY,Indianhead Food Distributor ,Bb ,2/17/2025,2/17/2025,SOLD-7d,,,,Better Balance,Better Balance hot dogs,,,,,Kim SOLD-7d this business. PO of  200 cases on 2/18,,0,,
+,A,PFG Reinhart BG House,,,,,,,,,,,,,,,,A,,
+,NO PRIORITY,Pizza Express,Kaufholds ,1/1/2025,12/30/2024,,,,,Kaufholds,Unknown,,Brent,Walk-In,,,,0,,
+,NO PRIORITY,Powers Health,Swap,4/22/2025,4/21/2025,,,,,,,,,,,,,,,
+,B,Rob's Meat,Dill Pickle Curds,1/1/2025,12/30/2024,,,,,Kaufholds,Unknown,,Dale,Walk-In,,,,B,,
+,A,University of Dayton,Bb ,2/17/2025,2/17/2025,Open,,,70.00%,Better Balance,Better Balance hot dogs,,,,,Will be presenting on 2/28.,,A,,
+,A,University of Dayton,many,2/25/2025,2/24/2025,Open,SOLD-7,,,Rapid Rasoi,,,,,,,,A,,
+,B,Independence Village of Ames,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,ABBVIE AP30,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,ACARATH MONTESSORI,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Ami-Gos Tacos,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Angry Octopus,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,APOSTOLIC CHURCH OF GOD,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,ASSEMBLY AMERICAN BAR & CAFE (THE),GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Beverly Country Club,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Countrytime Kettle Korn McHenry,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,CREME OF THE CROP,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,DR JOHN WARNER HOSPITAL,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,EPIC BURGER-PEARSON ST,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,ESPERANZA SCHOOL,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,GAME ON BAR & GRILL,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Hampshire Township Park District,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,KIRBY MEDICAL CENTER,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,KIRK'S BBQ,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,KNIGHTS OF COLUMBUS #1282,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,LA RABIDA CHILDRENS HOSPITAL,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Louies Waffle House,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,MARY'S PLACE,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,NIVRAM BALMORAL NURSING,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,North Island Catering,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,PARAMOUNT THEATRE,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,PEACE MEAL CENTRAL OFFICE,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,POST 18 AMERICAN LEGION,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Queen of Peace Retirement,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,RUSH U MED-GEN KITCHEN PO589563,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Sassy Mac Boys,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Storypoint Of Bolingbrook,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,The Ice Cream Shop,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,The Matrix Room,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,The Pointe at Morris,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,The Shores of Fairmont,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,THS-GOTTLIEB MEMORIAL DIETARY-H0182,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,U OF I- HOUSING FOOD STORES,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Washington Grade School District 52,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,10Forty Banquets & Catering,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Area Career Center,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,GOBLIN AND THE GROCER,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,MERRILLVILLE REGIONAL MENTAL HEALTH,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Notre Dame-110 South Dining Hall,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,State Park Little League,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Taco Depot Crown Point,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,CLEMENTINE'S SALOON,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Daydreamer Domes,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Ludington Pub,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,WUSKOWHAN PLAYERS CLUB,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,AGING AND DISABILITY RESOURCE CENTE,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,BJ'S RESTAURANT,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Faklandia Brewing,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,FORT ATKINSON FAMILY RESTAURANT,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,HSL West Allis Assisted,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,L G YOUTH CAMP-GATE 2,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,MACS,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Moxie Coffee Café Catering,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Timber-Lee Ministries,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Independence Village of Avon,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Independence Village of Waukee,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Jelka Leedle,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,JULIE WENDORF,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Kelly,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Kimberly Woods,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,King-Bruwaert House,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Maija's Families Foods,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Paulie’s,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,the woods of Caledonia,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,West Carroll Middle School ,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,JULIE WENDORF,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Kelly,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Kimberly Woods,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,King-Bruwaert House,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,Maija's Families Foods,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,B,Maple Tree Inn,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,B,,
+,NO PRIORITY,Paulie’s,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,the woods of Caledonia,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,NO PRIORITY,West Carroll Middle School ,GFS Roemont Food Show,4/1/2025,3/31/2025,,Sampled/Visited invite-3,,,Better Balance,,,Gary,,,,,,,
+,A,The Ohio State University,feb on campus showcase,2/27/2025,2/24/2025,Open,demo-cookup-6,5/9/2025,75.00%,Kaufholds,,,Gary,,,,,A,,
+,A,The Ohio State University,feb on campus showcase,2/27/2025,2/24/2025,Open,demo-cookup-6,5/9/2025,75.00%,VAF,,,Gary,,,,,A,,
+,A,The Ohio State University,feb on campus showcase,2/27/2025,2/24/2025,Open,demo-cookup-6,5/9/2025,75.00%,Frites Street,,,Gary,,,,,A,,
+,A,The Ohio State University,feb on campus showcase,2/27/2025,2/24/2025,Open,demo-cookup-6,5/9/2025,75.00%,Rapid Rasoi,,,Gary,,,,,A,,
+,A,The Ohio State University,feb on campus showcase,2/27/2025,2/24/2025,Open,demo-cookup-6,5/9/2025,75.00%,Never Better,,,Gary,,,,,A,,
+,A,The Ohio State University,feb on campus showcase,2/27/2025,2/24/2025,Open,demo-cookup-6,5/9/2025,75.00%,SWAP,,,Gary,,,,,A,,
+,A,Berkot Super Foods,Turkey Private Label program,4/29/2025,4/28/2025,Open,Sampled/Visited invite-3,5/1/2025,100.00%,Mrs Ressler's,,,Sue,,,"Presented the 3 turkey breasts chosen for Berkot brand. Final label needs approval. Final price needs confirmation. Order will be placed by ay 1, 2025. Need Deli Managers contest proposed.",,,,
+,A,MICHIGAN STATE POLICE TRAINING DIVI,"kurds, plant based",5/1/2025,4/28/2025,Open,demo-cookup-6,5/22/2025,90.00%,Kaufholds,Garlic,,Gary,,,W/w Angella-dieticin gfs healthcare rep-will led us to other opps,,A,,
+,B,Great Lakes CHR Homes,"kurds, plant based",5/1/2025,4/28/2025,Open,Sampled/Visited invite-3,5/22/2025,90.00%,Kaufholds,Original White Cheddar,,Gary,,,W/w Angella-dieticin gfs healthcare rep-will led us to other opps,,,,
+,A,MICHIGAN STATE POLICE TRAINING DIVI,"kurds, plant based",5/1/2025,4/28/2025,Open,demo-cookup-6,5/22/2025,90.00%,Better Balance,Better Balance hot dogs,,Gary,,,W/w Angella-dieticin gfs healthcare rep-will led us to other opps,,A,,
+,B,Great Lakes CHR Homes,"kurds, plant based",5/1/2025,4/28/2025,Open,demo-cookup-6,5/22/2025,90.00%,Better Balance,Better Balance hot dogs,,Gary,,,W/w Angella-dieticin gfs healthcare rep-will led us to other opps,,,,
+,A,MICHIGAN STATE POLICE TRAINING DIVI,"kurds, plant based",5/1/2025,4/28/2025,Open,demo-cookup-6,5/22/2025,90.00%,SWAP,,,Gary,,,W/w Angella-dieticin gfs healthcare rep-will led us to other opps,,A,,
+,B,Great Lakes CHR Homes,"kurds, plant based",5/1/2025,4/28/2025,Open,demo-cookup-6,5/22/2025,90.00%,SWAP,,,Gary,,,W/w Angella-dieticin gfs healthcare rep-will led us to other opps,,,,
+,A,Four Winds Casino,Rapid Rasoi,5/5/2025,5/5/2025,Open,Contacted-phone/email-2,,,Rapid Rasoi,,,Dale,,,Emailed 5/1. will phone 5/12,,,,
+,B,Innsbrook CC,Annasea; RR,4/28/2025,4/28/2025,Open,Sampled/Visited invite-3,,,Rapid Rasoi,,,Dale,,,,,B,,
+,NO PRIORITY,Powers Health,Rapid Rasoi,4/22/2025,4/21/2025,Open,Contacted-phone/email-2,,,Rapid Rasoi,,,,,,,,0,,
+Rapid Rasoi,NO PRIORITY,Indiana University,Swap,4/22/2025,4/21/2025,Closed,SOLD-7,,,Rapid Rasoi,,,,,,,,,,
+,NO PRIORITY,Steven,,,,,,,,,,,,,,,,,,
+,b,SUPREME LOBSTER AND SEAFO,Frosty Acres McCrum,5/22/2025,5/19/2025,Closed,Contacted-phone/email-2,,0.00%,McCrum,,0,Sue,,,Supreme Lobster does not sell any fries.,,,,
+,A,The Ohio State University,Annasea,2/27/2025,2/24/2025,Open,SOLD-7,5/13/2025,100.00%,Annasea,Bulk pack,,Gary,,,emailed donfirmation pf menu addition in fall by Lesa. USF and Sean notified.,,A,,
+,B,Tomato Bar,Plant Based,,,Open,,,,Never Better,,,Dale,,,Big Vegan menu. Pursuing,,,,
+,NO PRIORITY,O'Bryan's Bar and Grill,Kaufholds,5/22/2025,5/19/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,Unknown,,Michell,,,"Wants the a premade pie, does not have ovens. Wicks does offer some options.",,,,
+,NO PRIORITY,Dj's Casual Cafe ,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants samples of the 9"" raw lard pie shell and the 10"" lid/circle ",,,,
+,NO PRIORITY,Hotel Blackwood,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants to sample the 4"" raw lard pie shell and the 6"" lids/circles. Would use this for pot pies. ",,,,
+,NO PRIORITY,Main Street Meat Co.,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants to sample 9"" raw lard pie shells and the 10"" lids/circles. ",,,,
+,NO PRIORITY,Peanut Butter and Deli,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants to sample 9"" raw lard pie shells and the 10"" lids/circles. ",,,,
+,NO PRIORITY,Lubben Vineyards & Wines,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants to sample 9"" raw lard pie shells and the 10"" lids/circles. ",,,,
+,NO PRIORITY,Petro Travel Center,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants to sample 9"" raw lard pie shells and the 10"" lids/circles. ",,,,
+,NO PRIORITY,Hotel Julien Debuque,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants to sample 9"" raw lard pie shells and the 10"" lids/circles. ",,,,
+,NO PRIORITY,Thirsty Camel Supper Club ,Wicks,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,6/2/2025,50.00%,Wicks,,,Michell,,,"Wants to sample 9"" raw lard pie shells and the 10"" lids/circles. ",,,,
+,A,US Foods Cleveland,mccrum,5/22/2025,5/19/2025,Open,Follow-up-4,6/6/2025,100.00%,McCrum,,,Gary,,,Will attend sales meeting lainch 6/6,,,,
+,A,Hailstorm Brewing,Kaufhold,5/26/2025,5/26/2025,Open,Lead-discovery-1,,,Kaufholds,,,Dale,,,"NRA lead. bakeable samples, Original, Ranch, Cajun, Beer Battered. ",,,,
+,A,Lettuce Entertain You,Kaufhold's lead/all lines,5/26/2025,5/26/2025,Open,Lead-discovery-1,,,Kaufholds,,,Dale,,,NRA lead,,A,,
+,B,Sip Self Serve Wine Bar ,Kaufhold's lead/all lines,5/26/2025,5/26/2025,Open,Lead-discovery-1,,,Kaufholds,,,Dale,,,NRA lead,,,,
+,A,ANDERSON FOODS,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Battle Alley Brewing Company,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,BAY CLIFF HEALTH CAMP,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Belva ,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,BENS SUPERCENTER,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Bluebird,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,BOARDWALK (THE),Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Boyne River Inn,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,BSA-COLE CANOE,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,C K O S - Catered Events ,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Cardinal Pizza,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,CDS - Miracle Camp and Retreat Cent,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Chart Room,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Chico's Bar and Grill,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,COMM ACTION - HEAD START,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,COUNTRY VIEW BULK FOODS,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Cut River Grille,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Daybreak Cafe,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,DELTON MEMORIAL VFW #422,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,DETROIT PIZZA FACTORY,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Dockside Torch Lake,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Double Down Desserts,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,DUCK LAKE COUNTRY CLUB 40461E,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Eighteen87,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,EMBASSY BAR & GRILL,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,FEED BAG CAFE (THE),Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,GAYLORD BOWLING CENTER,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,GILLIES CONEY ISLAND/MT MORRIS,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,HACIENDA MEXICAN REST H-1,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,HAMLIN PUB - ROCHESTER HILLS,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,HENRY FORD COLLEGE,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,HENRY'S RESTAURANT- OTTAWA,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,HOG'S BACK FOOD CO-OP\ CAROLYN PERU,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Jayell Smoke House,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,KEYS (THE),Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,LOUHELEN BAHA'I SCHOOL,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,MORRISON LAKE GOLF CLUB,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Mrs. C’s Grilled Cheese,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,POTTERVILLE INN,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,PRINCIPLE BUSINESS ENTERPRISES,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Put In Bay Resort,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,RIVER ROCK BAR & GRILL,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,RIVERFRONT GRILLE,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,RIVERWALK GRILL,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,ROYAL OAK AMERICAN LEGION,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,SAGINAW CLUB,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Shafer's Smoked Meats,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,shawnee country club,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,SMALL BATCH AT THE CUPOLA ROOM,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Smokin' Pigs by Bigs,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,ST PETER LUTHERAN SCHOOL ACCOUNT,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,SUNRISE WAREHOUSE,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,The Cortland Northview,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,The Little Store,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,The Mayfield Tavern,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,The Pepper Mill,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Towneplace Suites Ann Arbor,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Trackside Eatery & Pub,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,TRAILS END PUB,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Troy Escape,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Turnaround Bar And Grille,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Village Place- Greek,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A+,The Patio,McCrum,9/8/2025,9/8/2025,Lost,Feedback- received-5,,,Mccrum,,,Gary,,,Simplot dupe of 251019 with 23004 Failed-tired product look after fry.,,,,
+,A,Zachariah's Chocolates,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Zefs Lighthouse Tavern,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,MICHIGAN STATE POLICE TRAINING DIVI,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,SLOW'S TO GO 002,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Treetops - Top Of Hill,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,All Nite Mobile Cafe,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,BRIGHTMOOR CHRISTIAN CHURCH,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,CAMP BLODGETT,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,CAMP CO-BE-AC,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Carmella's Italian Ice,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,LINCOLN LAKE BAPTIST YOUTH CAMP,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,Sparrow Eaton,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A,The New Tubbs Lake Resort,Kaufholds GFS Novi Lead,5/26/2025,5/26/2025,Open,Sampled/Visited invite-3,,,Kaufholds,Ranch,,Gary,,,GFS NOVI SHOW LEAD,,A,,
+,A+,Raydia,Mccrum cutting,5/29/2025,5/26/2025,Open,Lead-discovery-1,,,Mccrum,Unknown,,Gary,,,Dave Pestrak asks for approximate pricing on our matched items to simplot and mccain,,A+,,
+,NO PRIORITY,El Jefe,,,,,Sampled/Visited invite-3,6/16/2025,,SWAP,Chicken,,Michell,,,Chef wants to use SWAP in a vegan fajitas dish. Will play with product and decide. I am bringing him some more samples next week. ,,,,
+,NO PRIORITY,Bust Outs,,5/28/2025,5/26/2025,Open,Sampled/Visited invite-3,6/16/2025,,Kaufholds,,,Michell,,,They are a bar but also participate as vendors in a lot of festivals/concerts. They serve our garlic cheese curds. WIll now add jalapeno to the vendor menu. ,,,,
+,NO PRIORITY,grill 89,Kauhold's,5/28/2025,5/26/2025,Open,Sampled/Visited invite-3,6/16/2025,,Kaufholds,,,Michell,,,"Rep lead, brought them a USF curd kit. They have started buying. ",,,,
+,NO PRIORITY,Rabbits Bar,Kaufhold's,5/30/2025,5/26/2025,Open,order support-8,6/16/2025,,Kaufholds,,,MIchell,,,Rep Allessandra will pick up a USF curd kit on friday am.,,,,
+,NO PRIORITY,Vinny's PIzza and Catering,Kaufhold's,5/29/2025,5/26/2025,Open,Sampled/Visited invite-3,6/16/2025,,Kaufholds,,,Michell,,,,,,,
+,NO PRIORITY,Vinny's PIzza and Catering,TCFB,5/29/2025,5/26/2025,Open,Sampled/Visited invite-3,6/16/2025,,TCFB,,,Michell,,,,,,,
+,A+,Raydia,mccrum,5/29/2025,5/26/2025,Open,Lead-discovery-1,9/1/2025,,Mccrum,Unknown,,Gary,,,EMAIL TO DAVE PESTRAK IDENTIFIED INTEREST TO REVIEW.SENT TARGET ITEMS TO CHRISTINE,,A+,,
+,A,PREMIER PRODUCE/COLUMBUS,VAF,5/29/2025,5/26/2025,Open,Lead-discovery-1,9/1/2025,,VAF,Red Romaine,,Mike,,,email response announcing vacation thur June,,A,,
+,A,The Rose Hotel,VAF,6/2/2025,6/2/2025,Closed,VAF BLITZ,,,VAF,Chef's Mix,,Dale,,,Michael Hanser is testa rep; Exec Chef - Scott Wallet,,A,,
+,A,Three Embers Restaurant @ Marriott Lincolnshire Resort,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Michael Hanser is testa rep; Exec Chef's Ed Laxner or Everado,,,,
+,A,Hyatt Centric Rosemont,VAF,6/3/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Michael Hanser is testa rep; Exec Chef Gee Cuyugan,,,,
+,A,Foodstuff's Evanston,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Steve Horwich is Testa rep. Jay is Owner and Brendan is Director of Catering,,,,
+,A,Zelda's Catering,VAF,6/2/2025,6/2/2025,Closed,VAF BLITZ,,,VAF,,,Dale,,,Steve Horwich is Testa rep. Exec Chef Charile; Exec Sous Chef Ronald,,,,
+,A,Abigail's,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Steve Horwich is Testa rep. GM -Jason,,,,
+,A,Summer House (Halsted Street Kitchen),VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristine Campbell is Testa rep. Chef Will & Ben,,,,
+,NO PRIORITY,Kindling Cookout & Cocktails,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristine Campbell is Testa rep. Chef Jario,,,,
+,A,Lago Lake Zurich,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristine Campbell is Testa rep. Chef Ken,,,,
+,A,Ema Chicago,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristine Campbell is Testa rep. Chef Donny,,,,
+,A,Prasino,VAF,6/2/2025,6/2/2025,On Hold,VAF BLITZ,,,VAF,,,Dale,,,Kristine Campbell is Testa rep. Chef Peggy,,,,
+,A,Talbot Hotel,VAF currently buying Gem,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Megan Camarigg is Testa rep. Chef Kostas,,A,,
+,A,Bungalow,VAF currently buying Gem,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Megan Camarigg is Testa rep. Owner - Polly. GM - John,,A,,
+,A,Hyatt Mag Mile,VAF currently buying Gem,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Megan Camarigg is Testa rep. Chef Louis,,A,,
+,A,Atta Girl,VAF currently buying Gem,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Megan Camarigg is Testa rep. Chef Mad,,A,,
+,B,Lardon,VAF currently buying Gem,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Megan Camarigg is Testa rep. Chef Diana,,B,,
+,NO PRIORITY,Next Restaurant ,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristen is testa rep. Chef Alan,,,,
+,NO PRIORITY,Food For Thiught,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,"Kristen is testa rep. Patrick, john, rudy, darren are contacts",,,,
+,NO PRIORITY,Berghoff Restaurant,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristen is testa rep. chef Matt and Israel is Purchasing,,,,
+,A,LeTOUR,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristen is Testa rep.  Willy and Debbie are contact,,A,,
+,NO PRIORITY,The Bar - Evanston,VAF  ,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristen is testa rep. Luis is contact,,,,
+,A,The Table at Crate,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristen is testa rep. Chef Matt. Sister place Dimmi Dimmi opening soon,,A,,
+,NO PRIORITY,Miller's Pub,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Kristen is testa rep. Chef Leo,,,,
+Chef Jeff,NO PRIORITY,Briar Ridge CC,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Chef Jeff,,,,
+,B,Innsbrook CC,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Chef Billy,,B,,
+,A,White Hawk CC,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Chef Adrian,,A,,
+,A,Hilton Double Tree Aslip,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Chef Saul,,A,,
+,NO PRIORITY,Hilton Oakbrook Hills Resort,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,A,The Drake - Oakbrook,VAF,6/2/2025,6/2/2025,On Hold,VAF BLITZ,,,VAF,,,Dale,,,,,A,,
+,NO PRIORITY,Hyatt Centric Chicago Mag Mile,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt Regency Chicago,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,C,Hyatt Regency McCormick Place,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Park Hyatt,VAF,6/3/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt Place Wicker Park,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt House,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt House Chicago Medical District,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt Place Chicago South Medical Center,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt Place Chicago Midway,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt House Evanston,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt Regency O'Hare,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,B,219 Taproom,VAF,6/2/2025,6/2/2025,Closed,VAF Blitz,,,VAF,,,Gary,,,,,,,
+,NO PRIORITY,Hyatt Centric Chicago O'Hare,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt House Oakbrook,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hyatt Place O'Hare,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Crowne Plaza Rosemont,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,A,Hilton Oakbrook,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hilton Garden Inn Rosemont,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,Chef Sandro,,,,
+,NO PRIORITY,London House by Hilton,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,The Drake Lake Shore,VAF  ,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,Hilton Chicago,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,The Wit by Hilton,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,A,Gino's Steakhouse,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,Chef Mario 10 am,,,,
+,NO PRIORITY,The Palmer House,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,A,Gino's Steakhouse,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,,,,,,,,
+,NO PRIORITY,The Hilton Garden in Riverwalk,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,A,Sand Creek CC,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,nlw a concert club management in FL,,,,
+,A,Lucrezia,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,Christopher refers to Chef Dillon in CP. now 3 stores.,,,,
+,A,INDUSTRIAL REVOLUTION,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,Amanda will refiew VAF -quoted BOGO at $28/cs,,,,
+,NO PRIORITY,The Canopy by Hilton,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Dale,,,,,,,
+,NO PRIORITY,White Hawk,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,Chef Adrian will consider limited use of romaine for slecial dishes-still wants cut lettuce,,,,
+,NO PRIORITY,Licrezia,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,Chef Dillon loved product will test in dishes adn wants our product catalog,,,,
+,NO PRIORITY,Ramen District,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,Chef Chris will review product with team. Presented poke. Left curds,,,,
+,A,Provecho,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,Chef Chris will review product with team. Presented poke. Left curds,,A,,
+,A,Coppolillos,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,"Steve in town, advised Dale. Chef willmdistribute VAF to Rosebud and Windy City",,,,
+,D,"Rosebud steakhouse (Munster, IN)",VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,"Steve in town, advised Dale. Chef willmdistribute VAF to Rosebud and Windy City",,D,,
+,B,Windy City Media Group,VAF,6/2/2025,6/2/2025,Open,VAF BLITZ,,,VAF,,,Gary,,,"Steve in town, advised Dale. Chef willmdistribute VAF to Rosebud and Windy City",,B,,
+,A+,US Foods-Bensenville,TCFB,6/2/2025,6/9/2025,Open,Contacted-phone/email-2,,,TCFB,,,Gary,,,emqiled holiday Booking and dot food pricing on TCFB line,,,,
+,A+,US Foods-Bensenville,TCFB,6/2/2025,6/9/2025,Open,Contacted-phone/email-2,,,TCFB,,,Gary,,,emqiled holiday Booking and dot food pricing on TCFB line,,,,
+,A+,US Foods-Bensenville,TCFB,6/2/2025,6/9/2025,Open,Contacted-phone/email-2,,,TCFB,,,Gary,,,emqiled holiday Booking and dot food pricing on TCFB line,,,,
+,A+,US Foods-Bensenville,TCFB,6/2/2025,6/9/2025,Open,Contacted-phone/email-2,,,TCFB,,,Gary,,,emqiled holiday Booking and dot food pricing on TCFB line,,,,
+,A+,US Foods-Bensenville,TCFB,6/2/2025,6/9/2025,Open,Contacted-phone/email-2,,,TCFB,,,Gary,,,emqiled holiday Booking and dot food pricing on TCFB line,,,,
+,A,Ashland University,SWAP,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,AVI - University of Akron Concessions,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Central Michigan University,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Cleary University,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Delta College,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Ferris State University,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Gogebic Community College,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Grand Valley State Univ. Dining Svcs.,,,,,,,,SWAP,,,,,,,,,,
+,B,Grand Valley State University,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Indiana University,,,,,SOLD-7,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Kalamazoo Valley Community College,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Kirtland Community College,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Michigan Technological University,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Michigan Technological University,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Mott Community College,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Northwestern Michigan College,,,,,,,,SWAP,,,,,,,,,,
+,A,Ohio University,,,,,,,,SWAP,,,,,,,,A,,
+,NO PRIORITY,Ohio University Dining Services,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Sacred Heart Seminary,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Schoolcraft College,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Taylor University,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Univ of Indy Catering/Retail,,,,,,,,SWAP,,,,,,,,,,
+,A,University of Dayton,,,,,SOLD-7,,,SWAP,,,,,,,,A,,
+,NO PRIORITY,University of Indianapolis,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,University of Northwestern Ohio,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,West Shore Community College,,,,,,,,SWAP,,,,,,,,,,
+,NO PRIORITY,Wright State University,,,,,,,,SWAP,,,,,,,,,,
+,A,WASHINGTON TWP SCHOOLS WAREHOUSE,,,,,,,,SWAP,,,,,,,,A,,
+,A,BAY CLIFF HEALTH CAMP,,,,,,,,SWAP,,,,,,,,A,,
+,A,Bronson Behavioral Hospital,,,,,,,,SWAP,,,,,,,,A,,
+,A,BROWN JUG,,,,,,,,SWAP,,,,,,,,A,,
+,A,CASCADE HILLS COUNTRY CLUB  18682E,,,,,,,,SWAP,,,,,,,,A,,
+,A,CHURCHILL'S FOOD & SPIRITS,,,,,,,,SWAP,,,,,,,,A,,
+,A,COMMUNITY PROGRAMS,,,,,,,,SWAP,,,,,,,,A,,
+,A,Western Michigan University,,6/6/2025,6/2/2025,,SOLD-7,,,Rapid Rasoi,,,,,,,,,,
+,A,Crowes Nest Café,,,,,,,,SWAP,,,,,,,,A,,
+,A,Double Down Desserts,,,,,,,,SWAP,,,,,,,,A,,
+,A,FLAT ROCK CARE CENTER,,,,,,,,,,,,,,,,A,,
+,A,GARLAND LODGE FOOD AND BEVERAGE,,,,,,,,,,,,,,,,A,,
+,A,HENRY FORD COLLEGE,,,,,,,,,,,,,,,,A,,
+,A,LINCOLN LAKE BAPTIST YOUTH CAMP,,,,,,,,,,,,,,,,A,,
+,A,LOUHELEN BAHA'I SCHOOL,,,,,,,,,,,,,,,,A,,
+,A,Mad Anthony - Taylor - 371788E,,,,,,,,,,,,,,,,A,,
+,A,MARIA HEALTH CARE CENTER,,,,,,,,,,,,,,,,A,,
+,A,MASON COUNTY CENTRAL SCHOOLS,,,,,,,,,,,,,,,,A,,
+,A,MASON COUNTY CENTRAL SCHOOLS,,,,,,,,,,,,,,,,A,,
+,A,MATADOR'S PIZZA & TAKE OUT,,,,,,,,,,,,,,,,A,,
+,A,MDINING- TEST KITCHEN 689175,,,,,,,,,,,,,,,,A,,
+,A,MDINING- TEST KITCHEN 689175,,,,,,,,,,,,,,,,A,,
+,A,Memorial Healthcare - Cafe,,,,,,,,,,,,,,,,A,,
+,A,MICH MED- UNIV HOSPITAL-DOCK 5- 202,,,,,,,,,,,,,,,,A,,
+,A,MICH MED- UNIV HOSPITAL-DOCK 5- 202,,,,,,,,,,,,,,,,A,,
+,A,MICHIGAN STATE POLICE TRAINING DIVI,,,,,,,,,,,,,,,,A,,
+,A,MICHINDOH CONFERENCE CENTER,,,,,,,,,,,,,,,,,,
+,A,Mise En Place Culinary Consulting,,,,,,,,,,,,,,,,,,
+,A,MONROE ST DINER,,,,,,,,,,,,,,,,,,
+,,NEW HUDSON INN 371779E,,,,,,,,,,,,,,,,,,
+,,Northville Public Schools,,,,,,,,,,,,,,,,,,
+,,Plant Based Coney's,,,,,,,,,,,,,,,,,,
+,,RED BARON (THE),,,,,,,,,,,,,,,,,,
+,,RIVERWALK GRILL,,,,,,,,,,,,,,,,,,
+,,SAGINAW CLUB,,,,,,,,,,,,,,,,,,
+,,SPECTRUM JUVENILE JUSTICE SERVICES,,,,,,,,,,,,,,,,,,
+,,ST PETER LUTHERAN SCHOOL ACCOUNT,,,,,,,,,,,,,,,,,,
+,,Telluride Association,,,,,,,,,,,,,,,,,,
+,,The Heartlands,,,,,,,,,,,,,,,,,,
+,,The Laundry,,,,,,,,,,,,,,,,,,
+,,THE PITA POST,,,,,,,,,,,,,,,,,,
+,,THE SAWMILL GOLF CLUB,,,,,,,,,,,,,,,,,,
+,,The Vault Downtown,,,,,,,,,,,,,,,,,,
+,,Treetops - Top Of Hill,,,,,,,,,,,,,,,,,,
+,,Troy Escape,,,,,,,,,,,,,,,,,,
+,A,MDINING- TEST KITCHEN 689175,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,MDINING- TEST KITCHEN 689175,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,ANDERSON FOODS,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Battle Alley Brewing Company,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,BAY CLIFF HEALTH CAMP,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Belva ,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,BENS SUPERCENTER,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Bluebird,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,BOARDWALK (THE),Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Boyne River Inn,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,BSA-COLE CANOE,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,C K O S - Catered Events ,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Cardinal Pizza,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,CDS - Miracle Camp and Retreat Cent,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Chart Room,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Chico's Bar and Grill,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,COMM ACTION - HEAD START,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,COUNTRY VIEW BULK FOODS,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Cut River Grille,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Daybreak Cafe,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,DELTON MEMORIAL VFW #422,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,DETROIT PIZZA FACTORY,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Dockside Torch Lake,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Double Down Desserts,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,DUCK LAKE COUNTRY CLUB 40461E,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Eighteen87,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,EMBASSY BAR & GRILL,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,FEED BAG CAFE (THE),Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,GAYLORD BOWLING CENTER,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,GILLIES CONEY ISLAND/MT MORRIS,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,HACIENDA MEXICAN REST H-1,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,HAMLIN PUB - ROCHESTER HILLS,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,HENRY FORD COLLEGE,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,HENRY'S RESTAURANT- OTTAWA,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,HOG'S BACK FOOD CO-OP\ CAROLYN PERU,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Jayell Smoke House,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,KEYS (THE),Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,LOUHELEN BAHA'I SCHOOL,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,MORRISON LAKE GOLF CLUB,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Mrs. C’s Grilled Cheese,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,POTTERVILLE INN,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,PRINCIPLE BUSINESS ENTERPRISES,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Put In Bay Resort,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,RIVER ROCK BAR & GRILL,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,RIVERFRONT GRILLE,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,RIVERWALK GRILL,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,ROYAL OAK AMERICAN LEGION,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,SAGINAW CLUB,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Shafer's Smoked Meats,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,shawnee country club,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,SMALL BATCH AT THE CUPOLA ROOM,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Smokin' Pigs by Bigs,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,ST PETER LUTHERAN SCHOOL ACCOUNT,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,SUNRISE WAREHOUSE,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,The Cortland Northview,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,The Little Store,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,The Mayfield Tavern,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,The Pepper Mill,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Towneplace Suites Ann Arbor,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Trackside Eatery & Pub,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,TRAILS END PUB,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Troy Escape,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Turnaround Bar And Grille,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Village Place- Greek,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Zachariah's Chocolates,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Zefs Lighthouse Tavern,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,MICHIGAN STATE POLICE TRAINING DIVI,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,SLOW'S TO GO 002,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Treetops - Top Of Hill,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,All Nite Mobile Cafe,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,BRIGHTMOOR CHRISTIAN CHURCH,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,CAMP BLODGETT,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,CAMP CO-BE-AC,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Carmella's Italian Ice,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,LINCOLN LAKE BAPTIST YOUTH CAMP,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,Sparrow Eaton,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,#REF!
+,A,Gordon Food Service,ranch and bakeable,4/4/2025,3/31/2025,Closed,SOLD-7,4/11/2025,75.00%,Kaufholds,Ranch,,Gary,,,,,,,#REF!
+,A,Gordon Food Service,ranch and bakeable,4/4/2025,3/31/2025,Closed,SOLD-7,4/11/2025,75.00%,Kaufholds,Bakeable,,Gary,,,,,,,#REF!
+,A,The New Tubbs Lake Resort,Kaufholds NOVI Show lead,4/18/2025,4/14/2025,Open,Sampled/Visited invite-3,4/11/2025,75.00%,Kaufholds,Original White Cheddar,,Gary,,,,,,,0
+,A,coppolillos,VAF,6/2/2025,6/2/2025,Open,Sampled/Visited invite-3,6/2/2025,75.00%,VAF,Red Romaine,,Gary,,,,,,,
+,NO PRIORITY,Bowling Green Country Club,"kaufholds, BB, swap",5/9/2025,5/5/2025,,,,,,,,Gary,,,,,,,0
+,NO PRIORITY,Jacob's Pub,Kaufholds,5/30/2025,5/26/2025,,Kaufholds,,,,,,Gary,,,,,,,0
+,NO PRIORITY,Owensboro Convention,Swap,5/30/2025,5/26/2025,opem,Swap,,,,,,Gary,,,,,,,0
+,A,Ohio State,,,,,,,,,,,Gary,,,,,,,
+,A+,US Foods-Bensenville,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,A+,US Foods-Wixom,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,#REF!
+,NO PRIORITY,US Foods-Cleveland,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,A+,US Foods-Milwaukee,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,#REF!
+,A+,US Foods-Baraboo,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,A+,US Foods-Fishers,TCCF-HOLIDAY,6/9/2025,6/9/2025,opem,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,
+,A,Ohio State,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,A,GFS,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,NO PRIORITY,RFD,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,A,Ohio State,TCCF-HOLIDAY,6/7/2025,6/2/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,NO PRIORITY,University Club,annasea,,6/16/2025,,,,,Kaufholds,,,Gary,,,,,,,
+,NO PRIORITY,Joes on Jolies,annasea,,6/16/2025,,,,,Kaufholds,,,Gary,,,,,,,
+,NO PRIORITY,Crown plaza,annasea,,6/16/2025,,,,,Kaufholds,,,Gary,,,,,,,
+,NO PRIORITY,HT Hackney,TCCF-HOLIDAY,6/7/2025,6/16/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,NO PRIORITY,HT Hackney,TCCF-HOLIDAY,6/7/2025,6/16/2025,open,Contacted-phone/email-2,7/18/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,The Army and Navy Club,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,The Park at Fourteenth,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,American Culinary Federation,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,American Frozen Food Institute,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,#REF!
+,A,Biscottis,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,#REF!
+,A,blackpearl hospitality,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Driftwood Hospitality Management,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Elior NA,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Mena Catering,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,The Melting Pot,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Troon - Esplanade Golf & Country Club,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,tryst lounge,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,"Aramark Services, Inc",ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,ARCO Design/Build,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,gekko kitchen commissary inc,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Landings Club,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,RaceTrac,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Tandoori Pizza & Wing Co.,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Army MWR,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Bagel Miller,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Eddie Merlots,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Exmoor Country Club,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,"Fireplace Inns, Inc",ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Flavorista,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,R Whittingham Meat Corp,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Ready Set Gourmet,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Sakamoto Restaurant Inc,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,School District U-46,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Scooby Drew's (Soon to Be) World Famous Pickles,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,SNAIL CAVIAR,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,B,The Food Institute,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,The Metropolitan Club,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Compass Community Living,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Purdue Northwest,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,D,Purdue University Northwest,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Tea Plus Poke,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Texas Roadhouse,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,North Coast Seafoods,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Sysco Foods,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,La Chow,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Saval Foodservice,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Beyond Juicery & Eatery,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Coldbreak,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Crowne Plaza Lansing,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,K&K Catering,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Michigan State University,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Morrison Living,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Stark Provisions,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,The Corner Social,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Ts Food LLC,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Mocha Point Coffee Co.,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Compass Group: Morrison Health,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Levy Restaurants,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,los Tres Magueyes,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,UNC Rex Healthcare,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,NEARNG,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,NEARNG,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Marriott Hanover,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Fineline Settings,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Lifeworks,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Rochester Institute of Technology,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Rochester Institute of Technology,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Volcora,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,ARTISAN  PIZZA CAFe,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Audrey's Avenue Kitchen & Bar,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Boscoes,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,CuriosiTea Emporium LLC,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Station Square,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Station Square,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Station Square,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Taste the World in Cincy LLC,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Hal Smith Restaurants,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Hal Smith Restaurants,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Coughlin's Law,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Fleet Landing,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Real Food Restaurants Inc,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Springdale Hall Club,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Chowbus,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Elior North America - Dining and Events,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Embassy Suites San Antonio Riverwalk,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Ka sushi,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Legends / Dallas Cowboys,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Agile Hospitality,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,JOINT EXPEDITIONARY BASE LITTLE CREEK,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Macados,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,MACADO'S INC,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Pig & Sam Restaurant Group,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,AJ's Riverside,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Fox Hollow Golf Course,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Magpies / Fat Cat's / Creekside Jack's,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Moran's Pub,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,,,,,0
+,A,Gibsons,VAF,7/1/2025,6/30/2025,Open,Phone,9/1/2025,70.00%,Kaufholds,,,Colette,,,,,,,
+,A,UPPER CRUST PIZZERIA & PUB,ANNASEA,5/27/2025,5/26/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Annasea,,,Gary,,,Curdtown -Original Curds,,,,0
+,A,Gordon Food Service,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Kaufholds,,,Gary,,,,,,,0
+,A,Gun Lake Casino,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Kaufholds,,,Gary,,,,,,,0
+,NO PRIORITY,Bagger Daves Burger Tavern,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Kaufholds,,,Gary,,,,,,,0
+,A,S. Abraham and Sons,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Kaufholds,,,Gary,,,,,,,0
+,A,HORROCKS,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,90.00%,Kaufholds,,,,,,,,,,0
+,NO PRIORITY,Frankenmuth,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,90.00%,Kaufholds,,,,,,,,,,0
+,A,Bagger Daves,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,75.00%,Kaufholds,,,,,,,,,,0
+,A,One North,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,90.00%,Kaufholds,,,,,,,,,,0
+,B,Main Street Romeo,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,75.00%,Kaufholds,,,,,,,,,,0
+,B,Jayell BBq,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,75.00%,Kaufholds,,,,,,,,,,0
+,A,GFS Saginaw,Kaufholds,7/9/2025,7/7/2025,Open,Sampled/Visited invite-3,9/1/2025,100.00%,Kaufholds,,,,,,,,,,0
+,A,Schulers,Frites Street,7/5/2025,6/30/2025,Open,Sampled/Visited invite-3,10/1/2025,50.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,Ashland U,Frites Street,,6/2/2025,Open,Sampled/Visited invite-3,10/1/2025,50.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,Baldwin Richardson U,Frites Street,,6/2/2025,Open,Sampled/Visited invite-3,10/1/2025,50.00%,Frites Street,,,Gary,,,,,,,0
+,A+,Northern Haserot,Frites Street,,6/2/2025,Open,Sampled/Visited invite-3,10/1/2025,75.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,USF Cleveland,Frites Street,,6/2/2025,Open,Sampled/Visited invite-3,10/1/2025,75.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,USF Wixom,Frites Street,,6/9/2025,Open,Sampled/Visited invite-3,10/1/2025,50.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,USF Fishers,Frites Street,,6/9/2025,Open,Sampled/Visited invite-3,10/1/2025,50.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,Sasha Group,Frites Street,,6/9/2025,Open,Sampled/Visited invite-3,10/1/2025,80.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,MSU,Frites Street,,6/16/2025,Open,Sampled/Visited invite-3,10/1/2025,80.00%,Frites Street,,,Gary,,,,,,,0
+,A,Ohio State,Frites Street,,6/16/2025,Open,Sampled/Visited invite-3,10/1/2025,75.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,Indiana University,Frites Street,,6/16/2025,Open,Sampled/Visited invite-3,10/1/2025,75.00%,Frites Street,,,Gary,,,,,,,0
+,NO PRIORITY,the stray dog,Frites Street,,6/16/2025,Open,Sampled/Visited invite-3,10/1/2025,50.00%,Frites Street,,,Gary,,,,,,,0
+,A+,Brett Anthony Foods,swap,,7/28/2025,Open,demo-cookup-6,11/4/2025,80.00%,SWAP,,,Gary,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,A,Pavlou Restaurant Group,Frites Street,,7/21/2025,Open,Sampled/Visited invite-3,10/1/2025,90.00%,Frites Street,,,Gary,,,,,,,0
+,A,Pappas Restaurant Group,Frites Street,,7/21/2025,Open,Sampled/Visited invite-3,10/1/2025,80.00%,Frites Street,,,Gary,,,,,,,0
+,A,Gordon Foodservice,TCFB,8/20/2025,8/18/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,TCFB,,,Gary,,,,,,,
+,NO PRIORITY,AVI Foodsystems,MCCRUM?MFB?ABDALE,9/24/2025,9/22/2025,Open,Contacted-phone/email-2,,,Mccrum,,,Gary,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,,,,,,,,,,,,,,,,,,,
+,NO PRIORITY,Obicai,Frites Street,,7/21/2025,Open,Sampled/Visited invite-3,12/1/2025,40.00%,Frites Street,,,,,,,,,,0
+,A,Gordon Foodservice,rapid Rasoi EPO,8/20/2025,8/18/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,TCFB,,,Gary,,,,,,,0
+,A,Gordon Foodservice,Rapid Rasoi DC stocking,8/20/2025,8/18/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Rapid Rasoi,,,Gary,,,,,,,0
+,A,Gordon Foodservice,Wonderjuice,8/20/2025,8/18/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Rapid Rasoi,,,Gary,,,,,,,0
+,A,Gordon Foodservice,TCFB,8/20/2025,8/18/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Kayco,,,Gary,,,,,,,0
+,A,Gordon Foodservice,rapid Rasoi EPO,8/18/2025,8/18/2025,Open,Sampled/Visited invite-3,9/1/2025,50.00%,Mccrum,,,Gary,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,#VALUE!
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0
+,,,,,,,,,,,,,,,,,,,,0

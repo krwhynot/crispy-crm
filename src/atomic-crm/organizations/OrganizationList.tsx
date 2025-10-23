@@ -50,7 +50,7 @@ const OrganizationListActions = () => {
   return (
     <TopToolbar>
       <SortButton fields={["name", "created_at", "nb_contacts"]} />
-      <OrganizationImportButton />
+      {/* <OrganizationImportButton /> */}
       <ExportButton />
       <CreateButton label="New Organization" />
     </TopToolbar>
