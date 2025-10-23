@@ -53,7 +53,14 @@ export const ContactListContent = () => {
                   to={`/contacts/${contact.id}/show`}
                   className="font-medium text-sm text-primary hover:underline focus:outline-none block"
                 >
-                  {`${contact.first_name} ${contact.last_name ?? ""}`}
+                  {(() => {
+                    const firstName = contact.first_name?.trim();
+                    const lastName = contact.last_name?.trim();
+                    if (!firstName && !lastName) return "--";
+                    if (!firstName) return lastName;
+                    if (!lastName) return firstName;
+                    return `${firstName} ${lastName}`;
+                  })()}
                   {/* Stretched link overlay: makes entire card clickable */}
                   <span className="absolute inset-0" aria-hidden="true" />
                 </Link>
