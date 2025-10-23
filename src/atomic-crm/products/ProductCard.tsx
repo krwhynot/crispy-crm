@@ -1,8 +1,9 @@
 import { Package, DollarSign, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useCreatePath, useRecordContext } from "ra-core";
+import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,7 @@ import type { Product } from "../types";
 export const ProductCard = (props: { record?: Product }) => {
   const createPath = useCreatePath();
   const record = useRecordContext<Product>(props);
+  const { selectedIds, onToggleItem } = useListContext();
   if (!record) return null;
 
   const statusColors: Record<string, string> = {

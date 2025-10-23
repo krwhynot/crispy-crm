@@ -43,7 +43,14 @@ export const ContactListContent = () => {
               <Checkbox
                 checked={selectedIds.includes(contact.id)}
                 onCheckedChange={() => onToggleItem(contact.id)}
-                aria-label={`Select ${contact.first_name} ${contact.last_name ?? ""}`}
+                aria-label={`Select ${(() => {
+                  const firstName = contact.first_name?.trim();
+                  const lastName = contact.last_name?.trim();
+                  if (!firstName && !lastName) return "contact";
+                  if (!firstName) return lastName;
+                  if (!lastName) return firstName;
+                  return `${firstName} ${lastName}`;
+                })()}`}
                 className="relative z-10 shrink-0"
               />
               <Avatar className="shrink-0" />
