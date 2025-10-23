@@ -67,7 +67,7 @@ const OpportunityShowContent = () => {
     <div className="mt-2">
       {record.deleted_at ? <ArchivedTitle /> : null}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="p-6">
           <OpportunityHeader
             mode="show"
             ArchiveButton={ArchiveButton}

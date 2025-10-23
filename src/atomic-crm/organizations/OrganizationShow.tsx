@@ -58,7 +58,7 @@ const OrganizationShowContent = () => {
     <div className="mt-2 flex pb-2 gap-8">
       <div className="flex-1">
         <Card>
-          <CardContent>
+          <CardContent className="p-6">
             <div className="flex mb-3">
               <OrganizationAvatar />
               <h5 className="text-xl ml-2 flex-1">{record.name}</h5>

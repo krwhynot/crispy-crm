@@ -2,11 +2,14 @@ import { Package, DollarSign, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import { formatDistanceToNow } from "date-fns";
+import type { VariantProps } from "class-variance-authority";
 
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, badgeVariants } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Product } from "../types";
+
+type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export const ProductCard = (props: { record?: Product }) => {
   const createPath = useCreatePath();
