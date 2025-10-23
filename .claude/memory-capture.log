@@ -1670,3 +1670,8 @@
 [2025-10-22 18:01:02] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-migration-data.sh
 [2025-10-22 18:02:32] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/migration-output/SEED_DATA_SETUP_COMPLETE.md
 [2025-10-22 18:11:14] [migration] Write: /home/krwhynot/projects/crispy-crm/data/principal-products-import.sql
+[2025-10-22 18:11:25] [migration] Edit: /home/krwhynot/projects/crispy-crm/data/principal-products-import.sql
+[2025-10-22 18:11:45] [migration] Edit: /home/krwhynot/projects/crispy-crm/data/principal-products-import.sql
+[2025-10-22 18:11:45] [migration] Edit: /home/krwhynot/projects/crispy-crm/data/principal-products-import.sql
+[2025-10-22 18:12:46] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/PRINCIPALS_AND_PRODUCTS_ADDED.md
+[2025-10-22 19:28:42] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Header.tsx
