@@ -10,20 +10,20 @@
 
 Perplexity research identified concrete solutions for all 11 critical gaps. Analysis against Engineering Constitution reveals:
 
-**✅ Recommended (Simple, Scale-Appropriate):**
+**✅ APPROVED FOR IMPLEMENTATION (2025-10-23):**
 - Gap 1: Supabase CLI type generation (automated SINGLE SOURCE OF TRUTH)
 - Gap 2: PostgreSQL triggers for priority inheritance (simple, fail-fast enforcement)
 - Gap 5: Transactional CSV import with fail-fast validation
+- Gap 6: **Automatic contact backfill during migration** (Option A - complete data integrity)
 - Gap 9: Transparent view replacement (no code changes, simple cache invalidation)
+- Gap 10: **Watch products array for auto-generation** (Option A - magical UX, consistent behavior)
 
 **⚠️ Defer to Phase 2 (Over-Engineering for Current Scale):**
 - Gap 7: Optimistic concurrency control (complex for <10 users)
 - Gap 8: Full drag-and-drop implementation (use manual buttons for MVP)
 - Gap 4: Lexorank/fractional indexing (timestamp-based sufficient for MVP)
 
-**❓ Requires Business Decision:**
-- Gap 6: Contact array backfill strategy during migration
-- Gap 10: Product multi-select auto-name generation approach
+**📋 Total Implementation Time:** 10.5 hours
 
 ---
 
@@ -385,59 +385,112 @@ await dataProvider.update("opportunities", {
 
 ---
 
-## GAP 6 & GAP 10: Business Decision Required
+## GAP 6: Contact Array Backfill During Migration ✅ APPROVED
 
-### GAP 6: Contact Array Backfill During Migration
+### Approved Approach: **Option A - Automatic Backfill**
 
-**Two Approaches:**
-
-**Option A - Automatic Backfill:**
+**Implementation Plan:**
 ```typescript
-// Migration script adds interaction contacts to opportunity.contact_ids
-if (contact && !opportunity.contact_ids.includes(contact.id)) {
-  await updateOpportunity({
-    contact_ids: [...opportunity.contact_ids, contact.id]
-  });
+// Migration script: scripts/migrate-opportunities-csv.ts
+async function backfillContactsFromInteractions() {
+  const conn = await supabase.transaction();
+
+  try {
+    // For each opportunity
+    for (const opportunity of opportunities) {
+      // Find all interaction contacts not in opportunity.contact_ids
+      const interactionContacts = await conn.query(`
+        SELECT DISTINCT contact_id
+        FROM activities
+        WHERE opportunity_id = $1
+          AND activity_type = 'interaction'
+          AND contact_id IS NOT NULL
+          AND contact_id NOT IN (SELECT unnest(contact_ids) FROM opportunities WHERE id = $1)
+      `, [opportunity.id]);
+
+      if (interactionContacts.length > 0) {
+        // Automatically add missing contacts
+        await conn.query(`
+          UPDATE opportunities
+          SET contact_ids = array_cat(contact_ids, $1::bigint[])
+          WHERE id = $2
+        `, [interactionContacts.map(r => r.contact_id), opportunity.id]);
+
+        console.log(`✅ Added ${interactionContacts.length} contacts to opportunity ${opportunity.id}`);
+      }
+    }
+
+    await conn.commit();
+  } catch (error) {
+    await conn.rollback();
+    throw error;
+  }
 }
 ```
-- Pro: Complete data integrity after migration
-- Con: May add contacts not originally linked to opportunity
 
-**Option B - Manual Review:**
-```typescript
-// Log mismatches for manual review
-if (contact && !opportunity.contact_ids.includes(contact.id)) {
-  console.log(`REVIEW: Interaction ${interaction.id} links to contact ${contact.id} not in opportunity ${opportunity.id}`);
-}
-```
-- Pro: Business controls which contacts added
-- Con: Requires post-migration cleanup work
+**Rationale:**
+- Complete data integrity after migration (zero manual cleanup)
+- Sales team sees all relevant contacts immediately
+- Follows SINGLE SOURCE OF TRUTH principle (database becomes canonical)
 
-### GAP 10: Product Multi-Select Auto-Name
-
-**Two Approaches:**
-
-**Option A - Watch Products Array:**
-```typescript
-const products = useWatch({ name: "products" });
-// Re-generate name when products change
-// Pro: Consistent auto-generation
-// Con: Complex deep equality checking
-```
-
-**Option B - Manual Refresh Only:**
-```typescript
-// Remove auto-generation for products
-// Always show refresh button
-// Pro: Simple, predictable
-// Con: Less automatic than create mode
-```
+**Trade-offs Accepted:**
+- May add contacts not originally "linked" to opportunity (acceptable - they interacted on the opportunity)
 
 ---
 
-## Multiple Choice Decision Points
+## GAP 10: Product Multi-Select Auto-Name Generation ✅ APPROVED
 
-Need business/technical decisions on 4 open questions (see next section).
+### Approved Approach: **Option A - Watch Products Array (Full Auto-Generation)**
+
+**Implementation Plan:**
+```typescript
+// useAutoGenerateName.ts - Enhanced version
+import { useWatch } from "react-hook-form";
+import { useEffect } from "react";
+
+export function useAutoGenerateName(mode: "create" | "edit") {
+  const customerOrgId = useWatch({ name: "customer_organization_id" });
+  const principalOrgId = useWatch({ name: "principal_organization_id" });
+  const products = useWatch({ name: "products" }); // NEW: Watch products array
+  const { setValue } = useFormContext();
+
+  useEffect(() => {
+    // Auto-generate name when customer, principal, or products change
+    if (customerOrgId && principalOrgId) {
+      const name = generateOpportunityName({
+        customerOrgId,
+        principalOrgId,
+        products: products || [], // Include products in name generation
+      });
+
+      setValue("name", name, { shouldDirty: true });
+    }
+  }, [customerOrgId, principalOrgId, products]); // Deep equality handled by useWatch
+}
+
+function generateOpportunityName({ customerOrgId, principalOrgId, products }) {
+  const customerName = getOrgName(customerOrgId);
+  const principalName = getOrgName(principalOrgId);
+  const productNames = products.map(p => p.name).join(" & ");
+
+  return `${customerName} - ${principalName}${productNames ? ` - ${productNames}` : ""}`;
+}
+```
+
+**Rationale:**
+- Consistent "magical" UX between create and edit modes
+- useWatch handles deep equality checking automatically
+- Users expect name to update when products change (matches create mode behavior)
+
+**Trade-offs Accepted:**
+- 6 hours implementation (vs 1 hour for manual button) - acceptable for better UX
+- May overwrite manual customizations (mitigated by showing refresh button as escape hatch)
+
+---
+
+## Approved Decisions Summary
+
+All business decisions finalized on 2025-10-23. See DECISION-QUESTIONS.md for complete decision rationale.
 
 ---
 
