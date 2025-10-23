@@ -8,17 +8,16 @@ import {
   useMatch,
   useNavigate,
 } from "react-router-dom";
+import type { VariantProps } from "class-variance-authority";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-
-
-import { Badge } from "@/components/ui/badge";
-
-
+import { Badge, badgeVariants } from "@/components/ui/badge";
 
 import type { Product } from "../types";
 import { ProductAside } from "./ProductAside";
+
+type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 const ProductShow = () => (
   <ShowBase>
@@ -45,7 +44,7 @@ const ProductShowContent = () => {
 
   if (isPending || !record) return null;
 
-  const statusColors: Record<string, string> = {
+  const statusColors: Record<string, BadgeVariant> = {
     active: "default",
     discontinued: "destructive",
     coming_soon: "secondary",
@@ -69,7 +68,7 @@ const ProductShowContent = () => {
               <div className="flex gap-2">
                 {record.status && (
                   <Badge
-                    variant={statusColors[record.status] as any}
+                    variant={statusColors[record.status]}
                     className="text-xs"
                   >
                     {record.status}
