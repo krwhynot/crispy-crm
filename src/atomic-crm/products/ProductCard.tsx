@@ -17,7 +17,7 @@ export const ProductCard = (props: { record?: Product }) => {
   const { selectedIds, onToggleItem } = useListContext();
   if (!record) return null;
 
-  const statusColors: Record<string, string> = {
+  const statusColors: Record<string, BadgeVariant> = {
     active: "default",
     discontinued: "destructive",
     coming_soon: "secondary",
@@ -55,7 +55,7 @@ export const ProductCard = (props: { record?: Product }) => {
               <div className="flex gap-1 mt-1 justify-center flex-wrap">
                 {record.status && (
                   <Badge
-                    variant={statusColors[record.status] as any}
+                    variant={statusColors[record.status]}
                     className="text-xs px-1 py-0"
                   >
                     {record.status.replace(/_/g, ' ')}

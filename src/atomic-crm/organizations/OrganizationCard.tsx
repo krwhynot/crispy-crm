@@ -1,14 +1,18 @@
 import { DollarSign, Star, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
+import type { VariantProps } from "class-variance-authority";
+
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, badgeVariants } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import type { Company } from "../types";
 import { OrganizationAvatar } from "./OrganizationAvatar";
+
+type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export const OrganizationCard = (props: { record?: Company }) => {
   const createPath = useCreatePath();
@@ -33,7 +37,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
     unknown: "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]",
   };
 
-  const priorityColors: Record<string, string> = {
+  const priorityColors: Record<string, BadgeVariant> = {
     A: "destructive",
     B: "default",
     C: "secondary",
@@ -83,7 +87,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
                 )}
                 {record.priority && (
                   <Badge
-                    variant={priorityColors[record.priority] as any}
+                    variant={priorityColors[record.priority]}
                     className="text-xs px-1 py-0"
                   >
                     <Star className="w-3 h-3 mr-0.5" />
