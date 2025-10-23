@@ -1,12 +1,11 @@
 import { Package, DollarSign, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
+import { formatDistanceToNow } from "date-fns";
+
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { formatDistanceToNow } from "date-fns";
-import { cn } from "@/lib/utils";
-
 import type { Product } from "../types";
 
 export const ProductCard = (props: { record?: Product }) => {
@@ -22,21 +21,31 @@ export const ProductCard = (props: { record?: Product }) => {
   };
 
   return (
-    <Link
-      to={createPath({
-        resource: "products",
-        id: record.id,
-        type: "show",
-      })}
-      className="no-underline group"
-    >
-      <Card className="h-[200px] flex flex-col justify-between p-4
-                       bg-card border border-border rounded-xl
-                       shadow-sm hover:shadow-md
-                       transition-shadow duration-200
-                       motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01]
-                       hover:border-primary/20">
-        <div className="flex flex-col items-center gap-1">
+    <div className="relative">
+      {/* Checkbox positioned absolutely in top-left corner */}
+      <Checkbox
+        checked={selectedIds.includes(record.id)}
+        onCheckedChange={() => onToggleItem(record.id)}
+        aria-label={`Select ${record.name}`}
+        className="absolute top-2 left-2 z-10"
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      <Link
+        to={createPath({
+          resource: "products",
+          id: record.id,
+          type: "show",
+        })}
+        className="no-underline group"
+      >
+        <Card className="h-[200px] flex flex-col justify-between p-4
+                         bg-card border border-border rounded-xl
+                         shadow-sm hover:shadow-md
+                         transition-shadow duration-200
+                         motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01]
+                         hover:border-primary/20">
+          <div className="flex flex-col items-center gap-1">
           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
             <Package className="w-6 h-6 text-primary" />
           </div>
@@ -80,7 +89,8 @@ export const ProductCard = (props: { record?: Product }) => {
             </div>
           )}
         </div>
-      </Card>
-    </Link>
+        </Card>
+      </Link>
+    </div>
   );
 };
