@@ -84,7 +84,7 @@ export function useOrganizationImport() {
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
-      let skippedCount = 0;
+      const skippedCount = 0;
       const totalProcessed = batch.length;
 
       // Report progress if callback provided
