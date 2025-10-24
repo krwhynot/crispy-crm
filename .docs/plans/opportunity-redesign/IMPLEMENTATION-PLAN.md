@@ -17,12 +17,91 @@ This implementation plan addresses 11 critical gaps identified in the opportunit
 
 ---
 
-## Phase 1: MVP Implementation (12 hours)
+## ⚠️ Pre-Implementation Environment Checklist
 
-**Updated Estimate:** Original 10.5h → 12h after Zen review identified missing details:
-- +10 min: Index creation for view performance (Task 1.3)
+**CRITICAL:** Verify these requirements BEFORE starting Task 1.1. Missing tooling will cause silent failures in pre-commit hooks and type generation.
+
+### Local Development Environment
+
+- [ ] **Supabase CLI installed and accessible**
+  ```bash
+  supabase --version
+  # Expected: >=1.123.0
+  ```
+
+- [ ] **Docker running** (required for local Supabase)
+  ```bash
+  docker --version
+  docker ps
+  # Expected: Docker daemon running
+  ```
+
+- [ ] **Node.js >=18** (required for type generation)
+  ```bash
+  node --version
+  # Expected: v18.x.x or higher
+  ```
+
+- [ ] **Service role key available** (required for CSV migration)
+  ```bash
+  # Add to .env.local:
+  SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...  # From Supabase dashboard
+  ```
+
+- [ ] **Local database running**
+  ```bash
+  npm run db:local:start
+  # Verify: http://127.0.0.1:54321 accessible
+  ```
+
+### CI/CD Environment (if applicable)
+
+- [ ] **Add Supabase CLI to CI workflow**
+  ```yaml
+  # .github/workflows/ci.yml
+  - name: Setup Supabase CLI
+    run: |
+      npm install -g supabase
+      supabase --version
+  ```
+
+- [ ] **Verify type generation in CI**
+  ```yaml
+  - name: Validate type generation
+    run: |
+      npm run gen:types
+      git diff --exit-code src/types/database.generated.ts
+  ```
+
+### Pre-Flight Validation
+
+Run these commands to verify environment is ready:
+
+```bash
+# 1. Verify Supabase tooling
+npm run db:local:start && \
+npm run gen:types && \
+echo "✅ Environment ready for implementation"
+
+# 2. If any command fails, fix before proceeding
+```
+
+**Common Issues:**
+- **"supabase: command not found"** → Install via `npm install -g supabase`
+- **"Cannot connect to Docker"** → Start Docker Desktop
+- **"Permission denied"** on gen:types → Check file permissions on src/types/
+- **Missing SERVICE_ROLE_KEY** → Get from Supabase dashboard → Settings → API
+
+---
+
+## Phase 1: MVP Implementation (14 hours)
+
+**Updated Estimate:** Original 10.5h → 14h after multi-model consensus review:
+- +10 min: security_invoker setup and RLS testing (Task 1.3)
+- +10 min: customer_organization_id index (Task 1.2)
 - +30 min: CSV pre-validation and contact matching (Task 1.8)
-- +1 hour: Buffer for comprehensive error handling implementation
+- +10 min: Service role key validation (Task 1.8)
+- +1-2 hours: Buffer for trigger performance testing and operational safeguards
 
 ### Task 1.1: Fix Type System Mismatch (GAP 1) - 2 hours
 
@@ -94,6 +173,17 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    ```sql
    -- supabase/migrations/[timestamp]_enforce_priority_inheritance.sql
 
+   -- Migration: Enforce priority inheritance from customer organization
+   -- Business Rule: Opportunity priority ALWAYS matches customer org priority
+
+   -- ⭐ CRITICAL: Add index for cascade trigger performance
+   CREATE INDEX IF NOT EXISTS idx_opportunities_customer_org
+   ON opportunities(customer_organization_id)
+   WHERE deleted_at IS NULL;
+
+   COMMENT ON INDEX idx_opportunities_customer_org IS
+     'Optimizes cascade_priority_to_opportunities() trigger for bulk updates when org priority changes';
+
    -- Function to sync opportunity priority with customer org
    CREATE OR REPLACE FUNCTION sync_opportunity_priority()
    RETURNS TRIGGER AS $$
@@ -111,6 +201,9 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    END;
    $$ LANGUAGE plpgsql;
 
+   COMMENT ON FUNCTION sync_opportunity_priority IS
+     'Enforces business rule: opportunity priority inherits from customer organization';
+
    -- Trigger on INSERT/UPDATE of opportunities
    CREATE TRIGGER enforce_priority_inheritance_on_opportunity
      BEFORE INSERT OR UPDATE OF customer_organization_id ON opportunities
@@ -121,6 +214,8 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    CREATE OR REPLACE FUNCTION cascade_priority_to_opportunities()
    RETURNS TRIGGER AS $$
    BEGIN
+     -- Update all opportunities linked to this org
+     -- Index on customer_organization_id ensures this is efficient
      UPDATE opportunities
      SET priority = NEW.priority
      WHERE customer_organization_id = NEW.id;
@@ -128,6 +223,9 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
      RETURN NEW;
    END;
    $$ LANGUAGE plpgsql;
+
+   COMMENT ON FUNCTION cascade_priority_to_opportunities IS
+     'Cascades organization priority changes to all linked opportunities. Uses idx_opportunities_customer_org for performance.';
 
    -- Trigger on UPDATE of organization priority
    CREATE TRIGGER cascade_priority_on_org_update
@@ -785,20 +883,38 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
      return result;
    }
 
-   // Run validation before migration
+   // ⭐ CRITICAL: Run validation on FULL CSV (all 1,062 rows), NOT a sample
+   // This prevents discovering unmapped stages or duplicate contacts mid-migration
+   console.log('🔍 Validating FULL CSV dataset (all 1,062 opportunities)...');
+   console.log('⚠️  This is a DRY RUN - no data will be imported yet\n');
+
    const validation = await validateCSV("data/Opportunity.csv");
+
    if (!validation.valid) {
-     console.error("❌ CSV validation failed:");
+     console.error("\n❌ CSV VALIDATION FAILED - Migration aborted\n");
+     console.error("Errors found:");
      validation.errors.forEach(err => console.error(`  - ${err}`));
+     console.error("\n⚠️  Fix all errors before running migration");
      process.exit(1);
    }
 
    if (validation.warnings.length > 0) {
-     console.warn("⚠️ CSV validation warnings:");
+     console.warn("\n⚠️  CSV VALIDATION WARNINGS:\n");
      validation.warnings.forEach(warn => console.warn(`  - ${warn}`));
+     console.warn("\n📋 REQUIRED ACTION:");
+     console.warn("  1. Generate dry-run report: npm run migrate:csv -- --dry-run > migration-report.txt");
+     console.warn("  2. Share migration-report.txt with stakeholders");
+     console.warn("  3. Resolve ALL duplicate contact names before production import");
+     console.warn("  4. Budget time for manual data cleanup\n");
+
+     // Require confirmation if warnings exist
+     const confirmMessage = 'Continue with migration despite warnings? (yes/no): ';
+     // Implementation left to developer - add readline prompt here
    }
 
-   console.log(`✅ CSV validated: ${validation.stats.totalRows} rows, ${validation.stats.duplicateNames.length} duplicates`);
+   console.log(`\n✅ CSV VALIDATED: ${validation.stats.totalRows} rows`);
+   console.log(`   - Duplicate opportunity names: ${validation.stats.duplicateNames.length}`);
+   console.log(`   - Missing contacts: ${validation.stats.missingContacts.length}\n`);
    ```
 
 4. **Specify contact matching algorithm** (10 min) ⭐ **NEW - Eliminates ambiguity**
@@ -847,7 +963,21 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    import * as csv from "csv-parser";
 
    async function migrateOpportunities() {
-     const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!);
+     // ⭐ CRITICAL: Use SERVICE ROLE key to bypass RLS during migration
+     // Authenticated user key will fail due to RLS policies on bulk operations
+     const supabaseUrl = process.env.SUPABASE_URL;
+     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+     if (!supabaseUrl || !supabaseServiceKey) {
+       throw new Error(
+         '❌ Missing environment variables:\n' +
+         '  - SUPABASE_URL\n' +
+         '  - SUPABASE_SERVICE_ROLE_KEY (NOT the anon key!)\n' +
+         'Set these in .env.local before running migration.'
+       );
+     }
+
+     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
      const csvRows: any[] = [];
 

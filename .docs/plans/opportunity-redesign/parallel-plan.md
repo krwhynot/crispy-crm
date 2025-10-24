@@ -1,9 +1,27 @@
 # Opportunity Redesign - Parallel Implementation Plan
 
 **Plan Date:** 2025-10-23
+**Validated:** 2025-10-23 (3 corrections applied - see validation notes below)
 **Status:** READY FOR IMPLEMENTATION (All Tier 1 gaps resolved)
-**Total Estimated Time:** 12 hours (8 parallel tasks)
+**Total Estimated Time:** 11 hours (8 parallel tasks - Task 1.1 simplified)
 **Implementation Mode:** Parallel execution optimized for multiple agents
+
+---
+
+## ⚠️ VALIDATION CORRECTIONS (2025-10-23)
+
+**3 issues corrected after codebase validation:**
+
+1. **Task 1.1 SIMPLIFIED:** Type generation scripts already exist at `/scripts/mcp-generate-types.cjs` - just need to wire into package.json. Time reduced from 2h → 1h.
+
+2. **Task 1.6 REFERENCE FIX:** OrganizationCard does NOT have dropdown menu. Use `/src/atomic-crm/tasks/Task.tsx` (lines 155-206) as the correct dropdown pattern reference.
+
+3. **Task 1.8 CSV DATA ISSUES (BLOCKER):**
+   - ❌ STAGE column is at position **7** (not 6 as stated in plan)
+   - ❌ Only **~592 valid opportunity rows** exist (not 1,062 - that's total file lines including headers/empty rows)
+   - ❌ Custom stage names need business mapping: "Sampled/Visited invite-3" (533 rows!), "VAF BLITZ" (64), etc.
+   - 🚫 **TASK 1.8 BLOCKED** until stakeholder maps custom stages to database enums
+   - ✅ Tasks 1.1-1.7 can proceed immediately
 
 ---
 
