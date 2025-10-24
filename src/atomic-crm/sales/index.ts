@@ -1,4 +1,5 @@
 import type { Sale } from "../types";
+import { formatName } from "../utils/formatName";
 import { SalesCreate } from "./SalesCreate";
 import { SalesEdit } from "./SalesEdit";
 import { SalesList } from "./SalesList";
@@ -8,5 +9,5 @@ export default {
   create: SalesCreate,
   edit: SalesEdit,
   recordRepresentation: (record: Sale) =>
-    `${record.first_name} ${record.last_name}`,
+    formatName(record.first_name, record.last_name),
 };

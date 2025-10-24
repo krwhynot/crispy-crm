@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { Contact } from "../types";
+import { formatName } from "../utils/formatName";
 
 const ContactList = React.lazy(() => import("./ContactList"));
 const ContactShow = React.lazy(() => import("./ContactShow"));
@@ -12,5 +13,5 @@ export default {
   edit: ContactEdit,
   create: ContactCreate,
   recordRepresentation: (record: Contact) =>
-    record?.first_name + " " + record?.last_name,
+    formatName(record?.first_name, record?.last_name),
 };
