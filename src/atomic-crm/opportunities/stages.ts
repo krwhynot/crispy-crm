@@ -30,14 +30,14 @@ export const getOpportunitiesByStage = (
         {} as Record<Opportunity["stage"], Opportunity[]>,
       ),
     );
-  // order each column by index
+  // Sort each column by created_at DESC (newest first)
   stages.forEach((stage) => {
     if (opportunitiesByStage[stage.value]) {
       opportunitiesByStage[stage.value] = opportunitiesByStage[
         stage.value
       ].sort(
         (recordA: Opportunity, recordB: Opportunity) =>
-          recordA.index - recordB.index,
+          new Date(recordB.created_at).getTime() - new Date(recordA.created_at).getTime(),
       );
     }
   });

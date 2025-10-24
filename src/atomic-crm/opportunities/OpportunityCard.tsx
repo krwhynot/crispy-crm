@@ -2,8 +2,17 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useRedirect } from "ra-core";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { MoreVertical } from "lucide-react";
+import { useRedirect, useUpdate, useNotify, useRefresh } from "ra-core";
 import type { Opportunity } from "../types";
+import { OPPORTUNITY_STAGES, getOpportunityStageLabel } from "./stageConstants";
 
 export const OpportunityCard = ({
   opportunity,
@@ -21,6 +30,10 @@ export const OpportunityCardContent = ({
   opportunity: Opportunity;
 }) => {
   const redirect = useRedirect();
+  const [update] = useUpdate();
+  const notify = useNotify();
+  const refresh = useRefresh();
+
   const handleClick = () => {
     redirect(
       `/opportunities/${opportunity.id}/show`,
@@ -37,6 +50,36 @@ export const OpportunityCardContent = ({
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       handleClick();
+    }
+  };
+
+  const handleMoveToStage = async (
+    event: React.MouseEvent,
+    newStage: string,
+  ) => {
+    event.stopPropagation();
+    try {
+      await update(
+        "opportunities",
+        {
+          id: opportunity.id,
+          data: { stage: newStage },
+          previousData: opportunity,
+        },
+        {
+          onSuccess: () => {
+            notify(`Moved to ${getOpportunityStageLabel(newStage)}`, {
+              type: "success",
+            });
+            refresh();
+          },
+          onError: () => {
+            notify("Error moving opportunity", { type: "error" });
+          },
+        },
+      );
+    } catch (error) {
+      notify("Error moving opportunity", { type: "error" });
     }
   };
 

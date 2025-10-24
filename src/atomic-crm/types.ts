@@ -9,6 +9,7 @@ import type {
 } from "./consts";
 import type { Organization } from "./validation/organizations";
 import type { OpportunityStageValue } from "./opportunities/stageConstants";
+import type { Database } from "@/types/database.generated";
 
 // Type definitions for enhanced CRM features
 export type OrganizationType =
@@ -17,6 +18,9 @@ export type OrganizationType =
   | "principal"
   | "distributor"
   | "unknown";
+
+// Use generated enum as single source of truth for interaction types
+type InteractionType = Database["public"]["Enums"]["interaction_type"];
 
 // Organization priority type (canonical name)
 export type OrganizationPriority = "A" | "B" | "C" | "D";
@@ -125,15 +129,7 @@ export type OpportunityParticipant = {
 export type ActivityRecord = {
   id: Identifier;
   activity_type: "engagement" | "interaction";
-  type:
-    | "call"
-    | "email"
-    | "meeting"
-    | "demo"
-    | "follow_up"
-    | "visit"
-    | "proposal"
-    | "negotiation";
+  type: InteractionType;
   subject: string;
   description?: string;
   activity_date: string;
@@ -205,11 +201,11 @@ export type Opportunity = {
   actual_close_date?: string;
   created_at: string;
   updated_at: string;
+  stage_changed_at?: string;
   deleted_at?: string;
   opportunity_owner_id?: Identifier;
   account_manager_id?: Identifier;
   lead_source?: LeadSource;
-  index: number;
   founding_interaction_id?: Identifier;
   stage_manual: boolean;
   status_manual: boolean;

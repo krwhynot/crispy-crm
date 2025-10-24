@@ -4,7 +4,7 @@ import { useGetOne } from "ra-core";
 
 /**
  * Auto-Generate Name Hook
- * Automatically generates opportunity name from customer + principal + date
+ * Automatically generates opportunity name from customer + principal + products + date
  *
  * @param mode - 'create' for auto-generation, 'edit' for manual regeneration
  * @returns regenerate function and loading state
@@ -15,6 +15,7 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
   // Watch relevant fields
   const customerOrgId = useWatch({ name: "customer_organization_id" });
   const principalOrgId = useWatch({ name: "principal_organization_id" });
+  const products = useWatch({ name: "products" }) || [];
   const currentName = useWatch({ name: "name" });
 
   // Fetch customer organization name
@@ -35,20 +36,36 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
 
   /**
    * Generate name from components
-   * Format: "Customer Name - Principal Name - MMM YYYY"
+   * Format: "Customer Name - Principal Name - Product/Count - MMM YYYY"
    */
   const generateName = useCallback(() => {
-    const parts = [
-      customerOrg?.name,
-      principalOrg?.name,
+    const parts = [];
+
+    if (customerOrg?.name) {
+      parts.push(customerOrg.name);
+    }
+
+    if (principalOrg?.name) {
+      parts.push(principalOrg.name);
+    }
+
+    if (products.length === 0) {
+      parts.push("[No Product]");
+    } else if (products.length === 1) {
+      parts.push(products[0].product_name || "Product");
+    } else {
+      parts.push(`${products.length} products`);
+    }
+
+    parts.push(
       new Date().toLocaleDateString("en-US", {
         month: "short",
         year: "numeric",
-      }),
-    ].filter(Boolean);
+      })
+    );
 
     return parts.join(" - ");
-  }, [customerOrg?.name, principalOrg?.name]);
+  }, [customerOrg?.name, principalOrg?.name, products]);
 
   /**
    * Manual regenerate function for edit mode
