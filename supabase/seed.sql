@@ -64,13 +64,25 @@ INSERT INTO auth.users (
 -- ============================================================================
 -- Organizations Seed Data
 -- ============================================================================
--- Note: This section uses \copy which must be run via psql client.
--- Supabase CLI's db reset doesn't support \copy commands in seed.sql.
---
--- To seed organizations data, run after db reset:
---   npm run db:local:seed-orgs
---
--- Or manually:
---   psql $DB_URL -c "\copy organizations (name, organization_type, parent_organization_id, priority, segment_id, website, phone, email, address, city, state, postal_code, notes, logo_url, linkedin_url, annual_revenue, employee_count, founded_year, tax_identifier, context_links, sales_id, created_by, updated_by, deleted_at, import_session_id) FROM '/home/krwhynot/projects/crispy-crm/data/csv-files/organizations_final.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '')"
---
+
+-- Insert Principal Organizations
+INSERT INTO organizations (name, organization_type, created_by, updated_by) VALUES
+  ('Kaufholds', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Frites Street', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Better Balance', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('VAF', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Ofk', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Annasea', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Wicks', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('RJC', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Kayco', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Abdale', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Mccrum', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Rapid Rasoi', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('SWAP', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Never Better', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('TCFB', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
+  ('Mrs Ressler''s', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+ON CONFLICT (name) DO NOTHING;
+
 -- ============================================================================
