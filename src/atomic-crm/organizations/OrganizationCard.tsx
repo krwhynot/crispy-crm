@@ -6,7 +6,8 @@ import type { VariantProps } from "class-variance-authority";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card } from "@/components/ui/card";
-import { Badge, badgeVariants } from "@/components/ui/badge";
+import type { badgeVariants } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import type { Company } from "../types";

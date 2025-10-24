@@ -5,7 +5,8 @@ import { formatDistanceToNow } from "date-fns";
 import type { VariantProps } from "class-variance-authority";
 
 import { Card } from "@/components/ui/card";
-import { Badge, badgeVariants } from "@/components/ui/badge";
+import type { badgeVariants } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Product } from "../types";
 

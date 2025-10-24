@@ -12,7 +12,8 @@ import type { VariantProps } from "class-variance-authority";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Badge, badgeVariants } from "@/components/ui/badge";
+import type { badgeVariants } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 import type { Product } from "../types";
 import { ProductAside } from "./ProductAside";
