@@ -31,7 +31,7 @@ See [Engineering Constitution](docs/claude/engineering-constitution.md) for comp
 ```bash
 # Local Development
 npm run db:local:start    # Start local Supabase
-npm run db:local:reset    # Reset & seed database
+npm run db:local:reset    # Reset & seed database (runs supabase/seed.sql automatically)
 npm run dev               # Start UI (uses local DB)
 
 # Creating Migrations
@@ -40,6 +40,16 @@ npx supabase migration new <name>  # Create migration file
 # Cloud Deployment
 npm run db:cloud:push     # Deploy migrations to cloud
 ```
+
+### Seed Data - Single Source of Truth
+
+**⚠️ CRITICAL:** There is ONLY ONE seed file: `supabase/seed.sql`
+
+- Runs automatically after migrations during `npm run db:local:reset`
+- Seeds test user (admin@test.com / password123) and 16 principal organizations
+- **DO NOT** create separate seed scripts or commands
+- **DO NOT** use external CSV imports for core seed data
+- Add new seed data directly to `supabase/seed.sql`
 
 **❌ NEVER RUN ON PRODUCTION:**
 ```bash

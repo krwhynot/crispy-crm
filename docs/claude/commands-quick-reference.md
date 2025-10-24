@@ -106,10 +106,8 @@ npm run lint:apply && npm run prettier:apply
 ## Development Scripts
 
 ```bash
-# Seed data
-npm run seed:data              # Insert test data
-npm run seed:data:dry-run      # Preview test data without inserting
-npm run seed:data:clean        # Clean + regenerate test data
+# Database operations
+npm run db:local:reset         # Reset local DB and seed test data (supabase/seed.sql)
 
 # Cache management
 npm run cache:clear            # Clear application caches
