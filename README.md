@@ -93,10 +93,8 @@ The CRM has been enhanced to support more sophisticated sales processes. Key cha
 New development scripts for working with the enhanced schema:
 
 ```sh
-# Generate seed data for development
-npm run seed:data                # Insert test data
-npm run seed:data:dry-run        # Preview without inserting
-npm run seed:data:clean          # Clean and regenerate
+# Database operations
+npm run db:local:reset           # Reset local DB and seed test data
 
 # Database migration tools
 npm run migrate:production        # Execute production migration
@@ -148,8 +146,7 @@ npm run prod:deploy      # Deploy to production (GitHub Pages)
 
 ### Development Utilities
 ```sh
-npm run seed:data             # Insert test data
-npm run seed:data:dry-run     # Preview test data
+npm run db:local:reset        # Reset local DB and seed test data
 npm run cache:clear           # Clear application caches
 npm run search:reindex        # Reindex search data
 npm run migrate:production    # Execute production migration

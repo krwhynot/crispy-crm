@@ -1,9 +1,9 @@
 -- Seed data for development
 -- This file runs automatically after migrations on `supabase db reset`
 --
--- NOTE: This seeds only the test user. To seed the full migration data
--- (segments, organizations, contacts), run the script after reset:
--- ./scripts/seed-migration-data.sh
+-- Seeds:
+-- - Test user (admin@test.com / password123)
+-- - 16 Principal organizations
 
 -- ============================================================================
 -- Create test user (admin@test.com / password123)
