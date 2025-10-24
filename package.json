@@ -39,6 +39,7 @@
     "seed:data:clean": "node ./scripts/seed-data.js --clean",
     "seed:csv": "node ./scripts/seed-from-csv.js",
     "merge:csv": "node ./scripts/merge-org-contact-csv.js",
+    "clean:csv": "node ./scripts/clean-merged-csv.js",
     "seed:products": "node ./scripts/seed-products.js",
     "seed:products:dry-run": "node ./scripts/seed-products.js --dry-run",
     "test:performance": "vitest run tests/performance/",
