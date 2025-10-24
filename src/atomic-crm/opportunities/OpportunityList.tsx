@@ -36,7 +36,7 @@ const OpportunityList = () => {
         "deleted_at@is": null,
       }}
       title={false}
-      sort={{ field: "index", order: "DESC" }}
+      sort={{ field: "created_at", order: "DESC" }}
       filters={opportunityFilters}
       actions={<OpportunityActions />}
       pagination={null}

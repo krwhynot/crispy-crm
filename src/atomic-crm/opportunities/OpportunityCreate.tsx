@@ -2,87 +2,21 @@ import {
   CreateBase,
   Form,
   useGetIdentity,
-  useDataProvider,
-  useNotify,
-  useRedirect,
-  useGetList,
 } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "../layout/FormToolbar";
-import { useQueryClient } from "@tanstack/react-query";
-import type { GetListResult } from "ra-core";
 import { OpportunityInputs } from "./OpportunityInputs";
-import type { Opportunity } from "../types";
 import { opportunitySchema } from "../validation/opportunities";
 
 const OpportunityCreate = () => {
   const { identity } = useGetIdentity();
-  const dataProvider = useDataProvider();
-  const notify = useNotify();
-  const redirect = useRedirect();
-  const queryClient = useQueryClient();
-
-  // Get all opportunities for index management
-  const { data: allOpportunities } = useGetList<Opportunity>("opportunities", {
-    pagination: { page: 1, perPage: 1000 },
-    filter: { "deleted_at@is": null },
-  });
-
-  const onSuccess = async (opportunity: Opportunity) => {
-    // Manage kanban board indexes
-    if (allOpportunities) {
-      // Get opportunities in the same stage
-      const opportunities = allOpportunities.filter(
-        (o: Opportunity) =>
-          o.stage === opportunity.stage && o.id !== opportunity.id,
-      );
-
-      // Update indexes to make room for the new opportunity at index 0
-      await Promise.all(
-        opportunities.map(async (oldOpportunity) =>
-          dataProvider.update("opportunities", {
-            id: oldOpportunity.id,
-            data: { index: oldOpportunity.index + 1 },
-            previousData: oldOpportunity,
-          }),
-        ),
-      );
-
-      // Update cache to reflect index changes
-      const opportunitiesById = opportunities.reduce(
-        (acc, o) => ({
-          ...acc,
-          [o.id]: { ...o, index: o.index + 1 },
-        }),
-        {} as { [key: string]: Opportunity },
-      );
-
-      const now = Date.now();
-      queryClient.setQueriesData<GetListResult | undefined>(
-        { queryKey: ["opportunities", "getList"] },
-        (res) => {
-          if (!res) return res;
-          return {
-            ...res,
-            data: res.data.map(
-              (o: Opportunity) => opportunitiesById[o.id] || o,
-            ),
-          };
-        },
-        { updatedAt: now },
-      );
-    }
-
-    notify("Opportunity created successfully");
-    redirect(`/opportunities/${opportunity.id}/show`);
-  };
 
   // Generate defaults from schema, then merge with identity-specific values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // Use .partial() to make all fields optional during default generation
-  // This extracts only fields with .default() (stage, priority, index, estimated_close_date)
+  // This extracts only fields with .default() (stage, priority, estimated_close_date)
   // Required fields without defaults must be initialized for proper form field behavior:
   // - contact_ids: [] (empty array for AutocompleteArrayInput, validation still requires min 1)
   // - name: user must fill (text input works fine with undefined)
@@ -95,9 +29,7 @@ const OpportunityCreate = () => {
 
   return (
     <CreateBase
-      mutationOptions={{ onSuccess }}
-      redirect={false}
-      mutationMode="pessimistic"
+      redirect="show"
     >
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">

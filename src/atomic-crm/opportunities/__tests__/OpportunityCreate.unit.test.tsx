@@ -85,7 +85,6 @@ describe("OpportunityCreate - Default Values", () => {
       account_manager_id: identityId,
       contact_ids: [],
       products: [],
-      index: 0,
       priority: "medium",
       probability: 50,
       stage: "new_lead",
@@ -102,7 +101,6 @@ describe("OpportunityCreate - Default Values", () => {
     expect(defaults.probability).toBe(50);
     expect(defaults.stage).toBe("new_lead");
     expect(defaults.products).toEqual([]);
-    expect(defaults.index).toBe(0);
 
     // Check date is approximately 90 days from now
     const expectedDate = new Date(defaults.expected_closing_date);
@@ -110,45 +108,6 @@ describe("OpportunityCreate - Default Values", () => {
     const daysDiff = (expectedDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
     expect(daysDiff).toBeGreaterThanOrEqual(89);
     expect(daysDiff).toBeLessThanOrEqual(91);
-  });
-});
-
-describe("OpportunityCreate - Kanban Index Management", () => {
-  it("should calculate correct index updates for opportunities in same stage", () => {
-    const existingOpportunities = [
-      createMockOpportunity({ id: 1, stage: "new_lead", index: 0 }),
-      createMockOpportunity({ id: 2, stage: "new_lead", index: 1 }),
-      createMockOpportunity({ id: 3, stage: "new_lead", index: 2 }),
-      createMockOpportunity({ id: 4, stage: "qualified", index: 0 }),
-    ];
-
-    const newOpportunity = createMockOpportunity({
-      id: 999,
-      stage: "new_lead",
-      index: 0 // New opportunities start at index 0
-    });
-
-    // Filter opportunities in same stage (excluding the new one)
-    const opportunitiesInStage = existingOpportunities.filter(
-      o => o.stage === newOpportunity.stage && o.id !== newOpportunity.id
-    );
-
-    // Calculate index updates (increment each by 1)
-    const indexUpdates = opportunitiesInStage.map(o => ({
-      id: o.id,
-      newIndex: o.index + 1,
-    }));
-
-    expect(indexUpdates).toEqual([
-      { id: 1, newIndex: 1 },
-      { id: 2, newIndex: 2 },
-      { id: 3, newIndex: 3 },
-    ]);
-
-    // Opportunity in different stage should not be updated
-    const differentStageOpp = existingOpportunities.find(o => o.stage === "qualified");
-    const shouldUpdate = differentStageOpp?.stage === newOpportunity.stage;
-    expect(shouldUpdate).toBe(false);
   });
 });
 
