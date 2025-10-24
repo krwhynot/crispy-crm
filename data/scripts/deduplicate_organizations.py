@@ -78,7 +78,8 @@ class OrganizationDeduplicator:
         scored_records.sort(reverse=True)
 
         # Use most complete record as base
-        _, primary_idx, merged = scored_records[0][2].copy()
+        score, primary_idx, primary_record = scored_records[0]
+        merged = primary_record.copy()
         merged_from_indices = [idx for _, idx, _ in scored_records[1:]]
 
         # Fill in missing fields from other records

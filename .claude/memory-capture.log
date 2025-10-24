@@ -1861,3 +1861,5 @@
 [2025-10-24 10:49:41] [code] Write: /home/krwhynot/projects/crispy-crm/data/scripts/clean_organizations.py
 [2025-10-24 10:54:49] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/CLEANING_REPORT.md
 [2025-10-24 11:04:56] [code] Write: /home/krwhynot/projects/crispy-crm/data/scripts/deduplicate_organizations.py
+[2025-10-24 11:05:18] [code] Edit: /home/krwhynot/projects/crispy-crm/data/scripts/deduplicate_organizations.py
+[2025-10-24 11:31:30] [code] Write: /home/krwhynot/projects/crispy-crm/data/scripts/standardize_organization_names.py
