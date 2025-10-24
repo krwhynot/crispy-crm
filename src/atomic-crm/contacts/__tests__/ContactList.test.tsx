@@ -66,6 +66,16 @@ vi.mock("@/components/admin/search-input", () => ({
   ),
 }));
 
+// Mock FilterCategory to always show children (avoid collapsed state in tests)
+vi.mock("@/components/admin/filter-category", () => ({
+  FilterCategory: ({ children, label }: any) => (
+    <div data-testid={`filter-category-${label}`}>
+      <div>{label}</div>
+      {children}
+    </div>
+  ),
+}));
+
 // Import mocked functions after mock definition
 import { useListContext, useGetList } from "ra-core";
 
@@ -256,6 +266,14 @@ describe("ContactListFilter", () => {
     (useGetList as any).mockReturnValue({
       data: mockTags,
       total: mockTags.length,
+      isPending: false,
+    });
+
+    (useListContext as any).mockReturnValue({
+      filterValues: {},
+      setFilters: vi.fn(),
+      data: [],
+      total: 0,
       isPending: false,
     });
   });
