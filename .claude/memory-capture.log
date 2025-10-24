@@ -1793,3 +1793,9 @@
 [2025-10-23 21:03:05] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/OpportunityCreate.unit.test.tsx
 [2025-10-23 21:05:10] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityCard.tsx
 [2025-10-23 21:05:20] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityCard.tsx
+[2025-10-23 21:05:33] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251024020522_add_activities_opportunity_index.sql
+[2025-10-23 21:05:33] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityCard.tsx
+[2025-10-23 21:05:45] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251024020527_add_opportunities_summary_view.sql
+[2025-10-23 21:05:54] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/types.ts
+[2025-10-23 21:06:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderUtils.ts
+[2025-10-23 21:11:12] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/STAGE_MAPPING_GUIDE.md
