@@ -1892,3 +1892,5 @@
 [2025-10-24 13:07:50] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/populate_org_mapping.py
 [2025-10-24 13:09:46] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/CONTACT_DATA_TRANSFORMATION.md
 [2025-10-24 13:16:56] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/seed-contacts-from-cleaned.sh
+[2025-10-24 13:17:17] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/seed-local-complete.sh
+[2025-10-24 14:14:39] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
