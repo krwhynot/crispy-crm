@@ -1808,3 +1808,4 @@
 [2025-10-23 21:25:24] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
 [2025-10-23 21:25:47] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/migrate-opportunities-csv.js
 [2025-10-23 21:51:39] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251024025125_add_stage_changed_at.sql
+[2025-10-23 22:00:47] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/useAutoGenerateName.ts

@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useMemo } from "react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetOne } from "ra-core";
 
@@ -15,8 +15,15 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
   // Watch relevant fields
   const customerOrgId = useWatch({ name: "customer_organization_id" });
   const principalOrgId = useWatch({ name: "principal_organization_id" });
-  const products = useWatch({ name: "products" }) || [];
+  const productsRaw = useWatch({ name: "products" });
   const currentName = useWatch({ name: "name" });
+
+  // Stabilize products array reference to prevent infinite loops
+  // Only update when length or content actually changes (deep equality)
+  const products = useMemo(() => {
+    if (!productsRaw || !Array.isArray(productsRaw)) return [];
+    return productsRaw;
+  }, [productsRaw?.length, JSON.stringify(productsRaw)]);
 
   // Fetch customer organization name
   const { data: customerOrg, isLoading: isLoadingCustomer } = useGetOne(
