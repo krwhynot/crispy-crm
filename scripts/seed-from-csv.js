@@ -23,24 +23,47 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 console.log('🚀 CSV Data Import Starting...\n');
 
 /**
- * Simple CSV parser
+ * Proper CSV parser handling quoted fields
  */
 function parseCSV(content) {
-  const lines = content.split('\n');
+  const lines = [];
+  let currentLine = '';
+  let inQuotes = false;
+
+  // Split by lines, handling quoted newlines
+  for (let i = 0; i < content.length; i++) {
+    const char = content[i];
+
+    if (char === '"') {
+      inQuotes = !inQuotes;
+      currentLine += char;
+    } else if (char === '\n' && !inQuotes) {
+      if (currentLine.trim()) {
+        lines.push(currentLine);
+      }
+      currentLine = '';
+    } else {
+      currentLine += char;
+    }
+  }
+
+  if (currentLine.trim()) {
+    lines.push(currentLine);
+  }
+
   if (lines.length === 0) return [];
 
-  const headers = lines[0].split(',').map(h => h.trim());
+  // Parse header
+  const headers = parseCSVLine(lines[0]);
   const rows = [];
 
+  // Parse data rows
   for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-
-    const values = line.split(',');
+    const values = parseCSVLine(lines[i]);
     const row = {};
 
     headers.forEach((header, index) => {
-      const value = values[index]?.trim() || '';
+      const value = values[index] || '';
       row[header] = value === '' ? null : value;
     });
 
@@ -48,6 +71,41 @@ function parseCSV(content) {
   }
 
   return rows;
+}
+
+/**
+ * Parse a single CSV line handling quotes and commas
+ */
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        // Escaped quote
+        current += '"';
+        i++;
+      } else {
+        // Toggle quote state
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      // End of field
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  // Add last field
+  result.push(current.trim());
+
+  return result;
 }
 
 /**
@@ -62,15 +120,27 @@ async function importOrganizations() {
 
   console.log(`   Found ${rows.length} organizations in CSV`);
 
+  // Valid organization types
+  const validTypes = ['customer', 'distributor', 'principal', 'partner', 'competitor', 'unknown'];
+
   // Prepare organizations for insert
   const organizations = rows
     .filter(row => row.name)
-    .map(row => ({
-      name: row.name,
-      organization_type: row.organization_type || 'unknown',
-      priority: row.priority || null,
-      notes: row.notes || null,
-    }));
+    .map(row => {
+      let orgType = row.organization_type?.toLowerCase() || 'unknown';
+
+      // Map any invalid types to 'unknown'
+      if (!validTypes.includes(orgType)) {
+        orgType = 'unknown';
+      }
+
+      return {
+        name: row.name,
+        organization_type: orgType,
+        priority: row.priority || null,
+        notes: row.notes || null,
+      };
+    });
 
   console.log(`   Preparing to insert ${organizations.length} organizations`);
 
@@ -131,16 +201,30 @@ async function importContacts() {
   // Prepare contacts for insert
   const contacts = rows
     .filter(row => row.organization_name && orgMap.has(row.organization_name))
-    .map(row => ({
-      first_name: row.first_name || null,
-      last_name: row.last_name || row.name || null,
-      title: row.title || null,
-      email: row.email ? [{ type: 'main', value: row.email, primary: true }] : null,
-      phone: row.phone ? [{ type: 'main', value: row.phone, primary: true }] : null,
-      organization_id: orgMap.get(row.organization_name),
-      linkedin_url: row.linkedin_url || null,
-      notes: row.notes || null,
-    }));
+    .map(row => {
+      // Build full name from parts or use existing name field
+      let fullName = row.name;
+      if (!fullName && (row.first_name || row.last_name)) {
+        fullName = [row.first_name, row.last_name].filter(Boolean).join(' ');
+      }
+      if (!fullName) {
+        // Skip contacts without any name
+        return null;
+      }
+
+      return {
+        name: fullName,
+        first_name: row.first_name || null,
+        last_name: row.last_name || null,
+        title: row.title || null,
+        email: row.email ? [{ type: 'main', value: row.email, primary: true }] : null,
+        phone: row.phone ? [{ type: 'main', value: row.phone, primary: true }] : null,
+        organization_id: orgMap.get(row.organization_name),
+        linkedin_url: row.linkedin_url || null,
+        notes: row.notes || null,
+      };
+    })
+    .filter(Boolean); // Remove nulls
 
   console.log(`   Preparing to insert ${contacts.length} contacts`);
   const skipped = rows.length - contacts.length;
