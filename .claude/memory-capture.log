@@ -1812,3 +1812,8 @@
 [2025-10-23 22:00:59] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/types.ts
 [2025-10-23 22:01:20] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/OpportunityList.test.tsx
 [2025-10-23 22:28:26] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/seed-from-csv.js
+[2025-10-23 22:28:33] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-23 22:29:00] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-from-csv.js
+[2025-10-23 22:29:10] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-from-csv.js
+[2025-10-23 22:29:24] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-from-csv.js
+[2025-10-23 23:22:20] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/merge-org-contact-csv.js
