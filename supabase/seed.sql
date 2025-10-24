@@ -62,13 +62,15 @@ INSERT INTO auth.users (
 -- Note: Sales record is auto-created by database trigger when auth.users is inserted
 
 -- ============================================================================
--- Migration Data
+-- Organizations Seed Data
 -- ============================================================================
--- To seed the clean CSV data (30 segments, 2,025 organizations, 1,572 contacts):
+-- Note: This section uses \copy which must be run via psql client.
+-- Supabase CLI's db reset doesn't support \copy commands in seed.sql.
 --
---   ./scripts/seed-migration-data.sh
+-- To seed organizations data, run after db reset:
+--   npm run db:local:seed-orgs
 --
--- This will import:
---   - data/migration-output/segments_import.csv
---   - data/migration-output/organizations_final.csv
---   - data/migration-output/contacts_final.csv
+-- Or manually:
+--   psql $DB_URL -c "\copy organizations (name, organization_type, parent_organization_id, priority, segment_id, website, phone, email, address, city, state, postal_code, notes, logo_url, linkedin_url, annual_revenue, employee_count, founded_year, tax_identifier, context_links, sales_id, created_by, updated_by, deleted_at, import_session_id) FROM '/home/krwhynot/projects/crispy-crm/data/csv-files/organizations_final.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '')"
+--
+-- ============================================================================
