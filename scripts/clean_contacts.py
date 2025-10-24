@@ -348,46 +348,27 @@ def main():
     # Create derived 'name' field
     df["name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
 
-    # 4. Validation and Rejection Logic
-    print("\n✅ Validating records...")
-    rejection_reasons = []
-    for _, row in df.iterrows():
-        reasons = []
-        if not row["first_name"] and not row["last_name"]:
-            reasons.append("Missing Name")
-        if pd.isna(row["email_clean"]) and pd.isna(row["phone_clean"]):
-            reasons.append("Missing Contact Info (Email/Phone)")
-
-        rejection_reasons.append(", ".join(reasons))
-
-    df["rejection_reason"] = rejection_reasons
-
-    # Override cleaned columns with their clean versions
+    # 4. Override cleaned columns with their clean versions
     df['email'] = df['email_clean']
     df['phone'] = df['phone_clean']
     df['state'] = df['state_clean']
 
-    # 5. Split DataFrames
-    is_rejected = df["rejection_reason"] != ""
-    cleaned_df = df[~is_rejected][TARGET_SCHEMA]
+    # 5. All records are kept - no rejection
+    cleaned_df = df[TARGET_SCHEMA]
 
-    rejected_df = original_df[is_rejected].copy()
-    rejected_df["rejection_reason"] = df[is_rejected]["rejection_reason"]
+    rejected_df = pd.DataFrame()  # Empty dataframe - no rejections
 
     # 6. Update Stats
     stats["cleaned_rows"] = len(cleaned_df)
-    stats["rejected_rows"] = len(rejected_df)
-    reason_counts = rejected_df["rejection_reason"].value_counts().to_dict()
-    stats["rejection_reasons"] = reason_counts
+    stats["rejected_rows"] = 0
+    stats["rejection_reasons"] = {}
 
     # 7. Save Output Files
     print("\n💾 Saving results...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     cleaned_df.to_csv(CLEANED_FILE_PATH, index=False)
-    rejected_df.to_csv(REJECTED_FILE_PATH, index=False)
 
-    print(f"   ✓ Cleaned data saved to '{CLEANED_FILE_PATH}'")
-    print(f"   ✓ Rejected data saved to '{REJECTED_FILE_PATH}'")
+    print(f"   ✓ All cleaned data saved to '{CLEANED_FILE_PATH}'")
 
     # 8. Generate Report
     execution_time = time.time() - start_time
