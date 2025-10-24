@@ -163,7 +163,7 @@ const ContactsIterator = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-medium">
-                  {`${contact.first_name} ${contact.last_name}`}
+                  {formatName(contact.first_name, contact.last_name)}
                 </div>
                 <div className="text-sm text-[color:var(--text-subtle)]">
                   {contact.title}

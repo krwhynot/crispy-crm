@@ -11,6 +11,7 @@ import { useFormState } from "react-hook-form";
 import ImageEditorField from "../misc/ImageEditorField";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import type { Company, Sale } from "../types";
+import { formatName } from "../utils/formatName";
 
 // URL validation removed - handled at API boundary
 // Helper text provides format guidance instead
@@ -207,4 +208,4 @@ const OrganizationDisplayInputs = () => {
 };
 
 const saleOptionRenderer = (choice: Sale) =>
-  `${choice.first_name} ${choice.last_name}`;
+  formatName(choice.first_name, choice.last_name);

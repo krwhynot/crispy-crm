@@ -21,6 +21,7 @@ import OrganizationImportPreview, {
   type DuplicateGroup,
 } from "./OrganizationImportPreview";
 import { supabase } from "../providers/supabase/supabase";
+import { formatName } from "../utils/formatName";
 
 type OrganizationImportDialogProps = {
   open: boolean;
@@ -192,7 +193,7 @@ export function OrganizationImportDialog({
       const existingNames = new Set<string>();
 
       (existing || []).forEach(sale => {
-        const fullName = `${sale.first_name}${sale.last_name ? ' ' + sale.last_name : ''}`;
+        const fullName = formatName(sale.first_name, sale.last_name);
         const normalizedName = fullName.toLowerCase();
         salesLookupCache.current.set(normalizedName, sale.id);
         existingNames.add(normalizedName);
@@ -240,7 +241,7 @@ export function OrganizationImportDialog({
 
       // 5. Populate cache with newly created managers
       (inserted || []).forEach(sale => {
-        const fullName = `${sale.first_name}${sale.last_name ? ' ' + sale.last_name : ''}`;
+        const fullName = formatName(sale.first_name, sale.last_name);
         salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
       });
 
