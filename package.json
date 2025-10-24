@@ -46,6 +46,7 @@
     "db:local:start": "npx supabase start",
     "db:local:stop": "npx supabase stop",
     "db:local:reset": "npx supabase db reset",
+    "db:local:seed-orgs": "./scripts/db/seed-organizations.sh",
     "db:local:status": "npx supabase status",
     "supabase:deploy": "npx supabase db push && npx supabase functions deploy",
     "db:cloud:push": "./scripts/db/safe-cloud-push.sh",
