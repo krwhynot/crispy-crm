@@ -31,7 +31,7 @@ CLEANED_FILE_PATH = os.path.join(OUTPUT_DIR, "contacts_cleaned.csv")
 REJECTED_FILE_PATH = os.path.join(OUTPUT_DIR, "contacts_rejected.csv")
 
 # Data Loading
-ROWS_TO_SKIP = 8  # Skips the first 8 rows of instructions
+ROWS_TO_SKIP = 3  # Skip instruction rows, use row 4 as header
 
 # Column Mapping: Maps source column names to target schema names
 COLUMN_MAPPING = {
@@ -249,7 +249,44 @@ def main():
 
     # 1. Load Data
     print(f"📂 Loading data from: {INPUT_FILE_PATH}")
-    df = pd.read_csv(INPUT_FILE_PATH, skiprows=ROWS_TO_SKIP)
+    # Try different encodings to handle special characters
+    encodings_to_try = ['utf-8', 'latin-1', 'iso-8859-1', 'cp1252']
+    df = None
+
+    # The CSV has a multi-line header that spans rows 4-8
+    # We'll skip to row 9 and manually assign column names
+    manual_columns = [
+        "PRIORITY (Formula)",
+        "FULL NAME (FIRST, LAST)",
+        "Organizations (DropDown)",
+        "POSITION (DropDown)",
+        "EMAIL",
+        "PHONE",
+        "ACCT. MANAGER (DropDown)",
+        "LINKEDIN",
+        "STREET ADDRESS",
+        "CITY",
+        "STATE (DropDown)",
+        "ZIP",
+        "NOTES",
+        "Filtered Contacts",
+        "Unnamed_14",
+        "Unnamed_15",
+        "Unnamed_16"
+    ]
+
+    for encoding in encodings_to_try:
+        try:
+            # Skip the first 8 rows (instructions + multi-line header)
+            df = pd.read_csv(INPUT_FILE_PATH, skiprows=8, encoding=encoding, header=None, names=manual_columns)
+            print(f"   Successfully loaded with {encoding} encoding")
+            break
+        except UnicodeDecodeError:
+            continue
+
+    if df is None:
+        print("❌ Error: Could not read CSV with any supported encoding")
+        return
 
     # Initialize stats
     stats = {
