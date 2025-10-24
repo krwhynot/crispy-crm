@@ -13,6 +13,7 @@ import {
 import type { SubmitHandler } from "react-hook-form";
 import { SalesService } from "../services";
 import type { Sale, SalesFormData } from "../types";
+import { formatName } from "../utils/formatName";
 import { SalesInputs } from "./SalesInputs";
 
 function EditToolbar() {
@@ -78,7 +79,7 @@ const SaleEditTitle = () => {
   if (!record) return null;
   return (
     <h2 className="text-lg font-semibold mb-4">
-      Edit {record?.first_name} {record?.last_name}
+      Edit {formatName(record?.first_name, record?.last_name)}
     </h2>
   );
 };

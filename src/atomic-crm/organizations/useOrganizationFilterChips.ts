@@ -1,5 +1,6 @@
 import { useListContext } from "ra-core";
 import { useGetList } from "ra-core";
+import { formatName } from "../utils/formatName";
 
 interface FilterChip {
   key: string;
@@ -60,7 +61,7 @@ export const useOrganizationFilterChips = () => {
 
   const getSalesName = (salesId: string): string => {
     const sales = salesData?.[0];
-    return sales ? `${sales.first_name} ${sales.last_name}` : "Unknown";
+    return sales ? formatName(sales.first_name, sales.last_name) : "Unknown";
   };
 
   // Build filter chips array

@@ -1,5 +1,6 @@
 import { useGetIdentity, useRecordContext } from "ra-core";
 import type { Sale } from "../types";
+import { formatName } from "../utils/formatName";
 
 export const SaleName = ({ sale }: { sale?: Sale }) => {
   const { identity, isPending } = useGetIdentity();
@@ -8,5 +9,5 @@ export const SaleName = ({ sale }: { sale?: Sale }) => {
   if (isPending || !finalSale) return null;
   return finalSale.id === identity?.id
     ? "You"
-    : `${finalSale.first_name} ${finalSale.last_name}`;
+    : formatName(finalSale.first_name, finalSale.last_name);
 };

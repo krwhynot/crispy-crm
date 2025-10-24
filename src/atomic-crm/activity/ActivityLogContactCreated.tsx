@@ -5,6 +5,7 @@ import { Avatar } from "../contacts/Avatar";
 import { RelativeDate } from "../misc/RelativeDate";
 import { SaleName } from "../sales/SaleName";
 import type { ActivityContactCreated } from "../types";
+import { formatName } from "../utils/formatName";
 import { useActivityLogContext } from "./ActivityLogContext";
 
 type ActivityLogContactCreatedProps = {
@@ -26,7 +27,7 @@ export function ActivityLogContactCreated({
           </ReferenceField>
           {" "}added{" "}
           <Link to={`/contacts/${contact.id}/show`}>
-            {contact.first_name} {contact.last_name}
+            {formatName(contact.first_name, contact.last_name)}
           </Link>
           {" "}
           {context !== "company" && <>to organization {activity.customer_organization_id}</>}
