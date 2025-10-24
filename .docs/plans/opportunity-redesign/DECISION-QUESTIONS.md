@@ -409,11 +409,13 @@ Phase 2 (4 weeks):   Add drag-and-drop for desktop users (mobile keeps buttons)
 | Question | **APPROVED OPTION** | Implementation | Defer to Phase |
 |----------|---------------------|----------------|----------------|
 | **Q1: CSV Backfill** | **✅ Option A - Automatic Backfill** | 2 hours | - |
-| **Q2: Product Auto-Name** | **✅ Option A - Watch Products Array** | 6 hours | - |
+| **Q2: Product Auto-Name** | **✅ Option A - Watch Products Array** | 1.5 hours | - |
 | **Q3: View Cache** | **✅ Option A - Transparent View** | 30 min | - |
 | **Q4: Ordering** | **✅ Option A - Timestamp + Manual Buttons** | 2 hours | Drag-and-drop (Phase 2) |
 
-**Total MVP Implementation Time with Approved Options:** 10.5 hours
+**Total MVP Implementation Time with Approved Options:** 11 hours
+
+**Note:** Original Q2 estimate was 6 hours for complex implementation. Final IMPLEMENTATION-PLAN.md Task 1.7 shows 1.5 hours using standard React Hook Form patterns.
 
 **Deferred to Phase 2 (Based on User Feedback):**
 - Drag-and-drop Kanban (if manual buttons prove insufficient)
