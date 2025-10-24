@@ -106,23 +106,26 @@ function parseCSVLine(line) {
 }
 
 /**
- * IMPROVED CSV escaping - handles already-quoted values properly
+ * IMPROVED CSV escaping - preserves JSONB data integrity
  */
 function escapeCSV(value) {
   if (value === null || value === undefined || value === '') {
     return '';
   }
 
-  let str = String(value).trim();
+  const str = String(value);
 
-  // Remove outer quotes if already quoted (prevent double-quoting)
-  if (str.startsWith('"') && str.endsWith('"')) {
-    str = str.slice(1, -1);
-    // Un-escape inner quotes
-    str = str.replace(/""/g, '"');
+  // Check if this looks like JSONB data (starts with [{" or [{"type":)
+  const looksLikeJSONB = str.startsWith('[{');
+
+  // For JSONB data, wrap the entire thing in quotes and escape internal quotes
+  if (looksLikeJSONB) {
+    // Escape all quotes by doubling them, then wrap in quotes
+    const escaped = str.replace(/"/g, '""');
+    return `"${escaped}"`;
   }
 
-  // Now properly escape and quote if needed
+  // For normal text, check if quoting is needed
   const needsQuoting = str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r');
 
   if (needsQuoting) {
@@ -131,7 +134,7 @@ function escapeCSV(value) {
     return `"${escaped}"`;
   }
 
-  return str;
+  return str.trim();
 }
 
 /**
