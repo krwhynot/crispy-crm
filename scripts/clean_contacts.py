@@ -1,33 +1,5 @@
-<GENERATED-CODE>
-Here is the complete solution.
-
-1.  First, create a `requirements.txt` file to specify the project dependencies. This ensures a consistent environment.
-
-2.  Next, create the main script, `contact_cleaner.py`. This file contains all the logic for loading, cleaning, validating, and saving the contact data.
-
-3.  Finally, set up your project directory as follows and run the script from your terminal:
-
-    ```bash
-    .
-    ├── data/
-    │   └── contacts.csv        # Your raw input file
-    ├── contact_cleaner.py      # The script below
-    └── requirements.txt        # The requirements file below
-
-    # Installation and Execution
-    pip install -r requirements.txt
-    python contact_cleaner.py
-    ```
-    After running, a `cleaned` folder will be created with the output files.
-
-<NEWFILE: requirements.txt>
-pandas
-phonenumbers
-</NEWFILE>
-
-<NEWFILE: contact_cleaner.py>
 """
-Comprehensive cleaning script for a messy contacts CSV file.
+Comprehensive cleaning script for contacts CSV file.
 
 This script performs the following actions:
 1.  Loads a CSV file, skipping initial instructional rows.
@@ -43,19 +15,20 @@ This script performs the following actions:
 import os
 import re
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
-import numpy as np
 import pandas as pd
 import phonenumbers
 
 # --- Configuration ---
 
-# File Paths
-INPUT_FILE_PATH = "data/contacts.csv"
-OUTPUT_DIR = "cleaned"
-CLEANED_FILE_PATH = os.path.join(OUTPUT_DIR, "cleaned_contacts.csv")
-REJECTED_FILE_PATH = os.path.join(OUTPUT_DIR, "rejected_contacts.csv")
+# File Paths (relative to project root)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+INPUT_FILE_PATH = os.path.join(PROJECT_ROOT, "data/csv-files/contacts.csv")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "data/csv-files/cleaned")
+CLEANED_FILE_PATH = os.path.join(OUTPUT_DIR, "contacts_cleaned.csv")
+REJECTED_FILE_PATH = os.path.join(OUTPUT_DIR, "contacts_rejected.csv")
 
 # Data Loading
 ROWS_TO_SKIP = 8  # Skips the first 8 rows of instructions
@@ -101,11 +74,13 @@ TITLES_TO_EXTRACT = [
     "ceo", "chief executive officer", "cto", "chief technology officer",
     "cfo", "chief financial officer", "coo", "chief operating officer",
     "vp", "vice president", "owner", "partner", "manager", "director",
-    "president", "founder", "chef de cuisine", "chef", "consultant"
+    "president", "founder", "chef de cuisine", "chef", "consultant",
+    "exec chef", "executive chef", "pastry chef", "distributor rep",
+    "gm", "general manager"
 ]
 
 # Placeholder domains to identify invalid emails
-PLACEHOLDER_EMAIL_DOMAINS = ["example.com", "test.com", "invalid.com"]
+PLACEHOLDER_EMAIL_DOMAINS = ["example.com", "test.com", "invalid.com", "noemail.com"]
 
 # US State mapping for standardization
 STATE_MAPPING = {
@@ -156,7 +131,7 @@ def parse_name_and_title(name_str: str) -> Tuple[str, str, str]:
 
     # 2. Parse the remaining name string
     name_str = re.sub(r'\s{2,}', ' ', name_str).strip(', ') # Clean up extra spaces/commas
-    
+
     if "," in name_str:
         # Assumes "Last, First" format
         parts = [p.strip() for p in name_str.split(",", 1)]
@@ -222,15 +197,15 @@ def standardize_state(state_str: str) -> Optional[str]:
     state_str = safe_string(state_str).lower()
     if not state_str:
         return None
-    
+
     # Direct match
     if state_str in STATE_MAPPING:
         return STATE_MAPPING[state_str]
-    
+
     # Check if it's already an abbreviation
     if len(state_str) == 2 and state_str.upper() in STATE_MAPPING.values():
         return state_str.upper()
-        
+
     return None
 
 
@@ -238,39 +213,44 @@ def generate_report(
     stats: Dict, execution_time: float
 ) -> None:
     """Prints a detailed report of the cleaning process."""
-    print("\n--- Data Cleaning Report ---")
+    print("\n" + "="*60)
+    print(" DATA CLEANING REPORT")
+    print("="*60)
     print(f"Completed in {execution_time:.2f} seconds.")
-    print("-" * 28)
-    print(f"Total rows processed: {stats['total_rows']}")
-    print(f"Rows cleaned and saved: {stats['cleaned_rows']}")
-    print(f"Rows rejected: {stats['rejected_rows']}")
-    print("-" * 28)
+    print("-" * 60)
+    print(f"Total rows processed: {stats['total_rows']:,}")
+    print(f"Rows cleaned and saved: {stats['cleaned_rows']:,}")
+    print(f"Rows rejected: {stats['rejected_rows']:,}")
+    print("-" * 60)
     print("Cleaning Actions Summary:")
-    print(f"  - Names parsed: {stats['names_parsed']}")
-    print(f"  - Phone numbers standardized: {stats['phones_standardized']}")
-    print(f"  - Emails validated: {stats['emails_validated']}")
-    print(f"  - States standardized: {stats['states_standardized']}")
-    print("-" * 28)
+    print(f"  - Names parsed: {stats['names_parsed']:,}")
+    print(f"  - Phone numbers standardized: {stats['phones_standardized']:,}")
+    print(f"  - Emails validated: {stats['emails_validated']:,}")
+    print(f"  - States standardized: {stats['states_standardized']:,}")
+    print("-" * 60)
     print("Rejection Reasons Breakdown:")
     if not stats['rejection_reasons']:
         print("  - No rows were rejected.")
     else:
         for reason, count in stats['rejection_reasons'].items():
-            print(f"  - {reason}: {count}")
-    print("\n--- End of Report ---\n")
+            print(f"  - {reason}: {count:,}")
+    print("="*60 + "\n")
 
 
 def main():
     """Main function to orchestrate the data cleaning pipeline."""
     start_time = time.time()
-    
+
+    print("\n🧹 Starting contact data cleaning process...\n")
+
     if not os.path.exists(INPUT_FILE_PATH):
-        print(f"Error: Input file not found at '{INPUT_FILE_PATH}'")
+        print(f"❌ Error: Input file not found at '{INPUT_FILE_PATH}'")
         return
 
     # 1. Load Data
+    print(f"📂 Loading data from: {INPUT_FILE_PATH}")
     df = pd.read_csv(INPUT_FILE_PATH, skiprows=ROWS_TO_SKIP)
-    
+
     # Initialize stats
     stats = {
         "total_rows": len(df),
@@ -282,39 +262,48 @@ def main():
         "states_standardized": 0,
         "rejection_reasons": {}
     }
-    
+
+    print(f"   Found {stats['total_rows']:,} rows to process")
+
     # Keep original data for rejected file
     original_df = df.copy()
 
     # 2. Rename and Select Columns
+    print("\n🔄 Mapping columns to target schema...")
     df = df.rename(columns=COLUMN_MAPPING)
     required_cols = list(COLUMN_MAPPING.values())
     df = df[required_cols]
 
     # 3. Clean and Transform Data
-    
+    print("🧼 Cleaning and transforming data...")
+
     # Name and Title Parsing
+    print("   - Parsing names and extracting titles...")
     parsed_names = df["full_name_raw"].apply(parse_name_and_title)
     df[["first_name", "last_name", "extracted_title"]] = pd.DataFrame(
         parsed_names.tolist(), index=df.index
     )
-    stats['names_parsed'] = (df['first_name'] != '').sum()
+    stats['names_parsed'] = ((df['first_name'] != '') | (df['last_name'] != '')).sum()
 
     # Combine titles
     df["title"] = df["title_raw"].combine_first(df["extracted_title"])
     df["title"] = df["title"].apply(safe_string).str.title()
 
     # Standardize other fields
+    print("   - Standardizing phone numbers to E.164 format...")
     df["phone_clean"] = df["phone"].apply(standardize_phone)
     stats['phones_standardized'] = df["phone_clean"].notna().sum()
-    
+
+    print("   - Validating and cleaning email addresses...")
     df["email_clean"] = df["email"].apply(validate_and_clean_email)
     stats['emails_validated'] = df["email_clean"].notna().sum()
 
+    print("   - Standardizing state codes...")
     df["state_clean"] = df["state"].apply(standardize_state)
     stats['states_standardized'] = df["state_clean"].notna().sum()
-    
+
     # Generic cleaning for other text fields
+    print("   - Cleaning text fields...")
     for col in ["organization_name", "account_manager", "address", "city", "notes", "linkedin_url"]:
         if col in df.columns:
             df[col] = df[col].apply(safe_string)
@@ -323,18 +312,19 @@ def main():
     df["name"] = (df["first_name"] + " " + df["last_name"]).str.strip()
 
     # 4. Validation and Rejection Logic
+    print("\n✅ Validating records...")
     rejection_reasons = []
     for _, row in df.iterrows():
         reasons = []
-        if not row["first_name"] or not row["last_name"]:
+        if not row["first_name"] and not row["last_name"]:
             reasons.append("Missing Name")
         if pd.isna(row["email_clean"]) and pd.isna(row["phone_clean"]):
             reasons.append("Missing Contact Info (Email/Phone)")
-        
+
         rejection_reasons.append(", ".join(reasons))
 
     df["rejection_reason"] = rejection_reasons
-    
+
     # Override cleaned columns with their clean versions
     df['email'] = df['email_clean']
     df['phone'] = df['phone_clean']
@@ -343,7 +333,7 @@ def main():
     # 5. Split DataFrames
     is_rejected = df["rejection_reason"] != ""
     cleaned_df = df[~is_rejected][TARGET_SCHEMA]
-    
+
     rejected_df = original_df[is_rejected].copy()
     rejected_df["rejection_reason"] = df[is_rejected]["rejection_reason"]
 
@@ -354,12 +344,13 @@ def main():
     stats["rejection_reasons"] = reason_counts
 
     # 7. Save Output Files
+    print("\n💾 Saving results...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     cleaned_df.to_csv(CLEANED_FILE_PATH, index=False)
     rejected_df.to_csv(REJECTED_FILE_PATH, index=False)
-    
-    print(f"✓ Cleaned data saved to '{CLEANED_FILE_PATH}'")
-    print(f"✓ Rejected data saved to '{REJECTED_FILE_PATH}'")
+
+    print(f"   ✓ Cleaned data saved to '{CLEANED_FILE_PATH}'")
+    print(f"   ✓ Rejected data saved to '{REJECTED_FILE_PATH}'")
 
     # 8. Generate Report
     execution_time = time.time() - start_time
@@ -368,5 +359,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-</NEWFILE>
-</GENERATED-CODE>
