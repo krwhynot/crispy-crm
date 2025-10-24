@@ -94,7 +94,7 @@ These tasks fix critical blockers and establish infrastructure. Tasks 1.1, 1.2, 
 #### Task 1.1: Fix Type System Mismatch [GAP 1] **Depends on: [none]**
 
 **Priority:** 🔴 CRITICAL BLOCKER
-**Time Estimate:** 2 hours
+**Time Estimate:** 1 hour ⚠️ REDUCED (scripts already exist)
 **Engineering Constitution:** SINGLE SOURCE OF TRUTH, BOY SCOUT RULE
 
 **READ THESE BEFORE TASK:**
@@ -103,48 +103,47 @@ These tasks fix critical blockers and establish infrastructure. Tasks 1.1, 1.2, 
 - `/home/krwhynot/projects/crispy-crm/.docs/plans/opportunity-redesign/SOLUTIONS-ANALYSIS.md` (lines 30-73)
 
 **Files to Create:**
-- None (use existing infrastructure)
+- None (infrastructure already exists!)
 
 **Files to Modify:**
-- `package.json` - Add gen:types script
-- `src/atomic-crm/types.ts` - Update ActivityRecord type
-- `.husky/pre-commit` - Add type regeneration trigger
-- `src/types/database.generated.ts` - Regenerate from schema
+- `package.json` - Wire existing scripts into npm commands
+- `src/atomic-crm/types.ts` - Update ActivityRecord to use generated types
+- `.husky/pre-commit` - Already runs `npm test`, just ensure it catches type errors
 
 **Instructions:**
 
 **Context:** The ActivityRecord type in types.ts has only 8 interaction types, but the database enum defines 11 types (missing trade_show, site_visit, contract_review, check_in, social). This violates SINGLE SOURCE OF TRUTH - the database is canonical, TypeScript must match.
 
-**Solution:** Use Supabase CLI's built-in type generation to auto-sync TypeScript with database schema. This eliminates manual maintenance and drift.
+**⚠️ VALIDATION UPDATE:** Type generation scripts ALREADY EXIST at `/scripts/mcp-generate-types.cjs` and `database.generated.ts` already has 2,228 lines. We just need to wire them up properly.
+
+**Solution:** Use existing type generation infrastructure, update ActivityRecord to import from generated types instead of manual type union.
 
 **Implementation Steps:**
 
-1. **Add Type Generation Script to package.json** (10 min)
+1. **Add npm scripts to package.json** (5 min)
    ```json
    {
      "scripts": {
-       "gen:types": "npx supabase gen types typescript --local > src/types/database.generated.ts",
-       "gen:types:cloud": "npx supabase gen types typescript --linked > src/types/database.generated.ts"
+       "gen:types": "node ./scripts/mcp-generate-types.cjs",
+       "gen:types:force": "node ./scripts/mcp-generate-types.cjs --force"
      }
    }
    ```
 
-2. **Generate Types from Local Database** (5 min)
+2. **Verify Existing Generated Types** (3 min)
    ```bash
-   # Start local Supabase if not running
-   npm run db:local:start
-
-   # Generate types
-   npm run gen:types
+   # Check that types are already generated
+   cat src/types/database.generated.ts | grep -A 12 "interaction_type"
+   # Should show all 11 types already defined
    ```
 
-3. **Update ActivityRecord Type** (45 min)
+3. **Update ActivityRecord Type** (30 min)
 
    Open `src/atomic-crm/types.ts` and replace the hardcoded interaction type union (lines 128-136) with the generated enum:
 
    ```typescript
    // src/atomic-crm/types.ts
-   import type { Database } from '../types/database.generated';
+   import type { Database } from '@/types/database.generated';
 
    // Use generated enum as single source of truth
    type InteractionType = Database['public']['Enums']['interaction_type'];
@@ -158,26 +157,7 @@ These tasks fix critical blockers and establish infrastructure. Tasks 1.1, 1.2, 
    } & Pick<RaRecord, "id">;
    ```
 
-4. **Add Pre-Commit Hook for Auto-Regeneration** (30 min)
-
-   Modify `.husky/pre-commit` to regenerate types when migrations change:
-
-   ```bash
-   #!/usr/bin/env sh
-   . "$(dirname -- "$0")/_/husky.sh"
-
-   # Regenerate types if migrations changed
-   if git diff --cached --name-only | grep -q "supabase/migrations"; then
-     echo "🔄 Migrations changed, regenerating types..."
-     npm run gen:types
-     git add src/types/database.generated.ts
-     echo "✅ Types regenerated and staged"
-   fi
-
-   npm test
-   ```
-
-5. **Verify Type Sync** (10 min)
+4. **Verify Type Sync** (10 min)
    ```bash
    # Check that all 11 interaction types are present
    grep -A 15 "interaction_type" src/types/database.generated.ts
@@ -188,6 +168,27 @@ These tasks fix critical blockers and establish infrastructure. Tasks 1.1, 1.2, 
 
    # Run TypeScript compiler to verify no errors
    npm run typecheck
+   ```
+
+5. **Optional: Add Pre-Commit Hook** (10 min - OPTIONAL)
+
+   `.husky/pre-commit` already runs `npm test` which will catch type errors.
+
+   If you want automatic type regeneration on migration changes:
+
+   ```bash
+   #!/usr/bin/env sh
+   . "$(dirname -- "$0")/_/husky.sh"
+
+   # Regenerate types if migrations changed (optional)
+   if git diff --cached --name-only | grep -q "supabase/migrations"; then
+     echo "🔄 Migrations changed, regenerating types..."
+     npm run gen:types
+     git add src/types/database.generated.ts
+     echo "✅ Types regenerated and staged"
+   fi
+
+   npm test
    ```
 
 **Validation Criteria:**
@@ -878,7 +879,7 @@ These tasks improve the Kanban board UX. Tasks 1.5 and 1.7 can run in parallel. 
 **READ THESE BEFORE TASK:**
 - `/home/krwhynot/projects/crispy-crm/.docs/plans/opportunity-redesign/CRITICAL-GAPS.md` (lines 442-511)
 - `/home/krwhynot/projects/crispy-crm/.docs/plans/opportunity-redesign/DECISION-QUESTIONS.md` (Q4, lines 300-388)
-- `/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationCard.tsx` - Card dropdown pattern
+- `/home/krwhynot/projects/crispy-crm/src/atomic-crm/tasks/Task.tsx` (lines 155-206) - ⚠️ CORRECT dropdown pattern (OrganizationCard does NOT have dropdown)
 
 **Files to Create:**
 - None
@@ -1208,9 +1209,20 @@ This task imports legacy CSV data. Must run after all infrastructure tasks (1.1-
 
 #### Task 1.8: Implement CSV Migration Script [GAP 5, GAP 6] **Depends on: [1.1, 1.2, 1.3, 1.4, 1.5]**
 
-**Priority:** 🟠 HIGH - Business Requirement
-**Time Estimate:** 2.5 hours
+**Priority:** 🔴 BLOCKED - Business Decision Required
+**Time Estimate:** 2.5 hours (AFTER stage mapping complete)
 **Engineering Constitution:** FAIL FAST, SINGLE SOURCE OF TRUTH
+
+**⚠️ VALIDATION UPDATE - CRITICAL BLOCKERS:**
+- **BLOCKER #1:** STAGE column is at position **7** (not 6)
+- **BLOCKER #2:** Only **~592 valid opportunity rows** (not 1,062 total lines)
+- **BLOCKER #3:** Custom stage names require business mapping:
+  - "Sampled/Visited invite-3" (533 occurrences - 90% of data!)
+  - "VAF BLITZ" (64 occurrences)
+  - "Contacted-phone/email-2" (60 occurrences)
+  - "demo-cookup-6" (11 occurrences)
+  - Invalid data in STAGE column (dates, text fragments)
+- **ACTION REQUIRED:** Schedule stakeholder meeting to map custom stages before proceeding
 
 **READ THESE BEFORE TASK:**
 - `/home/krwhynot/projects/crispy-crm/.docs/plans/opportunity-redesign/CRITICAL-GAPS.md` (lines 75-131, 251-291)
@@ -1219,15 +1231,17 @@ This task imports legacy CSV data. Must run after all infrastructure tasks (1.1-
 
 **Files to Create:**
 - `scripts/migrate-opportunities-csv.ts` (new migration script)
+- `scripts/clean-opportunity-csv.ts` (data cleanup script - NEW)
 - `supabase/migrations/[timestamp]_add_csv_migration_helpers.sql` (helper functions)
-- `data/unique_stages.txt` (extracted stage values)
+- `data/unique_stages_complete.txt` (extracted stage values - NEW)
+- `data/stage_mapping.json` (business-approved mapping - NEW)
 
 **Files to Modify:**
 - None
 
 **Instructions:**
 
-**Context:** 1,062 legacy opportunities exist in CSV with numbered stages (1-8). Must migrate to 8 semantic stages with fail-fast validation. Additionally, CSV interactions may link to contacts not in opportunity.contact_ids array (GAP 6).
+**Context:** ~592 legacy opportunities exist in CSV with custom stage names. Must migrate to 8 semantic stages with fail-fast validation. Additionally, CSV interactions may link to contacts not in opportunity.contact_ids array (GAP 6).
 
 **Solution:**
 1. Extract ALL unique CSV stages and complete mapping (GAP 5 - fail fast)
@@ -1239,20 +1253,28 @@ This task imports legacy CSV data. Must run after all infrastructure tasks (1.1-
 
 1. **Extract Unique CSV Stages** (10 min)
 
-   **CRITICAL: You must analyze the actual CSV file to get complete stage mapping**
+   **CRITICAL: STAGE column is at position 7 (not 6), and CSV starts at row 16 (rows 1-15 are headers)**
 
    ```bash
    # Navigate to project root
    cd /home/krwhynot/projects/crispy-crm
 
-   # Extract unique stage values from CSV
-   awk -F',' 'NR>1 {print $6}' data/Opportunity.csv | sort -u > data/unique_stages.txt
+   # Extract unique stage values from CSV (column 7, starting from row 16)
+   awk -F',' 'NR>=16 && NF>=8 {print $8}' data/Opportunity.csv | \
+   sort | uniq -c | sort -rn > data/unique_stages_complete.txt
 
-   # Review the output
-   cat data/unique_stages.txt
+   # Review the output (shows frequency counts)
+   cat data/unique_stages_complete.txt
+
+   # Expected output (top 5):
+   #  533 Sampled/Visited invite-3
+   #   64 VAF BLITZ
+   #   60 Contacted-phone/email-2
+   #   25 Lead-discovery-1
+   #   20 SOLD-7
    ```
 
-   **Document the complete mapping** based on actual CSV stages (the plan only shows examples).
+   **⚠️ DATA QUALITY WARNING:** Some rows have invalid STAGE values (dates, text fragments). Create cleanup script to filter these out.
 
 2. **Create Helper Functions Migration** (30 min)
 
@@ -1659,10 +1681,47 @@ This task imports legacy CSV data. Must run after all infrastructure tasks (1.1-
 
 ## Summary
 
-**Phase 1 MVP:** 12 hours, 8 tasks, addresses 8 critical gaps
+**Phase 1 MVP:** 11 hours, 8 tasks (7 ready + 1 blocked), addresses 8 critical gaps
 **Dependencies:** Clear task ordering prevents blocking
-**Validation:** Strict criteria for each task
+**Validation:** ✅ Validated against actual codebase (2025-10-23)
 **Engineering:** Constitution-compliant, database-first architecture
-**Outcome:** Production-ready opportunity redesign with CSV migration
+**Outcome:** Production-ready opportunity redesign (CSV migration requires stage mapping)
 
-**Ready to implement.** All planning documents validated, all business decisions approved, all technical approaches verified against existing codebase patterns.
+---
+
+## ⚠️ Implementation Readiness Status
+
+**✅ READY TO START IMMEDIATELY (7 tasks):**
+- Task 1.1: Fix type system (1h - simplified)
+- Task 1.2: Priority inheritance (1.5h)
+- Task 1.3: opportunities_summary view (40min)
+- Task 1.4: stage_changed_at column (30min)
+- Task 1.5: Timestamp ordering (2h)
+- Task 1.6: Manual stage buttons (1h - use Task.tsx pattern)
+- Task 1.7: Auto-name with products (1.5h)
+
+**🔴 BLOCKED (1 task):**
+- Task 1.8: CSV migration - BLOCKED until stakeholder maps custom stage names
+  - Action required: Schedule meeting to map "Sampled/Visited invite-3", "VAF BLITZ", etc.
+  - Estimated unblock time: 1-2 days for business decision
+
+**Total Validated Implementation Time:** 11 hours (reduced from original 12h)
+
+---
+
+## Validation Report Summary (2025-10-23)
+
+**Validation Method:** 4 parallel research agents verified against actual codebase
+
+**Findings:**
+1. ✅ All database migration patterns match existing conventions
+2. ✅ All React Admin patterns proven in codebase
+3. ✅ Type generation infrastructure 70% complete (just wire up scripts)
+4. ❌ CSV data assumptions incorrect (column 7 not 6, 592 not 1,062 rows, custom stages)
+
+**Corrections Applied:**
+- Task 1.1: Simplified to 1 hour (scripts exist)
+- Task 1.6: Fixed reference to Task.tsx
+- Task 1.8: Updated column position, row count, added blockers
+
+**Plan Status:** VALIDATED AND READY (except Task 1.8 pending business input)
