@@ -42,57 +42,57 @@ For each legacy stage name below, decide which new stage it should map to:
 **1. "Sampled/Visited invite-3" (533 opportunities - YOUR BIGGEST GROUP!)**
 - What does this mean in your sales process?
 - Suggested mapping: `sample_visit_offered` (since it mentions sampling/visiting)
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `sample_visit_offered`
 
 **2. "VAF BLITZ" (64 opportunities)**
 - What campaign or activity is "VAF BLITZ"?
 - Suggested mapping: `initial_outreach` (if it's a mass outreach campaign)
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `initial_outreach` Add VAF BLITZ in the notes
 
 **3. "Contacted-phone/email-2" (60 opportunities)**
 - First contact attempt?
 - Suggested mapping: `initial_outreach`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** initial_outreach
 
 **4. "Lead-discovery-1" (25 opportunities)**
 - Initial lead identification?
 - Suggested mapping: `new_lead`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `new_lead`
 
 **5. "SOLD-7" (20 opportunities)**
 - Deals that closed successfully?
 - Suggested mapping: `closed_won`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `closed_won`
 
 **6. "demo-cookup-6" (11 opportunities)**
 - Demo or tasting scheduled?
 - Suggested mapping: `demo_scheduled`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `demo_scheduled`
 
 **7. "Follow-up-4" (11 opportunities)**
 - Waiting for response after outreach?
 - Suggested mapping: `awaiting_response`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `awaiting_response`
 
 **8. "Feedback- received-5" (5 opportunities)**
 - Customer provided feedback?
 - Suggested mapping: `feedback_logged`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `feedback_logged`
 
 **9. "order support-8" (1 opportunity)**
 - Post-sale support?
 - Suggested mapping: `closed_won`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `closed_won`
 
 **10. "Open" / "open" (16 + 4 = 20 opportunities)**
 - Generic open status?
 - Suggested mapping: `new_lead` (or choose based on context)
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `new_lead`
 
 **11. "VAF Blitz" (1 opportunity - lowercase variant)**
 - Same as #2 above
 - Suggested mapping: Same as "VAF BLITZ"
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:**  Same as "VAF BLITZ"
 
 **12. "Swap" (1 opportunity)**
 - Product swap/replacement deal?
@@ -102,7 +102,7 @@ For each legacy stage name below, decide which new stage it should map to:
 **13. "Phone" (1 opportunity)**
 - Phone outreach?
 - Suggested mapping: `initial_outreach`
-- **YOUR DECISION:** _______________________
+- **YOUR DECISION:** `initial_outreach`
 
 ### ❌ Invalid Data (Will Be SKIPPED)
 
