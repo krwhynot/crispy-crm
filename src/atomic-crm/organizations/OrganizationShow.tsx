@@ -26,6 +26,7 @@ import { findOpportunityLabel } from "../opportunities/opportunity";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Company, Contact, Opportunity } from "../types";
+import { formatName } from "../utils/formatName";
 import { OrganizationAside } from "./OrganizationAside";
 import { OrganizationAvatar } from "./OrganizationAvatar";
 

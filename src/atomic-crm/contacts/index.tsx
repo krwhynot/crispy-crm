@@ -1,4 +1,5 @@
 import type { Contact } from "../types";
+import { formatName } from "../utils/formatName";
 import { ContactCreate } from "./ContactCreate";
 import { ContactEdit } from "./ContactEdit";
 import { ContactList } from "./ContactList";
@@ -9,20 +10,6 @@ export default {
   show: ContactShow,
   edit: ContactEdit,
   create: ContactCreate,
-  recordRepresentation: (record: Contact) => {
-    const firstName = record?.first_name?.trim();
-    const lastName = record?.last_name?.trim();
-
-    // If both are missing, use double dash (industry standard)
-    if (!firstName && !lastName) {
-      return "--";
-    }
-
-    // If only one is present, return it without extra spaces
-    if (!firstName) return lastName;
-    if (!lastName) return firstName;
-
-    // Both present, concatenate with space
-    return `${firstName} ${lastName}`;
-  },
+  recordRepresentation: (record: Contact) =>
+    formatName(record?.first_name, record?.last_name),
 };

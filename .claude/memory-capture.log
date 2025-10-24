@@ -1836,3 +1836,8 @@
 [2025-10-24 00:10:34] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-from-merged-csv.js
 [2025-10-24 00:10:41] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/seed-from-merged-csv.js
 [2025-10-24 07:52:49] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251024125242_add_opportunities_summary_view.sql
+[2025-10-24 07:56:57] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/formatName.ts
+[2025-10-24 07:57:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/index.ts
+[2025-10-24 07:57:16] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/sales/index.ts
+[2025-10-24 07:57:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/index.tsx
+[2025-10-24 07:58:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationShow.tsx
