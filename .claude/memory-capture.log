@@ -1871,3 +1871,8 @@
 [2025-10-24 12:20:28] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
 [2025-10-24 12:22:33] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
 [2025-10-24 12:22:58] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/db/seed-organizations.sh
+[2025-10-24 12:24:18] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-24 12:25:14] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/db/seed-organizations.sh
+[2025-10-24 12:25:54] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/db/seed-organizations.sh
+[2025-10-24 12:27:00] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/db/seed-organizations.sh
+[2025-10-24 12:29:14] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/db/seed-organizations.sh
