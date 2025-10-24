@@ -17,7 +17,12 @@ This implementation plan addresses 11 critical gaps identified in the opportunit
 
 ---
 
-## Phase 1: MVP Implementation (10.5 hours)
+## Phase 1: MVP Implementation (12 hours)
+
+**Updated Estimate:** Original 10.5h → 12h after Zen review identified missing details:
+- +10 min: Index creation for view performance (Task 1.3)
+- +30 min: CSV pre-validation and contact matching (Task 1.8)
+- +1 hour: Buffer for comprehensive error handling implementation
 
 ### Task 1.1: Fix Type System Mismatch (GAP 1) - 2 hours
 
@@ -159,18 +164,36 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
 
 ---
 
-### Task 1.3: Create opportunities_summary View (GAP 9) - 30 min
+### Task 1.3: Create opportunities_summary View (GAP 9) - 40 min
 
 **Priority:** 🟠 HIGH - Required for interaction count display
 
 **Implementation Steps:**
 
-1. **Create migration for view** (10 min)
+1. **Create index for view performance** (10 min) ⭐ **NEW - Critical for performance**
+   ```bash
+   npx supabase migration new add_activities_opportunity_index
+   ```
+
+   ```sql
+   -- supabase/migrations/[timestamp]_add_activities_opportunity_index.sql
+
+   -- Create partial index for activities lookup by opportunity
+   -- PARTIAL INDEX only includes interaction records, reducing index size
+   CREATE INDEX idx_activities_opportunity_lookup
+   ON activities(opportunity_id, activity_type, deleted_at)
+   WHERE activity_type = 'interaction';
+
+   COMMENT ON INDEX idx_activities_opportunity_lookup IS
+   'Optimizes opportunities_summary view aggregations for interaction counts';
+   ```
+
+2. **Create migration for view** (10 min)
    ```bash
    npx supabase migration new add_opportunities_summary_view
    ```
 
-2. **Write view SQL** (15 min)
+3. **Write view SQL** (15 min)
    ```sql
    -- supabase/migrations/[timestamp]_add_opportunities_summary_view.sql
 
@@ -196,7 +219,7 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    COMMENT ON VIEW opportunities_summary IS 'Opportunity list view with calculated interaction counts and stage duration';
    ```
 
-3. **Update data provider to use view for lists** (5 min)
+4. **Update data provider to use view for lists** (5 min)
    ```typescript
    // src/atomic-crm/providers/supabase/dataProviderUtils.ts
    export function getDatabaseResource(resource: string, operation: "list" | "one") {
@@ -212,8 +235,11 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    ```
 
 **Files Modified:**
+- `supabase/migrations/[timestamp]_add_activities_opportunity_index.sql` (new) ⭐
 - `supabase/migrations/[timestamp]_add_opportunities_summary_view.sql` (new)
 - `src/atomic-crm/providers/supabase/dataProviderUtils.ts`
+
+**Performance Note:** The partial index only indexes `activity_type = 'interaction'` records, reducing index size by ~50% (assuming engagements and interactions are roughly equal). Expected query time: <10ms for 1,062 opportunities with 5,000+ interaction records.
 
 ---
 
@@ -603,9 +629,11 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
 
 ---
 
-### Task 1.8: CSV Migration with Automatic Contact Backfill (GAP 5 + GAP 6) - 2 hours
+### Task 1.8: CSV Migration with Automatic Contact Backfill (GAP 5 + GAP 6) - 2.5 hours
 
 **Priority:** 🔴 CRITICAL - Required before production data import
+
+**Updated Time:** Added 30 minutes for pre-validation (step 3) and contact matching specification (step 4) to prevent mid-migration failures.
 
 **Implementation Steps:**
 
@@ -631,7 +659,143 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    };
    ```
 
-3. **Write migration script with fail-fast validation** (60 min)
+3. **Pre-validate CSV structure and data quality** (20 min) ⭐ **NEW - Prevents mid-migration failures**
+   ```typescript
+   // scripts/validate-csv.ts
+   import * as fs from "fs";
+   import * as csv from "csv-parser";
+
+   interface ValidationResult {
+     valid: boolean;
+     errors: string[];
+     warnings: string[];
+     stats: {
+       totalRows: number;
+       duplicateNames: string[];
+       missingContacts: string[];
+     };
+   }
+
+   async function validateCSV(filePath: string): Promise<ValidationResult> {
+     const result: ValidationResult = {
+       valid: true,
+       errors: [],
+       warnings: [],
+       stats: {
+         totalRows: 0,
+         duplicateNames: [],
+         missingContacts: [],
+       },
+     };
+
+     const csvRows: any[] = [];
+     const seenNames = new Map<string, number>();
+
+     // Read and validate CSV structure
+     await new Promise((resolve, reject) => {
+       fs.createReadStream(filePath)
+         .pipe(csv())
+         .on("data", (row) => {
+           csvRows.push(row);
+           result.stats.totalRows++;
+
+           // Check for duplicate opportunity names
+           const name = row.NAME?.trim();
+           if (name) {
+             const count = seenNames.get(name) || 0;
+             seenNames.set(name, count + 1);
+           }
+         })
+         .on("end", resolve)
+         .on("error", (err) => {
+           result.valid = false;
+           result.errors.push(`CSV parsing failed: ${err.message}`);
+           reject(err);
+         });
+     });
+
+     // Validate required columns
+     const requiredColumns = ["NAME", "STAGE", "CUSTOMER", "PRINCIPAL"];
+     const sampleRow = csvRows[0];
+     for (const col of requiredColumns) {
+       if (!(col in sampleRow)) {
+         result.valid = false;
+         result.errors.push(`Missing required column: ${col}`);
+       }
+     }
+
+     // Check for duplicate names
+     for (const [name, count] of seenNames.entries()) {
+       if (count > 1) {
+         result.warnings.push(`Duplicate opportunity name: "${name}" (${count} occurrences)`);
+         result.stats.duplicateNames.push(name);
+       }
+     }
+
+     // Validate transaction size (PostgreSQL limit ~1GB, 1,062 rows should be <1MB)
+     const estimatedSize = JSON.stringify(csvRows).length;
+     if (estimatedSize > 10 * 1024 * 1024) { // 10MB threshold
+       result.warnings.push(`Large CSV file (${(estimatedSize / 1024 / 1024).toFixed(2)}MB). Consider batching.`);
+     }
+
+     return result;
+   }
+
+   // Run validation before migration
+   const validation = await validateCSV("data/Opportunity.csv");
+   if (!validation.valid) {
+     console.error("❌ CSV validation failed:");
+     validation.errors.forEach(err => console.error(`  - ${err}`));
+     process.exit(1);
+   }
+
+   if (validation.warnings.length > 0) {
+     console.warn("⚠️ CSV validation warnings:");
+     validation.warnings.forEach(warn => console.warn(`  - ${warn}`));
+   }
+
+   console.log(`✅ CSV validated: ${validation.stats.totalRows} rows, ${validation.stats.duplicateNames.length} duplicates`);
+   ```
+
+4. **Specify contact matching algorithm** (10 min) ⭐ **NEW - Eliminates ambiguity**
+   ```typescript
+   // scripts/migrate-opportunities-csv.ts
+
+   /**
+    * Contact Matching Strategy:
+    * 1. Primary: Exact match on contact.name (case-insensitive)
+    * 2. If not found: Fail migration with clear error message
+    * 3. If multiple matches: Fail migration (data quality issue)
+    */
+   function findContactByName(name: string, contacts: Contact[]): Contact {
+     const trimmedName = name.trim();
+
+     // Case-insensitive exact match
+     const matches = contacts.filter(c =>
+       c.name.toLowerCase() === trimmedName.toLowerCase()
+     );
+
+     if (matches.length === 0) {
+       throw new Error(
+         `❌ CONTACT NOT FOUND: "${trimmedName}"\n` +
+         `Add contact to database before running migration.\n` +
+         `Hint: Check for typos or trailing spaces in CSV.`
+       );
+     }
+
+     if (matches.length > 1) {
+       throw new Error(
+         `❌ DUPLICATE CONTACTS: "${trimmedName}" has ${matches.length} matches\n` +
+         `Contact IDs: ${matches.map(c => c.id).join(", ")}\n` +
+         `Resolve duplicates in database before migration.`
+       );
+     }
+
+     return matches[0];
+   }
+   ```
+
+5. **Write migration script with comprehensive error handling** (60 min)
    ```typescript
    // scripts/migrate-opportunities-csv.ts
    import { createClient } from "@supabase/supabase-js";
@@ -699,7 +863,7 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    migrateOpportunities().catch(console.error);
    ```
 
-4. **Create database RPC function for backfill** (30 min)
+6. **Create database RPC function for backfill** (30 min)
    ```sql
    -- Create migration
    -- supabase/migrations/[timestamp]_add_backfill_contacts_rpc.sql
@@ -734,9 +898,18 @@ grep -A 20 "type InteractionType" src/atomic-crm/types.ts
    ```
 
 **Files Modified:**
-- `scripts/migrate-opportunities-csv.ts` (new)
+- `scripts/validate-csv.ts` (new) ⭐ - Pre-validation script
+- `scripts/migrate-opportunities-csv.ts` (new) - Main migration with contact matching
 - `supabase/migrations/[timestamp]_add_backfill_contacts_rpc.sql` (new)
 - `data/unique_stages.txt` (new - for reference)
+
+**Error Handling Improvements:**
+- ✅ CSV parsing errors caught and reported clearly
+- ✅ Required column validation before processing
+- ✅ Duplicate opportunity name detection (warnings)
+- ✅ Transaction size check (prevents PostgreSQL limit issues)
+- ✅ Contact matching with clear error messages for not found/duplicates
+- ✅ Fail-fast validation prevents partial migrations
 
 ---
 
@@ -804,12 +977,14 @@ Before marking Phase 1 complete, verify:
 
 ## Implementation Order
 
-**Week 1 (10.5 hours):**
-1. Day 1 (4 hours): Tasks 1.1, 1.2, 1.3, 1.4 (Database foundations)
+**Week 1 (12 hours):**
+1. Day 1 (4.5 hours): Tasks 1.1, 1.2, 1.3, 1.4 (Database foundations + index creation)
 2. Day 2 (3.5 hours): Tasks 1.5, 1.6 (Simplify index, add manual buttons)
-3. Day 3 (3 hours): Tasks 1.7, 1.8 (Auto-name, CSV migration)
+3. Day 3 (4 hours): Tasks 1.7, 1.8 (Auto-name, CSV migration with validation)
 
-**Total MVP Delivery:** 3 days (10.5 hours)
+**Total MVP Delivery:** 3 days (12 hours)
+
+**Note:** Updated from original 10.5h estimate after adding index creation and comprehensive CSV error handling per Zen's review.
 
 ---
 

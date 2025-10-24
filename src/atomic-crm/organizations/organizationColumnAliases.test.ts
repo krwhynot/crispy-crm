@@ -25,9 +25,9 @@ describe('normalizeHeader', () => {
     expect(normalizeHeader('\tOrganization\n')).toBe('organization');
   });
 
-  it('should remove special characters except spaces, underscores, hyphens, parentheses', () => {
+  it('should remove special characters and parentheses with their contents', () => {
     expect(normalizeHeader('Company@Name!')).toBe('company name');
-    expect(normalizeHeader('Priority (A-D)')).toBe('priority (a-d)'); // Parentheses are preserved
+    expect(normalizeHeader('Priority (A-D)')).toBe('priority'); // Parentheses and contents removed
   });
 
   it('should collapse multiple spaces', () => {
