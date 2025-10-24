@@ -1,0 +1,17 @@
+{
+  "Sampled/Visited invite-3": "sample_visit_offered",
+  "VAF BLITZ": "initial_outreach",
+  "Contacted-phone/email-2": "initial_outreach",
+  "Lead-discovery-1": "new_lead",
+  "SOLD-7": "closed_won",
+  "demo-cookup-6": "demo_scheduled",
+  "Follow-up-4": "awaiting_response",
+  "Feedback- received-5": "feedback_logged",
+  "order support-8": "closed_won",
+  "Open": "new_lead",
+  "open": "new_lead",
+  "VAF Blitz": "initial_outreach",
+  "Swap": "new_lead",
+  "Phone": "initial_outreach",
+  "SOLD-7d": "closed_won"
+}
