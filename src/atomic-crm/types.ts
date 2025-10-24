@@ -213,6 +213,11 @@ export type Opportunity = {
   next_action_date?: string;
   competition?: string;
   decision_criteria?: string;
+
+  // Computed fields from opportunities_summary view (read-only)
+  nb_interactions?: number;
+  last_interaction_date?: string;
+  days_in_stage?: number;
 } & Pick<RaRecord, "id">;
 
 // DealNote type removed - use OpportunityNote instead

@@ -188,11 +188,11 @@ export function getDatabaseResource(
     const summaryResource = `${actualResource}_summary`;
     if (
       resource === "organizations" ||
-      resource === "contacts"
+      resource === "contacts" ||
+      resource === "opportunities"
     ) {
       return summaryResource;
     }
-    // Note: opportunities_summary removed for MVP - query base table directly
   }
 
   return actualResource;
