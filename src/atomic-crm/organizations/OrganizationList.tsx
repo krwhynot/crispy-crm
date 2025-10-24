@@ -1,5 +1,6 @@
 import { useGetIdentity, useListContext } from "ra-core";
 
+import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
@@ -9,6 +10,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { ImageList } from "./GridList";
+import { OrganizationImportButton } from "./OrganizationImportButton";
 
 export const OrganizationList = () => {
   const { identity } = useGetIdentity();
@@ -39,6 +41,7 @@ const OrganizationListLayout = () => {
       <div className="flex flex-col flex-1 gap-4">
         <ImageList />
       </div>
+      <BulkActionsToolbar />
     </div>
   );
 };
@@ -47,6 +50,7 @@ const OrganizationListActions = () => {
   return (
     <TopToolbar>
       <SortButton fields={["name", "created_at", "nb_contacts"]} />
+      {/* <OrganizationImportButton /> */}
       <ExportButton />
       <CreateButton label="New Organization" />
     </TopToolbar>

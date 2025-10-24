@@ -1,12 +1,16 @@
 import { Truck, Users, Tag, Star } from "lucide-react";
+import type { VariantProps } from "class-variance-authority";
+
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, badgeVariants } from "@/components/ui/badge";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { SidebarActiveFilters } from "./SidebarActiveFilters";
+
+type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export const OrganizationListFilter = () => {
   const { identity } = useGetIdentity();
@@ -39,7 +43,7 @@ export const OrganizationListFilter = () => {
     { id: "D", name: "D - Low" },
   ];
 
-  const priorityColors: Record<string, string> = {
+  const priorityColors: Record<string, BadgeVariant> = {
     A: "destructive",
     B: "default",
     C: "secondary",
@@ -100,7 +104,7 @@ export const OrganizationListFilter = () => {
                   className="w-full justify-between"
                   label={
                     <Badge
-                      variant={priorityColors[priority.id] as any}
+                      variant={priorityColors[priority.id]}
                       className="text-xs px-1 py-0"
                     >
                       {priority.name}

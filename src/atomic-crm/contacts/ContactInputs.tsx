@@ -170,6 +170,7 @@ const ContactMiscInputs = () => {
         sort={{ field: "last_name", order: "ASC" }}
         filter={{
           "disabled@neq": true,
+          "user_id@not.is": null, // Only show authenticated users in dropdown
         }}
       >
         <SelectInput

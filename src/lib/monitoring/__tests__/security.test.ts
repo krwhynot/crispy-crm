@@ -16,8 +16,8 @@ const consoleMock = {
 };
 
 beforeEach(() => {
-  // Clear any existing events
-  securityMonitor.clearOldEvents(0);
+  // Clear any existing events and reset all state
+  securityMonitor.reset();
 
   // Set NODE_ENV to development for console logging
   vi.stubEnv('NODE_ENV', 'development');

@@ -178,25 +178,24 @@ export const importContactSchema = z
       .string({ required_error: "Organization name is required" })
       .trim()
       .min(1, { message: "Organization name is required" }),
-    // Email fields - allow empty, null, or any string (lenient for imports)
-    // We validate email format as a warning but don't reject the import
+    // Email fields - validate format but allow empty/null for lenient imports
     email_work: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
-      z.string().trim(), // Accept any string, validate format separately
+      z.string().trim().email({ message: "Invalid email address" }),
     ]).optional().nullable(),
     email_home: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
-      z.string().trim(), // Accept any string, validate format separately
+      z.string().trim().email({ message: "Invalid email address" }),
     ]).optional().nullable(),
     email_other: z.union([
       z.literal(""),
       z.literal(null),
       z.undefined(),
-      z.string().trim(), // Accept any string, validate format separately
+      z.string().trim().email({ message: "Invalid email address" }),
     ]).optional().nullable(),
     // Phone fields - allow empty, null, string, or number (PapaParse converts numeric strings to numbers)
     phone_work: z.union([

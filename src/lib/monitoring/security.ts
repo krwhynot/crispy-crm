@@ -272,6 +272,14 @@ class SecurityMonitor {
     this.events = this.events.filter(event => event.timestamp >= cutoff);
   }
 
+  /**
+   * Reset all monitoring state (useful for testing)
+   */
+  reset() {
+    this.events = [];
+    this.rateLimitTracking.clear();
+  }
+
   // Private helper methods
 
   private addEvent(event: SecurityEvent) {

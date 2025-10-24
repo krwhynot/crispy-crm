@@ -23,7 +23,7 @@ const ContactShowContent = () => {
     <div className="mt-2 mb-2 flex gap-8">
       <div className="flex-1">
         <Card>
-          <CardContent>
+          <CardContent className="p-6">
             <div className="flex">
               <Avatar />
               <div className="ml-2 flex-1">
