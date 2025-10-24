@@ -108,7 +108,8 @@ async function seedFromMergedCSV() {
     console.log('🔗 Loading organization mappings...');
     const { data: orgs, error: orgError } = await supabase
       .from('organizations')
-      .select('id, name');
+      .select('id, name')
+      .limit(10000);
 
     if (orgError) {
       console.error('   ❌ Error loading organizations:', orgError.message);
@@ -125,9 +126,11 @@ async function seedFromMergedCSV() {
     for (const row of rows) {
       const orgName = row.org_name;
       const contactName = row.contact_full_name;
+      const firstName = row.contact_first_name || null;
+      const lastName = row.contact_last_name || null;
 
       // Skip rows without contact information
-      if (!contactName && !row.contact_email && !row.contact_phone) {
+      if (!contactName && !firstName && !lastName && !row.contact_email && !row.contact_phone) {
         continue;
       }
 
@@ -136,11 +139,22 @@ async function seedFromMergedCSV() {
         continue;
       }
 
+      // Build name from first/last if full name is missing
+      let finalName = contactName;
+      if (!finalName && (firstName || lastName)) {
+        finalName = [firstName, lastName].filter(Boolean).join(' ');
+      }
+
+      // Skip contacts without any name at all
+      if (!finalName) {
+        continue;
+      }
+
       const contact = {
         organization_id: orgNameToId.get(orgName),
-        name: contactName || null,
-        first_name: row.contact_first_name || null,
-        last_name: row.contact_last_name || null,
+        name: finalName,
+        first_name: firstName,
+        last_name: lastName,
         title: row.contact_title || null,
         email: row.contact_email || null,
         phone: row.contact_phone || null,
