@@ -13,7 +13,7 @@
     "gen:types": "node ./scripts/mcp-generate-types.cjs",
     "gen:types:force": "node ./scripts/mcp-generate-types.cjs --force",
     "dev": "vite --force",
-    "dev:local": "cp .env.local .env && npx supabase db reset && npm run seed:data && vite --force",
+    "dev:local": "cp .env.local .env && npx supabase db reset && vite --force",
     "dev:local:skip-reset": "cp .env.local .env && vite --force",
     "dev:cloud": "cp .env.cloud .env && vite --force",
     "dev:check": "npx supabase status",

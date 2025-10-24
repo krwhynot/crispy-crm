@@ -66,23 +66,23 @@ INSERT INTO auth.users (
 -- ============================================================================
 
 -- Insert Principal Organizations
-INSERT INTO organizations (name, organization_type, created_by, updated_by) VALUES
-  ('Kaufholds', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Frites Street', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Better Balance', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('VAF', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Ofk', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Annasea', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Wicks', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('RJC', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Kayco', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Abdale', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Mccrum', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Rapid Rasoi', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('SWAP', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Never Better', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('TCFB', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6'),
-  ('Mrs Ressler''s', 'principal', 'd3129876-b1fe-40eb-9980-64f5f73c64d6', 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
-ON CONFLICT (name) DO NOTHING;
+-- Note: created_by and updated_by will be auto-populated by database defaults
+INSERT INTO organizations (name, organization_type) VALUES
+  ('Kaufholds', 'principal'),
+  ('Frites Street', 'principal'),
+  ('Better Balance', 'principal'),
+  ('VAF', 'principal'),
+  ('Ofk', 'principal'),
+  ('Annasea', 'principal'),
+  ('Wicks', 'principal'),
+  ('RJC', 'principal'),
+  ('Kayco', 'principal'),
+  ('Abdale', 'principal'),
+  ('Mccrum', 'principal'),
+  ('Rapid Rasoi', 'principal'),
+  ('SWAP', 'principal'),
+  ('Never Better', 'principal'),
+  ('TCFB', 'principal'),
+  ('Mrs Ressler''s', 'principal');
 
 -- ============================================================================
