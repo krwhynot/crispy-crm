@@ -281,7 +281,7 @@ describe("UnifiedDataProvider Validation Integration", () => {
     });
 
     it("should validate organizations on create", async () => {
-      // Attempt to create an organization without required fields
+      // Organizations have validation that requires a name
       await expect(
         unifiedDataProvider.create("organizations", {
           data: { website: "https://example.com" },
@@ -289,18 +289,6 @@ describe("UnifiedDataProvider Validation Integration", () => {
       ).rejects.toMatchObject({
         message: "Validation failed",
         errors: { name: "Organization name is required" },
-      });
-    });
-
-    it("should validate organizations on create", async () => {
-      // Organizations resource doesn't have validation registered
-      // So this should pass through to the base provider
-      await expect(
-        unifiedDataProvider.create("organizations", {
-          data: { website: "https://example.com" },
-        }),
-      ).resolves.toMatchObject({
-        data: { id: 1 },
       });
     });
 

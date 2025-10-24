@@ -63,6 +63,7 @@ export const organizationSchema = z.object({
   sales_id: z.union([z.string(), z.number()]).nullish(),
   description: z.string().optional().nullable(),
   context_links: z.array(isValidUrl).nullish(),
+  tags: z.string().optional(), // Comma-separated tag names for CSV import
 
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("unknown"), // Default matches database

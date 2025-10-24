@@ -8,17 +8,16 @@ import {
   useMatch,
   useNavigate,
 } from "react-router-dom";
+import type { VariantProps } from "class-variance-authority";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-
-
-import { Badge } from "@/components/ui/badge";
-
-
+import { Badge, badgeVariants } from "@/components/ui/badge";
 
 import type { Product } from "../types";
 import { ProductAside } from "./ProductAside";
+
+type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 const ProductShow = () => (
   <ShowBase>
@@ -45,7 +44,7 @@ const ProductShowContent = () => {
 
   if (isPending || !record) return null;
 
-  const statusColors: Record<string, string> = {
+  const statusColors: Record<string, BadgeVariant> = {
     active: "default",
     discontinued: "destructive",
     coming_soon: "secondary",
@@ -69,7 +68,7 @@ const ProductShowContent = () => {
               <div className="flex gap-2">
                 {record.status && (
                   <Badge
-                    variant={statusColors[record.status] as any}
+                    variant={statusColors[record.status]}
                     className="text-xs"
                   >
                     {record.status}
@@ -133,7 +132,7 @@ const ProductOverviewTab = () => {
     <div className="space-y-6">
       {/* Pricing Card */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="p-6">
           <h3 className="font-medium mb-4 flex items-center gap-2">
             <DollarSign className="w-4 h-4" />
             Pricing Information
@@ -177,7 +176,7 @@ const ProductOverviewTab = () => {
 
       {/* Product Information Card */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="p-6">
           <h3 className="font-medium mb-4 flex items-center gap-2">
             <Package className="w-4 h-4" />
             Product Information
@@ -229,7 +228,7 @@ const ProductDetailsTab = () => {
       {/* Description Card */}
       {record.description && (
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-6">
             <h3 className="font-medium mb-4">Description</h3>
             <p className="text-[color:var(--text-subtle)] whitespace-pre-wrap">
               {record.description}
@@ -240,7 +239,7 @@ const ProductDetailsTab = () => {
 
       {/* Specifications Card */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="p-6">
           <h3 className="font-medium mb-4">Specifications</h3>
           <div className="space-y-3">
             {record.sku && (
@@ -288,7 +287,7 @@ const ProductActivityTab = () => {
   return (
     <div className="space-y-6">
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="p-6">
           <h3 className="font-medium mb-4">Activity Log</h3>
           <div className="text-center py-8 text-[color:var(--text-subtle)]">
             <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />

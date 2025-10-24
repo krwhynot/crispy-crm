@@ -65,8 +65,8 @@ const ContactListLayout = () => {
 const ContactListActions = () => (
   <TopToolbar>
     <SortButton fields={["first_name", "last_name", "last_seen"]} />
-    <ContactImportButton />
-    <ContactExportTemplateButton />
+    {/* <ContactImportButton /> */}
+    {/* <ContactExportTemplateButton /> */}
     <ExportButton exporter={exporter} />
     <CreateButton />
   </TopToolbar>
