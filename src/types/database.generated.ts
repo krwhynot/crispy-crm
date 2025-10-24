@@ -126,6 +126,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "activities_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
@@ -137,6 +144,13 @@ export type Database = {
             columns: ["opportunity_id"]
             isOneToOne: false
             referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
             referencedColumns: ["id"]
           },
         ]
@@ -197,6 +211,13 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "contacts_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contact_organizations_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
             referencedColumns: ["id"]
           },
           {
@@ -261,6 +282,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "contact_preferred_principals_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "contact_preferred_principals_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
@@ -319,6 +347,13 @@ export type Database = {
             columns: ["contact_id"]
             isOneToOne: false
             referencedRelation: "contacts_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contactNotes_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
             referencedColumns: ["id"]
           },
           {
@@ -461,6 +496,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "contacts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "contacts_sales_id_fkey"
             columns: ["sales_id"]
             isOneToOne: false
@@ -526,6 +568,13 @@ export type Database = {
             referencedRelation: "contacts_summary"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "interaction_participants_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
+            referencedColumns: ["id"]
+          },
         ]
       }
       migration_history: {
@@ -583,7 +632,6 @@ export type Database = {
           estimated_close_date: string | null
           founding_interaction_id: number | null
           id: number
-          index: number | null
           lead_source: string | null
           name: string
           next_action: string | null
@@ -593,6 +641,7 @@ export type Database = {
           priority: Database["public"]["Enums"]["priority_level"] | null
           search_tsv: unknown | null
           stage: Database["public"]["Enums"]["opportunity_stage"] | null
+          stage_changed_at: string | null
           stage_manual: boolean | null
           status: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual: boolean | null
@@ -615,7 +664,6 @@ export type Database = {
           estimated_close_date?: string | null
           founding_interaction_id?: number | null
           id?: number
-          index?: number | null
           lead_source?: string | null
           name: string
           next_action?: string | null
@@ -625,6 +673,7 @@ export type Database = {
           priority?: Database["public"]["Enums"]["priority_level"] | null
           search_tsv?: unknown | null
           stage?: Database["public"]["Enums"]["opportunity_stage"] | null
+          stage_changed_at?: string | null
           stage_manual?: boolean | null
           status?: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual?: boolean | null
@@ -647,7 +696,6 @@ export type Database = {
           estimated_close_date?: string | null
           founding_interaction_id?: number | null
           id?: number
-          index?: number | null
           lead_source?: string | null
           name?: string
           next_action?: string | null
@@ -657,6 +705,7 @@ export type Database = {
           priority?: Database["public"]["Enums"]["priority_level"] | null
           search_tsv?: unknown | null
           stage?: Database["public"]["Enums"]["opportunity_stage"] | null
+          stage_changed_at?: string | null
           stage_manual?: boolean | null
           status?: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual?: boolean | null
@@ -753,6 +802,13 @@ export type Database = {
             referencedRelation: "opportunities"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "opportunity_participants_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
+            referencedColumns: ["id"]
+          },
         ]
       }
       opportunityNotes: {
@@ -805,6 +861,13 @@ export type Database = {
             columns: ["opportunity_id"]
             isOneToOne: false
             referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunityNotes_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
             referencedColumns: ["id"]
           },
           {
@@ -953,6 +1016,13 @@ export type Database = {
             columns: ["parent_organization_id"]
             isOneToOne: false
             referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
             referencedColumns: ["id"]
           },
           {
@@ -1496,6 +1566,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "tasks_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "tasks_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
@@ -1507,6 +1584,13 @@ export type Database = {
             columns: ["opportunity_id"]
             isOneToOne: false
             referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
             referencedColumns: ["id"]
           },
           {
@@ -1605,8 +1689,153 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "contacts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "contacts_sales_id_fkey"
             columns: ["sales_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contacts_with_account_manager: {
+        Row: {
+          account_manager_is_user: boolean | null
+          account_manager_name: string | null
+          address: string | null
+          birthday: string | null
+          city: string | null
+          country: string | null
+          created_at: string | null
+          created_by: number | null
+          deleted_at: string | null
+          department: string | null
+          email: Json | null
+          first_name: string | null
+          first_seen: string | null
+          gender: string | null
+          id: number | null
+          last_name: string | null
+          last_seen: string | null
+          linkedin_url: string | null
+          name: string | null
+          notes: string | null
+          organization_id: number | null
+          phone: Json | null
+          postal_code: string | null
+          sales_id: number | null
+          search_tsv: unknown | null
+          state: string | null
+          tags: number[] | null
+          title: string | null
+          twitter_handle: string | null
+          updated_at: string | null
+          updated_by: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contacts_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contacts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contacts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contacts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contacts_sales_id_fkey"
+            columns: ["sales_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contacts_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunities_summary: {
+        Row: {
+          account_manager_id: number | null
+          actual_close_date: string | null
+          competition: string | null
+          contact_ids: number[] | null
+          created_at: string | null
+          created_by: number | null
+          customer_organization_id: number | null
+          days_in_stage: number | null
+          decision_criteria: string | null
+          deleted_at: string | null
+          description: string | null
+          distributor_organization_id: number | null
+          estimated_close_date: string | null
+          founding_interaction_id: number | null
+          id: number | null
+          last_interaction_date: string | null
+          lead_source: string | null
+          name: string | null
+          nb_interactions: number | null
+          next_action: string | null
+          next_action_date: string | null
+          opportunity_owner_id: number | null
+          principal_organization_id: number | null
+          priority: Database["public"]["Enums"]["priority_level"] | null
+          search_tsv: unknown | null
+          stage: Database["public"]["Enums"]["opportunity_stage"] | null
+          stage_changed_at: string | null
+          stage_manual: boolean | null
+          status: Database["public"]["Enums"]["opportunity_status"] | null
+          status_manual: boolean | null
+          tags: string[] | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunities_account_manager_id_fkey"
+            columns: ["account_manager_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_sales_id_fkey"
+            columns: ["opportunity_owner_id"]
             isOneToOne: false
             referencedRelation: "sales"
             referencedColumns: ["id"]
@@ -1645,8 +1874,101 @@ export type Database = {
           },
         ]
       }
+      organizations_with_account_manager: {
+        Row: {
+          account_manager_is_user: boolean | null
+          account_manager_name: string | null
+          address: string | null
+          annual_revenue: number | null
+          city: string | null
+          context_links: Json | null
+          created_at: string | null
+          created_by: number | null
+          deleted_at: string | null
+          description: string | null
+          email: string | null
+          employee_count: number | null
+          founded_year: number | null
+          id: number | null
+          import_session_id: string | null
+          linkedin_url: string | null
+          logo_url: string | null
+          name: string | null
+          notes: string | null
+          organization_type:
+            | Database["public"]["Enums"]["organization_type"]
+            | null
+          parent_organization_id: number | null
+          phone: string | null
+          postal_code: string | null
+          priority: string | null
+          sales_id: number | null
+          search_tsv: unknown | null
+          segment_id: string | null
+          state: string | null
+          tax_identifier: string | null
+          updated_at: string | null
+          updated_by: number | null
+          website: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organizations_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_industry_id_fkey"
+            columns: ["segment_id"]
+            isOneToOne: false
+            referencedRelation: "segments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_sales_id_fkey"
+            columns: ["sales_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
+      backfill_opportunity_contacts: {
+        Args: { p_opportunity_id: number }
+        Returns: undefined
+      }
       calculate_product_price: {
         Args: {
           p_distributor_id?: number
@@ -1743,6 +2065,10 @@ export type Database = {
           p_type: Database["public"]["Enums"]["interaction_type"]
         }
         Returns: number
+      }
+      map_org_priority_to_opp_priority: {
+        Args: { org_priority: string }
+        Returns: Database["public"]["Enums"]["priority_level"]
       }
       set_primary_organization: {
         Args: { p_contact_id: number; p_organization_id: number }

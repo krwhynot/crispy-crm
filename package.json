@@ -28,6 +28,7 @@
     "supabase:remote:init": "node ./scripts/supabase-remote-init.mjs",
     "db:migrate:new": "npx supabase migration new",
     "cache:clear": "node ./scripts/cache-invalidation.js",
+    "migrate:csv": "node ./scripts/migrate-opportunities-csv.js",
     "cache:clear:dry-run": "node ./scripts/cache-invalidation.js --dry-run",
     "search:reindex": "node ./scripts/search-reindex.js",
     "validate:pre-migration": "node ./scripts/validation/run-pre-validation.js",

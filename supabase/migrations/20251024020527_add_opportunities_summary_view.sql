@@ -25,7 +25,6 @@ SELECT
   o.opportunity_owner_id,
   o.account_manager_id,
   o.lead_source,
-  o.index,
   o.founding_interaction_id,
   o.stage_manual,
   o.status_manual,

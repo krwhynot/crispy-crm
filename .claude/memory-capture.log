@@ -1800,3 +1800,11 @@
 [2025-10-23 21:06:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderUtils.ts
 [2025-10-23 21:11:12] [documentation] Write: /home/krwhynot/projects/crispy-crm/data/STAGE_MAPPING_GUIDE.md
 [2025-10-23 21:21:04] [configuration] Write: /home/krwhynot/projects/crispy-crm/data/stage_mapping.json
+[2025-10-23 21:21:21] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251024022111_add_csv_migration_helpers.sql
+[2025-10-23 21:22:24] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/migrate-opportunities-csv.ts
+[2025-10-23 21:22:35] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-23 21:23:12] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251024020527_add_opportunities_summary_view.sql
+[2025-10-23 21:25:19] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/migrate-opportunities-csv.js
+[2025-10-23 21:25:24] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-23 21:25:47] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/migrate-opportunities-csv.js
+[2025-10-23 21:51:39] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251024025125_add_stage_changed_at.sql
