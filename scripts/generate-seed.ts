@@ -1,14 +1,20 @@
 #!/usr/bin/env npx tsx
 /**
- * TEST VERSION: Generate seed.sql from CSV files (SMALL SUBSET)
+ * PRODUCTION: Generate seed.sql from CSV files (FULL DATASET)
  *
- * This script processes a SMALL subset of data to validate the approach:
- * - First 20 organizations
- * - All contacts that reference those 20 orgs
+ * This script processes ALL data from CSV files:
+ * - All organizations from organizations_standardized.csv
+ * - All contacts from contacts_db_ready.csv
  *
- * Output: supabase/test-seed.sql (for manual testing)
+ * Output: supabase/seed.sql (production seed file)
  *
- * Usage: npm run generate:test-seed
+ * Usage: npm run generate:seed
+ *
+ * Industry Standards Applied:
+ * - Name-based deduplication (case-insensitive)
+ * - Sequential database IDs (not CSV line numbers)
+ * - Phone format: plain digits without .0 suffix
+ * - Email/phone: JSONB arrays with type metadata
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -19,11 +25,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// TEST CONFIGURATION
-const TEST_ORG_COUNT = 100;  // Process first 100 organizations (to capture contacts)
-
-console.log('📦 Generating TEST seed data from CSVs...\n');
-console.log(`   Test size: ${TEST_ORG_COUNT} organizations\n`);
+console.log('📦 Generating FULL seed data from CSVs...\n');
 
 // ============================================================================
 // HELPER FUNCTIONS

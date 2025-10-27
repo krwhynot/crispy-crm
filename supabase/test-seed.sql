@@ -2,7 +2,7 @@
 -- TEST SEED DATA - Generated from CSV files (SUBSET)
 -- ============================================================================
 -- This is a TEST file with 100 organizations and 36 contacts
--- Generated: 2025-10-27T22:16:05.247Z
+-- Generated: 2025-10-27T22:29:57.705Z
 --
 -- DO NOT use this in production - this is for testing the approach
 -- Run with: psql <connection> -f supabase/test-seed.sql
@@ -128,8 +128,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (5, 'Unknown', NULL, NULL, 34, '[{"email":"osroc44@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'President', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (6, 'Corso', NULL, 'Corso', 35, '[{"email":"osroc44@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (7, 'Chef Tinaglia', 'Chef', 'Tinaglia', 42, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
-  (8, 'Jay-', NULL, 'Jay-', 44, '[]'::jsonb, '[{"number":"12247352450.0","type":"work"}]'::jsonb, 'Manager', NULL, '111 W Campbell St', NULL, NULL, NULL, 'USA', NULL, NULL),
-  (9, 'Michael Campenil - Greco', 'Michael Campenil -', 'Greco', 44, '[]'::jsonb, '[{"number":"12247352450.0","type":"work"}]'::jsonb, 'Distributor Rep', NULL, '111 W Campbell St', NULL, NULL, NULL, 'USA', NULL, NULL),
+  (8, 'Jay-', NULL, 'Jay-', 44, '[]'::jsonb, '[{"number":"12247352450","type":"work"}]'::jsonb, 'Manager', NULL, '111 W Campbell St', NULL, NULL, NULL, 'USA', NULL, NULL),
+  (9, 'Michael Campenil - Greco', 'Michael Campenil -', 'Greco', 44, '[]'::jsonb, '[{"number":"12247352450","type":"work"}]'::jsonb, 'Distributor Rep', NULL, '111 W Campbell St', NULL, NULL, NULL, 'USA', NULL, NULL),
   (10, 'Don Smith', 'Don', 'Smith', 63, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, 'In charge of all purchases for store'),
   (11, 'Mike', NULL, 'Mike', 63, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (12, 'Max', NULL, 'Max', 63, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
@@ -140,23 +140,23 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (17, 'Community Engagement', 'Community', 'Engagement', 79, '[]'::jsonb, '[]'::jsonb, 'Vp', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (18, 'David Tsirekas Craig Richardson', 'David Tsirekas Craig', 'Richardson', 93, '[{"email":"craigbnb@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (19, 'Arjay Liarakos', 'Arjay', 'Liarakos', 48, '[{"email":"aliarakos@artisanspecialtyfoods.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
-  (20, 'Jennifer Baldwin', 'Jennifer', 'Baldwin', 56, '[{"email":"jennifer.baldwin@atlanticfoods.biz","type":"work"}]'::jsonb, '[{"number":"15136002267.0","type":"work"}]'::jsonb, 'Distributor Slot Decisionmaker', NULL, '430 6th ST SE Canton', 'Canton', NULL, '44702.0', 'USA', NULL, NULL),
+  (20, 'Jennifer Baldwin', 'Jennifer', 'Baldwin', 56, '[{"email":"jennifer.baldwin@atlanticfoods.biz","type":"work"}]'::jsonb, '[{"number":"15136002267","type":"work"}]'::jsonb, 'Distributor Slot Decisionmaker', NULL, '430 6th ST SE Canton', 'Canton', NULL, '44702.0', 'USA', NULL, NULL),
   (21, 'Lonnie', NULL, 'Lonnie', 56, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, '430 6th ST SE Canton', 'Canton', NULL, '44702.0', 'USA', NULL, NULL),
   (22, 'Christine Manolakis', 'Christine', 'Manolakis', 56, '[{"email":"chistina@atlanticfoods.biz","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '430 6th ST SE Canton', 'Canton', NULL, '44702.0', 'USA', NULL, NULL),
   (23, 'Kristina Clark', 'Kristina', 'Clark', 56, '[{"email":"kristina.clark@atlanticfoods.biz","type":"work"}]'::jsonb, '[]'::jsonb, 'Executive', NULL, '430 6th ST SE Canton', 'Canton', NULL, '44702.0', 'USA', NULL, NULL),
-  (24, 'Ron Peterson', 'Ron', 'Peterson', 56, '[{"email":"ron.peterson@atlanticfoods.biz","type":"work"}]'::jsonb, '[{"number":"13308315946.0","type":"work"}]'::jsonb, 'Distributor Rep', NULL, '430 6th ST SE Canton', 'Canton', NULL, '44702.0', 'USA', NULL, NULL),
+  (24, 'Ron Peterson', 'Ron', 'Peterson', 56, '[{"email":"ron.peterson@atlanticfoods.biz","type":"work"}]'::jsonb, '[{"number":"13308315946","type":"work"}]'::jsonb, 'Distributor Rep', NULL, '430 6th ST SE Canton', 'Canton', NULL, '44702.0', 'USA', NULL, NULL),
   (25, 'Nick Albanos', 'Nick', 'Albanos', 22, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (26, 'Matt Regula', 'Matt', 'Regula', 75, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
-  (27, 'Sue And Tim', 'Sue And', 'Tim', 53, '[{"email":"newt3013@yahoo.com","type":"work"}]'::jsonb, '[{"number":"17083885520.0","type":"work"}]'::jsonb, 'Owner', NULL, '4901 cal sag rd', 'Crestwood', 'IL', '60445.0', 'USA', NULL, NULL),
+  (27, 'Sue And Tim', 'Sue And', 'Tim', 53, '[{"email":"newt3013@yahoo.com","type":"work"}]'::jsonb, '[{"number":"17083885520","type":"work"}]'::jsonb, 'Owner', NULL, '4901 cal sag rd', 'Crestwood', 'IL', '60445.0', 'USA', NULL, NULL),
   (28, 'Matt Regula', 'Matt', 'Regula', 75, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, 'Brea', 'OH', NULL, 'USA', NULL, NULL),
   (29, 'Ched Brent', 'Ched', 'Brent', 51, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (30, 'Peter Shuey', 'Peter', 'Shuey', 74, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (31, 'Trevor', NULL, 'Trevor', 52, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (32, 'Adam Bliter', 'Adam', 'Bliter', 52, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (33, 'Panos', NULL, 'Panos', 64, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
-  (34, 'Tommy Rhodes', 'Tommy', 'Rhodes', 87, '[{"email":"tommy@barefootrepublic.org","type":"work"}]'::jsonb, '[{"number":"16155999683.0","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
+  (34, 'Tommy Rhodes', 'Tommy', 'Rhodes', 87, '[{"email":"tommy@barefootrepublic.org","type":"work"}]'::jsonb, '[{"number":"16155999683","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (35, 'Jack Gilbertson', 'Jack', 'Gilbertson', 21, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
-  (36, 'Unknown', NULL, NULL, 78, '[]'::jsonb, '[{"number":"17735252522.0","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL);
+  (36, 'Unknown', NULL, NULL, 78, '[]'::jsonb, '[{"number":"17735252522","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL);
 
 -- ============================================================================
 -- VALIDATION QUERIES (run these to verify)
