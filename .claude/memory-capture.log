@@ -1938,3 +1938,4 @@
 [2025-10-27 17:59:03] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251027225853_remove_csv_line_number_column.sql
 [2025-10-27 17:59:30] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
 [2025-10-27 18:07:51] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-27 18:16:34] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/generate-seed.ts
