@@ -1907,3 +1907,16 @@
 [2025-10-24 14:28:38] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/import-organizations-csv.sh
 [2025-10-24 14:30:33] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/import-all-data.sh
 [2025-10-27 16:48:08] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251027214800_add_csv_line_number_to_orgs.sql
+[2025-10-27 16:49:33] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/import-organizations-csv.ts
+[2025-10-27 16:49:59] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/import-contacts-csv.ts
+[2025-10-27 16:50:19] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-27 16:50:49] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
+[2025-10-27 16:51:14] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-organizations-csv.ts
+[2025-10-27 16:51:20] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-organizations-csv.ts
+[2025-10-27 16:51:26] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-contacts-csv.ts
+[2025-10-27 16:51:32] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-contacts-csv.ts
+[2025-10-27 16:51:47] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-organizations-csv.ts
+[2025-10-27 16:51:53] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-contacts-csv.ts
+[2025-10-27 16:52:16] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-organizations-csv.ts
+[2025-10-27 16:52:23] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-contacts-csv.ts
+[2025-10-27 16:53:22] [code] Edit: /home/krwhynot/projects/crispy-crm/scripts/import-contacts-csv.ts
