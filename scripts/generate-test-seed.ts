@@ -20,7 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // TEST CONFIGURATION
-const TEST_ORG_COUNT = 20;  // Only process first 20 organizations
+const TEST_ORG_COUNT = 100;  // Process first 100 organizations (to capture contacts)
 
 console.log('📦 Generating TEST seed data from CSVs...\n');
 console.log(`   Test size: ${TEST_ORG_COUNT} organizations\n`);
@@ -41,13 +41,27 @@ function parseOrgId(value: string): number | null {
   return isNaN(parsed) ? null : Math.floor(parsed);
 }
 
-function toPostgresJSON(value: string): string {
+function toPostgresJSON(value: string, fieldType: 'email' | 'phone' = 'email'): string {
   if (!value || value === '[]' || value.trim() === '') {
     return `'[]'::jsonb`;
   }
 
   try {
     const parsed = JSON.parse(value);
+
+    // Clean up phone numbers: remove .0 suffix from numeric strings
+    if (fieldType === 'phone' && Array.isArray(parsed)) {
+      parsed.forEach((item: any) => {
+        if (item.number) {
+          // Convert "12247352450.0" to "12247352450"
+          const numStr = String(item.number);
+          if (numStr.endsWith('.0')) {
+            item.number = numStr.slice(0, -2);
+          }
+        }
+      });
+    }
+
     const jsonStr = JSON.stringify(parsed).replace(/'/g, "''");
     return `'${jsonStr}'::jsonb`;
   } catch {
