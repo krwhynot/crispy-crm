@@ -42,6 +42,7 @@
     "db:local:stop": "npx supabase stop",
     "db:local:reset": "npx supabase db reset",
     "db:local:status": "npx supabase status",
+    "generate:seed": "npx tsx scripts/generate-seed.ts",
     "generate:test-seed": "npx tsx scripts/generate-test-seed.ts",
     "import:orgs": "npx tsx scripts/import-organizations-csv.ts",
     "import:contacts": "npx tsx scripts/import-contacts-csv.ts",

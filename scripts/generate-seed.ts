@@ -33,8 +33,11 @@ console.log('📦 Generating FULL seed data from CSVs...\n');
 
 function escapeSQLString(str: string | null | undefined): string {
   if (str === null || str === undefined || str === '') return 'NULL';
-  // Escape single quotes by doubling them
-  return `'${String(str).replace(/'/g, "''")}'`;
+  // Clean invalid UTF-8 characters and escape single quotes
+  const cleaned = String(str)
+    .replace(/�/g, '') // Remove replacement character
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ''); // Remove control characters
+  return `'${cleaned.replace(/'/g, "''")}'`;
 }
 
 function parseOrgId(value: string): number | null {
@@ -103,21 +106,19 @@ console.log(`   Organizations CSV: ${orgsArray.length} rows`);
 console.log(`   Contacts CSV: ${contactsArray.length} rows\n`);
 
 // ============================================================================
-// PROCESS ORGANIZATIONS (FIRST 20 ONLY)
+// PROCESS ORGANIZATIONS (ALL)
 // ============================================================================
 
-console.log(`2️⃣  Processing first ${TEST_ORG_COUNT} organizations...`);
-
-const testOrgsArray = orgsArray.slice(0, TEST_ORG_COUNT);
+console.log('2️⃣  Processing ALL organizations...');
 
 // Deduplicate by lowercase name
 const uniqueOrgs = new Map();
-testOrgsArray.forEach((org, index) => {
+orgsArray.forEach((org, index) => {
   const key = (org.name || '').trim().toLowerCase();
   if (key && !uniqueOrgs.has(key)) {
     uniqueOrgs.set(key, {
       ...org,
-      csvLineNumber: index + 1,  // 1-indexed
+      csvLineNumber: index + 1,  // Used only for contact mapping, not stored in DB
     });
   }
 });
@@ -137,61 +138,66 @@ uniqueOrgs.forEach((org, nameKey) => {
 console.log(`   Unique organizations: ${orgsForSQL.length}\n`);
 
 // ============================================================================
-// PROCESS CONTACTS (ONLY THOSE REFERENCING TEST ORGS)
+// PROCESS CONTACTS (ALL)
 // ============================================================================
 
-console.log('3️⃣  Processing contacts...');
+console.log('3️⃣  Processing ALL contacts...');
 
-const testContacts: any[] = [];
+const contactsForSQL: any[] = [];
 let contactId = 1;
 let matchedCount = 0;
 let unmatchedCount = 0;
+let withoutOrgCount = 0;
 
 contactsArray.forEach((contact) => {
   const csvLine = parseOrgId(contact.organization_id);
 
-  // Only include contacts that reference our test organizations
-  if (csvLine && csvLine <= TEST_ORG_COUNT) {
+  // Map CSV line number to actual org ID (if present)
+  let orgId: number | null = null;
+  if (csvLine) {
     const orgName = orgsArray[csvLine - 1]?.name;
     if (orgName) {
-      const orgId = orgNameToId.get(orgName.trim().toLowerCase());
-
+      orgId = orgNameToId.get(orgName.trim().toLowerCase()) || null;
       if (orgId) {
-        // Construct name field
-        const name = contact.name ||
-                     (contact.first_name && contact.last_name ? `${contact.first_name} ${contact.last_name}` : null) ||
-                     contact.first_name ||
-                     contact.last_name ||
-                     'Unknown';
-
-        testContacts.push({
-          id: contactId++,
-          name,
-          first_name: contact.first_name || null,
-          last_name: contact.last_name || null,
-          organization_id: orgId,
-          email: contact.email || '[]',
-          phone: contact.phone || '[]',
-          title: contact.title || null,
-          department: contact.department || null,
-          address: contact.address || null,
-          city: contact.city || null,
-          state: contact.state || null,
-          postal_code: contact.postal_code || null,
-          country: contact.country || 'USA',
-          linkedin_url: contact.linkedin_url || null,
-          notes: contact.notes || null,
-        });
         matchedCount++;
       } else {
         unmatchedCount++;
       }
     }
+  } else {
+    withoutOrgCount++;
   }
+
+  // Construct name field (required, not-null)
+  const name = contact.name ||
+               (contact.first_name && contact.last_name ? `${contact.first_name} ${contact.last_name}` : null) ||
+               contact.first_name ||
+               contact.last_name ||
+               'Unknown';
+
+  contactsForSQL.push({
+    id: contactId++,
+    name,
+    first_name: contact.first_name || null,
+    last_name: contact.last_name || null,
+    organization_id: orgId,
+    email: contact.email || '[]',
+    phone: contact.phone || '[]',
+    title: contact.title || null,
+    department: contact.department || null,
+    address: contact.address || null,
+    city: contact.city || null,
+    state: contact.state || null,
+    postal_code: contact.postal_code || null,
+    country: contact.country || 'USA',
+    linkedin_url: contact.linkedin_url || null,
+    notes: contact.notes || null,
+  });
 });
 
-console.log(`   Matched contacts: ${matchedCount}`);
-console.log(`   Unmatched: ${unmatchedCount}\n`);
+console.log(`   With organization: ${matchedCount}`);
+console.log(`   Without organization: ${withoutOrgCount}`);
+console.log(`   Invalid org reference: ${unmatchedCount}\n`);
 
 // ============================================================================
 // GENERATE SQL
@@ -200,17 +206,24 @@ console.log(`   Unmatched: ${unmatchedCount}\n`);
 console.log('4️⃣  Generating SQL...\n');
 
 let sql = `-- ============================================================================
--- TEST SEED DATA - Generated from CSV files (SUBSET)
+-- PRODUCTION SEED DATA - Generated from CSV files
 -- ============================================================================
--- This is a TEST file with ${TEST_ORG_COUNT} organizations and ${testContacts.length} contacts
 -- Generated: ${new Date().toISOString()}
+-- Organizations: ${orgsForSQL.length} (deduplicated)
+-- Contacts: ${contactsForSQL.length}
 --
--- DO NOT use this in production - this is for testing the approach
--- Run with: psql <connection> -f supabase/test-seed.sql
+-- Source Files:
+--   - data/csv-files/organizations_standardized.csv
+--   - data/csv-files/cleaned/contacts_db_ready.csv
+--
+-- Generation Method:
+--   - Name-based deduplication (case-insensitive)
+--   - Sequential database IDs (line numbers used only during generation)
+--   - Industry-standard JSONB format for email/phone arrays
+--
+-- Run with: npx supabase db reset (runs automatically)
+-- Or manually: psql <connection> -f supabase/seed.sql
 -- ============================================================================
-
--- Test user (from original seed.sql)
--- Note: This is simplified - you may need to preserve the full test user setup
 
 -- ============================================================================
 -- ORGANIZATIONS (${orgsForSQL.length} unique)
@@ -243,18 +256,18 @@ sql += orgValues.join('\n') + '\n\n';
 // ============================================================================
 
 sql += `-- ============================================================================
--- CONTACTS (${testContacts.length} total)
+-- CONTACTS (${contactsForSQL.length} total)
 -- ============================================================================
 
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, department, address, city, state, postal_code, country, linkedin_url, notes) VALUES\n`;
 
-const contactValues = testContacts.map((contact, idx) => {
+const contactValues = contactsForSQL.map((contact, idx) => {
   const values = [
     contact.id,
     escapeSQLString(contact.name),
     escapeSQLString(contact.first_name),
     escapeSQLString(contact.last_name),
-    contact.organization_id,
+    contact.organization_id === null ? 'NULL' : contact.organization_id,
     toPostgresJSON(contact.email, 'email'),
     toPostgresJSON(contact.phone, 'phone'),
     escapeSQLString(contact.title),
@@ -268,7 +281,7 @@ const contactValues = testContacts.map((contact, idx) => {
     escapeSQLString(contact.notes),
   ].join(', ');
 
-  return `  (${values})${idx < testContacts.length - 1 ? ',' : ';'}`;
+  return `  (${values})${idx < contactsForSQL.length - 1 ? ',' : ';'}`;
 });
 
 sql += contactValues.join('\n') + '\n\n';
@@ -301,14 +314,17 @@ sql += `-- =====================================================================
 // WRITE OUTPUT
 // ============================================================================
 
-const outputPath = resolve(__dirname, '../supabase/test-seed.sql');
+const outputPath = resolve(__dirname, '../supabase/seed.sql');
 writeFileSync(outputPath, sql, 'utf-8');
 
-console.log('✅ Test seed file generated!');
-console.log(`   Output: supabase/test-seed.sql`);
-console.log(`   Organizations: ${orgsForSQL.length}`);
-console.log(`   Contacts: ${testContacts.length}\n`);
+console.log('✅ Production seed file generated!');
+console.log(`   Output: supabase/seed.sql`);
+console.log(`   Organizations: ${orgsForSQL.length} (deduplicated)`);
+console.log(`   Contacts: ${contactsForSQL.length}`);
+console.log(`   - With organization: ${matchedCount}`);
+console.log(`   - Without organization: ${withoutOrgCount}`);
+console.log(`   - Invalid org reference: ${unmatchedCount}\n`);
 console.log('📋 Next steps:');
-console.log('   1. Review: cat supabase/test-seed.sql');
-console.log('   2. Test: psql <connection> -f supabase/test-seed.sql');
+console.log('   1. Review: head -100 supabase/seed.sql');
+console.log('   2. Test: npm run db:local:reset (runs seed.sql automatically)');
 console.log('   3. Validate with the queries at the end of the file\n');
