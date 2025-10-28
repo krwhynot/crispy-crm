@@ -4003,3 +4003,13 @@ SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts));
 -- JOIN organizations o ON c.organization_id = o.id
 -- LEFT JOIN segments s ON o.segment_id = s.id
 -- LIMIT 5;
+
+-- ============================================================================
+-- COMMIT TRANSACTION
+-- ============================================================================
+-- Finalizes all changes atomically
+-- If any error occurred above, this line is never reached and all changes
+-- are automatically rolled back, leaving the database in its original state
+-- ============================================================================
+
+COMMIT;
