@@ -1995,3 +1995,6 @@
 [2025-10-28 13:00:38] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-integration.spec.ts
 [2025-10-28 13:03:37] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-e2e.spec.ts
 [2025-10-28 13:03:47] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/import-integration.spec.ts
+[2025-10-28 17:08:27] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-28 17:09:39] [documentation] Write: /tmp/seed_safety_update.md
+[2025-10-28 17:50:53] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/deploy-seed-to-cloud.sh
