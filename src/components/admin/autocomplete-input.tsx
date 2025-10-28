@@ -209,7 +209,7 @@ export const AutocompleteInput = (
                   }}
                 />
                 <CommandEmpty>No matching item found.</CommandEmpty>
-                <CommandGroup>
+                <CommandGroup className="max-h-[280px] overflow-y-auto">
                   {finalChoices.map((choice) => {
                     const isCreateItem =
                       !!createItem && choice?.id === createItem.id;
