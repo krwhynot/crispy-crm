@@ -96,14 +96,23 @@ const ProductClassificationInputs = () => {
     name: status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
   }));
 
+  // Handler for creating custom categories
+  const handleCreateCategory = (categoryName?: string) => {
+    if (!categoryName) return;
+    // For categories, we just return the value directly (no database call needed)
+    return { id: categoryName, name: categoryName };
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Classification</h6>
-      <SelectInput
+      <AutocompleteInput
         source="category"
         label="Category *"
         choices={productCategories}
-        helperText="Required field"
+        onCreate={handleCreateCategory}
+        createItemLabel="Add custom category: %{item}"
+        helperText="Select F&B category or type to create custom"
       />
       <SelectInput
         source="status"
