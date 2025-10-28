@@ -54,11 +54,6 @@ export const productSchema = z.object({
   status: productStatusSchema.default("active"),
   description: z.string().optional(),
 
-  // Pricing fields with defaults
-  currency_code: currencyCodeSchema.default("USD"),
-  unit_of_measure: unitOfMeasureSchema,
-  list_price: z.number().min(0, "Price must be positive").optional(),
-
   // Food/health specific fields (kept for flexibility)
   // NOTE: Using .nullish() to accept both undefined and null values
   certifications: z.array(z.string()).nullish(),

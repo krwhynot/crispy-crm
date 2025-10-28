@@ -15,13 +15,6 @@ const ProductEdit = () => {
     <EditBase
       redirect="show"
       mutationMode="pessimistic"
-      transform={(values) => {
-        // Ensure numeric fields are properly formatted
-        if (values.list_price) {
-          values.list_price = parseFloat(values.list_price);
-        }
-        return values;
-      }}
       mutationOptions={{
         onSuccess: () => {
           // Invalidate products cache
@@ -58,7 +51,7 @@ const ProductEditForm = () => {
           <div className="mb-6">
             <h2 className="text-2xl font-semibold">Edit {record.name}</h2>
             <p className="text-sm text-[color:var(--text-subtle)] mt-1">
-              Update product information and pricing
+              Update product information
             </p>
           </div>
 

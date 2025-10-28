@@ -230,7 +230,6 @@ export const filterableFields: Record<string, string[]> = {
     "description",
     "sku",
     "category",
-    "list_price",
     "status",
     "certifications",  // Array field
     "allergens",       // Array field
@@ -241,8 +240,6 @@ export const filterableFields: Record<string, string[]> = {
     "created_by",
     "updated_by",
     "deleted_at",      // Soft delete timestamp
-    "currency_code",
-    "unit_of_measure",
     "minimum_order_quantity",
     "manufacturer_part_number",
     "q",               // Special: full-text search parameter
