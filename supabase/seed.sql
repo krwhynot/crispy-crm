@@ -75,6 +75,20 @@ INSERT INTO auth.users (
 -- Note: Sales record is auto-created by database trigger when auth.users is inserted
 
 -- ============================================================================
+-- SEGMENTS (Industry/Market Segments)
+-- ============================================================================
+-- Required for organizations.segment_id foreign key constraint
+-- These UUIDs are referenced in OrganizationCreate.tsx and test mocks
+
+INSERT INTO segments (id, name, created_at, created_by) VALUES
+  ('562062be-c15b-417f-b2a1-d4a643d69d52', 'Unknown', NOW(), NULL),
+  ('7ff800ed-22b9-46b1-acd3-f4180fe9fe55', 'Health Care', NOW(), NULL),
+  ('c596adaa-94b1-4145-b1fc-c54dffdcca1f', 'Restaurant', NOW(), NULL)
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  created_at = EXCLUDED.created_at;
+
+-- ============================================================================
 -- ORGANIZATIONS (1809 unique)
 -- ============================================================================
 
