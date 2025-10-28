@@ -163,13 +163,17 @@ export const filterableFields: Record<string, string[]> = {
   // Sales resource (users)
   sales: [
     "id",
+    "user_id",         // UUID reference to auth.users
     "first_name",
     "last_name",
     "email",
+    "phone",
     "administrator",
     "disabled",
     "deleted_at",      // Soft delete timestamp
     "avatar",
+    "created_at",
+    "updated_at",
   ],
 
   // Tasks resource
