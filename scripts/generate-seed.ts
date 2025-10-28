@@ -32,6 +32,31 @@ console.log('📦 Generating FULL seed data from CSVs...\n');
 // HELPER FUNCTIONS
 // ============================================================================
 
+/**
+ * Generate deterministic UUID v5 from a string
+ * Uses DNS namespace for consistency across regenerations
+ * Same input string always produces same UUID
+ */
+function generateDeterministicUUID(name: string): string {
+  // UUID v5 namespace for DNS (standard)
+  const namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+
+  // Create hash from namespace + name
+  const hash = createHash('sha1')
+    .update(namespace.replace(/-/g, ''))
+    .update(name)
+    .digest('hex');
+
+  // Format as UUID v5 (xxxxxxxx-xxxx-5xxx-yxxx-xxxxxxxxxxxx)
+  return [
+    hash.substring(0, 8),
+    hash.substring(8, 12),
+    '5' + hash.substring(13, 16), // Version 5
+    ((parseInt(hash.substring(16, 18), 16) & 0x3f) | 0x80).toString(16) + hash.substring(18, 20),
+    hash.substring(20, 32),
+  ].join('-');
+}
+
 function escapeSQLString(str: string | null | undefined): string {
   if (str === null || str === undefined || str === '') return 'NULL';
   // Clean invalid UTF-8 characters and escape single quotes
@@ -112,7 +137,34 @@ console.log(`   Contacts CSV: ${contactsArray.length} rows\n`);
 
 console.log('2️⃣  Processing ALL organizations...');
 
-// Deduplicate by lowercase name
+// Extract unique segments from CSV
+const uniqueSegments = new Set<string>();
+orgsArray.forEach((org) => {
+  const segmentName = (org.segment_name || '').trim();
+  if (segmentName) {
+    uniqueSegments.add(segmentName);
+  }
+});
+
+// Generate deterministic UUIDs for each segment
+const segmentNameToUUID = new Map<string, string>();
+const segmentsForSQL: Array<{id: string, name: string}> = [];
+
+// Add special "Unknown" segment with hardcoded UUID (used by OrganizationCreate.tsx default)
+const UNKNOWN_SEGMENT_UUID = '562062be-c15b-417f-b2a1-d4a643d69d52';
+segmentsForSQL.push({ id: UNKNOWN_SEGMENT_UUID, name: 'Unknown' });
+segmentNameToUUID.set('Unknown', UNKNOWN_SEGMENT_UUID);
+
+// Add segments from CSV
+uniqueSegments.forEach((segmentName) => {
+  const uuid = generateDeterministicUUID(`segment:${segmentName}`);
+  segmentNameToUUID.set(segmentName, uuid);
+  segmentsForSQL.push({ id: uuid, name: segmentName });
+});
+
+console.log(`   Unique segments extracted: ${segmentsForSQL.length} (including 1 special)`);
+
+// Deduplicate orgs by lowercase name
 const uniqueOrgs = new Map();
 orgsArray.forEach((org, index) => {
   const key = (org.name || '').trim().toLowerCase();
@@ -124,14 +176,18 @@ orgsArray.forEach((org, index) => {
   }
 });
 
-// Assign sequential IDs
+// Assign sequential IDs and map segments
 let nextOrgId = 1;
 const orgNameToId = new Map();
 const orgsForSQL: any[] = [];
 
 uniqueOrgs.forEach((org, nameKey) => {
   const orgId = nextOrgId++;
+  const segmentName = (org.segment_name || '').trim();
+  const segmentId = segmentName ? segmentNameToUUID.get(segmentName) : null;
+
   org.id = orgId;
+  org.segment_id = segmentId;
   orgNameToId.set(nameKey, orgId);
   orgsForSQL.push(org);
 });
@@ -210,6 +266,7 @@ let sql = `-- ==================================================================
 -- PRODUCTION SEED DATA - Generated from CSV files
 -- ============================================================================
 -- Generated: ${new Date().toISOString()}
+-- Segments: ${segmentsForSQL.length} (industry/market categories)
 -- Organizations: ${orgsForSQL.length} (deduplicated)
 -- Contacts: ${contactsForSQL.length}
 --
@@ -220,7 +277,9 @@ let sql = `-- ==================================================================
 -- Generation Method:
 --   - Name-based deduplication (case-insensitive)
 --   - Sequential database IDs (line numbers used only during generation)
+--   - Deterministic UUID v5 for segments (reproducible)
 --   - Industry-standard JSONB format for email/phone arrays
+--   - Sequence reset after bulk inserts to prevent conflicts
 --
 -- Run with: npx supabase db reset (runs automatically)
 -- Or manually: psql <connection> -f supabase/seed.sql
@@ -283,10 +342,31 @@ INSERT INTO auth.users (
 -- Note: Sales record is auto-created by database trigger when auth.users is inserted
 
 -- ============================================================================
+-- SEGMENTS (Industry/Market Segments)
+-- ============================================================================
+-- Required for organizations.segment_id foreign key constraint
+-- UUIDs generated deterministically using UUID v5 (namespace + segment name)
+-- Regenerating this file produces identical UUIDs for same segment names
+
+INSERT INTO segments (id, name, created_at, created_by) VALUES\n`;
+
+// Add segment values
+const segmentValues = segmentsForSQL
+  .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically
+  .map((segment, idx) => {
+    return `  ('${segment.id}', ${escapeSQLString(segment.name)}, NOW(), NULL)${idx < segmentsForSQL.length - 1 ? ',' : ''}`;
+  });
+
+sql += segmentValues.join('\n');
+sql += `\nON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  created_at = EXCLUDED.created_at;
+
+-- ============================================================================
 -- ORGANIZATIONS (${orgsForSQL.length} unique)
 -- ============================================================================
 
-INSERT INTO organizations (id, name, organization_type, priority, phone, linkedin_url, address, city, state, postal_code, notes) VALUES\n`;
+INSERT INTO organizations (id, name, organization_type, priority, segment_id, phone, linkedin_url, address, city, state, postal_code, notes) VALUES\n`;
 
 const orgValues = orgsForSQL.map((org, idx) => {
   const values = [
@@ -294,6 +374,7 @@ const orgValues = orgsForSQL.map((org, idx) => {
     escapeSQLString(org.name),
     escapeSQLString(org.organization_type || 'unknown'),
     escapeSQLString(org.priority || 'C'),
+    org.segment_id ? `'${org.segment_id}'` : 'NULL',
     escapeSQLString(org.phone),
     escapeSQLString(org.linkedin_url),
     escapeSQLString(org.address),
@@ -344,16 +425,33 @@ const contactValues = contactsForSQL.map((contact, idx) => {
 sql += contactValues.join('\n') + '\n\n';
 
 // ============================================================================
-// VALIDATION QUERIES
+// SEQUENCE RESETS
 // ============================================================================
 
 sql += `-- ============================================================================
+-- RESET SEQUENCES (critical for new record creation)
+-- ============================================================================
+-- After inserting with explicit IDs, sequences must be updated to prevent conflicts
+-- Without this, new records will fail with "duplicate key value violates unique constraint"
+
+SELECT setval('organizations_id_seq', (SELECT MAX(id) FROM organizations));
+SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts));
+
+-- ============================================================================
 -- VALIDATION QUERIES (run these to verify)
 -- ============================================================================
 
 -- Check counts
+-- SELECT COUNT(*) as segment_count FROM segments;
 -- SELECT COUNT(*) as org_count FROM organizations;
 -- SELECT COUNT(*) as contact_count FROM contacts;
+
+-- Check segment distribution
+-- SELECT s.name, COUNT(o.id) as org_count
+-- FROM segments s
+-- LEFT JOIN organizations o ON o.segment_id = s.id
+-- GROUP BY s.id, s.name
+-- ORDER BY org_count DESC;
 
 -- Check no orphaned contacts
 -- SELECT COUNT(*) as orphaned FROM contacts
@@ -361,9 +459,10 @@ sql += `-- =====================================================================
 --   AND organization_id NOT IN (SELECT id FROM organizations);
 
 -- Sample relationships
--- SELECT c.name as contact, o.name as organization
+-- SELECT c.name as contact, o.name as organization, s.name as segment
 -- FROM contacts c
 -- JOIN organizations o ON c.organization_id = o.id
+-- LEFT JOIN segments s ON o.segment_id = s.id
 -- LIMIT 5;
 `;
 
