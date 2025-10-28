@@ -1,4 +1,4 @@
-import { Package, DollarSign, BarChart3 } from "lucide-react";
+import { Package, BarChart3 } from "lucide-react";
 import {
   ShowBase,
   useRecordContext,
@@ -131,50 +131,6 @@ const ProductOverviewTab = () => {
 
   return (
     <div className="space-y-6">
-      {/* Pricing Card */}
-      <Card>
-        <CardContent className="p-6">
-          <h3 className="font-medium mb-4 flex items-center gap-2">
-            <DollarSign className="w-4 h-4" />
-            Pricing Information
-          </h3>
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-[color:var(--text-subtle)]">List Price</p>
-              <p className="text-lg font-semibold">
-                ${record.list_price?.toFixed(2) || "0.00"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-[color:var(--text-subtle)]">Cost per Unit</p>
-              <p className="text-lg font-semibold">
-                ${record.cost_per_unit?.toFixed(2) || "0.00"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-[color:var(--text-subtle)]">Margin</p>
-              <p className="text-lg font-semibold">
-                {record.list_price && record.cost_per_unit
-                  ? `${(
-                      ((record.list_price - record.cost_per_unit) /
-                        record.list_price) *
-                      100
-                    ).toFixed(1)}%`
-                  : "N/A"}
-              </p>
-            </div>
-          </div>
-          {record.map_price && (
-            <div className="mt-4 pt-4 border-t">
-              <p className="text-sm text-[color:var(--text-subtle)]">MAP Price</p>
-              <p className="text-lg font-semibold">
-                ${record.map_price.toFixed(2)}
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
       {/* Product Information Card */}
       <Card>
         <CardContent className="p-6">
@@ -205,12 +161,6 @@ const ProductOverviewTab = () => {
               <div>
                 <p className="text-sm text-[color:var(--text-subtle)]">UPC</p>
                 <p className="font-medium">{record.upc}</p>
-              </div>
-            )}
-            {record.unit_of_measure && (
-              <div>
-                <p className="text-sm text-[color:var(--text-subtle)]">Unit of Measure</p>
-                <p className="font-medium">{record.unit_of_measure}</p>
               </div>
             )}
           </div>
@@ -253,12 +203,6 @@ const ProductDetailsTab = () => {
               <div className="flex justify-between">
                 <span className="text-sm text-[color:var(--text-subtle)]">UPC/Barcode</span>
                 <span className="text-sm font-medium">{record.upc}</span>
-              </div>
-            )}
-            {record.unit_of_measure && (
-              <div className="flex justify-between">
-                <span className="text-sm text-[color:var(--text-subtle)]">Unit of Measure</span>
-                <span className="text-sm font-medium">{record.unit_of_measure}</span>
               </div>
             )}
             {record.category && (

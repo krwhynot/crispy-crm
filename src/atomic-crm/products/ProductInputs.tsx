@@ -1,7 +1,6 @@
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
-import { NumberInput } from "@/components/admin/number-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -16,7 +15,6 @@ export const ProductInputs = () => {
       <div className={`flex gap-6 ${isMobile ? "flex-col" : "flex-row"}`}>
         <div className="flex flex-col gap-10 flex-1">
           <ProductDetailInputs />
-          <ProductPricingInputs />
         </div>
         <Separator orientation={isMobile ? "horizontal" : "vertical"} />
         <div className="flex flex-col gap-8 flex-1">
@@ -71,58 +69,9 @@ const ProductDetailInputs = () => {
           helperText="Select the supplier organization"
         />
       </ReferenceInput>
-      <SelectInput
-        source="unit_of_measure"
-        label="Unit of Measure"
-        choices={[
-          { id: "each", name: "Each" },
-          { id: "case", name: "Case" },
-          { id: "box", name: "Box" },
-          { id: "pound", name: "Pound" },
-          { id: "kilogram", name: "Kilogram" },
-          { id: "liter", name: "Liter" },
-          { id: "gallon", name: "Gallon" },
-          { id: "dozen", name: "Dozen" },
-        ]}
-      />
     </div>
   );
 };
-
-const ProductPricingInputs = () => {
-  return (
-    <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Pricing</h6>
-      <div className="flex gap-4">
-        <NumberInput
-          source="list_price"
-          label="List Price"
-          placeholder="0.00"
-          helperText="Selling price to customers"
-          step={0.01}
-          className="flex-1"
-        />
-        <SelectInput
-          source="currency_code"
-          label="Currency"
-          // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
-          choices={[
-            { id: "USD", name: "USD" },
-            { id: "EUR", name: "EUR" },
-            { id: "GBP", name: "GBP" },
-            { id: "CAD", name: "CAD" },
-            { id: "AUD", name: "AUD" },
-            { id: "JPY", name: "JPY" },
-            { id: "CNY", name: "CNY" },
-            { id: "MXN", name: "MXN" },
-          ]}
-          className="w-32"
-        />
-      </div>
-    </div>
-  );
-};
-
 
 const ProductClassificationInputs = () => {
   // Derive all choices from Zod schema (Constitution Rule #5: Single Source of Truth)

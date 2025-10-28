@@ -19,13 +19,6 @@ const ProductCreate = () => {
         if (!values.category) {
           values.category = "equipment";
         }
-        if (!values.unit_of_measure) {
-          values.unit_of_measure = "each";
-        }
-        // Ensure numeric fields are properly formatted
-        if (values.list_price) {
-          values.list_price = parseFloat(values.list_price);
-        }
         return values;
       }}
     >
@@ -34,8 +27,6 @@ const ProductCreate = () => {
           <Form defaultValues={{
             status: "active",
             category: "equipment",
-            unit_of_measure: "each",
-            currency_code: "USD",
             created_by: identity?.id
           }}>
             <Card>
