@@ -1,7 +1,7 @@
 -- ============================================================================
 -- PRODUCTION SEED DATA - Generated from CSV files
 -- ============================================================================
--- Generated: 2025-10-27T22:47:57.211Z
+-- Generated: 2025-10-27T23:16:43.362Z
 -- Organizations: 1809 (deduplicated)
 -- Contacts: 2013
 --
@@ -17,6 +17,62 @@
 -- Run with: npx supabase db reset (runs automatically)
 -- Or manually: psql <connection> -f supabase/seed.sql
 -- ============================================================================
+
+-- ============================================================================
+-- TEST USER (for local development)
+-- ============================================================================
+-- Login: admin@test.com / password123
+
+INSERT INTO auth.users (
+  instance_id,
+  id,
+  aud,
+  role,
+  email,
+  encrypted_password,
+  email_confirmed_at,
+  raw_app_meta_data,
+  raw_user_meta_data,
+  created_at,
+  updated_at,
+  confirmation_token,
+  recovery_token,
+  email_change,
+  email_change_token_new,
+  email_change_token_current,
+  phone_change,
+  phone_change_token,
+  reauthentication_token,
+  is_sso_user,
+  is_anonymous
+) VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  'd3129876-b1fe-40eb-9980-64f5f73c64d6',
+  'authenticated',
+  'authenticated',
+  'admin@test.com',
+  crypt('password123', gen_salt('bf')),
+  NOW(),
+  '{"provider":"email","providers":["email"]}',
+  '{"first_name":"Admin","last_name":"User"}',
+  NOW(),
+  NOW(),
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  false,
+  false
+) ON CONFLICT (id) DO UPDATE SET
+  email = EXCLUDED.email,
+  encrypted_password = EXCLUDED.encrypted_password,
+  email_confirmed_at = EXCLUDED.email_confirmed_at;
+
+-- Note: Sales record is auto-created by database trigger when auth.users is inserted
 
 -- ============================================================================
 -- ORGANIZATIONS (1809 unique)
@@ -3857,6 +3913,15 @@ United States', NULL),
   (2011, 'Unknown', NULL, NULL, NULL, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (2012, 'Unknown', NULL, NULL, NULL, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL),
   (2013, 'Unknown', NULL, NULL, NULL, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL);
+
+-- ============================================================================
+-- RESET SEQUENCES (critical for new record creation)
+-- ============================================================================
+-- After inserting with explicit IDs, sequences must be updated to prevent conflicts
+-- Without this, new records will fail with "duplicate key value violates unique constraint"
+
+SELECT setval('organizations_id_seq', (SELECT MAX(id) FROM organizations));
+SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts));
 
 -- ============================================================================
 -- VALIDATION QUERIES (run these to verify)
