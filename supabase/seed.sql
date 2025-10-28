@@ -22,6 +22,16 @@
 -- ============================================================================
 
 -- ============================================================================
+-- TRANSACTION WRAPPER - PostgreSQL Best Practice
+-- ============================================================================
+-- Ensures atomic execution: either ALL data is inserted or NONE
+-- Allows automatic ROLLBACK on any error for data integrity
+-- Compliant with PostgreSQL and Supabase production standards
+-- ============================================================================
+
+BEGIN;
+
+-- ============================================================================
 -- TEST USER (for local development)
 -- ============================================================================
 -- Login: admin@test.com / password123
