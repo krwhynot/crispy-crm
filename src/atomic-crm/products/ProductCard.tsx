@@ -72,14 +72,6 @@ export const ProductCard = (props: { record?: Product }) => {
           </div>
 
           <div className="flex flex-col gap-1">
-            {record.list_price && (
-              <div className="flex items-center justify-center gap-0.5">
-                <DollarSign className="w-3 h-3 text-[color:var(--text-subtle)]" />
-                <span className="text-sm font-medium">
-                  ${record.list_price.toFixed(2)}
-                </span>
-              </div>
-            )}
             {record.last_promoted_at && (
               <div className="flex items-center justify-center gap-0.5">
                 <TrendingUp className="w-3 h-3 text-[color:var(--text-subtle)]" />

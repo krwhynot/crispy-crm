@@ -1,4 +1,4 @@
-import { Package, Tag, DollarSign, Building2 } from "lucide-react";
+import { Package, Tag, Building2 } from "lucide-react";
 import { FilterLiveForm, useGetList } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
@@ -31,21 +31,12 @@ export const ProductListFilter = () => {
   ];
 
   const categories = [
-    { id: "equipment", name: "Equipment" },
     { id: "beverages", name: "Beverages" },
     { id: "dairy", name: "Dairy" },
     { id: "frozen", name: "Frozen" },
     { id: "fresh_produce", name: "Fresh Produce" },
     { id: "dry_goods", name: "Dry Goods" },
     { id: "other", name: "Other" },
-  ];
-
-  const priceRanges = [
-    { id: "0-50", name: "Under $50" },
-    { id: "50-100", name: "$50 - $100" },
-    { id: "100-500", name: "$100 - $500" },
-    { id: "500-1000", name: "$500 - $1000" },
-    { id: "1000+", name: "Over $1000" },
   ];
 
   return (
@@ -78,20 +69,6 @@ export const ProductListFilter = () => {
             className="w-full justify-between"
             label={category.name}
             value={{ category: category.id }}
-          />
-        ))}
-      </FilterCategory>
-
-      <FilterCategory
-        icon={<DollarSign className="h-4 w-4" />}
-        label="Price Range"
-      >
-        {priceRanges.map((range) => (
-          <ToggleFilterButton
-            key={range.id}
-            className="w-full justify-between"
-            label={range.name}
-            value={{ price_range: range.id }}
           />
         ))}
       </FilterCategory>

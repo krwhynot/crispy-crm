@@ -45,7 +45,7 @@ const ProductListLayout = () => {
 const ProductListActions = () => {
   return (
     <TopToolbar>
-      <SortButton fields={["name", "created_at", "list_price", "sku"]} />
+      <SortButton fields={["name", "created_at", "sku"]} />
       <ExportButton />
       <CreateButton label="New Product" />
     </TopToolbar>
