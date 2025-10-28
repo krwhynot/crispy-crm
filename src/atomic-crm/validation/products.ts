@@ -42,15 +42,6 @@ export const productStatusSchema = z.enum([
 // Export the enum values for form components (Constitution Rule #5)
 export const PRODUCT_STATUSES = productStatusSchema.options;
 
-// Currency code validation (3-letter ISO codes)
-export const currencyCodeSchema = z.string()
-  .regex(/^[A-Z]{3}$/, "Currency must be a 3-letter code like USD");
-
-// Unit of measure - text field now for flexibility
-export const unitOfMeasureSchema = z.string()
-  .min(1, "Unit of measure is required")
-  .default("each");
-
 // Main product schema matching database structure
 export const productSchema = z.object({
   // Required fields

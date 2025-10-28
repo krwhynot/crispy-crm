@@ -1,8 +1,8 @@
 -- ============================================================================
 -- PRODUCTION SEED DATA - Generated from CSV files
 -- ============================================================================
--- Generated: 2025-10-28T02:46:37.460Z
--- Segments: 27 (industry/market categories)
+-- Generated: 2025-10-28T03:03:56.494Z
+-- Segments: 28 (industry/market categories)
 -- Organizations: 1809 (deduplicated)
 -- Contacts: 2013
 --
@@ -110,6 +110,7 @@ INSERT INTO segments (id, name, created_at, created_by) VALUES
   ('741cbb52-ed59-58a1-a8af-e9e89b9b0921', 'Pizza', NOW(), NULL),
   ('db21b569-5553-5aa8-8cca-9f3b204bb8a6', 'Retail', NOW(), NULL),
   ('34baa226-0c60-50fc-84ad-70a9e3b36bae', 'Travel', NOW(), NULL),
+  ('562062be-c15b-417f-b2a1-d4a643d69d52', 'Unknown', NOW(), NULL),
   ('16611749-4a0c-51d7-92b2-ee4ab35e7dfc', 'Vegan/ Vegetarian', NOW(), NULL),
   ('44c27513-d90e-5504-9789-7e89a06857a9', 'Vending', NOW(), NULL)
 ON CONFLICT (id) DO UPDATE SET
