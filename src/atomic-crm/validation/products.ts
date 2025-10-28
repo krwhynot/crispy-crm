@@ -53,6 +53,7 @@ export const productSchema = z.object({
   // Optional fields with defaults
   status: productStatusSchema.default("active"),
   description: z.string().optional(),
+  distributor_id: z.number().int().positive().optional(),
 
   // Food/health specific fields (kept for flexibility)
   // NOTE: Using .nullish() to accept both undefined and null values

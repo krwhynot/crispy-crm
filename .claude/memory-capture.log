@@ -1967,3 +1967,9 @@
 [2025-10-27 23:00:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
 [2025-10-27 23:00:19] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251028040008_remove_product_pricing_and_uom.sql
 [2025-10-27 23:21:47] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251028042131_add_product_distributor_field.sql
+[2025-10-27 23:21:59] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
+[2025-10-27 23:22:17] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
+[2025-10-27 23:22:27] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-27 23:22:50] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductAside.tsx
+[2025-10-27 23:23:05] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductAside.tsx
+[2025-10-27 23:37:52] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/autocomplete-input.tsx

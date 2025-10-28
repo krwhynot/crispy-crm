@@ -29,6 +29,12 @@ export const ProductAside = () => {
     id: record?.principal_id,
   });
 
+  // Get distributor information
+  const { data: distributor } = useReference<Organization>({
+    reference: "organizations",
+    id: record?.distributor_id,
+  });
+
   if (!record) return null;
 
   const statusColors: Record<string, string> = {
@@ -140,6 +146,37 @@ export const ProductAside = () => {
         </>
       )}
 
+      {/* Distributor */}
+      {distributor && (
+        <>
+          <div>
+            <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">
+              Distributor
+            </h4>
+            <Link
+              to={createPath({
+                resource: "organizations",
+                id: distributor.id,
+                type: "show",
+              })}
+              className="hover:underline"
+            >
+              <div className="flex items-start gap-2">
+                <Building2 className="w-4 h-4 mt-0.5 text-[color:var(--text-subtle)]" />
+                <div>
+                  <p className="text-sm font-medium">{distributor.name}</p>
+                  {distributor.segment && (
+                    <p className="text-xs text-[color:var(--text-subtle)]">
+                      {distributor.segment}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Link>
+          </div>
+          <Separator />
+        </>
+      )}
 
       {/* Metadata */}
       <div>

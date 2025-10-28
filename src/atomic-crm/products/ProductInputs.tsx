@@ -69,6 +69,17 @@ const ProductDetailInputs = () => {
           helperText="Select the supplier organization"
         />
       </ReferenceInput>
+      <ReferenceInput
+        source="distributor_id"
+        reference="organizations"
+        label="Distributor"
+        filter={{ organization_type: "distributor" }}
+      >
+        <AutocompleteInput
+          optionText="name"
+          helperText="Select the distributor organization"
+        />
+      </ReferenceInput>
     </div>
   );
 };

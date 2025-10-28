@@ -226,6 +226,7 @@ export const filterableFields: Record<string, string[]> = {
   products: [
     "id",
     "principal_id",
+    "distributor_id",
     "name",
     "description",
     "sku",
