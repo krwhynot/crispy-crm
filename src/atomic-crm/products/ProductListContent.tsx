@@ -55,11 +55,6 @@ export const ProductListContent = () => {
                 <div className="flex items-center gap-6 mt-2 text-sm text-[color:var(--text-subtle)]">
                   <span>Brand: {product.brand || "N/A"}</span>
                   <span>Status: {product.status || "Active"}</span>
-                  {product.list_price && (
-                    <span className="font-medium">
-                      ${product.list_price.toFixed(2)}
-                    </span>
-                  )}
                 </div>
 
                 {product.description && (

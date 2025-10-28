@@ -190,13 +190,12 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
       });
 
       // Check that the filter was transformed correctly
-      // Note: opportunities uses base table, so deleted_at IS added for soft delete
+      // Note: opportunities uses summary view, which handles soft delete filtering internally
       expect(mockGetList).toHaveBeenCalledWith(
-        "opportunities",
+        "opportunities_summary",
         expect.objectContaining({
           filter: {
             "stage@in": "(qualified,proposal,negotiation)",
-            "deleted_at@is": null,
           },
         }),
       );
