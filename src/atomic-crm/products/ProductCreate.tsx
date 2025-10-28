@@ -5,30 +5,24 @@ import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "@/components/admin/simple-form";
 
 import { ProductInputs } from "./ProductInputs";
+import { productSchema } from "../validation/products";
 
 const ProductCreate = () => {
   const { identity } = useGetIdentity();
+
+  // Constitution Rule #4: Form state from schema
+  const defaultValues = {
+    ...productSchema.partial().parse({}),
+    created_by: identity?.id
+  };
+
   return (
     <CreateBase
       redirect="show"
-      transform={(values) => {
-        // Set default values if not provided
-        if (!values.status) {
-          values.status = "active";
-        }
-        if (!values.category) {
-          values.category = "equipment";
-        }
-        return values;
-      }}
     >
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">
-          <Form defaultValues={{
-            status: "active",
-            category: "equipment",
-            created_by: identity?.id
-          }}>
+          <Form defaultValues={defaultValues}>
             <Card>
               <CardContent>
                 <ProductInputs />

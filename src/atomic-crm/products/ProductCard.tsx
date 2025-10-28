@@ -1,4 +1,4 @@
-import { Package, DollarSign, TrendingUp } from "lucide-react";
+import { Package, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import { formatDistanceToNow } from "date-fns";

@@ -5,8 +5,9 @@ import { z } from "zod";
  * Following Engineering Constitution: Single validation at API boundary
  */
 
-// Product category enum matching database
-export const productCategorySchema = z.enum([
+// F&B Consumable categories (suggested values)
+// Note: Database now accepts TEXT to allow custom categories
+export const FB_CONSUMABLE_CATEGORIES = [
   "beverages",
   "dairy",
   "frozen",
@@ -22,14 +23,14 @@ export const productCategorySchema = z.enum([
   "pasta_grains",
   "oils_vinegars",
   "sweeteners",
-  "cleaning_supplies",
-  "paper_products",
-  "equipment",
   "other",
-]);
+] as const;
 
-// Export the enum values for form components (Constitution Rule #5)
-export const PRODUCT_CATEGORIES = productCategorySchema.options;
+// Product category schema - now accepts any non-empty string
+export const productCategorySchema = z.string().min(1, "Category is required").default("beverages");
+
+// Export suggested categories for form components (Constitution Rule #5)
+export const PRODUCT_CATEGORIES = FB_CONSUMABLE_CATEGORIES;
 
 // Product status enum matching database
 // Removed: seasonal, limited_availability (2025-10-18)

@@ -1975,3 +1975,11 @@
 [2025-10-27 23:37:52] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/autocomplete-input.tsx
 [2025-10-27 23:38:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/autocomplete-input.tsx
 [2025-10-27 23:46:32] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251028044618_change_product_category_to_text.sql
+[2025-10-27 23:46:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
+[2025-10-27 23:47:53] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductInputs.tsx
+[2025-10-27 23:48:07] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCreate.tsx
+[2025-10-27 23:48:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCreate.tsx
+[2025-10-27 23:50:26] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/products.ts
+[2025-10-27 23:50:27] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCreate.tsx
+[2025-10-27 23:50:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCreate.tsx
+[2025-10-28 00:06:52] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCard.tsx

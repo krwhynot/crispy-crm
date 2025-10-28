@@ -632,6 +632,7 @@ export type Database = {
           estimated_close_date: string | null
           founding_interaction_id: number | null
           id: number
+          index: number | null
           lead_source: string | null
           name: string
           next_action: string | null
@@ -641,7 +642,6 @@ export type Database = {
           priority: Database["public"]["Enums"]["priority_level"] | null
           search_tsv: unknown | null
           stage: Database["public"]["Enums"]["opportunity_stage"] | null
-          stage_changed_at: string | null
           stage_manual: boolean | null
           status: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual: boolean | null
@@ -664,6 +664,7 @@ export type Database = {
           estimated_close_date?: string | null
           founding_interaction_id?: number | null
           id?: number
+          index?: number | null
           lead_source?: string | null
           name: string
           next_action?: string | null
@@ -673,7 +674,6 @@ export type Database = {
           priority?: Database["public"]["Enums"]["priority_level"] | null
           search_tsv?: unknown | null
           stage?: Database["public"]["Enums"]["opportunity_stage"] | null
-          stage_changed_at?: string | null
           stage_manual?: boolean | null
           status?: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual?: boolean | null
@@ -696,6 +696,7 @@ export type Database = {
           estimated_close_date?: string | null
           founding_interaction_id?: number | null
           id?: number
+          index?: number | null
           lead_source?: string | null
           name?: string
           next_action?: string | null
@@ -705,7 +706,6 @@ export type Database = {
           priority?: Database["public"]["Enums"]["priority_level"] | null
           search_tsv?: unknown | null
           stage?: Database["public"]["Enums"]["opportunity_stage"] | null
-          stage_changed_at?: string | null
           stage_manual?: boolean | null
           status?: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual?: boolean | null
@@ -1315,16 +1315,15 @@ export type Database = {
       products: {
         Row: {
           allergens: string[] | null
-          category: Database["public"]["Enums"]["product_category"]
+          category: string
           certifications: string[] | null
           created_at: string | null
           created_by: number | null
-          currency_code: string | null
           deleted_at: string | null
           description: string | null
+          distributor_id: number | null
           id: number
           ingredients: string | null
-          list_price: number | null
           manufacturer_part_number: string | null
           marketing_description: string | null
           name: string
@@ -1333,22 +1332,20 @@ export type Database = {
           search_tsv: unknown | null
           sku: string
           status: Database["public"]["Enums"]["product_status"] | null
-          unit_of_measure: string | null
           updated_at: string | null
           updated_by: number | null
         }
         Insert: {
           allergens?: string[] | null
-          category: Database["public"]["Enums"]["product_category"]
+          category: string
           certifications?: string[] | null
           created_at?: string | null
           created_by?: number | null
-          currency_code?: string | null
           deleted_at?: string | null
           description?: string | null
+          distributor_id?: number | null
           id?: number
           ingredients?: string | null
-          list_price?: number | null
           manufacturer_part_number?: string | null
           marketing_description?: string | null
           name: string
@@ -1357,22 +1354,20 @@ export type Database = {
           search_tsv?: unknown | null
           sku: string
           status?: Database["public"]["Enums"]["product_status"] | null
-          unit_of_measure?: string | null
           updated_at?: string | null
           updated_by?: number | null
         }
         Update: {
           allergens?: string[] | null
-          category?: Database["public"]["Enums"]["product_category"]
+          category?: string
           certifications?: string[] | null
           created_at?: string | null
           created_by?: number | null
-          currency_code?: string | null
           deleted_at?: string | null
           description?: string | null
+          distributor_id?: number | null
           id?: number
           ingredients?: string | null
-          list_price?: number | null
           manufacturer_part_number?: string | null
           marketing_description?: string | null
           name?: string
@@ -1381,7 +1376,6 @@ export type Database = {
           search_tsv?: unknown | null
           sku?: string
           status?: Database["public"]["Enums"]["product_status"] | null
-          unit_of_measure?: string | null
           updated_at?: string | null
           updated_by?: number | null
         }
@@ -1391,6 +1385,27 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_distributor_id_fkey"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_distributor_id_fkey"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_distributor_id_fkey"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
             referencedColumns: ["id"]
           },
           {
@@ -1792,31 +1807,32 @@ export type Database = {
           created_at: string | null
           created_by: number | null
           customer_organization_id: number | null
-          days_in_stage: number | null
+          customer_organization_name: string | null
           decision_criteria: string | null
           deleted_at: string | null
           description: string | null
           distributor_organization_id: number | null
+          distributor_organization_name: string | null
           estimated_close_date: string | null
           founding_interaction_id: number | null
           id: number | null
-          last_interaction_date: string | null
+          index: number | null
           lead_source: string | null
           name: string | null
-          nb_interactions: number | null
           next_action: string | null
           next_action_date: string | null
           opportunity_owner_id: number | null
           principal_organization_id: number | null
+          principal_organization_name: string | null
           priority: Database["public"]["Enums"]["priority_level"] | null
           search_tsv: unknown | null
           stage: Database["public"]["Enums"]["opportunity_stage"] | null
-          stage_changed_at: string | null
           stage_manual: boolean | null
           status: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual: boolean | null
           tags: string[] | null
           updated_at: string | null
+          updated_by: number | null
         }
         Relationships: [
           {
@@ -1836,6 +1852,13 @@ export type Database = {
           {
             foreignKeyName: "opportunities_sales_id_fkey"
             columns: ["opportunity_owner_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_updated_by_fkey"
+            columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "sales"
             referencedColumns: ["id"]
@@ -1965,10 +1988,6 @@ export type Database = {
       }
     }
     Functions: {
-      backfill_opportunity_contacts: {
-        Args: { p_opportunity_id: number }
-        Returns: undefined
-      }
       calculate_product_price: {
         Args: {
           p_distributor_id?: number
@@ -2065,10 +2084,6 @@ export type Database = {
           p_type: Database["public"]["Enums"]["interaction_type"]
         }
         Returns: number
-      }
-      map_org_priority_to_opp_priority: {
-        Args: { org_priority: string }
-        Returns: Database["public"]["Enums"]["priority_level"]
       }
       set_primary_organization: {
         Args: { p_contact_id: number; p_organization_id: number }
