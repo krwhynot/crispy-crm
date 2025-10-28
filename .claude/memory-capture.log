@@ -1973,3 +1973,5 @@
 [2025-10-27 23:22:50] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductAside.tsx
 [2025-10-27 23:23:05] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductAside.tsx
 [2025-10-27 23:37:52] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/autocomplete-input.tsx
+[2025-10-27 23:38:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/autocomplete-input.tsx
+[2025-10-27 23:46:32] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251028044618_change_product_category_to_text.sql
