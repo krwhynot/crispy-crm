@@ -2002,3 +2002,13 @@
 [2025-10-28 20:17:25] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
 [2025-10-28 21:29:31] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029022906_add_opportunity_foreign_key_constraints.sql
 [2025-10-28 21:29:31] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029022918_add_activity_contact_validation.sql
+[2025-10-28 21:29:37] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029022924_add_opportunity_optimistic_locking.sql
+[2025-10-28 21:29:44] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029022918_add_activity_contact_validation.sql
+[2025-10-28 21:29:47] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029022918_add_activity_contact_validation.sql
+[2025-10-28 21:30:35] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251028213020_create_opportunity_contacts_junction_table.sql
+[2025-10-28 21:30:39] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251028213032_add_soft_delete_cascade_functions.sql
+[2025-10-28 21:31:02] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/database/SOFT_DELETE_CASCADE_GUIDE.md
+[2025-10-28 21:31:03] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/database/OPPORTUNITY_CONTACTS_MIGRATION.md
+[2025-10-28 21:31:34] [documentation] Write: /home/krwhynot/projects/crispy-crm/OPPORTUNITY_CONTACTS_IMPLEMENTATION.md
+[2025-10-28 21:31:54] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/database/CASCADING_SOFT_DELETE_USAGE.md
+[2025-10-28 21:41:08] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029024045_fix_rls_policies_company_isolation.sql

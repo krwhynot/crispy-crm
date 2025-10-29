@@ -5,7 +5,7 @@
 -- Author: Claude Code
 
 -- Drop the existing trigger and function
-DROP TRIGGER IF EXISTS validate_activity_consistency_trigger ON activities;
+DROP TRIGGER IF EXISTS trigger_validate_activity_consistency ON activities;
 DROP FUNCTION IF EXISTS validate_activity_consistency();
 
 -- Recreate the function with enhanced contact validation
@@ -59,7 +59,7 @@ END;
 $$;
 
 -- Recreate the trigger
-CREATE TRIGGER validate_activity_consistency_trigger
+CREATE TRIGGER trigger_validate_activity_consistency
     BEFORE INSERT OR UPDATE ON activities
     FOR EACH ROW
     EXECUTE FUNCTION validate_activity_consistency();
