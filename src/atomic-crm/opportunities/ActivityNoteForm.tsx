@@ -138,8 +138,8 @@ export const ActivityNoteForm = ({
 
   return (
     <div className="space-y-4">
-      {/* Grid layout for date, type, contact, and stage */}
-      <div className="grid grid-cols-4 gap-4">
+      {/* Grid layout for date, type, contact, and stage - responsive for mobile */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {/* Date Picker */}
         <div className="flex flex-col gap-2">
           <label htmlFor="activity_date" className="text-sm font-medium">Date</label>
@@ -234,6 +234,9 @@ export const ActivityNoteForm = ({
               </Select>
             )}
           />
+          <p className="text-xs text-[color:var(--text-subtle)]">
+            Changing stage will update the opportunity immediately
+          </p>
           {errors.stage && (
             <p className="text-sm text-[color:var(--destructive)]">
               {errors.stage.message}
@@ -253,7 +256,7 @@ export const ActivityNoteForm = ({
               {...field}
               id="subject"
               placeholder="Enter activity subject..."
-              className="min-h-24"
+              className="min-h-12"
             />
           )}
         />

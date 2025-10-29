@@ -178,6 +178,7 @@ const OpportunityContactsInput = () => {
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium mb-2">Contacts *</h3>
+      <p className="text-xs text-[color:var(--text-subtle)] -mt-1 mb-2">At least one contact is required</p>
       <ReferenceArrayInput
         source="contact_ids"
         reference="contacts_summary"

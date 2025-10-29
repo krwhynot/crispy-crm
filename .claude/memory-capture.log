@@ -2022,3 +2022,14 @@
 [2025-10-28 23:00:52] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/user-guides/managing-opportunities.md
 [2025-10-28 23:01:05] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/user-guides/README.md
 [2025-10-28 23:09:39] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
+[2025-10-28 23:09:40] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
+[2025-10-28 23:09:51] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ActivityNoteForm.tsx
+[2025-10-28 23:10:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ActivityNoteForm.tsx
+[2025-10-28 23:10:14] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ActivityNoteForm.tsx
+[2025-10-28 23:12:50] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductShow.tsx
+[2025-10-28 23:12:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/notes/NoteAttachments.tsx
+[2025-10-28 23:13:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportResult.tsx
+[2025-10-28 23:13:41] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-10-28 23:13:42] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportResult.tsx
+[2025-10-28 23:13:43] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-10-28 23:52:54] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029045233_simplify_opportunity_products.sql
