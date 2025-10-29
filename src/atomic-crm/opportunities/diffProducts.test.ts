@@ -6,15 +6,11 @@ describe('productsAreDifferent', () => {
     const product1: Product = {
       id: 1,
       product_id_reference: 100,
-      quantity: 5,
-      unit_price: 10.50,
       notes: 'Test notes',
     };
     const product2: Product = {
       id: 1,
       product_id_reference: 100,
-      quantity: 5,
-      unit_price: 10.50,
       notes: 'Test notes',
     };
 
@@ -25,48 +21,12 @@ describe('productsAreDifferent', () => {
     const product1: Product = {
       id: 1,
       product_id_reference: 100,
-      quantity: 5,
-      unit_price: 10.50,
+      notes: 'Test notes',
     };
     const product2: Product = {
       id: 1,
       product_id_reference: 101,
-      quantity: 5,
-      unit_price: 10.50,
-    };
-
-    expect(productsAreDifferent(product1, product2)).toBe(true);
-  });
-
-  it('should return true when quantity differs', () => {
-    const product1: Product = {
-      id: 1,
-      product_id_reference: 100,
-      quantity: 5,
-      unit_price: 10.50,
-    };
-    const product2: Product = {
-      id: 1,
-      product_id_reference: 100,
-      quantity: 10,
-      unit_price: 10.50,
-    };
-
-    expect(productsAreDifferent(product1, product2)).toBe(true);
-  });
-
-  it('should return true when unit_price differs', () => {
-    const product1: Product = {
-      id: 1,
-      product_id_reference: 100,
-      quantity: 5,
-      unit_price: 10.50,
-    };
-    const product2: Product = {
-      id: 1,
-      product_id_reference: 100,
-      quantity: 5,
-      unit_price: 12.00,
+      notes: 'Test notes',
     };
 
     expect(productsAreDifferent(product1, product2)).toBe(true);
@@ -87,16 +47,31 @@ describe('productsAreDifferent', () => {
     expect(productsAreDifferent(product1, product2)).toBe(true);
   });
 
-  it('should treat undefined and 0 as equal for quantity', () => {
+  it('should treat undefined/null and empty string as equal for notes', () => {
     const product1: Product = {
       id: 1,
       product_id_reference: 100,
-      quantity: undefined,
+      notes: undefined,
     };
     const product2: Product = {
       id: 1,
       product_id_reference: 100,
-      quantity: 0,
+      notes: '',
+    };
+
+    expect(productsAreDifferent(product1, product2)).toBe(false);
+  });
+
+  it('should ignore whitespace differences in notes', () => {
+    const product1: Product = {
+      id: 1,
+      product_id_reference: 100,
+      notes: '  Test notes  ',
+    };
+    const product2: Product = {
+      id: 1,
+      product_id_reference: 100,
+      notes: 'Test notes',
     };
 
     expect(productsAreDifferent(product1, product2)).toBe(false);
@@ -107,9 +82,9 @@ describe('diffProducts', () => {
   it('should identify all creates when all products are new', () => {
     const dbItems: Product[] = [];
     const formItems: Product[] = [
-      { product_id_reference: 100, quantity: 5, unit_price: 10.50 },
-      { product_id_reference: 101, quantity: 3, unit_price: 15.00 },
-      { product_id_reference: 102, quantity: 10, unit_price: 5.25 },
+      { product_id_reference: 100, notes: 'Product A' },
+      { product_id_reference: 101, notes: 'Product B' },
+      { product_id_reference: 102, notes: 'Product C' },
     ];
 
     const result = diffProducts(dbItems, formItems);
@@ -122,14 +97,14 @@ describe('diffProducts', () => {
 
   it('should identify updates only when products have changed', () => {
     const dbItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 5, unit_price: 10.50 },
-      { id: 2, product_id_reference: 101, quantity: 3, unit_price: 15.00 },
-      { id: 3, product_id_reference: 102, quantity: 10, unit_price: 5.25 },
+      { id: 1, product_id_reference: 100, notes: 'Original A' },
+      { id: 2, product_id_reference: 101, notes: 'Original B' },
+      { id: 3, product_id_reference: 102, notes: 'Original C' },
     ];
     const formItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 5, unit_price: 10.50 }, // No change
-      { id: 2, product_id_reference: 101, quantity: 5, unit_price: 15.00 }, // Quantity changed
-      { id: 3, product_id_reference: 102, quantity: 10, unit_price: 6.00 }, // Price changed
+      { id: 1, product_id_reference: 100, notes: 'Original A' }, // No change
+      { id: 2, product_id_reference: 101, notes: 'Updated B' }, // Notes changed
+      { id: 3, product_id_reference: 103, notes: 'Original C' }, // Product changed
     ];
 
     const result = diffProducts(dbItems, formItems);
@@ -143,12 +118,12 @@ describe('diffProducts', () => {
 
   it('should identify deletes only when products are removed', () => {
     const dbItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 5, unit_price: 10.50 },
-      { id: 2, product_id_reference: 101, quantity: 3, unit_price: 15.00 },
-      { id: 3, product_id_reference: 102, quantity: 10, unit_price: 5.25 },
+      { id: 1, product_id_reference: 100, notes: 'Product A' },
+      { id: 2, product_id_reference: 101, notes: 'Product B' },
+      { id: 3, product_id_reference: 102, notes: 'Product C' },
     ];
     const formItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 5, unit_price: 10.50 }, // Kept
+      { id: 1, product_id_reference: 100, notes: 'Product A' }, // Kept
     ];
 
     const result = diffProducts(dbItems, formItems);
@@ -162,12 +137,12 @@ describe('diffProducts', () => {
 
   it('should handle mixed operations (creates, updates, deletes)', () => {
     const dbItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 5, unit_price: 10.50 },
-      { id: 2, product_id_reference: 101, quantity: 3, unit_price: 15.00 },
+      { id: 1, product_id_reference: 100, notes: 'Product A' },
+      { id: 2, product_id_reference: 101, notes: 'Product B' },
     ];
     const formItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 7, unit_price: 10.50 }, // Update
-      { product_id_reference: 103, quantity: 2, unit_price: 20.00 }, // Create
+      { id: 1, product_id_reference: 100, notes: 'Updated A' }, // Update
+      { product_id_reference: 103, notes: 'New Product C' }, // Create
     ];
 
     const result = diffProducts(dbItems, formItems);
@@ -182,12 +157,12 @@ describe('diffProducts', () => {
 
   it('should return empty arrays when no changes', () => {
     const dbItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 5, unit_price: 10.50 },
-      { id: 2, product_id_reference: 101, quantity: 3, unit_price: 15.00 },
+      { id: 1, product_id_reference: 100, notes: 'Product A' },
+      { id: 2, product_id_reference: 101, notes: 'Product B' },
     ];
     const formItems: Product[] = [
-      { id: 1, product_id_reference: 100, quantity: 5, unit_price: 10.50 },
-      { id: 2, product_id_reference: 101, quantity: 3, unit_price: 15.00 },
+      { id: 1, product_id_reference: 100, notes: 'Product A' },
+      { id: 2, product_id_reference: 101, notes: 'Product B' },
     ];
 
     const result = diffProducts(dbItems, formItems);
@@ -207,5 +182,19 @@ describe('diffProducts', () => {
     expect(result2.creates).toHaveLength(0);
     expect(result2.updates).toHaveLength(0);
     expect(result2.deletes).toHaveLength(0);
+  });
+
+  it('should treat products with no notes as valid', () => {
+    const dbItems: Product[] = [];
+    const formItems: Product[] = [
+      { product_id_reference: 100 }, // No notes
+      { product_id_reference: 101, notes: '' }, // Empty notes
+    ];
+
+    const result = diffProducts(dbItems, formItems);
+
+    expect(result.creates).toHaveLength(2);
+    expect(result.updates).toHaveLength(0);
+    expect(result.deletes).toHaveLength(0);
   });
 });

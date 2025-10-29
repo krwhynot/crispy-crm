@@ -2033,3 +2033,9 @@
 [2025-10-28 23:13:42] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportResult.tsx
 [2025-10-28 23:13:43] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
 [2025-10-28 23:52:54] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029045233_simplify_opportunity_products.sql
+[2025-10-28 23:53:15] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/diffProducts.ts
+[2025-10-28 23:53:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
+[2025-10-28 23:53:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
+[2025-10-28 23:54:30] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityShow.tsx
+[2025-10-28 23:56:45] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/diffProducts.test.ts
+[2025-10-29 00:15:57] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029051540_create_opportunity_products_table.sql

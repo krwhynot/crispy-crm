@@ -1,19 +1,16 @@
 /**
- * Product Diff Algorithm
+ * Product Diff Algorithm (Simplified)
  * Compares database products with form products to determine creates, updates, and deletes
  *
- * IMPORTANT: Uses field-by-field comparison, not JSON.stringify
- * - JSON.stringify fails on key order and type differences
- * - Uses Map for O(1) lookups instead of array.find()
+ * SIMPLIFIED: Only tracks product associations, no pricing/quantity
+ * Compares: product_id_reference, notes
  */
 
 export interface Product {
   id?: string | number;
   product_id_reference: string | number;
   product_name?: string;
-  quantity?: number;
-  unit_price?: number;
-  extended_price?: number;
+  product_category?: string;
   notes?: string;
 }
 
@@ -25,8 +22,8 @@ export interface ProductDiff {
 
 /**
  * Compare two products for differences in editable fields only
- * ONLY compares: product_id_reference, quantity, unit_price, notes
- * Does NOT compare: id, product_name, extended_price (calculated)
+ * ONLY compares: product_id_reference, notes
+ * Does NOT compare: id, product_name, product_category (denormalized)
  */
 export function productsAreDifferent(
   dbProduct: Product,
@@ -34,20 +31,6 @@ export function productsAreDifferent(
 ): boolean {
   // Compare product_id_reference
   if (String(dbProduct.product_id_reference) !== String(formProduct.product_id_reference)) {
-    return true;
-  }
-
-  // Compare quantity (treat undefined/null as 0)
-  const dbQty = dbProduct.quantity ?? 0;
-  const formQty = formProduct.quantity ?? 0;
-  if (dbQty !== formQty) {
-    return true;
-  }
-
-  // Compare unit_price (treat undefined/null as 0)
-  const dbPrice = dbProduct.unit_price ?? 0;
-  const formPrice = formProduct.unit_price ?? 0;
-  if (dbPrice !== formPrice) {
     return true;
   }
 

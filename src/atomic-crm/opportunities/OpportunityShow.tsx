@@ -238,6 +238,31 @@ const OpportunityShowContent = () => {
                   <p className="text-sm leading-6">{record.description}</p>
                 </div>
               )}
+
+              {!!record.products?.length && (
+                <div className="mb-4">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase mb-2">
+                      Products
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {record.products.map((product: any, index: number) => (
+                        <div
+                          key={index}
+                          className="px-3 py-1.5 bg-[color:var(--muted)] rounded-md text-sm"
+                        >
+                          {product.product_name}
+                          {product.notes && (
+                            <span className="text-xs text-[color:var(--text-subtle)] ml-2">
+                              ({product.notes})
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </TabsContent>
 
             {/* Notes & Activity Tab */}
