@@ -57,7 +57,7 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
           }}
         />
       </div>
-      <TextInput source="description" multiline rows={1} helperText={false} />
+      <TextInput source="description" label="Description" multiline rows={1} helperText={false} />
       <TextInput
         source="estimated_close_date"
         label="Expected Closing Date *"
