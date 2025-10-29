@@ -1999,3 +1999,5 @@
 [2025-10-28 17:09:39] [documentation] Write: /tmp/seed_safety_update.md
 [2025-10-28 17:50:53] [code] Write: /home/krwhynot/projects/crispy-crm/scripts/deploy-seed-to-cloud.sh
 [2025-10-28 19:54:48] [configuration] Edit: /home/krwhynot/projects/crispy-crm/supabase/config.toml
+[2025-10-28 20:17:25] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-28 21:29:31] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029022906_add_opportunity_foreign_key_constraints.sql
