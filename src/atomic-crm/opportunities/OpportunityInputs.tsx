@@ -4,6 +4,8 @@ import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
+import { ArrayInput } from "@/components/admin/array-input";
+import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import { useWatch } from "react-hook-form";
@@ -26,6 +28,8 @@ export const OpportunityInputs = ({ mode }: { mode: "create" | "edit" }) => {
       <OpportunityOrganizationInputs />
 
       <OpportunityContactsInput />
+
+      <OpportunityProductsInput />
     </div>
   );
 };
@@ -190,6 +194,49 @@ const OpportunityContactsInput = () => {
           helperText={false}
         />
       </ReferenceArrayInput>
+    </div>
+  );
+};
+
+// Products section
+const OpportunityProductsInput = () => {
+  const principalOrganizationId = useWatch({ name: "principal_organization_id" });
+
+  // Filter products by principal if selected
+  const productFilter = useMemo(
+    () => (principalOrganizationId ? { principal_organization_id: principalOrganizationId } : {}),
+    [principalOrganizationId]
+  );
+
+  return (
+    <div className="flex flex-col gap-2">
+      <h3 className="text-sm font-medium mb-2">Products</h3>
+      <p className="text-xs text-[color:var(--text-subtle)] -mt-1 mb-2">
+        Products being discussed in this opportunity
+      </p>
+      <ArrayInput source="products_to_sync" label={false}>
+        <SimpleFormIterator inline disableReordering>
+          <ReferenceInput
+            source="product_id_reference"
+            reference="products"
+            filter={productFilter}
+          >
+            <SelectInput
+              optionText="name"
+              label="Product"
+              helperText={false}
+              className="w-full"
+            />
+          </ReferenceInput>
+          <TextInput
+            source="notes"
+            label="Notes"
+            helperText={false}
+            placeholder="Optional notes"
+            className="w-full"
+          />
+        </SimpleFormIterator>
+      </ArrayInput>
     </div>
   );
 };
