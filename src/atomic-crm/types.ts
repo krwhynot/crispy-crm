@@ -126,6 +126,20 @@ export type OpportunityParticipant = {
   deleted_at?: string;
 } & Pick<RaRecord, "id">;
 
+/**
+ * Opportunity Contact Junction Table Record
+ * Links opportunities to contacts with additional metadata
+ */
+export type OpportunityContact = {
+  id: Identifier;
+  opportunity_id: Identifier;
+  contact_id: Identifier;
+  role?: string | null;
+  is_primary: boolean;
+  notes?: string | null;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
 export type ActivityRecord = {
   id: Identifier;
   activity_type: "engagement" | "interaction";

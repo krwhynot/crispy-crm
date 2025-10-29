@@ -553,6 +553,10 @@ export const unifiedDataProvider: DataProvider = {
   },
 
   // Custom opportunities methods - delegated to OpportunitiesService
+  async archiveOpportunity(opportunity: Opportunity): Promise<any[]> {
+    return opportunitiesService.archiveOpportunity(opportunity);
+  },
+
   async unarchiveOpportunity(opportunity: Opportunity): Promise<any[]> {
     return opportunitiesService.unarchiveOpportunity(opportunity);
   },
@@ -629,6 +633,32 @@ export const unifiedDataProvider: DataProvider = {
     contactId: Identifier,
   ): Promise<{ data: { id: string } }> {
     return junctionsService.removeOpportunityContact(opportunityId, contactId);
+  },
+
+  // Opportunity contacts via junction table
+  async getOpportunityContactsViaJunction(opportunityId: Identifier): Promise<{ data: any[] }> {
+    return junctionsService.getOpportunityContacts(opportunityId);
+  },
+
+  async addOpportunityContactViaJunction(
+    opportunityId: Identifier,
+    contactId: Identifier,
+    metadata?: { role?: string; is_primary?: boolean; notes?: string },
+  ): Promise<{ data: any }> {
+    return junctionsService.addOpportunityContact(opportunityId, contactId, metadata);
+  },
+
+  async removeOpportunityContactViaJunction(junctionId: Identifier): Promise<{ data: { id: string } }> {
+    try {
+      await this.delete("opportunity_contacts", { id: junctionId });
+      return { data: { id: String(junctionId) } };
+    } catch (error: any) {
+      console.error(`[DataProvider] Failed to remove opportunity contact via junction`, {
+        junctionId,
+        error
+      });
+      throw new Error(`Remove opportunity contact failed: ${error.message}`);
+    }
   },
 
   // Extended capabilities for operations not covered by React Admin's base adapter

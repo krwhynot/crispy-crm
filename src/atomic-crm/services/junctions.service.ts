@@ -1,5 +1,5 @@
 import type { DataProvider, Identifier } from "ra-core";
-import type { ContactOrganization, OpportunityParticipant } from "../types";
+import type { ContactOrganization, OpportunityParticipant, OpportunityContact } from "../types";
 
 /**
  * Junction service handles many-to-many relationship operations
@@ -419,6 +419,158 @@ export class JunctionsService {
         error
       });
       throw new Error(`Remove opportunity contact failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Get contacts associated with an opportunity via junction table with complete details
+   * Explicit variant of getOpportunityContacts using batch loading pattern
+   * @param opportunityId The opportunity ID
+   * @returns Promise with array of OpportunityContact records with contact details
+   */
+  async getOpportunityContactsViaJunction(
+    opportunityId: Identifier
+  ): Promise<{ data: any[] }> {
+    try {
+      // 1. Get junction records
+      const junctionResult = await this.dataProvider.getList("opportunity_contacts", {
+        filter: { opportunity_id: opportunityId },
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: "created_at", order: "ASC" },
+      });
+
+      if (!junctionResult.data || junctionResult.data.length === 0) {
+        return { data: [] };
+      }
+
+      // 2. Get unique contact IDs
+      const contactIds = junctionResult.data.map((jc: any) => jc.contact_id).filter(Boolean);
+
+      let contactMap = new Map();
+      if (contactIds.length > 0) {
+        try {
+          // 3. Batch fetch contacts
+          const contactsResult = await this.dataProvider.getMany("contacts", {
+            ids: contactIds,
+          });
+
+          // 4. Create map for efficient lookup
+          contactMap = new Map(
+            contactsResult.data.map((contact: any) => [contact.id, contact])
+          );
+        } catch (error: any) {
+          console.error(`[JunctionsService] Failed to fetch contacts in batch`, {
+            contactIds,
+            error,
+          });
+          throw new Error(`Failed to fetch contacts: ${error.message}`);
+        }
+      }
+
+      // 5. Map contacts into junction records
+      return {
+        data: junctionResult.data.map((junction: any) => ({
+          ...junction,
+          contact: contactMap.get(junction.contact_id),
+        })),
+      };
+    } catch (error: any) {
+      console.error(`[JunctionsService] Failed to get opportunity contacts via junction`, {
+        opportunityId,
+        error,
+      });
+      throw new Error(`Get opportunity contacts via junction failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Add a contact to an opportunity via junction table with metadata support
+   * Explicit variant of addOpportunityContact with optional metadata fields
+   * @param opportunityId The opportunity ID
+   * @param contactId The contact ID to add
+   * @param metadata Optional metadata (role, is_primary, notes)
+   * @returns Promise with created junction record
+   */
+  async addOpportunityContactViaJunction(
+    opportunityId: Identifier,
+    contactId: Identifier,
+    metadata?: Partial<Pick<OpportunityContact, "role" | "is_primary" | "notes">>
+  ): Promise<{ data: any }> {
+    try {
+      return await this.dataProvider.create("opportunity_contacts", {
+        data: {
+          opportunity_id: opportunityId,
+          contact_id: contactId,
+          role: metadata?.role,
+          is_primary: metadata?.is_primary ?? false,
+          notes: metadata?.notes,
+          created_at: new Date().toISOString(),
+        },
+      });
+    } catch (error: any) {
+      console.error(`[JunctionsService] Failed to add opportunity contact via junction`, {
+        opportunityId,
+        contactId,
+        metadata,
+        error,
+      });
+      throw new Error(`Add opportunity contact via junction failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Remove a contact from an opportunity using the junction record ID
+   * Direct delete variant using junction table primary key
+   * @param junctionId The opportunity_contacts junction record ID
+   * @returns Promise with deleted record
+   */
+  async removeOpportunityContactViaJunctionId(
+    junctionId: Identifier
+  ): Promise<{ data: { id: Identifier } }> {
+    try {
+      await this.dataProvider.delete("opportunity_contacts", {
+        id: junctionId,
+      });
+
+      return { data: { id: junctionId } };
+    } catch (error: any) {
+      console.error(`[JunctionsService] Failed to remove opportunity contact via junction ID`, {
+        junctionId,
+        error,
+      });
+      throw new Error(`Remove opportunity contact via junction ID failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Update opportunity contact metadata (role, is_primary, notes)
+   * Allows updating junction record fields without recreating the relationship
+   * @param junctionId The opportunity_contacts junction record ID
+   * @param updates Partial updates (role, is_primary, notes)
+   * @returns Promise with updated junction record
+   */
+  async updateOpportunityContactMetadata(
+    junctionId: Identifier,
+    updates: Partial<Pick<OpportunityContact, "role" | "is_primary" | "notes">>
+  ): Promise<{ data: any }> {
+    try {
+      // Get current record first for previousData
+      const currentRecord = await this.dataProvider.getOne("opportunity_contacts", {
+        id: junctionId,
+      });
+
+      return await this.dataProvider.update("opportunity_contacts", {
+        id: junctionId,
+        data: updates,
+        previousData: currentRecord.data,
+      });
+    } catch (error: any) {
+      console.error(`[JunctionsService] Failed to update opportunity contact metadata`, {
+        junctionId,
+        updates,
+        error,
+      });
+      throw new Error(`Update opportunity contact metadata failed: ${error.message}`);
     }
   }
 }
