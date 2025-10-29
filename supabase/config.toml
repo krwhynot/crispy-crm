@@ -169,7 +169,8 @@ project_id = "aaqnanddcqvfiwhshndl"
 # Production seed configuration
 # IMPORTANT: Seeding is disabled on production to prevent accidental data loss
 [remotes.production.db.seed]
-enabled = false
+enabled = true
+sql_paths = ["./supabase/seed.sql"]
 
 # Staging Environment (Placeholder)
 # Uncomment and configure when you create a staging Supabase project
