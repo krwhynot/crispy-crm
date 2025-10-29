@@ -496,7 +496,7 @@ export function ContactImportDialog({
                     </div>
 
                     {/* Statistics */}
-                    <div className="grid grid-cols-3 gap-4 pt-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                       <div className="space-y-1">
                         <p className="text-sm font-medium">Processed</p>
                         <p className="text-2xl font-bold text-primary">
