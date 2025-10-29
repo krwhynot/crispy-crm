@@ -1,13 +1,6 @@
--- Simplify opportunity_products table - remove pricing and quantity
--- Keep only product association tracking
-
--- Drop pricing/quantity columns from opportunity_products
-ALTER TABLE opportunity_products
-  DROP COLUMN IF EXISTS quantity,
-  DROP COLUMN IF EXISTS unit_price,
-  DROP COLUMN IF EXISTS extended_price;
-
 -- Update sync_opportunity_with_products RPC to remove pricing logic
+-- Simplified: only product associations with notes, no pricing/quantity
+
 CREATE OR REPLACE FUNCTION public.sync_opportunity_with_products(
   opportunity_data jsonb,
   products_to_create jsonb,
@@ -63,7 +56,7 @@ BEGIN
     updated_at = NOW()
   RETURNING id INTO opportunity_id;
 
-  -- Create new product associations
+  -- Create new product associations (simplified: no pricing)
   IF JSONB_ARRAY_LENGTH(products_to_create) > 0 THEN
     INSERT INTO opportunity_products (
       opportunity_id, product_id_reference, product_name, product_category, notes
@@ -77,7 +70,7 @@ BEGIN
     FROM JSONB_ARRAY_ELEMENTS(products_to_create) AS p;
   END IF;
 
-  -- Update existing product associations
+  -- Update existing product associations (simplified: no pricing)
   IF JSONB_ARRAY_LENGTH(products_to_update) > 0 THEN
     UPDATE opportunity_products op
     SET
@@ -117,5 +110,5 @@ BEGIN
 END;
 $function$;
 
--- Add comment explaining simplified structure
-COMMENT ON TABLE opportunity_products IS 'Simplified product associations - tracks which products are discussed in opportunities without pricing details';
+-- Update comment
+COMMENT ON FUNCTION public.sync_opportunity_with_products IS 'Atomically synchronize opportunity and its product associations (simplified: no pricing/quantity)';
