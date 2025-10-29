@@ -2044,3 +2044,5 @@
 [2025-10-29 00:18:34] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029005253_remote_schema.sql
 [2025-10-29 00:20:06] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029051954_add_products_to_opportunities_view.sql
 [2025-10-29 01:45:56] [code] Edit: /home/krwhynot/projects/crispy-crm/.env
+[2025-10-29 01:48:39] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-10-29 02:02:31] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029070224_grant_authenticated_permissions.sql
