@@ -409,6 +409,14 @@ export const unifiedDataProvider: DataProvider = {
           const products = processedData.products_to_sync;
           delete processedData.products_to_sync;
 
+          // DEBUG: Log what we're sending to RPC
+          console.log('[RPC sync_opportunity_with_products] Calling with:', {
+            opportunity_data: processedData,
+            products_to_create: products,
+            products_to_update: [],
+            product_ids_to_delete: [],
+          });
+
           // Call RPC function to create opportunity with products atomically
           const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
             opportunity_data: processedData,
@@ -418,6 +426,14 @@ export const unifiedDataProvider: DataProvider = {
           });
 
           if (error) {
+            console.error('[RPC sync_opportunity_with_products] Error:', error);
+            console.error('[RPC sync_opportunity_with_products] Error details:', {
+              message: error.message,
+              details: error.details,
+              hint: error.hint,
+              code: error.code,
+            });
+
             // Try to parse structured error if it's JSON
             try {
               const parsedError = JSON.parse(error.message);
@@ -427,6 +443,7 @@ export const unifiedDataProvider: DataProvider = {
             }
           }
 
+          console.log('[RPC sync_opportunity_with_products] Success:', data);
           return { data };
         }
       }
