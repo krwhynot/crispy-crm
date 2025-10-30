@@ -110,7 +110,7 @@ export async function validateOpportunityForm(data: any): Promise<void> {
 
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },  // React Admin expects errors at body.errors
       };
     }
     throw error;
@@ -202,7 +202,7 @@ export async function validateCreateOpportunity(data: any): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },  // React Admin expects errors at body.errors
       };
     }
     throw error;
@@ -221,7 +221,7 @@ export async function validateUpdateOpportunity(data: any): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },  // React Admin expects errors at body.errors
       };
     }
     throw error;

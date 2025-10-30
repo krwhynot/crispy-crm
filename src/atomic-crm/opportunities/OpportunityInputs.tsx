@@ -218,7 +218,8 @@ const OpportunityContactsInput = () => {
 const OpportunityProductsInput = () => {
   const principalOrganizationId = useWatch({ name: "principal_organization_id" });
 
-  // Filter products by principal if selected
+  // Memoize the filter object to prevent unnecessary re-renders
+  // When principal is selected, only show products from that principal
   const productFilter = useMemo(
     () => (principalOrganizationId ? { principal_organization_id: principalOrganizationId } : {}),
     [principalOrganizationId]
@@ -228,7 +229,9 @@ const OpportunityProductsInput = () => {
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-medium mb-2">Products *</h3>
       <p className="text-xs text-[color:var(--text-subtle)] -mt-1 mb-2">
-        At least one product is required
+        {principalOrganizationId
+          ? "At least one product is required (filtered by selected Principal)"
+          : "At least one product is required (select Principal Organization to filter)"}
       </p>
       <ArrayInput source="products_to_sync" label={false}>
         <SimpleFormIterator inline disableReordering>
