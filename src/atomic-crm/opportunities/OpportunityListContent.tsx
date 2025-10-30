@@ -1,10 +1,11 @@
 import isEqual from "lodash/isEqual";
-import { useListContext } from "ra-core";
+import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
 import { useEffect, useState } from "react";
+import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 
 import type { Opportunity } from "../types";
 import { OpportunityColumn } from "./OpportunityColumn";
-import { OPPORTUNITY_STAGES_LEGACY } from "./stageConstants";
+import { OPPORTUNITY_STAGES_LEGACY, getOpportunityStageLabel } from "./stageConstants";
 import type { OpportunitiesByStage } from "./stages";
 import { getOpportunitiesByStage } from "./stages";
 
