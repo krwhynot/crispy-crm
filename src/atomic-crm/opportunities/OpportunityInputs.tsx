@@ -220,8 +220,9 @@ const OpportunityProductsInput = () => {
 
   // Memoize the filter object to prevent unnecessary re-renders
   // When principal is selected, only show products from that principal
+  // Note: Database field is "principal_id", not "principal_organization_id"
   const productFilter = useMemo(
-    () => (principalOrganizationId ? { principal_organization_id: principalOrganizationId } : {}),
+    () => (principalOrganizationId ? { principal_id: principalOrganizationId } : {}),
     [principalOrganizationId]
   );
 
