@@ -1,3 +1,4 @@
+import { Droppable } from "@hello-pangea/dnd";
 import type { Opportunity } from "../types";
 import { OpportunityCard } from "./OpportunityCard";
 import {
@@ -43,14 +44,24 @@ export const OpportunityColumn = ({
           </span>
         </h3>
       </div>
-      <div className="flex flex-col rounded-2xl mt-2 gap-2 pb-3">
-        {opportunities.map((opportunity) => (
-          <OpportunityCard
-            key={opportunity.id}
-            opportunity={opportunity}
-          />
-        ))}
-      </div>
+      <Droppable droppableId={stage}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className="flex flex-col rounded-2xl mt-2 gap-2 pb-3 min-h-[100px]"
+          >
+            {opportunities.map((opportunity, index) => (
+              <OpportunityCard
+                key={opportunity.id}
+                opportunity={opportunity}
+                index={index}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };
