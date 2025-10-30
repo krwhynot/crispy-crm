@@ -1,27 +1,33 @@
+import { Draggable } from "@hello-pangea/dnd";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { MoreVertical } from "lucide-react";
-import { useRedirect, useUpdate, useNotify, useRefresh } from "ra-core";
+import { useRedirect } from "ra-core";
 import type { Opportunity } from "../types";
-import { OPPORTUNITY_STAGES, getOpportunityStageLabel } from "./stageConstants";
 
 export const OpportunityCard = ({
   opportunity,
+  index,
 }: {
   opportunity: Opportunity;
+  index: number;
 }) => {
   if (!opportunity) return null;
 
-  return <OpportunityCardContent opportunity={opportunity} />;
+  return (
+    <Draggable draggableId={opportunity.id.toString()} index={index}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <OpportunityCardContent opportunity={opportunity} />
+        </div>
+      )}
+    </Draggable>
+  );
 };
 
 export const OpportunityCardContent = ({
@@ -30,9 +36,6 @@ export const OpportunityCardContent = ({
   opportunity: Opportunity;
 }) => {
   const redirect = useRedirect();
-  const [update] = useUpdate();
-  const notify = useNotify();
-  const refresh = useRefresh();
 
   const handleClick = () => {
     redirect(
@@ -50,36 +53,6 @@ export const OpportunityCardContent = ({
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       handleClick();
-    }
-  };
-
-  const handleMoveToStage = async (
-    event: React.MouseEvent,
-    newStage: string,
-  ) => {
-    event.stopPropagation();
-    try {
-      await update(
-        "opportunities",
-        {
-          id: opportunity.id,
-          data: { stage: newStage },
-          previousData: opportunity,
-        },
-        {
-          onSuccess: () => {
-            notify(`Moved to ${getOpportunityStageLabel(newStage)}`, {
-              type: "success",
-            });
-            refresh();
-          },
-          onError: () => {
-            notify("Error moving opportunity", { type: "error" });
-          },
-        },
-      );
-    } catch (error) {
-      notify("Error moving opportunity", { type: "error" });
     }
   };
 
@@ -112,36 +85,6 @@ export const OpportunityCardContent = ({
       tabIndex={0}
     >
       <Card className="relative p-3 transition-[box-shadow,border-color,transform] duration-150 shadow-[var(--shadow-card-2)] group-hover:shadow-[var(--shadow-card-2-hover)] motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:scale-[1.01] group-hover:border-[var(--primary)] group-focus-visible:shadow-[var(--shadow-card-2-hover)] motion-safe:group-focus-visible:-translate-y-0.5 motion-safe:group-focus-visible:scale-[1.01] group-focus-visible:border-[var(--primary)] group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-active:scale-[0.98] touch-manipulation border border-[var(--input)]">
-        {/* Stage movement dropdown */}
-        <div className="absolute top-2 right-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 cursor-pointer"
-                aria-label="Move to stage"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {OPPORTUNITY_STAGES.filter(
-                (stage) => stage.value !== opportunity.stage,
-              ).map((stage) => (
-                <DropdownMenuItem
-                  key={stage.value}
-                  className="cursor-pointer"
-                  onClick={(e) => handleMoveToStage(e, stage.value)}
-                >
-                  Move to {stage.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
         <CardContent className="flex flex-col gap-2">
           {/* Line 1: Opportunity Name */}
           <p
