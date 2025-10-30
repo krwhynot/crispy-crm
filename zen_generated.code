@@ -1,3 +1,14 @@
+<GENERATED-CODE>
+Here is the updated code for `ProductListFilter.tsx`.
+
+1.  I've replaced the `useGetList` call for "products" and the subsequent `useMemo` block with a single, efficient `useGetList` call to the new `distinct_product_categories` view.
+2.  The React Query options have been updated with a more appropriate caching strategy for this kind of data.
+3.  A loading state has been added to the Category filter for better UX.
+4.  The local `Product` interface is replaced with a `Category` interface for the new data shape.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/products/ProductListFilter.tsx>
+```typescript
+import { useMemo } from "react";
 import { Package, Tag, Building2 } from "lucide-react";
 import { FilterLiveForm, useGetList } from "ra-core";
 
@@ -6,7 +17,7 @@ import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import type { Organization } from "../types";
 
-// Interface for the data returned by our database view
+// Interface for the data returned by our new database view
 interface Category {
   id: string;
   name: string;
@@ -14,6 +25,7 @@ interface Category {
 
 export const ProductListFilter = () => {
   // Fetch principal organizations dynamically
+  // Auto-refresh to pick up new principals when organizations are updated
   const { data: principals } = useGetList<Organization>(
     "organizations",
     {
@@ -22,26 +34,26 @@ export const ProductListFilter = () => {
       sort: { field: "name", order: "ASC" },
     },
     {
-      // Categories and principals don't change often - cache for 5 minutes
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 15 * 60 * 1000,
-      refetchOnWindowFocus: false,
+      // React Query options - aggressive refetch to ensure fresh data
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      staleTime: 5 * 60 * 1000, // 5 minutes - principals don't change often
+      cacheTime: 15 * 60 * 1000, // 15 minutes
     }
   );
 
   // Fetch unique categories directly from the database view
-  // This is much more efficient than fetching all products
   const { data: categories, isLoading: isLoadingCategories } = useGetList<Category>(
     "distinct_product_categories",
     {
-      pagination: { page: 1, perPage: 100 },
-      sort: { field: "name", order: "ASC" },
+      pagination: { page: 1, perPage: 100 }, // A safe limit for categories
+      sort: { field: "name", order: "ASC" }, // View is already sorted, but good practice
     },
     {
       // Categories change infrequently, so we can cache for longer
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 15 * 60 * 1000,
-      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 15 * 60 * 1000, // 15 minutes
+      refetchOnWindowFocus: false, // Not necessary to refetch on window focus
     }
   );
 
@@ -76,7 +88,7 @@ export const ProductListFilter = () => {
         label="Category"
       >
         {isLoadingCategories ? (
-          <div className="text-sm text-muted-foreground px-3 py-1">Loading...</div>
+          <div className="text-sm text-gray-500 px-3 py-1">Loading...</div>
         ) : (
           categories?.map((category) => (
             <ToggleFilterButton
@@ -107,3 +119,6 @@ export const ProductListFilter = () => {
     </div>
   );
 };
+```
+</UPDATED_EXISTING_FILE>
+</GENERATED-CODE>
