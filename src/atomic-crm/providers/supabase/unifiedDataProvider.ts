@@ -122,13 +122,22 @@ async function validateData(
   data: any,
   operation: "create" | "update" = "create",
 ): Promise<void> {
-  // DEBUG: Log the data being validated
-  console.log('[validateData] Resource:', resource, 'Operation:', operation);
-  console.log('[validateData] Data received:', JSON.stringify(data, null, 2));
+  // For opportunities, merge defaults for fields that React Hook Form might not include
+  // when they haven't been touched (even though defaultValues were set)
+  let dataToValidate = data;
+  if (resource === "opportunities" && operation === "create") {
+    // Merge with defaults - ensures validation receives proper types even for untouched fields
+    dataToValidate = {
+      customer_organization_id: undefined,  // Ensure field exists (will fail required validation with proper message)
+      contact_ids: [],                      // Default to empty array (will fail min(1) validation with proper message)
+      products_to_sync: [],                 // Default to empty array (will fail min(1) validation with proper message)
+      ...data,                              // User's data overwrites defaults
+    };
+  }
 
   try {
     // Use the ValidationService
-    await validationService.validate(resource, operation, data);
+    await validationService.validate(resource, operation, dataToValidate);
   } catch (error: any) {
     // Ensure errors are properly formatted for React Admin
     // React Admin expects { message: string, errors: { fieldName: string } }
