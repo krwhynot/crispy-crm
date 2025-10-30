@@ -103,12 +103,14 @@ function logError(
     error: error instanceof Error ? error.message :
            (error?.message ? error.message : String(error)),
     stack: error instanceof Error ? error.stack : undefined,
-    validationErrors: error?.errors || undefined,
+    validationErrors: error?.body?.errors || error?.errors || undefined,
     fullError: error,
   });
 
   // Log validation errors in detail for debugging
-  if (error?.errors) {
+  if (error?.body?.errors) {
+    console.error('[Validation Errors Detail]', JSON.stringify(error.body.errors, null, 2));
+  } else if (error?.errors) {
     console.error('[Validation Errors Detail]', JSON.stringify(error.errors, null, 2));
   }
 }
@@ -140,9 +142,9 @@ async function validateData(
     await validationService.validate(resource, operation, dataToValidate);
   } catch (error: any) {
     // Ensure errors are properly formatted for React Admin
-    // React Admin expects { message: string, errors: { fieldName: string } }
+    // React Admin expects { message: string, body: { errors: { fieldName: string } } }
 
-    if (error.errors && typeof error.errors === 'object') {
+    if (error.body?.errors && typeof error.body.errors === 'object') {
       // Already properly formatted
       throw error;
     }
@@ -151,14 +153,14 @@ async function validateData(
     if (error instanceof Error) {
       throw {
         message: error.message || "Validation failed",
-        errors: { _error: error.message },
+        body: { errors: { _error: error.message } },
       };
     }
 
     // Unknown error format
     throw {
       message: "Validation failed",
-      errors: { _error: String(error) },
+      body: { errors: { _error: String(error) } },
     };
   }
 }
@@ -220,8 +222,8 @@ async function wrapMethod<T>(
 
     // For validation errors, ensure React Admin format
     // This allows errors to be displayed inline next to form fields
-    if (error.errors && typeof error.errors === 'object') {
-      // Already in correct format { message, errors: { field: message } }
+    if (error.body?.errors && typeof error.body.errors === 'object') {
+      // Already in correct format { message, body: { errors: { field: message } } }
       throw error;
     }
 
