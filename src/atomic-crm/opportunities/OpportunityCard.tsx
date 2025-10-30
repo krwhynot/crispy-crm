@@ -17,13 +17,21 @@ export const OpportunityCard = ({
 
   return (
     <Draggable draggableId={opportunity.id.toString()} index={index}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          className="cursor-grab active:cursor-grabbing"
+          style={{
+            ...provided.draggableProps.style,
+            opacity: snapshot.isDragging ? 0.8 : 1,
+          }}
         >
-          <OpportunityCardContent opportunity={opportunity} />
+          <OpportunityCardContent
+            opportunity={opportunity}
+            isDragging={snapshot.isDragging}
+          />
         </div>
       )}
     </Draggable>
@@ -32,25 +40,29 @@ export const OpportunityCard = ({
 
 export const OpportunityCardContent = ({
   opportunity,
+  isDragging = false,
 }: {
   opportunity: Opportunity;
+  isDragging?: boolean;
 }) => {
   const redirect = useRedirect();
 
   const handleClick = () => {
-    redirect(
-      `/opportunities/${opportunity.id}/show`,
-      undefined,
-      undefined,
-      undefined,
-      {
-        _scrollToTop: false,
-      },
-    );
+    if (!isDragging) {
+      redirect(
+        `/opportunities/${opportunity.id}/show`,
+        undefined,
+        undefined,
+        undefined,
+        {
+          _scrollToTop: false,
+        },
+      );
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (!isDragging && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
       handleClick();
     }
@@ -78,11 +90,11 @@ export const OpportunityCardContent = ({
 
   return (
     <div
-      className="cursor-pointer group rounded-lg"
+      className="group rounded-lg"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="button"
-      tabIndex={0}
+      tabIndex={isDragging ? -1 : 0}
     >
       <Card className="relative p-3 transition-[box-shadow,border-color,transform] duration-150 shadow-[var(--shadow-card-2)] group-hover:shadow-[var(--shadow-card-2-hover)] motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:scale-[1.01] group-hover:border-[var(--primary)] group-focus-visible:shadow-[var(--shadow-card-2-hover)] motion-safe:group-focus-visible:-translate-y-0.5 motion-safe:group-focus-visible:scale-[1.01] group-focus-visible:border-[var(--primary)] group-focus-visible:outline-none group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-active:scale-[0.98] touch-manipulation border border-[var(--input)]">
         <CardContent className="flex flex-col gap-2">

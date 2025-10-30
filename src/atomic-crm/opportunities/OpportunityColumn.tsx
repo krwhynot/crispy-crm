@@ -45,11 +45,13 @@ export const OpportunityColumn = ({
         </h3>
       </div>
       <Droppable droppableId={stage}>
-        {(provided) => (
+        {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="flex flex-col rounded-2xl mt-2 gap-2 pb-3 min-h-[100px]"
+            className={`flex flex-col rounded-2xl mt-2 gap-2 pb-3 min-h-[100px] transition-colors ${
+              snapshot.isDraggingOver ? 'bg-[var(--accent)]' : ''
+            }`}
           >
             {opportunities.map((opportunity, index) => (
               <OpportunityCard

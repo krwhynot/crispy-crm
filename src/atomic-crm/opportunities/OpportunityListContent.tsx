@@ -45,7 +45,7 @@ export const OpportunityListContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unorderedOpportunities]);
 
-  const handleDragEnd = async (result: DropResult) => {
+  const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
     console.log("🎯 Drag ended:", {
@@ -69,32 +69,63 @@ export const OpportunityListContent = () => {
       return;
     }
 
-    // Update the opportunity stage
-    const opportunityId = draggableId;
-    const newStage = destination.droppableId;
+    const sourceColId = source.droppableId;
+    const destColId = destination.droppableId;
 
-    try {
-      await update(
-        "opportunities",
-        {
-          id: opportunityId,
-          data: { stage: newStage },
-        },
-        {
-          onSuccess: () => {
-            notify(`Moved to ${getOpportunityStageLabel(newStage)}`, {
-              type: "success",
-            });
-            refresh();
-          },
-          onError: () => {
-            notify("Error moving opportunity", { type: "error" });
-          },
-        },
-      );
-    } catch {
-      notify("Error moving opportunity", { type: "error" });
+    // Store previous state for rollback on API error
+    const previousState = opportunitiesByStage;
+
+    const sourceCol = previousState[sourceColId];
+    const destCol = previousState[destColId];
+    const draggedItem = sourceCol.find((opp) => opp.id.toString() === draggableId);
+
+    if (!draggedItem) {
+      console.error("Could not find dragged opportunity to move.");
+      return;
     }
+
+    // --- Optimistic UI Update ---
+    const newOpportunitiesByStage = { ...previousState };
+
+    // Remove item from the source column
+    const newSourceCol = Array.from(sourceCol);
+    newSourceCol.splice(source.index, 1);
+    newOpportunitiesByStage[sourceColId] = newSourceCol;
+
+    // Add item to the destination column
+    // Note: If moving in the same column, newSourceCol already has the item removed.
+    const newDestCol = sourceColId === destColId ? newSourceCol : Array.from(destCol);
+    newDestCol.splice(destination.index, 0, { ...draggedItem, stage: destColId });
+    newOpportunitiesByStage[destColId] = newDestCol;
+
+    setOpportunitiesByStage(newOpportunitiesByStage);
+    // --- End Optimistic UI Update ---
+
+    // --- API Call ---
+    update(
+      "opportunities",
+      {
+        id: draggableId,
+        data: { stage: destColId },
+        previousData: draggedItem, // Prevent React Admin from merging with cached data
+      },
+      {
+        onSuccess: () => {
+          notify(`Moved to ${getOpportunityStageLabel(destColId)}`, {
+            type: "success",
+          });
+          // Refresh to sync with any server-side changes
+          refresh();
+        },
+        onError: () => {
+          notify("Error: Could not move opportunity. Reverting.", {
+            type: "warning",
+          });
+          // Rollback UI on error
+          setOpportunitiesByStage(previousState);
+        },
+      },
+    );
   };
 
   if (isPending) return null;
