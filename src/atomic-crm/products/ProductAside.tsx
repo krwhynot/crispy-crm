@@ -1,6 +1,5 @@
 import {
   Edit,
-  Package,
   Building2,
   Calendar,
   AlertCircle
@@ -60,10 +59,6 @@ export const ProductAside = () => {
             Edit Product
           </Button>
         </Link>
-        <Button variant="outline" className="w-full justify-start" disabled>
-          <Package className="w-4 h-4 mr-2" />
-          Duplicate Product
-        </Button>
       </div>
 
       <Separator />
