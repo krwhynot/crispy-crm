@@ -20,7 +20,7 @@ import { LeadSourceInput } from "./LeadSourceInput";
 
 export const OpportunityInputs = ({ mode }: { mode: "create" | "edit" }) => {
   return (
-    <div className="flex flex-col gap-2 p-3">
+    <div className="flex flex-col gap-6 p-6">
       <OpportunityInfoInputs mode={mode} />
 
       <OpportunityClassificationInputs />
