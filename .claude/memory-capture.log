@@ -2075,3 +2075,4 @@
 [2025-10-29 21:50:21] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030025007_create_distinct_product_categories_view.sql
 [2025-10-29 21:51:38] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030025007_create_distinct_product_categories_view.sql
 [2025-10-29 21:52:46] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductListFilter.tsx
+[2025-10-30 07:47:27] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
