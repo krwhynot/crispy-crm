@@ -3968,6 +3968,46 @@ United States', NULL),
   (2013, 'Unknown', NULL, NULL, NULL, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'USA', NULL, NULL);
 
 -- ============================================================================
+-- PRODUCTS (Rapid Rasoi Product Catalog)
+-- ============================================================================
+-- Products for principal organization Rapid Rasoi (id=1802)
+-- All products are gravy bases, sauces, and spice mixes
+
+INSERT INTO products (
+  id,
+  principal_id,
+  name,
+  sku,
+  category,
+  description,
+  status
+) VALUES
+  -- Gravy Bases
+  (1, 1802, 'Tomato Gravy Base', 'RR-TGB-001', 'sauces_condiments', 'Rich tomato-based gravy foundation for Indian curries', 'active'),
+  (2, 1802, 'Yellow Gravy Base', 'RR-YGB-002', 'sauces_condiments', 'Turmeric-infused yellow gravy base', 'active'),
+  (3, 1802, 'All Purpose Gravy Base', 'RR-APGB-003', 'sauces_condiments', 'Versatile gravy base for multiple cuisines', 'active'),
+  (4, 1802, 'Tomato Onion Masala (Bhuna Masala)', 'RR-TOM-004', 'spices_seasonings', 'Slow-roasted tomato and onion masala blend', 'active'),
+  (5, 1802, 'White Gravy Base', 'RR-WGB-005', 'sauces_condiments', 'Creamy white gravy base for kormas and makhani', 'active'),
+  (6, 1802, 'Delhi Tikka Gravy Base', 'RR-DTGB-006', 'sauces_condiments', 'Authentic Delhi-style tikka masala gravy', 'active'),
+  (7, 1802, 'Tikka with Cashew Gravy Base', 'RR-TCGB-007', 'sauces_condiments', 'Premium tikka gravy enriched with cashews', 'active'),
+  (8, 1802, 'Korma Gravy Base', 'RR-KGB-008', 'sauces_condiments', 'Rich and creamy korma gravy foundation', 'active'),
+  (9, 1802, 'Makhani Gravy Base', 'RR-MGB-009', 'sauces_condiments', 'Buttery makhani gravy base for butter chicken', 'active'),
+
+  -- Spice Mixes and Pastes
+  (10, 1802, 'Biryani Mix', 'RR-BM-010', 'spices_seasonings', 'Complete spice blend for authentic biryani', 'active'),
+  (11, 1802, 'Tandoori Marination', 'RR-TM-011', 'spices_seasonings', 'Traditional tandoori marinade spice mix', 'active'),
+  (12, 1802, 'Vindaloo Paste', 'RR-VP-012', 'sauces_condiments', 'Spicy Goan vindaloo curry paste', 'active'),
+
+  -- Asian Sauces
+  (13, 1802, 'Manchurian Sauce', 'RR-MS-013', 'sauces_condiments', 'Indo-Chinese Manchurian sauce', 'active'),
+  (14, 1802, 'Schezwan Sauce', 'RR-SS-014', 'sauces_condiments', 'Spicy Schezwan chili sauce', 'active'),
+
+  -- Specialty Bases
+  (15, 1802, 'Pav Bhaji Base', 'RR-PBB-015', 'sauces_condiments', 'Mumbai-style pav bhaji vegetable curry base', 'active'),
+  (16, 1802, 'Dal Makhani Base', 'RR-DMB-016', 'sauces_condiments', 'Creamy dal makhani curry base', 'active'),
+  (17, 1802, 'Chana Masala Base', 'RR-CMB-017', 'spices_seasonings', 'Chickpea curry spice blend base', 'active');
+
+-- ============================================================================
 -- RESET SEQUENCES (critical for new record creation)
 -- ============================================================================
 -- After inserting with explicit IDs, sequences must be updated to prevent conflicts

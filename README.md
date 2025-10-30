@@ -40,22 +40,30 @@ npm install
 
 This will install the dependencies for the frontend and the backend, including a local Supabase instance.
 
-Once you app is configured, start the app locally with the following command:
+### Quick Start (5 Minutes)
+
+Start local development with fresh database:
 
 ```sh
-npm run dev
+npm run dev:local
 ```
 
-This will start the Vite dev server for the frontend and the local Supabase instance for the API.
+This will:
+1. Start local Supabase (Docker)
+2. Reset and seed the database
+3. Start Vite dev server
 
-You can then access the app via [http://localhost:5173/](http://localhost:5173/). You will be prompted to create the first user.
+**Access the app:**
+- App: [http://localhost:5173/](http://localhost:5173/)
+- Login: `admin@test.com` / `password123`
 
-If you need debug the backend, you can access the following services: 
-
-- Supabase dashboard: [http://localhost:54323/](http://localhost:54323/)
+**Debug services:**
+- Supabase Studio: [http://localhost:54323/](http://localhost:54323/)
 - REST API: [http://127.0.0.1:54321](http://127.0.0.1:54321)
 - Attachments storage: [http://localhost:54323/project/default/storage/buckets/attachments](http://localhost:54323/project/default/storage/buckets/attachments)
-- Inbucket email testing service: [http://localhost:54324/](http://localhost:54324/)
+- Email testing: [http://localhost:54324/](http://localhost:54324/)
+
+**Full setup guide:** See [Development Setup](./docs/guides/01-development-setup.md)
 
 ## User Documentation
 
@@ -153,11 +161,27 @@ npm run migrate:production    # Execute production migration
 npm run migrate:dry-run       # Preview migration changes
 ```
 
+## Documentation
+
+### Developer Guides
+- **[Development Setup](./docs/guides/01-development-setup.md)** - Complete local development guide
+- **[Testing Guide](./docs/guides/02-testing.md)** - Testing strategy and workflows
+- **[Supabase Workflow](./docs/guides/05-supabase-workflow.md)** - Database migration workflows
+
+### Reference Documentation
+- **[CLAUDE.md](./CLAUDE.md)** - AI agent guidelines and project constitution
+- **[Architecture Essentials](./docs/claude/architecture-essentials.md)** - Core patterns
+- **[Common Tasks](./docs/claude/common-tasks.md)** - Step-by-step guides
+- **[Commands Reference](./docs/claude/commands-quick-reference.md)** - All CLI commands
+
+### Specialized Topics
+- **[Database Documentation](./docs/database/)** - Migration business rules
+- **[Security Hardening](./docs/security/)** - Pre-launch security checklist
+- **[Design System](./docs/design-system/)** - UI component guidelines
+
 ## Testing
 
 ![Coverage](https://img.shields.io/badge/coverage-70%25-yellow)
-
-Atomic CRM uses a comprehensive testing strategy with unit, integration, and end-to-end tests. See our [Testing Documentation](./.docs/testing/TESTING.md) for complete details.
 
 ### Quick Start
 
@@ -168,15 +192,11 @@ npm test
 # Run tests once with coverage
 npm run test:coverage
 
-# Run tests in CI mode (no watch)
-npm run test:ci
-
-# Run end-to-end tests
-npm run test:e2e
-
-# Launch Vitest UI for visual exploration
-npm run test:ui
+# 5-minute manual checklist before deployment
+# See: docs/guides/02-testing.md
 ```
+
+**Full testing guide:** See [Testing Documentation](./docs/guides/02-testing.md)
 
 ### Test Commands
 
@@ -184,31 +204,8 @@ npm run test:ui
 |---------|-------------|
 | `npm test` | Run unit/integration tests in watch mode |
 | `npm run test:ci` | Run tests once with verbose output (for CI) |
-| `npm run test:coverage` | Generate coverage report |
-| `npm run test:unit` | Run only unit tests |
+| `npm run test:coverage` | Generate coverage report (70% minimum) |
 | `npm run test:e2e` | Run Playwright end-to-end tests |
-| `npm run test:e2e:ui` | Launch Playwright UI mode |
-| `npm run test:performance` | Run performance benchmarks |
-| `npm run test:load` | Run load tests |
-
-### Coverage Requirements
-
-We maintain a baseline coverage of **70%** across all metrics (statements, branches, functions, lines). Coverage reports are generated in the `coverage/` directory.
-
-### Documentation
-
-- [Testing Overview](./.docs/testing/TESTING.md) - Complete testing strategy and setup
-- [Writing Tests Guide](./.docs/testing/WRITING_TESTS.md) - Patterns, examples, and best practices
-- [Flaky Test Policy](./.docs/testing/FLAKY_TEST_POLICY.md) - Handling unreliable tests
-
-### Adding Tests
-
-You can add tests anywhere in the `src` directory:
-- Unit tests: `*.test.ts` or `*.test.tsx` files
-- Integration tests: `src/tests/integration/`
-- E2E tests: `tests/e2e/`
-
-Tests should follow our [testing patterns](./.docs/testing/WRITING_TESTS.md) and use semantic selectors (getByRole > data-testid > avoid CSS/text).
 
 ## License
 
