@@ -94,14 +94,12 @@ export async function validateProductForm(data: any): Promise<void> {
 export type ProductFormData = z.infer<typeof productSchema>;
 
 // Opportunity Product schema for line items (added for opportunity-products junction)
+// SIMPLIFIED: Only tracks product associations, no pricing/quantity (matches database schema)
 export const opportunityProductSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
   product_id_reference: z.coerce.number().int().positive("Product is required"),
   product_name: z.string().min(1, "Product name is required"),
   product_category: z.string().optional(),
-  quantity: z.coerce.number().int().positive().optional(),
-  unit_price: z.coerce.number().nonnegative().optional(),
-  discount_percent: z.coerce.number().min(0).max(100).optional(),
   notes: z.string().optional(),
 });
 

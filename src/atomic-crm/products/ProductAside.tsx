@@ -79,40 +79,6 @@ export const ProductAside = () => {
 
       <Separator />
 
-      {/* Price Summary */}
-      <div>
-        <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">Pricing</h4>
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm">List Price</span>
-            <span className="font-medium">
-              ${record.list_price?.toFixed(2) || "0.00"}
-            </span>
-          </div>
-          {record.cost_per_unit && (
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Cost</span>
-              <span className="text-sm text-[color:var(--text-subtle)]">
-                ${record.cost_per_unit.toFixed(2)}
-              </span>
-            </div>
-          )}
-          {record.list_price && record.cost_per_unit && (
-            <div className="flex justify-between items-center">
-              <span className="text-sm flex items-center gap-1">
-                <TrendingUp className="w-3 h-3" />
-                Margin
-              </span>
-              <span className="text-sm font-medium text-success-default">
-                {((record.list_price - record.cost_per_unit) / record.list_price * 100).toFixed(1)}%
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <Separator />
-
       {/* Supplier/Principal */}
       {principal && (
         <>
