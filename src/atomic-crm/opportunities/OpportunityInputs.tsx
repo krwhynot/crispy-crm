@@ -38,38 +38,44 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
   const { regenerate, isLoading } = useAutoGenerateName(mode);
 
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Opportunity Details</h3>
-      <div className="relative">
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Opportunity Details</h3>
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+        <div className="lg:col-span-2">
+          <div className="relative">
+            <TextInput
+              source="name"
+              label="Opportunity name *"
+              helperText={false}
+              InputProps={{
+                endAdornment:
+                  mode === "edit" ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={regenerate}
+                      disabled={isLoading}
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                    </Button>
+                  ) : null,
+              }}
+            />
+          </div>
+        </div>
+        <div className="lg:col-span-2">
+          <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
+        </div>
         <TextInput
-          source="name"
-          label="Opportunity name *"
+          source="estimated_close_date"
+          label="Expected Closing Date *"
           helperText={false}
-          InputProps={{
-            endAdornment:
-              mode === "edit" ? (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={regenerate}
-                  disabled={isLoading}
-                >
-                  <RefreshCw className="w-4 h-4" />
-                </Button>
-              ) : null,
-          }}
+          type="date"
+          // NOTE: defaultValue removed - now handled by form-level defaultValues from schema
+          // Per Constitution #5: Never use defaultValue on inputs with React Hook Form
         />
       </div>
-      <TextInput source="description" label="Description" multiline rows={1} helperText={false} />
-      <TextInput
-        source="estimated_close_date"
-        label="Expected Closing Date *"
-        helperText={false}
-        type="date"
-        // NOTE: defaultValue removed - now handled by form-level defaultValues from schema
-        // Per Constitution #5: Never use defaultValue on inputs with React Hook Form
-      />
     </div>
   );
 };
@@ -77,9 +83,9 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
 // Classification & Tracking section
 const OpportunityClassificationInputs = () => {
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Classification & Tracking</h3>
-      <div className="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Classification & Tracking</h3>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         <SelectInput
           source="stage"
           label="Stage *"
@@ -110,9 +116,9 @@ const OpportunityClassificationInputs = () => {
 // Organization relationships section
 const OpportunityOrganizationInputs = () => {
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Key Relationships</h3>
-      <div className="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Key Relationships</h3>
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         <ReferenceInput
           source="customer_organization_id"
           reference="organizations"
@@ -180,13 +186,15 @@ const OpportunityContactsInput = () => {
   );
 
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Contacts *</h3>
-      <p className="text-xs text-[color:var(--text-subtle)] -mt-1 mb-2">
-        {customerOrganizationId
-          ? "At least one contact is required"
-          : "Please select a Customer Organization first"}
-      </p>
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <div>
+        <h3 className="text-base font-semibold text-[color:var(--text-primary)] mb-1">Contacts *</h3>
+        <p className="text-sm text-[color:var(--text-subtle)]">
+          {customerOrganizationId
+            ? "At least one contact is required"
+            : "Please select a Customer Organization first"}
+        </p>
+      </div>
       {customerOrganizationId ? (
         <ReferenceArrayInput
           source="contact_ids"
@@ -227,13 +235,15 @@ const OpportunityProductsInput = () => {
   );
 
   return (
-    <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Products *</h3>
-      <p className="text-xs text-[color:var(--text-subtle)] -mt-1 mb-2">
-        {principalOrganizationId
-          ? "At least one product is required (filtered by selected Principal)"
-          : "At least one product is required (select Principal Organization to filter)"}
-      </p>
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <div>
+        <h3 className="text-base font-semibold text-[color:var(--text-primary)] mb-1">Products *</h3>
+        <p className="text-sm text-[color:var(--text-subtle)]">
+          {principalOrganizationId
+            ? "At least one product is required (filtered by selected Principal)"
+            : "At least one product is required (select Principal Organization to filter)"}
+        </p>
+      </div>
       <ArrayInput source="products_to_sync" label={false}>
         <SimpleFormIterator inline disableReordering>
           <ReferenceInput
