@@ -18,10 +18,10 @@ export const ContactInputs = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex flex-col gap-2 p-1">
+    <div className="flex flex-col gap-6 p-6">
       <Avatar />
       <div className={`flex gap-6 ${isMobile ? "flex-col" : "flex-row"}`}>
-        <div className="flex flex-col gap-10 flex-1">
+        <div className="flex flex-col gap-6 flex-1">
           <ContactIdentityInputs />
           <ContactPositionInputs />
         </div>
@@ -29,7 +29,7 @@ export const ContactInputs = () => {
           orientation={isMobile ? "horizontal" : "vertical"}
           className="flex-shrink-0"
         />
-        <div className="flex flex-col gap-10 flex-1">
+        <div className="flex flex-col gap-6 flex-1">
           <ContactPersonalInformationInputs />
           <ContactMiscInputs />
         </div>
