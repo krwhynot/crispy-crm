@@ -25,8 +25,8 @@ describe("OpportunityCreate - Transform Function", () => {
       name: "Test Opportunity",
       amount: 50000,
       products: [
-        { product_id: 1, quantity: 5, unit_price: 100 },
-        { product_id: 2, quantity: 10, unit_price: 200 },
+        { product_id_reference: 1, notes: "Test product 1" },
+        { product_id_reference: 2, notes: "Test product 2" },
       ],
     };
 
