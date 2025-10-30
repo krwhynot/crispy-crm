@@ -2151,3 +2151,9 @@
 [2025-10-30 15:05:25] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 [2025-10-30 15:06:01] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
 [2025-10-30 15:10:41] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 15:11:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 15:11:43] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 15:12:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 15:12:20] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 15:15:21] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 15:17:44] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030201606_fix_sync_rpc_response_format.sql

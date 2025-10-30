@@ -49,6 +49,9 @@ import {
 // Import types for custom methods
 import type { SalesFormData, Sale, Opportunity, OpportunityParticipant } from "../../types";
 
+// Type for potentially wrapped RPC responses
+type RpcWrappedResponse<T> = T | { data: T };
+
 // Initialize decomposed services
 const storageService = new StorageService();
 const transformService = new TransformService(storageService);
@@ -178,19 +181,46 @@ async function transformData<T>(
 }
 
 /**
+ * Type guard to check if an RPC response is wrapped.
+ * Checks for the presence of a data property with an id field.
+ *
+ * @param response The response to check
+ * @returns True if the response is wrapped
+ */
+function isWrappedResponse<T extends { id: any }>(
+  response: RpcWrappedResponse<T>
+): response is { data: T } {
+  return (
+    response !== null &&
+    response !== undefined &&
+    typeof response === 'object' &&
+    'data' in response &&
+    response.data !== null &&
+    typeof response.data === 'object' &&
+    'id' in response.data
+  );
+}
+
+/**
  * Formats RPC responses to match React Admin's expected structure.
  * Handles potentially double-wrapped responses from Supabase RPC functions.
  *
  * @param rpcData The raw data returned from a Supabase RPC call
  * @returns A React Admin-compatible response object
  */
-function formatRpcResponse<T extends { id: any }>(rpcData: any): { data: T } {
-  // If the RPC response is already in { data: record } format and contains an id,
-  // extract the inner record to avoid double-wrapping
-  if (rpcData && rpcData.data && typeof rpcData.data.id !== 'undefined') {
-    return { data: rpcData.data as T };
+function formatRpcResponse<T extends { id: any }>(
+  rpcData: RpcWrappedResponse<T>
+): { data: T } {
+  console.log('[formatRpcResponse] Input:', rpcData);
+  console.log('[formatRpcResponse] isWrappedResponse:', isWrappedResponse(rpcData));
+
+  // Use type guard for safer unwrapping
+  if (isWrappedResponse(rpcData)) {
+    console.log('[formatRpcResponse] Unwrapping response:', rpcData.data);
+    return { data: rpcData.data };
   }
   // Otherwise, wrap the raw response
+  console.log('[formatRpcResponse] Wrapping response:', rpcData);
   return { data: rpcData as T };
 }
 
@@ -471,23 +501,13 @@ export const unifiedDataProvider: DataProvider = {
               code: error.code,
             });
 
-            // Try to parse structured error if it's JSON
-            try {
-              const parsedError = JSON.parse(error.message);
-              throw parsedError;
-            } catch {
-              throw error;
-            }
+            // Use helper function for consistent error handling
+            handleRpcError(error);
           }
 
           console.log('[RPC sync_opportunity_with_products] Success:', data);
-          // The RPC function returns { data: { id, ...fields } }
-          // But React Admin expects { data: { id, ...fields } }
-          // So we need to extract the nested data
-          if (data && data.data) {
-            return { data: data.data };
-          }
-          return { data };
+          // Use helper function for consistent response formatting
+          return formatRpcResponse(data);
         }
       }
 
@@ -547,22 +567,12 @@ export const unifiedDataProvider: DataProvider = {
           });
 
           if (error) {
-            // Try to parse structured error if it's JSON
-            try {
-              const parsedError = JSON.parse(error.message);
-              throw parsedError;
-            } catch {
-              throw error;
-            }
+            // Use helper function for consistent error handling
+            handleRpcError(error);
           }
 
-          // The RPC function returns { data: { id, ...fields } }
-          // But React Admin expects { data: { id, ...fields } }
-          // So we need to extract the nested data
-          if (data && data.data) {
-            return { data: data.data };
-          }
-          return { data };
+          // Use helper function for consistent response formatting
+          return formatRpcResponse(data);
         }
       }
 
