@@ -226,9 +226,9 @@ const OpportunityProductsInput = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h3 className="text-sm font-medium mb-2">Products</h3>
+      <h3 className="text-sm font-medium mb-2">Products *</h3>
       <p className="text-xs text-[color:var(--text-subtle)] -mt-1 mb-2">
-        Products being discussed in this opportunity
+        At least one product is required
       </p>
       <ArrayInput source="products_to_sync" label={false}>
         <SimpleFormIterator inline disableReordering>

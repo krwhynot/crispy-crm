@@ -2084,3 +2084,8 @@
 [2025-10-30 08:07:44] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030130720_fix_sync_opportunity_schema_mismatch.sql
 [2025-10-30 08:11:45] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030131117_fix_rpc_array_parsing.sql
 [2025-10-30 08:20:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
+[2025-10-30 08:20:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
+[2025-10-30 08:20:39] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030132011_add_rpc_backend_validation.sql
+[2025-10-30 08:21:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
+[2025-10-30 08:22:00] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
+[2025-10-30 08:41:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
