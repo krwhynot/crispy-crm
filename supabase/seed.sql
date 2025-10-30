@@ -4015,6 +4015,7 @@ INSERT INTO products (
 
 SELECT setval('organizations_id_seq', (SELECT MAX(id) FROM organizations));
 SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts));
+SELECT setval('products_id_seq', (SELECT MAX(id) FROM products));
 
 -- ============================================================================
 -- VALIDATION QUERIES (run these to verify)

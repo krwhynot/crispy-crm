@@ -3,7 +3,6 @@ import {
   Package,
   Building2,
   Calendar,
-  TrendingUp,
   AlertCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
