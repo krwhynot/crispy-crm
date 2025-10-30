@@ -70,6 +70,7 @@ const opportunityBaseSchema = z.object({
   // OpportunityContactsInput fields
   contact_ids: z
     .array(z.union([z.string(), z.number()]))
+    .optional()
     .default([]),
 
   // Note: The following fields exist in database but are NOT validated
