@@ -399,7 +399,7 @@ export const unifiedDataProvider: DataProvider = {
             opportunity_data: processedData,
             products_to_create: products,
             products_to_update: [],
-            products_to_delete: [],
+            product_ids_to_delete: [],
           });
 
           if (error) {
@@ -468,7 +468,7 @@ export const unifiedDataProvider: DataProvider = {
             opportunity_data: { ...processedData, id: params.id },
             products_to_create: creates,
             products_to_update: updates,
-            products_to_delete: deletes,
+            product_ids_to_delete: deletes,
           });
 
           if (error) {
