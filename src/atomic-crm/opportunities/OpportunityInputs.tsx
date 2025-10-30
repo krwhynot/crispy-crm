@@ -201,11 +201,13 @@ const OpportunityContactsInput = () => {
         </ReferenceArrayInput>
       ) : (
         <AutocompleteArrayInput
+          source="contact_ids"
           label={false}
           optionText={contactOptionText}
           helperText={false}
           disabled
           placeholder="Select Customer Organization first"
+          choices={[]}
         />
       )}
     </div>
