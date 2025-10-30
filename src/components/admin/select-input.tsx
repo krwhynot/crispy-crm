@@ -229,54 +229,56 @@ export const SelectInput = (props: SelectInputProps) => {
             />
           </FormLabel>
         )}
-        <div className="relative">
-          <Select
-            //FIXME https://github.com/radix-ui/primitives/issues/3135
-            // Setting a key based on the value fixes an issue where onValueChange
-            // was called with an empty string when the controlled value was changed.
-            // See: https://github.com/radix-ui/primitives/issues/3135#issuecomment-2916908248
-            key={`select:${field.value?.toString() ?? emptyValue}`}
-            value={field.value?.toString() || emptyValue}
-            onValueChange={handleChangeWithCreateSupport}
-          >
-            <SelectTrigger
-              className={cn("w-full transition-all hover:bg-accent")}
+        <FormControl>
+          <div className="relative">
+            <Select
+              //FIXME https://github.com/radix-ui/primitives/issues/3135
+              // Setting a key based on the value fixes an issue where onValueChange
+              // was called with an empty string when the controlled value was changed.
+              // See: https://github.com/radix-ui/primitives/issues/3135#issuecomment-2916908248
+              key={`select:${field.value?.toString() ?? emptyValue}`}
+              value={field.value?.toString() || emptyValue}
+              onValueChange={handleChangeWithCreateSupport}
             >
-              <SelectValue placeholder={renderEmptyItemOption()} />
+              <SelectTrigger
+                className={cn("w-full transition-all hover:bg-accent")}
+              >
+                <SelectValue placeholder={renderEmptyItemOption()} />
 
-              {field.value && field.value !== emptyValue ? (
-                <div
-                  role="button"
-                  className="p-0 ml-auto pointer-events-auto hover:bg-transparent text-[color:var(--text-subtle)] opacity-50 hover:opacity-100"
-                  onClick={handleReset}
-                >
-                  <X className="h-4 w-4" />
-                </div>
-              ) : null}
-            </SelectTrigger>
-            <SelectContent>
-              {finalChoices?.map((choice) => {
-                if (!choice) return null;
-                const value = getChoiceValue(choice);
-                const isDisabled = getDisableValue(choice);
-
-                return (
-                  <SelectItem
-                    key={value}
-                    value={value?.toString()}
-                    disabled={isDisabled}
+                {field.value && field.value !== emptyValue ? (
+                  <div
+                    role="button"
+                    className="p-0 ml-auto pointer-events-auto hover:bg-transparent text-[color:var(--text-subtle)] opacity-50 hover:opacity-100"
+                    onClick={handleReset}
                   >
-                    {renderMenuItemOption(
-                      !!createItem && choice?.id === createItem.id
-                        ? createItem
-                        : choice,
-                    )}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-        </div>
+                    <X className="h-4 w-4" />
+                  </div>
+                ) : null}
+              </SelectTrigger>
+              <SelectContent>
+                {finalChoices?.map((choice) => {
+                  if (!choice) return null;
+                  const value = getChoiceValue(choice);
+                  const isDisabled = getDisableValue(choice);
+
+                  return (
+                    <SelectItem
+                      key={value}
+                      value={value?.toString()}
+                      disabled={isDisabled}
+                    >
+                      {renderMenuItemOption(
+                        !!createItem && choice?.id === createItem.id
+                          ? createItem
+                          : choice,
+                      )}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+          </div>
+        </FormControl>
         <InputHelperText helperText={helperText} />
       </FormField>
       {createElement}
