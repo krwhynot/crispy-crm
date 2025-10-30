@@ -21,6 +21,7 @@ See [Engineering Constitution](docs/claude/engineering-constitution.md) for comp
 4. **FORM STATE FROM SCHEMA**: Use `zodSchema.partial().parse({})` for defaults
 5. **SEMANTIC COLORS ONLY**: CSS variables (--primary, --brand-700), never hex codes
 6. **MIGRATIONS**: Always use `npx supabase migration new <name>` to generate correctly timestamped files
+7. **TWO-LAYER SECURITY**: All tables need BOTH GRANT permissions AND RLS policies (see Database Security section)
 
 ## Database Workflows ⚠️ CRITICAL
 
