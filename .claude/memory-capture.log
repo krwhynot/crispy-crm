@@ -2082,3 +2082,5 @@
 [2025-10-30 08:03:41] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 [2025-10-30 08:03:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 [2025-10-30 08:07:44] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030130720_fix_sync_opportunity_schema_mismatch.sql
+[2025-10-30 08:11:45] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030131117_fix_rpc_array_parsing.sql
+[2025-10-30 08:20:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts

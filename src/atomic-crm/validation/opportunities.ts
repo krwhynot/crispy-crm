@@ -69,7 +69,8 @@ const opportunityBaseSchema = z.object({
 
   // OpportunityContactsInput fields
   contact_ids: z
-    .array(z.union([z.string(), z.number()])),
+    .array(z.union([z.string(), z.number()]))
+    .default([]),
 
   // Note: The following fields exist in database but are NOT validated
   // because they have no UI input fields in OpportunityInputs.tsx (per "UI as truth" principle):
