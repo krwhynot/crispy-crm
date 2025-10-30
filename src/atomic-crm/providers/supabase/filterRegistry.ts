@@ -245,6 +245,12 @@ export const filterableFields: Record<string, string[]> = {
     "manufacturer_part_number",
     "q",               // Special: full-text search parameter
   ],
+
+  // Distinct Product Categories view (for filter dropdowns)
+  distinct_product_categories: [
+    "id",
+    "name",
+  ],
 };
 
 /**

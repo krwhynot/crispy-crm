@@ -178,6 +178,43 @@ async function transformData<T>(
 }
 
 /**
+ * Formats RPC responses to match React Admin's expected structure.
+ * Handles potentially double-wrapped responses from Supabase RPC functions.
+ *
+ * @param rpcData The raw data returned from a Supabase RPC call
+ * @returns A React Admin-compatible response object
+ */
+function formatRpcResponse<T extends { id: any }>(rpcData: any): { data: T } {
+  // If the RPC response is already in { data: record } format and contains an id,
+  // extract the inner record to avoid double-wrapping
+  if (rpcData && rpcData.data && typeof rpcData.data.id !== 'undefined') {
+    return { data: rpcData.data as T };
+  }
+  // Otherwise, wrap the raw response
+  return { data: rpcData as T };
+}
+
+/**
+ * Handles RPC errors by attempting to parse JSON error messages.
+ * Many Supabase RPC functions return structured error messages as JSON strings.
+ *
+ * @param error The error from a Supabase RPC call
+ * @throws The parsed error or original error
+ */
+function handleRpcError(error: any): never {
+  if (error?.message) {
+    try {
+      // Attempt to parse a structured error message
+      const parsedError = JSON.parse(error.message);
+      throw parsedError;
+    } catch {
+      // If parsing fails, it's not JSON, so throw the original error
+    }
+  }
+  throw error;
+}
+
+/**
  * Process data for database operations
  * CRITICAL: Validate FIRST, Transform SECOND (Issue 0.4)
  * This allows validation of original field names (e.g., 'products')
@@ -444,6 +481,12 @@ export const unifiedDataProvider: DataProvider = {
           }
 
           console.log('[RPC sync_opportunity_with_products] Success:', data);
+          // The RPC function returns { data: { id, ...fields } }
+          // But React Admin expects { data: { id, ...fields } }
+          // So we need to extract the nested data
+          if (data && data.data) {
+            return { data: data.data };
+          }
           return { data };
         }
       }
