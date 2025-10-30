@@ -49,7 +49,12 @@ const opportunityBaseSchema = z.object({
   estimated_close_date: z
     .string()
     .min(1, "Expected closing date is required")
-    .optional(),
+    .default(() => {
+      // Default to 30 days from now
+      const date = new Date();
+      date.setDate(date.getDate() + 30);
+      return date.toISOString().split('T')[0];
+    }),
 
   // OpportunityClassificationInputs fields
   stage: opportunityStageSchema.nullable().default("new_lead"),
