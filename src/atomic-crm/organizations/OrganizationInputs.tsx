@@ -94,7 +94,8 @@ export const OrganizationInputs = () => {
       </TabsList>
 
       <TabsContent value="general">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 p-4">
+        <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           <div className="lg:col-span-2">
             <OrganizationDisplayInputs />
           </div>
@@ -131,11 +132,13 @@ export const OrganizationInputs = () => {
               optionText={saleOptionRenderer}
             />
           </ReferenceInput>
+          </div>
         </div>
       </TabsContent>
 
       <TabsContent value="details">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 p-4">
+        <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           <SegmentComboboxInput
             source="segment_id"
             label="Segment"
@@ -156,11 +159,13 @@ export const OrganizationInputs = () => {
           <TextInput source="city" helperText={false} label="City" />
           <TextInput source="postal_code" label="Postal Code" helperText={false} />
           <TextInput source="state" label="State" helperText={false} />
+          </div>
         </div>
       </TabsContent>
 
       <TabsContent value="other">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 p-4">
+        <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           <TextInput source="website" helperText="Format: https://example.com" label="Website" />
           <TextInput
             source="linkedin_url"
@@ -177,6 +182,7 @@ export const OrganizationInputs = () => {
                 />
               </SimpleFormIterator>
             </ArrayInput>
+          </div>
           </div>
         </div>
       </TabsContent>
