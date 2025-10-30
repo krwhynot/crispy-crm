@@ -122,6 +122,10 @@ async function validateData(
   data: any,
   operation: "create" | "update" = "create",
 ): Promise<void> {
+  // DEBUG: Log the data being validated
+  console.log('[validateData] Resource:', resource, 'Operation:', operation);
+  console.log('[validateData] Data received:', JSON.stringify(data, null, 2));
+
   try {
     // Use the ValidationService
     await validationService.validate(resource, operation, data);
