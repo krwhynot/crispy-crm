@@ -2078,3 +2078,7 @@
 [2025-10-30 07:47:27] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
 [2025-10-30 07:50:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.tsx
 [2025-10-30 07:59:14] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
+[2025-10-30 07:59:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityCreate.tsx
+[2025-10-30 08:03:41] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 08:03:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-10-30 08:07:44] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251030130720_fix_sync_opportunity_schema_mismatch.sql
