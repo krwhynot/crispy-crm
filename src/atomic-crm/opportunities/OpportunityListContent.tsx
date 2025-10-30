@@ -102,12 +102,13 @@ export const OpportunityListContent = () => {
     // --- End Optimistic UI Update ---
 
     // --- API Call ---
+    // Note: ra-supabase requires previousData to calculate diffs
     update(
       "opportunities",
       {
         id: draggableId,
         data: { stage: destColId },
-        previousData: draggedItem, // Prevent React Admin from merging with cached data
+        previousData: draggedItem,
       },
       {
         onSuccess: () => {

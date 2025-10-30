@@ -169,6 +169,12 @@ export const createOpportunitySchema = opportunityBaseSchema
 // 2. contact_ids IN payload but empty [] → REJECT (user explicitly removing all contacts)
 export const updateOpportunitySchema = opportunityBaseSchema
   .partial()
+  .extend({
+    // Override contact_ids to remove the default([]) that causes issues with partial updates
+    contact_ids: z
+      .array(z.union([z.string(), z.number()]))
+      .optional(), // No .default([]) here!
+  })
   .required({
     id: true,
   })
