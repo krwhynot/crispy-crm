@@ -73,6 +73,74 @@ CREATE POLICY "Users can view own projects"
   USING (auth.uid() = user_id);
 ```
 
+### 🔒 Database Security - Two-Layer Model
+
+**⚠️ CRITICAL:** PostgreSQL security requires BOTH table permissions AND RLS policies.
+
+**Two-Layer Security Architecture:**
+
+1. **Layer 1: Table Permissions (GRANT)** - Controls which roles can access tables
+2. **Layer 2: Row Level Security (RLS)** - Filters which rows users can see/modify
+
+**❌ Common Mistake:** Adding RLS policies without GRANT permissions results in "permission denied" errors. RLS can only *restrict* access, not *grant* it.
+
+**✅ Correct Pattern for New Tables:**
+```sql
+-- Step 1: Create table
+CREATE TABLE my_table (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Step 2: Enable RLS
+ALTER TABLE my_table ENABLE ROW LEVEL SECURITY;
+
+-- Step 3: GRANT base permissions to authenticated role (Layer 1)
+GRANT SELECT, INSERT, UPDATE, DELETE ON my_table TO authenticated;
+GRANT USAGE ON SEQUENCE my_table_id_seq TO authenticated;
+
+-- Step 4: Create RLS policies for row filtering (Layer 2)
+CREATE POLICY authenticated_select_my_table ON my_table
+  FOR SELECT TO authenticated
+  USING (true);  -- Shared access for team
+
+CREATE POLICY authenticated_insert_my_table ON my_table
+  FOR INSERT TO authenticated
+  WITH CHECK (true);
+
+CREATE POLICY authenticated_update_my_table ON my_table
+  FOR UPDATE TO authenticated
+  USING (true);
+
+CREATE POLICY authenticated_delete_my_table ON my_table
+  FOR DELETE TO authenticated
+  USING (true);
+```
+
+**Security Patterns in This Project:**
+
+- **Shared Resources** (contacts, organizations, opportunities): `USING (true)` - all team members can access
+- **Personal Resources** (tasks): `USING (sales_id IN (SELECT id FROM sales WHERE user_id = auth.uid()))` - only creator can access
+
+**⚠️ Cloud Schema Sync Warning:**
+
+When pulling cloud schema with `npx supabase db pull`, the generated migration may contain:
+- `REVOKE ... FROM authenticated` statements that strip permissions
+- Missing `GRANT` statements to restore them
+
+**Always verify migrations include GRANT statements** or add them manually:
+```sql
+-- Restore permissions after schema sync
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
+```
+
+**Reference Migrations:**
+- Table permissions: `supabase/migrations/20251018152315_cloud_schema_fresh.sql`
+- RLS policies: `supabase/migrations/20251018203500_update_rls_for_shared_team_access.sql`
+- Permission grants: `supabase/migrations/20251029070224_grant_authenticated_permissions.sql`
+
 ### ⚠️ Auth Schema Exclusion Warning
 
 Supabase's `db diff` and `db dump` commands **exclude the `auth` schema by design**:

@@ -2046,3 +2046,4 @@
 [2025-10-29 01:45:56] [code] Edit: /home/krwhynot/projects/crispy-crm/.env
 [2025-10-29 01:48:39] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
 [2025-10-29 02:02:31] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251029070224_grant_authenticated_permissions.sql
+[2025-10-29 20:44:03] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
