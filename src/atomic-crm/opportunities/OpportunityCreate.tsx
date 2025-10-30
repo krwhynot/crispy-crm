@@ -16,14 +16,14 @@ const OpportunityCreate = () => {
   // Generate defaults from schema, then merge with identity-specific values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // Use .partial() to make all fields optional during default generation
-  // This extracts only fields with .default() (stage, priority, estimated_close_date)
-  // Required fields without defaults are left undefined:
-  // - contact_ids: undefined (validation will catch if user doesn't add contacts)
-  // - name: user must fill (text input works fine with undefined)
+  // This extracts fields with .default() (stage, priority, estimated_close_date)
+  // Explicitly initialize array fields for React Hook Form to track them:
   const formDefaults = {
     ...opportunitySchema.partial().parse({}),
     opportunity_owner_id: identity?.id,
     account_manager_id: identity?.id,
+    contact_ids: [], // Explicitly initialize for ReferenceArrayInput
+    products_to_sync: [], // Explicitly initialize for ArrayInput
   };
 
   return (
