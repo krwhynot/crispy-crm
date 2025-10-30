@@ -40,28 +40,32 @@ export const ContactInputs = () => {
 
 const ContactIdentityInputs = () => {
   return (
-    <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Contact Name</h6>
-      <TextInput source="first_name" label="First Name *" helperText="Required field" />
-      <TextInput source="last_name" label="Last Name *" helperText="Required field" />
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Contact Name</h3>
+      <div className="space-y-4">
+        <TextInput source="first_name" label="First Name *" helperText="Required field" />
+        <TextInput source="last_name" label="Last Name *" helperText="Required field" />
+      </div>
     </div>
   );
 };
 
 const ContactPositionInputs = () => {
   return (
-    <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Position</h6>
-      <TextInput source="title" helperText={false} />
-      <TextInput source="department" label="Department" helperText={false} />
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Position</h3>
+      <div className="space-y-4">
+        <TextInput source="title" helperText={false} />
+        <TextInput source="department" label="Department" helperText={false} />
 
-      <ReferenceInput
-        source="organization_id"
-        reference="organizations"
-        label="Organization"
-      >
-        <AutocompleteOrganizationInput />
-      </ReferenceInput>
+        <ReferenceInput
+          source="organization_id"
+          reference="organizations"
+          label="Organization"
+        >
+          <AutocompleteOrganizationInput />
+        </ReferenceInput>
+      </div>
     </div>
   );
 };
@@ -95,65 +99,67 @@ const ContactPersonalInformationInputs = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Personal info</h6>
-      <ArrayInput source="email" label="Email addresses" helperText={false}>
-        <SimpleFormIterator
-          inline
-          disableReordering
-          disableClear
-          className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
-        >
-          <TextInput
-            source="email"
-            className="w-full"
-            helperText={false}
-            label={false}
-            placeholder="Email (valid email required)"
-            onPaste={handleEmailPaste}
-            onBlur={handleEmailBlur}
-          />
-          <SelectInput
-            source="type"
-            helperText={false}
-            label={false}
-            optionText="id"
-            choices={personalInfoTypes}
-            // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
-            className="w-24 min-w-24"
-          />
-        </SimpleFormIterator>
-      </ArrayInput>
-      <ArrayInput source="phone" label="Phone numbers" helperText={false}>
-        <SimpleFormIterator
-          inline
-          disableReordering
-          disableClear
-          className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
-        >
-          <TextInput
-            source="number"
-            className="w-full"
-            helperText={false}
-            label={false}
-            placeholder="Phone number"
-          />
-          <SelectInput
-            source="type"
-            helperText={false}
-            label={false}
-            optionText="id"
-            choices={personalInfoTypes}
-            // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
-            className="w-24 min-w-24"
-          />
-        </SimpleFormIterator>
-      </ArrayInput>
-      <TextInput
-        source="linkedin_url"
-        label="Linkedin URL"
-        helperText="Format: https://linkedin.com/in/username"
-      />
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Personal Info</h3>
+      <div className="space-y-4">
+        <ArrayInput source="email" label="Email addresses" helperText={false}>
+          <SimpleFormIterator
+            inline
+            disableReordering
+            disableClear
+            className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
+          >
+            <TextInput
+              source="email"
+              className="w-full"
+              helperText={false}
+              label={false}
+              placeholder="Email (valid email required)"
+              onPaste={handleEmailPaste}
+              onBlur={handleEmailBlur}
+            />
+            <SelectInput
+              source="type"
+              helperText={false}
+              label={false}
+              optionText="id"
+              choices={personalInfoTypes}
+              // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
+              className="w-24 min-w-24"
+            />
+          </SimpleFormIterator>
+        </ArrayInput>
+        <ArrayInput source="phone" label="Phone numbers" helperText={false}>
+          <SimpleFormIterator
+            inline
+            disableReordering
+            disableClear
+            className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
+          >
+            <TextInput
+              source="number"
+              className="w-full"
+              helperText={false}
+              label={false}
+              placeholder="Phone number"
+            />
+            <SelectInput
+              source="type"
+              helperText={false}
+              label={false}
+              optionText="id"
+              choices={personalInfoTypes}
+              // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
+              className="w-24 min-w-24"
+            />
+          </SimpleFormIterator>
+        </ArrayInput>
+        <TextInput
+          source="linkedin_url"
+          label="Linkedin URL"
+          helperText="Format: https://linkedin.com/in/username"
+        />
+      </div>
     </div>
   );
 };
@@ -162,30 +168,32 @@ const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
 
 const ContactMiscInputs = () => {
   return (
-    <div className="flex flex-col gap-4">
-      <h6 className="text-lg font-semibold">Misc</h6>
-      <ReferenceInput
-        reference="sales"
-        source="sales_id"
-        sort={{ field: "last_name", order: "ASC" }}
-        filter={{
-          "disabled@neq": true,
-          "user_id@not.is": null, // Only show authenticated users in dropdown
-        }}
-      >
-        <SelectInput
-          helperText="Required field"
-          label="Account manager *"
-          optionText={saleOptionRenderer}
+    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Additional Info</h3>
+      <div className="space-y-4">
+        <ReferenceInput
+          reference="sales"
+          source="sales_id"
+          sort={{ field: "last_name", order: "ASC" }}
+          filter={{
+            "disabled@neq": true,
+            "user_id@not.is": null, // Only show authenticated users in dropdown
+          }}
+        >
+          <SelectInput
+            helperText="Required field"
+            label="Account manager *"
+            optionText={saleOptionRenderer}
+          />
+        </ReferenceInput>
+        <TextInput
+          source="notes"
+          label="Notes"
+          multiline
+          rows={4}
+          helperText="Additional information about this contact"
         />
-      </ReferenceInput>
-      <TextInput
-        source="notes"
-        label="Notes"
-        multiline
-        rows={4}
-        helperText="Additional information about this contact"
-      />
+      </div>
     </div>
   );
 };

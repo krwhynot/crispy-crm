@@ -513,6 +513,12 @@ export const unifiedDataProvider: DataProvider = {
             }
           }
 
+          // The RPC function returns { data: { id, ...fields } }
+          // But React Admin expects { data: { id, ...fields } }
+          // So we need to extract the nested data
+          if (data && data.data) {
+            return { data: data.data };
+          }
           return { data };
         }
       }
