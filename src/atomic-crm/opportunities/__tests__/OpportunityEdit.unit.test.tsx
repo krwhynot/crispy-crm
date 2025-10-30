@@ -27,8 +27,8 @@ describe("OpportunityEdit - Transform Function", () => {
       name: "Updated Opportunity",
       amount: 75000,
       products: [
-        { product_id: 3, notes: "Test product 3" },
-        { product_id: 4, notes: "Test product 4" },
+        { product_id_reference: 3, notes: "Test product 3" },
+        { product_id_reference: 4, notes: "Test product 4" },
       ],
     };
 
@@ -99,7 +99,7 @@ describe("OpportunityEdit - Transform Function", () => {
       stage: "qualified",
       expected_closing_date: "2024-12-31",
       customer_organization_id: 10,
-      products: [{ product_id: 1, notes: "Test product" }],
+      products: [{ product_id_reference: 1, notes: "Test product" }],
     };
 
     const result = transform(input);
@@ -336,8 +336,8 @@ describe("OpportunityEdit - Record Loading", () => {
       id: 123,
       name: "Existing Opportunity",
       products: [
-        { product_id: 1, notes: "Test product 1" },
-        { product_id: 2, notes: "Test product 2" },
+        { product_id_reference: 1, notes: "Test product 1" },
+        { product_id_reference: 2, notes: "Test product 2" },
       ],
     });
 
@@ -348,7 +348,7 @@ describe("OpportunityEdit - Record Loading", () => {
     };
 
     expect(defaultValues.products).toHaveLength(2);
-    expect(defaultValues.products[0].product_id).toBe(1);
+    expect(defaultValues.products[0].product_id_reference).toBe(1);
   });
 
   it("should handle existing record without products", () => {

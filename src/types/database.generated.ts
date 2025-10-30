@@ -1,3 +1,5 @@
+WARN: no SMS provider is enabled. Disabling phone login
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -729,7 +731,14 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "opportunities_sales_id_fkey"
+            foreignKeyName: "opportunities_founding_interaction_id_fkey"
+            columns: ["founding_interaction_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_opportunity_owner_id_fkey"
             columns: ["opportunity_owner_id"]
             isOneToOne: false
             referencedRelation: "sales"
@@ -740,6 +749,72 @@ export type Database = {
             columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_contacts: {
+        Row: {
+          contact_id: number
+          created_at: string | null
+          id: number
+          is_primary: boolean | null
+          notes: string | null
+          opportunity_id: number
+          role: string | null
+        }
+        Insert: {
+          contact_id: number
+          created_at?: string | null
+          id?: never
+          is_primary?: boolean | null
+          notes?: string | null
+          opportunity_id: number
+          role?: string | null
+        }
+        Update: {
+          contact_id?: number
+          created_at?: string | null
+          id?: never
+          is_primary?: boolean | null
+          notes?: string | null
+          opportunity_id?: number
+          role?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_contacts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_contacts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_contacts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_contacts_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_contacts_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
             referencedColumns: ["id"]
           },
         ]
@@ -811,12 +886,68 @@ export type Database = {
           },
         ]
       }
+      opportunity_products: {
+        Row: {
+          created_at: string | null
+          id: number
+          notes: string | null
+          opportunity_id: number
+          product_category: string | null
+          product_id_reference: number
+          product_name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          notes?: string | null
+          opportunity_id: number
+          product_category?: string | null
+          product_id_reference: number
+          product_name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          notes?: string | null
+          opportunity_id?: number
+          product_category?: string | null
+          product_id_reference?: number
+          product_name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_products_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_products_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_products_product_id_reference_fkey"
+            columns: ["product_id_reference"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunityNotes: {
         Row: {
           attachments: string[] | null
           created_at: string | null
           created_by: number | null
           date: string
+          deleted_at: string | null
           id: number
           opportunity_id: number
           sales_id: number | null
@@ -829,6 +960,7 @@ export type Database = {
           created_at?: string | null
           created_by?: number | null
           date?: string
+          deleted_at?: string | null
           id?: number
           opportunity_id: number
           sales_id?: number | null
@@ -841,6 +973,7 @@ export type Database = {
           created_at?: string | null
           created_by?: number | null
           date?: string
+          deleted_at?: string | null
           id?: number
           opportunity_id?: number
           sales_id?: number | null
@@ -1520,6 +1653,7 @@ export type Database = {
           contact_id: number | null
           created_at: string | null
           created_by: number | null
+          deleted_at: string | null
           description: string | null
           due_date: string | null
           id: number
@@ -1537,6 +1671,7 @@ export type Database = {
           contact_id?: number | null
           created_at?: string | null
           created_by?: number | null
+          deleted_at?: string | null
           description?: string | null
           due_date?: string | null
           id?: number
@@ -1554,6 +1689,7 @@ export type Database = {
           contact_id?: number | null
           created_at?: string | null
           created_by?: number | null
+          deleted_at?: string | null
           description?: string | null
           due_date?: string | null
           id?: number
@@ -1825,6 +1961,7 @@ export type Database = {
           principal_organization_id: number | null
           principal_organization_name: string | null
           priority: Database["public"]["Enums"]["priority_level"] | null
+          products: Json | null
           search_tsv: unknown | null
           stage: Database["public"]["Enums"]["opportunity_stage"] | null
           stage_manual: boolean | null
@@ -1850,7 +1987,14 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "opportunities_sales_id_fkey"
+            foreignKeyName: "opportunities_founding_interaction_id_fkey"
+            columns: ["founding_interaction_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_opportunity_owner_id_fkey"
             columns: ["opportunity_owner_id"]
             isOneToOne: false
             referencedRelation: "sales"
@@ -1988,6 +2132,10 @@ export type Database = {
       }
     }
     Functions: {
+      archive_opportunity_with_relations: {
+        Args: { opp_id: number }
+        Returns: undefined
+      }
       calculate_product_price: {
         Args: {
           p_distributor_id?: number
@@ -2029,6 +2177,14 @@ export type Database = {
         }[]
       }
       get_current_sales_id: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      get_current_user_company_id: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      get_current_user_sales_id: {
         Args: Record<PropertyKey, never>
         Returns: number
       }
@@ -2116,6 +2272,10 @@ export type Database = {
           products_to_update: Json
         }
         Returns: Json
+      }
+      unarchive_opportunity_with_relations: {
+        Args: { opp_id: number }
+        Returns: undefined
       }
     }
     Enums: {
@@ -2567,3 +2727,5 @@ export const Constants = {
   },
 } as const
 
+A new version of Supabase CLI is available: v2.54.11 (currently installed v2.51.0)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
