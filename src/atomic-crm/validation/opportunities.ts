@@ -135,7 +135,7 @@ export const createOpportunitySchema = opportunityBaseSchema
     products_to_sync: z
       .array(z.object({
         product_id_reference: z.union([z.string(), z.number()]).optional(),
-        notes: z.string().optional(),
+        notes: z.string().optional().nullable(), // Allow null from form inputs
       }))
       .min(1, "At least one product is required")
       .optional(), // Make optional so validation can provide custom message
