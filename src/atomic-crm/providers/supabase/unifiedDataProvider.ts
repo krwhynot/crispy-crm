@@ -144,26 +144,44 @@ async function validateData(
     // Use the ValidationService
     await validationService.validate(resource, operation, dataToValidate);
   } catch (error: any) {
-    // Ensure errors are properly formatted for React Admin
-    // React Admin expects { message: string, body: { errors: { fieldName: string } } }
+    // Parse Zod validation errors into React Admin format
+    // Zod errors have an 'issues' array with field-level errors
+    if (error.issues && Array.isArray(error.issues)) {
+      const fieldErrors: Record<string, string> = {};
 
-    if (error.body?.errors && typeof error.body.errors === 'object') {
-      // Already properly formatted
-      throw error;
-    }
+      // Convert Zod issues to field-error map
+      for (const issue of error.issues) {
+        const fieldPath = issue.path.join('.');
+        const fieldName = fieldPath || '_error';
+        fieldErrors[fieldName] = issue.message;
+      }
 
-    // If it's a generic error, wrap it
-    if (error instanceof Error) {
       throw {
-        message: error.message || "Validation failed",
-        body: { errors: { _error: error.message } },
+        message: "Validation failed",
+        errors: fieldErrors,
       };
     }
 
-    // Unknown error format
+    // If already in expected format (has errors object at top level)
+    if (error.errors && typeof error.errors === 'object') {
+      throw {
+        message: error.message || "Validation failed",
+        errors: error.errors,
+      };
+    }
+
+    // For other Error types, wrap with generic error
+    if (error instanceof Error) {
+      throw {
+        message: error.message || "Validation failed",
+        errors: { _error: error.message },
+      };
+    }
+
+    // Unknown error format - wrap it
     throw {
       message: "Validation failed",
-      body: { errors: { _error: String(error) } },
+      errors: { _error: String(error) },
     };
   }
 }
