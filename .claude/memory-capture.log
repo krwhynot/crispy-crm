@@ -1,3 +1,7 @@
 [2025-10-31 13:04:06] [migration] Write: /home/krwhynot/projects/crispy-crm/docs/database/data-quality-analysis.sql
 [2025-10-31 13:05:35] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/database/DATA-QUALITY-README.md
 [2025-10-31 13:24:43] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031132404_remove_unused_tables.sql
+[2025-10-31 13:25:26] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/archive/2025-10-planning/README.md
+[2025-10-31 13:26:31] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/cleanup/TEST-CLEANUP-CHECKLIST.md
+[2025-10-31 13:28:15] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/cleanup/DOCUMENTATION-RESTRUCTURING-GUIDE.md
+[2025-10-31 13:54:59] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/README.md
