@@ -1,1 +1,3 @@
 [2025-10-31 13:04:06] [migration] Write: /home/krwhynot/projects/crispy-crm/docs/database/data-quality-analysis.sql
+[2025-10-31 13:05:35] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/database/DATA-QUALITY-README.md
+[2025-10-31 13:24:43] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031132404_remove_unused_tables.sql
