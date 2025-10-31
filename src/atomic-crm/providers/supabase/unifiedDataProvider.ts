@@ -211,16 +211,11 @@ function isWrappedResponse<T extends { id: any }>(
 function formatRpcResponse<T extends { id: any }>(
   rpcData: RpcWrappedResponse<T>
 ): { data: T } {
-  console.log('[formatRpcResponse] Input:', rpcData);
-  console.log('[formatRpcResponse] isWrappedResponse:', isWrappedResponse(rpcData));
-
   // Use type guard for safer unwrapping
   if (isWrappedResponse(rpcData)) {
-    console.log('[formatRpcResponse] Unwrapping response:', rpcData.data);
     return { data: rpcData.data };
   }
   // Otherwise, wrap the raw response
-  console.log('[formatRpcResponse] Wrapping response:', rpcData);
   return { data: rpcData as T };
 }
 
