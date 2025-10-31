@@ -133,9 +133,7 @@ async function validateData(
   if (resource === "opportunities" && operation === "create") {
     // Merge with defaults - ensures validation receives proper types even for untouched fields
     dataToValidate = {
-      customer_organization_id: undefined,  // Ensure field exists (will fail required validation with proper message)
       contact_ids: [],                      // Default to empty array (will fail min(1) validation with proper message)
-      products_to_sync: [],                 // Default to empty array (will fail min(1) validation with proper message)
       ...data,                              // User's data overwrites defaults
     };
   }
