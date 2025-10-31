@@ -16,3 +16,4 @@
 [2025-10-31 14:19:53] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
 [2025-10-31 14:20:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 [2025-10-31 14:23:55] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
+[2025-10-31 17:34:18] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
