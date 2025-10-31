@@ -5,3 +5,8 @@
 [2025-10-31 13:26:31] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/cleanup/TEST-CLEANUP-CHECKLIST.md
 [2025-10-31 13:28:15] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/cleanup/DOCUMENTATION-RESTRUCTURING-GUIDE.md
 [2025-10-31 13:54:59] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/README.md
+[2025-10-31 13:55:08] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/development/README.md
+[2025-10-31 13:55:16] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/guides/README.md
+[2025-10-31 13:55:26] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/claude/README.md
+[2025-10-31 13:55:59] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/README.md
+[2025-10-31 14:16:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
