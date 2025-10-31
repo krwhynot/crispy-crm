@@ -131,34 +131,24 @@ export const createOpportunitySchema = opportunityBaseSchema
       .array(z.union([z.string(), z.number()]))
       .min(1, "At least one contact is required"),
 
-    // Require at least one product for new opportunities (business rule #202)
+    // Remove default from estimated_close_date for create - must be explicitly provided
+    estimated_close_date: z
+      .string()
+      .min(1, "Expected closing date is required"),
+
+    // Products are optional for opportunity creation
+    // They can be added later via the UI
     products_to_sync: z
       .array(z.object({
         product_id_reference: z.union([z.string(), z.number()]).optional(),
         notes: z.string().optional().nullable(), // Allow null from form inputs
       }))
-      .min(1, "At least one product is required")
-      .optional(), // Make optional so validation can provide custom message
+      .optional(),
   })
   .required({
     name: true,
     estimated_close_date: true,
-    customer_organization_id: true,
-  })
-  .refine(
-    (data) => {
-      // Validate products_to_sync only if it exists
-      // Allows undefined (initial state) but rejects empty arrays
-      if (data.products_to_sync === undefined) {
-        return false; // Required field is missing
-      }
-      return Array.isArray(data.products_to_sync) && data.products_to_sync.length > 0;
-    },
-    {
-      message: "At least one product is required",
-      path: ["products_to_sync"],
-    }
-  );
+  });
 
 // Update-specific schema (more flexible for partial updates)
 // IMPORTANT: React Admin v5 sends ALL form fields during update, not just dirty fields.
