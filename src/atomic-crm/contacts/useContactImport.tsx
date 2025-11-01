@@ -115,7 +115,6 @@ export function useContactImport() {
   const processBatch = useCallback(
     async (batch: ContactImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
       const { preview = false, onProgress, startingRow = 1, dataQualityDecisions } = options;
-      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, dataQualityDecisions });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
@@ -322,7 +321,6 @@ export function useContactImport() {
         endTime,
       };
 
-      console.log("processBatch returning:", finalResult);
       return finalResult;
     },
     [dataProvider, getOrganizations, getTags, identity?.id, today],
