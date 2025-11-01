@@ -83,6 +83,33 @@ Force agents to implement NEW features (that don't exist) to capture design syst
 
 ---
 
+## Revised Scenario 4: iPad-First Responsive Design (Forces Responsive Patterns)
+
+**Task:** "Create a dashboard card grid showing key metrics (total opportunities, revenue, win rate). This will be used primarily on iPads in the field, so design for iPad first, then make it work on desktop. Needs to work in both portrait and landscape iPad modes. Quick turnaround - sales team needs it tomorrow."
+
+**Pressures:**
+- iPad-first requirement (not mobile-first)
+- Touch interaction context ("in the field")
+- Both orientations (portrait/landscape)
+- Time pressure ("tomorrow")
+- Multiple breakpoints to consider
+
+**Expected Violations:**
+- Starting with mobile-first (`sm:`) instead of iPad-first (`md:` or `lg:`)
+- Touch targets smaller than 44px
+- Text too small for iPad viewing (< 12-14px base)
+- Grid that doesn't adapt between portrait (md:) and landscape (lg:)
+- Desktop-first approach with mobile as afterthought
+- Not testing responsive breakpoints
+
+**Why This Works:**
+- Tests understanding of "iPad-first" vs "mobile-first"
+- Forces responsive grid thinking
+- Requires Tailwind breakpoint knowledge
+- Touch-friendly design consideration
+
+---
+
 ## Additional Quick Test: Tailwind v4 Semantic Colors
 
 **Micro-Task:** "Update the opportunity priority badges to use Tailwind v4 semantic color utilities instead of inline variable syntax."
