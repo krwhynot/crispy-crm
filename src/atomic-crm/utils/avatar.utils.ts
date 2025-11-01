@@ -9,6 +9,7 @@ import { fetchWithTimeout } from "../misc/fetchWithTimeout";
 import { DOMAINS_NOT_SUPPORTING_FAVICON } from "../misc/unsupportedDomains.const";
 import type { Contact } from "../types";
 import type { Organization } from "../validation/organizations";
+import { emailAndTypeSchema } from "../validation/contacts";
 
 /**
  * Generate SHA-256 hash of a string
@@ -199,12 +200,15 @@ export function extractEmailDomain(email: string): string {
 /**
  * Check if email has a valid format for avatar generation
  *
+ * Uses the same validation as contact forms (Zod schema)
+ * to maintain single source of truth.
+ *
  * @param email - Email address to validate
  * @returns True if email is valid for avatar generation
  */
 export function isValidEmailForAvatar(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  const result = emailAndTypeSchema.shape.email.safeParse(email);
+  return result.success;
 }
 
 /**
