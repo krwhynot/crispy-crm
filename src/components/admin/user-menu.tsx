@@ -13,9 +13,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { UserMenuContext } from "@/hooks/user-menu-context";
 
-export type UserMenuProps = {
+export interface UserMenuProps {
   children?: React.ReactNode;
-};
+}
 
 export function UserMenu({ children }: UserMenuProps) {
   const authProvider = useAuthProvider();

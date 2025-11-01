@@ -9,10 +9,10 @@ import {
   useResourceContext,
 } from "ra-core";
 
-export type ShowButtonProps = {
+export interface ShowButtonProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   label?: string;
   icon?: React.ReactNode;
-} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
+}
 
 export const ShowButton = (props: ShowButtonProps) => {
   const resource = useResourceContext();

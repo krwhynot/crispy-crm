@@ -23,11 +23,11 @@ export type TagColorName =
  * Semantic color tokens for theme colors
  * Used for mapping color names to CSS variables or classes
  */
-export type SemanticColorToken = {
+export interface SemanticColorToken {
   name: TagColorName;
   cssClass: string;
   hexFallback: string;
-};
+}
 
 /**
  * Legacy hex color to semantic color mapping
