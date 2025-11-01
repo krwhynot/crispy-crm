@@ -315,6 +315,9 @@
   --stroke-card: oklch(93% 0.004 92);        /* 1px border around elevated cards */
   --stroke-card-hover: oklch(91% 0.006 92);  /* Slightly darker on hover */
 
+  /* NEW: Tag border token */
+  --tag-border: oklch(0 0 0 / 0.2);          /* 20% black for tag borders */
+
   /* Divider System - Internal separators */
   --divider-subtle: oklch(96% 0.004 92);     /* On white surfaces, internal dividers */
   --divider-strong: oklch(94.5% 0.004 92);   /* Section separators */
