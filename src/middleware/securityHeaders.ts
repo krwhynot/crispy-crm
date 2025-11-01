@@ -22,7 +22,7 @@ interface SecurityHeadersConfig {
  * Uses centralized CSP configuration from config/csp-config.ts
  */
 export function getSecurityHeaders(
-  config: SecurityHeadersConfig,
+  _config: SecurityHeadersConfig,
 ): Record<string, string> {
   const cspConfig = getCSPConfig();
   const cspHeader = buildCSPHeader(cspConfig);
