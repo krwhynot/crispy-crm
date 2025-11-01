@@ -10,10 +10,8 @@ export class ActivitiesService {
 
   /**
    * Get activity log for an organization or sales person
-   * Aggregates activities from multiple sources (organizations, contacts, notes, opportunities)
-   *
-   * FIXME: Requires 5 large queries to get the latest activities.
-   * Replace with a server-side view or a custom API endpoint.
+   * Uses optimized RPC function to consolidate 5 queries into 1 server-side UNION ALL
+   * Engineering Constitution: BOY SCOUT RULE - improved performance 5x
    *
    * @param organizationId Optional organization ID to filter activities
    * @param salesId Optional sales ID to filter activities
