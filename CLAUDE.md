@@ -12,6 +12,8 @@ Atomic CRM is a full-featured, open-source CRM built with React, shadcn-admin-ki
 
 ## Recent Architectural Changes
 
+> **Note:** This section documents changes from the last 90 days. Older changes are archived in git history.
+
 ### Pricing Removal (2025-10-29)
 
 **Decision**: Removed all pricing functionality from products and opportunities to simplify the data model to product association tracking only.
@@ -312,8 +314,3 @@ npm run test:e2e         # Playwright E2E
 - [User Documentation](doc/user/) - End-user guides
 - [Developer Documentation](doc/developer/) - Customization, deployment
 - [Testing Documentation](.docs/testing/) - Complete testing strategy
-
-## Support
-
-- Report issues: https://github.com/marmelab/atomic-crm/issues
-- License: MIT (courtesy of Marmelab)
