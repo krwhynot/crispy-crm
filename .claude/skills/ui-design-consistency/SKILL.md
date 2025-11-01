@@ -64,32 +64,47 @@ className="text-muted-foreground bg-warning border-border"
 
 **If semantic utility doesn't exist:** Check `tailwind.config.ts` or ask before adding inline syntax.
 
-### 2. iPad-First Responsive Design
+### 2. iPad-Optimized Responsive Design
 
-**Requirement:** Design for iPad viewport (768px-1024px) as base, then adapt.
+**Requirement:** Atomic CRM is used primarily on iPads. Design and test on iPad viewport (768px-1024px) first, then adapt for mobile and desktop.
 
-**❌ WRONG - Mobile-First for iPad-Primary App:**
+**Important:** Tailwind is inherently mobile-first (base styles apply at 0px). "iPad-first" means **design thinking**, not Tailwind syntax.
+
+**✅ CORRECT - iPad-Optimized Pattern:**
 ```typescript
-// Starts mobile, adapts up to tablet
-className="grid-cols-1 md:grid-cols-3"
+// Mobile base → iPad optimized (md:) → Desktop enhanced (lg:)
+className="grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
 ```
 
-**✅ CORRECT - iPad-First:**
-```typescript
-// Base is iPad (md), adapt down for mobile, up for desktop
-className="grid-cols-3 sm:grid-cols-1 xl:grid-cols-4"
-```
+**iPad-Optimized Strategy:**
 
-**iPad-First Strategy:**
+1. **Design on iPad viewport** - Prototype at 768px-1024px width
+2. **Optimize `md:` breakpoint** - iPad portrait (768px) is primary target
+3. **Test iPad landscape** - Ensure `lg:` (1024px) works well
+4. **Adapt mobile** - Base/mobile is fallback, not primary
+5. **Enhance desktop** - `xl:` adds improvements if helpful
 
-1. **Base styles** = iPad portrait (768px)
-2. **`sm:` prefix** = Mobile (smaller than iPad)
-3. **`lg:` or `xl:` prefix** = Large desktop (larger than iPad)
+**Key Difference from Mobile-First:**
+- Mobile-first: optimize for phones, adapt up
+- iPad-optimized: optimize for `md:` breakpoint, adapt down AND up
 
-**Touch-Friendly Requirements:**
+**Touch-Friendly Requirements for iPad:**
 - Minimum tap target: `w-11 h-11` (44px - Apple HIG)
 - Text base size: 14px minimum (`text-sm`)
-- Padding: generous for fat-finger taps
+- Padding: generous for fat-finger taps (`p-4 md:p-5 lg:p-6`)
+
+**Example: iPad-Optimized Dashboard Card**
+```typescript
+// Mobile: stacked, compact
+// iPad: spacious grid, touch-friendly
+// Desktop: enhanced spacing
+
+<Card className="p-4 md:p-6 lg:p-8 h-40 md:h-48 lg:h-56">
+  <div className="w-11 h-11 md:w-12 md:h-12">  {/* 44px→48px touch targets */}
+    <Icon className="w-6 h-6 md:w-8 md:h-8" />
+  </div>
+</Card>
+```
 
 ### 3. JSONB Array Pattern (Atomic CRM Specific)
 
