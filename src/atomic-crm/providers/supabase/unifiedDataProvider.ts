@@ -46,6 +46,9 @@ import {
   JunctionsService,
 } from "../../services";
 
+// Import RPC validation schemas
+import { RPC_SCHEMAS, type RPCFunctionName, edgeFunctionSchemas, type EdgeFunctionName } from "../../validation/rpc";
+
 // Import types for custom methods
 import type { SalesFormData, Sale, Opportunity, OpportunityParticipant } from "../../types";
 
@@ -778,8 +781,20 @@ export const unifiedDataProvider: DataProvider = {
       // Log the operation for debugging
       console.log(`[DataProvider RPC] Calling ${functionName}`, params);
 
-      // TODO: Add Zod validation for RPC params based on function name
-      // This would be added to validationRegistry for each RPC function
+      // Validate params if schema exists for this RPC function
+      if (functionName in RPC_SCHEMAS) {
+        const schema = RPC_SCHEMAS[functionName as RPCFunctionName];
+        const validationResult = schema.safeParse(params);
+
+        if (!validationResult.success) {
+          throw new Error(
+            `Invalid RPC parameters for ${functionName}: ${validationResult.error.message}`
+          );
+        }
+
+        // Use validated params
+        params = validationResult.data;
+      }
 
       const { data, error } = await supabase.rpc(functionName, params);
 
@@ -923,7 +938,20 @@ export const unifiedDataProvider: DataProvider = {
     try {
       console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
 
-      // TODO: Add Zod validation for edge function params based on function name
+      // Validate body params if schema exists for this Edge Function
+      if (functionName in edgeFunctionSchemas && options.body) {
+        const schema = edgeFunctionSchemas[functionName as EdgeFunctionName];
+        const validationResult = schema.safeParse(options.body);
+
+        if (!validationResult.success) {
+          throw new Error(
+            `Invalid Edge Function parameters for ${functionName}: ${validationResult.error.message}`
+          );
+        }
+
+        // Use validated params
+        options.body = validationResult.data;
+      }
 
       const { data, error } = await supabase.functions.invoke<T>(functionName, {
         method: options.method || 'POST',
