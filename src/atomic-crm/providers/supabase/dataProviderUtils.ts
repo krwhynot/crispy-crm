@@ -10,6 +10,7 @@
 
 import type { GetListParams } from "ra-core";
 import { getSearchableFields, supportsSoftDelete, getResourceName } from "./resources";
+import { escapeCacheManager } from './dataProviderCache';
 
 /**
  * Cache for searchable fields to avoid repeated lookups
@@ -28,24 +29,23 @@ function getCachedSearchableFields(resource: string): readonly string[] {
 }
 
 /**
- * Cache for escaped PostgREST values (limited size to prevent memory issues)
- * TODO: Replace with proper LRU implementation if cache evictions exceed 1k/hour
- * Current "clear half" strategy is adequate for <5k distinct values per process lifetime
+ * Cache for escaped PostgREST values using LRU eviction
+ * Replaces Map-based cache with proper LRU implementation
+ * Max 1000 entries, 5-minute TTL
  */
-const escapeCache = new Map<string, string>();
-const MAX_ESCAPE_CACHE_SIZE = 1000;
 
 /**
  * Escape values for PostgREST according to official documentation
  * PostgREST uses BACKSLASH escaping, NOT doubled quotes!
- * Now with caching for frequently used values
+ * Now with LRU caching for frequently used values
  */
 export function escapeForPostgREST(value: string | number | boolean | null | undefined): string {
   const str = String(value);
 
   // Check cache first
-  if (escapeCache.has(str)) {
-    return escapeCache.get(str)!;
+  const cached = escapeCacheManager.get(str);
+  if (cached !== undefined) {
+    return cached;
   }
 
   // Check for PostgREST reserved characters
@@ -61,14 +61,8 @@ export function escapeForPostgREST(value: string | number | boolean | null | und
     result = `"${escaped}"`;
   }
 
-  // Add to cache (with size limit to prevent memory issues)
-  if (escapeCache.size >= MAX_ESCAPE_CACHE_SIZE) {
-    // Simple eviction: clear half the cache when limit reached
-    const entriesToKeep = Array.from(escapeCache.entries()).slice(-MAX_ESCAPE_CACHE_SIZE / 2);
-    escapeCache.clear();
-    entriesToKeep.forEach(([k, v]) => escapeCache.set(k, v));
-  }
-  escapeCache.set(str, result);
+  // Add to LRU cache (automatic eviction when max size reached)
+  escapeCacheManager.set(str, result);
 
   return result;
 }
