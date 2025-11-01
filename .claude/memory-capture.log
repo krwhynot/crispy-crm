@@ -157,3 +157,10 @@
 [2025-11-01 18:03:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
 [2025-11-01 18:03:10] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/useContactImport.tsx
 [2025-11-01 18:05:55] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-01-constitution-audit-remediation.md
+[2025-11-01 18:06:14] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-01-constitution-audit-remediation.md
+[2025-11-01 18:07:25] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderCache.ts
+[2025-11-01 18:07:41] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/__tests__/cache.test.ts
+[2025-11-01 18:08:03] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderUtils.ts
+[2025-11-01 18:08:20] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderUtils.ts
+[2025-11-01 18:08:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderUtils.ts
+[2025-11-01 18:14:12] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251101231344_optimize_activity_log_rpc.sql
