@@ -100,9 +100,9 @@ export const Basic: Story = {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <a href="#" className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             Documentation
-          </a>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
