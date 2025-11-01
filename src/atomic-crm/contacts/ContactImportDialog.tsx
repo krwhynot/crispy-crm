@@ -103,8 +103,6 @@ export function ContactImportDialog({
     const organizationsWithoutContacts = findOrganizationsWithoutContacts(rows);
     const contactsWithoutContactInfo = findContactsWithoutContactInfo(rows);
 
-    console.log('📊 [DATA QUALITY] Organizations without contacts:', organizationsWithoutContacts.length);
-    console.log('📊 [DATA QUALITY] Contacts without contact info:', contactsWithoutContactInfo.length);
 
     // Generate initial preview data with auto-detected mappings
     const mappings = headers.map((header, index) => {
@@ -150,8 +148,6 @@ export function ContactImportDialog({
 
   // Handle user changing a column mapping - simplified to only manage state
   const handleMappingChange = useCallback((csvHeader: string, targetField: string | null) => {
-    console.log('🔄 [MAPPING CHANGE] User changed mapping:', csvHeader, '→', targetField);
-
     setUserOverrides(prev => {
       const next = new Map(prev);
       if (targetField === null || targetField === '') {
@@ -193,8 +189,6 @@ export function ContactImportDialog({
     if (!rawHeaders.length || !rawDataRows.length) {
       return previewData; // Return initial previewData until raw data is ready
     }
-
-    console.log('🔄 [PREVIEW DERIVE] Re-computing preview with', userOverrides.size, 'overrides');
 
     // Re-run data quality analysis on the latest reprocessed data
     const organizationsWithoutContacts = findOrganizationsWithoutContacts(reprocessedContacts);
@@ -275,15 +269,12 @@ export function ContactImportDialog({
 
   // Enhanced processBatch wrapper with result accumulation across batches
   const processBatch = useCallback(async (batch: ContactImportSchema[]) => {
-    console.log('🔵 [IMPORT DEBUG] processBatch called with', batch.length, 'contacts, starting at row', rowOffsetRef.current + 1);
-
     // Set start time on first batch
     if (!accumulatedResultRef.current.startTime) {
       accumulatedResultRef.current.startTime = new Date();
     }
 
     try {
-      console.log('🔵 [IMPORT DEBUG] Calling processBatchHook with data quality decisions:', dataQualityDecisions);
       const result = await processBatchHook(batch, {
         preview: false,
         startingRow: rowOffsetRef.current + 1,  // Pass correct starting row for this batch
@@ -295,23 +286,13 @@ export function ContactImportDialog({
 
       rowOffsetRef.current += batch.length;  // Increment offset for next batch
 
-      console.log('🔵 [IMPORT DEBUG] processBatchHook completed. Result:', result);
-
       // Accumulate results across all batches
       accumulatedResultRef.current.totalProcessed += result.totalProcessed;
       accumulatedResultRef.current.successCount += result.successCount;
       accumulatedResultRef.current.skippedCount += result.skippedCount;
       accumulatedResultRef.current.failedCount += result.failedCount;
       accumulatedResultRef.current.errors.push(...result.errors);
-
-      console.log('📊 [IMPORT DEBUG] Accumulated totals:', {
-        totalProcessed: accumulatedResultRef.current.totalProcessed,
-        successCount: accumulatedResultRef.current.successCount,
-        failedCount: accumulatedResultRef.current.failedCount,
-        errorCount: accumulatedResultRef.current.errors.length,
-      });
     } catch (error: any) {
-      console.error("🔴 [IMPORT DEBUG] Batch processing error:", error);
       const errorMessage = error.message || "A critical error occurred during batch processing.";
       const batchStartRow = rowOffsetRef.current + 1;
 
@@ -342,9 +323,6 @@ export function ContactImportDialog({
   // Handle preview confirmation and start the actual import
   // THIS IS THE FIX: Use reprocessedContacts (with user overrides) instead of re-parsing the file
   const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
-    console.log('🚀 [IMPORT DEBUG] handlePreviewContinue called with decisions:', decisions);
-    console.log('🚀 [IMPORT DEBUG] Processing', reprocessedContacts.length, 'contacts with user overrides applied');
-
     // Store data quality decisions for validation logic
     setDataQualityDecisions(decisions);
 
@@ -386,9 +364,6 @@ export function ContactImportDialog({
       startTime: startTime,
       endTime: endTime,
     };
-
-    console.log('📋 [IMPORT DEBUG] Final result:', finalResult);
-    console.log('📋 [IMPORT DEBUG] About to show result dialog...');
 
     setImportResult(finalResult);
     setShowResult(true);
