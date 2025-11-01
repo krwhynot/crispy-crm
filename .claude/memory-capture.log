@@ -17,3 +17,17 @@
 [2025-10-31 14:20:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 [2025-10-31 14:23:55] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
 [2025-10-31 17:34:18] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:34:32] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/database/migration-business-rules.md
+[2025-10-31 17:34:32] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/database/migration-business-rules.md
+[2025-10-31 17:34:33] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/database/migration-business-rules.md
+[2025-10-31 17:35:11] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:35:12] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:36:01] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:36:02] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:36:53] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:36:54] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:37:51] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:37:51] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:37:54] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-10-31 17:37:55] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
+[2025-11-01 12:30:02] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251101172947_enforce_opportunity_customer_requirement.sql

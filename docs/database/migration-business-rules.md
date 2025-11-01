@@ -20,7 +20,7 @@
 ## Contact Relationship Questions
 
 6. **Can a contact belong to multiple organizations simultaneously?**
-   - **TRUE** - Contacts can belong to multiple organizations
+   - **FALSE** - Contacts are limited to one organization at a time
 
 7. **Can a contact advocate for multiple principals at the same time?**
    - **TRUE** - Contacts can champion multiple principals' products
@@ -97,7 +97,7 @@
     - **TRUE** - Price snapshots required
 
 29. **Can a contact be primary decision maker for multiple organizations?**
-    - **TRUE** - One contact can be primary for multiple orgs
+    - **FALSE** - Since contacts are limited to one organization (Q6), they can only be primary decision maker for that single organization
 
 30. **Should an organization with no contacts be prevented from having deals?**
     - **TRUE** - Contacts required for deals
@@ -215,9 +215,9 @@
 ## CLARIFICATIONS - Conflicts Resolved
 
 ### Contact-Organization Relationship
-- **CLARIFIED**: Contacts CAN belong to multiple organizations (Q6 changed to TRUE)
-- This resolves the conflict with Q29 (contact can be primary decision maker for multiple orgs)
-- Implementation: Need many-to-many relationship table between contacts and organizations
+- **CLARIFIED**: Contacts are limited to ONE organization (Q6 = FALSE)
+- This is consistent with Q29 (contact can only be primary decision maker for their single organization)
+- Implementation: Junction table `contact_organizations` exists but has unique constraint enforcing 1:1 relationship
 
 ### Opportunities vs Deals
 - **CLARIFIED**: Deals are NOT separate entities
