@@ -2,11 +2,11 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
-export type AsideSectionProps = {
+export interface AsideSectionProps {
   title: string;
   children?: ReactNode;
   noGap?: boolean;
-};
+}
 
 export function AsideSection({ title, children, noGap }: AsideSectionProps) {
   return (

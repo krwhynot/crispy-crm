@@ -37,7 +37,7 @@ export interface SalesFormData {
   disabled: boolean;
 }
 
-export type Sale = {
+export interface Sale extends Pick<RaRecord, "id"> {
   first_name: string;
   last_name: string;
   administrator: boolean;
@@ -57,7 +57,7 @@ export type Sale = {
    * @deprecated
    */
   password?: string;
-} & Pick<RaRecord, "id">;
+}
 
 // Organization type (imported from validation)
 export type { Organization } from "./validation/organizations";
@@ -74,7 +74,7 @@ export interface PhoneNumberAndType {
   type: "Work" | "Home" | "Other";
 }
 
-export type Contact = {
+export interface Contact extends Pick<RaRecord, "id"> {
   first_name: string;
   last_name: string;
   title: string;
@@ -99,7 +99,7 @@ export type Contact = {
   // Calculated fields
   nb_tasks?: number;
   company_name?: string;
-} & Pick<RaRecord, "id">;
+}
 
 export interface ContactOrganization {
   id?: Identifier; // Optional for new records
@@ -111,7 +111,7 @@ export interface ContactOrganization {
   deleted_at?: string;
 }
 
-export type OpportunityParticipant = {
+export interface OpportunityParticipant extends Pick<RaRecord, "id"> {
   id: Identifier;
   opportunity_id: Identifier;
   organization_id: Identifier;
@@ -124,13 +124,13 @@ export type OpportunityParticipant = {
   updated_at?: string;
   created_by?: Identifier;
   deleted_at?: string;
-} & Pick<RaRecord, "id">;
+}
 
 /**
  * Opportunity Contact Junction Table Record
  * Links opportunities to contacts with additional metadata
  */
-export type OpportunityContact = {
+export interface OpportunityContact extends Pick<RaRecord, "id"> {
   id: Identifier;
   opportunity_id: Identifier;
   contact_id: Identifier;
@@ -138,9 +138,9 @@ export type OpportunityContact = {
   is_primary: boolean;
   notes?: string | null;
   created_at: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type ActivityRecord = {
+export interface ActivityRecord extends Pick<RaRecord, "id"> {
   id: Identifier;
   activity_type: "engagement" | "interaction";
   type: InteractionType;
@@ -164,9 +164,9 @@ export type ActivityRecord = {
   updated_at?: string;
   created_by?: Identifier;
   deleted_at?: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type InteractionParticipant = {
+export interface InteractionParticipant extends Pick<RaRecord, "id"> {
   id: Identifier;
   activity_id: Identifier;
   contact_id?: Identifier;
@@ -174,9 +174,9 @@ export type InteractionParticipant = {
   role?: string;
   notes?: string;
   created_at: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type ContactNote = {
+export interface ContactNote extends Pick<RaRecord, "id"> {
   contact_id: Identifier;
   text: string;
   created_at: string;
@@ -184,7 +184,7 @@ export type ContactNote = {
   opportunity_owner_id: Identifier;
   status: string;
   attachments?: AttachmentNote[];
-} & Pick<RaRecord, "id">;
+}
 
 // Deal type removed - use Opportunity instead
 
@@ -201,7 +201,7 @@ export type LeadSource =
   | "existing_customer";
 
 
-export type Opportunity = {
+export interface Opportunity extends Pick<RaRecord, "id"> {
   name: string;
   customer_organization_id: Identifier;
   principal_organization_id?: Identifier;
@@ -233,11 +233,11 @@ export type Opportunity = {
   nb_interactions?: number;
   last_interaction_date?: string;
   days_in_stage?: number;
-} & Pick<RaRecord, "id">;
+}
 
 // DealNote type removed - use OpportunityNote instead
 
-export type OpportunityNote = {
+export interface OpportunityNote extends Pick<RaRecord, "id"> {
   opportunity_id: Identifier;
   text: string;
   created_at: string;
@@ -247,14 +247,14 @@ export type OpportunityNote = {
 
   // This is defined for compatibility with `ContactNote`
   status?: undefined;
-} & Pick<RaRecord, "id">;
+}
 
-export type Tag = {
+export interface Tag extends Pick<RaRecord, "id"> {
   name: string;
   color: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type Task = {
+export interface Task extends Pick<RaRecord, "id"> {
   title: string;
   description?: string | null;
   contact_id: Identifier;
@@ -269,45 +269,45 @@ export type Task = {
   opportunity_owner_id?: Identifier;
   created_at?: string;
   updated_at?: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type ActivityOrganizationCreated = {
+export interface ActivityOrganizationCreated extends Pick<RaRecord, "id"> {
   type: typeof ORGANIZATION_CREATED;
   organization_id: Identifier;
   organization: Organization;
   opportunity_owner_id: Identifier;
   date: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type ActivityContactCreated = {
+export interface ActivityContactCreated extends Pick<RaRecord, "id"> {
   type: typeof CONTACT_CREATED;
   customer_organization_id: Identifier;
   opportunity_owner_id?: Identifier;
   contact: Contact;
   date: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type ActivityContactNoteCreated = {
+export interface ActivityContactNoteCreated extends Pick<RaRecord, "id"> {
   type: typeof CONTACT_NOTE_CREATED;
   opportunity_owner_id?: Identifier;
   contactNote: ContactNote;
   date: string;
-} & Pick<RaRecord, "id">;
+}
 
-export type ActivityOpportunityCreated = {
+export interface ActivityOpportunityCreated {
   type: typeof OPPORTUNITY_CREATED;
   customer_organization_id: Identifier;
   opportunity_owner_id?: Identifier;
   opportunity: Opportunity;
   date: string;
-};
+}
 
-export type ActivityOpportunityNoteCreated = {
+export interface ActivityOpportunityNoteCreated {
   type: typeof OPPORTUNITY_NOTE_CREATED;
   opportunity_owner_id?: Identifier;
   opportunityNote: OpportunityNote;
   date: string;
-};
+}
 
 export type Activity = RaRecord &
   (

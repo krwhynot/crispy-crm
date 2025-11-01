@@ -10,11 +10,11 @@ import {
 } from "ra-core";
 import { Link } from "react-router-dom";
 
-export type EditButtonProps = {
+export interface EditButtonProps {
   record?: RaRecord;
   resource?: string;
   label?: string;
-};
+}
 
 export const EditButton = (props: EditButtonProps) => {
   const resource = useResourceContext(props);

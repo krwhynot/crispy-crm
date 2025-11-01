@@ -32,11 +32,11 @@ import {
 import { i18nProvider } from "./i18nProvider";
 import { StartPage } from "@/atomic-crm/login/StartPage.tsx";
 
-export type CRMProps = {
+export interface CRMProps extends Partial<ConfigurationContextValue> {
   dataProvider?: DataProvider;
   authProvider?: AuthProvider;
   disableTelemetry?: boolean;
-} & Partial<ConfigurationContextValue>;
+}
 
 /**
  * CRM Component

@@ -4,10 +4,10 @@ import { Plus } from "lucide-react";
 import { Translate, useCreatePath, useResourceContext } from "ra-core";
 import { Link } from "react-router-dom";
 
-export type CreateButtonProps = {
+export interface CreateButtonProps {
   label?: string;
   resource?: string;
-};
+}
 
 export const CreateButton = ({
   label,

@@ -17,7 +17,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-export type CreateProps = CreateViewProps & CreateBaseProps;
+export interface CreateProps extends CreateViewProps, CreateBaseProps {}
 
 export const Create = ({
   title,
@@ -33,12 +33,12 @@ export const Create = ({
   </CreateBase>
 );
 
-export type CreateViewProps = {
+export interface CreateViewProps {
   actions?: ReactNode;
   children: ReactNode;
   className?: string;
   title?: ReactNode | string | false;
-};
+}
 
 export const CreateView = ({
   actions,

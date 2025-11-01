@@ -14,13 +14,13 @@ export const SimpleFormIteratorContext = createContext<
 /**
  * @deprecated Use SimpleFormIteratorContextValue from `ra-core` once available.
  */
-export type SimpleFormIteratorContextValue = {
+export interface SimpleFormIteratorContextValue {
   add: (item?: any) => void;
   remove: (index: number) => void;
   reOrder: (index: number, newIndex: number) => void;
   source: string;
   total: number;
-};
+}
 
 /**
  * @deprecated Use useSimpleFormIterator from `ra-core` once available.
@@ -49,12 +49,12 @@ export const SimpleFormIteratorItemContext = createContext<
 /**
  * @deprecated Use SimpleFormIteratorItemContextValue from `ra-core` once available.
  */
-export type SimpleFormIteratorItemContextValue = {
+export interface SimpleFormIteratorItemContextValue {
   index: number;
   total: number;
   remove: () => void;
   reOrder: (newIndex: number) => void;
-};
+}
 
 /**
  * @deprecated Use useSimpleFormIteratorItem from `ra-core` once available.

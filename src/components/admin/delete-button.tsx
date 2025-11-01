@@ -13,7 +13,7 @@ import {
   type RedirectionSideEffect,
 } from "ra-core";
 
-export type DeleteButtonProps = {
+export interface DeleteButtonProps {
   label?: string;
   size?: "default" | "sm" | "lg" | "icon";
   onClick?: React.ReactEventHandler<HTMLButtonElement>;
@@ -29,7 +29,7 @@ export type DeleteButtonProps = {
     | "secondary"
     | "ghost"
     | "link";
-};
+}
 
 export const DeleteButton = (props: DeleteButtonProps) => {
   const {
