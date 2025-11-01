@@ -16,13 +16,19 @@ interface MetricCard {
 /**
  * MetricsCardGrid - iPad-first responsive dashboard metrics
  *
- * Layout strategy:
- * - iPad Portrait: 1 column (full width)
- * - iPad Landscape: 3 columns (optimal for touch)
- * - Desktop: 3 columns with larger font sizes
+ * Design Strategy (iPad-First Responsive):
+ * - iPad Portrait (sm): 1 column, full width cards
+ * - iPad Landscape (md): 3 columns, optimal for field use
+ * - Desktop (lg+): 3 columns with larger spacing
  *
- * Touch targets: 44x44px minimum (Apple HIG)
- * Card height: 160px (iPad optimized)
+ * Touch Targets: 44x44px minimum (Apple HIG compliant)
+ * Card Heights: 160px (iPad portrait), 176px (iPad landscape), 192px (desktop)
+ *
+ * Color System: Uses semantic Tailwind utilities only
+ * - No inline CSS variables (text-[color:var(--text-subtle)])
+ * - All text colors via Tailwind: text-muted-foreground, text-foreground
+ * - Borders via semantic: border-border
+ * - Shadows via semantic: shadow-sm, shadow-md (mapped to elevation system)
  */
 export const MetricsCardGrid = () => {
   const { data: opportunities, isPending } = useGetList<Opportunity>(
@@ -55,13 +61,11 @@ export const MetricsCardGrid = () => {
     const winRate =
       closed > 0 ? Math.round((won.length / closed) * 100) : 0;
 
-    const wonRevenue = won.reduce((sum, opp) => sum + (opp.amount || 0), 0);
-
     return [
       {
         title: "Total Opportunities",
         value: opportunities.length,
-        icon: <Target className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
+        icon: <Target className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" />,
         unit: "open",
       },
       {
@@ -72,13 +76,13 @@ export const MetricsCardGrid = () => {
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
         }),
-        icon: <DollarSign className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
+        icon: <DollarSign className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" />,
         unit: `${active.length} active`,
       },
       {
         title: "Win Rate",
         value: `${winRate}%`,
-        icon: <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
+        icon: <TrendingUp className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" />,
         unit: `${won.length}/${closed} closed`,
       },
     ];
@@ -86,11 +90,11 @@ export const MetricsCardGrid = () => {
 
   if (isPending) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full">
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-40 sm:h-44 md:h-48 bg-card rounded-lg border border-[color:var(--stroke-card)] animate-pulse"
+            className="h-40 md:h-44 lg:h-48 bg-card rounded-lg border border-border animate-pulse"
           />
         ))}
       </div>
@@ -98,7 +102,7 @@ export const MetricsCardGrid = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full">
       {metrics.map((metric) => (
         <MetricCard key={metric.title} metric={metric} />
       ))}
@@ -109,12 +113,21 @@ export const MetricsCardGrid = () => {
 /**
  * Individual metric card component
  *
- * Responsive sizing:
- * - Base: touch-friendly padding (16px)
- * - sm: slightly larger (20px)
- * - md: desktop comfortable (24px)
+ * iPad-First Responsive Sizing:
+ * - Base (sm): 16px padding, compact text
+ * - md (iPad landscape): 20px padding, balanced text
+ * - lg+ (desktop): 24px padding, spacious layout
  *
- * Text scaling follows viewport size
+ * Touch Targets:
+ * - Icon container: 44x44px (sm), 48x48px (md), 52x52px (lg)
+ * - All interactive areas meet 44px minimum
+ *
+ * Semantic Colors (NO inline CSS variables):
+ * - Title: text-muted-foreground (warm gray)
+ * - Value: text-foreground (darkest text)
+ * - Unit: text-muted-foreground (secondary)
+ * - Border: border-border (1px hairline)
+ * - Shadow: shadow-sm (elevation-1), hover:shadow-md (elevation-2)
  */
 interface MetricCardProps {
   metric: MetricCard;
@@ -122,28 +135,28 @@ interface MetricCardProps {
 
 const MetricCard = ({ metric }: MetricCardProps) => {
   return (
-    <Card className="rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 flex flex-col justify-between h-40 sm:h-44 md:h-48 transition-all duration-200 hover:shadow-[var(--elevation-2)] active:shadow-[var(--elevation-0)]">
+    <Card className="rounded-lg md:rounded-xl p-4 md:p-5 lg:p-6 flex flex-col justify-between h-40 md:h-44 lg:h-48 transition-shadow duration-200 hover:shadow-md active:shadow-sm">
       {/* Header: Icon + Title */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <h3 className="text-xs sm:text-sm md:text-base font-medium text-[color:var(--text-subtle)] tracking-wide uppercase">
+          <h3 className="text-xs md:text-sm lg:text-base font-semibold text-muted-foreground tracking-wide uppercase">
             {metric.title}
           </h3>
         </div>
 
-        {/* Icon - touch target area */}
-        <div className="flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-md flex items-center justify-center text-[color:var(--text-subtle)] opacity-80">
+        {/* Icon Container - 44x44px minimum touch target (Apple HIG) */}
+        <div className="flex-shrink-0 w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-md flex items-center justify-center text-muted-foreground opacity-75 flex-center">
           {metric.icon}
         </div>
       </div>
 
-      {/* Main Value - Large, prominent text */}
-      <div className="flex items-baseline gap-2">
-        <span className="text-2xl sm:text-3xl md:text-4xl font-bold tabular-nums text-[color:var(--text-metric)] leading-none">
+      {/* Main Value - Large, prominent metric number */}
+      <div className="flex items-baseline gap-2 mt-2">
+        <span className="text-2xl md:text-3xl lg:text-4xl font-bold tabular-nums text-foreground leading-none">
           {metric.value}
         </span>
         {metric.unit && (
-          <span className="text-xs sm:text-sm md:text-base text-[color:var(--text-subtle)] font-normal ml-1">
+          <span className="text-xs md:text-sm lg:text-base text-muted-foreground font-normal ml-1">
             {metric.unit}
           </span>
         )}
@@ -152,10 +165,10 @@ const MetricCard = ({ metric }: MetricCardProps) => {
       {/* Optional trend indicator */}
       {metric.trend !== undefined && (
         <div
-          className={`text-xs sm:text-sm mt-2 font-medium ${
+          className={`text-xs md:text-sm mt-2 font-medium ${
             metric.trend > 0
-              ? "text-[color:var(--success)]"
-              : "text-[color:var(--destructive)]"
+              ? "text-green-600 dark:text-green-400"
+              : "text-red-600 dark:text-red-400"
           }`}
         >
           {metric.trend > 0 ? "↑" : "↓"} {Math.abs(metric.trend)}%{" "}
