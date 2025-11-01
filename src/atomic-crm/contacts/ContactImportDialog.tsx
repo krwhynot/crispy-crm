@@ -92,9 +92,6 @@ export function ContactImportDialog({
 
     const { rows, headers, rawDataRows: dataRows } = data;
 
-    console.log('📊 [PREVIEW DEBUG] First parsed row:', JSON.stringify(rows[0], null, 2));
-    console.log('📊 [PREVIEW DEBUG] Total rows:', rows.length);
-    console.log('📊 [PREVIEW DEBUG] Headers:', headers.length);
 
     // Store raw data for re-processing when user changes mappings
     setRawHeaders(headers);

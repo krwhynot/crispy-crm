@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-10-17T19:09:45.287Z",
+  "timestamp": "2025-11-01T20:38:25.443Z",
   "summary": {
-    "totalTests": 17,
-    "passed": 17,
+    "totalTests": 18,
+    "passed": 18,
     "failed": 0,
     "warnings": 0
   },
@@ -10,7 +10,7 @@
     {
       "mode": "light",
       "test": "Tag warm",
-      "ratio": "14.28",
+      "ratio": "12.22",
       "minRatio": 4.5,
       "bg": "tag-warm-bg",
       "fg": "tag-warm-fg"
@@ -18,7 +18,7 @@
     {
       "mode": "light",
       "test": "Tag green",
-      "ratio": "15.72",
+      "ratio": "12.95",
       "minRatio": 4.5,
       "bg": "tag-green-bg",
       "fg": "tag-green-fg"
@@ -26,7 +26,7 @@
     {
       "mode": "light",
       "test": "Tag teal",
-      "ratio": "15.33",
+      "ratio": "12.04",
       "minRatio": 4.5,
       "bg": "tag-teal-bg",
       "fg": "tag-teal-fg"
@@ -34,7 +34,7 @@
     {
       "mode": "light",
       "test": "Tag blue",
-      "ratio": "14.68",
+      "ratio": "11.46",
       "minRatio": 4.5,
       "bg": "tag-blue-bg",
       "fg": "tag-blue-fg"
@@ -42,7 +42,7 @@
     {
       "mode": "light",
       "test": "Tag purple",
-      "ratio": "14.95",
+      "ratio": "12.05",
       "minRatio": 4.5,
       "bg": "tag-purple-bg",
       "fg": "tag-purple-fg"
@@ -50,7 +50,7 @@
     {
       "mode": "light",
       "test": "Tag yellow",
-      "ratio": "17.28",
+      "ratio": "14.53",
       "minRatio": 4.5,
       "bg": "tag-yellow-bg",
       "fg": "tag-yellow-fg"
@@ -58,7 +58,7 @@
     {
       "mode": "light",
       "test": "Tag gray",
-      "ratio": "15.46",
+      "ratio": "13.45",
       "minRatio": 4.5,
       "bg": "tag-gray-bg",
       "fg": "tag-gray-fg"
@@ -66,15 +66,31 @@
     {
       "mode": "light",
       "test": "Tag pink",
-      "ratio": "14.62",
+      "ratio": "12.52",
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on background",
+      "ratio": "4.32",
+      "minRatio": 3,
+      "bg": "background",
+      "fg": "ring"
+    },
+    {
+      "mode": "light",
+      "test": "Focus ring on cards",
+      "ratio": "4.64",
+      "minRatio": 3,
+      "bg": "card",
+      "fg": "ring"
     },
     {
       "mode": "dark",
       "test": "Tag warm",
-      "ratio": "9.88",
+      "ratio": "12.22",
       "minRatio": 4.5,
       "bg": "tag-warm-bg",
       "fg": "tag-warm-fg"
@@ -82,7 +98,7 @@
     {
       "mode": "dark",
       "test": "Tag green",
-      "ratio": "10.76",
+      "ratio": "12.95",
       "minRatio": 4.5,
       "bg": "tag-green-bg",
       "fg": "tag-green-fg"
@@ -90,7 +106,7 @@
     {
       "mode": "dark",
       "test": "Tag teal",
-      "ratio": "10.16",
+      "ratio": "12.04",
       "minRatio": 4.5,
       "bg": "tag-teal-bg",
       "fg": "tag-teal-fg"
@@ -98,7 +114,7 @@
     {
       "mode": "dark",
       "test": "Tag blue",
-      "ratio": "10.33",
+      "ratio": "11.46",
       "minRatio": 4.5,
       "bg": "tag-blue-bg",
       "fg": "tag-blue-fg"
@@ -106,7 +122,7 @@
     {
       "mode": "dark",
       "test": "Tag purple",
-      "ratio": "10.10",
+      "ratio": "12.05",
       "minRatio": 4.5,
       "bg": "tag-purple-bg",
       "fg": "tag-purple-fg"
@@ -114,7 +130,7 @@
     {
       "mode": "dark",
       "test": "Tag yellow",
-      "ratio": "8.55",
+      "ratio": "14.53",
       "minRatio": 4.5,
       "bg": "tag-yellow-bg",
       "fg": "tag-yellow-fg"
@@ -122,7 +138,7 @@
     {
       "mode": "dark",
       "test": "Tag gray",
-      "ratio": "11.70",
+      "ratio": "13.45",
       "minRatio": 4.5,
       "bg": "tag-gray-bg",
       "fg": "tag-gray-fg"
@@ -130,18 +146,10 @@
     {
       "mode": "dark",
       "test": "Tag pink",
-      "ratio": "10.15",
+      "ratio": "12.52",
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
-    },
-    {
-      "mode": "dark",
-      "test": "Accent elements",
-      "ratio": "4.81",
-      "minRatio": 4.5,
-      "bg": "accent",
-      "fg": "accent-foreground"
     }
   ],
   "failed": [],
