@@ -79,23 +79,6 @@ npm run db:cloud:push     # Deploy migrations to cloud
 npx supabase db reset --linked  # DELETES ALL DATA INCLUDING USERS!
 ```
 
-**Example Migration:**
-```sql
--- supabase/migrations/20250126143000_add_projects_table.sql
-CREATE TABLE projects (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can view own projects"
-  ON projects FOR SELECT
-  USING (auth.uid() = user_id);
-```
-
 ### 🔒 Database Security - Two-Layer Model
 
 **⚠️ CRITICAL:** PostgreSQL security requires BOTH table permissions AND RLS policies.
@@ -188,13 +171,23 @@ CREATE TRIGGER on_auth_user_created
 
 ## Essential Commands
 
-**Top 5 Most-Used:**
+**Quick Start (One Command):**
 ```bash
-npm run dev                    # Start dev server
+npm run dev:local              # Reset DB + seed + start dev server (complete setup)
+```
+
+**Development (Most-Used):**
+```bash
+npm run dev                    # Start dev server only
 npm test                       # Run tests (watch mode)
-npx supabase db reset          # Reset local DB
-npm run db:cloud:push          # Deploy migrations (PRODUCTION)
 npm run lint:apply             # Auto-fix linting
+```
+
+**Database:**
+```bash
+npx supabase db reset          # Reset local DB (runs seed.sql automatically)
+npm run db:cloud:push          # Deploy migrations (PRODUCTION - use with care)
+npx supabase migration new <name>  # Create timestamped migration file
 ```
 
 **Complete Command Reference:** [Commands Quick Reference](docs/claude/commands-quick-reference.md)
@@ -212,6 +205,96 @@ npm run lint:apply             # Auto-fix linting
 - Provider: `providers/supabase/unifiedDataProvider.ts`
 - Auth: `providers/supabase/authProvider.ts`
 - Database: Views (aggregated data) + Triggers (auth sync) + Edge Functions
+
+**Validation Layer:**
+- Location: `src/atomic-crm/validation/<resource>.ts`
+- Pattern: "UI as source of truth" - only validate fields with UI inputs
+- Base schemas + derived schemas (insert/update variants)
+- JSONB arrays: Use sub-schemas (e.g., `emailAndTypeSchema`, `phoneNumberAndTypeSchema`)
+
+**Filter Validation:**
+- Registry: `providers/supabase/filterRegistry.ts` defines valid filterable fields per resource
+- Prevents 400 errors from stale cached filters referencing non-existent columns
+- Update when schema changes affect filterable columns
+- Used by: ValidationService (API layer) + useFilterCleanup hook (UI layer)
+
+**JSONB Array Handling Pattern:**
+
+PostgreSQL JSONB arrays require a three-layer approach: database structure, validation schemas, and form components.
+
+**1. Database Structure:**
+```sql
+-- Store arrays of objects with value + type fields
+email JSONB DEFAULT '[]'::jsonb,  -- [{"email": "user@example.com", "type": "Work"}]
+phone JSONB DEFAULT '[]'::jsonb   -- [{"number": "555-1234", "type": "Home"}]
+```
+
+**2. Validation Layer (Zod sub-schemas):**
+```typescript
+// src/atomic-crm/validation/contacts.ts
+export const personalInfoTypeSchema = z.enum(["Work", "Home", "Other"]);
+
+export const emailAndTypeSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  type: personalInfoTypeSchema.default("Work"),
+});
+
+export const phoneNumberAndTypeSchema = z.object({
+  number: z.string(),
+  type: personalInfoTypeSchema.default("Work"),
+});
+
+// In resource schema:
+const contactBaseSchema = z.object({
+  email: z.array(emailAndTypeSchema).default([]),  // Empty array default
+  phone: z.array(phoneNumberAndTypeSchema).default([]),
+  // ... other fields
+});
+```
+
+**3. Form Components (React Admin):**
+```typescript
+<ArrayInput source="email" label="Email addresses">
+  <SimpleFormIterator inline disableReordering disableClear>
+    <TextInput source="email" placeholder="Email (valid email required)" />
+    <SelectInput source="type" choices={personalInfoTypes} />
+    {/* NO defaultValue prop - defaults come from Zod schema (Constitution #5) */}
+  </SimpleFormIterator>
+</ArrayInput>
+```
+
+**Key Patterns:**
+- **Sub-schemas**: Create reusable schemas for array items (`emailAndTypeSchema`)
+- **Enum types**: Use `z.enum()` for type dropdowns
+- **Default values**: Set in Zod schema (`.default("Work")`), NOT in form components
+- **Empty arrays**: Initialize with `.default([])` in schema
+- **Form state**: Use `zodSchema.partial().parse({})` for initialization (Constitution #4)
+
+**Example: Adding a new JSONB array field**
+```typescript
+// 1. Database migration
+ALTER TABLE contacts ADD COLUMN addresses JSONB DEFAULT '[]'::jsonb;
+
+// 2. Validation schema
+export const addressAndTypeSchema = z.object({
+  street: z.string(),
+  city: z.string(),
+  type: z.enum(["Home", "Work", "Other"]).default("Home"),
+});
+
+const contactSchema = z.object({
+  addresses: z.array(addressAndTypeSchema).default([]),
+});
+
+// 3. Form component
+<ArrayInput source="addresses">
+  <SimpleFormIterator>
+    <TextInput source="street" />
+    <TextInput source="city" />
+    <SelectInput source="type" choices={addressTypes} />
+  </SimpleFormIterator>
+</ArrayInput>
+```
 
 **Configuration:** `root/ConfigurationContext.tsx` - customize via `<CRM>` props in `App.tsx`
 
@@ -243,6 +326,24 @@ npm run lint:apply             # Auto-fix linting
 4. Register in `CRM.tsx`: `<Resource name="..." {...resourceModule} />`
 5. Create migration: `npx supabase migration new add_<resource>_table`
 6. Update data provider filters if needed in `filterRegistry.ts`
+
+**Resource Module Pattern (`index.ts`):**
+```typescript
+import * as React from "react";
+
+const ResourceList = React.lazy(() => import("./ResourceList"));
+const ResourceShow = React.lazy(() => import("./ResourceShow"));
+const ResourceEdit = React.lazy(() => import("./ResourceEdit"));
+const ResourceCreate = React.lazy(() => import("./ResourceCreate"));
+
+export default {
+  list: ResourceList,
+  show: ResourceShow,
+  edit: ResourceEdit,
+  create: ResourceCreate,
+  recordRepresentation: (record) => record.name, // or formatName(record.first_name, record.last_name)
+};
+```
 
 **Complete Guide:** [Common Tasks](docs/claude/common-tasks.md)
 
