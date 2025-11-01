@@ -31,10 +31,11 @@ Do NOT use for:
 **Before writing any UI code, verify:**
 
 - [ ] Read CLAUDE.md sections: Color System, JSONB Array Handling, Core Principles
-- [ ] Identify target viewport: iPad-first or mobile-first?
-- [ ] List all colors needed: check if semantic utilities exist
-- [ ] Touch targets: will any interactive elements be < 44px?
+- [ ] Prototype on iPad viewport (768px-1024px) - this is the primary target
+- [ ] List all colors needed: map to semantic utilities (`text-muted-foreground`, not `text-[color:var(...)]`)
+- [ ] Touch targets: ensure all interactive elements are ≥ 44px (`w-11 h-11` minimum)
 - [ ] Form inputs: any JSONB arrays needing sub-schemas?
+- [ ] Test responsive breakpoints: base (mobile) → `md:` (iPad) → `lg:` (desktop)
 
 ## Critical Rules
 
@@ -189,7 +190,8 @@ const websiteTypes = [
 | Mistake | Fix |
 |---------|-----|
 | "Slightly under 44px is acceptable" | NO. 44px is minimum. Use `w-11 h-11` base. |
-| "Mobile-first works on iPad" | iPad-first means iPad as BASE, not target. |
+| "Mobile-first works on iPad" | Optimize `md:` breakpoint for iPad, not just make it "work". |
+| Only testing on mobile/desktop | Test on iPad viewport (768px-1024px) FIRST. |
 | `text-[color:var(--text-subtle)]` | Use `text-muted-foreground` semantic utility. |
 | `defaultValue` in form component | Defaults go in Zod schema (`.default()`). |
 | Hardcoded dropdown choices | Use `ConfigurationContext` for customizable values. |
@@ -223,7 +225,7 @@ const websiteTypes = [
 
 If you find yourself:
 - Using `className="text-[color:var(...)]"` → Wrong Tailwind syntax
-- Starting with `grid-cols-1` for iPad-first app → Wrong base breakpoint
+- Not testing on iPad viewport (768px-1024px) → Wrong design target
 - Accepting 40px touch targets → Below minimum
 - Setting `defaultValue` in form → Defaults go in Zod
 - Researching existing code instead of implementing → Wrong mode
