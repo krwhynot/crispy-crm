@@ -1,0 +1,246 @@
+import { describe, it, expect } from 'vitest';
+import {
+  getOrCreateSegmentParamsSchema,
+  setPrimaryOrganizationParamsSchema,
+  archiveOpportunityWithRelationsParamsSchema,
+  unarchiveOpportunityWithRelationsParamsSchema,
+  syncOpportunityWithProductsParamsSchema,
+  RPC_SCHEMAS,
+} from '../rpc';
+
+describe('RPC Validation Schemas', () => {
+  describe('getOrCreateSegmentParamsSchema', () => {
+    it('should accept valid segment name', () => {
+      const result = getOrCreateSegmentParamsSchema.safeParse({
+        p_name: 'Enterprise Customers',
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject empty segment name', () => {
+      const result = getOrCreateSegmentParamsSchema.safeParse({
+        p_name: '',
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain('Segment name is required');
+      }
+    });
+
+    it('should reject missing segment name', () => {
+      const result = getOrCreateSegmentParamsSchema.safeParse({});
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('setPrimaryOrganizationParamsSchema', () => {
+    it('should accept valid contact and organization IDs', () => {
+      const result = setPrimaryOrganizationParamsSchema.safeParse({
+        p_contact_id: 123,
+        p_organization_id: 456,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject negative contact ID', () => {
+      const result = setPrimaryOrganizationParamsSchema.safeParse({
+        p_contact_id: -1,
+        p_organization_id: 456,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject zero organization ID', () => {
+      const result = setPrimaryOrganizationParamsSchema.safeParse({
+        p_contact_id: 123,
+        p_organization_id: 0,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject non-integer contact ID', () => {
+      const result = setPrimaryOrganizationParamsSchema.safeParse({
+        p_contact_id: 123.45,
+        p_organization_id: 456,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject missing parameters', () => {
+      const result = setPrimaryOrganizationParamsSchema.safeParse({
+        p_contact_id: 123,
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('archiveOpportunityWithRelationsParamsSchema', () => {
+    it('should accept valid opportunity ID', () => {
+      const result = archiveOpportunityWithRelationsParamsSchema.safeParse({
+        opp_id: 789,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject negative opportunity ID', () => {
+      const result = archiveOpportunityWithRelationsParamsSchema.safeParse({
+        opp_id: -1,
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain('positive integer');
+      }
+    });
+
+    it('should reject zero opportunity ID', () => {
+      const result = archiveOpportunityWithRelationsParamsSchema.safeParse({
+        opp_id: 0,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject non-integer opportunity ID', () => {
+      const result = archiveOpportunityWithRelationsParamsSchema.safeParse({
+        opp_id: 789.12,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject missing opportunity ID', () => {
+      const result = archiveOpportunityWithRelationsParamsSchema.safeParse({});
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('unarchiveOpportunityWithRelationsParamsSchema', () => {
+    it('should accept valid opportunity ID', () => {
+      const result = unarchiveOpportunityWithRelationsParamsSchema.safeParse({
+        opp_id: 789,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject negative opportunity ID', () => {
+      const result = unarchiveOpportunityWithRelationsParamsSchema.safeParse({
+        opp_id: -1,
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain('positive integer');
+      }
+    });
+
+    it('should reject zero opportunity ID', () => {
+      const result = unarchiveOpportunityWithRelationsParamsSchema.safeParse({
+        opp_id: 0,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject missing opportunity ID', () => {
+      const result = unarchiveOpportunityWithRelationsParamsSchema.safeParse({});
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('syncOpportunityWithProductsParamsSchema', () => {
+    it('should accept valid sync params with all arrays', () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: 'Test Opportunity', stage: 'new_lead' },
+        products_to_create: [
+          { product_id: 1, notes: 'First product' },
+          { product_id: 2, notes: null },
+        ],
+        products_to_update: [
+          { product_id: 3, notes: 'Updated product' },
+        ],
+        product_ids_to_delete: [4, 5],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it('should apply default empty arrays when optional params are missing', () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: 'Test Opportunity' },
+      });
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.products_to_create).toEqual([]);
+        expect(result.data.products_to_update).toEqual([]);
+        expect(result.data.product_ids_to_delete).toEqual([]);
+      }
+    });
+
+    it('should reject invalid product_id in products_to_create', () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: 'Test Opportunity' },
+        products_to_create: [
+          { product_id: -1, notes: 'Invalid product' },
+        ],
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject non-integer product_id in products_to_update', () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: 'Test Opportunity' },
+        products_to_update: [
+          { product_id: 3.14, notes: 'Invalid product' },
+        ],
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should reject negative product IDs in product_ids_to_delete', () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: 'Test Opportunity' },
+        product_ids_to_delete: [1, -2, 3],
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it('should accept products with optional notes field', () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: 'Test Opportunity' },
+        products_to_create: [
+          { product_id: 1 },
+        ],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it('should accept empty opportunity_data object', () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: {},
+      });
+      expect(result.success).toBe(true);
+    });
+  });
+
+  describe('RPC_SCHEMAS registry', () => {
+    it('should contain all expected RPC functions', () => {
+      const expectedFunctions = [
+        'get_or_create_segment',
+        'set_primary_organization',
+        'archive_opportunity_with_relations',
+        'unarchive_opportunity_with_relations',
+        'sync_opportunity_with_products',
+      ];
+
+      expectedFunctions.forEach((funcName) => {
+        expect(RPC_SCHEMAS).toHaveProperty(funcName);
+      });
+    });
+
+    it('should have exactly 5 RPC function schemas', () => {
+      expect(Object.keys(RPC_SCHEMAS).length).toBe(5);
+    });
+
+    it('should map function names to valid Zod schemas', () => {
+      Object.values(RPC_SCHEMAS).forEach((schema) => {
+        expect(schema).toHaveProperty('safeParse');
+        expect(typeof schema.safeParse).toBe('function');
+      });
+    });
+  });
+});
