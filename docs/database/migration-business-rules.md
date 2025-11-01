@@ -24,12 +24,15 @@
 
 7. **Can a contact advocate for multiple principals at the same time?**
    - **TRUE** - Contacts can champion multiple principals' products
+   - **NOTE:** Contact advocacy feature not implemented in MVP. Use `opportunity_contacts.role='champion'` for opportunity-specific advocacy tracking
 
 8. **Must every contact have at least one advocacy relationship with a principal?**
    - **FALSE** - Advocacy relationships are optional
+   - **NOTE:** Contact advocacy feature not implemented in MVP
 
 9. **Does a contact's purchase influence (High/Medium/Low) apply globally or vary per principal?**
    - **VARIES** - Purchase influence varies per principal they advocate for
+   - **NOTE:** Contact advocacy feature not implemented in MVP. Future enhancement if needed
 
 10. **Can a contact at a distributor organization also be a decision maker for purchasing?**
     - **FALSE** - Distributor contacts don't make purchasing decisions
@@ -42,8 +45,8 @@
 12. **Must a deal have exactly one customer organization?**
     - **TRUE** - One customer per deal
 
-13. **Can a deal exist without any products?**
-    - **FALSE** - Deals must have products
+13. **Can an opportunity exist without any products?**
+    - **TRUE** - Products are optional; early-stage opportunities may not have specific products identified yet
 
 14. **When a deal is created with multiple principals selected, does the system create separate deals?**
     - **TRUE** - System creates one deal per principal
@@ -93,8 +96,8 @@
 27. **Can a deal continue if its customer organization is soft-deleted?**
     - **TRUE** - But flagged that customer has been deleted
 
-28. **Should historical deals show product prices at time of deal?**
-    - **TRUE** - Price snapshots required
+28. **Should historical closed opportunities show product prices at time of closing?**
+    - **FALSE** - Price tracking was removed from the system (see migration 20251028040008). Pricing is handled externally via quotes/invoices. CRM tracks product associations only
 
 29. **Can a contact be primary decision maker for multiple organizations?**
     - **FALSE** - Since contacts are limited to one organization (Q6), they can only be primary decision maker for that single organization

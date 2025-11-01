@@ -31,3 +31,7 @@
 [2025-10-31 17:37:54] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
 [2025-10-31 17:37:55] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031223406_complete_partner_type_removal.sql
 [2025-11-01 12:30:02] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251101172947_enforce_opportunity_customer_requirement.sql
+[2025-11-01 12:30:03] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/database/migration-business-rules.md
+[2025-11-01 12:30:18] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/database/migration-business-rules.md
+[2025-11-01 12:30:19] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/database/migration-business-rules.md
+[2025-11-01 13:18:55] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251101181845_add_tasks_table.sql
