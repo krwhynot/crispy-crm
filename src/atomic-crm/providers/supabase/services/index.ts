@@ -8,4 +8,3 @@
 export { ValidationService } from "./ValidationService";
 export { TransformService } from "./TransformService";
 export { StorageService } from "./StorageService";
-export { RateLimitService, rateLimitService } from "./RateLimitService";
