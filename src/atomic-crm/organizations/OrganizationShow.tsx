@@ -254,15 +254,16 @@ const OpportunitiesIterator = () => {
               <div className="flex-1 min-w-0">
                 <div className="font-medium">{opportunity.name}</div>
                 <div className="text-sm text-[color:var(--text-subtle)]">
-                  {findOpportunityLabel(opportunityStages, opportunity.stage)},{" "}
-                  {opportunity.amount.toLocaleString("en-US", {
-                    notation: "compact",
-                    style: "currency",
-                    currency: "USD",
-                    currencyDisplay: "narrowSymbol",
-                    minimumSignificantDigits: 3,
-                  })}
-                  {opportunity.category ? `, ${opportunity.category}` : ""}
+                  {findOpportunityLabel(opportunityStages, opportunity.stage)}
+                  {opportunity.estimated_close_date
+                    ? `, Expected close: ${new Date(
+                        opportunity.estimated_close_date
+                      ).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}`
+                    : ""}
                 </div>
               </div>
               <div className="text-right">
