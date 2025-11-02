@@ -104,7 +104,8 @@ export const OpportunityRowListView = () => {
               <div className="flex items-center gap-3 shrink-0">
                 {/* Stage Badge */}
                 <Badge
-                  className={`${getStageColor(opportunity.stage)} border-0 text-xs relative z-10`}
+                  className="border-0 text-xs relative z-10"
+                  style={{ backgroundColor: getOpportunityStageColor(opportunity.stage) }}
                 >
                   {getOpportunityStageLabel(opportunity.stage)}
                 </Badge>
