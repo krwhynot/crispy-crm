@@ -44,7 +44,7 @@ export const useContactFilterChips = () => {
     return tag?.name || `Tag #${tagId}`;
   };
 
-  const getSalesName = (salesId: string): string => {
+  const getSalesName = (): string => {
     const sales = salesData?.[0];
     return sales ? `${sales.first_name} ${sales.last_name}` : "Unknown";
   };
