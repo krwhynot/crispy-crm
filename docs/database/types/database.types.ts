@@ -247,16 +247,20 @@ export interface OpportunityParticipant extends BaseEntity {
   notes?: string | null;
 }
 
+/**
+ * OpportunityProduct - Product associations for opportunities
+ *
+ * Note: As of October 2025, pricing was removed from the product catalog.
+ * Products are tracked for association only. Pricing is handled externally
+ * via quotes and negotiations.
+ *
+ * Migration: supabase/migrations/20251028040008_remove_product_pricing_and_uom.sql
+ */
 export interface OpportunityProduct extends BaseEntity {
   opportunity_id: number;
   product_id?: number | null;
   product_name: string;
   product_category?: string | null;
-  quantity: number;
-  unit_price?: number | null;
-  extended_price?: number | null; // Generated
-  discount_percent: number;
-  final_price?: number | null; // Generated
   notes?: string | null;
 }
 
@@ -274,15 +278,22 @@ export interface InteractionParticipant {
 // STAGE 1.5 - SIMPLE PRINCIPAL FEATURES
 // =====================================================
 
+/**
+ * Product - Product catalog items
+ *
+ * Note: As of October 2025, pricing was removed from the product catalog.
+ * Products track catalog information only (name, SKU, category, status).
+ * Pricing is handled externally via quotes and negotiations.
+ *
+ * Migration: supabase/migrations/20251028040008_remove_product_pricing_and_uom.sql
+ */
 export interface Product extends BaseEntity {
   principal_id: number;
   name: string;
   description?: string | null;
   sku?: string | null;
   category?: string | null;
-  unit_price?: number | null;
-  unit_cost?: number | null;
-  is_active: boolean;
+  status: "active" | "discontinued" | "coming_soon";
   min_order_quantity: number;
 }
 
@@ -495,7 +506,6 @@ export interface AddProductParams {
   name: string;
   sku: string;
   category?: string;
-  unit_price?: number;
   description?: string;
   created_by?: number;
 }
@@ -642,7 +652,6 @@ export interface Database {
           product_name: string;
           sku: string;
           category?: string;
-          unit_price?: number;
           principal_id: number;
           principal_name: string;
           commission_percent?: number;
