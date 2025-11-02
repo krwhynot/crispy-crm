@@ -1,7 +1,6 @@
 import { useGetList } from "ra-core";
 import type { Contact, ContactNote } from "../types";
 import { DashboardActivityLog } from "./DashboardActivityLog";
-import { OpportunitiesChart } from "./OpportunitiesChart";
 import { HotContacts } from "./HotContacts";
 import { TasksList } from "./TasksList";
 import { MiniPipeline } from "./MiniPipeline";
