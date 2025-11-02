@@ -36,7 +36,7 @@ describe('Unified Data Provider - Real Schema Tests', () => {
       };
 
       // Simulate the query execution
-      const { data, error } = query;
+      const { error } = query;
 
       // Should get an error about the column not existing
       expect(error).toBeTruthy();
@@ -49,7 +49,7 @@ describe('Unified Data Provider - Real Schema Tests', () => {
 
     it('should succeed when using valid fields only', async () => {
       // Query with valid fields only
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('contacts_summary')
         .select('id, first_name, last_name, last_seen')
         .order('last_seen', { ascending: false, nullsFirst: false })

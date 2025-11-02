@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { createClient } from '@supabase/supabase-js';
 
 // Types for our schema validation
@@ -33,7 +33,7 @@ describe('Data Provider Schema Validation', () => {
     for (const table of tables) {
       try {
         // Get column information from the database
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from(table)
           .select('*')
           .limit(0);
@@ -87,7 +87,7 @@ describe('Data Provider Schema Validation', () => {
             }
           }
 
-          const { data, error } = await query.limit(1);
+          const { error } = await query.limit(1);
 
           if (testCase.shouldFail) {
             expect(error).toBeTruthy();
@@ -126,7 +126,7 @@ describe('Data Provider Schema Validation', () => {
         // Build select string with all required fields
         const selectString = fields.join(',');
 
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from(table)
           .select(selectString)
           .limit(1);
@@ -166,7 +166,7 @@ describe('Data Provider Schema Validation', () => {
 
       for (const test of typeTests) {
         try {
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from(test.table)
             .select('id')
             .filter(test.field, test.operator, test.value)
@@ -203,7 +203,7 @@ describe('Data Provider Schema Validation', () => {
       ];
 
       for (const scenario of errorScenarios) {
-        const { data, error } = await scenario.query();
+        const { error } = await scenario.query();
 
         if (error) {
           console.log(`✓ ${scenario.description}: "${error.message}"`);
@@ -256,7 +256,7 @@ describe('Data Provider Schema Validation', () => {
 
       for (const resource of resources) {
         try {
-          const { data, error } = await supabase
+          const { error } = await supabase
             .from(resource)
             .select('id')
             .limit(1);

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 /**
  * Tests for HTTP error patterns found in fix-auth-advanced.html
@@ -275,8 +275,6 @@ describe('HTTP Error Patterns from Production', () => {
       // The exact error pattern from the HTML:
       // hook.js:608 [DataProvider Error] Object Object
       // hook.js:608 HttpError2: column contacts_summary.nb_tasks does not exist
-
-      const consoleErrorPattern = /\[DataProvider Error\].*HttpError2?: column \w+\.\w+ does not exist/;
 
       const testErrors = [
         '[DataProvider Error] Object Object\nHttpError2: column contacts_summary.nb_tasks does not exist',
