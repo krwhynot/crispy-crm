@@ -1802,20 +1802,6 @@ export type Database = {
         Args: { opp_id: number }
         Returns: undefined
       }
-      calculate_product_price: {
-        Args: {
-          p_distributor_id?: number
-          p_product_id: number
-          p_quantity: number
-        }
-        Returns: {
-          discount_applied: number
-          special_pricing: boolean
-          tier_name: string
-          total_price: number
-          unit_price: number
-        }[]
-      }
       check_product_availability: {
         Args: {
           p_needed_date?: string
