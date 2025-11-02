@@ -561,7 +561,7 @@ BEGIN
     created_at
   )
   SELECT
-    'activity',
+    'engagement',
     'meeting',
     'Food show booth visit - initial interest',
     'Stopped by our booth, tried poke samples. Wants to explore adding poke bowls to menu.',
