@@ -260,8 +260,6 @@ class AdditionalDataSeeder {
       const template = PRODUCT_IDEAS[i % PRODUCT_IDEAS.length];
       const principal = faker.helpers.arrayElement(this.allOrganizations);
 
-      const listPrice = faker.number.float({ min: 5, max: 150, fractionDigits: 2 });
-
       const productAllergens = faker.helpers.maybe(
         () => faker.helpers.arrayElements(ALLERGENS, { min: 1, max: 3 }),
         { probability: 0.4 }
