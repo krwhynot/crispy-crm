@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistance, format } from "date-fns";
 import type { Opportunity } from "../types";
-import { getOpportunityStageLabel, getStageColor } from "./stageConstants";
+import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
 
 export const OpportunityRowListView = () => {
   const {
