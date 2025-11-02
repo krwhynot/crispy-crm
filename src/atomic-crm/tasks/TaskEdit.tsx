@@ -49,7 +49,6 @@ export const TaskEdit = ({
                 <DialogTitle>Edit task</DialogTitle>
               </DialogHeader>
               <TextInput
-                autoFocus
                 source="title"
                 label="Task Title *"
                 helperText="Required field"

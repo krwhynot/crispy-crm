@@ -137,7 +137,6 @@ export const AddTask = ({
               </DialogHeader>
               <div className="flex flex-col gap-4">
                 <TextInput
-                  autoFocus
                   source="title"
                   label="Task Title *"
                   className="m-0"

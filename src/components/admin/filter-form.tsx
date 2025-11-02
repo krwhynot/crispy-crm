@@ -335,7 +335,6 @@ export const FilterButton = (props: FilterButtonProps) => {
                 resource={resource}
                 onShow={handleShow}
                 onHide={handleRemove}
-                autoFocus={index === 0}
               />
             ),
           )}
