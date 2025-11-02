@@ -79,7 +79,6 @@ export const AddSavedQueryDialog = ({
               id="name"
               value={queryName}
               onChange={handleQueryNameChange}
-              autoFocus
             />
           </div>
         </form>
@@ -147,7 +146,7 @@ export const RemoveSavedQueryDialog = ({
           <Button variant="outline" onClick={onClose}>
             {translate("ra.action.cancel")}
           </Button>
-          <Button onClick={removeQuery} autoFocus>
+          <Button onClick={removeQuery}>
             {translate("ra.action.confirm")}
           </Button>
         </DialogFooter>
