@@ -299,9 +299,6 @@ describe("OpportunityEdit - Error Handling", () => {
       amount: 75000,
     };
 
-    // Simulate error occurring
-    const error = new Error("Update failed");
-
     // Form data should retain user's changes, not revert
     const dataAfterError = { ...modifiedData };
 

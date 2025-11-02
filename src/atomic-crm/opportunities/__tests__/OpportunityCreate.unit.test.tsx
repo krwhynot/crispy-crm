@@ -7,8 +7,7 @@
  * - Default values
  */
 
-import { describe, it, expect, vi } from "vitest";
-import { createMockOpportunity } from "@/tests/utils";
+import { describe, it, expect } from "vitest";
 
 describe("OpportunityCreate - Transform Function", () => {
   it("should extract products to products_to_sync", () => {
