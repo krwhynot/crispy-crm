@@ -279,7 +279,6 @@ class AdditionalDataSeeder {
         sku: `${template.brand.substring(0, 3).toUpperCase()}-${faker.string.alphanumeric(6).toUpperCase()}`,
         category: template.category,
         description: faker.commerce.productDescription(),
-        list_price: listPrice,
         status: faker.helpers.weightedArrayElement([
           { weight: 80, value: "active" },
           { weight: 10, value: "seasonal" },
@@ -291,7 +290,6 @@ class AdditionalDataSeeder {
         ingredients: this.generateIngredients(template.category),
         nutritional_info: this.generateNutrition(),
         marketing_description: `Premium ${template.name} - perfect for your F&B operations`,
-        unit_of_measure: faker.helpers.arrayElement(["each", "case", "pound", "ounce", "gallon", "liter", "kilogram"]),
         created_at: faker.date.past({ years: 1 }),
         updated_at: faker.date.recent(),
       };
@@ -356,7 +354,7 @@ class AdditionalDataSeeder {
       if (CONFIG.VERBOSE) {
         console.log("\nSample products:");
         this.products.slice(0, 3).forEach(p => {
-          console.log(chalk.gray(`    - ${p.name} by ${p.brand} ($${p.list_price})`));
+          console.log(chalk.gray(`    - ${p.name} (${p.status})`));
         });
       }
 
