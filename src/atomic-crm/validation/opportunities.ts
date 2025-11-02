@@ -62,8 +62,8 @@ const opportunityBaseSchema = z.object({
   lead_source: leadSourceSchema.optional().nullable(),
 
   // OpportunityOrganizationInputs fields
-  customer_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
-  principal_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
+  customer_organization_id: z.union([z.string(), z.number()]),  // Required - marked with * in UI
+  principal_organization_id: z.union([z.string(), z.number()]),  // Required - marked with * in UI
   distributor_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
   account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
 
