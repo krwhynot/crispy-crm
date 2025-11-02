@@ -24,7 +24,7 @@ import type { FieldProps } from "@/lib/field.type";
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>Wednesday, November 7, 2012</span>
  *
- * <DateField source="price" locales="fr-FR" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
+ * <DateField source="created_at" locales="fr-FR" options={{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }} />
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
