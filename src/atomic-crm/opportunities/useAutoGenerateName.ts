@@ -23,7 +23,7 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
   const products = useMemo(() => {
     if (!productsRaw || !Array.isArray(productsRaw)) return [];
     return productsRaw;
-  }, [productsRaw?.length, JSON.stringify(productsRaw)]);
+  }, [productsRaw]);
 
   // Fetch customer organization name
   const { data: customerOrg, isLoading: isLoadingCustomer } = useGetOne(
