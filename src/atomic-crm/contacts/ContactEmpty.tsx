@@ -1,6 +1,6 @@
 import { CreateButton } from "@/components/admin/create-button";
 import useAppBarHeight from "../misc/useAppBarHeight";
-import { ContactImportButton } from "./ContactImportButton";
+import { ContactImportButton as _ContactImportButton } from "./ContactImportButton";
 
 export const ContactEmpty = () => {
   const appbarHeight = useAppBarHeight();

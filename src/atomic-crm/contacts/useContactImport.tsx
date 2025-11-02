@@ -2,8 +2,8 @@ import type { DataProvider } from "ra-core";
 import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Organization, Tag } from "../types";
-import { mapHeadersToFields, isFullNameColumn, findCanonicalField } from "./columnAliases";
-import { importContactSchema } from "../validation/contacts";
+import { mapHeadersToFields as _mapHeadersToFields, isFullNameColumn as _isFullNameColumn, findCanonicalField as _findCanonicalField } from "./columnAliases";
+import { importContactSchema as _importContactSchema } from "../validation/contacts";
 import { ZodError } from "zod";
 import { applyDataQualityTransformations, validateTransformedContacts, isContactWithoutContactInfo } from "./contactImport.logic";
 
