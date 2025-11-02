@@ -250,6 +250,13 @@ export const SelectInput = (props: SelectInputProps) => {
                     role="button"
                     className="p-0 ml-auto pointer-events-auto hover:bg-transparent text-[color:var(--text-subtle)] opacity-50 hover:opacity-100"
                     onClick={handleReset}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleReset(e as unknown as React.MouseEvent);
+                      }
+                    }}
+                    tabIndex={0}
                   >
                     <X className="h-4 w-4" />
                   </div>
