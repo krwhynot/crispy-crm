@@ -1,8 +1,7 @@
 import { useGetList } from "ra-core";
 import { Card } from "@/components/ui/card";
-import { TrendingUp, DollarSign, Target } from "lucide-react";
+import { Users, Building2, Activity } from "lucide-react";
 import { useMemo } from "react";
-import type { Opportunity } from "../types";
 
 interface MetricCard {
   title: string;
@@ -31,62 +30,78 @@ interface MetricCard {
  * - Shadows via semantic: shadow-sm, shadow-md (mapped to elevation system)
  */
 export const MetricsCardGrid = () => {
-  const { data: opportunities, isPending } = useGetList<Opportunity>(
-    "opportunities",
+  // Fetch contacts
+  const { data: contacts, isPending: contactsPending } = useGetList(
+    "contacts",
     {
-      pagination: { page: 1, perPage: 1000 },
+      pagination: { page: 1, perPage: 10000 },
       filter: { "deleted_at@is": null },
     }
   );
 
+  // Fetch organizations
+  const { data: organizations, isPending: organizationsPending } = useGetList(
+    "organizations",
+    {
+      pagination: { page: 1, perPage: 10000 },
+      filter: { "deleted_at@is": null },
+    }
+  );
+
+  // Calculate 7 days ago for activity filtering
+  const sevenDaysAgo = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 7);
+    return date.toISOString().split('T')[0];
+  }, []);
+
+  // Fetch activities from last 7 days
+  const { data: activities, isPending: activitiesPending } = useGetList(
+    "activities",
+    {
+      pagination: { page: 1, perPage: 10000 },
+      filter: {
+        "deleted_at@is": null,
+        "activity_date@gte": sevenDaysAgo,
+      },
+    }
+  );
+
+  // Combined loading state
+  const isPending = contactsPending || organizationsPending || activitiesPending;
+
   const metrics = useMemo((): MetricCard[] => {
-    if (!opportunities) {
+    // Loading state - show zeros
+    if (!contacts || !organizations || !activities) {
       return [
-        { title: "Total Opportunities", value: "0", icon: null },
-        { title: "Pipeline Revenue", value: "$0", icon: null },
-        { title: "Win Rate", value: "0%", icon: null },
+        { title: "Total Contacts", value: "0", icon: null, unit: "contacts" },
+        { title: "Total Organizations", value: "0", icon: null, unit: "organizations" },
+        { title: "Activities This Week", value: "0", icon: null, unit: "this week" },
       ];
     }
 
-    const active = opportunities.filter(
-      (opp) => !["closed_won", "closed_lost"].includes(opp.stage)
-    );
-
-    const won = opportunities.filter((opp) => opp.stage === "closed_won");
-    const lost = opportunities.filter((opp) => opp.stage === "closed_lost");
-    const closed = won.length + lost.length;
-
-    const totalRevenue = active.reduce((sum, opp) => sum + (opp.amount || 0), 0);
-
-    const winRate =
-      closed > 0 ? Math.round((won.length / closed) * 100) : 0;
-
+    // Calculate actual metrics
     return [
       {
-        title: "Total Opportunities",
-        value: opportunities.length,
-        icon: <Target className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" />,
-        unit: "open",
+        title: "Total Contacts",
+        value: contacts.length,
+        icon: <Users className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
+        unit: "contacts",
       },
       {
-        title: "Pipeline Revenue",
-        value: totalRevenue.toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        }),
-        icon: <DollarSign className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" />,
-        unit: `${active.length} active`,
+        title: "Total Organizations",
+        value: organizations.length,
+        icon: <Building2 className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
+        unit: "organizations",
       },
       {
-        title: "Win Rate",
-        value: `${winRate}%`,
-        icon: <TrendingUp className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" />,
-        unit: `${won.length}/${closed} closed`,
+        title: "Activities This Week",
+        value: activities.length,
+        icon: <Activity className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
+        unit: "this week",
       },
     ];
-  }, [opportunities]);
+  }, [contacts, organizations, activities]);
 
   if (isPending) {
     return (
