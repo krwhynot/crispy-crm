@@ -13,7 +13,7 @@ const TestComponent = () => {
     if (context) {
       contextStatus = "Has context";
     }
-  } catch (e) {
+  } catch {
     contextStatus = "Error getting context";
   }
   return <div data-testid="context-status">{contextStatus}</div>;

@@ -1,8 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { GetListParams, CreateParams, UpdateParams } from "ra-core";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { supabaseDataProvider } from "ra-supabase-core";
-import type { SalesFormData, OpportunityParticipant } from "../../types";
 
 // Mock modules
 vi.mock("@supabase/supabase-js", () => ({

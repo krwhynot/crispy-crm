@@ -32,7 +32,6 @@ export const PrincipalChangeWarning = ({
   newType,
 }: PrincipalChangeWarningProps) => {
   const record = useRecordContext<Organization>();
-  const notify = useNotify();
 
   // Fetch products for this principal
   const { data: products, isLoading } = useGetList<Product>(

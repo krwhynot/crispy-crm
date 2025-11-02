@@ -13,7 +13,7 @@ const TestComponent = () => {
     if (form && typeof form.control !== 'undefined') {
       formStatus = "Form Found";
     }
-  } catch (e) {
+  } catch {
     // No form context
   }
 

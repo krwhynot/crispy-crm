@@ -25,12 +25,8 @@ import type {
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
 import {
-  escapeForPostgREST,
-  transformArrayFilters,
-  applyFullTextSearch,
   getDatabaseResource,
   applySearchParams,
-  normalizeJsonbArrayFields,
   normalizeResponseData,
 } from "./dataProviderUtils";
 import { diffProducts } from "../../opportunities/diffProducts";
@@ -193,7 +189,7 @@ async function validateData(
 async function transformData<T>(
   resource: string,
   data: Partial<T>,
-  operation: "create" | "update" = "create",
+  _operation: "create" | "update" = "create",
 ): Promise<Partial<T>> {
   // Use the TransformService
   return await transformService.transform(resource, data) as Partial<T>;

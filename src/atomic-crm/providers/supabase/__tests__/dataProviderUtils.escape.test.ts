@@ -5,7 +5,7 @@
  * Engineering Constitution: Pragmatic testing - focus on security-critical paths
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { escapeForPostgREST } from '../dataProviderUtils';
 
 describe('escapeForPostgREST', () => {
@@ -36,7 +36,7 @@ describe('escapeForPostgREST', () => {
       // Quote should become \"
       expect(escapeForPostgREST('say "hello"')).toBe('"say \\"hello\\""');
       // Both together
-      expect(escapeForPostgREST('path\\"test')).toBe('"path\\\\\\\"test"');
+      expect(escapeForPostgREST('path\\"test')).toBe('"path\\\\\\"test"');
     });
 
     it('should handle all PostgREST reserved characters', () => {
@@ -48,13 +48,13 @@ describe('escapeForPostgREST', () => {
   describe('SQL injection protection', () => {
     it('should safely escape potential SQL injection attempts', () => {
       const malicious1 = '"; DROP TABLE users;--';
-      expect(escapeForPostgREST(malicious1)).toBe('"\\\"; DROP TABLE users;--"');
+      expect(escapeForPostgREST(malicious1)).toBe(`"\\"; DROP TABLE users;--"`);
 
       const malicious2 = "' OR '1'='1";
       expect(escapeForPostgREST(malicious2)).toBe('"\' OR \'1\'=\'1"');
 
       const malicious3 = '\\"; DELETE FROM contacts WHERE "1"="1';
-      expect(escapeForPostgREST(malicious3)).toBe('"\\\\\\\"; DELETE FROM contacts WHERE \\"1\\"=\\"1"');
+      expect(escapeForPostgREST(malicious3)).toBe(`"\\\\\\"; DELETE FROM contacts WHERE \\"1\\"=\\"1"`);
     });
 
     it('should handle nested escape attempts', () => {

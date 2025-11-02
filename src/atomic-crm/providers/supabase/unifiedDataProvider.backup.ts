@@ -25,12 +25,8 @@ import type {
 import { supabase } from "./supabase";
 import { getResourceName } from "./resources";
 import {
-  escapeForPostgREST,
-  transformArrayFilters,
-  applyFullTextSearch,
   getDatabaseResource,
   applySearchParams,
-  normalizeJsonbArrayFields,
   normalizeResponseData,
 } from "./dataProviderUtils";
 
@@ -150,7 +146,7 @@ async function uploadToBucket(fi: RAFile): Promise<RAFile> {
   const fileName = `${Math.random()}.${fileExt}`;
   const filePath = `${fileName}`;
 
-  const { error: uploadError, data } = await supabase.storage
+  const { error: uploadError } = await supabase.storage
     .from("attachments")
     .upload(filePath, dataContent);
 
