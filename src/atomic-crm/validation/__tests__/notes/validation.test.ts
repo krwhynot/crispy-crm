@@ -7,12 +7,8 @@ import { describe, it, expect } from "vitest";
 import {
   contactNoteSchema,
   opportunityNoteSchema,
-  createOpportunityNoteSchema,
-  updateOpportunityNoteSchema,
   validateCreateContactNote,
-  validateUpdateContactNote,
   validateCreateOpportunityNote,
-  validateUpdateOpportunityNote,
   validateAttachment,
   validateAttachments,
 } from "../../notes";

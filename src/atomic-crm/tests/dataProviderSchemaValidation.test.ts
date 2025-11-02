@@ -341,7 +341,7 @@ export async function validateFilterField(
   value: any
 ): Promise<{ valid: boolean; error?: string }> {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from(table)
       .select('id')
       .filter(field, operator, value)

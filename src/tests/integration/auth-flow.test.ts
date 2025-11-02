@@ -465,7 +465,7 @@ describe("Authentication Flow Integration Tests", () => {
       expect(() => {
         try {
           JSON.parse(invalidResponse);
-        } catch (_e) {
+        } catch {
           throw new Error("Invalid JSON response");
         }
       }).toThrow("Invalid JSON response");
