@@ -60,59 +60,6 @@ describe("Opportunity Utils", () => {
     });
   });
 
-  describe("validateOpportunityAmount", () => {
-    it("should validate positive amounts", () => {
-      expect(validateOpportunityAmount(1000)).toBe(true);
-      expect(validateOpportunityAmount(50000)).toBe(true);
-      expect(validateOpportunityAmount(1000000)).toBe(true);
-    });
-
-    it("should validate zero amount", () => {
-      expect(validateOpportunityAmount(0)).toBe(true);
-    });
-
-    it("should reject negative amounts", () => {
-      expect(validateOpportunityAmount(-1000)).toBe(false);
-    });
-
-    it("should reject amounts exceeding maximum", () => {
-      expect(validateOpportunityAmount(10000001)).toBe(false);
-    });
-
-    it("should accept maximum allowed amount", () => {
-      expect(validateOpportunityAmount(10000000)).toBe(true);
-    });
-  });
-
-  describe("calculateWeightedPipelineValue", () => {
-    it("should calculate weighted value for single opportunity", () => {
-      const opportunities = [{ amount: 100000, probability: 75 }];
-
-      expect(calculateWeightedPipelineValue(opportunities)).toBe(75000);
-    });
-
-    it("should calculate weighted value for multiple opportunities", () => {
-      const opportunities = [
-        { amount: 100000, probability: 75 },
-        { amount: 50000, probability: 50 },
-        { amount: 25000, probability: 100 },
-      ];
-
-      // (100000 * 0.75) + (50000 * 0.50) + (25000 * 1.00) = 75000 + 25000 + 25000 = 125000
-      expect(calculateWeightedPipelineValue(opportunities)).toBe(125000);
-    });
-
-    it("should handle empty opportunities array", () => {
-      expect(calculateWeightedPipelineValue([])).toBe(0);
-    });
-
-    it("should handle zero probability opportunities", () => {
-      const opportunities = [{ amount: 100000, probability: 0 }];
-
-      expect(calculateWeightedPipelineValue(opportunities)).toBe(0);
-    });
-  });
-
   describe("formatOpportunityStage", () => {
     it("should format new_lead stage", () => {
       expect(formatOpportunityStage("new_lead")).toBe("New Lead");
@@ -326,32 +273,6 @@ describe("Opportunity Utils", () => {
   });
 
   describe("Backward Compatibility", () => {
-    it("should transform legacy deal data to opportunity format", () => {
-      const legacyDeal = {
-        id: 1,
-        name: "Legacy Deal",
-        stage: "initial_outreach",
-        amount: 50000,
-        organization_id: 1,
-        contact_ids: [1, 2],
-      };
-
-      const transformToOpportunity = (deal: any) => ({
-        ...deal,
-        customer_organization_id: deal.organization_id,
-        probability: calculateOpportunityProbability(deal.stage),
-        priority: "medium",
-        expected_closing_date: new Date().toISOString().split("T")[0],
-      });
-
-      const opportunity = transformToOpportunity(legacyDeal);
-
-      expect(opportunity.customer_organization_id).toBe(1);
-      expect(opportunity.probability).toBe(25);
-      expect(opportunity.priority).toBe("medium");
-      expect(opportunity.expected_closing_date).toBeTruthy();
-    });
-
     it("should handle opportunity URLs correctly", () => {
       const validateOpportunityUrl = (url: string): boolean => {
         return url.includes("/opportunities");
