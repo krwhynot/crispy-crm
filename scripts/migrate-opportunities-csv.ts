@@ -34,7 +34,7 @@ try {
   CSV_STAGE_MAP = JSON.parse(mappingContent);
   console.log(`📖 Loaded stage mapping from ${stageMappingPath}`);
   console.log(`   ${Object.keys(CSV_STAGE_MAP).length} stage mappings configured`);
-} catch (error) {
+} catch {
   console.error(`❌ Failed to load stage mapping from ${stageMappingPath}`);
   console.error('   Make sure data/stage_mapping.json exists');
   process.exit(1);
@@ -194,7 +194,6 @@ async function migrateOpportunities(): Promise<void> {
       const principalName = row['PRINCIPAL']?.trim();
       const estimatedCloseDate = row['EXP. SOLD-7']?.trim();
       const notes = row['Notes']?.trim();
-      const priority = row['PRIORITY']?.trim();
 
       // Lookup organization IDs
       const customerOrgId = customerOrgName ? await lookupOrganizationId(customerOrgName) : null;
@@ -274,7 +273,7 @@ migrateOpportunities()
     console.log('\n✅ Migration completed successfully');
     process.exit(0);
   })
-  .catch((error) => {
+  .catch(() => {
     console.error('\n❌ Migration failed');
     process.exit(1);
   });

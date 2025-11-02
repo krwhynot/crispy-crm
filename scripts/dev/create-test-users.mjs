@@ -16,7 +16,6 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { execSync } from 'child_process';
-import { createHash } from 'crypto';
 
 // =====================================================================
 // Configuration
