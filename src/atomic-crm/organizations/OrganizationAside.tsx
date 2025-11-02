@@ -11,7 +11,7 @@ import { SelectField } from "@/components/admin/select-field";
 import { AsideSection } from "../misc/AsideSection";
 import { SaleName } from "../sales/SaleName";
 import type { Company } from "../types";
-import { sizes } from "./sizes";
+import { sizes as _sizes } from "./sizes";
 
 interface OrganizationAsideProps {
   link?: string;

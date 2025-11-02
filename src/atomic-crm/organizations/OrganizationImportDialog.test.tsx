@@ -11,7 +11,7 @@
 
 import React from "react";
 import { describe, test, expect, vi, beforeEach } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { OrganizationImportDialog } from "./OrganizationImportDialog";

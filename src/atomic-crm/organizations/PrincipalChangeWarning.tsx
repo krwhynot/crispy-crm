@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useRecordContext, useGetList, useNotify } from "ra-core";
 import { AlertCircle, Package } from "lucide-react";
 import {
@@ -30,7 +29,6 @@ interface PrincipalChangeWarningProps {
 export const PrincipalChangeWarning = ({
   open,
   onClose,
-  onConfirm,
   newType,
 }: PrincipalChangeWarningProps) => {
   const record = useRecordContext<Organization>();

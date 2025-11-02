@@ -10,7 +10,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { ImageList } from "./GridList";
-import { OrganizationImportButton } from "./OrganizationImportButton";
+import { OrganizationImportButton as _OrganizationImportButton } from "./OrganizationImportButton";
 
 export const OrganizationList = () => {
   const { identity } = useGetIdentity();
