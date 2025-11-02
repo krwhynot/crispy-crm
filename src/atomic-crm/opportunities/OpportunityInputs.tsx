@@ -151,7 +151,7 @@ const OpportunityOrganizationInputs = () => {
           filter={{ organization_type: "principal" }}
         >
           <AutocompleteOrganizationInput
-            label="Principal Organization"
+            label="Principal Organization *"
             organizationType="principal"
           />
         </ReferenceInput>

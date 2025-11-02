@@ -10,6 +10,8 @@ describe("Opportunity Validation Functions - UI as Source of Truth", () => {
     it("should accept valid opportunity form data", async () => {
       const validData = {
         name: "Test Opportunity",
+        customer_organization_id: "1",
+        principal_organization_id: "2",
         contact_ids: ["1"],
         estimated_close_date: "2025-12-31",
       };

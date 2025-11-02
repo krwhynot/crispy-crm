@@ -4,6 +4,7 @@ import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRedirect } from "ra-core";
+import { format } from "date-fns";
 import type { Opportunity } from "../types";
 
 export const OpportunityCard = ({
@@ -135,13 +136,29 @@ export const OpportunityCardContent = ({
             </ReferenceField>
           )}
 
-          {/* Line 4: Priority */}
-          <Badge
-            variant={getPriorityBadgeProps(opportunity.priority).variant}
-            className={`text-xs px-2 py-0.5 capitalize w-fit ${getPriorityBadgeProps(opportunity.priority).className}`}
-          >
-            {opportunity.priority}
-          </Badge>
+          {/* Line 4: Priority and Activity Info */}
+          <div className="flex items-center justify-between gap-2">
+            <Badge
+              variant={getPriorityBadgeProps(opportunity.priority).variant}
+              className={`text-xs px-2 py-0.5 capitalize w-fit ${getPriorityBadgeProps(opportunity.priority).className}`}
+            >
+              {opportunity.priority}
+            </Badge>
+
+            {/* Activity Indicators */}
+            <div className="flex items-center gap-2">
+              {opportunity.nb_interactions !== undefined && opportunity.nb_interactions > 0 && (
+                <Badge variant="outline" className="text-xs px-2 py-0.5">
+                  {opportunity.nb_interactions} interaction{opportunity.nb_interactions !== 1 ? 's' : ''}
+                </Badge>
+              )}
+              {opportunity.last_interaction_date && (
+                <span className="text-xs text-[color:var(--text-subtle)]" title={`Last activity: ${format(new Date(opportunity.last_interaction_date), "MMM d, yyyy")}`}>
+                  {format(new Date(opportunity.last_interaction_date), "MMM d")}
+                </span>
+              )}
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

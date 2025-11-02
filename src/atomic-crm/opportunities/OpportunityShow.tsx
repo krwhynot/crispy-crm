@@ -26,6 +26,8 @@ import type { Opportunity } from "../types";
 import { ContactList } from "./ContactList";
 import { findOpportunityLabel } from "./opportunity";
 import { OpportunityHeader } from "./OpportunityHeader";
+import { ActivityNoteForm } from "./ActivityNoteForm";
+import { ActivitiesList } from "./ActivitiesList";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -267,14 +269,41 @@ const OpportunityShowContent = () => {
 
             {/* Notes & Activity Tab */}
             <TabsContent value="notes" className="pt-4">
-              <ReferenceManyField
-                target="opportunity_id"
-                reference="opportunityNotes"
-                sort={{ field: "created_at", order: "DESC" }}
-                empty={<NoteCreate reference={"opportunities"} />}
-              >
-                <NotesIterator reference="opportunities" />
-              </ReferenceManyField>
+              <div className="space-y-8">
+                {/* Activities Section */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Activities</h3>
+
+                  {/* Activity Quick Add Form */}
+                  <div className="mb-6 p-4 border border-[color:var(--border)] rounded-lg bg-[color:var(--muted)]/50">
+                    <h4 className="text-sm font-medium mb-3">Quick Add Activity</h4>
+                    <ActivityNoteForm opportunity={record} />
+                  </div>
+
+                  {/* Activities List */}
+                  <ReferenceManyField
+                    target="opportunity_id"
+                    reference="activities"
+                    filter={{ activity_type: "interaction" }}
+                    sort={{ field: "activity_date", order: "DESC" }}
+                  >
+                    <ActivitiesList />
+                  </ReferenceManyField>
+                </div>
+
+                {/* Notes Section */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Notes</h3>
+                  <ReferenceManyField
+                    target="opportunity_id"
+                    reference="opportunityNotes"
+                    sort={{ field: "created_at", order: "DESC" }}
+                    empty={<NoteCreate reference={"opportunities"} />}
+                  >
+                    <NotesIterator reference="opportunities" />
+                  </ReferenceManyField>
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
         </CardContent>
