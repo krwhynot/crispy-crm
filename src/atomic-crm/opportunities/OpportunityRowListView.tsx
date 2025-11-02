@@ -24,7 +24,19 @@ export const OpportunityRowListView = () => {
   }
 
   if (error) {
-    return null;
+    return (
+      <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
+        <p className="text-center text-destructive">Error loading opportunities. Please try refreshing the page.</p>
+      </Card>
+    );
+  }
+
+  if (!opportunities || opportunities.length === 0) {
+    return (
+      <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
+        <p className="text-center text-muted-foreground">No opportunities to display</p>
+      </Card>
+    );
   }
 
   return (
@@ -33,10 +45,10 @@ export const OpportunityRowListView = () => {
         {opportunities.map((opportunity) => (
           <RecordContextProvider key={opportunity.id} value={opportunity}>
             <div
-              className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+              className="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border border-transparent bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
             >
               {/* Left cluster: Checkbox + Main Info */}
-              <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div className="flex items-center gap-3 min-w-0 flex-1 w-full sm:w-auto">
                 <Checkbox
                   checked={selectedIds.includes(opportunity.id)}
                   onCheckedChange={() => onToggleItem(opportunity.id)}
@@ -101,7 +113,7 @@ export const OpportunityRowListView = () => {
               </div>
 
               {/* Right cluster: Stage, Priority, Close Date, Owner */}
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 w-full sm:w-auto justify-start sm:justify-end">
                 {/* Stage Badge */}
                 <Badge
                   className="border-0 text-xs relative z-10"
@@ -125,9 +137,9 @@ export const OpportunityRowListView = () => {
                   </Badge>
                 )}
 
-                {/* Close Date */}
+                {/* Close Date - Hidden on mobile, shown on sm+ */}
                 {opportunity.estimated_close_date && (
-                  <div className="text-xs text-[color:var(--text-subtle)] relative z-10">
+                  <div className="hidden sm:block text-xs text-[color:var(--text-subtle)] relative z-10">
                     <span className="opacity-75">Close:</span>{' '}
                     <span className="font-medium">
                       {format(new Date(opportunity.estimated_close_date), 'MMM d, yyyy')}
@@ -135,9 +147,9 @@ export const OpportunityRowListView = () => {
                   </div>
                 )}
 
-                {/* Owner */}
+                {/* Owner - Hidden on mobile, shown on md+ */}
                 {opportunity.opportunity_owner_id && (
-                  <div className="text-xs text-[color:var(--text-subtle)] relative z-10">
+                  <div className="hidden md:block text-xs text-[color:var(--text-subtle)] relative z-10">
                     <ReferenceField
                       source="opportunity_owner_id"
                       reference="sales"

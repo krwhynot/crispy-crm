@@ -12,10 +12,19 @@ interface OpportunityViewSwitcherProps {
 export const OpportunityViewSwitcher = ({ view, onViewChange }: OpportunityViewSwitcherProps) => {
   return (
     <TooltipProvider>
-      <ToggleGroup type="single" value={view} onValueChange={(value) => value && onViewChange(value as OpportunityView)}>
+      <ToggleGroup
+        type="single"
+        value={view}
+        onValueChange={(value) => value && onViewChange(value as OpportunityView)}
+        className="gap-0.5"
+      >
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToggleGroupItem value="kanban" aria-label="Kanban view">
+            <ToggleGroupItem
+              value="kanban"
+              aria-label="Kanban view"
+              className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+            >
               <LayoutGrid className="h-4 w-4" />
             </ToggleGroupItem>
           </TooltipTrigger>
@@ -25,7 +34,11 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: OpportunityViewS
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
-            <ToggleGroupItem value="list" aria-label="List view">
+            <ToggleGroupItem
+              value="list"
+              aria-label="List view"
+              className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+            >
               <List className="h-4 w-4" />
             </ToggleGroupItem>
           </TooltipTrigger>
