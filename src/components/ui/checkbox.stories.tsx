@@ -251,7 +251,7 @@ export const Focused: Story = {
   render: () => (
     <div className="space-y-4">
       <p className="text-sm text-[color:var(--text-subtle)]">Tab to focus the checkbox</p>
-      <Checkbox autoFocus />
+      <Checkbox />
     </div>
   ),
 };

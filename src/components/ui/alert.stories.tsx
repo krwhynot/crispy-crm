@@ -171,9 +171,9 @@ export const WithLink: Story = {
         <AlertTitle>Documentation</AlertTitle>
         <AlertDescription>
           Learn more about this feature in our{' '}
-          <a href="#" className="underline font-medium">
+          <button className="underline font-medium">
             documentation
-          </a>
+          </button>
           .
         </AlertDescription>
       </Alert>
@@ -181,40 +181,42 @@ export const WithLink: Story = {
   ),
 };
 
-export const Dismissible: Story = {
-  render: () => {
-    const [visible, setVisible] = React.useState(true);
+const DismissibleAlertComponent = () => {
+  const [visible, setVisible] = React.useState(true);
 
-    if (!visible) {
-      return (
-        <button
-          onClick={() => setVisible(true)}
-          className="px-4 py-2 bg-primary text-primary-foreground rounded"
-        >
-          Show Alert
-        </button>
-      );
-    }
-
+  if (!visible) {
     return (
-      <div className="w-[400px]">
-        <Alert>
-          <Info />
-          <AlertTitle>Dismissible Alert</AlertTitle>
-          <AlertDescription>
-            This alert can be dismissed by clicking the close button.
-          </AlertDescription>
-          <button
-            onClick={() => setVisible(false)}
-            className="absolute right-2 top-2 p-1 rounded hover:bg-accent"
-            aria-label="Dismiss"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </Alert>
-      </div>
+      <button
+        onClick={() => setVisible(true)}
+        className="px-4 py-2 bg-primary text-primary-foreground rounded"
+      >
+        Show Alert
+      </button>
     );
-  },
+  }
+
+  return (
+    <div className="w-[400px]">
+      <Alert>
+        <Info />
+        <AlertTitle>Dismissible Alert</AlertTitle>
+        <AlertDescription>
+          This alert can be dismissed by clicking the close button.
+        </AlertDescription>
+        <button
+          onClick={() => setVisible(false)}
+          className="absolute right-2 top-2 p-1 rounded hover:bg-accent"
+          aria-label="Dismiss"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </Alert>
+    </div>
+  );
+};
+
+export const Dismissible: Story = {
+  render: () => <DismissibleAlertComponent />,
 };
 
 // List in description

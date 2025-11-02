@@ -67,10 +67,10 @@ export const LowElevation: Story = {
             <AvatarFallback className="text-xs">JD</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <a href="#" className="font-medium text-sm text-primary hover:underline focus:outline-none">
+            <button className="font-medium text-sm text-primary hover:underline focus:outline-none">
               John Doe
               <span className="absolute inset-0" aria-hidden="true" />
-            </a>
+            </button>
             <p className="text-xs text-[color:var(--text-subtle)] truncate">
               Product Manager at Acme Corp
             </p>
@@ -90,10 +90,10 @@ export const LowElevation: Story = {
             <AvatarFallback className="text-xs">SK</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <a href="#" className="font-medium text-sm text-primary hover:underline focus:outline-none">
+            <button className="font-medium text-sm text-primary hover:underline focus:outline-none">
               Sarah Kim
               <span className="absolute inset-0" aria-hidden="true" />
-            </a>
+            </button>
             <p className="text-xs text-[color:var(--text-subtle)] truncate">
               Senior Engineer at TechStart Inc
             </p>

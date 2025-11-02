@@ -14,7 +14,6 @@ import {
   Edit,
   Save,
   X,
-  Check,
 } from 'lucide-react';
 import React from 'react';
 

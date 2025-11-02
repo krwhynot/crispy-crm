@@ -3,7 +3,7 @@ import { Toaster } from './sonner';
 import React from 'react';
 import { toast } from 'sonner';
 import { Button } from './button';
-import { CheckCircle2, AlertCircle, Info as InfoIcon, AlertTriangle, Loader2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 const meta = {
   title: 'UI/Sonner (Toast)',
