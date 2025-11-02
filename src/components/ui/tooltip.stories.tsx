@@ -303,7 +303,7 @@ export const OnDisabledElements: Story = {
     <div className="space-y-4">
       <Tooltip>
         <TooltipTrigger asChild>
-          <span tabIndex={0}>
+          <span tabIndex={0} role="button">
             <Button disabled>Disabled button</Button>
           </span>
         </TooltipTrigger>

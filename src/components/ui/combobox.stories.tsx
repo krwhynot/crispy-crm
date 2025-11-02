@@ -329,33 +329,33 @@ export const FormIntegration: Story = {
     return (
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="text-sm font-medium">Framework</label>
+          <div className="text-sm font-medium mb-1">Framework</div>
           <Combobox
             options={frameworks}
             value={framework}
             onValueChange={setFramework}
             placeholder="Select framework..."
-            className="mt-1 w-full"
+            className="w-full"
           />
         </div>
         <div>
-          <label className="text-sm font-medium">Language</label>
+          <div className="text-sm font-medium mb-1">Language</div>
           <Combobox
             options={languages}
             value={language}
             onValueChange={setLanguage}
             placeholder="Select language..."
-            className="mt-1 w-full"
+            className="w-full"
           />
         </div>
         <div>
-          <label className="text-sm font-medium">Country</label>
+          <div className="text-sm font-medium mb-1">Country</div>
           <Combobox
             options={countries}
             value={country}
             onValueChange={setCountry}
             placeholder="Select country..."
-            className="mt-1 w-full"
+            className="w-full"
           />
         </div>
         <button

@@ -131,58 +131,62 @@ export const WithShortcuts: Story = {
 };
 
 // With checkboxes
-export const WithCheckboxes: Story = {
-  render: () => {
-    const [statusBar, setStatusBar] = React.useState(true);
-    const [activityBar, setActivityBar] = React.useState(false);
-    const [panel, setPanel] = React.useState(false);
+const DropdownMenuWithCheckboxes = () => {
+  const [statusBar, setStatusBar] = React.useState(true);
+  const [activityBar, setActivityBar] = React.useState(false);
+  const [panel, setPanel] = React.useState(false);
 
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">View</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuCheckboxItem checked={statusBar} onCheckedChange={setStatusBar}>
-            Status Bar
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={activityBar} onCheckedChange={setActivityBar}>
-            Activity Bar
-          </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem checked={panel} onCheckedChange={setPanel}>
-            Panel
-          </DropdownMenuCheckboxItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  },
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">View</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuCheckboxItem checked={statusBar} onCheckedChange={setStatusBar}>
+          Status Bar
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem checked={activityBar} onCheckedChange={setActivityBar}>
+          Activity Bar
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem checked={panel} onCheckedChange={setPanel}>
+          Panel
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export const WithCheckboxes: Story = {
+  render: () => <DropdownMenuWithCheckboxes />,
 };
 
 // With radio items
-export const WithRadioItems: Story = {
-  render: () => {
-    const [position, setPosition] = React.useState('bottom');
+const DropdownMenuWithRadio = () => {
+  const [position, setPosition] = React.useState('bottom');
 
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">Panel Position</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-            <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="left">Left</DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  },
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Panel Position</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+          <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="left">Left</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export const WithRadioItems: Story = {
+  render: () => <DropdownMenuWithRadio />,
 };
 
 // With nested submenus
@@ -311,54 +315,56 @@ export const WithGroups: Story = {
 };
 
 // Complex nested example
-export const ComplexNested: Story = {
-  render: () => {
-    const [fontSize, setFontSize] = React.useState('medium');
-    const [showMinimap, setShowMinimap] = React.useState(true);
-    const [showBreadcrumbs, setShowBreadcrumbs] = React.useState(true);
-    const [wordWrap, setWordWrap] = React.useState(false);
+const ComplexNestedDropdown = () => {
+  const [fontSize, setFontSize] = React.useState('medium');
+  const [showMinimap, setShowMinimap] = React.useState(true);
+  const [showBreadcrumbs, setShowBreadcrumbs] = React.useState(true);
+  const [wordWrap, setWordWrap] = React.useState(false);
 
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">Editor Settings</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Editor</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Font Size</DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuRadioGroup value={fontSize} onValueChange={setFontSize}>
-                <DropdownMenuRadioItem value="small">Small</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="medium">Medium</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="large">Large</DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>View</DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuCheckboxItem checked={showMinimap} onCheckedChange={setShowMinimap}>
-                Show Minimap
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={showBreadcrumbs}
-                onCheckedChange={setShowBreadcrumbs}
-              >
-                Show Breadcrumbs
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem checked={wordWrap} onCheckedChange={setWordWrap}>
-                Word Wrap
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Reset to Default</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  },
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Editor Settings</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Editor</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Font Size</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuRadioGroup value={fontSize} onValueChange={setFontSize}>
+              <DropdownMenuRadioItem value="small">Small</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="medium">Medium</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="large">Large</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>View</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuCheckboxItem checked={showMinimap} onCheckedChange={setShowMinimap}>
+              Show Minimap
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={showBreadcrumbs}
+              onCheckedChange={setShowBreadcrumbs}
+            >
+              Show Breadcrumbs
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem checked={wordWrap} onCheckedChange={setWordWrap}>
+              Word Wrap
+            </DropdownMenuCheckboxItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Reset to Default</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+export const ComplexNested: Story = {
+  render: () => <ComplexNestedDropdown />,
 };
 
 // With inset items
