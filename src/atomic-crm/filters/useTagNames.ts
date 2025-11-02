@@ -50,7 +50,7 @@ export const useTagNames = (tagIds: string[] | undefined) => {
     };
 
     fetchTagNames();
-  }, [tagIdsKey, dataProvider]);
+  }, [tagIdsKey, tagIds, tagMap, dataProvider]);
 
   /**
    * Get tag name by ID with fallback

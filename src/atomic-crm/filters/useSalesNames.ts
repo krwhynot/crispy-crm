@@ -46,7 +46,7 @@ export const useSalesNames = (salesIds: string[] | undefined) => {
     };
 
     fetchSalesNames();
-  }, [salesIdsKey, dataProvider, salesMap]); // Include all dependencies
+  }, [salesIdsKey, salesIds, salesMap, dataProvider]);
 
   /**
    * Get sales person name by ID with fallback
