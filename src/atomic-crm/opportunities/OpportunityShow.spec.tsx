@@ -181,7 +181,7 @@ describe("OpportunityShow - Unified Provider", () => {
     });
 
     // Mock getList for related data
-    mockDataProvider.getList.mockImplementation((resource, params) => {
+    mockDataProvider.getList.mockImplementation((resource) => {
       if (resource === "opportunity_participants") {
         return Promise.resolve({
           data: mockOpportunityParticipants,
