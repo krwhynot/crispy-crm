@@ -454,6 +454,15 @@ export const FilterButtonMenuItem = React.forwardRef<
     });
   }, [filter.props.source, onHide]);
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (!filter.props.disabled) {
+        displayed ? handleHide() : handleShow();
+      }
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -465,9 +474,11 @@ export const FilterButtonMenuItem = React.forwardRef<
       onClick={
         filter.props.disabled ? undefined : displayed ? handleHide : handleShow
       }
+      onKeyDown={handleKeyDown}
       ref={ref}
       role="menuitemcheckbox"
       aria-checked={displayed}
+      tabIndex={0}
     >
       <div className="flex items-center justify-center w-4 h-4 mr-2">
         {displayed && <Check className="h-3 w-3" />}
