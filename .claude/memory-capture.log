@@ -417,3 +417,14 @@
 [2025-11-02 15:24:40] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed_opportunities.sql
 [2025-11-02 15:25:39] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
 [2025-11-02 15:33:10] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityViewSwitcher.tsx
+[2025-11-02 15:33:40] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityTableView.tsx
+[2025-11-02 15:34:12] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityList.tsx
+[2025-11-02 15:34:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityList.tsx
+[2025-11-02 15:34:44] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityList.tsx
+[2025-11-02 15:34:53] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityList.tsx
+[2025-11-02 15:35:15] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityTableView.tsx
+[2025-11-02 15:35:27] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityTableView.tsx
+[2025-11-02 15:35:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityTableView.tsx
+[2025-11-02 15:36:06] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/ui/toggle-group.tsx
+[2025-11-02 15:36:22] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/ui/toggle.tsx
+[2025-11-02 15:52:33] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityRowListView.tsx
