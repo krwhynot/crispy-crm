@@ -229,7 +229,7 @@ function findContactsWithoutContactInfo(contacts) {
 }
 
 function validateContacts(contacts, options = {}) {
-  const { importOrganizationsWithoutContacts = false, importContactsWithoutContactInfo = false } = options;
+  const { importOrganizationsWithoutContacts = false } = options;
 
   const results = {
     total: contacts.length,

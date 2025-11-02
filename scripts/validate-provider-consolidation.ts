@@ -204,7 +204,7 @@ async function validateTestsPassing() {
   try {
     execSync("tsc --noEmit", { encoding: "utf-8", stdio: "pipe" });
     addResult("Tests", "TypeScript compilation", "PASS");
-  } catch (_error) {
+  } catch {
     addResult("Tests", "TypeScript compilation", "FAIL", "TypeScript compilation errors");
   }
 
@@ -212,7 +212,7 @@ async function validateTestsPassing() {
   try {
     execSync("npm run lint:check", { encoding: "utf-8", stdio: "pipe" });
     addResult("Tests", "Lint checks", "PASS");
-  } catch (_error) {
+  } catch {
     addResult("Tests", "Lint checks", "WARN", "Linting errors found");
   }
 
@@ -220,7 +220,7 @@ async function validateTestsPassing() {
   try {
     execSync("npm run test -- --run --reporter=minimal", { encoding: "utf-8", stdio: "pipe" });
     addResult("Tests", "Unit tests", "PASS");
-  } catch (_error) {
+  } catch {
     addResult("Tests", "Unit tests", "WARN", "Some unit tests failing");
   }
 
@@ -241,7 +241,7 @@ async function validateTestsPassing() {
     } else {
       addResult("Tests", "E2E tests configured", "WARN", "E2E test directory not found");
     }
-  } catch (_error) {
+  } catch {
     addResult("Tests", "E2E tests configured", "WARN", "Could not validate E2E setup");
   }
 

@@ -211,7 +211,7 @@ async function main() {
         { stdio: 'inherit' }
       );
       success(`Generated ${user.role} test data`);
-    } catch (err) {
+    } catch {
       error(`Failed to generate test data for ${user.role}`);
     }
   }
