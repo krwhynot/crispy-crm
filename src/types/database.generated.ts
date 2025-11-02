@@ -1802,19 +1802,6 @@ export type Database = {
         Args: { opp_id: number }
         Returns: undefined
       }
-      check_product_availability: {
-        Args: {
-          p_needed_date?: string
-          p_product_id: number
-          p_quantity: number
-        }
-        Returns: {
-          availability_notes: string
-          can_fulfill_by: string
-          is_available: boolean
-          quantity_available: number
-        }[]
-      }
       create_opportunity_with_participants: {
         Args: { p_opportunity_data: Json; p_participants: Json[] }
         Returns: number
