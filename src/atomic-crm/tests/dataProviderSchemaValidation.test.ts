@@ -322,7 +322,7 @@ export async function validateFieldExists(
   field: string
 ): Promise<boolean> {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from(table)
       .select(field)
       .limit(0);

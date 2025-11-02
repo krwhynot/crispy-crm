@@ -224,8 +224,8 @@ describe("OpportunityCreate - Error Handling", () => {
       probability: 75,
     };
 
-    // Simulate error occurring
-    const error = new Error("Network timeout");
+    // Simulate error occurring (captured for potential logging/handling)
+    const _error = new Error("Network timeout");
 
     // Form data should remain unchanged
     const dataAfterError = { ...formData };

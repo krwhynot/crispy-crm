@@ -1,4 +1,4 @@
-import { useRecordContext, useGetList, useNotify } from "ra-core";
+import { useRecordContext, useGetList } from "ra-core";
 import { AlertCircle, Package } from "lucide-react";
 import {
   AlertDialog,

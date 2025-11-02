@@ -14,8 +14,6 @@ import {
   transformNoteDate,
   getCurrentNoteDate,
   noteHasAttachments,
-  type ContactNote,
-  type OpportunityNote,
 } from "../../notes";
 import { z } from "zod";
 

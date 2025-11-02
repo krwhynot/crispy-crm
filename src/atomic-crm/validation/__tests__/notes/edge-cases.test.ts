@@ -9,7 +9,6 @@ import {
   opportunityNoteSchema,
   validateAttachmentSize,
   validateAttachmentType,
-  type ContactNote,
 } from "../../notes";
 import { z } from "zod";
 
