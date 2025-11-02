@@ -49,7 +49,6 @@ export const Dashboard = () => {
         <div className="md:col-span-2 lg:col-span-1 space-y-6">
           <HotContacts />
           <MiniPipeline />
-          {totalOpportunities ? <OpportunitiesChart /> : null}
         </div>
 
         {/* Full-width quick actions */}
