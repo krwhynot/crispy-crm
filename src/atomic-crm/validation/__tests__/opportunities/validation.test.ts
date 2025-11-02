@@ -34,6 +34,8 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
     it("should apply default values for stage and priority", () => {
       const minimalOpportunity = {
         name: "Minimal Opportunity",
+        customer_organization_id: "1",
+        principal_organization_id: "2",
         contact_ids: ["1"],
       };
 
@@ -53,6 +55,8 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
     it("should require at least one contact for creation", () => {
       const invalidOpportunity = {
         name: "Test",
+        customer_organization_id: "1",
+        principal_organization_id: "2",
         contact_ids: [],
       };
 
@@ -66,6 +70,8 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
     it("should require name, contact_ids, and estimated_close_date", () => {
       const validData = {
         name: "New Opportunity",
+        customer_organization_id: "1",
+        principal_organization_id: "2",
         contact_ids: ["1"],
         estimated_close_date: "2025-12-31",
       };
