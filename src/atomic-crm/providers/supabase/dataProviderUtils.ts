@@ -241,7 +241,7 @@ export function applySearchParams(
   }
 
   // Extract search query and apply full-text search
-  const { q, ...filterWithoutQ } = transformedFilter;
+  const { q: _q, ...filterWithoutQ } = transformedFilter;
 
   // If no searchable fields configured, apply basic soft delete only
   if (searchableFields.length === 0) {
