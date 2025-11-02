@@ -11,7 +11,7 @@ import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { FormToolbar } from "../layout/FormToolbar";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
-import { NoteCreate, NotesIterator } from "../notes";
+import { NoteCreate as _NoteCreate, NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
 import { ActivityNoteForm } from "./ActivityNoteForm";
 
