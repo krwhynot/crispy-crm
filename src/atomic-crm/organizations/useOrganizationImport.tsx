@@ -58,7 +58,7 @@ export function useOrganizationImport() {
   const dataProvider = useDataProvider();
 
   // Tags cache to avoid creating the same tag multiple times
-  const tagsCache = useMemo(() => new Map<string, Tag>(), [dataProvider]);
+  const tagsCache = useMemo(() => new Map<string, Tag>(), []);
 
   const getTags = useCallback(
     async (names: string[], preview = false) =>
