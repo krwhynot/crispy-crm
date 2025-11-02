@@ -142,7 +142,7 @@ export function usePapaParse<T>({
                 }
                 return previous;
               });
-            } catch (error) {
+            } catch (_error) {
               setImporter((previous) =>
                 previous.state === "running"
                   ? {

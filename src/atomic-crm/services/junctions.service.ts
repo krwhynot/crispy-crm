@@ -1,5 +1,5 @@
 import type { DataProvider, Identifier } from "ra-core";
-import type { ContactOrganization, OpportunityParticipant, OpportunityContact } from "../types";
+import type { OpportunityParticipant, OpportunityContact } from "../types";
 
 /**
  * Junction service handles many-to-many relationship operations

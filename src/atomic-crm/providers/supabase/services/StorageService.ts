@@ -52,7 +52,7 @@ export class StorageService {
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
 
-    const { error: uploadError, data } = await supabase.storage
+    const { error: uploadError, data: _data } = await supabase.storage
       .from("attachments")
       .upload(filePath, dataContent);
 

@@ -6,7 +6,6 @@
  */
 
 import { z } from "zod";
-import type { Identifier } from "ra-core";
 
 /**
  * Task type enum matching PostgreSQL task_type enum

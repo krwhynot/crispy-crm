@@ -93,11 +93,11 @@ vi.mock("../../validation/contacts", () => ({
       };
     }
   }),
-  validateUpdateContact: vi.fn().mockImplementation(async (data) => {
+  validateUpdateContact: vi.fn().mockImplementation(async (_data) => {
     // Update validation is more permissive
     return;
   }),
-  validateContactOrganization: vi.fn().mockImplementation(async (data) => {
+  validateContactOrganization: vi.fn().mockImplementation(async (_data) => {
     // Mock for contact organization validation
     return;
   }),
@@ -143,55 +143,55 @@ vi.mock("../../validation/notes", () => ({
 
 // Mock products validation functions
 vi.mock("../../validation/products", () => ({
-  validateProductForm: vi.fn().mockImplementation(async (data) => {
+  validateProductForm: vi.fn().mockImplementation(async (_data) => {
     // Mock validation logic if needed
     return;
   }),
-  validateOpportunityProduct: vi.fn().mockImplementation(async (data) => {
+  validateOpportunityProduct: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
 }));
 
 // Mock sales validation functions
 vi.mock("../../validation/sales", () => ({
-  validateSalesForm: vi.fn().mockImplementation(async (data) => {
+  validateSalesForm: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateCreateSales: vi.fn().mockImplementation(async (data) => {
+  validateCreateSales: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateUpdateSales: vi.fn().mockImplementation(async (data) => {
+  validateUpdateSales: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
 }));
 
 // Mock activities validation functions
 vi.mock("../../validation/activities", () => ({
-  validateActivitiesForm: vi.fn().mockImplementation(async (data) => {
+  validateActivitiesForm: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateCreateActivities: vi.fn().mockImplementation(async (data) => {
+  validateCreateActivities: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateUpdateActivities: vi.fn().mockImplementation(async (data) => {
+  validateUpdateActivities: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateEngagementsForm: vi.fn().mockImplementation(async (data) => {
+  validateEngagementsForm: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateCreateEngagements: vi.fn().mockImplementation(async (data) => {
+  validateCreateEngagements: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateUpdateEngagements: vi.fn().mockImplementation(async (data) => {
+  validateUpdateEngagements: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateInteractionsForm: vi.fn().mockImplementation(async (data) => {
+  validateInteractionsForm: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateCreateInteractions: vi.fn().mockImplementation(async (data) => {
+  validateCreateInteractions: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
-  validateUpdateInteractions: vi.fn().mockImplementation(async (data) => {
+  validateUpdateInteractions: vi.fn().mockImplementation(async (_data) => {
     return;
   }),
 }));
@@ -220,7 +220,7 @@ vi.mock("../../validation/tasks", () => ({
   validateTaskWithReminder: vi.fn().mockImplementation((data) => {
     return data;
   }),
-  validateTaskForSubmission: vi.fn().mockImplementation((data, isUpdate = false) => {
+  validateTaskForSubmission: vi.fn().mockImplementation((data, _isUpdate = false) => {
     return data;
   }),
 }));

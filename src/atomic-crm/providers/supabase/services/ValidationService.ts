@@ -16,7 +16,7 @@ import type { Segment } from "../../../validation/segments";
 // Import all validation schemas
 import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
 import { validateOrganizationForSubmission } from "../../../validation/organizations";
-import { validateOpportunityForm, validateCreateOpportunity, validateUpdateOpportunity } from "../../../validation/opportunities";
+import { validateCreateOpportunity, validateUpdateOpportunity } from "../../../validation/opportunities";
 import {
   validateCreateContactNote,
   validateUpdateContactNote,
