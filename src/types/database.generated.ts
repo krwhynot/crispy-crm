@@ -556,7 +556,7 @@ export type Database = {
           contact_ids: number[] | null
           created_at: string | null
           created_by: number | null
-          customer_organization_id: number | null
+          customer_organization_id: number
           decision_criteria: string | null
           deleted_at: string | null
           description: string | null
@@ -588,7 +588,7 @@ export type Database = {
           contact_ids?: number[] | null
           created_at?: string | null
           created_by?: number | null
-          customer_organization_id?: number | null
+          customer_organization_id: number
           decision_criteria?: string | null
           deleted_at?: string | null
           description?: string | null
@@ -620,7 +620,7 @@ export type Database = {
           contact_ids?: number[] | null
           created_at?: string | null
           created_by?: number | null
-          customer_organization_id?: number | null
+          customer_organization_id?: number
           decision_criteria?: string | null
           deleted_at?: string | null
           description?: string | null
@@ -751,7 +751,6 @@ export type Database = {
       }
       opportunity_participants: {
         Row: {
-          commission_rate: number | null
           created_at: string | null
           created_by: number | null
           deleted_at: string | null
@@ -765,7 +764,6 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
-          commission_rate?: number | null
           created_at?: string | null
           created_by?: number | null
           deleted_at?: string | null
@@ -779,7 +777,6 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
-          commission_rate?: number | null
           created_at?: string | null
           created_by?: number | null
           deleted_at?: string | null
@@ -952,7 +949,6 @@ export type Database = {
       organizations: {
         Row: {
           address: string | null
-          annual_revenue: number | null
           city: string | null
           context_links: Json | null
           created_at: string | null
@@ -986,7 +982,6 @@ export type Database = {
         }
         Insert: {
           address?: string | null
-          annual_revenue?: number | null
           city?: string | null
           context_links?: Json | null
           created_at?: string | null
@@ -1020,7 +1015,6 @@ export type Database = {
         }
         Update: {
           address?: string | null
-          annual_revenue?: number | null
           city?: string | null
           context_links?: Json | null
           created_at?: string | null
@@ -1677,7 +1671,6 @@ export type Database = {
       }
       organizations_summary: {
         Row: {
-          annual_revenue: number | null
           city: string | null
           created_at: string | null
           description: string | null
@@ -1712,7 +1705,6 @@ export type Database = {
           account_manager_is_user: boolean | null
           account_manager_name: string | null
           address: string | null
-          annual_revenue: number | null
           city: string | null
           context_links: Json | null
           created_at: string | null
@@ -1802,9 +1794,44 @@ export type Database = {
         Args: { opp_id: number }
         Returns: undefined
       }
+      calculate_product_price: {
+        Args: {
+          p_distributor_id?: number
+          p_product_id: number
+          p_quantity: number
+        }
+        Returns: {
+          discount_applied: number
+          special_pricing: boolean
+          tier_name: string
+          total_price: number
+          unit_price: number
+        }[]
+      }
+      check_product_availability: {
+        Args: {
+          p_needed_date?: string
+          p_product_id: number
+          p_quantity: number
+        }
+        Returns: {
+          availability_notes: string
+          can_fulfill_by: string
+          is_available: boolean
+          quantity_available: number
+        }[]
+      }
       create_opportunity_with_participants: {
         Args: { p_opportunity_data: Json; p_participants: Json[] }
         Returns: number
+      }
+      get_activity_log: {
+        Args: {
+          p_limit?: number
+          p_organization_id?: number
+          p_sales_id?: number
+        }
+        Returns: Json
       }
       get_contact_organizations: {
         Args: { p_contact_id: number }
@@ -1960,14 +1987,7 @@ export type Database = {
         | "principal"
         | "distributor"
         | "prospect"
-        | "partner"
         | "unknown"
-      pricing_model_type:
-        | "fixed"
-        | "tiered"
-        | "volume"
-        | "subscription"
-        | "custom"
       priority_level: "low" | "medium" | "high" | "critical"
       product_category:
         | "beverages"
@@ -2310,15 +2330,7 @@ export const Constants = {
         "principal",
         "distributor",
         "prospect",
-        "partner",
         "unknown",
-      ],
-      pricing_model_type: [
-        "fixed",
-        "tiered",
-        "volume",
-        "subscription",
-        "custom",
       ],
       priority_level: ["low", "medium", "high", "critical"],
       product_category: [
