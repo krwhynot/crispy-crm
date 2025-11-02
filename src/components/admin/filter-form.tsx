@@ -326,7 +326,6 @@ export const FilterButton = (props: FilterButtonProps) => {
           {allTogglableFilters.map(
             (
               filterElement: React.ReactElement<FilterElementProps>,
-              index: number,
             ) => (
               <FilterButtonMenuItem
                 key={filterElement.props.source}
