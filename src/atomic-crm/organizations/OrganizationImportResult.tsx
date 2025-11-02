@@ -54,7 +54,6 @@ export function OrganizationImportResult({
   open,
   onClose,
   result,
-  allowRetry = false,
 }: OrganizationImportResultProps) {
   const successRate = result.totalProcessed > 0
     ? Math.round((result.successCount / result.totalProcessed) * 100)

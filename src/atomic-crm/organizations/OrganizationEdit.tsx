@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { EditBase, Form, useRecordContext, useNotify } from "ra-core";
-import { useFormContext } from "react-hook-form";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { PrincipalChangeWarning } from "./PrincipalChangeWarning";

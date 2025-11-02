@@ -149,7 +149,7 @@ export function useOrganizationImport() {
           }
 
           try {
-            const tagList = parseTags(tagNames || '')
+            const _tagList = parseTags(tagNames || '')
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 

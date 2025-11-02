@@ -29,7 +29,7 @@ export const OrganizationListFilter = () => {
   ];
 
   // Organization type colors using MFB Garden to Table theme
-  const organizationTypeColors: Record<string, string> = {
+  const _organizationTypeColors: Record<string, string> = {
     customer: "secondary",      // Warm tan - welcoming
     prospect: "secondary",      // Sage/olive - growth
     principal: "default",       // Eggplant/purple - important/primary

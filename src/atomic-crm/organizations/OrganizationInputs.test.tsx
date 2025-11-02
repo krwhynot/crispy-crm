@@ -12,7 +12,7 @@ import { vi } from 'vitest';
 
 // Mock useRecordContext from ra-core
 vi.mock('ra-core', async () => {
-  const actual = await vi.importActual<typeof import('ra-core')>('ra-core');
+  const actual = await vi.importActual('ra-core');
   return {
     ...actual,
     useRecordContext: vi.fn(() => ({ id: 1, name: 'Test Org' })),
@@ -22,7 +22,6 @@ vi.mock('ra-core', async () => {
 // Import ra-core components after mock definition
 import {
   CoreAdminContext as AdminContext,
-  useRecordContext,
   SaveContextProvider,
   Form as RaForm
 } from 'ra-core';
