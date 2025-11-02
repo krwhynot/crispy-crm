@@ -62,6 +62,7 @@ function escapeSQLString(str: string | null | undefined): string {
   // Clean invalid UTF-8 characters and escape single quotes
   const cleaned = String(str)
     .replace(/�/g, '') // Remove replacement character
+    // eslint-disable-next-line no-control-regex
     .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ''); // Remove control characters
   return `'${cleaned.replace(/'/g, "''")}'`;
 }

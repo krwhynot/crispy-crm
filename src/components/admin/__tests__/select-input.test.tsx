@@ -471,7 +471,7 @@ describe("SelectInput", () => {
     expect(() => {
       renderWithAdminContext(
         <FormWrapper>
-          {/* @ts-ignore - Intentionally omitting source to test error */}
+          {/* @ts-expect-error - Intentionally omitting source to test error */}
           <SelectInput
             label="Invalid"
             choices={mockChoices}
