@@ -11,7 +11,6 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockContact } from "@/tests/utils/mock-providers";
 import { ContactListContent } from "../ContactListContent";
 import { ContactListFilter } from "../ContactListFilter";
-import { downloadCSV } from "ra-core";
 
 // Mock dependencies
 vi.mock("ra-core", async () => {
@@ -52,7 +51,7 @@ vi.mock("../ContactListItem", () => ({
 
 // Mock ToggleFilterButton to avoid form context issues
 vi.mock("@/components/admin/toggle-filter-button", () => ({
-  ToggleFilterButton: ({ label, value, multiselect, ...props }: any) => (
+  ToggleFilterButton: ({ label, ...props }: any) => (
     <button data-testid={`toggle-filter-${label}`} {...props}>
       {label}
     </button>
@@ -360,7 +359,7 @@ describe("ContactList localStorage cleanup", () => {
             delete params.filter.status;
             localStorage.setItem(key, JSON.stringify(params));
           }
-        } catch (e) {
+        } catch {
           // Ignore parse errors
         }
       }
@@ -421,7 +420,7 @@ describe("ContactList exporter", () => {
     };
 
     // Mock the exporter function
-    const exporter = async (records: any[], fetchRelatedRecords: any) => {
+    const exporter = async (records: any[]) => {
       const sales = mockSales;
       const tags = mockTags;
       const organizations = mockOrganizations;
