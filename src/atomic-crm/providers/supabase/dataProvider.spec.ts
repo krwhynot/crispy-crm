@@ -214,7 +214,7 @@ describe("Unified Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockInsertChain);
 
-      const { dataProvider } = await import("./index");
+      await import("./index");
 
       const params: CreateParams = {
         data: newOpportunity,
@@ -247,7 +247,7 @@ describe("Unified Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockUpdateChain);
 
-      const { dataProvider } = await import("./index");
+      await import("./index");
 
       const params: UpdateParams = {
         id: "opp-1",
@@ -279,7 +279,7 @@ describe("Unified Supabase DataProvider", () => {
 
       (mockSupabaseClient.from as any).mockReturnValue(mockDeleteChain);
 
-      const { dataProvider } = await import("./index");
+      await import("./index");
 
       const result = await unifiedDataProvider.delete("opportunities", {
         id: "opp-1",
