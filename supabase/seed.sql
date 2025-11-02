@@ -4008,6 +4008,152 @@ INSERT INTO products (
   (17, 1802, 'Chana Masala Base', 'RR-CMB-017', 'spices_seasonings', 'Chickpea curry spice blend base', 'active');
 
 -- ============================================================================
+-- OPPORTUNITIES & ACTIVITIES SEED DATA
+-- ============================================================================
+-- Sample opportunities demonstrating principal-customer relationships
+-- with various stages and activities to test interaction tracking
+-- ============================================================================
+
+DO $$
+DECLARE
+  v_sales_id BIGINT;
+BEGIN
+  -- Get the sales ID for our test user
+  SELECT id INTO v_sales_id
+  FROM sales
+  WHERE user_id = 'd3129876-b1fe-40eb-9980-64f5f73c64d6'
+  LIMIT 1;
+
+  -- If no sales record exists, create one
+  IF v_sales_id IS NULL THEN
+    INSERT INTO sales (first_name, last_name, email, user_id)
+    VALUES ('Admin', 'User', 'admin@test.com', 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
+    RETURNING id INTO v_sales_id;
+  END IF;
+
+  -- Create sample opportunities for each principal
+  -- Note: contact_ids will be populated after opportunities are created
+  INSERT INTO opportunities (
+    name,
+    customer_organization_id,
+    principal_organization_id,
+    stage,
+    status,
+    priority,
+    description,
+    estimated_close_date,
+    opportunity_owner_id,
+    lead_source,
+    created_at,
+    contact_ids
+  ) VALUES
+    -- Kaufholds (Cheese) Opportunities
+    ('Cheese Curd Program - Q1 2025', 13, 1796, 'demo_scheduled', 'active', 'high',
+     'Large volume cheese curd program for all locations. Demo scheduled for next week.',
+     CURRENT_DATE + INTERVAL '30 days', v_sales_id, 'referral', NOW() - INTERVAL '15 days', ARRAY[]::bigint[]),
+
+    ('Wisconsin Cheese Variety Pack', 26, 1796, 'closed_won', 'active', 'medium',
+     'Artisanal cheese selection for seasonal menu. Successfully closed.',
+     CURRENT_DATE - INTERVAL '5 days', v_sales_id, 'cold_call', NOW() - INTERVAL '45 days', ARRAY[]::bigint[]),
+
+    ('Cheese Sticks LTO', 44, 1796, 'feedback_logged', 'active', 'high',
+     'Limited time offer on breaded cheese sticks. Customer loved the samples.',
+     CURRENT_DATE + INTERVAL '14 days', v_sales_id, 'trade_show', NOW() - INTERVAL '7 days', ARRAY[]::bigint[]),
+
+    -- Frites Street (French Fries) Opportunities
+    ('3/8" Straight Cut Fries Program', 6, 1797, 'awaiting_response', 'active', 'critical',
+     'High-volume fry program for entire hospitality group. Awaiting decision from corporate.',
+     CURRENT_DATE + INTERVAL '21 days', v_sales_id, 'existing_customer', NOW() - INTERVAL '20 days', ARRAY[]::bigint[]),
+
+    ('Cowboy Chips Launch', 52, 1797, 'sample_visit_offered', 'active', 'medium',
+     'New product launch - cowboy style thick cut chips. Sample visit scheduled.',
+     CURRENT_DATE + INTERVAL '45 days', v_sales_id, 'email_campaign', NOW() - INTERVAL '3 days', ARRAY[]::bigint[]),
+
+    -- Better Balance (Plant-Based) Opportunities
+    ('Plant-Based Menu Conversion', 51, 1798, 'initial_outreach', 'active', 'high',
+     'University interested in expanding plant-based options across campus dining.',
+     CURRENT_DATE + INTERVAL '60 days', v_sales_id, 'referral', NOW() - INTERVAL '2 days', ARRAY[]::bigint[]),
+
+    ('Better Balance Burger Trial', 12, 1798, 'closed_lost', 'active', 'low',
+     'Trial program for plant-based burgers. Lost to competitor on price.',
+     CURRENT_DATE - INTERVAL '10 days', v_sales_id, 'cold_call', NOW() - INTERVAL '30 days', ARRAY[]::bigint[]),
+
+    -- VAF (Vertical Farms) Opportunities
+    ('Hydroponic Lettuce Program', 26, 1799, 'closed_won', 'active', 'critical',
+     'Year-round hydroponic lettuce supply contract. Premium pricing accepted.',
+     CURRENT_DATE - INTERVAL '1 day', v_sales_id, 'referral', NOW() - INTERVAL '60 days', ARRAY[]::bigint[]),
+
+    ('Spring Greens Initiative', 40, 1799, 'demo_scheduled', 'active', 'medium',
+     'Locally grown greens program. Chef tasting scheduled.',
+     CURRENT_DATE + INTERVAL '10 days', v_sales_id, 'website', NOW() - INTERVAL '8 days', ARRAY[]::bigint[]),
+
+    -- Annasea (Poke/Seafood) Opportunities
+    ('Poke Bowl Base Program', 54, 1801, 'new_lead', 'active', 'low',
+     'New lead from food show. Interested in pre-marinated poke bases.',
+     CURRENT_DATE + INTERVAL '90 days', v_sales_id, 'trade_show', NOW() - INTERVAL '1 day', ARRAY[]::bigint[]),
+
+    ('Sushi-Grade Fish Supply', 50, 1801, 'feedback_logged', 'active', 'high',
+     'Regular sushi-grade fish supply. Chef approved quality.',
+     CURRENT_DATE + INTERVAL '14 days', v_sales_id, 'referral', NOW() - INTERVAL '21 days', ARRAY[]::bigint[]),
+
+    -- Rapid Rasoi (Indian Bases) Opportunities
+    ('Indian Gravy Base Rollout', 22, 1802, 'sample_visit_offered', 'active', 'medium',
+     'Adding Indian fusion items. Testing gravy bases.',
+     CURRENT_DATE + INTERVAL '35 days', v_sales_id, 'cold_call', NOW() - INTERVAL '10 days', ARRAY[]::bigint[]),
+
+    ('Butter Chicken LTO', 53, 1802, 'awaiting_response', 'active', 'high',
+     'Limited time butter chicken special using our base. Awaiting owner approval.',
+     CURRENT_DATE + INTERVAL '7 days', v_sales_id, 'email_campaign', NOW() - INTERVAL '5 days', ARRAY[]::bigint[]);
+
+  -- Add sample activities for some opportunities to demonstrate interaction tracking
+  INSERT INTO activities (
+    activity_type, type, subject, description, activity_date, duration_minutes,
+    organization_id, opportunity_id, sentiment, follow_up_required, follow_up_date,
+    created_by, created_at
+  )
+  SELECT
+    'interaction', 'email', 'Initial inquiry about cheese curd program',
+    'Customer reached out after referral. Very interested in Wisconsin cheese curds.',
+    NOW() - INTERVAL '15 days', 5, 13, o.id, 'positive', true,
+    CURRENT_DATE - INTERVAL '10 days', v_sales_id, NOW() - INTERVAL '15 days'
+  FROM opportunities o WHERE o.name = 'Cheese Curd Program - Q1 2025';
+
+  INSERT INTO activities (
+    activity_type, type, subject, description, activity_date, duration_minutes,
+    organization_id, opportunity_id, sentiment, created_by, created_at
+  )
+  SELECT
+    'interaction', 'call', 'Volume pricing discussion',
+    'Confirmed 50lbs/week across 3 locations. Moved to demo stage.',
+    NOW() - INTERVAL '10 days', 25, 13, o.id, 'positive',
+    v_sales_id, NOW() - INTERVAL '10 days'
+  FROM opportunities o WHERE o.name = 'Cheese Curd Program - Q1 2025';
+
+  INSERT INTO activities (
+    activity_type, type, subject, description, activity_date, duration_minutes,
+    organization_id, opportunity_id, sentiment, created_by, created_at
+  )
+  SELECT
+    'activity', 'meeting', 'Trade show booth visit',
+    'Great interaction at National Restaurant Show. Chef loved samples.',
+    NOW() - INTERVAL '7 days', 20, 44, o.id, 'positive',
+    v_sales_id, NOW() - INTERVAL '7 days'
+  FROM opportunities o WHERE o.name = 'Cheese Sticks LTO';
+
+  INSERT INTO activities (
+    activity_type, type, subject, description, activity_date, duration_minutes,
+    organization_id, opportunity_id, sentiment, created_by, created_at
+  )
+  SELECT
+    'interaction', 'meeting', 'Contract negotiation completed',
+    'Agreed to premium pricing for year-round quality guarantee.',
+    NOW() - INTERVAL '1 day', 90, 26, o.id, 'positive',
+    v_sales_id, NOW() - INTERVAL '1 day'
+  FROM opportunities o WHERE o.name = 'Hydroponic Lettuce Program';
+
+END $$;
+
+-- ============================================================================
 -- RESET SEQUENCES (critical for new record creation)
 -- ============================================================================
 -- After inserting with explicit IDs, sequences must be updated to prevent conflicts

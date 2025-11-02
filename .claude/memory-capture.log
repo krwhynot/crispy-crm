@@ -408,3 +408,6 @@
 [2025-11-02 15:05:22] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/opportunities/validation.test.ts
 [2025-11-02 15:07:15] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-02-interaction-tracking-design.md
 [2025-11-02 15:12:47] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/seed_opportunities.sql
+[2025-11-02 15:14:13] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-11-02 15:15:25] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-11-02 15:16:14] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
