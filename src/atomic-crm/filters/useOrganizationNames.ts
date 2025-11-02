@@ -46,7 +46,7 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
     };
 
     fetchOrganizationNames();
-  }, [organizationIdsKey, dataProvider]);
+  }, [organizationIdsKey, organizationIds, organizationMap, dataProvider]);
 
   /**
    * Get organization name by ID with fallback
