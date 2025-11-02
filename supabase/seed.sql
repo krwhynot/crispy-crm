@@ -4134,7 +4134,7 @@ BEGIN
     organization_id, opportunity_id, sentiment, created_by, created_at
   )
   SELECT
-    'activity', 'meeting', 'Trade show booth visit',
+    'engagement', 'meeting', 'Trade show booth visit',
     'Great interaction at National Restaurant Show. Chef loved samples.',
     NOW() - INTERVAL '7 days', 20, 44, o.id, 'positive',
     v_sales_id, NOW() - INTERVAL '7 days'

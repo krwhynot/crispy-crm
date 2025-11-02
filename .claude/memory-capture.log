@@ -414,3 +414,6 @@
 [2025-11-02 15:18:25] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
 [2025-11-02 15:23:13] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251102212250_fix_founding_interaction_trigger.sql
 [2025-11-02 15:24:26] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed_opportunities.sql
+[2025-11-02 15:24:40] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed_opportunities.sql
+[2025-11-02 15:25:39] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/seed.sql
+[2025-11-02 15:33:10] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityViewSwitcher.tsx
