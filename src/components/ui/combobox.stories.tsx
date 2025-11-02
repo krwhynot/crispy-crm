@@ -378,12 +378,15 @@ const FormIntegrationComponent = () => {
         />
       </div>
       <button
-          type="submit"
-          className="rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
-        >
-          Submit
-        </button>
-      </form>
-    );
-  },
+        type="submit"
+        className="rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+      >
+        Submit
+      </button>
+    </form>
+  );
+};
+
+export const FormIntegration: Story = {
+  render: () => <FormIntegrationComponent />,
 };

@@ -347,7 +347,7 @@ export const CustomStyling: Story = {
     <div className="flex gap-2">
       <Button
         onClick={() =>
-          toast.custom((t) => (
+          toast.custom(() => (
             <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg">
               <p className="font-bold">Special Announcement</p>
               <p className="text-sm">This is a custom styled toast!</p>
