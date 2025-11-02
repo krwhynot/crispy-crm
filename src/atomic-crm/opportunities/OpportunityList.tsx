@@ -17,7 +17,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { OpportunityArchivedList } from "./OpportunityArchivedList";
 import { OpportunityEmpty } from "./OpportunityEmpty";
 import { OpportunityListContent } from "./OpportunityListContent";
-import { OpportunityTableView } from "./OpportunityTableView";
+import { OpportunityRowListView } from "./OpportunityRowListView";
 import { OpportunityViewSwitcher, type OpportunityView } from "./OpportunityViewSwitcher";
 import { FilterChipsPanel } from "../filters/FilterChipsPanel";
 import { useOpportunityFilters } from "../filters/useOpportunityFilters";
@@ -98,7 +98,7 @@ const OpportunityLayout = ({ view }: { view: OpportunityView }) => {
 
   return (
     <div className="w-full">
-      {view === 'kanban' ? <OpportunityListContent /> : <OpportunityTableView />}
+      {view === 'kanban' ? <OpportunityListContent /> : <OpportunityRowListView />}
       <OpportunityArchivedList />
     </div>
   );
