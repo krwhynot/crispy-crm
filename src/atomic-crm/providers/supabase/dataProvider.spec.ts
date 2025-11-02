@@ -637,13 +637,13 @@ describe("Unified Supabase DataProvider", () => {
 
       const { unifiedDataProvider } = await import("./unifiedDataProvider");
 
-      const page1 = await unifiedDataProvider.getList("opportunities", {
+      await unifiedDataProvider.getList("opportunities", {
         pagination: { page: 1, perPage: 10 },
       });
 
       expect(mockSelectChain.range).toHaveBeenCalledWith(0, 9);
 
-      const page2 = await unifiedDataProvider.getList("opportunities", {
+      await unifiedDataProvider.getList("opportunities", {
         pagination: { page: 2, perPage: 10 },
       });
 

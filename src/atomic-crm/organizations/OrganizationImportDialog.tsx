@@ -493,7 +493,7 @@ export function OrganizationImportDialog({
       const result = await processBatchHook(batch, {
         preview: false,
         startingRow: rowOffsetRef.current + 2, // +2 for CSV header row
-        onProgress: (current, total) => {
+        onProgress: (_current, _total) => {
           setImportProgress(prev => ({ ...prev, count: prev.count + 1 }));
         }
       });
@@ -638,7 +638,7 @@ export function OrganizationImportDialog({
         );
 
         // Generate column mappings with confidence scores
-        const mappings: ColumnMapping[] = headers.map((header, index) => {
+        const mappings: ColumnMapping[] = headers.map((header, _index) => {
           const canonicalField = findCanonicalField(header);
           const target = canonicalField;
 

@@ -172,7 +172,7 @@ export function detectDuplicateOrganizations(
   // Filter to only groups with duplicates (2+ entries)
   const duplicates: DuplicateReport['duplicates'] = [];
 
-  nameMap.forEach((indices, normalizedName) => {
+  nameMap.forEach((indices, _normalizedName) => {
     if (indices.length > 1) {
       // Get the original name from the first occurrence
       const originalName = orgs[indices[0]].name;
@@ -211,7 +211,7 @@ export function detectDuplicateOrganizations(
  */
 export function applyDataQualityTransformations(
   orgs: OrganizationImportSchema[],
-  decisions: DataQualityDecisions = {}
+  _decisions: DataQualityDecisions = {}
 ): TransformResult {
   const transformedSet = new Set<number>();
   const validPriorities = ['A', 'B', 'C', 'D'];
