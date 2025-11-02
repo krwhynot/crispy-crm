@@ -14,6 +14,9 @@ export const useTagNames = (tagIds: string[] | undefined) => {
   const [tagMap, setTagMap] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
+  // Create a stable key for dependency array
+  const tagIdsKey = tagIds?.join(',') || '';
+
   useEffect(() => {
     if (!tagIds || tagIds.length === 0) {
       return;
@@ -47,7 +50,7 @@ export const useTagNames = (tagIds: string[] | undefined) => {
     };
 
     fetchTagNames();
-  }, [tagIds?.join(',')]); // Re-run when IDs change
+  }, [tagIdsKey, dataProvider]);
 
   /**
    * Get tag name by ID with fallback
