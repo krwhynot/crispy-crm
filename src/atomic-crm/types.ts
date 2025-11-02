@@ -212,7 +212,6 @@ export interface Opportunity extends Pick<RaRecord, "id"> {
   description: string;
   estimated_close_date: string;
   actual_close_date?: string;
-  amount?: number;
   created_at: string;
   updated_at: string;
   stage_changed_at?: string;
