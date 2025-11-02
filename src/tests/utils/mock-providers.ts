@@ -190,7 +190,6 @@ export const createMockOpportunity = (overrides?: any) => ({
     "closed_won",
     "closed_lost",
   ]),
-  amount: faker.number.float({ min: 1000, max: 1000000, fractionDigits: 2 }),
   probability: faker.number.int({ min: 0, max: 100 }),
   expected_closing_date: faker.date.future().toISOString().split("T")[0],
   customer_organization_id: faker.number.int({ min: 1, max: 100 }),
