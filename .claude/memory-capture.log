@@ -383,3 +383,6 @@
 [2025-11-02 12:39:41] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251102183932_remove_financial_tracking.sql
 [2025-11-02 12:40:50] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251102183932_remove_financial_tracking.sql
 [2025-11-02 12:53:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/tests/utils/mock-providers.ts
+[2025-11-02 12:55:10] [code] Edit: /home/krwhynot/projects/crispy-crm/src/tests/utils/__tests__/mock-providers.test.ts
+[2025-11-02 12:55:11] [code] Edit: /home/krwhynot/projects/crispy-crm/src/tests/utils/__tests__/mock-providers.test.ts
+[2025-11-02 13:01:53] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationShow.tsx
