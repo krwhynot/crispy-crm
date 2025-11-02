@@ -170,39 +170,41 @@ export const Sides: Story = {
 };
 
 // Controlled popover
-export const Controlled: Story = {
-  render: () => {
-    const [open, setOpen] = React.useState(false);
+const ControlledPopover = () => {
+  const [open, setOpen] = React.useState(false);
 
-    return (
-      <div className="space-y-4">
-        <div className="flex gap-2">
-          <Button onClick={() => setOpen(true)}>Open programmatically</Button>
-          <Button onClick={() => setOpen(false)} variant="outline">
-            Close programmatically
-          </Button>
-        </div>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="outline">
-              {open ? 'Close' : 'Open'} popover
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <div className="space-y-2">
-              <h4 className="font-medium">Controlled Popover</h4>
-              <p className="text-sm text-[color:var(--text-subtle)]">
-                This popover's open state is controlled programmatically.
-              </p>
-              <Button onClick={() => setOpen(false)} size="sm">
-                Close from inside
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        <Button onClick={() => setOpen(true)}>Open programmatically</Button>
+        <Button onClick={() => setOpen(false)} variant="outline">
+          Close programmatically
+        </Button>
       </div>
-    );
-  },
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant="outline">
+            {open ? 'Close' : 'Open'} popover
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div className="space-y-2">
+            <h4 className="font-medium">Controlled Popover</h4>
+            <p className="text-sm text-[color:var(--text-subtle)]">
+              This popover's open state is controlled programmatically.
+            </p>
+            <Button onClick={() => setOpen(false)} size="sm">
+              Close from inside
+            </Button>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+};
+
+export const Controlled: Story = {
+  render: () => <ControlledPopover />,
 };
 
 // Complex content
@@ -307,18 +309,18 @@ export const HelpPopover: Story = {
             </p>
           </div>
           <div className="space-y-2">
-            <a href="#" className="flex items-center text-sm hover:underline">
+            <button className="flex items-center text-sm hover:underline">
               📚 Documentation
-            </a>
-            <a href="#" className="flex items-center text-sm hover:underline">
+            </button>
+            <button className="flex items-center text-sm hover:underline">
               💬 Community Forum
-            </a>
-            <a href="#" className="flex items-center text-sm hover:underline">
+            </button>
+            <button className="flex items-center text-sm hover:underline">
               📧 Contact Support
-            </a>
-            <a href="#" className="flex items-center text-sm hover:underline">
+            </button>
+            <button className="flex items-center text-sm hover:underline">
               🎥 Video Tutorials
-            </a>
+            </button>
           </div>
         </div>
       </PopoverContent>
@@ -327,127 +329,133 @@ export const HelpPopover: Story = {
 };
 
 // Date picker popover (mock)
-export const DatePicker: Story = {
-  render: () => {
-    const [date, setDate] = React.useState('');
+const DatePickerPopover = () => {
+  const [date, setDate] = React.useState('');
 
-    return (
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[240px] justify-start text-left">
-            <Calendar className="mr-2 h-4 w-4" />
-            {date || 'Pick a date'}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <div className="p-4">
-            <div className="space-y-4">
-              <div className="text-center">
-                <h4 className="font-medium">March 2024</h4>
-              </div>
-              <div className="grid grid-cols-7 gap-1 text-center text-xs">
-                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-                  <div key={day} className="font-medium text-[color:var(--text-subtle)]">
-                    {day}
-                  </div>
-                ))}
-                {Array.from({ length: 31 }, (_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      setDate(`March ${i + 1}, 2024`);
-                    }}
-                    className="h-8 w-8 rounded hover:bg-muted"
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-              </div>
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="w-[240px] justify-start text-left">
+          <Calendar className="mr-2 h-4 w-4" />
+          {date || 'Pick a date'}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <div className="p-4">
+          <div className="space-y-4">
+            <div className="text-center">
+              <h4 className="font-medium">March 2024</h4>
+            </div>
+            <div className="grid grid-cols-7 gap-1 text-center text-xs">
+              {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
+                <div key={day} className="font-medium text-[color:var(--text-subtle)]">
+                  {day}
+                </div>
+              ))}
+              {Array.from({ length: 31 }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setDate(`March ${i + 1}, 2024`);
+                  }}
+                  className="h-8 w-8 rounded hover:bg-muted"
+                >
+                  {i + 1}
+                </button>
+              ))}
             </div>
           </div>
-        </PopoverContent>
-      </Popover>
-    );
-  },
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+export const DatePicker: Story = {
+  render: () => <DatePickerPopover />,
 };
 
 // Time picker popover
-export const TimePicker: Story = {
-  render: () => {
-    const [time, setTime] = React.useState('');
+const TimePickerPopover = () => {
+  const [time, setTime] = React.useState('');
 
-    return (
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="w-[180px] justify-start text-left">
+          <Clock className="mr-2 h-4 w-4" />
+          {time || 'Select time'}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-48 p-2">
+        <div className="grid gap-1">
+          {['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM'].map(
+            (t) => (
+              <button
+                key={t}
+                onClick={() => setTime(t)}
+                className="text-left px-2 py-1 text-sm rounded hover:bg-muted"
+              >
+                {t}
+              </button>
+            )
+          )}
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+export const TimePicker: Story = {
+  render: () => <TimePickerPopover />,
+};
+
+// Keyboard navigation demo
+const KeyboardNavigationPopover = () => {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <div>
+      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+        Tab to focus trigger, Space/Enter to open, Escape to close
+      </p>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[180px] justify-start text-left">
-            <Clock className="mr-2 h-4 w-4" />
-            {time || 'Select time'}
-          </Button>
+          <Button variant="outline">Test keyboard navigation</Button>
         </PopoverTrigger>
-        <PopoverContent className="w-48 p-2">
-          <div className="grid gap-1">
-            {['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM'].map(
-              (t) => (
-                <button
-                  key={t}
-                  onClick={() => setTime(t)}
-                  className="text-left px-2 py-1 text-sm rounded hover:bg-muted"
-                >
-                  {t}
-                </button>
-              )
+        <PopoverContent>
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-medium mb-2">Keyboard Test</h4>
+              <p className="text-sm text-[color:var(--text-subtle)]">
+                Tab through the form fields below. Press Escape to close.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <div>
+                <Label htmlFor="field1">Field 1</Label>
+                <Input
+                  id="field1"
+                  placeholder="Tab to next field"
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="field2">Field 2</Label>
+                <Input id="field2" placeholder="Tab to button" />
+              </div>
+              <Button className="w-full">Submit (Tab here, then Escape)</Button>
+            </div>
+            {value && (
+              <p className="text-sm text-[color:var(--text-subtle)]">You typed: {value}</p>
             )}
           </div>
         </PopoverContent>
       </Popover>
-    );
-  },
+    </div>
+  );
 };
 
-// Keyboard navigation demo
 export const KeyboardNavigation: Story = {
-  render: () => {
-    const [value, setValue] = React.useState('');
-
-    return (
-      <div>
-        <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
-          Tab to focus trigger, Space/Enter to open, Escape to close
-        </p>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline">Test keyboard navigation</Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium mb-2">Keyboard Test</h4>
-                <p className="text-sm text-[color:var(--text-subtle)]">
-                  Tab through the form fields below. Press Escape to close.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <div>
-                  <Label htmlFor="field1">Field 1</Label>
-                  <Input
-                    id="field1"
-                    placeholder="Tab to next field"
-                    onChange={(e) => setValue(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="field2">Field 2</Label>
-                  <Input id="field2" placeholder="Tab to button" />
-                </div>
-                <Button className="w-full">Submit (Tab here, then Escape)</Button>
-              </div>
-              {value && (
-                <p className="text-sm text-[color:var(--text-subtle)]">You typed: {value}</p>
-              )}
-            </div>
-          </PopoverContent>
-        </Popover>
-      </div>
-    );
-  },
+  render: () => <KeyboardNavigationPopover />,
 };

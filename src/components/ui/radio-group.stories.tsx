@@ -325,7 +325,7 @@ export const Focused: Story = {
       <p className="text-sm text-[color:var(--text-subtle)]">Tab to focus the radio group</p>
       <RadioGroup defaultValue="focused">
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="focused" id="f1" autoFocus />
+          <RadioGroupItem value="focused" id="f1" />
           <Label htmlFor="f1">Focused item</Label>
         </div>
         <div className="flex items-center space-x-2">

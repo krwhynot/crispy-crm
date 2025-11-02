@@ -156,53 +156,55 @@ export const BottomSide: Story = {
 };
 
 // Controlled sheet with animation state tracking
-export const Controlled: Story = {
-  render: () => {
-    const [open, setOpen] = useState(false);
-    const [animationState, setAnimationState] = useState('closed');
+const ControlledSheet = () => {
+  const [open, setOpen] = useState(false);
+  const [animationState, setAnimationState] = useState('closed');
 
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="text-sm text-[color:var(--text-subtle)]">
-          Animation State: <span className="font-mono font-semibold">{animationState}</span>
-        </div>
-        <Sheet
-          open={open}
-          onOpenChange={(isOpen) => {
-            setOpen(isOpen);
-            setAnimationState(isOpen ? 'opening → open' : 'closing → closed');
-            if (isOpen) {
-              setTimeout(() => setAnimationState('open'), 500);
-            } else {
-              setTimeout(() => setAnimationState('closed'), 300);
-            }
-          }}
-        >
-          <SheetTrigger asChild>
-            <Button>Controlled Sheet</Button>
-          </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Controlled Sheet</SheetTitle>
-              <SheetDescription>
-                This sheet's open state is controlled programmatically.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="py-4">
-              <p>Sheet is currently: {open ? 'open' : 'closed'}</p>
-              <Button
-                className="mt-4"
-                onClick={() => setOpen(false)}
-                variant="outline"
-              >
-                Close Sheet
-              </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="text-sm text-[color:var(--text-subtle)]">
+        Animation State: <span className="font-mono font-semibold">{animationState}</span>
       </div>
-    );
-  },
+      <Sheet
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+          setAnimationState(isOpen ? 'opening → open' : 'closing → closed');
+          if (isOpen) {
+            setTimeout(() => setAnimationState('open'), 500);
+          } else {
+            setTimeout(() => setAnimationState('closed'), 300);
+          }
+        }}
+      >
+        <SheetTrigger asChild>
+          <Button>Controlled Sheet</Button>
+        </SheetTrigger>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Controlled Sheet</SheetTitle>
+            <SheetDescription>
+              This sheet's open state is controlled programmatically.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="py-4">
+            <p>Sheet is currently: {open ? 'open' : 'closed'}</p>
+            <Button
+              className="mt-4"
+              onClick={() => setOpen(false)}
+              variant="outline"
+            >
+              Close Sheet
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+};
+
+export const Controlled: Story = {
+  render: () => <ControlledSheet />,
 };
 
 // Long content with scrolling

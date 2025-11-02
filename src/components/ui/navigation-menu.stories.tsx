@@ -6,8 +6,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from './navigation-menu';
+import { navigationMenuTriggerStyle } from './navigation-menu.constants';
 import React from 'react';
 import { cn } from '@/lib/utils';
 
@@ -357,9 +357,9 @@ export const ComplexNavigation: Story = {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <a href="#" className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             Pricing
-          </a>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
@@ -418,9 +418,9 @@ export const MixedNavigation: Story = {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <a href="#" className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             Home
-          </a>
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
@@ -472,15 +472,15 @@ export const MixedNavigation: Story = {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <a href="#" className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             Pricing
-          </a>
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <a href="#" className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             Contact
-          </a>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
@@ -586,9 +586,9 @@ export const ResponsiveMenu: Story = {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <a href="#" className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Link
-            </a>
+            </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
@@ -632,9 +632,9 @@ export const SemanticColors: Story = {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <a href="#" className={cn(navigationMenuTriggerStyle(), "text-primary")}>
+              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "text-primary")}>
                 Primary Link
-              </a>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

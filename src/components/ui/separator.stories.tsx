@@ -113,25 +113,25 @@ export const MultipleHorizontal: Story = {
 export const NavigationBar: Story = {
   render: () => (
     <nav className="flex h-10 items-center rounded-lg border bg-background px-4">
-      <a href="#" className="text-sm font-medium hover:text-primary">
+      <button className="text-sm font-medium hover:text-primary">
         Home
-      </a>
+      </button>
       <Separator orientation="vertical" className="mx-4" />
-      <a href="#" className="text-sm font-medium hover:text-primary">
+      <button className="text-sm font-medium hover:text-primary">
         Products
-      </a>
+      </button>
       <Separator orientation="vertical" className="mx-4" />
-      <a href="#" className="text-sm font-medium hover:text-primary">
+      <button className="text-sm font-medium hover:text-primary">
         Services
-      </a>
+      </button>
       <Separator orientation="vertical" className="mx-4" />
-      <a href="#" className="text-sm font-medium hover:text-primary">
+      <button className="text-sm font-medium hover:text-primary">
         About
-      </a>
+      </button>
       <Separator orientation="vertical" className="mx-4" />
-      <a href="#" className="text-sm font-medium hover:text-primary">
+      <button className="text-sm font-medium hover:text-primary">
         Contact
-      </a>
+      </button>
     </nav>
   ),
 };
