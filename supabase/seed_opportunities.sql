@@ -427,7 +427,7 @@ BEGIN
     created_at
   )
   SELECT
-    'activity',  -- Regular activity, not interaction
+    'engagement',  -- Regular activity, not interaction
     'email',
     'Sent pricing proposal',
     'Submitted formal pricing for review. Waiting for corporate approval.',
