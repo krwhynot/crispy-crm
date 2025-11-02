@@ -242,7 +242,7 @@ export const VeryLongText: Story = {
 export const AsLink: Story = {
   args: {
     asChild: true,
-    children: <a href="#">Clickable Badge</a>,
+    children: <button>Clickable Badge</button>,
     variant: 'outline',
   },
 };

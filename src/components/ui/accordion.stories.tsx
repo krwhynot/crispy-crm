@@ -258,72 +258,74 @@ export const Nested: Story = {
 };
 
 // Animation states showcase
-export const AnimationStates: Story = {
-  render: () => {
-    const [openItems, setOpenItems] = React.useState<string[]>([]);
+const AnimationStatesComponent = () => {
+  const [openItems, setOpenItems] = React.useState<string[]>([]);
 
-    return (
-      <div className="w-[450px] space-y-4">
-        <div className="rounded-lg border bg-secondary/10 p-3">
-          <p className="text-sm font-medium">Animation States Monitor</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">
-            Open items: {openItems.length > 0 ? openItems.join(', ') : 'None'}
-          </p>
-        </div>
-
-        <Accordion
-          type="multiple"
-          value={openItems}
-          onValueChange={setOpenItems}
-          className="w-full"
-        >
-          <AccordionItem value="item-1">
-            <AccordionTrigger>
-              Item 1 {openItems.includes('item-1') ? '(Expanded)' : '(Collapsed)'}
-            </AccordionTrigger>
-            <AccordionContent>
-              Watch the smooth animation as this content expands.
-              The chevron icon rotates 180 degrees.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>
-              Item 2 {openItems.includes('item-2') ? '(Expanded)' : '(Collapsed)'}
-            </AccordionTrigger>
-            <AccordionContent>
-              The accordion uses CSS animations for smooth transitions.
-              Both opening and closing are animated.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-3">
-            <AccordionTrigger>
-              Item 3 {openItems.includes('item-3') ? '(Expanded)' : '(Collapsed)'}
-            </AccordionTrigger>
-            <AccordionContent>
-              Multiple items can animate simultaneously without interference.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => setOpenItems(['item-1', 'item-2', 'item-3'])}
-          >
-            Expand All
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => setOpenItems([])}
-          >
-            Collapse All
-          </Button>
-        </div>
+  return (
+    <div className="w-[450px] space-y-4">
+      <div className="rounded-lg border bg-secondary/10 p-3">
+        <p className="text-sm font-medium">Animation States Monitor</p>
+        <p className="text-xs text-[color:var(--text-subtle)]">
+          Open items: {openItems.length > 0 ? openItems.join(', ') : 'None'}
+        </p>
       </div>
-    );
-  },
+
+      <Accordion
+        type="multiple"
+        value={openItems}
+        onValueChange={setOpenItems}
+        className="w-full"
+      >
+        <AccordionItem value="item-1">
+          <AccordionTrigger>
+            Item 1 {openItems.includes('item-1') ? '(Expanded)' : '(Collapsed)'}
+          </AccordionTrigger>
+          <AccordionContent>
+            Watch the smooth animation as this content expands.
+            The chevron icon rotates 180 degrees.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>
+            Item 2 {openItems.includes('item-2') ? '(Expanded)' : '(Collapsed)'}
+          </AccordionTrigger>
+          <AccordionContent>
+            The accordion uses CSS animations for smooth transitions.
+            Both opening and closing are animated.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-3">
+          <AccordionTrigger>
+            Item 3 {openItems.includes('item-3') ? '(Expanded)' : '(Collapsed)'}
+          </AccordionTrigger>
+          <AccordionContent>
+            Multiple items can animate simultaneously without interference.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <div className="flex gap-2">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setOpenItems(['item-1', 'item-2', 'item-3'])}
+        >
+          Expand All
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setOpenItems([])}
+        >
+          Collapse All
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export const AnimationStates: Story = {
+  render: () => <AnimationStatesComponent />,
 };
 
 // FAQ Example
@@ -394,16 +396,16 @@ export const SettingsPanel: Story = {
           <AccordionContent>
             <div className="space-y-3">
               <div>
-                <label className="text-sm font-medium">Language</label>
-                <select className="mt-1 w-full rounded border bg-background px-3 py-1">
+                <label htmlFor="language-select" className="text-sm font-medium">Language</label>
+                <select id="language-select" className="mt-1 w-full rounded border bg-background px-3 py-1">
                   <option>English</option>
                   <option>Spanish</option>
                   <option>French</option>
                 </select>
               </div>
               <div>
-                <label className="text-sm font-medium">Theme</label>
-                <select className="mt-1 w-full rounded border bg-background px-3 py-1">
+                <label htmlFor="theme-select" className="text-sm font-medium">Theme</label>
+                <select id="theme-select" className="mt-1 w-full rounded border bg-background px-3 py-1">
                   <option>Light</option>
                   <option>Dark</option>
                   <option>System</option>

@@ -3,7 +3,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { Button } from './button';
 import { Input } from './input';
 import { Label } from './label';
-import { Info, Settings, HelpCircle, ChevronDown, User, Calendar, Clock } from 'lucide-react';
+import { Info, Settings, HelpCircle, User, Calendar, Clock } from 'lucide-react';
 import React from 'react';
 
 const meta = {
