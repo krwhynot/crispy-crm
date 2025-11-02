@@ -457,7 +457,11 @@ export const FilterButtonMenuItem = React.forwardRef<
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       if (!filter.props.disabled) {
-        displayed ? handleHide() : handleShow();
+        if (displayed) {
+          handleHide();
+        } else {
+          handleShow();
+        }
       }
     }
   };
