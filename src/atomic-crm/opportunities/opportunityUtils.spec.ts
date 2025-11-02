@@ -18,18 +18,6 @@ export const calculateOpportunityProbability = (stage: string): number => {
     : 50;
 };
 
-export const validateOpportunityAmount = (amount: number): boolean => {
-  return amount >= 0 && amount <= 10000000; // Max 10M
-};
-
-export const calculateWeightedPipelineValue = (
-  opportunities: Array<{ amount: number; probability: number }>,
-): number => {
-  return opportunities.reduce((total, opp) => {
-    return total + (opp.amount * opp.probability) / 100;
-  }, 0);
-};
-
 export const formatOpportunityStage = (stage: string): string => {
   const stageLabels: Record<string, string> = {
     new_lead: "New Lead",
