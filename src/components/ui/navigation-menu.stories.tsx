@@ -488,59 +488,61 @@ export const MixedNavigation: Story = {
 };
 
 // Animation states demo
-export const AnimationStates: Story = {
-  render: () => {
-    const [activeItem, setActiveItem] = React.useState<string | null>(null);
+const AnimationStatesComponent = () => {
+  const [activeItem, setActiveItem] = React.useState<string | null>(null);
 
-    return (
-      <div className="space-y-4">
-        <div className="rounded-lg border bg-secondary/10 p-3">
-          <p className="text-sm font-medium">Active Item: {activeItem || 'None'}</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">
-            Click triggers to see animation states
-          </p>
-        </div>
-
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                onPointerEnter={() => setActiveItem('item-1')}
-                onPointerLeave={() => setActiveItem(null)}
-              >
-                Hover for Animation
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="w-[400px] p-6">
-                  <p className="text-sm">
-                    Watch the smooth fade-in and slide animations as this content appears.
-                    The viewport animates from the trigger position.
-                  </p>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                onPointerEnter={() => setActiveItem('item-2')}
-                onPointerLeave={() => setActiveItem(null)}
-              >
-                Another Animation
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="w-[400px] p-6">
-                  <p className="text-sm">
-                    The content smoothly transitions between different menu items.
-                    Notice the chevron rotation animation in the trigger.
-                  </p>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+  return (
+    <div className="space-y-4">
+      <div className="rounded-lg border bg-secondary/10 p-3">
+        <p className="text-sm font-medium">Active Item: {activeItem || 'None'}</p>
+        <p className="text-xs text-[color:var(--text-subtle)]">
+          Click triggers to see animation states
+        </p>
       </div>
-    );
-  },
+
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger
+              onPointerEnter={() => setActiveItem('item-1')}
+              onPointerLeave={() => setActiveItem(null)}
+            >
+              Hover for Animation
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="w-[400px] p-6">
+                <p className="text-sm">
+                  Watch the smooth fade-in and slide animations as this content appears.
+                  The viewport animates from the trigger position.
+                </p>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuTrigger
+              onPointerEnter={() => setActiveItem('item-2')}
+              onPointerLeave={() => setActiveItem(null)}
+            >
+              Another Animation
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="w-[400px] p-6">
+                <p className="text-sm">
+                  The content smoothly transitions between different menu items.
+                  Notice the chevron rotation animation in the trigger.
+                </p>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  );
+};
+
+export const AnimationStates: Story = {
+  render: () => <AnimationStatesComponent />,
 };
 
 // Responsive behavior
@@ -692,79 +694,81 @@ export const SemanticColors: Story = {
 };
 
 // Active state example
-export const WithActiveStates: Story = {
-  render: () => {
-    const [activePath, setActivePath] = React.useState('/products');
+const WithActiveStatesComponent = () => {
+  const [activePath, setActivePath] = React.useState('/products');
 
-    return (
-      <div className="space-y-4">
-        <div className="text-center text-sm text-[color:var(--text-subtle)]">
-          Current path: <code className="font-mono">{activePath}</code>
-        </div>
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  activePath === '/' && 'bg-accent text-accent-foreground'
-                )}
-                onClick={() => setActivePath('/')}
-              >
-                Home
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                className={cn(
-                  activePath.startsWith('/products') && 'bg-accent text-accent-foreground'
-                )}
-              >
-                Products
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4">
-                  <li>
-                    <NavigationMenuLink
-                      onClick={() => setActivePath('/products/analytics')}
-                      data-active={activePath === '/products/analytics'}
-                    >
-                      <div className="text-sm font-medium">Analytics</div>
-                      <p className="text-sm text-[color:var(--text-subtle)]">
-                        Data insights and reporting
-                      </p>
-                    </NavigationMenuLink>
-                  </li>
-                  <li>
-                    <NavigationMenuLink
-                      onClick={() => setActivePath('/products/commerce')}
-                      data-active={activePath === '/products/commerce'}
-                    >
-                      <div className="text-sm font-medium">Commerce</div>
-                      <p className="text-sm text-[color:var(--text-subtle)]">
-                        E-commerce solutions
-                      </p>
-                    </NavigationMenuLink>
-                  </li>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  activePath === '/about' && 'bg-accent text-accent-foreground'
-                )}
-                onClick={() => setActivePath('/about')}
-              >
-                About
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+  return (
+    <div className="space-y-4">
+      <div className="text-center text-sm text-[color:var(--text-subtle)]">
+        Current path: <code className="font-mono">{activePath}</code>
       </div>
-    );
-  },
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              className={cn(
+                navigationMenuTriggerStyle(),
+                activePath === '/' && 'bg-accent text-accent-foreground'
+              )}
+              onClick={() => setActivePath('/')}
+            >
+              Home
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuTrigger
+              className={cn(
+                activePath.startsWith('/products') && 'bg-accent text-accent-foreground'
+              )}
+            >
+              Products
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4">
+                <li>
+                  <NavigationMenuLink
+                    onClick={() => setActivePath('/products/analytics')}
+                    data-active={activePath === '/products/analytics'}
+                  >
+                    <div className="text-sm font-medium">Analytics</div>
+                    <p className="text-sm text-[color:var(--text-subtle)]">
+                      Data insights and reporting
+                    </p>
+                  </NavigationMenuLink>
+                </li>
+                <li>
+                  <NavigationMenuLink
+                    onClick={() => setActivePath('/products/commerce')}
+                    data-active={activePath === '/products/commerce'}
+                  >
+                    <div className="text-sm font-medium">Commerce</div>
+                    <p className="text-sm text-[color:var(--text-subtle)]">
+                      E-commerce solutions
+                    </p>
+                  </NavigationMenuLink>
+                </li>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              className={cn(
+                navigationMenuTriggerStyle(),
+                activePath === '/about' && 'bg-accent text-accent-foreground'
+              )}
+              onClick={() => setActivePath('/about')}
+            >
+              About
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  );
+};
+
+export const WithActiveStates: Story = {
+  render: () => <WithActiveStatesComponent />,
 };

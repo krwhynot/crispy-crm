@@ -214,30 +214,30 @@ export const AccessibilityFeatures: Story = {
           className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
         >
           <Checkbox className="relative z-10" />
-          <a href="#" className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
+          <button className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
             Keyboard navigable card
             <span className="absolute inset-0" aria-hidden="true" />
-          </a>
+          </button>
         </div>
 
         <div
           className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
         >
           <Checkbox className="relative z-10" aria-label="Select item" />
-          <a href="#" className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
+          <button className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
             Focus ring appears on keyboard focus
             <span className="absolute inset-0" aria-hidden="true" />
-          </a>
+          </button>
         </div>
 
         <div
           className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
         >
           <Checkbox className="relative z-10" aria-label="Select item" />
-          <a href="#" className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
+          <button className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
             Screen reader friendly structure
             <span className="absolute inset-0" aria-hidden="true" />
-          </a>
+          </button>
         </div>
       </div>
 
