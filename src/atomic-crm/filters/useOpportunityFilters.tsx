@@ -24,6 +24,9 @@ export const useOpportunityFilters = () => {
     <ReferenceInput source="customer_organization_id" reference="organizations">
       <AutocompleteArrayInput label={false} placeholder="Customer Organization" />
     </ReferenceInput>,
+    <ReferenceInput source="principal_organization_id" reference="organizations">
+      <AutocompleteArrayInput label={false} placeholder="Principal" />
+    </ReferenceInput>,
     <MultiSelectInput
       source="priority"
       emptyText="Priority"
