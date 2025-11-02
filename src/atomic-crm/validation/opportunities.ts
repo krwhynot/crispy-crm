@@ -80,7 +80,7 @@ const opportunityBaseSchema = z.object({
   // - stage_manual, status_manual
   // - next_action, next_action_date
   // - competition, decision_criteria
-  // - amount, probability, tags
+  // - probability, tags
   // - competitor_ids, loss_reason, team_members
   // - opportunity_owner_id
 });
