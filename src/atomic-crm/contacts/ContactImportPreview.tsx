@@ -117,7 +117,7 @@ export function ContactImportPreview({
   };
 
   // Get confidence icon for mapping
-  const getConfidenceIcon = (confidence: number) => {
+  const _getConfidenceIcon = (confidence: number) => {
     if (confidence >= 0.8) {
       return <CheckCircle className="h-4 w-4 text-green-500" />;
     } else if (confidence >= 0.5) {

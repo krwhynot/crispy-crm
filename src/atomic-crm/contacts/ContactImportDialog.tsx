@@ -25,7 +25,7 @@ import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
 import * as React from "react";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import * as sampleCsv from "./contacts_export.csv?raw";
 
 // Feature flag for enhanced import preview
@@ -279,7 +279,7 @@ export function ContactImportDialog({
         preview: false,
         startingRow: rowOffsetRef.current + 1,  // Pass correct starting row for this batch
         dataQualityDecisions,  // Pass user's data quality decisions
-        onProgress: (current, total) => {
+        onProgress: () => {
           setImportProgress(prev => ({ ...prev, count: prev.count + 1 }));
         }
       });
