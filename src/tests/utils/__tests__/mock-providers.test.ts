@@ -132,7 +132,6 @@ describe("Test Data Factories", () => {
     expect(opportunity.id).toBeDefined();
     expect(opportunity.name).toBeDefined();
     expect(opportunity.stage).toBeDefined();
-    expect(opportunity.amount).toBeGreaterThanOrEqual(0);
     expect(opportunity.probability).toBeGreaterThanOrEqual(0);
     expect(opportunity.probability).toBeLessThanOrEqual(100);
     expect(opportunity.contact_ids).toBeInstanceOf(Array);
@@ -143,12 +142,10 @@ describe("Test Data Factories", () => {
     const opportunity = createMockOpportunity({
       name: "Custom Opportunity",
       stage: "closed_won",
-      amount: 50000,
     });
 
     expect(opportunity.name).toBe("Custom Opportunity");
     expect(opportunity.stage).toBe("closed_won");
-    expect(opportunity.amount).toBe(50000);
   });
 
   test("createMockContact generates valid contact with JSONB arrays", () => {
