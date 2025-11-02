@@ -7,6 +7,7 @@
 
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import type * as RaCore from "ra-core";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockContact } from "@/tests/utils/mock-providers";
 import { ContactListContent } from "../ContactListContent";
@@ -14,7 +15,7 @@ import { ContactListFilter } from "../ContactListFilter";
 
 // Mock dependencies
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof import("ra-core")>("ra-core");
+  const actual = await vi.importActual<typeof RaCore>("ra-core");
   return {
     ...actual,
     useListContext: vi.fn(),
