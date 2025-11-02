@@ -96,23 +96,6 @@ async function createAuthUser(email, password, fullName, role) {
   return await response.json();
 }
 
-async function listAuthUsers() {
-  const response = await fetch(`${config.supabaseUrl}/auth/v1/admin/users`, {
-    method: 'GET',
-    headers: {
-      'apikey': config.serviceRoleKey,
-      'Authorization': `Bearer ${config.serviceRoleKey}`
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to list users: ${response.status}`);
-  }
-
-  const data = await response.json();
-  return data.users || [];
-}
-
 function getUserIdFromDatabase(email) {
   const result = execSync(
     `docker exec supabase_db_crispy-crm psql -U postgres -d postgres -t -c "SELECT id FROM auth.users WHERE email = '${email}';"`,
