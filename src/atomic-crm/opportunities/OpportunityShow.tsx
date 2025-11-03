@@ -28,6 +28,7 @@ import { findOpportunityLabel } from "./opportunity";
 import { OpportunityHeader } from "./OpportunityHeader";
 import { ActivityNoteForm } from "./ActivityNoteForm";
 import { ActivitiesList } from "./ActivitiesList";
+import { ChangeLogTab } from "./ChangeLogTab";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -77,9 +78,10 @@ const OpportunityShowContent = () => {
           />
 
           <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="details">Details</TabsTrigger>
               <TabsTrigger value="notes">Notes & Activity</TabsTrigger>
+              <TabsTrigger value="history">Change Log</TabsTrigger>
             </TabsList>
 
             {/* Details Tab */}
@@ -304,6 +306,11 @@ const OpportunityShowContent = () => {
                   </ReferenceManyField>
                 </div>
               </div>
+            </TabsContent>
+
+            {/* Change Log Tab */}
+            <TabsContent value="history" className="pt-4">
+              <ChangeLogTab />
             </TabsContent>
           </Tabs>
         </CardContent>
