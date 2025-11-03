@@ -52,8 +52,8 @@ interface Organization {
   
   // Core Information
   organization_name: string;         // UNIQUE, REQUIRED
-  priority_level: PriorityLevel;     // ENUM: A+, A, B, C, D
-  segment: OrganizationSegment;      // ENUM
+  priority_level: PriorityLevel;     // ENUM: A, B, C, D (4 levels, no A+)
+  segment: OrganizationSegment;      // TEXT (flexible, with suggested defaults)
   
   // Distribution Relationship
   distributor_id?: number;           // FK → Organizations (self-reference)
