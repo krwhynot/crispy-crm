@@ -225,7 +225,108 @@ GRANT USAGE, SELECT ON SEQUENCE <table_name>_<table>_id_seq TO authenticated;
 -- Create indexes (partial for active records) - See Section 3
 ```
 
-### 2.2 Organizations Table (Reference Example)
+### 2.3 Sales Table (User Profiles)
+
+**Critical Foundation Table:** The `sales` table extends Supabase's `auth.users` with CRM-specific profile data.
+
+```sql
+-- ============================================================================
+-- SALES TABLE (User Profiles)
+-- ============================================================================
+-- Extends auth.users with CRM profile data
+-- Created automatically by trigger when auth.users record inserted
+-- Relationship: auth.users (1) → sales (1) via user_id foreign key
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS sales (
+  -- Primary Key
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+
+  -- Link to Supabase Auth
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE NOT NULL,
+
+  -- Profile Information
+  first_name TEXT,
+  last_name TEXT,
+  full_name TEXT GENERATED ALWAYS AS (first_name || ' ' || last_name) STORED,
+  email TEXT NOT NULL,
+
+  -- Role & Permissions
+  role TEXT DEFAULT 'Sales Rep' CHECK (role IN ('Admin', 'Sales Manager', 'Sales Rep', 'Read-Only')),
+  active BOOLEAN DEFAULT TRUE,
+
+  -- Metadata
+  last_login TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+-- Enable Row Level Security
+ALTER TABLE sales ENABLE ROW LEVEL SECURITY;
+
+-- Grant permissions (Layer 1)
+GRANT SELECT, INSERT, UPDATE ON sales TO authenticated;
+GRANT USAGE, SELECT ON SEQUENCE sales_id_seq TO authenticated;
+
+-- Indexes
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sales_user_id ON sales(user_id);
+CREATE INDEX IF NOT EXISTS idx_sales_email ON sales(email);
+CREATE INDEX IF NOT EXISTS idx_sales_active ON sales(active) WHERE active = TRUE;
+
+-- RLS Policies (Layer 2)
+-- All authenticated users can view all sales profiles (for assignment dropdowns, etc.)
+CREATE POLICY authenticated_select_sales ON sales
+  FOR SELECT TO authenticated
+  USING (true);
+
+-- Users can update their own profile
+CREATE POLICY authenticated_update_own_sales ON sales
+  FOR UPDATE TO authenticated
+  USING (user_id = auth.uid());
+
+-- Admins can update any profile
+CREATE POLICY admin_update_sales ON sales
+  FOR UPDATE TO authenticated
+  USING (auth.jwt() ->> 'role' = 'admin');
+
+-- ============================================================================
+-- AUTO-CREATE SALES PROFILE TRIGGER
+-- ============================================================================
+-- When a new user is created in auth.users, automatically create sales record
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION create_sales_from_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO sales (user_id, email, first_name, last_name, role)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'first_name', split_part(NEW.email, '@', 1)),
+    COALESCE(NEW.raw_user_meta_data->>'last_name', ''),
+    COALESCE(NEW.raw_user_meta_data->>'role', 'Sales Rep')
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION create_sales_from_user();
+
+-- ============================================================================
+-- IMPORTANT: auth.users → sales Relationship
+-- ============================================================================
+-- All user-related foreign keys in other tables reference sales(id), NOT auth.users(id)
+-- This pattern:
+--   - Keeps auth schema separate from business logic
+--   - Allows CRM-specific profile fields without touching auth schema
+--   - Trigger ensures sales record always exists when auth.users exists
+-- ============================================================================
+```
+
+### 2.4 Organizations Table (Reference Example)
 
 ```sql
 -- ============================================================================
@@ -310,7 +411,7 @@ CREATE INDEX IF NOT EXISTS idx_organizations_secondary_account_manager
 -- RLS Policies (Layer 2) - See Section 4.2 for complete policies
 ```
 
-### 2.3 Contacts Table
+### 2.5 Contacts Table
 
 ```sql
 -- ============================================================================
@@ -384,7 +485,7 @@ CREATE INDEX IF NOT EXISTS idx_contacts_phone_gin
   ON contacts USING gin(phone);
 ```
 
-### 2.4 Opportunities Table
+### 2.6 Opportunities Table
 
 ```sql
 -- ============================================================================
@@ -481,7 +582,7 @@ CREATE INDEX IF NOT EXISTS idx_opportunities_start_of_week
   WHERE deleted_at IS NULL;
 ```
 
-### 2.5 Products Table
+### 2.7 Products Table
 
 ```sql
 -- ============================================================================
@@ -545,12 +646,15 @@ CREATE INDEX IF NOT EXISTS idx_products_category
 -- ============================================================================
 ```
 
-### 2.6 Opportunity-Products Junction Table
+### 2.8 Opportunity-Products Junction Table (Many-to-Many)
+
+**Industry Standard:** Salesforce uses "OpportunityLineItem", HubSpot uses "Line Items"
 
 ```sql
 -- ============================================================================
 -- OPPORTUNITY_PRODUCTS TABLE (Many-to-Many)
 -- ============================================================================
+-- Industry standard: Multiple products per opportunity (Salesforce, HubSpot pattern)
 -- Links opportunities to products with optional notes
 -- Implements: Simple association tracking (no pricing/quantity)
 -- ============================================================================
@@ -582,7 +686,7 @@ CREATE INDEX IF NOT EXISTS idx_opportunity_products_opportunity
   ON opportunity_products(opportunity_id);
 ```
 
-### 2.7 Activity Log Table
+### 2.9 Activity Log Table
 
 ```sql
 -- ============================================================================
@@ -625,6 +729,224 @@ CREATE INDEX IF NOT EXISTS idx_activity_log_user_date
 CREATE INDEX IF NOT EXISTS idx_activity_log_type_date
   ON activity_log(activity_type, activity_date DESC);
 ```
+
+### 2.10 Audit Trail (Field-Level Change Tracking)
+
+**Requirement:** PRD Section 3.1 requires "Old value → New value" change history
+
+**Industry Standard:** Salesforce, HubSpot use dedicated audit tables with triggers
+
+```sql
+-- ============================================================================
+-- AUDIT_TRAIL TABLE (Field-Level Change History)
+-- ============================================================================
+-- Tracks every field change across all tables
+-- Populated automatically by database triggers
+-- Industry standard: Salesforce Field History Tracking pattern
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS audit_trail (
+  -- Primary Key
+  audit_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+
+  -- What Changed
+  table_name TEXT NOT NULL,
+  record_id BIGINT NOT NULL,
+  field_name TEXT NOT NULL,
+  old_value TEXT,
+  new_value TEXT,
+
+  -- Who & When
+  changed_by BIGINT REFERENCES sales(id),
+  changed_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+
+  -- Context
+  change_type TEXT NOT NULL CHECK (change_type IN ('INSERT', 'UPDATE', 'DELETE')),
+  ip_address INET,
+  user_agent TEXT
+);
+
+-- Enable RLS
+ALTER TABLE audit_trail ENABLE ROW LEVEL SECURITY;
+
+-- Grant permissions
+GRANT SELECT, INSERT ON audit_trail TO authenticated;
+GRANT USAGE, SELECT ON SEQUENCE audit_trail_audit_id_seq TO authenticated;
+
+-- Indexes for fast queries
+CREATE INDEX IF NOT EXISTS idx_audit_trail_table_record
+  ON audit_trail(table_name, record_id, changed_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_audit_trail_changed_by
+  ON audit_trail(changed_by, changed_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_audit_trail_field
+  ON audit_trail(table_name, field_name, changed_at DESC);
+
+-- RLS: All users can view audit trail (for compliance, history views)
+CREATE POLICY authenticated_select_audit_trail ON audit_trail
+  FOR SELECT TO authenticated
+  USING (true);
+
+-- RLS: Only triggers can insert (prevent manual tampering)
+-- Note: Triggers run as SECURITY DEFINER, bypassing RLS
+
+-- ============================================================================
+-- GENERIC AUDIT TRIGGER FUNCTION
+-- ============================================================================
+-- Automatically logs field changes for any table
+-- Usage: Attach to tables with: CREATE TRIGGER audit_changes ...
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION audit_changes()
+RETURNS TRIGGER AS $$
+DECLARE
+  old_data JSONB;
+  new_data JSONB;
+  field_name TEXT;
+  old_value TEXT;
+  new_value TEXT;
+  current_sales_id BIGINT;
+BEGIN
+  -- Get current user's sales ID
+  SELECT id INTO current_sales_id FROM sales WHERE user_id = auth.uid();
+
+  -- Convert rows to JSONB for comparison
+  IF TG_OP = 'DELETE' THEN
+    old_data := to_jsonb(OLD);
+    new_data := NULL;
+  ELSIF TG_OP = 'INSERT' THEN
+    old_data := NULL;
+    new_data := to_jsonb(NEW);
+  ELSE  -- UPDATE
+    old_data := to_jsonb(OLD);
+    new_data := to_jsonb(NEW);
+  END IF;
+
+  -- Log each changed field
+  IF TG_OP = 'UPDATE' THEN
+    FOR field_name IN SELECT jsonb_object_keys(new_data) LOOP
+      old_value := old_data ->> field_name;
+      new_value := new_data ->> field_name;
+
+      -- Only log if value actually changed
+      IF old_value IS DISTINCT FROM new_value THEN
+        INSERT INTO audit_trail (
+          table_name, record_id, field_name,
+          old_value, new_value, changed_by, change_type
+        ) VALUES (
+          TG_TABLE_NAME,
+          (new_data ->> TG_ARGV[0])::BIGINT,  -- Primary key column name passed as trigger arg
+          field_name,
+          old_value,
+          new_value,
+          current_sales_id,
+          TG_OP
+        );
+      END IF;
+    END LOOP;
+  ELSIF TG_OP = 'INSERT' THEN
+    -- Log creation (all fields)
+    FOR field_name IN SELECT jsonb_object_keys(new_data) LOOP
+      INSERT INTO audit_trail (
+        table_name, record_id, field_name,
+        old_value, new_value, changed_by, change_type
+      ) VALUES (
+        TG_TABLE_NAME,
+        (new_data ->> TG_ARGV[0])::BIGINT,
+        field_name,
+        NULL,
+        new_data ->> field_name,
+        current_sales_id,
+        TG_OP
+      );
+    END LOOP;
+  ELSIF TG_OP = 'DELETE' THEN
+    -- Log deletion
+    INSERT INTO audit_trail (
+      table_name, record_id, field_name,
+      old_value, new_value, changed_by, change_type
+    ) VALUES (
+      TG_TABLE_NAME,
+      (old_data ->> TG_ARGV[0])::BIGINT,
+      'deleted',
+      'active',
+      'deleted',
+      current_sales_id,
+      TG_OP
+    );
+  END IF;
+
+  IF TG_OP = 'DELETE' THEN
+    RETURN OLD;
+  ELSE
+    RETURN NEW;
+  END IF;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ============================================================================
+-- ATTACH AUDIT TRIGGERS TO TABLES
+-- ============================================================================
+-- Example: Audit opportunities table
+-- First argument is primary key column name
+-- ============================================================================
+
+CREATE TRIGGER audit_opportunities_changes
+  AFTER INSERT OR UPDATE OR DELETE ON opportunities
+  FOR EACH ROW
+  EXECUTE FUNCTION audit_changes('opportunity_id');
+
+CREATE TRIGGER audit_organizations_changes
+  AFTER INSERT OR UPDATE OR DELETE ON organizations
+  FOR EACH ROW
+  EXECUTE FUNCTION audit_changes('organization_id');
+
+CREATE TRIGGER audit_contacts_changes
+  AFTER INSERT OR UPDATE OR DELETE ON contacts
+  FOR EACH ROW
+  EXECUTE FUNCTION audit_changes('contact_id');
+
+-- Add similar triggers for other tables as needed
+
+-- ============================================================================
+-- QUERY EXAMPLES: Viewing Audit History
+-- ============================================================================
+
+-- View all changes to opportunity #123
+-- SELECT
+--   field_name,
+--   old_value,
+--   new_value,
+--   s.full_name AS changed_by,
+--   changed_at
+-- FROM audit_trail a
+-- LEFT JOIN sales s ON a.changed_by = s.id
+-- WHERE table_name = 'opportunities' AND record_id = 123
+-- ORDER BY changed_at DESC;
+
+-- View all changes by a specific user
+-- SELECT
+--   table_name,
+--   record_id,
+--   field_name,
+--   old_value || ' → ' || new_value AS change,
+--   changed_at
+-- FROM audit_trail
+-- WHERE changed_by = <sales_id>
+-- ORDER BY changed_at DESC
+-- LIMIT 50;
+```
+
+**Performance Considerations:**
+- Audit triggers add ~5-10ms per write operation
+- Partition `audit_trail` table by month for large datasets
+- Consider async queue for very high-volume tables
+
+**Compliance Benefits:**
+- Complete audit trail for regulatory requirements
+- Cannot be tampered with (triggers only, SECURITY DEFINER)
+- Tracks WHO changed WHAT to WHAT VALUE at WHAT TIME
 
 ---
 
@@ -889,72 +1211,138 @@ CREATE POLICY authenticated_update_opportunities ON opportunities
 
 ### 4.3 Complete RLS Policy Examples
 
-**Organizations Table (Shared Access):**
+**⚠️ CRITICAL:** These policies enforce PRD Section 3.1 permissions:
+- Sales Reps can only edit THEIR ASSIGNED organizations and OWNED opportunities
+- Admins can edit everything
+- All users can VIEW all records (for reporting, assignment dropdowns)
+
+**Organizations Table (View All, Edit Assigned Only):**
 
 ```sql
--- SELECT: All authenticated users can view active organizations
+-- SELECT: All users can view active organizations (needed for dropdowns, reports)
 CREATE POLICY authenticated_select_organizations ON organizations
   FOR SELECT TO authenticated
   USING (deleted_at IS NULL);
 
--- INSERT: All authenticated users can create organizations
+-- INSERT: All users can create organizations
 CREATE POLICY authenticated_insert_organizations ON organizations
   FOR INSERT TO authenticated
   WITH CHECK (deleted_at IS NULL);
 
--- UPDATE: All authenticated users can edit active organizations
+-- UPDATE: Only primary/secondary account managers OR admins can edit
 CREATE POLICY authenticated_update_organizations ON organizations
   FOR UPDATE TO authenticated
-  USING (deleted_at IS NULL)
+  USING (
+    deleted_at IS NULL AND (
+      -- Admins can edit all
+      auth.jwt() ->> 'role' = 'admin' OR
+      -- Primary account manager can edit
+      primary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid()) OR
+      -- Secondary account manager can edit
+      secondary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+    )
+  )
   WITH CHECK (deleted_at IS NULL);
 
--- DELETE: All authenticated users can soft-delete organizations
--- (Hard delete prevented by CHECK constraint)
+-- DELETE: Same ownership rules apply for soft delete
 CREATE POLICY authenticated_delete_organizations ON organizations
   FOR DELETE TO authenticated
-  USING (deleted_at IS NULL);
+  USING (
+    deleted_at IS NULL AND (
+      auth.jwt() ->> 'role' = 'admin' OR
+      primary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid()) OR
+      secondary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+    )
+  );
 ```
 
-**Contacts Table (Shared Access):**
+**Contacts Table (View All, Edit Assigned Only):**
 
 ```sql
+-- SELECT: All users can view contacts (needed for opportunity associations, reports)
 CREATE POLICY authenticated_select_contacts ON contacts
   FOR SELECT TO authenticated
   USING (deleted_at IS NULL);
 
+-- INSERT: All users can create contacts
 CREATE POLICY authenticated_insert_contacts ON contacts
   FOR INSERT TO authenticated
   WITH CHECK (deleted_at IS NULL);
 
+-- UPDATE: Only account manager OR organization managers OR admins can edit
 CREATE POLICY authenticated_update_contacts ON contacts
   FOR UPDATE TO authenticated
-  USING (deleted_at IS NULL)
+  USING (
+    deleted_at IS NULL AND (
+      -- Admins can edit all
+      auth.jwt() ->> 'role' = 'admin' OR
+      -- Contact's account manager can edit
+      account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid()) OR
+      -- Organization's primary account manager can edit their contacts
+      organization_id IN (
+        SELECT organization_id FROM organizations
+        WHERE primary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+      ) OR
+      -- Organization's secondary account manager can edit their contacts
+      organization_id IN (
+        SELECT organization_id FROM organizations
+        WHERE secondary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+      )
+    )
+  )
   WITH CHECK (deleted_at IS NULL);
 
+-- DELETE: Same ownership rules
 CREATE POLICY authenticated_delete_contacts ON contacts
   FOR DELETE TO authenticated
-  USING (deleted_at IS NULL);
+  USING (
+    deleted_at IS NULL AND (
+      auth.jwt() ->> 'role' = 'admin' OR
+      account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid()) OR
+      organization_id IN (
+        SELECT organization_id FROM organizations
+        WHERE primary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+          OR secondary_account_manager_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+      )
+    )
+  );
 ```
 
-**Opportunities Table (Shared Access with Soft Delete Check):**
+**Opportunities Table (View All, Edit Owned Only) - STRICT:**
 
 ```sql
+-- SELECT: All users can view opportunities (for pipeline reports, team dashboards)
 CREATE POLICY authenticated_select_opportunities ON opportunities
   FOR SELECT TO authenticated
   USING (deleted_at IS NULL);
 
+-- INSERT: All users can create opportunities (automatically become deal owner)
 CREATE POLICY authenticated_insert_opportunities ON opportunities
   FOR INSERT TO authenticated
   WITH CHECK (deleted_at IS NULL);
 
+-- UPDATE: Only deal owner OR admins can edit
 CREATE POLICY authenticated_update_opportunities ON opportunities
   FOR UPDATE TO authenticated
-  USING (deleted_at IS NULL)
+  USING (
+    deleted_at IS NULL AND (
+      -- Admins can edit all
+      auth.jwt() ->> 'role' = 'admin' OR
+      -- Only the deal owner can edit their own opportunities
+      deal_owner_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+    )
+  )
   WITH CHECK (deleted_at IS NULL);
 
+-- DELETE: Only deal owner OR admins can soft-delete
 CREATE POLICY authenticated_delete_opportunities ON opportunities
   FOR DELETE TO authenticated
-  USING (deleted_at IS NULL);
+  USING (
+    deleted_at IS NULL AND (
+      auth.jwt() ->> 'role' = 'admin' OR
+      deal_owner_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+    )
+  );
 ```
 
 **Products Table (Shared Access):**
