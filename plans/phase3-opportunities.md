@@ -200,16 +200,17 @@
 ### E2-S3: Drag-and-Drop Logic
 
 **P3-E2-S3-T1: Implement drag handlers in KanbanBoard**
-- **Description:** Handle onDragStart, onDragOver, onDragEnd events
-- **Confidence:** 70% (complex state management)
+- **Description:** Handle onDragStart, onDragOver, onDragEnd events using dnd-kit patterns
+- **Confidence:** 85% (clear implementation patterns from spike)
 - **Estimate:** 4 hours
 - **Prerequisites:** P3-E2-S2-T3
 - **Acceptance Criteria:**
   - Visual feedback during drag (card lifts, column highlights)
   - Prevent drop on same column
-  - Smooth animations (200ms transitions)
-  - Error handling for failed drops
-  - Optimistic UI updates
+  - Smooth animations (CSS transforms)
+  - Error handling for failed drops with rollback
+  - Optimistic UI updates with normalized state
+- **Implementation Notes:** Follow patterns in `docs/spikes/2024-11-03-drag-drop-library-evaluation.md`
   - Rollback on error
 - **Files:**
   - `src/atomic-crm/opportunities/hooks/useDragAndDrop.ts`
@@ -996,8 +997,8 @@
 6. P3-E7-S3-T1: Audit trail spike
 
 ### Risk Areas (Lower Confidence)
-1. **Drag-and-drop implementation (70%):** Complex state management, need thorough testing
-2. **Campaign grouping UI (65%):** New UI pattern, may need design iteration
+1. **Drag-and-drop implementation (85%):** ✅ Spike complete, clear patterns established
+2. **Campaign grouping UI (80%):** ✅ Spike complete, grouped datagrid pattern selected
 3. **Trade show workflow (70%):** Business logic needs validation with users
 4. **Audit trail (75%):** Trigger performance impact needs monitoring
 5. **Bulk actions (85%):** Transaction handling for large batches
