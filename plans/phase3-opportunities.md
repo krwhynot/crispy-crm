@@ -900,6 +900,153 @@
 - **Files:**
   - `tests/e2e/opportunities/campaign-workflow.spec.ts`
 
+### E8-S2a: CSV Import Integration Tests (Existing Feature Validation)
+
+**P3-E8-S2a-T1: Integration test: CSV column mapping validation**
+- **Description:** Test existing CSV import with 600+ column aliases
+- **Confidence:** 95%
+- **Estimate:** 3 hours
+- **Prerequisites:** None (feature already implemented)
+- **Acceptance Criteria:**
+  - Test: Common Salesforce export column names mapped correctly
+  - Test: Full name splitting (first + last)
+  - Test: Work/Home/Other email and phone handling
+  - Test: Performance with 10K row CSV (< 3 seconds)
+  - Test: Unmapped columns detected and reported
+  - Coverage: 85%+ for csvProcessor.ts
+- **Files:**
+  - `src/atomic-crm/contacts/csvProcessor.test.ts` (new)
+  - `src/atomic-crm/contacts/columnAliases.test.ts` (new)
+  - `tests/fixtures/salesforce-export.csv`
+  - `tests/fixtures/hubspot-export.csv`
+
+**P3-E8-S2a-T2: E2E test: Complete CSV import workflow**
+- **Description:** Full import flow from upload to database persistence
+- **Confidence:** 85%
+- **Estimate:** 4 hours
+- **Prerequisites:** P3-E8-S2a-T1
+- **Acceptance Criteria:**
+  - Test: Upload CSV file via UI
+  - Test: Preview first 5 rows with mapped columns
+  - Test: Submit and create contacts in database
+  - Test: Duplicate detection and handling
+  - Test: Error handling for malformed CSV
+  - Test: Progress indicator for large files
+- **Files:**
+  - `tests/e2e/contacts/csv-import-workflow.spec.ts`
+
+### E8-S2b: Performance Validation Tests
+
+**P3-E8-S2b-T1: Performance test: Kanban board with 1000+ opportunities**
+- **Description:** Validate Kanban performance with large datasets
+- **Confidence:** 80%
+- **Estimate:** 3 hours
+- **Prerequisites:** None (Kanban already implemented)
+- **Acceptance Criteria:**
+  - Test: Load 1000 opportunities across 6 stages
+  - Test: Initial render < 2 seconds
+  - Test: Drag operation < 100ms response
+  - Test: Filter application < 500ms
+  - Test: Memory usage < 100MB
+  - Test: No frame drops during scroll
+- **Files:**
+  - `tests/performance/kanban-large-dataset.spec.ts`
+  - `tests/fixtures/generate-opportunities.ts`
+
+**P3-E8-S2b-T2: Performance test: Principal filtering with products**
+- **Description:** Test product dropdown performance with principal filtering
+- **Confidence:** 85%
+- **Estimate:** 2 hours
+- **Prerequisites:** P3-E4-S1-T2
+- **Acceptance Criteria:**
+  - Test: Load 5000 products across 50 principals
+  - Test: Principal selection filters products < 50ms
+  - Test: Product search within principal < 100ms
+  - Test: Memory efficient (no leaks after 100 selections)
+  - Test: Virtual scrolling works if > 100 products
+- **Files:**
+  - `tests/performance/product-filtering.spec.ts`
+
+**P3-E8-S2b-T3: Performance test: Search with fuzzy matching**
+- **Description:** Validate search performance with pg_trgm
+- **Confidence:** 75%
+- **Estimate:** 2 hours
+- **Prerequisites:** Fuzzy search implementation
+- **Acceptance Criteria:**
+  - Test: Search 50K opportunities < 20ms
+  - Test: Complex queries (3+ terms) < 50ms
+  - Test: Field-specific filters maintain performance
+  - Test: Autocomplete suggestions < 10ms
+  - Test: No query plan regressions
+- **Files:**
+  - `tests/performance/fuzzy-search.spec.ts`
+
+### E8-S2c: Trade Show Workflow Integration Tests
+
+**P3-E8-S2c-T1: E2E test: Complete trade show lead capture**
+- **Description:** Test critical trade show workflow end-to-end
+- **Confidence:** 70%
+- **Estimate:** 4 hours
+- **Prerequisites:** P3-E3-S3-T2
+- **Acceptance Criteria:**
+  - Test: Quick opportunity creation with minimal fields
+  - Test: Campaign auto-populated from context
+  - Test: Multiple principals for same visitor
+  - Test: Link related opportunities
+  - Test: Mobile/iPad touch interactions
+  - Test: Works with spotty connectivity (if offline implemented)
+- **Files:**
+  - `tests/e2e/trade-show/lead-capture.spec.ts`
+  - `tests/e2e/trade-show/multi-principal.spec.ts`
+
+**P3-E8-S2c-T2: Integration test: Campaign batch operations**
+- **Description:** Test bulk operations on campaign-grouped opportunities
+- **Confidence:** 75%
+- **Estimate:** 2 hours
+- **Prerequisites:** P3-E3-S1-T5
+- **Acceptance Criteria:**
+  - Test: Select all in campaign group
+  - Test: Bulk stage update
+  - Test: Bulk priority change
+  - Test: Export campaign opportunities to CSV
+  - Test: Performance with 200+ opportunities
+- **Files:**
+  - `tests/integration/campaign-bulk-ops.spec.ts`
+
+### E8-S2d: Existing Feature Regression Tests
+
+**P3-E8-S2d-T1: Regression test: Existing Kanban drag-drop**
+- **Description:** Add tests for already-working Kanban functionality
+- **Confidence:** 95%
+- **Estimate:** 3 hours
+- **Prerequisites:** None (feature works in production)
+- **Acceptance Criteria:**
+  - Test: @hello-pangea/dnd integration
+  - Test: Optimistic updates and rollback
+  - Test: Error handling with toast notifications
+  - Test: Touch interactions on iPad
+  - Test: Keyboard navigation (accessibility)
+  - Coverage: 80%+ for OpportunityListContent.tsx
+- **Files:**
+  - `src/atomic-crm/opportunities/OpportunityListContent.test.tsx`
+  - `src/atomic-crm/opportunities/OpportunityColumn.test.tsx`
+  - `src/atomic-crm/opportunities/OpportunityCard.test.tsx`
+
+**P3-E8-S2d-T2: Regression test: Principal organization tracking**
+- **Description:** Validate existing principal_organization_id functionality
+- **Confidence:** 95%
+- **Estimate:** 2 hours
+- **Prerequisites:** None (already implemented)
+- **Acceptance Criteria:**
+  - Test: Principal required validation
+  - Test: Principal organization dropdown populated
+  - Test: Principal persists on save
+  - Test: Principal displays in list/card views
+  - Test: Principal filtering works
+- **Files:**
+  - `src/atomic-crm/opportunities/OpportunityInputs.test.tsx`
+  - `tests/integration/principal-tracking.spec.ts`
+
 ### E8-S3: Documentation
 
 **P3-E8-S3-T1: Document principal tracking workflows**

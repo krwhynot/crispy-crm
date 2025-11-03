@@ -1021,6 +1021,120 @@ Basic keyboard shortcuts for global navigation and common actions.
 
 ---
 
+## Epic 7: Testing & Performance Validation (12h)
+
+### E7-S1: Integration Tests
+
+**P4-E7-S1-T1: Integration test: Dashboard widget loading**
+- **Description:** Test dashboard with multiple widgets and data sources
+- **Confidence:** 85%
+- **Estimate:** 2 hours
+- **Prerequisites:** P4-E1-S3-T3
+- **Acceptance Criteria:**
+  - Test: All widgets load independently
+  - Test: Failed widget doesn't affect others
+  - Test: Loading states display correctly
+  - Test: Data refreshes on interval
+  - Test: Memory usage stays stable over time
+- **Files:**
+  - `tests/integration/dashboard-widgets.spec.ts`
+  - `src/atomic-crm/dashboard/widgets/*.test.tsx`
+
+**P4-E7-S1-T2: E2E test: Advanced search workflow**
+- **Description:** Complete search flow with operators and filters
+- **Confidence:** 75%
+- **Estimate:** 3 hours
+- **Prerequisites:** P4-E2-S5-T3
+- **Acceptance Criteria:**
+  - Test: Search with quotes for exact match
+  - Test: Field-specific filters (stage:won)
+  - Test: Exclusion operators (-term)
+  - Test: AND/OR logic combinations
+  - Test: Saved search creation and recall
+  - Test: Search result actions (bulk select)
+- **Files:**
+  - `tests/e2e/search/advanced-search.spec.ts`
+  - `tests/e2e/search/saved-searches.spec.ts`
+
+**P4-E7-S1-T3: Integration test: Real-time notifications**
+- **Description:** Test notification system with Supabase subscriptions
+- **Confidence:** 80%
+- **Estimate:** 2 hours
+- **Prerequisites:** P4-E3-S2-T2
+- **Acceptance Criteria:**
+  - Test: Notifications appear in real-time
+  - Test: Dismissed notifications stay dismissed
+  - Test: Connection recovery after network loss
+  - Test: Memory cleanup on component unmount
+  - Test: No duplicate notifications
+- **Files:**
+  - `tests/integration/notifications-realtime.spec.ts`
+
+### E7-S2: Performance Validation
+
+**P4-E7-S2-T1: Performance test: Search with 100K records**
+- **Description:** Validate search performance at scale
+- **Confidence:** 70%
+- **Estimate:** 2 hours
+- **Prerequisites:** P4-E2-S2-T3
+- **Acceptance Criteria:**
+  - Test: Simple search < 20ms (with pg_trgm)
+  - Test: Complex queries < 100ms
+  - Test: Autocomplete < 10ms
+  - Test: Result highlighting < 50ms
+  - Test: No query plan regressions
+  - Test: Memory usage < 50MB
+- **Files:**
+  - `tests/performance/search-at-scale.spec.ts`
+  - `tests/fixtures/large-dataset-generator.ts`
+
+**P4-E7-S2-T2: Performance test: Dashboard with concurrent widgets**
+- **Description:** Test dashboard performance with all widgets active
+- **Confidence:** 85%
+- **Estimate:** 1.5 hours
+- **Prerequisites:** P4-E1-S3-T3
+- **Acceptance Criteria:**
+  - Test: Initial load < 3 seconds (all widgets)
+  - Test: Widget refresh < 500ms each
+  - Test: No blocking between widgets
+  - Test: Smooth scrolling (60fps)
+  - Test: Memory stable after 1 hour
+- **Files:**
+  - `tests/performance/dashboard-concurrent.spec.ts`
+
+### E7-S3: Accessibility & Mobile Testing
+
+**P4-E7-S3-T1: Accessibility test: Keyboard navigation**
+- **Description:** Validate keyboard shortcuts and navigation
+- **Confidence:** 90%
+- **Estimate:** 1.5 hours
+- **Prerequisites:** P4-E6-S2-T3
+- **Acceptance Criteria:**
+  - Test: All shortcuts work as documented
+  - Test: Focus indicators visible
+  - Test: Tab order logical
+  - Test: Screen reader announces correctly
+  - Test: No keyboard traps
+- **Files:**
+  - `tests/a11y/keyboard-navigation.spec.ts`
+
+**P4-E7-S3-T2: Mobile test: iPad touch interactions**
+- **Description:** Test touch-optimized features on iPad
+- **Confidence:** 85%
+- **Estimate:** 2 hours
+- **Prerequisites:** P4-E5-S2-T2
+- **Acceptance Criteria:**
+  - Test: Touch targets >= 44x44px
+  - Test: Long-press context menus work
+  - Test: Swipe gestures recognized
+  - Test: Pinch-zoom on dashboard charts
+  - Test: No accidental triggers
+  - Test: Momentum scrolling smooth
+- **Files:**
+  - `tests/mobile/ipad-interactions.spec.ts`
+
+---
+
 ## Post-Phase 4 Considerations
 
 ### Future Enhancements (Out of Scope)
