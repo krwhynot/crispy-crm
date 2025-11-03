@@ -18,9 +18,9 @@ ADRs are **immutable** once accepted. If a decision changes, create a new ADR th
 |--------|-------|--------|------|----------|
 | [0001](0001-use-supabase-for-backend-platform.md) | Use Supabase for Backend Platform | ✅ Accepted | 2025-11-02 | Use Supabase (PostgreSQL + Auth + APIs) over custom backend, Firebase, or Hasura |
 | [0002](0002-use-react-query-for-server-state.md) | Use React Query for Server State | ✅ Accepted | 2025-11-02 | Use TanStack Query (React Query) over SWR, Apollo Client, or RTK Query |
-| 0003 | Use Zustand Over Redux | 🚧 In Progress | 2025-11-02 | (In progress) |
-| 0004 | Use JWT Authentication | 📝 Planned | 2025-11-02 | (Planned) |
-| 0005 | Soft Delete Strategy | 📝 Planned | 2025-11-02 | (Planned) |
+| [0003](0003-use-zustand-over-redux.md) | Use Zustand Over Redux | ✅ Accepted | 2025-11-02 | Use Zustand over Redux Toolkit, Jotai, or Context API for client state |
+| [0004](0004-use-jwt-authentication-with-refresh-tokens.md) | Use JWT Authentication | ✅ Accepted | 2025-11-02 | Use JWT with refresh token rotation via Supabase Auth (GoTrue) |
+| [0005](0005-soft-delete-strategy-for-core-entities.md) | Soft Delete Strategy | ✅ Accepted | 2025-11-02 | Use soft delete (deleted_at column) for all core CRM entities |
 
 ## ADR Lifecycle
 
@@ -89,4 +89,6 @@ Proposed → Accepted → [Deprecated OR Superseded]
 ---
 
 **Last Updated:** 2025-11-02
-**Status:** 2/5 ADRs complete (Day 1 in progress)
+**Status:** ✅ **5/5 ADRs Complete** (Day 1 goal achieved!)
+
+**Next:** Migration Strategy document (Day 2-3)
