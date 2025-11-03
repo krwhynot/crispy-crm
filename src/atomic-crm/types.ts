@@ -117,7 +117,6 @@ export interface OpportunityParticipant extends Pick<RaRecord, "id"> {
   organization_id: Identifier;
   role: "customer" | "principal" | "distributor" | "competitor";
   is_primary: boolean;
-  territory?: string;
   notes?: string;
   created_at: string;
   updated_at?: string;
