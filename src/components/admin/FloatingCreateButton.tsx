@@ -68,7 +68,7 @@ export const FloatingCreateButton: React.FC<FloatingCreateButtonProps> = ({
         // Transitions
         "transition-all duration-200",
         // Focus states for accessibility
-        "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-700/30",
+        "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--brand-700)]/30",
         // Active state
         "active:scale-95",
         className
