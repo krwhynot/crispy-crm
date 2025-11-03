@@ -1742,29 +1742,48 @@ Jane Doe (15 activities this week)
 
 ### 3.9 Search & Filtering
 
-#### Search Strategy (MVP)
+#### Search Strategy (Advanced Implementation)
 
-**Module-Level Search (Not Global):**
-- Each module (Organizations, Contacts, Opportunities, Products) has its own search
-- Search box located in module toolbar (above list view)
-- Searches only within current module
+**Cross-Module Advanced Search:**
+- **Global search bar** in top navigation (always visible)
+- **Module-level search** also available in each list view
+- **Full-text search** across all searchable fields including notes and descriptions
+- **Search history** with recent searches (last 10 per user, stored locally)
+- **Saved searches** for frequently used queries (stored in database)
 
 **Search Behavior:**
 - **Real-time filtering** as user types (debounced 300ms)
 - **Minimum 2 characters** before search activates
 - **Searchable fields** per module:
-  - **Organizations**: Name, City
-  - **Contacts**: Full Name, Organization Name, Position, Email
-  - **Opportunities**: Opportunity Name, Customer Organization Name, Principal ⭐ (MOST IMPORTANT), Product Name
-  - **Products**: Product Name, Principal, Category
+  - **Organizations**: Name, City, Notes, Segment, Website, all text fields
+  - **Contacts**: Full Name, Organization Name, Position, Email, Phone, Notes
+  - **Opportunities**: Opportunity Name, Customer Organization Name, Principal ⭐ (MOST IMPORTANT), Product Names, Description, Notes, Tags
+  - **Products**: Product Name, Principal, Category, Description
+  - **Activities**: Description, Outcome, Participant names
+- **Advanced search operators:**
+  - Quotes for exact match: `"Nobu Miami"`
+  - AND/OR operators: `Ocean Hugger AND Miami`
+  - Field-specific search: `principal:Fishpeople`
+  - Exclusion: `-closed` (exclude closed opportunities)
 - **Case-insensitive** search
-- **Partial matching** (substring search)
-- **Clear button** (X icon) to reset search
+- **Fuzzy matching** with typo tolerance (1-2 character differences)
+- **Search suggestions** as you type (based on index and history)
 
 **Search Results:**
-- Table/card list filters in real-time
-- Results count displayed: "23 results for 'Ballyhoo'"
-- No results state: "No [entities] found matching 'XYZ'. Try different keywords or [Clear Search]"
+- **Unified results page** for global search showing all matching entities
+- **Grouped by entity type** (Organizations, Contacts, Opportunities)
+- **Preview snippets** showing matched text in context
+- **Quick filters** to narrow by entity type, date, owner
+- **Search analytics** tracked for improving search (anonymous)
+- Results count displayed: "23 results for 'Ballyhoo' across all modules"
+- No results state with suggestions: "No results for 'XYZ'. Did you mean 'ABC'? Try different keywords or [Clear Search]"
+
+**Search History & Saved Searches:**
+- **Recent searches dropdown** when clicking search box
+- **Save search button** to store frequently used queries
+- **Named saved searches** accessible from dropdown
+- **Clear history** option in user preferences
+- **Shared saved searches** for team-wide common queries (admin-created)
 
 #### Advanced Filtering
 
@@ -1817,7 +1836,199 @@ Jane Doe (15 activities this week)
 
 ---
 
-## 4. USER INTERFACE REQUIREMENTS
+### 3.10 Notifications
+
+#### Notification System (In-App Only)
+
+**Notification Channels:**
+- **In-app only** with bell icon in top navigation
+- Badge shows unread count (red circle with number)
+- No email notifications in MVP
+- No SMS or Slack integration in MVP
+
+**Notification Triggers (Minimal):**
+- **Overdue tasks only** - no other automatic notifications
+- Overdue defined as: Next action date has passed
+- Check runs daily at 9 AM server time
+- One notification per overdue task
+
+**Notification Display:**
+- **Bell icon** in top navigation bar
+- Click opens dropdown panel (400px wide)
+- Shows last 20 notifications
+- Each notification shows:
+  - Icon (task type)
+  - Message: "Task overdue: {Task Name}"
+  - Related entity link
+  - Time ago (e.g., "2 hours ago")
+  - Mark as read button (eye icon)
+- "Mark all as read" button at bottom
+- "View all notifications" link to full page
+
+**Notification Persistence:**
+- Notifications stored in database
+- Keep last 30 days of notifications
+- Auto-delete older than 30 days
+- Read/unread status tracked per user
+
+---
+
+### 3.11 Data Import/Export
+
+#### CSV Import (Flexible with Column Mapping)
+
+**Import Capabilities:**
+- Available for: Organizations, Contacts, Opportunities, Products
+- **Flexible CSV import with column mapping UI**
+- No strict template required - any CSV accepted
+- Intelligent column matching with manual override
+
+**Import Workflow:**
+1. **File Upload:**
+   - Drag-and-drop or file picker
+   - Accept .csv and .txt files
+   - Max file size: 10MB
+   - UTF-8, UTF-16, or ASCII encoding auto-detected
+
+2. **Column Mapping UI:**
+   - Two-column interface:
+     - Left: CSV columns with sample data (first 3 rows)
+     - Right: CRM fields grouped by category
+   - Drag-and-drop or dropdown to map columns
+   - Auto-match common column names:
+     - "Company", "Organization", "Business" → Organization Name
+     - "Email", "Email Address" → Email
+   - Required fields highlighted in red until mapped
+   - "Ignore column" option for unmapped CSV columns
+
+3. **Data Preview & Validation:**
+   - Show first 10 rows with mapped data
+   - Validation errors highlighted in red:
+     - Missing required fields
+     - Invalid email/phone formats
+     - Duplicate records (by name)
+   - Options per error:
+     - Skip row
+     - Set default value
+     - Fix and retry
+
+4. **Import Execution:**
+   - Progress bar with current row number
+   - Real-time error log
+   - Continue on error or stop on first error (user choice)
+   - Summary: "Imported 245 of 250 records. 5 errors. [Download Error Report]"
+
+**Bulk Operations (Delete Only):**
+- **Bulk delete only** for cleanup purposes
+- Select multiple records via checkboxes
+- "Delete Selected" button with confirmation
+- Shows count: "Delete 12 selected items?"
+- Two-step confirmation for safety:
+  1. "Are you sure? This cannot be undone."
+  2. "Type DELETE to confirm"
+- No bulk edit or bulk create in MVP
+
+#### CSV Export
+
+**Export Capabilities:**
+- All list views have "Export to CSV" button
+- **CSV format only** (no Excel, PDF, or JSON)
+- Respects current filters and search
+- Includes all visible columns
+
+**Export Options:**
+- Filtered results only (default)
+- All records (optional checkbox)
+- File naming: `{module}_{date}_{time}.csv`
+- Example: `opportunities_2025-11-03_14-30.csv`
+- UTF-8 encoding with BOM for Excel compatibility
+
+---
+
+### 3.12 Dashboard
+
+#### Dashboard Design (Fixed Layout)
+
+**Dashboard Approach:**
+- **Fixed dashboard for all users** (consistency over customization)
+- Same layout and widgets for everyone
+- No role-based dashboards
+- No drag-and-drop customization
+- No user preferences for dashboard layout
+
+**Dashboard Widgets (Fixed Grid):**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                         Dashboard                            │
+├─────────────────────────────────────────────────────────────┤
+│ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐│
+│ │ My Open          │ │ Overdue Tasks   │ │ This Week's     ││
+│ │ Opportunities    │ │                 │ │ Activities      ││
+│ │ Count: 23        │ │ Count: 5        │ │ Count: 47       ││
+│ └─────────────────┘ └─────────────────┘ └─────────────────┘│
+│                                                              │
+│ ┌──────────────────────────────────────────────────────────┐│
+│ │ Pipeline by Stage                                         ││
+│ │ [Horizontal bar chart showing opportunities per stage]    ││
+│ └──────────────────────────────────────────────────────────┘│
+│                                                              │
+│ ┌──────────────────────────────────────────────────────────┐│
+│ │ Recent Activities (Last 10)                              ││
+│ │ • John called Nobu Miami - 2 hours ago                   ││
+│ │ • Jane sent email to Ballyhoo - 4 hours ago              ││
+│ │ • Mike completed demo at Roka - Yesterday                ││
+│ └──────────────────────────────────────────────────────────┘│
+│                                                              │
+│ ┌──────────────────────────────────────────────────────────┐│
+│ │ Opportunities by Principal ⭐                             ││
+│ │ Ocean Hugger: 12 active                                   ││
+│ │ Fishpeople: 8 active                                      ││
+│ │ Other: 3 active                                           ││
+│ └──────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Widget Details:**
+
+1. **My Open Opportunities:**
+   - Count of opportunities where user is owner
+   - Status = active
+   - Click to view filtered list
+
+2. **Overdue Tasks:**
+   - Count of tasks where next_action_date < today
+   - Red text if count > 0
+   - Click to view task list
+
+3. **This Week's Activities:**
+   - Count of activities logged this week
+   - Monday to Sunday
+   - Click to view activity report
+
+4. **Pipeline by Stage:**
+   - Horizontal bar chart
+   - One bar per stage
+   - Shows count in each stage
+   - Click bar to filter opportunities
+
+5. **Recent Activities:**
+   - Last 10 activities across all users
+   - Shows: User, Type, Description, Time
+   - Click to view full activity feed
+
+6. **Opportunities by Principal:**
+   - List of principals with active opportunity count
+   - ⭐ marked as most important widget
+   - Click principal to filter opportunities
+
+**Dashboard Behavior:**
+- Auto-refresh every 5 minutes
+- Manual refresh button (circular arrow icon)
+- Loading states for each widget independently
+- Error states show "Unable to load" with retry button
+
+---
 
 ### 4.1 Design System Foundation
 
@@ -2455,15 +2666,27 @@ screens: {
 </div>
 ```
 
-**Touch Targets (iPad):**
-- Minimum touch target: 44x44px (Apple HIG)
-- Buttons: `min-h-[44px] min-w-[44px]`
-- Interactive elements: Adequate spacing to prevent accidental taps
+**Touch Targets (iPad Optimizations - Essential):**
+- **Minimum touch target: 48x48px** (larger than Apple HIG for better usability)
+- **Buttons:** `min-h-[48px] px-6` (increased padding for easier tapping)
+- **Table rows:** `min-h-[56px]` (more vertical space for touch)
+- **Dropdown items:** `py-3` (increased vertical padding)
+- **Checkbox/Radio:** Scale to 20x20px with 48px tap area
+- **Icon buttons:** 48x48px tap area even if icon is 24x24px
+- **Link spacing:** Minimum 8px between clickable elements
+- **List items:** Minimum 52px height for comfortable touch
 
-**Gestures:**
-- Swipe to delete: Use library (react-swipeable)
-- Pull to refresh: Use library (react-pull-to-refresh)
-- Pinch to zoom: For charts/images (react-pinch-zoom-pan)
+**Touch-Specific UI Adjustments:**
+- **Floating Action Button (FAB):** 56x56px for primary actions
+- **Tab bar items:** Minimum 48px height
+- **Modal close buttons:** 48x48px in top corner
+- **Form inputs:** 48px minimum height with 16px font size
+- **Swipeable list items:** Full row height as touch target
+
+**No Advanced Gestures in MVP:**
+- No swipe to delete (use explicit delete button)
+- No pull to refresh (use manual refresh button)
+- No pinch to zoom (not needed for MVP)
 
 **Typography Scaling:**
 ```tsx
@@ -2616,6 +2839,41 @@ screens: {
 - [ ] Animations respect `prefers-reduced-motion`
 - [ ] Zoom to 200% without loss of functionality
 - [ ] Text can be resized without breaking layout
+
+### 4.6 Keyboard Shortcuts (Basic)
+
+#### Basic Keyboard Shortcuts
+
+**Global Shortcuts (Available Everywhere):**
+- **Ctrl/Cmd + S**: Save current form
+- **Ctrl/Cmd + N**: New (create new record in current module)
+- **Escape**: Cancel/close current modal or drawer
+- **Ctrl/Cmd + /**: Open search (focus global search bar)
+- **Ctrl/Cmd + K**: Quick search (alternative to Ctrl+/)
+
+**Form Shortcuts:**
+- **Enter**: Submit form (when not in textarea)
+- **Tab**: Move to next field
+- **Shift + Tab**: Move to previous field
+- **Escape**: Cancel and close form
+
+**List View Shortcuts:**
+- **Arrow Up/Down**: Navigate between rows
+- **Enter**: Open selected record
+- **Space**: Select/deselect for bulk actions
+- **Delete**: Delete selected (with confirmation)
+
+**No Advanced Shortcuts in MVP:**
+- No customizable shortcuts
+- No command palette
+- No vim-style navigation
+- No multi-key combinations (except Ctrl/Cmd modifiers)
+
+**Shortcut Discovery:**
+- Small "Keyboard shortcuts" link in footer
+- Opens modal showing all available shortcuts
+- Grouped by context (Global, Forms, Lists)
+- No in-line hints on buttons (keeps UI clean)
 
 ---
 
@@ -2924,12 +3182,15 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 
 ### 5.3 Performance Requirements
 
-**Target Metrics:**
-- Initial page load (FCP): <2 seconds
-- Time to Interactive (TTI): <3 seconds
-- Interaction response time: <500ms
-- API response time: <200ms (p95)
-- Lighthouse Performance Score: >90
+**Target Metrics (Production):**
+- **Page load: < 2 seconds** (First Contentful Paint)
+- **Time to Interactive: < 3 seconds**
+- **Interactions: < 500ms** response time
+- **API response: < 300ms** (p95)
+- **Search response: < 500ms** (including full-text search)
+- **Form submission: < 1 second** (including validation)
+- **Dashboard refresh: < 2 seconds**
+- **Lighthouse Performance Score: > 85**
 
 **Optimization Strategies:**
 - Code splitting by route
@@ -2939,6 +3200,43 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - API response caching (TanStack Query)
 - Debounced search inputs (300ms)
 - Optimistic UI updates for mutations
+- Service Worker for static asset caching
+- Prefetch critical resources
+
+**Performance Monitoring:**
+- Real User Monitoring (RUM) with Web Vitals
+- Track Core Web Vitals: LCP, FID, CLS
+- Alert if p95 exceeds targets
+- Weekly performance reports
+
+### 5.4 Offline Mode (Read-Only)
+
+**Offline Capabilities:**
+- **Read-only offline mode** for viewing cached data
+- No create/edit/delete operations offline
+- Clear "Offline" indicator in UI header
+- Automatic reconnection detection
+
+**Cached Data:**
+- Last 100 viewed records per module
+- User's dashboard data
+- Recent search results
+- Navigation structure and menus
+- Static assets (CSS, JS, images)
+
+**Implementation:**
+- Service Worker with Cache API
+- IndexedDB for structured data
+- Background sync when online
+- Cache expires after 24 hours
+- "Last synced" timestamp visible
+
+**Offline UI Behavior:**
+- Grayed out action buttons (Create, Edit, Delete)
+- "Offline Mode" banner at top
+- Cached data marked with clock icon
+- "Retry" button for failed requests
+- Queue navigation for when online
 
 ### 5.4 Security Requirements
 
@@ -3449,6 +3747,56 @@ Following industry best practices from Salesforce/HubSpot research:
 - Keep migration files small and focused
 - Always include rollback scripts
 - Test migrations on fresh database before deploying
+
+### Data Backup Strategy
+
+#### Backup Approach (Supabase Automatic)
+- **Primary Strategy:** Rely on Supabase automatic backups only
+- **No custom backup scripts** or external storage
+- **No user-triggered backups** in MVP
+- **No continuous replication** to secondary database
+
+#### Supabase Backup Features (Built-in)
+**Daily Backups:**
+- Automatic daily snapshots at midnight UTC
+- 7-day retention for Free tier
+- 30-day retention for Pro tier
+- Point-in-time recovery (PITR) available on Pro tier
+
+**What's Backed Up:**
+- All database tables and data
+- Database schema and migrations
+- RLS policies and functions
+- User authentication data
+- Storage bucket metadata
+
+**What's NOT Backed Up:**
+- Storage bucket files (handled separately by Supabase)
+- Application code (handled by git)
+- Environment variables (store securely elsewhere)
+
+#### Recovery Process
+**In Case of Data Loss:**
+1. Contact Supabase support for restoration
+2. Provide timestamp of desired restore point
+3. Supabase restores to new database instance
+4. Update connection strings to point to restored instance
+5. Verify data integrity
+6. Resume operations
+
+**Recovery Time Objective (RTO):**
+- Target: 4-8 hours (depends on Supabase support response)
+- Acceptable for small team CRM use case
+
+**Recovery Point Objective (RPO):**
+- Maximum data loss: 24 hours (daily backup frequency)
+- Acceptable given manual data entry pace
+
+#### Future Enhancements (Post-MVP)
+- Scheduled exports to company cloud storage
+- Automated backup verification
+- Custom backup scripts for critical data
+- Read replicas for zero-downtime backups
 - Use feature branches even as solo developer
 
 #### Deployment Strategy (Q15)
