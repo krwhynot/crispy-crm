@@ -165,7 +165,7 @@ export const OpportunityRowListView = () => {
 
                 {/* Edit Button - positioned above stretched link overlay */}
                 <div className="relative z-10">
-                  <EditButton />
+                  <EditButton resource="opportunities" />
                 </div>
               </div>
             </div>

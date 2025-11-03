@@ -59,7 +59,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
 
       {/* Edit button positioned absolutely in top-right corner */}
       <div className="absolute top-2 right-2 z-10">
-        <EditButton />
+        <EditButton resource="organizations" />
       </div>
 
       <Link
