@@ -38,9 +38,9 @@ describe("FloatingCreateButton", () => {
     expect(button).toHaveClass("size-16"); // 64px diameter on mobile (mobile-first)
     expect(button).toHaveClass("md:size-14"); // 56px diameter on desktop
 
-    // Check semantic color usage
-    expect(button).toHaveClass("bg-accent-clay-600");
-    expect(button).toHaveClass("hover:bg-accent-clay-700");
+    // Check brand color usage (7:1+ contrast for accessibility)
+    expect(button).toHaveClass("bg-brand-700");
+    expect(button).toHaveClass("hover:bg-brand-800");
 
     // Check shape
     expect(button).toHaveClass("rounded-full");
