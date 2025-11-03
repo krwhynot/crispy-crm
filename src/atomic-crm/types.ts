@@ -122,6 +122,7 @@ export interface OpportunityParticipant extends Pick<RaRecord, "id"> {
   updated_at?: string;
   created_by?: Identifier;
   deleted_at?: string;
+  // Note: commission_rate removed - Phase 3 feature per PRD
 }
 
 /**
