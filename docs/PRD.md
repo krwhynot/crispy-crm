@@ -82,18 +82,12 @@ interface Organization {
   updated_by: number;                // FK → Sales (Users)
 }
 
-type PriorityLevel = 'A+' | 'A' | 'B' | 'C' | 'D';
+type PriorityLevel = 'A' | 'B' | 'C' | 'D';  // 4 levels only (no A+)
 
-type OrganizationSegment = 
-  | 'Fine Dining'
-  | 'Casual'
-  | 'Gastropub'
-  | 'Ethnic'
-  | 'Pizza'
-  | 'Chain/Group'
-  | 'Distributor'
-  | 'Management Company'
-  | 'Catering';
+type OrganizationSegment = string;  // Flexible text field with suggested defaults:
+// Default suggestions: 'Fine Dining', 'Casual', 'Gastropub', 'Ethnic', 'Pizza',
+// 'Chain/Group', 'Distributor', 'Management Company', 'Catering'
+// Users can create custom segments not in the default list
 
 type State = 'IL' | 'IN' | 'OH' | 'MI' | 'KY' | 'NY' // ... etc.
 ```
@@ -596,15 +590,15 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 **Filtering:**
 - Filter panel (collapsible sidebar on desktop, slide-over on tablet)
 - Filters available:
-  - **Priority** (multi-select checkboxes with color indicators)
-  - **Segment** (multi-select dropdown)
+  - **Priority** (multi-select checkboxes with color indicators: A, B, C, D)
+  - **Segment** (multi-select dropdown with all segments in database - includes both default + custom)
   - **Account Manager** (searchable multi-select)
   - **State** (multi-select dropdown)
   - **Has Open Opportunities** (toggle: Yes/No/All)
   - **Weekly Priority** (toggle: Yes/No/All)
 - Applied filters shown as removable chips above table
 - "Clear all filters" button
-- Filter presets: "My Accounts", "Priority A/A+", "Weekly Priority"
+- Filter presets: "My Accounts", "Priority A", "Weekly Priority"
 
 **Search:**
 - Search box above table (within module, not global)
@@ -704,8 +698,11 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 
 **1. Basic Information**
 - Organization Name* (text input, auto-trim whitespace)
-- Priority Level* (radio buttons with color indicators: A+, A, B, C, D)
-- Segment* (dropdown: Fine Dining, Casual, Gastropub, etc.)
+- Priority Level* (radio buttons with color indicators: A, B, C, D)
+- Segment* (flexible combo box: dropdown with suggestions + ability to type custom value)
+  - **Suggested defaults:** Fine Dining, Casual, Gastropub, Ethnic, Pizza, Chain/Group, Distributor, Management Company, Catering
+  - **Custom values allowed:** Users can type any segment name not in the default list
+  - **Industry pattern:** Follows Salesforce/HubSpot standard for flexible classification fields
 
 **2. Distribution** (collapsible section)
 - Distributor (searchable dropdown of Organizations with Segment="Distributor")
@@ -1143,16 +1140,6 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
   - Reset: Start Date = Today, Status = Open, Stage = Lead-discovery-1
 - Use case: Repeat business, similar deals with same customer
 
-**Convert to Order:**
-- Button available when Stage = SOLD-7 or manually
-- Action:
-  - Update Status → SOLD-7d
-  - Update Stage → SOLD-7 (if not already)
-  - Require Cases Per Week Volume (prompt if empty)
-  - Create order record (future integration phase)
-  - Activity log: "Converted to Order by [User]"
-- Confirmation modal: "Convert '[Opp Name]' to order? Required volume: [Input] cases/week. [Cancel] [Convert]"
-
 **Merge Opportunities:**
 - Admin-only feature
 - Use case: Duplicate opportunities detected
@@ -1296,7 +1283,194 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 **Bulk Operations:**
 - Select multiple products → "Activate" or "Deactivate" (bulk toggle)
 
-### 3.6 Reports (MVP - Basic Only)
+### 3.6 Tasks Module ⚠️ CRITICAL FOR FOLLOW-UPS
+
+**Purpose:** Track follow-ups, reminders, and action items for sales team. Critical for ensuring no customer is forgotten.
+
+**Industry Standard:** Follows Salesforce Tasks, HubSpot Tasks, and Microsoft Dynamics Activities patterns[Perplexity research]
+
+#### Task List View
+
+**Layout:**
+- Sortable/filterable table
+- Columns:
+  - **Status** (checkbox: mark complete inline)
+  - **Title** (primary, bold, linked to detail)
+  - **Due Date** (sortable, color-coded for overdue)
+  - **Priority** (badge: High/Medium/Low)
+  - **Related To** (linked: Organization, Contact, or Opportunity)
+  - **Assigned To** (avatar + name)
+- **Overdue tasks:** Highlighted in red, grouped at top by default
+
+**Search:**
+- Search box above table (within module)
+- Searches: Title, Description
+- Real-time filtering
+
+**Filtering:**
+- Filter panel:
+  - **Status** (multi-select: Not Started, In Progress, Completed, Overdue)
+  - **Priority** (multi-select: High, Medium, Low)
+  - **Assigned To** (multi-select with avatars)
+  - **Due Date Range** (date picker: Today, This Week, This Month, Custom)
+  - **Related To Type** (multi-select: Organization, Contact, Opportunity)
+- Applied filters as removable chips
+
+**Saved Views (Presets):**
+- **"My Tasks"** (default: assigned to current user, not completed)
+- **"Overdue"** (due date < today, not completed)
+- **"Due This Week"** (due date within next 7 days)
+- **"Completed"** (status = completed, last 30 days)
+
+**Quick Actions (per row):**
+- **Mark Complete** (checkbox, updates inline)
+- **Edit** (pencil icon) → Opens edit modal
+- **Delete** (trash icon) → Soft delete with confirmation
+
+**Bulk Actions:**
+- Select multiple tasks → "Mark Complete", "Delete", "Reassign"
+
+#### Task Detail View
+
+**Layout:**
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Breadcrumb: Tasks > [Task Title]                            │
+├─────────────────────────────────────────────────────────────┤
+│  ┌────────────────────────────────────────────────────┐    │
+│  │ Task Information Card                               │    │
+│  │  [Priority Badge] Task Title                        │    │
+│  │  [Status Badge: Not Started|In Progress|Completed]  │    │
+│  │  ────────────────────────────────────────────────   │    │
+│  │  📅 Due: January 15, 2025 (Overdue by 3 days)      │    │
+│  │  👤 Assigned to: John Smith                         │    │
+│  │  🔗 Related to: Restaurant ABC (Organization)       │    │
+│  │  ────────────────────────────────────────────────   │    │
+│  │  Description:                                        │    │
+│  │  Follow up on pricing quote for Fishpeople products │    │
+│  │  ────────────────────────────────────────────────   │    │
+│  │  Created: Jan 1, 2025 by Jane Doe                   │    │
+│  │  Completed: Jan 18, 2025 by John Smith              │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                              │
+│  [Mark Complete] [Edit] [Delete]                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Actions:**
+- **Mark Complete:** Updates status to "Completed", sets completion date
+- **Edit:** Opens edit modal
+- **Delete:** Soft delete with confirmation
+
+#### Create/Edit Task Form
+
+**Form Approach: Modal Popup**
+
+**Essential Fields (MVP):**
+
+**1. Task Details**
+- **Title*** (text input, max 255 chars)
+  - Placeholder: "What needs to be done? (e.g., 'Follow up on pricing')"
+- **Description** (textarea, 500 char limit, optional)
+  - Placeholder: "Additional details or notes..."
+
+**2. Scheduling**
+- **Due Date*** (date picker, required)
+  - Defaults to: Today + 3 days
+  - Quick options: Today, Tomorrow, Next Week
+- **Priority** (radio buttons: High, Medium [default], Low)
+
+**3. Assignment & Context**
+- **Assigned To*** (user dropdown, defaults to current user)
+- **Related To** (searchable combo: Organization, Contact, or Opportunity)
+  - Type-ahead search across all three entity types
+  - Shows entity type icon + name
+  - Optional: Can create task without linking to record
+
+**4. Status** (only in Edit mode, not Create)
+- **Status** (dropdown: Not Started [default], In Progress, Completed)
+- **Completed At** (read-only, auto-populated when status = Completed)
+
+**Form Validation:**
+- **Required Fields** (marked with *):
+  - Title
+  - Due Date
+  - Assigned To
+- **Business Rules:**
+  - Cannot set due date in the past (warning, not blocking)
+  - Status "Completed" auto-sets completion timestamp
+
+**Quick Create (Inline):**
+- Available on Organization, Contact, and Opportunity detail pages
+- Button: "+ Add Task"
+- Opens modal with "Related To" field pre-filled
+- Minimal fields: Title, Due Date, Priority
+- Saves immediately, no confirmation
+
+#### Notifications & Reminders
+
+**Overdue Task Indicators:**
+- **In-app badge:** Red dot on "Tasks" navigation item showing count of overdue tasks
+- **Task list:** Overdue tasks highlighted in red at top of list
+- **Due date column:** Displays "Overdue by X days" in red text
+
+**Daily Reminder (Email):**
+- Sent at 8 AM local time (configurable per user in profile settings)
+- Subject: "You have [X] tasks due today"
+- Body: List of tasks due today + overdue tasks
+- CTA button: "View My Tasks" → Links to CRM task list
+
+**Mobile Push Notifications (Future Phase):**
+- Not in MVP scope
+- Phase 3: Mobile app with push notifications for overdue tasks
+
+#### Access Control
+
+**Per user's Q11 answer (D: All 4 roles):**
+
+| Role | My Tasks | Others' Tasks | Actions |
+|------|----------|---------------|---------|
+| **Admin** | Full CRUD | Full CRUD (all users) | View, create, edit, delete, reassign any task |
+| **Sales Manager** | Full CRUD | Full CRUD (team members) | View, create, edit, delete, reassign team tasks |
+| **Sales Rep** | Full CRUD | View only | View own tasks + others' tasks (read-only) |
+| **Read-Only** | View only | View only | View all tasks (read-only) |
+
+**RLS Policy Pattern:**
+```sql
+-- Task SELECT: All authenticated users can view all tasks (transparency)
+CREATE POLICY authenticated_select_tasks ON tasks
+  FOR SELECT TO authenticated
+  USING (deleted_at IS NULL);
+
+-- Task INSERT: All users can create tasks
+CREATE POLICY authenticated_insert_tasks ON tasks
+  FOR INSERT TO authenticated
+  WITH CHECK (true);
+
+-- Task UPDATE: Admin can update any, Sales Manager can update team, Rep can update own
+CREATE POLICY authenticated_update_tasks ON tasks
+  FOR UPDATE TO authenticated
+  USING (
+    deleted_at IS NULL AND (
+      auth.jwt() ->> 'role' = 'admin' OR  -- Admins update any
+      auth.jwt() ->> 'role' = 'Sales Manager' OR  -- Managers update any
+      assigned_to_id IN (SELECT id FROM sales WHERE user_id = auth.uid())  -- Rep updates own
+    )
+  );
+
+-- Task DELETE: Same as UPDATE rules
+CREATE POLICY authenticated_delete_tasks ON tasks
+  FOR DELETE TO authenticated
+  USING (
+    deleted_at IS NULL AND (
+      auth.jwt() ->> 'role' = 'admin' OR
+      auth.jwt() ->> 'role' = 'Sales Manager' OR
+      assigned_to_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
+    )
+  );
+```
+
+### 3.7 Reports (MVP - Basic Only)
 
 **Note:** Analytics dashboards and advanced reporting are NOT in MVP scope. Focus is on data entry and basic list exports.
 
@@ -1386,7 +1560,7 @@ Jane Doe (15 activities this week)
 - File format: `{module}_export_{date}.csv`
 
 **Examples:**
-- Organizations filtered by "Priority A+" → `organizations_export_2025-11-03.csv`
+- Organizations filtered by "Priority A" → `organizations_export_2025-11-03.csv`
 - Opportunities filtered by "Principal = Fishpeople" → `opportunities_export_2025-11-03.csv`
 
 ---
@@ -1644,11 +1818,12 @@ Jane Doe (15 activities this week)
 --color-neutral-900: oklch(0.10 0 0);       /* Near black */
 
 /* Priority Colors (Organizations & Opportunities) */
---color-priority-aplus: oklch(0.35 0.15 145);   /* Dark green */
---color-priority-a: oklch(0.50 0.15 145);       /* Green */
+/* Note: System uses 4 priority levels (A, B, C, D). No A+ level. */
+--color-priority-aplus: oklch(0.35 0.15 145);   /* Dark green (deprecated, not used) */
+--color-priority-a: oklch(0.50 0.15 145);       /* Green - Highest priority */
 --color-priority-b: oklch(0.75 0.15 90);        /* Yellow/Gold */
 --color-priority-c: oklch(0.65 0.15 45);        /* Orange */
---color-priority-d: oklch(0.55 0.15 20);        /* Red */
+--color-priority-d: oklch(0.55 0.15 20);        /* Red - Lowest priority */
 --color-priority-none: oklch(0.60 0 0);         /* Gray */
 
 /* Status Colors */
@@ -1686,7 +1861,7 @@ module.exports = {
           // ... 100-900
         },
         priority: {
-          'aplus': 'var(--color-priority-aplus)',
+          'aplus': 'var(--color-priority-aplus)',  // Deprecated: not used in 4-level system (A,B,C,D)
           'a': 'var(--color-priority-a)',
           'b': 'var(--color-priority-b)',
           'c': 'var(--color-priority-c)',
@@ -1972,7 +2147,6 @@ transitionTimingFunction: {
     className="block w-full px-3 py-2 border border-neutral-300 rounded text-base text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow duration-200"
   >
     <option value="">Select priority...</option>
-    <option value="A+">A+</option>
     <option value="A">A</option>
     <option value="B">B</option>
     <option value="C">C</option>
@@ -2038,9 +2212,9 @@ transitionTimingFunction: {
 
 **Priority Badges:**
 ```tsx
-// A+ Priority
-<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-priority-aplus text-white">
-  A+
+// A Priority (Highest)
+<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-priority-a text-white">
+  A
 </span>
 
 // Status badges
@@ -2591,7 +2765,7 @@ interface OpportunityQueryParams {
   // Filtering
   status?: string[];       // Multi-select: ["Open", "On Hold"]
   stage?: string[];        // Multi-select: ["Lead-discovery-1", "Contacted-phone/email-2"]
-  priority?: string[];     // Multi-select: ["A+", "A", "B"]
+  priority?: string[];     // Multi-select: ["A", "B", "C", "D"]  (4 levels only)
   product_id?: string[];   // Multi-select product IDs
   deal_owner_id?: string[]; // Multi-select user IDs
   organization_id?: string; // Single org ID
@@ -2935,13 +3109,11 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 7. SOLD: Deal closed successfully
 8. Order support: Post-sale support and fulfillment
 
-**Priority System:**
-- **A+**: Top-tier accounts, highest volume potential
-- **A**: High-value accounts
+**Priority System (4 Levels):**
+- **A**: Top-tier accounts, high-value (highest priority)
 - **B**: Mid-tier accounts
 - **C**: Lower-value accounts
 - **D**: Lowest priority accounts
-- **No Priority**: Not yet categorized
 
 **Stage Progression Rules:**
 - Must move forward sequentially (cannot skip stages)
@@ -2960,6 +3132,7 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - Duplicate detection and merging tools
 - Bulk email campaigns
 - Quote generation
+- Convert to Order workflow (opportunity → order record creation)
 
 **Phase 3 Features:**
 - Mobile native app (iOS, Android)
