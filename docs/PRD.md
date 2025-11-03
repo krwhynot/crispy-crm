@@ -1,13 +1,14 @@
 # PRODUCT REQUIREMENTS DOCUMENT
 # Crispy-CRM: Food Distribution Sales Management Platform
 
-**Version:** 1.4 MVP (Complete Specification)
+**Version:** 1.5 MVP (Complete Specification)
 **Last Updated:** November 3, 2025
 **Changes:**
 - v1.1: Updated to reflect actual implementation decisions and architectural patterns
 - v1.2: Added business process rules and operational requirements (Sections 9-10)
 - v1.3: Enhanced opportunity management with trade show handling, naming conventions, and multi-brand filtering
 - v1.4: Added Round 5 specifications - notifications, import/export, dashboard, search, iPad optimizations, keyboard shortcuts, offline mode, performance targets, backup strategy
+- v1.5: Added Round 6 specifications - error handling, monitoring/logging, integration strategy, deployment/migration approach, security policies
 **Document Owner:** Product Design & Engineering Team
 
 ---
