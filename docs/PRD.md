@@ -777,7 +777,7 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
   - Organization (linked)
   - Position
   - Email (click to compose: mailto:)
-  - Phone (click to call on mobile: tel:)
+  - Phone (tel: link for calling)
   - Account Manager
 
 **Search:**
@@ -1302,244 +1302,101 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 
 #### Reports Included in MVP
 
-**Sales Rep Dashboard:**
+**1. Opportunities by Principal Report ⭐ MOST IMPORTANT**
 
-**Layout:**
+**Purpose:** See all opportunities grouped by which brand/manufacturer (Principal) they're for.
+
+**Access:** Reports > Opportunities by Principal
+
+**Features:**
+- Grouped list view: Principal as header, opportunities nested underneath
+- Show per Principal:
+  - Count of opportunities (active vs closed)
+  - List of opportunities with: Customer Org, Stage, Status, Expected Close Date, Owner
+- Filters:
+  - Status (active, closed, on_hold)
+  - Stage (all 8 stages)
+  - Date range (Expected Close Date)
+  - Owner
+- Sort options:
+  - By Principal name (A-Z)
+  - By opportunity count (most to least)
+  - By expected close date (soonest first)
+- Export: CSV with columns [Principal, Customer Org, Opportunity Name, Stage, Status, Expected Close, Owner]
+
+**Example Output:**
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ My Performance Dashboard                     [Customize ⚙️] │
-├─────────────────────────────────────────────────────────────┤
-│  ┌──────────┬──────────┬──────────┬──────────┐            │
-│  │ Open     │ Expected │ Closing  │ Activities│            │
-│  │ Opps     │ Volume   │ This Mo. │ This Week │            │
-│  │ 23       │ 1,250/wk │ 5 opps   │ 18        │            │
-│  └──────────┴──────────┴──────────┴──────────┘            │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ My Pipeline (Mini Kanban)                           │    │
-│  │ [Stage 1: 5] [Stage 2: 7] [Stage 3: 4] ... [8: 2] │    │
-│  │ [Scrollable mini cards]                             │    │
-│  └────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Upcoming Tasks & Alerts                             │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ 🔴 3 opportunities in Follow-up >7 days (need action)│    │
-│  │ 🟡 5 opportunities closing in next 7 days           │    │
-│  │ ⚪ 2 opportunities with no activity in 14+ days     │    │
-│  │ [View All Tasks →]                                  │    │
-│  └────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Recent Activity Feed                                │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ [Last 10 activities across all user's opportunities]│    │
-│  │ • [Avatar] User called Ballyhoo - 2 hours ago       │    │
-│  │ • [Avatar] Stage changed to Follow-up - Yesterday   │    │
-│  │ ... [View All Activity →]                           │    │
-│  └────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
+Principal: Fishpeople Seafood (5 opportunities)
+  - Restaurant A | Sample Visit Offered | Active | Dec 1, 2025 | John
+  - Restaurant B | New Lead | Active | Dec 15, 2025 | Jane
+  ...
+
+Principal: Ocean Hugger Foods (3 opportunities)
+  - Restaurant C | Demo Scheduled | Active | Nov 20, 2025 | John
+  ...
 ```
 
-**Widgets:**
-1. **Metric Cards** (4 across top):
-   - Open Opportunities (count)
-   - Expected Volume This Quarter (sum cases/week weighted by probability)
-   - Opportunities Closing This Month (Expected Sold Date within 30 days)
-   - Activities This Week (activity count)
+---
 
-2. **My Pipeline** (Mini Kanban):
-   - Condensed view of user's opportunities by stage
-   - Draggable cards (same as full Kanban)
-   - Click stage header → Navigate to full Kanban filtered to that stage
-   - Click "Expand Pipeline" → Full-screen Kanban view
+**2. Weekly Activity Summary Report**
 
-3. **Upcoming Tasks & Alerts**:
-   - **High Priority** (red):
-     - Opportunities in Follow-up stage >7 days without activity
-     - Opportunities past Expected Sold Date and still Open
-   - **Medium Priority** (yellow):
-     - Opportunities with Expected Sold Date in next 7 days
-     - Priority A/A+ organizations with no activity in 14+ days
-   - **Low Priority** (gray):
-     - Opportunities with no activity in 14+ days
-   - Click alert → Navigate to filtered opportunity list
+**Purpose:** See what each user did this week (calls, meetings, emails logged).
 
-4. **Recent Activity Feed**:
-   - Last 10 activities across all user's opportunities
-   - Same format as detail page activity feed
-   - Click activity → Navigate to related opportunity/org/contact
+**Access:** Reports > Weekly Activity Summary
 
-**Sales Manager Dashboard:**
+**Features:**
+- Grouped by user (sales rep), shows activities for selected week
+- Show per user:
+  - Activity count breakdown (# calls, # emails, # meetings, # notes)
+  - List of activities with: Type, Date, Description (truncated), Related Entity
+- Filters:
+  - Date range picker (defaults to current week: Mon-Sun)
+  - User multi-select (default: all users)
+  - Activity type (call, email, meeting, note)
+- Sort: By date (newest first) within each user
+- Export: CSV with columns [User, Date, Activity Type, Description, Related Entity]
 
-**Layout:**
+**Example Output:**
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ Team Performance Dashboard                   [Customize ⚙️] │
-├─────────────────────────────────────────────────────────────┤
-│  ┌──────────┬──────────┬──────────┬──────────┬──────────┐ │
-│  │ Total    │ Expected │ Conversion│ Avg Days │ Won/Lost │ │
-│  │ Open     │ Volume   │ Rate      │ in Stage │ This Mo. │ │
-│  │ 145      │ 8,750/wk │ 32%       │ 18.5     │ 12 / 3   │ │
-│  └──────────┴──────────┴──────────┴──────────┴──────────┘ │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Pipeline Overview (Stacked Bar Chart)               │    │
-│  │ [Visual: Stacked bars by stage showing Open, On     │    │
-│  │  Hold, and volume distribution]                     │    │
-│  └────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Team Performance Table                              │    │
-│  ├───────┬────────┬────────┬────────┬────────┬────────┤    │
-│  │ Sales │ Open   │ In     │ Expected│ Conv.  │ Avg    │    │
-│  │ Rep   │ Opps   │ SOLD-7 │ Volume │ Rate % │ Days   │    │
-│  ├───────┼────────┼────────┼────────┼────────┼────────┤    │
-│  │ John  │ 23     │ 2      │ 1,250  │ 35%    │ 16.2   │    │
-│  │ Sarah │ 31     │ 4      │ 1,800  │ 42%    │ 14.8   │    │
-│  │ Mike  │ 18     │ 1      │ 900    │ 28%    │ 21.3   │    │
-│  │ ...   │ ...    │ ...    │ ...    │ ...    │ ...    │    │
-│  └───────┴────────┴────────┴────────┴────────┴────────┘    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Priority Accounts At Risk                           │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ Organizations with Priority A/A+ and no activity    │    │
-│  │ >30 days                                            │    │
-│  │ • Ballyhoo Hospitality (42 days) - [View]          │    │
-│  │ • The Purple Pig (38 days) - [View]                │    │
-│  │ ... [View All At-Risk Accounts →]                  │    │
-│  └────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Product Performance                                 │    │
-│  ├──────────┬────────┬────────┬────────┬──────────────┤    │
-│  │ Product  │ In     │ Win    │ Avg    │ Total Volume │    │
-│  │          │ Pipeline│ Rate  │ Days   │              │    │
-│  ├──────────┼────────┼────────┼────────┼──────────────┤    │
-│  │ Poke     │ 12     │ 45%    │ 14.2   │ 850 cases/wk │    │
-│  │ Fries    │ 8      │ 38%    │ 18.5   │ 620 cases/wk │    │
-│  │ ...      │ ...    │ ...    │ ...    │ ...          │    │
-│  └──────────┴────────┴────────┴────────┴──────────────┘    │
-└─────────────────────────────────────────────────────────────┘
+John Smith (18 activities this week)
+  Calls: 8 | Emails: 5 | Meetings: 3 | Notes: 2
+
+  Nov 3 - Call - Spoke with chef at Restaurant A about pricing
+  Nov 3 - Email - Sent follow-up to Restaurant B
+  Nov 2 - Meeting - Demo at Restaurant C
+  ...
+
+Jane Doe (15 activities this week)
+  Calls: 6 | Emails: 7 | Meetings: 2 | Notes: 0
+  ...
 ```
 
-**Widgets:**
-1. **Team Metric Cards** (5 across top):
-   - Total Open Opportunities
-   - Total Expected Volume (weighted by probability)
-   - Conversion Rate by Stage (funnel view, average across team)
-   - Average Days in Each Stage (weighted average)
-   - Won/Lost This Month (count with trend)
+---
 
-2. **Pipeline Overview** (Chart):
-   - Stacked bar chart showing opportunities by stage
-   - Stacks: Open (blue), On Hold (yellow), Closed (gray)
-   - Hover: Show count and volume
-   - Click bar → Navigate to opportunity list filtered to that stage
+**3. Filtered List Exports (All Modules)**
 
-3. **Team Performance Table**:
-   - Sortable table showing each sales rep's metrics
-   - Columns defined above
-   - Click row → Navigate to rep's dashboard or filtered opportunity list
-   - Export to CSV button
+**Purpose:** Export any filtered/searched list to CSV for offline analysis.
 
-4. **Priority Accounts At Risk**:
-   - List of high-priority organizations without recent activity
-   - Click → Navigate to organization detail page
-   - "Assign Task" action to delegate follow-up
+**Access:** Any list view (Organizations, Contacts, Opportunities, Products) has "Export to CSV" button
 
-5. **Product Performance**:
-   - Table showing which products have highest success rates
-   - Sortable by any column
-   - Click product → Navigate to product detail page
+**Features:**
+- Button in list view toolbar (top right)
+- Respects current filters and search
+- Exports visible columns only
+- File format: `{module}_export_{date}.csv`
 
-#### Dashboard Customization (MVP: Limited)
+**Examples:**
+- Organizations filtered by "Priority A+" → `organizations_export_2025-11-03.csv`
+- Opportunities filtered by "Principal = Fishpeople" → `opportunities_export_2025-11-03.csv`
 
-**MVP Features:**
-- User cannot add/remove widgets (fixed layout per role)
-- User cannot rearrange widgets (future phase)
-- User can collapse/expand sections within widgets
-- Dashboard layout is responsive (stacks on tablet portrait)
+---
 
-**Future Phase:**
-- Drag-and-drop widget rearrangement
-- Add/remove widgets from library
-- Resize widgets
-- Save multiple dashboard layouts ("Sales View", "Forecast View")
-
-#### Standard Reports (Basic)
-
-**Report Access:**
-- "Reports" link in top navigation
-- Reports list page with categories:
-  - **Pipeline Reports**
-  - **Forecast Reports**
-  - **Account Reports**
-  - **Activity Reports**
-  - **Performance Reports**
-
-**Available Reports in MVP:**
-
-**1. Opportunity Pipeline Report**
-- **View**: Table grouped by Stage
-- **Columns**: Stage, Count, Total Volume, Weighted Volume (volume × probability)
-- **Filters**: Status, Priority, Product, Deal Owner, Date Range
-- **Visualization**: Funnel chart (conversion rates between stages)
-- **Export**: CSV, PDF
-
-**2. Sales Forecast Report**
-- **View**: Table grouped by time period (Week, Month, Quarter)
-- **Columns**: Time Period, Expected Volume, Weighted Volume, Confidence Level
-- **Confidence Levels**:
-  - High (>70% probability): [Count] opportunities, [Volume] cases/week
-  - Medium (40-70%): [Count] opportunities, [Volume] cases/week
-  - Low (<40%): [Count] opportunities, [Volume] cases/week
-- **Filters**: Date Range, Deal Owner, Product
-- **Visualization**: Line chart (forecast over time)
-- **Export**: CSV, Excel
-
-**3. Account Health Report**
-- **View**: Table of all organizations
-- **Columns**: Organization, Priority, # Open Opportunities, Total Expected Volume, Last Activity Date, Days Since Last Activity, Account Manager
-- **Flags**: At-risk accounts (no activity >30 days, Priority A/A+)
-- **Filters**: Priority, Account Manager, Segment, Days Since Activity
-- **Export**: CSV, Excel
-
-**4. Activity Report**
-- **View**: Table of all activities in date range
-- **Group By**: User, Activity Type, Organization, Opportunity
-- **Metrics**: Count by Type, Activities per Day/Week/Month
-- **Filters**: Date Range, User, Activity Type, Entity Type
-- **Visualization**: Bar chart (activity count by type or user)
-- **Export**: CSV
-
-**5. Won/Lost Analysis**
-- **View**: Summary metrics + table
-- **Metrics**:
-  - Total Won (count + volume)
-  - Total Lost (count)
-  - Win Rate % (won / total closed)
-  - Average Days to Close (won opportunities only)
-  - Loss Reasons Breakdown (pie chart)
-- **Filters**: Date Range, Product, Deal Owner
-- **Table**: List of won/lost opportunities with details
-- **Export**: PDF, Excel
-
-**6. Product Performance Report**
-- **View**: Table of all products with opportunity metrics
-- **Columns**: Product, Principal, # Opportunities by Stage, Win Rate %, Total Volume in Pipeline, Avg Probability, Avg Days to Close
-- **Sort By**: Any column
-- **Filters**: Active Status, Principal, Category
-- **Visualization**: Bar chart (win rate by product)
-- **Export**: CSV, Excel
-
-**Report Interaction:**
-- Click any metric or chart element → Drill down to filtered opportunity list
-- "Save Report" button → Save filter configuration for quick access (future)
-- "Schedule Email" → Automated delivery (future)
-- Print-friendly view (CSS media queries for @print)
-
+**Future Phase (Not MVP):**
+- Analytics dashboard with charts
+- Forecasting based on probability/volume
+- Saved report configurations
+- Scheduled email delivery of reports
+- Custom report builder
 ### 3.7 Activity Tracking
 
 #### Activity Types & Icons
@@ -1555,41 +1412,29 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 | **Status Change** | ➡️ Arrow | Green | Yes (Auto) |
 | **Stage Change** | 📶 Ladder | Yellow | Yes (Auto) |
 
-#### Quick Log Activity
+#### Quick Log Activity (Basic Structured Logging)
 
 **Access Points:**
 - Opportunity detail page (inline form at top of Activity Timeline)
 - Organization detail page (Activity Feed tab)
 - Contact detail page (Activity Feed section)
-- Mobile app (floating action button)
-- Keyboard shortcut: `Cmd/Ctrl + Shift + A` (global quick log)
 
-**Form Fields:**
+**Form Fields (Simple):**
 - **Activity Type*** (dropdown with icons)
-  - Call, Email, Meeting, Sample Delivered, Demo, Note
-- **Related To*** (auto-populated if opened from detail page, else searchable dropdown)
-  - Type-ahead search: "Ballyhoo Poke Deal" → Shows Opportunity + Organization
-- **Date/Time*** (datetime picker, default: now)
-  - Quick presets: "Now", "1 hour ago", "Yesterday", "Custom"
-- **Description*** (text area, 500 char limit)
-  - Placeholder: "What happened? What's the next step?"
-- **Participants** (optional, multi-select contacts)
-  - Searchable dropdown: Shows contacts from related organization
-- **Outcome** (optional, dropdown with presets)
-  - "Interested - Follow-up needed"
-  - "Need more information"
-  - "Not interested"
-  - "Ready to buy"
-  - "Custom" (free text)
+  - Call, Email, Meeting, Note
+- **Date*** (date picker, default: today)
+- **Description*** (textarea, 500 char limit)
+  - Placeholder: "What happened? (e.g., 'Called chef about pricing, will follow up next week')"
 
-**Submit Options:**
-- **Save & Close**: Log activity and close modal
-- **Save & Log Another**: Log activity and clear form for rapid entry (keeps Related To pre-filled)
+**Note:** Activity is automatically linked to the entity (opportunity/organization/contact) where the form is opened.
+
+**Submit:**
+- **Log Activity** button (primary)
+- Form clears after submission, ready for next entry
 
 **Success Feedback:**
-- Toast notification: "Activity logged successfully"
-- Activity immediately appears at top of activity feed
-- If probability or stage updated based on outcome, show additional toast: "Opportunity probability updated to 60%"
+- Toast notification: "Activity logged"
+- Activity immediately appears at top of activity feed (reverse chronological)
 
 #### Activity Feed Display
 
@@ -1688,7 +1533,7 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 - **Searchable fields** per module:
   - **Organizations**: Name, City
   - **Contacts**: Full Name, Organization Name, Position, Email
-  - **Opportunities**: Opportunity Name, Organization Name, Product Name
+  - **Opportunities**: Opportunity Name, Customer Organization Name, Principal ⭐ (MOST IMPORTANT), Product Name
   - **Products**: Product Name, Principal, Category
 - **Case-insensitive** search
 - **Partial matching** (substring search)
@@ -1725,13 +1570,9 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
    - Selected items shown as chips in dropdown header
 
 4. **Date Range Picker**
-   - Example: Start Date, Expected Sold Date, Last Activity Date
+   - Example: Expected Close Date, Next Action Date, Last Activity Date
    - Presets: Today, This Week, This Month, This Quarter, Custom
    - Custom: Two date inputs (From / To)
-
-5. **Number Range**
-   - Example: Probability, Volume
-   - Dual slider (min-max) or two number inputs
 
 **Filter Application:**
 - Filters apply immediately (no "Apply" button needed)
