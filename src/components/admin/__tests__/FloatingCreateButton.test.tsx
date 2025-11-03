@@ -39,8 +39,9 @@ describe("FloatingCreateButton", () => {
     expect(button).toHaveClass("md:size-14"); // 56px diameter on desktop
 
     // Check brand color usage (7:1+ contrast for accessibility)
-    expect(button).toHaveClass("bg-brand-700");
-    expect(button).toHaveClass("hover:bg-brand-800");
+    // Using CSS variable syntax since brand colors aren't in Tailwind theme
+    expect(button).toHaveClass("bg-[var(--brand-700)]");
+    expect(button).toHaveClass("hover:bg-[var(--brand-800)]");
 
     // Check shape
     expect(button).toHaveClass("rounded-full");
