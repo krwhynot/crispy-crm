@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
+import { EditButton } from "@/components/admin/edit-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Status } from "../misc/Status";
 import type { Contact } from "../types";
@@ -101,16 +102,23 @@ export const ContactListContent = () => {
               </div>
             </div>
 
-            {/* Right meta: Last activity */}
-            {contact.last_seen && (
-              <div className="text-xs text-[color:var(--text-subtle)] shrink-0 relative z-10">
-                <div title={contact.last_seen}>
-                  {!isSmall && "last activity "}
-                  {formatRelative(contact.last_seen, now)}{" "}
-                  <Status status={contact.status} />
+            {/* Right side: Last activity and Edit button */}
+            <div className="flex items-center gap-3 shrink-0">
+              {contact.last_seen && (
+                <div className="text-xs text-[color:var(--text-subtle)] relative z-10">
+                  <div title={contact.last_seen}>
+                    {!isSmall && "last activity "}
+                    {formatRelative(contact.last_seen, now)}{" "}
+                    <Status status={contact.status} />
+                  </div>
                 </div>
+              )}
+
+              {/* Edit Button - positioned above stretched link overlay */}
+              <div className="relative z-10">
+                <EditButton resource="contacts" />
               </div>
-            )}
+            </div>
           </div>
         </RecordContextProvider>
       ))}
