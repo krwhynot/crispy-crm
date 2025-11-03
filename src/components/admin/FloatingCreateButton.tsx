@@ -61,7 +61,7 @@ export const FloatingCreateButton: React.FC<FloatingCreateButtonProps> = ({
         // Shape
         "rounded-full",
         // Colors - using brand primary for maximum visibility (7:1+ contrast)
-        "bg-brand-700 hover:bg-brand-800",
+        "bg-[var(--brand-700)] hover:bg-[var(--brand-800)]",
         "text-white",
         // Shadow for elevation
         "shadow-lg hover:shadow-xl",
