@@ -226,7 +226,7 @@ export class JunctionsService {
    * Add organization as participant to opportunity
    * @param opportunityId Opportunity identifier
    * @param organizationId Organization identifier
-   * @param params Optional participant parameters (role, territory, etc.)
+   * @param params Optional participant parameters (role, notes, etc.)
    * @returns Object with created participant data
    */
   async addOpportunityParticipant(
@@ -241,7 +241,6 @@ export class JunctionsService {
           organization_id: organizationId,
           role: params.role || "customer",
           is_primary: params.is_primary || false,
-          territory: params.territory,
           notes: params.notes,
           created_at: new Date().toISOString(),
           ...params,
