@@ -1,8 +1,9 @@
 # PRODUCT REQUIREMENTS DOCUMENT
 # Crispy-CRM: Food Distribution Sales Management Platform
 
-**Version:** 1.0 MVP  
-**Last Updated:** November 2, 2025  
+**Version:** 1.1 MVP (Implementation-Aligned)
+**Last Updated:** November 3, 2025
+**Change:** Updated to reflect actual implementation decisions and architectural patterns  
 **Document Owner:** Product Design & Engineering Team
 
 ---
@@ -98,17 +99,17 @@ interface Contact {
   // Primary Key
   contact_id: number;                // BIGINT, PK (auto-increment)
 
-  // Core Information
+  // Core Information (Minimal implementation per Q1)
   name: string;                      // REQUIRED (computed from first_name + last_name)
   first_name?: string;
   last_name?: string;
   organization_id?: number;          // FK → Organizations
 
-  // Contact Methods (JSONB Arrays - supports multiple entries with types)
+  // Contact Methods (JSONB Arrays - rarely used but available)
+  // Note: <10% of contacts have multiple emails/phones (Q2: Rarely)
   email: EmailEntry[];               // Array: [{ email: "john@example.com", type: "Work" }]
   phone: PhoneEntry[];               // Array: [{ number: "555-1234", type: "Mobile" }]
   linkedin_url?: string;
-  twitter_handle?: string;
 
   // Professional Information
   title?: string;                    // Job title (e.g., "Chef", "Manager")
@@ -117,31 +118,21 @@ interface Contact {
   // Management
   sales_id?: number;                 // FK → Sales (Users), account manager for this contact
 
-  // Address
-  address?: string;
-  city?: string;
-  state?: string;
-  postal_code?: string;
-  country?: string;                  // DEFAULT: 'USA'
-
-  // Personal Information
-  birthday?: Date;
-  gender?: string;
-
   // Additional
   notes?: string;
-  tags?: number[];                   // Array of tag IDs
 
-  // Tracking
-  first_seen?: Date;                 // When first added to CRM
-  last_seen?: Date;                  // Last interaction date
+  // Note: The following fields exist in database but NOT in UI (per code review):
+  // - address, city, state, postal_code, country (not validated/shown)
+  // - birthday, gender (personal info not collected)
+  // - twitter_handle (social media minimal)
+  // - tags (not implemented in UI)
 
   // Audit Fields
   created_at: Date;
   updated_at: Date;
   created_by?: number;               // FK → Sales (Users)
   updated_by?: number;               // FK → Sales (Users)
-  deleted_at?: Date;                 // Soft delete timestamp
+  deleted_at?: Date;                 // Soft delete timestamp (30-day retention)
 }
 
 // JSONB array entry types
@@ -1326,192 +1317,59 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 **Bulk Operations:**
 - Select multiple products → "Activate" or "Deactivate" (bulk toggle)
 
-### 3.6 Tasks Module ⚠️ CRITICAL FOR FOLLOW-UPS
+### 3.6 Tasks Widget (Dashboard Component)
 
-**Purpose:** Track follow-ups, reminders, and action items for sales team. Critical for ensuring no customer is forgotten.
+**Purpose:** Lightweight task tracking for follow-ups and reminders, integrated into the main dashboard for quick access.
 
-**Industry Standard:** Follows Salesforce Tasks, HubSpot Tasks, and Microsoft Dynamics Activities patterns[Perplexity research]
+**Implementation Approach:** Dashboard-only widget following minimal design pattern. No standalone module or dedicated pages.
 
-#### Task List View
+#### Dashboard Tasks Widget
 
-**Layout:**
-- Sortable/filterable table
-- Columns:
-  - **Status** (checkbox: mark complete inline)
-  - **Title** (primary, bold, linked to detail)
-  - **Due Date** (sortable, color-coded for overdue)
-  - **Priority** (badge: High/Medium/Low)
-  - **Related To** (linked: Organization, Contact, or Opportunity)
-  - **Assigned To** (avatar + name)
-- **Overdue tasks:** Highlighted in red, grouped at top by default
+**Location:** Main Dashboard page (not a separate module)
 
-**Search:**
-- Search box above table (within module)
-- Searches: Title, Description
-- Real-time filtering
-
-**Filtering:**
-- Filter panel:
-  - **Status** (multi-select: Not Started, In Progress, Completed, Overdue)
-  - **Priority** (multi-select: High, Medium, Low)
-  - **Assigned To** (multi-select with avatars)
-  - **Due Date Range** (date picker: Today, This Week, This Month, Custom)
-  - **Related To Type** (multi-select: Organization, Contact, Opportunity)
-- Applied filters as removable chips
-
-**Saved Views (Presets):**
-- **"My Tasks"** (default: assigned to current user, not completed)
-- **"Overdue"** (due date < today, not completed)
-- **"Due This Week"** (due date within next 7 days)
-- **"Completed"** (status = completed, last 30 days)
-
-**Quick Actions (per row):**
-- **Mark Complete** (checkbox, updates inline)
-- **Edit** (pencil icon) → Opens edit modal
-- **Delete** (trash icon) → Soft delete with confirmation
-
-**Bulk Actions:**
-- Select multiple tasks → "Mark Complete", "Delete", "Reassign"
-
-#### Task Detail View
-
-**Layout:**
+**Widget Layout:**
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ Breadcrumb: Tasks > [Task Title]                            │
-├─────────────────────────────────────────────────────────────┤
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Task Information Card                               │    │
-│  │  [Priority Badge] Task Title                        │    │
-│  │  [Status Badge: Not Started|In Progress|Completed]  │    │
-│  │  ────────────────────────────────────────────────   │    │
-│  │  📅 Due: January 15, 2025 (Overdue by 3 days)      │    │
-│  │  👤 Assigned to: John Smith                         │    │
-│  │  🔗 Related to: Restaurant ABC (Organization)       │    │
-│  │  ────────────────────────────────────────────────   │    │
-│  │  Description:                                        │    │
-│  │  Follow up on pricing quote for Fishpeople products │    │
-│  │  ────────────────────────────────────────────────   │    │
-│  │  Created: Jan 1, 2025 by Jane Doe                   │    │
-│  │  Completed: Jan 18, 2025 by John Smith              │    │
-│  └────────────────────────────────────────────────────┘    │
-│                                                              │
-│  [Mark Complete] [Edit] [Delete]                            │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│ My Tasks                              [Add] │
+├─────────────────────────────────────────────┤
+│ □ Call Restaurant ABC           Due Today   │
+│ □ Follow up on quote           Due Tomorrow │
+│ ☑ Send pricing sheet              Complete  │
+│ □ Schedule demo               Due Next Week │
+├─────────────────────────────────────────────┤
+│              View All Tasks (5)             │
+└─────────────────────────────────────────────┘
 ```
 
-**Actions:**
-- **Mark Complete:** Updates status to "Completed", sets completion date
-- **Edit:** Opens edit modal
-- **Delete:** Soft delete with confirmation
+**Features:**
+- Shows user's incomplete tasks sorted by due date
+- Quick checkbox to mark tasks complete
+- Inline editing on click
+- "Add Task" button opens modal
+- Shows max 5 tasks, with "View All" expanding inline
 
-#### Create/Edit Task Form
+#### Quick Add Task Modal
 
-**Form Approach: Modal Popup**
+**Form Fields (Simplified):**
+- **Title*** (text input, required)
+- **Due Date*** (date picker, defaults to +3 days)
+- **Priority** (select: High/Medium/Low, default Medium)
+- **Related To** (optional):
+  - Contact (searchable dropdown)
+  - Opportunity (searchable dropdown)
+  - Organization (searchable dropdown)
+- **Description** (textarea, optional)
 
-**Essential Fields (MVP):**
+**Note:** Tasks are automatically assigned to current user. No complex assignment or delegation features.
 
-**1. Task Details**
-- **Title*** (text input, max 255 chars)
-  - Placeholder: "What needs to be done? (e.g., 'Follow up on pricing')"
-- **Description** (textarea, 500 char limit, optional)
-  - Placeholder: "Additional details or notes..."
+#### Implementation Notes
 
-**2. Scheduling**
-- **Due Date*** (date picker, required)
-  - Defaults to: Today + 3 days
-  - Quick options: Today, Tomorrow, Next Week
-- **Priority** (radio buttons: High, Medium [default], Low)
-
-**3. Assignment & Context**
-- **Assigned To*** (user dropdown, defaults to current user)
-- **Related To** (searchable combo: Organization, Contact, or Opportunity)
-  - Type-ahead search across all three entity types
-  - Shows entity type icon + name
-  - Optional: Can create task without linking to record
-
-**4. Status** (only in Edit mode, not Create)
-- **Status** (dropdown: Not Started [default], In Progress, Completed)
-- **Completed At** (read-only, auto-populated when status = Completed)
-
-**Form Validation:**
-- **Required Fields** (marked with *):
-  - Title
-  - Due Date
-  - Assigned To
-- **Business Rules:**
-  - Cannot set due date in the past (warning, not blocking)
-  - Status "Completed" auto-sets completion timestamp
-
-**Quick Create (Inline):**
-- Available on Organization, Contact, and Opportunity detail pages
-- Button: "+ Add Task"
-- Opens modal with "Related To" field pre-filled
-- Minimal fields: Title, Due Date, Priority
-- Saves immediately, no confirmation
-
-#### Notifications & Reminders
-
-**Overdue Task Indicators:**
-- **In-app badge:** Red dot on "Tasks" navigation item showing count of overdue tasks
-- **Task list:** Overdue tasks highlighted in red at top of list
-- **Due date column:** Displays "Overdue by X days" in red text
-
-**Daily Reminder (Email):**
-- Sent at 8 AM local time (configurable per user in profile settings)
-- Subject: "You have [X] tasks due today"
-- Body: List of tasks due today + overdue tasks
-- CTA button: "View My Tasks" → Links to CRM task list
-
-**Mobile Push Notifications (Future Phase):**
-- Not in MVP scope
-- Phase 3: Mobile app with push notifications for overdue tasks
-
-#### Access Control
-
-**Per user's Q11 answer (D: All 4 roles):**
-
-| Role | My Tasks | Others' Tasks | Actions |
-|------|----------|---------------|---------|
-| **Admin** | Full CRUD | Full CRUD (all users) | View, create, edit, delete, reassign any task |
-| **Sales Manager** | Full CRUD | Full CRUD (team members) | View, create, edit, delete, reassign team tasks |
-| **Sales Rep** | Full CRUD | View only | View own tasks + others' tasks (read-only) |
-| **Read-Only** | View only | View only | View all tasks (read-only) |
-
-**RLS Policy Pattern:**
-```sql
--- Task SELECT: All authenticated users can view all tasks (transparency)
-CREATE POLICY authenticated_select_tasks ON tasks
-  FOR SELECT TO authenticated
-  USING (deleted_at IS NULL);
-
--- Task INSERT: All users can create tasks
-CREATE POLICY authenticated_insert_tasks ON tasks
-  FOR INSERT TO authenticated
-  WITH CHECK (true);
-
--- Task UPDATE: Admin can update any, Sales Manager can update team, Rep can update own
-CREATE POLICY authenticated_update_tasks ON tasks
-  FOR UPDATE TO authenticated
-  USING (
-    deleted_at IS NULL AND (
-      auth.jwt() ->> 'role' = 'admin' OR  -- Admins update any
-      auth.jwt() ->> 'role' = 'Sales Manager' OR  -- Managers update any
-      assigned_to_id IN (SELECT id FROM sales WHERE user_id = auth.uid())  -- Rep updates own
-    )
-  );
-
--- Task DELETE: Same as UPDATE rules
-CREATE POLICY authenticated_delete_tasks ON tasks
-  FOR DELETE TO authenticated
-  USING (
-    deleted_at IS NULL AND (
-      auth.jwt() ->> 'role' = 'admin' OR
-      auth.jwt() ->> 'role' = 'Sales Manager' OR
-      assigned_to_id IN (SELECT id FROM sales WHERE user_id = auth.uid())
-    )
-  );
-```
+**Dashboard Integration:**
+- Tasks widget is part of main Dashboard component
+- No separate Tasks module or resource registration
+- Simple CRUD operations through dashboard interface
+- No email notifications (decision: users check tasks when logged in)
+- Uses HubSpot pattern with separate FKs for database integrity
 
 ### 3.7 Reports (MVP - Basic Only)
 
@@ -3212,13 +3070,87 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 
 ---
 
+## 8. IMPLEMENTATION DEVIATIONS & ARCHITECTURAL DECISIONS
+
+### Pragmatic Implementation Choices
+
+This section documents where the actual implementation differs from the original specification, following a "code wins" philosophy with pragmatic adjustments.
+
+#### Database Schema Patterns
+
+**Primary Keys:**
+- **Specified:** entity_name_id (e.g., organization_id, contact_id)
+- **Implemented:** id (PostgreSQL standard convention)
+- **Decision:** Keep current implementation - follows database best practices
+
+**Task Relationships (HubSpot Pattern):**
+- **Original:** Polymorphic pattern with related_to_type and related_to_id
+- **Implemented:** Separate foreign keys (contact_id, opportunity_id, organization_id)
+- **Rationale:** Maintains referential integrity at database level, simpler queries, follows HubSpot/Pipedrive industry standard
+
+**Organization Segments:**
+- **Specified:** Reference to segments table with segment_id
+- **Implemented:** Flexible text field allowing custom values
+- **Decision:** Switch to flexible text field per PRD for user flexibility
+
+#### Module Implementations
+
+**Tasks Module:**
+- **Specified:** Full module with List/Show/Edit/Create views
+- **Implemented:** Dashboard widget only with quick add/edit modals
+- **Decision:** Keep minimal - users manage tasks through dashboard
+- **Note:** No email notifications (users check tasks when logged in)
+
+**Reports Module:**
+- **Status:** To be implemented
+- **Scope:** Three basic reports as specified (no advanced analytics)
+  1. Opportunities by Principal (critical for business)
+  2. Weekly Activity Summary
+  3. Filtered List Exports (CSV)
+
+**Activity Tracking:**
+- **Specified:** Standalone module
+- **Implemented:** Embedded in Opportunities/Contacts + Dashboard timeline
+- **Decision:** Keep contextual approach - more intuitive for users
+
+#### Features Removed/Simplified
+
+**Product Pricing:**
+- **Removed:** list_price, currency_code, unit_of_measure columns
+- **Rationale:** Pricing is dynamic per customer/distributor
+- **Impact:** Simplified data model, products are catalog items only
+
+**Email Notifications:**
+- **Status:** Not implemented
+- **Decision:** Skip for MVP - reduces infrastructure complexity
+
+**Forecasting Features:**
+- **Status:** Removed from MVP
+- **Timeline:** Moved to Phase 3
+
+**Mobile App:**
+- **Status:** Not in MVP
+- **Timeline:** Phase 3 consideration
+
+#### Technical Stack Decisions
+
+**Authentication:** Supabase Auth (GoTrue)
+**Database:** PostgreSQL with RLS policies
+**Frontend:** React 19 + TypeScript + Vite
+**UI Framework:** React Admin + shadcn/ui components
+**State Management:** TanStack Query (server) + Zustand (client)
+**Deployment:** Vercel + Supabase Cloud
+
+---
+
 ## DOCUMENT APPROVAL
 
-**Prepared by**: Product Design & Engineering Team  
-**Reviewed by**: [Stakeholder Names]  
-**Approved by**: [Executive Sponsor]  
-**Date**: November 2, 2025  
-**Version**: 1.0 MVP
+**Prepared by**: Product Design & Engineering Team
+**Reviewed by**: Implementation Team
+**Approved by**: Technical Lead
+**Date**: November 3, 2025
+**Version**: 1.1 MVP (Implementation-Aligned)
+**Note**: This version has been updated to reflect actual implementation patterns and pragmatic architectural decisions
 
 ---
 
