@@ -4,17 +4,25 @@ This directory contains project-specific hooks that execute automatically during
 
 ## Active Hooks
 
-### 🚀 SessionStart Hooks (Currently Disabled)
+### 🚀 SessionStart Hooks (2 components)
 
-**Status:** DISABLED - SessionStart hooks have been removed from `.claude/settings.json`
+#### 1. Superpowers Confirmation Message
+**File:** `.claude/hooks/init-superpowers.sh`
+**Type:** Command script
+**Purpose:** Displays "YOU HAVE SUPERPOWERS NOW!" confirmation message
 
-**Available Script:** `.claude/hooks/init-superpowers.sh`
-- Ready to use but not configured to run automatically
-- Can be manually invoked if needed
-- Displays "YOU HAVE SUPERPOWERS NOW!" confirmation message
+#### 2. Superpowers System Initialization
+**File:** Configured in `.claude/settings.json`
+**Type:** Prompt execution
+**Command:** Sends prompt to execute `superpowers:using-superpowers`
+**Purpose:** Activates the superpowers workflow enforcement system
 
-**To Enable Superpowers Manually:**
-Use the Skill tool: `superpowers:using-superpowers`
+**What happens at session start:**
+1. Beautiful ASCII banner displays "YOU HAVE SUPERPOWERS NOW!"
+2. Shows system status (ACTIVE/ENABLED/MANDATORY)
+3. Lists enforced protocols
+4. Loads the superpowers skill for workflow enforcement
+5. All subsequent tasks check for relevant skills automatically
 
 ### 📝 PostToolUse Hooks (File Modifications)
 Triggered after Write, Edit, or MultiEdit operations:
