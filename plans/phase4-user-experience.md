@@ -268,21 +268,21 @@ Full-text search with operators, history, saved searches, and fuzzy matching acr
   - PostgreSQL full-text search
 
 #### P4-E2-S1-T5: Implement Search Query Parser
-- **Hours:** 4h
-- **Confidence:** 55%
+- **Hours:** 2h
+- **Confidence:** 90%
 - **Prerequisites:** P4-E2-S1-T2
 - **Description:**
-  - Build parser for search query string
-  - Support operators: quotes, AND/OR, field-specific, exclusion
-  - Convert parsed query to PostgreSQL tsquery format
-  - Handle edge cases and malformed queries
-  - Add comprehensive test coverage
+  - Implement simple regex-based parser per spike design (docs/spikes/2024-11-03-search-parser-design.md)
+  - Enhance existing ILIKE search with field-specific filters
+  - Support operators: field:value, -exclusion, wildcards (*)
+  - Keep existing text search using ILIKE
+  - Deploy as Edge Function for security
 - **Acceptance Criteria:**
-  - [ ] Parser handles all specified operators
-  - [ ] Converts to valid tsquery syntax
+  - [ ] Parser extracts field filters and text search
+  - [ ] Integrates with existing applyFullTextSearch
   - [ ] Test coverage > 85%
   - [ ] Error messages clear for invalid syntax
-  - [ ] Performance: parse time < 50ms
+  - [ ] Performance: parse time < 5ms
 - **Integration Points:**
   - Full-text search database function
   - Frontend search input

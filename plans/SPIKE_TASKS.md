@@ -1,6 +1,6 @@
 # Research Spike Tasks Consolidated
-**Total Spikes:** 16 tasks across 5 phases
-**Total Time:** 41 hours
+**Total Spikes:** 20 tasks across 6 phases
+**Total Time:** 49 hours
 **Purpose:** Time-boxed research to reduce technical uncertainty
 
 ---
@@ -373,6 +373,121 @@ matchScore("company", "organization") // 0.9
 // Cache First (for assets)
 // Stale While Revalidate (for reports)
 ```
+
+---
+
+### P4-E2-S0-T5: Research Saved Search Storage Patterns
+**Time:** 2 hours
+**Confidence Before:** 55%
+**Required For:** P4-E2-S5-T1 (Saved searches implementation)
+
+**Research Questions:**
+1. localStorage vs IndexedDB vs server-side storage?
+2. How to handle search filter serialization?
+3. Sharing searches between users?
+4. Migration strategy if filter schema changes?
+
+**Storage Options to Evaluate:**
+```javascript
+// Option A: Server-side (Supabase table)
+saved_searches: { user_id, name, query_json, is_shared }
+
+// Option B: IndexedDB (client-side)
+{ id, name, filters, timestamp }
+
+// Option C: Hybrid (metadata server, query client)
+```
+
+**Success Criteria:**
+- [ ] Compare storage options
+- [ ] Define serialization format
+- [ ] Plan sharing mechanism
+- [ ] Document migration approach
+
+---
+
+### P6-E2-S0-T2: Research IndexedDB with Dexie.js
+**Time:** 2 hours
+**Confidence Before:** 65%
+**Required For:** P6-E2-S3-T1 (IndexedDB setup)
+
+**Research Questions:**
+1. Dexie.js vs native IndexedDB API?
+2. Schema versioning and migrations?
+3. Storage limits and quota management?
+4. Sync strategies with server data?
+
+**Implementation Patterns:**
+```javascript
+// Dexie schema definition
+db.version(1).stores({
+  contacts: '++id, name, email, *tags',
+  organizations: '++id, name',
+  offline_queue: '++id, action, timestamp'
+});
+```
+
+**Success Criteria:**
+- [ ] Evaluate Dexie.js benefits
+- [ ] Design schema structure
+- [ ] Plan sync mechanism
+- [ ] Test storage limits
+
+---
+
+### P6-E2-S0-T3: Design Offline UI Indicators
+**Time:** 2 hours
+**Confidence Before:** 68%
+**Required For:** P6-E2-S4-T1 (Offline UI implementation)
+
+**Research Questions:**
+1. Where to show offline status?
+2. How to indicate sync pending?
+3. Conflict resolution UI patterns?
+4. Progressive degradation approach?
+
+**UI Patterns to Evaluate:**
+- Status bar indicator
+- Toast notifications
+- Inline sync badges
+- Queue visualization
+
+**Competitor Analysis:**
+- Gmail offline mode
+- Notion offline handling
+- Linear offline experience
+- Slack offline behavior
+
+---
+
+### P6-E2-S0-T4: Cache Invalidation Strategies
+**Time:** 2 hours
+**Confidence Before:** 65%
+**Required For:** P6-E2-S5-T1 (Cache management)
+
+**Research Questions:**
+1. Time-based vs event-based invalidation?
+2. Partial vs full cache clearing?
+3. Background sync strategies?
+4. Cache size management?
+
+**Strategies to Compare:**
+```javascript
+// Time-based
+if (Date.now() - cached.timestamp > TTL) invalidate();
+
+// Event-based
+socket.on('data-changed', (resource) => invalidate(resource));
+
+// Version-based
+if (cached.version !== server.version) invalidate();
+```
+
+**Success Criteria:**
+- [ ] Define TTL per resource type
+- [ ] Plan invalidation triggers
+- [ ] Design cache size limits
+- [ ] Document update strategies
 
 ---
 
