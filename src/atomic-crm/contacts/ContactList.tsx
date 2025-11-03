@@ -8,6 +8,7 @@ import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { SortButton } from "@/components/admin/sort-button";
 import { Card } from "@/components/ui/card";
+import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import type { Organization, Contact, Sale, Tag } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ContactEmpty } from "./ContactEmpty";
@@ -35,6 +36,7 @@ export const ContactList = () => {
       exporter={exporter}
     >
       <ContactListLayout />
+      <FloatingCreateButton />
     </List>
   );
 };
