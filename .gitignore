@@ -68,3 +68,6 @@ scripts/dev/test-fetch.mjs
 # Supabase seed files with real user data
 supabase/cloud_users.sql
 .vercel
+
+# Git worktrees (isolated development workspaces)
+.worktrees/
