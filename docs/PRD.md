@@ -48,7 +48,7 @@ Crispy-CRM prioritizes **clean, accessible, unified design** with a focus on:
 ```typescript
 interface Organization {
   // Primary Key
-  organization_id: string;           // UUID, PK
+  organization_id: number;           // BIGINT, PK (auto-increment, industry standard for CRM)
   
   // Core Information
   organization_name: string;         // UNIQUE, REQUIRED
@@ -56,12 +56,12 @@ interface Organization {
   segment: OrganizationSegment;      // ENUM
   
   // Distribution Relationship
-  distributor_id?: string;           // FK → Organizations (self-reference)
+  distributor_id?: number;           // FK → Organizations (self-reference)
   distributor_rep_name?: string;
-  
+
   // Account Management
-  primary_account_manager_id?: string;    // FK → Users
-  secondary_account_manager_id?: string;  // FK → Users
+  primary_account_manager_id?: number;    // FK → Sales (Users)
+  secondary_account_manager_id?: number;  // FK → Sales (Users)
   weekly_priority: boolean;               // Default: false
   
   // Contact Information
@@ -78,8 +78,8 @@ interface Organization {
   // Audit Fields
   created_at: Date;
   updated_at: Date;
-  created_by: string;                // FK → Users
-  updated_by: string;                // FK → Users
+  created_by: number;                // FK → Sales (Users)
+  updated_by: number;                // FK → Sales (Users)
 }
 
 type PriorityLevel = 'A+' | 'A' | 'B' | 'C' | 'D';
@@ -102,20 +102,20 @@ type State = 'IL' | 'IN' | 'OH' | 'MI' | 'KY' | 'NY' // ... etc.
 ```typescript
 interface Contact {
   // Primary Key
-  contact_id: string;                // UUID, PK
-  
+  contact_id: number;                // BIGINT, PK (auto-increment)
+
   // Core Information
   full_name: string;                 // REQUIRED
-  organization_id: string;           // FK → Organizations, REQUIRED
+  organization_id: number;           // FK → Organizations, REQUIRED
   position?: ContactPosition;        // ENUM
-  
+
   // Contact Methods
   email?: string;
   phone?: string;
   linkedin_url?: string;
-  
+
   // Management
-  account_manager_id?: string;       // FK → Users
+  account_manager_id?: number;       // FK → Sales (Users)
   
   // Address
   street_address?: string;
@@ -129,8 +129,8 @@ interface Contact {
   // Audit Fields
   created_at: Date;
   updated_at: Date;
-  created_by: string;                // FK → Users
-  updated_by: string;                // FK → Users
+  created_by: number;                // FK → Sales (Users)
+  updated_by: number;                // FK → Sales (Users)
 }
 
 type ContactPosition = 
@@ -148,43 +148,55 @@ type ContactPosition =
 ```typescript
 interface Opportunity {
   // Primary Key
-  opportunity_id: string;            // UUID, PK
-  
+  opportunity_id: number;            // BIGINT, PK (auto-increment)
+
   // Core Information
   opportunity_name: string;          // REQUIRED
-  organization_id: string;           // FK → Organizations, REQUIRED
-  
+  description?: string;              // TEXT
+
+  // Multi-Organization Tracking (Critical Feature)
+  customer_organization_id: number;      // FK → Organizations, REQUIRED (the customer/restaurant)
+  principal_organization_id: number;     // FK → Organizations, REQUIRED (the brand/manufacturer) ⭐ MOST IMPORTANT
+  distributor_organization_id?: number;  // FK → Organizations (optional distributor)
+
   // Status & Stage
-  status: OpportunityStatus;         // ENUM
-  stage: OpportunityStage;           // ENUM
-  
+  status: OpportunityStatus;         // ENUM, DEFAULT: 'active'
+  stage: OpportunityStage;           // ENUM, DEFAULT: 'new_lead'
+  priority: PriorityLevel;           // ENUM: low, medium, high, critical, DEFAULT: 'medium'
+
   // Timeline
-  start_date: Date;                  // REQUIRED
-  expected_sold_date?: Date;
-  
-  // Probability & Volume
-  probability: number;               // DECIMAL 0-1 (0-100%)
-  cases_per_week_volume?: number;    // INTEGER
-  
-  // Product Information
-  principal?: string;                // Brand/product line
-  product_id?: string;               // FK → Products
-  
+  estimated_close_date: Date;        // REQUIRED, DEFAULT: now() + 90 days
+  actual_close_date?: Date;          // Populated when deal closes
+
+  // NOTE: product_id removed - use opportunity_products junction table (M:N relationship)
+  // Each opportunity can have multiple products, but only ONE principal
+
+  // Workflow Management
+  tags?: string[];                   // Array of tags for categorization (e.g., 'urgent', 'big-deal')
+  next_action?: string;              // What to do next (e.g., "Follow up call")
+  next_action_date?: Date;           // When to do next action
+  decision_criteria?: string;        // What matters to the customer in their decision
+
   // Ownership & Source
-  deal_owner_id: string;             // FK → Users, REQUIRED
-  source?: OpportunitySource;        // ENUM
-  
-  // Closure Information
-  loss_reason?: LossReason;          // ENUM (required if Closed and not SOLD)
-  
+  opportunity_owner_id?: number;     // FK → Sales (Users), who owns this deal
+  account_manager_id?: number;       // FK → Sales (Users), account manager
+  lead_source?: string;              // Where lead came from (e.g., 'referral', 'trade_show')
+
+  // System Fields
+  index?: number;                    // Sort order
+  founding_interaction_id?: number;  // FK → Activities (what created this opportunity)
+  stage_manual: boolean;             // Whether stage was manually set (vs. auto-updated)
+  status_manual: boolean;            // Whether status was manually set
+
   // Additional
-  notes?: string;
-  
+  notes?: string;                    // TEXT
+
   // Audit Fields
   created_at: Date;
   updated_at: Date;
-  created_by: string;                // FK → Users
-  updated_by: string;                // FK → Users
+  created_by?: number;               // FK → Sales (Users)
+  updated_by?: number;               // FK → Sales (Users)
+  deleted_at?: Date;                 // Soft delete timestamp
 }
 
 type OpportunityStatus = 
@@ -230,7 +242,7 @@ type LossReason =
 ```typescript
 interface Product {
   // Primary Key
-  product_id: string;                // UUID, PK
+  product_id: number;                // BIGINT, PK (auto-increment)
   
   // Core Information
   product_name: string;              // UNIQUE, REQUIRED
@@ -247,11 +259,12 @@ interface Product {
 }
 ```
 
-#### Users Table
+#### Users Table (Implemented as "Sales" table)
 ```typescript
 interface User {
   // Primary Key
-  user_id: string;                   // UUID, PK
+  user_id: number;                   // BIGINT, PK (auto-increment)
+  auth_user_id: string;              // UUID, FK → auth.users(id), UNIQUE
   
   // Authentication
   username: string;                  // UNIQUE, REQUIRED
@@ -282,16 +295,16 @@ type UserRole =
 ```typescript
 interface Activity {
   // Primary Key
-  activity_id: string;               // UUID, PK
-  
+  activity_id: number;               // BIGINT, PK (auto-increment)
+
   // Entity Reference (Polymorphic)
   entity_type: EntityType;           // ENUM
-  entity_id: string;                 // FK → respective table
-  
+  entity_id: number;                 // FK → respective table (BIGINT)
+
   // Activity Details
   activity_type: ActivityType;       // ENUM
   activity_date: Date;               // REQUIRED
-  user_id: string;                   // FK → Users, REQUIRED
+  user_id: number;                   // FK → Sales (Users), REQUIRED
   description?: string;
   
   // Audit
