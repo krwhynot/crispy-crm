@@ -1,9 +1,11 @@
 # PRODUCT REQUIREMENTS DOCUMENT
 # Crispy-CRM: Food Distribution Sales Management Platform
 
-**Version:** 1.1 MVP (Implementation-Aligned)
+**Version:** 1.2 MVP (Complete Specification)
 **Last Updated:** November 3, 2025
-**Change:** Updated to reflect actual implementation decisions and architectural patterns  
+**Changes:**
+- v1.1: Updated to reflect actual implementation decisions and architectural patterns
+- v1.2: Added business process rules and operational requirements (Sections 9-10)  
 **Document Owner:** Product Design & Engineering Team
 
 ---
@@ -1103,9 +1105,13 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 
 #### Create/Edit Forms
 
-**Form Approach: Modal Popup**
-- Opens as centered modal overlay (per user preference for all forms)
-- Single scrollable form (no wizard)
+**Form Approach: Side Panel (Material-UI Drawer)**
+- Opens as side panel from the right (industry standard for in-context editing)
+- Width: 600px on desktop, 80% on iPad
+- Overlay backdrop with close on outside click
+- Sticky header with form title and close button
+- Scrollable content area
+- Sticky footer with Save/Cancel buttons
 - Sections organized with clear headers
 
 **Form Sections:**
@@ -1119,10 +1125,30 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
   - Which distributor (if applicable)
 
 **2. Opportunity Details**
-- **Opportunity Name*** (text input, e.g., "Poke Supply Deal")
+- **Opportunity Name*** (text input with helper text)
+  - **Naming Convention Helper Text:**
+    ```
+    Tips for naming opportunities:
+    • Include customer name: "Roka Akor - Tuna Roll Program"
+    • For trade shows: "NRA Show 2025 - {Customer} - {Principal}"
+    • For multi-location: "Whole Foods - {Principal} - {Region}"
+    • For trials: "{Customer} - {Principal} Trial Q1 2025"
+    ```
+  - **Auto-generate button** (refresh icon) generates name based on:
+    - Customer Organization + Principal + Current Quarter/Year
+    - Example: "Nobu Miami - Ocean Hugger - Q1 2025"
 - **Description** (textarea, 3-4 rows)
 - **Status** (dropdown: active [default], closed, on_hold)
-- **Stage** (dropdown: new_lead [default], initial_outreach, sample_visit_offered, awaiting_response, feedback_logged, demo_scheduled, closed_won, closed_lost)
+- **Stage** (dropdown with flexible transitions allowed):
+  - new_lead [default]
+  - initial_outreach
+  - sample_visit_offered
+  - awaiting_response
+  - feedback_logged
+  - demo_scheduled
+  - closed_won
+  - closed_lost
+  - **Note:** Users can move between any stages (no restrictions)
 - **Priority** (radio buttons: low, medium [default], high, critical)
 
 **3. Timeline**
@@ -3383,11 +3409,15 @@ Following industry best practices from Salesforce/HubSpot research:
 ## DOCUMENT APPROVAL
 
 **Prepared by**: Product Design & Engineering Team
-**Reviewed by**: Implementation Team
-**Approved by**: Technical Lead
+**Reviewed by**: Solo Developer
+**Approved by**: Project Owner
 **Date**: November 3, 2025
-**Version**: 1.1 MVP (Implementation-Aligned)
-**Note**: This version has been updated to reflect actual implementation patterns and pragmatic architectural decisions
+**Version**: 1.2 MVP (Complete Specification)
+**Note**: This comprehensive specification includes:
+- Implementation patterns aligned with current code
+- Business process rules for opportunity and product management
+- Operational requirements for single-developer deployment
+- Free-tier monitoring and backup strategies
 
 ---
 
