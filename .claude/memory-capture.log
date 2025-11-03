@@ -491,3 +491,8 @@
 [2025-11-02 20:53:02] [documentation] Edit: /home/krwhynot/.claude/skills/decomposing-prds-into-artifacts/SKILL.md
 [2025-11-02 21:05:46] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/ARTIFACT_GAP_ANALYSIS.md
 [2025-11-02 21:12:42] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/TEMPLATE.md
+[2025-11-02 21:12:56] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0001-use-supabase-for-backend-platform.md
+[2025-11-02 21:13:50] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0001-use-supabase-for-backend-platform.md
+[2025-11-02 21:15:22] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0002-use-react-query-for-server-state.md
+[2025-11-02 21:16:10] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/README.md
+[2025-11-02 21:18:20] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0003-use-zustand-over-redux.md
