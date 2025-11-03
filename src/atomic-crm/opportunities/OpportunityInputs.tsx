@@ -6,12 +6,16 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
+import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
-import { useWatch } from "react-hook-form";
+import { RefreshCw, Plus } from "lucide-react";
+import { useWatch, useFormContext } from "react-hook-form";
+import { useGetIdentity } from "ra-core";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { contactOptionText } from "../misc/ContactOption";
 import { AutocompleteOrganizationInput } from "@/atomic-crm/organizations/AutocompleteOrganizationInput";
+import { OrganizationInputs } from "@/atomic-crm/organizations/OrganizationInputs";
+import { ContactInputs } from "@/atomic-crm/contacts/ContactInputs";
 import {
   OPPORTUNITY_STAGE_CHOICES,
 } from "./stageConstants";
@@ -115,20 +119,51 @@ const OpportunityClassificationInputs = () => {
 
 // Organization relationships section
 const OpportunityOrganizationInputs = () => {
+  const { identity } = useGetIdentity();
+  const { setValue } = useFormContext();
+
   return (
     <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
       <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Key Relationships</h3>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
-        <ReferenceInput
-          source="customer_organization_id"
-          reference="organizations"
-          filter={{ organization_type: "customer" }}
-        >
-          <AutocompleteOrganizationInput
-            label="Customer Organization *"
-            organizationType="customer"
-          />
-        </ReferenceInput>
+        <div className="flex items-start gap-2">
+          <ReferenceInput
+            source="customer_organization_id"
+            reference="organizations"
+            filter={{ organization_type: "customer" }}
+            className="flex-1"
+          >
+            <AutocompleteOrganizationInput
+              label="Customer Organization *"
+              organizationType="customer"
+            />
+          </ReferenceInput>
+          <CreateInDialogButton
+            resource="organizations"
+            label="New Customer"
+            title="Create new Customer Organization"
+            description="Create a new customer organization and select it automatically"
+            defaultValues={{
+              organization_type: "customer",
+              sales_id: identity?.id,
+              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52", // Default to "Unknown" segment
+            }}
+            onSave={(record) => {
+              // Auto-select the newly created organization
+              setValue("customer_organization_id", record.id);
+            }}
+            transform={(values) => {
+              // add https:// before website if not present
+              if (values.website && !values.website.startsWith("http")) {
+                values.website = `https://${values.website}`;
+              }
+              return values;
+            }}
+            className="mt-7"
+          >
+            <OrganizationInputs />
+          </CreateInDialogButton>
+        </div>
 
         <ReferenceInput
           source="account_manager_id"
@@ -145,27 +180,83 @@ const OpportunityOrganizationInputs = () => {
           />
         </ReferenceInput>
 
-        <ReferenceInput
-          source="principal_organization_id"
-          reference="organizations"
-          filter={{ organization_type: "principal" }}
-        >
-          <AutocompleteOrganizationInput
-            label="Principal Organization *"
-            organizationType="principal"
-          />
-        </ReferenceInput>
+        <div className="flex items-start gap-2">
+          <ReferenceInput
+            source="principal_organization_id"
+            reference="organizations"
+            filter={{ organization_type: "principal" }}
+            className="flex-1"
+          >
+            <AutocompleteOrganizationInput
+              label="Principal Organization *"
+              organizationType="principal"
+            />
+          </ReferenceInput>
+          <CreateInDialogButton
+            resource="organizations"
+            label="New Principal"
+            title="Create new Principal Organization"
+            description="Create a new principal organization and select it automatically"
+            defaultValues={{
+              organization_type: "principal",
+              sales_id: identity?.id,
+              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52", // Default to "Unknown" segment
+            }}
+            onSave={(record) => {
+              // Auto-select the newly created organization
+              setValue("principal_organization_id", record.id);
+            }}
+            transform={(values) => {
+              // add https:// before website if not present
+              if (values.website && !values.website.startsWith("http")) {
+                values.website = `https://${values.website}`;
+              }
+              return values;
+            }}
+            className="mt-7"
+          >
+            <OrganizationInputs />
+          </CreateInDialogButton>
+        </div>
 
-        <ReferenceInput
-          source="distributor_organization_id"
-          reference="organizations"
-          filter={{ organization_type: "distributor" }}
-        >
-          <AutocompleteOrganizationInput
-            label="Distributor Organization"
-            organizationType="distributor"
-          />
-        </ReferenceInput>
+        <div className="flex items-start gap-2">
+          <ReferenceInput
+            source="distributor_organization_id"
+            reference="organizations"
+            filter={{ organization_type: "distributor" }}
+            className="flex-1"
+          >
+            <AutocompleteOrganizationInput
+              label="Distributor Organization"
+              organizationType="distributor"
+            />
+          </ReferenceInput>
+          <CreateInDialogButton
+            resource="organizations"
+            label="New Distributor"
+            title="Create new Distributor Organization"
+            description="Create a new distributor organization and select it automatically"
+            defaultValues={{
+              organization_type: "distributor",
+              sales_id: identity?.id,
+              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52", // Default to "Unknown" segment
+            }}
+            onSave={(record) => {
+              // Auto-select the newly created organization
+              setValue("distributor_organization_id", record.id);
+            }}
+            transform={(values) => {
+              // add https:// before website if not present
+              if (values.website && !values.website.startsWith("http")) {
+                values.website = `https://${values.website}`;
+              }
+              return values;
+            }}
+            className="mt-7"
+          >
+            <OrganizationInputs />
+          </CreateInDialogButton>
+        </div>
       </div>
     </div>
   );
