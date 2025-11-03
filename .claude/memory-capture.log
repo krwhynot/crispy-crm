@@ -684,3 +684,7 @@
 [2025-11-03 15:57:05] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251103215645_remove_phase3_features.sql
 [2025-11-03 15:57:42] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/types.ts
 [2025-11-03 16:05:29] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251103220516_remove_product_pricing_tables.sql
+[2025-11-03 16:05:42] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251103220531_remove_product_food_specific_fields.sql
+[2025-11-03 16:05:58] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251103220544_remove_deprecated_contact_organizations.sql
+[2025-11-03 16:07:26] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251103220652_fix_products_search_trigger_removed_fields.sql
+[2025-11-03 16:38:05] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251031132404_remove_unused_tables.sql
