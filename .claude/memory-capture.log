@@ -496,3 +496,9 @@
 [2025-11-02 21:15:22] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0002-use-react-query-for-server-state.md
 [2025-11-02 21:16:10] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/README.md
 [2025-11-02 21:18:20] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0003-use-zustand-over-redux.md
+[2025-11-02 21:19:49] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0004-use-jwt-authentication-with-refresh-tokens.md
+[2025-11-02 21:21:05] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/0005-soft-delete-strategy-for-core-entities.md
+[2025-11-02 21:21:35] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/README.md
+[2025-11-02 21:21:42] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/architecture/adr/README.md
+[2025-11-02 21:22:54] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/DAY1_COMPLETION_SUMMARY.md
+[2025-11-02 21:33:32] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/database/MIGRATION_STRATEGY.md
