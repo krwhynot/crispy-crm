@@ -1,12 +1,13 @@
 # PRODUCT REQUIREMENTS DOCUMENT
 # Crispy-CRM: Food Distribution Sales Management Platform
 
-**Version:** 1.3 MVP (Complete Specification)
+**Version:** 1.4 MVP (Complete Specification)
 **Last Updated:** November 3, 2025
 **Changes:**
 - v1.1: Updated to reflect actual implementation decisions and architectural patterns
 - v1.2: Added business process rules and operational requirements (Sections 9-10)
 - v1.3: Enhanced opportunity management with trade show handling, naming conventions, and multi-brand filtering
+- v1.4: Added Round 5 specifications - notifications, import/export, dashboard, search, iPad optimizations, keyboard shortcuts, offline mode, performance targets, backup strategy
 **Document Owner:** Product Design & Engineering Team
 
 ---
@@ -3238,12 +3239,13 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - "Retry" button for failed requests
 - Queue navigation for when online
 
-### 5.4 Security Requirements
+### 5.5 Security Requirements
 
 **Authentication:**
 - JWT tokens with 15-minute expiration
 - Refresh tokens with 30-day expiration (HTTP-only cookie)
 - Token rotation on refresh
+- **Sessions never expire** (stay logged in indefinitely)
 
 **Authorization:**
 - Role-based access control (RBAC) enforced server-side
@@ -3251,16 +3253,128 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - Frontend hides UI elements based on role (defense in depth)
 
 **Data Protection:**
-- HTTPS required for all requests
+- **HTTPS required for all requests**
+- **Password hashing with bcrypt**
+- **Basic privacy compliance only** (no GDPR/CCPA requirements)
 - API rate limiting (100 requests/minute per user)
 - Input validation and sanitization (SQL injection prevention)
 - XSS prevention (React escapes by default, careful with dangerouslySetInnerHTML)
 - CSRF protection (CSRF tokens for state-changing requests)
 
-**Password Security:**
-- Minimum 8 characters
+**Password Policy:**
+- **No password requirements** (user's choice)
+- Any length, any characters accepted
+- No complexity requirements
+- No password expiration
+- No password history
 - Bcrypt hashing (cost factor 12)
 - Password reset tokens expire in 1 hour
+
+**Data Validation Strategy:**
+- **Backend validation only** (single source of truth)
+- No frontend validation (except basic HTML5 attributes)
+- All validation rules in Supabase/PostgreSQL layer
+- Return user-friendly error messages with codes
+
+### 5.6 Error Handling
+
+**Error Display:**
+- **User-friendly messages with error codes**
+- Format: "Unable to save organization (E1001)"
+- Error dictionary maintained for support reference
+- No technical details exposed to users
+- Log full errors server-side only
+
+**Failed Operations:**
+- **Simple error display, user must retry manually**
+- No automatic retry logic
+- No operation queuing
+- Clear error message with retry button
+- Lost work prevention through auto-save drafts
+
+**Error Codes:**
+- E1xxx: Authentication/Authorization errors
+- E2xxx: Validation errors
+- E3xxx: Database errors
+- E4xxx: Network/connectivity errors
+- E5xxx: Business logic errors
+
+### 5.7 Monitoring & Logging
+
+**Application Monitoring:**
+- **Basic uptime monitoring only**
+- Use free tier service (UptimeRobot or similar)
+- Alert on site down via email
+- No APM or performance monitoring
+- No custom dashboards
+
+**User Activity Logging:**
+- **All user actions including views logged**
+- Log format: timestamp, user_id, action, entity_type, entity_id, IP address
+- Store in database table `activity_logs`
+- Used for audit trail and debugging
+- No analytics or behavior tracking
+
+**Log Retention:**
+- **30 days retention** for all logs
+- Automatic cleanup job runs nightly
+- Older logs deleted permanently
+- No archival or cold storage
+
+### 5.8 Integration & API Strategy
+
+**Third-Party Integrations:**
+- **None - standalone CRM only**
+- No email provider integration
+- No calendar sync
+- No accounting software
+- No marketing tools
+- Future consideration only
+
+**External API:**
+- **No API exposed**
+- Internal use only via Supabase
+- No REST endpoints for external consumers
+- No GraphQL
+- No webhooks
+
+**Webhook Support:**
+- **No webhooks**
+- No event notifications to external systems
+- All processing synchronous
+- No message queues or event streaming
+
+### 5.9 Deployment & Migration Strategy
+
+**Database Migrations (Post-Launch):**
+- **Scripted migrations with downtime** (Recommended by zen)
+- Use Supabase migration files
+- Version control all schema changes
+- Test migrations on local first
+- Schedule maintenance windows (5-10 minutes)
+- Notify users in advance
+- Apply during off-hours
+
+**Migration Workflow:**
+1. Develop and test locally
+2. Generate migration: `supabase db diff -f <name>`
+3. Review generated SQL
+4. Commit to version control
+5. Schedule maintenance window
+6. Apply to production: `supabase db push`
+7. Verify and monitor
+
+**Feature Flags:**
+- **No feature flags**
+- All features available to all users
+- No gradual rollout capability
+- No A/B testing infrastructure
+
+**Multi-Language Support:**
+- **English only forever**
+- No i18n framework needed
+- All text hard-coded in English
+- No translation infrastructure
 
 ---
 
