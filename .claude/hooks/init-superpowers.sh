@@ -2,6 +2,20 @@
 # Initialize Superpowers System at Session Start
 # This hook runs automatically when Claude Code starts in this project
 
+# --- DEBUGGING START ---
+LOG_FILE="/tmp/claude_hook_debug_$(date +%Y%m%d_%H%M%S).log"
+echo "--- init-superpowers.sh Debug Log ---" > "$LOG_FILE"
+echo "Timestamp: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
+echo "Current Working Directory: $(pwd)" >> "$LOG_FILE"
+echo "CLAUDE_PROJECT_DIR: \"$CLAUDE_PROJECT_DIR\"" >> "$LOG_FILE"
+echo "Attempting to execute: ${CLAUDE_PROJECT_DIR}/.claude/hooks/init-superpowers.sh" >> "$LOG_FILE"
+echo "Path to self (0): $0" >> "$LOG_FILE"
+echo "PATH environment variable: $PATH" >> "$LOG_FILE"
+echo "User: $(whoami)" >> "$LOG_FILE"
+echo "Shell: $SHELL" >> "$LOG_FILE"
+echo "--- DEBUGGING END ---" >> "$LOG_FILE"
+# --- DEBUGGING END ---
+
 # Color codes for beautiful output
 ROCKET="🚀"
 STAR="⭐"

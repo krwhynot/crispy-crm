@@ -61,12 +61,28 @@ The hook configuration is in `.claude/settings.json`:
 ```json
 "SessionStart": [
   {
-    "type": "skill",
-    "skill": "superpowers:using-superpowers",
-    "description": "Initialize superpowers system at session start"
+    "matcher": "startup",
+    "hooks": [
+      {
+        "type": "command",
+        "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/init-superpowers.sh"
+      },
+      {
+        "type": "prompt",
+        "prompt": "Execute the skill: superpowers:using-superpowers..."
+      }
+    ]
   }
 ]
 ```
+
+### Matcher Types
+
+SessionStart hooks support different matchers:
+- **`startup`** - Runs when Claude Code starts fresh (what we use)
+- **`resume`** - Runs when resuming a session
+- **`clear`** - Runs after `/clear` command
+- **`compact`** - Runs during auto/manual compact
 
 ## Troubleshooting
 
