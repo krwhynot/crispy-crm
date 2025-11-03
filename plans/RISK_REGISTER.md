@@ -1,7 +1,7 @@
 # Risk Register - Low Confidence Tasks
 **Generated:** November 3, 2025
 **Risk Threshold:** Tasks with <70% confidence
-**Total Risk Items:** 22 tasks (1 resolved)
+**Total Risk Items:** 22 tasks (4 resolved)
 **Highest Risk Phase:** Phase 4 (Advanced Search)
 
 ---
@@ -26,13 +26,16 @@
 
 ### Phase 3: Opportunities
 
-#### P3-E3-S2-T1: Campaign Grouping UI Design
-- **Confidence:** 55%
+#### P3-E3-S2-T1: Campaign Grouping UI Design (RESOLVED)
+- **Confidence:** 80%
 - **Estimate:** 3 hours
-- **Risk:** New UI pattern not in existing codebase
-- **Impact:** Trade show workflow affected
-- **Mitigation:** Research CRM patterns, create mockups first
-- **Spike:** P3-E3-S1-T1 (required)
+- **Risk:** RESOLVED - Grouped datagrid pattern selected
+- **Impact:** Trade show workflow optimized
+- **Resolution:**
+  - Spike completed: docs/spikes/2024-11-03-campaign-grouping-ui.md
+  - Grouped datagrid with collapsible sections chosen
+  - React Admin compatible implementation
+  - Mobile/iPad optimized design included
 
 ### Phase 4: User Experience
 
@@ -96,13 +99,16 @@
 - **Impact:** May need user feedback
 - **Mitigation:** Build basic version, iterate
 
-#### P3-E2-S1-T2: Drag-Drop Integration
-- **Confidence:** 65%
+#### P3-E2-S1-T2: Drag-Drop Integration (RESOLVED)
+- **Confidence:** 85%
 - **Estimate:** 4 hours
-- **Risk:** Library integration complex
-- **Impact:** Could use buttons instead
-- **Mitigation:** dnd-kit has good docs
-- **Spike:** P3-E2-S1-T1 (library evaluation)
+- **Risk:** RESOLVED - dnd-kit patterns documented
+- **Impact:** Implementation path clear
+- **Resolution:**
+  - Spike completed: docs/spikes/2024-11-03-drag-drop-library-evaluation.md
+  - dnd-kit chosen for modern architecture and touch support
+  - Clear implementation patterns with React.memo optimization
+  - Normalized state pattern for efficient updates
 
 #### P3-E3-S4-T1: Campaign Analytics View
 - **Confidence:** 65%
