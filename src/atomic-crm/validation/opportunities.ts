@@ -73,14 +73,21 @@ const opportunityBaseSchema = z.object({
     .optional()
     .default([]),
 
+  // Campaign & Workflow Tracking fields (added 2025-11-03)
+  campaign: z.string().optional().nullable(),
+  related_opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
+  tags: z.array(z.string()).optional().default([]),
+  next_action: z.string().optional().nullable(),
+  next_action_date: z.string().optional().nullable(), // ISO date string
+  decision_criteria: z.string().optional().nullable(),
+
   // Note: The following fields exist in database but are NOT validated
   // because they have no UI input fields in OpportunityInputs.tsx (per "UI as truth" principle):
   // - status, actual_close_date
   // - index, founding_interaction_id
   // - stage_manual, status_manual
-  // - next_action, next_action_date
-  // - competition, decision_criteria
-  // - probability, tags
+  // - competition (undocumented - not in PRD)
+  // - probability
   // - competitor_ids, loss_reason, team_members
   // - opportunity_owner_id
 });

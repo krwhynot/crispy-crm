@@ -226,6 +226,8 @@ export interface Opportunity extends Pick<RaRecord, "id"> {
   next_action_date?: string;
   competition?: string;
   decision_criteria?: string;
+  campaign?: string; // Campaign name for grouping related opportunities (e.g., "Winter Fancy Food Show 2025")
+  related_opportunity_id?: Identifier; // Parent opportunity ID for follow-up tracking
 
   // Computed fields from opportunities_summary view (read-only)
   nb_interactions?: number;
