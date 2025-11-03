@@ -1,11 +1,12 @@
 # PRODUCT REQUIREMENTS DOCUMENT
 # Crispy-CRM: Food Distribution Sales Management Platform
 
-**Version:** 1.2 MVP (Complete Specification)
+**Version:** 1.3 MVP (Complete Specification)
 **Last Updated:** November 3, 2025
 **Changes:**
 - v1.1: Updated to reflect actual implementation decisions and architectural patterns
-- v1.2: Added business process rules and operational requirements (Sections 9-10)  
+- v1.2: Added business process rules and operational requirements (Sections 9-10)
+- v1.3: Enhanced opportunity management with trade show handling, naming conventions, and multi-brand filtering
 **Document Owner:** Product Design & Engineering Team
 
 ---
@@ -1160,12 +1161,37 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 - **Next Action** (text input, e.g., "Follow up call to discuss pricing")
 - **Decision Criteria** (textarea, 2-3 rows, e.g., "Price and delivery timeline")
 
-**5. Ownership & Source**
+**5. Contacts**
+- **Customer Contacts*** (multi-select dropdown)
+  - Filtered by selected Customer Organization
+  - At least one contact required
+  - Shows: Full Name, Position
+  - "Add New Contact" button opens contact creation in modal
+
+**6. Products (Junction Table Pattern)**
+- **Associated Products*** (repeatable section)
+  - Product dropdown (filtered by selected Principal)
+  - Notes field (optional, per product)
+  - "Add Product" button to add more products
+  - At least one product required
+- **Database Implementation:**
+  - Junction table: `opportunity_products`
+  - Fields: `opportunity_id`, `product_id`, `notes`
+  - No quantity/pricing fields (removed per architecture decision)
+
+**7. Ownership & Source**
 - **Opportunity Owner*** (user dropdown, defaults to current user)
 - **Account Manager** (user dropdown, optional)
 - **Lead Source** (dropdown: referral, trade_show, website, cold_call, email_campaign, social_media, partner, existing_customer)
 
-**6. Notes**
+**8. Campaign Grouping (for Trade Shows)**
+- **Campaign** (optional searchable dropdown)
+  - Used to group related opportunities (e.g., "NRA Show 2025")
+  - Allows tracking multiple opportunities from same event
+- **Related To** (optional reference to parent opportunity)
+  - Links trade show opportunities together
+
+**9. Notes**
 - **Notes** (textarea, 4-5 rows, rich text optional for MVP)
 
 **Form Validation:**
@@ -1175,8 +1201,16 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
   - Opportunity Name
   - Expected Close Date
   - Opportunity Owner
+  - At least one Contact from Customer Organization
+  - At least one Product (filtered by Principal)
 - **Real-time validation** on blur (inline red error messages)
 - **Form-level validation** on submit (scroll to first error)
+- **Smart Defaults:**
+  - Stage: new_lead
+  - Status: active
+  - Priority: medium
+  - Expected Close Date: today + 90 days
+  - Opportunity Owner: current user
 
 **Form Actions:**
 - **Save** button (primary, bottom right)
@@ -1217,6 +1251,71 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 - Confirmation: "Archive '[Opp Name]'? You can restore it later from archived opportunities. [Cancel] [Archive]"
 - Archived opportunities visible in "Archived" filter view
 - Restore action available for admins
+
+#### Trade Show Handling (Multiple Principals)
+
+**Business Scenario:**
+- Trade shows often involve conversations with same customer about multiple principals/brands
+- Industry best practice: Create separate opportunities per principal (not combined)
+- Enables accurate pipeline tracking per brand
+
+**Implementation Pattern:**
+1. **Separate Opportunities per Principal:**
+   - Customer meets about Ocean Hugger AND Fishpeople at NRA Show
+   - Create TWO opportunities:
+     - "NRA Show 2025 - Nobu Miami - Ocean Hugger"
+     - "NRA Show 2025 - Nobu Miami - Fishpeople"
+
+2. **Campaign Grouping:**
+   - Campaign field links related opportunities (e.g., "NRA Show 2025")
+   - Enables filtering/reporting on all opportunities from an event
+   - Visual grouping in list view when filtered by campaign
+
+3. **Visual Display:**
+   - When viewing campaign-filtered list: Group opportunities in cards/sections by customer
+   - Show principal badge prominently on each opportunity
+   - Example layout:
+     ```
+     Campaign: NRA Show 2025
+     ┌─────────────────────────────────────┐
+     │ Nobu Miami (2 opportunities)        │
+     │  • Ocean Hugger - New Lead          │
+     │  • Fishpeople - Sample Offered      │
+     └─────────────────────────────────────┘
+     ```
+
+4. **Booth Visitor Tracking:**
+   - Create minimal opportunity for booth visitors
+   - Name: "NRA 2025 - {Contact Name} - {Principal}"
+   - Can convert to full opportunity later if interest develops
+
+#### Multi-Brand Filtering Behavior
+
+**Scenario:** User represents multiple principals and needs focused views
+
+**Filter Implementation (Based on Industry Best Practices):**
+1. **"All My Principals" View (Default):**
+   - Shows opportunities for all principals user represents
+   - No automatic filtering - user sees full pipeline
+
+2. **Principal Filter (Prominent in UI):**
+   - Multi-select dropdown at top of list/kanban view
+   - Allows focusing on one or more principals
+   - Persists during session but resets on page reload
+
+3. **Visual Differentiation:**
+   - Principal name shown prominently on every opportunity card/row
+   - Optional: Color-coded badges per principal (admin-configurable)
+
+4. **Saved Views per Principal:**
+   - Quick filter buttons: "Ocean Hugger Only", "Fishpeople Only", etc.
+   - Created by admin, available to all users
+   - One-click filtering to specific principal pipeline
+
+5. **Reports by Principal:**
+   - All reports include Principal as a grouping option
+   - Pipeline report shows separate sections per principal
+   - Export includes principal column for pivot table analysis
 
 ### 3.5 Products Module
 
@@ -1403,11 +1502,28 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 
 #### Reports Included in MVP
 
+**Report Access Control:**
+- **Democratic approach:** All users can access all reports
+- No role-based restrictions on report visibility
+- All users see the same report options in the Reports menu
+- Rationale: Small team collaboration, transparency over hierarchy
+
+**Export Format:**
+- **CSV only** for all exports (simple, universal compatibility)
+- No Excel formatting, PDF, or JSON in MVP
+- File naming: `{report_name}_{date}.csv`
+- UTF-8 encoding with headers
+
+**Report Scheduling:**
+- **No automation in MVP** - all reports are run manually
+- User must click "Run Report" to generate fresh data
+- No scheduled emails or recurring reports
+
 **1. Opportunities by Principal Report ⭐ MOST IMPORTANT**
 
 **Purpose:** See all opportunities grouped by which brand/manufacturer (Principal) they're for.
 
-**Access:** Reports > Opportunities by Principal
+**Access:** Reports > Opportunities by Principal (available to all users)
 
 **Features:**
 - Grouped list view: Principal as header, opportunities nested underneath
