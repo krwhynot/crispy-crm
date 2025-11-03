@@ -1,6 +1,13 @@
 {
-  "description": "Project hooks for file tracking and git checkpoints",
+  "description": "Project hooks for file tracking, git checkpoints, and superpowers initialization",
   "hooks": {
+    "SessionStart": [
+      {
+        "type": "skill",
+        "skill": "superpowers:using-superpowers",
+        "description": "Initialize superpowers system at session start"
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
