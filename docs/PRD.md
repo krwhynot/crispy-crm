@@ -105,32 +105,60 @@ interface Contact {
   contact_id: number;                // BIGINT, PK (auto-increment)
 
   // Core Information
-  full_name: string;                 // REQUIRED
-  organization_id: number;           // FK → Organizations, REQUIRED
-  position?: ContactPosition;        // ENUM
+  name: string;                      // REQUIRED (computed from first_name + last_name)
+  first_name?: string;
+  last_name?: string;
+  organization_id?: number;          // FK → Organizations
 
-  // Contact Methods
-  email?: string;
-  phone?: string;
+  // Contact Methods (JSONB Arrays - supports multiple entries with types)
+  email: EmailEntry[];               // Array: [{ email: "john@example.com", type: "Work" }]
+  phone: PhoneEntry[];               // Array: [{ number: "555-1234", type: "Mobile" }]
   linkedin_url?: string;
+  twitter_handle?: string;
+
+  // Professional Information
+  title?: string;                    // Job title (e.g., "Chef", "Manager")
+  department?: string;
 
   // Management
-  account_manager_id?: number;       // FK → Sales (Users)
-  
+  sales_id?: number;                 // FK → Sales (Users), account manager for this contact
+
   // Address
-  street_address?: string;
+  address?: string;
   city?: string;
-  state?: State;
-  zip_code?: string;
-  
+  state?: string;
+  postal_code?: string;
+  country?: string;                  // DEFAULT: 'USA'
+
+  // Personal Information
+  birthday?: Date;
+  gender?: string;
+
   // Additional
   notes?: string;
-  
+  tags?: number[];                   // Array of tag IDs
+
+  // Tracking
+  first_seen?: Date;                 // When first added to CRM
+  last_seen?: Date;                  // Last interaction date
+
   // Audit Fields
   created_at: Date;
   updated_at: Date;
-  created_by: number;                // FK → Sales (Users)
-  updated_by: number;                // FK → Sales (Users)
+  created_by?: number;               // FK → Sales (Users)
+  updated_by?: number;               // FK → Sales (Users)
+  deleted_at?: Date;                 // Soft delete timestamp
+}
+
+// JSONB array entry types
+interface EmailEntry {
+  email: string;                     // Email address
+  type: 'Work' | 'Home' | 'Other';   // Email type, DEFAULT: 'Work'
+}
+
+interface PhoneEntry {
+  number: string;                    // Phone number
+  type: 'Work' | 'Home' | 'Mobile' | 'Other';  // Phone type, DEFAULT: 'Work'
 }
 
 type ContactPosition = 
@@ -199,43 +227,37 @@ interface Opportunity {
   deleted_at?: Date;                 // Soft delete timestamp
 }
 
-type OpportunityStatus = 
-  | 'Open'
-  | 'Closed'
-  | 'On Hold'
-  | 'SOLD-7d'
-  | 'open';  // Note: Lowercase variant from legacy data
+type OpportunityStatus =
+  | 'active'                         // Currently working on deal (DEFAULT)
+  | 'open'                           // Legacy variant, treated as 'active'
+  | 'closed'                         // Deal closed (won or lost)
+  | 'on_hold';                       // Deal paused
 
-type OpportunityStage = 
-  | 'Lead-discovery-1'
-  | 'Contacted-phone/email-2'
-  | 'Sampled/Visited invite-3'
-  | 'Follow-up-4'
-  | 'Feedback-received-5'
-  | 'demo-cookup-6'
-  | 'SOLD-7'
-  | 'order support-8'
-  | 'Kaufholds'
-  | 'Swap'
-  | 'VAF BLITZ'
-  | 'Phone'
-  | 'Loss Business. Reason?';
+type OpportunityStage =
+  | 'new_lead'                       // Initial lead discovery (DEFAULT)
+  | 'initial_outreach'               // First contact attempt
+  | 'sample_visit_offered'           // Offered product sample/visit
+  | 'awaiting_response'              // Waiting for customer response
+  | 'feedback_logged'                // Customer feedback received
+  | 'demo_scheduled'                 // Demo/cookup scheduled
+  | 'closed_won'                     // Deal won (SOLD)
+  | 'closed_lost';                   // Deal lost
 
-type OpportunitySource = 
-  | 'MFB'
-  | 'Principal'
-  | 'Distributor referral'
-  | 'Already Known'
-  | 'Appointment'
-  | 'Customer referral'
-  | 'Networking'
-  | 'Email'
-  | 'Walk-In';
+type PriorityLevel =
+  | 'low'
+  | 'medium'                         // DEFAULT
+  | 'high'
+  | 'critical';
 
-type LossReason = 
-  | 'Competitor'
-  | 'Price'
-  | 'Other';
+type LeadSource =
+  | 'referral'
+  | 'trade_show'
+  | 'website'
+  | 'cold_call'
+  | 'email_campaign'
+  | 'social_media'
+  | 'partner'
+  | 'existing_customer';
 ```
 
 #### Products Table
@@ -518,18 +540,37 @@ Activity Log N:1 [Opportunity|Organization|Contact] (Polymorphic)
 
 #### User Roles & Permissions
 
-| Role | Organizations | Contacts | Opportunities | Products | Users | Reports |
-|------|--------------|----------|---------------|----------|-------|---------|
-| **Admin** | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD | All access |
-| **Sales Manager** | Full CRUD | Full CRUD | Full CRUD | Read | Read | All access |
-| **Sales Rep** | Read All, Edit Assigned | Read All, Edit Assigned | Read All, Full CRUD on Owned | Read | Read Own | Own + Team |
-| **Read-Only** | Read | Read | Read | Read | Read Own | Basic |
+**Access Model: Shared Team Collaboration**
 
-**Additional Permission Rules:**
-- Sales Reps can only edit Organizations where they are Primary/Secondary Account Manager
-- Sales Reps can view all Opportunities but only edit those where they are Deal Owner
-- Activity Log entries visible based on entity access
-- Bulk actions restricted to Sales Manager and Admin roles
+This CRM is designed for a **small collaborative team (2-10 people)** working together on a shared customer base. All authenticated users can view and edit all shared resources to enable teamwork and flexibility.
+
+| Role | Organizations | Contacts | Opportunities | Products | Activities | Tasks |
+|------|--------------|----------|---------------|----------|------------|-------|
+| **Admin** | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD (all users) |
+| **Sales Manager** | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD (all users) |
+| **Sales Rep** | Full CRUD | Full CRUD | Full CRUD | Read | Full CRUD | Own tasks only |
+| **Read-Only** | Read | Read | Read | Read | Read | Own tasks only |
+
+**Access Control Rules:**
+
+**Shared Resources** (Collaborative team access):
+- **Organizations**: All authenticated users can view, create, edit, and delete
+- **Contacts**: All authenticated users can view, create, edit, and delete
+- **Opportunities**: All authenticated users can view, create, edit, and delete
+- **Activities**: All authenticated users can view, create, edit, and delete
+- **Products**: All authenticated users can view (Admins/Managers can edit)
+
+**Personal Resources** (Creator-only access):
+- **Tasks**: Users can only view, edit, and delete their own tasks
+- Designed for individual task management within shared CRM environment
+
+**Why Shared Access?**
+- Enables team members to help each other (cover vacations, handle urgent requests)
+- Allows managers to step in on any account when needed
+- Simplifies training and reduces permission-related support issues
+- Trust-based model suitable for small, collaborative sales teams
+
+**Future Multi-Tenant Note:** If expanding to multiple companies/tenants, add `company_id` to isolate data between organizations.
 
 ### 3.2 Organizations Module
 
@@ -836,40 +877,48 @@ Activity Log N:1 [Opportunity|Organization|Contact] (Polymorphic)
 - Success toast: "Contact created successfully"
 - Option to "Add Another Contact" after creation
 
-### 3.4 Opportunities Module (Core CRM Feature)
+### 3.4 Opportunities Module ⭐ PRINCIPAL TRACKING (MOST IMPORTANT FEATURE)
+
+**Critical Business Need:** Track which Principal (brand/manufacturer) each opportunity is for. This is the #1 most important feature for reporting and pipeline management.
 
 #### Pipeline View (Kanban Board)
 
 **Visual Design:**
-- Horizontal swim lanes for each stage:
-  1. **Lead-discovery-1** (Lightest blue)
-  2. **Contacted-phone/email-2**
-  3. **Sampled/Visited invite-3**
-  4. **Follow-up-4**
-  5. **Feedback-received-5**
-  6. **demo-cookup-6**
-  7. **SOLD-7** (Green)
-  8. **order support-8** (Darkest green)
+- Horizontal swim lanes for each stage (8 stages):
+  1. **New Lead** (Lightest blue) - Initial lead discovery
+  2. **Initial Outreach** - First contact attempt
+  3. **Sample/Visit Offered** - Offered product sample or site visit
+  4. **Awaiting Response** - Waiting for customer feedback
+  5. **Feedback Logged** - Customer response received
+  6. **Demo Scheduled** - Demo/cookup scheduled
+  7. **Closed Won** (Green) - Deal won!
+  8. **Closed Lost** (Red) - Deal lost
 
 **Stage Columns:**
-- Header: Stage name + number badge + total count + total volume
-- Example: "Follow-up-4 [12] | 150 cases/week"
+- Header: Stage name + count badge
+- Example: "New Lead [12]"
 - Color-coded background (subtle gradient)
-- Minimum width to prevent overcrowding
+- Scrollable horizontally on smaller screens
 
 **Opportunity Cards:**
 ```
 ┌───────────────────────────────────────┐
-│ [Priority Badge]  [Deal Owner Avatar] │
+│ [Priority Badge]  [Owner Avatar]      │
 │                                        │
-│ Organization Name                      │
-│ Opportunity Name (secondary)           │
+│ Customer Organization Name (primary)   │
+│ 🏢 Principal: Brand Name ⭐ KEY       │
+│ Opportunity Name                       │
 │                                        │
-│ 🎯 Product Name                        │
-│ 📦 150 cases/week                      │
-│ 📅 Expected: Dec 15, 2025              │
+│ 📅 Expected Close: Dec 15, 2025       │
+│ 🏷️  Tags: urgent, big-deal            │
 └───────────────────────────────────────┘
 ```
+
+**Key Card Elements:**
+- **Priority Badge**: Color-coded (low/medium/high/critical)
+- **Principal Name**: ⭐ PROMINENT - this is what we track
+- **Customer Organization**: Who the deal is with
+- **Tags**: Quick visual categorization
 
 **Interactions:**
 - **Drag-and-drop** between stages:
