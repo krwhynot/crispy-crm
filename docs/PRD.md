@@ -3141,6 +3141,243 @@ This section documents where the actual implementation differs from the original
 **State Management:** TanStack Query (server) + Zustand (client)
 **Deployment:** Vercel + Supabase Cloud
 
+### User Experience Patterns
+
+#### Data Import
+- **CSV Import:** Nice-to-have feature (Q3: Occasionally useful)
+- **Supported Entities:** Organizations and Contacts
+- **Use Cases:** Initial migration from Excel, periodic bulk updates
+- **Validation:** Preview with error highlighting before import
+- **Mapping:** Auto-detect columns with manual override option
+
+#### Form Validation
+- **Approach:** Real-time validation as user types (Q4: Real-time)
+- **Implementation:** Zod schemas with immediate feedback
+- **Error Display:** Inline below fields, red text with icons
+- **Success Indicators:** Green checkmarks for valid fields
+- **Performance:** Debounced validation (300ms) to avoid lag
+
+#### Navigation Pattern
+- **Layout:** Top bar with horizontal tabs (current implementation)
+- **Sections:** Dashboard | Contacts | Organizations | Opportunities | Products
+- **Mobile:** Responsive tabs collapse to hamburger menu on small screens
+- **Active State:** Border-bottom highlight on current section
+
+#### Dashboard Content Priority
+**Primary Focus:** Tasks & Activities (Q6: Priority A)
+1. **My Tasks Widget** - Shows overdue and upcoming tasks
+2. **Personal Pipeline** - User's opportunities by stage
+3. **Recent Activity** - Latest records and changes
+4. **Quick Actions** - Add buttons for common tasks
+
+#### Data Management
+
+**Data Retention Policy (30-Day Soft Delete):**
+- **Phase 1:** Soft delete with `deleted_at` timestamp
+- **Phase 2:** After 30 days, move to archive tables
+- **Phase 3:** Hard delete from archive after 90 days total
+- **Audit Trail:** Permanent retention of who deleted what and when
+
+**Duplicate Detection (Prevent Creation):**
+- **Organizations:** Check name + city combination
+- **Contacts:** Check email or (first_name + last_name + organization)
+- **Behavior:** Block creation with error message and link to existing record
+- **Admin Override:** Admins can force create with reason
+
+**Activity Logging (Comprehensive):**
+- **Logged Actions:** Every create, read, update, delete operation
+- **Stored Data:** User, timestamp, action, entity, changes (old/new values)
+- **Performance:** Async logging to avoid UI blocking
+- **Retention:** 90 days in main table, then archive
+
+#### Smart Defaults (Rule-Based, Not ML)
+
+Following industry best practices from Salesforce/HubSpot research:
+
+**Context-Aware Defaults:**
+- **Due Date:** Tasks default to +3 days from today
+- **Priority:** Medium for all new items
+- **Owner:** Current user for new records
+- **Stage:** "New Lead" for opportunities
+- **Organization Segment:** Last-used value per user session
+
+**Auto-Population Rules:**
+- **Contact Organization:** Pre-fill when creating from org page
+- **Opportunity Customer:** Pre-fill when creating from org context
+- **Task Related Entity:** Auto-link when created from entity page
+
+**Not Implemented (Avoiding Over-Engineering):**
+- ❌ Machine learning predictions
+- ❌ Complex multi-field dependencies
+- ❌ Behavioral pattern learning
+- ✅ Simple, predictable, fast
+
+#### Mobile Responsiveness
+- **Priority:** Important for occasional mobile use (Q12)
+- **Target Devices:** iPad (primary), iPhone (secondary), Android tablets
+- **Breakpoints:** Desktop (1024px+), Tablet (768-1023px), Mobile (<768px)
+- **Touch Targets:** Minimum 44x44px for all interactive elements
+- **Responsive Tables:** Card view on mobile, table view on desktop/tablet
+
+#### Opportunity-Contact Relationships
+- **Primary Pattern:** Single primary contact per opportunity (Q13)
+- **Junction Table:** Supports multiple contacts when needed
+- **Use Cases:** Primary decision maker + influencers
+- **UI Display:** Show primary contact prominently, others as "Additional Contacts"
+
+#### Search Functionality
+- **Scope:** Module-level search only (Q7: Confirmed)
+- **No Global Search:** Each module has its own search box
+- **Search Fields:**
+  - Organizations: Name, City
+  - Contacts: Name, Email
+  - Opportunities: Name, Customer, Principal
+  - Products: Name, SKU, Category
+- **Performance:** Real-time filtering with 200ms debounce
+
+#### Performance Optimization (Speed First)
+
+**Target Metrics (Q14: Speed First):**
+- **Initial Load:** <2 seconds
+- **List Views:** <500ms with 1000 records
+- **Form Submit:** <300ms response
+- **Search Results:** <200ms as-you-type
+
+**Optimization Strategies:**
+- Virtual scrolling for long lists
+- Lazy loading for tabs and modals
+- Optimistic UI updates
+- Aggressive caching with React Query
+- Database indexes on all foreign keys
+
+## 9. BUSINESS PROCESS RULES
+
+### Opportunity Management
+
+#### Stage Transitions
+- **Flexibility:** Can move to any stage at any time (Q1: Flexible)
+- **Requirement:** Must complete interaction form with description when changing stage
+- **Validation:** Stage change triggers activity log entry with mandatory notes field
+- **No Restrictions:** Can move backwards or skip stages as needed
+
+#### Ownership & Assignment
+- **Territory Management:** Manual assignment with self-service (Q2)
+- **Default Behavior:** New opportunities unassigned until claimed
+- **Self-Assignment:** Sales reps can claim unassigned opportunities
+- **Manager Override:** Managers can reassign any opportunity
+- **Orphaned Records:** When user deactivated, opportunities remain with them until manually reassigned (Q4)
+
+### Product Catalog
+- **Edit Permissions:** All authenticated users can add/edit products (Q3)
+- **No Approval Workflow:** Changes are immediate
+- **Audit Trail:** All product changes logged with user and timestamp
+- **No Currency/Pricing:** Products are catalog items only (Q7)
+
+### User & Role Management
+- **Fixed Roles:** 4 predefined roles, no customization (Q10)
+  - Admin
+  - Sales Manager
+  - Sales Rep
+  - Read-Only
+- **No Team Hierarchy:** Flat structure, no territory or team concepts
+- **Onboarding:** Guided tour in-app (last priority feature) (Q9)
+
+---
+
+## 10. OPERATIONAL REQUIREMENTS
+
+### Infrastructure & Deployment
+
+#### Environment Strategy (Q12)
+- **Two Environments:** Local Development + Production
+- **Local Dev:** Supabase CLI with Docker
+- **Production:** Supabase Cloud + Vercel
+- **No Staging:** Direct promotion from dev to production
+
+#### Change Management (Q13 - Single Developer)
+**Recommended Workflow for Solo Developer:**
+1. All configuration in version control (git)
+2. Test locally with `npm run db:local:reset`
+3. Create migrations with `npx supabase migration new`
+4. Review changes with `npx supabase db diff`
+5. Deploy with `npm run db:cloud:push`
+6. Tag releases in git for rollback ability
+
+**Best Practices:**
+- Keep migration files small and focused
+- Always include rollback scripts
+- Test migrations on fresh database before deploying
+- Use feature branches even as solo developer
+
+#### Deployment Strategy (Q15)
+- **Big Bang Releases:** Deploy all features together
+- **No Feature Flags:** Features are either deployed or not
+- **Release Schedule:** Deploy during low-usage windows
+- **Rollback Plan:** Git tags for version rollback
+
+### Data Management
+
+#### Backup Strategy (Q6)
+- **Primary:** Rely on Supabase automatic daily backups
+- **Point-in-time Recovery:** Available through Supabase (7-30 days based on plan)
+- **No Additional Backups:** Trust platform reliability
+- **User Exports:** Users can export their data via CSV for local backup
+
+#### Data Privacy (Q11)
+- **Basic Compliance:** Soft delete + audit trail
+- **No GDPR Features:** US-only focus, no EU requirements
+- **Data Retention:** 30-day soft delete, then archive
+- **User Data Access:** Users can export their own data
+
+### Monitoring & Support
+
+#### Performance Monitoring (Q14)
+**Free Monitoring Stack:**
+- **Supabase Dashboard:** Built-in metrics for database and API
+- **Vercel Analytics:** Free tier for web vitals (if using Vercel)
+- **Sentry Free Tier:** Error tracking (up to 5K events/month)
+- **Uptime Robot:** Free uptime monitoring (50 monitors)
+
+**Key Metrics to Track:**
+- Database response time
+- API error rate
+- Page load speed
+- JavaScript errors
+- Uptime percentage
+
+#### Notification System (Q8)
+- **No Notifications:** Users check system when logged in
+- **No Email Alerts:** Even for critical events
+- **No Push Notifications:** Desktop or mobile
+- **Manual Checking:** Users responsible for checking tasks and updates
+
+### Integration Strategy
+
+#### API Access (Q5)
+- **No Public API:** Web UI only access
+- **Supabase REST API:** Available but not documented for external use
+- **No Webhooks:** No event streaming to external systems
+- **Manual Integration:** Export/import via CSV only
+
+#### Third-Party Integrations
+- **None Planned:** Standalone system
+- **Future Consideration:** Email/calendar in Phase 2
+- **Import/Export:** CSV files for data exchange
+
+### Security & Compliance
+
+#### Access Control
+- **Authentication:** Supabase Auth (email/password)
+- **Authorization:** RLS policies per role
+- **Session Management:** JWT with refresh tokens
+- **Password Policy:** Minimum 6 characters (Supabase default)
+
+#### Compliance Requirements
+- **Industry:** Food distribution (no special requirements)
+- **Geography:** US-only
+- **Data Residency:** US-East (Supabase default)
+- **Certifications:** None required
+
 ---
 
 ## DOCUMENT APPROVAL
