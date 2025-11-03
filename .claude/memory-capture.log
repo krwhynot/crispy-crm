@@ -703,3 +703,8 @@
 [2025-11-03 17:36:16] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ChangeLogTab.tsx
 [2025-11-03 17:36:43] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ChangeLogTab.tsx
 [2025-11-03 17:36:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ChangeLogTab.tsx
+[2025-11-03 17:37:06] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ChangeLogTab.tsx
+[2025-11-03 17:38:01] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251103233745_add_campaign_and_related_opportunity_fields.sql
+[2025-11-03 17:38:49] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251103233745_add_campaign_and_related_opportunity_fields.sql
+[2025-11-03 17:39:56] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/types.ts
+[2025-11-03 17:59:26] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts

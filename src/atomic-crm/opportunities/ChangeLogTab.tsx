@@ -365,7 +365,12 @@ export const ChangeLogTab = () => {
           </div>
 
           {entries.map((entry) => (
-            <ChangeLogEntry key={entry.audit_id} entry={entry} />
+            <ChangeLogEntry
+              key={entry.audit_id}
+              entry={entry}
+              formatFieldName={formatFieldName}
+              formatValue={formatValue}
+            />
           ))}
         </div>
       ))}
