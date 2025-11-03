@@ -932,260 +932,204 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 - **Click card** → Navigate to opportunity detail page
 - **Horizontal scroll** on tablet/mobile if stages overflow viewport
 
-**Filtering:**
+**Filtering (Critical for Principal Tracking):**
 - Filter toolbar above board:
-  - **Deal Owner** (multi-select with avatars)
-  - **Priority** (multi-select with color badges)
-  - **Product** (searchable multi-select)
-  - **Status** (multi-select: Open, On Hold, Closed, SOLD-7d)
+  - **Principal** ⭐ KEY FILTER (searchable multi-select) - Group deals by brand
+  - **Status** (multi-select: active, closed, on_hold)
+  - **Stage** (multi-select checkboxes)
+  - **Priority** (multi-select with color badges: low, medium, high, critical)
+  - **Opportunity Owner** (multi-select with avatars)
+  - **Customer Organization** (searchable multi-select)
+  - **Tags** (multi-select)
 - Applied filters shown as chips
 - "Clear all" button
 
 **Sorting within Stage:**
 - Sort dropdown per column:
-  - By Date (start_date or expected_sold_date)
-  - By Volume (cases_per_week_volume)
-  - By Priority (A+ → D)
-  - By Organization Name (A-Z)
+  - By Expected Close Date (default)
+  - By Priority (critical → low)
+  - By Customer Organization Name (A-Z)
+  - By Principal Name (A-Z) ⭐
 
 #### List View (Table)
 
 **Layout:**
 - Comprehensive sortable/filterable table
-- Columns (configurable visibility):
+- Columns:
   - **Priority** (color badge, sortable)
-  - **Organization Name** (linked)
-  - **Opportunity Name** (linked, bold)
-  - **Status** (colored badge: Open=Blue, SOLD-7d=Green, Closed=Gray, On Hold=Yellow)
-  - **Stage** (numbered badge with color gradient)
-  - **Product**
-  - **Start Date** (sortable)
-  - **Expected Sold Date** (sortable, highlight if past due)
-  - **Probability** (%) (sortable)
-  - **Cases/Week Volume** (sortable)
-  - **Deal Owner** (avatar + name, sortable)
-  - **Last Activity** (relative time, sortable)
-- Row hover: Subtle elevation and action icons appear (View, Edit, Clone)
+  - **Customer Organization** (linked)
+  - **Principal** ⭐ (linked, bold) - MOST IMPORTANT COLUMN
+  - **Opportunity Name** (linked)
+  - **Status** (colored badge: active=Blue, closed=Gray, on_hold=Yellow)
+  - **Stage** (badge with color gradient)
+  - **Expected Close Date** (sortable, highlight if past due in red)
+  - **Tags** (chips, clickable to filter)
+  - **Next Action** (text snippet)
+  - **Next Action Date** (sortable, highlight if overdue)
+  - **Opportunity Owner** (avatar + name, sortable)
+  - **Last Activity** (relative time: "2 days ago", sortable)
+- Row hover: Subtle elevation and action icons appear (View, Edit)
+- Click row → Navigate to detail page
 
 **Advanced Filtering:**
 - Comprehensive filter panel (collapsible sidebar)
 - Filters available:
-  - **Status** (multi-select checkboxes)
-  - **Stage** (multi-select with range option: "Stages 3-5")
-  - **Priority** (multi-select)
-  - **Product** (searchable multi-select)
-  - **Deal Owner** (searchable multi-select)
-  - **Organization** (searchable single/multi-select)
+  - **Principal** ⭐ (searchable multi-select) - Filter by brand/manufacturer
+  - **Status** (multi-select: active, closed, on_hold)
+  - **Stage** (multi-select checkboxes for all 8 stages)
+  - **Priority** (multi-select: low, medium, high, critical)
+  - **Tags** (multi-select with type-ahead search)
+  - **Opportunity Owner** (searchable multi-select)
+  - **Customer Organization** (searchable multi-select)
+  - **Lead Source** (multi-select: referral, trade_show, website, etc.)
   - **Date Ranges**:
-    - Start Date (date range picker)
-    - Expected Sold Date (date range picker)
-  - **Probability Range** (dual slider: min-max)
-  - **Volume Range** (number inputs: min-max)
-  - **Source** (multi-select)
+    - Expected Close Date (date range picker)
+    - Next Action Date (date range picker)
+  - **Has Next Action** (toggle: Yes/No/All)
 - Filter logic: AND between filter types, OR within multi-select
+- Module-level search: Searches opportunity name, customer org name, principal name
 
 **Saved Filter Views:**
 - Preset views available to all users:
-  - "My Open Opportunities"
-  - "Closing This Month" (Expected Sold Date within 30 days)
-  - "High Priority" (Priority A/A+)
-  - "Stale Opportunities" (Stage 3+, no activity >30 days)
-  - "Recent Wins" (SOLD-7d, last 30 days)
-- User-created custom views (saved filter combinations)
-- "Save current filters as view" button
-- Rename/delete custom views
+  - **"By Principal"** ⭐ (Group by principal, show all opportunities per brand)
+  - "My Opportunities" (Current user is owner)
+  - "Closing This Month" (Expected close within 30 days)
+  - "High Priority" (Priority = high or critical)
+  - "Needs Action" (Next action date overdue or today)
+  - "Recent Wins" (Stage = closed_won, last 30 days)
+- Admin can create system-wide views
+- "Save current filters as view" button (future phase)
 
 **Bulk Actions:**
 - Select multiple opportunities via checkboxes
 - Actions:
-  - **Change Status** (bulk status update with confirmation)
-  - **Assign Deal Owner** (reassign to another user)
-  - **Export to CSV** (respects filters)
-  - **Delete** (with confirmation, admin-only)
-- Bulk action confirmation modal shows count and affected opportunities
+  - **Change Status** (bulk status update: active/on_hold/closed with confirmation)
+  - **Change Stage** (bulk stage update with confirmation)
+  - **Assign Owner** (reassign to another user)
+  - **Add Tags** (add tags to selected opportunities)
+  - **Export to CSV** (respects current filters, includes Principal column ⭐)
+- Bulk action confirmation modal shows count and list of affected opportunities
 
 #### Detail View
 
-**Page Layout:**
+**Header Section:**
+- **Breadcrumb**: Opportunities > [Customer Org] > [Opp Name]
+- **Opportunity Name** (large, editable inline)
+- **Badges**: [Status Badge] [Stage Badge] [Priority Badge]
+- **Actions**: [Edit Button - Opens Modal] [Delete Button]
+
+**Key Information Cards (3-Organization Tracking):**
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ Breadcrumb: Opportunities > [Organization] > [Opp Name]     │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Header Section                                      │    │
-│  │  Organization Name (large, linked to org page)      │    │
-│  │  Opportunity Name                                   │    │
-│  │  [Status Badge] [Stage Badge] [Priority Badge]      │    │
-│  │                                                      │    │
-│  │  [Edit] [Delete] [Clone] [Convert to Order]         │    │
-│  └────────────────────────────────────────────────────┘    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Key Metrics Row (Cards)                             │    │
-│  ├──────────┬──────────┬──────────┬──────────┬────────┤    │
-│  │ Start    │ Expected │ Probab.  │ Volume   │ Deal   │    │
-│  │ Date     │ Sold     │ 65%      │ 150/wk   │ Owner  │    │
-│  │ +45 days │ Dec 15   │ [Gauge]  │ cases    │ [User] │    │
-│  └──────────┴──────────┴──────────┴──────────┴────────┘    │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │ Deal Details (Expandable Sections)                  │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ ▼ Deal Information                                  │    │
-│  │   Product: [Product Name] (linked)                  │    │
-│  │   Principal: [Brand]                                │    │
-│  │   Source: [Source Type]                             │    │
-│  │   Loss Reason: [If applicable]                      │    │
-│  │   Notes: [Expandable text]                          │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ ▼ Organization Context                              │    │
-│  │   [Org summary card with key info]                  │    │
-│  │   Related Contacts: [List with quick actions]       │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ ▼ Activity Timeline                                 │    │
-│  │   [Quick add activity form]                         │    │
-│  │   ─────────────────────────────────────────────    │    │
-│  │   [Reverse chronological activity feed]             │    │
-│  │   • User avatar, type icon, timestamp, desc         │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ ▼ Related Opportunities                             │    │
-│  │   [Mini table: Other opps for same organization]    │    │
-│  ├────────────────────────────────────────────────────┤    │
-│  │ ▼ Documents & Files                                 │    │
-│  │   [Upload area + list of attached files]            │    │
-│  └────────────────────────────────────────────────────┘    │
-│                                                              │
-│  [Right Sidebar: Change Log / Audit Trail]                  │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│ 🏢 Customer Organization: [Restaurant Name] (linked) │
+│ ⭐ Principal: [Brand Name] (linked) MOST IMPORTANT   │
+│ 📦 Distributor: [Distributor Name] (linked)          │
+│ 👤 Opportunity Owner: [User Name] (avatar)           │
+│ 📅 Expected Close: Dec 15, 2025 (30 days away)       │
+│ 📊 Created: Nov 1, 2025 by Jane Doe                  │
+└──────────────────────────────────────────────────────┘
 ```
 
-**Header Actions:**
-- **Edit**: Open edit modal or inline editing mode
-- **Delete**: Confirmation modal → soft delete → redirect to list
-- **Clone**: Duplicate opportunity with new name (preserves org, product, volume)
-- **Convert to Order**: Change status to SOLD-7d, stage to SOLD-7, require volume input, create order record (future phase)
+**Workflow Management Section:**
+- **Tags**: [urgent] [big-deal] [repeat-customer] (chips, clickable)
+- **Next Action**: "Follow up call to discuss pricing" (editable inline)
+- **Next Action Date**: Nov 10, 2025 (editable, highlights if overdue)
+- **Decision Criteria**: "Price and delivery timeline are key factors" (expandable text area)
 
-**Key Metrics Cards:**
-- **Start Date**: Shows date + "X days in pipeline" badge
-- **Expected Sold Date**: 
-  - Countdown badge: "15 days until close" (green if >30 days, yellow if 7-30 days, red if <7 days)
-  - "Overdue" badge if past expected date and not closed
-- **Probability**: Visual gauge (0-100%) with color gradient (low=red, high=green)
-- **Cases/Week Volume**: Number with "cases" label
-- **Deal Owner**: Avatar + name + contact button (opens email or messaging)
+**Products Section:**
+- Table of associated products (M:N relationship via junction table)
+- Columns: Product Name, Principal, Notes
+- "Add Product" button opens modal to associate more products
+
+**Related Contacts:**
+- Card grid of contacts from customer organization
+- Quick actions: View, Call, Email (mailto:)
 
 **Activity Timeline:**
-- **Quick Add Activity** (always at top):
-  - Inline form: Activity Type dropdown + Description textarea + Date/Time picker
+- **Quick Add Activity** form at top:
+  - Activity Type dropdown (Call, Email, Meeting, Note)
+  - Date picker (defaults to today)
+  - Description textarea
   - "Log Activity" button
-  - Collapses after submission, success toast
-- **Activity Feed**:
-  - Reverse chronological
-  - Each entry: User avatar, activity type icon, timestamp (relative), description, expand/collapse for long descriptions
-  - Filter by activity type (dropdown)
-  - "Load more" or infinite scroll for long histories
+- **Activity Feed** (reverse chronological):
+  - User avatar, type icon, timestamp, description
+  - "Load more" button if >20 activities
 
-**Inline Editing:**
-- Click-to-edit fields where feasible:
-  - Opportunity Name (text input appears)
-  - Expected Sold Date (date picker)
-  - Probability (slider)
-  - Volume (number input)
-- Auto-save on blur or explicit "Save" button
-- Undo option (toast: "Opportunity updated. [Undo]")
-
-**Change Log (Sidebar or Tab):**
-- Full audit trail of all changes
+**Change Log Tab (Field-Level Audit Trail) ⭐ CRITICAL:**
+- Shows complete history of ALL field changes (old value → new value)
 - Format:
-  - Timestamp
-  - User who made change
-  - Field changed
-  - Old value → New value
-- Filter by user, field, date range
-- Export change log to CSV
+  ```
+  Nov 3, 2025 2:30 PM - John Smith
+    Priority: medium → high
+    Stage: new_lead → initial_outreach
+
+  Nov 1, 2025 10:15 AM - Jane Doe
+    Created opportunity
+  ```
+- Filter by: Field name, User, Date range
+- Export to CSV
+- **Note:** This requires audit_trail table implementation (see ADR-0006)
 
 #### Create/Edit Forms
 
-**Form Approach:**
-- **Wizard** (multi-step) for complex creation (new users)
-- **Single scrollable form** for experienced users (preference toggle in settings)
-- **Quick Create Modal** for minimal fields (accessible from navbar, org page)
+**Form Approach: Modal Popup**
+- Opens as centered modal overlay (per user preference for all forms)
+- Single scrollable form (no wizard)
+- Sections organized with clear headers
 
-**Full Create Form (Wizard):**
+**Form Sections:**
 
-**Step 1: Basic Info**
-- Organization* (searchable dropdown with "Add New Organization" option)
-  - Shows: Name, Priority badge, Segment
-- Opportunity Name* (text input, placeholder: "e.g., Poke Supply Deal")
-- Product (searchable dropdown of active products)
-  - Shows: Product Name (Principal)
-- Principal (text field, auto-populated from product if selected, else free text)
+**1. Organizations (3-org tracking) ⭐**
+- **Customer Organization*** (searchable dropdown)
+  - Who the deal is with (the restaurant/customer)
+- **Principal Organization*** (searchable dropdown)
+  - ⭐ MOST IMPORTANT: Which brand/manufacturer (Fishpeople, Ocean Hugger, etc.)
+- **Distributor Organization** (searchable dropdown, optional)
+  - Which distributor (if applicable)
 
-**Step 2: Timeline & Probability**
-- Start Date* (date picker, default today, disable future dates)
-- Expected Sold Date (date picker, validation: >= start_date)
-- Status (dropdown, default "Open", options: Open, On Hold, Closed, SOLD-7d)
-- Stage (dropdown, default "Lead-discovery-1", shows stage progression 1-8)
-- Probability (slider 0-100% with stage-based suggestions tooltip)
-  - Example: "Typical probability for Stage 3: 40-60%"
+**2. Opportunity Details**
+- **Opportunity Name*** (text input, e.g., "Poke Supply Deal")
+- **Description** (textarea, 3-4 rows)
+- **Status** (dropdown: active [default], closed, on_hold)
+- **Stage** (dropdown: new_lead [default], initial_outreach, sample_visit_offered, awaiting_response, feedback_logged, demo_scheduled, closed_won, closed_lost)
+- **Priority** (radio buttons: low, medium [default], high, critical)
 
-**Step 3: Volume & Ownership**
-- Cases Per Week Volume (number input, positive integers only)
-- Deal Owner* (user dropdown, default current user, shows avatar + name)
-- Source (dropdown: MFB, Principal, Distributor referral, etc.)
+**3. Timeline**
+- **Expected Close Date*** (date picker, defaults to today + 90 days)
+- **Next Action Date** (date picker, optional)
 
-**Step 4: Additional Details**
-- Loss Reason (conditional: only shown if Status = Closed and Stage ≠ SOLD-7)
-  - Radio buttons: Competitor, Price, Other
-- Notes (rich text editor: bold, italic, lists, links)
+**4. Workflow Management**
+- **Tags** (multi-select with type-ahead, e.g., "urgent", "big-deal")
+- **Next Action** (text input, e.g., "Follow up call to discuss pricing")
+- **Decision Criteria** (textarea, 2-3 rows, e.g., "Price and delivery timeline")
 
-**Wizard Navigation:**
-- Progress indicator at top (1 of 4, 2 of 4, etc.)
-- "Next" button (primary) advances to next step
-- "Back" button (secondary) returns to previous step
-- "Save Draft" button (text-only) saves and closes (auto-resume on return)
-- "Cancel" button with confirmation if changes made
-- Step validation: Cannot proceed to next step if current step has errors
+**5. Ownership & Source**
+- **Opportunity Owner*** (user dropdown, defaults to current user)
+- **Account Manager** (user dropdown, optional)
+- **Lead Source** (dropdown: referral, trade_show, website, cold_call, email_campaign, social_media, partner, existing_customer)
 
-**Single Form (Alternative):**
-- All fields on one scrollable page
-- Organized in sections matching wizard steps
-- Same validation rules
-- "Save" and "Cancel" buttons fixed at bottom or sticky
-
-**Quick Create Modal:**
-- Minimal fields for rapid entry:
-  - Organization* (searchable dropdown)
-  - Opportunity Name* (text input)
-  - Product (searchable dropdown)
-  - Deal Owner* (defaults to current user)
-- "Create" button saves with defaults:
-  - Status = Open
-  - Stage = Lead-discovery-1
-  - Start Date = Today
-- After creation: Toast with options: "[View Details]" or "[Add Another]"
+**6. Notes**
+- **Notes** (textarea, 4-5 rows, rich text optional for MVP)
 
 **Form Validation:**
-- **Required Fields**: Organization, Opportunity Name, Start Date, Deal Owner
-- **Conditional Required**: Loss Reason (if Closed and not SOLD)
-- **Date Logic**: Expected Sold Date >= Start Date
-- **Probability**: 0-100 range
-- **Volume**: Positive integers only
-- Real-time validation on blur (inline error messages)
-- Form-level validation on submit (scroll to first error)
+- **Required Fields** (marked with *):
+  - Customer Organization
+  - Principal Organization ⭐
+  - Opportunity Name
+  - Expected Close Date
+  - Opportunity Owner
+- **Real-time validation** on blur (inline red error messages)
+- **Form-level validation** on submit (scroll to first error)
 
-**Auto-Save Drafts:**
-- Save form state to browser localStorage every 30 seconds
-- Indicator: "Draft saved at HH:MM:SS"
-- Resume draft on return: "You have an unsaved opportunity. [Resume Editing] [Discard]"
-
-**Cancel Confirmation:**
-- If unsaved changes: Modal "You have unsaved changes. Are you sure you want to discard them? [Discard] [Cancel]"
+**Form Actions:**
+- **Save** button (primary, bottom right)
+- **Cancel** button (secondary, bottom left)
+- If unsaved changes on cancel: "Discard changes?" confirmation
 
 **Success Handling:**
-- Toast notification: "Opportunity '[Opp Name]' created successfully. [View Opportunity]"
+- Modal closes
+- Toast notification: "Opportunity '[Name]' created successfully"
+- Redirects to opportunity detail page OR returns to list (user preference)
 - Option to remain on form for rapid entry: "Add another opportunity" button
 - Default behavior: Redirect to opportunity detail page
 
@@ -1352,9 +1296,11 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 **Bulk Operations:**
 - Select multiple products → "Activate" or "Deactivate" (bulk toggle)
 
-### 3.6 Reporting & Analytics Features
+### 3.6 Reports (MVP - Basic Only)
 
-#### Dashboards (Role-Based)
+**Note:** Analytics dashboards and advanced reporting are NOT in MVP scope. Focus is on data entry and basic list exports.
+
+#### Reports Included in MVP
 
 **Sales Rep Dashboard:**
 
