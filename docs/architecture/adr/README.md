@@ -21,6 +21,7 @@ ADRs are **immutable** once accepted. If a decision changes, create a new ADR th
 | [0003](0003-use-zustand-over-redux.md) | Use Zustand Over Redux | ✅ Accepted | 2025-11-02 | Use Zustand over Redux Toolkit, Jotai, or Context API for client state |
 | [0004](0004-use-jwt-authentication-with-refresh-tokens.md) | Use JWT Authentication | ✅ Accepted | 2025-11-02 | Use JWT with refresh token rotation via Supabase Auth (GoTrue) |
 | [0005](0005-soft-delete-strategy-for-core-entities.md) | Soft Delete Strategy | ✅ Accepted | 2025-11-02 | Use soft delete (deleted_at column) for all core CRM entities |
+| [0006](0006-field-level-audit-trail-with-database-triggers.md) | Field-Level Audit Trail | ✅ Accepted | 2025-11-02 | Use PostgreSQL triggers to track old value → new value changes |
 
 ## ADR Lifecycle
 
@@ -89,8 +90,9 @@ Proposed → Accepted → [Deprecated OR Superseded]
 ---
 
 **Last Updated:** 2025-11-02
-**Status:** ✅ **5/5 ADRs Complete + Migration Strategy Complete**
+**Status:** ✅ **6/6 ADRs Complete + Migration Strategy Complete (Constitution-Compliant)**
 
 **Completed Artifacts:**
 - Day 1: Architecture Decision Records (5 ADRs, ~1,500 lines)
-- Day 2-3: Migration Strategy Document (~800 lines with SQL examples)
+- Day 2-3: Migration Strategy Document (~1,000 lines with SQL examples + audit trail)
+- Post-Review: ADR-0006 Field-Level Audit Trail (350+ lines)
