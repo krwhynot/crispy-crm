@@ -332,7 +332,7 @@ type EntityType =
   | 'Organization'
   | 'Contact';
 
-type ActivityType = 
+type ActivityType =
   | 'Call'
   | 'Email'
   | 'Meeting'
@@ -341,6 +341,50 @@ type ActivityType =
   | 'Note'
   | 'Status Change'
   | 'Stage Change';
+```
+
+#### Tasks Table
+```typescript
+interface Task {
+  // Primary Key
+  task_id: number;                   // BIGINT, PK (auto-increment)
+
+  // Task Details
+  title: string;                     // REQUIRED, max 255 chars
+  description?: string;              // TEXT, optional (max 500 chars in UI)
+
+  // Scheduling
+  due_date: Date;                    // REQUIRED
+  priority: TaskPriority;            // ENUM, DEFAULT: 'medium'
+
+  // Assignment
+  assigned_to_id: number;            // FK → Sales (Users), REQUIRED
+
+  // Status
+  status: TaskStatus;                // ENUM, DEFAULT: 'not_started'
+  completed_at?: Date;               // Auto-set when status = 'completed'
+
+  // Related Entity (Optional - can be orphan task)
+  related_to_type?: EntityType;      // ENUM: 'Organization', 'Contact', 'Opportunity'
+  related_to_id?: number;            // FK → respective table
+
+  // Audit Fields
+  created_at: Date;
+  updated_at: Date;
+  created_by: number;                // FK → Sales (Users)
+  updated_by: number;                // FK → Sales (Users)
+  deleted_at?: Date;                 // Soft delete
+}
+
+type TaskPriority = 'low' | 'medium' | 'high';  // 3 levels
+
+type TaskStatus =
+  | 'not_started'                    // DEFAULT
+  | 'in_progress'
+  | 'completed';
+
+// Note: 'overdue' is a computed status, not stored in database
+// Computed as: status != 'completed' AND due_date < today
 ```
 
 ### 2.2 Entity Relationships
@@ -363,6 +407,10 @@ Contacts N:1 Users (Account Manager)
 
 Activity Log N:1 Users
 Activity Log N:1 [Opportunity|Organization|Contact] (Polymorphic)
+
+Tasks N:1 Users (Assigned To)
+Tasks N:1 Users (Created By)
+Tasks N:1 [Opportunity|Organization|Contact] (Polymorphic, Optional)
 ```
 
 **Calculated/Derived Fields:**
@@ -1571,7 +1619,10 @@ Jane Doe (15 activities this week)
 - Saved report configurations
 - Scheduled email delivery of reports
 - Custom report builder
-### 3.7 Activity Tracking
+
+---
+
+### 3.8 Activity Tracking
 
 #### Activity Types & Icons
 
@@ -1692,7 +1743,9 @@ Jane Doe (15 activities this week)
 - Cannot be edited or deleted
 - Labeled: "System Activity" badge
 
-### 3.8 Search & Filtering
+---
+
+### 3.9 Search & Filtering
 
 #### Search Strategy (MVP)
 
@@ -2984,8 +3037,18 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - Stage/Status update logic
 - Opportunity actions
 
-### Phase 6: Activity Tracking (Weeks 13-14)
+### Phase 6: Tasks & Activity Tracking (Weeks 13-15)
 
+**Tasks Module ⚠️ CRITICAL:**
+- Tasks list view (sortable/filterable table)
+- Task creation modal (quick add from any entity detail page)
+- Task editing and completion (inline checkbox + detail modal)
+- Overdue task indicators (red highlighting, badge count)
+- Daily email reminders (8 AM configurable)
+- Task API integration
+- RLS policies (admin/manager/rep access levels)
+
+**Activity Tracking:**
 - Activity log component
 - Quick log activity form
 - Activity feed display (reverse chronological)
@@ -2993,7 +3056,7 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - Automated activity logging (stage changes, etc.)
 - Activity API integration
 
-### Phase 7: Basic Reporting (Weeks 15-16)
+### Phase 7: Basic Reporting (Weeks 16-17)
 
 - **Opportunities by Principal Report** ⭐ (MOST IMPORTANT)
   - Grouped list view (Principal → Opportunities)
@@ -3006,7 +3069,7 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
   - Respects current filters/search
 - Note: Analytics dashboards NOT in MVP scope
 
-### Phase 8: Polish & Optimization (Weeks 17-18)
+### Phase 8: Polish & Optimization (Weeks 18-19)
 
 - Accessibility audit (WCAG 2.1 AA compliance)
 - Performance optimization (code splitting, lazy loading)
@@ -3015,7 +3078,7 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - Loading states and skeletons
 - User onboarding/tooltips
 
-### Phase 9: Testing & Bug Fixes (Weeks 19-20)
+### Phase 9: Testing & Bug Fixes (Weeks 20-21)
 
 - Unit tests for critical components
 - Integration tests for key flows
@@ -3024,7 +3087,7 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - User acceptance testing (UAT)
 - Bug fixes and refinements
 
-### Phase 10: Deployment & Training (Week 21)
+### Phase 10: Deployment & Training (Week 22)
 
 - Production deployment
 - User training materials
