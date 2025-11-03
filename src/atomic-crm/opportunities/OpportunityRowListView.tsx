@@ -6,6 +6,7 @@ import { TextField } from "@/components/admin/text-field";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EditButton } from "@/components/admin/edit-button";
 import { formatDistance, format } from "date-fns";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";

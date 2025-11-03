@@ -4,6 +4,7 @@ import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { FilterButton } from "@/components/admin/filter-form";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
+import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 
 import {
   Translate,
@@ -71,6 +72,7 @@ const OpportunityList = () => {
       </Breadcrumb>
       <FilterChipsPanel className="mb-4" />
       <OpportunityLayout view={view} />
+      <FloatingCreateButton />
     </List>
   );
 };
