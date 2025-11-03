@@ -265,6 +265,8 @@ const OpportunityOrganizationInputs = () => {
 // Contacts section
 const OpportunityContactsInput = () => {
   const customerOrganizationId = useWatch({ name: "customer_organization_id" });
+  const { identity } = useGetIdentity();
+  const { setValue, getValues } = useFormContext();
 
   // Memoize the filter object to prevent unnecessary re-renders and value clearing
   // See Engineering Constitution #1: NO OVER-ENGINEERING - this simple fix prevents
@@ -278,13 +280,37 @@ const OpportunityContactsInput = () => {
 
   return (
     <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
-      <div>
-        <h3 className="text-base font-semibold text-[color:var(--text-primary)] mb-1">Contacts *</h3>
-        <p className="text-sm text-[color:var(--text-subtle)]">
-          {customerOrganizationId
-            ? "At least one contact is required"
-            : "Please select a Customer Organization first"}
-        </p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="text-base font-semibold text-[color:var(--text-primary)] mb-1">Contacts *</h3>
+          <p className="text-sm text-[color:var(--text-subtle)]">
+            {customerOrganizationId
+              ? "At least one contact is required"
+              : "Please select a Customer Organization first"}
+          </p>
+        </div>
+        {customerOrganizationId && (
+          <CreateInDialogButton
+            resource="contacts"
+            label="New Contact"
+            title="Create new Contact"
+            description="Create a new contact for the selected customer organization"
+            defaultValues={{
+              organization_id: customerOrganizationId,
+              sales_id: identity?.id,
+              first_seen: new Date().toISOString(),
+              last_seen: new Date().toISOString(),
+              tags: [],
+            }}
+            onSave={(record) => {
+              // Auto-add the newly created contact to the contact list
+              const currentContacts = getValues("contact_ids") || [];
+              setValue("contact_ids", [...currentContacts, record.id]);
+            }}
+          >
+            <ContactInputs />
+          </CreateInDialogButton>
+        )}
       </div>
       {customerOrganizationId ? (
         <ReferenceArrayInput
