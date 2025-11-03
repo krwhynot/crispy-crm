@@ -358,33 +358,28 @@ interface Task {
   priority: TaskPriority;            // ENUM, DEFAULT: 'medium'
 
   // Assignment
-  assigned_to_id: number;            // FK → Sales (Users), REQUIRED
+  sales_id: number;                  // FK → Sales (Users), task owner
 
   // Status
-  status: TaskStatus;                // ENUM, DEFAULT: 'not_started'
-  completed_at?: Date;               // Auto-set when status = 'completed'
+  completed: boolean;                // DEFAULT: false
+  completed_at?: Date;               // Auto-set when completed = true
 
-  // Related Entity (Optional - can be orphan task)
-  related_to_type?: EntityType;      // ENUM: 'Organization', 'Contact', 'Opportunity'
-  related_to_id?: number;            // FK → respective table
+  // Related Entities (HubSpot Pattern - separate FKs for each entity type)
+  // Task can be related to one of these entities (or none for standalone tasks)
+  contact_id?: number;               // FK → Contacts (optional)
+  opportunity_id?: number;           // FK → Opportunities (optional)
+  organization_id?: number;          // FK → Organizations (optional)
 
   // Audit Fields
   created_at: Date;
   updated_at: Date;
-  created_by: number;                // FK → Sales (Users)
-  updated_by: number;                // FK → Sales (Users)
   deleted_at?: Date;                 // Soft delete
 }
 
 type TaskPriority = 'low' | 'medium' | 'high';  // 3 levels
 
-type TaskStatus =
-  | 'not_started'                    // DEFAULT
-  | 'in_progress'
-  | 'completed';
-
-// Note: 'overdue' is a computed status, not stored in database
-// Computed as: status != 'completed' AND due_date < today
+// Note: 'overdue' is computed in UI when completed = false AND due_date < today
+// Implementation follows HubSpot/Pipedrive pattern for referential integrity
 ```
 
 ### 2.2 Entity Relationships
