@@ -174,13 +174,25 @@ END $$;
 
 ## 2. Table Creation Patterns
 
-### 2.1 Standard Table Structure
+### 2.1 Primary Key Decision: BIGINT (Industry Standard)
+
+**Decision:** Use BIGINT auto-increment for all primary keys (not UUID).
+
+**Rationale (based on industry research):**
+- ✅ **Performance:** Faster joins, smaller indexes, better cache locality
+- ✅ **Simplicity:** Standard PostgreSQL pattern, excellent ORM support
+- ✅ **Industry Standard:** Salesforce, HubSpot, and major CRMs use sequential integers internally
+- ✅ **Right for Scale:** Single-tenant CRM doesn't need UUID's distributed system benefits
+
+**When to use UUID instead:** Only for multi-region distributed systems or public-facing IDs.
+
+### 2.2 Standard Table Structure
 
 All core CRM tables follow this pattern (implements ADR-0005 soft delete):
 
 ```sql
 CREATE TABLE IF NOT EXISTS <table_name> (
-  -- Primary Key (BIGINT auto-increment)
+  -- Primary Key (BIGINT auto-increment - industry standard for CRM)
   <table>_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 
   -- Core Business Fields
