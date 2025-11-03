@@ -13,8 +13,8 @@ This directory contains project-specific hooks that execute automatically during
 
 #### 2. Superpowers System Initialization
 **File:** Configured in `.claude/settings.json`
-**Type:** Skill execution
-**Command:** `superpowers:using-superpowers`
+**Type:** Prompt execution
+**Command:** Sends prompt to execute `superpowers:using-superpowers`
 **Purpose:** Activates the superpowers workflow enforcement system
 
 **What happens at session start:**
