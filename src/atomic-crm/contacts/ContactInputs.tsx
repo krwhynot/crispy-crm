@@ -9,10 +9,13 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
+import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 // LinkedIn validation removed - handled at API boundary
 import type { Sale } from "../types";
 import { Avatar } from "./Avatar";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
+import { OrganizationInputs } from "../organizations/OrganizationInputs";
+import { useGetIdentity } from "ra-core";
 
 export const ContactInputs = () => {
   const isMobile = useIsMobile();
@@ -51,6 +54,9 @@ const ContactIdentityInputs = () => {
 };
 
 const ContactPositionInputs = () => {
+  const { identity } = useGetIdentity();
+  const { setValue } = useFormContext();
+
   return (
     <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
       <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Position</h3>
@@ -58,13 +64,40 @@ const ContactPositionInputs = () => {
         <TextInput source="title" helperText={false} />
         <TextInput source="department" label="Department" helperText={false} />
 
-        <ReferenceInput
-          source="organization_id"
-          reference="organizations"
-          label="Organization"
-        >
-          <AutocompleteOrganizationInput />
-        </ReferenceInput>
+        <div className="space-y-2">
+          <ReferenceInput
+            source="organization_id"
+            reference="organizations"
+            label="Organization"
+          >
+            <AutocompleteOrganizationInput />
+          </ReferenceInput>
+
+          <CreateInDialogButton
+            resource="organizations"
+            label="New Organization"
+            defaultValues={{
+              organization_type: "customer",
+              sales_id: identity?.id,
+              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52", // Default to "Unknown" segment
+            }}
+            onSave={(newOrg) => {
+              // Auto-select the new organization in the form
+              setValue("organization_id", newOrg.id);
+            }}
+            transform={(values) => {
+              // add https:// before website if not present
+              if (values.website && !values.website.startsWith("http")) {
+                values.website = `https://${values.website}`;
+              }
+              return values;
+            }}
+            title="Create New Organization"
+            description="Create a new organization and associate it with this contact"
+          >
+            <OrganizationInputs />
+          </CreateInDialogButton>
+        </div>
       </div>
     </div>
   );

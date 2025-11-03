@@ -28,14 +28,15 @@ describe("FloatingCreateButton", () => {
 
     // Check positioning classes
     expect(button).toHaveClass("fixed");
-    expect(button).toHaveClass("bottom-6");
-    expect(button).toHaveClass("right-6");
+    expect(button).toHaveClass("bottom-4"); // Mobile-first
+    expect(button).toHaveClass("md:bottom-6"); // Desktop
+    expect(button).toHaveClass("right-4"); // Mobile-first
+    expect(button).toHaveClass("md:right-6"); // Desktop
     expect(button).toHaveClass("z-50");
 
     // Check size classes for FAB
-    expect(button).toHaveClass("size-14"); // 56px diameter on desktop
+    expect(button).toHaveClass("size-16"); // 64px diameter on mobile (mobile-first)
     expect(button).toHaveClass("md:size-14"); // 56px diameter on desktop
-    expect(button).toHaveClass("size-16"); // 64px diameter on mobile
 
     // Check semantic color usage
     expect(button).toHaveClass("bg-accent-clay-600");
@@ -78,7 +79,7 @@ describe("FloatingCreateButton", () => {
     const button = screen.getByRole("link", { name: /create/i });
 
     // Check ARIA label for screen readers
-    expect(button).toHaveAttribute("aria-label", "Create new opportunity");
+    expect(button).toHaveAttribute("aria-label", "Create new opportunities");
   });
 
   test("stops event propagation when clicked", async () => {
