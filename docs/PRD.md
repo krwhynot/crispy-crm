@@ -930,7 +930,7 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
     - [Cancel] [Confirm] buttons
   - Auto-creates activity log entry on confirm
 - **Click card** → Navigate to opportunity detail page
-- **Horizontal scroll** on tablet/mobile if stages overflow viewport
+- **Horizontal scroll** on iPad if stages overflow viewport
 
 **Filtering (Critical for Principal Tracking):**
 - Filter toolbar above board:
@@ -2191,7 +2191,7 @@ transitionTimingFunction: {
 
 ```javascript
 screens: {
-  'sm': '640px',   // Mobile landscape, small tablets
+  'sm': '640px',   // Small tablets
   'md': '768px',   // iPad portrait (PRIMARY TARGET)
   'lg': '1024px',  // iPad landscape, small laptops
   'xl': '1280px',  // Desktop
@@ -2450,30 +2450,42 @@ screens: {
 - **Vite** (preferred) or Create React App
 - **Rationale**: Faster dev server, optimized builds, better HMR
 
-#### Backend (Assumed Tech Stack for Integration)
+#### Backend & Infrastructure
 
-**API:**
-- **RESTful API** or **GraphQL**
-- **Authentication**: JWT tokens with refresh token rotation
-- **Authorization**: Role-based access control (RBAC)
+**Backend Platform:**
+- **Supabase** (PostgreSQL + Auto-generated REST APIs + Built-in Auth)
+- **Rationale**: Eliminates need for custom backend, provides instant REST/GraphQL APIs from database schema, includes Row-Level Security (RLS) for multi-tenant access control
 
 **Database:**
-- **PostgreSQL** (recommended for relational data, strong consistency)
-- **Alternative**: MySQL, SQL Server
+- **PostgreSQL** (via Supabase)
+- Field-level audit trail using database triggers (see ADR-0006)
+- Soft delete pattern (deleted_at column) for all core entities
 
-**ORM:**
-- **Prisma** (if Node.js backend) or **Entity Framework** (if .NET)
+**Authentication:**
+- **Supabase Auth (GoTrue)** with JWT tokens
+- Refresh token rotation for security
+- Email/password authentication (MVP)
+- Auth triggers sync to internal sales table
+
+**Authorization:**
+- **Row Level Security (RLS)** policies in PostgreSQL
+- Shared team collaboration model (all authenticated users can access shared resources)
+- See PRD Section 3.1 for access control details
 
 **File Storage:**
-- **AWS S3** or **Azure Blob Storage** for document uploads
+- **Supabase Storage** for document uploads (built-in)
+- Alternative: AWS S3 or Cloudflare R2 if needed
 
-**Real-time (Future):**
-- **WebSockets** or **Server-Sent Events** for live updates
-- **Pusher** or **Ably** as managed service alternative
+**Deployment:**
+- **Frontend**: Vercel or Netlify (static hosting with SSR support)
+- **Backend**: Supabase Cloud (managed PostgreSQL + APIs)
+- **Rationale**: Serverless architecture, automatic scaling, minimal ops overhead
 
 ### 5.2 Data Flow & API Design
 
-#### API Endpoints (RESTful Example)
+**Note:** With Supabase, REST APIs are **auto-generated** from the database schema. The endpoints below are for documentation/reference - they are automatically available without manual implementation once the database tables are created.
+
+#### API Endpoints (Supabase Auto-Generated)
 
 **Authentication:**
 ```
@@ -2793,10 +2805,10 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 
 **Week 11-12: Kanban & Creation**
 - Kanban pipeline board (drag-and-drop)
-- Create opportunity wizard
-- Quick create modal
+- Create/Edit opportunity modal (single form with 6 sections)
+- Principal Organization field ⭐ (MOST IMPORTANT - required field)
 - Stage/Status update logic
-- Opportunity actions (clone, convert)
+- Opportunity actions
 
 ### Phase 6: Activity Tracking (Weeks 13-14)
 
@@ -2807,13 +2819,18 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 - Automated activity logging (stage changes, etc.)
 - Activity API integration
 
-### Phase 7: Dashboard & Reporting (Weeks 15-16)
+### Phase 7: Basic Reporting (Weeks 15-16)
 
-- Sales Rep dashboard (metrics + mini Kanban + alerts)
-- Sales Manager dashboard (team metrics + charts)
-- Basic reports (Pipeline, Forecast, Account Health)
-- Chart components (Recharts integration)
-- Export report functionality
+- **Opportunities by Principal Report** ⭐ (MOST IMPORTANT)
+  - Grouped list view (Principal → Opportunities)
+  - CSV export with proper columns
+- **Weekly Activity Summary Report**
+  - Per-user activity breakdown
+  - CSV export
+- **Filtered List Exports**
+  - CSV export button on all list views
+  - Respects current filters/search
+- Note: Analytics dashboards NOT in MVP scope
 
 ### Phase 8: Polish & Optimization (Weeks 17-18)
 
@@ -2845,45 +2862,47 @@ GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&s
 
 ## 7. SUCCESS METRICS & KPIs
 
-### User Adoption Metrics
-- **Target**: 100% sales team migration within 60 days
-- **Measure**: Active users / Total sales team * 100%
-- **Tracking**: Daily active users, login frequency
+**Primary Goal:** Replace Excel spreadsheets with a faster, searchable CRM system.
 
-### Data Quality Metrics
-- **Target**: <5% error rate in opportunity data
-- **Measure**: (Opportunities with validation errors / Total opportunities) * 100%
-- **Tracking**: Required field completion rate, duplicate records
+### 1. Excel Replacement (MOST IMPORTANT)
+- **Target**: Old Excel sheets abandoned within 30 days
+- **Measure**: Are team members still opening Excel files for CRM data?
+- **Success Signal**: All opportunity tracking happens in CRM, Excel is archive-only
 
-### Efficiency Metrics
-- **Target**: 40% reduction in administrative tasks
-- **Measure**: Time spent on data entry, reporting (before vs. after)
-- **Tracking**: User surveys, time tracking
+### 2. Data Entry Speed
+- **Target**: Data entry is faster than Excel
+- **Measure**: Time to create new opportunity (before: Excel, after: CRM)
+- **Success Signal**: Users voluntarily choose CRM over Excel for new data
 
-### Pipeline Velocity
-- **Target**: Reduce average days in each stage by 15%
-- **Measure**: Average days in stage (before vs. after implementation)
-- **Tracking**: Stage duration analytics
+### 3. Search & Findability
+- **Target**: Can find information quickly
+- **Measure**: Time to find a contact/organization/opportunity
+- **Success Signal**: Users stop asking "Where's that info?" in team chat
 
-### Forecast Accuracy
-- **Target**: ±15% variance on quarterly volume projections
-- **Measure**: (Actual volume - Forecast volume) / Forecast volume * 100%
-- **Tracking**: Quarterly forecast vs. actuals comparison
+### 4. User Adoption
+- **Target**: 100% team uses CRM daily within 60 days
+- **Measure**: Daily active users / Total team size
+- **Success Signal**: All team members log at least one activity per week
 
-### User Satisfaction
-- **Target**: 4/5 rating in post-implementation survey
-- **Measure**: NPS score, feature satisfaction ratings
-- **Tracking**: In-app feedback, post-launch survey
+### 5. Principal Tracking (Key Feature)
+- **Target**: All opportunities have Principal assigned
+- **Measure**: % of opportunities with valid Principal organization
+- **Success Signal**: "Opportunities by Principal" report is used weekly
 
-### Technical Performance
-- **Target**: Lighthouse Performance Score >90
-- **Measure**: Core Web Vitals (FCP, LCP, CLS, TTI)
-- **Tracking**: Continuous monitoring via Lighthouse CI
+### 6. Technical Performance
+- **Target**: Fast enough that users don't complain
+- **Measure**: Page load <3 seconds, interactions <500ms
+- **Success Signal**: No "app is slow" feedback in first month
 
-### Accessibility
-- **Target**: WCAG 2.1 AA compliance (100%)
-- **Measure**: Automated + manual accessibility testing
-- **Tracking**: Axe DevTools, manual keyboard/screen reader testing
+### 7. Data Quality
+- **Target**: Clean, usable data
+- **Measure**: % of opportunities with required fields complete
+- **Success Signal**: Reports don't show "Unknown" or missing data
+
+**Post-Launch Evaluation (30 Days After):**
+- Survey team: "Is the CRM better than Excel?" (Yes/No + why)
+- Observe: Are people still using Excel? (If yes, understand why)
+- Measure: Search time, data entry time (informal timing tests)
 
 ---
 
