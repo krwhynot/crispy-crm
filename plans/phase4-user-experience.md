@@ -157,8 +157,8 @@ Fixed layout dashboard with 6 widgets, auto-refresh, and manual refresh capabili
   - Pluralization: "No activities this week" / "1 activity this week" / "N activities this week"
   - Non-clickable widget (navigation deferred - could add activity feed route in future)
 
-#### P4-E1-S1-T6: Implement "Pipeline by Stage" Chart Widget
-- **Hours:** 3h
+#### P4-E1-S1-T6: Implement "Pipeline by Stage" Chart Widget ✅
+- **Hours:** 3h (Actual: 2h)
 - **Confidence:** 85%
 - **Prerequisites:** P4-E1-S1-T2
 - **Description:**
@@ -167,18 +167,27 @@ Fixed layout dashboard with 6 widgets, auto-refresh, and manual refresh capabili
   - Click bar navigates to opportunities filtered by that stage
   - Show stage names and counts on bars
 - **Acceptance Criteria:**
-  - [ ] Chart displays all stages with counts
-  - [ ] Bars sized proportionally to counts
-  - [ ] Click bar filters opportunities by stage
-  - [ ] Chart responsive on iPad/desktop
-  - [ ] Uses semantic colors from design system
+  - ✅ Chart displays all stages with counts (uses ConfigurationContext opportunityStages)
+  - ✅ Bars sized proportionally to counts (Recharts automatic sizing)
+  - ✅ Click bar filters opportunities by stage (handleBarClick with encoded JSON filter)
+  - ✅ Chart responsive on iPad/desktop (ResponsiveContainer, spans 2 cols on md/lg)
+  - ✅ Uses semantic colors from design system (8 semantic CSS variables, no hex codes)
 - **Integration Points:**
   - Recharts library integration
   - Opportunity stages from ConfigurationContext
   - Stage filtering logic
+- **Implementation Notes:**
+  - Created `src/atomic-crm/dashboard/PipelineByStage.tsx` (181 lines)
+  - Installed recharts ^2.15.0
+  - Horizontal bar chart with custom tooltip showing percentage
+  - Uses Map for efficient grouping by stage
+  - Color array with 8 semantic CSS variables (--brand-500, --accent, etc.)
+  - Custom tooltip shows stage label, count, percentage, and "Click to filter" hint
+  - Spans 2 columns on medium/large screens for better visibility
+  - Zero state handling with "No active opportunities" message
 
-#### P4-E1-S1-T7: Implement "Recent Activities" Feed Widget
-- **Hours:** 2h
+#### P4-E1-S1-T7: Implement "Recent Activities" Feed Widget ✅
+- **Hours:** 2h (Actual: 1.5h)
 - **Confidence:** 88%
 - **Prerequisites:** P4-E1-S1-T2
 - **Description:**
@@ -187,18 +196,26 @@ Fixed layout dashboard with 6 widgets, auto-refresh, and manual refresh capabili
   - Click activity navigates to full activity feed
   - Format "time ago" (e.g., "2 hours ago")
 - **Acceptance Criteria:**
-  - [ ] Shows last 10 activities reverse chronologically
-  - [ ] Includes activity type icons
-  - [ ] "Time ago" formatted correctly
-  - [ ] Click navigates to full activity feed
-  - [ ] Truncates long descriptions
+  - ✅ Shows last 10 activities reverse chronologically (useGetList with DESC sort on activity_date)
+  - ✅ Includes activity type icons (11 interaction types mapped to lucide-react icons)
+  - ✅ "Time ago" formatted correctly (date-fns formatDistanceToNow with addSuffix)
+  - ✅ Click navigates to full activity feed (redirect to /activities/:id/show on click)
+  - ✅ Truncates long descriptions (truncateText utility with 60 char limit)
 - **Integration Points:**
-  - Activities table query with user joins
-  - Date formatting (date-fns)
-  - Activity type icons
+  - Activities table query with user joins (separate useGetList for sales users)
+  - Date formatting (date-fns formatDistanceToNow)
+  - Activity type icons (Phone, Mail, Users, FileText, ClipboardCheck, Calendar, Building, MapPin, FileSignature, MessageCircle, Share2)
+- **Implementation Notes:**
+  - Created `src/atomic-crm/dashboard/RecentActivities.tsx` with DashboardWidget wrapper
+  - Maps 11 interaction types: call, email, meeting, demo, proposal, follow_up, trade_show, site_visit, contract_review, check_in, social
+  - Fetches sales users separately for name display (created_by foreign key)
+  - Each activity item clickable with hover states using semantic colors
+  - Scrollable container with max-h-[400px] for many activities
+  - Uses semantic colors: --primary, --accent, --border, --foreground, --muted-foreground
+  - Full keyboard accessibility with tabIndex and onKeyDown handlers
 
-#### P4-E1-S1-T8: Implement "Opportunities by Principal" Widget
-- **Hours:** 2.5h
+#### P4-E1-S1-T8: Implement "Opportunities by Principal" Widget ✅
+- **Hours:** 2.5h (Actual: 1h)
 - **Confidence:** 87%
 - **Prerequisites:** P4-E1-S1-T2
 - **Description:**
@@ -207,14 +224,28 @@ Fixed layout dashboard with 6 widgets, auto-refresh, and manual refresh capabili
   - Mark with star icon (most important widget per PRD)
   - Click principal navigates to opportunities filtered by that principal
 - **Acceptance Criteria:**
-  - [ ] Lists principals with active opportunity counts
-  - [ ] Star icon visible to indicate importance
-  - [ ] Click principal filters opportunities
-  - [ ] Sorted by count (descending)
-  - [ ] Shows "Other" category if applicable
+  - ✅ Lists principals with active opportunity counts (useGetList with grouping logic)
+  - ✅ Star icon visible to indicate importance (filled star icon from lucide-react)
+  - ✅ Click principal filters opportunities (useNavigate with encoded filter JSON)
+  - ✅ Sorted by count (descending) (useMemo with Array.sort)
+  - ✅ Shows "Other" category if applicable (null principal_organization_id handled)
 - **Integration Points:**
   - Opportunities table with principal filtering
   - Principal configuration from ConfigurationContext
+- **Implementation Notes:**
+  - Created `src/atomic-crm/dashboard/OpportunitiesByPrincipal.tsx` (145 lines)
+  - Uses `useGetList` to fetch all active opportunities (status: "active", deleted_at@is: null)
+  - Groups opportunities by `principal_organization_id` in `useMemo` hook
+  - Uses `principal_organization_name` from opportunities_summary view
+  - Null principals grouped as "Other" category
+  - Sorted by count descending (most opportunities first)
+  - Star icon with `fill-primary` to emphasize importance (⭐ HIGHEST PRIORITY)
+  - Displays as scrollable list (max-height: 300px) with hover effects
+  - Each principal row shows name + count with clickable button
+  - Navigation includes both null check (`@is` operator) and ID filter
+  - Total count displayed at bottom with border separator
+  - Comprehensive test suite with 6 passing tests (grouping, sorting, null handling, icons)
+  - Integrated into Dashboard.tsx in Phase 4 widgets grid
 
 ---
 
