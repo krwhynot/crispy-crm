@@ -113,6 +113,7 @@ const OpportunityActions = ({ view, onViewChange }: { view: OpportunityView; onV
       <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
       <FilterButton />
       <ExportButton />
+      <QuickAddButton />
       <CreateButton label="New Opportunity" />
     </TopToolbar>
   );
