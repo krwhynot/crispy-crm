@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quickAddSchema, type QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { useQuickAdd } from "./hooks/useQuickAdd";
+import { useFilteredProducts } from "./hooks/useFilteredProducts";
 import { useGetList } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,23 +39,12 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     }
   );
 
-  // Get selected principal to filter products
-  const [selectedPrincipalId, setSelectedPrincipalId] = useState<number | undefined>(
-    Number(localStorage.getItem('last_principal')) || undefined
-  );
+  // Watch principal selection for product filtering
+  const principalId = watch("principal_id");
 
-  // Fetch products filtered by principal
-  const { data: productsList, isLoading: productsLoading } = useGetList(
-    "products",
-    {
-      filter: selectedPrincipalId ? { principal_id: selectedPrincipalId } : {},
-      pagination: { page: 1, perPage: 200 },
-      sort: { field: "name", order: "ASC" },
-    },
-    {
-      enabled: !!selectedPrincipalId,
-    }
-  );
+  // Fetch products filtered by selected principal
+  const { products: productsList, isLoading: productsLoading, isReady: productsReady } =
+    useFilteredProducts(principalId);
 
   // Initialize form with defaults from localStorage
   const {
@@ -93,12 +83,6 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       clearErrors("phone");
     }
   }, [phoneValue, emailValue, errors.phone, clearErrors]);
-
-  // Update selected principal when form value changes
-  const principalId = watch("principal_id");
-  useEffect(() => {
-    setSelectedPrincipalId(principalId);
-  }, [principalId]);
 
   // Filter city options based on search
   const filteredCities = useMemo(() => {
@@ -211,7 +195,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
         <div className="space-y-2">
           <Label htmlFor="products">Products</Label>
-          {selectedPrincipalId ? (
+          {productsReady ? (
             <MultiSelectCombobox
               options={productOptions}
               value={watch("product_ids")?.map(id => id.toString()) || []}

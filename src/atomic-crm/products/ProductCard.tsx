@@ -62,6 +62,11 @@ export const ProductCard = (props: { record?: Product }) => {
                     {record.status.replace(/_/g, ' ')}
                   </Badge>
                 )}
+                {record.principal_name && (
+                  <Badge variant="secondary" className="text-xs px-1 py-0">
+                    {record.principal_name}
+                  </Badge>
+                )}
                 {record.brand && (
                   <Badge variant="outline" className="text-xs px-1 py-0">
                     {record.brand}
