@@ -1,4 +1,7 @@
-import { useGetList } from "ra-core";
+import { useGetList, useRefresh } from "ra-core";
+import { useEffect, useState } from "react";
+import { RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { Contact, ContactNote } from "../types";
 import { DashboardActivityLog } from "./DashboardActivityLog";
 import { HotContacts } from "./HotContacts";
@@ -7,7 +10,12 @@ import { MiniPipeline } from "./MiniPipeline";
 import { QuickAdd } from "./QuickAdd";
 import { MetricsCardGrid } from "./MetricsCardGrid";
 
+const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
+
 export const Dashboard = () => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const refresh = useRefresh();
+
   const {
     data: _dataContact,
     total: _totalContact,
@@ -29,12 +37,45 @@ export const Dashboard = () => {
   const isPending =
     isPendingContact || isPendingContactNotes || isPendingOpportunities;
 
+  // Auto-refresh every 5 minutes
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refresh();
+    }, AUTO_REFRESH_INTERVAL);
+
+    return () => clearInterval(intervalId);
+  }, [refresh]);
+
+  // Manual refresh handler
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    refresh();
+    // Give feedback for at least 500ms
+    setTimeout(() => setIsRefreshing(false), 500);
+  };
+
   if (isPending) {
     return null;
   }
 
   return (
     <div className="space-y-6 md:space-y-8">
+      {/* Dashboard Header with Refresh Button */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Dashboard</h1>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className="gap-2"
+          aria-label="Refresh dashboard"
+        >
+          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          Refresh
+        </Button>
+      </div>
+
       {/* Metrics Grid - iPad optimized, full width */}
       <MetricsCardGrid />
 
