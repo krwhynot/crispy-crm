@@ -937,33 +937,52 @@
   - **Decision:** Postpone tests until we decide if we want the simpler immediate-move UX or add a confirmation modal
   - **Alternative:** Could write tests for OpportunityListContent.tsx drag functionality as-is
 
-**P3-E8-S1-T3: Write tests for campaign grouping**
+**P3-E8-S1-T3: Write tests for campaign grouping** ⏸️
 - **Description:** Test campaign-grouped list view
 - **Confidence:** 85%
-- **Estimate:** 2 hours
-- **Prerequisites:** P3-E3-S1-T4
+- **Estimate:** 2 hours (blocked - component not yet implemented)
+- **Prerequisites:** P3-E3-S1-T4 (NOT YET COMPLETE)
 - **Acceptance Criteria:**
-  - Test: Opportunities grouped by campaign
-  - Test: Within campaign, grouped by customer
-  - Test: Principal badges displayed
-  - Test: Expand/collapse functionality
-  - Coverage: 80%+
+  - ⏸️ Test: Opportunities grouped by campaign
+  - ⏸️ Test: Within campaign, grouped by customer
+  - ⏸️ Test: Principal badges displayed
+  - ⏸️ Test: Expand/collapse functionality
+  - ⏸️ Coverage: 80%+
 - **Files:**
-  - `src/atomic-crm/opportunities/CampaignGroupedList.test.tsx`
+  - `src/atomic-crm/opportunities/CampaignGroupedList.test.tsx` (component doesn't exist yet)
+- **Implementation Status:**
+  - **Blocked:** CampaignGroupedList component not yet implemented
+  - **Prerequisite:** Must complete P3-E3-S1-T4 first (Epic 3 Story 1 Task 4)
+  - **Note:** Cannot write tests for non-existent component
+  - **Action:** Proceed with other test tasks, return to this after component is built
 
-**P3-E8-S1-T4: Write tests for auto-generate name**
+**P3-E8-S1-T4: Write tests for auto-generate name** ✅
 - **Description:** Comprehensive tests for name generation logic
 - **Confidence:** 95%
 - **Estimate:** 1.5 hours
 - **Prerequisites:** P3-E5-S1-T1
 - **Acceptance Criteria:**
-  - Test: Correct format with all fields
-  - Test: Handles missing customer/principal
-  - Test: Quarter calculation correct
-  - Test: Truncates at 200 chars
-  - Coverage: 100%
+  - ✅ Test: Correct format with all fields
+  - ✅ Test: Handles missing customer/principal
+  - ✅ Test: Quarter calculation correct
+  - ✅ Test: Truncates at 200 chars
+  - ✅ Coverage: 100%
 - **Files:**
-  - `src/atomic-crm/opportunities/utils/generateOpportunityName.test.ts`
+  - `src/atomic-crm/opportunities/utils/generateOpportunityName.test.ts` (already exists)
+- **Implementation Notes:**
+  - Comprehensive test suite with 37 test cases
+  - Coverage: **100% statements (27/27), 100% branches (10/10), 100% functions (2/2), 100% lines (27/27)**
+  - Tests cover all requirements and edge cases:
+    - Full format with all fields present
+    - Missing customer organization handling
+    - Missing principal organization handling
+    - Quarter calculation from estimated close date (Q1-Q4)
+    - Name truncation at 200 characters
+    - Date format variations
+    - Null/undefined handling
+    - Special characters in organization names
+    - Multiple missing fields combinations
+  - All 37 tests passing
 
 ### E8-S2: Integration Tests
 
