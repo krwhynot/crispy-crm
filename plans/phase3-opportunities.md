@@ -325,9 +325,9 @@
 
 ## Epic 3: Campaign Grouping & Trade Show Workflow
 
-**Progress:** 4/6 tasks complete (67%)
+**Progress:** 5/6 tasks complete (83%)
 - ✅ Story 1: Campaign field + filter complete (3/4 tasks)
-- ✅ Story 2: Related opportunity field complete (1/2 tasks)
+- ✅ Story 2: Related opportunity tracking complete (2/2 tasks)
 
 ### E3-S1: Campaign Management
 
@@ -418,20 +418,28 @@
   - Circular reference prevention can be added via database constraint if needed
   - Helper text can be added to label or as helperText prop if needed
 
-**P3-E3-S2-T2: Display related opportunities section on detail page**
+**P3-E3-S2-T2: Display related opportunities section on detail page** ✅
 - **Description:** Show parent opportunity and child opportunities on OpportunityShow
-- **Confidence:** 85%
-- **Estimate:** 2 hours
+- **Status:** COMPLETE - RelatedOpportunitiesSection component implemented
+- **Confidence:** 100%
+- **Estimate:** 2 hours (actual: 2 hours)
 - **Prerequisites:** P3-E3-S2-T1
 - **Acceptance Criteria:**
-  - "Related Opportunities" card shows parent (if exists)
-  - Shows list of child opportunities (if any)
-  - Links navigate to related opportunity details
-  - Shows principal badge for each
-  - Shows stage and status badges
+  - ✅ "Related Opportunities" card shows parent (if related_opportunity_id exists)
+  - ✅ Shows list of child opportunities (queries opportunities where related_opportunity_id = current)
+  - ✅ Links navigate to related opportunity details (Link to /opportunities/:id/show)
+  - ✅ Shows principal organization badge for each (principal_organization_name)
+  - ✅ Shows stage and status badges with appropriate styling
 - **Files:**
-  - `src/atomic-crm/opportunities/OpportunityShow.tsx` (update)
-  - `src/atomic-crm/opportunities/RelatedOpportunitiesCard.tsx` (new)
+  - ✅ `src/atomic-crm/opportunities/OpportunityShow.tsx` (lines 38, 107-110: import & integration)
+  - ✅ `src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx` (new component)
+- **Implementation Notes:**
+  - Component only renders if parent OR children exist (null check)
+  - Parent section shows single opportunity with arrow icon
+  - Children section shows count in header ("Follow-up Opportunities (2)")
+  - Uses useGetOne for parent, useGetList for children
+  - Hover effects on opportunity cards for better UX
+  - External link icons indicate navigation to detail page
 
 **P3-E3-S2-T3: Create "Quick Add Booth Visitor" workflow**
 - **Description:** Quick create minimal opportunity for trade show booth visitors
