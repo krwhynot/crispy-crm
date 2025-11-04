@@ -82,9 +82,9 @@ export const DashboardWidget = ({
   return (
     <Card
       className={`
-        rounded-lg md:rounded-xl p-4 md:p-5 lg:p-6
+        rounded-md p-2 md:p-2.5 lg:p-3
         flex flex-col
-        min-h-[160px] md:min-h-[176px] lg:min-h-[192px]
+        min-h-[60px] md:min-h-[70px] lg:min-h-[80px]
         transition-all duration-200
         ${isClickable ? "cursor-pointer hover:shadow-md active:shadow-sm hover:border-primary/50" : ""}
         ${className}
@@ -105,7 +105,7 @@ export const DashboardWidget = ({
       aria-label={isClickable ? `View ${title}` : undefined}
     >
       {/* Header: Title + Icon */}
-      <div className="flex items-center justify-between gap-3 mb-4">
+      <div className="flex items-center justify-between gap-2 mb-2 md:mb-3">
         <h3 className="text-xs md:text-sm lg:text-base font-semibold text-muted-foreground tracking-wide uppercase flex-1 min-w-0">
           {title}
         </h3>
