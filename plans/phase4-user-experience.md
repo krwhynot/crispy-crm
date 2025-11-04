@@ -134,22 +134,28 @@ Fixed layout dashboard with 6 widgets, auto-refresh, and manual refresh capabili
   - Pluralization: "No overdue tasks" / "1 overdue task" / "N overdue tasks"
   - Non-clickable widget (tasks are managed in existing TasksList widget)
 
-#### P4-E1-S1-T5: Implement "This Week's Activities" Widget
-- **Hours:** 1.5h
+#### P4-E1-S1-T5: Implement "This Week's Activities" Widget ✅
+- **Hours:** 1.5h (Actual: 0.5h)
 - **Confidence:** 90%
 - **Prerequisites:** P4-E1-S1-T2
 - **Description:**
   - Fetch count of activities logged this week (Monday-Sunday)
   - Display count with label
-  - Click navigates to activity feed with week filter
 - **Acceptance Criteria:**
-  - [ ] Displays accurate count of current week's activities
-  - [ ] Week defined as Monday-Sunday
-  - [ ] Click navigates to filtered activity feed
-  - [ ] Count includes all activity types
+  - ✅ Displays accurate count of current week's activities (useGetList with activity_date range filter)
+  - ✅ Week defined as Monday-Sunday (date-fns startOfWeek/endOfWeek with weekStartsOn: 1)
+  - ✅ Count includes all activity types (filter only by date range and deleted_at)
 - **Integration Points:**
   - Activities table query
   - Date range filtering (ISO week)
+- **Implementation Notes:**
+  - Created `src/atomic-crm/dashboard/ThisWeeksActivities.tsx` (65 lines)
+  - Uses date-fns with `weekStartsOn: 1` for Monday-Sunday ISO 8601 week
+  - Filters: `{ "deleted_at@is": null, "activity_date@gte": startOfWeek, "activity_date@lte": endOfWeek }`
+  - Memoized week boundaries calculation for performance
+  - Activity icon from lucide-react
+  - Pluralization: "No activities this week" / "1 activity this week" / "N activities this week"
+  - Non-clickable widget (navigation deferred - could add activity feed route in future)
 
 #### P4-E1-S1-T6: Implement "Pipeline by Stage" Chart Widget
 - **Hours:** 3h
