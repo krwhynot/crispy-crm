@@ -12,6 +12,7 @@ import { formatDistance, format } from "date-fns";
 import { Building2, X } from "lucide-react";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
+import { BulkActionsToolbar } from "./BulkActionsToolbar";
 
 export const OpportunityRowListView = () => {
   const {
@@ -57,29 +58,39 @@ export const OpportunityRowListView = () => {
 
   return (
     <>
-      {/* Bulk selection header - shown when items are selected */}
+      {/* Bulk selection controls - shown when items are selected */}
       {selectedIds.length > 0 && (
-        <div className="mb-3 flex items-center justify-between rounded-lg border border-border bg-muted/50 px-4 py-2">
-          <div className="flex items-center gap-3">
-            <Checkbox
-              checked={allSelected}
-              indeterminate={someSelected}
-              onCheckedChange={handleSelectAll}
-              aria-label="Select all opportunities"
-            />
-            <span className="text-sm font-medium">
-              {selectedIds.length} opportunit{selectedIds.length === 1 ? 'y' : 'ies'} selected
-            </span>
+        <div className="space-y-3">
+          {/* Selection summary bar */}
+          <div className="flex items-center justify-between rounded-lg border border-border bg-muted/50 px-4 py-2">
+            <div className="flex items-center gap-3">
+              <Checkbox
+                checked={allSelected}
+                indeterminate={someSelected}
+                onCheckedChange={handleSelectAll}
+                aria-label="Select all opportunities"
+              />
+              <span className="text-sm font-medium">
+                {selectedIds.length} opportunit{selectedIds.length === 1 ? 'y' : 'ies'} selected
+              </span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onUnselectItems}
+              className="h-8 gap-1.5"
+            >
+              <X className="h-4 w-4" />
+              Clear selection
+            </Button>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onUnselectItems}
-            className="h-8 gap-1.5"
-          >
-            <X className="h-4 w-4" />
-            Clear selection
-          </Button>
+
+          {/* Bulk actions toolbar */}
+          <BulkActionsToolbar
+            selectedIds={selectedIds}
+            opportunities={opportunities}
+            onUnselectItems={onUnselectItems}
+          />
         </div>
       )}
 

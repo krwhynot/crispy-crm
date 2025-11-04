@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useListContext, useNotify, useRefresh, useDataProvider } from "ra-core";
+import { useNotify, useRefresh, useDataProvider, useGetList } from "ra-core";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,9 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Layers, CircleDot, UserPlus } from "lucide-react";
+import { CheckCircle2, XCircle, Layers, CircleDot, UserPlus, Download } from "lucide-react";
 import type { Opportunity } from "../types";
 import { OPPORTUNITY_STAGES, getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
+import { useExportOpportunities } from "./hooks/useExportOpportunities";
 
 type BulkAction = "change_stage" | "change_status" | "assign_owner" | null;
 
@@ -47,7 +48,13 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
   const notify = useNotify();
   const refresh = useRefresh();
   const dataProvider = useDataProvider();
-  const { data: salesList } = useListContext();
+  const { exportToCSV } = useExportOpportunities();
+
+  // Fetch sales list for owner assignment
+  const { data: salesList } = useGetList("sales", {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "last_name", order: "ASC" },
+  });
 
   // Get selected opportunities
   const selectedOpportunities = opportunities.filter((opp) => selectedIds.includes(opp.id));
@@ -131,6 +138,10 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
     return false;
   };
 
+  const handleExport = () => {
+    exportToCSV(selectedOpportunities);
+  };
+
   if (selectedIds.length === 0) return null;
 
   return (
@@ -167,6 +178,19 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
           <UserPlus className="h-4 w-4" />
           Assign Owner
         </Button>
+
+        {/* Export button */}
+        <div className="ml-auto">
+          <Button
+            variant="default"
+            size="sm"
+            onClick={handleExport}
+            className="gap-2"
+          >
+            <Download className="h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
       </div>
 
       {/* Change Stage Dialog */}
@@ -305,7 +329,7 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
               </div>
             </div>
 
-            {/* Owner selector - Note: This needs actual sales data */}
+            {/* Owner selector */}
             <div className="space-y-2">
               <label className="text-sm font-medium">New Owner</label>
               <Select value={selectedOwner} onValueChange={setSelectedOwner}>
@@ -313,8 +337,11 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
                   <SelectValue placeholder="Select an owner" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">Admin User</SelectItem>
-                  {/* TODO: Load actual sales list from data provider */}
+                  {salesList?.map((sales) => (
+                    <SelectItem key={sales.id} value={String(sales.id)}>
+                      {sales.first_name} {sales.last_name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
