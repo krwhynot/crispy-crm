@@ -836,3 +836,6 @@
 [2025-11-03 22:35:50] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddForm.tsx
 [2025-11-03 22:37:33] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddForm.tsx
 [2025-11-03 22:40:59] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/ProductCard.tsx
+[2025-11-03 22:41:46] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251104044122_add_products_summary_view.sql
+[2025-11-03 22:42:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderUtils.ts
+[2025-11-04 06:16:10] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/phase3-opportunities.md
