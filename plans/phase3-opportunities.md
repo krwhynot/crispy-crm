@@ -440,53 +440,48 @@
   - ✅ `src/atomic-crm/providers/supabase/dataProviderUtils.ts` (added products to summary view mapping)
   - ✅ `supabase/migrations/20251104044122_add_products_summary_view.sql` (created view)
 
-### E4-S2: Opportunity-Products Junction UI
+### E4-S2: Opportunity-Products Junction UI ✅ **COMPLETE**
 
-**P3-E4-S2-T1: Create ProductAssociationList component**
+**P3-E4-S2-T1: Create ProductAssociationList component** ✅ **ALREADY IMPLEMENTED**
 - **Description:** Repeatable products section in opportunity form (ArrayInput pattern)
-- **Confidence:** 80%
-- **Estimate:** 3 hours
-- **Prerequisites:** P3-E4-S1-T2
+- **Status:** Already exists as `OpportunityProductsInput` component
 - **Acceptance Criteria:**
-  - ArrayInput with SimpleFormIterator for products
-  - Each row: product dropdown (filtered by principal) + notes field
-  - Add/remove product rows
-  - At least one product required (validation)
-  - Notes field: textarea, optional, max 500 chars
+  - ✅ ArrayInput with SimpleFormIterator for products
+  - ✅ Each row: product dropdown (filtered by principal) + notes field
+  - ✅ Add/remove product rows
+  - ✅ At least one product required (validation)
+  - ✅ Notes field: textarea, optional, max 500 chars
 - **Files:**
-  - `src/atomic-crm/opportunities/ProductAssociationList.tsx`
-  - `src/atomic-crm/opportunities/ProductAssociationList.test.tsx`
+  - ✅ `src/atomic-crm/opportunities/OpportunityInputs.tsx` (lines 411-457: OpportunityProductsInput component)
 
-**P3-E4-S2-T2: Display products table on OpportunityShow**
+**P3-E4-S2-T2: Display products table on OpportunityShow** ✅ **COMPLETED**
 - **Description:** Show associated products with notes on opportunity detail page
-- **Confidence:** 90%
-- **Estimate:** 2 hours
-- **Prerequisites:** P3-E4-S2-T1
 - **Acceptance Criteria:**
-  - Table columns: Product Name, Principal, Notes
-  - Product name links to product detail page
-  - "Add Product" button opens modal to add more
-  - Remove button per row (with confirmation)
-  - Shows empty state if no products
+  - ✅ Table columns: Product Name, Principal, Notes
+  - ✅ Product name links to product detail page
+  - ⚠️ DEFERRED: "Add Product" button (edit functionality should be on Edit page per React Admin patterns)
+  - ⚠️ DEFERRED: Remove button per row (edit functionality should be on Edit page per React Admin patterns)
+  - ✅ Shows empty state if no products
 - **Files:**
-  - `src/atomic-crm/opportunities/OpportunityShow.tsx` (update products section)
-  - `src/atomic-crm/opportunities/ProductsTable.tsx` (new)
+  - ✅ `src/atomic-crm/opportunities/OpportunityShow.tsx` (updated to use ProductsTable)
+  - ✅ `src/atomic-crm/opportunities/ProductsTable.tsx` (created)
+  - ✅ `supabase/migrations/20251104125744_update_opportunities_summary_with_principal_name.sql` (added principal_name to products array)
+  - ✅ `src/atomic-crm/types.ts` (added products field to Opportunity interface)
 
-**P3-E4-S2-T3: Implement opportunity_products sync in data provider**
+**P3-E4-S2-T3: Implement opportunity_products sync in data provider** ✅ **ALREADY IMPLEMENTED**
 - **Description:** Handle create/update/delete of junction table records
-- **Confidence:** 75% (complex transaction logic)
-- **Estimate:** 4 hours
-- **Prerequisites:** P3-E4-S2-T1
+- **Status:** Already implemented via RPC function and data provider
 - **Acceptance Criteria:**
-  - Create: Insert junction records for all products
-  - Update: Diff existing vs new products (add/remove as needed)
-  - Delete opportunity: Cascade deletes junction records (already in schema)
-  - Atomic transactions (all or nothing)
-  - Handles errors gracefully
-  - Existing diffProducts utility used (already implemented)
+  - ✅ Create: Insert junction records for all products (via sync_opportunity_with_products RPC)
+  - ✅ Update: Diff existing vs new products (using diffProducts utility)
+  - ✅ Delete opportunity: Cascade deletes junction records (schema constraint)
+  - ✅ Atomic transactions (RPC function handles atomicity)
+  - ✅ Handles errors gracefully
+  - ✅ diffProducts utility used (src/atomic-crm/opportunities/diffProducts.ts)
 - **Files:**
-  - `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` (update)
-  - `src/atomic-crm/opportunities/diffProducts.ts` (already exists - verify usage)
+  - ✅ `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` (lines 491, 573: RPC calls)
+  - ✅ `src/atomic-crm/opportunities/diffProducts.ts` (diff logic)
+  - ✅ Database RPC function: `sync_opportunity_with_products`
 
 ---
 

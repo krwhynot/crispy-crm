@@ -233,6 +233,17 @@ export interface Opportunity extends Pick<RaRecord, "id"> {
   nb_interactions?: number;
   last_interaction_date?: string;
   days_in_stage?: number;
+  customer_organization_name?: string;
+  principal_organization_name?: string;
+  distributor_organization_name?: string;
+  products?: Array<{
+    id: Identifier;
+    product_id_reference: Identifier;
+    product_name: string;
+    product_category?: string;
+    principal_name?: string;
+    notes?: string;
+  }>;
 }
 
 // DealNote type removed - use OpportunityNote instead
