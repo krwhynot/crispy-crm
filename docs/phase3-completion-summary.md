@@ -9,7 +9,7 @@
 
 ## 📊 Executive Summary
 
-### Overall Completion: 72% (44/61 tasks)
+### Overall Completion: 77% (47/61 tasks)
 
 **MVP-Ready Features:**
 - ✅ Product-principal filtering (100% test coverage)
@@ -20,12 +20,15 @@
 - ✅ Complete audit trail system
 - ✅ List view enhancements with filter presets
 - ✅ Drag-and-drop Kanban (already operational)
-- ✅ **Campaign grouping UI** with nested accordions (just completed)
-- ✅ **Trade show workflow** with related opportunities tracking (just completed)
+- ✅ Campaign grouping UI with nested accordions
+- ✅ Trade show workflow with related opportunities tracking
+- ✅ **Bulk actions toolbar** with Change Stage/Status/Owner (just completed)
+- ✅ **Bulk selection UI** with select-all and clear (just completed)
+- ✅ **CSV export** with principal prominence (just completed)
 
 **Deferred to Post-MVP:**
 - ⏸️ E2E test infrastructure setup
-- ⏸️ Bulk actions toolbar
+- ⏸️ "By Principal" grouped view (complex UI pattern)
 - ⏸️ Frontend migration to opportunity_contacts junction table
 
 ---
@@ -209,21 +212,32 @@
 
 ---
 
-### Epic 6: List View Enhancements (4/9 tasks complete)
+### Epic 6: List View Enhancements (7/9 tasks complete)
 
-**Status:** ⏸️ Partially Complete - Core Filters Working
+**Status:** ✅ **NEARLY COMPLETE** - Core Filters + Bulk Actions Working
 
 **Completed:**
 - ✅ P3-E6-S1-T1: Make principal column prominent (bold, icon, high contrast)
 - ✅ P3-E6-S1-T2: Add principal filter to OpportunityList (TOP position)
 - ✅ P3-E6-S2-T2: Create "My Opportunities" saved view (with count badge)
 - ✅ P3-E6-S2-T3: Create additional preset views (5 total presets)
+- ✅ **P3-E6-S3-T1: Add bulk selection checkboxes to list view** (just completed)
+- ✅ **P3-E6-S3-T2: Implement bulk actions toolbar** (just completed)
+- ✅ **P3-E6-S3-T3: Add bulk export to CSV** (just completed)
 
-**Not Complete:**
+**Deferred:**
 - ⏸️ P3-E6-S2-T1: Create "By Principal" saved view (DEFERRED - complex grouping)
-- ⏸️ P3-E6-S3-T1: Add bulk selection checkboxes to list view
-- ⏸️ P3-E6-S3-T2: Implement bulk actions toolbar
-- ⏸️ P3-E6-S3-T3: Add bulk export to CSV
+- ⏸️ Additional bulk actions (tags management - future enhancement)
+
+**Bulk Actions Delivered (Story 3):**
+- **Selection UI:** Select-all checkbox with indeterminate state + selection count + clear button
+- **Change Stage:** Modal with affected opportunities list + dropdown selection
+- **Change Status:** Modal with affected opportunities list + dropdown selection
+- **Assign Owner:** Modal with affected opportunities list + dynamic sales dropdown
+- **CSV Export:** ⭐ Principal column prominently positioned (3rd column with star emoji)
+  - Proper CSV escaping for special characters
+  - Filename: `opportunities_export_YYYY-MM-DD.csv`
+  - 16 columns including all key opportunity data
 
 **Filter Presets Created:**
 1. "My Opportunities" (opportunity_owner_id = current user)
@@ -235,8 +249,11 @@
 **Files Created:**
 - `src/atomic-crm/opportunities/filterPresets.ts`
 - `src/atomic-crm/opportunities/FilterPresetsBar.tsx`
+- `src/atomic-crm/opportunities/BulkActionsToolbar.tsx` (350+ lines)
+- `src/atomic-crm/opportunities/hooks/useExportOpportunities.ts` (94 lines)
+- `src/atomic-crm/opportunities/OpportunityRowListView.tsx` (updated with bulk selection)
 
-**Recommendation:** Bulk actions deferred to Phase 4 - filter presets provide 80% of value
+**Impact:** Complete bulk operations workflow for list view efficiency
 
 ---
 
