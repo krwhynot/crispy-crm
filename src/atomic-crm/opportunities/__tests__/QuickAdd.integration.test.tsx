@@ -174,9 +174,12 @@ describe('QuickAdd Integration', () => {
     // Type campaign name (it's a text field, not a select)
     await user.type(screen.getByLabelText(/campaign/i), 'Trade Show 2024');
 
+    // Find principal select by its trigger button (Select components use triggers)
     const principalSelect = screen.getByLabelText(/principal/i);
-    await user.click(principalSelect);
-    await user.click(screen.getByText('Principal A'));
+    const principalTrigger = principalSelect.closest('[data-slot="select"]')?.querySelector('[role="combobox"]');
+    if (!principalTrigger) throw new Error('Principal trigger not found');
+    await user.click(principalTrigger);
+    await user.click(await screen.findByRole('option', { name: 'Principal A' }));
 
     // 4. Submit with Save & Close
     const saveCloseButton = screen.getByText(/save & close/i);
@@ -186,33 +189,26 @@ describe('QuickAdd Integration', () => {
     await waitFor(() => {
       expect(mockCreateBoothVisitor).toHaveBeenCalledWith(
         expect.objectContaining({
-          contact: expect.objectContaining({
-            first_name: 'John',
-            last_name: 'Doe',
-            email: [{ email: 'john.doe@example.com', type: 'Work' }],
-            phone: [{ number: '555-1234', type: 'Work' }],
-          }),
-          organization: expect.objectContaining({
-            name: 'Acme Corp',
-          }),
-          opportunity: expect.objectContaining({
-            campaign_id: 1,
-            principal_id: 1,
-          }),
+          first_name: 'John',
+          last_name: 'Doe',
+          email: 'john.doe@example.com',
+          phone: '555-1234',
+          org_name: 'Acme Corp',
+          campaign: 'Trade Show 2024',
+          principal_id: 1,
         })
       );
     });
 
     // 6. Verify success toast shown
     expect(mockNotify).toHaveBeenCalledWith(
-      'Booth visitor created successfully',
+      '✅ Created: John Doe - Acme Corp',
       { type: 'success', autoHideDuration: 2000 }
     );
 
     // 7. Verify localStorage updated
-    const storedPrefs = JSON.parse(localStorage.getItem('quickadd.preferences') || '{}');
-    expect(storedPrefs.campaign_id).toBe(1);
-    expect(storedPrefs.principal_id).toBe(1);
+    expect(localStorage.getItem('last_campaign')).toBe('Trade Show 2024');
+    expect(localStorage.getItem('last_principal')).toBe('1');
 
     // 8. Verify dialog closed
     await waitFor(() => {
@@ -232,13 +228,14 @@ describe('QuickAdd Integration', () => {
     await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
     await user.type(screen.getByLabelText(/organization name/i), 'Tech Corp');
 
-    // Select campaign and principal
-    const campaignSelect = screen.getByLabelText(/campaign/i);
-    await user.click(campaignSelect);
-    await user.click(screen.getByText('Conference 2024'));
+    // Type campaign name (it's a text field, not a select)
+    await user.type(screen.getByLabelText(/campaign/i), 'Conference 2024');
 
-    const principalSelect = screen.getByLabelText(/principal/i);
-    await user.click(principalSelect);
+    // Find principal select by its trigger button
+    const principalLabel = screen.getByText(/principal/i);
+    const principalTrigger = principalLabel.parentElement?.parentElement?.querySelector('[role="combobox"]');
+    if (!principalTrigger) throw new Error('Principal trigger not found');
+    await user.click(principalTrigger);
     await user.click(screen.getByText('Principal B'));
 
     // Submit with Save & Add Another
@@ -247,19 +244,21 @@ describe('QuickAdd Integration', () => {
 
     // Verify record created
     await waitFor(() => {
-      expect(mockCreateBoothVisitor.createBoothVisitor).toHaveBeenCalledWith(
+      expect(mockCreateBoothVisitor).toHaveBeenCalledWith(
         expect.objectContaining({
-          contact: expect.objectContaining({
-            first_name: 'Jane',
-            last_name: 'Smith',
-          }),
+          first_name: 'Jane',
+          last_name: 'Smith',
+          email: 'jane@example.com',
+          org_name: 'Tech Corp',
+          campaign: 'Conference 2024',
+          principal_id: 2,
         })
       );
     });
 
     // Verify success toast
     expect(mockNotify).toHaveBeenCalledWith(
-      'Booth visitor created successfully',
+      '✅ Created: Jane Smith - Tech Corp',
       { type: 'success', autoHideDuration: 2000 }
     );
 
@@ -272,9 +271,12 @@ describe('QuickAdd Integration', () => {
     expect(screen.getByLabelText(/email/i)).toHaveValue('');
     expect(screen.getByLabelText(/organization name/i)).toHaveValue('');
 
-    // Verify campaign/principal preserved
-    expect(screen.getByLabelText(/campaign/i)).toHaveTextContent('Conference 2024');
-    expect(screen.getByLabelText(/principal/i)).toHaveTextContent('Principal B');
+    // Verify campaign/principal preserved (they're input/select fields)
+    expect(screen.getByLabelText(/campaign/i)).toHaveValue('Conference 2024');
+    // Principal is in a Select trigger, find it by label
+    const principalLabelElement = screen.getByText(/principal/i);
+    const principalTriggerElement = principalLabelElement.parentElement?.parentElement?.querySelector('[role="combobox"]');
+    expect(principalTriggerElement).toHaveTextContent('Principal B');
 
     // Verify focus returns to first name field
     await waitFor(() => {
@@ -284,7 +286,7 @@ describe('QuickAdd Integration', () => {
 
   it('handles errors and preserves form data', async () => {
     // Setup error mock
-    mockCreateBoothVisitor.createBoothVisitor.mockRejectedValueOnce(
+    mockCreateBoothVisitor.mockRejectedValueOnce(
       new Error('Database connection failed')
     );
 
@@ -319,7 +321,7 @@ describe('QuickAdd Integration', () => {
     expect(screen.getByLabelText(/organization name/i)).toHaveValue('Test Org');
 
     // Verify no automatic retry (fail fast principle)
-    expect(mockCreateBoothVisitor.createBoothVisitor).toHaveBeenCalledTimes(1);
+    expect(mockCreateBoothVisitor).toHaveBeenCalledTimes(1);
   });
 
   it('validates phone OR email requirement', async () => {
@@ -343,7 +345,7 @@ describe('QuickAdd Integration', () => {
     });
 
     // Verify createBoothVisitor was NOT called
-    expect(mockCreateBoothVisitor.createBoothVisitor).not.toHaveBeenCalled();
+    expect(mockCreateBoothVisitor).not.toHaveBeenCalled();
 
     // Now add just email and try again
     await user.type(screen.getByLabelText(/email/i), 'test@example.com');
@@ -351,11 +353,11 @@ describe('QuickAdd Integration', () => {
 
     // Should now submit successfully
     await waitFor(() => {
-      expect(mockCreateBoothVisitor.createBoothVisitor).toHaveBeenCalled();
+      expect(mockCreateBoothVisitor).toHaveBeenCalled();
     });
 
     // Reset for phone-only test
-    mockCreateBoothVisitor.createBoothVisitor.mockClear();
+    mockCreateBoothVisitor.mockClear();
 
     // Open dialog again
     await user.click(screen.getByText(/quick add/i));
@@ -370,11 +372,12 @@ describe('QuickAdd Integration', () => {
     await user.click(screen.getByText(/save & close/i));
 
     await waitFor(() => {
-      expect(mockCreateBoothVisitor.createBoothVisitor).toHaveBeenCalledWith(
+      expect(mockCreateBoothVisitor).toHaveBeenCalledWith(
         expect.objectContaining({
-          contact: expect.objectContaining({
-            phone: [{ number: '555-9999', type: 'Work' }],
-          }),
+          first_name: 'Phone',
+          last_name: 'Only',
+          phone: '555-9999',
+          org_name: 'Phone Org',
         })
       );
     });
@@ -393,9 +396,12 @@ describe('QuickAdd Integration', () => {
     }
 
     // Select Principal A
+    // Find principal select by its trigger button (Select components use triggers)
     const principalSelect = screen.getByLabelText(/principal/i);
-    await user.click(principalSelect);
-    await user.click(screen.getByText('Principal A'));
+    const principalTrigger = principalSelect.closest('[data-slot="select"]')?.querySelector('[role="combobox"]');
+    if (!principalTrigger) throw new Error('Principal trigger not found');
+    await user.click(principalTrigger);
+    await user.click(await screen.findByRole('option', { name: 'Principal A' }));
 
     // Wait for products to be filtered
     await waitFor(() => {
@@ -409,7 +415,7 @@ describe('QuickAdd Integration', () => {
     });
 
     // Now select Principal B
-    await user.click(principalSelect);
+    await user.click(principalTrigger);
     await user.click(screen.getByText('Principal B'));
 
     // Verify products re-filtered for Principal B
@@ -473,9 +479,12 @@ describe('QuickAdd Integration', () => {
     // Type campaign name (it's a text field, not a select)
     await user.type(screen.getByLabelText(/campaign/i), 'Trade Show 2024');
 
+    // Find principal select by its trigger button (Select components use triggers)
     const principalSelect = screen.getByLabelText(/principal/i);
-    await user.click(principalSelect);
-    await user.click(screen.getByText('Principal A'));
+    const principalTrigger = principalSelect.closest('[data-slot="select"]')?.querySelector('[role="combobox"]');
+    if (!principalTrigger) throw new Error('Principal trigger not found');
+    await user.click(principalTrigger);
+    await user.click(await screen.findByRole('option', { name: 'Principal A' }));
 
     // Fill minimal form
     await user.type(screen.getByLabelText(/first name/i), 'First');
@@ -487,25 +496,25 @@ describe('QuickAdd Integration', () => {
     await user.click(screen.getByText(/save & close/i));
 
     await waitFor(() => {
-      expect(mockCreateBoothVisitor.createBoothVisitor).toHaveBeenCalled();
+      expect(mockCreateBoothVisitor).toHaveBeenCalled();
     });
 
     // Verify preferences saved
-    const prefs = JSON.parse(localStorage.getItem('quickadd.preferences') || '{}');
-    expect(prefs.campaign_id).toBe(1);
-    expect(prefs.principal_id).toBe(1);
+    expect(localStorage.getItem('last_campaign')).toBe('Trade Show 2024');
+    expect(localStorage.getItem('last_principal')).toBe('1');
 
     // Second session - verify preferences loaded
-    const { unmount } = renderWithAdminContext(<QuickAddButton />, {
-      dataProvider: mockCreateBoothVisitor,
-    });
+    const { unmount } = renderWithAdminContext(<QuickAddButton />);
 
     await user.click(screen.getByText(/quick add/i));
 
     // Verify campaign and principal pre-selected
     await waitFor(() => {
-      expect(screen.getByLabelText(/campaign/i)).toHaveTextContent('Trade Show 2024');
-      expect(screen.getByLabelText(/principal/i)).toHaveTextContent('Principal A');
+      expect(screen.getByLabelText(/campaign/i)).toHaveValue('Trade Show 2024');
+      // Principal trigger shows selected value
+      const principalLabelEl = screen.getByText(/principal/i);
+      const principalTriggerEl = principalLabelEl.parentElement?.parentElement?.querySelector('[role="combobox"]');
+      expect(principalTriggerEl).toHaveTextContent('Principal A');
     });
 
     unmount();
