@@ -82,5 +82,5 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
     }
   }, [mode, currentName, generateName, setValue, isLoading]);
 
-  return { regenerate, isLoading };
+  return { regenerate, isLoading, canGenerate };
 };

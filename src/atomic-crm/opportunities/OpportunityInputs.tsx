@@ -8,6 +8,12 @@ import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { RefreshCw, Plus } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetIdentity } from "ra-core";
@@ -21,6 +27,7 @@ import {
 } from "./stageConstants";
 import { useAutoGenerateName } from "./useAutoGenerateName";
 import { LeadSourceInput } from "./LeadSourceInput";
+import { NamingConventionHelp } from "./NamingConventionHelp";
 
 export const OpportunityInputs = ({ mode }: { mode: "create" | "edit" }) => {
   return (
@@ -41,7 +48,7 @@ export const OpportunityInputs = ({ mode }: { mode: "create" | "edit" }) => {
 };
 
 const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
-  const { regenerate, isLoading } = useAutoGenerateName(mode);
+  const { regenerate, isLoading, canGenerate } = useAutoGenerateName(mode);
 
   return (
     <div className="rounded-lg border border-border bg-card p-4 space-y-4">
@@ -54,20 +61,31 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
               label="Opportunity name *"
               helperText={false}
               InputProps={{
-                endAdornment:
-                  mode === "edit" ? (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={regenerate}
-                      disabled={isLoading}
-                    >
-                      <RefreshCw className="w-4 h-4" />
-                    </Button>
-                  ) : null,
+                endAdornment: (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={regenerate}
+                          disabled={!canGenerate || isLoading}
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Generate name from customer and principal</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ),
               }}
             />
+            <div className="mt-2">
+              <NamingConventionHelp />
+            </div>
           </div>
         </div>
         <div className="lg:col-span-2">
