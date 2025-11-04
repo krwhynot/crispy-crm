@@ -1083,3 +1083,11 @@
 [2025-11-04 17:25:38] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/ui/button.tsx
 [2025-11-04 17:25:39] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/sort-button.tsx
 [2025-11-04 17:40:42] [code] Write: /home/krwhynot/projects/crispy-crm/src/hooks/useKeyboardShortcuts.ts
+[2025-11-04 17:41:29] [code] Write: /home/krwhynot/projects/crispy-crm/src/providers/KeyboardShortcutsProvider.tsx
+[2025-11-04 17:41:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/root/CRM.tsx
+[2025-11-04 17:41:47] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/root/CRM.tsx
+[2025-11-04 17:41:52] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/root/CRM.tsx
+[2025-11-04 17:44:12] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/KeyboardShortcutsModal.tsx
+[2025-11-04 17:44:47] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Layout.tsx
+[2025-11-04 17:44:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Layout.tsx
+[2025-11-04 17:47:07] [documentation] Write: /home/krwhynot/projects/crispy-crm/FOCUS_INDICATORS_VERIFICATION.md
