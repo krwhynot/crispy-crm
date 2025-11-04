@@ -13,9 +13,12 @@ DECLARE
   _opp_id BIGINT;
   _sales_id BIGINT;
 BEGIN
+  RAISE NOTICE 'Starting function with data type: %', pg_typeof(_data);
   _sales_id := (SELECT id FROM sales WHERE user_id = auth.uid());
+  RAISE NOTICE 'Got sales_id: %', _sales_id;
 
   -- Create Organization
+  RAISE NOTICE 'About to create organization';
   INSERT INTO organizations (
     name, city, state, organization_type, sales_id, segment_id
   ) VALUES (
@@ -26,12 +29,15 @@ BEGIN
     _sales_id,
     '562062be-c15b-417f-b2a1-d4a643d69d52'::uuid
   ) RETURNING id INTO _org_id;
+  RAISE NOTICE 'Created organization with id: %', _org_id;
 
   -- Create Contact
+  RAISE NOTICE 'About to create contact';
   INSERT INTO contacts (
-    first_name, last_name, organization_id, sales_id,
+    name, first_name, last_name, organization_id, sales_id,
     email, phone, first_seen, last_seen, tags
   ) VALUES (
+    _data->>'first_name' || ' ' || _data->>'last_name',
     _data->>'first_name',
     _data->>'last_name',
     _org_id,
@@ -42,8 +48,9 @@ BEGIN
     CASE WHEN _data->>'phone' IS NOT NULL
       THEN jsonb_build_array(jsonb_build_object('number', _data->>'phone', 'type', 'Work'))
       ELSE '[]'::jsonb END,
-    NOW(), NOW(), '[]'::jsonb
+    NOW(), NOW(), '{}'::bigint[]
   ) RETURNING id INTO _contact_id;
+  RAISE NOTICE 'Created contact with id: %', _contact_id;
 
   -- Create Opportunity
   INSERT INTO opportunities (
@@ -61,7 +68,7 @@ BEGIN
     'medium',
     (CURRENT_DATE + INTERVAL '30 days')::date,
     'trade_show',
-    _data->>'quick_note',
+    NULLIF(_data->>'quick_note', ''),
     _sales_id
   ) RETURNING id INTO _opp_id;
 
