@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { CommandShortcut } from '@/components/ui/command';
 
 interface Shortcut {
   keys: string[];
