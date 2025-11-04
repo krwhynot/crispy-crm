@@ -12,6 +12,9 @@ import { MetricsCardGrid } from "./MetricsCardGrid";
 import { MyOpenOpportunities } from "./MyOpenOpportunities";
 import { OverdueTasks } from "./OverdueTasks";
 import { ThisWeeksActivities } from "./ThisWeeksActivities";
+import { OpportunitiesByPrincipal } from "./OpportunitiesByPrincipal";
+import { PipelineByStage } from "./PipelineByStage";
+import { RecentActivities } from "./RecentActivities";
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
@@ -32,7 +35,7 @@ export const Dashboard = () => {
       pagination: { page: 1, perPage: 1 },
     });
 
-  const { total: totalOpportunities, isPending: isPendingOpportunities } =
+  const { total: _totalOpportunities, isPending: isPendingOpportunities } =
     useGetList<Contact>("opportunities", {
       pagination: { page: 1, perPage: 1 },
     });
@@ -82,16 +85,14 @@ export const Dashboard = () => {
       {/* Metrics Grid - iPad optimized, full width */}
       <MetricsCardGrid />
 
-      {/* Phase 4 Widgets - Fixed 6-widget dashboard */}
+      {/* Phase 4 Widgets - Fixed 6-widget dashboard (COMPLETE) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
         <MyOpenOpportunities />
         <OverdueTasks />
         <ThisWeeksActivities />
-        {/* TODO: Add remaining 3 widgets:
-            - Pipeline by Stage Chart
-            - Recent Activities Feed
-            - Opportunities by Principal (⭐ HIGHEST PRIORITY)
-        */}
+        <OpportunitiesByPrincipal />
+        <PipelineByStage />
+        <RecentActivities />
       </div>
 
       {/* Existing Dashboard Components */}

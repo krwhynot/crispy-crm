@@ -9,13 +9,14 @@ import * as React from "react";
 import { useListContext, useListFilterContext, useGetIdentity } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import type {
+  LucideIcon} from "lucide-react";
 import {
   User,
   Calendar,
   AlertCircle,
   Flag,
-  Trophy,
-  LucideIcon,
+  Trophy
 } from "lucide-react";
 import { getFilterPresets, type FilterPreset } from "./filterPresets";
 import type { Opportunity } from "../types";
