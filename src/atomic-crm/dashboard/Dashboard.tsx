@@ -65,10 +65,10 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-3 md:space-y-4">
-      {/* Dashboard Header with Refresh Button - Compact for iPad */}
+    <div className="space-y-2">
+      {/* Dashboard Header with Refresh Button - Ultra compact */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="text-base md:text-lg lg:text-xl font-bold text-foreground">Dashboard</h1>
         <Button
           variant="outline"
           size="sm"
@@ -85,8 +85,8 @@ export const Dashboard = () => {
       {/* Metrics Grid - iPad optimized, full width */}
       <MetricsCardGrid />
 
-      {/* Phase 4 Widgets - Fixed 6-widget dashboard (COMPLETE) - Tighter spacing */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-5">
+      {/* Phase 4 Widgets - Fixed 6-widget dashboard (COMPLETE) - Ultra compact */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2">
         <MyOpenOpportunities />
         <OverdueTasks />
         <ThisWeeksActivities />
@@ -95,16 +95,16 @@ export const Dashboard = () => {
         <RecentActivities />
       </div>
 
-      {/* Existing Dashboard Components - Tighter spacing */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-5 mt-1">
-        {/* Left column - Action zone (2/3 width) - Tighter spacing */}
-        <div className="md:col-span-2 lg:col-span-2 space-y-3 md:space-y-4">
+      {/* Existing Dashboard Components - Ultra compact */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2 mt-1">
+        {/* Left column - Action zone (2/3 width) - Ultra compact */}
+        <div className="md:col-span-2 lg:col-span-2 space-y-2">
           <TasksList />
           <DashboardActivityLog />
         </div>
 
-        {/* Right column - Context zone (1/3 width) - Tighter spacing */}
-        <div className="md:col-span-2 lg:col-span-1 space-y-3 md:space-y-4">
+        {/* Right column - Context zone (1/3 width) - Ultra compact */}
+        <div className="md:col-span-2 lg:col-span-1 space-y-2">
           <HotContacts />
           <MiniPipeline />
         </div>

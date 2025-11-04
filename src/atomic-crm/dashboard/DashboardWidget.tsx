@@ -104,13 +104,13 @@ export const DashboardWidget = ({
       }
       aria-label={isClickable ? `View ${title}` : undefined}
     >
-      {/* Header: Title + Icon */}
-      <div className="flex items-center justify-between gap-2 mb-2 md:mb-3">
-        <h3 className="text-xs md:text-sm lg:text-base font-semibold text-muted-foreground tracking-wide uppercase flex-1 min-w-0">
+      {/* Header: Title + Icon - Ultra compact */}
+      <div className="flex items-center justify-between gap-1 mb-1">
+        <h3 className="text-[10px] md:text-xs font-semibold text-muted-foreground tracking-wide uppercase flex-1 min-w-0 truncate">
           {title}
         </h3>
         {icon && (
-          <div className="flex-shrink-0 text-muted-foreground opacity-75">
+          <div className="flex-shrink-0 text-muted-foreground opacity-75 scale-75">
             {icon}
           </div>
         )}

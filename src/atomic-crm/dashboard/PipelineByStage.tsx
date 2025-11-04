@@ -122,19 +122,19 @@ export const PipelineByStage = () => {
       error={error}
       onRetry={refetch}
       icon={<BarChart3 className="h-6 w-6 md:h-8 md:h-8" />}
-      className="md:col-span-2 lg:col-span-2 max-h-[200px] md:max-h-[240px]"
+      className="md:col-span-2 lg:col-span-2 max-h-[80px] md:max-h-[90px]"
     >
       <div className="w-full h-full flex items-center justify-center">
         {total === 0 ? (
-          <div className="text-center text-muted-foreground py-8">
-            <p className="text-sm">No active opportunities</p>
+          <div className="text-center text-muted-foreground py-2">
+            <p className="text-xs">No active opportunities</p>
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={180}>
+          <ResponsiveContainer width="100%" height={60}>
             <BarChart
               data={chartData}
               layout="vertical"
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              margin={{ top: 2, right: 15, left: 10, bottom: 2 }}
             >
               <CartesianGrid
                 strokeDasharray="3 3"
@@ -145,14 +145,15 @@ export const PipelineByStage = () => {
               <XAxis
                 type="number"
                 stroke="hsl(var(--muted-foreground))"
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 9 }}
+                hide
               />
               <YAxis
                 type="category"
                 dataKey="label"
-                width={150}
+                width={80}
                 stroke="hsl(var(--muted-foreground))"
-                tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
+                tick={{ fill: "hsl(var(--foreground))", fontSize: 9 }}
               />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: "hsl(var(--muted))" }} />
               <Bar
