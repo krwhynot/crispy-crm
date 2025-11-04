@@ -21,7 +21,10 @@ export const quickAddSchema = z.object({
 
   // Contact information (at least one required, validated in refine)
   phone: z.string().optional(),
-  email: z.string().email("Invalid email address").optional(),
+  email: z.union([
+    z.string().email("Invalid email address"),
+    z.literal('')
+  ]).optional(),
 
   // Organization fields (required)
   org_name: z.string({ required_error: "Organization name required" }).min(1, "Organization name required"),
