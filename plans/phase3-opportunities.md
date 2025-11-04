@@ -15,7 +15,11 @@
 
 ---
 
-## Epic 1: Database Schema & Junction Tables
+## Epic 1: Database Schema & Junction Tables ✅ **100% COMPLETE**
+
+**Status:** All database foundation work complete
+**Completion:** 7/7 tasks (6 complete + 1 deferred for frontend migration)
+**Impact:** Unblocks Epic 3 (Campaign & Trade Show UI features)
 
 ### E1-S1: Campaign & Trade Show Support ✅ **COMPLETE**
 
@@ -123,19 +127,27 @@
 - **Files:**
   - ⏸️ `supabase/migrations/YYYYMMDDHHMMSS_drop_contact_ids_column.sql` (not created yet)
 
-### E1-S3: Enhanced Opportunity Fields
+### E1-S3: Enhanced Opportunity Fields ✅ **COMPLETE**
 
-**P3-E1-S3-T1: Add notes field to opportunities**
+**P3-E1-S3-T1: Add notes field to opportunities** ✅
 - **Description:** Add TEXT field for general opportunity notes (separate from activity log)
+- **Status:** COMPLETE - Migration applied and TypeScript types updated
 - **Confidence:** 95%
 - **Estimate:** 0.5 hours
 - **Prerequisites:** None
 - **Acceptance Criteria:**
-  - Migration adds notes TEXT field (nullable)
-  - Field included in opportunities view
-  - Search tsv includes notes content
+  - ✅ Migration adds notes TEXT field (nullable)
+  - ✅ Field included in opportunities_summary view (inherits from table)
+  - ✅ Search tsv includes notes content (to_tsvector includes notes)
+  - ✅ TypeScript types updated (notes?: string in Opportunity interface)
+  - ✅ TypeScript compilation passes
 - **Files:**
-  - `supabase/migrations/YYYYMMDDHHMMSS_add_opportunity_notes.sql`
+  - ✅ `supabase/migrations/20251104155935_add_opportunity_notes_field.sql`
+  - ✅ `src/atomic-crm/types.ts` (line 233: notes field added)
+- **Implementation Notes:**
+  - Search trigger updated to include: name, description, campaign, notes
+  - Field inherits table-level GRANT permissions and RLS policies
+  - No index needed (TEXT field, not frequently filtered)
 
 ---
 
