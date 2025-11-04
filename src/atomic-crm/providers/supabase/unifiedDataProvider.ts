@@ -980,7 +980,7 @@ export const unifiedDataProvider: DataProvider = {
    * @param data QuickAddInput data from the form
    * @returns Result containing created record IDs
    */
-  async createBoothVisitor(data: any): Promise<{ data: any }> {
+  async createBoothVisitor(data: QuickAddInput): Promise<{ data: any }> {
     try {
       console.log('[DataProvider] Creating booth visitor', data);
 
