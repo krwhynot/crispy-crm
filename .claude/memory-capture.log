@@ -943,3 +943,6 @@
 [2025-11-04 11:16:51] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/phase3-completion-summary.md
 [2025-11-04 11:17:40] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/CLEANUP_RECOMMENDATION.md
 [2025-11-04 11:26:42] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/opportunities.ts
+[2025-11-04 11:27:35] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/phase3-opportunities.md
+[2025-11-04 11:28:14] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/phase3-opportunities.md
+[2025-11-04 11:49:44] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251104174935_add_campaign_choices_view.sql
