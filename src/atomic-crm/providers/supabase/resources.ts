@@ -15,8 +15,8 @@ export const RESOURCE_MAPPING = {
   organizations_summary: "organizations_summary",
   contacts_summary: "contacts_summary",
   contact_organization_details: "contact_organization_details",
+  opportunities_summary: "opportunities_summary", // Re-enabled for dashboard widgets
   // deals_summary: REMOVED - migrated to opportunities
-  // opportunities_summary: REMOVED - not needed for MVP, query base table directly
 
   // Notes/activities
   contactNotes: "contactNotes",
@@ -66,6 +66,7 @@ export const SEARCHABLE_RESOURCES = {
     "title",
   ],
   opportunities: ["name", "category", "description", "next_action"],
+  opportunities_summary: ["name", "category", "description", "next_action", "principal_organization_name"],
   contacts_summary: ["first_name", "last_name"],
   products: ["name", "sku", "brand", "description", "manufacturer_part_number"],
   // deals: REMOVED - use opportunities
