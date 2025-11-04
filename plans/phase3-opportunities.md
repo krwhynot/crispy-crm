@@ -709,20 +709,25 @@
 
 ### E6-S3: Bulk Actions
 
-**P3-E6-S3-T1: Add bulk selection checkboxes to list view**
+**P3-E6-S3-T1: Add bulk selection checkboxes to list view** ✅
 - **Description:** Row checkboxes + "Select all" header checkbox
 - **Confidence:** 90%
 - **Estimate:** 2 hours
 - **Prerequisites:** None
 - **Acceptance Criteria:**
-  - Checkbox column (first position)
-  - Select all checkbox in header
-  - Shows count of selected: "3 opportunities selected"
-  - Clear selection button
-  - Persists during pagination
+  - ✅ Checkbox column (first position) - already existed
+  - ✅ Select all checkbox in header - with indeterminate state
+  - ✅ Shows count of selected: "3 opportunities selected"
+  - ✅ Clear selection button - with X icon
+  - ✅ Persists during pagination - uses React Admin's useListContext
+- **Implementation:**
+  - Updated `OpportunityRowListView.tsx` to add bulk selection header
+  - Uses `useListContext` hooks: `onSelect`, `onUnselectItems`, `selectedIds`
+  - Header shows only when items selected (conditional rendering)
+  - Checkbox supports indeterminate state when partial selection
+  - Selection count with proper pluralization
 - **Files:**
-  - `src/atomic-crm/opportunities/OpportunityListContent.tsx` (update)
-  - `src/atomic-crm/opportunities/hooks/useBulkSelection.ts` (new)
+  - `src/atomic-crm/opportunities/OpportunityRowListView.tsx` (updated)
 
 **P3-E6-S3-T2: Implement bulk actions toolbar**
 - **Description:** Action bar appears when items selected: Change Status, Change Stage, Assign Owner, Add Tags

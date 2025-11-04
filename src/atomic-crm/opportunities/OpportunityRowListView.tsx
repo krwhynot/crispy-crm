@@ -20,6 +20,8 @@ export const OpportunityRowListView = () => {
     isPending,
     onToggleItem,
     selectedIds,
+    onSelect,
+    onUnselectItems,
   } = useListContext<Opportunity>();
 
   if (isPending) {
@@ -42,9 +44,47 @@ export const OpportunityRowListView = () => {
     );
   }
 
+  const allSelected = selectedIds.length === opportunities.length && opportunities.length > 0;
+  const someSelected = selectedIds.length > 0 && selectedIds.length < opportunities.length;
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      onUnselectItems();
+    } else {
+      onSelect(opportunities.map((opp) => opp.id));
+    }
+  };
+
   return (
-    <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
-      <div className="space-y-2">
+    <>
+      {/* Bulk selection header - shown when items are selected */}
+      {selectedIds.length > 0 && (
+        <div className="mb-3 flex items-center justify-between rounded-lg border border-border bg-muted/50 px-4 py-2">
+          <div className="flex items-center gap-3">
+            <Checkbox
+              checked={allSelected}
+              indeterminate={someSelected}
+              onCheckedChange={handleSelectAll}
+              aria-label="Select all opportunities"
+            />
+            <span className="text-sm font-medium">
+              {selectedIds.length} opportunit{selectedIds.length === 1 ? 'y' : 'ies'} selected
+            </span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onUnselectItems}
+            className="h-8 gap-1.5"
+          >
+            <X className="h-4 w-4" />
+            Clear selection
+          </Button>
+        </div>
+      )}
+
+      <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
+        <div className="space-y-2">
         {opportunities.map((opportunity) => (
           <RecordContextProvider key={opportunity.id} value={opportunity}>
             <div
@@ -181,5 +221,6 @@ export const OpportunityRowListView = () => {
         ))}
       </div>
     </Card>
+    </>
   );
 };
