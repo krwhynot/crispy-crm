@@ -971,6 +971,35 @@ export const unifiedDataProvider: DataProvider = {
       throw error;
     }
   },
+
+  /**
+   * Create Booth Visitor Opportunity
+   * Atomically creates organization, contact, and opportunity records via database function
+   * Used by Quick Add dialog for trade show lead capture
+   * @param data QuickAddInput data from the form
+   * @returns Result containing created record IDs
+   */
+  async createBoothVisitor(data: any): Promise<{ data: any }> {
+    try {
+      console.log('[DataProvider] Creating booth visitor', data);
+
+      const { data: result, error } = await supabase.rpc(
+        'create_booth_visitor_opportunity',
+        { _data: data }
+      );
+
+      if (error) {
+        logError('createBoothVisitor', 'booth_visitor', data, error);
+        throw new Error(`Create booth visitor failed: ${error.message}`);
+      }
+
+      console.log('[DataProvider] Booth visitor created successfully', result);
+      return { data: result };
+    } catch (error) {
+      logError('createBoothVisitor', 'booth_visitor', data, error);
+      throw error;
+    }
+  },
 };
 
 /**

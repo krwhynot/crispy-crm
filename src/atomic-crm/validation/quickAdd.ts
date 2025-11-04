@@ -16,20 +16,20 @@ import { z } from "zod";
  */
 export const quickAddSchema = z.object({
   // Contact fields (required)
-  first_name: z.string().min(1, "First name required"),
-  last_name: z.string().min(1, "Last name required"),
+  first_name: z.string({ required_error: "First name required" }).min(1, "First name required"),
+  last_name: z.string({ required_error: "Last name required" }).min(1, "Last name required"),
 
   // Contact information (at least one required, validated in refine)
   phone: z.string().optional(),
   email: z.string().email("Invalid email address").optional(),
 
   // Organization fields (required)
-  org_name: z.string().min(1, "Organization name required"),
-  city: z.string().min(1, "City required"),
-  state: z.string().min(1, "State required"),
+  org_name: z.string({ required_error: "Organization name required" }).min(1, "Organization name required"),
+  city: z.string({ required_error: "City required" }).min(1, "City required"),
+  state: z.string({ required_error: "State required" }).min(1, "State required"),
 
   // Opportunity fields (required)
-  campaign: z.string().min(1, "Campaign required"),
+  campaign: z.string({ required_error: "Campaign required" }).min(1, "Campaign required"),
   principal_id: z.number({ required_error: "Principal required" }),
 
   // Optional fields
