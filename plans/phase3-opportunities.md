@@ -910,21 +910,32 @@
   - Coverage: **100% statements, 100% branches, 100% functions, 100% lines**
   - Confirmation modal test belongs to OpportunityCreate/Edit component tests (UX layer, not hook layer)
 
-**P3-E8-S1-T2: Write tests for drag-and-drop logic**
+**P3-E8-S1-T2: Write tests for drag-and-drop logic** ⏸️
 - **Description:** Test drag handlers, stage changes, confirmation modal
 - **Confidence:** 85%
-- **Estimate:** 4 hours
+- **Estimate:** 4 hours (postponed - simpler implementation exists)
 - **Prerequisites:** P3-E2-S3-T2
 - **Acceptance Criteria:**
-  - Test: Drag within same column does nothing
-  - Test: Drag to different column shows modal
-  - Test: Cancel reverts card position
-  - Test: Confirm updates stage and creates activity
-  - Test: Error handling and rollback
-  - Coverage: 85%+
+  - ✅ Test: Drag within same column does nothing (implemented in handleDragEnd)
+  - ❌ Test: Drag to different column shows modal (NO MODAL - immediate move)
+  - ❌ Test: Cancel reverts card position (NO MODAL - not applicable)
+  - ❌ Test: Confirm updates stage and creates activity (NO MODAL - auto-update)
+  - ✅ Test: Error handling and rollback (implemented with onError rollback)
+  - ⏸️ Coverage: 85%+ (tests not yet written)
 - **Files:**
-  - `src/atomic-crm/opportunities/hooks/useDragAndDrop.test.ts`
-  - `src/atomic-crm/opportunities/StageChangeModal.test.tsx`
+  - ~~`src/atomic-crm/opportunities/hooks/useDragAndDrop.test.ts`~~ (hook doesn't exist)
+  - ~~`src/atomic-crm/opportunities/StageChangeModal.test.tsx`~~ (modal doesn't exist)
+  - **Actual Implementation:** `src/atomic-crm/opportunities/OpportunityListContent.tsx`
+- **Implementation Reality:**
+  - **NO separate hook:** Drag logic embedded in OpportunityListContent.tsx (handleDragEnd function)
+  - **NO confirmation modal:** Stage changes happen immediately on drag
+  - **Current behavior:**
+    - Drag within same column/position: Early return, does nothing (lines 65-70)
+    - Drag to different column: Optimistic UI update + API call (lines 87-129)
+    - Error handling: Rollback to previousState on API error (lines 121-127)
+    - Success: Notification + refresh (lines 114-119)
+  - **Decision:** Postpone tests until we decide if we want the simpler immediate-move UX or add a confirmation modal
+  - **Alternative:** Could write tests for OpportunityListContent.tsx drag functionality as-is
 
 **P3-E8-S1-T3: Write tests for campaign grouping**
 - **Description:** Test campaign-grouped list view
