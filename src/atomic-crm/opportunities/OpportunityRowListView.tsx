@@ -87,9 +87,15 @@ export const OpportunityRowListView = () => {
                       <ReferenceField
                         source="principal_organization_id"
                         reference="organizations"
-                        link={false}
+                        link="show"
                       >
-                        <TextField source="name" className="text-[color:var(--brand-600)]" />
+                        <div className="flex items-center gap-1 relative z-10">
+                          <Building2 className="w-3 h-3 text-[color:var(--brand-600)]" />
+                          <TextField
+                            source="name"
+                            className="font-bold text-[color:var(--brand-700)] hover:underline cursor-pointer"
+                          />
+                        </div>
                       </ReferenceField>
                     )}
 
