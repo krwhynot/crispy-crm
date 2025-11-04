@@ -162,6 +162,17 @@ const OpportunityCampaignWorkflowInputs = () => {
         </ReferenceInput>
 
         <div className="lg:col-span-2">
+          <TextInput
+            source="notes"
+            label="Notes"
+            multiline
+            rows={3}
+            helperText={false}
+            placeholder="General notes about the opportunity (separate from activity log)..."
+          />
+        </div>
+
+        <div className="lg:col-span-2">
           <ArrayInput source="tags" label="Tags">
             <SimpleFormIterator inline disableReordering>
               <TextInput

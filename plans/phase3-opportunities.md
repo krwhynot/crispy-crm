@@ -130,10 +130,10 @@
 ### E1-S3: Enhanced Opportunity Fields ✅ **COMPLETE**
 
 **P3-E1-S3-T1: Add notes field to opportunities** ✅
-- **Description:** Add TEXT field for general opportunity notes (separate from activity log)
-- **Status:** COMPLETE - Migration applied and TypeScript types updated
-- **Confidence:** 95%
-- **Estimate:** 0.5 hours
+- **Description:** Add TEXT field for general opportunity notes (separate from activity log) with full UI integration
+- **Status:** COMPLETE - Database, TypeScript, validation, and UI all implemented and deployed
+- **Confidence:** 100%
+- **Estimate:** 0.5 hours (database) + 0.5 hours (UI) = 1 hour total
 - **Prerequisites:** None
 - **Acceptance Criteria:**
   - ✅ Migration adds notes TEXT field (nullable)
@@ -141,13 +141,20 @@
   - ✅ Search tsv includes notes content (to_tsvector includes notes)
   - ✅ TypeScript types updated (notes?: string in Opportunity interface)
   - ✅ TypeScript compilation passes
+  - ✅ Zod validation schema updated (notes field added)
+  - ✅ UI field added to OpportunityInputs form (multiline TextInput, 3 rows)
+  - ✅ Migration deployed to cloud production database
 - **Files:**
   - ✅ `supabase/migrations/20251104155935_add_opportunity_notes_field.sql`
   - ✅ `src/atomic-crm/types.ts` (line 233: notes field added)
+  - ✅ `src/atomic-crm/validation/opportunities.ts` (line 79: notes validation added)
+  - ✅ `src/atomic-crm/opportunities/OpportunityInputs.tsx` (lines 164-173: notes TextInput added)
 - **Implementation Notes:**
   - Search trigger updated to include: name, description, campaign, notes
   - Field inherits table-level GRANT permissions and RLS policies
   - No index needed (TEXT field, not frequently filtered)
+  - UI placement: "Campaign & Workflow Tracking" section (logical grouping)
+  - Form validation: Optional nullable field per UI truth principle
 
 ---
 
