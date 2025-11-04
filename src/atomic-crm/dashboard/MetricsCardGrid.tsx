@@ -30,20 +30,20 @@ interface MetricCard {
  * - Shadows via semantic: shadow-sm, shadow-md (mapped to elevation system)
  */
 export const MetricsCardGrid = () => {
-  // Fetch contacts
-  const { data: contacts, isPending: contactsPending } = useGetList(
+  // Fetch contacts - use total count, not array length
+  const { total: totalContacts, isPending: contactsPending } = useGetList(
     "contacts",
     {
-      pagination: { page: 1, perPage: 10000 },
+      pagination: { page: 1, perPage: 1 }, // Only need count, not data
       filter: { "deleted_at@is": null },
     }
   );
 
-  // Fetch organizations
-  const { data: organizations, isPending: organizationsPending } = useGetList(
+  // Fetch organizations - use total count, not array length
+  const { total: totalOrganizations, isPending: organizationsPending } = useGetList(
     "organizations",
     {
-      pagination: { page: 1, perPage: 10000 },
+      pagination: { page: 1, perPage: 1 }, // Only need count, not data
       filter: { "deleted_at@is": null },
     }
   );
@@ -72,7 +72,7 @@ export const MetricsCardGrid = () => {
 
   const metrics = useMemo((): MetricCard[] => {
     // Loading state - show zeros
-    if (!contacts || !organizations || !activities) {
+    if (totalContacts === undefined || totalOrganizations === undefined || !activities) {
       return [
         { title: "Total Contacts", value: "0", icon: null, unit: "contacts" },
         { title: "Total Organizations", value: "0", icon: null, unit: "organizations" },
@@ -84,13 +84,13 @@ export const MetricsCardGrid = () => {
     return [
       {
         title: "Total Contacts",
-        value: contacts.length,
+        value: totalContacts,
         icon: <Users className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
         unit: "contacts",
       },
       {
         title: "Total Organizations",
-        value: organizations.length,
+        value: totalOrganizations,
         icon: <Building2 className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
         unit: "organizations",
       },
@@ -101,7 +101,7 @@ export const MetricsCardGrid = () => {
         unit: "this week",
       },
     ];
-  }, [contacts, organizations, activities]);
+  }, [totalContacts, totalOrganizations, activities]);
 
   if (isPending) {
     return (

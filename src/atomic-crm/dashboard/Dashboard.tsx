@@ -65,10 +65,10 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-6 md:space-y-8">
-      {/* Dashboard Header with Refresh Button */}
+    <div className="space-y-3 md:space-y-4">
+      {/* Dashboard Header with Refresh Button - Compact for iPad */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">Dashboard</h1>
         <Button
           variant="outline"
           size="sm"
@@ -85,8 +85,8 @@ export const Dashboard = () => {
       {/* Metrics Grid - iPad optimized, full width */}
       <MetricsCardGrid />
 
-      {/* Phase 4 Widgets - Fixed 6-widget dashboard (COMPLETE) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+      {/* Phase 4 Widgets - Fixed 6-widget dashboard (COMPLETE) - Tighter spacing */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-5">
         <MyOpenOpportunities />
         <OverdueTasks />
         <ThisWeeksActivities />
@@ -95,8 +95,8 @@ export const Dashboard = () => {
         <RecentActivities />
       </div>
 
-      {/* Existing Dashboard Components */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-1">
+      {/* Existing Dashboard Components - Tighter spacing */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-5 mt-1">
         {/* Left column - Action zone (2/3 width) */}
         <div className="md:col-span-2 lg:col-span-2 space-y-6">
           <TasksList />
