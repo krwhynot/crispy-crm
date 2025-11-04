@@ -1,6 +1,30 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { QuickAddButton } from '../QuickAddButton';
+
+// Mock dependencies
+vi.mock('../hooks/useQuickAdd');
+vi.mock('ra-core', () => ({
+  useGetList: vi.fn(() => ({
+    data: [
+      { id: 1, name: 'Principal A' },
+      { id: 2, name: 'Principal B' },
+    ],
+    isLoading: false,
+  })),
+}));
+
+// Test wrapper
+const TestWrapper = ({ children }: { children: React.ReactNode }) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+};
 
 describe('QuickAddButton', () => {
   it('renders button with correct text', () => {
