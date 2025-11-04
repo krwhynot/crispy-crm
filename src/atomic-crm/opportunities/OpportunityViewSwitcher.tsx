@@ -1,8 +1,8 @@
-import { LayoutGrid, List } from "lucide-react";
+import { LayoutGrid, List, FolderOpen } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-export type OpportunityView = "kanban" | "list";
+export type OpportunityView = "kanban" | "list" | "campaign";
 
 interface OpportunityViewSwitcherProps {
   view: OpportunityView;
@@ -44,6 +44,20 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: OpportunityViewS
           </TooltipTrigger>
           <TooltipContent>
             <p>List View</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ToggleGroupItem
+              value="campaign"
+              aria-label="Campaign grouped view"
+              className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+            >
+              <FolderOpen className="h-4 w-4" />
+            </ToggleGroupItem>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Campaign View</p>
           </TooltipContent>
         </Tooltip>
       </ToggleGroup>

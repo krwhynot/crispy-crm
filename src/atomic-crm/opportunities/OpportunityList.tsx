@@ -20,6 +20,7 @@ import { OpportunityArchivedList } from "./OpportunityArchivedList";
 import { OpportunityEmpty } from "./OpportunityEmpty";
 import { OpportunityListContent } from "./OpportunityListContent";
 import { OpportunityRowListView } from "./OpportunityRowListView";
+import { CampaignGroupedList } from "./CampaignGroupedList";
 import { OpportunityViewSwitcher, type OpportunityView } from "./OpportunityViewSwitcher";
 import { FilterChipsPanel } from "../filters/FilterChipsPanel";
 import { FilterPresetsBar } from "./FilterPresetsBar";
@@ -31,7 +32,7 @@ const OPPORTUNITY_VIEW_KEY = 'opportunity.view.preference';
 
 const getViewPreference = (): OpportunityView => {
   const saved = localStorage.getItem(OPPORTUNITY_VIEW_KEY);
-  return (saved === 'list' || saved === 'kanban') ? saved : 'kanban';
+  return (saved === 'list' || saved === 'kanban' || saved === 'campaign') ? saved : 'kanban';
 };
 
 const saveViewPreference = (view: OpportunityView) => {
@@ -103,7 +104,13 @@ const OpportunityLayout = ({ view }: { view: OpportunityView }) => {
 
   return (
     <div className="w-full">
-      {view === 'kanban' ? <OpportunityListContent /> : <OpportunityRowListView />}
+      {view === 'kanban' ? (
+        <OpportunityListContent />
+      ) : view === 'campaign' ? (
+        <CampaignGroupedList />
+      ) : (
+        <OpportunityRowListView />
+      )}
       <OpportunityArchivedList />
     </div>
   );
