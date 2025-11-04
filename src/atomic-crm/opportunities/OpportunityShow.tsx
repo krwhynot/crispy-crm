@@ -32,6 +32,7 @@ import { ChangeLogTab } from "./ChangeLogTab";
 import { ProductsTable } from "./ProductsTable";
 import { OrganizationInfoCard } from "./OrganizationInfoCard";
 import { SaleAvatar } from "../sales/SaleAvatar";
+import { WorkflowManagementSection } from "./WorkflowManagementSection";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -92,6 +93,11 @@ const OpportunityShowContent = () => {
               {/* Organization Info Card - Featured Display */}
               <div className="mb-6">
                 <OrganizationInfoCard opportunity={record} />
+              </div>
+
+              {/* Workflow Management Section */}
+              <div className="mb-6">
+                <WorkflowManagementSection />
               </div>
 
               <div className="flex gap-8 mb-4">
