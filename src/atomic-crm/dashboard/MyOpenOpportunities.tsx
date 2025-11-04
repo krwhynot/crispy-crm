@@ -44,14 +44,14 @@ export const MyOpenOpportunities = () => {
       error={error}
       onRetry={refetch}
       onClick={handleClick}
-      icon={<Briefcase className="h-6 w-6 md:h-8 md:h-8" />}
+      icon={<Briefcase className="h-4 w-4" />}
     >
-      <div className="flex flex-col items-center justify-center w-full">
-        <div className="text-4xl md:text-5xl lg:text-6xl font-bold tabular-nums text-foreground">
+      <div className="flex items-center justify-center gap-2 w-full">
+        <div className="text-2xl md:text-3xl font-bold tabular-nums text-foreground">
           {count}
         </div>
-        <div className="text-sm md:text-base text-muted-foreground mt-2">
-          {count === 0 ? "No open opportunities" : count === 1 ? "active opportunity" : "active opportunities"}
+        <div className="text-[10px] md:text-xs text-muted-foreground">
+          {count === 1 ? "opportunity" : "opportunities"}
         </div>
       </div>
     </DashboardWidget>

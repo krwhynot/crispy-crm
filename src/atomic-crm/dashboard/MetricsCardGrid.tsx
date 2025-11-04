@@ -1,7 +1,7 @@
 import { useGetList } from "ra-core";
 import { Card } from "@/components/ui/card";
 import { Users, Building2, Activity } from "lucide-react";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 interface MetricCard {
   title: string;
@@ -80,24 +80,24 @@ export const MetricsCardGrid = () => {
       ];
     }
 
-    // Calculate actual metrics
+    // Calculate actual metrics - icons will be resized by the component
     return [
       {
         title: "Total Contacts",
         value: totalContacts,
-        icon: <Users className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
+        icon: <Users aria-hidden="true" />,
         unit: "contacts",
       },
       {
         title: "Total Organizations",
         value: totalOrganizations,
-        icon: <Building2 className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
+        icon: <Building2 aria-hidden="true" />,
         unit: "organizations",
       },
       {
         title: "Activities This Week",
         value: activities.length,
-        icon: <Activity className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9" aria-hidden="true" />,
+        icon: <Activity aria-hidden="true" />,
         unit: "this week",
       },
     ];
@@ -105,11 +105,11 @@ export const MetricsCardGrid = () => {
 
   if (isPending) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-5 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 w-full">
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-32 md:h-36 lg:h-40 bg-card rounded-lg border border-border animate-pulse"
+            className="h-16 md:h-18 lg:h-20 bg-card rounded-md border border-border animate-pulse"
           />
         ))}
       </div>
@@ -117,7 +117,7 @@ export const MetricsCardGrid = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-5 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 w-full">
       {metrics.map((metric) => (
         <MetricCard key={metric.title} metric={metric} />
       ))}
@@ -150,31 +150,32 @@ interface MetricCardProps {
 
 const MetricCard = ({ metric }: MetricCardProps) => {
   return (
-    <Card className="rounded-lg md:rounded-xl p-3 md:p-4 lg:p-5 flex flex-col justify-between h-32 md:h-36 lg:h-40 transition-shadow duration-200 hover:shadow-md active:shadow-sm">
-      {/* Header: Icon + Title */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="text-xs md:text-sm lg:text-base font-semibold text-muted-foreground tracking-wide uppercase">
+    <Card className="rounded-md p-2 flex flex-col justify-between h-16 md:h-18 lg:h-20 transition-shadow duration-200 hover:shadow-md active:shadow-sm">
+      {/* Ultra-compact layout - Icon and title on same line */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+          {/* Inline icon */}
+          <div className="flex-shrink-0 w-4 h-4 md:w-5 md:h-5 text-muted-foreground opacity-75">
+            {React.cloneElement(metric.icon as React.ReactElement, {
+              className: "w-full h-full"
+            })}
+          </div>
+          <h3 className="text-[10px] md:text-xs font-semibold text-muted-foreground tracking-wide uppercase truncate">
             {metric.title}
           </h3>
         </div>
 
-        {/* Icon Container - 44x44px minimum touch target (Apple HIG) */}
-        <div className="flex-shrink-0 w-11 h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-md flex items-center justify-center text-muted-foreground opacity-75 flex-center">
-          {metric.icon}
-        </div>
-      </div>
-
-      {/* Main Value - Large, prominent metric number */}
-      <div className="flex items-baseline gap-2 mt-2">
-        <span className="text-2xl md:text-3xl lg:text-4xl font-bold tabular-nums text-foreground leading-none">
-          {metric.value}
-        </span>
-        {metric.unit && (
-          <span className="text-xs md:text-sm lg:text-base text-muted-foreground font-normal ml-1">
-            {metric.unit}
+        {/* Value and unit inline */}
+        <div className="flex items-baseline gap-1">
+          <span className="text-base md:text-lg lg:text-xl font-bold tabular-nums text-foreground leading-none">
+            {metric.value}
           </span>
-        )}
+          {metric.unit && (
+            <span className="text-[9px] md:text-[10px] text-muted-foreground font-normal">
+              {metric.unit}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Optional trend indicator */}
