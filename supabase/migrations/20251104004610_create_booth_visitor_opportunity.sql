@@ -30,6 +30,10 @@ BEGIN
   -- Get current user's sales ID
   _sales_id := (SELECT id FROM sales WHERE user_id = auth.uid());
 
+  IF _sales_id IS NULL THEN
+    RAISE EXCEPTION 'Current user does not have a sales record. User ID: %', auth.uid();
+  END IF;
+
   -- Extract all text values from JSONB
   _first_name := _data->>'first_name';
   _last_name := _data->>'last_name';
