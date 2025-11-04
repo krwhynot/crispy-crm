@@ -18,6 +18,7 @@ DECLARE
   _email_jsonb JSONB;
   _phone_jsonb JSONB;
   _principal_name TEXT;
+  _principal_type organization_type;
   _opp_name TEXT;
   _first_name TEXT;
   _last_name TEXT;
@@ -45,6 +46,32 @@ BEGIN
   _email_val := _data->>'email';
   _phone_val := _data->>'phone';
   _principal_id := (_data->>'principal_id')::BIGINT;
+
+  -- Validate required fields
+  IF _first_name IS NULL OR _last_name IS NULL THEN
+    RAISE EXCEPTION 'first_name and last_name are required';
+  END IF;
+
+  IF _org_name IS NULL THEN
+    RAISE EXCEPTION 'org_name is required';
+  END IF;
+
+  IF _city IS NULL OR _state IS NULL THEN
+    RAISE EXCEPTION 'city and state are required';
+  END IF;
+
+  IF _principal_id IS NULL THEN
+    RAISE EXCEPTION 'principal_id is required';
+  END IF;
+
+  IF _campaign IS NULL THEN
+    RAISE EXCEPTION 'campaign is required';
+  END IF;
+
+  -- Validate at least one contact method exists
+  IF (_email_val IS NULL OR _email_val = '') AND (_phone_val IS NULL OR _phone_val = '') THEN
+    RAISE EXCEPTION 'At least one of email or phone is required';
+  END IF;
 
   -- Build JSONB arrays for email and phone
   IF _email_val IS NOT NULL AND _email_val != '' THEN
@@ -86,8 +113,21 @@ BEGIN
     NOW(), NOW(), '{}'::bigint[]
   ) RETURNING id INTO _contact_id;
 
-  -- Get principal name and build opportunity name
-  _principal_name := (SELECT name FROM organizations WHERE id = _principal_id);
+  -- Validate principal organization and get name
+  SELECT name, organization_type
+  INTO _principal_name, _principal_type
+  FROM organizations
+  WHERE id = _principal_id;
+
+  IF _principal_name IS NULL THEN
+    RAISE EXCEPTION 'Principal organization with id % does not exist', _principal_id;
+  END IF;
+
+  IF _principal_type != 'principal' THEN
+    RAISE EXCEPTION 'Organization % is not a principal', _principal_id;
+  END IF;
+
+  -- Build opportunity name
   _opp_name := _campaign || ' - ' || _org_name || ' - ' || _principal_name;
 
   -- Create Opportunity
