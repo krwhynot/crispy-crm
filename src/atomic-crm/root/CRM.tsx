@@ -31,6 +31,7 @@ import {
 } from "./defaultConfiguration";
 import { i18nProvider } from "./i18nProvider";
 import { StartPage } from "@/atomic-crm/login/StartPage.tsx";
+import { KeyboardShortcutsProvider } from "@/providers/KeyboardShortcutsProvider";
 
 export interface CRMProps extends Partial<ConfigurationContextValue> {
   dataProvider?: DataProvider;
@@ -117,18 +118,19 @@ export const CRM = ({
       taskTypes={taskTypes}
       title={title}
     >
-      <Admin
-        dataProvider={dataProvider}
-        authProvider={authProvider}
-        store={localStorageStore(undefined, "CRM")}
-        layout={Layout}
-        loginPage={StartPage}
-        i18nProvider={i18nProvider}
-        dashboard={Dashboard}
-        requireAuth
-        disableTelemetry
-        {...rest}
-      >
+      <KeyboardShortcutsProvider>
+        <Admin
+          dataProvider={dataProvider}
+          authProvider={authProvider}
+          store={localStorageStore(undefined, "CRM")}
+          layout={Layout}
+          loginPage={StartPage}
+          i18nProvider={i18nProvider}
+          dashboard={Dashboard}
+          requireAuth
+          disableTelemetry
+          {...rest}
+        >
         <CustomRoutes noLayout>
           <Route path={SetPasswordPage.path} element={<SetPasswordPage />} />
           <Route
@@ -150,7 +152,8 @@ export const CRM = ({
         <Resource name="sales" {...sales} />
         <Resource name="tags" />
         <Resource name="segments" />
-      </Admin>
+        </Admin>
+      </KeyboardShortcutsProvider>
     </ConfigurationProvider>
   );
 };
