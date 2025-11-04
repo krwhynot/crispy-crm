@@ -11,6 +11,7 @@ import { QuickAdd } from "./QuickAdd";
 import { MetricsCardGrid } from "./MetricsCardGrid";
 import { MyOpenOpportunities } from "./MyOpenOpportunities";
 import { OverdueTasks } from "./OverdueTasks";
+import { ThisWeeksActivities } from "./ThisWeeksActivities";
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
@@ -85,8 +86,8 @@ export const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
         <MyOpenOpportunities />
         <OverdueTasks />
-        {/* TODO: Add remaining 4 widgets:
-            - This Week's Activities
+        <ThisWeeksActivities />
+        {/* TODO: Add remaining 3 widgets:
             - Pipeline by Stage Chart
             - Recent Activities Feed
             - Opportunities by Principal (⭐ HIGHEST PRIORITY)
