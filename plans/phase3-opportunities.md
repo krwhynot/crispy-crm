@@ -17,44 +17,51 @@
 
 ## Epic 1: Database Schema & Junction Tables
 
-### E1-S1: Campaign & Trade Show Support
+### E1-S1: Campaign & Trade Show Support ✅ **COMPLETE**
 
-**P3-E1-S1-T1: Add campaign field to opportunities table**
+**P3-E1-S1-T1: Add campaign field to opportunities table** ✅
 - **Description:** Add `campaign` TEXT field to opportunities table for grouping related opportunities (e.g., "NRA Show 2025")
+- **Status:** COMPLETE - Migration already applied
 - **Confidence:** 95%
 - **Estimate:** 1 hour
 - **Prerequisites:** None
 - **Acceptance Criteria:**
-  - Migration creates `campaign` field (TEXT, nullable)
-  - Field indexed for filtering performance
-  - RLS policies updated if needed
+  - ✅ Migration creates `campaign` field (TEXT, nullable)
+  - ✅ Field indexed for filtering performance (idx_opportunities_campaign)
+  - ✅ RLS policies updated (inherited from table-level policies)
+  - ✅ Search trigger updated to include campaign in full-text search
 - **Files:**
-  - `supabase/migrations/YYYYMMDDHHMMSS_add_campaign_field.sql`
+  - ✅ `supabase/migrations/20251103233745_add_campaign_and_related_opportunity_fields.sql`
+  - ✅ TypeScript types updated (campaign?: string in Opportunity interface)
 
-**P3-E1-S1-T2: Add related_opportunity_id field for trade show linking**
+**P3-E1-S1-T2: Add related_opportunity_id field for trade show linking** ✅
 - **Description:** Add self-referencing FK to link related opportunities (trade show booth visitors to full opportunities)
+- **Status:** COMPLETE - Migration already applied
 - **Confidence:** 90%
 - **Estimate:** 1.5 hours
 - **Prerequisites:** P3-E1-S1-T1
 - **Acceptance Criteria:**
-  - Migration adds `related_opportunity_id` BIGINT field
-  - FK constraint to opportunities.id with ON DELETE SET NULL
-  - Index created for query performance
-  - Can query "child" opportunities from parent
+  - ✅ Migration adds `related_opportunity_id` BIGINT field
+  - ✅ FK constraint to opportunities.id (self-referencing)
+  - ✅ Index created for query performance (idx_opportunities_related_opportunity_id)
+  - ✅ Can query "child" opportunities from parent
 - **Files:**
-  - `supabase/migrations/YYYYMMDDHHMMSS_add_related_opportunity_field.sql`
+  - ✅ `supabase/migrations/20251103233745_add_campaign_and_related_opportunity_fields.sql` (combined with T1)
+  - ✅ TypeScript types updated (related_opportunity_id?: Identifier in Opportunity interface)
 
-**P3-E1-S1-T3: Update opportunities view to include campaign data**
-- **Description:** Add campaign and related_opportunity fields to opportunities_with_orgs view
+**P3-E1-S1-T3: Update opportunities view to include campaign data** ✅
+- **Description:** Add campaign and related_opportunity fields to opportunities_summary view
+- **Status:** COMPLETE - View already includes fields
 - **Confidence:** 95%
 - **Estimate:** 0.5 hours
 - **Prerequisites:** P3-E1-S1-T1, P3-E1-S1-T2
 - **Acceptance Criteria:**
-  - View includes campaign field
-  - View includes related_opportunity_id and related opportunity name
-  - Data provider can fetch campaign data
+  - ✅ View includes campaign field
+  - ✅ View includes related_opportunity_id field
+  - ✅ Data provider can fetch campaign data
 - **Files:**
-  - `supabase/migrations/YYYYMMDDHHMMSS_update_opportunities_view_campaign.sql`
+  - ✅ opportunities_summary view (already includes both fields)
+  - ✅ TypeScript types include fields in Opportunity interface
 
 ### E1-S2: Opportunity-Contacts Junction Table
 
