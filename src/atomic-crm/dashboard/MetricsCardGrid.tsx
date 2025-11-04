@@ -105,11 +105,11 @@ export const MetricsCardGrid = () => {
 
   if (isPending) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-5 w-full">
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-40 md:h-44 lg:h-48 bg-card rounded-lg border border-border animate-pulse"
+            className="h-32 md:h-36 lg:h-40 bg-card rounded-lg border border-border animate-pulse"
           />
         ))}
       </div>
@@ -117,7 +117,7 @@ export const MetricsCardGrid = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-5 w-full">
       {metrics.map((metric) => (
         <MetricCard key={metric.title} metric={metric} />
       ))}
@@ -150,7 +150,7 @@ interface MetricCardProps {
 
 const MetricCard = ({ metric }: MetricCardProps) => {
   return (
-    <Card className="rounded-lg md:rounded-xl p-4 md:p-5 lg:p-6 flex flex-col justify-between h-40 md:h-44 lg:h-48 transition-shadow duration-200 hover:shadow-md active:shadow-sm">
+    <Card className="rounded-lg md:rounded-xl p-3 md:p-4 lg:p-5 flex flex-col justify-between h-32 md:h-36 lg:h-40 transition-shadow duration-200 hover:shadow-md active:shadow-sm">
       {/* Header: Icon + Title */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">

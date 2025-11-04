@@ -122,7 +122,7 @@ export const PipelineByStage = () => {
       error={error}
       onRetry={refetch}
       icon={<BarChart3 className="h-6 w-6 md:h-8 md:h-8" />}
-      className="md:col-span-2 lg:col-span-2"
+      className="md:col-span-2 lg:col-span-2 max-h-[200px] md:max-h-[240px]"
     >
       <div className="w-full h-full flex items-center justify-center">
         {total === 0 ? (
@@ -130,7 +130,7 @@ export const PipelineByStage = () => {
             <p className="text-sm">No active opportunities</p>
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={180}>
             <BarChart
               data={chartData}
               layout="vertical"
