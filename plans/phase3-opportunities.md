@@ -986,48 +986,66 @@
 
 ### E8-S2: Integration Tests
 
-**P3-E8-S2-T1: ⭐ E2E test: Create opportunity with principal and products**
+**P3-E8-S2-T1: ⭐ E2E test: Create opportunity with principal and products** ⏸️
 - **Description:** Full workflow test from creation to viewing
 - **Confidence:** 80%
-- **Estimate:** 3 hours
-- **Prerequisites:** P3-E4-S2-T3
+- **Estimate:** 3 hours + setup (5 hours total)
+- **Prerequisites:** P3-E4-S2-T3, E2E framework setup
 - **Acceptance Criteria:**
-  - Test: Select principal organization
-  - Test: Product dropdown filters correctly
-  - Test: Add multiple products with notes
-  - Test: Submit creates opportunity and junction records
-  - Test: Detail page displays products correctly
-  - Uses Playwright or Vitest browser mode
+  - ⏸️ Test: Select principal organization
+  - ⏸️ Test: Product dropdown filters correctly
+  - ⏸️ Test: Add multiple products with notes
+  - ⏸️ Test: Submit creates opportunity and junction records
+  - ⏸️ Test: Detail page displays products correctly
+  - ⏸️ Uses Playwright or Vitest browser mode
 - **Files:**
-  - `tests/e2e/opportunities/create-with-products.spec.ts`
+  - `tests/e2e/opportunities/create-with-products.spec.ts` (not yet created)
+- **Implementation Status:**
+  - **Blocked:** E2E testing framework not yet configured
+  - **Current Setup:** Vitest with jsdom (unit/component testing only)
+  - **Required Setup:**
+    1. Install and configure Playwright OR Vitest browser mode
+    2. Set up test database/seed data
+    3. Configure test environment (VITE_SUPABASE_URL, etc.)
+    4. Create test fixtures and helpers
+    5. Write actual E2E tests
+  - **Estimated Setup Time:** 2 hours (Playwright) or 3 hours (Vitest browser mode)
 
-**P3-E8-S2-T2: E2E test: Kanban drag-and-drop workflow**
+**P3-E8-S2-T2: E2E test: Kanban drag-and-drop workflow** ⏸️
 - **Description:** Test full drag-drop-confirm-activity cycle
 - **Confidence:** 75%
-- **Estimate:** 3 hours
-- **Prerequisites:** P3-E2-S3-T3
+- **Estimate:** 3 hours (requires E2E framework setup)
+- **Prerequisites:** P3-E2-S3-T3, E2E framework setup
 - **Acceptance Criteria:**
-  - Test: Drag card between columns
-  - Test: Confirmation modal appears
-  - Test: Add note and confirm
-  - Test: Card updates in new column
-  - Test: Activity log entry created
-  - Test: Stage updated in database
+  - ⏸️ Test: Drag card between columns
+  - ⏸️ Test: Confirmation modal appears (NOTE: No modal in current implementation)
+  - ⏸️ Test: Add note and confirm
+  - ⏸️ Test: Card updates in new column
+  - ⏸️ Test: Activity log entry created
+  - ⏸️ Test: Stage updated in database
 - **Files:**
-  - `tests/e2e/opportunities/kanban-drag-drop.spec.ts`
+  - `tests/e2e/opportunities/kanban-drag-drop.spec.ts` (not yet created)
+- **Implementation Status:**
+  - **Blocked:** E2E framework not configured
+  - **Note:** Test criteria assumes confirmation modal (not in current implementation)
+  - **Actual Behavior:** Immediate drag-and-drop with optimistic updates
 
-**P3-E8-S2-T3: E2E test: Campaign grouping workflow**
+**P3-E8-S2-T3: E2E test: Campaign grouping workflow** ⏸️
 - **Description:** Test creating multiple opportunities for trade show
 - **Confidence:** 75%
-- **Estimate:** 2 hours
-- **Prerequisites:** P3-E3-S1-T4
+- **Estimate:** 2 hours (requires E2E framework + component)
+- **Prerequisites:** P3-E3-S1-T4 (component not implemented), E2E framework setup
 - **Acceptance Criteria:**
-  - Test: Create 2 opportunities with same campaign, different principals
-  - Test: Filter by campaign
-  - Test: View campaign-grouped list
-  - Test: Opportunities grouped correctly by customer
+  - ⏸️ Test: Create 2 opportunities with same campaign, different principals
+  - ⏸️ Test: Filter by campaign
+  - ⏸️ Test: View campaign-grouped list
+  - ⏸️ Test: Opportunities grouped correctly by customer
 - **Files:**
-  - `tests/e2e/opportunities/campaign-workflow.spec.ts`
+  - `tests/e2e/opportunities/campaign-workflow.spec.ts` (not yet created)
+- **Implementation Status:**
+  - **Blocked:** CampaignGroupedList component not implemented
+  - **Blocked:** E2E framework not configured
+  - **Prerequisite:** Must complete P3-E3-S1-T4 first
 
 ### E8-S2a: CSV Import Integration Tests (Existing Feature Validation)
 
