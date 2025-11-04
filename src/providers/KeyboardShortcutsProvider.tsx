@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotify, useRedirect, useRefresh } from 'ra-core';
+import { useNotify } from 'ra-core';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 interface KeyboardShortcutsProviderProps {
@@ -21,8 +21,6 @@ interface KeyboardShortcutsProviderProps {
 export const KeyboardShortcutsProvider = ({ children }: KeyboardShortcutsProviderProps) => {
   const navigate = useNavigate();
   const notify = useNotify();
-  const redirect = useRedirect();
-  const refresh = useRefresh();
 
   const handleSave = useCallback(() => {
     // Find the submit button in the current form and click it

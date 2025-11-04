@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 /**
  * Detect if running on Mac for Cmd vs Ctrl
@@ -146,7 +145,7 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
         return;
       }
     },
-    [handlers, navigate]
+    [handlers]
   );
 
   useEffect(() => {
