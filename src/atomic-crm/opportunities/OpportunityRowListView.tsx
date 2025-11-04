@@ -6,6 +6,7 @@ import { TextField } from "@/components/admin/text-field";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EditButton } from "@/components/admin/edit-button";
 import { formatDistance, format } from "date-fns";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
@@ -112,7 +113,7 @@ export const OpportunityRowListView = () => {
                 </div>
               </div>
 
-              {/* Right cluster: Stage, Priority, Close Date, Owner */}
+              {/* Right cluster: Stage, Priority, Close Date, Owner, Edit */}
               <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 w-full sm:w-auto justify-start sm:justify-end">
                 {/* Stage Badge */}
                 <Badge
@@ -161,6 +162,11 @@ export const OpportunityRowListView = () => {
                     </ReferenceField>
                   </div>
                 )}
+
+                {/* Edit Button - positioned above stretched link overlay */}
+                <div className="relative z-10">
+                  <EditButton resource="opportunities" />
+                </div>
               </div>
             </div>
           </RecordContextProvider>

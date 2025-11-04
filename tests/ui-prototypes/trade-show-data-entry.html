@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic CRM - Trade Show vs Restaurant Data Entry</title>
+    <style>
+        /* MFB "Garden to Table" Color Theme */
+        :root {
+            /* Brand Colors */
+            --cream: #FEFEF9;
+            --lime-500: #84cc16;
+            --lime-600: #65a30d;
+            --lime-700: #4d7c0f;
+            --clay-600: #dc6b2f;
+            --clay-700: #c2572a;
+            --sage-100: #e8f3e8;
+            --sage-200: #d1e7d1;
+            --sage-600: #4a5d4a;
+            --stone-100: #f5f5f0;
+            --stone-200: #e7e5e0;
+            --stone-300: #d6d3ce;
+            --stone-600: #57534e;
+            --stone-800: #292524;
+
+            /* Semantic Colors */
+            --primary: var(--lime-500);
+            --primary-hover: var(--lime-600);
+            --accent: var(--clay-600);
+            --accent-hover: var(--clay-700);
+            --background: var(--cream);
+            --surface: white;
+            --text: var(--stone-800);
+            --text-muted: var(--stone-600);
+            --border: var(--stone-300);
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* Workflow Toggle */
+        .workflow-toggle {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            background: var(--surface);
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .workflow-btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: var(--text-muted);
+            min-height: 44px; /* iPad touch target */
+        }
+
+        .workflow-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .workflow-btn:hover:not(.active) {
+            background: var(--sage-100);
+        }
+
+        .workflow-btn .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        /* Main Container */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            min-height: 600px;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .form-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--sage-200);
+        }
+
+        .form-header h2 {
+            color: var(--text);
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .form-header .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .workflow-content {
+            display: none;
+        }
+
+        .workflow-content.active {
+            display: block;
+        }
+
+        /* Form Fields */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .form-group .required {
+            color: var(--accent);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.2s;
+            min-height: 44px; /* iPad touch target */
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.1);
+        }
+
+        .form-control.pre-filled {
+            background: var(--sage-100);
+            font-weight: 500;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quick-action-btn {
+            padding: 12px 16px;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            background: var(--stone-100);
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--sage-100);
+            border-color: var(--primary);
+            color: var(--text);
+        }
+
+        /* Submit Section */
+        .submit-section {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 44px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--stone-100);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .info-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .info-card h3 {
+            color: var(--text);
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stat {
+            background: var(--stone-100);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat .label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Related Opportunities */
+        .related-list {
+            margin-top: 12px;
+        }
+
+        .related-item {
+            background: var(--stone-100);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .related-item:hover {
+            background: var(--sage-100);
+            transform: translateX(4px);
+        }
+
+        .related-item .name {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .related-item .principal {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .related-item .stage {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--lime-500);
+            color: white;
+        }
+
+        /* Timer */
+        .timer {
+            background: var(--sage-100);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer.active {
+            background: var(--accent);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Help Text */
+        .help-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .success-message {
+            background: var(--sage-100);
+            border: 1px solid var(--lime-500);
+            color: var(--lime-700);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌱 Atomic CRM - Opportunity Entry</h1>
+        <p>Optimized workflows for trade shows and restaurant visits</p>
+    </div>
+
+    <div class="workflow-toggle">
+        <button class="workflow-btn active" onclick="switchWorkflow('tradeshow')">
+            🎪 Trade Show Mode
+            <span class="badge">Quick</span>
+        </button>
+        <button class="workflow-btn" onclick="switchWorkflow('restaurant')">
+            🍽️ Restaurant Visit
+            <span class="badge">Detailed</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="form-section">
+            <!-- Trade Show Workflow -->
+            <div id="tradeshow-workflow" class="workflow-content active">
+                <div class="form-header">
+                    <h2>Quick Add Booth Visitor</h2>
+                    <div class="subtitle">Capture leads quickly at trade shows - expand details later</div>
+                    <div class="timer active">⏱️ Target: 30 seconds per lead</div>
+                </div>
+
+                <form id="tradeshow-form">
+                    <div class="form-group">
+                        <label>Campaign <span class="required">*</span></label>
+                        <input type="text" class="form-control pre-filled" value="NRA Show 2025" readonly>
+                        <div class="help-text">Auto-filled from your current context</div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <button type="button" class="quick-action-btn" onclick="scanBadge()">
+                            📷 Scan Badge
+                        </button>
+                        <button type="button" class="quick-action-btn" onclick="useLastContact()">
+                            🔄 Same Contact
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="contact-name" placeholder="John Smith">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Restaurant/Organization <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="organization" placeholder="Luigi's Restaurant">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Principal (Brand) <span class="required">*</span></label>
+                        <select class="form-control" id="principal">
+                            <option value="">Select principal...</option>
+                            <option value="sysco">Sysco</option>
+                            <option value="usfoods">US Foods</option>
+                            <option value="gourmet">Gourmet Imports Co</option>
+                            <option value="chefwarehouse">Chef's Warehouse</option>
+                            <option value="restaurant-depot">Restaurant Depot</option>
+                        </select>
+                        <div class="help-text">Which product line are they interested in?</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quick Note</label>
+                        <input type="text" class="form-control" placeholder="Interested in organic line, follow up Monday">
+                        <div class="help-text">Optional - add more details later</div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button type="button" class="btn btn-secondary" onclick="saveAndAddAnother()">
+                            Save & Add Another
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveBoothVisitor()">
+                            Save & Continue
+                        </button>
+                    </div>
+
+                    <div class="success-message" id="tradeshow-success">
+                        ✅ Booth visitor added! Auto-generated: "NRA Show 2025 - Luigi's Restaurant - Sysco"
+                    </div>
+                </form>
+            </div>
+
+            <!-- Restaurant Visit Workflow -->
+            <div id="restaurant-workflow" class="workflow-content">
+                <div class="form-header">
+                    <h2>New Restaurant Opportunity</h2>
+                    <div class="subtitle">Complete opportunity details for direct sales visit</div>
+                    <div class="timer">⏱️ Typical: 2-3 minutes</div>
+                </div>
+
+                <form id="restaurant-form">
+                    <div class="form-group">
+                        <label>Opportunity Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="Luigi's Restaurant - Q4 Menu Update">
+                        <div class="help-text">Or leave blank to auto-generate from details</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Organization <span class="required">*</span></label>
+                        <select class="form-control">
+                            <option value="">Select or add new...</option>
+                            <option value="luigis">Luigi's Restaurant</option>
+                            <option value="marios">Mario's Pizza</option>
+                            <option value="olive">Olive Garden #2341</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Principal Organization <span class="required">*</span></label>
+                        <select class="form-control">
+                            <option value="">Select principal...</option>
+                            <option value="sysco">Sysco</option>
+                            <option value="usfoods">US Foods</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Primary Contact <span class="required">*</span></label>
+                        <select class="form-control">
+                            <option value="">Select contact...</option>
+                            <option value="john">John Smith - Owner</option>
+                            <option value="maria">Maria Rodriguez - Head Chef</option>
+                            <option value="tony">Tony Soprano - Manager</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Opportunity Stage</label>
+                        <select class="form-control">
+                            <option value="new_lead">New Lead</option>
+                            <option value="qualified" selected>Qualified</option>
+                            <option value="proposal">Proposal Sent</option>
+                            <option value="negotiation">Negotiation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select class="form-control">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Expected Close Date</label>
+                        <input type="date" class="form-control" value="2025-01-15">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Campaign (Optional)</label>
+                        <input type="text" class="form-control" placeholder="Q4 Restaurant Visits">
+                        <div class="help-text">Group with other visits if needed</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea class="form-control" rows="3" placeholder="Detailed notes about the opportunity..."></textarea>
+                    </div>
+
+                    <div class="submit-section">
+                        <button type="button" class="btn btn-secondary">
+                            Save as Draft
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="saveRestaurantOpportunity()">
+                            Create Opportunity
+                        </button>
+                    </div>
+
+                    <div class="success-message" id="restaurant-success">
+                        ✅ Opportunity created successfully! View in pipeline →
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <!-- Context Card -->
+            <div class="info-card">
+                <h3>
+                    <span class="icon">📍</span>
+                    Current Context
+                </h3>
+                <div id="context-info">
+                    <div style="margin-bottom: 12px;">
+                        <strong>Event:</strong> NRA Show 2025<br>
+                        <strong>Location:</strong> Booth #1247<br>
+                        <strong>User:</strong> Sarah Johnson
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat">
+                            <div class="value">47</div>
+                            <div class="label">Today</div>
+                        </div>
+                        <div class="stat">
+                            <div class="value">132</div>
+                            <div class="label">Total</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Opportunities -->
+            <div class="info-card" id="related-card" style="display: none;">
+                <h3>
+                    <span class="icon">🔗</span>
+                    Related Opportunities
+                </h3>
+                <div class="related-list">
+                    <div class="related-item">
+                        <div>
+                            <div class="name">Luigi's - Sysco Products</div>
+                            <div class="principal">Principal: Sysco</div>
+                        </div>
+                        <div class="stage">New Lead</div>
+                    </div>
+                    <div class="related-item">
+                        <div>
+                            <div class="name">Luigi's - US Foods Products</div>
+                            <div class="principal">Principal: US Foods</div>
+                        </div>
+                        <div class="stage">New Lead</div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 12px;">
+                    + Add Another Principal
+                </button>
+            </div>
+
+            <!-- Tips Card -->
+            <div class="info-card">
+                <h3>
+                    <span class="icon">💡</span>
+                    Quick Tips
+                </h3>
+                <div id="tips-content">
+                    <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: var(--text-muted);">
+                        <li>Use badge scanner for quick contact entry</li>
+                        <li>Same visitor, different principal? Use "Same Contact" button</li>
+                        <li>Can expand to full details after the show</li>
+                        <li>All booth visitors automatically tagged with campaign</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let lastContact = null;
+        let entryCount = 0;
+
+        function switchWorkflow(type) {
+            // Update button states
+            document.querySelectorAll('.workflow-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.workflow-btn').classList.add('active');
+
+            // Update form visibility
+            document.querySelectorAll('.workflow-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${type}-workflow`).classList.add('active');
+
+            // Update context and tips
+            updateContextForWorkflow(type);
+        }
+
+        function updateContextForWorkflow(type) {
+            const contextInfo = document.getElementById('context-info');
+            const tipsContent = document.getElementById('tips-content');
+            const relatedCard = document.getElementById('related-card');
+
+            if (type === 'tradeshow') {
+                contextInfo.innerHTML = `
+                    <div style="margin-bottom: 12px;">
+                        <strong>Event:</strong> NRA Show 2025<br>
+                        <strong>Location:</strong> Booth #1247<br>
+                        <strong>User:</strong> Sarah Johnson
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat">
+                            <div class="value">47</div>
+                            <div class="label">Today</div>
+                        </div>
+                        <div class="stat">
+                            <div class="value">132</div>
+                            <div class="label">Total</div>
+                        </div>
+                    </div>
+                `;
+                tipsContent.innerHTML = `
+                    <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: var(--text-muted);">
+                        <li>Use badge scanner for quick contact entry</li>
+                        <li>Same visitor, different principal? Use "Same Contact" button</li>
+                        <li>Can expand to full details after the show</li>
+                        <li>All booth visitors automatically tagged with campaign</li>
+                    </ul>
+                `;
+                relatedCard.style.display = 'none';
+            } else {
+                contextInfo.innerHTML = `
+                    <div style="margin-bottom: 12px;">
+                        <strong>Mode:</strong> Direct Sales Visit<br>
+                        <strong>Focus:</strong> Single Opportunity<br>
+                        <strong>User:</strong> Sarah Johnson
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat">
+                            <div class="value">3</div>
+                            <div class="label">Today</div>
+                        </div>
+                        <div class="stat">
+                            <div class="value">12</div>
+                            <div class="label">This Week</div>
+                        </div>
+                    </div>
+                `;
+                tipsContent.innerHTML = `
+                    <ul style="padding-left: 20px; margin: 0; font-size: 14px; color: var(--text-muted);">
+                        <li>Complete all fields for accurate pipeline tracking</li>
+                        <li>Set realistic close dates based on customer timeline</li>
+                        <li>Link to existing contacts and organizations</li>
+                        <li>Add detailed notes for team collaboration</li>
+                    </ul>
+                `;
+                relatedCard.style.display = 'none';
+            }
+        }
+
+        function scanBadge() {
+            // Simulate badge scan
+            document.getElementById('contact-name').value = 'John Smith';
+            document.getElementById('organization').value = "Luigi's Restaurant";
+            document.getElementById('contact-name').focus();
+
+            // Show quick feedback
+            const btn = event.target;
+            btn.style.background = 'var(--sage-200)';
+            setTimeout(() => {
+                btn.style.background = '';
+            }, 500);
+        }
+
+        function useLastContact() {
+            if (lastContact) {
+                document.getElementById('contact-name').value = lastContact.name;
+                document.getElementById('organization').value = lastContact.organization;
+                document.getElementById('principal').focus();
+
+                // Show related opportunities
+                document.getElementById('related-card').style.display = 'block';
+            } else {
+                alert('No previous contact to copy');
+            }
+        }
+
+        function saveBoothVisitor() {
+            const contactName = document.getElementById('contact-name').value;
+            const organization = document.getElementById('organization').value;
+            const principal = document.getElementById('principal').value;
+
+            if (!contactName || !organization || !principal) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Save for reuse
+            lastContact = {
+                name: contactName,
+                organization: organization
+            };
+
+            // Show success message
+            const successMsg = document.getElementById('tradeshow-success');
+            successMsg.classList.add('show');
+
+            // Update counter
+            entryCount++;
+            document.querySelector('.stat .value').textContent = 47 + entryCount;
+
+            // Reset form after delay
+            setTimeout(() => {
+                document.getElementById('tradeshow-form').reset();
+                document.getElementById('contact-name').focus();
+                successMsg.classList.remove('show');
+            }, 2000);
+        }
+
+        function saveAndAddAnother() {
+            saveBoothVisitor();
+            // Keep the form open for next entry
+        }
+
+        function saveRestaurantOpportunity() {
+            // Show success message
+            const successMsg = document.getElementById('restaurant-success');
+            successMsg.classList.add('show');
+
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize with trade show mode
+        window.onload = () => {
+            document.getElementById('contact-name').focus();
+        };
+    </script>
+</body>
+</html>
