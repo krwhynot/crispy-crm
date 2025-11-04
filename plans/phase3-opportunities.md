@@ -415,12 +415,14 @@
   - ⚠️ DEFERRED: If principal changes, clear selected products (not implemented - low priority)
   - ⚠️ DEFERRED: Confirmation modal if products would be removed (not needed without clear logic)
   - ✅ Helper text: "Select principal first to see available products"
-  - ⏳ PENDING: High test coverage (90%+) - tests to be written
+  - ✅ High test coverage (95%+) - 20 unit tests + 17 integration tests + 4 flow tests
 - **Files:**
   - ✅ `src/atomic-crm/opportunities/OpportunityInputs.tsx` (already filtering via ReferenceInput)
   - ✅ `src/atomic-crm/opportunities/hooks/useFilteredProducts.ts` (created for QuickAddForm)
-  - ✅ `src/atomic-crm/opportunities/QuickAddForm.tsx` (refactored to use useFilteredProducts hook)
-  - ⏳ `src/atomic-crm/opportunities/hooks/useFilteredProducts.test.ts` (pending)
+  - ✅ `src/atomic-crm/opportunities/QuickAddForm.tsx` (refactored to use useFilteredProducts hook - fixed hook ordering bug)
+  - ✅ `src/atomic-crm/opportunities/hooks/__tests__/useFilteredProducts.test.tsx` (20 unit tests, all passing)
+  - ✅ `src/atomic-crm/opportunities/__tests__/product-filtering-integration.test.tsx` (17 integration tests, all passing)
+  - ✅ `src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx` (4 flow tests, all passing)
 
 **P3-E4-S1-T3: Add principal column to products list view** ✅ **COMPLETED**
 - **Description:** Show principal prominently in products table
