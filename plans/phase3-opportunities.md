@@ -752,19 +752,33 @@
   - Form uses react-hook-form with Zod validation
   - Successfully integrated in OpportunityShow "Notes & Activity" tab
 
-**P3-E7-S2-T2: Add activity filtering to timeline**
+**P3-E7-S2-T2: Add activity filtering to timeline** ✅
 - **Description:** Filter activity timeline by type, date range, user
 - **Confidence:** 85%
 - **Estimate:** 2 hours
 - **Prerequisites:** P7-E7-S2-T1
 - **Acceptance Criteria:**
-  - Filter by activity type (multi-select)
-  - Date range picker
-  - Filter by user (multi-select)
-  - "Show stage changes only" toggle
-  - Filters apply without page reload
+  - ✅ Filter by activity type (multi-select)
+  - ✅ Date range picker
+  - ✅ Filter by user (multi-select)
+  - ✅ "Show stage changes only" toggle
+  - ✅ Filters apply without page reload
 - **Files:**
-  - `src/atomic-crm/opportunities/ActivityTimelineFilters.tsx`
+  - `src/atomic-crm/opportunities/ActivityTimelineFilters.tsx` (new)
+  - `src/atomic-crm/opportunities/OpportunityShow.tsx` (updated)
+- **Implementation Notes:**
+  - Created ActivityTimelineFilters component with comprehensive filtering controls
+  - Activity type filter: Multi-select checkboxes for all 11 activity types from INTERACTION_TYPE_OPTIONS
+  - Date range: From/to date inputs with formatted date display
+  - User filter: Multi-select checkboxes for all sales users (fetched via useGetList)
+  - Stage changes toggle: Switch control (filters by is_stage_change flag)
+  - Filter state management: Controlled components with useEffect building filter object on state changes
+  - Active filters display: Removable badges show currently active filters
+  - Filter count badge displayed on filter button
+  - Clear all filters button when any filters active
+  - Integrated into OpportunityShow "Notes & Activity" tab
+  - Filters merge with base filter (activity_type: "interaction") in ReferenceManyField
+  - No page reload required - filters apply instantly via controlled state
 
 ### E7-S3: Change Log / Audit Trail
 

@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import { format, isValid, formatDistanceToNow, isPast, isFuture } from "date-fns";
 import { Archive, ArchiveRestore } from "lucide-react";
 import {
@@ -33,6 +34,7 @@ import { ProductsTable } from "./ProductsTable";
 import { OrganizationInfoCard } from "./OrganizationInfoCard";
 import { SaleAvatar } from "../sales/SaleAvatar";
 import { WorkflowManagementSection } from "./WorkflowManagementSection";
+import { ActivityTimelineFilters } from "./ActivityTimelineFilters";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -43,6 +45,7 @@ const OpportunityShow = () => (
 const OpportunityShowContent = () => {
   const { record, isPending } = useShowContext<Opportunity>();
   const navigate = useNavigate();
+  const [activityFilters, setActivityFilters] = useState<Record<string, any>>({});
 
   // Get tab from URL or default to "details"
   const tabMatch = useMatch("/opportunities/:id/show/:tab");
@@ -298,11 +301,14 @@ const OpportunityShowContent = () => {
                     <ActivityNoteForm opportunity={record} />
                   </div>
 
+                  {/* Activity Filters */}
+                  <ActivityTimelineFilters onFiltersChange={setActivityFilters} />
+
                   {/* Activities List */}
                   <ReferenceManyField
                     target="opportunity_id"
                     reference="activities"
-                    filter={{ activity_type: "interaction" }}
+                    filter={{ activity_type: "interaction", ...activityFilters }}
                     sort={{ field: "activity_date", order: "DESC" }}
                   >
                     <ActivitiesList />
