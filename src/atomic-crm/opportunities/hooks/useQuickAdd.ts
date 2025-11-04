@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useDataProvider, useNotify } from 'react-admin';
+import { useDataProvider, useNotify } from 'ra-core';
 import type { QuickAddInput } from '@/atomic-crm/validation/quickAdd';
 
 /**
