@@ -71,7 +71,7 @@ export const Dashboard = () => {
         <h1 className="text-base md:text-lg lg:text-xl font-bold text-foreground">Dashboard</h1>
         <Button
           variant="outline"
-          size="sm"
+          size="default"
           onClick={handleRefresh}
           disabled={isRefreshing}
           className="gap-2"
