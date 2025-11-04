@@ -1,13 +1,17 @@
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useCallback } from "react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetOne } from "ra-core";
+import { generateOpportunityName } from "./utils/generateOpportunityName";
 
 /**
  * Auto-Generate Name Hook
- * Automatically generates opportunity name from customer + principal + products + date
+ * Automatically generates opportunity name from customer + principal + quarter/year
+ *
+ * Format: "{Customer Name} - {Principal Name} - Q{quarter} {year}"
+ * Example: "Nobu Miami - Ocean Hugger - Q1 2025"
  *
  * @param mode - 'create' for auto-generation, 'edit' for manual regeneration
- * @returns regenerate function and loading state
+ * @returns regenerate function, loading state, and canGenerate flag
  */
 export const useAutoGenerateName = (mode: "create" | "edit") => {
   const { setValue } = useFormContext();
@@ -15,15 +19,7 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
   // Watch relevant fields
   const customerOrgId = useWatch({ name: "customer_organization_id" });
   const principalOrgId = useWatch({ name: "principal_organization_id" });
-  const productsRaw = useWatch({ name: "products" });
   const currentName = useWatch({ name: "name" });
-
-  // Stabilize products array reference to prevent infinite loops
-  // Only update when length or content actually changes (deep equality)
-  const products = useMemo(() => {
-    if (!productsRaw || !Array.isArray(productsRaw)) return [];
-    return productsRaw;
-  }, [productsRaw]);
 
   // Fetch customer organization name
   const { data: customerOrg, isLoading: isLoadingCustomer } = useGetOne(
@@ -41,38 +37,20 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
 
   const isLoading = isLoadingCustomer || isLoadingPrincipal;
 
+  // Button should be enabled when at least one of customer or principal is selected
+  const canGenerate = !!(customerOrg?.name || principalOrg?.name);
+
   /**
-   * Generate name from components
-   * Format: "Customer Name - Principal Name - Product/Count - MMM YYYY"
+   * Generate name using the standardized utility function
+   * Format: "{Customer Name} - {Principal Name} - Q{quarter} {year}"
    */
   const generateName = useCallback(() => {
-    const parts = [];
-
-    if (customerOrg?.name) {
-      parts.push(customerOrg.name);
-    }
-
-    if (principalOrg?.name) {
-      parts.push(principalOrg.name);
-    }
-
-    if (products.length === 0) {
-      parts.push("[No Product]");
-    } else if (products.length === 1) {
-      parts.push(products[0].product_name || "Product");
-    } else {
-      parts.push(`${products.length} products`);
-    }
-
-    parts.push(
-      new Date().toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-      })
-    );
-
-    return parts.join(" - ");
-  }, [customerOrg?.name, principalOrg?.name, products]);
+    return generateOpportunityName({
+      customerName: customerOrg?.name,
+      principalName: principalOrg?.name,
+      date: new Date(),
+    });
+  }, [customerOrg?.name, principalOrg?.name]);
 
   /**
    * Manual regenerate function for edit mode
