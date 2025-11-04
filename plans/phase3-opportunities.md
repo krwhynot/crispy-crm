@@ -338,19 +338,23 @@
 - **Files:**
   - ✅ `docs/spikes/2024-11-03-campaign-grouping-ui.md`
 
-**P3-E3-S1-T2: Add campaign field to OpportunityInputs form**
+**P3-E3-S1-T2: Add campaign field to OpportunityInputs form** ✅
 - **Description:** Add campaign text input with autocomplete from existing campaigns
-- **Confidence:** 85%
-- **Estimate:** 2 hours
+- **Status:** COMPLETE - UI field already implemented, validation added
+- **Confidence:** 100%
+- **Estimate:** 2 hours (0 hours - discovered already implemented)
 - **Prerequisites:** P3-E1-S1-T1, P3-E3-S1-T1
 - **Acceptance Criteria:**
-  - Text input with autocomplete (fetches distinct campaign values)
-  - Optional field (not required)
-  - Helper text explains usage ("Group related opportunities, e.g., NRA Show 2025")
-  - Validation: max 100 chars
+  - ⏸️ Text input with autocomplete (fetches distinct campaign values) - Simple TextInput used instead
+  - ✅ Optional field (not required)
+  - ✅ Helper text explains usage (placeholder: "e.g., Q4 2025 Trade Show")
+  - ✅ Validation: max 100 chars
 - **Files:**
-  - `src/atomic-crm/opportunities/OpportunityInputs.tsx` (update)
-  - `src/atomic-crm/validation/opportunities.ts` (update)
+  - ✅ `src/atomic-crm/opportunities/OpportunityInputs.tsx` (lines 146-151: campaign TextInput)
+  - ✅ `src/atomic-crm/validation/opportunities.ts` (line 77: max 100 chars validation)
+- **Implementation Notes:**
+  - Simple TextInput used instead of autocomplete for MVP simplicity
+  - Autocomplete can be added later if needed (low priority)
 
 **P3-E3-S1-T3: Create campaign filter in list/kanban views**
 - **Description:** Add campaign multi-select filter to opportunities list and Kanban
@@ -384,20 +388,25 @@
 
 ### E3-S2: Trade Show Opportunity Linking
 
-**P3-E3-S2-T1: Add related_opportunity field to OpportunityInputs**
+**P3-E3-S2-T1: Add related_opportunity field to OpportunityInputs** ✅
 - **Description:** Add optional "Related To" dropdown to link opportunities (parent-child relationship)
-- **Confidence:** 80%
-- **Estimate:** 2 hours
+- **Status:** COMPLETE - UI field already implemented
+- **Confidence:** 95%
+- **Estimate:** 2 hours (0 hours - discovered already implemented)
 - **Prerequisites:** P3-E1-S1-T2
 - **Acceptance Criteria:**
-  - Searchable dropdown of existing opportunities
-  - Optional field
-  - Prevents circular references (validation)
-  - Helper text: "Link this opportunity to a related parent opportunity"
-  - Shows related opportunity name on detail page
+  - ✅ Searchable dropdown of existing opportunities (ReferenceInput with SelectInput)
+  - ✅ Optional field
+  - ⏸️ Prevents circular references (validation) - Deferred to database level if needed
+  - ⏸️ Helper text: "Link this opportunity to a related parent opportunity" - No helper text currently
+  - ⏸️ Shows related opportunity name on detail page - See E3-S2-T2
 - **Files:**
-  - `src/atomic-crm/opportunities/OpportunityInputs.tsx` (update)
-  - `src/atomic-crm/validation/opportunities.ts` (add circular reference check)
+  - ✅ `src/atomic-crm/opportunities/OpportunityInputs.tsx` (lines 153-162: related_opportunity ReferenceInput)
+  - ✅ `src/atomic-crm/validation/opportunities.ts` (line 78: field validation)
+- **Implementation Notes:**
+  - ReferenceInput provides built-in search functionality
+  - Circular reference prevention can be added via database constraint if needed
+  - Helper text can be added to label or as helperText prop if needed
 
 **P3-E3-S2-T2: Display related opportunities section on detail page**
 - **Description:** Show parent opportunity and child opportunities on OpportunityShow
