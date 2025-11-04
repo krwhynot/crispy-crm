@@ -5,6 +5,7 @@ import { List } from "@/components/admin/list";
 import { FilterButton } from "@/components/admin/filter-form";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+import { QuickAddButton } from "./QuickAddButton";
 
 import {
   Translate,
