@@ -31,6 +31,7 @@ import { ActivitiesList } from "./ActivitiesList";
 import { ChangeLogTab } from "./ChangeLogTab";
 import { ProductsTable } from "./ProductsTable";
 import { OrganizationInfoCard } from "./OrganizationInfoCard";
+import { SaleAvatar } from "../sales/SaleAvatar";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -161,11 +162,20 @@ const OpportunityShowContent = () => {
                       <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                         Opportunity Owner
                       </span>
-                      <ReferenceField
-                        source="opportunity_owner_id"
-                        reference="sales"
-                        link={false}
-                      />
+                      <div className="flex items-center gap-2">
+                        <ReferenceField
+                          source="opportunity_owner_id"
+                          reference="sales"
+                          link={false}
+                        >
+                          <SaleAvatar size="sm" />
+                        </ReferenceField>
+                        <ReferenceField
+                          source="opportunity_owner_id"
+                          reference="sales"
+                          link={false}
+                        />
+                      </div>
                     </div>
                   )}
 
@@ -210,6 +220,45 @@ const OpportunityShowContent = () => {
                   </div>
                 </div>
               )}
+
+              {/* Created Date and Creator */}
+              <div className="flex gap-8 mb-4">
+                <div className="flex flex-col min-w-[150px]">
+                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                    Created
+                  </span>
+                  <span className="text-sm">
+                    {isValid(new Date(record.created_at))
+                      ? format(new Date(record.created_at), "PPp")
+                      : "Unknown"}
+                  </span>
+                  <span className="text-xs text-[color:var(--text-subtle)]">
+                    {formatDistanceToNow(new Date(record.created_at), { addSuffix: true })}
+                  </span>
+                </div>
+
+                {record.created_by && (
+                  <div className="flex flex-col min-w-[150px]">
+                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                      Created By
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <ReferenceField
+                        source="created_by"
+                        reference="sales"
+                        link={false}
+                      >
+                        <SaleAvatar size="sm" />
+                      </ReferenceField>
+                      <ReferenceField
+                        source="created_by"
+                        reference="sales"
+                        link={false}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
 
               {record.description && (
                 <div className="mb-4 whitespace-pre-line">

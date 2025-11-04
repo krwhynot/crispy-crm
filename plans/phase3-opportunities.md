@@ -678,22 +678,29 @@
 
 ### E7-S1: Enhanced Header Section
 
-**P3-E7-S1-T1: Update OpportunityShow header with 3-org display**
+**P3-E7-S1-T1: Update OpportunityShow header with 3-org display** ✅
 - **Description:** Show customer, ⭐ principal, and distributor organizations prominently
 - **Confidence:** 90%
 - **Estimate:** 2 hours
 - **Prerequisites:** None
 - **Acceptance Criteria:**
-  - Card layout with icons
-  - ⭐ Principal displayed prominently (bold, star icon, "MOST IMPORTANT" tooltip)
-  - Customer organization linked
-  - Distributor organization linked (if present)
-  - Owner with avatar
-  - Expected close date with days-away calculation
-  - Created date and creator
+  - ✅ Card layout with icons
+  - ✅ ⭐ Principal displayed prominently (bold, star icon, "MOST IMPORTANT" tooltip)
+  - ✅ Customer organization linked
+  - ✅ Distributor organization linked (if present)
+  - ✅ Owner with avatar
+  - ✅ Expected close date with days-away calculation
+  - ✅ Created date and creator
 - **Files:**
   - `src/atomic-crm/opportunities/OpportunityShow.tsx` (update header)
   - `src/atomic-crm/opportunities/OrganizationInfoCard.tsx` (new)
+  - `src/atomic-crm/sales/SaleAvatar.tsx` (new - avatar component for sales)
+  - `src/atomic-crm/types.ts` (added created_by field to Opportunity interface)
+- **Implementation Notes:**
+  - Created OrganizationInfoCard with featured principal display (star icon, tooltip, brand coloring)
+  - Enhanced expected close date with formatDistanceToNow ("in 14 days" / "2 days ago")
+  - Created SaleAvatar component for consistent avatar display across sales
+  - Added created date with relative time and creator with avatar
 
 **P3-E7-S1-T2: Add workflow management section**
 - **Description:** Display and inline-edit tags, next action, next action date, decision criteria
