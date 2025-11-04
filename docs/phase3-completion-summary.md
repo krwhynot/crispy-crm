@@ -9,7 +9,7 @@
 
 ## 📊 Executive Summary
 
-### Overall Completion: 77% (47/61 tasks)
+### Overall Completion: 79% (48/61 tasks)
 
 **MVP-Ready Features:**
 - ✅ Product-principal filtering (100% test coverage)
@@ -313,18 +313,18 @@
 
 ---
 
-### Epic 8: Testing & Documentation (3/9 tasks complete)
+### Epic 8: Testing & Documentation (4/9 tasks complete)
 
 **Status:** ✅ Unit Tests Complete - E2E Deferred to Post-MVP
 
 **Completed:**
 - ✅ P3-E8-S1-T1: Write tests for principal filtering (100% coverage)
+- ✅ P3-E8-S1-T3: Write tests for campaign grouping (14 tests, business logic coverage)
 - ✅ P3-E8-S1-T4: Write tests for auto-generate name (100% coverage)
 - ✅ Epic 8 MVP Decision: Defer E2E tests to post-launch
 
 **Not Complete:**
 - ⏸️ P3-E8-S1-T2: Write tests for drag-and-drop logic (implementation differs from plan)
-- ⏸️ P3-E8-S1-T3: Write tests for campaign grouping (component not implemented)
 - ⏸️ P3-E8-S2-T1: E2E test - Create opportunity with principal and products (no E2E framework)
 - ⏸️ P3-E8-S2-T2: E2E test - Kanban drag-and-drop workflow (no E2E framework)
 - ⏸️ P3-E8-S2-T3: E2E test - Campaign grouping workflow (no E2E framework)
@@ -340,6 +340,7 @@
 **Test Files:**
 - ✅ `src/atomic-crm/opportunities/hooks/__tests__/useFilteredProducts.test.tsx` (20 tests, 100% coverage)
 - ✅ `src/atomic-crm/opportunities/utils/generateOpportunityName.test.ts` (37 tests, 100% coverage)
+- ✅ `src/atomic-crm/opportunities/__tests__/CampaignGroupedList.test.ts` (14 tests, business logic coverage)
 
 **Deferred to Post-MVP:**
 - E2E test infrastructure setup (Playwright or Vitest browser mode)
