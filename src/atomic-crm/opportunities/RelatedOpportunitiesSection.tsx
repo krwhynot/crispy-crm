@@ -59,9 +59,9 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
               <ExternalLink className="w-3 h-3" />
             </Link>
             <div className="flex items-center gap-2">
-              {parentOpportunity.principal_name && (
+              {parentOpportunity.principal_organization_name && (
                 <Badge variant="outline" className="text-xs">
-                  {parentOpportunity.principal_name}
+                  {parentOpportunity.principal_organization_name}
                 </Badge>
               )}
               <Badge
@@ -117,9 +117,9 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
                   <ExternalLink className="w-3 h-3" />
                 </Link>
                 <div className="flex items-center gap-2">
-                  {childOpp.principal_name && (
+                  {childOpp.principal_organization_name && (
                     <Badge variant="outline" className="text-xs">
-                      {childOpp.principal_name}
+                      {childOpp.principal_organization_name}
                     </Badge>
                   )}
                   <Badge

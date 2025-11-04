@@ -35,6 +35,7 @@ import { OrganizationInfoCard } from "./OrganizationInfoCard";
 import { SaleAvatar } from "../sales/SaleAvatar";
 import { WorkflowManagementSection } from "./WorkflowManagementSection";
 import { ActivityTimelineFilters } from "./ActivityTimelineFilters";
+import { RelatedOpportunitiesSection } from "./RelatedOpportunitiesSection";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -101,6 +102,11 @@ const OpportunityShowContent = () => {
               {/* Workflow Management Section */}
               <div className="mb-6">
                 <WorkflowManagementSection />
+              </div>
+
+              {/* Related Opportunities Section */}
+              <div className="mb-6">
+                <RelatedOpportunitiesSection opportunity={record} />
               </div>
 
               <div className="flex gap-8 mb-4">
