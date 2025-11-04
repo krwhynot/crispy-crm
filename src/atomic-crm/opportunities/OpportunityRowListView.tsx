@@ -1,6 +1,7 @@
 import { useListContext, RecordContextProvider } from "ra-core";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EditButton } from "@/components/admin/edit-button";
 import { formatDistance, format } from "date-fns";
-import { Building2 } from "lucide-react";
+import { Building2, X } from "lucide-react";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
 

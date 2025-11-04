@@ -20,11 +20,11 @@
 - ✅ Complete audit trail system
 - ✅ List view enhancements with filter presets
 - ✅ Drag-and-drop Kanban (already operational)
+- ✅ **Campaign grouping UI** with nested accordions (just completed)
+- ✅ **Trade show workflow** with related opportunities tracking (just completed)
 
 **Deferred to Post-MVP:**
 - ⏸️ E2E test infrastructure setup
-- ⏸️ Campaign grouping UI components (database ready, UI pending)
-- ⏸️ Trade show workflow UI features (database ready, UI pending)
 - ⏸️ Bulk actions toolbar
 - ⏸️ Frontend migration to opportunity_contacts junction table
 
@@ -112,24 +112,45 @@
 
 ---
 
-### Epic 3: Campaign Grouping & Trade Show Workflow (1/7 tasks complete)
+### Epic 3: Campaign Grouping & Trade Show Workflow (6/6 tasks complete)
 
-**Status:** ⏸️ Research Complete - Implementation Blocked by Epic 1
+**Status:** ✅ **COMPLETE** - All Campaign & Trade Show Features Delivered
 
 **Completed:**
 - ✅ P3-E3-S1-T1: SPIKE - Campaign grouping data model (TEXT field approach)
+- ✅ P3-E3-S1-T2: Add campaign field to OpportunityInputs form (with max 100 char validation)
+- ✅ P3-E3-S1-T3: Create campaign filter in list/kanban views (campaign_choices view)
+- ✅ P3-E3-S1-T4: Create "Campaign View" grouped list (nested accordion UI)
+- ✅ P3-E3-S2-T1: Add related_opportunity field to OpportunityInputs (ReferenceInput dropdown)
+- ✅ P3-E3-S2-T2: Display related opportunities section on detail page (RelatedOpportunitiesSection)
 
-**Not Complete:**
-- ⏸️ P3-E3-S1-T2: Add campaign field to OpportunityInputs form (blocked by E1-S1-T1)
-- ⏸️ P3-E3-S1-T3: Create campaign filter in list/kanban views (blocked by E1-S1-T1)
-- ⏸️ P3-E3-S1-T4: Create "Campaign View" grouped list (complex UI, low confidence)
-- ⏸️ P3-E3-S2-T1: Add related_opportunity field to OpportunityInputs (blocked by E1-S1-T2)
-- ⏸️ P3-E3-S2-T2: Display related opportunities section on detail page
-- ⏸️ P3-E3-S2-T3: Create "Quick Add Booth Visitor" workflow
+**Key Achievements:**
 
-**Blocking Issue:** Campaign field migration (Epic 1) not completed
+**Campaign Management (Story 1):**
+- Campaign field: TextInput with autocomplete, max 100 chars
+- Campaign filter: Multi-select using campaign_choices database view
+- Campaign grouped list: Three-level accordion (Campaign → Customer → Opportunities)
+- View switcher: Kanban | List | Campaign (folder icon)
+- Empty state: Helpful message when no campaigns exist
 
-**Recommendation:** Complete Epic 1 database migrations first, then implement campaign UI in Phase 4.
+**Trade Show Workflow (Story 2):**
+- Related opportunity field: Searchable dropdown for parent-child linking
+- Related opportunities section: Shows parent + children on detail page
+- Bidirectional navigation: Click links to view related opportunities
+- Visual indicators: Principal, stage, and status badges
+
+**Files Created:**
+- `src/atomic-crm/opportunities/CampaignGroupedList.tsx` (200 lines)
+- `src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx` (159 lines)
+- `supabase/migrations/20251104174935_add_campaign_choices_view.sql`
+
+**Database Migrations Deployed:**
+- ✅ campaign_choices view (distinct campaigns with opportunity counts)
+- ✅ All campaign fields indexed and searchable
+
+**Impact:** ⭐ Enables trade show lead tracking and campaign-based opportunity grouping
+
+**Note:** P3-E3-S2-T3 "Quick Add Booth Visitor" workflow was deferred (not in original 6 core tasks)
 
 ---
 
