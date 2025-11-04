@@ -6,6 +6,7 @@ import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { ListPagination } from "@/components/admin/list-pagination";
 import { SortButton } from "@/components/admin/sort-button";
+import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { TopToolbar } from "../layout/TopToolbar";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationListFilter } from "./OrganizationListFilter";
@@ -24,6 +25,7 @@ export const OrganizationList = () => {
       pagination={<ListPagination rowsPerPageOptions={[10, 25, 50, 100]} />}
     >
       <OrganizationListLayout />
+      <FloatingCreateButton />
     </List>
   );
 };

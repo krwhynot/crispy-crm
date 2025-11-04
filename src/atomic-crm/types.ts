@@ -117,12 +117,12 @@ export interface OpportunityParticipant extends Pick<RaRecord, "id"> {
   organization_id: Identifier;
   role: "customer" | "principal" | "distributor" | "competitor";
   is_primary: boolean;
-  territory?: string;
   notes?: string;
   created_at: string;
   updated_at?: string;
   created_by?: Identifier;
   deleted_at?: string;
+  // Note: commission_rate removed - Phase 3 feature per PRD
 }
 
 /**
@@ -226,6 +226,8 @@ export interface Opportunity extends Pick<RaRecord, "id"> {
   next_action_date?: string;
   competition?: string;
   decision_criteria?: string;
+  campaign?: string; // Campaign name for grouping related opportunities (e.g., "Winter Fancy Food Show 2025")
+  related_opportunity_id?: Identifier; // Parent opportunity ID for follow-up tracking
 
   // Computed fields from opportunities_summary view (read-only)
   nb_interactions?: number;

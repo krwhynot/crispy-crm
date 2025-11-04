@@ -5,6 +5,7 @@ import type { VariantProps } from "class-variance-authority";
 
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
+import { EditButton } from "@/components/admin/edit-button";
 import { Card } from "@/components/ui/card";
 import type { badgeVariants } from "@/components/ui/badge";
 import { Badge } from "@/components/ui/badge";
@@ -55,6 +56,11 @@ export const OrganizationCard = (props: { record?: Company }) => {
         className="absolute top-2 left-2 z-10"
         onClick={(e) => e.stopPropagation()}
       />
+
+      {/* Edit button positioned absolutely in top-right corner */}
+      <div className="absolute top-2 right-2 z-10">
+        <EditButton resource="organizations" />
+      </div>
 
       <Link
         to={createPath({

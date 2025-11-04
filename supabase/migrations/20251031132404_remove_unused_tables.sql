@@ -29,44 +29,63 @@ BEGIN;
 DO $$
 DECLARE
   v_count INTEGER;
+  v_table_exists BOOLEAN;
 BEGIN
   -- Check product_pricing_models
-  SELECT COUNT(*) INTO v_count FROM product_pricing_models;
-  IF v_count > 0 THEN
-    RAISE EXCEPTION 'SAFETY CHECK FAILED: product_pricing_models contains % rows. Review data before dropping table.', v_count;
+  SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product_pricing_models') INTO v_table_exists;
+  IF v_table_exists THEN
+    SELECT COUNT(*) INTO v_count FROM product_pricing_models;
+    IF v_count > 0 THEN
+      RAISE EXCEPTION 'SAFETY CHECK FAILED: product_pricing_models contains % rows. Review data before dropping table.', v_count;
+    END IF;
   END IF;
 
   -- Check product_pricing_tiers
-  SELECT COUNT(*) INTO v_count FROM product_pricing_tiers;
-  IF v_count > 0 THEN
-    RAISE EXCEPTION 'SAFETY CHECK FAILED: product_pricing_tiers contains % rows. Review data before dropping table.', v_count;
+  SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product_pricing_tiers') INTO v_table_exists;
+  IF v_table_exists THEN
+    SELECT COUNT(*) INTO v_count FROM product_pricing_tiers;
+    IF v_count > 0 THEN
+      RAISE EXCEPTION 'SAFETY CHECK FAILED: product_pricing_tiers contains % rows. Review data before dropping table.', v_count;
+    END IF;
   END IF;
 
   -- Check contact_preferred_principals
-  SELECT COUNT(*) INTO v_count FROM contact_preferred_principals;
-  IF v_count > 0 THEN
-    RAISE EXCEPTION 'SAFETY CHECK FAILED: contact_preferred_principals contains % rows. Review data before dropping table.', v_count;
+  SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'contact_preferred_principals') INTO v_table_exists;
+  IF v_table_exists THEN
+    SELECT COUNT(*) INTO v_count FROM contact_preferred_principals;
+    IF v_count > 0 THEN
+      RAISE EXCEPTION 'SAFETY CHECK FAILED: contact_preferred_principals contains % rows. Review data before dropping table.', v_count;
+    END IF;
   END IF;
 
   -- Check product_distributor_authorizations
-  SELECT COUNT(*) INTO v_count FROM product_distributor_authorizations;
-  IF v_count > 0 THEN
-    RAISE EXCEPTION 'SAFETY CHECK FAILED: product_distributor_authorizations contains % rows. Review data before dropping table.', v_count;
+  SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product_distributor_authorizations') INTO v_table_exists;
+  IF v_table_exists THEN
+    SELECT COUNT(*) INTO v_count FROM product_distributor_authorizations;
+    IF v_count > 0 THEN
+      RAISE EXCEPTION 'SAFETY CHECK FAILED: product_distributor_authorizations contains % rows. Review data before dropping table.', v_count;
+    END IF;
   END IF;
 
   -- Check product_category_hierarchy
-  SELECT COUNT(*) INTO v_count FROM product_category_hierarchy;
-  IF v_count > 0 THEN
-    RAISE EXCEPTION 'SAFETY CHECK FAILED: product_category_hierarchy contains % rows. Review data before dropping table.', v_count;
+  SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product_category_hierarchy') INTO v_table_exists;
+  IF v_table_exists THEN
+    SELECT COUNT(*) INTO v_count FROM product_category_hierarchy;
+    IF v_count > 0 THEN
+      RAISE EXCEPTION 'SAFETY CHECK FAILED: product_category_hierarchy contains % rows. Review data before dropping table.', v_count;
+    END IF;
   END IF;
 
   -- Check product_features
-  SELECT COUNT(*) INTO v_count FROM product_features;
-  IF v_count > 0 THEN
-    RAISE EXCEPTION 'SAFETY CHECK FAILED: product_features contains % rows. Review data before dropping table.', v_count;
+  SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product_features') INTO v_table_exists;
+  IF v_table_exists THEN
+    SELECT COUNT(*) INTO v_count FROM product_features;
+    IF v_count > 0 THEN
+      RAISE EXCEPTION 'SAFETY CHECK FAILED: product_features contains % rows. Review data before dropping table.', v_count;
+    END IF;
   END IF;
 
-  RAISE NOTICE 'SAFETY CHECK PASSED: All tables verified empty.';
+  RAISE NOTICE 'SAFETY CHECK PASSED: All tables verified empty or non-existent.';
 END $$;
 
 
