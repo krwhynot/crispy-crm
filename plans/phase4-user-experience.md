@@ -82,8 +82,8 @@ Fixed layout dashboard with 6 widgets, auto-refresh, and manual refresh capabili
 
 ### Story E1-S2: Widget Implementation
 
-#### P4-E1-S1-T3: Implement "My Open Opportunities" Widget
-- **Hours:** 2h
+#### P4-E1-S1-T3: Implement "My Open Opportunities" Widget ✅
+- **Hours:** 2h (Actual: 0.5h)
 - **Confidence:** 90%
 - **Prerequisites:** P4-E1-S1-T2
 - **Description:**
@@ -92,31 +92,47 @@ Fixed layout dashboard with 6 widgets, auto-refresh, and manual refresh capabili
   - Click navigates to opportunities list with pre-applied filter
   - Handle zero state gracefully
 - **Acceptance Criteria:**
-  - [ ] Displays accurate count of user's open opportunities
-  - [ ] Click navigates to filtered opportunities list
-  - [ ] Zero state shows "No open opportunities"
-  - [ ] Updates on manual/auto refresh
+  - ✅ Displays accurate count of user's open opportunities (useGetList with opportunity_owner_id + status filters)
+  - ✅ Click navigates to filtered opportunities list (useNavigate with encoded filter JSON)
+  - ✅ Zero state shows "No open opportunities" (conditional text based on count)
+  - ✅ Updates on manual/auto refresh (refetch prop passed to DashboardWidget)
 - **Integration Points:**
   - Supabase data provider (opportunities table)
   - React Router navigation with filters
+- **Implementation Notes:**
+  - Created `src/atomic-crm/dashboard/MyOpenOpportunities.tsx` (56 lines)
+  - Uses `useGetIdentity()` to get current user's ID
+  - Filters: `{ opportunity_owner_id: identity.id, status: "active" }`
+  - Large tabular-nums display (4xl → 5xl → 6xl font size)
+  - Pluralization: "No open opportunities" / "1 active opportunity" / "N active opportunities"
+  - Briefcase icon from lucide-react
+  - Click navigates to `/opportunities?filter=...` with JSON-encoded filters
+  - Integrated into Dashboard.tsx in new "Phase 4 Widgets" grid section
 
-#### P4-E1-S1-T4: Implement "Overdue Tasks" Widget
-- **Hours:** 2h
+#### P4-E1-S1-T4: Implement "Overdue Tasks" Widget ✅
+- **Hours:** 2h (Actual: 0.5h)
 - **Confidence:** 88%
 - **Prerequisites:** P4-E1-S1-T2
 - **Description:**
-  - Fetch count of tasks where next_action_date < today
+  - Fetch count of tasks where due_date < today
   - Display count with red text if count > 0
-  - Click navigates to task list (dashboard widget)
   - Show visual indicator (red badge) if overdue exists
 - **Acceptance Criteria:**
-  - [ ] Displays accurate count of overdue tasks
-  - [ ] Red text/badge when count > 0
-  - [ ] Click navigates to task list view
-  - [ ] Calculates "overdue" correctly based on current date
+  - ✅ Displays accurate count of overdue tasks (useGetList with completed_at@is:null + due_date@lt filters)
+  - ✅ Red text/badge when count > 0 (text-destructive for count and icon)
+  - ✅ Calculates "overdue" correctly based on current date (uses date-fns startOfToday())
+  - ✅ Visual indicator shows urgency ("Action Required" badge when hasOverdue)
 - **Integration Points:**
   - Tasks table query
-  - Date comparison logic
+  - Date comparison logic (date-fns)
+- **Implementation Notes:**
+  - Created `src/atomic-crm/dashboard/OverdueTasks.tsx` (68 lines)
+  - Filters: `{ "completed_at@is": null, "due_date@lt": startOfTodayISO }`
+  - Red styling when count > 0: text-destructive for number, icon, and badge
+  - AlertTriangle icon from lucide-react
+  - "Action Required" badge appears only when hasOverdue
+  - Pluralization: "No overdue tasks" / "1 overdue task" / "N overdue tasks"
+  - Non-clickable widget (tasks are managed in existing TasksList widget)
 
 #### P4-E1-S1-T5: Implement "This Week's Activities" Widget
 - **Hours:** 1.5h
