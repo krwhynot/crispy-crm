@@ -76,6 +76,7 @@ const opportunityBaseSchema = z.object({
   // Campaign & Workflow Tracking fields (added 2025-11-03)
   campaign: z.string().optional().nullable(),
   related_opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
+  notes: z.string().optional().nullable(), // General notes about the opportunity (separate from activity log)
   tags: z.array(z.string()).optional().default([]),
   next_action: z.string().optional().nullable(),
   next_action_date: z.string().optional().nullable(), // ISO date string
