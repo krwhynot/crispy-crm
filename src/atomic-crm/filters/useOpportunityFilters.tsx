@@ -21,11 +21,12 @@ import { getInitialStageFilter } from "./opportunityStagePreferences";
 export const useOpportunityFilters = () => {
   return [
     <SearchInput source="q" alwaysOn />,
+    // ⭐ Principal filter at TOP position (most important filter per PRD)
+    <ReferenceInput source="principal_organization_id" reference="organizations">
+      <AutocompleteArrayInput label={false} placeholder="Principal (Brand/Manufacturer)" />
+    </ReferenceInput>,
     <ReferenceInput source="customer_organization_id" reference="organizations">
       <AutocompleteArrayInput label={false} placeholder="Customer Organization" />
-    </ReferenceInput>,
-    <ReferenceInput source="principal_organization_id" reference="organizations">
-      <AutocompleteArrayInput label={false} placeholder="Principal" />
     </ReferenceInput>,
     <MultiSelectInput
       source="priority"
