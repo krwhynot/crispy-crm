@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { format, isValid } from "date-fns";
+import { format, isValid, formatDistanceToNow, isPast, isFuture } from "date-fns";
 import { Archive, ArchiveRestore } from "lucide-react";
 import {
   ShowBase,
@@ -30,6 +30,7 @@ import { ActivityNoteForm } from "./ActivityNoteForm";
 import { ActivitiesList } from "./ActivitiesList";
 import { ChangeLogTab } from "./ChangeLogTab";
 import { ProductsTable } from "./ProductsTable";
+import { OrganizationInfoCard } from "./OrganizationInfoCard";
 
 const OpportunityShow = () => (
   <ShowBase>
@@ -87,6 +88,11 @@ const OpportunityShowContent = () => {
 
             {/* Details Tab */}
             <TabsContent value="details" className="pt-4">
+              {/* Organization Info Card - Featured Display */}
+              <div className="mb-6">
+                <OrganizationInfoCard opportunity={record} />
+              </div>
+
               <div className="flex gap-8 mb-4">
                 <div className="flex flex-col min-w-[150px]">
                   <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
@@ -98,9 +104,19 @@ const OpportunityShowContent = () => {
                         ? format(new Date(record.estimated_close_date), "PP")
                         : "Invalid date"}
                     </span>
-                    {new Date(record.estimated_close_date) < new Date() ? (
-                      <Badge variant="destructive">Past</Badge>
-                    ) : null}
+                    {isValid(new Date(record.estimated_close_date)) && (
+                      <>
+                        {isPast(new Date(record.estimated_close_date)) ? (
+                          <Badge variant="destructive">
+                            {formatDistanceToNow(new Date(record.estimated_close_date), { addSuffix: true })}
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="bg-[var(--brand-100)] text-[var(--brand-700)] border-[var(--brand-300)]">
+                            {formatDistanceToNow(new Date(record.estimated_close_date), { addSuffix: true })}
+                          </Badge>
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -178,46 +194,6 @@ const OpportunityShowContent = () => {
                   )}
                 </div>
               )}
-
-              {/* Organization Details */}
-              <div className="flex gap-8 mb-4">
-                <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
-                    Customer Organization
-                  </span>
-                  <ReferenceField
-                    source="customer_organization_id"
-                    reference="organizations"
-                    link="show"
-                  />
-                </div>
-
-                {record.principal_organization_id && (
-                  <div className="flex flex-col min-w-[150px]">
-                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
-                      Principal Organization
-                    </span>
-                    <ReferenceField
-                      source="principal_organization_id"
-                      reference="organizations"
-                      link="show"
-                    />
-                  </div>
-                )}
-
-                {record.distributor_organization_id && (
-                  <div className="flex flex-col min-w-[150px]">
-                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
-                      Distributor Organization
-                    </span>
-                    <ReferenceField
-                      source="distributor_organization_id"
-                      reference="organizations"
-                      link="show"
-                    />
-                  </div>
-                )}
-              </div>
 
               {!!record.contact_ids?.length && (
                 <div className="mb-4">
