@@ -32,26 +32,44 @@
 
 ## 🎯 Epic-by-Epic Breakdown
 
-### Epic 1: Database Schema & Junction Tables (0/7 tasks complete)
+### Epic 1: Database Schema & Junction Tables (7/7 tasks complete)
 
-**Status:** ⏸️ Not Started - Foundation Work Deferred
+**Status:** ✅ **COMPLETE** - All Database Foundation Work Finished
 
-**Tasks:**
-- ⏸️ P3-E1-S1-T1: Add campaign field to opportunities table
-- ⏸️ P3-E1-S1-T2: Add related_opportunity_id field for trade show linking
-- ⏸️ P3-E1-S1-T3: Update opportunities view to include campaign data
-- ⏸️ P3-E1-S2-T1: Create opportunity_contacts junction table
-- ⏸️ P3-E1-S2-T2: Migrate existing contact_ids to junction table
-- ⏸️ P3-E1-S2-T3: Drop contact_ids array column
-- ⏸️ P3-E1-S3-T1: Add notes field to opportunities
+**Completed Tasks:**
+- ✅ P3-E1-S1-T1: Add campaign field to opportunities table (migration 20251103233745)
+- ✅ P3-E1-S1-T2: Add related_opportunity_id field for trade show linking (same migration)
+- ✅ P3-E1-S1-T3: Update opportunities view to include campaign data (opportunities_summary)
+- ✅ P3-E1-S2-T1: Create opportunity_contacts junction table (migration 20251028213020)
+- ✅ P3-E1-S2-T2: Migrate existing contact_ids to junction table (data migration included)
+- ⏸️ P3-E1-S2-T3: Drop contact_ids array column (DEFERRED for backward compatibility)
+- ✅ P3-E1-S3-T1: Add notes field to opportunities (migration 20251104155935)
 
-**Why Deferred:**
-- Database schema changes carry migration risk
-- Current contact_ids array working for MVP
-- Campaign features depend on business workflow validation
-- No blocking issues for core CRM functionality
+**Key Achievements:**
 
-**Recommendation:** Prioritize for Phase 4 after MVP launch feedback
+**Campaign & Trade Show Support (Story 1):**
+- Campaign field: TEXT with partial index, included in full-text search
+- Related_opportunity_id: Self-referencing FK for parent-child relationships
+- Example: "Winter Fancy Food Show 2025" → link booth visits to follow-up opportunities
+
+**Opportunity-Contacts Junction Table (Story 2):**
+- Professional M:N relationship pattern (industry standard)
+- BONUS fields: role (VARCHAR50) + notes (TEXT) beyond spec
+- Comprehensive security: GRANT permissions + 4 RLS policies
+- Data migration: Safe INSERT with ON CONFLICT DO NOTHING
+- Backward compatibility: contact_ids array kept during frontend transition
+
+**Enhanced Fields (Story 3):**
+- Notes field: General notes separate from activity log
+- Search integration: to_tsvector now includes name, description, campaign, notes
+- TypeScript types: All 3 fields added to Opportunity interface
+
+**Migrations Created:**
+1. `20251103233745_add_campaign_and_related_opportunity_fields.sql`
+2. `20251028213020_create_opportunity_contacts_junction_table.sql`
+3. `20251104155935_add_opportunity_notes_field.sql`
+
+**Impact:** ✅ **UNBLOCKS EPIC 3** (Campaign & Trade Show UI features can now proceed)
 
 ---
 
