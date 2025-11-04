@@ -35,7 +35,7 @@ export const OpportunitiesByPrincipal = () => {
     isPending,
     error,
     refetch,
-  } = useGetList<Opportunity>("opportunities", {
+  } = useGetList<Opportunity>("opportunities_summary", {
     pagination: { page: 1, perPage: 10000 },
     filter: {
       status: "active",
