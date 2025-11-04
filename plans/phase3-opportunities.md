@@ -391,17 +391,18 @@
 
 ### E4-S1: Product-Principal Filtering
 
-**P3-E4-S1-T1: Add principal field index to products**
+**P3-E4-S1-T1: Add principal field index to products** ✅ **COMPLETED**
 - **Description:** Ensure principal field is indexed for fast filtering
 - **Confidence:** 95%
 - **Estimate:** 0.5 hours
 - **Prerequisites:** None
 - **Acceptance Criteria:**
-  - Index on products.principal
-  - Query plan shows index usage
-  - Fast filtering by principal (< 50ms for 1000 products)
+  - ✅ Index on products.principal_id (already existed: idx_products_principal_id)
+  - ✅ Query plan shows index usage
+  - ✅ Fast filtering by principal (< 50ms for 1000 products)
 - **Files:**
-  - `supabase/migrations/YYYYMMDDHHMMSS_index_products_principal.sql`
+  - ✅ Index verified in existing migration (already created)
+  - ✅ Created products_summary view: `supabase/migrations/20251104044122_add_products_summary_view.sql`
 
 **P3-E4-S1-T2: Update product dropdown in OpportunityInputs to filter by principal**
 - **Description:** ⭐ CRITICAL - Products filtered by selected principal organization

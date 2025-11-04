@@ -183,7 +183,8 @@ export function getDatabaseResource(
     if (
       resource === "organizations" ||
       resource === "contacts" ||
-      resource === "opportunities"
+      resource === "opportunities" ||
+      resource === "products"
     ) {
       return summaryResource;
     }
