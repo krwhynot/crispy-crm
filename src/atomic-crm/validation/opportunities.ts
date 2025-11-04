@@ -74,7 +74,7 @@ const opportunityBaseSchema = z.object({
     .default([]),
 
   // Campaign & Workflow Tracking fields (added 2025-11-03)
-  campaign: z.string().optional().nullable(),
+  campaign: z.string().max(100, "Campaign name must be 100 characters or less").optional().nullable(),
   related_opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
   notes: z.string().optional().nullable(), // General notes about the opportunity (separate from activity log)
   tags: z.array(z.string()).optional().default([]),
