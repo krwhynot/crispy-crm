@@ -828,3 +828,5 @@
 [2025-11-03 20:45:48] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/quickAdd.ts
 [2025-11-03 20:46:41] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251104024615_fix_booth_visitor_product_column.sql
 [2025-11-03 21:09:12] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddForm.tsx
+[2025-11-03 21:09:25] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddForm.tsx
+[2025-11-03 21:16:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx

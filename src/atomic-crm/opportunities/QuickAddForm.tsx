@@ -345,35 +345,13 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       {/* Optional Details Section */}
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-foreground">Optional Details</h3>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="products">Products</Label>
-            {selectedPrincipalId ? (
-              <MultiSelectCombobox
-                options={productOptions}
-                value={watch("product_ids")?.map(id => id.toString()) || []}
-                onValueChange={(values) => setValue("product_ids", values.map(v => Number(v)))}
-                placeholder={productsLoading ? "Loading products..." : "Select products..."}
-                searchPlaceholder="Search products..."
-                emptyText="No products found"
-                className="w-full"
-                disabled={productsLoading || !productOptions.length}
-              />
-            ) : (
-              <div className="text-sm text-muted-foreground p-2 border rounded-md bg-muted">
-                Select a Principal first to filter products
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="quick_note">Quick Note</Label>
-            <Input
-              id="quick_note"
-              {...register("quick_note")}
-              placeholder="Met at booth, interested in product demo..."
-            />
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="quick_note">Quick Note</Label>
+          <Input
+            id="quick_note"
+            {...register("quick_note")}
+            placeholder="Met at booth, interested in product demo..."
+          />
         </div>
       </div>
 
