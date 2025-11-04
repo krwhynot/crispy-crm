@@ -759,3 +759,11 @@
 [2025-11-03 19:31:35] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/hooks/__tests__/useQuickAdd.test.tsx
 [2025-11-03 19:31:41] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/hooks/useQuickAdd.ts
 [2025-11-03 19:34:56] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddButton.tsx
+[2025-11-03 19:35:06] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddDialog.tsx
+[2025-11-03 19:35:18] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx
+[2025-11-03 19:37:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddDialog.tsx
+[2025-11-03 19:37:59] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx
+[2025-11-03 19:38:07] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/data/us-cities.ts
+[2025-11-03 19:38:25] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx
+[2025-11-03 19:38:44] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddForm.tsx
+[2025-11-03 19:40:30] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddForm.tsx
