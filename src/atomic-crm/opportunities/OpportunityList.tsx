@@ -22,6 +22,7 @@ import { OpportunityListContent } from "./OpportunityListContent";
 import { OpportunityRowListView } from "./OpportunityRowListView";
 import { OpportunityViewSwitcher, type OpportunityView } from "./OpportunityViewSwitcher";
 import { FilterChipsPanel } from "../filters/FilterChipsPanel";
+import { FilterPresetsBar } from "./FilterPresetsBar";
 import { useOpportunityFilters } from "../filters/useOpportunityFilters";
 import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 
@@ -71,6 +72,7 @@ const OpportunityList = () => {
         </BreadcrumbItem>
         <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
       </Breadcrumb>
+      <FilterPresetsBar />
       <FilterChipsPanel className="mb-4" />
       <OpportunityLayout view={view} />
       <FloatingCreateButton />

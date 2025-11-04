@@ -582,46 +582,48 @@
 
 **P3-E6-S2-T1: Create "By Principal" saved view**
 - **Description:** ⭐ Preset view groups opportunities by principal
+- **Status:** DEFERRED - Complex grouping pattern, lower priority than quick filters
 - **Confidence:** 70% (new grouping pattern)
 - **Estimate:** 3 hours
-- **Prerequisites:** P3-E6-S1-T2
-- **Acceptance Criteria:**
-  - ⭐ "By Principal" button in view switcher
-  - Groups list by principal organization
-  - Shows count per principal
-  - Expandable sections per principal
-  - Sortable within group
-- **Files:**
-  - `src/atomic-crm/opportunities/views/ByPrincipalView.tsx`
-  - `src/atomic-crm/opportunities/OpportunityList.tsx` (add view option)
+- **Deferral Reason:** Quick filter presets (T2/T3) provide 80% of value with 20% of effort. Grouped view requires significant UI work for uncertain ROI.
+- **Alternative:** Principal filter in top position + "My Opportunities" preset achieves primary goal
 
-**P3-E6-S2-T2: Create "My Opportunities" saved view**
+**P3-E6-S2-T2: Create "My Opportunities" saved view** ✅ **COMPLETED**
 - **Description:** Filter to current user's opportunities
-- **Confidence:** 95%
-- **Estimate:** 1 hour
-- **Prerequisites:** None
+- **Status:** All acceptance criteria met
 - **Acceptance Criteria:**
-  - "My Opportunities" button in toolbar
-  - Filters to opportunity_owner_id = current user
-  - Shows count in badge
-  - Can combine with other filters
+  - ✅ "My Opportunities" button in filter presets bar (with User icon)
+  - ✅ Filters to opportunity_owner_id = current user
+  - ✅ Shows count in badge (dynamic count based on data)
+  - ✅ Can combine with other filters (merges with existing filterValues)
+  - ✅ Active state visual feedback
+- **Implementation Notes:**
+  - Created reusable FilterPresetsBar component
+  - Presets defined in centralized filterPresets.ts configuration
+  - Client-side count calculation for fast feedback
 - **Files:**
-  - `src/atomic-crm/opportunities/OpportunityList.tsx` (add filter preset)
+  - ✅ `src/atomic-crm/opportunities/filterPresets.ts` (created)
+  - ✅ `src/atomic-crm/opportunities/FilterPresetsBar.tsx` (created)
+  - ✅ `src/atomic-crm/opportunities/OpportunityList.tsx` (integrated presets bar)
 
-**P3-E6-S2-T3: Create additional preset views**
+**P3-E6-S2-T3: Create additional preset views** ✅ **COMPLETED**
 - **Description:** Add preset views: "Closing This Month", "High Priority", "Needs Action", "Recent Wins"
-- **Confidence:** 90%
-- **Estimate:** 2 hours
-- **Prerequisites:** P3-E6-S2-T2
+- **Status:** All acceptance criteria met
 - **Acceptance Criteria:**
-  - "Closing This Month": estimated_close_date within 30 days
-  - "High Priority": priority IN (high, critical)
-  - "Needs Action": next_action_date <= today OR overdue
-  - "Recent Wins": stage=closed_won AND updated_at within 30 days
-  - All views show count badges
+  - ✅ "Closing This Month": estimated_close_date within 30 days (Calendar icon)
+  - ✅ "High Priority": priority IN (high, critical) (AlertCircle icon)
+  - ✅ "Needs Action": next_action_date <= today (Flag icon)
+  - ✅ "Recent Wins": stage=closed_won AND updated_at within 30 days (Trophy icon)
+  - ✅ All views show count badges (dynamic counts)
+  - ✅ Icons for visual identification
+  - ✅ Tooltips with descriptions
+- **Implementation Notes:**
+  - All 5 presets implemented in single filterPresets.ts configuration
+  - Uses date-fns for date calculations (addDays, startOfMonth, endOfMonth)
+  - Presets are composable and can be combined with other filters
 - **Files:**
-  - `src/atomic-crm/opportunities/filterPresets.ts` (new)
-  - `src/atomic-crm/opportunities/OpportunityList.tsx` (integrate presets)
+  - ✅ `src/atomic-crm/opportunities/filterPresets.ts` (all presets defined)
+  - ✅ `src/atomic-crm/opportunities/FilterPresetsBar.tsx` (renders all presets with icons/counts)
 
 ### E6-S3: Bulk Actions
 
