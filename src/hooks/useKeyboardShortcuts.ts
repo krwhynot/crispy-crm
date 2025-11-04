@@ -79,8 +79,6 @@ export interface KeyboardShortcutHandlers {
  * @param handlers - Object with handler functions for each shortcut
  */
 export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) => {
-  const navigate = useNavigate();
-
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       const { key } = event;
