@@ -39,13 +39,6 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     }
   );
 
-  // Watch principal selection for product filtering
-  const principalId = watch("principal_id");
-
-  // Fetch products filtered by selected principal
-  const { products: productsList, isLoading: productsLoading, isReady: productsReady } =
-    useFilteredProducts(principalId);
-
   // Initialize form with defaults from localStorage
   const {
     register,
@@ -71,6 +64,13 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       quick_note: '',
     },
   });
+
+  // Watch principal selection for product filtering
+  const principalId = watch("principal_id");
+
+  // Fetch products filtered by selected principal
+  const { products: productsList, isLoading: productsLoading, isReady: productsReady } =
+    useFilteredProducts(principalId);
 
   // Watch values for dependent fields
   const cityValue = watch("city");
