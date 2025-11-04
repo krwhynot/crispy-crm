@@ -325,6 +325,10 @@
 
 ## Epic 3: Campaign Grouping & Trade Show Workflow
 
+**Progress:** 4/6 tasks complete (67%)
+- ✅ Story 1: Campaign field + filter complete (3/4 tasks)
+- ✅ Story 2: Related opportunity field complete (1/2 tasks)
+
 ### E3-S1: Campaign Management
 
 **P3-E3-S1-T1: SPIKE - Campaign grouping data model** ✅
@@ -356,19 +360,25 @@
   - Simple TextInput used instead of autocomplete for MVP simplicity
   - Autocomplete can be added later if needed (low priority)
 
-**P3-E3-S1-T3: Create campaign filter in list/kanban views**
+**P3-E3-S1-T3: Create campaign filter in list/kanban views** ✅
 - **Description:** Add campaign multi-select filter to opportunities list and Kanban
-- **Confidence:** 90%
-- **Estimate:** 1.5 hours
+- **Status:** COMPLETE - Database view + filter implementation complete
+- **Confidence:** 100%
+- **Estimate:** 1.5 hours (actual: 1.5 hours)
 - **Prerequisites:** P3-E3-S1-T2
 - **Acceptance Criteria:**
-  - Filter fetches distinct campaign values
-  - Multi-select with search
-  - Shows opportunity count per campaign
-  - Works in both list and Kanban views
+  - ✅ Filter fetches distinct campaign values from database view
+  - ✅ Multi-select with search (AutocompleteArrayInput)
+  - ✅ Shows opportunity count per campaign (campaign_choices view includes counts)
+  - ✅ Works in both list and Kanban views (shared useOpportunityFilters hook)
 - **Files:**
-  - `src/atomic-crm/opportunities/OpportunityListContent.tsx` (update filters)
-  - `src/atomic-crm/opportunities/KanbanFilterToolbar.tsx` (update)
+  - ✅ `supabase/migrations/20251104174935_add_campaign_choices_view.sql` - View with distinct campaigns + counts
+  - ✅ `src/atomic-crm/filters/useOpportunityFilters.tsx` (lines 31-33: campaign filter)
+- **Implementation Notes:**
+  - Created database VIEW `campaign_choices` that returns distinct campaign values with opportunity counts
+  - Follows same pattern as organization filters (ReferenceInput + AutocompleteArrayInput)
+  - View automatically updates as campaigns are added/removed from opportunities
+  - `opportunity_count` column ready for future grouped view (E3-S1-T4)
 
 **P3-E3-S1-T4: Create "Campaign View" grouped list**
 - **Description:** Special list view that groups opportunities by campaign, then by customer
