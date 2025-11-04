@@ -839,3 +839,8 @@
 [2025-11-03 22:41:46] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251104044122_add_products_summary_view.sql
 [2025-11-03 22:42:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/dataProviderUtils.ts
 [2025-11-04 06:16:10] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/phase3-opportunities.md
+[2025-11-04 06:16:30] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/phase3-opportunities.md
+[2025-11-04 06:16:44] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/phase3-opportunities.md
+[2025-11-04 06:18:47] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/hooks/__tests__/useFilteredProducts.test.ts
+[2025-11-04 06:19:24] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/hooks/__tests__/useFilteredProducts.test.tsx
+[2025-11-04 06:21:35] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/product-filtering-integration.test.tsx
