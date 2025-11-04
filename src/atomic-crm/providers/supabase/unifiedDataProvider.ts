@@ -21,6 +21,7 @@ import type {
   DeleteManyParams,
   Identifier,
 } from "ra-core";
+import type { QuickAddInput } from "../validation/quickAdd";
 
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
