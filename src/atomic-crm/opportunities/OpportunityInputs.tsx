@@ -29,6 +29,8 @@ export const OpportunityInputs = ({ mode }: { mode: "create" | "edit" }) => {
 
       <OpportunityClassificationInputs />
 
+      <OpportunityCampaignWorkflowInputs />
+
       <OpportunityOrganizationInputs />
 
       <OpportunityContactsInput />
@@ -42,8 +44,8 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
   const { regenerate, isLoading } = useAutoGenerateName(mode);
 
   return (
-    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
-      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Opportunity Details</h3>
+    <div className="rounded-lg border border-border bg-card p-4 space-y-4">
+      <h3 className="text-base font-semibold text-foreground">Opportunity Details</h3>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         <div className="lg:col-span-2">
           <div className="relative">
@@ -87,8 +89,8 @@ const OpportunityInfoInputs = ({ mode }: { mode: "create" | "edit" }) => {
 // Classification & Tracking section
 const OpportunityClassificationInputs = () => {
   return (
-    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
-      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Classification & Tracking</h3>
+    <div className="rounded-lg border border-border bg-card p-4 space-y-4">
+      <h3 className="text-base font-semibold text-foreground">Classification & Tracking</h3>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
         <SelectInput
           source="stage"
@@ -117,14 +119,80 @@ const OpportunityClassificationInputs = () => {
   );
 };
 
+// Campaign & Workflow Tracking section
+const OpportunityCampaignWorkflowInputs = () => {
+  return (
+    <div className="rounded-lg border border-border bg-card p-4 space-y-4">
+      <h3 className="text-base font-semibold text-foreground">Campaign & Workflow Tracking</h3>
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+        <TextInput
+          source="campaign"
+          label="Campaign"
+          helperText={false}
+          placeholder="e.g., Q4 2025 Trade Show"
+        />
+
+        <ReferenceInput
+          source="related_opportunity_id"
+          reference="opportunities"
+        >
+          <SelectInput
+            optionText="name"
+            label="Related Opportunity"
+            helperText={false}
+          />
+        </ReferenceInput>
+
+        <div className="lg:col-span-2">
+          <ArrayInput source="tags" label="Tags">
+            <SimpleFormIterator inline disableReordering>
+              <TextInput
+                source=""
+                label={false}
+                helperText={false}
+                placeholder="Add tag"
+              />
+            </SimpleFormIterator>
+          </ArrayInput>
+        </div>
+
+        <TextInput
+          source="next_action"
+          label="Next Action"
+          helperText={false}
+          placeholder="e.g., Follow up with decision maker"
+        />
+
+        <TextInput
+          source="next_action_date"
+          label="Next Action Date"
+          helperText={false}
+          type="date"
+        />
+
+        <div className="lg:col-span-2">
+          <TextInput
+            source="decision_criteria"
+            label="Decision Criteria"
+            multiline
+            rows={3}
+            helperText={false}
+            placeholder="Key factors influencing the decision..."
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Organization relationships section
 const OpportunityOrganizationInputs = () => {
   const { identity } = useGetIdentity();
   const { setValue } = useFormContext();
 
   return (
-    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
-      <h3 className="text-base font-semibold text-[color:var(--text-primary)]">Key Relationships</h3>
+    <div className="rounded-lg border border-border bg-card p-4 space-y-4">
+      <h3 className="text-base font-semibold text-foreground">Key Relationships</h3>
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         <div className="flex items-start gap-2">
           <ReferenceInput
@@ -279,11 +347,11 @@ const OpportunityContactsInput = () => {
   );
 
   return (
-    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+    <div className="rounded-lg border border-border bg-card p-4 space-y-4">
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="text-base font-semibold text-[color:var(--text-primary)] mb-1">Contacts *</h3>
-          <p className="text-sm text-[color:var(--text-subtle)]">
+          <h3 className="text-base font-semibold text-foreground mb-1">Contacts *</h3>
+          <p className="text-sm text-muted-foreground">
             {customerOrganizationId
               ? "At least one contact is required"
               : "Please select a Customer Organization first"}
@@ -352,10 +420,10 @@ const OpportunityProductsInput = () => {
   );
 
   return (
-    <div className="rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-4 space-y-4">
+    <div className="rounded-lg border border-border bg-card p-4 space-y-4">
       <div>
-        <h3 className="text-base font-semibold text-[color:var(--text-primary)] mb-1">Products *</h3>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <h3 className="text-base font-semibold text-foreground mb-1">Products *</h3>
+        <p className="text-sm text-muted-foreground">
           {principalOrganizationId
             ? "At least one product is required (filtered by selected Principal)"
             : "At least one product is required (select Principal Organization to filter)"}
