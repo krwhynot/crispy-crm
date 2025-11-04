@@ -9,6 +9,8 @@ import { TasksList } from "./TasksList";
 import { MiniPipeline } from "./MiniPipeline";
 import { QuickAdd } from "./QuickAdd";
 import { MetricsCardGrid } from "./MetricsCardGrid";
+import { MyOpenOpportunities } from "./MyOpenOpportunities";
+import { OverdueTasks } from "./OverdueTasks";
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
@@ -79,6 +81,19 @@ export const Dashboard = () => {
       {/* Metrics Grid - iPad optimized, full width */}
       <MetricsCardGrid />
 
+      {/* Phase 4 Widgets - Fixed 6-widget dashboard */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 lg:gap-6">
+        <MyOpenOpportunities />
+        <OverdueTasks />
+        {/* TODO: Add remaining 4 widgets:
+            - This Week's Activities
+            - Pipeline by Stage Chart
+            - Recent Activities Feed
+            - Opportunities by Principal (⭐ HIGHEST PRIORITY)
+        */}
+      </div>
+
+      {/* Existing Dashboard Components */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-1">
         {/* Left column - Action zone (2/3 width) */}
         <div className="md:col-span-2 lg:col-span-2 space-y-6">
