@@ -17,6 +17,72 @@
 
 This section documents where the actual implementation differs from the original specification, following a "code wins" philosophy with pragmatic adjustments.
 
+**Last Updated:** November 4, 2025 (Comprehensive codebase analysis)
+
+---
+
+## Critical Discoveries from Implementation Analysis
+
+### PRD Claims vs. Reality
+
+**1. vCard Export (Contacts Module) - DISCREPANCY FOUND**
+- **PRD Claims:** ✅ Complete (marked in 05-contacts-module.md lines 27, 33, 39)
+- **Reality:** ❌ NOT FOUND in codebase (no .vcf generation, no vCard libraries)
+- **Impact:** HIGH - Feature marked complete but missing
+- **Recommendation:** Remove claim from PRD or implement feature (2 days effort)
+
+**2. Activity Logging - DIFFERENT IMPLEMENTATION**
+- **PRD Specification:** `activity_logs` table with (timestamp, user_id, action, entity_type, entity_id, IP address)
+- **Actual Implementation:**
+  - `activities` table: Business activities (calls, emails, meetings) - NOT user action logs
+  - `audit_trail` table: Field-level change tracking with database triggers
+  - Security monitoring: In-memory tracking (security.ts) - NOT persisted to database
+- **Impact:** MEDIUM - Comprehensive audit capability exists but different schema
+- **Status:** Working as designed, just different from PRD specification
+
+**3. Performance Monitoring - BUILT BUT DORMANT**
+- **PRD Requirement:** Page load <3s, interactions <500ms tracking
+- **Actual Implementation:** Complete Web Vitals framework in `src/lib/monitoring/performance.ts`
+- **Critical Issue:** ❌ NEVER INITIALIZED in main.tsx
+- **Impact:** HIGH - Built but not used (1-line fix: `initializePerformanceMonitoring()`)
+- **Quick Win:** 5-minute fix for production-ready performance monitoring
+
+### Module Implementation Status
+
+**Tasks Module - EMBEDDED WIDGET NOT FULL MODULE**
+- **PRD Specification:** Full resource module with List/Show/Edit/Create views
+- **Actual Implementation:** Dashboard widget only (65% complete)
+- **Missing:** Standalone List/Show/Create pages, index.ts exports, priority/opportunity association UI
+- **Decision Rationale:** Users manage tasks through dashboard, minimal standalone views needed
+- **Completion Estimate:** 35% incomplete (~10 days work to elevate to full module)
+
+**Reports Module - INFRASTRUCTURE ONLY**
+- **PRD Specification:** 3 report pages (Opportunities by Principal ⭐, Weekly Activity, Pipeline Status)
+- **Actual Implementation:** CSV export infrastructure 100%, but zero report pages
+- **Critical Gap:** OpportunitiesByPrincipal page ⭐ (HIGHEST PRIORITY REPORT) missing
+- **Dashboard Widget:** OpportunitiesByPrincipal widget EXISTS and is complete
+- **Status:** 40% complete (infrastructure + widget, but missing dedicated report pages)
+
+**Offline Mode - FULLY PLANNED, NOT IMPLEMENTED**
+- **PRD Requirement:** Read-only offline mode with Service Worker
+- **Actual Implementation:** 0% implemented
+- **Planning Status:** 100% complete (527-line spike document: docs/spikes/2024-11-03-service-worker-strategy.md)
+- **Estimate:** 3-5 days implementation (all design decisions made, just needs code)
+
+### Monitoring & Operations Gaps
+
+**External Services Not Configured (Pre-Launch Appropriate):**
+- **Uptime Monitoring:** UptimeRobot not configured (external service, 2 hours setup)
+- **Error Tracking:** Sentry not configured (external service, 2 hours setup)
+- **Analytics:** Google Analytics commented out in code (3 days integration)
+- **Status:** Appropriate for pre-launch phase, production deployment will need these
+
+**User Adoption Tracking - MISSING**
+- **PRD Requirement:** Daily active users, 100% team adoption tracking
+- **Actual Implementation:** 0% - No DAU tracking, no login frequency monitoring
+- **Impact:** HIGH - Cannot measure #1 success metric (team adoption)
+- **Estimate:** 2 days to add user adoption dashboard widget
+
 ### Database Schema Patterns
 
 **Primary Keys:**
