@@ -7,6 +7,7 @@ import { Settings, User } from "lucide-react";
 import { CanAccess } from "ra-core";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { useConfigurationContext } from "../root/ConfigurationContext";
+import { NotificationBell } from "@/components/NotificationBell";
 
 const Header = () => {
   const { darkModeLogo, lightModeLogo, title } = useConfigurationContext();
@@ -88,6 +89,7 @@ const Header = () => {
             <div className="flex items-center">
               <ThemeModeToggle />
               <RefreshButton />
+              <NotificationBell onClick={() => console.log("Notifications clicked")} />
               <UserMenu>
                 <ConfigurationMenu />
                 <CanAccess resource="sales" action="list">
