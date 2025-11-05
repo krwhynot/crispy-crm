@@ -59,11 +59,11 @@ Atomic CRM demonstrates **production-ready implementation** across all core modu
 | **Tasks Widget (08)** | 65% | 🟡 MEDIUM | 4 files | ⚠️ Embedded only |
 | **Notifications (12)** | 100% | 🟢 HIGH | 11 files | ✅ Production ready |
 
-**Dashboard Highlights:**
-- 13 widgets implemented (6 Phase 4, 7 legacy)
-- OpportunitiesByPrincipal ⭐ (highest priority feature) complete
-- Ultra-compact design (50-67% size reduction)
-- Auto-refresh every 5 minutes
+**Dashboard Status:**
+- ⚠️ 13 widgets exist but require replacement per v2.0 principal-centric redesign
+- ✅ OpportunitiesByPrincipal widget ⭐ can be reused in table view
+- 📋 **Required Work:** Replace all widgets with principal-centric table view (17-20 days)
+- Ultra-compact design (50-67% size reduction) - superseded by table view design
 
 **Tasks Module Gap:**
 - Has embedded widget with add/edit/delete
@@ -87,11 +87,11 @@ Atomic CRM demonstrates **production-ready implementation** across all core modu
 - Global search bar: 0% (missing)
 - Advanced operators: 0% (missing)
 
-**Reports:**
+**Reports (2 MVP Reports):**
 - CSV export infrastructure: 100%
 - Opportunities by Principal page ⭐: 0% (highest priority report missing)
 - Weekly Activity Summary: 0%
-- Pipeline Status Report: 0%
+- _Pipeline Status Report: Deferred to Post-MVP per v2.0 redesign_
 
 **Activities:**
 - Manual logging: 100%
@@ -337,7 +337,7 @@ Atomic CRM demonstrates **production-ready implementation** across all core modu
 
 ### High Priority (Post-Launch)
 1. **Implement Offline Mode:** 527-line plan exists, 3-5 days effort (trade show use case)
-2. **Complete Reports Module:** Add 2 remaining report pages (Weekly Activity, Pipeline Status)
+2. **Complete Reports Module:** Add Weekly Activity Summary report page (Pipeline Status deferred)
 3. **Add Global Search:** Unified search bar in top navigation (2 days)
 
 ### Medium Priority
