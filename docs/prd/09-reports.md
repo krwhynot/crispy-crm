@@ -1,6 +1,6 @@
 ---
 **Part of:** Atomic CRM Product Requirements Document
-**Feature Module:** Reports (MVP - Basic Only)
+**Feature Module:** Reports (MVP - 2 Reports Only)
 **Category:** Features
 
 **Related Documents:**
@@ -14,7 +14,7 @@
 
 ## 📊 Implementation Status
 
-**Last Updated:** November 4, 2025
+**Last Updated:** November 5, 2025
 
 | Metric | Status |
 |--------|--------|
@@ -38,9 +38,10 @@
 |------|--------|-----------|----------|
 | Create Opportunities by Principal report page ⭐ | ❌ Missing | 🟢 HIGH | 2 days |
 | Create Weekly Activity Summary report page | ❌ Missing | 🟢 HIGH | 2 days |
-| Create Opportunity Pipeline Status report page | ❌ Missing | 🟢 HIGH | 2 days |
 | Add Reports navigation menu item | ❌ Missing | 🟢 HIGH | 30 min |
 | Implement report filtering UI | ❌ Missing | 🟡 MEDIUM | 1 day |
+
+**Total Estimate:** 4 days for 2 critical MVP reports
 
 **Details:**
 - **Infrastructure Gap:** CSV export patterns exist but no standalone report pages or dedicated Reports menu
@@ -50,18 +51,31 @@
 
 **Blockers:** None - Just needs dedicated implementation time
 
-**Recommendation:** Create dedicated Reports module with 3 standalone pages following existing CSV export patterns. Add Reports menu item to main navigation.
+**Recommendation:** Create dedicated Reports module with 2 standalone pages following existing CSV export patterns. Add Reports menu item to main navigation.
 
 ---
 
-# 3.7 Reports (MVP - Basic Only)
+# 3.7 Reports (MVP - 2 Critical Reports Only)
 
-**Note:** Analytics dashboards and advanced reporting are NOT in MVP scope. Focus is on data entry and basic list exports.
+**Note:** Analytics dashboards and advanced reporting are NOT in MVP scope. Focus is on answering two critical questions: (1) What's happening with each principal? (2) What did each Account Manager do this week?
 
-## Reports Included in MVP
+## MVP Scope
 
-**Report Access Control:**
-- **Democratic approach:** All users can access all reports
+**Reports Included:**
+1. ⭐ Opportunities by Principal Report (HIGHEST PRIORITY)
+2. Weekly Activity Summary Report (CRITICAL)
+
+**Deferred to Post-MVP:**
+- Pipeline Status Report (moved to Phase 2)
+- Forecasting reports
+- Custom report builder
+- Saved report configurations
+
+---
+
+## Report Access Control
+
+**Democratic approach:** All users can access all reports
 - No role-based restrictions on report visibility
 - All users see the same report options in the Reports menu
 - Rationale: Small team collaboration, transparency over hierarchy
@@ -77,9 +91,11 @@
 - User must click "Run Report" to generate fresh data
 - No scheduled emails or recurring reports
 
+---
+
 ## 1. Opportunities by Principal Report ⭐ MOST IMPORTANT
 
-**Purpose:** See all opportunities grouped by which brand/manufacturer (Principal) they're for.
+**Purpose:** See all opportunities grouped by which brand/manufacturer (Principal) they're for. Answers: "What's the status of each principal I represent?"
 
 **Access:** Reports > Opportunities by Principal (available to all users)
 
@@ -87,17 +103,17 @@
 - Grouped list view: Principal as header, opportunities nested underneath
 - Show per Principal:
   - Count of opportunities (active vs closed)
-  - List of opportunities with: Customer Org, Stage, Status, Expected Close Date, Owner
+  - List of opportunities with: Customer Org, Stage, Status, Expected Close Date, Account Manager
 - Filters:
   - Status (active, closed, on_hold)
   - Stage (all 8 stages)
   - Date range (Expected Close Date)
-  - Owner
+  - Account Manager (filter by specific user)
 - Sort options:
   - By Principal name (A-Z)
   - By opportunity count (most to least)
   - By expected close date (soonest first)
-- Export: CSV with columns [Principal, Customer Org, Opportunity Name, Stage, Status, Expected Close, Owner]
+- Export: CSV with columns [Principal, Customer Org, Opportunity Name, Stage, Status, Expected Close, Account Manager]
 
 **Example Output:**
 ```
@@ -111,25 +127,33 @@ Principal: Ocean Hugger Foods (3 opportunities)
   ...
 ```
 
+**Why Most Important:** Account Managers manage 3-5 principals each. This report shows at a glance which principals need attention, which are progressing well, and where opportunities are stuck.
+
+**Implementation Notes:**
+- Reuse logic from dashboard OpportunitiesByPrincipal widget
+- Add advanced filtering and CSV export
+- Sortable columns
+- Click principal name to filter opportunities view
+
 ---
 
 ## 2. Weekly Activity Summary Report
 
-**Purpose:** See what each user did this week (calls, meetings, emails logged).
+**Purpose:** See what each Account Manager did this week (calls, meetings, emails logged). Answers: "Is everyone actively working their principals?"
 
 **Access:** Reports > Weekly Activity Summary
 
 **Features:**
-- Grouped by user (sales rep), shows activities for selected week
+- Grouped by Account Manager, shows activities for selected week
 - Show per user:
   - Activity count breakdown (# calls, # emails, # meetings, # notes)
   - List of activities with: Type, Date, Description (truncated), Related Entity
 - Filters:
   - Date range picker (defaults to current week: Mon-Sun)
-  - User multi-select (default: all users)
+  - Account Manager multi-select (default: all users)
   - Activity type (call, email, meeting, note)
-- Sort: By date (newest first) within each user
-- Export: CSV with columns [User, Date, Activity Type, Description, Related Entity]
+- Sort: By date (newest first) within each Account Manager
+- Export: CSV with columns [Account Manager, Date, Activity Type, Description, Related Entity]
 
 **Example Output:**
 ```
@@ -146,9 +170,36 @@ Jane Doe (15 activities this week)
   ...
 ```
 
+**Why Critical:** Activity tracking is the leading indicator of success. If an Account Manager isn't logging 10+ activities/week, they're not actively working. This report makes accountability visible.
+
+**Implementation Notes:**
+- Query activities table with date range filter
+- Group by sales_id (Account Manager)
+- Count by activity_type
+- Default to current week (Monday to Sunday)
+
 ---
 
-## 3. Filtered List Exports (All Modules)
+## Deferred Features (Post-MVP)
+
+**Pipeline Status Report:**
+- **Why Deferred:** Nice-to-have, but Opportunities by Principal report answers the same questions
+- **What it would show:** All opportunities grouped by stage with counts and values
+- **When to build:** After MVP launch, if sales team requests it
+
+**Other Deferred Reports:**
+- Analytics dashboard with charts
+- Forecasting based on probability/volume
+- Win/loss analysis by principal
+- Time-to-close metrics
+- Conversion rate by stage
+- Account Manager performance leaderboard
+
+**Why Defer?** Focus on Excel replacement first. Advanced analytics come after team adoption is proven.
+
+---
+
+## Filtered List Exports (All Modules)
 
 **Purpose:** Export any filtered/searched list to CSV for offline analysis.
 
@@ -161,14 +212,62 @@ Jane Doe (15 activities this week)
 - File format: `{module}_export_{date}.csv`
 
 **Examples:**
-- Organizations filtered by "Priority A" → `organizations_export_2025-11-03.csv`
-- Opportunities filtered by "Principal = Fishpeople" → `opportunities_export_2025-11-03.csv`
+- Organizations filtered by "Priority A" → `organizations_export_2025-11-05.csv`
+- Opportunities filtered by "Principal = Fishpeople" → `opportunities_export_2025-11-05.csv`
+
+**Status:** ✅ Already implemented in Organizations and Contacts modules
 
 ---
 
-**Future Phase (Not MVP):**
-- Analytics dashboard with charts
-- Forecasting based on probability/volume
-- Saved report configurations
+## Technical Implementation Notes
+
+**Report Pages:**
+- Create `src/atomic-crm/reports/` directory
+- OpportunitiesByPrincipal.tsx (report page)
+- WeeklyActivitySummary.tsx (report page)
+- index.ts (lazy-loaded exports)
+
+**Navigation:**
+- Add Reports menu item to main navigation
+- Icon: 📊 (bar chart)
+- Sub-menu: List both reports
+
+**CSV Export:**
+- Reuse existing CSV export infrastructure from Organizations/Contacts
+- Header row with column names
+- UTF-8 encoding
+- Downloads immediately (no server storage)
+
+**Performance:**
+- Reports query ALL data (not paginated like lists)
+- Use database views for complex joins
+- Add loading states for slow queries
+- Consider caching for 5 minutes
+
+---
+
+## Success Metrics
+
+**Primary Goal:** Replace Excel reporting within 30 days.
+
+**Measurements:**
+- Report usage: Each report run 2-3x per week minimum
+- CSV export frequency: Declining over time (sign they trust the UI)
+- Time to answer "What's my principal status?": < 10 seconds (vs 5+ minutes in Excel)
+
+---
+
+## Related Features
+
+- **Dashboard:** Principal-centric table shows summary, reports show detail
+- **Activity Tracking:** Feeds Weekly Activity Summary report data
+- **Opportunities Module:** Source data for principal-focused reporting
+
+---
+
+**Future Enhancements (Post-MVP):**
 - Scheduled email delivery of reports
+- Saved report configurations
 - Custom report builder
+- PDF export with charts
+- Report sharing links
