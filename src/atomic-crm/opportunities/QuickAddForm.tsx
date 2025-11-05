@@ -27,7 +27,6 @@ interface QuickAddFormProps {
 export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const { mutate, isPending } = useQuickAdd();
   const firstNameRef = useRef<HTMLInputElement>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch principals for dropdown
   const { data: principalsList, isLoading: principalsLoading } = useGetList(
