@@ -39,26 +39,31 @@
 
 | Task | Status | Confidence | Estimate |
 |------|--------|-----------|----------|
-| Implement OAuth integration (Google) | ❌ Missing | 🟡 MEDIUM | 2 days |
-| Implement OAuth integration (Microsoft) | ❌ Missing | 🟡 MEDIUM | 2 days |
-| Add two-factor authentication | ❌ Missing | 🟡 MEDIUM | 3 days |
 | Implement password visibility toggle | ❌ Missing | 🟢 HIGH | 2 hours |
 | Add "remember me" option (30-day session) | ❌ Missing | 🟢 HIGH | 4 hours |
 | Enhance role-based permissions (Account Manager/Read-Only) | ❌ Missing | 🟡 MEDIUM | 2 days |
 | Add user profile editing | ❌ Missing | 🟢 HIGH | 1 day |
 | Add test coverage | ❌ Missing | 🟢 HIGH | 1 day |
 
+**Deferred to Post-MVP:**
+
+| Feature | Status | Rationale |
+|---------|--------|-----------|
+| OAuth integration (Google) | ⏸️ Deferred | Email/password sufficient for Excel replacement MVP |
+| OAuth integration (Microsoft) | ⏸️ Deferred | Enterprise feature, defer until adoption proven |
+| Two-factor authentication (2FA/TOTP) | ⏸️ Deferred | Security enhancement, not critical for small team MVP |
+
 **Details:**
 - **Core Auth:** Email/password login works with Supabase Auth, password reset functional
-- **OAuth Missing:** No Google or Microsoft SSO integration despite PRD specification
-- **2FA Missing:** No two-factor authentication implementation
+- **OAuth:** Deferred to Post-MVP (enterprise feature)
+- **2FA:** Deferred to Post-MVP (security enhancement)
 - **Role Limitations:** Only basic authenticated access implemented, not full role system (Admin/Sales Manager/Account Manager/Read-Only)
 - **UX Gaps:** No password visibility toggle, no "remember me" checkbox
 - **Profile:** View-only profile page exists, but no editing capability
 
 **Blockers:** None
 
-**Recommendation:** Prioritize OAuth integration for Google (most common), add password visibility toggle and "remember me" for UX, then implement enhanced role system if multi-tenant features are needed.
+**Recommendation:** Add password visibility toggle and "remember me" for UX improvements. OAuth and 2FA deferred until team proves they'll adopt the CRM consistently.
 
 ---
 
