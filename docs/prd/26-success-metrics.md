@@ -114,10 +114,12 @@
 - **Measure**: Time to find a contact/organization/opportunity
 - **Success Signal**: Users stop asking "Where's that info?" in team chat
 
-### 4. User Adoption
-- **Target**: 100% team uses CRM daily within 60 days
+### 4. User Adoption (Post-MVP Metric)
+- **Primary MVP Goal**: Excel replacement within 30 days (basic team adoption)
+- **Extended Goal**: 100% team uses CRM daily within 60 days (tracked Post-MVP)
 - **Measure**: Daily active users / Total team size
 - **Success Signal**: All team members log at least one activity per week
+- _Note: User Adoption Tracking dashboard deferred to Post-MVP per v2.0 redesign. MVP focuses on Excel replacement goal (30 days)._
 
 ### 5. Principal Tracking (Key Feature)
 - **Target**: All opportunities have Principal assigned
