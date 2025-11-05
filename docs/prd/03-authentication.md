@@ -44,7 +44,7 @@
 | Add two-factor authentication | ❌ Missing | 🟡 MEDIUM | 3 days |
 | Implement password visibility toggle | ❌ Missing | 🟢 HIGH | 2 hours |
 | Add "remember me" option (30-day session) | ❌ Missing | 🟢 HIGH | 4 hours |
-| Enhance role-based permissions (Sales Rep/Read-Only) | ❌ Missing | 🟡 MEDIUM | 2 days |
+| Enhance role-based permissions (Account Manager/Read-Only) | ❌ Missing | 🟡 MEDIUM | 2 days |
 | Add user profile editing | ❌ Missing | 🟢 HIGH | 1 day |
 | Add test coverage | ❌ Missing | 🟢 HIGH | 1 day |
 
@@ -52,7 +52,7 @@
 - **Core Auth:** Email/password login works with Supabase Auth, password reset functional
 - **OAuth Missing:** No Google or Microsoft SSO integration despite PRD specification
 - **2FA Missing:** No two-factor authentication implementation
-- **Role Limitations:** Only basic authenticated access implemented, not full role system (Admin/Sales Manager/Sales Rep/Read-Only)
+- **Role Limitations:** Only basic authenticated access implemented, not full role system (Admin/Sales Manager/Account Manager/Read-Only)
 - **UX Gaps:** No password visibility toggle, no "remember me" checkbox
 - **Profile:** View-only profile page exists, but no editing capability
 
@@ -90,7 +90,7 @@ This CRM is designed for a **small collaborative team (2-10 people)** working to
 |------|--------------|----------|---------------|----------|------------|-------|
 | **Admin** | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD (all users) |
 | **Sales Manager** | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD | Full CRUD (all users) |
-| **Sales Rep** | Full CRUD | Full CRUD | Full CRUD | Read | Full CRUD | Own tasks only |
+| **Account Manager** | Full CRUD | Full CRUD | Full CRUD | Read | Full CRUD | Own tasks only |
 | **Read-Only** | Read | Read | Read | Read | Read | Own tasks only |
 
 **Access Control Rules:**

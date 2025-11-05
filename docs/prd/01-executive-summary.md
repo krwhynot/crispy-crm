@@ -49,7 +49,7 @@ Crispy-CRM prioritizes **clean, accessible, unified design** with a focus on:
 3. **Improve Pipeline Visibility**: Real-time dashboards and reporting
 4. **Enable Collaboration**: Multi-user access with role-based permissions
 5. **Enhance Forecasting**: Volume and probability-based sales projections
-6. **Tablet Accessibility**: Optimized for field sales rep access via iPad
+6. **Tablet Accessibility**: Optimized for Account Manager access via iPad
 
 ### Success Metrics
 - **User Adoption**: 100% sales team migration within 60 days

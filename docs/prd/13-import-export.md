@@ -60,7 +60,6 @@
 | Implement Opportunities CSV import | ❌ Missing | 🟢 HIGH | 3 days |
 | Implement Products CSV import | ❌ Missing | 🟢 HIGH | 3 days |
 | Implement Products CSV export | ❌ Missing | 🟢 HIGH | 1 day |
-| Implement vCard export for Contacts | ❌ Missing | 🟡 MEDIUM | 2 days |
 | Add duplicate detection for Contacts import | ❌ Missing | 🟢 HIGH | 1 day |
 | Fix export header consistency (company vs organization_name) | ❌ Missing | 🟢 HIGH | 4 hours |
 | Add template downloads for Organizations | ❌ Missing | 🟢 HIGH | 2 hours |
@@ -68,7 +67,7 @@
 
 **Details:**
 - **Strong Foundation:** Contacts and Organizations have production-ready import/export with advanced column mapping, validation, and error handling
-- **vCard Gap:** PRD claims vCard export is complete (line 27, 33, 39) but no implementation found - no .vcf generation, no vCard libraries in package.json
+- **vCard Export:** Deferred to Post-MVP (CSV export sufficient for Excel replacement goal)
 - **Products Module:** Zero import/export implementation despite PRD specification
 - **Opportunities Import:** Export exists but import missing
 - **Architecture Strength:** Generic `usePapaParse` hook is reusable, state machine pattern prevents impossible UI states
@@ -76,7 +75,7 @@
 
 **Blockers:** None
 
-**Recommendation:** Prioritize vCard export (marked complete but missing), then add Opportunities import following existing Contacts/Organizations patterns. Products import/export lower priority.
+**Recommendation:** Add Opportunities import following existing Contacts/Organizations patterns. Products import/export lower priority. vCard export deferred to Post-MVP.
 
 ---
 
