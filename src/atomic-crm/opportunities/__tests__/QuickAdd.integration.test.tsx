@@ -153,8 +153,7 @@ describe('QuickAdd Integration', () => {
     vi.restoreAllMocks();
   });
 
-  it.skip('completes full atomic creation flow with Save & Close', async () => {
-    // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
+  it('completes full atomic creation flow with Save & Close', async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // 1. Open dialog
@@ -172,11 +171,18 @@ describe('QuickAdd Integration', () => {
     await user.type(screen.getByLabelText(/phone/i), '555-1234');
     await user.type(screen.getByLabelText(/organization name/i), 'Acme Corp');
 
-    // City field is Combobox - skip for now since it requires complex dropdown interaction
-    // TODO: Properly test Combobox city field interaction
-    // await user.type(screen.getByLabelText(/city/i), 'Chicago');
+    // City field uses Combobox component - interact with dropdown
+    const cityCombobox = screen.getByRole('combobox', { name: /city/i });
+    await user.click(cityCombobox);
+    const searchInput = await screen.findByPlaceholderText('Select or type city...');
+    await user.type(searchInput, 'Chicago');
+    const option = await screen.findByRole('option', { name: 'Chicago' });
+    await user.click(option);
 
-    await user.type(screen.getByLabelText(/state/i), 'IL');
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state/i)).toHaveValue('IL');
+    });
 
     // Type campaign name (it's a text field, not a select)
     await user.type(screen.getByLabelText(/campaign/i), 'Trade Show 2024');
@@ -225,8 +231,7 @@ describe('QuickAdd Integration', () => {
     });
   });
 
-  it.skip('handles Save & Add Another flow correctly', async () => {
-    // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
+  it('handles Save & Add Another flow correctly', async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog
@@ -238,13 +243,18 @@ describe('QuickAdd Integration', () => {
     await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
     await user.type(screen.getByLabelText(/organization name/i), 'Tech Corp');
 
-    // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText('Select or type city...');
-    await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText('Search cities...'), 'Los Angeles');
-    await user.keyboard('{Escape}'); // Close the Combobox dropdown
+    // City field uses Combobox component - interact with dropdown
+    const cityCombobox = screen.getByRole('combobox', { name: /city/i });
+    await user.click(cityCombobox);
+    const searchInput = await screen.findByPlaceholderText('Select or type city...');
+    await user.type(searchInput, 'Los Angeles');
+    const option = await screen.findByRole('option', { name: 'Los Angeles' });
+    await user.click(option);
 
-    await user.type(screen.getByLabelText(/state/i), 'CA');
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state/i)).toHaveValue('CA');
+    });
 
     // Type campaign name (it's a text field, not a select)
     await user.type(screen.getByLabelText(/campaign/i), 'Conference 2024');
