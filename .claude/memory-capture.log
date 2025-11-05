@@ -1397,3 +1397,8 @@
 [2025-11-05 17:26:54] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/layout/Header.tsx
 [2025-11-05 17:26:59] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/layout/Header.tsx
 [2025-11-05 17:30:41] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/columnAliases.ts
+[2025-11-05 17:30:56] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/csvConstants.ts
+[2025-11-05 17:32:06] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/opportunityImport.logic.ts
+[2025-11-05 17:33:15] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/useOpportunityImport.tsx
+[2025-11-05 17:33:44] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/csvProcessor.ts
+[2025-11-05 17:37:17] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/hooks/__tests__/useOpportunitiesByPrincipal.test.ts
