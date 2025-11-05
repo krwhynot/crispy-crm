@@ -83,15 +83,6 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     }
   }, [phoneValue, emailValue, errors.phone, clearErrors]);
 
-  // Filter city options based on search
-  const filteredCities = useMemo(() => {
-    if (!searchQuery) return US_CITIES.slice(0, 10); // Show first 10 when no search
-    const lowerSearch = searchQuery.toLowerCase();
-    return US_CITIES.filter(
-      ({ city }) => city.toLowerCase().includes(lowerSearch)
-    ).slice(0, 20); // Limit results to 20 for performance
-  }, [searchQuery]);
-
   // Handle city selection
   const handleCitySelect = (cityName: string) => {
     const selectedCity = US_CITIES.find(c => c.city === cityName);
@@ -144,7 +135,8 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     label: product.name,
   })) || [];
 
-  const cityOptions = filteredCities.map(({ city }) => ({
+  // Map all US cities for Combobox (Command component handles filtering)
+  const cityOptions = US_CITIES.map(({ city }) => ({
     value: city,
     label: city,
   }));
