@@ -36,8 +36,8 @@ export default defineConfig({
         statements: 70,
       },
     },
-    include: ["src/**/*.test.{ts,tsx}", "tests/**/*.spec.{ts,tsx}"],
-    exclude: ["node_modules/", "dist/", ".docs/"],
+    include: ["src/**/*.test.{ts,tsx}"],
+    exclude: ["node_modules/", "dist/", ".docs/", "tests/**/*.spec.{ts,tsx}"],
   },
   resolve: {
     alias: {
