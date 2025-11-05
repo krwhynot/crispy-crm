@@ -1,0 +1,237 @@
+---
+**Part of:** Atomic CRM Product Requirements Document
+**Category:** Technical Specifications
+**Document:** 19-api-design.md
+
+**Related Documents:**
+- 📋 [README - Master Index](./00-README.md)
+- 🗄️ [Data Architecture](./02-data-architecture.md)
+- 💻 [Technology Stack](./18-tech-stack.md)
+- 🏢 [Organizations Feature](./03-organizations.md)
+- 🎯 [Opportunities Feature](./04-opportunities.md)
+- 👤 [Contacts Feature](./05-contacts.md)
+- 📦 [Products Feature](./06-products.md)
+- 📋 [Tasks Feature](./07-tasks.md)
+- 📊 [Dashboards & Reports](./09-dashboards.md)
+---
+
+# 19. API Design
+
+## 5.2 Data Flow & API Design
+
+**Note:** With Supabase, REST APIs are **auto-generated** from the database schema. The endpoints below are for documentation/reference - they are automatically available without manual implementation once the database tables are created.
+
+### API Endpoints (Supabase Auto-Generated)
+
+**Authentication:**
+```
+POST   /api/v1/auth/login
+POST   /api/v1/auth/logout
+POST   /api/v1/auth/refresh
+POST   /api/v1/auth/forgot-password
+POST   /api/v1/auth/reset-password
+```
+
+**Organizations:**
+```
+GET    /api/v1/organizations          (List with filters, pagination)
+POST   /api/v1/organizations          (Create)
+GET    /api/v1/organizations/:id      (Get single)
+PUT    /api/v1/organizations/:id      (Update)
+DELETE /api/v1/organizations/:id      (Soft delete)
+POST   /api/v1/organizations/import   (CSV import)
+GET    /api/v1/organizations/export   (CSV export)
+```
+
+**Contacts:**
+```
+GET    /api/v1/contacts
+POST   /api/v1/contacts
+GET    /api/v1/contacts/:id
+PUT    /api/v1/contacts/:id
+DELETE /api/v1/contacts/:id
+GET    /api/v1/organizations/:id/contacts  (Contacts for org)
+```
+
+**Opportunities:**
+```
+GET    /api/v1/opportunities
+POST   /api/v1/opportunities
+GET    /api/v1/opportunities/:id
+PUT    /api/v1/opportunities/:id
+PATCH  /api/v1/opportunities/:id/stage     (Update stage only)
+PATCH  /api/v1/opportunities/:id/status    (Update status only)
+DELETE /api/v1/opportunities/:id
+POST   /api/v1/opportunities/:id/clone
+GET    /api/v1/organizations/:id/opportunities
+```
+
+**Products:**
+```
+GET    /api/v1/products
+POST   /api/v1/products
+GET    /api/v1/products/:id
+PUT    /api/v1/products/:id
+DELETE /api/v1/products/:id
+```
+
+**Activities:**
+```
+GET    /api/v1/activities               (All activities, filterable)
+POST   /api/v1/activities               (Log activity)
+GET    /api/v1/activities/:id
+PUT    /api/v1/activities/:id           (Edit activity, user-created only)
+DELETE /api/v1/activities/:id           (Delete activity, user-created only)
+GET    /api/v1/opportunities/:id/activities
+GET    /api/v1/organizations/:id/activities
+GET    /api/v1/contacts/:id/activities
+```
+
+**Users:**
+```
+GET    /api/v1/users                    (List, admin-only)
+POST   /api/v1/users                    (Create, admin-only)
+GET    /api/v1/users/:id
+PUT    /api/v1/users/:id                (Update, self or admin)
+DELETE /api/v1/users/:id                (Deactivate, admin-only)
+GET    /api/v1/users/me                 (Current user profile)
+PUT    /api/v1/users/me                 (Update own profile)
+```
+
+**Reports/Analytics:**
+```
+GET    /api/v1/reports/dashboard/sales-rep      (Sales Rep metrics)
+GET    /api/v1/reports/dashboard/sales-manager  (Manager metrics)
+GET    /api/v1/reports/pipeline                 (Pipeline report data)
+GET    /api/v1/reports/forecast                 (Forecast report data)
+GET    /api/v1/reports/account-health           (Account health data)
+GET    /api/v1/reports/activity                 (Activity report data)
+GET    /api/v1/reports/won-lost                 (Won/Lost analysis)
+GET    /api/v1/reports/product-performance      (Product metrics)
+```
+
+### Query Parameters (Filtering, Sorting, Pagination)
+
+**Example: GET /api/v1/opportunities**
+
+```typescript
+interface OpportunityQueryParams {
+  // Pagination
+  page?: number;          // Page number (1-indexed)
+  limit?: number;         // Results per page (default: 20, max: 100)
+
+  // Sorting
+  sort_by?: string;       // Field to sort by (e.g., "start_date", "priority")
+  sort_order?: 'asc' | 'desc'; // Sort direction
+
+  // Filtering
+  status?: string[];       // Multi-select: ["Open", "On Hold"]
+  stage?: string[];        // Multi-select: ["Lead-discovery-1", "Contacted-phone/email-2"]
+  priority?: string[];     // Multi-select: ["A", "B", "C", "D"]  (4 levels only)
+  product_id?: string[];   // Multi-select product IDs
+  deal_owner_id?: string[]; // Multi-select user IDs
+  organization_id?: string; // Single org ID
+
+  // Date ranges
+  start_date_from?: string;   // ISO date: "2025-01-01"
+  start_date_to?: string;
+  expected_sold_date_from?: string;
+  expected_sold_date_to?: string;
+
+  // Number ranges
+  probability_min?: number;  // 0-100
+  probability_max?: number;
+  volume_min?: number;
+  volume_max?: number;
+
+  // Search
+  search?: string;         // Full-text search across name, org name, product
+
+  // Includes
+  include?: string[];      // Relationships to include: ["organization", "product", "deal_owner"]
+}
+```
+
+**Example Request:**
+```
+GET /api/v1/opportunities?status=Open&priority=A+,A&sort_by=expected_sold_date&sort_order=asc&page=1&limit=20&include=organization,product
+```
+
+**Example Response:**
+```json
+{
+  "data": [
+    {
+      "opportunity_id": "uuid-123",
+      "opportunity_name": "Poke Supply Deal",
+      "organization": {
+        "organization_id": "uuid-456",
+        "organization_name": "Ballyhoo Hospitality",
+        "priority_level": "A"
+      },
+      "product": {
+        "product_id": "uuid-789",
+        "product_name": "Poke Bowl Mix",
+        "principal": "Seafood Co"
+      },
+      "status": "Open",
+      "stage": "Follow-up-4",
+      "start_date": "2025-10-15",
+      "expected_sold_date": "2025-12-01",
+      "probability": 0.65,
+      "cases_per_week_volume": 150,
+      "deal_owner_id": "uuid-user-1",
+      "created_at": "2025-10-15T08:30:00Z",
+      "updated_at": "2025-10-20T14:22:00Z"
+    }
+    // ... more opportunities
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total_pages": 5,
+    "total_results": 92
+  },
+  "meta": {
+    "request_time": "2025-11-02T10:30:00Z",
+    "api_version": "v1"
+  }
+}
+```
+
+### Error Handling
+
+**Standard Error Response:**
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid input data",
+    "details": [
+      {
+        "field": "organization_name",
+        "message": "Organization name is required"
+      },
+      {
+        "field": "priority_level",
+        "message": "Priority must be one of: A+, A, B, C, D"
+      }
+    ]
+  },
+  "meta": {
+    "request_id": "req-uuid-123",
+    "timestamp": "2025-11-02T10:30:00Z"
+  }
+}
+```
+
+**HTTP Status Codes:**
+- `200 OK`: Success
+- `201 Created`: Resource created
+- `400 Bad Request`: Validation error
+- `401 Unauthorized`: Authentication required
+- `403 Forbidden`: Insufficient permissions
+- `404 Not Found`: Resource not found
+- `409 Conflict`: Resource conflict (e.g., duplicate name)
+- `422 Unprocessable Entity`: Semantic error (e.g., invalid state transition)
+- `500 Internal Server Error`: Server error
