@@ -1108,3 +1108,11 @@
 [2025-11-04 18:48:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/NotificationBell.tsx
 [2025-11-04 18:48:44] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Header.tsx
 [2025-11-04 18:54:56] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/notifications/index.ts
+[2025-11-04 18:55:34] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/notifications/NotificationsList.tsx
+[2025-11-04 18:56:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/root/CRM.tsx
+[2025-11-04 18:56:11] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/root/CRM.tsx
+[2025-11-04 18:56:33] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
+[2025-11-04 18:57:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/notifications/NotificationsList.tsx
+[2025-11-04 18:57:20] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/notifications/NotificationsList.tsx
+[2025-11-04 18:59:53] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251105005940_add_overdue_notification_tracking.sql
+[2025-11-04 19:01:12] [code] Write: /home/krwhynot/projects/crispy-crm/supabase/functions/check-overdue-tasks/index.ts
