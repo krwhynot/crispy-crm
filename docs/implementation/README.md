@@ -250,7 +250,7 @@ Phase X: [Name]
 
 **Original PRD:** 3,900 lines defining complete CRM system
 **Optimization:** Compressed 22-week timeline → 10 weeks (existing code leverage)
-**Archived:** Phase 3 supplementary docs in `/plans/archive/phase3-supplementary/`
+**Archived:** Phase 3 supplementary docs in `/docs/archive/phase3-supplementary/`
 
 ---
 
