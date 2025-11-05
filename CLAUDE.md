@@ -223,6 +223,8 @@ See `.claude/commands/` for complete list.
 
 Plans in `docs/plans/` track design, status, QA readiness. **Phase:** Pre-launch (Phase 1 complete).
 
+**Current Design:** [Principal-Centric CRM v2.0](docs/plans/2025-11-05-principal-centric-crm-design.md) - 30-day Excel replacement goal, 2 MVP reports (Opportunities by Principal ⭐, Weekly Activity Summary), table-based dashboard.
+
 ## Key Files
 
 | File | Purpose |
