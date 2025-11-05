@@ -1,0 +1,237 @@
+import { useEffect, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { Eye, ExternalLink, Inbox } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { supabase } from "@/atomic-crm/providers/supabase/supabase";
+import { useGetIdentity } from "ra-core";
+import { Link } from "react-router-dom";
+
+interface Notification {
+  id: number;
+  type: string;
+  message: string;
+  entity_type: string | null;
+  entity_id: number | null;
+  read: boolean;
+  created_at: string;
+}
+
+interface NotificationDropdownProps {
+  children: React.ReactNode;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export const NotificationDropdown = ({
+  children,
+  onOpenChange,
+}: NotificationDropdownProps) => {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { data: identity } = useGetIdentity();
+
+  // Fetch notifications
+  const fetchNotifications = async () => {
+    if (!identity?.id) return;
+
+    setIsLoading(true);
+    const { data, error } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", identity.id)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    if (!error && data) {
+      setNotifications(data);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [identity?.id]);
+
+  // Mark single notification as read
+  const markAsRead = async (notificationId: number) => {
+    if (!identity?.id) return;
+
+    const { error } = await supabase
+      .from("notifications")
+      .update({ read: true })
+      .eq("id", notificationId)
+      .eq("user_id", identity.id);
+
+    if (!error) {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
+      );
+    }
+  };
+
+  // Mark all notifications as read
+  const markAllAsRead = async () => {
+    if (!identity?.id) return;
+
+    const { error } = await supabase
+      .from("notifications")
+      .update({ read: true })
+      .eq("user_id", identity.id)
+      .eq("read", false);
+
+    if (!error) {
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    }
+  };
+
+  // Get entity link
+  const getEntityLink = (entityType: string | null, entityId: number | null) => {
+    if (!entityType || !entityId) return null;
+
+    const routes: Record<string, string> = {
+      task: `/tasks/${entityId}`,
+      opportunity: `/opportunities/${entityId}/show`,
+      contact: `/contacts/${entityId}/show`,
+      organization: `/organizations/${entityId}/show`,
+      product: `/products/${entityId}/show`,
+    };
+
+    return routes[entityType] || null;
+  };
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  return (
+    <DropdownMenu onOpenChange={onOpenChange}>
+      <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        className="w-[400px] p-0"
+        sideOffset={8}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b">
+          <h2 className="font-semibold text-sm">Notifications</h2>
+          {unreadCount > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={markAllAsRead}
+              className="h-8 text-xs"
+            >
+              Mark all as read
+            </Button>
+          )}
+        </div>
+
+        {/* Notifications List */}
+        <ScrollArea className="h-[400px]">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-32 text-sm text-muted-foreground">
+              Loading...
+            </div>
+          ) : notifications.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-32 gap-2 text-sm text-muted-foreground">
+              <Inbox className="h-8 w-8 opacity-50" />
+              <p>No notifications</p>
+            </div>
+          ) : (
+            <div className="divide-y">
+              {notifications.map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  notification={notification}
+                  onMarkAsRead={markAsRead}
+                  getEntityLink={getEntityLink}
+                />
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+
+        {/* Footer */}
+        <DropdownMenuSeparator />
+        <div className="p-2">
+          <Link to="/notifications">
+            <Button variant="ghost" size="sm" className="w-full justify-start">
+              <ExternalLink className="h-4 w-4 mr-2" />
+              View all notifications
+            </Button>
+          </Link>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
+interface NotificationItemProps {
+  notification: Notification;
+  onMarkAsRead: (id: number) => void;
+  getEntityLink: (entityType: string | null, entityId: number | null) => string | null;
+}
+
+const NotificationItem = ({
+  notification,
+  onMarkAsRead,
+  getEntityLink,
+}: NotificationItemProps) => {
+  const entityLink = getEntityLink(notification.entity_type, notification.entity_id);
+  const timeAgo = formatDistanceToNow(new Date(notification.created_at), {
+    addSuffix: true,
+  });
+
+  return (
+    <div
+      className={`flex items-start gap-3 p-4 hover:bg-muted/50 transition-colors ${
+        !notification.read ? "bg-muted/30" : ""
+      }`}
+    >
+      {/* Notification Icon */}
+      <div
+        className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${
+          !notification.read ? "bg-primary" : "bg-muted-foreground/30"
+        }`}
+      />
+
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <p className="text-sm mb-1">{notification.message}</p>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span>{timeAgo}</span>
+          {entityLink && (
+            <>
+              <span>•</span>
+              <Link
+                to={entityLink}
+                className="hover:text-foreground transition-colors inline-flex items-center gap-1"
+              >
+                View {notification.entity_type}
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Mark as Read Button */}
+      {!notification.read && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="flex-shrink-0 h-8 w-8"
+          onClick={() => onMarkAsRead(notification.id)}
+          aria-label="Mark as read"
+        >
+          <Eye className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
+  );
+};
