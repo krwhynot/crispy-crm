@@ -257,19 +257,19 @@ All phases use consistent stack:
 ## Document Index
 
 ### Phase Plans
-- [Phase 1: Foundation](phase1-foundation.md)
-- [Phase 2: Core Entities](phase2-core-entities.md)
-- [Phase 3: Opportunities](phase3-opportunities.md)
-- [Phase 4: User Experience](phase4-user-experience.md)
-- [Phase 5: Data & Reports](phase5-data-reports.md)
-- [Phase 6: Production Ready](phase6-production.md)
+- [Phase 1: Foundation](completed/phase1-foundation.md)
+- [Phase 2: Core Entities](completed/phase2-core-entities.md)
+- [Phase 3: Opportunities](active/phase3-opportunities.md)
+- [Phase 4: User Experience](active/phase4-user-experience.md)
+- [Phase 5: Data & Reports](active/phase5-data-reports.md)
+- [Phase 6: Production Ready](active/phase6-production.md)
 
 ### Supporting Documents
-- [Dependencies Map](DEPENDENCIES.md)
-- [Steel Thread Guide](STEEL_THREAD.md)
-- [Risk Register](RISK_REGISTER.md)
-- [Spike Tasks](SPIKE_TASKS.md)
-- [Task Template](TASK_TEMPLATE.md)
+- [Dependencies Map](meta/DEPENDENCIES.md)
+- [Steel Thread Guide](meta/STEEL_THREAD.md)
+- [Risk Register](meta/RISK_REGISTER.md)
+- [Spike Tasks](meta/SPIKE_TASKS.md)
+- [Task Template](meta/TASK_TEMPLATE.md)
 
 ---
 
