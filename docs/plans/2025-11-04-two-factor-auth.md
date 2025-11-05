@@ -1,5 +1,11 @@
 # Two-Factor Authentication Implementation Plan
 
+> **⏸️ STATUS: DEFERRED TO POST-MVP**
+>
+> **Reason:** Email/password authentication is sufficient for Excel replacement goal (30 days). Small team deployment (2-10 users).
+>
+> **Rationale:** Per principal-centric redesign v2.0, 2FA is security enhancement for larger deployments. Not critical for small team MVP with trusted users.
+
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Add TOTP two-factor authentication for enhanced security
@@ -7,7 +13,7 @@
 **Architecture:** Use Supabase Auth 2FA API with TOTP (Google Authenticator, Authy). Add 2FA setup UI and verification flow.
 
 **Tech Stack:** Supabase Auth MFA, qrcode.react (QR code generation), React
-**Effort:** 4 days (includes cryptographically secure backup codes) | **Priority:** LOW | **Status:** Supabase API ready 100%, UI 0%
+**Effort:** 4 days (includes cryptographically secure backup codes) | **Priority:** ⏸️ DEFERRED | **Status:** Supabase API ready 100%, UI 0%
 
 **⚠️ Security:** Uses Web Crypto API for backup codes - see [SECURITY-ADDENDUM.md](./SECURITY-ADDENDUM.md#critical-fix-2)
 

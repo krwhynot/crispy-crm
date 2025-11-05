@@ -1,5 +1,11 @@
 # OAuth Integration Implementation Plan
 
+> **⏸️ STATUS: DEFERRED TO POST-MVP**
+>
+> **Reason:** Email/password authentication is 100% functional and sufficient for Excel replacement goal (30 days). Small team deployment.
+>
+> **Rationale:** Per principal-centric redesign v2.0, OAuth is enterprise polish for larger organizations. MVP targets small teams (2-10 Account Managers).
+
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Add Google and Microsoft OAuth SSO for enterprise authentication
@@ -7,7 +13,7 @@
 **Architecture:** Extend existing Supabase Auth (email/password 100%) with OAuth providers. Supabase handles OAuth flow.
 
 **Tech Stack:** Supabase Auth OAuth, Google OAuth 2.0, Microsoft Azure AD
-**Effort:** 4 days (2 Google + 2 Microsoft) | **Priority:** MEDIUM
+**Effort:** 5 days | **Priority:** ⏸️ DEFERRED
 **Status:** Email/password works, OAuth 0%
 
 ---
