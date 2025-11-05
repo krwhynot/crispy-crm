@@ -7,7 +7,9 @@
 **Architecture:** Use Supabase Auth 2FA API with TOTP (Google Authenticator, Authy). Add 2FA setup UI and verification flow.
 
 **Tech Stack:** Supabase Auth MFA, qrcode.react (QR code generation), React
-**Effort:** 3 days | **Priority:** LOW | **Status:** Supabase API ready 100%, UI 0%
+**Effort:** 4 days (includes cryptographically secure backup codes) | **Priority:** LOW | **Status:** Supabase API ready 100%, UI 0%
+
+**⚠️ Security:** Uses Web Crypto API for backup codes - see [SECURITY-ADDENDUM.md](./SECURITY-ADDENDUM.md#critical-fix-2)
 
 ---
 
@@ -114,10 +116,18 @@ export const TwoFactorSetup = () => {
 
       if (error) throw error;
 
-      // Generate backup codes (simulated - Supabase doesn't provide this directly)
-      const codes = Array.from({ length: 10 }, () =>
-        Math.random().toString(36).substring(2, 10).toUpperCase()
+      // Generate cryptographically secure backup codes
+      // Engineering Constitution: Use correct APIs (crypto.getRandomValues vs Math.random)
+      const codes = await Promise.all(
+        Array.from({ length: 10 }, async () => {
+          const array = new Uint8Array(8);
+          crypto.getRandomValues(array); // Web Crypto API (built-in)
+          return Array.from(array, byte =>
+            byte.toString(16).padStart(2, '0')
+          ).join('').toUpperCase();
+        })
       );
+
       setBackupCodes(codes);
       setIsEnabled(true);
 
