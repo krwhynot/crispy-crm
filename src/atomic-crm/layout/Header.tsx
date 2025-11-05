@@ -89,7 +89,7 @@ const Header = () => {
             <div className="flex items-center">
               <ThemeModeToggle />
               <RefreshButton />
-              <NotificationBell onClick={() => console.log("Notifications clicked")} />
+              <NotificationBell />
               <UserMenu>
                 <ConfigurationMenu />
                 <CanAccess resource="sales" action="list">
