@@ -10,6 +10,7 @@ Atomic CRM - Full-featured, open-source CRM with React, shadcn-admin-kit, and Su
 
 ## Recent Changes (90 days)
 
+- **Principal-Centric Redesign v2.0 (2025-11-05)**: Dashboard → table view, 2 MVP reports (Opportunities by Principal ⭐, Weekly Activity Summary), 30-day Excel replacement goal. Design: `docs/plans/2025-11-05-principal-centric-crm-design.md`
 - **Pricing Removal (2025-10-29)**: Products = associations only, no pricing. Migration: `20251028040008_remove_product_pricing_and_uom.sql`
 - **Deal → Opportunity (v0.2.0)**: Multi-participant support, activity tracking
 
