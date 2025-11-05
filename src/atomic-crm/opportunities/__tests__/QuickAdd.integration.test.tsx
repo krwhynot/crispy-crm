@@ -170,7 +170,12 @@ describe('QuickAdd Integration', () => {
     await user.type(screen.getByLabelText(/email/i), 'john.doe@example.com');
     await user.type(screen.getByLabelText(/phone/i), '555-1234');
     await user.type(screen.getByLabelText(/organization name/i), 'Acme Corp');
-    await user.type(screen.getByLabelText(/city/i), 'Chicago');
+
+    // City uses Combobox - find button and click to interact
+    const cityButton = screen.getByText('Select or type city...');
+    await user.click(cityButton);
+    await user.type(screen.getByPlaceholderText('Search cities...'), 'Chicago');
+
     await user.type(screen.getByLabelText(/state/i), 'IL');
 
     // Type campaign name (it's a text field, not a select)
