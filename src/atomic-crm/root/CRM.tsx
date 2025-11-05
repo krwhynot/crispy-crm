@@ -10,6 +10,7 @@ import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
 import opportunities from "../opportunities";
 import products from "../products";
+import notifications from "../notifications";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
@@ -152,6 +153,7 @@ export const CRM = ({
         <Resource name="sales" {...sales} />
         <Resource name="tags" />
         <Resource name="segments" />
+        <Resource name="notifications" {...notifications} />
         </Admin>
       </KeyboardShortcutsProvider>
     </ConfigurationProvider>

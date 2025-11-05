@@ -251,6 +251,19 @@ export const filterableFields: Record<string, string[]> = {
     "id",
     "name",
   ],
+
+  // Notifications resource
+  notifications: [
+    "id",
+    "user_id",
+    "type",
+    "message",
+    "entity_type",
+    "entity_id",
+    "read",
+    "created_at",
+    "q",               // Special: full-text search parameter
+  ],
 };
 
 /**
