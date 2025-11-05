@@ -1116,3 +1116,5 @@
 [2025-11-04 18:57:20] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/notifications/NotificationsList.tsx
 [2025-11-04 18:59:53] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251105005940_add_overdue_notification_tracking.sql
 [2025-11-04 19:01:12] [code] Write: /home/krwhynot/projects/crispy-crm/supabase/functions/check-overdue-tasks/index.ts
+[2025-11-04 19:02:05] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251105010132_setup_overdue_task_cron.sql
+[2025-11-04 19:23:08] [documentation] Edit: /home/krwhynot/projects/crispy-crm/plans/phase4-user-experience.md
