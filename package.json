@@ -134,7 +134,6 @@
     "vaul": "^1.1.2",
     "vite": "^7.0.4",
     "vite-plugin-simple-html": "^1.0.1",
-    "web-vitals": "^5.1.0",
     "zod": "^4.0.5"
   },
   "overrides": {

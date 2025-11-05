@@ -23,24 +23,9 @@
 
 ---
 
-## 🚨 CRITICAL - Pre-Launch (4 hours)
+## 🚨 CRITICAL - Pre-Launch (5 minutes)
 
-### Task 1: Initialize Performance Monitoring ⚡
-**File:** `docs/plans/2025-11-04-initialize-performance-monitoring.md`
-**Time:** 5 minutes
-**Priority:** CRITICAL
-**Blocker:** No - Quick win
-
-**Why Critical:** Complete Web Vitals framework exists but is dormant. One-line fix activates production-ready monitoring.
-
-**Impact:**
-- ✅ LCP, INP, CLS tracking
-- ✅ Performance budgets and alerts
-- ✅ Real-time performance rating
-
----
-
-### Task 2: Fix vCard Export Documentation
+### Task 1: Fix vCard Export Documentation
 **File:** `docs/plans/2025-11-04-fix-vcard-export-docs.md`
 **Time:** 5 minutes (docs only) OR 2 days (with implementation)
 **Priority:** CRITICAL
@@ -54,23 +39,9 @@
 
 ---
 
-### Task 3: Configure External Monitoring Services
-**File:** `docs/plans/2025-11-04-configure-external-monitoring.md`
-**Time:** 3 hours
-**Priority:** CRITICAL
-**Blocker:** No - External service configuration
-
-**Why Critical:** PRD requires uptime monitoring (UptimeRobot) and error tracking (Sentry) for production deployment.
-
-**Components:**
-1. Sentry setup (2 hours) - 5K events/month free tier
-2. UptimeRobot setup (1 hour) - 50 monitors free tier
-
----
-
 ## 🔥 HIGH PRIORITY - Post-Launch (13 days)
 
-### Task 4: OpportunitiesByPrincipal Report Page ⭐
+### Task 2: OpportunitiesByPrincipal Report Page ⭐
 **File:** `docs/plans/2025-11-04-opportunities-by-principal-report.md`
 **Time:** 2 days
 **Priority:** HIGH (marked ⭐ in PRD)
@@ -91,7 +62,7 @@
 
 ---
 
-### Task 5: User Adoption Tracking Dashboard
+### Task 3: User Adoption Tracking Dashboard
 **File:** `docs/plans/2025-11-04-user-adoption-tracking.md`
 **Time:** 2 days
 **Priority:** HIGH
@@ -113,7 +84,7 @@
 
 ---
 
-### Task 6: Global Search Bar
+### Task 4: Global Search Bar
 **File:** `docs/plans/2025-11-04-global-search-bar.md`
 **Time:** 2 days
 **Priority:** HIGH
@@ -135,7 +106,7 @@
 
 ---
 
-### Task 7: Complete Reports Module
+### Task 5: Complete Reports Module
 **File:** `docs/plans/2025-11-04-complete-reports-module.md`
 **Time:** 3 days
 **Priority:** HIGH
@@ -156,7 +127,7 @@
 
 ---
 
-### Task 8: Offline Mode Implementation
+### Task 6: Offline Mode Implementation
 **File:** `docs/plans/2025-11-04-offline-mode.md`
 **Time:** 3-5 days
 **Priority:** HIGH
@@ -183,7 +154,7 @@
 
 ## ⚙️ MEDIUM PRIORITY - Post-Launch (23-25 days)
 
-### Task 9: OAuth Integration (Google + Microsoft)
+### Task 7: OAuth Integration (Google + Microsoft)
 **File:** `docs/plans/2025-11-04-oauth-integration.md`
 **Time:** 4 days (2 days Google + 2 days Microsoft)
 **Priority:** MEDIUM
@@ -203,7 +174,7 @@
 
 ---
 
-### Task 10: Elevate Tasks to Full Resource Module
+### Task 8: Elevate Tasks to Full Resource Module
 **File:** `docs/plans/2025-11-04-tasks-full-module.md`
 **Time:** 5-7 days
 **Priority:** MEDIUM
@@ -226,7 +197,7 @@
 
 ---
 
-### Task 11: Activity Auto-Generation
+### Task 9: Activity Auto-Generation
 **File:** `docs/plans/2025-11-04-activity-auto-generation.md`
 **Time:** 3 days
 **Priority:** MEDIUM
@@ -248,52 +219,9 @@
 
 ---
 
-### Task 12: Analytics Platform Integration
-**File:** `docs/plans/2025-11-04-analytics-integration.md`
-**Time:** 3 days
-**Priority:** MEDIUM
-**Blocker:** No - Console logging works for dev
-
-**Why Medium:** Historical metrics tracking. Performance.ts has Google Analytics integration commented out.
-
-**Components:**
-1. Google Analytics 4 setup (1 day)
-2. Custom event tracking (1 day)
-3. Integration with performance.ts (1 day)
-4. Privacy-compliant configuration
-5. Tests (event tracking, data flow)
-
-**Current State:**
-- ✅ Performance.ts framework: 100%
-- ⚠️ GA integration: Commented out (lines 100-107)
-- ❌ Custom analytics endpoint: 0%
-
----
-
-### Task 13: Workflow Timing Metrics
-**File:** `docs/plans/2025-11-04-workflow-timing-metrics.md`
-**Time:** 1 day
-**Priority:** MEDIUM
-**Blocker:** No - Nice-to-have analytics
-
-**Why Medium:** Measure "faster than Excel" PRD success criterion. Quantify speed improvements.
-
-**Components:**
-1. Opportunity creation timing
-2. Contact creation timing
-3. Search timing instrumentation
-4. Dashboard widget showing metrics
-5. Tests
-
-**Current State:**
-- ✅ `trackCustomMetric()` function: Exists in performance.ts
-- ❌ Timing instrumentation: 0%
-
----
-
 ## 🔧 LOW PRIORITY - Future Enhancements (15 days)
 
-### Task 14: Products Import/Export
+### Task 10: Products Import/Export
 **File:** `docs/plans/2025-11-04-products-import-export.md`
 **Time:** 3 days
 **Priority:** LOW
@@ -311,7 +239,7 @@
 
 ---
 
-### Task 15: vCard Export Implementation
+### Task 11: vCard Export Implementation
 **File:** `docs/plans/2025-11-04-vcard-export-implementation.md`
 **Time:** 2 days
 **Priority:** LOW
@@ -331,7 +259,7 @@
 
 ---
 
-### Task 16: Two-Factor Authentication
+### Task 12: Two-Factor Authentication
 **File:** `docs/plans/2025-11-04-two-factor-auth.md`
 **Time:** 3 days
 **Priority:** LOW
@@ -350,7 +278,7 @@
 
 ---
 
-### Task 17: Data Quality Dashboard Widget
+### Task 13: Data Quality Dashboard Widget
 **File:** `docs/plans/2025-11-04-data-quality-widget.md`
 **Time:** 2 days
 **Priority:** LOW
@@ -371,7 +299,7 @@
 
 ## 📋 DOCUMENTATION TASKS (1.5 days)
 
-### Task 18: Incident Response Playbook
+### Task 14: Incident Response Playbook
 **File:** `docs/plans/2025-11-04-incident-response-playbook.md`
 **Time:** 1 day
 **Priority:** MEDIUM
@@ -390,7 +318,7 @@
 
 ---
 
-### Task 19: Manual Rollback Procedure Documentation
+### Task 15: Manual Rollback Procedure Documentation
 **File:** `docs/plans/2025-11-04-manual-rollback-docs.md`
 **Time:** 2 hours
 **Priority:** LOW
@@ -415,10 +343,8 @@
 **Must complete before production deployment**
 
 ```bash
-# Day 1 Morning (4 hours)
-1. Initialize performance monitoring (5 min)
-2. Fix vCard export docs (5 min)
-3. Configure Sentry + UptimeRobot (3 hours)
+# Day 1 Morning (5 minutes)
+1. Fix vCard export docs (5 min)
 ```
 
 **Deliverable:** Production-ready monitoring and documentation accuracy
@@ -455,18 +381,16 @@ Monday-Friday: Offline mode implementation (3-5 days)
 
 ---
 
-### Phase 4: Authentication & Analytics (2-3 weeks)
+### Phase 4: Authentication & Automation (1.5 weeks)
 **Enterprise readiness**
 
 ```bash
-# Week 4-5
+# Week 4
 OAuth integration (4 days)
-Analytics platform (3 days)
 Activity auto-generation (3 days)
-Workflow timing metrics (1 day)
 ```
 
-**Deliverable:** OAuth SSO, analytics tracking, automatic audit trail
+**Deliverable:** OAuth SSO, automatic audit trail
 
 ---
 
@@ -567,9 +491,7 @@ When generated, individual plans will be saved to:
 ```
 docs/plans/
 ├── 2025-11-04-prd-completion-master-plan.md (this file)
-├── 2025-11-04-initialize-performance-monitoring.md
 ├── 2025-11-04-fix-vcard-export-docs.md
-├── 2025-11-04-configure-external-monitoring.md
 ├── 2025-11-04-opportunities-by-principal-report.md
 ├── 2025-11-04-user-adoption-tracking.md
 ├── 2025-11-04-global-search-bar.md
@@ -578,8 +500,6 @@ docs/plans/
 ├── 2025-11-04-oauth-integration.md
 ├── 2025-11-04-tasks-full-module.md
 ├── 2025-11-04-activity-auto-generation.md
-├── 2025-11-04-analytics-integration.md
-├── 2025-11-04-workflow-timing-metrics.md
 ├── 2025-11-04-products-import-export.md
 ├── 2025-11-04-vcard-export-implementation.md
 ├── 2025-11-04-two-factor-auth.md
