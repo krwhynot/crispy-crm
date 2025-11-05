@@ -1402,3 +1402,11 @@
 [2025-11-05 17:33:15] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/useOpportunityImport.tsx
 [2025-11-05 17:33:44] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/csvProcessor.ts
 [2025-11-05 17:37:17] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/hooks/__tests__/useOpportunitiesByPrincipal.test.ts
+[2025-11-05 17:38:01] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/hooks/__tests__/useWeeklyActivitySummary.test.ts
+[2025-11-05 17:38:38] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/hooks/__tests__/useReportExport.test.ts
+[2025-11-05 17:39:03] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/components/__tests__/ReportHeader.test.tsx
+[2025-11-05 17:39:31] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/components/__tests__/ReportFilters.test.tsx
+[2025-11-05 17:40:11] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/components/__tests__/GroupedReportTable.test.tsx
+[2025-11-05 17:41:07] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/__tests__/OpportunitiesByPrincipal.integration.test.tsx
+[2025-11-05 17:42:02] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/__tests__/WeeklyActivitySummary.integration.test.tsx
+[2025-11-05 17:42:56] [configuration] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/vitest.config.ts
