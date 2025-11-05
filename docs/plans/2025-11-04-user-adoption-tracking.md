@@ -11,9 +11,11 @@
 - Dashboard widget: React component with Recharts
 - Queries: Supabase RPC functions for DAU/WAU calculations
 
-**Effort:** 2 days
+**Effort:** 3 days (includes RLS policies + GDPR compliance)
 **Priority:** HIGH
 **Current Status:** 0% (no DAU tracking exists)
+
+**⚠️ Security:** Follows Engineering Constitution TWO-LAYER SECURITY - see [SECURITY-ADDENDUM.md](./SECURITY-ADDENDUM.md#critical-fix-1)
 
 ---
 
@@ -46,12 +48,27 @@ CREATE TABLE IF NOT EXISTS user_activity_log (
 CREATE INDEX idx_user_activity_log_user_date ON user_activity_log(user_id, DATE(created_at));
 CREATE INDEX idx_user_activity_log_type_date ON user_activity_log(activity_type, DATE(created_at));
 
--- RLS policies
+-- TWO-LAYER SECURITY (Engineering Constitution #7)
+-- Layer 1: GRANT permissions
+GRANT SELECT, INSERT ON user_activity_log TO authenticated;
+GRANT USAGE ON SEQUENCE user_activity_log_id_seq TO authenticated;
+
+-- Layer 2: RLS policies
 ALTER TABLE user_activity_log ENABLE ROW LEVEL SECURITY;
 
--- Admins can see all activity
-CREATE POLICY admin_all_user_activity_log ON user_activity_log
-  FOR ALL TO authenticated
+-- Users can view their own activity
+CREATE POLICY select_own_activity ON user_activity_log
+  FOR SELECT TO authenticated
+  USING (user_id = auth.uid());
+
+-- Users can insert their own activity
+CREATE POLICY insert_own_activity ON user_activity_log
+  FOR INSERT TO authenticated
+  WITH CHECK (user_id = auth.uid());
+
+-- Admins can view all activity (for adoption metrics dashboard)
+CREATE POLICY admin_select_all_activity ON user_activity_log
+  FOR SELECT TO authenticated
   USING (
     EXISTS (
       SELECT 1 FROM sales
@@ -60,14 +77,16 @@ CREATE POLICY admin_all_user_activity_log ON user_activity_log
     )
   );
 
--- Users can only insert their own activity
-CREATE POLICY user_insert_own_activity ON user_activity_log
-  FOR INSERT TO authenticated
-  WITH CHECK (user_id = auth.uid());
+-- GDPR Compliance: Auto-delete logs after 90 days
+CREATE OR REPLACE FUNCTION cleanup_old_activity_logs()
+RETURNS void AS $$
+BEGIN
+  DELETE FROM user_activity_log
+  WHERE created_at < NOW() - INTERVAL '90 days';
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Grant permissions
-GRANT SELECT, INSERT ON user_activity_log TO authenticated;
-GRANT USAGE ON SEQUENCE user_activity_log_id_seq TO authenticated;
+COMMENT ON FUNCTION cleanup_old_activity_logs IS 'GDPR: Auto-delete activity logs after 90 days retention period';
 
 -- RPC function: Get Daily Active Users count
 CREATE OR REPLACE FUNCTION get_daily_active_users(days_back INTEGER DEFAULT 30)
