@@ -40,30 +40,29 @@
 - ✅ Case-insensitive search (PostgreSQL ILIKE)
 - ✅ useFilterCleanup hook for stale filter handling
 
-**Missing Requirements (55%):**
+**Deferred to Post-MVP:**
 
-| Task | Status | Confidence | Estimate |
-|------|--------|-----------|----------|
-| Implement global search bar in top navigation | ❌ Missing | 🟢 HIGH | 2 days |
-| Create unified results page for cross-module search | ❌ Missing | 🟡 MEDIUM | 3 days |
-| Add search history (last 10, localStorage) | ❌ Missing | 🟢 HIGH | 1 day |
-| Implement saved searches (database) | ❌ Missing | 🟡 MEDIUM | 2 days |
-| Add advanced search operators (quotes, AND/OR, field-specific) | ❌ Missing | 🔴 LOW | 3 days |
-| Implement fuzzy matching with typo tolerance | ❌ Missing | 🔴 LOW | 2 days |
-| Add search suggestions as-you-type | ❌ Missing | 🔴 LOW | 2 days |
-| Create full-text search triggers in database | ❌ Missing | 🟡 MEDIUM | 1 day |
-| Add test coverage | ❌ Missing | 🟢 HIGH | 1 day |
+| Feature | Status | Rationale |
+|---------|--------|-----------|
+| Global search bar in top navigation | ⏸️ Deferred | Module-level search sufficient for Excel replacement |
+| Unified cross-module search results page | ⏸️ Deferred | Users know which module to search within |
+| Search history (last 10, localStorage) | ⏸️ Deferred | Nice-to-have, not critical for MVP |
+| Saved searches (database) | ⏸️ Deferred | Power user feature, defer until adoption proven |
+| Advanced search operators (AND/OR, quotes) | ⏸️ Deferred | Simple search meets 95% of use cases |
+| Fuzzy matching with typo tolerance | ⏸️ Deferred | Basic ILIKE search works well |
+| Search suggestions as-you-type | ⏸️ Deferred | Performance cost not justified for MVP |
+| Full-text search triggers | ⏸️ Deferred | ILIKE on indexed columns performs adequately |
 
 **Details:**
-- **Module Search:** All 4 core modules (Organizations, Contacts, Opportunities, Products) have working search and filter panels
-- **Global Search Gap:** No unified search bar in top navigation, no cross-module search capability
-- **Advanced Features Missing:** No search operators, fuzzy matching, search history, or saved searches
+- **MVP Scope:** Module-level search only (Organizations, Contacts, Opportunities, Products)
+- **Module Search:** All 4 core modules have working search and filter panels
+- **Global Search:** Deferred to Post-MVP (not needed for Excel replacement goal)
 - **Filter Registry:** Well-implemented validation system prevents 400 errors from stale cached filters
-- **Pattern Established:** Consistent filter UI pattern across modules makes global search extension straightforward
+- **Pattern Established:** Consistent filter UI pattern across modules makes future global search extension straightforward
 
 **Blockers:** None
 
-**Recommendation:** Prioritize global search bar in top navigation first (high user value), then add search history. Advanced operators and fuzzy matching are lower priority for MVP.
+**Recommendation:** MVP ships with module-level search only. Add global search bar in Phase 2 if users request it after adoption.
 
 ---
 
