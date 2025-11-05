@@ -12,25 +12,10 @@ Atomic CRM is a full-featured, open-source CRM built with React, shadcn-admin-ki
 
 ## Recent Architectural Changes
 
-> **Note:** This section documents changes from the last 90 days. Older changes are archived in git history.
+> **Note:** Major changes from the last 90 days are documented here. See git history for complete changelog.
 
-### Pricing Removal (2025-10-29)
-
-**Decision**: Removed all pricing functionality from products and opportunities to simplify the data model to product association tracking only.
-
-**What was removed:**
-- Products table: `list_price`, `currency_code`, `unit_of_measure` columns
-- Opportunity-products junction: `quantity`, `unit_price`, `discount_percent` columns
-- All pricing-related UI components and validation schemas
-- Duplicate product functionality (was non-functional/disabled)
-
-**Current product model:**
-- **Products**: Catalog items with name, SKU, category, description, status
-- **Opportunity-products**: Simple association tracking with optional notes
-
-**Rationale**: Pricing is highly dynamic and varies per customer, distributor, and context. Storing static pricing in the product catalog created complexity without adding value. Price negotiation and quotes are better handled outside the product catalog.
-
-**Migration**: See `supabase/migrations/20251028040008_remove_product_pricing_and_uom.sql`
+- **Pricing Removal (2025-10-29)**: Products now track associations only, no pricing/UOM. See migration `20251028040008_remove_product_pricing_and_uom.sql`
+- **Deal → Opportunity Migration (v0.2.0)**: Enhanced schema with multi-participant support and activity tracking
 
 ## Core Principles
 
