@@ -57,7 +57,7 @@ This section documents where the actual implementation differs from the original
 - **Completion Estimate:** 35% incomplete (~10 days work to elevate to full module)
 
 **Reports Module - INFRASTRUCTURE ONLY**
-- **PRD Specification:** 3 report pages (Opportunities by Principal ⭐, Weekly Activity, Pipeline Status)
+- **PRD Specification:** 2 report pages (Opportunities by Principal ⭐, Weekly Activity Summary)
 - **Actual Implementation:** CSV export infrastructure 100%, but zero report pages
 - **Critical Gap:** OpportunitiesByPrincipal page ⭐ (HIGHEST PRIORITY REPORT) missing
 - **Dashboard Widget:** OpportunitiesByPrincipal widget EXISTS and is complete

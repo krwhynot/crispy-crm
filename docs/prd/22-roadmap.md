@@ -86,7 +86,7 @@
 - Overdue task indicators (red highlighting, badge count)
 - Daily email reminders (8 AM configurable)
 - Task API integration
-- RLS policies (admin/manager/rep access levels)
+- RLS policies (admin/manager/account-manager access levels)
 
 **Activity Tracking:**
 - Activity log component

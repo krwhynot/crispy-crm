@@ -185,7 +185,7 @@ PUT    /api/v1/users/me                 (Update own profile)
 
 **Reports/Analytics:**
 ```
-GET    /api/v1/reports/dashboard/sales-rep      (Account Manager metrics)
+GET    /api/v1/reports/dashboard/account-manager      (Account Manager metrics)
 GET    /api/v1/reports/dashboard/sales-manager  (Manager metrics)
 GET    /api/v1/reports/pipeline                 (Pipeline report data)
 GET    /api/v1/reports/forecast                 (Forecast report data)

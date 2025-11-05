@@ -53,7 +53,7 @@ This PRD is split into **27 modular documents** organized by category for easier
 
 | File | Description | Key Content |
 |------|-------------|-------------|
-| 09-dashboard.md | Dashboard & reporting module | KPI widgets, charts, metrics |
+| 14-dashboard.md | Dashboard module | Principal-centric table view with status tracking |
 | 10-search.md | Search functionality module | Global search, filters, quick find |
 | 11-notifications.md | Notification system module | Task reminders, overdue alerts |
 | 12-import-export.md | Data import/export module | CSV handling, bulk operations |
