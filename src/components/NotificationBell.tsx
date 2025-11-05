@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/atomic-crm/providers/supabase/supabase";
 import { useGetIdentity } from "ra-core";
+import { NotificationDropdown } from "./NotificationDropdown";
 
-interface NotificationBellProps {
-  onClick?: () => void;
-}
-
-export const NotificationBell = ({ onClick }: NotificationBellProps) => {
+export const NotificationBell = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const { data: identity, isLoading } = useGetIdentity();
 
@@ -72,22 +69,23 @@ export const NotificationBell = ({ onClick }: NotificationBellProps) => {
       : "Notifications";
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={onClick}
-      aria-label={ariaLabel}
-      className="relative min-h-[44px] min-w-[44px]"
-    >
-      <Bell className="h-5 w-5" />
-      {unreadCount > 0 && (
-        <span
-          className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-medium"
-          aria-hidden="true"
-        >
-          {unreadCount > 99 ? "99+" : unreadCount}
-        </span>
-      )}
-    </Button>
+    <NotificationDropdown>
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label={ariaLabel}
+        className="relative min-h-[44px] min-w-[44px]"
+      >
+        <Bell className="h-5 w-5" />
+        {unreadCount > 0 && (
+          <span
+            className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-medium"
+            aria-hidden="true"
+          >
+            {unreadCount > 99 ? "99+" : unreadCount}
+          </span>
+        )}
+      </Button>
+    </NotificationDropdown>
   );
 };
