@@ -111,7 +111,7 @@
 ### Ownership & Assignment
 - **Territory Management:** Manual assignment with self-service (Q2)
 - **Default Behavior:** New opportunities unassigned until claimed
-- **Self-Assignment:** Sales reps can claim unassigned opportunities
+- **Self-Assignment:** Account Managers can claim unassigned opportunities
 - **Manager Override:** Managers can reassign any opportunity
 - **Orphaned Records:** When user deactivated, opportunities remain with them until manually reassigned (Q4)
 
@@ -125,7 +125,7 @@
 - **Fixed Roles:** 4 predefined roles, no customization (Q10)
   - Admin
   - Sales Manager
-  - Sales Rep
+  - Account Manager
   - Read-Only
 - **No Team Hierarchy:** Flat structure, no territory or team concepts
 - **Onboarding:** Guided tour in-app (last priority feature) (Q9)

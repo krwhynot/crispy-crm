@@ -368,7 +368,7 @@ interface User {
 type UserRole =
   | 'Admin'
   | 'Sales Manager'
-  | 'Sales Rep'
+  | 'Account Manager'
   | 'Read-Only';
 ```
 

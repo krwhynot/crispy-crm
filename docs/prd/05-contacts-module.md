@@ -24,19 +24,18 @@
 | **CRUD Operations** | ✅ List, Show, Edit, Create all complete |
 | **Database Schema** | ✅ Full schema with RLS policies |
 | **Validation** | ✅ Comprehensive Zod schemas (465 lines) |
-| **Advanced Features** | ✅ JSONB arrays, Multi-org, CSV Import/Export, vCard |
+| **Advanced Features** | ✅ JSONB arrays, Multi-org, CSV Import/Export |
 
 **Completed Requirements:**
 - ✅ List view with responsive table/cards
 - ✅ Advanced filtering (Organization, Position, Account Manager, Priority)
 - ✅ Search functionality (name, organization, position, email)
-- ✅ Bulk actions (Export CSV, Export vCard, Assign Manager)
+- ✅ Bulk actions (Export CSV, Assign Manager)
 - ✅ Detail view with organization relationships
 - ✅ CRUD operations with validation
 - ✅ JSONB arrays (email/phone with types)
 - ✅ Multi-organization support
 - ✅ CSV Import/Export with smart column mapping
-- ✅ vCard export for phone import
 - ✅ Database migrations with RLS
 - ✅ Validation layer (emailAndTypeSchema, phoneNumberAndTypeSchema)
 - ✅ Test coverage for critical paths
@@ -94,7 +93,6 @@
 - Select multiple contacts
 - Actions:
   - Export to CSV
-  - Export to vCard (for phone import)
   - Assign Account Manager
   - Send Bulk Email (future phase)
 

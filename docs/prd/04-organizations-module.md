@@ -189,7 +189,7 @@
 - Distributor Rep Name (text input)
 
 **3. Account Management**
-- Primary Account Manager (searchable dropdown of Users with role Sales Rep/Manager)
+- Primary Account Manager (searchable dropdown of Users with role Account Manager/Manager)
 - Secondary Account Manager (same as above)
 - Weekly Priority (checkbox)
 

@@ -27,8 +27,8 @@
 - **Priority**: Importance level of an organization (A+, A, B, C, D)
 - **Volume**: Cases per week expected from a deal
 - **Probability**: Likelihood (0-100%) that an opportunity will close
-- **Deal Owner**: Sales rep responsible for an opportunity
-- **Account Manager**: Sales rep responsible for an organization relationship
+- **Deal Owner**: Account Manager responsible for an opportunity
+- **Account Manager**: Team member responsible for an organization relationship and its opportunities
 - **Principal**: Brand or product line manufacturer
 - **Activity**: A logged interaction (call, email, meeting, etc.)
 
