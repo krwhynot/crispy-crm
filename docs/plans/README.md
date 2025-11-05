@@ -16,7 +16,31 @@
 
 ## Implementation Order
 
-### 🚨 **Phase 1: CRITICAL (5 minutes)**
+### 🎯 **Phase 1: MVP - Principal-Centric Design (18-21 days)**
+
+**Excel Replacement Goal:** Complete within 30 days
+
+1. **[Principal-Centric Dashboard](./2025-11-04-principal-centric-dashboard.md)** (6 days)
+   - Table view showing all principals with status tracking
+   - Core question: "What's the ONE thing to do for each principal?"
+
+2. **[OpportunitiesByPrincipal Report](./2025-11-04-opportunities-by-principal-report.md)** (2 days)
+   - ⭐ Highest priority report in PRD
+
+3. **[Complete Reports Module](./2025-11-04-complete-reports-module.md)** (3 days)
+   - Weekly Activity Summary report (Pipeline Status deferred to Post-MVP)
+
+4. **[Tasks Full Module](./2025-11-04-tasks-full-module.md)** (5-7 days)
+   - Multi-assignment model (primary/secondary/tertiary)
+   - Activity integration
+   - Elevate from widget to full resource
+
+5. **[Activity Auto-Generation](./2025-11-04-activity-auto-generation.md)** (3 days)
+   - Database triggers for audit trail
+
+---
+
+### 🚨 **Phase 2: CRITICAL FIXES (5 minutes)**
 
 Execute these BEFORE production deployment:
 
@@ -25,71 +49,57 @@ Execute these BEFORE production deployment:
 
 ---
 
-### 🔥 **Phase 2: HIGH PRIORITY (13-15 days)**
-
-Complete within 2 weeks of launch:
-
-2. **[OpportunitiesByPrincipal Report](./2025-11-04-opportunities-by-principal-report.md)** (2 days)
-   - ⭐ Highest priority report in PRD
-
-3. **[User Adoption Tracking](./2025-11-04-user-adoption-tracking.md)** (3 days) ⚠️ **SECURITY UPDATED**
-   - DAU metrics dashboard
-   - **Updated:** TWO-LAYER SECURITY + GDPR compliance
-
-4. **[Global Search Bar](./2025-11-04-global-search-bar.md)** (3 days) ⚠️ **SECURITY PENDING**
-   - Unified cross-module search
-   - **Requires:** Input validation via Zod schema (see SECURITY-ADDENDUM)
-
-5. **[Complete Reports Module](./2025-11-04-complete-reports-module.md)** (3 days)
-   - Weekly Activity Summary + Pipeline Status reports
-
-6. **[Offline Mode](./2025-11-04-offline-mode.md)** (5-7 days)
-   - Service Worker + IndexedDB for trade shows
-
----
-
-### ⚙️ **Phase 3: MEDIUM PRIORITY (13-17 days)**
-
-Enterprise features:
-
-7. **[OAuth Integration](./2025-11-04-oauth-integration.md)** (5 days) ⚠️ **SECURITY PENDING**
-   - Google + Microsoft SSO
-   - **Requires:** Redirect validation (see SECURITY-ADDENDUM)
-
-8. **[Tasks Full Module](./2025-11-04-tasks-full-module.md)** (5-7 days)
-   - Elevate from widget to full resource
-
-9. **[Activity Auto-Generation](./2025-11-04-activity-auto-generation.md)** (3 days)
-   - Database triggers for audit trail
-
----
-
-### 🔧 **Phase 4: LOW PRIORITY (10-12 days)**
-
-Feature completeness:
+### 🔧 **Phase 3: REMAINING FEATURES (5 days)**
 
 10. **[Products Import/Export](./2025-11-04-products-import-export.md)** (3 days)
     - CSV import/export for products catalog
 
-11. **[vCard Export Implementation](./2025-11-04-vcard-export-implementation.md)** (2 days)
-    - Contact vCard generation (.vcf files)
-
-12. **[Two-Factor Authentication](./2025-11-04-two-factor-auth.md)** (4 days) ⚠️ **SECURITY UPDATED**
-    - TOTP with QR codes
-    - **Updated:** Crypto-secure backup codes
-
-13. **[Data Quality Widget](./2025-11-04-data-quality-widget.md)** (2 days)
+11. **[Data Quality Widget](./2025-11-04-data-quality-widget.md)** (2 days)
     - Real-time completeness monitoring
 
 ---
 
-### 📋 **Phase 5: DOCUMENTATION (1.5 days)**
+### 📋 **Phase 4: DOCUMENTATION (1.5 days)**
 
-14. **[Incident Response Playbook](./2025-11-04-incident-response-playbook.md)** (1 day)
+12. **[Incident Response Playbook](./2025-11-04-incident-response-playbook.md)** (1 day)
     - Security & operational incident procedures
 
-15. **[Manual Rollback Documentation](./2025-11-04-manual-rollback-docs.md)** (2 hours)
+13. **[Manual Rollback Documentation](./2025-11-04-manual-rollback-docs.md)** (2 hours)
     - Operator recovery guide
+
+---
+
+### ⏸️ **DEFERRED - Post-MVP**
+
+**These features are deferred to Phase 2+ per principal-centric redesign (v2.0):**
+
+14. **[User Adoption Tracking](./2025-11-04-user-adoption-tracking.md)** (3 days) ⚠️ **SECURITY UPDATED**
+    - DAU metrics dashboard
+    - **Updated:** TWO-LAYER SECURITY + GDPR compliance
+    - **Deferred:** Not critical for Excel replacement goal
+
+15. **[Global Search Bar](./2025-11-04-global-search-bar.md)** (3 days) ⚠️ **SECURITY PENDING**
+    - Unified cross-module search
+    - **Requires:** Input validation via Zod schema (see SECURITY-ADDENDUM)
+    - **Deferred:** Module-level search sufficient for MVP
+
+16. **[Offline Mode](./2025-11-04-offline-mode.md)** (5-7 days)
+    - Service Worker + IndexedDB for trade shows
+    - **Deferred:** Trade show use case, not critical for Excel replacement
+
+17. **[OAuth Integration](./2025-11-04-oauth-integration.md)** (5 days) ⚠️ **SECURITY PENDING**
+    - Google + Microsoft SSO
+    - **Requires:** Redirect validation (see SECURITY-ADDENDUM)
+    - **Deferred:** Email/password sufficient for small team MVP
+
+18. **[vCard Export Implementation](./2025-11-04-vcard-export-implementation.md)** (2 days)
+    - Contact vCard generation (.vcf files)
+    - **Deferred:** CSV export sufficient for MVP
+
+19. **[Two-Factor Authentication](./2025-11-04-two-factor-auth.md)** (4 days) ⚠️ **SECURITY UPDATED**
+    - TOTP with QR codes
+    - **Updated:** Crypto-secure backup codes
+    - **Deferred:** Security enhancement, not critical for small team MVP
 
 ---
 
@@ -117,16 +127,25 @@ Apply fixes from [SECURITY-ADDENDUM.md](./SECURITY-ADDENDUM.md) before implement
 
 ## Effort Summary
 
-| Priority | Tasks | Original Estimate | Updated Estimate | Difference |
-|----------|-------|------------------|------------------|------------|
-| CRITICAL | 3 | 4 hours | 4 hours | - |
-| HIGH | 5 | 13 days | 15 days | +2 days |
-| MEDIUM | 5 | 23-25 days | 25-27 days | +2 days |
-| LOW | 4 | 10 days | 12 days | +2 days |
-| DOCS | 2 | 1.5 days | 1.5 days | - |
-| **TOTAL** | **19** | **52-62 days** | **58-70 days** | **+6-8 days** |
+### MVP Timeline (Principal-Centric Design)
 
-**Reason for increase:** Security hardening (RLS policies, crypto fixes, GDPR compliance)
+| Phase | Tasks | Estimate |
+|-------|-------|----------|
+| **Phase 1: MVP Core** | 5 | 18-21 days |
+| **Phase 2: Critical Fixes** | 1 | 5 minutes |
+| **Phase 3: Remaining Features** | 2 | 5 days |
+| **Phase 4: Documentation** | 2 | 1.5 days |
+| **TOTAL MVP PATH** | **10** | **~25 days** |
+
+### Deferred to Post-MVP
+
+| Feature Category | Tasks | Estimate |
+|-----------------|-------|----------|
+| **Deferred Features** | 6 | 22-28 days |
+
+**Excel Replacement Goal:** MVP path completable within 30 days
+
+**Reason for timeline reduction:** Focused on principal-centric core features only. User Adoption Tracking, Global Search, Offline Mode, OAuth, vCard, and 2FA deferred to Phase 2+
 
 ---
 

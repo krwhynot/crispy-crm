@@ -1,8 +1,14 @@
 # User Adoption Tracking Dashboard Implementation Plan
 
+> **⏸️ STATUS: DEFERRED TO POST-MVP**
+>
+> **Reason:** Not critical for Excel replacement goal (30 days). Basic login tracking sufficient for MVP.
+>
+> **Rationale:** Per principal-centric redesign v2.0, user adoption metrics are nice-to-have for small team deployment. Focus is on core Account Manager workflows first.
+
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Track daily active users (DAU) and login frequency to measure #1 PRD success metric (100% team adoption in 60 days)
+**Goal:** Track daily active users (DAU) and login frequency to measure Excel replacement success
 
 **Architecture:** Create database table for login tracking, dashboard widget showing adoption metrics, and queries for user activity analysis.
 
