@@ -6,8 +6,13 @@
 
 **Architecture:** Create standard React Admin resource structure. Widget stays for quick access.
 
+**Principal-Centric Features:**
+- **Multi-Assignment Model:** Primary/Secondary/Tertiary Account Manager support
+- **Activity Integration:** Tasks create activities on completion (audit trail)
+- **Due Date Focus:** Priority field exists in schema but DEFERRED from MVP UI
+
 **Tech Stack:** React Admin Resource pattern, existing tasks table
-**Effort:** 5-7 days | **Priority:** MEDIUM | **Status:** Widget works, full module missing
+**Effort:** 5-7 days | **Priority:** HIGH (Phase 1 MVP) | **Status:** Widget works, full module needed for multi-assignment
 
 ---
 

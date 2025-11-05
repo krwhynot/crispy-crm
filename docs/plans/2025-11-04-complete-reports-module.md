@@ -2,13 +2,15 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Add 2 missing report pages (Weekly Activity Summary, Pipeline Status Report) to complete Reports module
+**Goal:** Add 1 missing MVP report page (Weekly Activity Summary) to complete Reports module
 
 **Architecture:** Reuse CSV export infrastructure (100% ready). Create List-based report pages with charts and filters.
 
 **Tech Stack:** React Admin List, Recharts, existing CSV infrastructure
-**Effort:** 3 days (1.5 days each) | **Priority:** HIGH
-**Status:** Infrastructure 100%, Report pages 0 of 3 (1 completed in separate plan)
+**Effort:** 3 days | **Priority:** HIGH
+**Status:** Infrastructure 100%, Report pages 0 of 2 MVP reports (OpportunitiesByPrincipal ⭐ in separate plan)
+
+**Note:** Pipeline Status Report deferred to Post-MVP per principal-centric redesign v2.0.
 
 ---
 
@@ -89,106 +91,50 @@ export function WeeklyActivitySummaryReport() {
 
 ---
 
-## Task 2: Pipeline Status Report (1.5 days)
+## Task 2: Finalize Module (Day 2 - Afternoon)
 
-### Step 5-7: Create Pipeline Report
-
-**File:** `src/atomic-crm/reports/PipelineStatusReport.tsx`
-
-```typescript
-import { List, Datagrid, TextField, NumberField } from 'react-admin'
-import { PieChart, Pie, Cell, Legend } from 'recharts'
-
-const PipelineChart = () => {
-  const { data } = useListContext()
-  
-  const stages = data?.reduce((acc: any, opp: any) => {
-    acc[opp.stage] = (acc[opp.stage] || 0) + 1
-    return acc
-  }, {})
-
-  const chartData = Object.entries(stages || {}).map(([name, value]) => ({
-    name,
-    value,
-  }))
-
-  return (
-    <PieChart width={400} height={300}>
-      <Pie data={chartData} dataKey="value" nameKey="name" label>
-        {chartData.map((_, index) => (
-          <Cell key={index} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Legend />
-    </PieChart>
-  )
-}
-
-export function PipelineStatusReport() {
-  return (
-    <>
-      <Typography variant="h4">Pipeline Status Report</Typography>
-      <List
-        resource="opportunities"
-        filter={{ status: 'active' }}
-        sort={{ field: 'stage', order: 'ASC' }}
-        perPage={100}
-      >
-        <PipelineChart />
-        <Datagrid>
-          <TextField source="name" />
-          <TextField source="stage" />
-          <NumberField source="probability" options={{ style: 'percent' }} />
-        </Datagrid>
-      </List>
-    </>
-  )
-}
-```
-
-### Step 8: Export Both
+### Step 5: Export Report
 
 **File:** `src/atomic-crm/reports/index.ts`
 
 ```typescript
 export { OpportunitiesByPrincipalReport } from './OpportunitiesByPrincipalReport'
 export { WeeklyActivitySummaryReport } from './WeeklyActivitySummaryReport'
-export { PipelineStatusReport } from './PipelineStatusReport'
 ```
 
-### Step 9-10: Register Routes & Menu
+### Step 6: Register Route & Menu
 
 ```typescript
 // In CRM.tsx
 <Route path="reports/weekly-activity" element={<WeeklyActivitySummaryReport />} />
-<Route path="reports/pipeline-status" element={<PipelineStatusReport />} />
 
 // In Menu.tsx
 <Menu.Item to="/reports/weekly-activity" primaryText="Weekly Activity" />
-<Menu.Item to="/reports/pipeline-status" primaryText="Pipeline Status" />
 ```
 
-### Step 11: Test & Commit
+### Step 7: Test & Commit
 
 ```bash
 npm run dev
-# Test all 3 report pages
-# Verify charts render
+# Test Weekly Activity Summary report
+# Verify activity breakdown chart renders
 # Test CSV export
 
 git add src/atomic-crm/reports/
-git commit -m "feat: complete Reports module with 2 new report pages
+git commit -m "feat: complete Reports module MVP scope
 
 - Add Weekly Activity Summary report (activity breakdown chart)
-- Add Pipeline Status Report (stage distribution pie chart)
-- Register routes in CRM.tsx
+- Register route in CRM.tsx
 - Add to reports menu
 
-Reports module: 40% → 100% complete (3 of 3 pages)
+Reports module: 40% → 100% MVP complete (2 of 2 pages)
+Note: Pipeline Status Report deferred to Post-MVP
 
 🤖 Generated with Claude Code"
 ```
 
 ---
 
-**Plan Status:** ✅ Ready | **Time:** 3 days | **Impact:** HIGH (Completes module)
+**Plan Status:** ✅ Ready | **Time:** 3 days | **Impact:** HIGH (Completes MVP module)
+
+**Note:** Pipeline Status Report deferred to Post-MVP per principal-centric redesign v2.0

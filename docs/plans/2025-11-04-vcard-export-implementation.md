@@ -1,5 +1,11 @@
 # vCard Export Implementation Plan
 
+> **⏸️ STATUS: DEFERRED TO POST-MVP**
+>
+> **Reason:** CSV export is 100% functional and sufficient for Excel replacement goal (30 days). vCard is nice-to-have.
+>
+> **Rationale:** Per principal-centric redesign v2.0, vCard export is contact polish for mobile device integration. Not critical for core Account Manager workflows.
+
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Implement vCard export for contacts (single and bulk)
@@ -7,9 +13,9 @@
 **Architecture:** Use vcard-creator library to generate vCard 4.0 files. Add export button to ContactShow and ContactList.
 
 **Tech Stack:** vcard-creator npm package, React Admin
-**Effort:** 2 days | **Priority:** LOW | **Status:** 0% (PRD claims complete but no implementation)
+**Effort:** 2 days | **Priority:** ⏸️ DEFERRED | **Status:** 0% (PRD claim removed in Task 1)
 
-**Note:** Only implement if Task 2 (Fix vCard Export Documentation) chose "implement" over "remove claim"
+**Note:** Task 1 (Fix vCard Export Documentation) removed incorrect PRD claim. Only implement if explicitly requested post-MVP.
 
 ---
 
