@@ -187,7 +187,7 @@ All 6 Phase 4 dashboard widgets have been successfully implemented, integrated, 
 
 ### Modified Files (3)
 1. `src/atomic-crm/dashboard/Dashboard.tsx` - Integrated all 6 widgets
-2. `plans/phase4-user-experience.md` - Updated task statuses
+2. `docs/implementation/active/phase4-user-experience.md` - Updated task statuses
 3. `package.json` - Added recharts dependency
 
 ### Total Lines Added
