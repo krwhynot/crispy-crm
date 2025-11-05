@@ -123,7 +123,7 @@ Account Managers don't manage hundreds of scattered contacts. They manage **3-5 
 ## 2. TARGET USERS & USE CASES
 
 ### Primary Users: Account Managers
-**Role:** Sales representatives managing 3-5 brand principals (manufacturers)
+**Role:** Account Managers managing 3-5 brand principals (manufacturers)
 **Daily Workflow:**
 1. Morning: Check dashboard for urgent principals (🔴 red status)
 2. Midday: Log activities (calls, emails, meetings)
