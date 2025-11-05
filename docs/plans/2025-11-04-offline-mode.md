@@ -1,5 +1,11 @@
 # Offline Mode Implementation Plan
 
+> **⏸️ STATUS: DEFERRED TO POST-MVP**
+>
+> **Reason:** Trade show use case is not critical for Excel replacement goal (30 days). Online-only sufficient for small team MVP.
+>
+> **Rationale:** Per principal-centric redesign v2.0, offline mode is nice-to-have for field sales. Office-based Account Managers (primary users) have reliable internet.
+
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Implement read-only offline mode with Service Worker for trade show use case
@@ -7,7 +13,7 @@
 **Architecture:** Service Worker caches static assets + IndexedDB stores last 100 viewed records. Background sync when online. Based on 527-line spike document (docs/spikes/2024-11-03-service-worker-strategy.md).
 
 **Tech Stack:** Service Worker API, Cache API, IndexedDB, Workbox (optional)
-**Effort:** 3-5 days | **Priority:** HIGH | **Status:** 0% code, 100% planned
+**Effort:** 5-7 days | **Priority:** ⏸️ DEFERRED | **Status:** 0% code, 100% planned
 
 **Reference:** All design decisions in spike document
 

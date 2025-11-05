@@ -14,12 +14,17 @@
 
 ## Executive Summary
 
-**Total Remaining Tasks:** 17 implementation tasks + 2 documentation tasks
-**Estimated Total Effort:** 52-62 days
-**Critical Path:** 4 hours (pre-launch blockers)
-**High Priority Path:** 13 days (post-launch must-haves)
+**IMPORTANT:** This plan has been superseded by the principal-centric redesign (v2.0) with a 30-day Excel replacement goal.
 
-**Key Insight:** The codebase is production-ready (85-90% complete) with excellent core functionality. Remaining work focuses on monitoring integration, user adoption metrics, and feature completeness.
+**MVP Scope (Principal-Centric v2.0):**
+- **Total MVP Tasks:** 5 core features + 2 remaining features + 2 docs
+- **Estimated MVP Effort:** ~25 days
+- **Critical Path:** 5 minutes (documentation fix)
+- **Excel Replacement Goal:** 30 days
+
+**Deferred to Post-MVP:** User Adoption Tracking, Global Search, Offline Mode, OAuth, vCard, Two-Factor Auth
+
+**Key Insight:** The codebase is production-ready (85-90% complete) with excellent core functionality. Principal-centric redesign focuses on Account Manager workflow: answering "What's the ONE thing to do for each principal this week?"
 
 ---
 
@@ -68,7 +73,9 @@
 **Priority:** HIGH
 **Blocker:** No - New feature
 
-**Why High:** Cannot measure #1 PRD success metric (100% team adoption in 60 days) without this.
+**Why High:** Cannot measure #1 PRD success metric (Excel replacement in 30 days) without this.
+
+**Note:** Per principal-centric redesign v2.0, this feature is DEFERRED to Post-MVP. Tracking basic login activity is sufficient for MVP.
 
 **Components:**
 1. Daily active users (DAU) tracking
@@ -86,11 +93,11 @@
 
 ### Task 4: Global Search Bar
 **File:** `docs/plans/2025-11-04-global-search-bar.md`
-**Time:** 2 days
-**Priority:** HIGH
+**Time:** 3 days
+**Priority:** ⏸️ DEFERRED to Post-MVP
 **Blocker:** No - Module search exists, extend it
 
-**Why High:** Better UX, PRD requirement (11-search-filtering.md). Module-level search is 100% complete, need unified global search.
+**Why Deferred:** Module-level search is 100% complete and sufficient for Excel replacement goal. Global search is UX polish, not critical for MVP.
 
 **Components:**
 1. Global search bar in top navigation
@@ -115,25 +122,26 @@
 **Why High:** Reports module is 40% complete (infrastructure + 1 widget, but 0 report pages).
 
 **Components:**
-1. Weekly Activity Summary report page (1.5 days)
-2. Pipeline Status Report page (1.5 days)
-3. Integration with reports menu
-4. Tests (unit + integration)
+1. Weekly Activity Summary report page (3 days)
+2. Integration with reports menu
+3. Tests (unit + integration)
+
+**Note:** Pipeline Status Report deferred to Post-MVP per principal-centric redesign v2.0.
 
 **Current State:**
 - ✅ CSV export infrastructure: 100%
 - ✅ OpportunitiesByPrincipal widget: 100%
-- ❌ Dedicated report pages: 0 of 3
+- ❌ Dedicated report pages: 0 of 2 (MVP scope)
 
 ---
 
 ### Task 6: Offline Mode Implementation
 **File:** `docs/plans/2025-11-04-offline-mode.md`
-**Time:** 3-5 days
-**Priority:** HIGH
+**Time:** 5-7 days
+**Priority:** ⏸️ DEFERRED to Post-MVP
 **Blocker:** No - Fully planned, needs implementation
 
-**Why High:** Trade show use case (PRD 20-performance-security.md). 527-line spike document exists with complete design.
+**Why Deferred:** Trade show use case is not critical for Excel replacement goal. Online-only CRM is sufficient for MVP (small team, office-based).
 
 **Components:**
 1. Service Worker implementation
@@ -156,11 +164,11 @@
 
 ### Task 7: OAuth Integration (Google + Microsoft)
 **File:** `docs/plans/2025-11-04-oauth-integration.md`
-**Time:** 4 days (2 days Google + 2 days Microsoft)
-**Priority:** MEDIUM
+**Time:** 5 days
+**Priority:** ⏸️ DEFERRED to Post-MVP
 **Blocker:** No - Email/password works
 
-**Why Medium:** Enterprise authentication requirement. Current email/password is 100% functional.
+**Why Deferred:** Email/password authentication is 100% functional and sufficient for small team MVP. OAuth is enterprise polish, not critical for Excel replacement.
 
 **Components:**
 1. Google OAuth provider (2 days)
@@ -242,10 +250,12 @@
 ### Task 11: vCard Export Implementation
 **File:** `docs/plans/2025-11-04-vcard-export-implementation.md`
 **Time:** 2 days
-**Priority:** LOW
+**Priority:** ⏸️ DEFERRED to Post-MVP
 **Blocker:** No - Nice-to-have feature
 
-**Note:** Only implement if Task 2 chose "implement" over "remove claim"
+**Why Deferred:** CSV export is 100% functional and sufficient for Excel replacement goal. vCard export is nice-to-have, not critical for MVP.
+
+**Note:** Task 1 removed incorrect PRD claim. Only implement if explicitly requested post-MVP.
 
 **Components:**
 1. vCard library integration (vcard-creator or similar)
@@ -261,14 +271,16 @@
 
 ### Task 12: Two-Factor Authentication
 **File:** `docs/plans/2025-11-04-two-factor-auth.md`
-**Time:** 3 days
-**Priority:** LOW
+**Time:** 4 days
+**Priority:** ⏸️ DEFERRED to Post-MVP
 **Blocker:** No - Security enhancement
+
+**Why Deferred:** Small team MVP with email/password authentication is sufficient for Excel replacement. 2FA is security enhancement, not critical for initial launch.
 
 **Components:**
 1. TOTP integration (Google Authenticator, Authy)
 2. QR code generation for 2FA setup
-3. Backup codes generation
+3. Crypto-secure backup codes (Web Crypto API)
 4. 2FA enforcement UI
 5. Tests (auth flow, recovery)
 
@@ -422,16 +434,29 @@ Incident response playbook (1 day)
 
 ---
 
-## 📊 EFFORT SUMMARY
+## 📊 EFFORT SUMMARY (Updated for Principal-Centric v2.0)
 
-| Priority | Tasks | Total Effort | Deliverable |
-|----------|-------|-------------|-------------|
-| **CRITICAL** | 3 | 4 hours | Production monitoring |
-| **HIGH** | 5 | 13 days | Core completeness |
-| **MEDIUM** | 5 | 23-25 days | Enterprise features |
-| **LOW** | 4 | 10 days | Polish |
-| **DOCS** | 2 | 1.5 days | Operations |
-| **TOTAL** | 19 | 52-62 days | 100% PRD |
+### MVP Timeline (Excel Replacement in 30 Days)
+
+| Phase | Tasks | Total Effort | Deliverable |
+|-------|-------|-------------|-------------|
+| **CRITICAL (Phase 1)** | 1 | 5 minutes | Documentation fixes |
+| **MVP CORE (Phase 1)** | 5 | 18-21 days | Principal-centric features |
+| **REMAINING (Phase 3)** | 2 | 5 days | Products, Data Quality |
+| **DOCS (Phase 4)** | 2 | 1.5 days | Operations guides |
+| **TOTAL MVP PATH** | 10 | ~25 days | Excel replacement ready |
+
+### Deferred to Post-MVP (Phase 2+)
+
+| Feature | Tasks | Total Effort | Category |
+|---------|-------|-------------|----------|
+| **User Adoption Tracking** | 1 | 3 days | Metrics |
+| **Global Search** | 1 | 3 days | UX Enhancement |
+| **Offline Mode** | 1 | 5-7 days | Trade shows |
+| **OAuth Integration** | 1 | 5 days | Enterprise auth |
+| **vCard Export** | 1 | 2 days | Contact polish |
+| **Two-Factor Auth** | 1 | 4 days | Security enhancement |
+| **TOTAL DEFERRED** | 6 | 22-28 days | Phase 2+ features |
 
 ---
 

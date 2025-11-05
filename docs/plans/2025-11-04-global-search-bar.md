@@ -1,5 +1,11 @@
 # Global Search Bar Implementation Plan
 
+> **⏸️ STATUS: DEFERRED TO POST-MVP**
+>
+> **Reason:** Module-level search is 100% complete and sufficient for Excel replacement goal (30 days).
+>
+> **Rationale:** Per principal-centric redesign v2.0, global search is UX polish, not critical for core Account Manager workflows. Each module has functional search.
+
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Add unified global search bar in top navigation for cross-module search
@@ -7,7 +13,7 @@
 **Architecture:** Extend existing module-level search (100% complete) to create global search bar with unified results page. Reuse React Admin search infrastructure.
 
 **Tech Stack:** React Admin useList, AppBar, Autocomplete component
-**Effort:** 2 days | **Priority:** HIGH | **Status:** Module search works, global missing
+**Effort:** 3 days | **Priority:** ⏸️ DEFERRED | **Status:** Module search works, global missing
 
 ---
 
