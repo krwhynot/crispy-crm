@@ -1384,3 +1384,16 @@
 [2025-11-05 16:32:01] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/planning/import-export-module/IMPLEMENTATION-TASKS.md
 [2025-11-05 17:16:19] [migration] Write: /home/krwhynot/projects/crispy-crm/.worktrees/tasks-module/supabase/migrations/20251105231533_add_tasks_multi_assignment.sql
 [2025-11-05 17:22:24] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/index.ts
+[2025-11-05 17:22:36] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/components/ReportHeader.tsx
+[2025-11-05 17:22:56] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/components/ReportFilters.tsx
+[2025-11-05 17:23:23] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/components/GroupedReportTable.tsx
+[2025-11-05 17:23:42] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/hooks/useReportExport.ts
+[2025-11-05 17:24:22] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/hooks/useOpportunitiesByPrincipal.ts
+[2025-11-05 17:24:54] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/OpportunitiesByPrincipal.tsx
+[2025-11-05 17:25:53] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/hooks/useWeeklyActivitySummary.ts
+[2025-11-05 17:26:16] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/reports/WeeklyActivitySummary.tsx
+[2025-11-05 17:26:32] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/root/CRM.tsx
+[2025-11-05 17:26:37] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/root/CRM.tsx
+[2025-11-05 17:26:54] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/layout/Header.tsx
+[2025-11-05 17:26:59] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/reports-module/src/atomic-crm/layout/Header.tsx
+[2025-11-05 17:30:41] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/columnAliases.ts
