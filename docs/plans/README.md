@@ -16,18 +16,12 @@
 
 ## Implementation Order
 
-### 🚨 **Phase 1: CRITICAL (4 hours)**
+### 🚨 **Phase 1: CRITICAL (5 minutes)**
 
 Execute these BEFORE production deployment:
 
-1. **[Initialize Performance Monitoring](./2025-11-04-initialize-performance-monitoring.md)** (5 min)
-   - Activates dormant Web Vitals framework
-
-2. **[Fix vCard Export Documentation](./2025-11-04-fix-vcard-export-docs.md)** (5 min)
+1. **[Fix vCard Export Documentation](./2025-11-04-fix-vcard-export-docs.md)** (5 min)
    - Removes incorrect PRD claims
-
-3. **[Configure External Monitoring](./2025-11-04-configure-external-monitoring.md)** (3 hours)
-   - Sentry error tracking + UptimeRobot uptime monitoring
 
 ---
 
@@ -35,45 +29,38 @@ Execute these BEFORE production deployment:
 
 Complete within 2 weeks of launch:
 
-4. **[OpportunitiesByPrincipal Report](./2025-11-04-opportunities-by-principal-report.md)** (2 days)
+2. **[OpportunitiesByPrincipal Report](./2025-11-04-opportunities-by-principal-report.md)** (2 days)
    - ⭐ Highest priority report in PRD
 
-5. **[User Adoption Tracking](./2025-11-04-user-adoption-tracking.md)** (3 days) ⚠️ **SECURITY UPDATED**
+3. **[User Adoption Tracking](./2025-11-04-user-adoption-tracking.md)** (3 days) ⚠️ **SECURITY UPDATED**
    - DAU metrics dashboard
    - **Updated:** TWO-LAYER SECURITY + GDPR compliance
 
-6. **[Global Search Bar](./2025-11-04-global-search-bar.md)** (3 days) ⚠️ **SECURITY PENDING**
+4. **[Global Search Bar](./2025-11-04-global-search-bar.md)** (3 days) ⚠️ **SECURITY PENDING**
    - Unified cross-module search
    - **Requires:** Input validation via Zod schema (see SECURITY-ADDENDUM)
 
-7. **[Complete Reports Module](./2025-11-04-complete-reports-module.md)** (3 days)
+5. **[Complete Reports Module](./2025-11-04-complete-reports-module.md)** (3 days)
    - Weekly Activity Summary + Pipeline Status reports
 
-8. **[Offline Mode](./2025-11-04-offline-mode.md)** (5-7 days)
+6. **[Offline Mode](./2025-11-04-offline-mode.md)** (5-7 days)
    - Service Worker + IndexedDB for trade shows
 
 ---
 
-### ⚙️ **Phase 3: MEDIUM PRIORITY (23-27 days)**
+### ⚙️ **Phase 3: MEDIUM PRIORITY (13-17 days)**
 
 Enterprise features:
 
-9. **[OAuth Integration](./2025-11-04-oauth-integration.md)** (5 days) ⚠️ **SECURITY PENDING**
+7. **[OAuth Integration](./2025-11-04-oauth-integration.md)** (5 days) ⚠️ **SECURITY PENDING**
    - Google + Microsoft SSO
    - **Requires:** Redirect validation (see SECURITY-ADDENDUM)
 
-10. **[Tasks Full Module](./2025-11-04-tasks-full-module.md)** (5-7 days)
-    - Elevate from widget to full resource
+8. **[Tasks Full Module](./2025-11-04-tasks-full-module.md)** (5-7 days)
+   - Elevate from widget to full resource
 
-11. **[Activity Auto-Generation](./2025-11-04-activity-auto-generation.md)** (3 days)
-    - Database triggers for audit trail
-
-12. **[Analytics Integration](./2025-11-04-analytics-integration.md)** (4 days) ⚠️ **SECURITY PENDING**
-    - Google Analytics 4
-    - **Requires:** GDPR cookie consent (see SECURITY-ADDENDUM)
-
-13. **[Workflow Timing Metrics](./2025-11-04-workflow-timing-metrics.md)** (1 day)
-    - Measure "faster than Excel" PRD metric
+9. **[Activity Auto-Generation](./2025-11-04-activity-auto-generation.md)** (3 days)
+   - Database triggers for audit trail
 
 ---
 
@@ -81,27 +68,27 @@ Enterprise features:
 
 Feature completeness:
 
-14. **[Products Import/Export](./2025-11-04-products-import-export.md)** (3 days)
+10. **[Products Import/Export](./2025-11-04-products-import-export.md)** (3 days)
     - CSV import/export for products catalog
 
-15. **[vCard Export Implementation](./2025-11-04-vcard-export-implementation.md)** (2 days)
+11. **[vCard Export Implementation](./2025-11-04-vcard-export-implementation.md)** (2 days)
     - Contact vCard generation (.vcf files)
 
-16. **[Two-Factor Authentication](./2025-11-04-two-factor-auth.md)** (4 days) ⚠️ **SECURITY UPDATED**
+12. **[Two-Factor Authentication](./2025-11-04-two-factor-auth.md)** (4 days) ⚠️ **SECURITY UPDATED**
     - TOTP with QR codes
     - **Updated:** Crypto-secure backup codes
 
-17. **[Data Quality Widget](./2025-11-04-data-quality-widget.md)** (2 days)
+13. **[Data Quality Widget](./2025-11-04-data-quality-widget.md)** (2 days)
     - Real-time completeness monitoring
 
 ---
 
 ### 📋 **Phase 5: DOCUMENTATION (1.5 days)**
 
-18. **[Incident Response Playbook](./2025-11-04-incident-response-playbook.md)** (1 day)
+14. **[Incident Response Playbook](./2025-11-04-incident-response-playbook.md)** (1 day)
     - Security & operational incident procedures
 
-19. **[Manual Rollback Documentation](./2025-11-04-manual-rollback-docs.md)** (2 hours)
+15. **[Manual Rollback Documentation](./2025-11-04-manual-rollback-docs.md)** (2 hours)
     - Operator recovery guide
 
 ---
