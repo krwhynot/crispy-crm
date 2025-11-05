@@ -7,7 +7,7 @@
 - 📋 [README - Master Index](./00-README.md)
 - 🗄️ [Data Architecture](./02-data-architecture.md) - Notifications table schema
 - 🎨 [Design System](./15-design-tokens.md) - Notification bell, dropdown, and badges
-- 🔗 [Tasks Widget](./08-tasks-widget.md) - Overdue task notifications source
+- 🔗 [Tasks Module](./08-tasks-module.md) - Overdue task notifications source
 - ⚙️ [Technical Stack](./18-tech-stack.md) - Notification delivery mechanism
 ---
 

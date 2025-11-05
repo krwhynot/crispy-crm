@@ -251,7 +251,7 @@ Account Managers don't manage hundreds of scattered contacts. They manage **3-5 
 
 ### Terminology
 - **Principal:** Brand or manufacturer (e.g., Ocean Hugger Foods, Fishpeople Seafood)
-- **Account Manager:** Sales representative managing 3-5 principals
+- **Account Manager:** Team member managing 3-5 principals
 - **Stuck:** Opportunity in same stage for 30+ days
 - **Activity:** Logged interaction (call, email, meeting, note)
 
