@@ -8,6 +8,41 @@
 
 ---
 
+## Key Design Decisions (From Review)
+
+**Terminology:**
+- UI: "Sales Rep" → "Account Manager" everywhere
+- Database: Keep `sales` table as-is (no migration risk)
+- Code: Add UI labels for "Account Manager" role
+
+**Task Assignment Model:**
+- Primary Account Manager (required)
+- Secondary Account Manager (optional)
+- Tertiary Account Manager (optional)
+- Database fields: `primary_account_manager_id`, `secondary_account_manager_id`, `tertiary_account_manager_id`
+
+**Report Priority:**
+1. Opportunities by Principal (2 days) - CRITICAL, build first
+2. Weekly Activity Summary (2 days) - CRITICAL, build second
+3. Pipeline Status (2 days) - DEFERRED to post-launch
+
+**Dashboard Layout:**
+- **Table format** (not cards or grid)
+- More compact, see all principals at once
+- Better for desktop + iPad landscape
+
+**Task Priority Field:**
+- **Omitted** from MVP
+- Use due date alone for sorting
+- Can add later if Account Managers request it
+
+**Testing Strategy:**
+- Build all 3 features (18-21 days)
+- Then test with Account Managers
+- Iterate based on feedback
+
+---
+
 ## Executive Summary
 
 This design replaces the current dashboard-centric CRM with a principal-focused workflow. Sales reps represent food brands (principals) and sell to distributors (organizations). The #1 question reps ask is: "What must I do this week to move each principal forward?"
@@ -44,11 +79,13 @@ This design replaces the current dashboard-centric CRM with a principal-focused 
 **Opportunities** = Potential sales of principal products to organizations
 **Contacts** = Decision-makers at organizations
 
-**Sales Rep Workflow:**
-1. Rep represents 3-5 principals
-2. Rep has 15-20 active opportunities across multiple organizations
-3. Rep must prioritize: "Which principal needs attention this week?"
-4. Rep logs tasks (calls, demos, follow-ups) and activities (what actually happened)
+**Account Manager Workflow:**
+1. Account Manager represents 3-5 principals
+2. Account Manager has 15-20 active opportunities across multiple organizations
+3. Account Manager must prioritize: "Which principal needs attention this week?"
+4. Account Manager logs tasks (calls, demos, follow-ups) and activities (what actually happened)
+
+**Note:** UI shows "Account Manager" but database uses `sales` table (existing schema)
 
 ### Success Criteria
 
@@ -73,54 +110,45 @@ This design replaces the current dashboard-centric CRM with a principal-focused 
 
 ### User Story
 
-> As a sales rep, when I log in, I see my principals ranked by urgency so I know which one needs my focus today.
+> As an Account Manager, when I log in, I see my principals ranked by urgency so I know which one needs my focus today.
 
 ### Dashboard Layout
 
-**Top Section: Principal Cards (User-Filtered)**
+**Table Format (Compact, See All Principals at Once)**
 
 ```
 My Principals - Week of Nov 4-10
 
-┌─── Brand A ──────────────────────────────────┐
-│ 8 tasks (2 overdue ⚠️) | 12 activities      │
-│                                               │
-│ Top Opportunity:                             │
-│ • Restaurant ABC - Negotiation - $5,000      │ [Click → Opportunity]
-│                                               │
-│ Action Needed:                               │
-│ • Call about pricing (Due Nov 6 ⚠️)          │ [Click → Task]
-│ • Send samples (Due Nov 6 ⚠️)                │ [Click → Task]
-│                                               │
-│ Recent Activity:                             │
-│ • Nov 4: Called Restaurant ABC               │ [Click → Organization]
-│ • Nov 3: Sent pricing to Cafe XYZ            │ [Click → Organization]
-│                                               │
-│ [View All Brand A Tasks →]                   │ [Click → Tasks filtered]
-│ [View Opportunities →]                        │ [Click → Opps filtered]
-└───────────────────────────────────────────────┘
+┌──────────┬────────────────────┬────────────────────┬──────────────────────────────┬─────────────┐
+│Principal │ Tasks              │ Activities         │ Top Opportunity              │ Actions     │
+│          │ (Overdue)          │ This Week          │                              │             │
+├──────────┼────────────────────┼────────────────────┼──────────────────────────────┼─────────────┤
+│⚠️ Brand A│ 8 tasks (2 ⚠️)     │ 12 activities      │ Restaurant ABC               │[View Tasks] │
+│          │ • Call pricing ⚠️  │ • Called Rest. ABC │ Negotiation - $5,000         │[View Opps]  │
+│          │ • Send samples ⚠️  │ • Sent pricing XYZ │                              │             │
+├──────────┼────────────────────┼────────────────────┼──────────────────────────────┼─────────────┤
+│  Brand B │ 4 tasks            │ 5 activities       │ Cafe XYZ                     │[View Tasks] │
+│          │ • Send pricing     │ • Demo product     │ Prospecting - $2,000         │[View Opps]  │
+│          │ • Demo new item    │ • Sent email       │                              │             │
+├──────────┼────────────────────┼────────────────────┼──────────────────────────────┼─────────────┤
+│⚠️ Brand C│ 3 tasks (1 ⚠️)     │ 2 ⚠️ LOW ACTIVITY  │ Bistro 123                   │[View Tasks] │
+│          │ • Check inventory⚠️│ • Called Market    │ Closed Won - $10,000         │[View Opps]  │
+│          │                    │                    │                              │             │
+└──────────┴────────────────────┴────────────────────┴──────────────────────────────┴─────────────┘
 
-┌─── Brand B ──────────────────────────────────┐
-│ 4 tasks (0 overdue) | 5 activities           │
-│ [Similar card structure]                     │
-└───────────────────────────────────────────────┘
-
-┌─── Brand C ──────────────────────────────────┐
-│ 3 tasks (1 overdue ⚠️) | 2 activities ⚠️     │
-│ WARNING: Low activity this week              │
-│ [Similar card structure]                     │
-└───────────────────────────────────────────────┘
+All elements clickable:
+- Principal name → Filter all views to that principal
+- Task name → Task detail modal
+- Activity text → Organization detail page
+- Opportunity name → Opportunity detail page
+- [View Tasks] → Tasks page filtered to principal
+- [View Opps] → Opportunities page filtered to principal
 ```
 
-**Bottom Section: Quick Stats (Optional)**
+**Summary Stats Below Table:**
 
 ```
-This Week Summary
-┌─────────────────────────────────────────────┐
-│ Total Opportunities: 18                     │
-│ Total Tasks Due: 15 (3 overdue)             │
-│ Activities Logged: 19                       │
-└─────────────────────────────────────────────┘
+This Week: 15 tasks (3 overdue) | 19 activities logged | 18 opportunities
 ```
 
 ### Component Architecture
