@@ -155,8 +155,8 @@ The following must be completed in sequence:
 - [ ] Principal tracking on every opportunity ⭐
 - [ ] Basic CRUD for all 4 entities
 - [ ] CSV import/export
-- [ ] 3 reports (Principal focus)
-- [ ] Fixed dashboard
+- [ ] 2 MVP reports (Opportunities by Principal ⭐, Weekly Activity Summary)
+- [ ] Principal-centric dashboard (table view)
 - [ ] Search (at minimum: module-level)
 
 ### Should Have

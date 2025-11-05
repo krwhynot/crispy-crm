@@ -13,7 +13,8 @@
 - ✅ CSV Import (contacts, organizations) - Full import dialogs with preview and logic
 
 **Remaining Work (~35h):**
-- ❌ Three Reports (Opportunities by Principal, Weekly Activity, Filtered Exports) - ~20h
+- ❌ Two MVP Reports (Opportunities by Principal ⭐, Weekly Activity Summary) - ~14h
+- _Note: Pipeline Status Report deferred to Post-MVP_
 - ❌ Bulk Delete with safety confirmations - ~10h
 - ❌ Additional testing and polish - ~5h
 
@@ -24,11 +25,13 @@
 Phase 5 implements essential data management and reporting capabilities:
 
 **Core Deliverables:**
-1. **Three Reports** (Opportunities by Principal, Weekly Activity, Filtered Exports)
+1. **Two MVP Reports** (Opportunities by Principal ⭐, Weekly Activity Summary)
 2. **CSV Import** with flexible column mapping UI
 3. **CSV Export** from all list views
 4. **Bulk Delete** with safety confirmations
 5. **Data Validation** and error handling
+
+_Note: Pipeline Status Report deferred to Post-MVP per principal-centric redesign v2.0_
 
 **Key Design Principles:**
 - **Simple by Design:** CSV-only exports, no complex analytics
@@ -38,7 +41,7 @@ Phase 5 implements essential data management and reporting capabilities:
 - **Flexible Import:** Accept any CSV with intelligent column matching
 
 **Success Criteria:**
-- All three reports generate correct CSV outputs
+- Both MVP reports generate correct CSV outputs
 - Column mapping UI handles common field name variations
 - Bulk delete requires two-step confirmation
 - Import handles validation errors gracefully

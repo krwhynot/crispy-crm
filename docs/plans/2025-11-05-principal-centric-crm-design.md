@@ -2,9 +2,9 @@
 
 **Date:** November 5, 2025
 **Status:** APPROVED - Ready for Implementation
-**Estimated Effort:** 18-21 days
+**Estimated Effort:** 17-20 days (MVP scope: 2 reports)
 **Priority:** CRITICAL - Excel Replacement MVP
-**Last Reviewed:** November 5, 2025 (stakeholder approval received)
+**Last Reviewed:** November 5, 2025 (stakeholder approval received, Pipeline Status deferred)
 
 ---
 
@@ -55,7 +55,7 @@ This design replaces the current dashboard-centric CRM with a principal-focused 
 
 **What changes:**
 - Dashboard page: Delete all 13 existing widgets, build principal-centric view
-- Reports: Add 3 report pages with principal filtering
+- Reports: Add 2 MVP report pages with principal filtering (Pipeline Status deferred)
 - Tasks: Upgrade from embedded widget to full resource module with activity integration
 
 **What we cut from original plan:**
@@ -344,74 +344,7 @@ Brand A,Cafe XYZ,Cafe XYZ,Prospecting,2000,2025-11-15,Sarah
 
 ---
 
-### Report 2: Pipeline Status (2 days)
-
-**User Story:**
-> As a sales rep, I want to see which opportunities are stuck in each stage and which are closing soon so I can prioritize follow-ups.
-
-**Page:** `/reports/pipeline-status`
-
-**Layout:**
-
-```
-Pipeline Status Report
-
-Filters:
-[Principal: All ▼] [Sales Rep: Me ▼] [Time Period: This Quarter ▼]
-
-[Export CSV]
-
-Stage: Prospecting (8 opportunities)
-┌──────────────────────────────────────────────────────────┐
-│ Opportunity        │ Principal │ Days in Stage │ Value   │
-├────────────────────┼───────────┼───────────────┼─────────┤
-│ Restaurant ABC     │ Brand A   │ 45 days ⚠️    │ $5,000  │ [Click → Opp]
-│ Cafe XYZ           │ Brand B   │ 12 days       │ $2,000  │
-└──────────────────────────────────────────────────────────┘
-
-Stage: Negotiation (5 opportunities)
-┌──────────────────────────────────────────────────────────┐
-│ [Similar table]                                          │
-└──────────────────────────────────────────────────────────┘
-
-Closing This Month (3 opportunities)
-┌──────────────────────────────────────────────────────────┐
-│ Bistro 123         │ Brand C   │ Nov 15        │ $10,000 │
-│ Market ABC         │ Brand A   │ Nov 20        │ $8,000  │
-└──────────────────────────────────────────────────────────┘
-```
-
-**Implementation:**
-
-**File:** `src/atomic-crm/reports/PipelineStatus.tsx`
-
-**Logic:**
-```typescript
-// Group by stage
-const byStage = groupBy(opportunities, 'stage');
-
-// Calculate days in stage
-const enriched = opportunities.map(opp => ({
-  ...opp,
-  daysInStage: differenceInDays(new Date(), opp.stage_changed_at || opp.created_at),
-  isStuck: differenceInDays(new Date(), opp.stage_changed_at) > 30,
-  isClosingSoon: opp.expected_close_date &&
-                  differenceInDays(opp.expected_close_date, new Date()) <= 30
-}));
-
-// Highlight stuck (>30 days in stage)
-const stuck = enriched.filter(o => o.isStuck);
-```
-
-**CSV Export:**
-```csv
-Stage,Opportunity,Principal,Days in Stage,Value,Close Date,Status
-Prospecting,Restaurant ABC,Brand A,45,5000,2025-12-01,Stuck
-```
-
----
-
-### Report 3: Weekly Activity Summary (1 day)
+### Report 2: Weekly Activity Summary (1 day)
 
 **User Story:**
 > As a sales manager, I want to see how many activities each rep logged this week, grouped by principal, so I can spot low activity and coach the team.
@@ -962,7 +895,7 @@ ALTER TABLE activities ADD COLUMN contact_id BIGINT REFERENCES contacts(id);
 
 ---
 
-### Phase 2: Reports Module (5 days)
+### Phase 2: Reports Module (4 days - MVP Scope)
 
 **Day 1-2: Opportunities by Principal Report**
 - Build report page layout
@@ -971,15 +904,7 @@ ALTER TABLE activities ADD COLUMN contact_id BIGINT REFERENCES contacts(id);
 - Implement CSV export
 - Test with large datasets
 
-**Day 2-3: Pipeline Status Report**
-- Build report page layout
-- Calculate "days in stage"
-- Implement "stuck" detection (>30 days)
-- Implement "closing soon" detection (<30 days to close)
-- Add CSV export
-- Test calculations
-
-**Day 3-4: Weekly Activity Summary**
+**Day 2-3: Weekly Activity Summary**
 - Build report page layout
 - Implement user + principal grouping
 - Calculate activity type counts
@@ -1043,10 +968,10 @@ ALTER TABLE activities ADD COLUMN contact_id BIGINT REFERENCES contacts(id);
 - [ ] All elements are clickable with correct navigation
 - [ ] Updates in real-time when tasks/activities change
 
-✅ **Reports**
+✅ **Reports (2 MVP Reports)**
 - [ ] Opportunities by Principal: Groups, filters, exports CSV
-- [ ] Pipeline Status: Shows stuck deals, closing soon, days in stage
 - [ ] Weekly Activity: Shows activity counts by principal and user
+- _Note: Pipeline Status deferred to Post-MVP_
 
 ✅ **Tasks + Activities**
 - [ ] Tasks List page with principal grouping
