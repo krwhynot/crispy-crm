@@ -1092,3 +1092,9 @@
 [2025-11-04 17:44:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Layout.tsx
 [2025-11-04 17:47:07] [documentation] Write: /home/krwhynot/projects/crispy-crm/FOCUS_INDICATORS_VERIFICATION.md
 [2025-11-04 17:55:25] [code] Edit: /home/krwhynot/projects/crispy-crm/src/hooks/useKeyboardShortcuts.ts
+[2025-11-04 17:55:26] [code] Edit: /home/krwhynot/projects/crispy-crm/src/hooks/useKeyboardShortcuts.ts
+[2025-11-04 17:55:36] [code] Edit: /home/krwhynot/projects/crispy-crm/src/hooks/useKeyboardShortcuts.ts
+[2025-11-04 17:55:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/providers/KeyboardShortcutsProvider.tsx
+[2025-11-04 17:55:46] [code] Edit: /home/krwhynot/projects/crispy-crm/src/providers/KeyboardShortcutsProvider.tsx
+[2025-11-04 17:55:55] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/KeyboardShortcutsModal.tsx
+[2025-11-04 18:13:27] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251105001240_add_notifications_table.sql
