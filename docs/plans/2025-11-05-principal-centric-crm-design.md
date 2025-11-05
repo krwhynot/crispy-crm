@@ -50,7 +50,7 @@ This design replaces the current dashboard-centric CRM with a principal-focused 
 **Three features answer this question:**
 
 1. **Principal Dashboard** - Shows all principals with task counts, overdue indicators, and activity summaries
-2. **Reports Module** - Opportunities by Principal, Pipeline Status, Weekly Activity Summary
+2. **Reports Module** - Opportunities by Principal, Weekly Activity Summary (Pipeline Status deferred to Post-MVP)
 3. **Tasks + Activities** - Full task management with principal grouping and activity tracking
 
 **What changes:**
