@@ -1481,3 +1481,4 @@
 [2025-11-05 20:27:07] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/auth.setup.ts
 [2025-11-05 20:31:15] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/LoginPage.ts
 [2025-11-05 20:36:18] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/contacts/contacts-crud.spec.ts
+[2025-11-05 20:43:41] [documentation] Edit: /home/krwhynot/.claude/skills/playwright-e2e-testing/SKILL.md
