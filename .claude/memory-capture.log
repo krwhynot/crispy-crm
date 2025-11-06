@@ -1450,3 +1450,8 @@
 [2025-11-05 18:09:10] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/ProductImportResult.tsx
 [2025-11-05 18:10:20] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/ProductImportPreview.tsx
 [2025-11-05 18:11:49] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/ProductImportDialog.tsx
+[2025-11-05 18:12:21] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/ProductImportButton.tsx
+[2025-11-05 18:12:53] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/hooks/useExportProducts.ts
+[2025-11-05 18:13:50] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/ProductList.tsx
+[2025-11-05 18:13:57] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/ProductList.tsx
+[2025-11-05 18:20:08] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/organizations/OrganizationExportTemplateButton.tsx
