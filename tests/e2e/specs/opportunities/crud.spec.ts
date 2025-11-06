@@ -49,6 +49,14 @@ test.describe('Opportunities CRUD Operations', () => {
   });
 
   test('should create opportunity with minimal required fields', async ({ page }) => {
+    // Initialize POMs
+    const listPage = new OpportunitiesListPage(page);
+    const showPage = new OpportunityShowPage(page);
+    const formPage = new OpportunityFormPage(page);
+
+    // Navigate to opportunities list
+    await listPage.goto();
+
     // Generate unique test data using timestamp
     const timestamp = Date.now();
     const opportunityName = `Test Opportunity ${timestamp}`;
@@ -90,6 +98,14 @@ test.describe('Opportunities CRUD Operations', () => {
   });
 
   test('should create opportunity with complete data including products', async ({ page }) => {
+    // Initialize POMs
+    const listPage = new OpportunitiesListPage(page);
+    const showPage = new OpportunityShowPage(page);
+    const formPage = new OpportunityFormPage(page);
+
+    // Navigate to opportunities list
+    await listPage.goto();
+
     const timestamp = Date.now();
     const opportunityData = {
       name: `Complete Opportunity ${timestamp}`,
@@ -140,6 +156,14 @@ test.describe('Opportunities CRUD Operations', () => {
   });
 
   test('should read and display opportunity details', async ({ page }) => {
+    // Initialize POMs
+    const listPage = new OpportunitiesListPage(page);
+    const showPage = new OpportunityShowPage(page);
+    const formPage = new OpportunityFormPage(page);
+
+    // Navigate to opportunities list
+    await listPage.goto();
+
     // Create test opportunity first
     const timestamp = Date.now();
     const opportunityName = `Read Test ${timestamp}`;
@@ -171,6 +195,14 @@ test.describe('Opportunities CRUD Operations', () => {
   });
 
   test('should update opportunity details', async ({ page }) => {
+    // Initialize POMs
+    const listPage = new OpportunitiesListPage(page);
+    const showPage = new OpportunityShowPage(page);
+    const formPage = new OpportunityFormPage(page);
+
+    // Navigate to opportunities list
+    await listPage.goto();
+
     // Create test opportunity
     const timestamp = Date.now();
     const originalName = `Update Test Original ${timestamp}`;
@@ -212,6 +244,14 @@ test.describe('Opportunities CRUD Operations', () => {
   });
 
   test('should delete opportunity', async ({ page }) => {
+    // Initialize POMs
+    const listPage = new OpportunitiesListPage(page);
+    const showPage = new OpportunityShowPage(page);
+    const formPage = new OpportunityFormPage(page);
+
+    // Navigate to opportunities list
+    await listPage.goto();
+
     // Create test opportunity
     const timestamp = Date.now();
     const opportunityName = `Delete Test ${timestamp}`;
@@ -235,6 +275,13 @@ test.describe('Opportunities CRUD Operations', () => {
   });
 
   test('should handle validation errors on create', async ({ page }) => {
+    // Initialize POMs
+    const listPage = new OpportunitiesListPage(page);
+    const formPage = new OpportunityFormPage(page);
+
+    // Navigate to opportunities list
+    await listPage.goto();
+
     // Navigate to create form
     await listPage.clickCreate();
 
@@ -257,6 +304,13 @@ test.describe('Opportunities CRUD Operations', () => {
   });
 
   test('should maintain test data isolation with concurrent creates', async ({ page }) => {
+    // Initialize POMs
+    const listPage = new OpportunitiesListPage(page);
+    const formPage = new OpportunityFormPage(page);
+
+    // Navigate to opportunities list
+    await listPage.goto();
+
     // This test verifies that timestamp-based naming prevents conflicts
     const timestamp1 = Date.now();
     const name1 = `Concurrent Test ${timestamp1}`;
