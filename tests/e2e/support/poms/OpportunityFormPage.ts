@@ -313,9 +313,16 @@ export class OpportunityFormPage extends BasePage {
     await firstNameInput.waitFor({ state: 'visible', timeout: 3000 });
     await firstNameInput.fill(`TestContact${timestamp}`);
 
-    // Fill last name (also required)
+    // Fill last name (also required) - wait for it to be ready
     const lastNameInput = this.page.getByLabel(/last.*name/i);
+    await lastNameInput.waitFor({ state: 'visible', timeout: 3000 });
     await lastNameInput.fill(`TestLast${timestamp}`);
+
+    // Press Tab to trigger blur event and ensure validation runs
+    await lastNameInput.press('Tab');
+
+    // Wait a moment for validation to complete
+    await this.page.waitForTimeout(500);
 
     // Submit the contact (this auto-adds it to the opportunity)
     const saveContactButton = this.page.getByRole('button', { name: /save/i }).last();
