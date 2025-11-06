@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test';
 /**
  * E2E tests for Contacts CRUD operations
  * Tests create, read, update, and delete functionality
+ *
+ * NOTE: These tests use stored authentication state from auth.setup.ts
  */
 
 // Test data
@@ -21,25 +23,7 @@ const updatedContact = {
 
 test.describe('Contacts CRUD Operations', () => {
   test.beforeEach(async ({ page }) => {
-    // Set longer timeout for initial load
-    test.setTimeout(60000);
-
-    // Navigate to login page and wait for it to load
-    await page.goto('/', { waitUntil: 'networkidle', timeout: 30000 });
-
-    // Wait for login form to be visible
-    await page.waitForSelector('input[name="email"]', { timeout: 20000 });
-
-    // Login with test user
-    await page.fill('input[name="email"]', 'admin@test.com');
-    await page.fill('input[name="password"]', 'password123');
-    await page.click('button[type="submit"]');
-
-    // Wait for dashboard to load
-    await page.waitForURL('/#/', { timeout: 15000 });
-    await page.waitForLoadState('networkidle');
-
-    // Navigate to contacts
+    // Navigate to contacts - auth is pre-loaded from storage state
     await page.goto('/#/contacts');
     await page.waitForLoadState('networkidle');
   });

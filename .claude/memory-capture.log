@@ -1464,3 +1464,8 @@
 [2025-11-05 20:06:55] [configuration] Edit: /home/krwhynot/projects/crispy-crm/package.json
 [2025-11-05 20:11:17] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/contacts-crud.spec.ts
 [2025-11-05 20:12:53] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/helpers/auth.ts
+[2025-11-05 20:13:05] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/contacts-crud.spec.ts
+[2025-11-05 20:15:45] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/auth.setup.ts
+[2025-11-05 20:16:00] [configuration] Edit: /home/krwhynot/projects/crispy-crm/playwright.config.ts
+[2025-11-05 20:16:11] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/contacts-crud.spec.ts
+[2025-11-05 20:19:33] [documentation] Write: /home/krwhynot/.claude/skills/playwright-e2e-testing/SKILL.md
