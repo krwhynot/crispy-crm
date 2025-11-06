@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:5176',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     // Use headed mode in local development, headless in CI
@@ -47,7 +47,7 @@ export default defineConfig({
 
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:5173',
+    url: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:5176',
     reuseExistingServer: !process.env.CI,
   },
 });
