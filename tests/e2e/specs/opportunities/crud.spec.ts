@@ -21,10 +21,6 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  */
 
 test.describe('Opportunities CRUD Operations', () => {
-  let listPage: OpportunitiesListPage;
-  let showPage: OpportunityShowPage;
-  let formPage: OpportunityFormPage;
-
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
@@ -38,20 +34,10 @@ test.describe('Opportunities CRUD Operations', () => {
 
     if (isLoginFormVisible) {
       await loginPage.login('admin@test.com', 'password123');
-      // Engineering Constitution: Fail fast - wait for session to establish
-      await page.waitForTimeout(2000);
     } else {
       // Already logged in, wait for dashboard
       await page.waitForURL(/\/#\//, { timeout: 10000 });
     }
-
-    // Initialize POMs
-    listPage = new OpportunitiesListPage(page);
-    showPage = new OpportunityShowPage(page);
-    formPage = new OpportunityFormPage(page);
-
-    // Navigate to opportunities list
-    await listPage.goto();
   });
 
   test.afterEach(async () => {
