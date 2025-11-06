@@ -1,7 +1,7 @@
 # Playwright Testing Strategy for Atomic CRM
 
 **Date:** 2025-11-05
-**Status:** Design Complete | Blocked on App Initialization Issue
+**Status:** Ready for Implementation | App Initialization Issue RESOLVED ✅
 **Priority:** Pre-launch Confidence + iPad-First UI/UX + Deep Testing on Critical Features
 
 ---
@@ -17,7 +17,7 @@ This document outlines the comprehensive Playwright E2E testing strategy for Ato
 - **Smart masking for visual regression** (mask dynamic content, validate layout)
 - **Comprehensive console error monitoring** (RLS, React, Network, Design System)
 
-**Current Blocker:** React app fails to initialize in Playwright's headless browser. All tests timeout waiting for DOM elements. Root cause investigation required before test implementation.
+**Previous Blocker (RESOLVED ✅):** React app failed to initialize in Playwright due to KeyboardShortcutsProvider calling `useNavigate()` before React Admin's Router was established. Fixed by moving KeyboardShortcutsProvider from wrapping `<Admin>` to inside the Layout component (src/atomic-crm/layout/Layout.tsx:16-42).
 
 ---
 
@@ -285,6 +285,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    // Use headed mode in local development for better debugging
+    headless: !!process.env.CI,
   },
 
   // Multi-device testing (iPad-first)
@@ -365,47 +367,53 @@ test('should have no a11y violations', async ({ page }) => {
 
 ---
 
-## Current Blocker: App Initialization Issue
+## Resolution: App Initialization Issue (2025-11-05)
 
-**Problem:** React app fails to initialize in Playwright's headless browser.
+**Problem:** React app failed to initialize in Playwright's headless browser. All tests timed out waiting for DOM elements.
 
-**Symptoms:**
-- All tests timeout waiting for DOM elements (login form, dashboard, etc.)
-- Tests using `page.waitForLoadState('networkidle')` hang indefinitely
-- Screenshots show blank white page
-- No console errors captured (app never starts)
+**Root Cause Identified:**
+KeyboardShortcutsProvider (src/providers/KeyboardShortcutsProvider.tsx:22) called `useNavigate()` during render, but was positioned OUTSIDE React Admin's Router context in CRM.tsx:122-158.
 
-**Evidence:**
-- HTML loads fine: `<script type="module" src="src/main.tsx"></script>`
-- Dev server running on port 5173
-- Supabase running locally
-- App works in regular browser
-- `curl http://localhost:5173` returns valid HTML
+**Component Hierarchy (BEFORE - BROKEN):**
+```tsx
+<ConfigurationProvider>
+  <KeyboardShortcutsProvider>  ← useNavigate() called HERE
+    <Admin>                      ← Router created HERE (inside CoreAdminUI)
+      ...
+    </Admin>
+  </KeyboardShortcutsProvider>
+</ConfigurationProvider>
+```
 
-**Likely Causes:**
-1. Vite's React fast refresh not compatible with headless mode
-2. Missing environment variables in Playwright context
-3. Service worker or async module loading issue
-4. React error boundary catching silent errors
-5. Module resolution issue in test environment
+**Error:** "useNavigate() may be used only in the context of a <Router> component."
 
-**Next Steps:**
-1. Run with `--headed` flag to see actual browser behavior
-2. Add `console.log` debugging in app initialization
-3. Check if Vite/React/Supabase have initialization race condition
-4. Try different browser contexts or disable specific Vite features
+**Solution Implemented:**
+Moved KeyboardShortcutsProvider to render INSIDE the Router context by integrating it into Layout.tsx:
+- **File:** src/atomic-crm/layout/Layout.tsx
+- **Lines:** 10 (import), 16-42 (wrapping layout children)
+- **Removed from:** src/atomic-crm/root/CRM.tsx:122-158
 
-**Impact:** Cannot write or run E2E tests until this is resolved. Unit tests work fine.
+**Results:**
+- ✅ Auth setup: 3.8s (previously 120s timeout)
+- ✅ Test suite: 19.6s for 7 tests (6 passed)
+- ✅ user.json created successfully
+- ✅ React app loads in Playwright headless mode
+
+**Investigation Tools Used:**
+- Diagnostic test: tests/e2e/specs/diagnostics/env-vars.spec.ts
+- Zen MCP debug workflow (5-step systematic investigation)
+- Console error monitoring
+- Perplexity research for common Vite+Playwright issues
 
 ---
 
 ## Implementation Checklist
 
-### Phase 1: Resolve Blocker
-- [ ] Investigate why React app doesn't initialize in Playwright
-- [ ] Fix environment configuration or Vite settings
-- [ ] Verify basic navigation works in headless browser
-- [ ] Document solution for future reference
+### Phase 1: Resolve Blocker ✅ COMPLETE
+- [x] Investigate why React app doesn't initialize in Playwright
+- [x] Fix environment configuration or Vite settings
+- [x] Verify basic navigation works in headless browser
+- [x] Document solution for future reference
 
 ### Phase 2: Core Infrastructure
 - [ ] Create `support/poms/BasePage.ts`
@@ -464,14 +472,24 @@ test('should have no a11y violations', async ({ page }) => {
 
 ## Revision History
 
-- **2025-11-05**: Initial design complete (brainstorming + Zen consultation)
+- **2025-11-05 (Evening)**: App initialization blocker RESOLVED
+  - Root cause: KeyboardShortcutsProvider calling useNavigate() outside Router context
+  - Solution: Moved KeyboardShortcutsProvider from CRM.tsx to Layout.tsx
+  - Results: Auth setup 3.8s (was 120s timeout), 6/7 tests passing
+  - Created diagnostic test (tests/e2e/specs/diagnostics/env-vars.spec.ts)
+  - Ready for Phase 2 implementation
+
+- **2025-11-05 (Morning)**: Initial design complete (brainstorming + Zen consultation)
   - Identified priorities: pre-launch confidence, iPad-first, deep testing
   - Designed Zen-optimized structure (support/, specs/, merged visual tests)
-  - Created Playwright testing skill
+  - Created Playwright testing skill (~/.claude/skills/playwright-e2e-testing/)
   - Discovered app initialization blocker
 
 ---
 
-**Document Status:** READY FOR IMPLEMENTATION (pending blocker resolution)
+**Document Status:** READY FOR IMPLEMENTATION ✅
 
-**Next Action:** Investigate and resolve React app initialization issue in Playwright headless browser.
+**Next Actions:**
+1. Implement Phase 2: Core infrastructure (BasePage, console-monitor, fixtures, POMs)
+2. Implement Phase 3: Priority tests (Smoke, Opportunities, Dashboard, Contacts)
+3. Set up CI/CD integration with test execution strategy
