@@ -184,13 +184,13 @@ test.describe('Dashboard Tests', () => {
 
   test.describe('Functional Tests', () => {
     test('Quick Add buttons navigate correctly', async ({ page }) => {
-      // Test New Contact button navigation
+      // Test New Contact button navigation (React Admin uses hash routing)
       const newContactButton = page.getByRole('link', { name: /new contact/i });
-      await expect(newContactButton).toHaveAttribute('href', '/contacts/create');
+      await expect(newContactButton).toHaveAttribute('href', '#/contacts/create');
 
       // Test New Opportunity button navigation
       const newOpportunityButton = page.getByRole('link', { name: /new opportunity/i });
-      await expect(newOpportunityButton).toHaveAttribute('href', '/opportunities/create');
+      await expect(newOpportunityButton).toHaveAttribute('href', '#/opportunities/create');
     });
 
     test('widgets display data content', async ({ page }) => {
