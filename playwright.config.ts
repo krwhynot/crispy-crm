@@ -11,6 +11,8 @@ export default defineConfig({
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Use headed mode in local development, headless in CI
+    headless: !!process.env.CI,
   },
 
   projects: [

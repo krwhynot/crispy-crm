@@ -39,6 +39,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       </footer>
       <KeyboardShortcutsModal open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       <Notification />
-    </>
+    </KeyboardShortcutsProvider>
   );
 };
