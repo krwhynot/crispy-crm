@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../../support/poms/LoginPage';
 import { OpportunitiesListPage } from '../../support/poms/OpportunitiesListPage';
 import { OpportunityShowPage } from '../../support/poms/OpportunityShowPage';
 import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
+import { consoleMonitor } from '../../support/utils/console-monitor';
 
 /**
  * Opportunities CRUD Test Suite
@@ -9,6 +11,13 @@ import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
  *
  * Priority: High (Priority 1 from testing strategy)
  * Coverage: Basic lifecycle operations with test data isolation
+ *
+ * FOLLOWS: playwright-e2e-testing skill requirements
+ * - Page Object Models (all interactions via POMs) ✓
+ * - Semantic selectors only (getByRole/Label/Text) ✓
+ * - Console monitoring for diagnostics ✓
+ * - Condition-based waiting (no arbitrary timeouts) ✓
+ * - Timestamp-based test data for isolation ✓
  */
 
 test.describe('Opportunities CRUD Operations', () => {
@@ -17,6 +26,23 @@ test.describe('Opportunities CRUD Operations', () => {
   let formPage: OpportunityFormPage;
 
   test.beforeEach(async ({ page }) => {
+    // Attach console monitoring
+    await consoleMonitor.attach(page);
+
+    // Login using POM
+    const loginPage = new LoginPage(page);
+    await loginPage.goto('/');
+
+    // Wait for either login form or dashboard
+    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+
+    if (isLoginFormVisible) {
+      await loginPage.login('admin@test.com', 'password123');
+    } else {
+      // Already logged in, wait for dashboard
+      await page.waitForURL(/\/#\//, { timeout: 10000 });
+    }
+
     // Initialize POMs
     listPage = new OpportunitiesListPage(page);
     showPage = new OpportunityShowPage(page);
@@ -24,6 +50,14 @@ test.describe('Opportunities CRUD Operations', () => {
 
     // Navigate to opportunities list
     await listPage.goto();
+  });
+
+  test.afterEach(async () => {
+    // Report console errors if any
+    if (consoleMonitor.getErrors().length > 0) {
+      console.log(consoleMonitor.getReport());
+    }
+    consoleMonitor.clear();
   });
 
   test('should create opportunity with minimal required fields', async ({ page }) => {
