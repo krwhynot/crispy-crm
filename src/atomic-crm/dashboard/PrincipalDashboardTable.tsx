@@ -102,7 +102,7 @@ const NextActionField = ({ record }: { record?: DashboardPrincipalSummary }) => 
 
 export const PrincipalDashboardTable = () => {
   const { identity } = useGetIdentity();
-  const salesId = identity?.sales_id;
+  const salesId = identity?.id;
 
   // If no identity yet, show nothing (loading handled by parent)
   if (!salesId) {
