@@ -58,7 +58,7 @@ const Header = () => {
               />
             </Link>
             <div>
-              <nav className="hidden md:flex">
+              <nav className="flex">
                 <NavigationTab
                   label="Dashboard"
                   to="/"
