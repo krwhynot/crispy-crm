@@ -1529,3 +1529,6 @@
 [2025-11-05 22:04:37] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/debug-opportunities-nav.spec.ts
 [2025-11-05 22:04:48] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/debug-opportunities-nav.spec.ts
 [2025-11-05 22:18:30] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/commons/activity.ts
+[2025-11-05 22:20:35] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106042002_fix_activity_log_deleted_at.sql
+[2025-11-05 22:22:35] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106042002_fix_activity_log_deleted_at.sql
+[2025-11-05 22:28:10] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/OpportunitiesListPage.ts
