@@ -1429,3 +1429,10 @@
 [2025-11-05 17:52:06] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/tasks-module/src/atomic-crm/validation/__tests__/tasks/validation.test.ts
 [2025-11-05 17:52:31] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/tasks-module/src/atomic-crm/validation/__tests__/tasks/validation.test.ts
 [2025-11-05 17:59:20] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/OpportunityImportDialog.tsx
+[2025-11-05 18:00:29] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/OpportunityImportPreview.tsx
+[2025-11-05 18:01:15] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/OpportunityImportResult.tsx
+[2025-11-05 18:01:25] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/OpportunityImportButton.tsx
+[2025-11-05 18:01:38] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/OpportunityList.tsx
+[2025-11-05 18:01:44] [code] Edit: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/OpportunityList.tsx
+[2025-11-05 18:02:06] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/opportunities/opportunities_export.csv
+[2025-11-05 18:06:23] [code] Write: /home/krwhynot/projects/crispy-crm/.worktrees/import-export-module/src/atomic-crm/products/productColumnAliases.ts
