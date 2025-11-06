@@ -1469,3 +1469,12 @@
 [2025-11-05 20:16:00] [configuration] Edit: /home/krwhynot/projects/crispy-crm/playwright.config.ts
 [2025-11-05 20:16:11] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/contacts-crud.spec.ts
 [2025-11-05 20:19:33] [documentation] Write: /home/krwhynot/.claude/skills/playwright-e2e-testing/SKILL.md
+[2025-11-05 20:20:48] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/utils/console-monitor.ts
+[2025-11-05 20:20:57] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/BasePage.ts
+[2025-11-05 20:21:03] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/LoginPage.ts
+[2025-11-05 20:21:14] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/ContactsListPage.ts
+[2025-11-05 20:21:30] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/ContactFormPage.ts
+[2025-11-05 20:21:42] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/ContactShowPage.ts
+[2025-11-05 20:21:50] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/fixtures/authenticated.ts
+[2025-11-05 20:22:13] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/contacts/contacts-crud.spec.ts
+[2025-11-05 20:24:40] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/fixtures/authenticated.ts
