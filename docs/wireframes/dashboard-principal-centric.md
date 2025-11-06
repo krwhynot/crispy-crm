@@ -1,8 +1,21 @@
 # Dashboard Wireframe - Principal-Centric View
 
-**PRD Reference:** docs/prd/14-dashboard.md
-**Design Doc:** docs/plans/2025-11-05-principal-centric-crm-design.md
-**Implementation:** src/atomic-crm/dashboard/Dashboard.tsx
+## Document References
+
+**Primary PRD:** [docs/prd/14-dashboard.md](../prd/14-dashboard.md)
+
+**Related PRD Documents:**
+- [02-data-architecture.md](../prd/02-data-architecture.md) - Database views and CTE structure
+- [04-organizations-module.md](../prd/04-organizations-module.md) - Principal organization management
+- [06-opportunities-module.md](../prd/06-opportunities-module.md) - Opportunity tracking and stages
+- [16-design-components.md](../prd/16-design-components.md) - UI component patterns (tables, status indicators)
+- [17-design-layout.md](../prd/17-design-layout.md) - Responsive layout patterns (desktop/iPad/mobile)
+
+**Design Doc:** [docs/plans/2025-11-05-principal-centric-crm-design.md](../plans/2025-11-05-principal-centric-crm-design.md)
+
+**Implementation:**
+- `src/atomic-crm/dashboard/Dashboard.tsx` - Main container
+- `src/atomic-crm/dashboard/PrincipalDashboardTable.tsx` - Table component
 
 ---
 
