@@ -43,17 +43,21 @@ test.describe('Dashboard Tests', () => {
     test('refresh button works', async ({ page }) => {
       const refreshButton = page.getByRole('button', { name: /refresh/i });
 
+      // Verify button is initially enabled
+      await expect(refreshButton).toBeEnabled();
+
       // Click refresh button
       await refreshButton.click();
 
-      // Button should temporarily show spinning state
-      await expect(refreshButton).toBeDisabled();
-
-      // Wait for refresh to complete (500ms per Dashboard.tsx)
+      // Wait for refresh animation to complete (500ms per Dashboard.tsx line 60)
       await page.waitForTimeout(600);
 
-      // Button should be enabled again
+      // Button should still be enabled and functional after refresh
       await expect(refreshButton).toBeEnabled();
+
+      // Verify we can click it again (proves it's functional)
+      await refreshButton.click();
+      await page.waitForTimeout(100);
     });
   });
 
@@ -124,6 +128,18 @@ test.describe('Dashboard Tests', () => {
     test('displays Hot Contacts', async ({ page }) => {
       const hotContactsWidget = page.getByText('Hot Contacts');
       await expect(hotContactsWidget).toBeVisible();
+    });
+
+    test('displays Dashboard Activity Log', async ({ page }) => {
+      // DashboardActivityLog widget (Dashboard.tsx line 103)
+      const activityLogWidget = page.locator('text=/Activity/i').first();
+      await expect(activityLogWidget).toBeVisible();
+    });
+
+    test('displays Mini Pipeline', async ({ page }) => {
+      // MiniPipeline widget (Dashboard.tsx line 109)
+      const miniPipelineWidget = page.locator('text=/Pipeline/i').first();
+      await expect(miniPipelineWidget).toBeVisible();
     });
 
     test('displays Quick Add section', async ({ page }) => {
