@@ -41,14 +41,18 @@ export class LoginPage extends BasePage {
       { timeout: 60000 }
     );
 
-    // If already logged in, we're done
-    if (this.page.url().includes('/#/')) {
+    // Check if login form is present (indicates NOT logged in)
+    const emailInput = this.page.getByLabel(/email/i);
+    const isLoginFormVisible = await emailInput.isVisible();
+
+    if (!isLoginFormVisible) {
+      // No login form visible = already logged in
       console.log('Already logged in, skipping login');
       return;
     }
 
-    // Otherwise, perform login
-    await expect(this.getTextInput(/email/i)).toBeVisible({ timeout: 5000 });
+    // Login form is visible, perform login
+    await expect(emailInput).toBeVisible({ timeout: 5000 });
     await this.login('admin@test.com', 'password123');
   }
 }

@@ -10,9 +10,10 @@ import { BasePage } from './BasePage';
 export class DashboardPage extends BasePage {
   /**
    * Navigate to dashboard
+   * Uses relative path for baseURL portability
    */
   async navigate(): Promise<void> {
-    await this.goto('/#/');
+    await this.goto('/');
     await this.waitForURL(/\/#\//, 10000);
 
     // Wait for dashboard to be fully loaded by checking for heading
