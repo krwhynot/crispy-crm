@@ -31,7 +31,10 @@ export class OpportunitiesListPage extends BasePage {
    * Get create button
    */
   getCreateButton() {
-    return this.page.getByRole('link', { name: /create|new opportunity/i });
+    // Accept both button and link roles for flexibility
+    return this.page.getByRole('button', { name: /create|new opportunity/i }).or(
+      this.page.getByRole('link', { name: /create|new opportunity/i })
+    );
   }
 
   /**
