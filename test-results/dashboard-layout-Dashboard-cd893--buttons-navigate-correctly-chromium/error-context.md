@@ -1,0 +1,271 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e6]:
+        - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+          - /url: "#/"
+          - generic "MFB Master Food Brokers" [ref=e8]
+        - navigation [ref=e10]:
+          - link "Dashboard" [ref=e11] [cursor=pointer]:
+            - /url: "#/"
+          - link "Contacts" [ref=e12] [cursor=pointer]:
+            - /url: "#/contacts"
+          - link "Organizations" [ref=e13] [cursor=pointer]:
+            - /url: "#/organizations"
+          - link "Opportunities" [ref=e14] [cursor=pointer]:
+            - /url: "#/opportunities"
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: "#/products"
+        - generic [ref=e16]:
+          - button "Toggle theme" [ref=e17] [cursor=pointer]:
+            - img
+            - generic [ref=e18]: Toggle theme
+          - button [ref=e19] [cursor=pointer]:
+            - img
+          - button "Notifications" [ref=e20] [cursor=pointer]:
+            - img
+          - button "n" [ref=e21] [cursor=pointer]:
+            - generic [ref=e23]: "n"
+    - main [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - heading "Dashboard" [level=1] [ref=e27]
+          - button "Refresh dashboard" [ref=e28] [cursor=pointer]:
+            - img
+            - text: Refresh
+        - generic [ref=e29]:
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - img [ref=e34]
+              - heading "Total Contacts" [level=3] [ref=e39]
+            - generic [ref=e40]:
+              - generic [ref=e41]: "2021"
+              - generic [ref=e42]: contacts
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - img [ref=e47]
+              - heading "Total Organizations" [level=3] [ref=e51]
+            - generic [ref=e52]:
+              - generic [ref=e53]: "1811"
+              - generic [ref=e54]: organizations
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - img [ref=e59]
+              - heading "Activities This Week" [level=3] [ref=e61]
+            - generic [ref=e62]:
+              - generic [ref=e63]: "2"
+              - generic [ref=e64]: this week
+        - generic [ref=e65]:
+          - button "View My Open Opportunities" [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]:
+              - heading "My Open Opportunities" [level=3] [ref=e68]
+              - img [ref=e70]
+            - generic [ref=e74]:
+              - generic [ref=e75]: "13"
+              - generic [ref=e76]: opportunities
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - heading "Overdue Tasks" [level=3] [ref=e79]
+              - img [ref=e81]
+            - generic [ref=e84]:
+              - generic [ref=e85]: "0"
+              - generic [ref=e86]: No overdue tasks
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - heading "This Week's Activities" [level=3] [ref=e89]
+              - img [ref=e91]
+            - generic [ref=e94]:
+              - generic [ref=e95]: "1"
+              - generic [ref=e96]: activity this week
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - heading "Opportunities by Principal" [level=3] [ref=e99]
+              - img [ref=e101]
+            - generic [ref=e104]:
+              - button "Kaufholds 3 opportunities" [ref=e105] [cursor=pointer]:
+                - generic [ref=e106]: Kaufholds
+                - generic [ref=e107]: 3 opportunities
+              - button "Rapid Rasoi 2 opportunities" [ref=e108] [cursor=pointer]:
+                - generic [ref=e109]: Rapid Rasoi
+                - generic [ref=e110]: 2 opportunities
+              - button "Annasea 2 opportunities" [ref=e111] [cursor=pointer]:
+                - generic [ref=e112]: Annasea
+                - generic [ref=e113]: 2 opportunities
+              - button "VAF 2 opportunities" [ref=e114] [cursor=pointer]:
+                - generic [ref=e115]: VAF
+                - generic [ref=e116]: 2 opportunities
+              - button "Better Balance 2 opportunities" [ref=e117] [cursor=pointer]:
+                - generic [ref=e118]: Better Balance
+                - generic [ref=e119]: 2 opportunities
+              - button "Frites Street 2 opportunities" [ref=e120] [cursor=pointer]:
+                - generic [ref=e121]: Frites Street
+                - generic [ref=e122]: 2 opportunities
+              - generic [ref=e124]: 13 total opportunities
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - heading "Pipeline by Stage" [level=3] [ref=e127]
+              - img [ref=e129]
+            - application [ref=e135]:
+              - generic [ref=e139]:
+                - generic [ref=e141]: InitialOutreach
+                - generic [ref=e143]: Feedback Logged
+                - generic [ref=e145]: ClosedLost
+          - generic [ref=e165]:
+            - generic [ref=e166]:
+              - heading "Recent Activities" [level=3] [ref=e167]
+              - img [ref=e169]
+            - generic [ref=e172]:
+              - 'button "View activity: Contract negotiation completed" [ref=e173] [cursor=pointer]':
+                - generic [ref=e174]:
+                  - img [ref=e176]
+                  - generic [ref=e181]: null null
+                  - generic [ref=e182]: "-"
+                  - generic [ref=e183]: Meeting
+                - generic [ref=e184]: Agreed to premium pricing for year-round quality guarantee.
+                - generic [ref=e185]: 1 day ago
+              - 'button "View activity: Trade show booth visit" [ref=e186] [cursor=pointer]':
+                - generic [ref=e187]:
+                  - img [ref=e189]
+                  - generic [ref=e194]: null null
+                  - generic [ref=e195]: "-"
+                  - generic [ref=e196]: Meeting
+                - generic [ref=e197]: Great interaction at National Restaurant Show. Chef loved sa...
+                - generic [ref=e198]: 8 days ago
+              - 'button "View activity: Volume pricing discussion" [ref=e199] [cursor=pointer]':
+                - generic [ref=e200]:
+                  - img [ref=e202]
+                  - generic [ref=e204]: null null
+                  - generic [ref=e205]: "-"
+                  - generic [ref=e206]: Call
+                - generic [ref=e207]: Confirmed 50lbs/week across 3 locations. Moved to demo stage...
+                - generic [ref=e208]: 11 days ago
+              - 'button "View activity: Initial inquiry about cheese curd program" [ref=e209] [cursor=pointer]':
+                - generic [ref=e210]:
+                  - img [ref=e212]
+                  - generic [ref=e215]: null null
+                  - generic [ref=e216]: "-"
+                  - generic [ref=e217]: Email
+                - generic [ref=e218]: Customer reached out after referral. Very interested in Wisc...
+                - generic [ref=e219]: 16 days ago
+        - generic [ref=e220]:
+          - generic [ref=e221]:
+            - generic [ref=e222]:
+              - generic [ref=e223]:
+                - img [ref=e225]
+                - heading "Upcoming Tasks" [level=2] [ref=e228]
+                - button [ref=e229] [cursor=pointer]:
+                  - img
+              - paragraph [ref=e232] [cursor=pointer]: Tasks added to your contacts will appear here.
+            - generic [ref=e233]:
+              - generic [ref=e234]:
+                - img [ref=e236]
+                - heading "Latest Activity" [level=2] [ref=e239]
+              - button "Load more activity" [ref=e242] [cursor=pointer]
+          - generic [ref=e243]:
+            - generic [ref=e244]:
+              - generic [ref=e245]:
+                - img [ref=e247]
+                - heading "Hot Contacts" [level=2] [ref=e252]
+                - link [ref=e253] [cursor=pointer]:
+                  - /url: "#/contacts/create"
+                  - img
+              - list [ref=e255] [cursor=pointer]:
+                - listitem [ref=e256]:
+                  - link "TT TestContact1762443185485 TestLast1762443185485 at A&W" [ref=e257]:
+                    - /url: "#/contacts/2020/show"
+                    - generic [ref=e258]:
+                      - generic [ref=e262]: TT
+                      - generic [ref=e263]:
+                        - generic [ref=e265]: TestContact1762443185485 TestLast1762443185485
+                        - generic [ref=e266]: at A&W
+                - listitem [ref=e267]:
+                  - link "TT TestContact1762443185485 TestLast1762443185485 at A&W" [ref=e268]:
+                    - /url: "#/contacts/2021/show"
+                    - generic [ref=e269]:
+                      - generic [ref=e273]: TT
+                      - generic [ref=e274]:
+                        - generic [ref=e276]: TestContact1762443185485 TestLast1762443185485
+                        - generic [ref=e277]: at A&W
+                - listitem [ref=e278]:
+                  - link "TT TestContact1762443154516 TestLast1762443154516 at A&W" [ref=e279]:
+                    - /url: "#/contacts/2018/show"
+                    - generic [ref=e280]:
+                      - generic [ref=e284]: TT
+                      - generic [ref=e285]:
+                        - generic [ref=e287]: TestContact1762443154516 TestLast1762443154516
+                        - generic [ref=e288]: at A&W
+                - listitem [ref=e289]:
+                  - link "TT TestContact1762443154516 TestLast1762443154516 at A&W" [ref=e290]:
+                    - /url: "#/contacts/2019/show"
+                    - generic [ref=e291]:
+                      - generic [ref=e295]: TT
+                      - generic [ref=e296]:
+                        - generic [ref=e298]: TestContact1762443154516 TestLast1762443154516
+                        - generic [ref=e299]: at A&W
+                - listitem [ref=e300]:
+                  - link "TT TestContact1762443122811 TestLast1762443122811 at A&W" [ref=e301]:
+                    - /url: "#/contacts/2015/show"
+                    - generic [ref=e302]:
+                      - generic [ref=e306]: TT
+                      - generic [ref=e307]:
+                        - generic [ref=e309]: TestContact1762443122811 TestLast1762443122811
+                        - generic [ref=e310]: at A&W
+                - listitem [ref=e311]:
+                  - link "TT TestContact1762443122811 TestLast1762443122811 at A&W" [ref=e312]:
+                    - /url: "#/contacts/2017/show"
+                    - generic [ref=e313]:
+                      - generic [ref=e317]: TT
+                      - generic [ref=e318]:
+                        - generic [ref=e320]: TestContact1762443122811 TestLast1762443122811
+                        - generic [ref=e321]: at A&W
+                - listitem [ref=e322]:
+                  - link "TT TestContact1762443122496 TestLast1762443122496 at A&W" [ref=e323]:
+                    - /url: "#/contacts/2014/show"
+                    - generic [ref=e324]:
+                      - generic [ref=e328]: TT
+                      - generic [ref=e329]:
+                        - generic [ref=e331]: TestContact1762443122496 TestLast1762443122496
+                        - generic [ref=e332]: at A&W
+                - listitem [ref=e333]:
+                  - link "TT TestContact1762443122496 TestLast1762443122496 at A&W" [ref=e334]:
+                    - /url: "#/contacts/2016/show"
+                    - generic [ref=e335]:
+                      - generic [ref=e339]: TT
+                      - generic [ref=e340]:
+                        - generic [ref=e342]: TestContact1762443122496 TestLast1762443122496
+                        - generic [ref=e343]: at A&W
+            - generic [ref=e344]:
+              - generic [ref=e345]:
+                - img [ref=e347]
+                - heading "Pipeline" [level=2] [ref=e350]
+              - generic [ref=e351]:
+                - generic [ref=e352]:
+                  - generic [ref=e353]: Active Opportunities
+                  - generic [ref=e354]: "10"
+                - generic [ref=e355]:
+                  - generic [ref=e356]: Closed Won
+                  - generic [ref=e357]: "2"
+                - generic [ref=e358]:
+                  - generic [ref=e359]: Closed Lost
+                  - generic [ref=e360]: "1"
+          - generic [ref=e363]:
+            - link "New Contact" [ref=e364] [cursor=pointer]:
+              - /url: "#/contacts/create"
+              - img
+              - text: New Contact
+            - link "New Opportunity" [ref=e365] [cursor=pointer]:
+              - /url: "#/opportunities/create"
+              - img
+              - text: New Opportunity
+    - contentinfo [ref=e366]:
+      - generic [ref=e368]:
+        - paragraph [ref=e369]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e370] [cursor=pointer]:
+          - img [ref=e371]
+          - generic [ref=e373]: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - generic [ref=e374]: Logged
+```
