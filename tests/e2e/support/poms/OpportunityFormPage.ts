@@ -307,21 +307,32 @@ export class OpportunityFormPage extends BasePage {
     // Wait for the contact creation dialog to open
     await this.page.waitForTimeout(500);
 
-    // Fill minimal contact fields (BOTH first_name AND last_name are required)
+    // Fill required contact fields: first_name, last_name, and email
+    // NOTE: sales_id is auto-provided by CreateInDialogButton defaultValues
     const timestamp = Date.now();
+
     const firstNameInput = this.page.getByLabel(/first.*name/i);
     await firstNameInput.waitFor({ state: 'visible', timeout: 3000 });
     await firstNameInput.fill(`TestContact${timestamp}`);
 
-    // Fill last name (also required) - wait for it to be ready
     const lastNameInput = this.page.getByLabel(/last.*name/i);
     await lastNameInput.waitFor({ state: 'visible', timeout: 3000 });
     await lastNameInput.fill(`TestLast${timestamp}`);
 
-    // Press Tab to trigger blur event and ensure validation runs
-    await lastNameInput.press('Tab');
+    // Add email (REQUIRED for contact creation per contacts.ts:401-408)
+    // Email is an ArrayInput - need to add an entry
+    const addEmailButton = this.page.getByRole('button', { name: /add/i }).first();
+    await addEmailButton.click();
+    await this.page.waitForTimeout(300);
 
-    // Wait a moment for validation to complete
+    // Fill the email input (appears after clicking Add)
+    const emailInput = this.page.locator('input[placeholder*="Email"]').or(
+      this.page.locator('input[type="email"]')
+    ).first();
+    await emailInput.waitFor({ state: 'visible', timeout: 3000 });
+    await emailInput.fill(`test${timestamp}@example.com`);
+
+    // Wait for validation to complete
     await this.page.waitForTimeout(500);
 
     // Submit the contact (this auto-adds it to the opportunity)
