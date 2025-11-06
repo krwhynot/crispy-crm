@@ -29,12 +29,13 @@ export class OpportunitiesListPage extends BasePage {
 
   /**
    * Get create button
+   * Note: There are multiple create buttons on the page (toolbar + FAB), so we use first()
    */
   getCreateButton() {
     // Accept both button and link roles for flexibility
     return this.page.getByRole('button', { name: /create|new opportunity/i }).or(
       this.page.getByRole('link', { name: /create|new opportunity/i })
-    );
+    ).first();
   }
 
   /**

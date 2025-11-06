@@ -1532,3 +1532,7 @@
 [2025-11-05 22:20:35] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106042002_fix_activity_log_deleted_at.sql
 [2025-11-05 22:22:35] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106042002_fix_activity_log_deleted_at.sql
 [2025-11-05 22:28:10] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/OpportunitiesListPage.ts
+[2025-11-05 22:30:13] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/crud.spec.ts
+[2025-11-05 22:31:12] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/crud.spec.ts
+[2025-11-05 22:31:57] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/crud.spec.ts
+[2025-11-05 22:34:57] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/OpportunitiesListPage.ts

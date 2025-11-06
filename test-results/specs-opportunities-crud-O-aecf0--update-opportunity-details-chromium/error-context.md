@@ -1,0 +1,226 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e6]:
+        - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+          - /url: "#/"
+          - generic "MFB Master Food Brokers" [ref=e8]
+        - navigation [ref=e10]:
+          - link "Dashboard" [ref=e11] [cursor=pointer]:
+            - /url: "#/"
+          - link "Contacts" [ref=e12] [cursor=pointer]:
+            - /url: "#/contacts"
+          - link "Organizations" [ref=e13] [cursor=pointer]:
+            - /url: "#/organizations"
+          - link "Opportunities" [ref=e14] [cursor=pointer]:
+            - /url: "#/opportunities"
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: "#/products"
+        - generic [ref=e16]:
+          - button "Toggle theme" [ref=e17] [cursor=pointer]:
+            - img
+            - generic [ref=e18]: Toggle theme
+          - button [ref=e19] [cursor=pointer]:
+            - img
+          - button "Notifications" [ref=e20] [cursor=pointer]:
+            - img
+          - button "n" [ref=e21] [cursor=pointer]:
+            - generic [ref=e23]: "n"
+    - main [ref=e24]:
+      - generic [ref=e25]:
+        - generic:
+          - generic [ref=e27]:
+            - group [ref=e28]:
+              - textbox "Search" [ref=e29]
+            - img
+          - generic [ref=e32]:
+            - switch "Only opportunities I manage" [ref=e33] [cursor=pointer]
+            - checkbox
+            - generic [ref=e34]: Only opportunities I manage
+        - generic [ref=e35]:
+          - group [ref=e36]:
+            - radio "Kanban view" [checked] [ref=e37] [cursor=pointer]:
+              - img [ref=e38]
+            - radio "List view" [ref=e43] [cursor=pointer]:
+              - img [ref=e44]
+            - radio "Campaign grouped view" [ref=e45] [cursor=pointer]:
+              - img [ref=e46]
+          - button "Add filter" [ref=e49] [cursor=pointer]:
+            - img
+            - text: Add filter
+          - button "Export" [ref=e50] [cursor=pointer]:
+            - img
+            - text: Export
+          - button "⚡ Quick Add" [ref=e51] [cursor=pointer]
+          - link "New Opportunity" [ref=e52] [cursor=pointer]:
+            - /url: "#/opportunities/create"
+            - img
+            - text: New Opportunity
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]: "Quick Filters:"
+          - button "My Opportunities 13" [ref=e56] [cursor=pointer]:
+            - img
+            - generic [ref=e57]: My Opportunities
+            - generic [ref=e58]: "13"
+          - button "Closing This Month 6" [ref=e59] [cursor=pointer]:
+            - img
+            - generic [ref=e60]: Closing This Month
+            - generic [ref=e61]: "6"
+          - button "High Priority 7" [ref=e62] [cursor=pointer]:
+            - img
+            - generic [ref=e63]: High Priority
+            - generic [ref=e64]: "7"
+          - button "Needs Action" [ref=e65] [cursor=pointer]:
+            - img
+            - generic [ref=e66]: Needs Action
+          - button "Recent Wins 2" [ref=e67] [cursor=pointer]:
+            - img
+            - generic [ref=e68]: Recent Wins
+            - generic [ref=e69]: "2"
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - heading "New Lead(1)" [level=3] [ref=e74]:
+                - text: New Lead
+                - generic [ref=e75]: (1)
+              - button "Poke Bowl Base Program Atelier Annasea low" [ref=e77]:
+                - button "Poke Bowl Base Program Atelier Annasea low" [ref=e78]:
+                  - generic [ref=e80]:
+                    - paragraph [ref=e81]: Poke Bowl Base Program
+                    - generic [ref=e82]: Atelier
+                    - generic [ref=e83]: Annasea
+                    - generic [ref=e85]: low
+            - generic [ref=e86]:
+              - heading "Initial Outreach(1)" [level=3] [ref=e88]:
+                - text: Initial Outreach
+                - generic [ref=e89]: (1)
+              - button "Plant-Based Menu Conversion Ashland University Better Balance high" [ref=e91]:
+                - button "Plant-Based Menu Conversion Ashland University Better Balance high" [ref=e92]:
+                  - generic [ref=e94]:
+                    - paragraph [ref=e95]: Plant-Based Menu Conversion
+                    - generic [ref=e96]: Ashland University
+                    - generic [ref=e97]: Better Balance
+                    - generic [ref=e99]: high
+            - generic [ref=e100]:
+              - heading "Sample/Visit Offered(2)" [level=3] [ref=e102]:
+                - text: Sample/Visit Offered
+                - generic [ref=e103]: (2)
+              - generic [ref=e104]:
+                - button "Cowboy Chips Launch Astor Club Frites Street medium" [ref=e105]:
+                  - button "Cowboy Chips Launch Astor Club Frites Street medium" [ref=e106]:
+                    - generic [ref=e108]:
+                      - paragraph [ref=e109]: Cowboy Chips Launch
+                      - generic [ref=e110]: Astor Club
+                      - generic [ref=e111]: Frites Street
+                      - generic [ref=e113]: medium
+                - button "Indian Gravy Base Rollout Albanos Pasta Rapid Rasoi medium" [ref=e114]:
+                  - button "Indian Gravy Base Rollout Albanos Pasta Rapid Rasoi medium" [ref=e115]:
+                    - generic [ref=e117]:
+                      - paragraph [ref=e118]: Indian Gravy Base Rollout
+                      - generic [ref=e119]: Albanos Pasta
+                      - generic [ref=e120]: Rapid Rasoi
+                      - generic [ref=e122]: medium
+            - generic [ref=e123]:
+              - heading "Awaiting Response(2)" [level=3] [ref=e125]:
+                - text: Awaiting Response
+                - generic [ref=e126]: (2)
+              - generic [ref=e127]:
+                - button "Butter Chicken LTO At the Office Bar& Grill Rapid Rasoi high" [ref=e128]:
+                  - button "Butter Chicken LTO At the Office Bar& Grill Rapid Rasoi high" [ref=e129]:
+                    - generic [ref=e131]:
+                      - paragraph [ref=e132]: Butter Chicken LTO
+                      - generic [ref=e133]: At the Office Bar& Grill
+                      - generic [ref=e134]: Rapid Rasoi
+                      - generic [ref=e136]: high
+                - button "3/8\" Straight Cut Fries Program 8 hospitality group Frites Street critical" [ref=e137]:
+                  - button "3/8\" Straight Cut Fries Program 8 hospitality group Frites Street critical" [ref=e138]:
+                    - generic [ref=e140]:
+                      - paragraph [ref=e141]: 3/8" Straight Cut Fries Program
+                      - generic [ref=e142]: 8 hospitality group
+                      - generic [ref=e143]: Frites Street
+                      - generic [ref=e145]: critical
+            - generic [ref=e146]:
+              - heading "Feedback Logged(2)" [level=3] [ref=e148]:
+                - text: Feedback Logged
+                - generic [ref=e149]: (2)
+              - generic [ref=e150]:
+                - button "Cheese Sticks LTO Arlington Tap House Kaufholds high" [ref=e151]:
+                  - button "Cheese Sticks LTO Arlington Tap House Kaufholds high" [ref=e152]:
+                    - generic [ref=e154]:
+                      - paragraph [ref=e155]: Cheese Sticks LTO
+                      - generic [ref=e156]: Arlington Tap House
+                      - generic [ref=e157]: Kaufholds
+                      - generic [ref=e159]: high
+                - button "Sushi-Grade Fish Supply Asador Bastian Annasea high" [ref=e160]:
+                  - button "Sushi-Grade Fish Supply Asador Bastian Annasea high" [ref=e161]:
+                    - generic [ref=e163]:
+                      - paragraph [ref=e164]: Sushi-Grade Fish Supply
+                      - generic [ref=e165]: Asador Bastian
+                      - generic [ref=e166]: Annasea
+                      - generic [ref=e168]: high
+            - generic [ref=e169]:
+              - heading "Demo Scheduled(2)" [level=3] [ref=e171]:
+                - text: Demo Scheduled
+                - generic [ref=e172]: (2)
+              - generic [ref=e173]:
+                - button "Spring Greens Initiative Apolonia VAF medium" [ref=e174]:
+                  - button "Spring Greens Initiative Apolonia VAF medium" [ref=e175]:
+                    - generic [ref=e177]:
+                      - paragraph [ref=e178]: Spring Greens Initiative
+                      - generic [ref=e179]: Apolonia
+                      - generic [ref=e180]: VAF
+                      - generic [ref=e182]: medium
+                - button "Cheese Curd Program - Q1 2025 A.Fusion Kaufholds high" [ref=e183]:
+                  - button "Cheese Curd Program - Q1 2025 A.Fusion Kaufholds high" [ref=e184]:
+                    - generic [ref=e186]:
+                      - paragraph [ref=e187]: Cheese Curd Program - Q1 2025
+                      - generic [ref=e188]: A.Fusion
+                      - generic [ref=e189]: Kaufholds
+                      - generic [ref=e191]: high
+            - generic [ref=e192]:
+              - heading "Closed - Won(2)" [level=3] [ref=e194]:
+                - text: Closed - Won
+                - generic [ref=e195]: (2)
+              - generic [ref=e196]:
+                - button "Wisconsin Cheese Variety Pack ALINEA Kaufholds medium" [ref=e197]:
+                  - button "Wisconsin Cheese Variety Pack ALINEA Kaufholds medium" [ref=e198]:
+                    - generic [ref=e200]:
+                      - paragraph [ref=e201]: Wisconsin Cheese Variety Pack
+                      - generic [ref=e202]: ALINEA
+                      - generic [ref=e203]: Kaufholds
+                      - generic [ref=e205]: medium
+                - button "Hydroponic Lettuce Program ALINEA VAF critical" [ref=e206]:
+                  - button "Hydroponic Lettuce Program ALINEA VAF critical" [ref=e207]:
+                    - generic [ref=e209]:
+                      - paragraph [ref=e210]: Hydroponic Lettuce Program
+                      - generic [ref=e211]: ALINEA
+                      - generic [ref=e212]: VAF
+                      - generic [ref=e214]: critical
+            - generic [ref=e215]:
+              - heading "Closed - Lost(1)" [level=3] [ref=e217]:
+                - text: Closed - Lost
+                - generic [ref=e218]: (1)
+              - button "Better Balance Burger Trial A&W Better Balance low" [ref=e220]:
+                - button "Better Balance Burger Trial A&W Better Balance low" [ref=e221]:
+                  - generic [ref=e223]:
+                    - paragraph [ref=e224]: Better Balance Burger Trial
+                    - generic [ref=e225]: A&W
+                    - generic [ref=e226]: Better Balance
+                    - generic [ref=e228]: low
+          - button "View archived opportunities" [ref=e230] [cursor=pointer]
+        - link "Create new opportunities" [ref=e231] [cursor=pointer]:
+          - /url: "#/opportunities/create"
+          - img [ref=e232]
+    - contentinfo [ref=e233]:
+      - generic [ref=e235]:
+        - paragraph [ref=e236]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e237] [cursor=pointer]:
+          - img [ref=e238]
+          - generic [ref=e240]: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - generic [ref=e241]: Logged
+```

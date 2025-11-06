@@ -25,19 +25,22 @@ test.describe('Opportunities CRUD Operations', () => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
-    // Login using POM
+    // Always do explicit login (simpler and more reliable than storage state)
     const loginPage = new LoginPage(page);
     await loginPage.goto('/');
+    await page.waitForTimeout(1000); // Let page stabilize
 
-    // Wait for either login form or dashboard
+    //Check if we need to login
     const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
 
     if (isLoginFormVisible) {
       await loginPage.login('admin@test.com', 'password123');
-    } else {
-      // Already logged in, wait for dashboard
-      await page.waitForURL(/\/#\//, { timeout: 10000 });
+      // Wait for dashboard to load
+      await page.waitForTimeout(2000);
     }
+
+    // Verify we're authenticated (use first nav element to avoid strict mode violation)
+    await page.getByRole('navigation').first().waitFor({ state: 'visible', timeout: 10000 });
   });
 
   test.afterEach(async () => {
