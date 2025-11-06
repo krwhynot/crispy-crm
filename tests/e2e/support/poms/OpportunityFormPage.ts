@@ -311,35 +311,38 @@ export class OpportunityFormPage extends BasePage {
     // NOTE: sales_id is auto-provided by CreateInDialogButton defaultValues
     const timestamp = Date.now();
 
-    const firstNameInput = this.page.getByLabel(/first.*name/i);
+    // Scope all selectors to the contact creation dialog
+    const contactDialog = this.page.locator('[role="dialog"]').first();
+
+    const firstNameInput = contactDialog.getByLabel(/first.*name/i);
     await firstNameInput.waitFor({ state: 'visible', timeout: 3000 });
     await firstNameInput.fill(`TestContact${timestamp}`);
 
-    const lastNameInput = this.page.getByLabel(/last.*name/i);
+    const lastNameInput = contactDialog.getByLabel(/last.*name/i);
     await lastNameInput.waitFor({ state: 'visible', timeout: 3000 });
     await lastNameInput.fill(`TestLast${timestamp}`);
 
     // Add email (REQUIRED for contact creation per contacts.ts:401-408)
     // Email is an ArrayInput - need to add an entry
     // The Add button is a plus icon (⊕) next to "Email addresses" label
-    const emailSection = this.page.locator(':text("Email addresses")').locator('..').locator('..');
+    const emailSection = contactDialog.locator(':text("Email addresses")').locator('..').locator('..');
     const addEmailButton = emailSection.getByRole('button').first();
     await addEmailButton.waitFor({ state: 'visible', timeout: 3000 });
     await addEmailButton.click();
     await this.page.waitForTimeout(300);
 
-    // Fill the email input (appears after clicking Add)
-    const emailInput = this.page.locator('input[placeholder*="Email"]').or(
-      this.page.locator('input[type="email"]')
-    ).first();
+    // Fill the email input (appears after clicking Add) - scoped to dialog
+    const emailInput = contactDialog.locator('input[placeholder*="Email"]').first();
     await emailInput.waitFor({ state: 'visible', timeout: 3000 });
+    await emailInput.clear(); // Clear any existing content
     await emailInput.fill(`test${timestamp}@example.com`);
 
     // Wait for validation to complete
     await this.page.waitForTimeout(500);
 
-    // Submit the contact (this auto-adds it to the opportunity)
-    const saveContactButton = this.page.getByRole('button', { name: /save/i }).last();
+    // Submit the contact (this auto-adds it to the opportunity) - scoped to dialog
+    const saveContactButton = contactDialog.getByRole('button', { name: /save|create/i });
+    await saveContactButton.waitFor({ state: 'visible', timeout: 3000 });
     await saveContactButton.click();
 
     // Wait for contact to be added
