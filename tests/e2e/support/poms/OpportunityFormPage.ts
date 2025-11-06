@@ -321,7 +321,10 @@ export class OpportunityFormPage extends BasePage {
 
     // Add email (REQUIRED for contact creation per contacts.ts:401-408)
     // Email is an ArrayInput - need to add an entry
-    const addEmailButton = this.page.getByRole('button', { name: /add/i }).first();
+    // The Add button is a plus icon (⊕) next to "Email addresses" label
+    const emailSection = this.page.locator(':text("Email addresses")').locator('..').locator('..');
+    const addEmailButton = emailSection.getByRole('button').first();
+    await addEmailButton.waitFor({ state: 'visible', timeout: 3000 });
     await addEmailButton.click();
     await this.page.waitForTimeout(300);
 
