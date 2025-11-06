@@ -33,16 +33,21 @@ export default defineConfig({
       name: 'iPad Portrait',
       use: {
         ...devices['iPad Pro'],
-        viewport: { width: 768, height: 1024 }
+        viewport: { width: 768, height: 1024 },
+        storageState: 'tests/e2e/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
-    {
-      name: 'iPad Landscape',
-      use: {
-        ...devices['iPad Pro landscape'],
-        viewport: { width: 1024, height: 768 }
-      },
-    },
+    // Commented out iPad Landscape - focus on iPad Portrait first
+    // {
+    //   name: 'iPad Landscape',
+    //   use: {
+    //     ...devices['iPad Pro landscape'],
+    //     viewport: { width: 1024, height: 768 },
+    //     storageState: 'tests/e2e/.auth/user.json',
+    //   },
+    //   dependencies: ['setup'],
+    // },
   ],
 
   webServer: {
