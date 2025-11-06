@@ -35,7 +35,7 @@ export class OpportunityFormPage extends BasePage {
    * Fill opportunity name
    */
   async fillName(name: string): Promise<void> {
-    await this.getTextInput(/^name$/i).fill(name);
+    await this.getTextInput(/opportunity name/i).fill(name);
   }
 
   /**
