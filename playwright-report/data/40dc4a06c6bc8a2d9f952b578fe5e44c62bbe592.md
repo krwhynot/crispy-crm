@@ -1,0 +1,44 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+      - generic [ref=e16]:
+        - button "Toggle theme" [ref=e17] [cursor=pointer]:
+          - img
+          - generic [ref=e18]: Toggle theme
+        - button [ref=e19] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e20] [cursor=pointer]:
+          - img
+        - button "n" [ref=e21] [cursor=pointer]:
+          - generic [ref=e23]: "n"
+  - main [ref=e24]:
+    - generic [ref=e26]:
+      - heading "My Principals" [level=1] [ref=e27]
+      - button "Refresh dashboard" [ref=e28] [cursor=pointer]:
+        - img
+        - text: Refresh
+  - contentinfo [ref=e30]:
+    - generic [ref=e32]:
+      - paragraph [ref=e33]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+        - generic [ref=e37]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
