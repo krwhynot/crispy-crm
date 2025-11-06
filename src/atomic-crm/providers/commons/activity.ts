@@ -12,7 +12,7 @@ export async function getActivityLog(
   salesId?: Identifier,
 ): Promise<Activity[]> {
   // Call RPC function with parameters
-  const { data } = await dataProvider.invokeRPC<Activity[]>("get_activity_log", {
+  const data = await dataProvider.rpc("get_activity_log", {
     p_organization_id: organizationId || null,
     p_sales_id: salesId || null,
     p_limit: 250,
