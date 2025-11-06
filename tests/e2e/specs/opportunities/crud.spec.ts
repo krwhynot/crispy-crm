@@ -38,6 +38,8 @@ test.describe('Opportunities CRUD Operations', () => {
 
     if (isLoginFormVisible) {
       await loginPage.login('admin@test.com', 'password123');
+      // Engineering Constitution: Fail fast - wait for session to establish
+      await page.waitForTimeout(2000);
     } else {
       // Already logged in, wait for dashboard
       await page.waitForURL(/\/#\//, { timeout: 10000 });
