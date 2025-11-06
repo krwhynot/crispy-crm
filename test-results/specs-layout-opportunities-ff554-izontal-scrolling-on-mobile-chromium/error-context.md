@@ -25,159 +25,159 @@
           - button "n" [ref=e18] [cursor=pointer]:
             - generic [ref=e20]: "n"
     - main [ref=e21]:
-      - generic [ref=e26]:
-        - generic [ref=e27]:
-          - generic [ref=e28]:
-            - heading "Opportunity Details" [level=3] [ref=e29]
-            - generic [ref=e30]:
-              - generic [ref=e32]:
-                - group [ref=e33]:
-                  - generic [ref=e35]: Opportunity name *
-                  - textbox "Opportunity name *" [ref=e36]
-                - button "Show naming tips" [ref=e39] [cursor=pointer]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - heading "Opportunity Details" [level=3] [ref=e28]
+            - generic [ref=e29]:
+              - generic [ref=e31]:
+                - group [ref=e32]:
+                  - generic [ref=e34]: Opportunity name *
+                  - textbox "Opportunity name *" [ref=e35]
+                - button "Show naming tips" [ref=e38] [cursor=pointer]:
                   - img
                   - text: Show naming tips
                   - img
-              - group [ref=e41]:
-                - generic [ref=e43]: Description
-                - textbox "Description" [ref=e44]
-              - group [ref=e45]:
-                - generic [ref=e47]: Expected Closing Date *
-                - textbox "Expected Closing Date *" [ref=e48]: 2025-12-06
-          - generic [ref=e49]:
-            - heading "Classification & Tracking" [level=3] [ref=e50]
-            - generic [ref=e51]:
-              - group [ref=e52]:
-                - generic [ref=e54]: Stage *
-                - generic [ref=e55]:
-                  - combobox [ref=e56] [cursor=pointer]:
+              - group [ref=e40]:
+                - generic [ref=e42]: Description
+                - textbox "Description" [ref=e43]
+              - group [ref=e44]:
+                - generic [ref=e46]: Expected Closing Date *
+                - textbox "Expected Closing Date *" [ref=e47]: 2025-12-06
+          - generic [ref=e48]:
+            - heading "Classification & Tracking" [level=3] [ref=e49]
+            - generic [ref=e50]:
+              - group [ref=e51]:
+                - generic [ref=e53]: Stage *
+                - generic [ref=e54]:
+                  - combobox [ref=e55] [cursor=pointer]:
                     - generic: New Lead
-                    - button [ref=e57]:
+                    - button [ref=e56]:
                       - img
                     - img
-                  - combobox [ref=e58]
-              - group [ref=e59]:
-                - generic [ref=e61]: Priority *
-                - generic [ref=e62]:
-                  - combobox [ref=e63] [cursor=pointer]:
+                  - combobox [ref=e57]
+              - group [ref=e58]:
+                - generic [ref=e60]: Priority *
+                - generic [ref=e61]:
+                  - combobox [ref=e62] [cursor=pointer]:
                     - generic: Medium
-                    - button [ref=e64]:
+                    - button [ref=e63]:
                       - img
                     - img
-                  - combobox [ref=e65]
-              - group [ref=e66]:
-                - generic [ref=e68]: Lead Source
-                - generic [ref=e69]:
-                  - combobox [ref=e70] [cursor=pointer]:
+                  - combobox [ref=e64]
+              - group [ref=e65]:
+                - generic [ref=e67]: Lead Source
+                - generic [ref=e68]:
+                  - combobox [ref=e69] [cursor=pointer]:
                     - img
-                  - combobox [ref=e71]
-          - generic [ref=e72]:
-            - heading "Campaign & Workflow Tracking" [level=3] [ref=e73]
-            - generic [ref=e74]:
-              - group [ref=e75]:
-                - generic [ref=e77]: Campaign
-                - textbox "Campaign" [ref=e78]:
+                  - combobox [ref=e70]
+          - generic [ref=e71]:
+            - heading "Campaign & Workflow Tracking" [level=3] [ref=e72]
+            - generic [ref=e73]:
+              - group [ref=e74]:
+                - generic [ref=e76]: Campaign
+                - textbox "Campaign" [ref=e77]:
                   - /placeholder: e.g., Q4 2025 Trade Show
-              - group [ref=e79]:
-                - generic [ref=e81]: Related Opportunity
-                - generic [ref=e82]:
-                  - combobox [ref=e83] [cursor=pointer]:
+              - group [ref=e78]:
+                - generic [ref=e80]: Related Opportunity
+                - generic [ref=e81]:
+                  - combobox [ref=e82] [cursor=pointer]:
                     - img
-                  - combobox [ref=e84]
-              - group [ref=e86]:
-                - generic [ref=e88]: Notes
-                - textbox "Notes" [ref=e89]:
+                  - combobox [ref=e83]
+              - group [ref=e85]:
+                - generic [ref=e87]: Notes
+                - textbox "Notes" [ref=e88]:
                   - /placeholder: General notes about the opportunity (separate from activity log)...
-              - group [ref=e91]:
-                - generic [ref=e93]: Tags
-                - generic [ref=e94]:
+              - group [ref=e90]:
+                - generic [ref=e92]: Tags
+                - generic [ref=e93]:
                   - list
-                  - button [ref=e96] [cursor=pointer]:
+                  - button [ref=e95] [cursor=pointer]:
                     - img
-              - group [ref=e97]:
-                - generic [ref=e99]: Next Action
-                - textbox "Next Action" [ref=e100]:
+              - group [ref=e96]:
+                - generic [ref=e98]: Next Action
+                - textbox "Next Action" [ref=e99]:
                   - /placeholder: e.g., Follow up with decision maker
-              - group [ref=e101]:
-                - generic [ref=e103]: Next Action Date
-                - textbox "Next Action Date" [ref=e104]
-              - group [ref=e106]:
-                - generic [ref=e108]: Decision Criteria
-                - textbox "Decision Criteria" [ref=e109]:
+              - group [ref=e100]:
+                - generic [ref=e102]: Next Action Date
+                - textbox "Next Action Date" [ref=e103]
+              - group [ref=e105]:
+                - generic [ref=e107]: Decision Criteria
+                - textbox "Decision Criteria" [ref=e108]:
                   - /placeholder: Key factors influencing the decision...
-          - generic [ref=e110]:
-            - heading "Key Relationships" [level=3] [ref=e111]
-            - generic [ref=e112]:
-              - generic [ref=e113]:
-                - group [ref=e114]:
-                  - generic [ref=e116]: Customer Organization *
-                  - combobox [ref=e117] [cursor=pointer]:
-                    - generic [ref=e118]: Search
+          - generic [ref=e109]:
+            - heading "Key Relationships" [level=3] [ref=e110]
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - group [ref=e113]:
+                  - generic [ref=e115]: Customer Organization *
+                  - combobox [ref=e116] [cursor=pointer]:
+                    - generic [ref=e117]: Search
                     - img
-                - button "New Customer" [ref=e119] [cursor=pointer]:
+                - button "New Customer" [ref=e118] [cursor=pointer]:
                   - img
                   - text: New Customer
-              - group [ref=e120]:
-                - generic [ref=e122]: Account Manager
-                - generic [ref=e123]:
-                  - combobox [ref=e124] [cursor=pointer]:
-                    - button [ref=e125]:
+              - group [ref=e119]:
+                - generic [ref=e121]: Account Manager
+                - generic [ref=e122]:
+                  - combobox [ref=e123] [cursor=pointer]:
+                    - button [ref=e124]:
                       - img
                     - img
-                  - combobox [ref=e126]
-              - generic [ref=e127]:
-                - group [ref=e128]:
-                  - generic [ref=e130]: Principal Organization *
-                  - combobox [ref=e131] [cursor=pointer]:
-                    - generic [ref=e132]: Search
+                  - combobox [ref=e125]
+              - generic [ref=e126]:
+                - group [ref=e127]:
+                  - generic [ref=e129]: Principal Organization *
+                  - combobox [ref=e130] [cursor=pointer]:
+                    - generic [ref=e131]: Search
                     - img
-                - button "New Principal" [ref=e133] [cursor=pointer]:
+                - button "New Principal" [ref=e132] [cursor=pointer]:
                   - img
                   - text: New Principal
-              - generic [ref=e134]:
-                - group [ref=e135]:
-                  - generic [ref=e137]: Distributor Organization
-                  - combobox [ref=e138] [cursor=pointer]:
-                    - generic [ref=e139]: Search
+              - generic [ref=e133]:
+                - group [ref=e134]:
+                  - generic [ref=e136]: Distributor Organization
+                  - combobox [ref=e137] [cursor=pointer]:
+                    - generic [ref=e138]: Search
                     - img
-                - button "New Distributor" [ref=e140] [cursor=pointer]:
+                - button "New Distributor" [ref=e139] [cursor=pointer]:
                   - img
                   - text: New Distributor
-          - generic [ref=e141]:
-            - generic [ref=e143]:
-              - heading "Contacts *" [level=3] [ref=e144]
-              - paragraph [ref=e145]: Please select a Customer Organization first
-            - group [ref=e146]:
-              - generic [ref=e147]:
-                - combobox [expanded] [ref=e151]
+          - generic [ref=e140]:
+            - generic [ref=e142]:
+              - heading "Contacts *" [level=3] [ref=e143]
+              - paragraph [ref=e144]: Please select a Customer Organization first
+            - group [ref=e145]:
+              - generic [ref=e146]:
+                - combobox [expanded] [ref=e150]
                 - generic:
                   - listbox "Suggestions"
-          - generic [ref=e152]:
-            - generic [ref=e153]:
-              - heading "Products *" [level=3] [ref=e154]
-              - paragraph [ref=e155]: At least one product is required (select Principal Organization to filter)
-            - group [ref=e156]:
-              - generic [ref=e157]:
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - heading "Products *" [level=3] [ref=e153]
+              - paragraph [ref=e154]: At least one product is required (select Principal Organization to filter)
+            - group [ref=e155]:
+              - generic [ref=e156]:
                 - list
-                - button [ref=e159] [cursor=pointer]:
+                - button [ref=e158] [cursor=pointer]:
                   - img
-        - toolbar [ref=e160]:
-          - button "Delete" [ref=e161] [cursor=pointer]:
+        - toolbar [ref=e159]:
+          - button "Delete" [ref=e160] [cursor=pointer]:
             - img
             - text: Delete
-          - generic [ref=e162]:
-            - button "Cancel" [ref=e163] [cursor=pointer]:
+          - generic [ref=e161]:
+            - button "Cancel" [ref=e162] [cursor=pointer]:
               - img
               - text: Cancel
             - button "Save" [disabled]:
               - img
               - text: Save
-    - contentinfo [ref=e164]:
-      - generic [ref=e166]:
-        - paragraph [ref=e167]: © 2025 MFB Master Food Brokers. All rights reserved.
-        - button "View keyboard shortcuts" [ref=e168] [cursor=pointer]:
-          - img [ref=e169]
-          - generic [ref=e171]: Keyboard shortcuts
+    - contentinfo [ref=e163]:
+      - generic [ref=e165]:
+        - paragraph [ref=e166]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e167] [cursor=pointer]:
+          - img [ref=e168]
+          - generic [ref=e170]: Keyboard shortcuts
     - region "Notifications alt+T"
-  - generic [ref=e172]: Logged
+  - generic [ref=e171]: Logged
 ```
