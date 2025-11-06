@@ -38,7 +38,7 @@
               - generic [ref=e35]:
                 - group [ref=e36]:
                   - generic [ref=e38]: Opportunity name *
-                  - textbox "Opportunity name *" [active] [ref=e39]: Test Opportunity 1762404508491
+                  - textbox "Opportunity name *" [active] [ref=e39]: Read Test 1762404540981
                 - button "Show naming tips" [ref=e42] [cursor=pointer]:
                   - img
                   - text: Show naming tips
