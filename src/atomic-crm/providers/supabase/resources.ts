@@ -16,6 +16,7 @@ export const RESOURCE_MAPPING = {
   contacts_summary: "contacts_summary",
   contact_organization_details: "contact_organization_details",
   opportunities_summary: "opportunities_summary", // Re-enabled for dashboard widgets
+  dashboard_principal_summary: "dashboard_principal_summary", // Principal-centric dashboard view
   // deals_summary: REMOVED - migrated to opportunities
 
   // Notes/activities
