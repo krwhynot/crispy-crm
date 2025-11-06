@@ -129,7 +129,7 @@ principal_aggregates AS (
 
 -- Final view with principal names and calculated indicators
 SELECT
-  pa.principal_organization_id,
+  pa.principal_organization_id AS id,
   po.name AS principal_name,
   pa.account_manager_id,
   pa.opportunity_count,

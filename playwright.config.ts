@@ -9,7 +9,7 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:5173',
-    trace: 'on-first-retry',
+    trace: 'on-first-retry', // Captures full trace for debugging on first retry
     screenshot: 'only-on-failure',
     // Use headed mode in local development, headless in CI
     headless: !!process.env.CI,
@@ -38,16 +38,15 @@ export default defineConfig({
       },
       dependencies: ['setup'],
     },
-    // Commented out iPad Landscape - focus on iPad Portrait first
-    // {
-    //   name: 'iPad Landscape',
-    //   use: {
-    //     ...devices['iPad Pro landscape'],
-    //     viewport: { width: 1024, height: 768 },
-    //     storageState: 'tests/e2e/.auth/user.json',
-    //   },
-    //   dependencies: ['setup'],
-    // },
+    {
+      name: 'iPad Landscape',
+      use: {
+        ...devices['iPad Pro landscape'],
+        viewport: { width: 1024, height: 768 },
+        storageState: 'tests/e2e/.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
   ],
 
   webServer: {
