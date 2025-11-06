@@ -121,6 +121,7 @@
     "ra-supabase-core": "^3.5.1",
     "ra-supabase-language-english": "^3.5.0",
     "react": "^19.1.0",
+    "react-admin": "^5.10.0",
     "react-cropper": "^2.3.3",
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
