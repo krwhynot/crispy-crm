@@ -7,12 +7,13 @@ import { ErrorBoundary } from "react-error-boundary";
 import Header from "./Header";
 import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
 import { Keyboard } from "lucide-react";
+import { KeyboardShortcutsProvider } from "@/providers/KeyboardShortcutsProvider";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
 
   return (
-    <>
+    <KeyboardShortcutsProvider>
       <Header />
       <main className="max-w-screen-xl mx-auto pt-4 px-4 pb-16" id="main-content">
         <ErrorBoundary FallbackComponent={Error}>

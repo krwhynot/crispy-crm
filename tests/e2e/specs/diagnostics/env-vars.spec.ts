@@ -33,21 +33,20 @@ test.describe('Environment Variables Diagnostic', () => {
     // Wait a bit for modules to load
     await page.waitForTimeout(3000);
 
-    // Try to evaluate env vars directly in browser context
-    const envVarsInBrowser = await page.evaluate(() => {
+    // Try to check if global config is available
+    const globalConfig = await page.evaluate(() => {
+      // Check window object for any exposed config
       return {
-        VITE_SUPABASE_URL: (import.meta as any).env?.VITE_SUPABASE_URL,
-        VITE_SUPABASE_ANON_KEY: (import.meta as any).env?.VITE_SUPABASE_ANON_KEY,
-        allEnvKeys: Object.keys((import.meta as any).env || {}),
-        NODE_ENV: (import.meta as any).env?.MODE,
+        hasSupabaseClient: typeof (window as any).supabase !== 'undefined',
+        windowKeys: Object.keys(window).filter(k => k.toLowerCase().includes('vite') || k.toLowerCase().includes('supabase')),
       };
     });
 
     // Report findings
     console.log('📊 DIAGNOSTIC RESULTS:');
     console.log('─────────────────────────────────────────────');
-    console.log('\n1. Environment variables in browser context:');
-    console.log(JSON.stringify(envVarsInBrowser, null, 2));
+    console.log('\n1. Global config in browser context:');
+    console.log(JSON.stringify(globalConfig, null, 2));
 
     console.log('\n2. All console messages captured:');
     consoleMessages.forEach((msg, i) => {
@@ -86,21 +85,23 @@ test.describe('Environment Variables Diagnostic', () => {
     // Assertions
     console.log('🧪 VERIFICATION:');
 
-    if (!envVarsInBrowser.VITE_SUPABASE_URL) {
-      console.log('❌ VITE_SUPABASE_URL is UNDEFINED in browser context');
-      console.log('   This explains why React app fails to initialize!');
+    // Check if we got the Supabase init debug log
+    const supabaseInitLog = consoleMessages.find(msg => msg.text.includes('[SUPABASE INIT]'));
+    if (!supabaseInitLog) {
+      console.log('❌ No Supabase initialization log found');
+      console.log('   This means supabase.ts module never loaded/executed');
+      console.log('   → React app failed to initialize');
     } else {
-      console.log(`✅ VITE_SUPABASE_URL is defined: ${envVarsInBrowser.VITE_SUPABASE_URL}`);
+      console.log('✅ Supabase initialization attempted');
+
+      // Check if the log indicates missing env vars
+      if (supabaseInitLog.text.includes('undefined') || supabaseInitLog.text.includes('is not defined')) {
+        console.log('❌ Environment variables are UNDEFINED');
+        console.log('   → This is the root cause!');
+      }
     }
 
-    if (!envVarsInBrowser.VITE_SUPABASE_ANON_KEY) {
-      console.log('❌ VITE_SUPABASE_ANON_KEY is UNDEFINED in browser context');
-    } else {
-      console.log('✅ VITE_SUPABASE_ANON_KEY is defined');
-    }
-
-    console.log(`\n📝 Available env var keys: ${envVarsInBrowser.allEnvKeys.join(', ')}`);
-    console.log(`📝 Current MODE: ${envVarsInBrowser.NODE_ENV}`);
+    console.log(`\n📝 Window keys related to config: ${globalConfig.windowKeys.join(', ') || 'none'}`);
 
     // Don't fail the test - we want to see the output regardless
     expect(true).toBe(true);
