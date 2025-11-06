@@ -52,7 +52,7 @@
                           - group:
                             - generic:
                               - generic: Opportunity name *
-                            - textbox: Delete Test 1762440069297
+                            - textbox: Delete Test 1762440630434
                           - generic:
                             - generic:
                               - button:
@@ -238,18 +238,18 @@
             - generic [ref=e17]:
               - group [ref=e18]:
                 - generic [ref=e20]: First Name *
-                - textbox "First Name *" [ref=e21]: TestContact1762440074964
+                - textbox "First Name *" [ref=e21]: TestContact1762440637194
                 - generic [ref=e22]: Required field
               - group [ref=e23]:
                 - generic [ref=e25]: Last Name *
-                - textbox "Last Name *" [ref=e26]: TestLast1762440074964
+                - textbox "Last Name *" [active] [ref=e26]: TestLast1762440637194
                 - generic [ref=e27]: Required field
           - generic [ref=e28]:
             - heading "Position" [level=3] [ref=e29]
             - generic [ref=e30]:
               - group [ref=e31]:
                 - generic [ref=e33]: Title
-                - textbox "Title" [active] [ref=e34]
+                - textbox "Title" [ref=e34]
               - group [ref=e35]:
                 - generic [ref=e37]: Department
                 - textbox "Department" [ref=e38]
