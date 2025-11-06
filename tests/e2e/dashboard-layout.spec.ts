@@ -127,8 +127,12 @@ test.describe('Dashboard Tests', () => {
     });
 
     test('displays Quick Add section', async ({ page }) => {
-      const quickAddWidget = page.getByText('Quick Add');
-      await expect(quickAddWidget).toBeVisible();
+      // QuickAdd displays buttons, not "Quick Add" text
+      const newContactButton = page.getByRole('link', { name: /new contact/i });
+      await expect(newContactButton).toBeVisible();
+
+      const newOpportunityButton = page.getByRole('link', { name: /new opportunity/i });
+      await expect(newOpportunityButton).toBeVisible();
     });
   });
 
