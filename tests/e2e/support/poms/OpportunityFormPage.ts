@@ -339,9 +339,8 @@ export class OpportunityFormPage extends BasePage {
 
     // Select email type (REQUIRED - one of "Work"|"Home"|"Other")
     // The type SelectInput is rendered as a button with role="combobox" next to the email input
-    // Need to find the visible button, not the hidden native select fallback
-    const emailRow = contactDialog.locator('li').filter({ has: emailInput });
-    const emailTypeButton = emailRow.getByRole('combobox').first();
+    // Since we just added an email entry, the type combobox is the last one in the email section
+    const emailTypeButton = emailSection.getByRole('combobox').last();
     await emailTypeButton.waitFor({ state: 'visible', timeout: 3000 });
     await emailTypeButton.click();
 
