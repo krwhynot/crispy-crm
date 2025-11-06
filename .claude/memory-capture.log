@@ -1587,3 +1587,4 @@
 [2025-11-06 12:26:49] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/dashboard-layout.spec.ts
 [2025-11-06 12:30:02] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/dashboard-layout.spec.ts
 [2025-11-06 12:32:06] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/dashboard-layout.spec.ts
+[2025-11-06 12:59:13] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106185819_add_stage_changed_at_to_opportunities.sql
