@@ -1502,3 +1502,7 @@
 [2025-11-05 21:10:31] [configuration] Edit: /home/krwhynot/projects/crispy-crm/playwright.config.ts
 [2025-11-05 21:10:41] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-05-playwright-testing-strategy.md
 [2025-11-05 21:15:06] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/OpportunitiesListPage.ts
+[2025-11-05 21:15:39] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/OpportunityShowPage.ts
+[2025-11-05 21:16:14] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/OpportunityFormPage.ts
+[2025-11-05 21:19:54] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/crud.spec.ts
+[2025-11-05 21:20:48] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/kanban-board.spec.ts
