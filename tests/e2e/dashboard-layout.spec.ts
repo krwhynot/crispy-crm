@@ -24,8 +24,7 @@ test.describe('Dashboard - iPad (768x1024)', () => {
   let dashboard: DashboardPage;
 
   test.beforeEach(async ({ authenticatedPage }) => {
-    // Set iPad viewport
-    await authenticatedPage.setViewportSize({ width: 768, height: 1024 });
+    // Viewport already set in playwright.config.ts (768x1024)
 
     // Create POM instance
     dashboard = new DashboardPage(authenticatedPage);
@@ -34,11 +33,19 @@ test.describe('Dashboard - iPad (768x1024)', () => {
     await dashboard.navigate();
   });
 
-  test.afterEach(() => {
-    // Report console errors if any
-    if (consoleMonitor.getErrors().length > 0) {
-      console.log('\n' + consoleMonitor.getReport());
+  test.afterEach(async () => {
+    const errors = consoleMonitor.getErrors();
+
+    if (errors.length > 0) {
+      // Attach detailed report to test results for debugging
+      await test.info().attach('console-report', {
+        body: consoleMonitor.getReport(),
+        contentType: 'text/plain',
+      });
     }
+
+    // Fail test if console errors were detected
+    expect(errors, 'Console errors were detected during the test. See attached report.').toHaveLength(0);
   });
 
   test.describe('Core Elements', () => {
