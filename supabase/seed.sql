@@ -4051,60 +4051,60 @@ BEGIN
     -- Kaufholds (Cheese) Opportunities
     ('Cheese Curd Program - Q1 2025', 13, 1796, 'demo_scheduled', 'active', 'high',
      'Large volume cheese curd program for all locations. Demo scheduled for next week.',
-     CURRENT_DATE + INTERVAL '30 days', v_sales_id, 'referral', NOW() - INTERVAL '15 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '30 days', v_sales_id, v_sales_id, 'referral', NOW() - INTERVAL '15 days', ARRAY[]::bigint[]),
 
     ('Wisconsin Cheese Variety Pack', 26, 1796, 'closed_won', 'active', 'medium',
      'Artisanal cheese selection for seasonal menu. Successfully closed.',
-     CURRENT_DATE - INTERVAL '5 days', v_sales_id, 'cold_call', NOW() - INTERVAL '45 days', ARRAY[]::bigint[]),
+     CURRENT_DATE - INTERVAL '5 days', v_sales_id, v_sales_id, 'cold_call', NOW() - INTERVAL '45 days', ARRAY[]::bigint[]),
 
     ('Cheese Sticks LTO', 44, 1796, 'feedback_logged', 'active', 'high',
      'Limited time offer on breaded cheese sticks. Customer loved the samples.',
-     CURRENT_DATE + INTERVAL '14 days', v_sales_id, 'trade_show', NOW() - INTERVAL '7 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '14 days', v_sales_id, v_sales_id, 'trade_show', NOW() - INTERVAL '7 days', ARRAY[]::bigint[]),
 
     -- Frites Street (French Fries) Opportunities
     ('3/8" Straight Cut Fries Program', 6, 1797, 'awaiting_response', 'active', 'critical',
      'High-volume fry program for entire hospitality group. Awaiting decision from corporate.',
-     CURRENT_DATE + INTERVAL '21 days', v_sales_id, 'existing_customer', NOW() - INTERVAL '20 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '21 days', v_sales_id, v_sales_id, 'existing_customer', NOW() - INTERVAL '20 days', ARRAY[]::bigint[]),
 
     ('Cowboy Chips Launch', 52, 1797, 'sample_visit_offered', 'active', 'medium',
      'New product launch - cowboy style thick cut chips. Sample visit scheduled.',
-     CURRENT_DATE + INTERVAL '45 days', v_sales_id, 'email_campaign', NOW() - INTERVAL '3 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '45 days', v_sales_id, v_sales_id, 'email_campaign', NOW() - INTERVAL '3 days', ARRAY[]::bigint[]),
 
     -- Better Balance (Plant-Based) Opportunities
     ('Plant-Based Menu Conversion', 51, 1798, 'initial_outreach', 'active', 'high',
      'University interested in expanding plant-based options across campus dining.',
-     CURRENT_DATE + INTERVAL '60 days', v_sales_id, 'referral', NOW() - INTERVAL '2 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '60 days', v_sales_id, v_sales_id, 'referral', NOW() - INTERVAL '2 days', ARRAY[]::bigint[]),
 
     ('Better Balance Burger Trial', 12, 1798, 'closed_lost', 'active', 'low',
      'Trial program for plant-based burgers. Lost to competitor on price.',
-     CURRENT_DATE - INTERVAL '10 days', v_sales_id, 'cold_call', NOW() - INTERVAL '30 days', ARRAY[]::bigint[]),
+     CURRENT_DATE - INTERVAL '10 days', v_sales_id, v_sales_id, 'cold_call', NOW() - INTERVAL '30 days', ARRAY[]::bigint[]),
 
     -- VAF (Vertical Farms) Opportunities
     ('Hydroponic Lettuce Program', 26, 1799, 'closed_won', 'active', 'critical',
      'Year-round hydroponic lettuce supply contract. Premium pricing accepted.',
-     CURRENT_DATE - INTERVAL '1 day', v_sales_id, 'referral', NOW() - INTERVAL '60 days', ARRAY[]::bigint[]),
+     CURRENT_DATE - INTERVAL '1 day', v_sales_id, v_sales_id, 'referral', NOW() - INTERVAL '60 days', ARRAY[]::bigint[]),
 
     ('Spring Greens Initiative', 40, 1799, 'demo_scheduled', 'active', 'medium',
      'Locally grown greens program. Chef tasting scheduled.',
-     CURRENT_DATE + INTERVAL '10 days', v_sales_id, 'website', NOW() - INTERVAL '8 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '10 days', v_sales_id, v_sales_id, 'website', NOW() - INTERVAL '8 days', ARRAY[]::bigint[]),
 
     -- Annasea (Poke/Seafood) Opportunities
     ('Poke Bowl Base Program', 54, 1801, 'new_lead', 'active', 'low',
      'New lead from food show. Interested in pre-marinated poke bases.',
-     CURRENT_DATE + INTERVAL '90 days', v_sales_id, 'trade_show', NOW() - INTERVAL '1 day', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '90 days', v_sales_id, v_sales_id, 'trade_show', NOW() - INTERVAL '1 day', ARRAY[]::bigint[]),
 
     ('Sushi-Grade Fish Supply', 50, 1801, 'feedback_logged', 'active', 'high',
      'Regular sushi-grade fish supply. Chef approved quality.',
-     CURRENT_DATE + INTERVAL '14 days', v_sales_id, 'referral', NOW() - INTERVAL '21 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '14 days', v_sales_id, v_sales_id, 'referral', NOW() - INTERVAL '21 days', ARRAY[]::bigint[]),
 
     -- Rapid Rasoi (Indian Bases) Opportunities
     ('Indian Gravy Base Rollout', 22, 1802, 'sample_visit_offered', 'active', 'medium',
      'Adding Indian fusion items. Testing gravy bases.',
-     CURRENT_DATE + INTERVAL '35 days', v_sales_id, 'cold_call', NOW() - INTERVAL '10 days', ARRAY[]::bigint[]),
+     CURRENT_DATE + INTERVAL '35 days', v_sales_id, v_sales_id, 'cold_call', NOW() - INTERVAL '10 days', ARRAY[]::bigint[]),
 
     ('Butter Chicken LTO', 53, 1802, 'awaiting_response', 'active', 'high',
      'Limited time butter chicken special using our base. Awaiting owner approval.',
-     CURRENT_DATE + INTERVAL '7 days', v_sales_id, 'email_campaign', NOW() - INTERVAL '5 days', ARRAY[]::bigint[]);
+     CURRENT_DATE + INTERVAL '7 days', v_sales_id, v_sales_id, 'email_campaign', NOW() - INTERVAL '5 days', ARRAY[]::bigint[]);
 
   -- Add sample activities for some opportunities to demonstrate interaction tracking
   INSERT INTO activities (
