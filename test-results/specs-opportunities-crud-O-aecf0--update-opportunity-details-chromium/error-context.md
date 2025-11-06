@@ -52,7 +52,7 @@
                           - group:
                             - generic:
                               - generic: Opportunity name *
-                            - textbox: Update Test Original 1762438951194
+                            - textbox: Update Test Original 1762439793107
                           - generic:
                             - generic:
                               - button:
@@ -238,11 +238,11 @@
             - generic [ref=e17]:
               - group [ref=e18]:
                 - generic [ref=e20]: First Name *
-                - textbox "First Name *" [active] [ref=e21]: TestContact1762438959924
+                - textbox "First Name *" [ref=e21]: TestContact1762439799832
                 - generic [ref=e22]: Required field
               - group [ref=e23]:
                 - generic [ref=e25]: Last Name *
-                - textbox "Last Name *" [ref=e26]
+                - textbox "Last Name *" [active] [ref=e26]: TestLast1762439799832
                 - generic [ref=e27]: Required field
           - generic [ref=e28]:
             - heading "Position" [level=3] [ref=e29]
