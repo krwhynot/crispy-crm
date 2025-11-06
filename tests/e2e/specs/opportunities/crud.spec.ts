@@ -63,7 +63,7 @@ test.describe('Opportunities CRUD Operations', () => {
     // Generate unique test data using timestamp
     const timestamp = Date.now();
     const opportunityName = `Test Opportunity ${timestamp}`;
-    const orgName = 'Acme Corp'; // From seed.sql
+    const orgName = 'A&W'; // From seed.sql (id: 12, customer type)
 
     // Navigate to create form
     await listPage.clickCreate();
@@ -112,7 +112,7 @@ test.describe('Opportunities CRUD Operations', () => {
     const timestamp = Date.now();
     const opportunityData = {
       name: `Complete Opportunity ${timestamp}`,
-      organization: 'Acme Corp',
+      organization: 'A&W',
       stage: 'Qualification',
       value: '50000',
       probability: '60',
@@ -170,7 +170,7 @@ test.describe('Opportunities CRUD Operations', () => {
     // Create test opportunity first
     const timestamp = Date.now();
     const opportunityName = `Read Test ${timestamp}`;
-    const orgName = 'Acme Corp';
+    const orgName = 'A&W';
 
     await listPage.clickCreate();
     await formPage.createOpportunity(opportunityName, orgName);
@@ -210,7 +210,7 @@ test.describe('Opportunities CRUD Operations', () => {
     const timestamp = Date.now();
     const originalName = `Update Test Original ${timestamp}`;
     const updatedName = `Update Test Modified ${timestamp}`;
-    const orgName = 'Acme Corp';
+    const orgName = 'A&W';
 
     await listPage.clickCreate();
     await formPage.createOpportunity(originalName, orgName);
@@ -258,7 +258,7 @@ test.describe('Opportunities CRUD Operations', () => {
     // Create test opportunity
     const timestamp = Date.now();
     const opportunityName = `Delete Test ${timestamp}`;
-    const orgName = 'Acme Corp';
+    const orgName = 'A&W';
 
     await listPage.clickCreate();
     await formPage.createOpportunity(opportunityName, orgName);
@@ -329,11 +329,11 @@ test.describe('Opportunities CRUD Operations', () => {
 
     // Create both opportunities
     await listPage.clickCreate();
-    await formPage.createOpportunity(name1, 'Acme Corp');
+    await formPage.createOpportunity(name1, 'A&W');
 
     await listPage.goto();
     await listPage.clickCreate();
-    await formPage.createOpportunity(name2, 'Acme Corp');
+    await formPage.createOpportunity(name2, 'A&W');
 
     // Verify both exist independently
     await listPage.goto();

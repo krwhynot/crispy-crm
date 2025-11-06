@@ -38,7 +38,7 @@
               - generic [ref=e35]:
                 - group [ref=e36]:
                   - generic [ref=e38]: Opportunity name *
-                  - textbox "Opportunity name *" [ref=e39]: Test Opportunity 1762421339903
+                  - textbox "Opportunity name *" [ref=e39]: Test Opportunity 1762438918548
                 - button "Show naming tips" [ref=e42] [cursor=pointer]:
                   - img
                   - text: Show naming tips
@@ -117,7 +117,7 @@
                 - group [ref=e117]:
                   - generic [ref=e119]: Customer Organization *
                   - combobox [ref=e120] [cursor=pointer]:
-                    - text: Acme Corp
+                    - text: A&W
                     - img
                 - button "New Customer" [ref=e121] [cursor=pointer]:
                   - img
