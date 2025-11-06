@@ -43,7 +43,7 @@
 | Add "remember me" option (30-day session) | ❌ Missing | 🟢 HIGH | 4 hours |
 | Enhance role-based permissions (Account Manager/Read-Only) | ❌ Missing | 🟡 MEDIUM | 2 days |
 | Add user profile editing | ❌ Missing | 🟢 HIGH | 1 day |
-| Add test coverage | ❌ Missing | 🟢 HIGH | 1 day |
+| Add comprehensive auth test coverage | 🟡 Partial | 🟢 HIGH | 3 days |
 
 **Deferred to Post-MVP:**
 
