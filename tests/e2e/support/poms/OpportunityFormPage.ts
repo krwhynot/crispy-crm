@@ -284,32 +284,41 @@ export class OpportunityFormPage extends BasePage {
    * - name (provided)
    * - customer_organization_id (provided via organization param)
    * - principal_organization_id (defaults to 'Wicks' from seed data)
-   * - contact_ids with at least 1 contact (selects first available contact from customer org)
+   * - contact_ids with at least 1 contact (creates inline if none available)
    * - estimated_close_date (has default in schema)
    *
    * NOTE: Products are OPTIONAL per the validation schema (line 149-154 in opportunities.ts)
+   * NOTE: Since seed data has contacts with NULL organization_id, we create a test contact inline
    */
   async createOpportunity(name: string, organization: string, principalOrg: string = 'Wicks'): Promise<void> {
     await this.fillName(name);
     await this.selectOrganization(organization);
     await this.selectPrincipal(principalOrg);
 
-    // Wait a moment for contacts to become available after selecting customer org
+    // Wait for contacts section to become active
     await this.page.waitForTimeout(1000);
 
-    // Select first available contact from the customer organization
-    // The contacts combobox shows available contacts filtered by customer_organization_id
-    const contactsSection = this.page.locator(':text("Contacts")').locator('..').locator('..');
-    const combobox = contactsSection.getByRole('combobox').last();
+    // Create a test contact inline using the "New Contact" button
+    // This is necessary because seed data contacts have NULL organization_id
+    const newContactButton = this.page.getByRole('button', { name: /new contact/i });
+    await newContactButton.waitFor({ state: 'visible', timeout: 3000 });
+    await newContactButton.click();
 
-    // Click to open suggestions
-    await combobox.click();
+    // Wait for the contact creation dialog to open
     await this.page.waitForTimeout(500);
 
-    // Select the first available contact
-    const firstContact = this.page.getByRole('option').first();
-    await firstContact.waitFor({ state: 'visible', timeout: 3000 });
-    await firstContact.click();
+    // Fill minimal contact fields (first_name is required)
+    const timestamp = Date.now();
+    const firstNameInput = this.page.getByLabel(/first.*name/i);
+    await firstNameInput.waitFor({ state: 'visible', timeout: 3000 });
+    await firstNameInput.fill(`TestContact${timestamp}`);
+
+    // Submit the contact (this auto-adds it to the opportunity)
+    const saveContactButton = this.page.getByRole('button', { name: /save/i }).last();
+    await saveContactButton.click();
+
+    // Wait for contact to be added
+    await this.page.waitForTimeout(1000);
 
     await this.submit();
   }
