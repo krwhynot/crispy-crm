@@ -26,7 +26,7 @@ import type { RaRecord } from "react-admin";
  */
 
 interface DashboardPrincipalSummary extends RaRecord {
-  principal_organization_id: number;
+  id: number; // principal_organization_id aliased as id in view
   principal_name: string;
   account_manager_id: number;
   opportunity_count: number;
@@ -126,9 +126,8 @@ export const PrincipalDashboardTable = () => {
       <Datagrid
         bulkActionButtons={false}
         rowClick={(id, resource, record) => {
-          // Navigate to organization detail page
-          const principalId = (record as DashboardPrincipalSummary).principal_organization_id;
-          return `/organizations/${principalId}/show`;
+          // Navigate to organization detail page (id = principal_organization_id)
+          return `/organizations/${id}/show`;
         }}
         sx={{
           '& .RaDatagrid-table': {
@@ -156,7 +155,7 @@ export const PrincipalDashboardTable = () => {
           label="Principal"
           render={(record: DashboardPrincipalSummary) => (
             <Link
-              to={`/organizations/${record.principal_organization_id}/show`}
+              to={`/organizations/${record.id}/show`}
               className="font-medium text-primary hover:underline"
               onClick={(e) => e.stopPropagation()}
             >

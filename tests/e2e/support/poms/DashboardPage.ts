@@ -14,9 +14,9 @@ export class DashboardPage extends BasePage {
    */
   async navigate(): Promise<void> {
     await this.goto('/');
-    await this.waitForURL(/\/#\//, 10000);
 
     // Wait for dashboard to be fully loaded by checking for heading
+    // Note: React Admin dashboard renders at '/' not '/#/'
     await expect(this.getHeading()).toBeVisible({ timeout: 10000 });
   }
 

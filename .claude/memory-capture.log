@@ -1618,3 +1618,7 @@
 [2025-11-06 16:22:32] [configuration] Edit: /home/krwhynot/projects/crispy-crm/playwright.config.ts
 [2025-11-06 16:26:01] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/LoginPage.ts
 [2025-11-06 17:24:25] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106190107_create_dashboard_principal_summary_view.sql
+[2025-11-06 17:24:34] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/PrincipalDashboardTable.tsx
+[2025-11-06 17:24:57] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/PrincipalDashboardTable.tsx
+[2025-11-06 17:24:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/PrincipalDashboardTable.tsx
+[2025-11-06 17:34:24] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/DashboardPage.ts
