@@ -254,11 +254,63 @@ export class OpportunityFormPage extends BasePage {
   }
 
   /**
-   * Create opportunity with minimal required fields
+   * Select contact(s) from autocomplete
    */
-  async createOpportunity(name: string, organization: string): Promise<void> {
+  async selectContact(contactName: string): Promise<void> {
+    //  Find the Contacts section combobox
+    const contactsSection = this.page.locator(':text("Contacts")').locator('..').locator('..');
+    const combobox = contactsSection.getByRole('combobox').last(); // Use last to get the actual input, not just the label
+
+    // Click to open the dropdown
+    await combobox.click();
+
+    // Wait for suggestions to load
+    await this.page.waitForTimeout(500);
+
+    // Type the contact name to filter
+    await combobox.fill(contactName);
+    await this.page.waitForTimeout(500);
+
+    // Select from dropdown - use first match
+    const option = this.page.getByRole('option', { name: new RegExp(contactName, 'i') }).first();
+    await option.waitFor({ state: 'visible', timeout: 3000 });
+    await option.click();
+  }
+
+  /**
+   * Create opportunity with minimal ACTUALLY required fields
+   *
+   * IMPORTANT: This creates an opportunity with the minimum fields required by validation:
+   * - name (provided)
+   * - customer_organization_id (provided via organization param)
+   * - principal_organization_id (defaults to 'Wicks' from seed data)
+   * - contact_ids with at least 1 contact (selects first available contact from customer org)
+   * - estimated_close_date (has default in schema)
+   *
+   * NOTE: Products are OPTIONAL per the validation schema (line 149-154 in opportunities.ts)
+   */
+  async createOpportunity(name: string, organization: string, principalOrg: string = 'Wicks'): Promise<void> {
     await this.fillName(name);
     await this.selectOrganization(organization);
+    await this.selectPrincipal(principalOrg);
+
+    // Wait a moment for contacts to become available after selecting customer org
+    await this.page.waitForTimeout(1000);
+
+    // Select first available contact from the customer organization
+    // The contacts combobox shows available contacts filtered by customer_organization_id
+    const contactsSection = this.page.locator(':text("Contacts")').locator('..').locator('..');
+    const combobox = contactsSection.getByRole('combobox').last();
+
+    // Click to open suggestions
+    await combobox.click();
+    await this.page.waitForTimeout(500);
+
+    // Select the first available contact
+    const firstContact = this.page.getByRole('option').first();
+    await firstContact.waitFor({ state: 'visible', timeout: 3000 });
+    await firstContact.click();
+
     await this.submit();
   }
 
