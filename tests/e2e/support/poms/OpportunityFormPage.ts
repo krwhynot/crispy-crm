@@ -91,8 +91,8 @@ export class OpportunityFormPage extends BasePage {
     // Wait for autocomplete options
     await this.page.waitForTimeout(500);
 
-    // Select from dropdown
-    const option = this.page.getByRole('option', { name: new RegExp(principalName, 'i') });
+    // Select from dropdown - use first match to avoid "Create..." option and duplicates
+    const option = this.page.getByRole('option', { name: new RegExp(`^${principalName}$`, 'i') }).first();
     await option.waitFor({ state: 'visible' });
     await option.click();
   }
