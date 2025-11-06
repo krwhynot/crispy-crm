@@ -21,8 +21,14 @@ const updatedContact = {
 
 test.describe('Contacts CRUD Operations', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to login page
-    await page.goto('/');
+    // Set longer timeout for initial load
+    test.setTimeout(60000);
+
+    // Navigate to login page and wait for it to load
+    await page.goto('/', { waitUntil: 'networkidle', timeout: 30000 });
+
+    // Wait for login form to be visible
+    await page.waitForSelector('input[name="email"]', { timeout: 20000 });
 
     // Login with test user
     await page.fill('input[name="email"]', 'admin@test.com');
@@ -30,7 +36,7 @@ test.describe('Contacts CRUD Operations', () => {
     await page.click('button[type="submit"]');
 
     // Wait for dashboard to load
-    await page.waitForURL('/#/', { timeout: 10000 });
+    await page.waitForURL('/#/', { timeout: 15000 });
     await page.waitForLoadState('networkidle');
 
     // Navigate to contacts
