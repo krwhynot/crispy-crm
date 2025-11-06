@@ -1,0 +1,205 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e6]:
+        - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+          - /url: "#/"
+          - generic "MFB Master Food Brokers" [ref=e8]
+        - navigation [ref=e10]:
+          - link "Dashboard" [ref=e11] [cursor=pointer]:
+            - /url: "#/"
+          - link "Contacts" [ref=e12] [cursor=pointer]:
+            - /url: "#/contacts"
+          - link "Organizations" [ref=e13] [cursor=pointer]:
+            - /url: "#/organizations"
+          - link "Opportunities" [ref=e14] [cursor=pointer]:
+            - /url: "#/opportunities"
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: "#/products"
+        - generic [ref=e16]:
+          - button "Toggle theme" [ref=e17] [cursor=pointer]:
+            - img
+            - generic [ref=e18]: Toggle theme
+          - button [ref=e19] [cursor=pointer]:
+            - img
+          - button "Notifications" [ref=e20] [cursor=pointer]:
+            - img
+          - button "n" [ref=e21] [cursor=pointer]:
+            - generic [ref=e23]: "n"
+    - main [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - heading "Dashboard" [level=1] [ref=e27]
+          - button "Refresh dashboard" [ref=e28] [cursor=pointer]:
+            - img
+            - text: Refresh
+        - generic [ref=e29]:
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - img [ref=e34]
+              - heading "Total Contacts" [level=3] [ref=e39]
+            - generic [ref=e40]:
+              - generic [ref=e41]: "2021"
+              - generic [ref=e42]: contacts
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - img [ref=e47]
+              - heading "Total Organizations" [level=3] [ref=e51]
+            - generic [ref=e52]:
+              - generic [ref=e53]: "1811"
+              - generic [ref=e54]: organizations
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - img [ref=e59]
+              - heading "Activities This Week" [level=3] [ref=e61]
+            - generic [ref=e62]:
+              - generic [ref=e63]: "2"
+              - generic [ref=e64]: this week
+        - generic [ref=e65]:
+          - button "View My Open Opportunities" [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]:
+              - heading "My Open Opportunities" [level=3] [ref=e68]
+              - img [ref=e70]
+            - generic [ref=e74]:
+              - generic [ref=e75]: "13"
+              - generic [ref=e76]: opportunities
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - heading "Overdue Tasks" [level=3] [ref=e79]
+              - img [ref=e81]
+            - generic [ref=e84]:
+              - generic [ref=e85]: "0"
+              - generic [ref=e86]: No overdue tasks
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - heading "This Week's Activities" [level=3] [ref=e89]
+              - img [ref=e91]
+            - generic [ref=e94]:
+              - generic [ref=e95]: "1"
+              - generic [ref=e96]: activity this week
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - heading "Opportunities by Principal" [level=3] [ref=e99]
+              - img [ref=e101]
+            - generic [ref=e104]:
+              - button "Kaufholds 3 opportunities" [ref=e105] [cursor=pointer]:
+                - generic [ref=e106]: Kaufholds
+                - generic [ref=e107]: 3 opportunities
+              - button "Rapid Rasoi 2 opportunities" [ref=e108] [cursor=pointer]:
+                - generic [ref=e109]: Rapid Rasoi
+                - generic [ref=e110]: 2 opportunities
+              - button "Annasea 2 opportunities" [ref=e111] [cursor=pointer]:
+                - generic [ref=e112]: Annasea
+                - generic [ref=e113]: 2 opportunities
+              - button "VAF 2 opportunities" [ref=e114] [cursor=pointer]:
+                - generic [ref=e115]: VAF
+                - generic [ref=e116]: 2 opportunities
+              - button "Better Balance 2 opportunities" [ref=e117] [cursor=pointer]:
+                - generic [ref=e118]: Better Balance
+                - generic [ref=e119]: 2 opportunities
+              - button "Frites Street 2 opportunities" [ref=e120] [cursor=pointer]:
+                - generic [ref=e121]: Frites Street
+                - generic [ref=e122]: 2 opportunities
+              - generic [ref=e124]: 13 total opportunities
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - heading "Pipeline by Stage" [level=3] [ref=e127]
+              - img [ref=e129]
+            - application [ref=e135]:
+              - generic [ref=e139]:
+                - generic [ref=e141]: InitialOutreach
+                - generic [ref=e143]: Feedback Logged
+                - generic [ref=e145]: ClosedLost
+          - generic [ref=e146]:
+            - generic [ref=e147]:
+              - heading "Recent Activities" [level=3] [ref=e148]
+              - img [ref=e150]
+            - generic [ref=e153]:
+              - 'button "View activity: Contract negotiation completed" [ref=e154] [cursor=pointer]':
+                - generic [ref=e155]:
+                  - img [ref=e157]
+                  - generic [ref=e162]: null null
+                  - generic [ref=e163]: "-"
+                  - generic [ref=e164]: Meeting
+                - generic [ref=e165]: Agreed to premium pricing for year-round quality guarantee.
+                - generic [ref=e166]: 1 day ago
+              - 'button "View activity: Trade show booth visit" [ref=e167] [cursor=pointer]':
+                - generic [ref=e168]:
+                  - img [ref=e170]
+                  - generic [ref=e175]: null null
+                  - generic [ref=e176]: "-"
+                  - generic [ref=e177]: Meeting
+                - generic [ref=e178]: Great interaction at National Restaurant Show. Chef loved sa...
+                - generic [ref=e179]: 8 days ago
+              - 'button "View activity: Volume pricing discussion" [ref=e180] [cursor=pointer]':
+                - generic [ref=e181]:
+                  - img [ref=e183]
+                  - generic [ref=e185]: null null
+                  - generic [ref=e186]: "-"
+                  - generic [ref=e187]: Call
+                - generic [ref=e188]: Confirmed 50lbs/week across 3 locations. Moved to demo stage...
+                - generic [ref=e189]: 11 days ago
+              - 'button "View activity: Initial inquiry about cheese curd program" [ref=e190] [cursor=pointer]':
+                - generic [ref=e191]:
+                  - img [ref=e193]
+                  - generic [ref=e196]: null null
+                  - generic [ref=e197]: "-"
+                  - generic [ref=e198]: Email
+                - generic [ref=e199]: Customer reached out after referral. Very interested in Wisc...
+                - generic [ref=e200]: 16 days ago
+        - generic [ref=e201]:
+          - generic [ref=e202]:
+            - generic [ref=e203]:
+              - generic [ref=e204]:
+                - img [ref=e206]
+                - heading "Upcoming Tasks" [level=2] [ref=e209]
+                - button [ref=e210] [cursor=pointer]:
+                  - img
+              - paragraph [ref=e213] [cursor=pointer]: Tasks added to your contacts will appear here.
+            - generic [ref=e214]:
+              - generic [ref=e215]:
+                - img [ref=e217]
+                - heading "Latest Activity" [level=2] [ref=e220]
+              - button "Load more activity" [ref=e223] [cursor=pointer]
+          - generic [ref=e224]:
+            - generic [ref=e226]:
+              - img [ref=e228]
+              - heading "Hot Contacts" [level=2] [ref=e233]
+              - link [ref=e234] [cursor=pointer]:
+                - /url: "#/contacts/create"
+                - img
+            - generic [ref=e236]:
+              - generic [ref=e237]:
+                - img [ref=e239]
+                - heading "Pipeline" [level=2] [ref=e242]
+              - generic [ref=e243]:
+                - generic [ref=e244]:
+                  - generic [ref=e245]: Active Opportunities
+                  - generic [ref=e246]: "10"
+                - generic [ref=e247]:
+                  - generic [ref=e248]: Closed Won
+                  - generic [ref=e249]: "2"
+                - generic [ref=e250]:
+                  - generic [ref=e251]: Closed Lost
+                  - generic [ref=e252]: "1"
+          - generic [ref=e255]:
+            - link "New Contact" [ref=e256] [cursor=pointer]:
+              - /url: "#/contacts/create"
+              - img
+              - text: New Contact
+            - link "New Opportunity" [ref=e257] [cursor=pointer]:
+              - /url: "#/opportunities/create"
+              - img
+              - text: New Opportunity
+    - contentinfo [ref=e258]:
+      - generic [ref=e260]:
+        - paragraph [ref=e261]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e262] [cursor=pointer]:
+          - img [ref=e263]
+          - generic [ref=e265]: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - generic [ref=e266]: Logged
+```
