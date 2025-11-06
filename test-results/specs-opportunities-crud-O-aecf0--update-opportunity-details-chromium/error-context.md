@@ -52,7 +52,7 @@
                           - group:
                             - generic:
                               - generic: Opportunity name *
-                            - textbox: Update Test Original 1762442864440
+                            - textbox: Update Test Original 1762443116806
                           - generic:
                             - generic:
                               - button:
@@ -224,9 +224,24 @@
           - button:
             - img
             - generic: Keyboard shortcuts
-    - region "Notifications alt+T"
+    - region "Notifications alt+T":
+      - list:
+        - listitem:
+          - button "Close toast":
+            - img
+          - generic:
+            - img
+          - generic:
+            - generic: Error creating contacts
+        - listitem:
+          - button "Close toast":
+            - img
+          - generic:
+            - img
+          - generic:
+            - generic: Error creating contacts
   - generic: Logged
-  - dialog "Create new Contact" [ref=e5]:
+  - dialog "Create new Contact" [active] [ref=e5]:
     - generic [ref=e6]:
       - heading "Create new Contact" [level=2] [ref=e7]
       - paragraph [ref=e8]: Create a new contact for the selected customer organization
@@ -238,11 +253,11 @@
             - generic [ref=e17]:
               - group [ref=e18]:
                 - generic [ref=e20]: First Name *
-                - textbox "First Name *" [ref=e21]: TestContact1762442872229
+                - textbox "First Name *" [ref=e21]: TestContact1762443122811
                 - generic [ref=e22]: Required field
               - group [ref=e23]:
                 - generic [ref=e25]: Last Name *
-                - textbox "Last Name *" [ref=e26]: TestLast1762442872229
+                - textbox "Last Name *" [ref=e26]: TestLast1762443122811
                 - generic [ref=e27]: Required field
           - generic [ref=e28]:
             - heading "Position" [level=3] [ref=e29]
@@ -273,50 +288,53 @@
                     - listitem [ref=e54]:
                       - generic [ref=e55]:
                         - group [ref=e56]:
-                          - textbox "Email (valid email required)" [active] [ref=e57]: test1762442872229@example.com
+                          - textbox "Email (valid email required)" [ref=e57]: test1762443122811@example.com
                         - group [ref=e58]:
                           - generic [ref=e59]:
                             - combobox [ref=e60] [cursor=pointer]:
+                              - generic: Work
+                              - button [ref=e61]:
+                                - img
                               - img
-                            - combobox [ref=e61]
-                      - button [ref=e63] [cursor=pointer]:
+                            - combobox [ref=e62]
+                      - button [ref=e64] [cursor=pointer]:
                         - img
-                  - button [ref=e65] [cursor=pointer]:
+                  - button [ref=e66] [cursor=pointer]:
                     - img
-              - group [ref=e66]:
-                - generic [ref=e68]: Phone numbers
-                - generic [ref=e69]:
+              - group [ref=e67]:
+                - generic [ref=e69]: Phone numbers
+                - generic [ref=e70]:
                   - list
-                  - button [ref=e71] [cursor=pointer]:
+                  - button [ref=e72] [cursor=pointer]:
                     - img
-              - group [ref=e72]:
-                - generic [ref=e74]: Linkedin URL
-                - textbox "Linkedin URL" [ref=e75]
-                - generic [ref=e76]: "Format: https://linkedin.com/in/username"
-          - generic [ref=e77]:
-            - heading "Additional Info" [level=3] [ref=e78]
-            - generic [ref=e79]:
-              - group [ref=e80]:
-                - generic [ref=e82]: Account manager *
-                - generic [ref=e83]:
-                  - combobox [ref=e84] [cursor=pointer]:
+              - group [ref=e73]:
+                - generic [ref=e75]: Linkedin URL
+                - textbox "Linkedin URL" [ref=e76]
+                - generic [ref=e77]: "Format: https://linkedin.com/in/username"
+          - generic [ref=e78]:
+            - heading "Additional Info" [level=3] [ref=e79]
+            - generic [ref=e80]:
+              - group [ref=e81]:
+                - generic [ref=e83]: Account manager *
+                - generic [ref=e84]:
+                  - combobox [ref=e85] [cursor=pointer]:
                     - generic: null null
-                    - button [ref=e85]:
+                    - button [ref=e86]:
                       - img
                     - img
-                  - combobox [ref=e86]
-                - generic [ref=e87]: Required field
-              - group [ref=e88]:
-                - generic [ref=e90]: Notes
-                - textbox "Notes" [ref=e91]
-                - generic [ref=e92]: Additional information about this contact
-      - toolbar [ref=e93]:
-        - generic [ref=e94]:
-          - button "Cancel" [ref=e95] [cursor=pointer]
-          - button "Create" [ref=e96] [cursor=pointer]:
+                  - combobox [ref=e87]
+                - generic [ref=e88]: Required field
+              - group [ref=e89]:
+                - generic [ref=e91]: Notes
+                - textbox "Notes" [ref=e92]
+                - generic [ref=e93]: Additional information about this contact
+      - toolbar [ref=e94]:
+        - generic [ref=e95]:
+          - button "Cancel" [ref=e96] [cursor=pointer]
+          - button "Create" [ref=e97] [cursor=pointer]:
             - img
             - text: Create
-    - button "Close" [ref=e97] [cursor=pointer]:
+    - button "Close" [ref=e98] [cursor=pointer]:
       - img
-      - generic [ref=e98]: Close
+      - generic [ref=e99]: Close
 ```
