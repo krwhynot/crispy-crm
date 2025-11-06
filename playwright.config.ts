@@ -14,9 +14,18 @@ export default defineConfig({
   },
 
   projects: [
+    // Setup project
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    },
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'tests/e2e/.auth/user.json',
+      },
+      dependencies: ['setup'],
     },
     {
       name: 'iPad Portrait',
