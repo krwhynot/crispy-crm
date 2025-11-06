@@ -337,6 +337,17 @@ export class OpportunityFormPage extends BasePage {
     await emailInput.clear(); // Clear any existing content
     await emailInput.fill(`test${timestamp}@example.com`);
 
+    // Select email type (REQUIRED - one of "Work"|"Home"|"Other")
+    // The type SelectInput appears next to the email input in the same row
+    const emailTypeSelect = contactDialog.locator('select, [role="combobox"]').last();
+    await emailTypeSelect.waitFor({ state: 'visible', timeout: 3000 });
+    await emailTypeSelect.click();
+
+    // Select "Work" from the dropdown
+    const workOption = this.page.getByRole('option', { name: /^work$/i }).first();
+    await workOption.waitFor({ state: 'visible', timeout: 3000 });
+    await workOption.click();
+
     // Wait for validation to complete
     await this.page.waitForTimeout(500);
 
