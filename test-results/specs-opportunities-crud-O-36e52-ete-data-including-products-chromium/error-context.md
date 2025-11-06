@@ -38,7 +38,7 @@
               - generic [ref=e35]:
                 - group [ref=e36]:
                   - generic [ref=e38]: Opportunity name *
-                  - textbox "Opportunity name *" [active] [ref=e39]: Complete Opportunity 1762404508136
+                  - textbox "Opportunity name *" [ref=e39]: Complete Opportunity 1762404917947
                 - button "Show naming tips" [ref=e42] [cursor=pointer]:
                   - img
                   - text: Show naming tips
@@ -116,42 +116,46 @@
               - generic [ref=e116]:
                 - group [ref=e117]:
                   - generic [ref=e119]: Customer Organization *
-                  - combobox [ref=e120] [cursor=pointer]:
-                    - generic [ref=e121]: Search
+                  - combobox [active] [ref=e120] [cursor=pointer]:
+                    - text: Acme Corp
                     - img
-                - button "New Customer" [ref=e122] [cursor=pointer]:
+                - button "New Customer" [ref=e121] [cursor=pointer]:
                   - img
                   - text: New Customer
-              - group [ref=e123]:
-                - generic [ref=e125]: Account Manager
-                - generic [ref=e126]:
-                  - combobox [ref=e127] [cursor=pointer]:
-                    - button [ref=e128]:
+              - group [ref=e122]:
+                - generic [ref=e124]: Account Manager
+                - generic [ref=e125]:
+                  - combobox [ref=e126] [cursor=pointer]:
+                    - button [ref=e127]:
                       - img
                     - img
-                  - combobox [ref=e129]
-              - generic [ref=e130]:
-                - group [ref=e131]:
-                  - generic [ref=e133]: Principal Organization *
-                  - combobox [ref=e134] [cursor=pointer]:
-                    - generic [ref=e135]: Search
+                  - combobox [ref=e128]
+              - generic [ref=e129]:
+                - group [ref=e130]:
+                  - generic [ref=e132]: Principal Organization *
+                  - combobox [ref=e133] [cursor=pointer]:
+                    - generic [ref=e134]: Search
                     - img
-                - button "New Principal" [ref=e136] [cursor=pointer]:
+                - button "New Principal" [ref=e135] [cursor=pointer]:
                   - img
                   - text: New Principal
-              - generic [ref=e137]:
-                - group [ref=e138]:
-                  - generic [ref=e140]: Distributor Organization
-                  - combobox [ref=e141] [cursor=pointer]:
-                    - generic [ref=e142]: Search
+              - generic [ref=e136]:
+                - group [ref=e137]:
+                  - generic [ref=e139]: Distributor Organization
+                  - combobox [ref=e140] [cursor=pointer]:
+                    - generic [ref=e141]: Search
                     - img
-                - button "New Distributor" [ref=e143] [cursor=pointer]:
+                - button "New Distributor" [ref=e142] [cursor=pointer]:
                   - img
                   - text: New Distributor
-          - generic [ref=e144]:
-            - generic [ref=e146]:
-              - heading "Contacts *" [level=3] [ref=e147]
-              - paragraph [ref=e148]: Please select a Customer Organization first
+          - generic [ref=e143]:
+            - generic [ref=e144]:
+              - generic [ref=e145]:
+                - heading "Contacts *" [level=3] [ref=e146]
+                - paragraph [ref=e147]: At least one contact is required
+              - button "New Contact" [ref=e148] [cursor=pointer]:
+                - img
+                - text: New Contact
             - group [ref=e149]:
               - generic [ref=e150]:
                 - combobox [expanded] [ref=e154]

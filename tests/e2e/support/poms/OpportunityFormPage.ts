@@ -42,19 +42,28 @@ export class OpportunityFormPage extends BasePage {
    * Select organization
    */
   async selectOrganization(orgName: string): Promise<void> {
-    // Find combobox by text content since React Admin doesn't always use proper label association
+    // Find combobox button by text content since React Admin doesn't always use proper label association
     // Look for the section containing "Customer Organization" text, then find the combobox within it
     const section = this.page.locator(':text("Customer Organization")').locator('..').locator('..');
-    const orgInput = section.getByRole('combobox');
+    const comboboxButton = section.getByRole('combobox');
 
-    await orgInput.click();
-    await orgInput.fill(orgName);
+    // Click to open the dropdown
+    await comboboxButton.click();
+
+    // Wait for the actual input field to appear in the opened dropdown/dialog
+    const searchInput = this.page.getByRole('textbox', { name: /search/i }).or(
+      this.page.locator('input[type="text"]').filter({ has: this.page.locator(':text("Search")') })
+    ).or(
+      this.page.locator('input[type="text"]').last()
+    );
+    await searchInput.waitFor({ state: 'visible', timeout: 3000 });
+    await searchInput.fill(orgName);
 
     // Wait for autocomplete options
     await this.page.waitForTimeout(500);
 
-    // Select from dropdown
-    const option = this.page.getByRole('option', { name: new RegExp(orgName, 'i') });
+    // Select from dropdown - use first match to avoid "Create..." option and duplicates
+    const option = this.page.getByRole('option', { name: new RegExp(`^${orgName}$`, 'i') }).first();
     await option.waitFor({ state: 'visible' });
     await option.click();
   }
@@ -63,10 +72,21 @@ export class OpportunityFormPage extends BasePage {
    * Select principal/owner
    */
   async selectPrincipal(principalName: string): Promise<void> {
-    // Use more specific label pattern for Principal Organization field
-    const principalInput = this.page.getByLabel(/principal organization/i);
-    await principalInput.click();
-    await principalInput.fill(principalName);
+    // Find combobox button by text content since React Admin doesn't always use proper label association
+    const section = this.page.locator(':text("Principal Organization")').locator('..').locator('..');
+    const comboboxButton = section.getByRole('combobox');
+
+    // Click to open the dropdown
+    await comboboxButton.click();
+
+    // Wait for the actual input field to appear in the opened dropdown/dialog
+    const searchInput = this.page.getByRole('textbox', { name: /search/i }).or(
+      this.page.locator('input[type="text"]').filter({ has: this.page.locator(':text("Search")') })
+    ).or(
+      this.page.locator('input[type="text"]').last()
+    );
+    await searchInput.waitFor({ state: 'visible', timeout: 3000 });
+    await searchInput.fill(principalName);
 
     // Wait for autocomplete options
     await this.page.waitForTimeout(500);

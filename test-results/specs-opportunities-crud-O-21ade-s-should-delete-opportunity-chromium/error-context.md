@@ -38,7 +38,7 @@
               - generic [ref=e35]:
                 - group [ref=e36]:
                   - generic [ref=e38]: Opportunity name *
-                  - textbox "Opportunity name *" [active] [ref=e39]: Delete Test 1762404573428
+                  - textbox "Opportunity name *" [ref=e39]: Delete Test 1762404970043
                 - button "Show naming tips" [ref=e42] [cursor=pointer]:
                   - img
                   - text: Show naming tips
@@ -116,7 +116,7 @@
               - generic [ref=e116]:
                 - group [ref=e117]:
                   - generic [ref=e119]: Customer Organization *
-                  - combobox [ref=e120] [cursor=pointer]:
+                  - combobox [expanded] [ref=e120] [cursor=pointer]:
                     - generic [ref=e121]: Search
                     - img
                 - button "New Customer" [ref=e122] [cursor=pointer]:
@@ -185,4 +185,28 @@
           - generic [ref=e175]: Keyboard shortcuts
     - region "Notifications alt+T"
   - generic [ref=e176]: Logged
+  - dialog [ref=e178]:
+    - generic [ref=e179]:
+      - generic [ref=e181]:
+        - img [ref=e182]
+        - combobox [expanded] [active] [ref=e185]: Acme Corp
+      - group [ref=e186]:
+        - option "Acme Corp" [ref=e187]:
+          - img
+          - text: Acme Corp
+        - option "Acme Corp" [ref=e188]:
+          - img
+          - text: Acme Corp
+        - option "Surfs Up Franchising Corporation" [ref=e189]:
+          - img
+          - text: Surfs Up Franchising Corporation
+        - option "RDV Corp" [ref=e190]:
+          - img
+          - text: RDV Corp
+        - option "DeRosa Corporation" [ref=e191]:
+          - img
+          - text: DeRosa Corporation
+        - option "Create Acme Corp" [ref=e192]:
+          - img
+          - text: Create Acme Corp
 ```
