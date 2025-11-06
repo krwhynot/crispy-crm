@@ -307,11 +307,15 @@ export class OpportunityFormPage extends BasePage {
     // Wait for the contact creation dialog to open
     await this.page.waitForTimeout(500);
 
-    // Fill minimal contact fields (first_name is required)
+    // Fill minimal contact fields (BOTH first_name AND last_name are required)
     const timestamp = Date.now();
     const firstNameInput = this.page.getByLabel(/first.*name/i);
     await firstNameInput.waitFor({ state: 'visible', timeout: 3000 });
     await firstNameInput.fill(`TestContact${timestamp}`);
+
+    // Fill last name (also required)
+    const lastNameInput = this.page.getByLabel(/last.*name/i);
+    await lastNameInput.fill(`TestLast${timestamp}`);
 
     // Submit the contact (this auto-adds it to the opportunity)
     const saveContactButton = this.page.getByRole('button', { name: /save/i }).last();
