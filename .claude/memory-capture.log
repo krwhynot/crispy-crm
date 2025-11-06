@@ -1591,3 +1591,5 @@
 [2025-11-06 13:03:08] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106190107_create_dashboard_principal_summary_view.sql
 [2025-11-06 13:10:03] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251106190107_create_dashboard_principal_summary_view.sql
 [2025-11-06 13:18:53] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/PrincipalDashboardTable.tsx
+[2025-11-06 13:23:39] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/Dashboard.tsx
+[2025-11-06 13:27:58] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/dashboard-layout.spec.ts
