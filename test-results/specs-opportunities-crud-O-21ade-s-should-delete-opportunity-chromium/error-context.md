@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - generic [ref=e2]:
     - navigation [ref=e3]:
       - generic [ref=e6]:
@@ -38,7 +38,7 @@
               - generic [ref=e35]:
                 - group [ref=e36]:
                   - generic [ref=e38]: Opportunity name *
-                  - textbox "Opportunity name *" [ref=e39]: Delete Test 1762421178227
+                  - textbox "Opportunity name *" [ref=e39]: Delete Test 1762421404020
                 - button "Show naming tips" [ref=e42] [cursor=pointer]:
                   - img
                   - text: Show naming tips
@@ -133,60 +133,60 @@
               - generic [ref=e129]:
                 - group [ref=e130]:
                   - generic [ref=e132]: Principal Organization *
-                  - combobox [ref=e133] [cursor=pointer]:
-                    - generic [ref=e134]: Search
+                  - combobox [active] [ref=e133] [cursor=pointer]:
+                    - text: Wicks
                     - img
-                - button "New Principal" [ref=e135] [cursor=pointer]:
+                - button "New Principal" [ref=e134] [cursor=pointer]:
                   - img
                   - text: New Principal
-              - generic [ref=e136]:
-                - group [ref=e137]:
-                  - generic [ref=e139]: Distributor Organization
-                  - combobox [ref=e140] [cursor=pointer]:
-                    - generic [ref=e141]: Search
+              - generic [ref=e135]:
+                - group [ref=e136]:
+                  - generic [ref=e138]: Distributor Organization
+                  - combobox [ref=e139] [cursor=pointer]:
+                    - generic [ref=e140]: Search
                     - img
-                - button "New Distributor" [ref=e142] [cursor=pointer]:
+                - button "New Distributor" [ref=e141] [cursor=pointer]:
                   - img
                   - text: New Distributor
-          - generic [ref=e143]:
-            - generic [ref=e144]:
-              - generic [ref=e145]:
-                - heading "Contacts *" [level=3] [ref=e146]
-                - paragraph [ref=e147]: At least one contact is required
-              - button "New Contact" [ref=e148] [cursor=pointer]:
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]:
+                - heading "Contacts *" [level=3] [ref=e145]
+                - paragraph [ref=e146]: At least one contact is required
+              - button "New Contact" [ref=e147] [cursor=pointer]:
                 - img
                 - text: New Contact
-            - group [ref=e149]:
-              - generic [ref=e150]:
-                - combobox [expanded] [ref=e154]
+            - group [ref=e148]:
+              - generic [ref=e149]:
+                - combobox [expanded] [ref=e153]
                 - generic:
                   - listbox "Suggestions"
-          - generic [ref=e155]:
-            - generic [ref=e156]:
-              - heading "Products *" [level=3] [ref=e157]
-              - paragraph [ref=e158]: At least one product is required (select Principal Organization to filter)
-            - group [ref=e159]:
-              - generic [ref=e160]:
+          - generic [ref=e154]:
+            - generic [ref=e155]:
+              - heading "Products *" [level=3] [ref=e156]
+              - paragraph [ref=e157]: At least one product is required (filtered by selected Principal)
+            - group [ref=e158]:
+              - generic [ref=e159]:
                 - list
-                - button [ref=e162] [cursor=pointer]:
+                - button [ref=e161] [cursor=pointer]:
                   - img
-        - toolbar [ref=e163]:
-          - button "Delete" [ref=e164] [cursor=pointer]:
+        - toolbar [ref=e162]:
+          - button "Delete" [ref=e163] [cursor=pointer]:
             - img
             - text: Delete
-          - generic [ref=e165]:
-            - button "Cancel" [ref=e166] [cursor=pointer]:
+          - generic [ref=e164]:
+            - button "Cancel" [ref=e165] [cursor=pointer]:
               - img
               - text: Cancel
-            - button "Save" [ref=e167] [cursor=pointer]:
+            - button "Save" [ref=e166] [cursor=pointer]:
               - img
               - text: Save
-    - contentinfo [ref=e168]:
-      - generic [ref=e170]:
-        - paragraph [ref=e171]: © 2025 MFB Master Food Brokers. All rights reserved.
-        - button "View keyboard shortcuts" [ref=e172] [cursor=pointer]:
-          - img [ref=e173]
-          - generic [ref=e175]: Keyboard shortcuts
+    - contentinfo [ref=e167]:
+      - generic [ref=e169]:
+        - paragraph [ref=e170]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e171] [cursor=pointer]:
+          - img [ref=e172]
+          - generic [ref=e174]: Keyboard shortcuts
     - region "Notifications alt+T"
-  - generic [ref=e176]: Logged
+  - generic [ref=e175]: Logged
 ```
