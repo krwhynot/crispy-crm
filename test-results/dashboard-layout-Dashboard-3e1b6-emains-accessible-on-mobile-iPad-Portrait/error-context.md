@@ -24,16 +24,18 @@
         - button "n" [ref=e18] [cursor=pointer]:
           - generic [ref=e20]: "n"
   - main [ref=e21]:
-    - generic [ref=e23]:
-      - heading "My Principals" [level=1] [ref=e24]
-      - button "Refresh dashboard" [ref=e25] [cursor=pointer]:
-        - img
-        - text: Refresh
-  - contentinfo [ref=e27]:
-    - generic [ref=e29]:
-      - paragraph [ref=e30]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e31] [cursor=pointer]:
-        - img [ref=e32]
-        - generic [ref=e34]: Keyboard shortcuts
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - heading "My Principals" [level=1] [ref=e24]
+        - button "Refresh dashboard" [ref=e25] [cursor=pointer]:
+          - img
+          - text: Refresh
+      - paragraph [ref=e31]: No Dashboard principal summaries found
+  - contentinfo [ref=e32]:
+    - generic [ref=e34]:
+      - paragraph [ref=e35]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e36] [cursor=pointer]:
+        - img [ref=e37]
+        - generic [ref=e39]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
