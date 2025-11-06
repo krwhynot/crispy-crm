@@ -1506,3 +1506,9 @@
 [2025-11-05 21:16:14] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/OpportunityFormPage.ts
 [2025-11-05 21:19:54] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/crud.spec.ts
 [2025-11-05 21:20:48] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/kanban-board.spec.ts
+[2025-11-05 21:21:48] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/stage-transitions.spec.ts
+[2025-11-05 21:22:57] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/activity-timeline.spec.ts
+[2025-11-05 21:25:10] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/crud.spec.ts
+[2025-11-05 21:25:24] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/kanban-board.spec.ts
+[2025-11-05 21:25:39] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/stage-transitions.spec.ts
+[2025-11-05 21:25:52] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/opportunities/activity-timeline.spec.ts

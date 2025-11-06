@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../../support/poms/LoginPage';
 import { OpportunitiesListPage } from '../../support/poms/OpportunitiesListPage';
 import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
+import { consoleMonitor } from '../../support/utils/console-monitor';
 
 /**
  * Opportunities Kanban Board Test Suite
@@ -9,6 +11,7 @@ import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
  * Priority: Critical (Priority 1A from testing strategy)
  * Coverage: Kanban view interactions, drag-and-drop, visual regression
  *
+ * FOLLOWS: playwright-e2e-testing skill requirements
  * Note: Drag-and-drop tests run only on desktop viewport (not touch devices)
  */
 
@@ -17,12 +20,34 @@ test.describe('Opportunities Kanban Board', () => {
   let formPage: OpportunityFormPage;
 
   test.beforeEach(async ({ page }) => {
+    // Attach console monitoring
+    await consoleMonitor.attach(page);
+
+    // Login using POM
+    const loginPage = new LoginPage(page);
+    await loginPage.goto('/');
+
+    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+
+    if (isLoginFormVisible) {
+      await loginPage.login('admin@test.com', 'password123');
+    } else {
+      await page.waitForURL(/\/#\//, { timeout: 10000 });
+    }
+
     // Initialize POMs
     listPage = new OpportunitiesListPage(page);
     formPage = new OpportunityFormPage(page);
 
     // Navigate to opportunities list
     await listPage.goto();
+  });
+
+  test.afterEach(async () => {
+    if (consoleMonitor.getErrors().length > 0) {
+      console.log(consoleMonitor.getReport());
+    }
+    consoleMonitor.clear();
   });
 
   test('should display Kanban board with stage columns', async ({ page }) => {
