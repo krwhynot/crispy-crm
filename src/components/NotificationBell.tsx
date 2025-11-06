@@ -11,13 +11,13 @@ export const NotificationBell = () => {
 
   // Fetch initial unread count
   useEffect(() => {
-    if (!identity?.id || isLoading) return;
+    if (!identity?.user_id || isLoading) return;
 
     const fetchUnreadCount = async () => {
       const { count, error } = await supabase
         .from("notifications")
         .select("*", { count: "exact", head: true })
-        .eq("user_id", identity.id)
+        .eq("user_id", identity.user_id)
         .eq("read", false);
 
       if (!error && count !== null) {
@@ -26,7 +26,7 @@ export const NotificationBell = () => {
     };
 
     fetchUnreadCount();
-  }, [identity?.id, isLoading]);
+  }, [identity?.user_id, isLoading]);
 
   // Subscribe to real-time updates
   useEffect(() => {

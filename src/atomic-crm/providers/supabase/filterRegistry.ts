@@ -131,7 +131,7 @@ export const filterableFields: Record<string, string[]> = {
 
   // Dashboard Principal Summary View (principal-centric dashboard)
   dashboard_principal_summary: [
-    "principal_organization_id",
+    "id",                  // Aliased from principal_organization_id in view
     "principal_name",
     "account_manager_id",
     "opportunity_count",
