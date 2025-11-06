@@ -13,7 +13,7 @@
 
 ## 📊 Implementation Status
 
-**Last Updated:** November 4, 2025
+**Last Updated:** November 6, 2025
 
 | Metric | Status |
 |--------|-----------|
@@ -60,6 +60,7 @@
 - **Role Limitations:** Only basic authenticated access implemented, not full role system (Admin/Sales Manager/Account Manager/Read-Only)
 - **UX Gaps:** No password visibility toggle, no "remember me" checkbox
 - **Profile:** View-only profile page exists, but no editing capability
+- **Test Coverage:** E2E auth setup exists (`auth.setup.ts` + `LoginPage` POM) for login flow, but missing comprehensive tests for logout, password reset, session management, and error scenarios
 
 **Blockers:** None
 
