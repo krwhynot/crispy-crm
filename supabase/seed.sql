@@ -4043,6 +4043,7 @@ BEGIN
     description,
     estimated_close_date,
     opportunity_owner_id,
+    account_manager_id,
     lead_source,
     created_at,
     contact_ids
