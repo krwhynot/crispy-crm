@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e1]:
+- generic [active] [ref=e1]:
   - generic [ref=e2]:
     - navigation [ref=e3]:
       - generic [ref=e6]:
@@ -38,7 +38,7 @@
               - generic [ref=e35]:
                 - group [ref=e36]:
                   - generic [ref=e38]: Opportunity name *
-                  - textbox "Opportunity name *" [active] [ref=e39]: Test Opportunity 1762404508491
+                  - textbox "Opportunity name *" [ref=e39]
                 - button "Show naming tips" [ref=e42] [cursor=pointer]:
                   - img
                   - text: Show naming tips
@@ -174,15 +174,15 @@
             - button "Cancel" [ref=e166] [cursor=pointer]:
               - img
               - text: Cancel
-            - button "Save" [ref=e167] [cursor=pointer]:
+            - button "Save" [disabled]:
               - img
               - text: Save
-    - contentinfo [ref=e168]:
-      - generic [ref=e170]:
-        - paragraph [ref=e171]: © 2025 MFB Master Food Brokers. All rights reserved.
-        - button "View keyboard shortcuts" [ref=e172] [cursor=pointer]:
-          - img [ref=e173]
-          - generic [ref=e175]: Keyboard shortcuts
+    - contentinfo [ref=e167]:
+      - generic [ref=e169]:
+        - paragraph [ref=e170]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e171] [cursor=pointer]:
+          - img [ref=e172]
+          - generic [ref=e174]: Keyboard shortcuts
     - region "Notifications alt+T"
-  - generic [ref=e176]: Logged
+  - generic [ref=e175]: Logged
 ```

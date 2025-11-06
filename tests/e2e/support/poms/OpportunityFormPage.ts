@@ -42,7 +42,11 @@ export class OpportunityFormPage extends BasePage {
    * Select organization
    */
   async selectOrganization(orgName: string): Promise<void> {
-    const orgInput = this.page.getByLabel(/organization/i);
+    // Find combobox by text content since React Admin doesn't always use proper label association
+    // Look for the section containing "Customer Organization" text, then find the combobox within it
+    const section = this.page.locator(':text("Customer Organization")').locator('..').locator('..');
+    const orgInput = section.getByRole('combobox');
+
     await orgInput.click();
     await orgInput.fill(orgName);
 
@@ -59,8 +63,13 @@ export class OpportunityFormPage extends BasePage {
    * Select principal/owner
    */
   async selectPrincipal(principalName: string): Promise<void> {
-    const principalInput = this.page.getByLabel(/principal|owner|assigned/i);
+    // Use more specific label pattern for Principal Organization field
+    const principalInput = this.page.getByLabel(/principal organization/i);
     await principalInput.click();
+    await principalInput.fill(principalName);
+
+    // Wait for autocomplete options
+    await this.page.waitForTimeout(500);
 
     // Select from dropdown
     const option = this.page.getByRole('option', { name: new RegExp(principalName, 'i') });
