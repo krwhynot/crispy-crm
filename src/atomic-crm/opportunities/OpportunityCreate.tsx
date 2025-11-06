@@ -30,22 +30,20 @@ const OpportunityCreate = () => {
     <CreateBase
       redirect="show"
     >
-      <div className="mt-2 flex lg:mr-72">
-        <div className="flex-1">
-          <Form defaultValues={formDefaults}>
-            <Card>
-              <CardContent>
-                <OpportunityInputs mode="create" />
-                <FormToolbar>
-                  <div className="flex flex-row gap-2 justify-end">
-                    <CancelButton />
-                    <SaveButton label="Create Opportunity" />
-                  </div>
-                </FormToolbar>
-              </CardContent>
-            </Card>
-          </Form>
-        </div>
+      <div className="mt-2">
+        <Form defaultValues={formDefaults}>
+          <Card>
+            <CardContent>
+              <OpportunityInputs mode="create" />
+              <FormToolbar>
+                <div className="flex flex-row gap-2 justify-end">
+                  <CancelButton />
+                  <SaveButton label="Create Opportunity" />
+                </div>
+              </FormToolbar>
+            </CardContent>
+          </Card>
+        </Form>
       </div>
     </CreateBase>
   );

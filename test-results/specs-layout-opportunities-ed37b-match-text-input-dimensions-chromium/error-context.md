@@ -38,7 +38,7 @@
               - generic [ref=e35]:
                 - group [ref=e36]:
                   - generic [ref=e38]: Opportunity name *
-                  - textbox "Opportunity name *" [ref=e39]: Test Opportunity 1762443083172
+                  - textbox "Opportunity name *" [ref=e39]
                 - button "Show naming tips" [ref=e42] [cursor=pointer]:
                   - img
                   - text: Show naming tips
@@ -117,45 +117,41 @@
                 - group [ref=e117]:
                   - generic [ref=e119]: Customer Organization *
                   - combobox [ref=e120] [cursor=pointer]:
-                    - text: A&W
+                    - generic [ref=e121]: Search
                     - img
-                - button "New Customer" [ref=e121] [cursor=pointer]:
+                - button "New Customer" [ref=e122] [cursor=pointer]:
                   - img
                   - text: New Customer
-              - group [ref=e122]:
-                - generic [ref=e124]: Account Manager
-                - generic [ref=e125]:
-                  - combobox [ref=e126] [cursor=pointer]:
-                    - button [ref=e127]:
+              - group [ref=e123]:
+                - generic [ref=e125]: Account Manager
+                - generic [ref=e126]:
+                  - combobox [ref=e127] [cursor=pointer]:
+                    - button [ref=e128]:
                       - img
                     - img
-                  - combobox [ref=e128]
-              - generic [ref=e129]:
-                - group [ref=e130]:
-                  - generic [ref=e132]: Principal Organization *
-                  - combobox [ref=e133] [cursor=pointer]:
-                    - generic [ref=e134]: Search
+                  - combobox [ref=e129]
+              - generic [ref=e130]:
+                - group [ref=e131]:
+                  - generic [ref=e133]: Principal Organization *
+                  - combobox [ref=e134] [cursor=pointer]:
+                    - generic [ref=e135]: Search
                     - img
-                - button "New Principal" [ref=e135] [cursor=pointer]:
+                - button "New Principal" [ref=e136] [cursor=pointer]:
                   - img
                   - text: New Principal
-              - generic [ref=e136]:
-                - group [ref=e137]:
-                  - generic [ref=e139]: Distributor Organization
-                  - combobox [ref=e140] [cursor=pointer]:
-                    - generic [ref=e141]: Search
+              - generic [ref=e137]:
+                - group [ref=e138]:
+                  - generic [ref=e140]: Distributor Organization
+                  - combobox [ref=e141] [cursor=pointer]:
+                    - generic [ref=e142]: Search
                     - img
-                - button "New Distributor" [ref=e142] [cursor=pointer]:
+                - button "New Distributor" [ref=e143] [cursor=pointer]:
                   - img
                   - text: New Distributor
-          - generic [ref=e143]:
-            - generic [ref=e144]:
-              - generic [ref=e145]:
-                - heading "Contacts *" [level=3] [ref=e146]
-                - paragraph [ref=e147]: At least one contact is required
-              - button "New Contact" [ref=e148] [cursor=pointer]:
-                - img
-                - text: New Contact
+          - generic [ref=e144]:
+            - generic [ref=e146]:
+              - heading "Contacts *" [level=3] [ref=e147]
+              - paragraph [ref=e148]: Please select a Customer Organization first
             - group [ref=e149]:
               - generic [ref=e150]:
                 - combobox [expanded] [ref=e154]
@@ -178,15 +174,15 @@
             - button "Cancel" [ref=e166] [cursor=pointer]:
               - img
               - text: Cancel
-            - button "Save" [ref=e167] [cursor=pointer]:
+            - button "Save" [disabled]:
               - img
               - text: Save
-    - contentinfo [ref=e168]:
-      - generic [ref=e170]:
-        - paragraph [ref=e171]: © 2025 MFB Master Food Brokers. All rights reserved.
-        - button "View keyboard shortcuts" [ref=e172] [cursor=pointer]:
-          - img [ref=e173]
-          - generic [ref=e175]: Keyboard shortcuts
+    - contentinfo [ref=e167]:
+      - generic [ref=e169]:
+        - paragraph [ref=e170]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e171] [cursor=pointer]:
+          - img [ref=e172]
+          - generic [ref=e174]: Keyboard shortcuts
     - region "Notifications alt+T"
-  - generic [ref=e176]: Logged
+  - generic [ref=e175]: Logged
 ```
