@@ -1,47 +1,31 @@
-import { useGetList, useRefresh } from "ra-core";
+import { useRefresh } from "ra-core";
 import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Contact, ContactNote } from "../types";
-import { DashboardActivityLog } from "./DashboardActivityLog";
-import { HotContacts } from "./HotContacts";
-import { TasksList } from "./TasksList";
-import { MiniPipeline } from "./MiniPipeline";
-import { QuickAdd } from "./QuickAdd";
-import { MetricsCardGrid } from "./MetricsCardGrid";
-import { MyOpenOpportunities } from "./MyOpenOpportunities";
-import { OverdueTasks } from "./OverdueTasks";
-import { ThisWeeksActivities } from "./ThisWeeksActivities";
-import { OpportunitiesByPrincipal } from "./OpportunitiesByPrincipal";
-import { PipelineByStage } from "./PipelineByStage";
-import { RecentActivities } from "./RecentActivities";
+import { PrincipalDashboardTable } from "./PrincipalDashboardTable";
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
+/**
+ * Principal-Centric Dashboard
+ *
+ * Replaces the widget-based dashboard with a focused table view of principals.
+ * This design supports the account manager workflow where each AM manages 3-5
+ * principal organizations (brands/manufacturers) with multiple opportunities each.
+ *
+ * PRD Reference: docs/prd/14-dashboard.md
+ * Design: docs/plans/2025-11-05-principal-centric-crm-design.md
+ *
+ * Key Features:
+ * - Table-based layout with 6 columns (Principal, # Opps, Status, Last Activity, Stuck, Next Action)
+ * - Automatic filtering by current user's account_manager_id
+ * - Priority sorting (most urgent principals first)
+ * - Color-coded status indicators (Good/Warning/Urgent)
+ * - Stuck opportunity warnings (30+ days in same stage)
+ */
 export const Dashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const refresh = useRefresh();
-
-  const {
-    data: _dataContact,
-    total: _totalContact,
-    isPending: isPendingContact,
-  } = useGetList<Contact>("contacts", {
-    pagination: { page: 1, perPage: 1 },
-  });
-
-  const { total: _totalContactNotes, isPending: isPendingContactNotes } =
-    useGetList<ContactNote>("contactNotes", {
-      pagination: { page: 1, perPage: 1 },
-    });
-
-  const { total: _totalOpportunities, isPending: isPendingOpportunities } =
-    useGetList<Contact>("opportunities", {
-      pagination: { page: 1, perPage: 1 },
-    });
-
-  const isPending =
-    isPendingContact || isPendingContactNotes || isPendingOpportunities;
 
   // Auto-refresh every 5 minutes
   useEffect(() => {
@@ -60,15 +44,13 @@ export const Dashboard = () => {
     setTimeout(() => setIsRefreshing(false), 500);
   };
 
-  if (isPending) {
-    return null;
-  }
-
   return (
-    <div className="space-y-2">
-      {/* Dashboard Header with Refresh Button - Ultra compact */}
+    <div className="space-y-4">
+      {/* Dashboard Header with Refresh Button */}
       <div className="flex items-center justify-between">
-        <h1 className="text-base md:text-lg lg:text-xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+          My Principals
+        </h1>
         <Button
           variant="outline"
           size="default"
@@ -82,37 +64,9 @@ export const Dashboard = () => {
         </Button>
       </div>
 
-      {/* Metrics Grid - iPad optimized, full width */}
-      <MetricsCardGrid />
-
-      {/* Phase 4 Widgets - Fixed 6-widget dashboard (COMPLETE) - Ultra compact */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2">
-        <MyOpenOpportunities />
-        <OverdueTasks />
-        <ThisWeeksActivities />
-        <OpportunitiesByPrincipal />
-        <PipelineByStage />
-        <RecentActivities />
-      </div>
-
-      {/* Existing Dashboard Components - Ultra compact */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1.5 md:gap-2 mt-1">
-        {/* Left column - Action zone (2/3 width) - Ultra compact */}
-        <div className="md:col-span-2 lg:col-span-2 space-y-2">
-          <TasksList />
-          <DashboardActivityLog />
-        </div>
-
-        {/* Right column - Context zone (1/3 width) - Ultra compact */}
-        <div className="md:col-span-2 lg:col-span-1 space-y-2">
-          <HotContacts />
-          <MiniPipeline />
-        </div>
-
-        {/* Full-width quick actions */}
-        <div className="md:col-span-2 lg:col-span-3">
-          <QuickAdd />
-        </div>
+      {/* Principal-Centric Table - Replaces all widgets */}
+      <div className="rounded-lg border border-border bg-card">
+        <PrincipalDashboardTable />
       </div>
     </div>
   );

@@ -1,15 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Dashboard E2E Tests
+ * Principal-Centric Dashboard E2E Tests
  *
- * Tests the dashboard layout, widgets, metrics, and responsive behavior.
+ * Tests the new principal-centric table dashboard layout and responsive behavior.
  *
  * Focus Areas:
- * - Widget presence and visibility (6 Phase 4 widgets)
- * - Metrics cards display
+ * - Principal table with 6 columns (Principal, # Opps, Status, Last Activity, Stuck, Next Action)
+ * - Table data display and interactions
  * - Layout and no horizontal scrolling
- * - Responsive behavior
+ * - Responsive behavior (desktop/iPad/mobile)
  */
 
 test.describe('Dashboard Tests', () => {
