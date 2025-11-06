@@ -129,6 +129,22 @@ export const filterableFields: Record<string, string[]> = {
     "q",               // Special: full-text search parameter
   ],
 
+  // Dashboard Principal Summary View (principal-centric dashboard)
+  dashboard_principal_summary: [
+    "principal_organization_id",
+    "principal_name",
+    "account_manager_id",
+    "opportunity_count",
+    "last_activity_date",
+    "last_activity_type",
+    "days_since_last_activity",
+    "status_indicator",    // Enum: good/warning/urgent
+    "max_days_in_stage",
+    "is_stuck",            // Boolean: 30+ days in same stage
+    "next_action",
+    "priority_score",
+  ],
+
   // Activities resource
   activities: [
     "id",
