@@ -2,6 +2,7 @@ import { useRefresh } from "ra-core";
 import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAriaAnnounce } from "@/lib/design-system";
 import { PrincipalDashboardTable } from "./PrincipalDashboardTable";
 import { UpcomingEventsByPrincipal } from "./UpcomingEventsByPrincipal";
 import { MyTasksThisWeek } from "./MyTasksThisWeek";
