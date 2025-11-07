@@ -34,6 +34,7 @@ const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 export const Dashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const refresh = useRefresh();
+  const announce = useAriaAnnounce();
 
   // Auto-refresh every 5 minutes
   useEffect(() => {
@@ -48,6 +49,7 @@ export const Dashboard = () => {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     refresh();
+    announce('Dashboard data refreshed');
     // Give feedback for at least 500ms
     setTimeout(() => setIsRefreshing(false), 500);
   };
