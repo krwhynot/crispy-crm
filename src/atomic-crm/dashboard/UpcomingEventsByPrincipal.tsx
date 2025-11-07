@@ -77,7 +77,7 @@ export const UpcomingEventsByPrincipal = () => {
   // Fetch upcoming scheduled activities
   const { data: activities, isPending: activitiesLoading, error: activitiesError } = useGetList<Activity>('activities', {
     filter: {
-      sales_id: identity?.id,
+      created_by: identity?.id, // Note: activities use created_by, not sales_id
       activity_date_gte: format(startOfDay(today), 'yyyy-MM-dd'),
       activity_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
     },

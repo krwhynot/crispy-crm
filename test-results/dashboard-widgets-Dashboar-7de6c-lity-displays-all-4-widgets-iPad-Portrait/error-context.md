@@ -39,7 +39,7 @@
         - generic [ref=e30]:
           - generic [ref=e31]:
             - generic [ref=e33]: Upcoming by Principal
-            - paragraph [ref=e35]: No scheduled events this week
+            - paragraph [ref=e35]: Loading...
           - table [ref=e42]:
             - rowgroup [ref=e43]:
               - 'row "Principal Sort by # Opps ascending Status Last Activity Stuck Next Action" [ref=e44]':
@@ -131,49 +131,15 @@
         - generic [ref=e132]:
           - generic [ref=e133]:
             - generic [ref=e135]: My Tasks This Week
-            - paragraph [ref=e137]: No tasks due this week 🎉
+            - paragraph [ref=e137]: Loading...
           - generic [ref=e138]:
             - generic [ref=e140]: Recent Activity
-            - generic [ref=e141]:
-              - generic [ref=e142]:
-                - generic [ref=e143]: Nov 5, 5:25PM
-                - link "📋 meeting - meeting" [ref=e145] [cursor=pointer]:
-                  - /url: "#/activities/4"
-                - generic [ref=e146]:
-                  - text: →
-                  - link "View Opportunity" [ref=e147] [cursor=pointer]:
-                    - /url: "#/opportunities/8/show"
-              - generic [ref=e148]:
-                - generic [ref=e149]: Oct 30, 6:25PM
-                - link "📋 meeting - meeting" [ref=e151] [cursor=pointer]:
-                  - /url: "#/activities/3"
-                - generic [ref=e152]:
-                  - text: →
-                  - link "View Opportunity" [ref=e153] [cursor=pointer]:
-                    - /url: "#/opportunities/3/show"
-              - generic [ref=e154]:
-                - generic [ref=e155]: Oct 27, 6:25PM
-                - link "📋 call - call" [ref=e157] [cursor=pointer]:
-                  - /url: "#/activities/2"
-                - generic [ref=e158]:
-                  - text: →
-                  - link "View Opportunity" [ref=e159] [cursor=pointer]:
-                    - /url: "#/opportunities/1/show"
-              - generic [ref=e160]:
-                - generic [ref=e161]: Oct 22, 6:25PM
-                - link "📋 email - email" [ref=e163] [cursor=pointer]:
-                  - /url: "#/activities/1"
-                - generic [ref=e164]:
-                  - text: →
-                  - link "View Opportunity" [ref=e165] [cursor=pointer]:
-                    - /url: "#/opportunities/1/show"
-            - link "View All Activity →" [ref=e167] [cursor=pointer]:
-              - /url: "#/activities"
-  - contentinfo [ref=e168]:
-    - generic [ref=e170]:
-      - paragraph [ref=e171]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e172] [cursor=pointer]:
-        - img [ref=e173]
-        - generic [ref=e175]: Keyboard shortcuts
+            - paragraph [ref=e142]: Loading...
+  - contentinfo [ref=e143]:
+    - generic [ref=e145]:
+      - paragraph [ref=e146]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e147] [cursor=pointer]:
+        - img [ref=e148]
+        - generic [ref=e150]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```

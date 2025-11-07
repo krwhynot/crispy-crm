@@ -46,7 +46,7 @@ export const RecentActivityFeed = () => {
   const { identity } = useGetIdentity();
 
   const { data: activities, isPending, error } = useGetList<Activity>('activities', {
-    filter: { sales_id: identity?.id },
+    filter: { created_by: identity?.id }, // Note: activities use created_by, not sales_id
     sort: { field: 'activity_date', order: 'DESC' },
     pagination: { page: 1, perPage: 7 },
   });
