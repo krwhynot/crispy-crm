@@ -29,9 +29,9 @@ const handleRefresh = async () => {
 - No visual changes
 
 **Testing:**
-- Tested with NVDA (Windows) ✅
-- Tested with VoiceOver (Mac) ✅
-- Axe-core: No violations ✅
+- Manual screen reader testing required (NVDA/VoiceOver)
+- Code changes verified - announcement hook integrated correctly ✅
+- Functional testing pending user verification
 
 ### 2. ARIA Landmarks
 
