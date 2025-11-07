@@ -93,7 +93,7 @@ test.describe('Dashboard Widgets - Desktop (1280x1024)', () => {
       const leftColumn = dashboard.getLeftColumn();
 
       // Both widgets should be in left column
-      await expect(leftColumn.getByRole('heading', { name: /upcoming by principal/i })).toBeVisible();
+      await expect(leftColumn.locator('[data-slot="card-title"]:has-text("Upcoming by Principal")')).toBeVisible();
       await expect(leftColumn.getByRole('table')).toBeVisible();
     });
 
@@ -101,8 +101,8 @@ test.describe('Dashboard Widgets - Desktop (1280x1024)', () => {
       const rightSidebar = dashboard.getRightSidebar();
 
       // Both widgets should be in right sidebar
-      await expect(rightSidebar.getByRole('heading', { name: /my tasks this week/i })).toBeVisible();
-      await expect(rightSidebar.getByRole('heading', { name: /recent activity/i })).toBeVisible();
+      await expect(rightSidebar.locator('[data-slot="card-title"]:has-text("My Tasks This Week")')).toBeVisible();
+      await expect(rightSidebar.locator('[data-slot="card-title"]:has-text("Recent Activity")')).toBeVisible();
     });
   });
 
@@ -386,7 +386,8 @@ test.describe('Dashboard Widgets - Theme & UX Consistency', () => {
 
   test('widget spacing is consistent', async () => {
     const leftColumn = dashboard.getLeftColumn();
-    const upcomingBox = await leftColumn.getByRole('heading', { name: /upcoming/i }).locator('..').boundingBox();
+    const upcomingWidget = dashboard.getUpcomingEventsWidget();
+    const upcomingBox = await upcomingWidget.boundingBox();
     const tableBox = await leftColumn.getByRole('table').boundingBox();
 
     if (upcomingBox && tableBox) {

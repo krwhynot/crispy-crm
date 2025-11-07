@@ -152,9 +152,9 @@ export class DashboardPage extends BasePage {
    * Get Upcoming Events by Principal widget
    */
   getUpcomingEventsWidget(): Locator {
-    // Get the card containing this heading
+    // Get the card containing this title
     return this.page.locator('[data-slot="card"]', {
-      has: this.page.getByRole('heading', { name: /upcoming by principal/i })
+      has: this.page.locator('[data-slot="card-title"]:has-text("Upcoming by Principal")')
     });
   }
 
@@ -163,7 +163,7 @@ export class DashboardPage extends BasePage {
    */
   getMyTasksWidget(): Locator {
     return this.page.locator('[data-slot="card"]', {
-      has: this.page.getByRole('heading', { name: /my tasks this week/i })
+      has: this.page.locator('[data-slot="card-title"]:has-text("My Tasks This Week")')
     });
   }
 
@@ -172,7 +172,7 @@ export class DashboardPage extends BasePage {
    */
   getRecentActivityWidget(): Locator {
     return this.page.locator('[data-slot="card"]', {
-      has: this.page.getByRole('heading', { name: /recent activity/i })
+      has: this.page.locator('[data-slot="card-title"]:has-text("Recent Activity")')
     });
   }
 
@@ -189,14 +189,15 @@ export class DashboardPage extends BasePage {
    * Get the grid container
    */
   getGridContainer(): Locator {
-    // Grid container has the class grid grid-cols-1 lg:grid-cols-[70%_30%]
-    return this.page.locator('.grid.grid-cols-1').first();
+    // Select the grid container by gap-6 class (viewport-agnostic)
+    return this.page.locator('.grid.gap-6').first();
   }
 
   /**
    * Get left column (main content - 70%)
    */
   getLeftColumn(): Locator {
+    // The left column is the first direct child div
     return this.getGridContainer().locator('> div').first();
   }
 
@@ -204,7 +205,8 @@ export class DashboardPage extends BasePage {
    * Get right sidebar (supporting context - 30%)
    */
   getRightSidebar(): Locator {
-    return this.getGridContainer().locator('> div').nth(1);
+    // The right sidebar is the second direct child div
+    return this.getGridContainer().locator('> div').last();
   }
 
   /**

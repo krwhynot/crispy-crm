@@ -86,8 +86,8 @@ export const UpcomingEventsByPrincipal = () => {
     {
       filter: {
         created_by: identity?.id, // Note: activities use created_by, not sales_id
-        activity_date_gte: format(startOfDay(today), 'yyyy-MM-dd'),
-        activity_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+        'activity_date@gte': format(startOfDay(today), 'yyyy-MM-dd'),
+        'activity_date@lte': format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
       },
       sort: { field: 'activity_date', order: 'ASC' },
     },

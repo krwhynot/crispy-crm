@@ -51,7 +51,7 @@ export const MyTasksThisWeek = () => {
         sales_id: identity?.id, // Note: tasks use sales_id, not assigned_to
         completed: false,
         // Get tasks due this week OR overdue
-        due_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+        'due_date@lte': format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
       },
       sort: { field: 'due_date', order: 'ASC' },
     },
