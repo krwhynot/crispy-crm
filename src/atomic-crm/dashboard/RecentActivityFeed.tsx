@@ -37,7 +37,7 @@ const ACTIVITY_ICONS: Record<string, string> = {
   Email: '📧',
   Meeting: '🤝',
   Note: '📝',
-  Follow-up: '📝',
+  'Follow-up': '📝',
   Presentation: '🤝',
   Demo: '🤝',
 };
