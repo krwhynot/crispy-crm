@@ -65,7 +65,7 @@ const gridVariants: Record<GridVariant, string> = {
    *
    * Used in: Dashboard, Opportunity detail, Reports
    */
-  dashboard: 'grid grid-cols-1 lg:grid-cols-[70%_30%]',
+  dashboard: 'grid grid-cols-1 lg:grid-cols-[7fr_3fr]',
 
   /**
    * Cards: Auto-fit responsive card grid
