@@ -53,12 +53,14 @@ const ContactListLayout = () => {
 
   return (
     <div className="flex flex-row gap-6">
-      <ContactListFilter />
-      <div className="flex-1 flex flex-col gap-4">
+      <aside role="complementary" aria-label="Filter contacts">
+        <ContactListFilter />
+      </aside>
+      <main role="main" aria-label="Contacts list" className="flex-1 flex flex-col gap-4">
         <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
           <ContactListContent />
         </Card>
-      </div>
+      </main>
       <BulkActionsToolbar />
     </div>
   );

@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { ResponsiveGrid } from "@/components/design-system";
 import { EditBase, Form, useEditContext } from "ra-core";
 
 import type { Contact } from "../types";
@@ -16,18 +17,22 @@ const ContactEditContent = () => {
   const { isPending, record } = useEditContext<Contact>();
   if (isPending || !record) return null;
   return (
-    <div className="mt-2 flex gap-8">
-      <Form className="flex flex-1 flex-col gap-4">
-        <Card>
-          <CardContent>
-            <ContactInputs />
-            <FormToolbar />
-          </CardContent>
-        </Card>
-      </Form>
+    <ResponsiveGrid variant="dashboard" className="mt-2">
+      <main role="main" aria-label="Edit contact">
+        <Form className="flex flex-col gap-4">
+          <Card>
+            <CardContent>
+              <ContactInputs />
+              <FormToolbar />
+            </CardContent>
+          </Card>
+        </Form>
+      </main>
 
-      <ContactAside link="show" />
-    </div>
+      <aside role="complementary" aria-label="Contact information">
+        <ContactAside link="show" />
+      </aside>
+    </ResponsiveGrid>
   );
 };
 
