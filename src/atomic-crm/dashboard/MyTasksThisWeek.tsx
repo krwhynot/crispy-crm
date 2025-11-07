@@ -96,9 +96,22 @@ export const MyTasksThisWeek = () => {
         <CardHeader>
           <CardTitle>My Tasks This Week</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground italic">No tasks due this week 🎉</p>
+        <CardContent className="space-y-3">
+          <p className="text-muted-foreground">
+            You're all caught up! 🎉
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Consider planning your next steps or reaching out to principals for updates.
+          </p>
         </CardContent>
+        <CardFooter>
+          <Link
+            to="/tasks/create"
+            className="text-sm text-primary hover:underline"
+          >
+            Create Task →
+          </Link>
+        </CardFooter>
       </Card>
     );
   }

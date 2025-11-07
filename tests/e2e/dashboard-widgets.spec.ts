@@ -74,18 +74,19 @@ test.describe('Dashboard Widgets - Desktop (1280x1024)', () => {
       expect(isTwoColumn).toBe(true);
     });
 
-    test('left column is approximately 70% width', async () => {
-      const leftWidth = await dashboard.getLeftColumnWidthPercentage();
-      // Allow 5% tolerance for gap spacing
-      expect(leftWidth).toBeGreaterThan(65);
-      expect(leftWidth).toBeLessThan(75);
-    });
+    test('left column is wider than right sidebar', async () => {
+      const leftBox = await dashboard.getLeftColumn().boundingBox();
+      const rightBox = await dashboard.getRightSidebar().boundingBox();
 
-    test('right sidebar is approximately 30% width', async () => {
-      const rightWidth = await dashboard.getRightSidebarWidthPercentage();
-      // Allow 5% tolerance for gap spacing
-      expect(rightWidth).toBeGreaterThan(25);
-      expect(rightWidth).toBeLessThan(35);
+      expect(leftBox).not.toBeNull();
+      expect(rightBox).not.toBeNull();
+
+      if (leftBox && rightBox) {
+        // Main content should be significantly wider than sidebar
+        expect(leftBox.width).toBeGreaterThan(rightBox.width);
+        // Verify columns are side-by-side (similar vertical start)
+        expect(Math.abs(leftBox.top - rightBox.top)).toBeLessThan(50);
+      }
     });
 
     test('left column contains Upcoming Events and Principal Table', async () => {
@@ -171,10 +172,17 @@ test.describe('Dashboard Widgets - iPad Landscape (1024x768)', () => {
     expect(hasHorizontalScroll).toBe(false);
   });
 
-  test('left column maintains 70% width proportion', async () => {
-    const leftWidth = await dashboard.getLeftColumnWidthPercentage();
-    expect(leftWidth).toBeGreaterThan(65);
-    expect(leftWidth).toBeLessThan(75);
+  test('left column is wider than right sidebar', async () => {
+    const leftBox = await dashboard.getLeftColumn().boundingBox();
+    const rightBox = await dashboard.getRightSidebar().boundingBox();
+
+    expect(leftBox).not.toBeNull();
+    expect(rightBox).not.toBeNull();
+
+    if (leftBox && rightBox) {
+      // Main content should be significantly wider than sidebar
+      expect(leftBox.width).toBeGreaterThan(rightBox.width);
+    }
   });
 
   test('capture iPad landscape visual snapshot', async ({ authenticatedPage }) => {

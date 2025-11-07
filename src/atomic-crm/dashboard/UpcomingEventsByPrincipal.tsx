@@ -65,29 +65,47 @@ export const UpcomingEventsByPrincipal = () => {
   const sevenDaysFromNow = addDays(today, 7);
 
   // Fetch upcoming incomplete tasks
-  const { data: tasks, isPending: tasksLoading, error: tasksError } = useGetList<Task>('tasks', {
-    filter: {
-      completed: false,
-      due_date_gte: format(startOfDay(today), 'yyyy-MM-dd'),
-      due_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+  const { data: tasks, isPending: tasksLoading, error: tasksError } = useGetList<Task>(
+    'tasks',
+    {
+      filter: {
+        completed: false,
+        'due_date@gte': format(startOfDay(today), 'yyyy-MM-dd'),
+        'due_date@lte': format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+      },
+      sort: { field: 'due_date', order: 'ASC' },
     },
-    sort: { field: 'due_date', order: 'ASC' },
-  });
+    {
+      enabled: !!identity?.id, // Don't query until identity is available
+    }
+  );
 
   // Fetch upcoming scheduled activities
-  const { data: activities, isPending: activitiesLoading, error: activitiesError } = useGetList<Activity>('activities', {
-    filter: {
-      created_by: identity?.id, // Note: activities use created_by, not sales_id
-      activity_date_gte: format(startOfDay(today), 'yyyy-MM-dd'),
-      activity_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+  const { data: activities, isPending: activitiesLoading, error: activitiesError } = useGetList<Activity>(
+    'activities',
+    {
+      filter: {
+        created_by: identity?.id, // Note: activities use created_by, not sales_id
+        activity_date_gte: format(startOfDay(today), 'yyyy-MM-dd'),
+        activity_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+      },
+      sort: { field: 'activity_date', order: 'ASC' },
     },
-    sort: { field: 'activity_date', order: 'ASC' },
-  });
+    {
+      enabled: !!identity?.id, // Don't query until identity is available
+    }
+  );
 
   // Fetch principal summary for status indicators
-  const { data: principals } = useGetList('dashboard_principal_summary', {
-    filter: { account_manager_id: identity?.id },
-  });
+  const { data: principals } = useGetList(
+    'dashboard_principal_summary',
+    {
+      filter: { account_manager_id: identity?.id },
+    },
+    {
+      enabled: !!identity?.id, // Don't query until identity is available
+    }
+  );
 
   if (tasksLoading || activitiesLoading) {
     return (
@@ -128,8 +146,13 @@ export const UpcomingEventsByPrincipal = () => {
         <CardHeader>
           <CardTitle>Upcoming by Principal</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground italic">No scheduled events this week</p>
+        <CardContent className="space-y-3">
+          <p className="text-muted-foreground">
+            No scheduled events this week
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Schedule meetings or set task deadlines to stay connected with your principals.
+          </p>
         </CardContent>
       </Card>
     );
