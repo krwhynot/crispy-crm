@@ -3,25 +3,32 @@ import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PrincipalDashboardTable } from "./PrincipalDashboardTable";
+import { UpcomingEventsByPrincipal } from "./UpcomingEventsByPrincipal";
+import { MyTasksThisWeek } from "./MyTasksThisWeek";
+import { RecentActivityFeed } from "./RecentActivityFeed";
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 /**
- * Principal-Centric Dashboard
+ * Principal-Centric Dashboard with Supporting Widgets
  *
- * Replaces the widget-based dashboard with a focused table view of principals.
- * This design supports the account manager workflow where each AM manages 3-5
- * principal organizations (brands/manufacturers) with multiple opportunities each.
+ * Layout: Grid with 70% main content (left) + 30% sidebar (right)
+ * Responsive: Stacks to single column on iPad portrait and mobile
  *
- * PRD Reference: docs/prd/14-dashboard.md
- * Design: docs/plans/2025-11-05-principal-centric-crm-design.md
+ * Widgets (4 total - Pipeline Summary pending):
+ * 1. Upcoming Events by Principal - This week's scheduled activities
+ * 2. Principal Table - Main priority-sorted relationship view
+ * 3. My Tasks This Week - Task management with urgency grouping
+ * 4. Recent Activity Feed - Last 7 activities for context
+ *
+ * PRD: docs/prd/14-dashboard.md
+ * Design: docs/plans/2025-11-07-dashboard-widgets-design.md
  *
  * Key Features:
- * - Table-based layout with 6 columns (Principal, # Opps, Status, Last Activity, Stuck, Next Action)
- * - Automatic filtering by current user's account_manager_id
- * - Priority sorting (most urgent principals first)
- * - Color-coded status indicators (Good/Warning/Urgent)
- * - Stuck opportunity warnings (30+ days in same stage)
+ * - Grid layout optimized for iPad landscape/desktop
+ * - Auto-refresh every 5 minutes for all widgets
+ * - Manual refresh button updates all data
+ * - Supporting widgets provide context for weekly prioritization
  */
 export const Dashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -64,9 +71,22 @@ export const Dashboard = () => {
         </Button>
       </div>
 
-      {/* Principal-Centric Table - Replaces all widgets */}
-      <div className="rounded-lg border border-border bg-card">
-        <PrincipalDashboardTable />
+      {/* Grid Layout: 70% main content (left) + 30% sidebar (right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+        {/* Left Column - Main Focus */}
+        <div className="space-y-6">
+          <UpcomingEventsByPrincipal />
+          <div className="rounded-lg border border-border bg-card">
+            <PrincipalDashboardTable />
+          </div>
+        </div>
+
+        {/* Right Sidebar - Supporting Context */}
+        <div className="space-y-6">
+          <MyTasksThisWeek />
+          <RecentActivityFeed />
+          {/* PipelineSummary widget to be added */}
+        </div>
       </div>
     </div>
   );
