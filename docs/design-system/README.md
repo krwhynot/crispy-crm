@@ -117,7 +117,6 @@ docs/design-system/
 
 - [Engineering Constitution](../claude/engineering-constitution.md) - Core principles
 - [Color System](../internal-docs/color-theming-architecture.docs.md) - OKLCH tokens
-- [Accessibility Testing](../claude/testing-quick-reference.md) - WCAG validation
 
 ## Validation
 
