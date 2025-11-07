@@ -45,11 +45,17 @@ const ACTIVITY_ICONS: Record<string, string> = {
 export const RecentActivityFeed = () => {
   const { identity } = useGetIdentity();
 
-  const { data: activities, isPending, error } = useGetList<Activity>('activities', {
-    filter: { created_by: identity?.id }, // Note: activities use created_by, not sales_id
-    sort: { field: 'activity_date', order: 'DESC' },
-    pagination: { page: 1, perPage: 7 },
-  });
+  const { data: activities, isPending, error } = useGetList<Activity>(
+    'activities',
+    {
+      filter: { created_by: identity?.id }, // Note: activities use created_by, not sales_id
+      sort: { field: 'activity_date', order: 'DESC' },
+      pagination: { page: 1, perPage: 7 },
+    },
+    {
+      enabled: !!identity?.id, // Don't query until identity is available
+    }
+  );
 
   if (isPending) {
     return (
@@ -83,9 +89,22 @@ export const RecentActivityFeed = () => {
         <CardHeader>
           <CardTitle>Recent Activity</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground italic">No recent activity logged</p>
+        <CardContent className="space-y-3">
+          <p className="text-muted-foreground">
+            No recent activity logged
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Log your calls and meetings to keep your pipeline up to date and track engagement.
+          </p>
         </CardContent>
+        <CardFooter>
+          <Link
+            to="/activities/create"
+            className="text-sm text-primary hover:underline"
+          >
+            Log Activity →
+          </Link>
+        </CardFooter>
       </Card>
     );
   }
