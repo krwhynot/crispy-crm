@@ -133,11 +133,14 @@ export const useKeyboardNavigation = <T,>({
         case 'Enter':
         case ' ':
           e.preventDefault();
-          onSelect(currentIndex);
+          setCurrentIndex((current) => {
+            onSelect(current);
+            return current;
+          });
           break;
       }
     },
-    [items.length, loop, onSelect, currentIndex]
+    [items.length, loop, onSelect]
   );
 
   return { currentIndex, handleKeyDown, setCurrentIndex };
