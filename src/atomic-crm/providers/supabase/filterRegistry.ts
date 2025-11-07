@@ -200,7 +200,9 @@ export const filterableFields: Record<string, string[]> = {
     "contact_id",
     "opportunity_id",
     "due_date",
+    "completed",        // Boolean field for filtering incomplete/complete tasks
     "completed_at",     // Changed from "done_date" to match database column
+    "assigned_to",      // FK to sales (for filtering by assignee)
     "sales_id",
     "created_at",
     "updated_at",
