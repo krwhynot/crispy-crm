@@ -44,15 +44,21 @@ export const MyTasksThisWeek = () => {
   const today = new Date();
   const sevenDaysFromNow = addDays(today, 7);
 
-  const { data: tasks, isPending, error } = useGetList<Task>('tasks', {
-    filter: {
-      assigned_to: identity?.id,
-      completed: false,
-      // Get tasks due this week OR overdue
-      due_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+  const { data: tasks, isPending, error } = useGetList<Task>(
+    'tasks',
+    {
+      filter: {
+        sales_id: identity?.id, // Note: tasks use sales_id, not assigned_to
+        completed: false,
+        // Get tasks due this week OR overdue
+        due_date_lte: format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+      },
+      sort: { field: 'due_date', order: 'ASC' },
     },
-    sort: { field: 'due_date', order: 'ASC' },
-  });
+    {
+      enabled: !!identity?.id, // Don't query until identity is available
+    }
+  );
 
   if (isPending) {
     return (
