@@ -21,8 +21,8 @@ const ContactShowContent = () => {
   if (isPending || !record) return null;
 
   return (
-    <div className="mt-2 mb-2 flex gap-8">
-      <div className="flex-1">
+    <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
+      <main role="main" aria-label="Contact details">
         <Card>
           <CardContent className="p-6">
             <div className="flex">
@@ -117,9 +117,12 @@ const ContactShowContent = () => {
             </ReferenceManyField>
           </CardContent>
         </Card>
-      </div>
-      <ContactAside />
-    </div>
+      </main>
+
+      <aside role="complementary" aria-label="Contact information">
+        <ContactAside />
+      </aside>
+    </ResponsiveGrid>
   );
 };
 
