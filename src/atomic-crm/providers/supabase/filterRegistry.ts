@@ -163,7 +163,7 @@ export const filterableFields: Record<string, string[]> = {
     "created_at",
     "updated_at",
     "deleted_at",      // Soft delete timestamp
-    "created_by",
+    "created_by",      // FK to sales (for filtering by creator)
   ],
 
   // Tags resource
@@ -200,8 +200,10 @@ export const filterableFields: Record<string, string[]> = {
     "contact_id",
     "opportunity_id",
     "due_date",
+    "completed",        // Boolean field for filtering incomplete/complete tasks
     "completed_at",     // Changed from "done_date" to match database column
-    "sales_id",
+    "sales_id",         // FK to sales (for filtering by assignee)
+    "created_by",       // FK to sales (created by user)
     "created_at",
     "updated_at",
   ],

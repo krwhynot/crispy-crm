@@ -145,4 +145,156 @@ export class DashboardPage extends BasePage {
     if (!box) return false;
     return box.height >= minSize && box.width >= minSize;
   }
+
+  // ===== Dashboard Widgets (v2.0 Enhancement) =====
+
+  /**
+   * Get Upcoming Events by Principal widget
+   */
+  getUpcomingEventsWidget(): Locator {
+    // Get the card containing this title
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.locator('[data-slot="card-title"]:has-text("Upcoming by Principal")')
+    });
+  }
+
+  /**
+   * Get My Tasks This Week widget
+   */
+  getMyTasksWidget(): Locator {
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.locator('[data-slot="card-title"]:has-text("My Tasks This Week")')
+    });
+  }
+
+  /**
+   * Get Recent Activity Feed widget
+   */
+  getRecentActivityWidget(): Locator {
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.locator('[data-slot="card-title"]:has-text("Recent Activity")')
+    });
+  }
+
+  /**
+   * Get Pipeline Summary widget
+   */
+  getPipelineSummaryWidget(): Locator {
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.getByRole('heading', { name: /pipeline summary/i })
+    });
+  }
+
+  /**
+   * Get the grid container
+   */
+  getGridContainer(): Locator {
+    // Select the grid container by gap-6 class (viewport-agnostic)
+    return this.page.locator('.grid.gap-6').first();
+  }
+
+  /**
+   * Get left column (main content - 70%)
+   */
+  getLeftColumn(): Locator {
+    // The left column is the first direct child div
+    return this.getGridContainer().locator('> div').first();
+  }
+
+  /**
+   * Get right sidebar (supporting context - 30%)
+   */
+  getRightSidebar(): Locator {
+    // The right sidebar is the second direct child div
+    return this.getGridContainer().locator('> div').last();
+  }
+
+  /**
+   * Check if grid layout is in single column mode (stacked)
+   */
+  async isStackedLayout(): Promise<boolean> {
+    const leftColumn = this.getLeftColumn();
+    const rightSidebar = this.getRightSidebar();
+
+    const leftBox = await leftColumn.boundingBox();
+    const rightBox = await rightSidebar.boundingBox();
+
+    if (!leftBox || !rightBox) return false;
+
+    // In stacked mode, right sidebar should be below left column
+    // (rightBox.top should be greater than leftBox.bottom)
+    return rightBox.top >= leftBox.bottom - 10; // 10px tolerance
+  }
+
+  /**
+   * Check if grid layout is in two-column mode (side-by-side)
+   */
+  async isTwoColumnLayout(): Promise<boolean> {
+    const leftColumn = this.getLeftColumn();
+    const rightSidebar = this.getRightSidebar();
+
+    const leftBox = await leftColumn.boundingBox();
+    const rightBox = await rightSidebar.boundingBox();
+
+    if (!leftBox || !rightBox) return false;
+
+    // In two-column mode, both should have similar top position
+    // and right sidebar should be to the right of left column
+    const topDiff = Math.abs(leftBox.top - rightBox.top);
+    return topDiff < 50 && rightBox.left > leftBox.left;
+  }
+
+  /**
+   * Verify widget is visible with semantic color styling
+   */
+  async verifyWidgetStyling(widget: Locator): Promise<void> {
+    await expect(widget).toBeVisible();
+
+    // Check that widget uses semantic card styling
+    const hasCardBackground = await widget.evaluate((el) => {
+      const styles = window.getComputedStyle(el);
+      // Widget should have card background (check CSS variable is set)
+      return styles.backgroundColor !== 'rgba(0, 0, 0, 0)';
+    });
+
+    expect(hasCardBackground).toBe(true);
+  }
+
+  /**
+   * Get task checkbox from My Tasks widget
+   */
+  getTaskCheckbox(taskTitle: string | RegExp): Locator {
+    return this.page.getByRole('checkbox', { name: new RegExp(taskTitle.toString()) });
+  }
+
+  /**
+   * Get "View All" link from widget
+   */
+  getViewAllLink(linkText: string | RegExp): Locator {
+    return this.page.getByRole('link', { name: linkText });
+  }
+
+  /**
+   * Measure left column width percentage
+   */
+  async getLeftColumnWidthPercentage(): Promise<number> {
+    const gridBox = await this.getGridContainer().boundingBox();
+    const leftBox = await this.getLeftColumn().boundingBox();
+
+    if (!gridBox || !leftBox) return 0;
+
+    return (leftBox.width / gridBox.width) * 100;
+  }
+
+  /**
+   * Measure right sidebar width percentage
+   */
+  async getRightSidebarWidthPercentage(): Promise<number> {
+    const gridBox = await this.getGridContainer().boundingBox();
+    const rightBox = await this.getRightSidebar().boundingBox();
+
+    if (!gridBox || !rightBox) return 0;
+
+    return (rightBox.width / gridBox.width) * 100;
+  }
 }
