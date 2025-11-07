@@ -55,43 +55,45 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Dashboard Header with Refresh Button */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
-          My Principals
-        </h1>
-        <Button
-          variant="outline"
-          size="default"
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="gap-2"
-          aria-label="Refresh dashboard"
-        >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
-      </div>
+    <main role="main" aria-label="Dashboard">
+      <div className="space-y-4">
+        {/* Dashboard Header with Refresh Button */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+            My Principals
+          </h1>
+          <Button
+            variant="outline"
+            size="default"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="gap-2"
+            aria-label="Refresh dashboard"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+        </div>
 
-      {/* Grid Layout: 70% main content (left) + 30% sidebar (right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
-        {/* Left Column - Main Focus */}
-        <div className="space-y-6">
-          <UpcomingEventsByPrincipal />
-          <div className="rounded-lg border border-border bg-card">
-            <PrincipalDashboardTable />
+        {/* Grid Layout: 70% main content (left) + 30% sidebar (right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+          {/* Left Column - Main Focus */}
+          <div className="space-y-6">
+            <UpcomingEventsByPrincipal />
+            <div className="rounded-lg border border-border bg-card">
+              <PrincipalDashboardTable />
+            </div>
           </div>
-        </div>
 
-        {/* Right Sidebar - Supporting Context */}
-        <div className="space-y-6">
-          <MyTasksThisWeek />
-          <RecentActivityFeed />
-          {/* PipelineSummary widget to be added */}
+          {/* Right Sidebar - Supporting Context */}
+          <aside className="space-y-6" role="complementary" aria-label="Supporting information">
+            <MyTasksThisWeek />
+            <RecentActivityFeed />
+            {/* PipelineSummary widget to be added */}
+          </aside>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
