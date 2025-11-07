@@ -1,0 +1,179 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+      - generic [ref=e16]:
+        - button "Toggle theme" [ref=e17] [cursor=pointer]:
+          - img
+          - generic [ref=e18]: Toggle theme
+        - button [ref=e19] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e20] [cursor=pointer]:
+          - img
+        - button "n" [ref=e21] [cursor=pointer]:
+          - generic [ref=e23]: "n"
+  - main [ref=e24]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - heading "My Principals" [level=1] [ref=e27]
+        - button "Refresh dashboard" [ref=e28] [cursor=pointer]:
+          - img
+          - text: Refresh
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e33]: Upcoming by Principal
+            - paragraph [ref=e35]: No scheduled events this week
+          - table [ref=e42]:
+            - rowgroup [ref=e43]:
+              - 'row "Principal Sort by # Opps ascending Status Last Activity Stuck Next Action" [ref=e44]':
+                - columnheader "Principal" [ref=e45]
+                - 'columnheader "Sort by # Opps ascending" [ref=e46]':
+                  - 'button "Sort by # Opps ascending" [ref=e47] [cursor=pointer]':
+                    - generic [ref=e48]: "# Opps"
+                - columnheader "Status" [ref=e49]
+                - columnheader "Last Activity" [ref=e50]
+                - columnheader "Stuck" [ref=e51]
+                - columnheader "Next Action" [ref=e52]
+            - rowgroup [ref=e53]:
+              - row "Frites Street 2 🔴 Urgent No activity No pending tasks" [ref=e54] [cursor=pointer]:
+                - cell "Frites Street" [ref=e55]:
+                  - link "Frites Street" [ref=e57]:
+                    - /url: "#/organizations/1797/show"
+                - cell "2" [ref=e58]
+                - cell "🔴 Urgent" [ref=e59]:
+                  - generic [ref=e60]: 🔴 Urgent
+                - cell "No activity" [ref=e61]:
+                  - generic [ref=e62]: No activity
+                - cell [ref=e63]
+                - cell "No pending tasks" [ref=e64]:
+                  - generic [ref=e65]: No pending tasks
+              - row "Better Balance 2 🔴 Urgent No activity No pending tasks" [ref=e66] [cursor=pointer]:
+                - cell "Better Balance" [ref=e67]:
+                  - link "Better Balance" [ref=e69]:
+                    - /url: "#/organizations/1798/show"
+                - cell "2" [ref=e70]
+                - cell "🔴 Urgent" [ref=e71]:
+                  - generic [ref=e72]: 🔴 Urgent
+                - cell "No activity" [ref=e73]:
+                  - generic [ref=e74]: No activity
+                - cell [ref=e75]
+                - cell "No pending tasks" [ref=e76]:
+                  - generic [ref=e77]: No pending tasks
+              - row "Annasea 2 🔴 Urgent No activity No pending tasks" [ref=e78] [cursor=pointer]:
+                - cell "Annasea" [ref=e79]:
+                  - link "Annasea" [ref=e81]:
+                    - /url: "#/organizations/1801/show"
+                - cell "2" [ref=e82]
+                - cell "🔴 Urgent" [ref=e83]:
+                  - generic [ref=e84]: 🔴 Urgent
+                - cell "No activity" [ref=e85]:
+                  - generic [ref=e86]: No activity
+                - cell [ref=e87]
+                - cell "No pending tasks" [ref=e88]:
+                  - generic [ref=e89]: No pending tasks
+              - row "Rapid Rasoi 2 🔴 Urgent No activity No pending tasks" [ref=e90] [cursor=pointer]:
+                - cell "Rapid Rasoi" [ref=e91]:
+                  - link "Rapid Rasoi" [ref=e93]:
+                    - /url: "#/organizations/1802/show"
+                - cell "2" [ref=e94]
+                - cell "🔴 Urgent" [ref=e95]:
+                  - generic [ref=e96]: 🔴 Urgent
+                - cell "No activity" [ref=e97]:
+                  - generic [ref=e98]: No activity
+                - cell [ref=e99]
+                - cell "No pending tasks" [ref=e100]:
+                  - generic [ref=e101]: No pending tasks
+              - row "Kaufholds 3 🟢 Good Oct 30, 2025 meeting No pending tasks" [ref=e102] [cursor=pointer]:
+                - cell "Kaufholds" [ref=e103]:
+                  - link "Kaufholds" [ref=e105]:
+                    - /url: "#/organizations/1796/show"
+                - cell "3" [ref=e106]
+                - cell "🟢 Good" [ref=e107]:
+                  - generic [ref=e108]: 🟢 Good
+                - cell "Oct 30, 2025 meeting" [ref=e109]:
+                  - generic [ref=e111]:
+                    - generic [ref=e112]: Oct 30, 2025
+                    - generic [ref=e113]: meeting
+                - cell [ref=e114]
+                - cell "No pending tasks" [ref=e115]:
+                  - generic [ref=e116]: No pending tasks
+              - row "VAF 2 🟢 Good Nov 5, 2025 meeting No pending tasks" [ref=e117] [cursor=pointer]:
+                - cell "VAF" [ref=e118]:
+                  - link "VAF" [ref=e120]:
+                    - /url: "#/organizations/1799/show"
+                - cell "2" [ref=e121]
+                - cell "🟢 Good" [ref=e122]:
+                  - generic [ref=e123]: 🟢 Good
+                - cell "Nov 5, 2025 meeting" [ref=e124]:
+                  - generic [ref=e126]:
+                    - generic [ref=e127]: Nov 5, 2025
+                    - generic [ref=e128]: meeting
+                - cell [ref=e129]
+                - cell "No pending tasks" [ref=e130]:
+                  - generic [ref=e131]: No pending tasks
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e135]: My Tasks This Week
+            - paragraph [ref=e137]: No tasks due this week 🎉
+          - generic [ref=e138]:
+            - generic [ref=e140]: Recent Activity
+            - generic [ref=e141]:
+              - generic [ref=e142]:
+                - generic [ref=e143]: Nov 5, 5:25PM
+                - link "📋 meeting - meeting" [ref=e145] [cursor=pointer]:
+                  - /url: "#/activities/4"
+                - generic [ref=e146]:
+                  - text: →
+                  - link "View Opportunity" [ref=e147] [cursor=pointer]:
+                    - /url: "#/opportunities/8/show"
+              - generic [ref=e148]:
+                - generic [ref=e149]: Oct 30, 6:25PM
+                - link "📋 meeting - meeting" [ref=e151] [cursor=pointer]:
+                  - /url: "#/activities/3"
+                - generic [ref=e152]:
+                  - text: →
+                  - link "View Opportunity" [ref=e153] [cursor=pointer]:
+                    - /url: "#/opportunities/3/show"
+              - generic [ref=e154]:
+                - generic [ref=e155]: Oct 27, 6:25PM
+                - link "📋 call - call" [ref=e157] [cursor=pointer]:
+                  - /url: "#/activities/2"
+                - generic [ref=e158]:
+                  - text: →
+                  - link "View Opportunity" [ref=e159] [cursor=pointer]:
+                    - /url: "#/opportunities/1/show"
+              - generic [ref=e160]:
+                - generic [ref=e161]: Oct 22, 6:25PM
+                - link "📋 email - email" [ref=e163] [cursor=pointer]:
+                  - /url: "#/activities/1"
+                - generic [ref=e164]:
+                  - text: →
+                  - link "View Opportunity" [ref=e165] [cursor=pointer]:
+                    - /url: "#/opportunities/1/show"
+            - link "View All Activity →" [ref=e167] [cursor=pointer]:
+              - /url: "#/activities"
+  - contentinfo [ref=e168]:
+    - generic [ref=e170]:
+      - paragraph [ref=e171]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e172] [cursor=pointer]:
+        - img [ref=e173]
+        - generic [ref=e175]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

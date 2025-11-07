@@ -152,28 +152,37 @@ export class DashboardPage extends BasePage {
    * Get Upcoming Events by Principal widget
    */
   getUpcomingEventsWidget(): Locator {
-    return this.page.getByRole('heading', { name: /upcoming by principal/i }).locator('..');
+    // Get the card containing this heading
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.getByRole('heading', { name: /upcoming by principal/i })
+    });
   }
 
   /**
    * Get My Tasks This Week widget
    */
   getMyTasksWidget(): Locator {
-    return this.page.getByRole('heading', { name: /my tasks this week/i }).locator('..');
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.getByRole('heading', { name: /my tasks this week/i })
+    });
   }
 
   /**
    * Get Recent Activity Feed widget
    */
   getRecentActivityWidget(): Locator {
-    return this.page.getByRole('heading', { name: /recent activity/i }).locator('..');
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.getByRole('heading', { name: /recent activity/i })
+    });
   }
 
   /**
    * Get Pipeline Summary widget
    */
   getPipelineSummaryWidget(): Locator {
-    return this.page.getByRole('heading', { name: /pipeline summary/i }).locator('..');
+    return this.page.locator('[data-slot="card"]', {
+      has: this.page.getByRole('heading', { name: /pipeline summary/i })
+    });
   }
 
   /**
