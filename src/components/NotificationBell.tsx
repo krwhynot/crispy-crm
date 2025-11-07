@@ -30,7 +30,7 @@ export const NotificationBell = () => {
 
   // Subscribe to real-time updates
   useEffect(() => {
-    if (!identity?.id || isLoading) return;
+    if (!identity?.user_id || isLoading) return;
 
     const channel = supabase
       .channel("notifications_changes")
@@ -40,14 +40,14 @@ export const NotificationBell = () => {
           event: "*",
           schema: "public",
           table: "notifications",
-          filter: `user_id=eq.${identity.id}`,
+          filter: `user_id=eq.${identity.user_id}`,
         },
         async () => {
           // Refetch count when notifications change
           const { count, error } = await supabase
             .from("notifications")
             .select("*", { count: "exact", head: true })
-            .eq("user_id", identity.id)
+            .eq("user_id", identity.user_id)
             .eq("read", false);
 
           if (!error && count !== null) {
@@ -60,7 +60,7 @@ export const NotificationBell = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [identity?.id, isLoading]);
+  }, [identity?.user_id, isLoading]);
 
   // Accessible label
   const ariaLabel =

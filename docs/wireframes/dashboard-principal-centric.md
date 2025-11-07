@@ -310,6 +310,109 @@ When no principals are assigned to current user:
 
 ---
 
+## Evolution History - What Was Removed
+
+The principal-centric dashboard represents a **complete redesign** from the previous widget-based layouts. Below is the evolution history showing what was removed at each phase.
+
+### **Phase 1: Original Dashboard** (Pre-October 2025)
+
+**Layout:** 3-column grid (`md:grid-cols-12`)
+- **Column 1 (3/12):** HotContacts widget
+- **Column 2 (6/12):** OpportunitiesChart + DashboardActivityLog
+- **Column 3 (3/12):** TasksList widget
+
+### **Phase 2: Action-First Redesign** (Commit `84a45ca` - Oct 11, 2025)
+
+**Layout:** 2-column responsive grid (`md:grid-cols-2 lg:grid-cols-3`)
+- **Left column (2/3):** TasksList + DashboardActivityLog (action zone)
+- **Right column (1/3):** HotContacts + MiniPipeline + OpportunitiesChart (context zone)
+- **Full-width row:** QuickAdd (quick action buttons)
+
+**Components Added:**
+- ✅ MiniPipeline.tsx - Grouped opportunity summary (Active/Won/Lost)
+- ✅ QuickAdd.tsx - Quick create buttons for Contact/Opportunity
+- ✅ MetricsCardGrid.tsx - iPad-optimized metrics cards
+
+### **Phase 3: Financial Removal** (Commit `e480964` - Nov 2, 2025)
+
+**Components Deleted:**
+- ❌ **OpportunitiesChart.tsx** (234 lines) - Monthly revenue chart showing opportunity amounts
+- ❌ **OpportunitiesPipeline.tsx** (94 lines) - Pipeline value visualization
+
+**Reason:** Complete financial tracking removal per design doc `docs/plans/2025-11-02-complete-financial-tracking-removal-design.md`
+
+### **Phase 4: Principal-Centric Redesign** (Current - Nov 6, 2025)
+
+**Layout:** Single-table focused view
+- **Only Component:** PrincipalDashboardTable (6-column principal table)
+- **Header:** "My Principals" heading + Refresh button
+- **Auto-refresh:** Every 5 minutes (configurable)
+
+**Components Removed from Dashboard.tsx:**
+
+All previous widgets were removed and replaced with the single principal table:
+
+1. ❌ **DashboardActivityLog.tsx** - Recent activity feed widget
+2. ❌ **HotContacts.tsx** - Recently active contacts widget
+3. ❌ **TasksList.tsx** - Task management widget with filters
+4. ❌ **MiniPipeline.tsx** - Opportunity pipeline summary (Active/Won/Lost)
+5. ❌ **QuickAdd.tsx** - Quick action buttons for creating records
+6. ❌ **MetricsCardGrid.tsx** - Top-level metrics cards (Contacts, Organizations, Activities)
+
+### **Orphaned Components (Still in Codebase)**
+
+These components exist in `src/atomic-crm/dashboard/` but are **NOT imported or used anywhere**:
+
+```
+DashboardActivityLog.tsx       # Activity feed widget
+DashboardWidget.tsx             # Base widget wrapper component
+HotContacts.tsx                 # Recently active contacts widget
+LatestNotes.tsx                 # Recent notes feed (if exists)
+MetricsCardGrid.tsx             # Top-level metrics display
+MiniPipeline.tsx                # Pipeline summary widget
+MyOpenOpportunities.tsx         # User's open opportunities widget
+OpportunitiesByPrincipal.tsx    # Principal-grouped opportunities widget
+OverdueTasks.tsx                # Overdue tasks widget
+PipelineByStage.tsx             # Stage-based pipeline widget
+QuickAdd.tsx                    # Quick create action buttons
+RecentActivities.tsx            # Recent activity list widget
+TasksList.tsx                   # Task list widget
+TasksListEmpty.tsx              # Empty state for tasks widget
+TasksListFilter.tsx             # Task filtering UI component
+ThisWeeksActivities.tsx         # Weekly activity summary widget
+```
+
+**Status:** These files are **candidates for deletion** in a future cleanup, or could be repurposed for:
+- Customizable dashboard widgets (future feature)
+- Alternative dashboard views for different roles
+- Standalone pages for specific workflows
+
+### **Key Design Rationale**
+
+**Why remove all widgets?**
+
+1. **Focus over flexibility** - Account Managers need ONE clear view of their principals, not configurable widgets
+2. **Principal-first workflow** - The core job is managing 3-5 principal relationships, not tracking 100+ metrics
+3. **Reduce cognitive load** - Single table format eliminates decision paralysis from multiple dashboard sections
+4. **Consistency** - Fixed layout ensures all users see critical information the same way
+5. **iPad optimization** - Table format works better on tablets than widget grids
+
+**What was lost?**
+
+- Quick task management (TasksList) - moved to dedicated Tasks page
+- Activity feed (DashboardActivityLog) - moved to Activity module
+- Quick create buttons (QuickAdd) - replaced with navigation to create forms
+- Metrics overview (MetricsCardGrid) - deprioritized in favor of action-oriented view
+
+**What was gained?**
+
+- Immediate visibility into all principals (no scrolling through widgets)
+- Priority-sorted table surfaces most urgent principals first
+- Stuck opportunity warnings prevent deals from going stale
+- Consistent UX across all account managers
+
+---
+
 ## Next Steps
 
 1. **Seed Test Data**: Create opportunities with assigned account managers
@@ -317,8 +420,10 @@ When no principals are assigned to current user:
 3. **Run E2E Tests**: Validate all 24 tests pass with data present
 4. **Manual QA**: Test on actual devices (desktop/iPad/mobile)
 5. **Production Readiness**: Load test with 100+ principals per user
+6. **Cleanup Decision**: Archive or delete orphaned widget components
 
 ---
 
-**Last Updated:** 2025-11-06
+**Last Updated:** 2025-11-07
 **Implementation Phase:** Code Complete, Data Seeding Required
+**Evolution Phase:** Principal-Centric v2.0 (All widgets removed)
