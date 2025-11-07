@@ -39,13 +39,13 @@ export const NotificationDropdown = ({
 
   // Fetch notifications
   const fetchNotifications = async () => {
-    if (!identity?.id) return;
+    if (!identity?.user_id) return;
 
     setIsLoading(true);
-    const { data, error } = await supabase
+    const { data, error} = await supabase
       .from("notifications")
       .select("*")
-      .eq("user_id", identity.id)
+      .eq("user_id", identity.user_id)
       .order("created_at", { ascending: false })
       .limit(20);
 
@@ -57,17 +57,17 @@ export const NotificationDropdown = ({
 
   useEffect(() => {
     fetchNotifications();
-  }, [identity?.id]);
+  }, [identity?.user_id]);
 
   // Mark single notification as read
   const markAsRead = async (notificationId: number) => {
-    if (!identity?.id) return;
+    if (!identity?.user_id) return;
 
     const { error } = await supabase
       .from("notifications")
       .update({ read: true })
       .eq("id", notificationId)
-      .eq("user_id", identity.id);
+      .eq("user_id", identity.user_id);
 
     if (!error) {
       setNotifications((prev) =>
@@ -78,12 +78,12 @@ export const NotificationDropdown = ({
 
   // Mark all notifications as read
   const markAllAsRead = async () => {
-    if (!identity?.id) return;
+    if (!identity?.user_id) return;
 
     const { error } = await supabase
       .from("notifications")
       .update({ read: true })
-      .eq("user_id", identity.id)
+      .eq("user_id", identity.user_id)
       .eq("read", false);
 
     if (!error) {
