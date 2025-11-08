@@ -8,7 +8,13 @@ Atomic Design is a methodology for creating design systems by Brad Frost. It bre
 
 **⚛️ Atoms** → **🧬 Molecules** → **🦠 Organisms** → **📐 Templates** → **📄 Pages**
 
-Each level builds upon the previous, creating a systematic approach to UI design and development.
+**Core Principle:** Components at any level should **primarily** be composed of components from levels below it. This is a guideline for clarity, not a rigid rule - flexibility is key.
+
+**Engineering Constitution Alignment:**
+- **YAGNI:** Create components only when needed in 3+ places
+- **No Over-Engineering:** Don't debate Molecule vs Organism for hours - build the feature
+- **Fail Fast:** Validate at the appropriate level, throw errors in development
+- **Single Source of Truth:** Define components once, import everywhere
 
 ---
 
