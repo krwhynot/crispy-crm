@@ -21,6 +21,8 @@ import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactI
 import { findCanonicalField, isFullNameColumn, mapHeadersToFields } from "./columnAliases";
 import { processCsvDataWithMappings } from "./csvProcessor";
 import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
+import { validateCsvFile, getSecurePapaParseConfig, type CsvValidationError } from "../utils/csvUploadValidator";
+import { contactImportLimiter } from "../utils/rateLimiter";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
@@ -319,6 +321,8 @@ export function ContactImportDialog({
   });
 
   const [file, setFile] = useState<File | null>(null);
+  const [validationErrors, setValidationErrors] = useState<CsvValidationError[]>([]);
+  const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
 
   // Handle preview confirmation and start the actual import
   // THIS IS THE FIX: Use reprocessedContacts (with user overrides) instead of re-parsing the file

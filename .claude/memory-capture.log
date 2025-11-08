@@ -1749,3 +1749,10 @@
 [2025-11-07 23:30:01] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/internal-docs/2025-11-08-constitution-audit-summary.md
 [2025-11-08 11:01:08] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/internal-docs/2025-11-08-technical-gaps-audit.md
 [2025-11-08 11:24:52] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/SECURITY_MODEL.md
+[2025-11-08 11:25:11] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/SECURITY_README.md
+[2025-11-08 11:26:32] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/SECURITY_KEY_ROTATION.md
+[2025-11-08 11:27:58] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108172640_document_rls_security_model.sql
+[2025-11-08 11:28:52] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/csvUploadValidator.ts
+[2025-11-08 11:29:16] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/rateLimiter.ts
+[2025-11-08 11:29:48] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx
+[2025-11-08 11:30:05] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/ContactImportDialog.tsx

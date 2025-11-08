@@ -1,8 +1,32 @@
 # Security Audit Documentation Index
 
-**Audit Date:** November 8, 2025  
-**Codebase:** Atomic CRM v0.1.0 (Pre-launch)  
+**Audit Date:** November 8, 2025
+**Codebase:** Atomic CRM v0.1.0 (Pre-launch)
 **Scope:** Comprehensive security vulnerability assessment
+
+---
+
+## Security Model Overview
+
+**Phase 1 Implementation: Complete**
+
+Atomic CRM uses a **single-tenant trusted-team model** where:
+- All authenticated users can view/modify shared data (contacts, opportunities, organizations)
+- Authentication is the primary security boundary
+- Compensating controls (audit trails, soft-deletes, rate limiting) prevent data loss
+- Tasks are personal (creator-only access)
+
+**See [SECURITY_MODEL.md](SECURITY_MODEL.md) for complete documentation** including:
+- Access control policies and rationale
+- Risk assessment and accepted risks
+- Multi-tenant expansion path
+- Compliance considerations (SOC 2, GDPR, ISO 27001)
+- Incident response procedures
+
+**Key Documents:**
+- **[SECURITY_MODEL.md](SECURITY_MODEL.md)** - Security architecture and policies
+- **[SECURITY_KEY_ROTATION.md](SECURITY_KEY_ROTATION.md)** - Key rotation procedures
+- **Phase 1 Status:** RLS documentation complete, CSV validation implemented, secret hygiene fixed
 
 ---
 
