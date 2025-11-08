@@ -22,6 +22,7 @@ import OrganizationImportPreview, {
 } from "./OrganizationImportPreview";
 import { supabase } from "../providers/supabase/supabase";
 import { formatName } from "../utils/formatName";
+import { validateCsvFile, getSecurePapaParseConfig, sanitizeCsvValue, type CsvValidationError } from "../utils/csvUploadValidator";
 
 type OrganizationImportDialogProps = {
   open: boolean;
@@ -43,6 +44,10 @@ export function OrganizationImportDialog({
   const [importProgress, setImportProgress] = useState({ count: 0, total: 0 });
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // SECURITY: Phase 1 Security Remediation - CSV validation
+  const [validationErrors, setValidationErrors] = useState<CsvValidationError[]>([]);
+  const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
 
   // Preview state management
   const [showPreview, setShowPreview] = useState(false);
@@ -87,7 +92,10 @@ export function OrganizationImportDialog({
     const mappedRow: any = {};
     headers.forEach((header, index) => {
       const canonicalField = mappings[header];
-      const value = rawRow[index];
+      const rawValue = rawRow[index];
+
+      // SECURITY: Sanitize all CSV values (Phase 1 Security Remediation)
+      const value = typeof rawValue === 'string' ? sanitizeCsvValue(rawValue) : rawValue;
 
       if (canonicalField && value !== undefined && value !== '') {
         if (canonicalField === 'sales_id' && typeof value === 'string') {
@@ -589,8 +597,32 @@ export function OrganizationImportDialog({
     }
   }, [reprocessedOrganizations, processBatch, refresh, notify]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] || null;
+
+    // Clear previous validation errors
+    setValidationErrors([]);
+    setValidationWarnings([]);
+
+    if (!selectedFile) {
+      setFile(null);
+      return;
+    }
+
+    // SECURITY: Validate file before processing (Phase 1 Security Remediation)
+    const validation = await validateCsvFile(selectedFile);
+
+    if (!validation.valid && validation.errors) {
+      setValidationErrors(validation.errors);
+      setFile(null);
+      return;
+    }
+
+    // Show warnings if any (non-blocking)
+    if (validation.warnings && validation.warnings.length > 0) {
+      setValidationWarnings(validation.warnings);
+    }
+
     setFile(selectedFile);
     // Reset state when file changes
     setImportState("idle");
@@ -606,9 +638,9 @@ export function OrganizationImportDialog({
 
     setImportState("parsing");
 
+    // SECURITY: Use secure Papa Parse configuration (Phase 1 Security Remediation)
     Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
+      ...getSecurePapaParseConfig(),
       complete: async (results) => {
         const rows = results.data as any[];
         const headers = results.meta.fields || [];
@@ -780,6 +812,35 @@ export function OrganizationImportDialog({
                   </p>
                 )}
               </div>
+
+              {/* SECURITY: Display validation errors (Phase 1 Security Remediation) */}
+              {validationErrors.length > 0 && (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    <div className="font-semibold mb-2">File validation failed:</div>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {validationErrors.map((error, idx) => (
+                        <li key={idx}>{error.message}</li>
+                      ))}
+                    </ul>
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {/* Display non-blocking warnings */}
+              {validationWarnings.length > 0 && (
+                <Alert>
+                  <AlertDescription>
+                    <div className="font-semibold mb-2">Warnings:</div>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {validationWarnings.map((warning, idx) => (
+                        <li key={idx}>{warning}</li>
+                      ))}
+                    </ul>
+                  </AlertDescription>
+                </Alert>
+              )}
+
               <div className="flex justify-end gap-2">
                 <Button variant="outline" onClick={handleClose}>
                   Cancel
