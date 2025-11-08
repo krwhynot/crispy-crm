@@ -1,8 +1,10 @@
 import { OPPORTUNITY_STAGE_CHOICES } from '../opportunities/stageConstants';
+import { getStorageItem, setStorageItem } from '../utils/secureStorage';
 
 /**
- * localStorage key for storing opportunity stage preferences
- * Changed from 'opportunity_hidden_stages' to 'filter.opportunity_stages' for consistency
+ * Storage key for opportunity stage preferences
+ * Phase 1 Security Remediation: Now uses sessionStorage instead of localStorage
+ * (cleared on tab close for better privacy)
  */
 const STORAGE_KEY = 'filter.opportunity_stages';
 
@@ -15,30 +17,34 @@ const DEFAULT_VISIBLE_STAGES = OPPORTUNITY_STAGE_CHOICES
   .map(c => c.id);
 
 /**
- * Get stored stage preferences from localStorage
+ * Get stored stage preferences from sessionStorage
  * Falls back to default visible stages if no preferences are stored
+ *
+ * Phase 1 Security Remediation: Uses sessionStorage (cleared on tab close)
  *
  * @returns Array of stage IDs that should be visible in the filter
  */
 export const getStoredStagePreferences = (): string[] => {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    // SECURITY: Use sessionStorage instead of localStorage
+    const stored = getStorageItem<string[]>(STORAGE_KEY, { type: 'session' });
     if (!stored) return DEFAULT_VISIBLE_STAGES;
 
-    const parsed = JSON.parse(stored);
     // Handle corrupted data (null, non-array values)
-    if (!Array.isArray(parsed)) {
+    if (!Array.isArray(stored)) {
       return DEFAULT_VISIBLE_STAGES;
     }
-    return parsed;
+    return stored;
   } catch {
     return DEFAULT_VISIBLE_STAGES;
   }
 };
 
 /**
- * Save stage preferences to localStorage
+ * Save stage preferences to sessionStorage
  * Only saves if selectedStages is a non-empty array
+ *
+ * Phase 1 Security Remediation: Uses sessionStorage (cleared on tab close)
  *
  * @param selectedStages - Array of stage IDs that are currently selected
  */
@@ -46,7 +52,8 @@ export const saveStagePreferences = (selectedStages: string[]): void => {
   if (selectedStages.length === 0) return; // Don't save empty array
 
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedStages));
+    // SECURITY: Use sessionStorage instead of localStorage
+    setStorageItem(STORAGE_KEY, selectedStages, { type: 'session' });
   } catch (error) {
     console.warn('Failed to save stage preferences:', error);
   }

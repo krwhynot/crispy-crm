@@ -8,7 +8,7 @@ import {
 
 describe('opportunityStagePreferences', () => {
   beforeEach(() => {
-    localStorage.clear();
+    sessionStorage.clear();
   });
 
   describe('getDefaultVisibleStages', () => {

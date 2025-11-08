@@ -1,9 +1,11 @@
 import type { FilterValues} from "./types";
 import { FILTER_KEYS } from "./types";
+import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/secureStorage';
 
 /**
  * Filter precedence utilities
  * Simplifies the complex logic for determining filter default values
+ * Phase 1 Security Remediation: Uses sessionStorage instead of localStorage
  */
 
 /**
@@ -44,23 +46,26 @@ export const parseUrlFilters = (search: string): FilterValues => {
 };
 
 /**
- * Get filter preferences from localStorage
+ * Get filter preferences from sessionStorage
+ * Phase 1 Security Remediation: Uses sessionStorage (cleared on tab close)
  */
 export const getStoredFilterPreferences = (key: string): any => {
   try {
-    const stored = localStorage.getItem(key);
-    return stored ? JSON.parse(stored) : null;
+    // SECURITY: Use sessionStorage instead of localStorage
+    return getStorageItem<any>(key, { type: 'session' });
   } catch {
     return null;
   }
 };
 
 /**
- * Save filter preferences to localStorage
+ * Save filter preferences to sessionStorage
+ * Phase 1 Security Remediation: Uses sessionStorage (cleared on tab close)
  */
 export const saveFilterPreferences = (key: string, value: any): void => {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    // SECURITY: Use sessionStorage instead of localStorage
+    setStorageItem(key, value, { type: 'session' });
   } catch (error) {
     console.warn('Failed to save filter preferences:', error);
   }
@@ -90,7 +95,8 @@ export const getDefaultVisibleStages = (): string[] => {
 
 /**
  * Get initial filter value with precedence
- * URL > localStorage > default
+ * URL > sessionStorage > default
+ * Phase 1 Security Remediation: sessionStorage clears on tab close (better privacy)
  */
 export const getInitialFilterValue = (
   filterKey: string,
@@ -102,7 +108,7 @@ export const getInitialFilterValue = (
     return urlValue;
   }
 
-  // 2. localStorage preferences (if no URL value)
+  // 2. sessionStorage preferences (if no URL value)
   const storedValue = getStoredFilterPreferences(`filter.${filterKey}`);
   if (storedValue !== undefined && storedValue !== null) {
     return storedValue;
@@ -136,8 +142,9 @@ export const getInitialStageFilter = (urlFilters?: FilterValues): string[] => {
 };
 
 /**
- * Update stage preferences in localStorage
+ * Update stage preferences in sessionStorage
  * Only saves if different from defaults
+ * Phase 1 Security Remediation: sessionStorage clears on tab close (better privacy)
  */
 export const updateStagePreferences = (stages: string[]): void => {
   const defaults = getDefaultVisibleStages();
@@ -152,7 +159,8 @@ export const updateStagePreferences = (stages: string[]): void => {
   } else {
     // Remove from storage if back to defaults
     try {
-      localStorage.removeItem('opportunity_hidden_stages');
+      // SECURITY: Use sessionStorage instead of localStorage
+      removeStorageItem('opportunity_hidden_stages');
     } catch {
       // Ignore errors
     }
