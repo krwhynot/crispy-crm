@@ -1876,3 +1876,5 @@
 [2025-11-08 14:48:13] [configuration] Write: /home/krwhynot/projects/crispy-crm/.github/workflows/ci.yml
 [2025-11-08 15:13:59] [documentation] Write: /home/krwhynot/projects/crispy-crm/4-PHASE-REMEDIATION-PLAN.md
 [2025-11-08 15:31:02] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108213039_fix_rls_policies_role_based_access.sql
+[2025-11-08 15:32:44] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108213216_cleanup_duplicate_rls_policies.sql
+[2025-11-08 15:36:03] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts
