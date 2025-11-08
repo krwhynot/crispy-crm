@@ -143,25 +143,77 @@ const { currentIndex, handleKeyDown } = useKeyboardNavigation({
 return <div onKeyDown={handleKeyDown} tabIndex={0}>...</div>;
 ```
 
-## File Structure
+## File Structure (Atomic Design)
 
 ```
-src/lib/design-system/
-├── spacing.ts          # Touch target constants, spacing scale
-├── accessibility.ts    # Focus management, screen reader utilities
+src/lib/design-system/          # ⚛️ Atoms & 🧬 Molecules
+├── spacing.ts                  # Atoms: Touch targets, spacing constants
+├── accessibility.ts            # Molecules: Hooks for focus, announcements
 └── index.ts
 
-src/components/design-system/
-├── ResponsiveGrid.tsx  # Grid layout patterns
+src/components/design-system/   # 🦠 Organisms
+├── ResponsiveGrid.tsx          # Organism: Grid layout patterns
 └── index.ts
+
+src/atomic-crm/                 # 📐 Templates & 📄 Pages
+├── dashboard/                  # Template: Dashboard layout
+│   └── Dashboard.tsx           # Page: Actual dashboard with data
+├── contacts/                   # Templates: List/Show/Edit
+│   ├── ContactList.tsx         # Page: Contact list with filters
+│   ├── ContactShow.tsx         # Page: Contact details
+│   └── ContactEdit.tsx         # Page: Contact edit form
+└── ...
 
 docs/design-system/
-├── README.md           # This file
-└── 01-principles.md    # Design principles
+├── README.md                   # This file - Atomic Design overview
+├── 01-principles.md            # Design principles & constitution
+├── 02-dashboard-pilot.md       # Pilot implementation
+└── 03-atomic-design.md         # Detailed Atomic Design guide
 ```
+
+## Component Creation Guidelines
+
+Before creating a new component, ask:
+
+1. **What level is it?** Atom, Molecule, Organism, Template, or Page?
+2. **Does it already exist?** Search `src/lib/design-system/` and `src/components/design-system/`
+3. **Is it needed 3+ times?** If not, use Tailwind directly (YAGNI)
+4. **Can you fix at source?** Don't wrap broken components, fix them
+
+**Quick decision tree:**
+```
+Is it a constant/token? → Atom (src/lib/design-system/)
+Combines 2-3 atoms? → Molecule (src/lib/design-system/)
+Complex reusable UI? → Organism (src/components/design-system/)
+Page layout pattern? → Template (document pattern)
+Specific page + data? → Page (src/atomic-crm/<resource>/)
+```
+
+**Example workflow:**
+```typescript
+// 1. Check if similar component exists
+grep -r "ResponsiveGrid" src/
+
+// 2. If creating new organism:
+// - Document in 03-atomic-design.md
+// - Add to src/components/design-system/
+// - Export from index.ts
+// - Add tests
+// - Update this README
+
+// 3. Use constitutional principles:
+// - YAGNI: Only if needed 3+ times
+// - Fail Fast: Validate in dev mode
+// - Single Source: One place to change
+```
+
+See [Atomic Design Guide](./03-atomic-design.md) for detailed component creation workflow.
 
 ## Related Documentation
 
+- [Atomic Design Guide](./03-atomic-design.md) - Detailed hierarchy and guidelines
+- [Design Principles](./01-principles.md) - Constitution alignment
+- [Dashboard Pilot](./02-dashboard-pilot.md) - Implementation lessons
 - [Engineering Constitution](../claude/engineering-constitution.md) - Core principles
 - [Color System](../internal-docs/color-theming-architecture.docs.md) - OKLCH tokens
 
