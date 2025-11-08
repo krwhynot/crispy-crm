@@ -138,7 +138,7 @@ const OrganizationShowContent = () => {
         </Card>
       </main>
 
-      <aside role="complementary" aria-label="Organization information">
+      <aside aria-label="Organization information">
         <OrganizationAside />
       </aside>
     </ResponsiveGrid>

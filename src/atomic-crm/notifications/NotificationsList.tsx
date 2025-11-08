@@ -213,15 +213,25 @@ const NotificationsBulkActions = () => {
 
   const markAllAsRead = async () => {
     try {
-      // Update each selected notification
-      await Promise.all(
+      // Phase 3: Use Promise.allSettled() to handle partial failures gracefully
+      const results = await Promise.allSettled(
         selectedIds.map((id) =>
           update("notifications", { id, data: { read: true } })
         )
       );
-      notify(`${selectedIds.length} notification(s) marked as read`, {
-        type: "success",
-      });
+
+      // Count successes and failures
+      const successes = results.filter(r => r.status === "fulfilled").length;
+      const failures = results.filter(r => r.status === "rejected").length;
+
+      if (failures === 0) {
+        notify(`${successes} notification(s) marked as read`, { type: "success" });
+      } else if (successes > 0) {
+        notify(`${successes} notification(s) marked as read, ${failures} failed`, { type: "warning" });
+      } else {
+        notify("Failed to mark notifications as read", { type: "error" });
+      }
+
       refresh();
     } catch (error) {
       notify("Error marking notifications as read", { type: "error" });
