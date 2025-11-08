@@ -1,6 +1,53 @@
 # Atomic CRM Design System
 
-Minimal design system utilities following the Engineering Constitution: no over-engineering, fail fast, single source of truth.
+Minimal design system utilities following the Engineering Constitution and Atomic Design methodology: no over-engineering, fail fast, single source of truth.
+
+## Atomic Design Hierarchy
+
+This design system follows [Atomic Design](https://atomicdesign.bradfrost.com/) principles by Brad Frost:
+
+**⚛️ Atoms** → **🧬 Molecules** → **🦠 Organisms** → **📐 Templates** → **📄 Pages**
+
+### ⚛️ Atoms (Basic building blocks)
+Design tokens and constants that can't be broken down further:
+- Touch target sizes (`TOUCH_TARGET_MIN`, `TOUCH_TARGET_STANDARD`)
+- Focus ring constants (`focusRing`)
+- Screen reader utilities (`srOnly`)
+- Color tokens (semantic CSS vars: `--primary`, `--brand-700`)
+
+**Location:** `src/lib/design-system/spacing.ts`, `accessibility.ts`
+
+### 🧬 Molecules (Simple component groups)
+Reusable UI patterns combining atoms:
+- `useAriaAnnounce` - Live region + announcement hook
+- `useKeyboardNavigation` - Arrow key + focus management hook
+- Form field patterns (input + label + error)
+
+**Location:** `src/lib/design-system/accessibility.ts`
+
+### 🦠 Organisms (Complex UI components)
+Standalone UI sections with specific purposes:
+- `ResponsiveGrid` (dashboard variant: 70/30 layout)
+- `ResponsiveGrid` (cards variant: responsive card grids)
+- Navigation components, data tables, forms
+
+**Location:** `src/components/design-system/ResponsiveGrid.tsx`
+
+### 📐 Templates (Page-level layouts)
+Wireframe layouts showing content structure:
+- Dashboard template (main 70% + complementary sidebar 30%)
+- List/Detail template (filter sidebar + main content + info sidebar)
+- Form template (main form + contextual sidebar)
+
+**Examples:** Dashboard, ContactShow, ContactEdit layouts
+
+### 📄 Pages (Specific instances)
+Real content in templates:
+- Dashboard with actual widgets and data
+- ContactShow with real contact information
+- ContactEdit with working form fields
+
+**Examples:** `/dashboard`, `/contacts/123`, `/contacts/123/edit`
 
 ## Philosophy
 
@@ -8,7 +55,7 @@ Minimal design system utilities following the Engineering Constitution: no over-
 - Document standards, don't over-abstract
 - Fix components at source, don't wrap them
 - Use Tailwind classes directly when possible
-- Add utilities only when genuinely needed
+- Add atoms/molecules/organisms only when genuinely needed (YAGNI)
 
 **iPad-First Responsive:**
 - Design for iPad (768-1024px), scale up/down
