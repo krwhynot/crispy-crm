@@ -53,7 +53,7 @@ const ContactListLayout = () => {
 
   return (
     <div className="flex flex-row gap-6">
-      <aside role="complementary" aria-label="Filter contacts">
+      <aside aria-label="Filter contacts">
         <ContactListFilter />
       </aside>
       <main role="main" aria-label="Contacts list" className="flex-1 flex flex-col gap-4">

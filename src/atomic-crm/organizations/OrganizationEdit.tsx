@@ -94,7 +94,7 @@ const OrganizationEditContent = ({
           </Form>
         </main>
 
-        <aside role="complementary" aria-label="Organization information">
+        <aside aria-label="Organization information">
           <OrganizationAside link="show" />
         </aside>
       </ResponsiveGrid>
