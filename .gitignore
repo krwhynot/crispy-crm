@@ -18,7 +18,7 @@
 .DS_Store
 .eslintcache
 
-# Environment files
+# Environment files - Phase 1 Security Remediation
 # Keep these files (committed):
 # .env.example - Template showing structure
 # .env.local - Local development config (safe Docker keys)
@@ -26,10 +26,11 @@
 
 # Ignore these:
 .env                        # Active configuration (copied from .env.local or .env.cloud)
-.env-archive/              # Archived old env files
-.env.production            # Production secrets (if any)
-.env.*.local              # Any local overrides
-.env.staging                # Staging environment credentials
+.env.*                      # Catch-all: .env.production, .env.staging, .env.development, .env.test, etc.
+!.env.example               # Exception: Keep .env.example (template)
+!.env.local                 # Exception: Keep .env.local (safe Docker keys)
+!.env.cloud                 # Exception: Keep .env.cloud (public anon key template)
+.env-archive/               # Archived old env files
 
 npm-debug.log*
 yarn-debug.log*
@@ -39,7 +40,6 @@ supabase/.temp
 
 dist/
 /lib/
-.env
 *storybook.log
 
 # MCP Configuration (contains API keys)
