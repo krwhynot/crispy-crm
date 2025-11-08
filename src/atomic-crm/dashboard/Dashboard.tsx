@@ -86,7 +86,7 @@ export const Dashboard = () => {
           </div>
 
           {/* Right Sidebar - Supporting Context */}
-          <aside className="space-y-6" role="complementary" aria-label="Supporting information">
+          <aside className="space-y-6" aria-label="Supporting information">
             <MyTasksThisWeek />
             <RecentActivityFeed />
             {/* PipelineSummary widget to be added */}

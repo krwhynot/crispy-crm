@@ -88,7 +88,14 @@ describe("FloatingCreateButton", () => {
     const handleClick = vi.fn();
 
     renderWithAdminContext(
-      <div onClick={handleClick}>
+      <div
+        onClick={handleClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') handleClick();
+        }}
+        role="button"
+        tabIndex={0}
+      >
         <FloatingCreateButton />
       </div>,
       {

@@ -118,7 +118,7 @@ const ProductShowContent = () => {
           </Tabs>
         </main>
 
-        <aside role="complementary" aria-label="Product information">
+        <aside aria-label="Product information">
           <ProductAside />
         </aside>
       </ResponsiveGrid>

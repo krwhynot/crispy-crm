@@ -29,7 +29,7 @@ const ContactEditContent = () => {
         </Form>
       </main>
 
-      <aside role="complementary" aria-label="Contact information">
+      <aside aria-label="Contact information">
         <ContactAside link="show" />
       </aside>
     </ResponsiveGrid>
