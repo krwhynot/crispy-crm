@@ -110,21 +110,28 @@ Create a new molecule when:
 ### Examples of Good Molecules
 
 ```typescript
-// ✅ Good: Reusable validation + error display pattern
-export const useFormFieldState = (fieldName: string) => {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState<string | null>(null);
-
-  const validate = () => {
-    // Validation logic combining multiple atoms
-  };
-
-  return { value, setValue, error, validate };
-};
-
 // ✅ Good: Common keyboard shortcut pattern
 export const useKeyboardShortcut = (key: string, callback: () => void) => {
   // Combines: key detection (atom) + callback execution
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === key) callback();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [key, callback]);
+};
+
+// ✅ Good: Reusable focus trap for modals/dialogs
+export const useFocusTrap = (ref: RefObject<HTMLElement>) => {
+  // Combines: focus management atoms + tab key detection
+  // Keeps focus within modal for accessibility
+};
+
+// ❌ Bad: Custom validation (use Zod + React Admin instead)
+// Validation belongs at API boundary per Engineering Constitution
+export const useFormFieldState = (/* ... */) => {
+  // ❌ Don't create parallel validation systems
 };
 
 // ❌ Bad: Just use Tailwind directly
@@ -132,6 +139,8 @@ const FormLabel = ({ children }) => (
   <label className="text-sm font-medium">{children}</label>
 );
 ```
+
+**Note on Form Validation:** Per Engineering Constitution, validation happens at the API boundary using Zod schemas. React Admin forms use `zodResolver` to connect schemas to forms. See "React Admin Integration" section below for proper form validation patterns.
 
 ---
 
