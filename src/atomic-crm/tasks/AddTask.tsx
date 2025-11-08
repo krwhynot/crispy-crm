@@ -53,18 +53,31 @@ export const AddTask = ({
 
   const handleSuccess = async (data: any) => {
     setOpen(false);
-    const contact = await dataProvider.getOne("contacts", {
-      id: data.contact_id,
-    });
-    if (!contact.data) return;
 
-    await update("contacts", {
-      id: contact.data.id,
-      data: { last_seen: new Date().toISOString() },
-      previousData: contact.data,
-    });
+    // Phase 3: Add error handling to prevent unhandled promise rejections
+    try {
+      const contact = await dataProvider.getOne("contacts", {
+        id: data.contact_id,
+      });
 
-    notify("Task added");
+      if (!contact.data) {
+        notify("Task created, but couldn't update contact last_seen", { type: "warning" });
+        return;
+      }
+
+      await update("contacts", {
+        id: contact.data.id,
+        data: { last_seen: new Date().toISOString() },
+        previousData: contact.data,
+      });
+
+      notify("Task added");
+    } catch (error) {
+      // Task was created successfully, but contact update failed
+      // This is non-critical - notify user but don't fail the operation
+      console.error("Failed to update contact last_seen:", error);
+      notify("Task created, but couldn't update contact", { type: "warning" });
+    }
   };
 
   if (!identity) return null;
