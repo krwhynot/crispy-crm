@@ -166,12 +166,17 @@ npm run migrate:csv           # Migrate opportunities from CSV
 
 ### Specialized Topics
 - **[Database Documentation](./docs/database/)** - Migration business rules
-- **[Security](./docs/SECURITY_README.md)** - ✅ Phase 1 Complete (Nov 2025) - [Executive Summary](./SECURITY_PHASE1_COMPLETE.md)
+- **[Security & Testing](./docs/SECURITY_README.md)** - ✅ Remediation Complete (Nov 2025) - [Completion Report](./4-PHASE-REMEDIATION-COMPLETION.md)
+  - 0 critical vulnerabilities, RLS admin-only policies, CSV validation
+  - 95.4% test pass rate (1130/1184), 65 new tests added
+  - WCAG 2.1 Level AA accessibility compliance
 - **[Design System](./docs/design-system/)** - UI component guidelines
 
 ## Testing
 
-![Coverage](https://img.shields.io/badge/coverage-70%25-yellow)
+![Test Pass Rate](https://img.shields.io/badge/tests-95.4%25%20passing-brightgreen) ![Coverage](https://img.shields.io/badge/coverage-70%25%20min-yellow) ![Accessibility](https://img.shields.io/badge/a11y-WCAG%202.1%20AA-blue)
+
+**Status:** 1130/1184 tests passing (95.4%) | 65 tests added in Nov 2025 remediation
 
 ### Quick Start
 

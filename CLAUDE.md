@@ -93,11 +93,91 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
 - `20251108213039_fix_rls_policies_role_based_access.sql` - Admin-only restrictions
 - `20251108213216_cleanup_duplicate_rls_policies.sql` - Remove permissive duplicates
 
+### 🛡️ CSV Upload Security
+
+**CRITICAL:** Always validate CSV uploads to prevent formula injection, DoS, binary uploads.
+
+**Pattern for CSV imports:**
+```typescript
+import { validateCsvFile, getSecurePapaParseConfig, sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
+
+// 1. Validate file before processing
+const validation = await validateCsvFile(selectedFile);
+if (!validation.valid && validation.errors) {
+  setValidationErrors(validation.errors);
+  return;
+}
+
+// 2. Use secure Papa Parse config
+Papa.parse(file, {
+  ...getSecurePapaParseConfig(),  // Disables dynamic typing, limits preview
+  complete: async (results) => { /* ... */ }
+});
+
+// 3. Sanitize all cell values
+const transformRowData = (row: any) => ({
+  name: sanitizeCsvValue(row.name),
+  description: sanitizeCsvValue(row.description),
+  // Sanitize ALL string fields
+});
+```
+
+**What it prevents:**
+- Formula injection (`=cmd|'/c calc'!A0` → `'=cmd|'/c calc'!A0`)
+- Binary file uploads (JPEG, ZIP magic byte detection)
+- Control character injection (`\x00`, `\x01`)
+- Oversized files (10MB limit)
+
+**Reference:** `src/atomic-crm/utils/csvUploadValidator.ts`, `src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts` (26 tests)
+
 ### ⚠️ Auth Schema Exclusion
 
 `db diff` excludes `auth` schema - manually add auth triggers to migrations.
 
 **Complete docs:** [Supabase Workflow](docs/supabase/WORKFLOW.md), [Production Safety](scripts/db/PRODUCTION-WARNING.md)
+
+## Error Handling Patterns
+
+### Promise.allSettled for Bulk Operations
+
+**CRITICAL:** Use `Promise.allSettled()` instead of `Promise.all()` for bulk operations to handle partial failures gracefully.
+
+**Pattern for bulk updates/creates:**
+```typescript
+// ❌ BAD: Promise.all() fails completely if one operation fails
+const results = await Promise.all(
+  items.map(item => update("resource", { id: item.id, data: { status: "active" } }))
+);
+
+// ✅ GOOD: Promise.allSettled() handles partial failures
+const results = await Promise.allSettled(
+  items.map(item => update("resource", { id: item.id, data: { status: "active" } }))
+);
+
+// Count successes and failures
+const successes = results.filter(r => r.status === "fulfilled").length;
+const failures = results.filter(r => r.status === "rejected").length;
+
+// Provide informative user feedback
+if (failures === 0) {
+  notify(`${successes} items updated`, { type: "success" });
+} else if (successes > 0) {
+  notify(`${successes} succeeded, ${failures} failed`, { type: "warning" });
+} else {
+  notify("All updates failed", { type: "error" });
+}
+```
+
+**When to use:**
+- Bulk updates/deletes (notifications, contacts, opportunities)
+- Parallel fetches that don't depend on each other
+- Import operations with multiple records
+- Any operation where partial success is acceptable
+
+**Reference implementations:**
+- `src/atomic-crm/notifications/NotificationsList.tsx:214` - Bulk mark as read
+- `src/atomic-crm/contacts/useContactImport.tsx:160` - Parallel organization/tag fetch
+- `src/atomic-crm/contacts/useContactImport.tsx:372` - Bulk record creation
 
 ## Essential Commands
 
