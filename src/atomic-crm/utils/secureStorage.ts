@@ -1,0 +1,202 @@
+/**
+ * Secure storage utilities
+ * Prefers sessionStorage (cleared on tab close) over localStorage
+ *
+ * Phase 1 Security Remediation - HIGH Priority
+ *
+ * Security Rationale:
+ * - localStorage persists across browser sessions (privacy risk on shared devices)
+ * - sessionStorage is cleared when browser tab closes (more secure)
+ * - Filter preferences don't need to persist forever
+ * - Reduces attack surface for XSS (session-only exposure)
+ *
+ * @module secureStorage
+ */
+
+export type StorageType = 'session' | 'local';
+
+export interface StorageOptions {
+  /**
+   * Preferred storage type
+   * - 'session': Cleared when browser tab closes (more secure, recommended)
+   * - 'local': Persists across sessions (convenience over security)
+   */
+  type?: StorageType;
+
+  /**
+   * Encrypt data before storing (future enhancement)
+   * Currently not implemented, but structure supports it
+   */
+  encrypt?: boolean;
+}
+
+/**
+ * Get item from storage
+ * Tries sessionStorage first (more secure), falls back to localStorage for migration
+ *
+ * @param key - Storage key
+ * @param options - Storage options (defaults to sessionStorage)
+ * @returns Parsed value or null if not found
+ *
+ * @example
+ * const stages = getStorageItem<string[]>('filter.opportunity_stages');
+ * // Returns: ['new_lead', 'initial_outreach'] or null
+ */
+export function getStorageItem<T = any>(
+  key: string,
+  options: StorageOptions = {}
+): T | null {
+  const storageType = options.type || 'session';
+
+  try {
+    // Try preferred storage type first
+    const storage = storageType === 'session' ? sessionStorage : localStorage;
+    const item = storage.getItem(key);
+
+    if (item) {
+      return JSON.parse(item) as T;
+    }
+
+    // Fallback to alternate storage if not found (migration path)
+    const fallbackStorage = storageType === 'session' ? localStorage : sessionStorage;
+    const fallbackItem = fallbackStorage.getItem(key);
+
+    if (fallbackItem) {
+      // Migrate to preferred storage
+      const parsed = JSON.parse(fallbackItem) as T;
+      setStorageItem(key, parsed, options);
+
+      // Clean up old storage
+      fallbackStorage.removeItem(key);
+
+      return parsed;
+    }
+  } catch (e) {
+    console.error(`[Storage] Error reading key "${key}":`, e);
+  }
+
+  return null;
+}
+
+/**
+ * Set item in storage
+ *
+ * @param key - Storage key
+ * @param value - Value to store (will be JSON.stringify'd)
+ * @param options - Storage options (defaults to sessionStorage)
+ * @returns true if successful, false otherwise
+ *
+ * @example
+ * setStorageItem('filter.opportunity_stages', ['new_lead', 'initial_outreach']);
+ * // Stores in sessionStorage, cleared on tab close
+ */
+export function setStorageItem<T = any>(
+  key: string,
+  value: T,
+  options: StorageOptions = {}
+): boolean {
+  const storageType = options.type || 'session';
+
+  try {
+    const storage = storageType === 'session' ? sessionStorage : localStorage;
+    storage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (e) {
+    console.error(`[Storage] Error writing key "${key}":`, e);
+
+    // Try fallback storage if preferred fails (quota exceeded, etc.)
+    try {
+      const fallbackStorage = storageType === 'session' ? localStorage : sessionStorage;
+      fallbackStorage.setItem(key, JSON.stringify(value));
+      console.warn(`[Storage] Used fallback storage for key "${key}"`);
+      return true;
+    } catch (e2) {
+      console.error(`[Storage] Fallback storage also failed:`, e2);
+      return false;
+    }
+  }
+}
+
+/**
+ * Remove item from both storage types
+ * Ensures complete cleanup regardless of where data was stored
+ *
+ * @param key - Storage key to remove
+ *
+ * @example
+ * removeStorageItem('filter.opportunity_stages');
+ * // Removes from both sessionStorage and localStorage
+ */
+export function removeStorageItem(key: string): void {
+  try {
+    sessionStorage.removeItem(key);
+    localStorage.removeItem(key);
+  } catch (e) {
+    console.error(`[Storage] Error removing key "${key}":`, e);
+  }
+}
+
+/**
+ * Clear all items with a given prefix
+ * Useful for logging out or clearing feature-specific data
+ *
+ * @param prefix - Key prefix to match (e.g., 'filter.' clears all filter data)
+ *
+ * @example
+ * clearStorageByPrefix('filter.');
+ * // Clears: filter.opportunity_stages, filter.precedence, etc.
+ */
+export function clearStorageByPrefix(prefix: string): void {
+  const clearFromStorage = (storage: Storage) => {
+    const keysToRemove: string[] = [];
+
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i);
+      if (key && key.startsWith(prefix)) {
+        keysToRemove.push(key);
+      }
+    }
+
+    keysToRemove.forEach(key => storage.removeItem(key));
+  };
+
+  try {
+    clearFromStorage(sessionStorage);
+    clearFromStorage(localStorage);
+  } catch (e) {
+    console.error(`[Storage] Error clearing prefix "${prefix}":`, e);
+  }
+}
+
+/**
+ * Get all keys matching a prefix
+ * Useful for debugging or data export
+ *
+ * @param prefix - Key prefix to match
+ * @returns Array of matching keys from both storage types
+ *
+ * @example
+ * const filterKeys = getKeysByPrefix('filter.');
+ * // Returns: ['filter.opportunity_stages', 'filter.precedence']
+ */
+export function getKeysByPrefix(prefix: string): string[] {
+  const keys: Set<string> = new Set();
+
+  const collectKeys = (storage: Storage) => {
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i);
+      if (key && key.startsWith(prefix)) {
+        keys.add(key);
+      }
+    }
+  };
+
+  try {
+    collectKeys(sessionStorage);
+    collectKeys(localStorage);
+  } catch (e) {
+    console.error(`[Storage] Error getting keys for prefix "${prefix}":`, e);
+  }
+
+  return Array.from(keys);
+}

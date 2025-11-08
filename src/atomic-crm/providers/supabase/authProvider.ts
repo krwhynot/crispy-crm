@@ -31,22 +31,26 @@ export const authProvider: AuthProvider = {
     cachedSale = undefined;
     return result;
   },
+  /**
+   * Check authentication status
+   * Phase 1 Security Remediation:
+   * - SECURITY FIX: Always validate session first, don't trust URL-based checks
+   * - Previous vulnerability: Users could bypass auth by navigating to public URLs
+   * - Now: Session validation happens BEFORE checking if path is public
+   */
   checkAuth: async (params) => {
-    // Users are on the set-password page, nothing to do
-    if (
-      window.location.pathname === "/set-password" ||
-      window.location.hash.includes("#/set-password")
-    ) {
-      return;
+    // Always check session first - don't trust URL alone
+    const { data: { session }, error } = await supabase.auth.getSession();
+
+    // If no valid session, only allow public paths
+    if (!session || error) {
+      if (isPublicPath(window.location.pathname)) {
+        return; // Allow access to public pages without session
+      }
+      throw new Error('Not authenticated');
     }
-    // Users are on the forgot-password page, nothing to do
-    if (
-      window.location.pathname === "/forgot-password" ||
-      window.location.hash.includes("#/forgot-password")
-    ) {
-      return;
-    }
-    // Simply delegate to base auth provider
+
+    // Valid session exists, proceed with normal auth check
     return baseAuthProvider.checkAuth(params);
   },
   canAccess: async (params) => {
@@ -59,6 +63,22 @@ export const authProvider: AuthProvider = {
     return canAccess(role, params);
   },
 };
+
+/**
+ * Define public paths that don't require authentication
+ * SECURITY: Whitelist approach - only these paths are accessible without a session
+ * Phase 1 Security Remediation
+ */
+function isPublicPath(pathname: string): boolean {
+  const publicPaths = [
+    '/login',
+    '/forgot-password',
+    '/set-password',  // Only accessible via email recovery link
+    '/reset-password',
+  ];
+
+  return publicPaths.some(path => pathname.startsWith(path));
+}
 
 let cachedSale: any;
 const getSaleFromCache = async () => {
