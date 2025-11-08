@@ -25,10 +25,11 @@ To run this project locally, you will need the following tools installed on your
 
 - Node 22 LTS
 
-Fork the [`marmelab/atomic-crm`](https://github.com/marmelab/atomic-crm) repository to your user/organization, then clone it locally:
+Clone the repository to your local machine:
 
 ```sh
-git clone https://github.com/[username]/atomic-crm.git
+git clone https://github.com/[your-org]/crispy-crm.git
+cd crispy-crm
 ```
 
 Install dependencies:
