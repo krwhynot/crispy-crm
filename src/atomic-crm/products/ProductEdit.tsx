@@ -22,10 +22,8 @@ const ProductEdit = () => {
         },
       }}
     >
-      <div className="mt-2 flex lg:mr-72">
-        <div className="flex-1">
-          <ProductEditForm />
-        </div>
+      <div className="mt-2">
+        <ProductEditForm />
       </div>
     </EditBase>
   );
