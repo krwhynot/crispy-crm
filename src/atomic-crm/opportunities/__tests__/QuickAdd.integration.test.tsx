@@ -247,12 +247,16 @@ describe('QuickAdd Integration', () => {
     await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
     await user.type(screen.getByLabelText(/organization name/i), 'Tech Corp');
 
-    // City field uses Combobox component - interact with dropdown
-    const cityCombobox = screen.getByRole('combobox', { name: /city/i });
+    // City field uses Combobox component - wait for it to be ready, then interact
+    const cityCombobox = await screen.findByRole('combobox', { name: /city/i });
     await user.click(cityCombobox);
-    const searchInput = await screen.findByPlaceholderText('Select or type city...');
+
+    // Wait for the search input to appear before typing
+    const searchInput = await screen.findByPlaceholderText('Select or type city...', {}, { timeout: 3000 });
     await user.type(searchInput, 'Los Angeles');
-    const option = await screen.findByRole('option', { name: 'Los Angeles' });
+
+    // Wait for the option to appear after typing
+    const option = await screen.findByRole('option', { name: 'Los Angeles' }, { timeout: 3000 });
     await user.click(option);
 
     // State should auto-fill when city is selected
