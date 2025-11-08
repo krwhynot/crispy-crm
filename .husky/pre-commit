@@ -1,1 +1,35 @@
+#!/bin/bash
+# Pre-commit hook - Phase 1 Security Remediation
+# Checks for .env files and runs tests
+
+# ANSI color codes
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Check if any .env files are being committed
+env_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.env$|\.env\.')
+
+if [ -n "$env_files" ]; then
+  echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo -e "${RED}❌ COMMIT BLOCKED: .env file(s) detected${NC}"
+  echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo
+  echo -e "${YELLOW}The following .env files are staged for commit:${NC}"
+  echo "$env_files" | sed 's/^/  - /'
+  echo
+  echo -e "${YELLOW}🔐 Security Policy: Environment files must never be committed${NC}"
+  echo
+  echo "To fix this:"
+  echo "  1. Unstage the .env file(s):"
+  echo "     git reset HEAD $env_files"
+  echo
+  echo "  2. If secrets were already committed, follow key rotation:"
+  echo "     See /docs/SECURITY_KEY_ROTATION.md"
+  echo
+  echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  exit 1
+fi
+
+# Run tests
 npm test
