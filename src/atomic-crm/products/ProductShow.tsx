@@ -53,7 +53,7 @@ const ProductShowContent = () => {
   };
 
   return (
-    <div>
+    <div className="mt-2 mb-2">
       <div className="relative flex justify-between mb-8">
         <div className="flex flex-row gap-8 items-start flex-1">
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
@@ -95,8 +95,8 @@ const ProductShowContent = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+      <ResponsiveGrid variant="dashboard">
+        <main role="main" aria-label="Product details">
           <Tabs value={currentTab} onValueChange={handleTabChange}>
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -116,12 +116,12 @@ const ProductShowContent = () => {
               <ProductActivityTab />
             </TabsContent>
           </Tabs>
-        </div>
+        </main>
 
-        <div className="col-span-1">
+        <aside role="complementary" aria-label="Product information">
           <ProductAside />
-        </div>
-      </div>
+        </aside>
+      </ResponsiveGrid>
     </div>
   );
 };
