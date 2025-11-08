@@ -166,7 +166,7 @@ npm run migrate:csv           # Migrate opportunities from CSV
 
 ### Specialized Topics
 - **[Database Documentation](./docs/database/)** - Migration business rules
-- **[Security Hardening](./docs/security/)** - Pre-launch security checklist
+- **[Security](./docs/SECURITY_README.md)** - ✅ Phase 1 Complete (Nov 2025) - [Executive Summary](./SECURITY_PHASE1_COMPLETE.md)
 - **[Design System](./docs/design-system/)** - UI component guidelines
 
 ## Testing
