@@ -5,11 +5,16 @@
  * This module is the canonical implementation used by:
  * - Production code (ContactImportDialog.tsx, usePapaParse.tsx)
  * - Test code (all CSV import tests)
+ *
+ * Phase 1 Security Remediation:
+ * - Sanitizes all CSV values to prevent formula injection attacks
+ * - Removes control characters and potential HTML/script tags
  */
 
 import type { ContactImportSchema } from './useContactImport';
 import { mapHeadersToFields } from './columnAliases';
 import { FULL_NAME_SPLIT_MARKER } from './csvConstants';
+import { sanitizeCsvValue } from '../utils/csvUploadValidator';
 
 /**
  * Split a full name string into first and last name components
@@ -86,13 +91,16 @@ export function processCsvData(
 
     headers.forEach((originalHeader, index) => {
       const transformedHeader = transformedHeaders[index];
-      const value = row[index];
+      const rawValue = row[index];
+
+      // SECURITY: Sanitize all cell values (Phase 1 Security Remediation)
+      const value = sanitizeCsvValue(rawValue);
 
       // Handle full name splitting
       if (transformedHeader === FULL_NAME_SPLIT_MARKER) {
         const { first_name, last_name } = splitFullName(value || '');
-        contact.first_name = first_name;
-        contact.last_name = last_name;
+        contact.first_name = sanitizeCsvValue(first_name);
+        contact.last_name = sanitizeCsvValue(last_name);
       } else {
         contact[transformedHeader] = value;
       }
@@ -121,13 +129,16 @@ export function processCsvDataWithMappings(
 
     headers.forEach((originalHeader, index) => {
       const targetField = customMappings[originalHeader];
-      const value = row[index];
+      const rawValue = row[index];
+
+      // SECURITY: Sanitize all cell values (Phase 1 Security Remediation)
+      const value = sanitizeCsvValue(rawValue);
 
       // Handle full name splitting
       if (targetField === FULL_NAME_SPLIT_MARKER) {
         const { first_name, last_name } = splitFullName(value || '');
-        contact.first_name = first_name;
-        contact.last_name = last_name;
+        contact.first_name = sanitizeCsvValue(first_name);
+        contact.last_name = sanitizeCsvValue(last_name);
       } else if (targetField) {
         contact[targetField] = value;
       }

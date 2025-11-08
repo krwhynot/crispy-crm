@@ -315,9 +315,11 @@ export function ContactImportDialog({
   }, [processBatchHook, dataQualityDecisions]);
 
   // Use a single importer for the preview step only
+  // SECURITY: Apply secure Papa Parse configuration (Phase 1 Security Remediation)
   const { importer: previewImporter, parseCsv, reset: resetPreviewImporter } = usePapaParse<ContactImportSchema>({
     onPreview: onPreview,
     previewRowCount: 100,
+    papaConfig: getSecurePapaParseConfig(),
   });
 
   const [file, setFile] = useState<File | null>(null);
@@ -327,6 +329,19 @@ export function ContactImportDialog({
   // Handle preview confirmation and start the actual import
   // THIS IS THE FIX: Use reprocessedContacts (with user overrides) instead of re-parsing the file
   const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
+    // SECURITY: Check rate limit before starting import (Phase 1 Security Remediation)
+    if (!contactImportLimiter.canProceed()) {
+      const resetTime = contactImportLimiter.getResetTimeFormatted();
+      const remaining = contactImportLimiter.getRemaining();
+      alert(
+        `Import rate limit exceeded.\n\n` +
+        `You have ${remaining} imports remaining.\n` +
+        `Rate limit resets in ${resetTime}.\n\n` +
+        `This limit prevents accidental bulk data corruption and protects database performance.`
+      );
+      return;
+    }
+
     // Store data quality decisions for validation logic
     setDataQualityDecisions(decisions);
 
@@ -374,7 +389,30 @@ export function ContactImportDialog({
     refresh();
   }, [reprocessedContacts, processBatch, refresh]);
 
-  const handleFileChange = (file: File | null) => {
+  const handleFileChange = async (file: File | null) => {
+    // Clear previous validation errors
+    setValidationErrors([]);
+    setValidationWarnings([]);
+
+    if (!file) {
+      setFile(null);
+      return;
+    }
+
+    // SECURITY: Validate file before processing (Phase 1 Security Remediation)
+    const validation = await validateCsvFile(file);
+
+    if (!validation.valid && validation.errors) {
+      setValidationErrors(validation.errors);
+      setFile(null);
+      return;
+    }
+
+    // Show warnings if any (non-blocking)
+    if (validation.warnings && validation.warnings.length > 0) {
+      setValidationWarnings(validation.warnings);
+    }
+
     setFile(file);
   };
 
@@ -568,6 +606,34 @@ export function ContactImportDialog({
                   >
                     <FileField source="src" title="title" target="_blank" />
                   </FileInput>
+
+                  {/* SECURITY: Display validation errors (Phase 1 Security Remediation) */}
+                  {validationErrors.length > 0 && (
+                    <Alert variant="destructive">
+                      <AlertDescription>
+                        <div className="font-semibold mb-2">File validation failed:</div>
+                        <ul className="list-disc pl-5 space-y-1">
+                          {validationErrors.map((error, idx) => (
+                            <li key={idx}>{error.message}</li>
+                          ))}
+                        </ul>
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  {/* Display non-blocking warnings */}
+                  {validationWarnings.length > 0 && (
+                    <Alert>
+                      <AlertDescription>
+                        <div className="font-semibold mb-2">Warnings:</div>
+                        <ul className="list-disc pl-5 space-y-1">
+                          {validationWarnings.map((warning, idx) => (
+                            <li key={idx}>{warning}</li>
+                          ))}
+                        </ul>
+                      </AlertDescription>
+                    </Alert>
+                  )}
                 </>
               )}
             </div>
