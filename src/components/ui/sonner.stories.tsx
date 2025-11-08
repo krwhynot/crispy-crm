@@ -348,7 +348,7 @@ export const CustomStyling: Story = {
       <Button
         onClick={() =>
           toast.custom(() => (
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow-lg">
+            <div className="bg-gradient-to-r from-accent to-destructive text-primary-foreground p-4 rounded-lg shadow-lg">
               <p className="font-bold">Special Announcement</p>
               <p className="text-sm">This is a custom styled toast!</p>
             </div>
@@ -359,13 +359,11 @@ export const CustomStyling: Story = {
       </Button>
       <Button
         onClick={() =>
-          toast('Dark themed toast', {
-            style: {
-              background: '#1a1a1a',
-              color: '#ffffff',
-              border: '1px solid #333',
-            },
-          })
+          toast.custom(() => (
+            <div className="bg-card text-card-foreground border border-border p-4 rounded-lg shadow-lg">
+              Dark themed toast
+            </div>
+          ))
         }
       >
         Dark Toast
@@ -380,7 +378,7 @@ export const RichContent: Story = {
     <Button
       onClick={() =>
         toast.custom((t) => (
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg max-w-md">
+          <div className="bg-card text-card-foreground p-4 rounded-lg shadow-lg max-w-md">
             <div className="flex items-start gap-3">
               <img
                 src="https://via.placeholder.com/40"
@@ -389,7 +387,7 @@ export const RichContent: Story = {
               />
               <div className="flex-1">
                 <p className="font-semibold">New message from John</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   Hey! Are you available for a quick call?
                 </p>
                 <div className="flex gap-2 mt-2">
@@ -398,13 +396,13 @@ export const RichContent: Story = {
                       toast.dismiss(t);
                       toast.success('Replied!');
                     }}
-                    className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+                    className="px-3 py-1 bg-primary text-primary-foreground text-sm rounded hover:bg-primary/90"
                   >
                     Reply
                   </button>
                   <button
                     onClick={() => toast.dismiss(t)}
-                    className="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+                    className="px-3 py-1 bg-secondary text-secondary-foreground text-sm rounded hover:bg-secondary/80"
                   >
                     Dismiss
                   </button>
@@ -426,12 +424,12 @@ export const FormInToast: Story = {
     <Button
       onClick={() =>
         toast.custom((t) => (
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+          <div className="bg-card text-card-foreground p-4 rounded-lg shadow-lg">
             <p className="font-semibold mb-2">Quick Feedback</p>
             <input
               type="text"
               placeholder="Enter your feedback..."
-              className="w-full px-3 py-2 border rounded mb-2"
+              className="w-full px-3 py-2 border border-border rounded mb-2 bg-background text-foreground"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   toast.dismiss(t);
