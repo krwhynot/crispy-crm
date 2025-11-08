@@ -5,6 +5,7 @@ import { OrganizationInputs } from "./OrganizationInputs";
 import { PrincipalChangeWarning } from "./PrincipalChangeWarning";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { ResponsiveGrid } from "@/components/design-system";
 import { OrganizationAside } from "./OrganizationAside";
 import { FormToolbar } from "../layout/FormToolbar";
 import type { Organization } from "../types";
@@ -81,18 +82,22 @@ const OrganizationEditContent = ({
 
   return (
     <>
-      <div className="mt-2 flex gap-8">
-        <Form className="flex flex-1 flex-col gap-4 pb-2">
-          <Card>
-            <CardContent>
-              <OrganizationInputs />
-              <FormToolbar />
-            </CardContent>
-          </Card>
-        </Form>
+      <ResponsiveGrid variant="dashboard" className="mt-2">
+        <main role="main" aria-label="Edit organization">
+          <Form className="flex flex-col gap-4">
+            <Card>
+              <CardContent>
+                <OrganizationInputs />
+                <FormToolbar />
+              </CardContent>
+            </Card>
+          </Form>
+        </main>
 
-        <OrganizationAside link="show" />
-      </div>
+        <aside role="complementary" aria-label="Organization information">
+          <OrganizationAside link="show" />
+        </aside>
+      </ResponsiveGrid>
 
       <PrincipalChangeWarning
         open={showWarning}
