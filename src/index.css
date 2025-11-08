@@ -164,6 +164,7 @@
   --overlay: oklch(0 0 0 / 50%);                /* Black 50% opacity for modals */
   --overlay-light: oklch(0 0 0 / 30%);          /* Lighter overlay variant */
   --destructive: oklch(58% 0.180 27);           /* Slightly lighter terracotta for cream background */
+  --destructive-foreground: oklch(99% 0 0);     /* White text on destructive */
 
   /* Borders and focus */
   --border: var(--neutral-200);                 /* Borders */
