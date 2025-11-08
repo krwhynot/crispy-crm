@@ -2,6 +2,24 @@
 
 This document provides detailed guidance on applying Atomic Design methodology to the Atomic CRM design system.
 
+## Quick Reference: Component Classification
+
+**Spend < 5 minutes deciding. When in doubt, build it as an Organism and refactor later if a pattern emerges.**
+
+| If your component... | Level | Examples | Import Rules |
+|---------------------|-------|----------|--------------|
+| Is a token/constant | ⚛️ **Atom** | `TOUCH_TARGET_MIN`, `--primary`, `focusRing` | No RA/Supabase |
+| Solves generic UI problem | 🧬 **Molecule** | `useAriaAnnounce`, `useKeyboardShortcut` | No RA/Supabase |
+| Solves CRM business problem | 🦠 **Organism** | `ContactListOrganism`, `OpportunityPipeline` | Can use RA hooks |
+| Defines page structure | 📐 **Template** | `DashboardLayout`, `DetailPageLayout` | Full access |
+| Is rendered by router | 📄 **Page** | `/contacts` route component | Full access |
+
+**Key Decision Question:** *Does this solve a specific problem for Atomic CRM's domain?*
+- **Yes** → Organism (e.g., ContactCard, DealPipeline)
+- **No** → Molecule or Atom (e.g., Button, SearchBox, DatePicker)
+
+---
+
 ## Overview
 
 Atomic Design is a methodology for creating design systems by Brad Frost. It breaks UI components into a hierarchy inspired by chemistry:
@@ -337,12 +355,28 @@ This section bridges Atomic Design theory with our specific tech stack: React 19
 
 **Rationale:** Keeps Atoms and Molecules pure, presentational, and highly reusable.
 
+#### 📋 Data Fetching Decision Rule
+
+**Within admin routes (`/contacts`, `/organizations`, `/opportunities`, etc.):**
+- ✅ **Use React Admin's data provider/hooks exclusively**
+  - Examples: `useGetList`, `useGetOne`, `useUpdate`, `<List>`, `<Edit>`, `<Datagrid>`
+  - React Admin manages caching, optimistic updates, and error handling
+- ❌ **Do NOT use TanStack Query + direct Supabase client**
+  - Avoid: `useQuery({ queryFn: () => supabase.from(...) })`
+  - Reason: Creates duplicate cache layers and inconsistent state
+
+**Outside admin routes (marketing pages, public dashboards, custom features):**
+- ✅ **Use TanStack Query + Supabase client**
+  - When: Building features outside React Admin's routing structure
+- ❌ **Do NOT use React Admin hooks**
+  - Reason: React Admin hooks expect to be within `<Admin>` context
+
 ```typescript
-// ✅ Good: Organism handles data fetching
-export const ContactList = () => {
-  const { data: contacts, isLoading } = useQuery({
-    queryKey: ['contacts'],
-    queryFn: () => supabase.from('contacts_summary').select('*')
+// ✅ Good: Page uses React Admin for data fetching (admin route)
+export const ContactListPage = () => {
+  const { data: contacts, isLoading } = useGetList('contacts', {
+    pagination: { page: 1, perPage: 25 },
+    sort: { field: 'last_seen', order: 'DESC' }
   });
 
   if (isLoading) return <LoadingSpinner />;  // Atom
@@ -356,15 +390,24 @@ export const ContactList = () => {
   );
 };
 
-// ❌ Bad: Atom shouldn't know about Supabase
+// ✅ Good: Non-admin feature uses TanStack Query (outside admin routes)
+export const PublicContactDirectory = () => {
+  const { data } = useQuery({
+    queryKey: ['public-contacts'],
+    queryFn: () => supabase.from('contacts_public').select('*')
+  });
+  // For public-facing pages outside React Admin
+};
+
+// ❌ Bad: Atom shouldn't know about data fetching
 export const Button = () => {
-  const { data } = useQuery(/* ... */);  // Too much responsibility
+  const { data } = useGetList(/* ... */);  // Too much responsibility
   return <button>...</button>;
 };
 
 // ❌ Bad: Molecule shouldn't have domain-specific data fetching
 export const SearchBox = () => {
-  const { data: contacts } = useQuery(/* ... */);  // Should be in parent Organism
+  const { data: contacts } = useGetList(/* ... */);  // Should be in parent Organism
   return <input />;
 };
 ```
@@ -377,7 +420,7 @@ export const SearchBox = () => {
 
 ```typescript
 // ✅ Good: Page uses React Admin components as infrastructure
-export const ContactList = () => (
+export const ContactListPage = () => (
   <List>  // Template-level (React Admin provides routing + data)
     <Datagrid>
       <TextField source="first_name" />  // Atom
@@ -397,6 +440,40 @@ export const ContactFilters = () => (
 );
 ```
 
+#### Form Validation with Zod + React Admin
+
+**Per Engineering Constitution:** Validation happens at the API boundary using Zod schemas.
+
+```typescript
+// ✅ Good: Schema-driven form validation (single source of truth)
+import { zodResolver } from '@hookform/resolvers/zod';
+import { contactSchema } from '@/atomic-crm/validation/contact';
+import { Form, TextInput, SaveButton } from 'ra-ui-materialui';
+
+export const ContactEditPage = () => (
+  <Edit>
+    <Form resolver={zodResolver(contactSchema)}>
+      <TextInput source="first_name" />
+      <TextInput source="last_name" />
+      <TextInput source="email" />
+      <SaveButton />  // Validation happens automatically via Zod
+    </Form>
+  </Edit>
+);
+
+// Zod schema defines validation rules (src/atomic-crm/validation/contact.ts)
+export const contactSchema = z.object({
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email format"),
+});
+
+// ❌ Bad: Custom validation molecules (violates single source of truth)
+export const useFormValidation = () => {
+  // Don't create parallel validation systems
+};
+```
+
 ### Supabase Views & Database Logic
 
 **Guideline:** Organisms that display data should use Supabase views when available.
@@ -408,18 +485,34 @@ export const PrincipalDashboardTable = () => {
   // ...
 };
 
-// ✅ Good: Organism handles RLS errors gracefully
+// ✅ Good: Fail fast on permission errors (per Engineering Constitution)
 export const RecentActivityFeed = () => {
   const { data, error } = useGetList('activities');
 
   if (error) {
+    // Fail fast: RLS permission errors indicate configuration problems
     if (error.message.includes('permission denied')) {
-      return <EmptyState message="No recent activity" />;  // Fail fast but gracefully
+      throw new Error(`RLS permission denied for activities: ${error.message}`);
     }
-    throw error;  // Unexpected errors still throw
+    // All unexpected errors also throw
+    throw error;
+  }
+
+  // Only use EmptyState for truly empty datasets
+  if (!data || data.length === 0) {
+    return <EmptyState message="No recent activity" />;
   }
 
   return <ActivityList activities={data} />;
+};
+
+// ❌ Bad: Swallowing permission errors (violates fail-fast)
+export const BrokenFeed = () => {
+  const { data, error } = useGetList('activities');
+  if (error?.message.includes('permission denied')) {
+    return <EmptyState />;  // ❌ Hides security/config issues
+  }
+  // ...
 };
 ```
 
@@ -526,6 +619,47 @@ cat docs/design-system/README.md
 - **Fail Fast**: Validate inputs, throw errors in development
 - **Single Source of Truth**: One place to change, everywhere updates
 - **Fix at Source**: Don't wrap broken components, fix them
+
+#### Layer Dependency Rules (Prevent Layer Bleed)
+
+**Strict import restrictions to maintain clean architecture:**
+
+**⚛️ Atoms & 🧬 Molecules:**
+- ✅ **Can import:** CSS variables, utility functions, other atoms/molecules
+- ❌ **Cannot import:** React Admin (`ra-core`, `ra-ui-*`), Supabase client (`@supabase/supabase-js`), React Router
+- **Why:** Must remain pure, reusable, and application-agnostic
+
+**🦠 Organisms:**
+- ✅ **Can import:** React Admin hooks (`useGetList`, `useRecordContext`), atoms, molecules
+- ⚠️ **Use sparingly:** Direct Supabase client (prefer React Admin data provider in admin routes)
+- ❌ **Cannot import:** React Router directly (use React Admin's routing)
+- **Why:** Domain-specific but should rely on data providers, not raw database clients
+
+**📐 Templates & 📄 Pages:**
+- ✅ **Can import:** React Router, React Admin components, organisms, molecules, atoms, data fetching
+- ✅ **Full access** to all layers and infrastructure
+- **Why:** Orchestration layer that ties everything together
+
+```typescript
+// ✅ Good: Molecule doesn't know about React Admin
+export const SearchBox = ({ value, onChange }) => (
+  <input value={value} onChange={onChange} />  // Pure, reusable
+);
+
+// ❌ Bad: Molecule importing React Admin
+import { useListContext } from 'ra-core';
+export const SearchBox = () => {
+  const { filterValues } = useListContext();  // ❌ Breaks reusability
+  // ...
+};
+
+// ✅ Good: Organism uses React Admin hooks
+import { useGetList } from 'ra-core';
+export const ContactListOrganism = () => {
+  const { data } = useGetList('contacts');  // ✅ Appropriate level
+  return <div>{/* ... */}</div>;
+};
+```
 
 ### 4. Document and Test
 
