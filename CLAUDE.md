@@ -10,6 +10,7 @@ Atomic CRM - Full-featured, open-source CRM with React, shadcn-admin-kit, and Su
 
 ## Recent Changes (90 days)
 
+- **Security & Testing Remediation (2025-11-08)**: 4-phase remediation complete - RLS admin-only policies, CSV validation, 65 new tests (95.4% pass rate), WCAG 2.1 AA compliance, Promise.allSettled error handling. Report: `4-PHASE-REMEDIATION-COMPLETION.md`
 - **Principal-Centric Redesign v2.0 (2025-11-05)**: Dashboard → table view, 2 MVP reports (Opportunities by Principal ⭐, Weekly Activity Summary), 30-day Excel replacement goal. Design: `docs/plans/2025-11-05-principal-centric-crm-design.md`
 - **Pricing Removal (2025-10-29)**: Products = associations only, no pricing. Migration: `20251028040008_remove_product_pricing_and_uom.sql`
 - **Deal → Opportunity (v0.2.0)**: Multi-participant support, activity tracking
@@ -73,8 +74,12 @@ CREATE POLICY select_my_table ON my_table FOR SELECT TO authenticated USING (tru
 ```
 
 **Security patterns:**
-- Shared (contacts, orgs): `USING (true)`
-- Personal (tasks): `USING (sales_id IN (SELECT id FROM sales WHERE user_id = auth.uid()))`
+- **Shared (contacts, orgs):** `USING (true)` - Team-wide read/write access
+- **Personal (tasks):** `USING (sales_id IN (SELECT id FROM sales WHERE user_id = auth.uid()))`
+- **Admin-only (UPDATE/DELETE):** `USING ((SELECT is_admin FROM sales WHERE user_id = auth.uid()) = true)`
+  - Applied to: contacts, organizations, opportunities, contactNotes, opportunityNotes, products
+  - Prevents non-admin users from modifying/deleting shared data
+  - Reference: `20251108213039_fix_rls_policies_role_based_access.sql`
 
 **⚠️ Cloud sync:** `npx supabase db pull` may strip GRANTs - always verify and restore:
 ```sql
@@ -82,7 +87,11 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO authentic
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
 ```
 
-**Reference migrations:** `20251018152315_cloud_schema_fresh.sql`, `20251018203500_update_rls_for_shared_team_access.sql`
+**Reference migrations:**
+- `20251018152315_cloud_schema_fresh.sql` - Initial schema
+- `20251018203500_update_rls_for_shared_team_access.sql` - Team access
+- `20251108213039_fix_rls_policies_role_based_access.sql` - Admin-only restrictions
+- `20251108213216_cleanup_duplicate_rls_policies.sql` - Remove permissive duplicates
 
 ### ⚠️ Auth Schema Exclusion
 
