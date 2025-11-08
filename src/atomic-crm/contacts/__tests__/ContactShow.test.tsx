@@ -10,6 +10,7 @@
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import { Routes, Route } from "react-router-dom";
 import type * as RaCore from "ra-core";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockContact } from "@/tests/utils/mock-providers";
@@ -21,6 +22,13 @@ vi.mock("ra-core", async () => {
   return {
     ...actual,
     useShowContext: vi.fn(),
+    useListContext: vi.fn(() => ({
+      data: [],
+      total: 0,
+      isPending: false,
+      isLoading: false,
+      error: null,
+    })),
     useGetList: vi.fn(() => ({
       data: [],
       total: 0,
@@ -50,7 +58,7 @@ vi.mock("../Avatar", () => ({
   Avatar: () => <div data-testid="contact-avatar">Avatar</div>,
 }));
 
-vi.mock("../organizations/OrganizationAvatar", () => ({
+vi.mock("../../organizations/OrganizationAvatar", () => ({
   OrganizationAvatar: () => <div data-testid="org-avatar">OrgAvatar</div>,
 }));
 
@@ -80,9 +88,15 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     // When isPending is true, the component returns null
     expect(screen.queryByRole("main")).not.toBeInTheDocument();
@@ -112,10 +126,16 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-      record: mockContact,
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        record: mockContact,
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Check main content area
@@ -157,10 +177,16 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-      record: mockContact,
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        record: mockContact,
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Should show associated organizations section
@@ -205,10 +231,16 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-      record: mockContact,
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        record: mockContact,
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     await waitFor(() => {
       expect(screen.getByText("Associated Organizations")).toBeInTheDocument();
@@ -234,10 +266,16 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-      record: mockContact,
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        record: mockContact,
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Should render name and title
@@ -262,10 +300,16 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-      record: mockContact,
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        record: mockContact,
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Should render ReferenceManyField for notes
@@ -280,9 +324,15 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     // When record is null, component returns null
     expect(screen.queryByRole("main")).not.toBeInTheDocument();
@@ -301,10 +351,16 @@ describe("ContactShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ContactShow />, {
-      resource: "contacts",
-      record: mockContact,
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        record: mockContact,
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Check aside section
