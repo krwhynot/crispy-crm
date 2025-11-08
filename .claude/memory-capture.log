@@ -1875,3 +1875,4 @@
 [2025-11-08 14:46:53] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx
 [2025-11-08 14:48:13] [configuration] Write: /home/krwhynot/projects/crispy-crm/.github/workflows/ci.yml
 [2025-11-08 15:13:59] [documentation] Write: /home/krwhynot/projects/crispy-crm/4-PHASE-REMEDIATION-PLAN.md
+[2025-11-08 15:31:02] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108213039_fix_rls_policies_role_based_access.sql
