@@ -68,6 +68,32 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ========================================
+     SPACING TOKENS
+     ======================================== */
+
+  /* Grid System */
+  --spacing-grid-columns-desktop: 12;
+  --spacing-grid-columns-ipad: 8;
+  --spacing-gutter-desktop: 24px;
+  --spacing-gutter-ipad: 20px;
+
+  /* Edge Padding (Screen Borders) */
+  --spacing-edge-desktop: 120px;
+  --spacing-edge-ipad: 60px;
+  --spacing-edge-mobile: 16px;
+
+  /* Vertical Rhythm */
+  --spacing-section: 32px;        /* Between major sections */
+  --spacing-widget: 24px;         /* Card-to-card, row-to-row spacing */
+  --spacing-content: 16px;        /* Within cards, between elements */
+  --spacing-compact: 12px;        /* Tight groupings */
+
+  /* Widget/Card Internals */
+  --spacing-widget-padding: 20px;
+  --spacing-widget-min-height: 280px;
+  --spacing-top-offset: 80px;     /* Space below navbar */
 }
 
 /*
