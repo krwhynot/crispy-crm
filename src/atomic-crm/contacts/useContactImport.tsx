@@ -156,7 +156,8 @@ export function useContactImport() {
       }
 
       // 3. Fetch related records (organizations, tags) for valid contacts only
-      const [organizations, tags] = await Promise.all([
+      // Phase 3: Use Promise.allSettled() to handle partial failures gracefully
+      const fetchResults = await Promise.allSettled([
         getOrganizations(
           contactsToProcess
             .map((contact) => contact.organization_name?.trim())
@@ -165,6 +166,18 @@ export function useContactImport() {
         ),
         getTags(contactsToProcess.flatMap((contact) => parseTags(contact.tags)), preview),
       ]);
+
+      // Handle partial failures - use empty map if fetch failed
+      const organizations = fetchResults[0].status === "fulfilled" ? fetchResults[0].value : new Map();
+      const tags = fetchResults[1].status === "fulfilled" ? fetchResults[1].value : new Map();
+
+      // Log warnings if fetches failed (non-critical for import process)
+      if (fetchResults[0].status === "rejected") {
+        console.warn("Failed to fetch organizations:", fetchResults[0].reason);
+      }
+      if (fetchResults[1].status === "rejected") {
+        console.warn("Failed to fetch tags:", fetchResults[1].reason);
+      }
 
       // 4. Process all valid contacts with Promise.allSettled
       const results = await Promise.allSettled(
@@ -355,16 +368,24 @@ const fetchRecordsWithCache = async function <T>(
     }
   }
 
-  // create missing records in parallel
-  await Promise.all(
+  // Phase 3: Use Promise.allSettled() to create missing records with partial failure handling
+  const createResults = await Promise.allSettled(
     uncachedRecordNames.map(async (name) => {
-      if (cache.has(name)) return;
+      if (cache.has(name)) return { name, success: true, cached: true };
       const response = await dataProvider.create(resource, {
         data: getCreateData(name),
       });
       cache.set(name, response.data);
+      return { name, success: true, data: response.data };
     }),
   );
+
+  // Log any failures (non-blocking - contacts can still be created without these records)
+  const failures = createResults.filter(r => r.status === "rejected");
+  if (failures.length > 0) {
+    console.warn(`Failed to create ${failures.length} ${resource} records:`,
+      failures.map((f: any) => f.reason?.message || f.reason));
+  }
 
   // now all records are in cache, return a map of all records
   return trimmedNames.reduce((acc, name) => {

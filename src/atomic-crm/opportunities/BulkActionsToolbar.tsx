@@ -224,9 +224,9 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
             {/* Stage selector */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">New Stage</label>
+              <label htmlFor="bulk-stage-select" className="text-sm font-medium">New Stage</label>
               <Select value={selectedStage} onValueChange={setSelectedStage}>
-                <SelectTrigger>
+                <SelectTrigger id="bulk-stage-select">
                   <SelectValue placeholder="Select a stage" />
                 </SelectTrigger>
                 <SelectContent>
@@ -279,9 +279,9 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
             {/* Status selector */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">New Status</label>
+              <label htmlFor="bulk-status-select" className="text-sm font-medium">New Status</label>
               <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                <SelectTrigger>
+                <SelectTrigger id="bulk-status-select">
                   <SelectValue placeholder="Select a status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -331,9 +331,9 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
             {/* Owner selector */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">New Owner</label>
+              <label htmlFor="bulk-owner-select" className="text-sm font-medium">New Owner</label>
               <Select value={selectedOwner} onValueChange={setSelectedOwner}>
-                <SelectTrigger>
+                <SelectTrigger id="bulk-owner-select">
                   <SelectValue placeholder="Select an owner" />
                 </SelectTrigger>
                 <SelectContent>
