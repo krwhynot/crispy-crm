@@ -627,6 +627,18 @@ export const unifiedDataProvider: DataProvider = {
   ): Promise<any> {
     return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
+
+      // Constitution: soft-deletes rule - check if resource supports soft delete
+      if (supportsSoftDelete(dbResource)) {
+        // Soft delete: set deleted_at timestamp
+        return baseDataProvider.update(dbResource, {
+          id: params.id,
+          data: { deleted_at: new Date().toISOString() },
+          previousData: params.previousData,
+        });
+      }
+
+      // Hard delete (only for resources without soft-delete support)
       return baseDataProvider.delete(dbResource, params);
     });
   },
@@ -634,6 +646,21 @@ export const unifiedDataProvider: DataProvider = {
   async deleteMany(resource: string, params: DeleteManyParams): Promise<any> {
     return wrapMethod("deleteMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
+
+      // Constitution: soft-deletes rule - check if resource supports soft delete
+      if (supportsSoftDelete(dbResource)) {
+        // Soft delete many: set deleted_at timestamp for each
+        return Promise.all(
+          params.ids.map(id =>
+            baseDataProvider.update(dbResource, {
+              id,
+              data: { deleted_at: new Date().toISOString() },
+            })
+          )
+        ).then(() => ({ data: params.ids }));
+      }
+
+      // Hard delete (only for resources without soft-delete support)
       return baseDataProvider.deleteMany(dbResource, params);
     });
   },

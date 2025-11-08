@@ -75,6 +75,7 @@ export const SEARCHABLE_RESOURCES = {
 
 /**
  * Resources that have soft delete support
+ * Updated per Constitution audit 2025-11-08
  */
 export const SOFT_DELETE_RESOURCES = [
   "organizations",
@@ -83,6 +84,16 @@ export const SOFT_DELETE_RESOURCES = [
   "contact_organizations",
   "opportunity_participants",
   "activities",
+  "products",
+  "sales",
+  "contact_preferred_principals",
+  // Added per Constitution audit - now have deleted_at columns:
+  "segments",
+  "contactNotes",
+  "interaction_participants",
+  "tags",
+  "opportunity_products",
+  "notifications",
 ] as const;
 
 /**

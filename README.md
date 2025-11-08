@@ -68,24 +68,19 @@ This will:
 
 ## User Documentation
 
-1. [User Management](./doc/user/user-management.md)
-2. [Importing And Exporting Data](./doc/user/import-contacts.md)
-3. [Inbound Email](./doc/user/inbound-email.md)
+See [User Guides](./docs/guides/) for complete documentation.
 
 ## Deploying to Production
 
-1. [Configuring Supabase](./doc/developer/supabase-configuration.md)
-2. [Configuring Inbound Email](./doc/developer/inbound-email-configuration.md) *(optional)*
-3. [Deployment](./doc/developer/deploy.md)
+See [Supabase Workflow Guide](./docs/supabase/WORKFLOW.md) for production deployment instructions.
 
 ## Customizing Atomic CRM
 
-To customize Atomic CRM, you will need TypeScript and React programming skills as there is no graphical user interface for customization. Here are some resources to assist you in getting started.
+To customize Atomic CRM, you will need TypeScript and React programming skills as there is no graphical user interface for customization. Here are some resources to assist you in getting started:
 
-1. [Customizing the CRM](./doc/developer/customizing.md)
-2. [Creating Migrations](./doc/developer/migrations.md) *(optional)*
-3. [Using Fake Rest Data Provider for Development](./doc/developer/data-providers.md) *(optional)*
-4. [Architecture Decisions](./doc/developer/architecture-choices.md) *(optional)*
+- [Common Tasks](./docs/claude/common-tasks.md) - Step-by-step customization guides
+- [Architecture Essentials](./docs/claude/architecture-essentials.md) - Core patterns and design
+- [Engineering Constitution](./docs/claude/engineering-constitution.md) - Development principles
 
 ## Migration Notes (v0.2.0)
 
@@ -103,18 +98,14 @@ New development scripts for working with the enhanced schema:
 
 ```sh
 # Database operations
+npm run db:local:start           # Start local Supabase (Docker)
 npm run db:local:reset           # Reset local DB and seed test data
-
-# Database migration tools
-npm run migrate:production        # Execute production migration
-npm run migrate:dry-run          # Preview migration changes
-npm run migrate:backup           # Backup before migration
-npm run migrate:rollback         # Rollback if needed
-npm run migrate:validate         # Validate migration success
+npm run db:cloud:push            # Deploy migrations to production
 
 # Cache and search management
 npm run cache:clear              # Clear application caches
 npm run search:reindex           # Reindex search data
+npm run migrate:csv              # Migrate opportunities from CSV
 ```
 
 Test fixtures have been updated to use the new opportunity schema structure. See `/tests/fixtures/` for examples.
@@ -132,8 +123,8 @@ npm run preview          # Preview production build locally
 ```sh
 npm test                 # Run tests in watch mode
 npm run test:ci          # Run tests once (for CI)
-npm run test:performance # Run performance benchmarks
-npm run test:load        # Run load tests
+npm run test:coverage    # Generate coverage report (70% minimum)
+npm run test:e2e         # Run Playwright end-to-end tests
 ```
 
 ### Code Quality
@@ -148,18 +139,16 @@ npm run validate:colors  # Validate semantic color usage
 
 ### Database & Deployment
 ```sh
-npm run supabase:deploy  # Deploy database migrations and functions
-npm run prod:start       # Build and start production server locally
-npm run prod:deploy      # Deploy to production (GitHub Pages)
+npm run db:local:start        # Start local Supabase (Docker)
+npm run db:local:reset        # Reset local DB and seed test data
+npm run db:cloud:push         # Deploy migrations to production
 ```
 
 ### Development Utilities
 ```sh
-npm run db:local:reset        # Reset local DB and seed test data
 npm run cache:clear           # Clear application caches
 npm run search:reindex        # Reindex search data
-npm run migrate:production    # Execute production migration
-npm run migrate:dry-run       # Preview migration changes
+npm run migrate:csv           # Migrate opportunities from CSV
 ```
 
 ## Documentation
