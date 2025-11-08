@@ -1878,3 +1878,15 @@
 [2025-11-08 15:31:02] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108213039_fix_rls_policies_role_based_access.sql
 [2025-11-08 15:32:44] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108213216_cleanup_duplicate_rls_policies.sql
 [2025-11-08 15:36:03] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts
+[2025-11-08 15:36:23] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts
+[2025-11-08 15:38:13] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts
+[2025-11-08 15:38:33] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts
+[2025-11-08 15:38:48] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts
+[2025-11-08 15:38:48] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts
+[2025-11-08 15:39:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-11-08 15:39:28] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-11-08 15:39:29] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-11-08 15:39:31] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-11-08 15:39:53] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-11-08 15:40:17] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationImportDialog.tsx
+[2025-11-08 15:44:33] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/__tests__/authProvider.test.ts
