@@ -6,7 +6,7 @@
  */
 
 import { describe, test, expect, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FloatingCreateButton } from "../FloatingCreateButton";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
