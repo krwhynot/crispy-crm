@@ -22,6 +22,9 @@ See [Engineering Constitution](docs/claude/engineering-constitution.md) for comp
 1. **NO OVER-ENGINEERING**: Fail fast, no circuit breakers
 2. **SINGLE SOURCE OF TRUTH**: Supabase + Zod at API boundary
 3. **BOY SCOUT RULE**: Fix inconsistencies when editing files
+   - **TypeScript**: Convert `type Foo = {...}` to `interface Foo {...}` when touching files
+   - **ESLint enforces**: `@typescript-eslint/consistent-type-definitions` rule
+   - **22 files pending**: Incremental cleanup via Boy Scout Rule (see eslint.config.js)
 4. **FORM STATE FROM SCHEMA**: `zodSchema.partial().parse({})` for defaults
 5. **SEMANTIC COLORS ONLY**: CSS vars (--primary, --brand-700), never hex
 6. **MIGRATIONS**: Use `npx supabase migration new <name>`

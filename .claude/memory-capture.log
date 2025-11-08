@@ -1735,3 +1735,14 @@
 [2025-11-07 22:18:58] [configuration] Edit: /home/krwhynot/projects/crispy-crm/vite.config.ts
 [2025-11-07 22:37:45] [documentation] Write: /home/krwhynot/projects/crispy-crm/codebase_analysis_verification.md
 [2025-11-07 23:10:11] [documentation] Edit: /home/krwhynot/projects/crispy-crm/README.md
+[2025-11-07 23:10:28] [documentation] Edit: /home/krwhynot/projects/crispy-crm/README.md
+[2025-11-07 23:10:47] [documentation] Edit: /home/krwhynot/projects/crispy-crm/README.md
+[2025-11-07 23:10:54] [documentation] Edit: /home/krwhynot/projects/crispy-crm/README.md
+[2025-11-07 23:11:01] [documentation] Edit: /home/krwhynot/projects/crispy-crm/README.md
+[2025-11-07 23:11:41] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108051117_add_soft_delete_columns.sql
+[2025-11-07 23:12:48] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108051154_fix_opportunity_products_soft_delete.sql
+[2025-11-07 23:13:19] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251108051302_fix_notifications_soft_delete.sql
+[2025-11-07 23:14:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/resources.ts
+[2025-11-07 23:14:47] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
+[2025-11-07 23:15:11] [configuration] Edit: /home/krwhynot/projects/crispy-crm/eslint.config.js
+[2025-11-07 23:15:32] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md

@@ -105,6 +105,8 @@ export default tseslint.config(
       ],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/consistent-type-imports": "warn",
+      // Constitution: TypeScript conventions - interface for objects, type for unions
+      "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
 
       // Tailwind CSS rules for color system enforcement
       // NOTE: eslint-plugin-tailwindcss does not support Tailwind v4 yet
