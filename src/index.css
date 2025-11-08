@@ -27,6 +27,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-overlay: var(--overlay);
   --color-overlay-light: var(--overlay-light);
   --color-border: var(--border);
@@ -443,6 +444,7 @@
   --accent: var(--accent-clay-600-dark);    /* Clay accent for brand consistency */
   --accent-foreground: oklch(12% 0.02 72);  /* Very dark text for accessibility */
   --destructive: var(--destructive-dark);
+  --destructive-foreground: oklch(12% 0.02 25);  /* Very dark text on destructive for accessibility */
 
   /* Overlay/backdrop colors - dark mode */
   --overlay: oklch(0 0 0 / 70%);              /* Higher opacity in dark mode */

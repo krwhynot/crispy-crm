@@ -353,8 +353,8 @@ export const CustomStyled: Story = {
           Get 20% off your first purchase with code WELCOME20
         </AlertDescription>
       </Alert>
-      <Alert className="bg-slate-900 text-white border-slate-700">
-        <Terminal className="text-green-400" />
+      <Alert className="bg-primary text-primary-foreground border-primary">
+        <Terminal className="text-success" />
         <AlertTitle>Terminal Output</AlertTitle>
         <AlertDescription className="font-mono text-sm">
           Process completed with exit code 0

@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-11-08T23:00:09.227Z",
+  "timestamp": "2025-11-08T23:11:39.050Z",
   "summary": {
-    "totalTests": 18,
-    "passed": 18,
+    "totalTests": 20,
+    "passed": 20,
     "failed": 0,
     "warnings": 0
   },
@@ -70,6 +70,14 @@
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
+    },
+    {
+      "mode": "light",
+      "test": "Destructive button",
+      "ratio": "4.58",
+      "minRatio": 4.5,
+      "bg": "destructive",
+      "fg": "destructive-foreground"
     },
     {
       "mode": "light",
@@ -150,6 +158,14 @@
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
+    },
+    {
+      "mode": "dark",
+      "test": "Destructive button",
+      "ratio": "7.03",
+      "minRatio": 4.5,
+      "bg": "destructive",
+      "fg": "destructive-foreground"
     }
   ],
   "failed": [],
