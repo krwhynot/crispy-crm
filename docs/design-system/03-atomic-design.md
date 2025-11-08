@@ -73,7 +73,13 @@ const headerHeight = 64; // Just use h-16 in Tailwind
 
 ## 🧬 Molecules
 
-**Definition:** Simple UI patterns that combine atoms into reusable groups.
+**Definition:** The smallest reusable, functional units that do one thing well.
+
+**Key Characteristics:**
+- Application-agnostic (no business logic specific to CRM)
+- Reusable across different contexts
+- Combine atoms and/or other molecules
+- Encapsulate simple, focused behavior
 
 ### Current Molecules
 
@@ -131,7 +137,14 @@ const FormLabel = ({ children }) => (
 
 ## 🦠 Organisms
 
-**Definition:** Complex, standalone UI components with specific purposes.
+**Definition:** Feature-level components that solve specific business problems for Atomic CRM.
+
+**Key Characteristics:**
+- Domain-specific (e.g., ContactList, DealPipelineView, PrincipalDashboardTable)
+- This is where your CRM's identity begins to show
+- Often contain data-fetching logic (Supabase queries)
+- Combine molecules, atoms, and can include other organisms when it makes sense
+- Reusable across multiple pages within the same feature domain
 
 ### Current Organisms
 
@@ -183,9 +196,18 @@ const DashboardHeader = () => (
 
 ---
 
-## 📐 Templates
+## 📐 Templates (Layout Components)
 
-**Definition:** Page-level layouts showing content structure without real data.
+**Definition:** Reusable page layouts that define structure without content.
+
+**In React Terms:** These are **Layout Components** - they manage the overall chrome and structure of pages.
+
+**Key Characteristics:**
+- Define header, sidebar, main content areas
+- Accept `children` props for content slots
+- No data fetching or business logic
+- Reusable across multiple pages
+- Examples: `DashboardLayout.tsx`, `DetailPageLayout.tsx`
 
 ### Current Templates
 
@@ -236,9 +258,20 @@ export const DetailPageTemplate = ({ main, sidebar }) => (
 
 ---
 
-## 📄 Pages
+## 📄 Pages (Routed Components)
 
-**Definition:** Specific instances of templates with real content and data.
+**Definition:** Components rendered by your router that combine templates, organisms, and data.
+
+**In React Terms:** These are **Routed Components** - the components your React Router actually renders.
+
+**Key Responsibilities:**
+1. Select a Template (Layout Component)
+2. Fetch data needed for the page (via Supabase/React Admin)
+3. Assemble Organisms to build the feature
+4. Connect Organisms (state from one organism affects another)
+5. Handle page-level routing and navigation
+
+**Examples:** `/dashboard`, `/contacts/123`, `/contacts/123/edit`
 
 ### Current Pages
 
@@ -285,16 +318,185 @@ export const OrganizationShow = () => (
 
 ---
 
+## Implementation in Atomic CRM
+
+This section bridges Atomic Design theory with our specific tech stack: React 19, TypeScript, Supabase, React Admin, Tailwind CSS 4.
+
+### Data Fetching & State Management
+
+**Guideline:** Data fetching (Supabase queries) and complex business logic should primarily reside in **Organisms** and **Pages**.
+
+**Rationale:** Keeps Atoms and Molecules pure, presentational, and highly reusable.
+
+```typescript
+// ✅ Good: Organism handles data fetching
+export const ContactList = () => {
+  const { data: contacts, isLoading } = useQuery({
+    queryKey: ['contacts'],
+    queryFn: () => supabase.from('contacts_summary').select('*')
+  });
+
+  if (isLoading) return <LoadingSpinner />;  // Atom
+
+  return (
+    <div>
+      {contacts.map(contact => (
+        <ContactListItem key={contact.id} contact={contact} />  // Molecule
+      ))}
+    </div>
+  );
+};
+
+// ❌ Bad: Atom shouldn't know about Supabase
+export const Button = () => {
+  const { data } = useQuery(/* ... */);  // Too much responsibility
+  return <button>...</button>;
+};
+
+// ❌ Bad: Molecule shouldn't have domain-specific data fetching
+export const SearchBox = () => {
+  const { data: contacts } = useQuery(/* ... */);  // Should be in parent Organism
+  return <input />;
+};
+```
+
+### React Admin Integration
+
+**Guideline:** Treat React Admin's core components (`<List>`, `<Edit>`, `<Datagrid>`) as part of the **Template** or **Page** layer.
+
+**Rationale:** They handle routing, data fetching, and provide structure - that's template/page territory.
+
+```typescript
+// ✅ Good: Page uses React Admin components as infrastructure
+export const ContactList = () => (
+  <List>  // Template-level (React Admin provides routing + data)
+    <Datagrid>
+      <TextField source="first_name" />  // Atom
+      <TextField source="last_name" />   // Atom
+      <ContactStatusBadge />  // Molecule (combines atom + logic)
+    </Datagrid>
+  </List>
+);
+
+// ✅ Good: Custom Filter is an Organism
+export const ContactFilters = () => (
+  <Filter>  // Template-level
+    <TextInput source="q" label="Search" />  // Atom
+    <DateRangePicker source="created_at" />  // Molecule
+    <OrganizationSelect source="organization_id" />  // Molecule
+  </Filter>
+);
+```
+
+### Supabase Views & Database Logic
+
+**Guideline:** Organisms that display data should use Supabase views when available.
+
+```typescript
+// ✅ Good: Organism uses view designed for its purpose
+export const PrincipalDashboardTable = () => {
+  const { data } = useGetList('principals_summary');  // View with computed fields
+  // ...
+};
+
+// ✅ Good: Organism handles RLS errors gracefully
+export const RecentActivityFeed = () => {
+  const { data, error } = useGetList('activities');
+
+  if (error) {
+    if (error.message.includes('permission denied')) {
+      return <EmptyState message="No recent activity" />;  // Fail fast but gracefully
+    }
+    throw error;  // Unexpected errors still throw
+  }
+
+  return <ActivityList activities={data} />;
+};
+```
+
+### Tailwind CSS 4 & Styling
+
+**Guideline:** Use Tailwind classes directly in components at all levels. Don't create wrapper components just for styling.
+
+```typescript
+// ✅ Good: Molecule uses Tailwind directly
+export const ContactCard = ({ contact }) => (
+  <div className="rounded-lg border border-border bg-card p-4">
+    <h3 className="text-lg font-semibold">{contact.name}</h3>
+    <p className="text-sm text-muted-foreground">{contact.email}</p>
+  </div>
+);
+
+// ❌ Bad: Unnecessary wrapper just for styling
+export const CardWrapper = ({ children }) => (
+  <div className="rounded-lg border border-border bg-card p-4">
+    {children}
+  </div>
+);
+```
+
+### When to Create vs. Use Inline
+
+**Atoms:** Create constants for repeated values
+```typescript
+// ✅ Create: Used everywhere
+export const TOUCH_TARGET_MIN = 44;
+
+// ❌ Don't create: One-off value
+const modalPadding = 16;  // Just use p-4 in Tailwind
+```
+
+**Molecules:** Create when pattern appears 3+ times
+```typescript
+// ✅ Create: Used in 5+ forms
+export const FormField = ({ label, error, children }) => (
+  <div className="space-y-2">
+    <label>{label}</label>
+    {children}
+    {error && <span className="text-destructive">{error}</span>}
+  </div>
+);
+
+// ❌ Don't create: Used once
+// Just inline the pattern where needed
+```
+
+**Organisms:** Create when feature appears on multiple pages
+```typescript
+// ✅ Create: ContactAside used in ContactShow + ContactEdit
+export const ContactAside = ({ contact }) => {
+  // Complex sidebar with multiple sections
+};
+
+// ❌ Don't create: Page-specific header used nowhere else
+// Keep inline in the page component
+```
+
+---
+
 ## Component Creation Workflow
 
 ### 1. Identify the Level
 
-**Ask:**
-- Is it a constant/token? → **Atom**
-- Does it combine 2-3 atoms? → **Molecule**
-- Is it a complex, reusable UI section? → **Organism**
-- Is it a page layout structure? → **Template**
-- Is it a specific page with real data? → **Page**
+**Better Heuristics:** Focus on purpose, not structure.
+
+**Question:**Does this solve a specific problem for **Atomic CRM's domain?**
+- **Yes** → Likely an **Organism** (e.g., ContactList, DealPipelineView)
+- **No** → Likely a **Molecule** or **Atom** (e.g., Button, SearchBox, DatePicker)
+
+**Question:** Does it have any business context at all?
+- **No** → **Atom** (Button, Input, Badge)
+- **Yes, but generic** → **Molecule** (SearchBox, FormField, UserAvatar)
+- **Yes, CRM-specific** → **Organism** (ContactCard, OpportunityTimeline)
+
+**Question:** Does it define page structure?
+- **Yes, reusable layout** → **Template** (DashboardLayout, DetailPageLayout)
+- **Yes, specific route** → **Page** (/contacts/123)
+
+**When in doubt:**
+- If you'd spend more than 5 minutes debating Molecule vs Organism, just build it and iterate
+- The category matters less than code quality and YAGNI compliance
+- You can always refactor later if a pattern emerges
 
 ### 2. Check for Existing Components
 
@@ -387,6 +589,24 @@ export const useAriaAnnounce = () => {
 - ResponsiveGrid serves as template infrastructure
 - Creating explicit <Template> components is over-abstraction
 - Can create explicit templates later if genuinely needed
+
+**Why allow organisms to contain other organisms?**
+- Brad Frost's original methodology permits this ("groups of molecules and/or atoms and/or other organisms")
+- Real-world components are fluid - strict rules cause over-engineering
+- Example: A `CustomerDetailsPanel` organism can contain an `AddressForm` organism
+- Flexibility prevents unnecessary refactoring just to satisfy naming conventions
+
+**Why emphasize "when in doubt, just build it"?**
+- Engineering Constitution prioritizes shipping over taxonomy debates
+- The category matters less than code quality and YAGNI compliance
+- Developers shouldn't spend 30 minutes debating Molecule vs Organism
+- Atomic Design is a mental model, not a set of rigid laws
+
+**Why focus on business domain for categorization?**
+- Most actionable heuristic: "Is this CRM-specific?"
+- Prevents debates about structural composition
+- Aligns with how developers actually think about components
+- Makes the hierarchy intuitive rather than theoretical
 
 ---
 
