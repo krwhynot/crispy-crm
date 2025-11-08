@@ -81,6 +81,38 @@ export default defineConfig(({ mode }) => ({
         data: {
           mainScript: `src/main.tsx`,
         },
+        tags: [
+          {
+            injectTo: 'head',
+            tag: 'meta',
+            attrs: {
+              'http-equiv': 'Content-Security-Policy',
+              content: mode === 'production'
+                ? // Production: Stricter security
+                  "default-src 'self'; " +
+                  "script-src 'self'; " +
+                  "style-src 'self' 'unsafe-inline'; " +
+                  "img-src 'self' data: https:; " +
+                  "font-src 'self' data:; " +
+                  "connect-src 'self' https://*.supabase.co https://*.supabase.in; " +
+                  "frame-src 'none'; " +
+                  "object-src 'none'; " +
+                  "base-uri 'self'; " +
+                  "form-action 'self';"
+                : // Development: Allow Vite HMR and inline scripts
+                  "default-src 'self'; " +
+                  "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+                  "style-src 'self' 'unsafe-inline'; " +
+                  "img-src 'self' data: https:; " +
+                  "font-src 'self' data:; " +
+                  "connect-src 'self' https://*.supabase.co https://*.supabase.in ws://localhost:* ws://127.0.0.1:*; " +
+                  "frame-src 'none'; " +
+                  "object-src 'none'; " +
+                  "base-uri 'self'; " +
+                  "form-action 'self';"
+            }
+          }
+        ],
       },
     }),
   ],
