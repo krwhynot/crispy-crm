@@ -1,14 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Spacing Tokens Validation', () => {
-  test.beforeEach(async ({ page }) => {
-    // Login first
-    await page.goto('/login');
-    await page.getByLabel('Email').fill('admin@test.com');
-    await page.getByLabel('Password').fill('password123');
-    await page.getByRole('button', { name: /sign in/i }).click();
-    await page.waitForURL('**/dashboard');
-  });
+  // Tests use storage state for authentication (see playwright.config.ts)
+  // No manual login needed
 
   test('edge padding matches spec on desktop (120px)', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
