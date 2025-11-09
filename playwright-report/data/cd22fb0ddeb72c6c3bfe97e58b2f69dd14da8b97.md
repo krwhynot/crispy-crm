@@ -1,0 +1,53 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e6]:
+        - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+          - /url: "#/"
+          - generic "MFB Master Food Brokers" [ref=e8]
+        - navigation [ref=e10]:
+          - link "Dashboard" [ref=e11] [cursor=pointer]:
+            - /url: "#/"
+          - link "Contacts" [ref=e12] [cursor=pointer]:
+            - /url: "#/contacts"
+          - link "Organizations" [ref=e13] [cursor=pointer]:
+            - /url: "#/organizations"
+          - link "Opportunities" [ref=e14] [cursor=pointer]:
+            - /url: "#/opportunities"
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: "#/products"
+        - generic [ref=e16]:
+          - button "Notifications" [ref=e17] [cursor=pointer]:
+            - img
+          - button [ref=e18] [cursor=pointer]
+    - main [ref=e21]:
+      - main "Dashboard" [ref=e22]:
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - heading "My Principals" [level=1] [ref=e25]
+            - button "Refresh dashboard" [ref=e26] [cursor=pointer]:
+              - img
+              - text: Refresh
+          - generic [ref=e27]:
+            - generic [ref=e29]:
+              - generic [ref=e31]: Upcoming by Principal
+              - paragraph [ref=e33]: Loading...
+            - complementary "Supporting information" [ref=e35]:
+              - generic [ref=e36]:
+                - generic [ref=e38]: My Tasks This Week
+                - paragraph [ref=e40]: Loading...
+              - generic [ref=e41]:
+                - generic [ref=e43]: Recent Activity
+                - paragraph [ref=e45]: Loading...
+    - contentinfo [ref=e46]:
+      - generic [ref=e48]:
+        - paragraph [ref=e49]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e50] [cursor=pointer]:
+          - img [ref=e51]
+          - generic [ref=e53]: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - status [ref=e54]
+```
