@@ -1,9 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Reports Spacing Visual Regression', () => {
-  // Only run on chromium project to avoid duplicate snapshots
-  test.skip(({ browserName }) => browserName !== 'chromium', 'Run only on chromium');
-
   // Tests use storage state for authentication (see playwright.config.ts)
   // No manual login needed
 
@@ -15,7 +12,9 @@ test.describe('Reports Spacing Visual Regression', () => {
   ];
 
   for (const viewport of viewports) {
-    test(`OpportunitiesByPrincipal renders correctly on ${viewport.name}`, async ({ page }) => {
+    test(`OpportunitiesByPrincipal renders correctly on ${viewport.name}`, async ({ page }, testInfo) => {
+      // Only run on chromium project to avoid duplicate snapshots
+      test.skip(testInfo.project.name !== 'chromium', 'Run only on chromium');
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto('/reports/opportunities-by-principal');
 
@@ -31,7 +30,9 @@ test.describe('Reports Spacing Visual Regression', () => {
       await expect(page).toHaveScreenshot(`opportunities-by-principal-${viewport.name}.png`);
     });
 
-    test(`WeeklyActivitySummary renders correctly on ${viewport.name}`, async ({ page }) => {
+    test(`WeeklyActivitySummary renders correctly on ${viewport.name}`, async ({ page }, testInfo) => {
+      // Only run on chromium project to avoid duplicate snapshots
+      test.skip(testInfo.project.name !== 'chromium', 'Run only on chromium');
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto('/reports/weekly-activity-summary');
 
