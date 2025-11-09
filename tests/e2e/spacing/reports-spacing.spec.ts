@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Reports Spacing Visual Regression', () => {
+  // Only run on chromium project to avoid duplicate snapshots
+  test.skip(({ browserName }) => browserName !== 'chromium', 'Run only on chromium');
+
   // Tests use storage state for authentication (see playwright.config.ts)
   // No manual login needed
 
