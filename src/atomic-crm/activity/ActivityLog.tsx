@@ -9,11 +9,11 @@ import { ActivitiesService } from "../services";
 import { ActivityLogContext } from "./ActivityLogContext";
 import { ActivityLogIterator } from "./ActivityLogIterator";
 
-type ActivityLogProps = {
+interface ActivityLogProps {
   organizationId?: Identifier;
   pageSize?: number;
   context?: "organization" | "contact" | "opportunity" | "all";
-};
+}
 
 export function ActivityLog({
   organizationId,

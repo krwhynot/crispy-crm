@@ -37,10 +37,10 @@ const SAMPLE_URL = `data:text/csv;name=crm_contacts_sample.csv;charset=utf-8,${e
   sampleCsv.default,
 )}`;
 
-type ContactImportModalProps = {
+interface ContactImportModalProps {
   open: boolean;
   onClose(): void;
-};
+}
 
 type ImportState = 'idle' | 'running' | 'complete' | 'error';
 

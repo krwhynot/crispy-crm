@@ -29,10 +29,10 @@ import { Button } from "@/components/ui/button";
 
 const Form = FormProvider;
 
-type FormItemContextValue = {
+interface FormItemContextValue {
   id: string;
   name: string;
-};
+}
 
 const FormItemContext = createContext<FormItemContextValue>(
   {} as FormItemContextValue,

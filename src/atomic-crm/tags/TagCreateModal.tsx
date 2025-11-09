@@ -2,11 +2,11 @@ import { useCreate } from "ra-core";
 import type { Tag } from "../types";
 import { TagDialog } from "./TagDialog";
 
-type TagCreateModalProps = {
+interface TagCreateModalProps {
   open: boolean;
   onClose(): void;
   onSuccess?(tag: Tag): Promise<void>;
-};
+}
 
 export function TagCreateModal({
   open,

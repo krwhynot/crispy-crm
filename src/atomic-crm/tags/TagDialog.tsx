@@ -17,13 +17,13 @@ import { RoundButton } from "./RoundButton";
 import { validateTagColor, normalizeColorToSemantic } from "./tag-colors";
 import type { TagColorName } from "@/lib/color-types";
 
-type TagDialogProps = {
+interface TagDialogProps {
   open: boolean;
   tag?: Pick<Tag, "name" | "color">;
   title: string;
   onSubmit(tag: Pick<Tag, "name" | "color">): Promise<void>;
   onClose(): void;
-};
+}
 
 export function TagDialog({
   open,

@@ -8,9 +8,9 @@ import type { ActivityContactCreated } from "../types";
 import { formatName } from "../utils/formatName";
 import { useActivityLogContext } from "./ActivityLogContext";
 
-type ActivityLogContactCreatedProps = {
+interface ActivityLogContactCreatedProps {
   activity: ActivityContactCreated;
-};
+}
 
 export function ActivityLogContactCreated({
   activity,

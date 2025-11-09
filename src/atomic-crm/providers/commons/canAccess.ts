@@ -1,11 +1,11 @@
 // FIXME: This should be exported from the ra-core package
-type CanAccessParams<
+interface CanAccessParams<
   RecordType extends Record<string, any> = Record<string, any>,
-> = {
+> {
   action: string;
   resource: string;
   record?: RecordType;
-};
+}
 
 export const canAccess = <
   RecordType extends Record<string, any> = Record<string, any>,

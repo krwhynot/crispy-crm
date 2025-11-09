@@ -8,9 +8,9 @@ import type { ActivityOpportunityNoteCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 import { ActivityLogNote } from "./ActivityLogNote";
 
-type ActivityLogOpportunityNoteCreatedProps = {
+interface ActivityLogOpportunityNoteCreatedProps {
   activity: RaRecord & ActivityOpportunityNoteCreated;
-};
+}
 
 export function ActivityLogOpportunityNoteCreated({
   activity,

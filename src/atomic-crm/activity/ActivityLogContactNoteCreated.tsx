@@ -8,9 +8,9 @@ import type { ActivityContactNoteCreated, Contact } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 import { ActivityLogNote } from "./ActivityLogNote";
 
-type ActivityLogContactNoteCreatedProps = {
+interface ActivityLogContactNoteCreatedProps {
   activity: ActivityContactNoteCreated;
-};
+}
 
 function ContactAvatar() {
   const record = useRecordContext<Contact>();

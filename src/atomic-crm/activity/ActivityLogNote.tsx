@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Fragment } from "react";
 
-type ActivityLogContactNoteCreatedProps = {
+interface ActivityLogContactNoteCreatedProps {
   header: ReactNode;
   text: string;
-};
+}
 
 export function ActivityLogNote({
   header,
