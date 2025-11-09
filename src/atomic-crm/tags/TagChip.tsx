@@ -5,11 +5,11 @@ import type { Tag } from "../types";
 import { TagEditModal } from "./TagEditModal";
 import { getTagColorClass } from "./tag-colors";
 
-type TagChipProps = {
+interface TagChipProps {
   tag: Tag;
 
   onUnlink: () => Promise<void>;
-};
+}
 
 export function TagChip({ tag, onUnlink }: TagChipProps) {
   const [open, setOpen] = useState(false);

@@ -24,10 +24,10 @@ import { supabase } from "../providers/supabase/supabase";
 import { formatName } from "../utils/formatName";
 import { validateCsvFile, getSecurePapaParseConfig, sanitizeCsvValue, type CsvValidationError } from "../utils/csvUploadValidator";
 
-type OrganizationImportDialogProps = {
+interface OrganizationImportDialogProps {
   open: boolean;
   onClose(): void;
-};
+}
 
 type ImportState = "idle" | "parsing" | "running" | "complete" | "error";
 

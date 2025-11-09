@@ -44,7 +44,7 @@ interface ValidationHandlers<T = unknown> {
 }
 
 // Resource type map for type safety
-type ResourceTypeMap = {
+interface ResourceTypeMap {
   contacts: Contact;
   organizations: Organization;
   opportunities: Opportunity;
@@ -58,7 +58,7 @@ type ResourceTypeMap = {
   engagements: ActivityRecord;
   interactions: ActivityRecord;
   segments: Segment;
-};
+}
 
 /**
  * ValidationService handles all Zod validation at API boundaries

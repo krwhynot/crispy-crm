@@ -7,9 +7,9 @@ import { SaleName } from "../sales/SaleName";
 import type { ActivityOrganizationCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 
-type ActivityLogOrganizationCreatedProps = {
+interface ActivityLogOrganizationCreatedProps {
   activity: ActivityOrganizationCreated;
-};
+}
 
 export function ActivityLogOrganizationCreated({
   activity,

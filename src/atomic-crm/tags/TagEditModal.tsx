@@ -2,12 +2,12 @@ import { useUpdate } from "ra-core";
 import type { Tag } from "../types";
 import { TagDialog } from "./TagDialog";
 
-type TagEditModalProps = {
+interface TagEditModalProps {
   tag: Tag;
   open: boolean;
   onClose(): void;
   onSuccess?(tag: Tag): Promise<void>;
-};
+}
 
 export function TagEditModal({
   tag,

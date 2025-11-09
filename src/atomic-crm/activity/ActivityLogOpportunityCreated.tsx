@@ -5,9 +5,9 @@ import { RelativeDate } from "../misc/RelativeDate";
 import type { ActivityOpportunityCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 
-type ActivityLogOpportunityCreatedProps = {
+interface ActivityLogOpportunityCreatedProps {
   activity: RaRecord & ActivityOpportunityCreated;
-};
+}
 
 export function ActivityLogOpportunityCreated({
   activity,

@@ -25,7 +25,7 @@ type Import =
       error: Error;
     };
 
-type usePapaParseProps<T> = {
+interface usePapaParseProps<T> {
   // The import batch size
   batchSize?: number;
 
@@ -37,7 +37,7 @@ type usePapaParseProps<T> = {
 
   // Optional: Parse only first N rows for preview mode
   previewRowCount?: number;
-};
+}
 
 export function usePapaParse<T>({
   batchSize = 10,

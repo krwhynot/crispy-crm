@@ -15,10 +15,10 @@ import { ActivityLogContactNoteCreated } from "./ActivityLogContactNoteCreated";
 import { ActivityLogOpportunityCreated } from "./ActivityLogOpportunityCreated";
 import { ActivityLogOpportunityNoteCreated } from "./ActivityLogOpportunityNoteCreated";
 
-type ActivityLogIteratorProps = {
+interface ActivityLogIteratorProps {
   activities: Activity[];
   pageSize: number;
-};
+}
 
 export function ActivityLogIterator({
   activities,
