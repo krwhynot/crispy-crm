@@ -12,6 +12,7 @@ import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
 import notifications from "../notifications";
+import reports from "../reports";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
@@ -141,6 +142,10 @@ export const CRM = ({
 
         <CustomRoutes>
           <Route path={SettingsPage.path} element={<SettingsPage />} />
+          <Route
+            path="/reports/weekly-activity"
+            element={<reports.WeeklyActivitySummary />}
+          />
         </CustomRoutes>
         <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />
