@@ -8,6 +8,8 @@ import { OpportunityColumn } from "./OpportunityColumn";
 import { OPPORTUNITY_STAGES_LEGACY, getOpportunityStageLabel } from "./stageConstants";
 import type { OpportunitiesByStage } from "./stages";
 import { getOpportunitiesByStage } from "./stages";
+import { useColumnPreferences } from "./useColumnPreferences";
+import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 
 export const OpportunityListContent = () => {
   const allOpportunityStages = OPPORTUNITY_STAGES_LEGACY;
@@ -22,10 +24,21 @@ export const OpportunityListContent = () => {
   const notify = useNotify();
   const refresh = useRefresh();
 
-  // Filter stages based on active filter
+  const {
+    collapsedStages,
+    visibleStages: userVisibleStages,
+    toggleCollapse,
+    toggleVisibility,
+    collapseAll,
+    expandAll,
+  } = useColumnPreferences();
+
+  // Filter stages based on active filter and user preferences
   const visibleStages = filterValues?.stage && Array.isArray(filterValues.stage) && filterValues.stage.length > 0
-    ? allOpportunityStages.filter((stage) => filterValues.stage.includes(stage.value))
-    : allOpportunityStages;
+    ? allOpportunityStages.filter((stage) =>
+        filterValues.stage.includes(stage.value) && userVisibleStages.includes(stage.value)
+      )
+    : allOpportunityStages.filter((stage) => userVisibleStages.includes(stage.value));
 
   const [opportunitiesByStage, setOpportunitiesByStage] =
     useState<OpportunitiesByStage>(
@@ -132,16 +145,28 @@ export const OpportunityListContent = () => {
   if (isPending) return null;
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-[var(--border)] shadow-inner">
-        {visibleStages.map((stage) => (
-          <OpportunityColumn
-            stage={stage.value}
-            opportunities={opportunitiesByStage[stage.value]}
-            key={stage.value}
-          />
-        ))}
+    <>
+      <div className="flex justify-end mb-4">
+        <ColumnCustomizationMenu
+          visibleStages={userVisibleStages}
+          toggleVisibility={toggleVisibility}
+          collapseAll={collapseAll}
+          expandAll={expandAll}
+        />
       </div>
-    </DragDropContext>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-[var(--border)] shadow-inner">
+          {visibleStages.map((stage) => (
+            <OpportunityColumn
+              stage={stage.value}
+              opportunities={opportunitiesByStage[stage.value]}
+              key={stage.value}
+              isCollapsed={collapsedStages.includes(stage.value)}
+              onToggleCollapse={() => toggleCollapse(stage.value)}
+            />
+          ))}
+        </div>
+      </DragDropContext>
+    </>
   );
 };
