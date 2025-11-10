@@ -196,4 +196,105 @@ export class OpportunitiesListPage extends BasePage {
     const stageBadge = this.getOpportunityStageBadge(opportunityName);
     await expect(stageBadge).toContainText(stageName);
   }
+
+  /**
+   * Get column customization menu button
+   */
+  getCustomizeColumnsButton() {
+    return this.page.getByRole('button', { name: /customize columns/i });
+  }
+
+  /**
+   * Open column customization menu
+   */
+  async openCustomizationMenu(): Promise<void> {
+    await this.getCustomizeColumnsButton().click();
+    // Wait for menu to be visible
+    await this.page.getByText('Visible Stages').waitFor({ state: 'visible' });
+  }
+
+  /**
+   * Click "Collapse All" in customization menu
+   */
+  async clickCollapseAll(): Promise<void> {
+    await this.page.getByRole('button', { name: /collapse all/i }).click();
+  }
+
+  /**
+   * Click "Expand All" in customization menu
+   */
+  async clickExpandAll(): Promise<void> {
+    await this.page.getByRole('button', { name: /expand all/i }).click();
+  }
+
+  /**
+   * Toggle visibility for a specific stage
+   */
+  async toggleStageVisibility(stageName: string): Promise<void> {
+    // Find the checkbox by its associated label
+    const label = this.page.locator('label').filter({ hasText: new RegExp(stageName, 'i') });
+    const checkbox = label.locator('input[type="checkbox"]');
+    await checkbox.click();
+  }
+
+  /**
+   * Get quick-add button for a specific stage column
+   */
+  getQuickAddButton(stageName: string) {
+    const column = this.getKanbanColumn(stageName);
+    return column.getByRole('button', { name: /\+ new opportunity/i });
+  }
+
+  /**
+   * Click quick-add button and fill form
+   */
+  async quickAddOpportunity(stageName: string, opportunityName: string): Promise<void> {
+    await this.getQuickAddButton(stageName).click();
+
+    // Wait for modal to appear
+    await this.page.getByRole('heading', { name: /new opportunity/i }).waitFor({ state: 'visible' });
+
+    // Fill name field
+    await this.page.getByLabel(/name/i).fill(opportunityName);
+
+    // Click create button
+    await this.page.getByRole('button', { name: /create/i }).click();
+
+    // Wait for modal to close
+    await this.page.getByRole('heading', { name: /new opportunity/i }).waitFor({ state: 'hidden' });
+  }
+
+  /**
+   * Get inline actions menu button for a specific opportunity card
+   */
+  getCardActionsButton(opportunityName: string) {
+    const card = this.getOpportunityCard(opportunityName);
+    return card.getByRole('button', { name: /actions menu/i });
+  }
+
+  /**
+   * Open inline actions menu for an opportunity card
+   */
+  async openCardActions(opportunityName: string): Promise<void> {
+    await this.getCardActionsButton(opportunityName).click();
+    // Wait for menu to appear
+    await this.page.getByRole('button', { name: /view details/i }).waitFor({ state: 'visible' });
+  }
+
+  /**
+   * Check if column is collapsed (has collapse indicator)
+   */
+  async isColumnCollapsed(stageName: string): Promise<boolean> {
+    const column = this.getKanbanColumn(stageName);
+    const collapseButton = column.getByRole('button', { name: /expand column/i });
+    return await collapseButton.isVisible();
+  }
+
+  /**
+   * Check if column is visible
+   */
+  async isColumnVisible(stageName: string): Promise<boolean> {
+    const column = this.getKanbanColumn(stageName);
+    return await column.isVisible();
+  }
 }
