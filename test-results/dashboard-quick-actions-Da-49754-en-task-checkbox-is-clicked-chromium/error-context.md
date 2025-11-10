@@ -1,0 +1,328 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - navigation:
+      - generic:
+        - generic:
+          - generic:
+            - link:
+              - /url: "#/"
+            - generic:
+              - navigation:
+                - link:
+                  - /url: "#/"
+                  - text: Dashboard
+                - link:
+                  - /url: "#/contacts"
+                  - text: Contacts
+                - link:
+                  - /url: "#/organizations"
+                  - text: Organizations
+                - link:
+                  - /url: "#/opportunities"
+                  - text: Opportunities
+                - link:
+                  - /url: "#/products"
+                  - text: Products
+                - link:
+                  - /url: "#/tasks"
+                  - text: Tasks
+                - link:
+                  - /url: "#/reports/weekly-activity"
+                  - text: Reports
+            - generic:
+              - button:
+                - img
+                - generic: Toggle theme
+              - button:
+                - img
+              - button:
+                - img
+              - button:
+                - generic:
+                  - generic: "n"
+    - main:
+      - main:
+        - generic:
+          - generic:
+            - heading [level=1]: My Principals
+            - button:
+              - img
+              - text: Refresh
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Upcoming by Principal
+                - generic:
+                  - paragraph: No scheduled events this week
+                  - paragraph: Schedule meetings or set task deadlines to stay connected with your principals.
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - table:
+                            - rowgroup:
+                              - row:
+                                - columnheader: Principal
+                                - columnheader:
+                                  - button:
+                                    - generic: "# Opps"
+                                - columnheader: Status
+                                - columnheader: Last Activity
+                                - columnheader: Stuck
+                                - columnheader: Next Action
+                            - rowgroup:
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: "#/organizations/1797/show"
+                                      - text: Frites Street
+                                - cell: "2"
+                                - cell:
+                                  - generic: 🔴 Urgent
+                                - cell:
+                                  - generic: No activity
+                                - cell
+                                - cell:
+                                  - generic: No pending tasks
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: "#/organizations/1798/show"
+                                      - text: Better Balance
+                                - cell: "2"
+                                - cell:
+                                  - generic: 🔴 Urgent
+                                - cell:
+                                  - generic: No activity
+                                - cell
+                                - cell:
+                                  - generic: No pending tasks
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: "#/organizations/1801/show"
+                                      - text: Annasea
+                                - cell: "2"
+                                - cell:
+                                  - generic: 🔴 Urgent
+                                - cell:
+                                  - generic: No activity
+                                - cell
+                                - cell:
+                                  - generic: No pending tasks
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: "#/organizations/1802/show"
+                                      - text: Rapid Rasoi
+                                - cell: "2"
+                                - cell:
+                                  - generic: 🔴 Urgent
+                                - cell:
+                                  - generic: No activity
+                                - cell
+                                - cell:
+                                  - generic: No pending tasks
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: "#/organizations/1796/show"
+                                      - text: Kaufholds
+                                - cell: "3"
+                                - cell:
+                                  - generic: 🟢 Good
+                                - cell:
+                                  - generic:
+                                    - generic:
+                                      - generic: Nov 3, 2025
+                                      - generic: meeting
+                                - cell
+                                - cell:
+                                  - generic:
+                                    - generic:
+                                      - checkbox
+                                      - generic: Send email proposal for spring menu
+                              - row:
+                                - cell:
+                                  - generic:
+                                    - link:
+                                      - /url: "#/organizations/1799/show"
+                                      - text: VAF
+                                - cell: "2"
+                                - cell:
+                                  - generic: 🟢 Good
+                                - cell:
+                                  - generic:
+                                    - generic:
+                                      - generic: Nov 9, 2025
+                                      - generic: meeting
+                                - cell
+                                - cell:
+                                  - generic:
+                                    - generic:
+                                      - checkbox
+                                      - generic: Administrative - update account notes
+            - complementary:
+              - generic:
+                - generic:
+                  - generic: My Tasks This Week
+                - generic:
+                  - generic:
+                    - heading [level=4]: 📆 THIS WEEK (4)
+                    - generic:
+                      - generic:
+                        - checkbox
+                        - generic:
+                          - generic:
+                            - link:
+                              - /url: "#/tasks/2"
+                              - text: Send email proposal for spring menu
+                          - generic:
+                            - text: Tue 11/11 →
+                            - link:
+                              - /url: "#/opportunities/1/show"
+                              - text: View Opportunity
+                      - generic:
+                        - checkbox
+                        - generic:
+                          - generic:
+                            - link:
+                              - /url: "#/tasks/6"
+                              - text: Administrative - update account notes
+                          - generic:
+                            - text: Wed 11/12 →
+                            - link:
+                              - /url: "#/opportunities/8/show"
+                              - text: View Opportunity
+                      - generic:
+                        - checkbox
+                        - generic:
+                          - generic:
+                            - link:
+                              - /url: "#/tasks/4"
+                              - text: Follow-up on sample request
+                          - generic:
+                            - text: Thu 11/13 →
+                            - link:
+                              - /url: "#/opportunities/3/show"
+                              - text: View Opportunity
+                      - generic:
+                        - checkbox
+                        - generic:
+                          - generic:
+                            - link:
+                              - /url: "#/tasks/1"
+                              - text: Call about pricing for new cheese curds
+                          - generic:
+                            - text: Fri 11/14 →
+                            - link:
+                              - /url: "#/opportunities/1/show"
+                              - text: View Opportunity
+                - generic:
+                  - link:
+                    - /url: "#/tasks"
+                    - text: View All Tasks →
+              - generic:
+                - generic:
+                  - generic: Recent Activity
+                - generic:
+                  - generic:
+                    - generic: Nov 9, 6:45AM
+                    - generic:
+                      - link:
+                        - /url: "#/activities/4"
+                        - text: 📋 meeting - meeting
+                    - generic:
+                      - text: →
+                      - link:
+                        - /url: "#/opportunities/8/show"
+                        - text: View Opportunity
+                  - generic:
+                    - generic: Nov 3, 6:45AM
+                    - generic:
+                      - link:
+                        - /url: "#/activities/3"
+                        - text: 📋 meeting - meeting
+                    - generic:
+                      - text: →
+                      - link:
+                        - /url: "#/opportunities/3/show"
+                        - text: View Opportunity
+                  - generic:
+                    - generic: Oct 31, 7:45AM
+                    - generic:
+                      - link:
+                        - /url: "#/activities/2"
+                        - text: 📋 call - call
+                    - generic:
+                      - text: →
+                      - link:
+                        - /url: "#/opportunities/1/show"
+                        - text: View Opportunity
+                  - generic:
+                    - generic: Oct 26, 7:45AM
+                    - generic:
+                      - link:
+                        - /url: "#/activities/1"
+                        - text: 📋 email - email
+                    - generic:
+                      - text: →
+                      - link:
+                        - /url: "#/opportunities/1/show"
+                        - text: View Opportunity
+                - generic:
+                  - link:
+                    - /url: "#/activities"
+                    - text: View All Activity →
+    - contentinfo:
+      - generic:
+        - generic:
+          - paragraph: © 2025 MFB Master Food Brokers. All rights reserved.
+          - button:
+            - img
+            - generic: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - status
+  - 'dialog "Complete Task: Send email proposal for spring menu" [ref=e2]':
+    - 'heading "Complete Task: Send email proposal for spring menu" [level=2] [ref=e4]'
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: Activity Type
+        - combobox "Activity Type" [ref=e8] [cursor=pointer]:
+          - generic: Email
+          - img
+        - paragraph [ref=e9]: Auto-detected from task title
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - text: Notes
+          - generic [ref=e12]: "*"
+        - textbox "Notes *" [active] [ref=e13]:
+          - /placeholder: What happened? (e.g., 'Discussed pricing options, customer interested in 2 cases')
+          - text: Send detailed proposal including seasonal options
+        - paragraph [ref=e14]: 49 characters
+      - generic [ref=e15]:
+        - paragraph [ref=e16]: "Related to:"
+        - list [ref=e17]:
+          - listitem [ref=e18]:
+            - img [ref=e19]
+            - generic [ref=e22]: "Task: Send email proposal for spring menu"
+          - listitem [ref=e23]:
+            - img [ref=e24]
+            - generic [ref=e27]: "Opportunity (ID: 1)"
+      - button "Save & Continue →" [ref=e29] [cursor=pointer]
+      - paragraph [ref=e30]: Ctrl+Enter to save • Esc to cancel
+    - button "Close" [ref=e31] [cursor=pointer]:
+      - img
+      - generic [ref=e32]: Close
+```
