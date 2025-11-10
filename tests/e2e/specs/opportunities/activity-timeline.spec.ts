@@ -166,7 +166,7 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should track opportunity creation in timeline', async ({ page }) => {
+  test('should track opportunity creation in timeline', async ({ _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Creation Track ${timestamp}`;
@@ -189,12 +189,6 @@ test.describe('Opportunities Activity Timeline', () => {
       // First activity should reference creation
       const firstText = await firstItem.textContent();
       expect(firstText).toBeTruthy();
-
-      // Common creation indicators
-      const hasCreationIndicator =
-        firstText?.toLowerCase().includes('created') ||
-        firstText?.toLowerCase().includes('added') ||
-        firstText?.toLowerCase().includes('new');
 
       // At minimum, verify timeline has content
       expect(firstText).not.toBe('');
@@ -244,7 +238,7 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should display activity with author information', async ({ page }) => {
+  test('should display activity with author information', async ({ _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Author Info ${timestamp}`;
@@ -275,7 +269,7 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should display activity timestamps', async ({ page }) => {
+  test('should display activity timestamps', async ({ _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Timestamps ${timestamp}`;
@@ -305,7 +299,7 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should group activities by date or time period', async ({ page }) => {
+  test('should group activities by date or time period', async ({ _page }) => {
     // Create opportunity and add activities over time
     const timestamp = Date.now();
     const opportunityName = `Grouped Activities ${timestamp}`;
@@ -338,7 +332,7 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should handle empty timeline state', async ({ page }) => {
+  test('should handle empty timeline state', async ({ _page }) => {
     // This test assumes we can create an opportunity without triggering automatic activities
     // In reality, creation itself might be an activity
 

@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../support/poms/LoginPage';
-import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
 
 /**
  * Opportunity Form Layout Tests

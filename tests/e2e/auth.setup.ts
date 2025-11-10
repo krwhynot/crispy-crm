@@ -1,4 +1,4 @@
-import { test as setup, expect } from '@playwright/test';
+import { test as setup } from '@playwright/test';
 import { LoginPage } from './support/poms/LoginPage';
 
 const authFile = 'tests/e2e/.auth/user.json';

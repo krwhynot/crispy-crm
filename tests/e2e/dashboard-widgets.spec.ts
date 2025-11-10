@@ -240,7 +240,7 @@ test.describe('Dashboard Widgets - iPad Portrait (768x1024)', () => {
       }
     });
 
-    test('maintains proper vertical stacking order', async ({ authenticatedPage }) => {
+    test('maintains proper vertical stacking order', async ({ _authenticatedPage }) => {
       // Order should be: Upcoming Events → Principal Table → Tasks → Activity
       const upcomingBox = await dashboard.getUpcomingEventsWidget().boundingBox();
       const tableBox = await dashboard.getTable().boundingBox();
@@ -367,7 +367,7 @@ test.describe('Dashboard Widgets - Theme & UX Consistency', () => {
     await dashboard.navigate();
   });
 
-  test('widgets use semantic color variables', async ({ authenticatedPage }) => {
+  test('widgets use semantic color variables', async ({ _authenticatedPage }) => {
     const upcomingWidget = dashboard.getUpcomingEventsWidget();
 
     // Check that widgets use CSS variables, not hardcoded colors
@@ -398,7 +398,7 @@ test.describe('Dashboard Widgets - Theme & UX Consistency', () => {
     }
   });
 
-  test('all interactive elements have hover states', async ({ authenticatedPage }) => {
+  test('all interactive elements have hover states', async ({ _authenticatedPage }) => {
     const viewAllLink = dashboard.getViewAllLink(/view all tasks/i);
 
     // Hover over link

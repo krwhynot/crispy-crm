@@ -83,7 +83,7 @@ test.describe('Opportunities Kanban Enhancements', () => {
       const firstCard = authenticatedPage.locator('[data-testid="opportunity-card"]').first();
 
       // Check for days indicator (e.g., "5 days in stage")
-      const daysIndicator = firstCard.locator('text=/\d+ days? in stage/i');
+      const daysIndicator = firstCard.locator('text=/\\d+ days? in stage/i');
       await expect(daysIndicator).toBeVisible();
     });
   });
@@ -123,7 +123,7 @@ test.describe('Opportunities Kanban Enhancements', () => {
   });
 
   test.describe('Quick-Add Functionality', () => {
-    test('creates opportunity in specific stage via quick-add', async ({ authenticatedPage }) => {
+    test('creates opportunity in specific stage via quick-add', async ({ _authenticatedPage }) => {
       const testOpportunityName = `Test Quick-Add ${Date.now()}`;
       const targetStage = 'Initial Outreach';
 
@@ -135,7 +135,7 @@ test.describe('Opportunities Kanban Enhancements', () => {
       await expect(targetColumn.getByText(testOpportunityName)).toBeVisible();
     });
 
-    test('quick-add button is present in each column', async ({ authenticatedPage }) => {
+    test('quick-add button is present in each column', async ({ _authenticatedPage }) => {
       // Check first few columns have quick-add buttons
       const stages = ['New Lead', 'Initial Outreach', 'Sample Visit Offered'];
 

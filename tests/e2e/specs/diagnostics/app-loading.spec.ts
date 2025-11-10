@@ -26,7 +26,7 @@ test.describe('App Loading Diagnostics', () => {
     await page.screenshot({ path: 'test-results/app-loading.png', fullPage: true });
 
     // Get page content
-    const content = await page.content();
+    const _content = await page.content();
     console.log('Page title:', await page.title());
     console.log('Console errors:', consoleErrors);
     console.log('Page errors:', pageErrors);
