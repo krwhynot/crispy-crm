@@ -30,8 +30,8 @@ import type { Company, Contact, Opportunity, OrganizationWithHierarchy } from ".
 import { formatName } from "../utils/formatName";
 import { OrganizationAside } from "./OrganizationAside";
 import { OrganizationAvatar } from "./OrganizationAvatar";
-import { HierarchyBreadcrumb } from "./HierarchyBreadcrumb";
-import { BranchLocationsSection } from "./BranchLocationsSection";
+import HierarchyBreadcrumb from "./HierarchyBreadcrumb";
+import BranchLocationsSection from "./BranchLocationsSection";
 import { ParentOrganizationSection } from "./ParentOrganizationSection";
 
 const OrganizationShow = () => (

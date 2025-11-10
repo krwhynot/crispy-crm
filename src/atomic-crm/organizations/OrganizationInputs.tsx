@@ -30,7 +30,7 @@ const TAB_DEFINITIONS: TabDefinition[] = [
   {
     key: 'general',
     label: 'General',
-    fields: ['name', 'logo', 'organization_type', 'description', 'sales_id']
+    fields: ['name', 'logo', 'organization_type', 'parent_id', 'description', 'sales_id']
   },
   {
     key: 'details',
@@ -115,6 +115,9 @@ export const OrganizationInputs = () => {
               helperText="Required field"
               emptyText="Select organization type"
             />
+          </div>
+          <div className="lg:col-span-2">
+            <ParentOrganizationInput />
           </div>
           <div className="lg:col-span-2">
             <TextInput source="description" multiline helperText={false} label="Description" />
