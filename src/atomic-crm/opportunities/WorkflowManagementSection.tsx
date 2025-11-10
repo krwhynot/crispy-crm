@@ -12,7 +12,7 @@
 
 import * as React from "react";
 import { useState } from "react";
-import { useShowContext, useUpdate, useNotify, useListContext } from "ra-core";
+import { useShowContext, useUpdate, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { format, isValid, isPast, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
