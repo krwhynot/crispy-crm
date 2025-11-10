@@ -47,7 +47,7 @@
                 - generic [ref=e48]: Name *
                 - textbox "Name *" [active] [ref=e49]:
                   - /placeholder: Organization name
-                  - text: TestOrg-1762786868564
+                  - text: TestOrg-1762786822332
                 - generic [ref=e50]: Required field
             - group [ref=e52]:
               - generic [ref=e54]: Organization Type *
