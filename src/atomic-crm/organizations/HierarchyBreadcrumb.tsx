@@ -24,7 +24,7 @@ interface HierarchyBreadcrumbProps {
   organization: OrganizationWithHierarchy;
 }
 
-const HierarchyBreadcrumb = ({
+export const HierarchyBreadcrumb = ({
   organization,
 }: HierarchyBreadcrumbProps) => {
   const navigate = useNavigate();
@@ -71,5 +71,3 @@ const HierarchyBreadcrumb = ({
     </Breadcrumb>
   );
 };
-
-export default HierarchyBreadcrumb;
