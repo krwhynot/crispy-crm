@@ -45,7 +45,7 @@ test.describe('Dashboard Quick Actions - Complete Task Workflow', () => {
   });
 
   test.describe('Modal Opening and Step 1 (Log Activity)', () => {
-    test.skip('opens modal when task checkbox is clicked', async ({ authenticatedPage }) => {
+    test('opens modal when task checkbox is clicked', async ({ authenticatedPage }) => {
       // Click first task checkbox
       const firstTaskCheckbox = authenticatedPage.getByRole('checkbox').first();
       await firstTaskCheckbox.click();
