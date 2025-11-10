@@ -199,6 +199,13 @@ COMMENT ON VIEW dashboard_principal_summary IS 'Aggregated principal metrics for
 -- Grant permissions
 GRANT SELECT ON dashboard_principal_summary TO authenticated, anon;
 
+-- Add related_task_id column to activities table (for linking activities to completed tasks)
+ALTER TABLE activities
+ADD COLUMN IF NOT EXISTS related_task_id BIGINT
+  REFERENCES tasks(id) ON DELETE SET NULL;
+
+COMMENT ON COLUMN activities.related_task_id IS 'Optional reference to the task that prompted this activity. Used by quick actions workflow to link activities created when completing tasks.';
+
 -- Add indexes for performance optimization
 -- Index for activities lookup (opportunity_id + created_at for DESC sort)
 CREATE INDEX IF NOT EXISTS idx_activities_opportunity_id_activity_date
