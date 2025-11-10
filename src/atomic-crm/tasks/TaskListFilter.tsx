@@ -1,92 +1,139 @@
-import { Filter } from "@/components/admin/filter";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { TextInput } from "@/components/admin/text-input";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { endOfToday, startOfToday, addDays } from "date-fns";
+import {
+  Calendar,
+  CheckSquare,
+  Star,
+  Tag,
+  Users,
+} from "lucide-react";
+import { FilterLiveForm, useGetIdentity } from "ra-core";
+
+import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
+import { SearchInput } from "@/components/admin/search-input";
+import { FilterCategory } from "../filters/FilterCategory";
+import { SidebarActiveFilters } from "./SidebarActiveFilters";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 
 /**
  * TaskListFilter Component
  *
- * Filters for tasks list:
- * - Principal (organization via opportunity)
- * - Due Date (before/after)
- * - Status (completed/incomplete)
- * - Priority (low/medium/high/critical)
- * - Assigned To (sales rep)
+ * Sidebar filter panel for tasks list using the collapsible FilterCategory pattern.
+ * Filters: opportunity, due date, completion status, priority, type, assigned to
  */
 export const TaskListFilter = () => {
+  const { identity } = useGetIdentity();
   const { taskTypes } = useConfigurationContext();
 
+  const priorityColors: Record<string, string> = {
+    low: "outline",
+    medium: "secondary",
+    high: "default",
+    critical: "destructive",
+  };
+
   return (
-    <Filter>
-      <ReferenceInput
-        source="opportunity_id"
-        reference="opportunities"
-        alwaysOn
-      >
-        <AutocompleteInput
-          label="Opportunity"
-          optionText="title"
-          helperText="Filter by opportunity"
-        />
-      </ReferenceInput>
+    <div className="w-52 min-w-52 order-first">
+      <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
+        <div className="flex flex-col gap-4">
+          {/* Search - Always visible */}
+          <FilterLiveForm>
+            <SearchInput source="q" placeholder="Search tasks..." />
+          </FilterLiveForm>
 
-      <TextInput
-        source="due_date@gte"
-        label="Due After"
-        type="date"
-        helperText="Tasks due on or after this date"
-      />
+          {/* Active Filters - Conditional */}
+          <SidebarActiveFilters />
 
-      <TextInput
-        source="due_date@lte"
-        label="Due Before"
-        type="date"
-        helperText="Tasks due on or before this date"
-      />
+          {/* Divider */}
+          <div className="border-b border-border" />
 
-      <SelectInput
-        source="completed"
-        label="Status"
-        choices={[
-          { id: "false", name: "Incomplete" },
-          { id: "true", name: "Completed" },
-        ]}
-        helperText="Filter by completion status"
-      />
+          {/* Collapsible Filter Sections */}
+          <div className="flex flex-col gap-2">
+            <FilterCategory label="Due Date" icon={<Calendar className="h-4 w-4" />}>
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Today"
+                value={{
+                  "due_date@gte": startOfToday().toISOString(),
+                  "due_date@lte": endOfToday().toISOString(),
+                }}
+              />
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="This Week"
+                value={{
+                  "due_date@gte": startOfToday().toISOString(),
+                  "due_date@lte": addDays(startOfToday(), 7).toISOString(),
+                }}
+              />
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Overdue"
+                value={{
+                  "due_date@lte": startOfToday().toISOString(),
+                  completed: false,
+                }}
+              />
+            </FilterCategory>
 
-      <SelectInput
-        source="priority"
-        label="Priority"
-        choices={[
-          { id: "low", name: "Low" },
-          { id: "medium", name: "Medium" },
-          { id: "high", name: "High" },
-          { id: "critical", name: "Critical" },
-        ]}
-        helperText="Filter by priority level"
-      />
+            <FilterCategory label="Status" icon={<CheckSquare className="h-4 w-4" />}>
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Incomplete"
+                value={{ completed: false }}
+              />
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Completed"
+                value={{ completed: true }}
+              />
+            </FilterCategory>
 
-      <SelectInput
-        source="type"
-        label="Type"
-        choices={taskTypes.map((type) => ({ id: type, name: type }))}
-        helperText="Filter by task type"
-      />
+            <FilterCategory label="Priority" icon={<Star className="h-4 w-4" />}>
+              {["low", "medium", "high", "critical"].map((priority) => (
+                <ToggleFilterButton
+                  multiselect
+                  key={priority}
+                  className="w-full justify-between"
+                  label={
+                    <Badge
+                      variant={priorityColors[priority] as any}
+                      className="text-xs px-1 py-0"
+                    >
+                      {priority.charAt(0).toUpperCase() + priority.slice(1)}
+                    </Badge>
+                  }
+                  value={{ priority }}
+                />
+              ))}
+            </FilterCategory>
 
-      <ReferenceInput
-        source="sales_id"
-        reference="sales"
-      >
-        <AutocompleteInput
-          label="Assigned To"
-          optionText={(record) =>
-            record ? `${record.first_name} ${record.last_name}` : ""
-          }
-          helperText="Filter by assigned sales rep"
-        />
-      </ReferenceInput>
-    </Filter>
+            <FilterCategory label="Type" icon={<Tag className="h-4 w-4" />}>
+              {taskTypes.map((type) => (
+                <ToggleFilterButton
+                  multiselect
+                  key={type}
+                  className="w-full justify-between"
+                  label={type}
+                  value={{ type }}
+                />
+              ))}
+            </FilterCategory>
+
+            <FilterCategory
+              icon={<Users className="h-4 w-4" />}
+              label="Assigned To"
+            >
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label={"Me"}
+                value={{ sales_id: identity?.id }}
+              />
+            </FilterCategory>
+          </div>
+        </div>
+      </Card>
+    </div>
   );
 };
