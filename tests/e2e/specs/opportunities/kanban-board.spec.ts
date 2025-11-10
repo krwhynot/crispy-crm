@@ -96,7 +96,7 @@ test.describe('Opportunities Kanban Board', () => {
     await expect(kanbanBoard).not.toBeVisible();
   });
 
-  test('should display opportunity cards with key information', async ({ page }) => {
+  test('should display opportunity cards with key information', async ({ _page }) => {
     // Create test opportunity to ensure at least one card exists
     const timestamp = Date.now();
     const opportunityName = `Kanban Card Test ${timestamp}`;
@@ -125,7 +125,7 @@ test.describe('Opportunities Kanban Board', () => {
   });
 
   // Desktop-only test for drag-and-drop (skip on mobile viewports)
-  test('should drag opportunity card to different stage', async ({ page, isMobile }) => {
+  test('should drag opportunity card to different stage', async ({ _page, isMobile }) => {
     test.skip(isMobile, 'Drag-and-drop requires mouse events (desktop only)');
 
     // Create test opportunity in initial stage

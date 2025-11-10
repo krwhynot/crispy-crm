@@ -33,7 +33,7 @@ export class ContactFormPage extends BasePage {
    * Add an email to the contact
    * Handles the JSONB array pattern (click Add, then fill)
    */
-  async addEmail(email: string, type: 'Work' | 'Home' = 'Work'): Promise<void> {
+  async addEmail(email: string, _type: 'Work' | 'Home' = 'Work'): Promise<void> {
     // Find and click the Add button for email section
     // React Admin SimpleFormIterator uses "Add" button
     const addButton = this.getButton(/add/i).first();
