@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { OpportunityCard } from "../OpportunityCard";
 import { describe, it, expect, vi } from "vitest";
 import { useOpportunityContacts } from "../useOpportunityContacts";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 
 vi.mock("../useOpportunityContacts");
 vi.mock("react-admin", () => ({
@@ -16,6 +17,21 @@ vi.mock("react-admin", () => ({
   }),
 }));
 
+const renderWithDragContext = (component: React.ReactElement) => {
+  return render(
+    <DragDropContext onDragEnd={() => {}}>
+      <Droppable droppableId="test">
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            {component}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
+};
+
 describe("OpportunityCard", () => {
   it("displays primary contact name", () => {
     (useOpportunityContacts as any).mockReturnValue({
@@ -23,7 +39,7 @@ describe("OpportunityCard", () => {
       isLoading: false,
     });
 
-    render(<OpportunityCard index={0} />);
+    renderWithDragContext(<OpportunityCard index={0} />);
 
     expect(screen.getByText("John Doe")).toBeInTheDocument();
   });
@@ -34,9 +50,9 @@ describe("OpportunityCard", () => {
       isLoading: false,
     });
 
-    render(<OpportunityCard index={0} />);
+    renderWithDragContext(<OpportunityCard index={0} />);
 
-    expect(screen.getByText(/Dec 31/)).toBeInTheDocument();
+    expect(screen.getByText(/Dec \d+, 2025/)).toBeInTheDocument();
   });
 
   it("displays days in stage badge", () => {
@@ -45,7 +61,7 @@ describe("OpportunityCard", () => {
       isLoading: false,
     });
 
-    render(<OpportunityCard index={0} />);
+    renderWithDragContext(<OpportunityCard index={0} />);
 
     expect(screen.getByText("5 days in stage")).toBeInTheDocument();
   });
@@ -56,9 +72,9 @@ describe("OpportunityCard", () => {
       isLoading: false,
     });
 
-    render(<OpportunityCard index={0} />);
+    renderWithDragContext(<OpportunityCard index={0} />);
 
     const badge = screen.getByText("High");
-    expect(badge).toHaveClass("bg-destructive");
+    expect(badge).toHaveClass("bg-warning/10");
   });
 });
