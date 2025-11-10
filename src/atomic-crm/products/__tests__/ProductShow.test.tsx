@@ -12,6 +12,7 @@
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import { Routes, Route } from "react-router-dom";
 import type * as RaCore from "ra-core";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockProduct } from "@/tests/utils/mock-providers";
@@ -47,10 +48,15 @@ describe("ProductShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     // When isPending is true, the component returns null
     expect(screen.queryByRole("main")).not.toBeInTheDocument();
@@ -76,11 +82,16 @@ describe("ProductShow", () => {
     // Mock useRecordContext for the tab content components
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Check main content area
@@ -126,10 +137,16 @@ describe("ProductShow", () => {
 
       (useRecordContext as any).mockReturnValue(mockProduct);
 
-      const { unmount } = renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      const { unmount } = renderWithAdminContext(
+        <Routes>
+          <Route path="/products/:id/show" element={<ProductShow />} />
+        </Routes>,
+        {
+          resource: "products",
+          record: mockProduct,
+          initialEntries: ["/products/1/show"],
+        }
+      );
 
       await waitFor(() => {
         expect(screen.getByText(expected)).toBeInTheDocument();
@@ -156,11 +173,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Category should replace underscores with spaces
@@ -184,11 +206,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Category should replace underscores with spaces
@@ -212,11 +239,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       expect(screen.getByText("TechBrand")).toBeInTheDocument();
@@ -242,11 +274,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Overview tab should show product information
@@ -280,11 +317,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     // Click details tab
     const detailsTab = screen.getByRole("tab", { name: /details/i });
@@ -310,11 +352,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     // Click activity tab
     const activityTab = screen.getByRole("tab", { name: /activity/i });
@@ -333,10 +380,15 @@ describe("ProductShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     // When record is null, component returns null
     expect(screen.queryByRole("main")).not.toBeInTheDocument();
@@ -357,11 +409,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Check aside section
@@ -385,11 +442,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // The product icon should be rendered (Package icon from lucide-react)
@@ -417,11 +479,16 @@ describe("ProductShow", () => {
 
     (useRecordContext as any).mockReturnValue(mockProduct);
 
-    renderWithAdminContext(<ProductShow />, {
-      resource: "products",
-      record: mockProduct,
-      initialEntries: ["/products/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/products/:id/show" element={<ProductShow />} />
+      </Routes>,
+      {
+        resource: "products",
+        record: mockProduct,
+        initialEntries: ["/products/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Should still render name and SKU
