@@ -196,16 +196,20 @@ export const filterableFields: Record<string, string[]> = {
   tasks: [
     "id",
     "title",            // Changed from "text" to match database column
-    "type",
+    "description",      // Task description field
+    "type",             // Task type enum (Call, Email, Meeting, etc.)
+    "priority",         // Priority level enum (low, medium, high, critical)
     "contact_id",
     "opportunity_id",
     "due_date",
+    "reminder_date",    // Optional reminder date
     "completed",        // Boolean field for filtering incomplete/complete tasks
     "completed_at",     // Changed from "done_date" to match database column
     "sales_id",         // FK to sales (for filtering by assignee)
     "created_by",       // FK to sales (created by user)
     "created_at",
     "updated_at",
+    "q",                // Special: full-text search parameter
   ],
 
   // Contact Notes resource
