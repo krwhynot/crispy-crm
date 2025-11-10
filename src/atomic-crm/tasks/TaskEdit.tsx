@@ -1,100 +1,101 @@
-import { DeleteButton } from "@/components/admin/delete-button";
+import { Edit } from "@/components/admin/edit";
+import { SimpleForm } from "@/components/admin/simple-form";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
-import { SaveButton } from "@/components/admin/form";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import type { Identifier } from "ra-core";
-import { EditBase, Form, useNotify } from "ra-core";
-// Validation removed per Engineering Constitution - single-point validation at API boundary only
+import { ReferenceInput } from "@/components/admin/reference-input";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { useConfigurationContext } from "../root/ConfigurationContext";
+import { contactOptionText } from "../misc/ContactOption";
 
-export const TaskEdit = ({
-  open,
-  close,
-  taskId,
-}: {
-  taskId: Identifier;
-  open: boolean;
-  close: () => void;
-}) => {
+/**
+ * TaskEdit Component
+ *
+ * Edit form for tasks - standalone page version
+ * For inline dialog version, see Task.tsx
+ */
+export default function TaskEdit() {
   const { taskTypes } = useConfigurationContext();
-  const notify = useNotify();
+
   return (
-    <Dialog open={open} onOpenChange={close}>
-      {taskId && (
-        <EditBase
-          id={taskId}
-          resource="tasks"
-          className="mt-0"
-          mutationOptions={{
-            onSuccess: () => {
-              close();
-              notify("Task updated", {
-                type: "info",
-                undoable: true,
-              });
-            },
-          }}
-          redirect={false}
+    <Edit>
+      <SimpleForm>
+        <TextInput
+          source="title"
+          label="Task Title"
+          isRequired
+          helperText="Brief description of the task"
+        />
+
+        <TextInput
+          source="description"
+          label="Description"
+          multiline
+          rows={3}
+          helperText="Optional detailed description"
+        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <TextInput
+            source="due_date"
+            label="Due Date"
+            type="date"
+            isRequired
+            helperText="When is this due?"
+          />
+
+          <TextInput
+            source="reminder_date"
+            label="Reminder Date"
+            type="date"
+            helperText="Optional reminder"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <SelectInput
+            source="priority"
+            label="Priority"
+            choices={[
+              { id: "low", name: "Low" },
+              { id: "medium", name: "Medium" },
+              { id: "high", name: "High" },
+              { id: "critical", name: "Critical" },
+            ]}
+            defaultValue="medium"
+            helperText="Task priority level"
+          />
+
+          <SelectInput
+            source="type"
+            label="Type"
+            choices={taskTypes.map((type) => ({ id: type, name: type }))}
+            defaultValue="None"
+            helperText="Category of task"
+          />
+        </div>
+
+        <ReferenceInput
+          source="opportunity_id"
+          reference="opportunities"
         >
-          <DialogContent className="lg:max-w-xl overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
-            <Form className="flex flex-col gap-4">
-              <DialogHeader>
-                <DialogTitle>Edit task</DialogTitle>
-              </DialogHeader>
-              <TextInput
-                source="title"
-                label="Task Title *"
-                helperText="Required field"
-              />
-              <TextInput
-                source="description"
-                label="Description"
-                multiline
-                helperText="Optional details"
-              />
-              <div className="flex flex-row gap-4">
-                <TextInput
-                  source="due_date"
-                  label="Due Date *"
-                  helperText="Required field"
-                  type="date"
-                />
-                <SelectInput
-                  source="type"
-                  label="Type *"
-                  choices={taskTypes.map((type) => ({
-                    id: type,
-                    name: type,
-                  }))}
-                  helperText="Required field"
-                />
-              </div>
-              <DialogFooter className="w-full sm:justify-between gap-4">
-                <DeleteButton
-                  mutationOptions={{
-                    onSuccess: () => {
-                      close();
-                      notify("Task deleted", {
-                        type: "info",
-                        undoable: true,
-                      });
-                    },
-                  }}
-                  redirect={false}
-                />
-                <SaveButton label="Save" />
-              </DialogFooter>
-            </Form>
-          </DialogContent>
-        </EditBase>
-      )}
-    </Dialog>
+          <AutocompleteInput
+            label="Opportunity"
+            optionText="title"
+            helperText="Link to opportunity"
+          />
+        </ReferenceInput>
+
+        <ReferenceInput
+          source="contact_id"
+          reference="contacts_summary"
+        >
+          <AutocompleteInput
+            label="Contact"
+            optionText={contactOptionText}
+            helperText="Link to contact"
+          />
+        </ReferenceInput>
+      </SimpleForm>
+    </Edit>
   );
-};
+}
