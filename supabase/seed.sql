@@ -4155,6 +4155,29 @@ BEGIN
 END $$;
 
 -- ============================================================================
+-- TASKS - E2E Test Data
+-- ============================================================================
+-- Tasks linked to existing opportunities for dashboard quick actions E2E tests
+-- Ensures checkboxes appear in Next Action column
+
+INSERT INTO tasks (
+  id, title, description, due_date, reminder_date, completed, completed_at,
+  priority, type, contact_id, opportunity_id, sales_id,
+  created_at, updated_at
+) VALUES
+  -- Tasks for Opportunity 1 (Kaufholds)
+  (1, 'Call about pricing for new cheese curds', 'Discuss pricing options for Brand A cheese curds with chef', '2025-11-15', '2025-11-14', false, NULL, 'high', 'Call', NULL, 1, 1, NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days'),
+  (2, 'Send email proposal for spring menu', 'Send detailed proposal including seasonal options', '2025-11-12', NULL, false, NULL, 'medium', 'Email', NULL, 1, 1, NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day'),
+
+  -- Tasks for Opportunity 3 (Better Balance)
+  (3, 'Schedule meeting with purchasing manager', 'Set up demo meeting to showcase plant-based options', '2025-11-18', '2025-11-17', false, NULL, 'high', 'Meeting', NULL, 3, 1, NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days'),
+  (4, 'Follow-up on sample request', 'Send requested samples of vegan cheese alternatives', '2025-11-14', NULL, false, NULL, 'medium', 'Follow-up', NULL, 3, 1, NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day'),
+
+  -- Tasks for Opportunity 8 (VAF)
+  (5, 'Product demo at their facility', 'Prepare demo kit for on-site product showcase', '2025-11-20', '2025-11-19', false, NULL, 'critical', 'Discovery', NULL, 8, 1, NOW() - INTERVAL '5 days', NOW() - INTERVAL '5 days'),
+  (6, 'Administrative - update account notes', 'Document recent conversations and preferences', '2025-11-13', NULL, false, NULL, 'low', 'Administrative', NULL, 8, 1, NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days');
+
+-- ============================================================================
 -- RESET SEQUENCES (critical for new record creation)
 -- ============================================================================
 -- After inserting with explicit IDs, sequences must be updated to prevent conflicts

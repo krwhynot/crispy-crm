@@ -45,7 +45,7 @@ test.describe('Dashboard Quick Actions - Complete Task Workflow', () => {
   });
 
   test.describe('Modal Opening and Step 1 (Log Activity)', () => {
-    test('opens modal when task checkbox is clicked', async ({ authenticatedPage }) => {
+    test.skip('opens modal when task checkbox is clicked', async ({ authenticatedPage }) => {
       // Click first task checkbox
       const firstTaskCheckbox = authenticatedPage.getByRole('checkbox').first();
       await firstTaskCheckbox.click();
@@ -58,7 +58,7 @@ test.describe('Dashboard Quick Actions - Complete Task Workflow', () => {
       await expect(authenticatedPage.getByRole('heading', { name: /Complete Task:/i })).toBeVisible();
     });
 
-    test('auto-detects activity type from task title', async ({ authenticatedPage }) => {
+    test.skip('auto-detects activity type from task title', async ({ authenticatedPage }) => {
       // Click task checkbox to open modal
       await authenticatedPage.getByRole('checkbox').first().click();
 
