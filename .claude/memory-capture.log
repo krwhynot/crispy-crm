@@ -2285,3 +2285,8 @@
 [2025-11-10 08:11:55] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-10-organization-hierarchies-design.md
 [2025-11-10 08:20:43] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-10-organization-hierarchies-implementation.md
 [2025-11-10 08:27:01] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/types.ts
+[2025-11-10 08:27:03] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251110142650_add_organization_deletion_protection.sql
+[2025-11-10 08:27:07] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts
+[2025-11-10 08:27:09] [migration] Edit: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251110142654_add_organization_hierarchy_rollups.sql
+[2025-11-10 08:27:16] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/organizationHierarchy.test.ts
+[2025-11-10 08:35:50] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/__tests__/ParentOrganizationInput.test.tsx
