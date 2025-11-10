@@ -350,7 +350,7 @@ If all three pass, you're good to commit.
 
 - [Development Setup](./01-development-setup.md)
 - [Database Migrations](./03-database-migrations.md)
-- [Supabase Workflow](./05-supabase-workflow.md)
+- [Supabase Workflow](../supabase/WORKFLOW.md)
 - [docs/claude/testing-quick-reference.md](../claude/testing-quick-reference.md)
 
 ---
