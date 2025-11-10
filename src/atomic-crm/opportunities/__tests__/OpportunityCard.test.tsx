@@ -3,6 +3,7 @@ import { OpportunityCard } from "../OpportunityCard";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useOpportunityContacts } from "../useOpportunityContacts";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import { BrowserRouter } from "react-router-dom";
 
 vi.mock("../useOpportunityContacts");
 
@@ -16,22 +17,29 @@ let mockRecord = {
   last_interaction_date: "2025-11-01",
 };
 
+// Mock React Admin hooks
 vi.mock("react-admin", () => ({
   useRecordContext: () => mockRecord,
+  useUpdate: () => [vi.fn()],
+  useDelete: () => [vi.fn()],
+  useNotify: () => vi.fn(),
+  useRefresh: () => vi.fn(),
 }));
 
 const renderWithDragContext = (component: React.ReactElement) => {
   return render(
-    <DragDropContext onDragEnd={() => {}}>
-      <Droppable droppableId="test">
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            {component}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <BrowserRouter>
+      <DragDropContext onDragEnd={() => {}}>
+        <Droppable droppableId="test">
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {component}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </BrowserRouter>
   );
 };
 
