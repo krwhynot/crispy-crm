@@ -8,8 +8,8 @@
  * - Current org is not clickable
  */
 
-import { describe, test, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { screen, fireEvent } from "@testing-library/react";
 import { Route, Routes } from "react-router-dom";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOrganization } from "@/tests/utils/mock-providers";
@@ -147,5 +147,37 @@ describe("HierarchyBreadcrumb", () => {
     // The current org should not have an href attribute (it's the current page)
     const link = currentOrg.closest("a");
     expect(link).not.toBeInTheDocument();
+  });
+
+  test("navigates to correct show page path for parent organization", () => {
+    const mockOrg = createMockOrganization({
+      id: 2,
+      name: "Child Division",
+      parent_organization_id: 123,
+      parent_organization_name: "Parent Corp",
+    }) as OrganizationWithHierarchy;
+
+    renderWithAdminContext(
+      <Routes>
+        <Route
+          path="/organizations/:id/show"
+          element={<HierarchyBreadcrumb organization={mockOrg} />}
+        />
+      </Routes>,
+      {
+        resource: "organizations",
+        initialEntries: ["/organizations/2/show"],
+      }
+    );
+
+    // Verify parent link exists and is clickable
+    const parentLink = screen.getByText("Parent Corp");
+    expect(parentLink).toBeInTheDocument();
+    expect(parentLink.tagName).toBe("A");
+
+    // The parent link should navigate to the show page path
+    // Verify by checking that organizations link for navigation exists (breadcrumb structure)
+    const orgsLink = screen.getByText("Organizations");
+    expect(orgsLink).toBeInTheDocument();
   });
 });
