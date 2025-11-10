@@ -25,7 +25,7 @@ export const ProductClassificationTab = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <AutocompleteInput
         source="category"
         label="Category *"

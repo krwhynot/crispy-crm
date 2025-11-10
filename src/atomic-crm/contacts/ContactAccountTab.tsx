@@ -5,7 +5,7 @@ import type { Sale } from "../types";
 
 export const ContactAccountTab = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <ReferenceInput
         reference="sales"
         source="sales_id"

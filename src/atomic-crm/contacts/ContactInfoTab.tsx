@@ -36,7 +36,7 @@ export const ContactInfoTab = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <ArrayInput source="email" label="Email addresses" helperText={false}>
         <SimpleFormIterator
           inline

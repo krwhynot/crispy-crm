@@ -3,7 +3,7 @@ import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 
 export const ProductRelationshipsTab = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <ReferenceInput
         source="principal_id"
         reference="organizations"

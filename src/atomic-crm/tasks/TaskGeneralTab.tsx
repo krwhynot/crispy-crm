@@ -2,7 +2,7 @@ import { TextInput } from "@/components/admin/text-input";
 
 export const TaskGeneralTab = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <TextInput
         source="title"
         label="Task Title *"

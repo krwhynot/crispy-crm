@@ -3,7 +3,7 @@ import { Avatar } from "./Avatar";
 
 export const ContactIdentityTab = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <Avatar />
       <TextInput source="first_name" label="First Name *" helperText="Required field" />
       <TextInput source="last_name" label="Last Name *" helperText="Required field" />

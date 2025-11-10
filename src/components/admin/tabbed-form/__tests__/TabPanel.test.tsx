@@ -24,9 +24,9 @@ describe("TabPanel", () => {
       </Tabs>
     );
     const content = container.querySelector('[role="tabpanel"]');
-    expect(content?.className).toContain("rounded-lg");
+    expect(content?.className).toContain("rounded-b-lg");
     expect(content?.className).toContain("border");
-    expect(content?.className).toContain("p-6");
+    expect(content?.className).toContain("p-3");
   });
 
   it("applies semantic color variables", () => {
@@ -39,7 +39,7 @@ describe("TabPanel", () => {
     );
     const content = container.querySelector('[role="tabpanel"]');
     expect(content?.className).toContain("border-[color:var(--border-subtle)]");
-    expect(content?.className).toContain("bg-[color:var(--bg-secondary)]");
+    expect(content?.className).toContain("bg-background");
   });
 
   it("passes className prop through", () => {
