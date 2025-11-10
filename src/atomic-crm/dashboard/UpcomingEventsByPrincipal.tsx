@@ -175,7 +175,7 @@ export const UpcomingEventsByPrincipal = () => {
 function groupEventsByPrincipal(
   tasks: Task[],
   activities: Activity[],
-  principals: any[]
+  _principals: any[]
 ): PrincipalEvent[] {
   const eventMap = new Map<number, PrincipalEvent>();
 
