@@ -144,6 +144,14 @@ export function QuickCompleteTaskModal({
             {step === FlowStep.UPDATE_OPPORTUNITY && "Update Opportunity"}
             {step === FlowStep.COMPLETE && "Task Completed!"}
           </DialogTitle>
+          <DialogDescription>
+            {step === FlowStep.LOG_ACTIVITY &&
+              "Log the activity to complete this task"}
+            {step === FlowStep.UPDATE_OPPORTUNITY &&
+              "Optionally update the opportunity stage"}
+            {step === FlowStep.COMPLETE &&
+              "Your task has been completed successfully"}
+          </DialogDescription>
         </DialogHeader>
 
         {/* Step 1: Log Activity */}
