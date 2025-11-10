@@ -35,7 +35,6 @@ export default function TaskCreate() {
           label="Task Title"
           isRequired
           helperText="What needs to be done?"
-          autoFocus
         />
 
         <TextInput
