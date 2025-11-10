@@ -387,6 +387,11 @@ npm run test:e2e:headed  # Visible browser mode
 
 **Configuration:** `playwright.config.ts`
 
+**⚠️ Known Issue:** Local Supabase may become unresponsive during extended E2E test runs. If tests fail with "Failed to fetch" errors, restart Supabase:
+```bash
+npx supabase stop && npx supabase start
+```
+
 [Full guide](docs/development/testing-quick-reference.md)
 
 ## GitHub Actions Workflows
