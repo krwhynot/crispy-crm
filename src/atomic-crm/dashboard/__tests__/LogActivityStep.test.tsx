@@ -326,7 +326,8 @@ describe('LogActivityStep', () => {
     it('disables buttons while submitting', async () => {
       const user = userEvent.setup();
       const task = createMockTask();
-      const onSave = vi.fn();
+      // This onSave mock will never resolve, simulating a pending API call
+      const onSave = vi.fn(() => new Promise(() => {}));
       const onSkip = vi.fn();
 
       render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
@@ -336,14 +337,15 @@ describe('LogActivityStep', () => {
       await user.type(notesField, 'Test');
 
       const saveButton = screen.getByRole('button', { name: /Save & Continue/i });
-      const skipButton = screen.getByRole('button', { name: /Skip/i });
-
-      // Click save (which sets isSubmitting = true)
       await user.click(saveButton);
 
-      // Buttons should be disabled during submission
-      expect(saveButton).toBeDisabled();
-      expect(skipButton).toBeDisabled();
+      // After the click, wait for the UI to reflect the "submitting" state
+      await waitFor(() => {
+        // Check for the text change AND the disabled state
+        const submittingButton = screen.getByRole('button', { name: /Saving.../i });
+        expect(submittingButton).toBeDisabled();
+        expect(screen.getByRole('button', { name: /Skip/i })).toBeDisabled();
+      });
     });
   });
 
