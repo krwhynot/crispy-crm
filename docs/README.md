@@ -57,6 +57,23 @@ This is your central hub for all project documentation, organized by audience an
   - Architecture essentials
   - ADRs (Architecture Decision Records)
 
+### For Security & Compliance
+- **[security/](security/)** - Security audits, policies, and hardening guides
+  - Security audit (2025-11-08)
+  - Security model and RLS patterns
+  - Key rotation procedures
+  - Pre-launch hardening checklist
+
+- **[accessibility/](accessibility/)** - Accessibility compliance and testing
+  - WCAG 2.1 AA compliance audit
+  - Priority fixes and quick reference
+  - Testing patterns and tools
+
+### For Project Status
+- **[status/](status/)** - Implementation progress tracking
+  - Phase 1 implementation status
+  - PRD implementation rollup
+
 ### For Internal Reference
 - **[internal-docs/](internal-docs/)** - Technical implementation details
   - Color theming architecture
