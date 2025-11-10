@@ -94,7 +94,8 @@ describe('inferActivityTypeFromTaskTitle', () => {
 
     it('handles whitespace around keywords', () => {
       expect(inferActivityTypeFromTaskTitle('  call  ')).toBe('call');
-      expect(inferActivityTypeFromTaskTitle('\\temail\\t')).toBe('email');
+      expect(inferActivityTypeFromTaskTitle('  email  ')).toBe('email');
+      expect(inferActivityTypeFromTaskTitle('\tmeeting\t')).toBe('meeting');
     });
 
     it('does not match partial words', () => {
