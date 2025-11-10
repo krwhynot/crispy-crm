@@ -160,7 +160,9 @@ jobs:
         id: backup
         run: |
           echo "Creating production backup..."
-          npm run migrate:backup -- cloud
+          # TODO: Implement migrate:backup script or use Supabase backup API
+          # npm run migrate:backup -- cloud
+          echo "⚠️  Automated backup skipped - implement migrate:backup script"
           echo "backup_timestamp=$(date +%Y%m%d_%H%M%S)" >> $GITHUB_OUTPUT
 
       - name: 📡 Deploy migrations
