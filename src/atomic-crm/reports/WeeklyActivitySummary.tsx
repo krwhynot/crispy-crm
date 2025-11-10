@@ -20,13 +20,14 @@ import type { ActivityRecord, Organization, Sale } from "../types";
  */
 export default function WeeklyActivitySummary() {
   const { identity } = useGetIdentity();
+  const notify = useNotify();
   const [dateRange, setDateRange] = useState(() => ({
     start: format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
     end: format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
   }));
 
   // Fetch activities for date range
-  const { data: activities, isPending: activitiesPending } = useGetList<Activity>(
+  const { data: activities, isPending: activitiesPending } = useGetList<ActivityRecord>(
     "activities",
     {
       pagination: { page: 1, perPage: 10000 },
@@ -138,8 +139,8 @@ export default function WeeklyActivitySummary() {
     reportData.forEach((repGroup) => {
       repGroup.principals.forEach((stats) => {
         exportData.push({
-          rep_name: `${repGroup.rep.first_name} ${repGroup.rep.last_name}`,
-          principal_name: stats.org.name,
+          rep_name: sanitizeCsvValue(`${repGroup.rep.first_name} ${repGroup.rep.last_name}`),
+          principal_name: sanitizeCsvValue(stats.org.name),
           calls: stats.calls,
           emails: stats.emails,
           meetings: stats.meetings,
@@ -152,9 +153,11 @@ export default function WeeklyActivitySummary() {
     jsonExport(exportData, (err, csv) => {
       if (err) {
         console.error("Export error:", err);
+        notify("Export failed. Please try again.", { type: "error" });
         return;
       }
       downloadCSV(csv, `weekly-activity-${dateRange.start}-to-${dateRange.end}`);
+      notify("Report exported successfully", { type: "success" });
     });
   };
 
@@ -285,7 +288,8 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
             {principalStats.map((stats, idx) => (
               <tr
                 key={stats.org.id || idx}
-                className={`border-b ${stats.total < 3 ? "bg-yellow-50" : ""}`}
+                className="border-b"
+                style={stats.total < 3 ? { backgroundColor: 'var(--warning-light)' } : {}}
               >
                 <td className="py-2 flex items-center gap-2">
                   {stats.org.name}
