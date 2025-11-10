@@ -28,6 +28,7 @@ interface ComboboxProps {
   emptyText?: string;
   className?: string;
   disabled?: boolean;
+  id?: string;
 }
 
 export function Combobox({
@@ -39,6 +40,7 @@ export function Combobox({
   emptyText = "No option found.",
   className,
   disabled = false,
+  id,
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
@@ -49,6 +51,7 @@ export function Combobox({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          id={id}
           variant="outline"
           role="combobox"
           aria-expanded={open}

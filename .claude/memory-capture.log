@@ -2122,3 +2122,16 @@
 [2025-11-10 03:17:51] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/useOpportunityContacts.ts
 [2025-11-10 03:27:27] [code] Edit: /home/krwhynot/projects/crispy-crm/.husky/pre-commit
 [2025-11-10 03:42:59] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx
+[2025-11-10 03:43:52] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/ui/combobox.tsx
+[2025-11-10 03:43:57] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityCard.tsx
+[2025-11-10 03:43:59] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/ui/combobox.tsx
+[2025-11-10 03:44:12] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/ui/combobox.tsx
+[2025-11-10 03:44:24] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx
+[2025-11-10 03:44:25] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/QuickAddForm.tsx
+[2025-11-10 03:44:41] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/activity/ActivityLog.tsx
+[2025-11-10 03:44:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx
+[2025-11-10 03:45:02] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/__tests__/ProductShow.test.tsx
+[2025-11-10 03:45:22] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/useStageMetrics.test.ts
+[2025-11-10 03:45:43] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/useStageMetrics.ts
+[2025-11-10 03:46:25] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityColumn.tsx
+[2025-11-10 03:49:17] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/products/__tests__/ProductShow.test.tsx

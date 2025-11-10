@@ -52,8 +52,10 @@ export function ActivityLog({
   }
 
   return (
-    <ActivityLogContext.Provider value={context}>
-      <ActivityLogIterator activities={data} pageSize={pageSize} />
-    </ActivityLogContext.Provider>
+    <div data-testid="activity-log">
+      <ActivityLogContext.Provider value={context}>
+        <ActivityLogIterator activities={data} pageSize={pageSize} />
+      </ActivityLogContext.Provider>
+    </div>
   );
 }
