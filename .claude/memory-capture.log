@@ -2513,3 +2513,14 @@
 [2025-11-10 13:00:52] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/TabTriggerWithErrors.tsx
 [2025-11-10 13:01:11] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/__tests__/TabTriggerWithErrors.test.tsx
 [2025-11-10 13:07:37] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/__tests__/TabPanel.test.tsx
+[2025-11-10 13:07:51] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/TabPanel.tsx
+[2025-11-10 13:08:16] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/__tests__/TabbedFormInputs.test.tsx
+[2025-11-10 13:08:33] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/TabbedFormInputs.tsx
+[2025-11-10 13:08:59] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/__tests__/TabbedFormInputs.test.tsx
+[2025-11-10 13:09:19] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/__tests__/TabbedFormInputs.test.tsx
+[2025-11-10 13:09:43] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/TabTriggerWithErrors.tsx
+[2025-11-10 13:09:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/TabPanel.tsx
+[2025-11-10 13:09:55] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/TabbedFormInputs.tsx
+[2025-11-10 13:10:01] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/index.ts
+[2025-11-10 13:12:36] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationGeneralTab.tsx
+[2025-11-10 13:12:43] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationDetailsTab.tsx
