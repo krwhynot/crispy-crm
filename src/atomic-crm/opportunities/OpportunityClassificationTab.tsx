@@ -4,7 +4,7 @@ import { LeadSourceInput } from "./LeadSourceInput";
 
 export const OpportunityClassificationTab = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <SelectInput
         source="stage"
         label="Stage *"

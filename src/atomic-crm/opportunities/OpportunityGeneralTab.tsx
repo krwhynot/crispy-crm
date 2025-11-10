@@ -18,7 +18,7 @@ export const OpportunityGeneralTab = ({ mode }: OpportunityGeneralTabProps) => {
   const { regenerate, isLoading, canGenerate } = useAutoGenerateName(mode);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <div className="relative">
         <TextInput
           source="name"

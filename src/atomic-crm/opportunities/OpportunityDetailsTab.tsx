@@ -6,7 +6,7 @@ import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 
 export const OpportunityDetailsTab = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <TextInput
         source="campaign"
         label="Campaign"

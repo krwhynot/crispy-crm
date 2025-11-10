@@ -16,7 +16,7 @@ export const TabPanel = ({
     <TabsContent
       value={value}
       className={cn(
-        "rounded-lg border border-[color:var(--border-subtle)] bg-[color:var(--bg-secondary)] p-6",
+        "rounded-b-lg rounded-tr-lg border border-[color:var(--border-subtle)] bg-background p-3",
         className
       )}
     >

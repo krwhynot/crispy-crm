@@ -8,7 +8,7 @@ export const TaskDetailsTab = () => {
   const { taskTypes } = useConfigurationContext();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <SelectInput
         source="priority"
         label="Priority"

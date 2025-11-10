@@ -8,7 +8,7 @@ export const SalesPermissionsTab = () => {
   const record = useRecordContext<Sale>();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <BooleanInput
         source="administrator"
         readOnly={record?.id === identity?.id}

@@ -11,7 +11,7 @@ export const ContactPositionTab = () => {
   const { setValue } = useFormContext();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <TextInput source="title" helperText={false} />
       <TextInput source="department" label="Department" helperText={false} />
       <div className="space-y-2">
