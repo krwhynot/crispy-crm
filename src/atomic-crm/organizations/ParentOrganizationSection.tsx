@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { AsideSection } from "../misc/AsideSection";
 import type { Organization } from "../types";
-import { ShowButton } from "@/components/admin/show-button";
 
 /**
  * ParentOrganizationSection
@@ -26,13 +25,12 @@ export const ParentOrganizationSection = () => {
   const [showAllSisters, setShowAllSisters] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // If no parent, render nothing
-  if (!record || !record.parent_organization_id) {
-    return null;
-  }
-
   // Fetch sister branches on mount
   useEffect(() => {
+    if (!record || !record.parent_organization_id) {
+      return;
+    }
+
     const fetchSisters = async () => {
       setLoading(true);
       try {
@@ -57,10 +55,13 @@ export const ParentOrganizationSection = () => {
       }
     };
 
-    if (record.parent_organization_id) {
-      fetchSisters();
-    }
-  }, [record.id, record.parent_organization_id, dataProvider, notify]);
+    fetchSisters();
+  }, [record, dataProvider, notify]);
+
+  // If no parent, render nothing
+  if (!record || !record.parent_organization_id) {
+    return null;
+  }
 
   const handleRemoveParent = async () => {
     if (!window.confirm("Remove parent organization? This action cannot be undone.")) {
