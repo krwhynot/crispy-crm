@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 
 vi.mock("../useOpportunityContacts");
 
-let mockRecord = {
+const mockRecord = {
   id: 1,
   name: "Test Opportunity",
   contact_ids: [1],
