@@ -1,4 +1,5 @@
 import { Droppable } from "@hello-pangea/dnd";
+import { RecordContextProvider } from "react-admin";
 import type { Opportunity } from "../types";
 import { OpportunityCard } from "./OpportunityCard";
 import {
@@ -6,6 +7,7 @@ import {
   getOpportunityStageColor,
   getOpportunityStageElevation
 } from "./stageConstants";
+import { useStageMetrics } from "./useStageMetrics";
 
 export const OpportunityColumn = ({
   stage,
@@ -14,6 +16,8 @@ export const OpportunityColumn = ({
   stage: string;
   opportunities: Opportunity[];
 }) => {
+  const metrics = useStageMetrics(opportunities);
+
   // Map elevation levels to semantic shadow tokens
   const elevation = getOpportunityStageElevation(stage);
   const shadowConfig = {
@@ -33,16 +37,31 @@ export const OpportunityColumn = ({
 
   return (
     <div className={`flex-1 pb-8 min-w-[240px] max-w-[280px] bg-card border border-[var(--border)] rounded-2xl shadow-[var(--shadow-col-inner)] ${shadowConfig.rest} ${shadowConfig.hover} transition-[box-shadow,border-color] duration-200 ease-in-out px-3`}>
-      <div className="flex flex-col items-center">
-        <h3
-          className="px-3 py-2 text-sm font-bold uppercase tracking-wider bg-accent shadow-[inset_0_-1px_0_var(--border)] w-full text-center"
-          style={{ borderBottom: `2px solid ${getOpportunityStageColor(stage)}` }}
-        >
-          {getOpportunityStageLabel(stage)}
-          <span className="text-[11px] text-[color:var(--text-subtle)] ml-1 font-normal">
-            ({opportunities.length})
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-border px-3 py-2">
+        <div className="flex items-center gap-2">
+          <h2
+            className="font-semibold text-base text-foreground"
+            style={{ borderBottom: `2px solid ${getOpportunityStageColor(stage)}` }}
+          >
+            {getOpportunityStageLabel(stage)}
+          </h2>
+          <span className="text-sm text-muted-foreground">
+            ({metrics.count})
           </span>
-        </h3>
+        </div>
+
+        {metrics.count > 0 && (
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span title="Average days in this stage">
+              ~{metrics.avgDaysInStage}d
+            </span>
+            {metrics.stuckCount > 0 && (
+              <span className="text-warning" title="Opportunities stuck >14 days">
+                ⚠ {metrics.stuckCount}
+              </span>
+            )}
+          </div>
+        )}
       </div>
       <Droppable droppableId={stage}>
         {(provided, snapshot) => (
@@ -54,11 +73,9 @@ export const OpportunityColumn = ({
             }`}
           >
             {opportunities.map((opportunity, index) => (
-              <OpportunityCard
-                key={opportunity.id}
-                opportunity={opportunity}
-                index={index}
-              />
+              <RecordContextProvider key={opportunity.id} value={opportunity}>
+                <OpportunityCard index={index} />
+              </RecordContextProvider>
             ))}
             {provided.placeholder}
           </div>
