@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useGetIdentity, useGetList } from "ra-core";
 import { useEffect, useState } from "react";
+import { format } from "date-fns";
 import type { Opportunity } from "../types";
-import { OpportunityCardContent } from "./OpportunityCard";
+import { getOpportunityStageLabel } from "./stageConstants";
 
 export const OpportunityArchivedList = () => {
   const { identity } = useGetIdentity();
