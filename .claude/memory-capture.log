@@ -2524,3 +2524,8 @@
 [2025-11-10 13:10:01] [code] Write: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/index.ts
 [2025-11-10 13:12:36] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationGeneralTab.tsx
 [2025-11-10 13:12:43] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationDetailsTab.tsx
+[2025-11-10 13:12:49] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationOtherTab.tsx
+[2025-11-10 13:12:56] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationInputs.tsx
+[2025-11-10 13:14:26] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/__tests__/TabPanel.test.tsx
+[2025-11-10 13:14:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/components/admin/tabbed-form/__tests__/TabbedFormInputs.test.tsx
+[2025-11-10 13:25:50] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/sales/SalesGeneralTab.tsx
