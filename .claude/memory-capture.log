@@ -2186,3 +2186,6 @@
 [2025-11-10 05:07:36] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/utils/__tests__/activityTypeDetection.test.ts
 [2025-11-10 05:08:09] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/utils/activityTypeDetection.ts
 [2025-11-10 05:13:41] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251110111229_complete_task_with_followup_rpc.sql
+[2025-11-10 05:16:19] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/QuickCompleteTaskModal.tsx
+[2025-11-10 05:18:27] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/LogActivityStep.tsx
+[2025-11-10 05:19:06] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/UpdateOpportunityStep.tsx
