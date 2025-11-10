@@ -146,7 +146,7 @@ describe("unifiedDataProvider - Error Handling", () => {
     });
 
     it("should propagate network errors on delete", async () => {
-      vi.clearAllMocks();
+      mockDelete.mockReset();
       mockDelete.mockRejectedValue(new Error("Network error"));
 
       await expect(
