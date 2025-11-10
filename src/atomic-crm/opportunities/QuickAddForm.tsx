@@ -285,6 +285,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             <div className="space-y-2">
               <Label htmlFor="city">City *</Label>
               <Combobox
+                id="city"
                 options={cityOptions}
                 value={cityValue}
                 onValueChange={(value) => handleCitySelect(value)}

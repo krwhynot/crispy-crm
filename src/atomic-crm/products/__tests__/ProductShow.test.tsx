@@ -185,8 +185,9 @@ describe("ProductShow", () => {
     );
 
     await waitFor(() => {
-      // Category should replace underscores with spaces
-      expect(screen.getByText("electronics")).toBeInTheDocument();
+      // Category appears in multiple places (badge, overview, details)
+      const categoryElements = screen.getAllByText("electronics");
+      expect(categoryElements.length).toBeGreaterThan(0);
     });
   });
 
@@ -218,8 +219,9 @@ describe("ProductShow", () => {
     );
 
     await waitFor(() => {
-      // Category should replace underscores with spaces
-      expect(screen.getByText("office supplies")).toBeInTheDocument();
+      // Category should replace underscores with spaces (appears in multiple places)
+      const categoryElements = screen.getAllByText("office supplies");
+      expect(categoryElements.length).toBeGreaterThan(0);
     });
   });
 
@@ -251,7 +253,9 @@ describe("ProductShow", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("TechBrand")).toBeInTheDocument();
+      // Brand appears in multiple places (badge, overview section)
+      const brandElements = screen.getAllByText("TechBrand");
+      expect(brandElements.length).toBeGreaterThan(0);
     });
   });
 
