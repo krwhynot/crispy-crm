@@ -65,8 +65,36 @@ export const OpportunityArchivedList = () => {
                   <h4 className="font-bold">{getRelativeTimeString(date)}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                     {opportunities.map((opportunity: Opportunity) => (
-                      <div key={opportunity.id}>
-                        <OpportunityCardContent opportunity={opportunity} />
+                      <div
+                        key={opportunity.id}
+                        className="bg-card rounded-lg border border-border p-4"
+                      >
+                        <h3 className="font-medium text-sm text-foreground mb-2">
+                          {opportunity.name}
+                        </h3>
+                        <div className="text-xs text-muted-foreground space-y-1">
+                          <div>
+                            Stage: {getOpportunityStageLabel(opportunity.stage)}
+                          </div>
+                          {opportunity.estimated_close_date && (
+                            <div>
+                              Close Date:{" "}
+                              {format(
+                                new Date(opportunity.estimated_close_date),
+                                "MMM d, yyyy"
+                              )}
+                            </div>
+                          )}
+                          {opportunity.deleted_at && (
+                            <div className="text-destructive mt-2">
+                              Archived:{" "}
+                              {format(
+                                new Date(opportunity.deleted_at),
+                                "MMM d, yyyy"
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
