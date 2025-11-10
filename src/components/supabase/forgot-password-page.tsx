@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useResetPassword } from "ra-supabase-core";
-import { Form, required, useNotify, useTranslate } from "ra-core";
+import { Form, useNotify, useTranslate } from "ra-core";
 import { Layout } from "@/components/supabase/layout.tsx";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { TextInput } from "@/components/admin/text-input";
@@ -67,11 +67,9 @@ export const ForgotPasswordPage = () => {
       >
         <TextInput
           source="email"
-          label={translate("ra.auth.email", {
-            _: "Email",
-          })}
+          label={`${translate("ra.auth.email", { _: "Email" })} *`}
           autoComplete="email"
-          validate={required()}
+          helperText="Required"
         />
         <Button type="submit" className="cursor-pointer" disabled={loading}>
           {translate("ra.action.reset_password", {

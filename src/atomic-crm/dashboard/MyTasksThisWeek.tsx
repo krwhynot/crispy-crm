@@ -169,7 +169,6 @@ export const MyTasksThisWeek = () => {
 };
 
 function groupTasksByUrgency(tasks: Task[]): GroupedTasks {
-  const today = startOfDay(new Date());
   const grouped: GroupedTasks = {
     overdue: [],
     today: [],

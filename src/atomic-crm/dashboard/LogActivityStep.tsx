@@ -70,12 +70,12 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
     notesRef.current?.focus();
   }, []);
 
-  // Validation
+  // Validation - derived from notes state
   const isValid = notes.trim().length > 0;
 
   // Handle save - wrapped in useCallback for stable reference
   const handleSave = useCallback(async () => {
-    if (!isValid) return;
+    if (notes.trim().length === 0) return;
 
     setIsSubmitting(true);
 
@@ -87,7 +87,7 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
     };
 
     onSave(activityData);
-  }, [activityType, notes, task.title, onSave]); // Removed redundant isValid (derived from notes)
+  }, [activityType, notes, task.title, onSave]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -95,7 +95,7 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
       // Ctrl/Cmd + Enter to save
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
-        if (isValid) {
+        if (notes.trim().length > 0) {
           handleSave();
         }
       }
@@ -108,7 +108,7 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isValid, handleSave, onCancel]);
+  }, [notes, handleSave, onCancel]);
 
   return (
     <div className="space-y-4">

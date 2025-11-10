@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, required, useLogin, useNotify } from "ra-core";
+import { Form, useLogin, useNotify } from "ra-core";
 import type { SubmitHandler, FieldValues } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -60,16 +60,16 @@ export const LoginPage = (props: { redirectTo?: string }) => {
             </div>
             <Form className="space-y-8" onSubmit={handleSubmit}>
               <TextInput
-                label="Email"
+                label="Email *"
                 source="email"
                 type="email"
-                validate={required()}
+                helperText="Required"
               />
               <TextInput
-                label="Password"
+                label="Password *"
                 source="password"
                 type="password"
-                validate={required()}
+                helperText="Required"
               />
               <Button
                 type="submit"

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button.constants";
 import { Eye } from "lucide-react";
 import {
   Translate,

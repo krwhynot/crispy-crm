@@ -12,7 +12,7 @@ import type { VariantProps } from "class-variance-authority";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import type { badgeVariants } from "@/components/ui/badge";
+import type { badgeVariants } from "@/components/ui/badge.constants";
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveGrid } from "@/components/design-system";
 

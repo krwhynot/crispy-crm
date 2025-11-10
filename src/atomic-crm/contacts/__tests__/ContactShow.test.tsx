@@ -11,14 +11,13 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { Routes, Route } from "react-router-dom";
-import type * as RaCore from "ra-core";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockContact } from "@/tests/utils/mock-providers";
 import ContactShow from "../ContactShow";
 
 // Mock dependencies
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof RaCore>("ra-core");
+  const actual = await vi.importActual("ra-core");
   return {
     ...actual,
     useShowContext: vi.fn(),

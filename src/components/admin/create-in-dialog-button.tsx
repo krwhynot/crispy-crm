@@ -13,7 +13,6 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { SaveButton } from "@/components/admin/form";
-import { CancelButton } from "@/components/admin/cancel-button";
 
 interface CreateInDialogButtonProps {
   resource: string;
@@ -68,7 +67,7 @@ export const CreateInDialogButton = ({
       if (onSave && response.data) {
         onSave(response.data);
       }
-    } catch (error) {
+    } catch {
       notify(`Error creating ${resource}`, { type: "error" });
     }
   };

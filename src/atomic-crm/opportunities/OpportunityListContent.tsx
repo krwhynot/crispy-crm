@@ -1,5 +1,5 @@
 import isEqual from "lodash/isEqual";
-import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
+import { useListContext, useUpdate, useNotify } from "ra-core";
 import { useEffect, useState } from "react";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 
@@ -22,7 +22,6 @@ export const OpportunityListContent = () => {
 
   const [update] = useUpdate();
   const notify = useNotify();
-  const refresh = useRefresh();
 
   const {
     collapsedStages,

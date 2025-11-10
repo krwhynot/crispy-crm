@@ -7,7 +7,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { badgeVariants } from "@/components/ui/badge";
+import type { badgeVariants } from "@/components/ui/badge.constants";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 

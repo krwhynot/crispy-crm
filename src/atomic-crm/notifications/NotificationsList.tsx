@@ -40,7 +40,7 @@ const NotificationsList = () => {
 };
 
 const NotificationsListLayout = () => {
-  const { data, isPending } = useListContext<Notification>();
+  const { isPending } = useListContext<Notification>();
 
   if (isPending) return <div className="p-6 text-center">Loading...</div>;
 
@@ -233,7 +233,7 @@ const NotificationsBulkActions = () => {
       }
 
       refresh();
-    } catch (error) {
+    } catch {
       notify("Error marking notifications as read", { type: "error" });
     }
   };

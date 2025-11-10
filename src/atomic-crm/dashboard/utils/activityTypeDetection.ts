@@ -8,8 +8,6 @@
  * the activity type dropdown in the quick actions modal.
  */
 
-import type { InteractionType } from '@/atomic-crm/validation/activities';
-
 /**
  * Infers activity type from task title by detecting keywords
  *

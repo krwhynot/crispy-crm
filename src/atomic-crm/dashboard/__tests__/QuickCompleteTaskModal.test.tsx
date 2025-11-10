@@ -13,7 +13,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AdminContext } from 'react-admin';
 import { QuickCompleteTaskModal } from '../QuickCompleteTaskModal';
@@ -32,9 +32,6 @@ const mockDataProvider = {
   delete: vi.fn(),
   deleteMany: vi.fn(),
 };
-
-const mockNotify = vi.fn();
-const mockRefresh = vi.fn();
 
 // Test utility: Wrap component in required providers
 const renderWithProviders = (ui: React.ReactElement) => {
