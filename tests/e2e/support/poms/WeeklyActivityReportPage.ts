@@ -23,8 +23,17 @@ export class WeeklyActivityReportPage extends BasePage {
    * Wait for the report page to fully load
    */
   async waitForPageLoad(): Promise<void> {
-    // Wait for title to be visible
-    await expect(this.page.getByRole('heading', { name: /weekly activity summary/i })).toBeVisible({ timeout: 10000 });
+    // Wait for React loading state to clear (condition-based waiting)
+    await this.page.waitForFunction(
+      () => {
+        const loadingText = document.body.textContent?.includes('Loading...');
+        return !loadingText;
+      },
+      { timeout: 15000 }
+    );
+
+    // Now wait for title to be visible
+    await expect(this.page.getByRole('heading', { name: /weekly activity summary/i })).toBeVisible({ timeout: 5000 });
   }
 
   /**
