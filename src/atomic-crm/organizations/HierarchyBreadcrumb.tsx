@@ -53,7 +53,7 @@ export const HierarchyBreadcrumb = ({
         <BreadcrumbItem>
           <BreadcrumbLink
             onClick={() =>
-              navigate(`/organizations/${organization.parent_organization_id}`)
+              navigate(`/organizations/${organization.parent_organization_id}/show`)
             }
             className="cursor-pointer"
           >
