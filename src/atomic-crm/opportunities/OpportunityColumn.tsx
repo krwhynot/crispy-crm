@@ -8,6 +8,7 @@ import {
   getOpportunityStageElevation
 } from "./stageConstants";
 import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "./useStageMetrics";
+import { QuickAddOpportunity } from "./QuickAddOpportunity";
 
 export const OpportunityColumn = ({
   stage,
@@ -62,6 +63,9 @@ export const OpportunityColumn = ({
             )}
           </div>
         )}
+      </div>
+      <div className="mb-3 px-3">
+        <QuickAddOpportunity stage={stage} />
       </div>
       <Droppable droppableId={stage}>
         {(provided, snapshot) => (
