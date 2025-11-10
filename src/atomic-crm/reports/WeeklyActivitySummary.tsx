@@ -1,11 +1,12 @@
 import { useState, useMemo } from "react";
-import { useGetList, useGetIdentity, downloadCSV } from "ra-core";
+import { useGetList, useGetIdentity, downloadCSV, useNotify } from "ra-core";
 import { startOfWeek, endOfWeek, format } from "date-fns";
 import jsonExport from "jsonexport/dist";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import type { Activity, Organization, Sale } from "../types";
+import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
+import type { ActivityRecord, Organization, Sale } from "../types";
 
 /**
  * Weekly Activity Summary Report
