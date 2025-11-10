@@ -349,6 +349,38 @@ export const unifiedDataProvider: DataProvider = {
         processedParams.filter = validationService.validateFilters(resource, processedParams.filter);
       }
 
+      // Handle hierarchy filters for organizations
+      if (resource === "organizations" && processedParams.filter) {
+        // Handle hierarchy_type filter
+        if (processedParams.filter.hierarchy_type) {
+          switch (processedParams.filter.hierarchy_type) {
+            case "parent":
+              // Show only organizations with branches (child_branch_count > 0)
+              processedParams.filter["child_branch_count@gt"] = 0;
+              break;
+            case "branch":
+              // Show only organizations with a parent (parent_organization_id IS NOT NULL)
+              processedParams.filter["parent_organization_id@not.is"] = null;
+              break;
+            case "standalone":
+              // Show only organizations with no parent AND no branches
+              processedParams.filter["parent_organization_id@is"] = null;
+              processedParams.filter["child_branch_count@eq"] = 0;
+              break;
+            // "all" = no additional filter
+          }
+          delete processedParams.filter.hierarchy_type;
+        }
+
+        // Handle has_branches filter
+        if (processedParams.filter.has_branches === true) {
+          processedParams.filter["child_branch_count@gt"] = 0;
+          delete processedParams.filter.has_branches;
+        } else if (processedParams.filter.has_branches === false) {
+          delete processedParams.filter.has_branches;
+        }
+      }
+
       // Apply search parameters (now uses cleaned filters)
       const searchParams = applySearchParams(resource, processedParams);
 
@@ -627,6 +659,22 @@ export const unifiedDataProvider: DataProvider = {
   ): Promise<any> {
     return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
+
+      // Check for parent org deletion protection
+      if (resource === "organizations") {
+        // Fetch org from summary view to check child count
+        const { data: org } = await supabase
+          .from("organizations_summary")
+          .select("child_branch_count")
+          .eq("id", params.id)
+          .single();
+
+        if (org && org.child_branch_count > 0) {
+          throw new Error(
+            `Cannot delete organization with ${org.child_branch_count} branch locations. Remove branches first.`
+          );
+        }
+      }
 
       // Constitution: soft-deletes rule - check if resource supports soft delete
       if (supportsSoftDelete(dbResource)) {
