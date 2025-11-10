@@ -5,7 +5,7 @@
  * in the opportunities list toolbar.
  */
 
-import { addDays, startOfMonth, endOfMonth } from "date-fns";
+import { addDays } from "date-fns";
 
 export interface FilterPreset {
   id: string;

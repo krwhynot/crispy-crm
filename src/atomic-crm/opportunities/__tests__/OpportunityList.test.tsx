@@ -7,7 +7,6 @@
 
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
-import type * as RaCore from "ra-core";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
 import { OPPORTUNITY_STAGE_CHOICES, OPPORTUNITY_STAGES_LEGACY } from "../stageConstants";
@@ -15,7 +14,7 @@ import { OpportunityListContent } from "../OpportunityListContent";
 
 // Mock useListContext to test components directly
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof RaCore>("ra-core");
+  const actual = await vi.importActual("ra-core");
   return {
     ...actual,
     useListContext: vi.fn(),

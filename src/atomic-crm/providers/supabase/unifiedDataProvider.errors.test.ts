@@ -29,10 +29,8 @@ const {
   mockUpdate,
   mockDelete,
   mockGetMany,
-  mockGetManyReference,
   mockUpdateMany,
   mockDeleteMany,
-  mockGetUser,
 } = mocks;
 
 // Mock the base supabase provider

@@ -5,7 +5,7 @@
  * Ensures products are correctly filtered by principal_id at the API layer
  */
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { supabase } from '@/atomic-crm/providers/supabase/supabase';
 import { getDatabaseResource } from '@/atomic-crm/providers/supabase/dataProviderUtils';
 

@@ -256,7 +256,7 @@ export function normalizeHeader(header: string): string {
     // Remove parentheses and everything inside them (e.g., "(DropDown)" -> "")
     .replace(/\([^)]*\)/g, ' ')
     // Remove special characters except spaces, underscores, hyphens
-    .replace(/[^a-z0-9\s_\-]/g, ' ')
+    .replace(/[^a-z0-9\s_-]/g, ' ')
     // Collapse multiple spaces to single space
     .replace(/\s+/g, ' ')
     .trim();

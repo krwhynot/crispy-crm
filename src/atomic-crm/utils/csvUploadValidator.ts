@@ -112,10 +112,10 @@ export async function validateCsvFile(file: File): Promise<CsvValidationResult> 
     }
 
     // Check for valid text encoding
-    if (/[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(chunk)) {
+    if (/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]/.test(chunk)) {
       warnings.push('File may contain control characters or binary data');
     }
-  } catch (e) {
+  } catch {
     errors.push({
       field: 'encoding',
       message: 'Unable to read file. Ensure it is valid UTF-8 encoded text.',
@@ -182,7 +182,7 @@ export function getSecurePapaParseConfig() {
     },
 
     // Sanitize cell values (formula injection prevention)
-    transform: (value: string, field: string) => {
+    transform: (value: string, _field: string) => {
       if (typeof value !== 'string') return value;
 
       // Remove formula injection attempts
@@ -232,7 +232,7 @@ export function sanitizeCsvValue(value: any): string {
   }
 
   // 2. Remove control characters
-  sanitized = sanitized.replace(/[\x00-\x1F\x7F]/g, '');
+  sanitized = sanitized.replace(/[\\x00-\\x1F\\x7F]/g, '');
 
   // 3. Remove potential HTML/script tags
   sanitized = sanitized.replace(/<[^>]*>/g, '');

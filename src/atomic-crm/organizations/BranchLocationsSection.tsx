@@ -42,12 +42,12 @@ export function BranchLocationsSection({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Return null if org has no child branches
-  if (!org.child_branch_count || org.child_branch_count === 0) {
-    return null;
-  }
-
   useEffect(() => {
+    // Don't fetch if org has no child branches
+    if (!org.child_branch_count || org.child_branch_count === 0) {
+      return;
+    }
+
     const fetchBranches = async () => {
       setIsLoading(true);
       setError(null);
@@ -67,7 +67,12 @@ export function BranchLocationsSection({
     };
 
     fetchBranches();
-  }, [org.id, dataProvider]);
+  }, [org.id, org.child_branch_count, dataProvider]);
+
+  // Return null if org has no child branches
+  if (!org.child_branch_count || org.child_branch_count === 0) {
+    return null;
+  }
 
   return (
     <Card>
