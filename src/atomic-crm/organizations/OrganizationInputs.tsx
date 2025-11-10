@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRecordContext } from "ra-core";
 import { useFormState } from "react-hook-form";
 import ImageEditorField from "../misc/ImageEditorField";
+import { ParentOrganizationInput } from "./ParentOrganizationInput";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import type { Company, Sale } from "../types";
 import { formatName } from "../utils/formatName";
