@@ -6,11 +6,10 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import type * as RaCore from "ra-core";
 
 // Mock ra-core
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof RaCore>("ra-core");
+  const actual = await vi.importActual("ra-core");
   return {
     ...actual,
     useRecordContext: vi.fn(),
@@ -19,7 +18,7 @@ vi.mock("ra-core", async () => {
   };
 });
 
-import { useRecordContext, useDataProvider, useNotify } from "ra-core";
+import { useRecordContext, useDataProvider } from "ra-core";
 import { ParentOrganizationSection } from "../ParentOrganizationSection";
 import type { Organization } from "../../types";
 
@@ -233,7 +232,7 @@ describe("ParentOrganizationSection", () => {
 
     // Mock returns all siblings including self
     const mockDataProvider = {
-      getList: vi.fn().mockImplementation((resource, params) => {
+      getList: vi.fn().mockImplementation((resource, _params) => {
         if (resource === "organizations") {
           // The component should filter out self with filter param
           const filteredSisters = [
