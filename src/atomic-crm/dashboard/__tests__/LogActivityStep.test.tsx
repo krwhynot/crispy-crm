@@ -44,9 +44,9 @@ describe('LogActivityStep', () => {
     it('detects "Call" from task title containing "call"', () => {
       const task = createMockTask({ title: 'Call about pricing' });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       // Should show "Auto-detected" hint
       expect(screen.getByText(/Auto-detected from task title/i)).toBeInTheDocument();
@@ -58,9 +58,9 @@ describe('LogActivityStep', () => {
     it('detects "Email" from task title containing "email"', () => {
       const task = createMockTask({ title: 'Send email proposal' });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Email');
     });
@@ -68,9 +68,9 @@ describe('LogActivityStep', () => {
     it('detects "Meeting" from task title containing "meeting"', () => {
       const task = createMockTask({ title: 'Schedule meeting with chef' });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Meeting');
     });
@@ -78,9 +78,9 @@ describe('LogActivityStep', () => {
     it('detects "Meeting" from task title containing "demo"', () => {
       const task = createMockTask({ title: 'Product demo for buyer' });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Meeting');
     });
@@ -88,9 +88,9 @@ describe('LogActivityStep', () => {
     it('defaults to "Check-in" for generic task titles', () => {
       const task = createMockTask({ title: 'Follow up on proposal' });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Check-in');
     });
@@ -102,9 +102,9 @@ describe('LogActivityStep', () => {
         description: 'Discuss pricing options for Brand A',
       });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       expect(notesField).toHaveValue('Discuss pricing options for Brand A');
@@ -113,9 +113,9 @@ describe('LogActivityStep', () => {
     it('shows empty notes field when task has no description', () => {
       const task = createMockTask({ description: null });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       expect(notesField).toHaveValue('');
@@ -127,9 +127,9 @@ describe('LogActivityStep', () => {
         description: 'Original description',
       });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
 
@@ -145,9 +145,9 @@ describe('LogActivityStep', () => {
     it('disables Save button when notes are empty', () => {
       const task = createMockTask({ description: null });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const saveButton = screen.getByRole('button', { name: /Save & Continue/i });
       expect(saveButton).toBeDisabled();
@@ -157,9 +157,9 @@ describe('LogActivityStep', () => {
       const user = userEvent.setup();
       const task = createMockTask({ description: null });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       await user.type(notesField, 'Some notes');
@@ -171,9 +171,9 @@ describe('LogActivityStep', () => {
     it('shows validation message when notes are empty', () => {
       const task = createMockTask({ description: null });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       expect(screen.getByText(/Activity notes are required/i)).toBeInTheDocument();
     });
@@ -182,9 +182,9 @@ describe('LogActivityStep', () => {
       const user = userEvent.setup();
       const task = createMockTask({ description: null });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       await user.type(notesField, 'Test notes');
@@ -198,9 +198,9 @@ describe('LogActivityStep', () => {
       const user = userEvent.setup();
       const task = createMockTask();
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       await user.clear(notesField);
@@ -221,9 +221,9 @@ describe('LogActivityStep', () => {
       const user = userEvent.setup();
       const task = createMockTask();
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       await user.clear(notesField);
@@ -239,9 +239,9 @@ describe('LogActivityStep', () => {
       const user = userEvent.setup();
       const task = createMockTask({ description: null });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       // Press Ctrl+Enter with empty notes
       await user.keyboard('{Control>}{Enter}{/Control}');
@@ -249,18 +249,18 @@ describe('LogActivityStep', () => {
       expect(onSave).not.toHaveBeenCalled();
     });
 
-    it('calls onSkip when Escape is pressed', async () => {
+    it('calls onCancel when Escape is pressed', async () => {
       const user = userEvent.setup();
       const task = createMockTask();
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       // Press Escape
       await user.keyboard('{Escape}');
 
-      expect(onSkip).toHaveBeenCalled();
+      expect(onCancel).toHaveBeenCalled();
     });
   });
 
@@ -268,9 +268,9 @@ describe('LogActivityStep', () => {
     it('auto-focuses the notes field on mount', () => {
       const task = createMockTask();
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       expect(notesField).toHaveFocus();
@@ -285,9 +285,9 @@ describe('LogActivityStep', () => {
         description: 'Include pricing tiers',
       });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       // Modify notes
       const notesField = screen.getByLabelText(/Notes/i);
@@ -305,27 +305,14 @@ describe('LogActivityStep', () => {
       });
     });
 
-    it('calls onSkip when Skip button is clicked', async () => {
-      const user = userEvent.setup();
-      const task = createMockTask();
-      const onSave = vi.fn();
-      const onSkip = vi.fn();
-
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
-
-      await user.click(screen.getByRole('button', { name: /Skip/i }));
-
-      expect(onSkip).toHaveBeenCalled();
-    });
-
     it('disables buttons while submitting', async () => {
       const user = userEvent.setup();
       const task = createMockTask();
       // This onSave mock will never resolve, simulating a pending API call
       const onSave = vi.fn(() => new Promise(() => {}));
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       const notesField = screen.getByLabelText(/Notes/i);
       await user.clear(notesField);
@@ -339,7 +326,6 @@ describe('LogActivityStep', () => {
         // Check for the text change AND the disabled state
         const submittingButton = screen.getByRole('button', { name: /Saving.../i });
         expect(submittingButton).toBeDisabled();
-        expect(screen.getByRole('button', { name: /Skip/i })).toBeDisabled();
       });
     });
   });
@@ -352,9 +338,9 @@ describe('LogActivityStep', () => {
         contact_id: 10,
       });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       // Should show task title
       expect(screen.getByText(/Task: Follow up on contract/i)).toBeInTheDocument();
@@ -369,9 +355,9 @@ describe('LogActivityStep', () => {
     it('does not show opportunity when task has no opportunity', () => {
       const task = createMockTask({ opportunity_id: undefined });
       const onSave = vi.fn();
-      const onSkip = vi.fn();
+      const onCancel = vi.fn();
 
-      render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
+      render(<LogActivityStep task={task} onSave={onSave} onCancel={onCancel} />);
 
       expect(screen.queryByText(/Opportunity/i)).not.toBeInTheDocument();
     });

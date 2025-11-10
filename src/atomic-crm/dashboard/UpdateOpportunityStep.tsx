@@ -27,7 +27,7 @@ import {
   getOpportunityStageLabel,
   type OpportunityStageValue,
 } from "../opportunities/stageConstants";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 
 interface UpdateOpportunityStepProps {
   opportunityId: number;
@@ -50,10 +50,10 @@ export function UpdateOpportunityStep({
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Handle update
-  const handleUpdate = async () => {
+  // Handle submit (update or skip based on whether stage is selected)
+  const handleSubmit = async () => {
     if (!selectedStage) {
-      // No stage selected, just skip
+      // No stage selected, skip to completion without updating
       onSkip();
       return;
     }
@@ -142,8 +142,9 @@ export function UpdateOpportunityStep({
           </p>
         )}
         {selectedStage && selectedStage !== currentStage && (
-          <p className="text-xs text-muted-foreground">
-            Will move from {currentStageLabel} ’ {getOpportunityStageLabel(selectedStage)}
+          <p className="text-xs text-muted-foreground flex items-center gap-1">
+            Will move from {currentStageLabel}{" "}
+            <ArrowRight className="inline h-3 w-3" /> {getOpportunityStageLabel(selectedStage)}
           </p>
         )}
       </div>
@@ -159,7 +160,7 @@ export function UpdateOpportunityStep({
           Skip
         </Button>
         <Button
-          onClick={handleUpdate}
+          onClick={handleSubmit}
           disabled={isSubmitting}
           className="flex-1"
         >
