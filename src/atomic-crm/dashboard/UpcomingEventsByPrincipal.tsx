@@ -185,29 +185,29 @@ function groupEventsByPrincipal(
 
     // Find principal from opportunity (would need to join, for now skip tasks without principal)
     // This is a simplified version - production would need proper join
-    const event = {
-      id: `task-${task.id}`,
-      type: 'task' as const,
-      title: task.title,
-      date: new Date(task.due_date),
-      description: undefined,
-    };
+    // const event = {
+    //   id: `task-${task.id}`,
+    //   type: 'task' as const,
+    //   title: task.title,
+    //   date: new Date(task.due_date),
+    //   description: undefined,
+    // };
 
     // For now, we'll skip tasks without direct principal association
     // In production, we'd need to join through opportunities table
   });
 
   // Add activities to event map (similar logic)
-  activities.forEach((activity) => {
-    if (!activity.opportunity_id) return;
+  activities.forEach((_activity) => {
+    // if (!activity.opportunity_id) return;
 
-    const event = {
-      id: `activity-${activity.id}`,
-      type: 'activity' as const,
-      title: activity.type,
-      date: new Date(activity.activity_date),
-      description: activity.notes,
-    };
+    // const event = {
+    //   id: `activity-${activity.id}`,
+    //   type: 'activity' as const,
+    //   title: activity.type,
+    //   date: new Date(activity.activity_date),
+    //   description: activity.notes,
+    // };
 
     // For now, we'll skip activities without direct principal association
   });
