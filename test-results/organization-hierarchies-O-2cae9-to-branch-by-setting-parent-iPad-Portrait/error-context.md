@@ -1,0 +1,277 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports/weekly-activity"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "n" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: "n"
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - generic:
+        - generic [ref=e30]:
+          - textbox "Search" [ref=e31]
+          - img [ref=e33]
+          - group
+        - generic [ref=e37]:
+          - combobox [ref=e38] [cursor=pointer]
+          - textbox
+          - img
+          - group
+      - generic [ref=e39]:
+        - button "Sort by name ascending" [ref=e40] [cursor=pointer]:
+          - img
+          - generic [ref=e41]: Sort by name ascending
+          - img
+        - button "Export" [ref=e42] [cursor=pointer]:
+          - img
+          - text: Export
+        - link "New Organization" [ref=e43] [cursor=pointer]:
+          - /url: "#/organizations/create"
+          - img
+          - text: New Organization
+    - generic [ref=e44]:
+      - table [ref=e48]:
+        - rowgroup [ref=e49]:
+          - 'row "Sort by name descending Sort by parent Organization ascending Sort by type ascending Sort by priority ascending # Branches" [ref=e50]':
+            - columnheader "Sort by name descending" [ref=e51]:
+              - button "Sort by name descending" [ref=e52] [cursor=pointer]:
+                - generic [ref=e53]: Name
+                - img [ref=e54]
+            - columnheader "Sort by parent Organization ascending" [ref=e56]:
+              - button "Sort by parent Organization ascending" [ref=e57] [cursor=pointer]:
+                - generic [ref=e58]: Parent Organization
+            - columnheader "Sort by type ascending" [ref=e59]:
+              - button "Sort by type ascending" [ref=e60] [cursor=pointer]:
+                - generic [ref=e61]: Type
+            - columnheader "Sort by priority ascending" [ref=e62]:
+              - button "Sort by priority ascending" [ref=e63] [cursor=pointer]:
+                - generic [ref=e64]: Priority
+            - columnheader "# Branches" [ref=e65]
+        - rowgroup [ref=e66]:
+          - row "040 KITCHEN INC - unknown B -" [ref=e67] [cursor=pointer]:
+            - cell "040 KITCHEN INC" [ref=e68]
+            - cell "-" [ref=e69]
+            - cell "unknown" [ref=e70]
+            - cell "B" [ref=e71]
+            - cell "-" [ref=e72]
+          - row "10Forty Banquets & Catering - unknown C -" [ref=e73] [cursor=pointer]:
+            - cell "10Forty Banquets & Catering" [ref=e74]
+            - cell "-" [ref=e75]
+            - cell "unknown" [ref=e76]
+            - cell "C" [ref=e77]
+            - cell "-" [ref=e78]
+          - row "219 Taproom - customer B -" [ref=e79] [cursor=pointer]:
+            - cell "219 Taproom" [ref=e80]
+            - cell "-" [ref=e81]
+            - cell "customer" [ref=e82]
+            - cell "B" [ref=e83]
+            - cell "-" [ref=e84]
+          - row "2d Restaurant - unknown D -" [ref=e85] [cursor=pointer]:
+            - cell "2d Restaurant" [ref=e86]
+            - cell "-" [ref=e87]
+            - cell "unknown" [ref=e88]
+            - cell "D" [ref=e89]
+            - cell "-" [ref=e90]
+          - row "3 Monkey's - prospect A -" [ref=e91] [cursor=pointer]:
+            - cell "3 Monkey's" [ref=e92]
+            - cell "-" [ref=e93]
+            - cell "prospect" [ref=e94]
+            - cell "A" [ref=e95]
+            - cell "-" [ref=e96]
+          - row "7 K FARMS, INC. - distributor D -" [ref=e97] [cursor=pointer]:
+            - cell "7 K FARMS, INC." [ref=e98]
+            - cell "-" [ref=e99]
+            - cell "distributor" [ref=e100]
+            - cell "D" [ref=e101]
+            - cell "-" [ref=e102]
+          - row "7 Monks Taproom Grand Rapids - unknown B -" [ref=e103] [cursor=pointer]:
+            - cell "7 Monks Taproom Grand Rapids" [ref=e104]
+            - cell "-" [ref=e105]
+            - cell "unknown" [ref=e106]
+            - cell "B" [ref=e107]
+            - cell "-" [ref=e108]
+          - row "8 hospitality group - customer A -" [ref=e109] [cursor=pointer]:
+            - cell "8 hospitality group" [ref=e110]
+            - cell "-" [ref=e111]
+            - cell "customer" [ref=e112]
+            - cell "A" [ref=e113]
+            - cell "-" [ref=e114]
+          - row "86 FOOD SERVICE - unknown C -" [ref=e115] [cursor=pointer]:
+            - cell "86 FOOD SERVICE" [ref=e116]
+            - cell "-" [ref=e117]
+            - cell "unknown" [ref=e118]
+            - cell "C" [ref=e119]
+            - cell "-" [ref=e120]
+          - row "90 miles Cuban cafe - unknown C -" [ref=e121] [cursor=pointer]:
+            - cell "90 miles Cuban cafe" [ref=e122]
+            - cell "-" [ref=e123]
+            - cell "unknown" [ref=e124]
+            - cell "C" [ref=e125]
+            - cell "-" [ref=e126]
+          - row "A & G FOODSERVICE - distributor D -" [ref=e127] [cursor=pointer]:
+            - cell "A & G FOODSERVICE" [ref=e128]
+            - cell "-" [ref=e129]
+            - cell "distributor" [ref=e130]
+            - cell "D" [ref=e131]
+            - cell "-" [ref=e132]
+          - row "A Little Taste of Texas - customer C -" [ref=e133] [cursor=pointer]:
+            - cell "A Little Taste of Texas" [ref=e134]
+            - cell "-" [ref=e135]
+            - cell "customer" [ref=e136]
+            - cell "C" [ref=e137]
+            - cell "-" [ref=e138]
+          - 'row "A Plus Inc DBA: Noodles Etc - unknown A -" [ref=e139] [cursor=pointer]':
+            - 'cell "A Plus Inc DBA: Noodles Etc" [ref=e140]'
+            - cell "-" [ref=e141]
+            - cell "unknown" [ref=e142]
+            - cell "A" [ref=e143]
+            - cell "-" [ref=e144]
+          - row "A.Fusion - customer D -" [ref=e145] [cursor=pointer]:
+            - cell "A.Fusion" [ref=e146]
+            - cell "-" [ref=e147]
+            - cell "customer" [ref=e148]
+            - cell "D" [ref=e149]
+            - cell "-" [ref=e150]
+          - row "A&W - customer B -" [ref=e151] [cursor=pointer]:
+            - cell "A&W" [ref=e152]
+            - cell "-" [ref=e153]
+            - cell "customer" [ref=e154]
+            - cell "B" [ref=e155]
+            - cell "-" [ref=e156]
+          - row "ABBOTT AP6D DEPT GE03 - unknown A -" [ref=e157] [cursor=pointer]:
+            - cell "ABBOTT AP6D DEPT GE03" [ref=e158]
+            - cell "-" [ref=e159]
+            - cell "unknown" [ref=e160]
+            - cell "A" [ref=e161]
+            - cell "-" [ref=e162]
+          - row "Abbvie - unknown C -" [ref=e163] [cursor=pointer]:
+            - cell "Abbvie" [ref=e164]
+            - cell "-" [ref=e165]
+            - cell "unknown" [ref=e166]
+            - cell "C" [ref=e167]
+            - cell "-" [ref=e168]
+          - row "ABBVIE AP30 - prospect C -" [ref=e169] [cursor=pointer]:
+            - cell "ABBVIE AP30" [ref=e170]
+            - cell "-" [ref=e171]
+            - cell "prospect" [ref=e172]
+            - cell "C" [ref=e173]
+            - cell "-" [ref=e174]
+          - row "ABBVIE M1 - unknown A -" [ref=e175] [cursor=pointer]:
+            - cell "ABBVIE M1" [ref=e176]
+            - cell "-" [ref=e177]
+            - cell "unknown" [ref=e178]
+            - cell "A" [ref=e179]
+            - cell "-" [ref=e180]
+          - row "Abdale - principal C -" [ref=e181] [cursor=pointer]:
+            - cell "Abdale" [ref=e182]
+            - cell "-" [ref=e183]
+            - cell "principal" [ref=e184]
+            - cell "C" [ref=e185]
+            - cell "-" [ref=e186]
+          - row "Abigail's - unknown A -" [ref=e187] [cursor=pointer]:
+            - cell "Abigail's" [ref=e188]
+            - cell "-" [ref=e189]
+            - cell "unknown" [ref=e190]
+            - cell "A" [ref=e191]
+            - cell "-" [ref=e192]
+          - row "Acaibowl.LLC - unknown A -" [ref=e193] [cursor=pointer]:
+            - cell "Acaibowl.LLC" [ref=e194]
+            - cell "-" [ref=e195]
+            - cell "unknown" [ref=e196]
+            - cell "A" [ref=e197]
+            - cell "-" [ref=e198]
+          - row "ACARATH MONTESSORI - unknown C -" [ref=e199] [cursor=pointer]:
+            - cell "ACARATH MONTESSORI" [ref=e200]
+            - cell "-" [ref=e201]
+            - cell "unknown" [ref=e202]
+            - cell "C" [ref=e203]
+            - cell "-" [ref=e204]
+          - row "ACF Chicago - prospect A -" [ref=e205] [cursor=pointer]:
+            - cell "ACF Chicago" [ref=e206]
+            - cell "-" [ref=e207]
+            - cell "prospect" [ref=e208]
+            - cell "A" [ref=e209]
+            - cell "-" [ref=e210]
+          - row "ACF Northwest Indiana - prospect A -" [ref=e211] [cursor=pointer]:
+            - cell "ACF Northwest Indiana" [ref=e212]
+            - cell "-" [ref=e213]
+            - cell "prospect" [ref=e214]
+            - cell "A" [ref=e215]
+            - cell "-" [ref=e216]
+      - link "Create new organizations" [ref=e217] [cursor=pointer]:
+        - /url: "#/organizations/create"
+        - img [ref=e218]
+    - generic [ref=e219]:
+      - generic [ref=e220]:
+        - paragraph [ref=e221]: "Rows per page:"
+        - combobox [ref=e222] [cursor=pointer]:
+          - generic: "25"
+          - img
+      - generic [ref=e223]: 1-25 of 1809
+      - navigation "pagination" [ref=e224]:
+        - list [ref=e225]:
+          - listitem [ref=e226]:
+            - link "Go to previous page" [ref=e227] [cursor=pointer]:
+              - /url: "#"
+              - img
+          - listitem [ref=e228]:
+            - link "1" [ref=e229] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e230]:
+            - link "2" [ref=e231] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e232]:
+            - link "3" [ref=e233] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e234]:
+            - link "4" [ref=e235] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e236]:
+            - link "5" [ref=e237] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e238]:
+            - generic [ref=e239]:
+              - img [ref=e240]
+              - generic [ref=e244]: More pages
+          - listitem [ref=e245]:
+            - link "73" [ref=e246] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e247]:
+            - link "Go to next page" [ref=e248] [cursor=pointer]:
+              - /url: "#"
+              - img
+  - contentinfo [ref=e249]:
+    - generic [ref=e251]:
+      - paragraph [ref=e252]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e253] [cursor=pointer]:
+        - img [ref=e254]
+        - generic [ref=e256]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
