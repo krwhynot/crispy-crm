@@ -176,6 +176,7 @@ describe('UpdateOpportunityStep', () => {
     });
 
     it('disables current stage in dropdown', async () => {
+      const user = userEvent.setup();
       mockDataProvider.getOne.mockResolvedValueOnce({
         data: { ...mockOpportunity, stage: 'qualification' },
       });
@@ -191,13 +192,11 @@ describe('UpdateOpportunityStep', () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByText(/Current Stage:/i)).toBeInTheDocument();
-      });
+      // Wait for initial data to load
+      const stageSelect = await screen.findByLabelText(/Move to Stage \(optional\)/i);
 
       // Open dropdown
-      const user = userEvent.setup();
-      await user.click(screen.getByLabelText(/Move to Stage \(optional\)/i));
+      await user.click(stageSelect);
 
       // Current stage should show "(current)" indicator
       await waitFor(() => {
@@ -206,6 +205,7 @@ describe('UpdateOpportunityStep', () => {
     });
 
     it('excludes closed stages from selection', async () => {
+      const user = userEvent.setup();
       mockDataProvider.getOne.mockResolvedValueOnce({
         data: mockOpportunity,
       });
@@ -221,18 +221,16 @@ describe('UpdateOpportunityStep', () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByLabelText(/Move to Stage \(optional\)/i)).toBeInTheDocument();
-      });
+      // Wait for initial data to load
+      const stageSelect = await screen.findByLabelText(/Move to Stage \(optional\)/i);
 
       // Open dropdown
-      const user = userEvent.setup();
-      await user.click(screen.getByLabelText(/Move to Stage \(optional\)/i));
+      await user.click(stageSelect);
 
       // "Closed Won" and "Closed Lost" should not be in the list
       await waitFor(() => {
-        expect(screen.queryByText(/Closed Won/i)).not.toBeInTheDocument();
-        expect(screen.queryByText(/Closed Lost/i)).not.toBeInTheDocument();
+        expect(screen.queryByRole('option', { name: /Closed Won/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole('option', { name: /Closed Lost/i })).not.toBeInTheDocument();
       });
     });
 
@@ -253,20 +251,18 @@ describe('UpdateOpportunityStep', () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByLabelText(/Move to Stage \(optional\)/i)).toBeInTheDocument();
-      });
+      // Wait for initial data to load
+      const stageSelect = await screen.findByLabelText(/Move to Stage \(optional\)/i);
 
-      // Select a new stage
-      await user.click(screen.getByLabelText(/Move to Stage \(optional\)/i));
+      // Open the dropdown
+      await user.click(stageSelect);
 
-      await waitFor(() => {
-        expect(screen.getByText(/Proposal/i)).toBeInTheDocument();
-      });
+      // Find the option by its role and name, which is more resilient
+      // findByRole will wait for it to appear
+      const proposalOption = await screen.findByRole('option', { name: /Proposal/i });
+      await user.click(proposalOption);
 
-      await user.click(screen.getByText(/Proposal/i));
-
-      // Should show transition indicator
+      // Now, assert that the indicator text appears
       await waitFor(() => {
         expect(screen.getByText(/Will move from Qualification → Proposal/i)).toBeInTheDocument();
       });
@@ -318,25 +314,18 @@ describe('UpdateOpportunityStep', () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByLabelText(/Move to Stage \(optional\)/i)).toBeInTheDocument();
-      });
+      // Wait for initial data to load
+      const stageSelect = await screen.findByLabelText(/Move to Stage \(optional\)/i);
 
-      // Select Proposal stage
-      await user.click(screen.getByLabelText(/Move to Stage \(optional\)/i));
+      // Open dropdown and select Proposal stage
+      await user.click(stageSelect);
 
-      await waitFor(() => {
-        expect(screen.getByText(/Proposal/i)).toBeInTheDocument();
-      });
-
-      await user.click(screen.getByText(/Proposal/i));
+      const proposalOption = await screen.findByRole('option', { name: /Proposal/i });
+      await user.click(proposalOption);
 
       // Click Update & Close
-      await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Update & Close/i })).toBeInTheDocument();
-      });
-
-      await user.click(screen.getByRole('button', { name: /Update & Close/i }));
+      const updateButton = await screen.findByRole('button', { name: /Update & Close/i });
+      await user.click(updateButton);
 
       expect(onUpdate).toHaveBeenCalledWith('proposal');
     });
@@ -347,7 +336,8 @@ describe('UpdateOpportunityStep', () => {
         data: mockOpportunity,
       });
 
-      const onUpdate = vi.fn();
+      // onUpdate that never resolves (simulating pending API call)
+      const onUpdate = vi.fn(() => new Promise(() => {}));
       const onSkip = vi.fn();
 
       renderWithProviders(
@@ -358,19 +348,24 @@ describe('UpdateOpportunityStep', () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Keep Stage & Close/i })).toBeInTheDocument();
-      });
+      // Wait for initial data to load
+      const stageSelect = await screen.findByLabelText(/Move to Stage \(optional\)/i);
 
-      const updateButton = screen.getByRole('button', { name: /Keep Stage & Close/i });
-      const skipButton = screen.getByRole('button', { name: /Skip/i });
+      // Select a stage to trigger update flow (not skip flow)
+      await user.click(stageSelect);
+      const proposalOption = await screen.findByRole('option', { name: /Proposal/i });
+      await user.click(proposalOption);
 
-      // Click update (which sets isSubmitting = true)
+      // Now click the Update button (text should be "Update & Close")
+      const updateButton = await screen.findByRole('button', { name: /Update & Close/i });
       await user.click(updateButton);
 
-      // Buttons should be disabled during submission
-      expect(updateButton).toBeDisabled();
-      expect(skipButton).toBeDisabled();
+      // After the click, wait for the UI to reflect the "submitting" state
+      await waitFor(() => {
+        const submittingButton = screen.getByRole('button', { name: /Updating.../i });
+        expect(submittingButton).toBeDisabled();
+        expect(screen.getByRole('button', { name: /Skip/i })).toBeDisabled();
+      });
     });
   });
 
