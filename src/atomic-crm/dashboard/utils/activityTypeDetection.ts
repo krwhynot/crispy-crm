@@ -14,36 +14,36 @@ import type { InteractionType } from '@/atomic-crm/validation/activities';
  * Infers activity type from task title by detecting keywords
  *
  * Detection rules (first match wins):
- * - "call" or "phone" → Call
- * - "email" or "e-mail" → Email
- * - "meeting", "demo", "presentation", "appointment" → Meeting
- * - Default → Note
+ * - "call" or "phone" → call
+ * - "email" or "e-mail" → email
+ * - "meeting", "demo", "presentation", "appointment" → meeting
+ * - Default → check_in
  *
  * @param taskTitle - The task title to analyze
  * @returns The inferred activity type
  *
  * @example
- * inferActivityTypeFromTaskTitle("Call about pricing") // "Call"
- * inferActivityTypeFromTaskTitle("Send email proposal") // "Email"
- * inferActivityTypeFromTaskTitle("Follow up on contract") // "Note"
+ * inferActivityTypeFromTaskTitle("Call about pricing") // "call"
+ * inferActivityTypeFromTaskTitle("Send email proposal") // "email"
+ * inferActivityTypeFromTaskTitle("Follow up on contract") // "check_in"
  */
-export function inferActivityTypeFromTaskTitle(taskTitle: string): InteractionType {
+export function inferActivityTypeFromTaskTitle(taskTitle: string): string {
   const title = taskTitle.toLowerCase().trim();
 
   // Use word boundaries to avoid matching partial words
   // \b ensures we match whole words only
   if (/\b(call|phone)\b/.test(title)) {
-    return 'Call';
+    return 'call';
   }
 
   if (/\b(email|e-mail)\b/.test(title)) {
-    return 'Email';
+    return 'email';
   }
 
   if (/\b(meeting|demo|presentation|appointment)\b/.test(title)) {
-    return 'Meeting';
+    return 'meeting';
   }
 
   // Default fallback
-  return 'Note';
+  return 'check_in';
 }

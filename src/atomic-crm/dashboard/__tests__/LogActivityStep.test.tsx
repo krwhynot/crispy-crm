@@ -51,9 +51,8 @@ describe('LogActivityStep', () => {
       // Should show "Auto-detected" hint
       expect(screen.getByText(/Auto-detected from task title/i)).toBeInTheDocument();
 
-      // Activity Type dropdown should have "Call" selected
-      const activityTypeSelect = screen.getByLabelText(/Activity Type/i);
-      expect(activityTypeSelect).toHaveValue('call');
+      // Activity Type dropdown should show "Call" (shadcn Select shows label, not value)
+      expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Call');
     });
 
     it('detects "Email" from task title containing "email"', () => {
@@ -63,8 +62,7 @@ describe('LogActivityStep', () => {
 
       render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
 
-      const activityTypeSelect = screen.getByLabelText(/Activity Type/i);
-      expect(activityTypeSelect).toHaveValue('email');
+      expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Email');
     });
 
     it('detects "Meeting" from task title containing "meeting"', () => {
@@ -74,8 +72,7 @@ describe('LogActivityStep', () => {
 
       render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
 
-      const activityTypeSelect = screen.getByLabelText(/Activity Type/i);
-      expect(activityTypeSelect).toHaveValue('meeting');
+      expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Meeting');
     });
 
     it('detects "Meeting" from task title containing "demo"', () => {
@@ -85,19 +82,17 @@ describe('LogActivityStep', () => {
 
       render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
 
-      const activityTypeSelect = screen.getByLabelText(/Activity Type/i);
-      expect(activityTypeSelect).toHaveValue('meeting');
+      expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Meeting');
     });
 
-    it('defaults to "Note" for generic task titles', () => {
+    it('defaults to "Check-in" for generic task titles', () => {
       const task = createMockTask({ title: 'Follow up on proposal' });
       const onSave = vi.fn();
       const onSkip = vi.fn();
 
       render(<LogActivityStep task={task} onSave={onSave} onSkip={onSkip} />);
 
-      const activityTypeSelect = screen.getByLabelText(/Activity Type/i);
-      expect(activityTypeSelect).toHaveValue('note');
+      expect(screen.getByRole('combobox', { name: /Activity Type/i })).toHaveTextContent('Check-in');
     });
   });
 
