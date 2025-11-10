@@ -1,7 +1,7 @@
 import { TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
-interface TabTriggerWithErrorsProps {
+export interface TabTriggerWithErrorsProps {
   value: string;
   label: string;
   errorCount: number;
