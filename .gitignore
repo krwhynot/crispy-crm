@@ -65,6 +65,9 @@ backups/
 logs/sync-operations/
 scripts/dev/test-fetch.mjs
 
+# Data files (binary files, spreadsheets, etc.)
+data/
+
 # Supabase seed files with real user data
 supabase/cloud_users.sql
 .vercel
