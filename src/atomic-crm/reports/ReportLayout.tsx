@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { ReactNode } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 
