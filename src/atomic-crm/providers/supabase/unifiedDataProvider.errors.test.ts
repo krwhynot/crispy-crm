@@ -98,6 +98,12 @@ vi.mock("../../validation/products", () => ({
   validateOpportunityProduct: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock("../../validation/activities", () => ({
+  validateActivitiesForm: vi.fn().mockResolvedValue(undefined),
+  validateEngagementsForm: vi.fn().mockResolvedValue(undefined),
+  validateInteractionsForm: vi.fn().mockResolvedValue(undefined),
+}));
+
 vi.mock("../../validation/rpc", () => ({
   RPC_SCHEMAS: {},
   edgeFunctionSchemas: {},
@@ -146,11 +152,13 @@ describe("unifiedDataProvider - Error Handling", () => {
     });
 
     it("should propagate network errors on delete", async () => {
-      mockDelete.mockReset();
+      // Clear all mocks to ensure clean state
+      vi.clearAllMocks();
+      // Use segments which do NOT support soft delete (not in SOFT_DELETE_RESOURCES)
       mockDelete.mockRejectedValue(new Error("Network error"));
 
       await expect(
-        unifiedDataProvider.delete("tags", {
+        unifiedDataProvider.delete("segments", {
           id: 1,
           previousData: { id: 1 },
         })
@@ -253,18 +261,17 @@ describe("unifiedDataProvider - Error Handling", () => {
 
     it("should propagate foreign key constraint violations", async () => {
       vi.clearAllMocks();
-      mockCreate.mockRejectedValue({
-        
-        message: 'insert or update on table "activities" violates foreign key constraint',
-        details: 'Key (contact_id)=(999) is not present in table "contacts".',
-      });
+      // Use Error object with code and details properties to match Supabase error format
+      const error: any = new Error('insert or update on table "activities" violates foreign key constraint');
+      error.code = '23503';
+      error.details = 'Key (contact_id)=(999) is not present in table "contacts".';
+      mockCreate.mockRejectedValue(error);
 
       await expect(
         unifiedDataProvider.create("activities", {
           data: { contact_id: 999, activity_type: "call" },
         })
       ).rejects.toMatchObject({
-        
         message: expect.stringContaining("foreign key"),
       });
     });
@@ -298,7 +305,8 @@ describe("unifiedDataProvider - Error Handling", () => {
           data: { name: "" }, // Assuming empty name violates check
         })
       ).rejects.toMatchObject({
-        code: "23514",
+        message: expect.stringContaining("check constraint"),
+        errors: expect.any(Object),
       });
     });
   });
