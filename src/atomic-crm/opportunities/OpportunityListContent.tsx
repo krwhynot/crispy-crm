@@ -61,16 +61,8 @@ export const OpportunityListContent = () => {
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
-    console.log("🎯 Drag ended:", {
-      draggableId,
-      source: source.droppableId,
-      destination: destination?.droppableId,
-      result
-    });
-
     // Dropped outside a valid droppable
     if (!destination) {
-      console.log("❌ No destination - dropped outside");
       return;
     }
 
@@ -128,8 +120,8 @@ export const OpportunityListContent = () => {
           notify(`Moved to ${getOpportunityStageLabel(destColId)}`, {
             type: "success",
           });
-          // Refresh to sync with any server-side changes
-          refresh();
+          // No refresh() needed - optimistic update already shows correct state
+          // This prevents UI flicker from refetching data
         },
         onError: () => {
           notify("Error: Could not move opportunity. Reverting.", {
