@@ -88,6 +88,16 @@ const Header = () => {
                   to="/products"
                   isActive={currentPath === "/products"}
                 />
+                <NavigationTab
+                  label="Tasks"
+                  to="/tasks"
+                  isActive={currentPath === "/tasks"}
+                />
+                <NavigationTab
+                  label="Reports"
+                  to="/reports/weekly-activity"
+                  isActive={currentPath === "/reports"}
+                />
               </nav>
             </div>
             <div className="flex items-center">
