@@ -272,12 +272,12 @@ export interface Task extends Pick<RaRecord, "id"> {
   title: string;
   description?: string | null;
   contact_id: Identifier;
-  type: string;
+  type: Database["public"]["Enums"]["task_type"];
   due_date: string;
   reminder_date?: string | null;
   completed?: boolean;
   completed_at?: string | null;
-  priority?: "low" | "medium" | "high";
+  priority?: Database["public"]["Enums"]["priority_level"];
   opportunity_id?: Identifier;
   sales_id?: Identifier;
   opportunity_owner_id?: Identifier;
