@@ -98,6 +98,9 @@ describe('UpdateOpportunityStep', () => {
     });
 
     it('shows error state when fetch fails', async () => {
+      // Suppress console.error for this test since we're intentionally testing error state
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
       mockDataProvider.getOne.mockRejectedValueOnce(new Error('Network error'));
 
       const onUpdate = vi.fn();
@@ -117,10 +120,14 @@ describe('UpdateOpportunityStep', () => {
 
       // Should show "Continue Anyway" button
       expect(screen.getByRole('button', { name: /Continue Anyway/i })).toBeInTheDocument();
+
+      consoleErrorSpy.mockRestore();
     });
 
     it('calls onSkip when "Continue Anyway" is clicked in error state', async () => {
       const user = userEvent.setup();
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
       mockDataProvider.getOne.mockRejectedValueOnce(new Error('Network error'));
 
       const onUpdate = vi.fn();
@@ -141,6 +148,8 @@ describe('UpdateOpportunityStep', () => {
       await user.click(screen.getByRole('button', { name: /Continue Anyway/i }));
 
       expect(onSkip).toHaveBeenCalled();
+
+      consoleErrorSpy.mockRestore();
     });
   });
 
