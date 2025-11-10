@@ -13,6 +13,7 @@
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import { Route, Routes } from "react-router-dom";
 import type * as RaCore from "ra-core";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
@@ -40,12 +41,16 @@ vi.mock("ra-core", async () => {
 });
 
 // Mock @tanstack/react-query
-vi.mock("@tanstack/react-query", () => ({
-  useMutation: vi.fn(() => ({
-    mutate: vi.fn(),
-    isPending: false,
-  })),
-}));
+vi.mock("@tanstack/react-query", async () => {
+  const actual = await vi.importActual("@tanstack/react-query");
+  return {
+    ...actual,
+    useMutation: vi.fn(() => ({
+      mutate: vi.fn(),
+      isPending: false,
+    })),
+  };
+});
 
 // Mock ReferenceField
 vi.mock("@/components/admin/reference-field", () => ({
@@ -154,10 +159,15 @@ describe("OpportunityShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OpportunityShow />, {
-      resource: "opportunities",
-      initialEntries: ["/opportunities/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/opportunities/:id/show" element={<OpportunityShow />} />
+      </Routes>,
+      {
+        resource: "opportunities",
+        initialEntries: ["/opportunities/1/show"],
+      }
+    );
 
     // When isPending is true, the component returns null
     expect(screen.queryByRole("tab")).not.toBeInTheDocument();
