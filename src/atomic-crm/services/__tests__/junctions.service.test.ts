@@ -120,7 +120,7 @@ describe("JunctionsService", () => {
           .fn()
           .mockResolvedValue({ data: createdRecord });
 
-        const result = await service.addContactToOrganization(
+        await service.addContactToOrganization(
           contactId,
           organizationId
         );
@@ -470,7 +470,7 @@ describe("JunctionsService", () => {
           data: { id: 1, opportunity_id: 1, contact_id: 201, is_primary: false },
         });
 
-        const result = await service.addOpportunityContact(1, 201);
+        await service.addOpportunityContact(1, 201);
 
         expect(mockDataProvider.create).toHaveBeenCalledWith(
           "opportunity_contacts",
@@ -646,7 +646,7 @@ describe("JunctionsService", () => {
           data: { ...currentRecord, role: "Decision Maker", is_primary: true },
         });
 
-        const result = await service.updateOpportunityContactMetadata(1, {
+        await service.updateOpportunityContactMetadata(1, {
           role: "Decision Maker",
           is_primary: true,
         });

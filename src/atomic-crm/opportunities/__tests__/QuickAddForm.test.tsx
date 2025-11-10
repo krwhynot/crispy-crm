@@ -235,7 +235,7 @@ describe('QuickAddForm', () => {
   });
 
   it('filters products by selected principal', async () => {
-    const user = userEvent.setup();
+    userEvent.setup();
 
     // Mock no principal selected initially
     mockLocalStorage.getItem.mockImplementation((key) => {

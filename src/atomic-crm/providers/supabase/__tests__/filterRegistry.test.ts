@@ -38,7 +38,7 @@ describe('filterRegistry', () => {
     });
 
     it('should have non-empty filter arrays for each resource', () => {
-      for (const [resource, fields] of Object.entries(filterableFields)) {
+      for (const [_resource, fields] of Object.entries(filterableFields)) {
         expect(fields.length).toBeGreaterThan(0);
         expect(fields).toBeTruthy();
       }
@@ -90,7 +90,7 @@ describe('filterRegistry', () => {
 
     it('should not include operator suffixes in base field names', () => {
       // Field names should be base names, not include @gte, @lte, etc.
-      for (const [resource, fields] of Object.entries(filterableFields)) {
+      for (const [_resource, fields] of Object.entries(filterableFields)) {
         for (const field of fields) {
           expect(field).not.toMatch(/@/);
           expect(field).not.toMatch(/\$/);
@@ -102,7 +102,7 @@ describe('filterRegistry', () => {
       // Field names should be snake_case or lowercase
       const validFieldPattern = /^[a-z_][a-z0-9_]*$/;
 
-      for (const [resource, fields] of Object.entries(filterableFields)) {
+      for (const [_resource, fields] of Object.entries(filterableFields)) {
         for (const field of fields) {
           expect(field).toMatch(validFieldPattern);
         }
@@ -223,7 +223,7 @@ describe('filterRegistry', () => {
 
   describe('Field Uniqueness', () => {
     it('should not have duplicate fields in any resource', () => {
-      for (const [resource, fields] of Object.entries(filterableFields)) {
+      for (const [_resource, fields] of Object.entries(filterableFields)) {
         const uniqueFields = new Set(fields);
         expect(uniqueFields.size).toBe(fields.length);
       }

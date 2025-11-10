@@ -14,14 +14,13 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { Route, Routes } from "react-router-dom";
-import type * as RaCore from "ra-core";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
 import OpportunityShow from "../OpportunityShow";
 
 // Mock dependencies
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof RaCore>("ra-core");
+  const actual = await vi.importActual("ra-core");
   return {
     ...actual,
     useShowContext: vi.fn(),
@@ -116,7 +115,7 @@ vi.mock("../ChangeLogTab", () => ({
 }));
 
 vi.mock("../ActivityTimelineFilters", () => ({
-  ActivityTimelineFilters: ({ onFiltersChange }: any) => (
+  ActivityTimelineFilters: () => (
     <div data-testid="activity-filters">Filters</div>
   ),
 }));

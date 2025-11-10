@@ -18,7 +18,6 @@ import {
   type TaskType,
   type PriorityLevel,
 } from "../task";
-import { z } from "zod";
 
 describe("Task Validation Schemas (task.ts)", () => {
   describe("taskTypeSchema", () => {

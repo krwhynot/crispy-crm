@@ -69,13 +69,13 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Enter opportunity name"
-                  autoFocus
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Stage</label>
+                <label htmlFor="stage" className="block text-sm font-medium mb-1">Stage</label>
                 <input
+                  id="stage"
                   type="text"
                   value={stageLabel}
                   disabled

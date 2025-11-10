@@ -7,7 +7,6 @@
 import { describe, test, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { OpportunityViewSwitcher } from "../OpportunityViewSwitcher";
-import type { OpportunityView } from "../OpportunityViewSwitcher";
 
 describe("OpportunityViewSwitcher", () => {
   test("renders both view options", () => {

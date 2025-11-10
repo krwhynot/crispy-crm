@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { OpportunityCard } from "../OpportunityCard";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { useOpportunityContacts } from "../useOpportunityContacts";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { BrowserRouter } from "react-router-dom";

@@ -55,11 +55,10 @@ export interface DuplicateReport {
 
 /**
  * Data quality decisions made by the user
+ * Reserved for future use - organizations don't have the same quality issues as contacts
+ * Example: mergeDuplicates, standardizePhoneFormat, etc.
  */
-export interface DataQualityDecisions {
-  // Reserved for future use - organizations don't have the same quality issues as contacts
-  // Example: mergeDuplicates, standardizePhoneFormat, etc.
-}
+export type DataQualityDecisions = Record<string, never>;
 
 /**
  * Result of applying data quality transformations
