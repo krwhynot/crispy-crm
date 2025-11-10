@@ -2179,3 +2179,6 @@
 [2025-11-10 04:33:10] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityListContent.tsx
 [2025-11-10 04:33:27] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityListContent.tsx
 [2025-11-10 04:38:09] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityArchivedList.tsx
+[2025-11-10 04:38:38] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityArchivedList.tsx
+[2025-11-10 04:40:56] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-10-dashboard-quick-actions-design.md
+[2025-11-10 05:05:24] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251110110402_dashboard_quick_actions_view_update.sql
