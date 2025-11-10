@@ -13,96 +13,96 @@ import { inferActivityTypeFromTaskTitle } from '../activityTypeDetection';
 
 describe('inferActivityTypeFromTaskTitle', () => {
   describe('Call detection', () => {
-    it('detects "call" keyword as Call activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Call about pricing')).toBe('Call');
+    it('detects "call" keyword as call activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Call about pricing')).toBe('call');
     });
 
-    it('detects "Call" with capital C as Call activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Call chef John')).toBe('Call');
+    it('detects "Call" with capital C as call activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Call chef John')).toBe('call');
     });
 
-    it('detects "call" in middle of title as Call activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Follow up call about delivery')).toBe('Call');
+    it('detects "call" in middle of title as call activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Follow up call about delivery')).toBe('call');
     });
 
-    it('detects "phone" keyword as Call activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Phone the buyer')).toBe('Call');
+    it('detects "phone" keyword as call activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Phone the buyer')).toBe('call');
     });
   });
 
   describe('Email detection', () => {
-    it('detects "email" keyword as Email activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Send email about proposal')).toBe('Email');
+    it('detects "email" keyword as email activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Send email about proposal')).toBe('email');
     });
 
-    it('detects "Email" with capital E as Email activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Email pricing quote')).toBe('Email');
+    it('detects "Email" with capital E as email activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Email pricing quote')).toBe('email');
     });
 
-    it('detects "e-mail" with hyphen as Email activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Send e-mail follow-up')).toBe('Email');
+    it('detects "e-mail" with hyphen as email activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Send e-mail follow-up')).toBe('email');
     });
   });
 
   describe('Meeting detection', () => {
-    it('detects "meeting" keyword as Meeting activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Schedule meeting with buyer')).toBe('Meeting');
+    it('detects "meeting" keyword as meeting activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Schedule meeting with buyer')).toBe('meeting');
     });
 
-    it('detects "demo" keyword as Meeting activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Product demo for chef')).toBe('Meeting');
+    it('detects "demo" keyword as meeting activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Product demo for chef')).toBe('meeting');
     });
 
-    it('detects "presentation" keyword as Meeting activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Give presentation to team')).toBe('Meeting');
+    it('detects "presentation" keyword as meeting activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Give presentation to team')).toBe('meeting');
     });
 
-    it('detects "appointment" keyword as Meeting activity', () => {
-      expect(inferActivityTypeFromTaskTitle('Appointment with distributor')).toBe('Meeting');
+    it('detects "appointment" keyword as meeting activity', () => {
+      expect(inferActivityTypeFromTaskTitle('Appointment with distributor')).toBe('meeting');
     });
   });
 
   describe('Default behavior', () => {
-    it('returns "Note" for generic task without keywords', () => {
-      expect(inferActivityTypeFromTaskTitle('Follow up on proposal')).toBe('Note');
+    it('returns "check_in" for generic task without keywords', () => {
+      expect(inferActivityTypeFromTaskTitle('Follow up on proposal')).toBe('check_in');
     });
 
-    it('returns "Note" for empty string', () => {
-      expect(inferActivityTypeFromTaskTitle('')).toBe('Note');
+    it('returns "check_in" for empty string', () => {
+      expect(inferActivityTypeFromTaskTitle('')).toBe('check_in');
     });
 
-    it('returns "Note" for task about deliveries', () => {
-      expect(inferActivityTypeFromTaskTitle('Check delivery status')).toBe('Note');
+    it('returns "check_in" for task about deliveries', () => {
+      expect(inferActivityTypeFromTaskTitle('Check delivery status')).toBe('check_in');
     });
 
-    it('returns "Note" for task about paperwork', () => {
-      expect(inferActivityTypeFromTaskTitle('Review contract terms')).toBe('Note');
+    it('returns "check_in" for task about paperwork', () => {
+      expect(inferActivityTypeFromTaskTitle('Review contract terms')).toBe('check_in');
     });
   });
 
   describe('Edge cases', () => {
     it('handles title with multiple keywords - first match wins', () => {
       // "call" appears before "email"
-      expect(inferActivityTypeFromTaskTitle('Call before sending email')).toBe('Call');
+      expect(inferActivityTypeFromTaskTitle('Call before sending email')).toBe('call');
     });
 
     it('is case-insensitive', () => {
-      expect(inferActivityTypeFromTaskTitle('CALL ABOUT PRICING')).toBe('Call');
-      expect(inferActivityTypeFromTaskTitle('send EMAIL')).toBe('Email');
-      expect(inferActivityTypeFromTaskTitle('MEETING with chef')).toBe('Meeting');
+      expect(inferActivityTypeFromTaskTitle('CALL ABOUT PRICING')).toBe('call');
+      expect(inferActivityTypeFromTaskTitle('send EMAIL')).toBe('email');
+      expect(inferActivityTypeFromTaskTitle('MEETING with chef')).toBe('meeting');
     });
 
     it('handles whitespace around keywords', () => {
-      expect(inferActivityTypeFromTaskTitle('  call  ')).toBe('Call');
-      expect(inferActivityTypeFromTaskTitle('\\temail\\t')).toBe('Email');
+      expect(inferActivityTypeFromTaskTitle('  call  ')).toBe('call');
+      expect(inferActivityTypeFromTaskTitle('\\temail\\t')).toBe('email');
     });
 
     it('does not match partial words', () => {
       // "recall" contains "call" but should not match
-      expect(inferActivityTypeFromTaskTitle('Recall product batch')).toBe('Note');
+      expect(inferActivityTypeFromTaskTitle('Recall product batch')).toBe('check_in');
 
       // "female" contains "email" but should not match
-      expect(inferActivityTypeFromTaskTitle('Contact female buyer')).toBe('Note');
+      expect(inferActivityTypeFromTaskTitle('Contact female buyer')).toBe('check_in');
     });
   });
 });
