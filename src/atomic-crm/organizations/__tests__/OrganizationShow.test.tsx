@@ -140,11 +140,16 @@ describe("OrganizationShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OrganizationShow />, {
-      resource: "organizations",
-      record: mockOrg,
-      initialEntries: ["/organizations/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+      </Routes>,
+      {
+        resource: "organizations",
+        record: mockOrg,
+        initialEntries: ["/organizations/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Check main content area
@@ -184,10 +189,16 @@ describe("OrganizationShow", () => {
         error: null,
       });
 
-      const { unmount } = renderWithAdminContext(<OrganizationShow />, {
-        resource: "organizations",
-        record: mockOrg,
-      });
+      const { unmount } = renderWithAdminContext(
+        <Routes>
+          <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+        </Routes>,
+        {
+          resource: "organizations",
+          record: mockOrg,
+          initialEntries: ["/organizations/1/show"],
+        }
+      );
 
       await waitFor(() => {
         expect(screen.getByRole("tab", { name: new RegExp(expected, "i") })).toBeInTheDocument();
@@ -219,10 +230,16 @@ describe("OrganizationShow", () => {
         error: null,
       });
 
-      const { unmount } = renderWithAdminContext(<OrganizationShow />, {
-        resource: "organizations",
-        record: mockOrg,
-      });
+      const { unmount } = renderWithAdminContext(
+        <Routes>
+          <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+        </Routes>,
+        {
+          resource: "organizations",
+          record: mockOrg,
+          initialEntries: ["/organizations/1/show"],
+        }
+      );
 
       await waitFor(() => {
         expect(screen.getByRole("tab", { name: new RegExp(expected, "i") })).toBeInTheDocument();
@@ -247,11 +264,16 @@ describe("OrganizationShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OrganizationShow />, {
-      resource: "organizations",
-      record: mockOrg,
-      initialEntries: ["/organizations/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+      </Routes>,
+      {
+        resource: "organizations",
+        record: mockOrg,
+        initialEntries: ["/organizations/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Activity tab should be selected by default
@@ -271,11 +293,16 @@ describe("OrganizationShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OrganizationShow />, {
-      resource: "organizations",
-      record: mockOrg,
-      initialEntries: ["/organizations/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+      </Routes>,
+      {
+        resource: "organizations",
+        record: mockOrg,
+        initialEntries: ["/organizations/1/show"],
+      }
+    );
 
     await waitFor(() => {
       expect(screen.getByTestId("org-avatar")).toBeInTheDocument();
@@ -289,10 +316,15 @@ describe("OrganizationShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OrganizationShow />, {
-      resource: "organizations",
-      initialEntries: ["/organizations/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+      </Routes>,
+      {
+        resource: "organizations",
+        initialEntries: ["/organizations/1/show"],
+      }
+    );
 
     // When record is null, component returns null
     expect(screen.queryByRole("main")).not.toBeInTheDocument();
@@ -310,11 +342,16 @@ describe("OrganizationShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OrganizationShow />, {
-      resource: "organizations",
-      record: mockOrg,
-      initialEntries: ["/organizations/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+      </Routes>,
+      {
+        resource: "organizations",
+        record: mockOrg,
+        initialEntries: ["/organizations/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Check aside section
@@ -337,11 +374,16 @@ describe("OrganizationShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OrganizationShow />, {
-      resource: "organizations",
-      record: mockOrg,
-      initialEntries: ["/organizations/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+      </Routes>,
+      {
+        resource: "organizations",
+        record: mockOrg,
+        initialEntries: ["/organizations/1/show"],
+      }
+    );
 
     await waitFor(() => {
       // Check all three tabs are present
