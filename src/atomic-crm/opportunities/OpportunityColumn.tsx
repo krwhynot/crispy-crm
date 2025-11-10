@@ -41,7 +41,7 @@ export const OpportunityColumn = ({
   }[elevation];
 
   return (
-    <div className={`flex-1 pb-8 min-w-[240px] max-w-[280px] bg-card border border-[var(--border)] rounded-2xl shadow-[var(--shadow-col-inner)] ${shadowConfig.rest} ${shadowConfig.hover} transition-[box-shadow,border-color] duration-200 ease-in-out px-3`}>
+    <div className={`flex-1 pb-8 min-w-[240px] max-w-[280px] bg-card border border-[var(--border)] rounded-2xl shadow-[var(--shadow-col-inner)] ${shadowConfig.rest} ${shadowConfig.hover} transition-[box-shadow,border-color] duration-200 ease-in-out px-3`} data-testid="kanban-column">
       <div className="flex items-center justify-between mb-4 pb-3 border-b border-border px-3 py-2">
         <div className="flex items-center gap-2">
           {onToggleCollapse && (
