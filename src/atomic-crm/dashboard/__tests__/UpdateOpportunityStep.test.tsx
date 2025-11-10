@@ -270,7 +270,7 @@ describe('UpdateOpportunityStep', () => {
   });
 
   describe('Update Functionality', () => {
-    it('calls onUpdate with null when no stage is selected', async () => {
+    it('calls onSkip when no stage is selected and button clicked', async () => {
       const user = userEvent.setup();
       mockDataProvider.getOne.mockResolvedValueOnce({
         data: mockOpportunity,
@@ -291,10 +291,11 @@ describe('UpdateOpportunityStep', () => {
         expect(screen.getByRole('button', { name: /Keep Stage & Close/i })).toBeInTheDocument();
       });
 
-      // Click "Keep Stage & Close" (no stage selected)
+      // Click "Keep Stage & Close" (no stage selected) - should call onSkip
       await user.click(screen.getByRole('button', { name: /Keep Stage & Close/i }));
 
-      expect(onUpdate).toHaveBeenCalledWith(null);
+      expect(onSkip).toHaveBeenCalled();
+      expect(onUpdate).not.toHaveBeenCalled();
     });
 
     it('calls onUpdate with selected stage', async () => {
