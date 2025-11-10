@@ -10,11 +10,18 @@
  *   node scripts/validation/run-pre-validation.js --dry-run
  */
 
-const { execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
-const { Client } = require("pg");
-require("dotenv").config();
+import { execSync } from "child_process";
+import fs from "fs";
+import path from "path";
+import { Client } from "pg";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// Get __dirname for ES modules
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Console color helpers
 const colors = {
