@@ -74,10 +74,7 @@ export default function TaskEdit() {
           />
         </div>
 
-        <ReferenceInput
-          source="opportunity_id"
-          reference="opportunities"
-        >
+        <ReferenceInput source="opportunity_id" reference="opportunities">
           <AutocompleteInput
             label="Opportunity"
             optionText="title"
@@ -85,10 +82,7 @@ export default function TaskEdit() {
           />
         </ReferenceInput>
 
-        <ReferenceInput
-          source="contact_id"
-          reference="contacts_summary"
-        >
+        <ReferenceInput source="contact_id" reference="contacts_summary">
           <AutocompleteInput
             label="Contact"
             optionText={contactOptionText}
