@@ -31,5 +31,5 @@ if [ -n "$env_files" ]; then
   exit 1
 fi
 
-# Run tests
-npm test
+# Run tests (non-interactive mode for pre-commit)
+npm run test:ci
