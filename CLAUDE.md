@@ -10,6 +10,7 @@ Atomic CRM - Full-featured, open-source CRM with React, shadcn-admin-kit, and Su
 
 ## Recent Changes (90 days)
 
+- **Tasks Module + Weekly Activity Report (2025-11-09)**: Complete Tasks CRUD with principal-grouped list view, full test coverage (43 unit tests + 6 E2E tests), filterRegistry integration. Weekly Activity Report groups activities by rep → principal with CSV export. Known issue: Duplicate validation files (`task.ts` current, `tasks.ts` legacy with 28 tests - cleanup pending). Plan: `docs/plans/2025-11-09-tasks-module-weekly-activity-report.md`
 - **Spacing System Phase 1 (2025-11-08)**: Semantic spacing tokens for consistent layouts. CSS custom properties in `src/index.css` for grid, edge padding, vertical rhythm. Applied to Reports Module. Design: `docs/plans/2025-11-08-spacing-layout-system-design.md`
 - **Security & Testing Remediation (2025-11-08)**: 4-phase remediation complete - RLS admin-only policies, CSV validation, 65 new tests (95.4% pass rate), WCAG 2.1 AA compliance, Promise.allSettled error handling
 - **Principal-Centric Redesign v2.0 (2025-11-05)**: Dashboard → table view, 2 MVP reports (Opportunities by Principal ⭐, Weekly Activity Summary), 30-day Excel replacement goal. Design: `docs/plans/2025-11-05-principal-centric-crm-design.md`

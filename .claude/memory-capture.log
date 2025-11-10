@@ -2059,3 +2059,10 @@
 [2025-11-09 23:03:37] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/root/CRM.tsx
 [2025-11-09 23:03:51] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/root/CRM.tsx
 [2025-11-09 23:18:07] [code] Write: /home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/__tests__/task.test.ts
+[2025-11-09 23:19:14] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/TasksListPage.ts
+[2025-11-09 23:19:31] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/TaskFormPage.ts
+[2025-11-09 23:19:51] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/support/poms/TaskShowPage.ts
+[2025-11-09 23:20:29] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/specs/tasks/tasks-crud.spec.ts
+[2025-11-09 23:21:04] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts
+[2025-11-09 23:21:53] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-11-09 23:23:43] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/layout/Header.tsx

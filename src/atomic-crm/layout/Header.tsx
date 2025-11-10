@@ -24,6 +24,10 @@ const Header = () => {
     currentPath = "/opportunities";
   } else if (matchPath("/products/*", location.pathname)) {
     currentPath = "/products";
+  } else if (matchPath("/tasks/*", location.pathname)) {
+    currentPath = "/tasks";
+  } else if (matchPath("/reports/*", location.pathname)) {
+    currentPath = "/reports";
   } else {
     currentPath = false;
   }
