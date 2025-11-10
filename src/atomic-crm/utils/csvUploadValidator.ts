@@ -232,7 +232,7 @@ export function sanitizeCsvValue(value: any): string {
   }
 
   // 2. Remove control characters
-  sanitized = sanitized.replace(/[\\x00-\\x1F\\x7F]/g, '');
+  sanitized = sanitized.replace(/[\x00-\x1F\x7F]/g, '');
 
   // 3. Remove potential HTML/script tags
   sanitized = sanitized.replace(/<[^>]*>/g, '');

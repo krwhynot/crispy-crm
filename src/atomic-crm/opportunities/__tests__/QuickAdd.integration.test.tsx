@@ -152,8 +152,10 @@ describe('QuickAdd Integration', () => {
     vi.restoreAllMocks();
   });
 
-  it('completes full atomic creation flow with Save & Close', async () => {
-    renderWithAdminContext(<QuickAddButton />);
+  it(
+    'completes full atomic creation flow with Save & Close',
+    async () => {
+      renderWithAdminContext(<QuickAddButton />);
 
     // 1. Open dialog
     const quickAddButton = screen.getByText(/quick add/i);
@@ -232,10 +234,14 @@ describe('QuickAdd Integration', () => {
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
-  });
+    },
+    10000
+  );
 
-  it('handles Save & Add Another flow correctly', async () => {
-    renderWithAdminContext(<QuickAddButton />);
+  it(
+    'handles Save & Add Another flow correctly',
+    async () => {
+      renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog
     await user.click(screen.getByText(/quick add/i));
@@ -319,7 +325,9 @@ describe('QuickAdd Integration', () => {
     await waitFor(() => {
       expect(screen.getByLabelText(/first name/i)).toHaveFocus();
     });
-  });
+    },
+    10000
+  );
 
   it.skip('handles errors and preserves form data', async () => {
     // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component

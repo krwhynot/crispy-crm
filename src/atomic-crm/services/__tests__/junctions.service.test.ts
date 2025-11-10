@@ -120,7 +120,7 @@ describe("JunctionsService", () => {
           .fn()
           .mockResolvedValue({ data: createdRecord });
 
-        await service.addContactToOrganization(
+        const result = await service.addContactToOrganization(
           contactId,
           organizationId
         );
