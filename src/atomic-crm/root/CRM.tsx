@@ -10,6 +10,7 @@ import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
 import opportunities from "../opportunities";
 import products from "../products";
+import tasks from "../tasks";
 import notifications from "../notifications";
 import { Layout } from "../layout/Layout";
 import {
@@ -145,9 +146,9 @@ export const CRM = ({
         <Resource name="contacts" {...contacts} />
         <Resource name="organizations" {...organizations} />
         <Resource name="products" {...products} />
+        <Resource name="tasks" {...tasks} />
         <Resource name="contactNotes" />
         <Resource name="opportunityNotes" />
-        <Resource name="tasks" />
         <Resource name="sales" {...sales} />
         <Resource name="tags" />
         <Resource name="segments" />
