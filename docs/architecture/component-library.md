@@ -585,6 +585,63 @@ interface OpportunityCardProps {
 
 ---
 
+### TabbedFormInputs
+
+**Location:** `src/components/admin/tabbed-form/`
+
+**Purpose:** Reusable container for tabbed form interfaces with automatic error tracking across all resource Create/Edit forms.
+
+**Components:**
+- `TabbedFormInputs` (Organism) - Main container with error tracking and tab management
+- `TabTriggerWithErrors` (Molecule) - Tab trigger with error badge and accessible aria-labels
+- `TabPanel` (Molecule) - Tab content wrapper with semantic styling
+
+**Usage Pattern:**
+
+```tsx
+const tabs = [
+  {
+    key: 'general',
+    label: 'General',
+    fields: ['name', 'email'],  // Fields for error tracking
+    content: <GeneralTab />,
+  },
+  {
+    key: 'details',
+    label: 'Details',
+    fields: ['phone', 'address'],
+    content: <DetailsTab />,
+  },
+];
+
+<TabbedFormInputs tabs={tabs} defaultTab="general" />
+```
+
+**Features:**
+- Automatic error count calculation per tab based on field mapping
+- Error badges display count only when > 0
+- Semantic color variables for consistent styling
+- React Hook Form integration via `useFormState()`
+- Memoized error calculations for performance
+- Accessible tab navigation and aria-labels
+
+**Forms Using Tabs:**
+- Organizations (General | Details | Other)
+- Sales (General | Permissions)
+- Tasks (General | Details)
+- Products (General | Relationships | Classification)
+- Contacts (Identity | Position | Contact Info | Account)
+- Opportunities (General | Classification | Relationships | Details)
+
+**Design System Compliance:**
+- Uses semantic color vars: `--border-subtle`, `--bg-secondary`
+- Padding: `p-6` (24px)
+- Border radius: `rounded-lg`
+- Touch targets: 44px minimum
+- WCAG AA accessibility
+
+---
+
 ## Component Composition Patterns
 
 ### Form with JSONB Arrays
