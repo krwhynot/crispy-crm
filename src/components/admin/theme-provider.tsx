@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useStore } from "ra-core";
-import { ThemeProviderContext, type Theme, useTheme } from "./theme-provider.utils";
-
-// Re-export useTheme for backward compatibility
-export { useTheme };
+import { ThemeProviderContext, type Theme } from "./theme-provider.utils";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
