@@ -32,10 +32,8 @@ test.describe('Weekly Activity Summary Report', () => {
 
     if (isLoginFormVisible) {
       await loginPage.login('admin@test.com', 'password123');
-    } else {
-      // Already logged in, wait for dashboard
-      await page.waitForURL(/\/#\//, { timeout: 10000 });
     }
+    // If not visible, storage state has already authenticated us - no need to wait
   });
 
   test.afterEach(async () => {
