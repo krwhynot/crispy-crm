@@ -41,7 +41,7 @@ export const TabbedFormInputs = ({
       defaultValue={defaultTab || tabs[0]?.key}
       className={className}
     >
-      <TabsList className="h-auto min-h-0 w-auto justify-start rounded-t-lg bg-muted p-[1px] gap-[1px] border-b-0">
+      <TabsList className="h-auto min-h-0 inline-flex justify-start rounded-t-lg bg-muted p-[1px] gap-[1px] border-b-0">
         {tabs.map((tab) => (
           <TabTriggerWithErrors
             key={tab.key}
