@@ -3,6 +3,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import { format } from "date-fns";
 import { useOpportunityContacts } from "./useOpportunityContacts";
 import { STUCK_THRESHOLD_DAYS } from "./useStageMetrics";
+import { OpportunityCardActions } from "./OpportunityCardActions";
 import type { Opportunity } from "../types";
 
 interface OpportunityCardProps {
@@ -53,19 +54,22 @@ export function OpportunityCard({ index }: OpportunityCardProps) {
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}
         >
-          {/* Header: Name + Priority */}
+          {/* Header: Name + Priority + Actions */}
           <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="font-medium text-sm text-foreground line-clamp-2">
+            <h3 className="font-medium text-sm text-foreground line-clamp-2 flex-1">
               {record.name}
             </h3>
-            <span
-              className={`
-                text-xs px-2 py-0.5 rounded-full whitespace-nowrap
-                ${priorityClass}
-              `}
-            >
-              {priorityLabel}
-            </span>
+            <div className="flex items-center gap-1">
+              <span
+                className={`
+                  text-xs px-2 py-0.5 rounded-full whitespace-nowrap
+                  ${priorityClass}
+                `}
+              >
+                {priorityLabel}
+              </span>
+              <OpportunityCardActions opportunityId={record.id as number} />
+            </div>
           </div>
 
           {/* Primary Contact */}
