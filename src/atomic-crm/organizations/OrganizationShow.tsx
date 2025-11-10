@@ -26,10 +26,13 @@ import { TagsList } from "../contacts/TagsList";
 import { findOpportunityLabel } from "../opportunities/opportunity";
 import { Status } from "../misc/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
-import type { Company, Contact, Opportunity } from "../types";
+import type { Company, Contact, Opportunity, OrganizationWithHierarchy } from "../types";
 import { formatName } from "../utils/formatName";
 import { OrganizationAside } from "./OrganizationAside";
 import { OrganizationAvatar } from "./OrganizationAvatar";
+import { HierarchyBreadcrumb } from "./HierarchyBreadcrumb";
+import { BranchLocationsSection } from "./BranchLocationsSection";
+import { ParentOrganizationSection } from "./ParentOrganizationSection";
 
 const OrganizationShow = () => (
   <ShowBase>
@@ -59,6 +62,7 @@ const OrganizationShowContent = () => {
   return (
     <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
       <main role="main" aria-label="Organization details">
+        <HierarchyBreadcrumb organization={record as OrganizationWithHierarchy} />
         <Card>
           <CardContent className="p-6">
             <div className="flex mb-3">
@@ -136,6 +140,8 @@ const OrganizationShowContent = () => {
             </Tabs>
           </CardContent>
         </Card>
+        <BranchLocationsSection org={record as OrganizationWithHierarchy} />
+        <ParentOrganizationSection />
       </main>
 
       <aside aria-label="Organization information">
