@@ -1,18 +1,5 @@
 {
-  "description": "Project hooks for file tracking, git checkpoints, and superpowers initialization",
   "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Execute the skill: superpowers:using-superpowers\n\n🚀 The superpowers system is now active and will enforce best practices throughout this session.",
-            "description": "Initialize superpowers system at session start"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
@@ -26,14 +13,10 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/checkpoint-trigger.sh",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/memory-capture.sh",
-            "timeout": 5
           }
         ]
       }
     ]
-  }
+  },
+  "description": "Project hooks for file tracking, git checkpoints, and superpowers initialization"
 }
