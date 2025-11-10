@@ -125,21 +125,12 @@ export function QuickCompleteTaskModal({
   };
 
   /**
-   * Handle skip in any step
-   * Advances to next step or completes without optional data
+   * Handle skip for opportunity update step (optional)
+   * Completes workflow without updating opportunity stage
    */
-  const handleSkip = () => {
-    if (step === FlowStep.LOG_ACTIVITY) {
-      // Can't skip activity logging - it's required
-      // User must provide at least minimal notes
-      return;
-    }
-
-    if (step === FlowStep.UPDATE_OPPORTUNITY) {
-      // Skip opportunity update, complete with activity only
-      if (activityData) {
-        handleComplete(activityData, null);
-      }
+  const handleSkipOpportunityUpdate = () => {
+    if (activityData) {
+      handleComplete(activityData, null);
     }
   };
 
@@ -159,7 +150,7 @@ export function QuickCompleteTaskModal({
           <LogActivityStep
             task={task}
             onSave={handleActivitySaved}
-            onSkip={handleSkip}
+            onCancel={onClose}
           />
         )}
 
@@ -168,7 +159,7 @@ export function QuickCompleteTaskModal({
           <UpdateOpportunityStep
             opportunityId={task.opportunity_id as number}
             onUpdate={handleOpportunityUpdated}
-            onSkip={handleSkip}
+            onSkip={handleSkipOpportunityUpdate}
           />
         )}
 

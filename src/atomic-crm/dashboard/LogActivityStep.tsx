@@ -22,13 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { CheckSquare, Briefcase, User } from "lucide-react";
 import { inferActivityTypeFromTaskTitle } from "./utils/activityTypeDetection";
 import type { Task } from "../types";
 
 interface LogActivityStepProps {
   task: Task;
   onSave: (activityData: ActivityData) => void;
-  onSkip: () => void;
+  onCancel: () => void;
 }
 
 export interface ActivityData {
@@ -54,7 +55,7 @@ const ACTIVITY_TYPE_CHOICES = [
   { value: "social", label: "Social" },
 ];
 
-export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) {
+export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps) {
   // Auto-detect activity type from task title
   const detectedType = inferActivityTypeFromTaskTitle(task.title);
 
@@ -86,7 +87,7 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
     };
 
     onSave(activityData);
-  }, [isValid, activityType, notes, task.title, onSave]);
+  }, [activityType, notes, task.title, onSave]); // Removed redundant isValid (derived from notes)
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -98,16 +99,16 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
           handleSave();
         }
       }
-      // Escape to skip
+      // Escape to cancel (close modal)
       if (e.key === "Escape") {
         e.preventDefault();
-        onSkip();
+        onCancel();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isValid, handleSave, onSkip]);
+  }, [isValid, handleSave, onCancel]);
 
   return (
     <div className="space-y-4">
@@ -128,7 +129,7 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
         </Select>
         {detectedType && (
           <p className="text-xs text-muted-foreground">
-            ( Auto-detected from task title
+            Auto-detected from task title
           </p>
         )}
       </div>
@@ -159,37 +160,40 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
       <div className="rounded-md bg-muted/50 p-3 text-sm">
         <p className="font-medium text-foreground">Related to:</p>
         <ul className="mt-1 space-y-1 text-muted-foreground">
-          <li>=� Task: {task.title}</li>
+          <li className="flex items-center gap-2">
+            <CheckSquare className="h-4 w-4" />
+            <span>Task: {task.title}</span>
+          </li>
           {task.opportunity_id && (
-            <li>=� Opportunity (ID: {task.opportunity_id})</li>
+            <li className="flex items-center gap-2">
+              <Briefcase className="h-4 w-4" />
+              <span>Opportunity (ID: {task.opportunity_id})</span>
+            </li>
           )}
-          {task.contact_id && <li>=d Contact (ID: {task.contact_id})</li>}
+          {task.contact_id && (
+            <li className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              <span>Contact (ID: {task.contact_id})</span>
+            </li>
+          )}
         </ul>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-2 pt-2">
-        <Button
-          variant="outline"
-          onClick={onSkip}
-          disabled={isSubmitting}
-          className="flex-1"
-        >
-          Skip
-        </Button>
+      <div className="pt-2">
         <Button
           onClick={handleSave}
           disabled={!isValid || isSubmitting}
-          className="flex-1"
+          className="w-full"
         >
-          {isSubmitting ? "Saving..." : "Save & Continue �"}
+          {isSubmitting ? "Saving..." : "Save & Continue →"}
         </Button>
       </div>
 
       {/* Keyboard Shortcuts Hint */}
       <p className="text-center text-xs text-muted-foreground">
-        <kbd className="rounded bg-muted px-1.5 py-0.5">Ctrl+Enter</kbd> to save
-        " <kbd className="rounded bg-muted px-1.5 py-0.5">Esc</kbd> to skip
+        <kbd className="rounded bg-muted px-1.5 py-0.5">Ctrl+Enter</kbd> to save •{" "}
+        <kbd className="rounded bg-muted px-1.5 py-0.5">Esc</kbd> to cancel
       </p>
     </div>
   );
