@@ -166,7 +166,6 @@ test.describe('Organization Hierarchies', () => {
           const isBranchVisible = await firstBranchLink.isVisible().catch(() => false);
 
           if (isBranchVisible) {
-            const branchName = await firstBranchLink.textContent();
             await firstBranchLink.click();
 
             // Verify navigation to branch page

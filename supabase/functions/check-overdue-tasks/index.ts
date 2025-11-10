@@ -16,21 +16,12 @@ import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
  * Prevents duplicates: Only notifies tasks where overdue_notified_at IS NULL
  */
 
-interface OverdueTask {
-  id: number;
-  title: string;
-  due_date: string;
-  sales_id: number;
-  contact_id: number | null;
-  opportunity_id: number | null;
-}
-
 interface Sales {
   id: number;
   user_id: string;
 }
 
-Deno.serve(async (req) => {
+Deno.serve(async (_req) => {
   try {
     console.log("Starting overdue tasks check...");
 
