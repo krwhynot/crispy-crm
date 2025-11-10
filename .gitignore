@@ -71,3 +71,7 @@ supabase/cloud_users.sql
 
 # Git worktrees (isolated development workspaces)
 .worktrees/
+
+# Claude Code session files
+.claude/checkpoint-state
+.claude/memory-capture.log
