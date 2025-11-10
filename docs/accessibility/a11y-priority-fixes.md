@@ -373,7 +373,7 @@ export const MyTasksThisWeek = () => {
 ### 11. Update CLAUDE.md with A11y Guidance
 **File:** `CLAUDE.md`
 **Content:**
-- Link to new `docs/A11Y_QUICK_REFERENCE.md`
+- Link to new `a11y-quick-reference.md`
 - A11y patterns section
 - ESLint rules overview
 
@@ -427,8 +427,8 @@ After implementing fixes:
 
 ## RESOURCES
 
-- Full Audit: `docs/ACCESSIBILITY_AUDIT.md`
-- Quick Reference: `docs/A11Y_QUICK_REFERENCE.md`
+- Full Audit: `accessibility-audit.md`
+- Quick Reference: `a11y-quick-reference.md`
 - ESLint Config: `eslint.config.js` (jsx-a11y plugin configured)
 
 ---

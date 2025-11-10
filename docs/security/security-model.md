@@ -420,6 +420,6 @@ This security model document should be reviewed:
 - [Supabase RLS Documentation](https://supabase.com/docs/guides/auth/row-level-security)
 - [OWASP Top 10 2021](https://owasp.org/Top10/)
 - Engineering Constitution: `.claude/engineering-constitution.md`
-- Security Audit: `docs/SECURITY_AUDIT_2025-11-08.md`
+- Security Audit: `security-audit-2025-11-08.md`
 - RLS Policies: `supabase/migrations/20251029024045_fix_rls_policies_company_isolation.sql`
 - Audit Trail: `supabase/migrations/20251103232837_create_audit_trail_system.sql`

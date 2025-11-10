@@ -6,7 +6,7 @@ This directory contains comprehensive accessibility analysis and implementation 
 
 ### For Developers
 Start here when implementing features:
-- **[A11Y_QUICK_REFERENCE.md](./A11Y_QUICK_REFERENCE.md)** - 5-minute developer guide with code examples
+- **[a11y-quick-reference.md](./a11y-quick-reference.md)** - 5-minute developer guide with code examples
   - Common violations and fixes
   - Available accessibility hooks
   - ESLint rules overview
@@ -14,7 +14,7 @@ Start here when implementing features:
 
 ### For Managers/Leads
 Start here for overview and planning:
-- **[A11Y_PRIORITY_FIXES.md](./A11Y_PRIORITY_FIXES.md)** - Implementation roadmap
+- **[a11y-priority-fixes.md](./a11y-priority-fixes.md)** - Implementation roadmap
   - Detailed fixes with code examples
   - Timeline estimates (20 hours to AA compliance)
   - Priority phases (Critical, High, Medium, Documentation)
@@ -22,7 +22,7 @@ Start here for overview and planning:
 
 ### For Full Details
 Start here for comprehensive analysis:
-- **[ACCESSIBILITY_AUDIT.md](./ACCESSIBILITY_AUDIT.md)** - Complete audit (400+ lines)
+- **[accessibility-audit.md](./accessibility-audit.md)** - Complete audit (400+ lines)
   - Detailed violation analysis by category
   - WCAG 2.1 compliance status
   - Positive patterns to expand
@@ -175,18 +175,18 @@ import {
 
 ## Next Steps
 
-1. **Read** `A11Y_QUICK_REFERENCE.md` (5 minutes)
+1. **Read** `a11y-quick-reference.md` (5 minutes)
 2. **Fix** Priority 1 violations (30 minutes)
-3. **Plan** Priority 2-3 implementation (review A11Y_PRIORITY_FIXES.md)
+3. **Plan** Priority 2-3 implementation (review a11y-priority-fixes.md)
 4. **Implement** in phases (20 hours total)
 5. **Test** with ESLint + manual testing
 
 ## Questions?
 
 See detailed documentation:
-- **Quick answers**: A11Y_QUICK_REFERENCE.md
-- **How to fix**: A11Y_PRIORITY_FIXES.md  
-- **Full analysis**: ACCESSIBILITY_AUDIT.md
+- **Quick answers**: a11y-quick-reference.md
+- **How to fix**: a11y-priority-fixes.md  
+- **Full analysis**: accessibility-audit.md
 
 ---
 

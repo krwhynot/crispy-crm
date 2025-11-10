@@ -309,7 +309,7 @@ npm run validate:colors
 
 ## Questions?
 
-See full audit: `docs/ACCESSIBILITY_AUDIT.md`
+See full audit: `accessibility-audit.md`
 
 Audit date: 2025-11-08
 Compliance: WCAG 2.1 Level A (Partial) - 60% AA

@@ -17,9 +17,9 @@ Phase 1 (P0 Security Remediation) has been **successfully completed end-to-end**
 ### 1. RLS Security Model Documentation ✓
 
 **Files Created:**
-- ✅ `/docs/SECURITY_MODEL.md` (400+ lines) - Comprehensive security architecture documentation
-- ✅ `/docs/SECURITY_KEY_ROTATION.md` (500+ lines) - Key rotation procedures and incident response
-- ✅ `/docs/SECURITY_README.md` - Updated with security model overview
+- ✅ `../security/security-model.md` (400+ lines) - Comprehensive security architecture documentation
+- ✅ `../security/security-key-rotation.md` (500+ lines) - Key rotation procedures and incident response
+- ✅ `../security/README.md` - Updated with security model overview
 - ✅ `/supabase/migrations/20251108172640_document_rls_security_model.sql` - SQL comments for all tables/policies/columns
 
 **What Was Done:**
@@ -91,7 +91,7 @@ Phase 1 (P0 Security Remediation) has been **successfully completed end-to-end**
 - ✅ `.gitignore` - Comprehensive .env patterns with catch-all `.env.*`
 
 **Files Created:**
-- ✅ `/docs/SECURITY_KEY_ROTATION.md` - Complete key rotation procedures
+- ✅ `../security/security-key-rotation.md` - Complete key rotation procedures
 
 **What Was Done:**
 - **Fixed environment logging:**
@@ -268,9 +268,9 @@ Phase 1 (P0 Security Remediation) has been **successfully completed end-to-end**
 - ✅ Secure Papa Parse config (`dynamicTyping: false`)
 
 ### Documentation
-- ✅ `/docs/SECURITY_MODEL.md` documents shared-access model
+- ✅ `../security/security-model.md` documents shared-access model
 - ✅ Database comments visible in PostgreSQL (`\d+ contacts`)
-- ✅ `/docs/SECURITY_KEY_ROTATION.md` has rotation procedures
+- ✅ `../security/security-key-rotation.md` has rotation procedures
 
 ### Secret Hygiene
 - ✅ No environment variables logged to console
@@ -384,7 +384,7 @@ Phase 1 (P0 Security Remediation) has been **successfully completed end-to-end**
 
 ### Long-term (Next Quarter)
 1. **Server-side validation** - Supabase Edge Function for CSV processing
-2. **Multi-tenant expansion** - If needed, follow path in SECURITY_MODEL.md
+2. **Multi-tenant expansion** - If needed, follow path in ../security/security-model.md
 3. **Penetration testing** - External security assessment
 4. **Quarterly review** - Revisit security model and controls
 
@@ -409,10 +409,10 @@ Phase 1 (P0 Security Remediation) has been **successfully completed end-to-end**
 
 All documentation is complete and comprehensive:
 
-1. ✅ **SECURITY_MODEL.md** (400+ lines) - Complete security architecture
-2. ✅ **SECURITY_KEY_ROTATION.md** (500+ lines) - Incident response procedures
-3. ✅ **SECURITY_README.md** - Security overview and quick reference
-4. ✅ **PHASE1_IMPLEMENTATION_STATUS.md** (this document) - Implementation tracker
+1. ✅ **../security/security-model.md** (400+ lines) - Complete security architecture
+2. ✅ **../security/security-key-rotation.md** (500+ lines) - Incident response procedures
+3. ✅ **../security/README.md** - Security overview and quick reference
+4. ✅ **phase1-implementation-status.md** (this document) - Implementation tracker
 5. ✅ **Migration 20251108172640** - Self-documenting database schema
 
 ---
