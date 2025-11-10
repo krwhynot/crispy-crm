@@ -1,12 +1,12 @@
-import { DollarSign, Star, Building2 } from "lucide-react";
+import { DollarSign, Star, Building2, Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import type { VariantProps } from "class-variance-authority";
 
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
-import { EditButton } from "@/components/admin/edit-button";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import type { badgeVariants } from "@/components/ui/badge";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -32,11 +32,11 @@ export const OrganizationCard = (props: { record?: Company }) => {
 
   // Organization type colors using MFB Garden to Table theme
   const organizationTypeColorClasses: Record<string, string> = {
-    customer: "bg-[color:var(--tag-warm-bg)] text-[color:var(--tag-warm-fg)]",
-    prospect: "bg-[color:var(--tag-sage-bg)] text-[color:var(--tag-sage-fg)]",
-    principal: "bg-[color:var(--tag-purple-bg)] text-[color:var(--tag-purple-fg)]",
-    distributor: "bg-[color:var(--tag-teal-bg)] text-[color:var(--tag-teal-fg)]",
-    unknown: "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]",
+    customer: "bg-[var(--tag-warm-bg)] text-[var(--tag-warm-fg)]",
+    prospect: "bg-[var(--tag-sage-bg)] text-[var(--tag-sage-fg)]",
+    principal: "bg-[var(--tag-purple-bg)] text-[var(--tag-purple-fg)]",
+    distributor: "bg-[var(--tag-teal-bg)] text-[var(--tag-teal-fg)]",
+    unknown: "bg-[var(--tag-gray-bg)] text-[var(--tag-gray-fg)]",
   };
 
   const priorityColors: Record<string, BadgeVariant> = {
@@ -53,12 +53,12 @@ export const OrganizationCard = (props: { record?: Company }) => {
         checked={selectedIds.includes(record.id)}
         onCheckedChange={() => onToggleItem(record.id)}
         aria-label={`Select ${record.name}`}
-        className="absolute top-2 left-2 z-10"
+        className="absolute top-2 left-2 z-10 w-11 h-11"
         onClick={(e) => e.stopPropagation()}
       />
 
       {/* Edit button positioned absolutely in top-right corner */}
-      <div className="absolute top-2 right-2 z-10">
+      <div className="absolute top-2 right-2 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center">
         <EditButton resource="organizations" />
       </div>
 
@@ -79,7 +79,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
               </h6>
               {record.segment_id && (
                 <ReferenceField source="segment_id" reference="segments" link={false}>
-                  <TextField source="name" className="text-xs text-[color:var(--text-subtle)]" />
+                  <TextField source="name" className="text-xs text-muted-foreground" />
                 </ReferenceField>
               )}
               <div className="flex gap-1 mt-1 justify-center flex-wrap">
@@ -108,22 +108,22 @@ export const OrganizationCard = (props: { record?: Company }) => {
           <div className="flex flex-row w-full justify-between gap-2">
             {record.nb_contacts ? (
               <div className="flex items-center gap-0.5">
-                <Building2 className="w-4 h-4 text-[color:var(--text-subtle)]" />
+                <Building2 className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm font-medium">
                   {record.nb_contacts}
                 </span>
-                <span className="text-xs text-[color:var(--text-subtle)]">
+                <span className="text-xs text-muted-foreground">
                   {record.nb_contacts > 1 ? "contacts" : "contact"}
                 </span>
               </div>
             ) : null}
             {record.nb_opportunities ? (
               <div className="flex items-center gap-0.5">
-                <DollarSign className="w-4 h-4 text-[color:var(--text-subtle)]" />
+                <DollarSign className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm font-medium">
                   {record.nb_opportunities}
                 </span>
-                <span className="text-xs text-[color:var(--text-subtle)]">
+                <span className="text-xs text-muted-foreground">
                   {record.nb_opportunities > 1 ? "opportunities" : "opportunity"}
                 </span>
               </div>
