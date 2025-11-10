@@ -265,7 +265,7 @@ export function OrganizationImportDialog({
     } catch (error) {
       console.error('[Import] Unexpected error resolving account managers:', error);
     }
-  }, []);
+  }, [dataProvider]);
 
   /**
    * Batch resolve and cache all unique segment names from CSV
@@ -382,7 +382,7 @@ export function OrganizationImportDialog({
     } catch (error) {
       console.error('[Import] Unexpected error resolving segments:', error);
     }
-  }, []);
+  }, [dataProvider]);
 
   // Derive final mappings by merging auto-detection with user overrides
   const mergedMappings = useMemo<Record<string, string | null>>(() => {
