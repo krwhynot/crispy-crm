@@ -64,6 +64,17 @@ export type { Organization } from "./validation/organizations";
 // Company is an alias for Organization for backward compatibility
 export type Company = Organization;
 
+/**
+ * Organization with hierarchy computed fields
+ * Extends Organization with data from database views
+ */
+export interface OrganizationWithHierarchy extends Organization {
+  child_branch_count?: number;
+  parent_organization_name?: string;
+  total_contacts_across_branches?: number;
+  total_opportunities_across_branches?: number;
+}
+
 export interface EmailAndType {
   email: string;
   type: "Work" | "Home" | "Other";
