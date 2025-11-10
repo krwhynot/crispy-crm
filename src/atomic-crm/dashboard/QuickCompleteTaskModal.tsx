@@ -49,7 +49,7 @@ export function QuickCompleteTaskModal({
 }: QuickCompleteTaskModalProps) {
   const [step, setStep] = useState<FlowStep>(FlowStep.LOG_ACTIVITY);
   const [activityData, setActivityData] = useState<ActivityData | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [_isSubmitting, _setIsSubmitting] = useState(false);
 
   const dataProvider = useDataProvider();
   const notify = useNotify();
