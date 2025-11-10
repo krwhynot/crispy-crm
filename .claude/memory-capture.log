@@ -2071,3 +2071,6 @@
 [2025-11-09 23:55:20] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/database-schema.md
 [2025-11-09 23:57:02] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/component-library.md
 [2025-11-09 23:58:39] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/api-design.md
+[2025-11-10 00:00:25] [documentation] Write: /home/krwhynot/projects/crispy-crm/docs/architecture/business-rules.md
+[2025-11-10 00:02:12] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-11-10 00:30:21] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/reports/ReportLayout.tsx

@@ -401,6 +401,13 @@ Plans in `docs/plans/` track design, status, QA readiness. **Phase:** Pre-launch
 - [Architecture Essentials](docs/architecture/architecture-essentials.md) - Design
 - [Common Tasks](docs/development/common-tasks.md) - Guides
 
+**Foundational Architecture (Source of Truth):**
+- [Design System](docs/architecture/design-system.md) ⭐ Colors, spacing, typography, accessibility
+- [Database Schema](docs/architecture/database-schema.md) ⭐ Tables, relationships, RLS, migrations
+- [Component Library](docs/architecture/component-library.md) - All UI components and patterns
+- [API Design](docs/architecture/api-design.md) - Data provider, validation, error handling
+- [Business Rules](docs/architecture/business-rules.md) - Validation schemas, constraints, workflows
+
 **Database:**
 - [Supabase Workflow](docs/supabase/WORKFLOW.md) ⭐ Local + cloud
 - [Production Safety](scripts/db/PRODUCTION-WARNING.md) ⚠️ Critical
