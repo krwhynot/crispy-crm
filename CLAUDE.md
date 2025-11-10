@@ -305,6 +305,53 @@ export default { list: List, show: Show, edit: Edit, create: Create, recordRepre
 
 [Full guide](docs/development/common-tasks.md)
 
+## Tasks Module
+
+**Resource:** `/tasks` - Full CRUD task management with principal grouping
+
+**Features:**
+- Tasks grouped by principal (organization via opportunity)
+- Filter by principal, due date, status, priority, type
+- Inline task completion
+- CSV export
+
+**Database Schema:**
+```sql
+CREATE TABLE tasks (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  title TEXT NOT NULL,
+  description TEXT,
+  due_date DATE,
+  reminder_date DATE,
+  completed BOOLEAN DEFAULT false,
+  completed_at TIMESTAMPTZ,
+  priority priority_level DEFAULT 'medium', -- low, medium, high, critical
+  type task_type DEFAULT 'None', -- Call, Email, Meeting, Follow-up, etc.
+  contact_id BIGINT,
+  opportunity_id BIGINT,
+  sales_id BIGINT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+```
+
+**Validation:** `src/atomic-crm/validation/task.ts`
+
+**Components:**
+- List: Principal-grouped view (default)
+- Show: Task detail with links
+- Edit: Full form
+- Create: Quick-add form
+- Filter: Multi-field filtering
+
+**Reports:**
+- Weekly Activity Summary: `/reports/weekly-activity`
+  - Groups: Sales Rep → Principal → Activity Type Counts
+  - Flags low-activity principals (< 3/week)
+  - CSV export
+
+**Ref:** [Implementation Plan](docs/plans/2025-11-09-tasks-module-weekly-activity-report.md)
+
 ## Customizing CRM
 
 Props to `<CRM>` in `App.tsx`:
