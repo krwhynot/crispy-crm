@@ -155,7 +155,7 @@ export const OpportunityListContent = () => {
         />
       </div>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-[var(--border)] shadow-inner">
+        <div className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-[var(--border)] shadow-inner" data-testid="kanban-board">
           {visibleStages.map((stage) => (
             <OpportunityColumn
               stage={stage.value}

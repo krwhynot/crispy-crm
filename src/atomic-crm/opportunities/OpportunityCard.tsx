@@ -53,6 +53,7 @@ export function OpportunityCard({ index }: OpportunityCardProps) {
             hover:shadow-md hover:-translate-y-1
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}
+          data-testid="opportunity-card"
         >
           {/* Header: Name + Priority + Actions */}
           <div className="flex items-start justify-between gap-2 mb-2">
