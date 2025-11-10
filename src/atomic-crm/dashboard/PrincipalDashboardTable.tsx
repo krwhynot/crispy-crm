@@ -1,8 +1,12 @@
-import { List, Datagrid, TextField, FunctionField, useGetIdentity } from "react-admin";
+import { List, Datagrid, TextField, FunctionField, useGetIdentity, useRefresh } from "react-admin";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { AlertCircle } from "lucide-react";
 import type { RaRecord } from "react-admin";
+import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { QuickCompleteTaskModal } from "./QuickCompleteTaskModal";
+import type { Task } from "../types";
 
 /**
  * Principal-Centric Dashboard Table

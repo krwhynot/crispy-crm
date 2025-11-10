@@ -2,7 +2,7 @@
  * Quick Complete Task Modal
  *
  * Progressive disclosure modal for completing tasks with follow-up actions.
- * Guides users through: Complete Task ’ Log Activity ’ Update Opportunity
+ * Guides users through: Complete Task â†’ Log Activity â†’ Update Opportunity
  *
  * Feature: Dashboard Quick Actions
  * Design: docs/plans/2025-11-10-dashboard-quick-actions-design.md
@@ -24,20 +24,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { Task } from "../types";
+import { LogActivityStep, type ActivityData } from "./LogActivityStep";
+import { UpdateOpportunityStep } from "./UpdateOpportunityStep";
+import { SuccessStep } from "./SuccessStep";
 
 // Flow steps enum
 enum FlowStep {
   LOG_ACTIVITY = "log_activity",
   UPDATE_OPPORTUNITY = "update_opportunity",
   COMPLETE = "complete",
-}
-
-// Activity data shape for the RPC call
-interface ActivityData {
-  type: string; // interaction_type enum value
-  description: string;
-  subject?: string;
-  activity_date?: string;
 }
 
 interface QuickCompleteTaskModalProps {
@@ -60,7 +55,7 @@ export function QuickCompleteTaskModal({
   const refresh = useRefresh();
 
   /**
-   * Handle activity saved (Step 1 ’ Step 2)
+   * Handle activity saved (Step 1 â†’ Step 2)
    * Stores activity data and advances to opportunity update step
    */
   const handleActivitySaved = (data: ActivityData) => {
@@ -77,7 +72,7 @@ export function QuickCompleteTaskModal({
   };
 
   /**
-   * Handle opportunity updated (Step 2 ’ Step 3)
+   * Handle opportunity updated (Step 2 â†’ Step 3)
    * Calls RPC function to complete task atomically
    */
   const handleOpportunityUpdated = async (newStage: string | null) => {
@@ -163,69 +158,24 @@ export function QuickCompleteTaskModal({
 
         {/* Step 1: Log Activity */}
         {step === FlowStep.LOG_ACTIVITY && (
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              How did it go? Log what happened for this task.
-            </p>
-            {/* LogActivityStep component will be created in next batch */}
-            <div className="p-4 border border-dashed rounded">
-              <p className="text-center text-muted-foreground">
-                LogActivityStep component (to be implemented)
-              </p>
-              <button
-                onClick={() =>
-                  handleActivitySaved({
-                    type: "follow_up",
-                    description: "Placeholder activity",
-                  })
-                }
-                className="mt-4 w-full px-4 py-2 bg-primary text-primary-foreground rounded"
-              >
-                Continue (Temp)
-              </button>
-            </div>
-          </div>
+          <LogActivityStep
+            task={task}
+            onSave={handleActivitySaved}
+            onSkip={handleSkip}
+          />
         )}
 
         {/* Step 2: Update Opportunity */}
-        {step === FlowStep.UPDATE_OPPORTUNITY && (
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Want to update the opportunity stage?
-            </p>
-            {/* UpdateOpportunityStep component will be created in next batch */}
-            <div className="p-4 border border-dashed rounded">
-              <p className="text-center text-muted-foreground">
-                UpdateOpportunityStep component (to be implemented)
-              </p>
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={handleSkip}
-                  className="flex-1 px-4 py-2 border rounded"
-                  disabled={isSubmitting}
-                >
-                  Skip
-                </button>
-                <button
-                  onClick={() => handleOpportunityUpdated("initial_outreach")}
-                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded"
-                  disabled={isSubmitting}
-                >
-                  Update (Temp)
-                </button>
-              </div>
-            </div>
-          </div>
+        {step === FlowStep.UPDATE_OPPORTUNITY && task.opportunity_id && (
+          <UpdateOpportunityStep
+            opportunityId={task.opportunity_id as number}
+            onUpdate={handleOpportunityUpdated}
+            onSkip={handleSkip}
+          />
         )}
 
         {/* Step 3: Success */}
-        {step === FlowStep.COMPLETE && (
-          <div className="py-8 text-center">
-            <div className="text-4xl mb-4"></div>
-            <p className="text-lg font-medium">Task completed and logged!</p>
-            <p className="text-sm text-muted-foreground mt-2">Closing...</p>
-          </div>
-        )}
+        {step === FlowStep.COMPLETE && <SuccessStep />}
       </DialogContent>
     </Dialog>
   );
