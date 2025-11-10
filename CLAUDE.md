@@ -10,6 +10,7 @@ Atomic CRM - Full-featured, open-source CRM with React, shadcn-admin-kit, and Su
 
 ## Recent Changes (90 days)
 
+- **Spacing System Phase 1 (2025-11-08)**: Semantic spacing tokens for consistent layouts. CSS custom properties in `src/index.css` for grid, edge padding, vertical rhythm. Applied to Reports Module. Design: `docs/plans/2025-11-08-spacing-layout-system-design.md`
 - **Security & Testing Remediation (2025-11-08)**: 4-phase remediation complete - RLS admin-only policies, CSV validation, 65 new tests (95.4% pass rate), WCAG 2.1 AA compliance, Promise.allSettled error handling. Report: `4-PHASE-REMEDIATION-COMPLETION.md`
 - **Principal-Centric Redesign v2.0 (2025-11-05)**: Dashboard → table view, 2 MVP reports (Opportunities by Principal ⭐, Weekly Activity Summary), 30-day Excel replacement goal. Design: `docs/plans/2025-11-05-principal-centric-crm-design.md`
 - **Pricing Removal (2025-10-29)**: Products = associations only, no pricing. Migration: `20251028040008_remove_product_pricing_and_uom.sql`
