@@ -34,7 +34,7 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
       setIsOpen(false);
       setName("");
       refresh();
-    } catch (error) {
+    } catch {
       notify("Error creating opportunity", { type: "error" });
     }
   };

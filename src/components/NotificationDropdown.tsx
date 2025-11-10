@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Eye, ExternalLink, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,8 +37,8 @@ export const NotificationDropdown = ({
   const [isLoading, setIsLoading] = useState(true);
   const { data: identity } = useGetIdentity();
 
-  // Fetch notifications
-  const fetchNotifications = async () => {
+  // Fetch notifications - memoized to avoid dependency issues
+  const fetchNotifications = useCallback(async () => {
     if (!identity?.user_id) return;
 
     setIsLoading(true);
@@ -53,11 +53,11 @@ export const NotificationDropdown = ({
       setNotifications(data);
     }
     setIsLoading(false);
-  };
+  }, [identity?.user_id]);
 
   useEffect(() => {
     fetchNotifications();
-  }, [identity?.user_id]);
+  }, [fetchNotifications]);
 
   // Mark single notification as read
   const markAsRead = async (notificationId: number) => {

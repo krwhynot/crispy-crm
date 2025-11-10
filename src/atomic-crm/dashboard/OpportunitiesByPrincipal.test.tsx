@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { OpportunitiesByPrincipal } from "./OpportunitiesByPrincipal";
-import * as raCore from "ra-core";
+import { useGetList } from "ra-core";
 import { BrowserRouter } from "react-router-dom";
 
 // Mock react-admin hooks
@@ -13,7 +13,7 @@ vi.mock("ra-core", async () => {
   };
 });
 
-const mockUseGetList = raCore.useGetList as ReturnType<typeof vi.fn>;
+const mockUseGetList = useGetList as ReturnType<typeof vi.fn>;
 
 const MockRouter = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>{children}</BrowserRouter>

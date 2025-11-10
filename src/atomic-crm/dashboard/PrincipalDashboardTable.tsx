@@ -131,7 +131,7 @@ const DashboardGrid = memo(({ onTaskSelect }: { onTaskSelect: (task: Task) => vo
   return (
     <Datagrid
       bulkActionButtons={false}
-      rowClick={(id, resource, record) => {
+      rowClick={(id) => {
         // Navigate to organization detail page (id = principal_organization_id)
         return `/organizations/${id}/show`;
       }}

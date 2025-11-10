@@ -50,7 +50,7 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
       });
       notify("Opportunity marked as won", { type: "success" });
       refresh();
-    } catch (error) {
+    } catch {
       notify("Error updating opportunity", { type: "error" });
     }
     setIsOpen(false);
@@ -63,7 +63,7 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
         await deleteOne("opportunities", { id: opportunityId, previousData: {} });
         notify("Opportunity deleted", { type: "success" });
         refresh();
-      } catch (error) {
+      } catch {
         notify("Error deleting opportunity", { type: "error" });
       }
     }

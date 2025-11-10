@@ -1,4 +1,4 @@
-import { useRecordContext, type Identifier } from "react-admin";
+import { useRecordContext } from "react-admin";
 import { Draggable } from "@hello-pangea/dnd";
 import { format } from "date-fns";
 import { useOpportunityContacts } from "./useOpportunityContacts";

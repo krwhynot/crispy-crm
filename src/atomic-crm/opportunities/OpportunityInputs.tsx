@@ -14,7 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { RefreshCw, Plus } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetIdentity } from "ra-core";
 // Validation removed per Engineering Constitution - single-point validation at API boundary only

@@ -1,4 +1,5 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button.constants";
 import {
   Dialog,
   DialogContent,

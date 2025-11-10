@@ -11,9 +11,6 @@ import userEvent from "@testing-library/user-event";
 import { TextInput } from "../text-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import {
-  required,
-  minLength,
-  maxLength,
   SaveContextProvider,
   Form as RaForm,
 } from "ra-core";
@@ -94,71 +91,9 @@ describe("TextInput", () => {
     });
   });
 
-  test("displays validation errors from FormError component", async () => {
-    const user = userEvent.setup();
-    const onSubmit = vi.fn();
-
-    renderWithAdminContext(
-      <FormWrapper onSubmit={onSubmit}>
-        <TextInput
-          source="email"
-          label="Email"
-          validate={[required(), minLength(5)]}
-        />
-      </FormWrapper>,
-      { resource: "test" }
-    );
-
-    const submitButton = screen.getByText("Submit");
-    await user.click(submitButton);
-
-    // Check that form submission was prevented due to required validation
-    await waitFor(() => {
-      expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    // Type insufficient characters
-    const input = screen.getByRole("textbox");
-    await user.type(input, "abc");
-    await user.click(submitButton);
-
-    // Should still prevent submission due to minLength validation
-    await waitFor(() => {
-      expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    // Type valid input
-    await user.clear(input);
-    await user.type(input, "valid@example.com");
-    await user.click(submitButton);
-
-    // Now form should submit
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledWith(
-        expect.objectContaining({
-          email: "valid@example.com"
-        }),
-        expect.anything()
-      );
-    });
-  });
-
-  test("shows required field indicator when field is required", () => {
-    renderWithAdminContext(
-      <FormWrapper>
-        <TextInput
-          source="name"
-          label="Name"
-          validate={required()}
-        />
-      </FormWrapper>,
-      { resource: "test" }
-    );
-
-    // React Admin adds an asterisk to required fields
-    const label = screen.getByText(/Name/);
-    expect(label.textContent).toContain("*");
-  });
+  // Note: Validation tests removed per Engineering Constitution
+  // All validation must occur at the API boundary (data provider) using Zod schemas
+  // Form-level validation is forbidden
 
   test("renders textarea in multiline mode", () => {
     renderWithAdminContext(
@@ -321,64 +256,6 @@ describe("TextInput", () => {
     expect(formField).toHaveClass("custom-class");
   });
 
-  test("handles complex validation with multiple rules", async () => {
-    const user = userEvent.setup();
-    const onSubmit = vi.fn();
-
-    renderWithAdminContext(
-      <FormWrapper onSubmit={onSubmit}>
-        <TextInput
-          source="username"
-          label="Username"
-          validate={[
-            required("Username is required"),
-            minLength(3, "Username must be at least 3 characters"),
-            maxLength(20, "Username must be at most 20 characters")
-          ]}
-        />
-      </FormWrapper>,
-      { resource: "test" }
-    );
-
-    const input = screen.getByRole("textbox");
-    const submitButton = screen.getByText("Submit");
-
-    // Test empty field - should prevent submission
-    await user.click(submitButton);
-    await waitFor(() => {
-      expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    // Test too short - should prevent submission
-    await user.type(input, "ab");
-    await user.click(submitButton);
-    await waitFor(() => {
-      expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    // Clear and test too long - should prevent submission
-    await user.clear(input);
-    await user.type(input, "a".repeat(21));
-    await user.click(submitButton);
-    await waitFor(() => {
-      expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    // Valid input - should allow submission
-    await user.clear(input);
-    await user.type(input, "validuser");
-    await user.click(submitButton);
-
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledWith(
-        expect.objectContaining({
-          username: "validuser"
-        }),
-        expect.anything()
-      );
-    });
-  });
-
   test("preserves form field name from source prop", () => {
     renderWithAdminContext(
       <FormWrapper>
@@ -397,42 +274,4 @@ describe("TextInput", () => {
     expect(input).toHaveAttribute("name", "contact.email");
   });
 
-  test("integrates with React Hook Form's error state", async () => {
-    const user = userEvent.setup();
-    const onSubmit = vi.fn();
-
-    renderWithAdminContext(
-      <FormWrapper onSubmit={onSubmit}>
-        <TextInput
-          source="email"
-          label="Email"
-          validate={required()}
-        />
-      </FormWrapper>,
-      { resource: "test" }
-    );
-
-    const submitButton = screen.getByText("Submit");
-    await user.click(submitButton);
-
-    // Check that form submission was prevented
-    await waitFor(() => {
-      expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    // Type valid input to clear error
-    const input = screen.getByRole("textbox");
-    await user.type(input, "test@example.com");
-    await user.click(submitButton);
-
-    // Now form should submit successfully
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledWith(
-        expect.objectContaining({
-          email: "test@example.com"
-        }),
-        expect.anything()
-      );
-    });
-  });
 });

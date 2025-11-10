@@ -2,7 +2,7 @@ import { Truck, Users, Tag, Star } from "lucide-react";
 import type { VariantProps } from "class-variance-authority";
 
 import { Card } from "@/components/ui/card";
-import type { badgeVariants } from "@/components/ui/badge";
+import type { badgeVariants } from "@/components/ui/badge.constants";
 import { Badge } from "@/components/ui/badge";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 

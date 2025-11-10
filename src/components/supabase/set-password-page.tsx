@@ -1,6 +1,5 @@
 import { useState } from "react";
-import type { ValidateForm } from "ra-core";
-import { Form, required, useNotify, useTranslate } from "ra-core";
+import { Form, useNotify, useTranslate } from "ra-core";
 import { useSetPassword, useSupabaseAccessToken } from "ra-supabase-core";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -24,16 +23,6 @@ export const SetPasswordPage = () => {
   const translate = useTranslate();
   const [, { mutateAsync: setPassword }] = useSetPassword();
 
-  const validate = (values: FormData) => {
-    if (values.password !== values.confirmPassword) {
-      return {
-        password: "ra-supabase.validation.password_mismatch",
-        confirmPassword: "ra-supabase.validation.password_mismatch",
-      };
-    }
-    return {};
-  };
-
   if (!access_token || !refresh_token) {
     if (process.env.NODE_ENV === "development") {
       console.error("Missing access_token or refresh_token for set password");
@@ -46,6 +35,17 @@ export const SetPasswordPage = () => {
   }
 
   const submit = async (values: FormData) => {
+    // Validation at API boundary: Check password match before calling API
+    if (values.password !== values.confirmPassword) {
+      notify("ra-supabase.validation.password_mismatch", {
+        type: "warning",
+        messageArgs: {
+          _: "Passwords do not match",
+        },
+      });
+      return;
+    }
+
     try {
       setLoading(true);
       await setPassword({
@@ -89,24 +89,19 @@ export const SetPasswordPage = () => {
       <Form<FormData>
         className="space-y-8"
         onSubmit={submit as SubmitHandler<FieldValues>}
-        validate={validate as ValidateForm}
       >
         <TextInput
-          label={translate("ra.auth.password", {
-            _: "Password",
-          })}
+          label={`${translate("ra.auth.password", { _: "Password" })} *`}
           autoComplete="new-password"
           source="password"
           type="password"
-          validate={required()}
+          helperText="Required"
         />
         <TextInput
-          label={translate("ra.auth.confirm_password", {
-            _: "Confirm password",
-          })}
+          label={`${translate("ra.auth.confirm_password", { _: "Confirm password" })} *`}
           source="confirmPassword"
           type="password"
-          validate={required()}
+          helperText="Required - must match password above"
         />
         <Button type="submit" className="cursor-pointer" disabled={loading}>
           {translate("ra.action.save")}
