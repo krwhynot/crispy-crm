@@ -1,5 +1,5 @@
 import { DollarSign, Star, Building2, Pencil } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import type { VariantProps } from "class-variance-authority";
 
@@ -18,6 +18,7 @@ type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export const OrganizationCard = (props: { record?: Company }) => {
   const createPath = useCreatePath();
+  const navigate = useNavigate();
   const record = useRecordContext<Company>(props);
   const { selectedIds, onToggleItem } = useListContext();
   if (!record) return null;
@@ -47,7 +48,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative group">
       {/* Checkbox positioned absolutely in top-left corner */}
       <Checkbox
         checked={selectedIds.includes(record.id)}
@@ -58,9 +59,25 @@ export const OrganizationCard = (props: { record?: Company }) => {
       />
 
       {/* Edit button positioned absolutely in top-right corner */}
-      <div className="absolute top-2 right-2 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center">
-        <EditButton resource="organizations" />
-      </div>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute top-2 right-2 z-10 w-11 h-11 rounded-full hover:bg-accent/20 opacity-0 group-hover:opacity-100 transition-opacity"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigate(
+            createPath({
+              resource: "organizations",
+              id: record.id,
+              type: "edit",
+            })
+          );
+        }}
+        aria-label={`Edit ${record.name}`}
+      >
+        <Pencil className="w-4 h-4" />
+      </Button>
 
       <Link
         to={createPath({
@@ -68,7 +85,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
           id: record.id,
           type: "show",
         })}
-        className="no-underline group"
+        className="no-underline"
       >
         <Card className="h-[200px] flex flex-col justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01] hover:border-primary/20">
           <div className="flex flex-col items-center gap-1">
