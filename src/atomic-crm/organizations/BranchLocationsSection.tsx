@@ -34,7 +34,7 @@ interface BranchOrganization {
   nb_opportunities?: number;
 }
 
-export default function BranchLocationsSection({
+export function BranchLocationsSection({
   org,
 }: BranchLocationsSectionProps) {
   const dataProvider = useDataProvider();

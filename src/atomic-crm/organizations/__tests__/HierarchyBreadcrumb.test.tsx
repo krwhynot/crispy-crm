@@ -13,7 +13,7 @@ import { screen } from "@testing-library/react";
 import { Route, Routes } from "react-router-dom";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOrganization } from "@/tests/utils/mock-providers";
-import HierarchyBreadcrumb from "../HierarchyBreadcrumb";
+import { HierarchyBreadcrumb } from "../HierarchyBreadcrumb";
 import type { OrganizationWithHierarchy } from "../../types";
 
 describe("HierarchyBreadcrumb", () => {

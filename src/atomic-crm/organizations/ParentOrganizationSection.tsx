@@ -163,5 +163,3 @@ export const ParentOrganizationSection = () => {
     </AsideSection>
   );
 };
-
-export default ParentOrganizationSection;

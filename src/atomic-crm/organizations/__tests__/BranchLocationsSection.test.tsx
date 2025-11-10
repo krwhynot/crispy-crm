@@ -18,7 +18,7 @@ import {
   createMockDataProvider,
 } from "@/tests/utils/mock-providers";
 import type { OrganizationWithHierarchy } from "@/atomic-crm/types";
-import BranchLocationsSection from "../BranchLocationsSection";
+import { BranchLocationsSection } from "../BranchLocationsSection";
 
 // Mock dependencies
 vi.mock("ra-core", async () => {
