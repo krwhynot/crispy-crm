@@ -3,7 +3,7 @@
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement individual plans task-by-task.
 
 **Created:** November 4, 2025
-**Analysis Source:** docs/PRD_IMPLEMENTATION_STATUS_ROLLUP.md
+**Analysis Source:** ../status/prd-implementation-status-rollup.md
 **Current Completion:** 85-90% overall
 
 **Goal:** Complete all remaining PRD requirements to achieve 100% implementation coverage
@@ -548,7 +548,7 @@ Let me know your choice, and I'll proceed accordingly!
 
 ---
 
-**Analysis Source:** docs/PRD_IMPLEMENTATION_STATUS_ROLLUP.md
+**Analysis Source:** ../status/prd-implementation-status-rollup.md
 **Codebase Version:** main branch (commit 3061bf7)
 **Plan Author:** Claude Code (AI Agent)
 **Plan Date:** November 4, 2025

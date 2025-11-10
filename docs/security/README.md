@@ -18,7 +18,7 @@ Atomic CRM uses a **single-tenant trusted-team model** where:
 
 **All CRITICAL and HIGH severity vulnerabilities have been fixed or documented.**
 
-**See [SECURITY_MODEL.md](SECURITY_MODEL.md) for complete documentation** including:
+**See [security-model.md](security-model.md) for complete documentation** including:
 - Access control policies and rationale
 - Risk assessment and accepted risks
 - Multi-tenant expansion path
@@ -26,9 +26,9 @@ Atomic CRM uses a **single-tenant trusted-team model** where:
 - Incident response procedures
 
 **Key Documents:**
-- **[SECURITY_MODEL.md](SECURITY_MODEL.md)** - Security architecture and policies (400+ lines)
-- **[SECURITY_KEY_ROTATION.md](SECURITY_KEY_ROTATION.md)** - Key rotation procedures (500+ lines)
-- **[PHASE1_IMPLEMENTATION_STATUS.md](PHASE1_IMPLEMENTATION_STATUS.md)** - Complete implementation tracker
+- **[security-model.md](security-model.md)** - Security architecture and policies (400+ lines)
+- **[security-key-rotation.md](security-key-rotation.md)** - Key rotation procedures (500+ lines)
+- **[../status/phase1-implementation-status.md](../status/phase1-implementation-status.md)** - Complete implementation tracker
 - **Phase 1 Status:** ✅ 100% Complete - RLS documented, CSV secured, secrets protected, auth bypass fixed, sessionStorage implemented
 
 ---
@@ -52,8 +52,8 @@ Quick overview of findings:
 
 ---
 
-### 2. **SECURITY_AUDIT_2025-11-08.md** (Detailed Findings)
-**Location:** `/docs/SECURITY_AUDIT_2025-11-08.md`  
+### 2. **security-audit-2025-11-08.md** (Detailed Findings)
+**Location:** `/docs/security-audit-2025-11-08.md`  
 **Audience:** Security engineers, developers, architects  
 **Length:** ~20 pages  
 
@@ -69,8 +69,8 @@ Comprehensive analysis for each vulnerability:
 
 ---
 
-### 3. **SECURITY_REMEDIATION_EXAMPLES.md** (Code Fixes)
-**Location:** `/docs/SECURITY_REMEDIATION_EXAMPLES.md`  
+### 3. **security-remediation-examples.md** (Code Fixes)
+**Location:** `/docs/security-remediation-examples.md`  
 **Audience:** Developers implementing fixes  
 **Length:** ~25 pages  
 
@@ -91,21 +91,21 @@ Ready-to-use code examples for each vulnerability:
 ### By Severity
 
 **CRITICAL (Blocking):**
-1. Permissive RLS Policies → See SECURITY_REMEDIATION_EXAMPLES.md § 1
-2. CSV Upload Validation → See SECURITY_REMEDIATION_EXAMPLES.md § 2
-3. API Credentials Exposed → See SECURITY_AUDIT_2025-11-08.md § 1
+1. Permissive RLS Policies → See security-remediation-examples.md § 1
+2. CSV Upload Validation → See security-remediation-examples.md § 2
+3. API Credentials Exposed → See security-audit-2025-11-08.md § 1
 
 **HIGH (Before Launch):**
-4. Auth Bypass in Routes → See SECURITY_REMEDIATION_EXAMPLES.md § 4
-5. Unencrypted localStorage → See SECURITY_REMEDIATION_EXAMPLES.md § 5
-6. Environment Variable Logging → See SECURITY_REMEDIATION_EXAMPLES.md § 3
-7. CSV Injection Attacks → See SECURITY_REMEDIATION_EXAMPLES.md § 2 (Step 3)
-8. CSRF Protection Missing → See SECURITY_AUDIT_2025-11-08.md § 4
+4. Auth Bypass in Routes → See security-remediation-examples.md § 4
+5. Unencrypted localStorage → See security-remediation-examples.md § 5
+6. Environment Variable Logging → See security-remediation-examples.md § 3
+7. CSV Injection Attacks → See security-remediation-examples.md § 2 (Step 3)
+8. CSRF Protection Missing → See security-audit-2025-11-08.md § 4
 
 **MEDIUM (Should Fix):**
-9. No Rate Limiting → See SECURITY_REMEDIATION_EXAMPLES.md § 6
-10. Weak TypeScript Types → See SECURITY_REMEDIATION_EXAMPLES.md § 7
-11. Improper Error Handling → See SECURITY_REMEDIATION_EXAMPLES.md § 3
+9. No Rate Limiting → See security-remediation-examples.md § 6
+10. Weak TypeScript Types → See security-remediation-examples.md § 7
+11. Improper Error Handling → See security-remediation-examples.md § 3
 
 ---
 
@@ -137,7 +137,7 @@ Ready-to-use code examples for each vulnerability:
 **Status:** ✅ **COMPLETE**
 **Owner:** Engineering Team
 **Completed:** 2025-11-08
-**Implementation:** See [PHASE1_IMPLEMENTATION_STATUS.md](PHASE1_IMPLEMENTATION_STATUS.md)
+**Implementation:** See [../status/phase1-implementation-status.md](../status/phase1-implementation-status.md)
 
 ### ✅ Phase 2: HIGH (COMPLETED 2025-11-08)
 **Complete before production launch:**
@@ -180,15 +180,15 @@ Ready-to-use code examples for each vulnerability:
 4. Plan: Separate critical (Phase 1) from nice-to-have items
 
 ### For Security Engineers
-1. Read: SECURITY_AUDIT_2025-11-08.md (full report)
+1. Read: security-audit-2025-11-08.md (full report)
 2. Review: OWASP mappings and impact analysis
-3. Verify: Proposed fixes in SECURITY_REMEDIATION_EXAMPLES.md
+3. Verify: Proposed fixes in security-remediation-examples.md
 4. Approve: Before developers implement
 
 ### For Developers
 1. Read: SECURITY_AUDIT_SUMMARY.txt (quick overview)
-2. Find: Your specific issues in SECURITY_AUDIT_2025-11-08.md
-3. Reference: Code examples in SECURITY_REMEDIATION_EXAMPLES.md
+2. Find: Your specific issues in security-audit-2025-11-08.md
+3. Reference: Code examples in security-remediation-examples.md
 4. Implement: Step-by-step instructions for each fix
 5. Test: Unit tests provided for each vulnerability
 6. Verify: Against deployment checklist

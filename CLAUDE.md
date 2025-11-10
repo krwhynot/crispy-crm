@@ -198,7 +198,7 @@ npm run db:cloud:push          # Deploy (PRODUCTION)
 npx supabase migration new <name>
 ```
 
-[Full commands](docs/claude/commands-quick-reference.md)
+[Full commands](docs/development/commands-quick-reference.md)
 
 ## Architecture
 
@@ -246,7 +246,7 @@ const contactSchema = z.object({
 **Config:** `root/ConfigurationContext.tsx`, customize via `<CRM>` props in `App.tsx`
 **Path alias:** `@/*` → `src/*`
 
-[Full architecture](docs/claude/architecture-essentials.md)
+[Full architecture](docs/architecture/architecture-essentials.md)
 
 ## Color System
 
@@ -302,7 +302,7 @@ export default { list: List, show: Show, edit: Edit, create: Create, recordRepre
 4. Migration: `npx supabase migration new add_<name>_table`
 5. Update `filterRegistry.ts` if needed
 
-[Full guide](docs/claude/common-tasks.md)
+[Full guide](docs/development/common-tasks.md)
 
 ## Customizing CRM
 
@@ -311,7 +311,7 @@ Props to `<CRM>` in `App.tsx`:
 <CRM title="My CRM" opportunityStages={[...]} contactGender={[...]} />
 ```
 
-[Full guide](docs/claude/common-tasks.md#customizing-the-crm)
+[Full guide](docs/development/common-tasks.md#customizing-the-crm)
 
 ## Testing
 
@@ -339,7 +339,7 @@ npm run test:e2e:headed  # Visible browser mode
 
 **Configuration:** `playwright.config.ts`
 
-[Full guide](docs/claude/testing-quick-reference.md)
+[Full guide](docs/development/testing-quick-reference.md)
 
 ## GitHub Actions Workflows
 
@@ -397,15 +397,15 @@ Plans in `docs/plans/` track design, status, QA readiness. **Phase:** Pre-launch
 
 **Start here:**
 - [Engineering Constitution](docs/claude/engineering-constitution.md) ⭐ Principles
-- [Architecture Essentials](docs/claude/architecture-essentials.md) - Design
-- [Common Tasks](docs/claude/common-tasks.md) - Guides
+- [Architecture Essentials](docs/architecture/architecture-essentials.md) - Design
+- [Common Tasks](docs/development/common-tasks.md) - Guides
 
 **Database:**
 - [Supabase Workflow](docs/supabase/WORKFLOW.md) ⭐ Local + cloud
 - [Production Safety](scripts/db/PRODUCTION-WARNING.md) ⚠️ Critical
 
 **References:**
-- [Commands](docs/claude/commands-quick-reference.md)
-- [Testing](docs/claude/testing-quick-reference.md)
+- [Commands](docs/development/commands-quick-reference.md)
+- [Testing](docs/development/testing-quick-reference.md)
 - [Colors](docs/internal-docs/color-theming-architecture.docs.md)
 - [README](README.md)

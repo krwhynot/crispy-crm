@@ -85,7 +85,9 @@ This is your central hub for all project documentation, organized by audience an
 
 ### Historical
 - **[archive/](archive/)** - Completed planning documents and deprecated docs
-  - 2025-10-planning/ - October 2025 feature planning
+  - 2025-10-codebase-snapshot/ - October codebase overview (119K)
+  - 2025-11-spikes/ - November spike research (11 files)
+  - 2025-11-planning/ - November planning summaries
 
 ---
 
@@ -196,5 +198,5 @@ When adding significant documentation, update:
 
 ---
 
-**Last Updated:** 2025-10-31
-**Documentation Structure Version:** 2.0
+**Last Updated:** 2025-11-09
+**Documentation Structure Version:** 2.1

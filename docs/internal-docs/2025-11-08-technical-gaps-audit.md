@@ -339,9 +339,9 @@ git filter-branch --force --index-filter \
 
 ### **Documentation Created:**
 - ✅ `SECURITY_AUDIT_SUMMARY.txt` (root - 2-page executive summary)
-- ✅ `docs/SECURITY_AUDIT_2025-11-08.md` (20-page detailed analysis with OWASP mappings)
-- ✅ `docs/SECURITY_REMEDIATION_EXAMPLES.md` (25-page code fix guide)
-- ✅ `docs/SECURITY_README.md` (navigation index)
+- ✅ `../security/security-audit-2025-11-08.md` (20-page detailed analysis with OWASP mappings)
+- ✅ `../security/security-remediation-examples.md` (25-page code fix guide)
+- ✅ `../security/README.md` (navigation index)
 
 ---
 
@@ -411,9 +411,9 @@ git filter-branch --force --index-filter \
 
 ### **Documentation Created:**
 - ✅ `docs/ACCESSIBILITY_README.md` (index with quick navigation)
-- ✅ `docs/A11Y_QUICK_REFERENCE.md` (5-minute developer guide)
-- ✅ `docs/A11Y_PRIORITY_FIXES.md` (implementation guide with code fixes)
-- ✅ `docs/ACCESSIBILITY_AUDIT.md` (full 400+ line analysis)
+- ✅ `../accessibility/a11y-quick-reference.md` (5-minute developer guide)
+- ✅ `../accessibility/a11y-priority-fixes.md` (implementation guide with code fixes)
+- ✅ `../accessibility/accessibility-audit.md` (full 400+ line analysis)
 
 ---
 
@@ -519,13 +519,13 @@ git filter-branch --force --index-filter \
 1. ✅ `docs/internal-docs/2025-11-08-constitution-audit-summary.md` (Constitution compliance)
 2. ✅ `docs/internal-docs/2025-11-08-technical-gaps-audit.md` (This document)
 3. ✅ `SECURITY_AUDIT_SUMMARY.txt` (2-page executive summary)
-4. ✅ `docs/SECURITY_AUDIT_2025-11-08.md` (20-page security analysis)
-5. ✅ `docs/SECURITY_REMEDIATION_EXAMPLES.md` (25-page code fixes)
-6. ✅ `docs/SECURITY_README.md` (navigation index)
+4. ✅ `../security/security-audit-2025-11-08.md` (20-page security analysis)
+5. ✅ `../security/security-remediation-examples.md` (25-page code fixes)
+6. ✅ `../security/README.md` (navigation index)
 7. ✅ `docs/ACCESSIBILITY_README.md` (a11y index)
-8. ✅ `docs/A11Y_QUICK_REFERENCE.md` (5-minute guide)
-9. ✅ `docs/A11Y_PRIORITY_FIXES.md` (implementation guide)
-10. ✅ `docs/ACCESSIBILITY_AUDIT.md` (400+ line analysis)
+8. ✅ `../accessibility/a11y-quick-reference.md` (5-minute guide)
+9. ✅ `../accessibility/a11y-priority-fixes.md` (implementation guide)
+10. ✅ `../accessibility/accessibility-audit.md` (400+ line analysis)
 11. ✅ `docs/claude/TESTING-COVERAGE-GAP-ANALYSIS.md` (testing gaps)
 12. ✅ `docs/claude/TESTING-QUICK-START.md` (testing guide)
 
@@ -717,8 +717,8 @@ git filter-branch --force --index-filter \
 - Error Handling: AddTask.tsx, NotificationsList.tsx, MyTasksThisWeek.tsx, storage.utils.ts, BulkActionsToolbar.tsx
 
 ### **Documentation Index**
-- Security: `docs/SECURITY_*.md` (4 files)
-- Accessibility: `docs/A11Y_*.md`, `docs/ACCESSIBILITY_*.md` (4 files)
+- Security: `../security/security-*.md` (4 files)
+- Accessibility: `../accessibility/a11y-*.md`, `../accessibility/accessibility-*.md` (4 files)
 - Testing: `docs/claude/TESTING-*.md` (2 files)
 - This Audit: `docs/internal-docs/2025-11-08-technical-gaps-audit.md`
 - Constitution: `docs/internal-docs/2025-11-08-constitution-audit-summary.md`
