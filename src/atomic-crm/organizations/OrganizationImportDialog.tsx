@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, CheckCircle2, Building2, Upload } from "lucide-react";
-import { useRefresh, useNotify } from "ra-core";
+import { useRefresh, useNotify, useDataProvider } from "ra-core";
 import { useState, useRef, useCallback, useMemo } from "react";
 import Papa from "papaparse";
 import { findCanonicalField, mapHeadersToFields } from "./organizationColumnAliases";
@@ -20,7 +20,6 @@ import OrganizationImportPreview, {
   type ColumnMapping,
   type DuplicateGroup,
 } from "./OrganizationImportPreview";
-import { supabase } from "../providers/supabase/supabase";
 import { formatName } from "../utils/formatName";
 import { validateCsvFile, getSecurePapaParseConfig, sanitizeCsvValue, type CsvValidationError } from "../utils/csvUploadValidator";
 
@@ -37,6 +36,7 @@ export function OrganizationImportDialog({
 }: OrganizationImportDialogProps) {
   const refresh = useRefresh();
   const notify = useNotify();
+  const dataProvider = useDataProvider();
   const processBatchHook = useOrganizationImport();
 
   const [file, setFile] = useState<File | null>(null);
@@ -182,16 +182,16 @@ export function OrganizationImportDialog({
 
     try {
       // 2. Check which names already exist in the DB (for user_id IS NULL)
-      const { data: existing, error: selectError } = await supabase
-        .from('sales')
-        .select('id, first_name, last_name')
-        .in('first_name', firstNames)
-        .is('user_id', null);
+      const response = await dataProvider.getList('sales', {
+        filter: {
+          'first_name@in': `(${firstNames.map(name => `"${name}"`).join(',')})`,
+          user_id: null,
+        },
+        pagination: { page: 1, perPage: firstNames.length },
+        sort: { field: 'id', order: 'ASC' },
+      });
 
-      if (selectError) {
-        console.error('[Import] Error fetching existing account managers:', selectError);
-        return;
-      }
+      const existing = response.data;
 
       console.log('[Import] Found existing account managers:', existing);
 
@@ -233,20 +233,29 @@ export function OrganizationImportDialog({
 
       console.log('[Import] Inserting sales records:', newSalesRecords);
 
-      const { data: inserted, error: insertError } = await supabase
-        .from('sales')
-        .insert(newSalesRecords)
-        .select('id, first_name, last_name');
+      // 4. Batch insert new managers using Promise.allSettled for partial failure handling
+      const insertResults = await Promise.allSettled(
+        newSalesRecords.map(async (record) => {
+          const response = await dataProvider.create('sales', { data: record });
+          return response.data;
+        })
+      );
 
-      if (insertError) {
-        console.error('[Import] Error batch-creating account managers:', insertError);
-        return;
+      // Extract successfully inserted records
+      const inserted = insertResults
+        .filter((result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled')
+        .map(result => result.value);
+
+      // Log any failures
+      const failures = insertResults.filter(result => result.status === 'rejected');
+      if (failures.length > 0) {
+        console.error('[Import] Some account managers failed to insert:', failures);
       }
 
       console.log('[Import] Successfully inserted account managers:', inserted);
 
       // 5. Populate cache with newly created managers
-      (inserted || []).forEach(sale => {
+      inserted.forEach(sale => {
         const fullName = formatName(sale.first_name, sale.last_name);
         salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
       });
@@ -303,15 +312,15 @@ export function OrganizationImportDialog({
 
     try {
       // Check which segments already exist
-      const { data: existing, error: selectError } = await supabase
-        .from('segments')
-        .select('id, name')
-        .in('name', uniqueNames);
+      const response = await dataProvider.getList('segments', {
+        filter: {
+          'name@in': `(${uniqueNames.map(name => `"${name}"`).join(',')})`,
+        },
+        pagination: { page: 1, perPage: uniqueNames.length },
+        sort: { field: 'id', order: 'ASC' },
+      });
 
-      if (selectError) {
-        console.error('[Import] Error fetching existing segments:', selectError);
-        return;
-      }
+      const existing = response.data;
 
       console.log('[Import] Found existing segments:', existing);
 
@@ -342,20 +351,29 @@ export function OrganizationImportDialog({
 
       console.log('[Import] Inserting segments:', newSegments);
 
-      const { data: inserted, error: insertError } = await supabase
-        .from('segments')
-        .insert(newSegments)
-        .select('id, name');
+      // Batch insert new segments using Promise.allSettled for partial failure handling
+      const insertResults = await Promise.allSettled(
+        newSegments.map(async (segment) => {
+          const response = await dataProvider.create('segments', { data: segment });
+          return response.data;
+        })
+      );
 
-      if (insertError) {
-        console.error('[Import] Error batch-creating segments:', insertError);
-        return;
+      // Extract successfully inserted records
+      const inserted = insertResults
+        .filter((result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled')
+        .map(result => result.value);
+
+      // Log any failures
+      const failures = insertResults.filter(result => result.status === 'rejected');
+      if (failures.length > 0) {
+        console.error('[Import] Some segments failed to insert:', failures);
       }
 
       console.log('[Import] Successfully inserted segments:', inserted);
 
       // Populate cache with newly created segments
-      (inserted || []).forEach(segment => {
+      inserted.forEach(segment => {
         segmentsLookupCache.current.set(segment.name.toLowerCase(), segment.id);
       });
 

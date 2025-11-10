@@ -325,9 +325,6 @@ describe('authProvider', () => {
 
   describe('login', () => {
     it('should clear cached sale on login', async () => {
-      // Mock successful login
-      const mockLogin = vi.fn().mockResolvedValue({});
-
       // We can't directly test the base provider's login,
       // but we can verify our wrapper clears the cache
       // This is a structural test - verifies the login method exists

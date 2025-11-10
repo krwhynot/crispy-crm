@@ -22,14 +22,9 @@ const mocks = vi.hoisted(() => ({
 // Destructure for easier access
 const {
   mockLogin,
-  mockLogout,
   mockCheckAuth,
-  mockCheckError,
-  mockGetIdentity,
-  mockGetPermissions,
   mockCanAccessFn,
   mockGetSession,
-  mockGetUser,
   mockFrom,
 } = mocks;
 
