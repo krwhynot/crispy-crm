@@ -292,37 +292,35 @@
           - button:
             - img
             - generic: Keyboard shortcuts
-    - region "Notifications alt+T"
+    - region "Notifications alt+T":
+      - list:
+        - listitem:
+          - button "Close toast":
+            - img
+          - generic:
+            - img
+          - generic:
+            - generic: Failed to complete task. Please try again.
   - status
-  - 'dialog "Complete Task: Send email proposal for spring menu" [ref=e2]':
-    - 'heading "Complete Task: Send email proposal for spring menu" [level=2] [ref=e4]'
-    - generic [ref=e5]:
-      - generic [ref=e6]:
-        - generic [ref=e7]: Activity Type
-        - combobox "Activity Type" [ref=e8] [cursor=pointer]:
-          - generic: Email
-          - img
-        - paragraph [ref=e9]: Auto-detected from task title
+  - dialog "Update Opportunity" [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Update Opportunity" [level=2] [ref=e4]
+      - paragraph [ref=e5]: Optionally update the opportunity stage
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: Cheese Curd Program - Q1 2025
+        - paragraph [ref=e9]: "Current Stage: Demo Scheduled"
       - generic [ref=e10]:
-        - generic [ref=e11]:
-          - text: Notes
-          - generic [ref=e12]: "*"
-        - textbox "Notes *" [active] [ref=e13]:
-          - /placeholder: What happened? (e.g., 'Discussed pricing options, customer interested in 2 cases')
-          - text: Send detailed proposal including seasonal options
-        - paragraph [ref=e14]: 49 characters
-      - generic [ref=e15]:
-        - paragraph [ref=e16]: "Related to:"
-        - list [ref=e17]:
-          - listitem [ref=e18]:
-            - img [ref=e19]
-            - generic [ref=e22]: "Task: Send email proposal for spring menu"
-          - listitem [ref=e23]:
-            - img [ref=e24]
-            - generic [ref=e27]: "Opportunity (ID: 1)"
-      - button "Save & Continue →" [ref=e29] [cursor=pointer]
-      - paragraph [ref=e30]: Ctrl+Enter to save • Esc to cancel
-    - button "Close" [ref=e31] [cursor=pointer]:
+        - generic [ref=e11]: Move to Stage (optional)
+        - combobox "Move to Stage (optional)" [ref=e12] [cursor=pointer]:
+          - generic: Select new stage...
+          - img
+        - paragraph [ref=e13]: Leave blank to keep current stage
+      - generic [ref=e14]:
+        - button "Skip" [active] [ref=e15] [cursor=pointer]
+        - button "Keep Stage & Close" [ref=e16] [cursor=pointer]
+      - paragraph [ref=e17]: This step is optional - you can skip if the stage hasn't changed
+    - button "Close" [ref=e18] [cursor=pointer]:
       - img
-      - generic [ref=e32]: Close
+      - generic [ref=e19]: Close
 ```
