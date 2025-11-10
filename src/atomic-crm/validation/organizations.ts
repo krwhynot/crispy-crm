@@ -5,6 +5,39 @@ import { z } from "zod";
  * Implements validation rules from OrganizationInputs.tsx
  */
 
+// Organization hierarchy constants
+export const PARENT_ELIGIBLE_TYPES = [
+  "distributor",
+  "customer",
+  "principal",
+] as const;
+export type ParentEligibleType = (typeof PARENT_ELIGIBLE_TYPES)[number];
+
+export function isParentEligibleType(type: string): type is ParentEligibleType {
+  return PARENT_ELIGIBLE_TYPES.includes(type as ParentEligibleType);
+}
+
+export function canBeParent(org: {
+  organization_type: string;
+  parent_organization_id?: number | string | null;
+}): boolean {
+  return (
+    isParentEligibleType(org.organization_type) && !org.parent_organization_id
+  );
+}
+
+export function canHaveParent(org: {
+  organization_type: string;
+  parent_organization_id?: number | string | null;
+  child_branch_count?: number;
+}): boolean {
+  return (
+    isParentEligibleType(org.organization_type) &&
+    !org.parent_organization_id &&
+    (org.child_branch_count === 0 || org.child_branch_count === undefined)
+  );
+}
+
 // Organization type enum
 export const organizationTypeSchema = z.enum([
   "customer",
@@ -24,11 +57,9 @@ const URL_REGEX =
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
 
 // Custom validators
-const isValidUrl = z
-  .string()
-  .refine((url) => !url || URL_REGEX.test(url), {
-    message: "Must be a valid URL",
-  });
+const isValidUrl = z.string().refine((url) => !url || URL_REGEX.test(url), {
+  message: "Must be a valid URL",
+});
 
 const isLinkedinUrl = z.string().refine(
   (url) => {
