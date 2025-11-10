@@ -156,8 +156,8 @@ describe("ParentOrganizationInput", () => {
     );
 
     await waitFor(() => {
-      const label = screen.getByText(/Parent Organization/i);
-      expect(label).toBeInTheDocument();
+      const input = screen.getByRole("combobox");
+      expect(input).toHaveAttribute("name", "parent_id");
     });
   });
 
