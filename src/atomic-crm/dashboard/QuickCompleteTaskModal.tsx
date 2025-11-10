@@ -16,7 +16,7 @@
  */
 
 import { useState } from "react";
-import { useDataProvider, useNotify, useRefresh } from "react-admin";
+import { useDataProvider, useNotify } from "react-admin";
 import {
   Dialog,
   DialogContent,
@@ -52,7 +52,6 @@ export function QuickCompleteTaskModal({
 
   const dataProvider = useDataProvider();
   const notify = useNotify();
-  const refresh = useRefresh();
 
   /**
    * Handle activity saved (Step 1 → Step 2)
@@ -109,8 +108,7 @@ export function QuickCompleteTaskModal({
       // Notify user
       notify("Task completed successfully!", { type: "success" });
 
-      // Refresh parent data
-      refresh();
+      // Signal parent to refresh and handle cleanup
       onComplete();
 
       // Auto-close after 1 second

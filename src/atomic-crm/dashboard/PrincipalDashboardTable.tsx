@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { AlertCircle } from "lucide-react";
 import type { RaRecord } from "react-admin";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { QuickCompleteTaskModal } from "./QuickCompleteTaskModal";
 import type { Task } from "../types";
@@ -41,6 +41,7 @@ interface DashboardPrincipalSummary extends RaRecord {
   max_days_in_stage: number;
   is_stuck: boolean;
   next_action: string | null;
+  next_action_task: Task | null; // Full task object for quick actions
   priority_score: number;
 }
 
@@ -95,18 +96,126 @@ const StuckField = ({ record }: { record?: DashboardPrincipalSummary }) => {
   );
 };
 
-// Next action field
-const NextActionField = ({ record }: { record?: DashboardPrincipalSummary }) => {
-  if (!record || !record.next_action) {
+// Next action field with checkbox for quick completion
+const NextActionField = ({
+  record,
+  onTaskSelect
+}: {
+  record?: DashboardPrincipalSummary;
+  onTaskSelect: (task: Task) => void;
+}) => {
+  if (!record) return null;
+
+  // Use the task object directly for checks and rendering
+  const task = record.next_action_task;
+
+  if (!task) {
     return <span className="text-muted-foreground italic">No pending tasks</span>;
   }
 
-  return <span className="text-sm">{record.next_action}</span>;
+  return (
+    <div className="flex items-center gap-2">
+      <Checkbox
+        checked={false}
+        onCheckedChange={() => onTaskSelect(task)}
+        onClick={(e) => e.stopPropagation()}
+        aria-label={`Complete task: ${record.next_action}`}
+      />
+      <span className="text-sm">{record.next_action}</span>
+    </div>
+  );
 };
+
+// Memoized grid component to prevent unnecessary re-renders when modal state changes
+const DashboardGrid = memo(({ onTaskSelect }: { onTaskSelect: (task: Task) => void }) => {
+  return (
+    <Datagrid
+      bulkActionButtons={false}
+      rowClick={(id, resource, record) => {
+        // Navigate to organization detail page (id = principal_organization_id)
+        return `/organizations/${id}/show`;
+      }}
+      sx={{
+        '& .RaDatagrid-table': {
+          borderCollapse: 'separate',
+          borderSpacing: 0,
+        },
+        '& .RaDatagrid-thead': {
+          backgroundColor: 'var(--secondary)',
+        },
+        '& .RaDatagrid-headerCell': {
+          fontWeight: 600,
+          padding: '12px 16px',
+        },
+        '& .RaDatagrid-rowCell': {
+          padding: '12px 16px',
+        },
+        '& .RaDatagrid-row:hover': {
+          backgroundColor: 'var(--accent)',
+          cursor: 'pointer',
+        },
+      }}
+    >
+      {/* Column 1: Principal Name (clickable) */}
+      <FunctionField
+        label="Principal"
+        render={(record: DashboardPrincipalSummary) => (
+          <Link
+            to={`/organizations/${record.id}/show`}
+            className="font-medium text-primary hover:underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {record.principal_name}
+          </Link>
+        )}
+      />
+
+      {/* Column 2: Opportunity Count */}
+      <TextField
+        source="opportunity_count"
+        label="# Opps"
+        textAlign="center"
+      />
+
+      {/* Column 3: Status Indicator */}
+      <FunctionField
+        label="Status"
+        render={(record?: RaRecord) => <StatusField record={record as DashboardPrincipalSummary} />}
+      />
+
+      {/* Column 4: Last Activity */}
+      <FunctionField
+        label="Last Activity"
+        render={(record?: RaRecord) => <LastActivityField record={record as DashboardPrincipalSummary} />}
+      />
+
+      {/* Column 5: Stuck Indicator */}
+      <FunctionField
+        label="Stuck"
+        render={(record?: RaRecord) => <StuckField record={record as DashboardPrincipalSummary} />}
+      />
+
+      {/* Column 6: Next Action */}
+      <FunctionField
+        label="Next Action"
+        render={(record?: RaRecord) => (
+          <NextActionField
+            record={record as DashboardPrincipalSummary}
+            onTaskSelect={onTaskSelect}
+          />
+        )}
+      />
+    </Datagrid>
+  );
+});
 
 export const PrincipalDashboardTable = () => {
   const { identity } = useGetIdentity();
   const salesId = identity?.id;
+  const refresh = useRefresh();
+
+  // State for quick action modal
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   // If no identity yet, show nothing (loading handled by parent)
   if (!salesId) {
@@ -114,6 +223,7 @@ export const PrincipalDashboardTable = () => {
   }
 
   return (
+    <>
     <List
       resource="dashboard_principal_summary"
       filter={{ account_manager_id: salesId }}
@@ -127,78 +237,20 @@ export const PrincipalDashboardTable = () => {
         },
       }}
     >
-      <Datagrid
-        bulkActionButtons={false}
-        rowClick={(id, resource, record) => {
-          // Navigate to organization detail page (id = principal_organization_id)
-          return `/organizations/${id}/show`;
-        }}
-        sx={{
-          '& .RaDatagrid-table': {
-            borderCollapse: 'separate',
-            borderSpacing: 0,
-          },
-          '& .RaDatagrid-thead': {
-            backgroundColor: 'var(--secondary)',
-          },
-          '& .RaDatagrid-headerCell': {
-            fontWeight: 600,
-            padding: '12px 16px',
-          },
-          '& .RaDatagrid-rowCell': {
-            padding: '12px 16px',
-          },
-          '& .RaDatagrid-row:hover': {
-            backgroundColor: 'var(--accent)',
-            cursor: 'pointer',
-          },
-        }}
-      >
-        {/* Column 1: Principal Name (clickable) */}
-        <FunctionField
-          label="Principal"
-          render={(record: DashboardPrincipalSummary) => (
-            <Link
-              to={`/organizations/${record.id}/show`}
-              className="font-medium text-primary hover:underline"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {record.principal_name}
-            </Link>
-          )}
-        />
-
-        {/* Column 2: Opportunity Count */}
-        <TextField
-          source="opportunity_count"
-          label="# Opps"
-          textAlign="center"
-        />
-
-        {/* Column 3: Status Indicator */}
-        <FunctionField
-          label="Status"
-          render={(record?: RaRecord) => <StatusField record={record as DashboardPrincipalSummary} />}
-        />
-
-        {/* Column 4: Last Activity */}
-        <FunctionField
-          label="Last Activity"
-          render={(record?: RaRecord) => <LastActivityField record={record as DashboardPrincipalSummary} />}
-        />
-
-        {/* Column 5: Stuck Indicator */}
-        <FunctionField
-          label="Stuck"
-          render={(record?: RaRecord) => <StuckField record={record as DashboardPrincipalSummary} />}
-        />
-
-        {/* Column 6: Next Action */}
-        <FunctionField
-          label="Next Action"
-          render={(record?: RaRecord) => <NextActionField record={record as DashboardPrincipalSummary} />}
-        />
-      </Datagrid>
+      <DashboardGrid onTaskSelect={setSelectedTask} />
     </List>
+
+    {/* Quick Complete Task Modal */}
+    {selectedTask && (
+      <QuickCompleteTaskModal
+        task={selectedTask}
+        onClose={() => setSelectedTask(null)}
+        onComplete={() => {
+          setSelectedTask(null);
+          refresh();
+        }}
+      />
+    )}
+    </>
   );
 };
