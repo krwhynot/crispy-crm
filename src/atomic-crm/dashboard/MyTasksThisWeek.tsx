@@ -1,8 +1,11 @@
-import { useGetList, useGetIdentity, useUpdate } from "react-admin";
+import { useGetList, useGetIdentity, useRefresh } from "react-admin";
 import { Link } from "react-router-dom";
 import { format, addDays, startOfDay, endOfDay, isPast, isToday } from "date-fns";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
+import { QuickCompleteTaskModal } from "./QuickCompleteTaskModal";
+import type { Task } from "../types";
 
 /**
  * My Tasks This Week Widget
@@ -15,22 +18,13 @@ import { Checkbox } from "@/components/ui/checkbox";
  * Sort: due_date ASC, priority DESC
  *
  * Interactions:
- * - Checkbox: Mark task complete (inline)
+ * - Checkbox: Opens QuickCompleteTaskModal for progressive disclosure workflow
  * - Task text: Open task detail
  * - "View All Tasks": Navigate to /tasks
  *
  * Design: docs/plans/2025-11-07-dashboard-widgets-design.md (Widget 3)
+ * Feature: Dashboard Quick Actions (docs/plans/2025-11-10-dashboard-quick-actions-design.md)
  */
-
-interface Task {
-  id: number;
-  title: string;
-  due_date: string | null;
-  priority: 'high' | 'medium' | 'low';
-  completed: boolean;
-  assigned_to: number;
-  opportunity_id?: number;
-}
 
 interface GroupedTasks {
   overdue: Task[];
@@ -40,7 +34,8 @@ interface GroupedTasks {
 
 export const MyTasksThisWeek = () => {
   const { identity } = useGetIdentity();
-  const [update] = useUpdate();
+  const refresh = useRefresh();
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const today = new Date();
   const sevenDaysFromNow = addDays(today, 7);
 
@@ -116,65 +111,60 @@ export const MyTasksThisWeek = () => {
     );
   }
 
-  const handleTaskComplete = (taskId: number) => {
-    update(
-      'tasks',
-      {
-        id: taskId,
-        data: { completed: true },
-        previousData: tasks?.find((t) => t.id === taskId),
-      },
-      {
-        onSuccess: () => {
-          // Task will be removed from list via React Admin cache invalidation
-        },
-        onError: (error) => {
-          console.error('Failed to complete task:', error);
-        },
-      }
-    );
-  };
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>My Tasks This Week</CardTitle>
-      </CardHeader>
-      <CardContent className="max-h-[350px] overflow-y-auto space-y-4">
-        {grouped.overdue.length > 0 && (
-          <TaskGroup
-            title="⚠️ OVERDUE"
-            tasks={grouped.overdue}
-            onComplete={handleTaskComplete}
-            variant="overdue"
-          />
-        )}
-        {grouped.today.length > 0 && (
-          <TaskGroup
-            title="📅 DUE TODAY"
-            tasks={grouped.today}
-            onComplete={handleTaskComplete}
-            variant="today"
-          />
-        )}
-        {grouped.thisWeek.length > 0 && (
-          <TaskGroup
-            title="📆 THIS WEEK"
-            tasks={grouped.thisWeek}
-            onComplete={handleTaskComplete}
-            variant="week"
-          />
-        )}
-      </CardContent>
-      <CardFooter>
-        <Link
-          to="/tasks"
-          className="text-sm text-primary hover:underline"
-        >
-          View All Tasks →
-        </Link>
-      </CardFooter>
-    </Card>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>My Tasks This Week</CardTitle>
+        </CardHeader>
+        <CardContent className="max-h-[350px] overflow-y-auto space-y-4">
+          {grouped.overdue.length > 0 && (
+            <TaskGroup
+              title="⚠️ OVERDUE"
+              tasks={grouped.overdue}
+              onTaskSelect={setSelectedTask}
+              variant="overdue"
+            />
+          )}
+          {grouped.today.length > 0 && (
+            <TaskGroup
+              title="📅 DUE TODAY"
+              tasks={grouped.today}
+              onTaskSelect={setSelectedTask}
+              variant="today"
+            />
+          )}
+          {grouped.thisWeek.length > 0 && (
+            <TaskGroup
+              title="📆 THIS WEEK"
+              tasks={grouped.thisWeek}
+              onTaskSelect={setSelectedTask}
+              variant="week"
+            />
+          )}
+        </CardContent>
+        <CardFooter>
+          <Link
+            to="/tasks"
+            className="text-sm text-primary hover:underline"
+          >
+            View All Tasks →
+          </Link>
+        </CardFooter>
+      </Card>
+
+      {/* Quick Complete Task Modal */}
+      {selectedTask && (
+        <QuickCompleteTaskModal
+          task={selectedTask}
+          onClose={() => setSelectedTask(null)}
+          onComplete={() => {
+            setSelectedTask(null);
+            refresh();
+          }}
+        />
+      )}
+    </>
   );
 };
 
@@ -210,11 +200,11 @@ function groupTasksByUrgency(tasks: Task[]): GroupedTasks {
 interface TaskGroupProps {
   title: string;
   tasks: Task[];
-  onComplete: (taskId: number) => void;
+  onTaskSelect: (task: Task) => void;
   variant: 'overdue' | 'today' | 'week';
 }
 
-function TaskGroup({ title, tasks, onComplete, variant }: TaskGroupProps) {
+function TaskGroup({ title, tasks, onTaskSelect, variant }: TaskGroupProps) {
   const titleColors = {
     overdue: 'text-destructive',
     today: 'text-warning',
@@ -228,7 +218,7 @@ function TaskGroup({ title, tasks, onComplete, variant }: TaskGroupProps) {
       </h4>
       <div className="space-y-2">
         {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} onComplete={onComplete} variant={variant} />
+          <TaskItem key={task.id} task={task} onTaskSelect={onTaskSelect} variant={variant} />
         ))}
       </div>
     </div>
@@ -237,11 +227,11 @@ function TaskGroup({ title, tasks, onComplete, variant }: TaskGroupProps) {
 
 interface TaskItemProps {
   task: Task;
-  onComplete: (taskId: number) => void;
+  onTaskSelect: (task: Task) => void;
   variant: 'overdue' | 'today' | 'week';
 }
 
-function TaskItem({ task, onComplete, variant }: TaskItemProps) {
+function TaskItem({ task, onTaskSelect, variant }: TaskItemProps) {
   const daysLate = task.due_date
     ? Math.floor((new Date().getTime() - new Date(task.due_date).getTime()) / (1000 * 60 * 60 * 24))
     : 0;
@@ -254,9 +244,9 @@ function TaskItem({ task, onComplete, variant }: TaskItemProps) {
     <div className="flex items-start gap-2 group">
       <Checkbox
         checked={false}
-        onCheckedChange={() => onComplete(task.id)}
+        onCheckedChange={() => onTaskSelect(task)}
         className="mt-0.5"
-        aria-label={`Mark "${task.title}" as complete`}
+        aria-label={`Complete task: ${task.title}`}
       />
       <div className="flex-1 min-w-0">
         <div className="text-sm">

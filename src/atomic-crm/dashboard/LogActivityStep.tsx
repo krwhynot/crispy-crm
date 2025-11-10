@@ -11,7 +11,7 @@
  * - Keyboard shortcuts (Enter to save, Esc to skip)
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -72,8 +72,8 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
   // Validation
   const isValid = notes.trim().length > 0;
 
-  // Handle save
-  const handleSave = async () => {
+  // Handle save - wrapped in useCallback for stable reference
+  const handleSave = useCallback(async () => {
     if (!isValid) return;
 
     setIsSubmitting(true);
@@ -86,7 +86,7 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
     };
 
     onSave(activityData);
-  };
+  }, [isValid, activityType, notes, task.title, onSave]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -107,7 +107,7 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isValid, notes, activityType]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isValid, handleSave, onSkip]);
 
   return (
     <div className="space-y-4">
@@ -159,9 +159,9 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
       <div className="rounded-md bg-muted/50 p-3 text-sm">
         <p className="font-medium text-foreground">Related to:</p>
         <ul className="mt-1 space-y-1 text-muted-foreground">
-          <li>=Ë Task: {task.title}</li>
+          <li>=ï¿½ Task: {task.title}</li>
           {task.opportunity_id && (
-            <li>=¼ Opportunity (ID: {task.opportunity_id})</li>
+            <li>=ï¿½ Opportunity (ID: {task.opportunity_id})</li>
           )}
           {task.contact_id && <li>=d Contact (ID: {task.contact_id})</li>}
         </ul>
@@ -182,7 +182,7 @@ export function LogActivityStep({ task, onSave, onSkip }: LogActivityStepProps) 
           disabled={!isValid || isSubmitting}
           className="flex-1"
         >
-          {isSubmitting ? "Saving..." : "Save & Continue ’"}
+          {isSubmitting ? "Saving..." : "Save & Continue ï¿½"}
         </Button>
       </div>
 
