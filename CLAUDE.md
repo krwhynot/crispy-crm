@@ -352,6 +352,46 @@ CREATE TABLE tasks (
 
 **Ref:** [Implementation Plan](docs/plans/2025-11-09-tasks-module-weekly-activity-report.md)
 
+## Opportunities Module
+
+**Resource:** `/opportunities` - Full CRUD opportunity management with Kanban board
+
+### Kanban Board Features
+
+**View:** Default view with drag-and-drop stage transitions
+
+**Enhanced Cards:**
+- Primary contact name with icon
+- Estimated close date
+- Priority badge (semantic colors: low/medium/high/critical)
+- Days in stage indicator
+- Warning badge for stuck opportunities (>14 days)
+- Inline actions menu (view, edit, mark won, delete)
+
+**Column Features:**
+- Stage metrics in headers (count, avg days, stuck count)
+- Quick-add opportunity button (pre-fills stage)
+- Collapse/expand individual columns
+- Column visibility toggle
+
+**Customization:**
+- Preferences persisted to localStorage
+- Keys: `opportunity.kanban.collapsed_stages`, `opportunity.kanban.visible_stages`
+- "Customize Columns" menu with collapse all/expand all
+
+**Library:** `@hello-pangea/dnd` v18.0.1 (fork of react-beautiful-dnd)
+
+**Validation:** `src/atomic-crm/validation/opportunity.ts`
+
+**Components:**
+- List: Kanban board with drag-and-drop (default)
+- Show: Opportunity detail with tabs
+- Edit: Full form with contact/organization pickers
+- Create: Multi-step form
+- QuickAdd: Single-field modal from Kanban columns
+
+**Ref:** [Kanban Enhancements Plan](docs/plans/2025-11-10-pipedrive-kanban-enhancements.md)
+
 ## Customizing CRM
 
 Props to `<CRM>` in `App.tsx`:
