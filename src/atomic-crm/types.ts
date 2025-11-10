@@ -198,7 +198,6 @@ export interface ContactNote extends Pick<RaRecord, "id"> {
 
 // Deal type removed - use Opportunity instead
 
-
 // Lead Source type
 export type LeadSource =
   | "referral"
@@ -209,7 +208,6 @@ export type LeadSource =
   | "social_media"
   | "partner"
   | "existing_customer";
-
 
 export interface Opportunity extends Pick<RaRecord, "id"> {
   name: string;
