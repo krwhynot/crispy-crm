@@ -2271,3 +2271,4 @@
 [2025-11-10 06:52:58] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/QuickCompleteTaskModal.tsx
 [2025-11-10 06:53:08] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/QuickCompleteTaskModal.tsx
 [2025-11-10 06:59:07] [migration] Write: /home/krwhynot/projects/crispy-crm/supabase/migrations/20251110125720_fix_complete_task_with_followup_created_by.sql
+[2025-11-10 07:09:19] [documentation] Edit: /home/krwhynot/projects/crispy-crm/docs/plans/2025-11-10-dashboard-quick-actions-design.md
