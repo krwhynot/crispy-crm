@@ -110,7 +110,7 @@ describe("TabbedFormInputs", () => {
       },
     ];
 
-    const { container } = render(
+    render(
       <FormWrapper>
         <Tabs defaultValue="other">
           <TabbedFormInputs tabs={tabs} defaultTab="other" />

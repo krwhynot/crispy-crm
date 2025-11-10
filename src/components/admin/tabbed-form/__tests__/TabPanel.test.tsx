@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/tabs";
 import { TabPanel } from "../TabPanel";
 import { describe, it, expect } from "vitest";
 
