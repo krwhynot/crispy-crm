@@ -7,7 +7,7 @@ import {
   getOpportunityStageColor,
   getOpportunityStageElevation
 } from "./stageConstants";
-import { useStageMetrics } from "./useStageMetrics";
+import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "./useStageMetrics";
 
 export const OpportunityColumn = ({
   stage,
@@ -56,7 +56,7 @@ export const OpportunityColumn = ({
               ~{metrics.avgDaysInStage}d
             </span>
             {metrics.stuckCount > 0 && (
-              <span className="text-warning" title="Opportunities stuck >14 days">
+              <span className="text-warning" title={`Opportunities stuck >${STUCK_THRESHOLD_DAYS} days`}>
                 ⚠ {metrics.stuckCount}
               </span>
             )}

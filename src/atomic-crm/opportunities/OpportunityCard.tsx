@@ -2,6 +2,7 @@ import { useRecordContext, type Identifier } from "react-admin";
 import { Draggable } from "@hello-pangea/dnd";
 import { format } from "date-fns";
 import { useOpportunityContacts } from "./useOpportunityContacts";
+import { STUCK_THRESHOLD_DAYS } from "./useStageMetrics";
 import type { Opportunity } from "../types";
 
 interface OpportunityCardProps {
@@ -13,7 +14,7 @@ const priorityColors = {
   medium: "bg-primary/10 text-primary",
   high: "bg-warning/10 text-warning",
   critical: "bg-destructive text-destructive-foreground",
-};
+} as const;
 
 export function OpportunityCard({ index }: OpportunityCardProps) {
   const record = useRecordContext<Opportunity>();
@@ -28,7 +29,13 @@ export function OpportunityCard({ index }: OpportunityCardProps) {
     : "No date set";
 
   const daysInStage = record.days_in_stage || 0;
-  const isStuck = daysInStage > 14;
+  const isStuck = daysInStage > STUCK_THRESHOLD_DAYS;
+
+  // Safely handle priority with fallback
+  const priority = record.priority || "medium";
+  const priorityClass =
+    priorityColors[priority as keyof typeof priorityColors] || priorityColors.medium;
+  const priorityLabel = priority.charAt(0).toUpperCase() + priority.slice(1);
 
   return (
     <Draggable draggableId={String(record.id)} index={index}>
@@ -54,10 +61,10 @@ export function OpportunityCard({ index }: OpportunityCardProps) {
             <span
               className={`
                 text-xs px-2 py-0.5 rounded-full whitespace-nowrap
-                ${priorityColors[record.priority || "medium"]}
+                ${priorityClass}
               `}
             >
-              {record.priority ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1) : "Medium"}
+              {priorityLabel}
             </span>
           </div>
 

@@ -293,11 +293,12 @@ describe("ProductShow", () => {
       // Overview tab should show product information
       expect(screen.getByText("Product Information")).toBeInTheDocument();
       expect(screen.getByText("Category")).toBeInTheDocument();
-      expect(screen.getByText("test category")).toBeInTheDocument();
+      // Category and brand appear in multiple places (badge + overview section)
+      expect(screen.getAllByText("test category").length).toBeGreaterThan(0);
       expect(screen.getByText("Subcategory")).toBeInTheDocument();
       expect(screen.getByText("test_subcategory")).toBeInTheDocument();
       expect(screen.getByText("Brand")).toBeInTheDocument();
-      expect(screen.getByText("TestBrand")).toBeInTheDocument();
+      expect(screen.getAllByText("TestBrand").length).toBeGreaterThan(0);
       expect(screen.getByText("UPC")).toBeInTheDocument();
       expect(screen.getByText("123456789012")).toBeInTheDocument();
     });
