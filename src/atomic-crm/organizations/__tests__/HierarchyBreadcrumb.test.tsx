@@ -8,8 +8,8 @@
  * - Current org is not clickable
  */
 
-import { describe, test, expect, vi, beforeEach } from "vitest";
-import { screen, fireEvent } from "@testing-library/react";
+import { describe, test, expect } from "vitest";
+import { screen } from "@testing-library/react";
 import { Route, Routes } from "react-router-dom";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOrganization } from "@/tests/utils/mock-providers";
