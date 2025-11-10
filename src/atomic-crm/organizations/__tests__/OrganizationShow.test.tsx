@@ -112,10 +112,15 @@ describe("OrganizationShow", () => {
       error: null,
     });
 
-    renderWithAdminContext(<OrganizationShow />, {
-      resource: "organizations",
-      initialEntries: ["/organizations/1/show"],
-    });
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/organizations/:id/show" element={<OrganizationShow />} />
+      </Routes>,
+      {
+        resource: "organizations",
+        initialEntries: ["/organizations/1/show"],
+      }
+    );
 
     // When isPending is true, the component returns null
     expect(screen.queryByRole("main")).not.toBeInTheDocument();
