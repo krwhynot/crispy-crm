@@ -197,7 +197,7 @@ export function getSecurePapaParseConfig() {
         return trimmed.substring(0, CSV_UPLOAD_LIMITS.MAX_CELL_LENGTH) + '...';
       }
 
-      return value;
+      return trimmed;
     },
 
     // Error handling
