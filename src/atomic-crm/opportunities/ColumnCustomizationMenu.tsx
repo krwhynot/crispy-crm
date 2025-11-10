@@ -27,8 +27,10 @@ export function ColumnCustomizationMenu({
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
     }
+
+    // Always cleanup, even if component unmounts while closed
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
   return (
