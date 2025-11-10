@@ -259,6 +259,36 @@ const contactSchema = z.object({
 
 [Complete system](docs/internal-docs/color-theming-architecture.docs.md)
 
+## Spacing System
+
+**Semantic Spacing:** CSS custom properties for consistent layouts across iPad/desktop breakpoints.
+
+**Location:** `src/index.css` (lines 72-96) in `@theme` layer
+
+**Tokens:**
+- **Grid:** `--spacing-grid-columns-{desktop|ipad}`, `--spacing-gutter-{desktop|ipad}`
+- **Edge Padding:** `--spacing-edge-{desktop|ipad|mobile}` (screen borders)
+- **Vertical Rhythm:** `--spacing-section` (32px), `--spacing-widget` (24px), `--spacing-content` (16px), `--spacing-compact` (12px)
+- **Widget Internals:** `--spacing-widget-padding` (20px), `--spacing-widget-min-height` (280px)
+
+**Breakpoints:** Mobile (375-767px), iPad (768-1024px), Desktop (1440px+)
+
+**Pattern:**
+```css
+/* ✅ Semantic spacing */
+padding: var(--spacing-widget-padding);
+gap: var(--spacing-content);
+margin-bottom: var(--spacing-section);
+
+/* ❌ Hardcoded pixel values */
+padding: 20px;
+gap: 16px;
+```
+
+**Status:** Phase 1 complete (Reports Module). Incremental rollout to other modules.
+
+[Design docs](docs/plans/2025-11-08-spacing-layout-system-design.md)
+
 ## Adding Resources
 
 1. Create `src/atomic-crm/<name>/` with List/Show/Edit/Create
@@ -288,14 +318,48 @@ Props to `<CRM>` in `App.tsx`:
 **Framework:** Vitest + React Testing Library | **Coverage:** 70% min
 
 ```bash
-npm test                 # Watch
-npm run test:coverage    # Report
-npm run test:e2e         # Playwright
+npm test                 # Watch mode
+npm run test:coverage    # Coverage report
+npm run test:ci          # Run once (for CI)
 ```
 
-**Locations:** `src/**/*.test.{ts,tsx}`, `tests/e2e/`, `tests/fixtures/`
+**Locations:** `src/**/*.test.{ts,tsx}`
+
+### E2E Testing (Playwright)
+
+**Framework:** Playwright | **Location:** `tests/e2e/`, `tests/fixtures/`
+
+```bash
+npm run test:e2e         # Run all E2E tests
+npm run test:e2e:ui      # Interactive UI mode
+npm run test:e2e:headed  # Visible browser mode
+```
+
+**Test Strategy:** Critical user journeys (auth, CRUD operations, reports, data import/export)
+
+**Configuration:** `playwright.config.ts`
 
 [Full guide](docs/claude/testing-quick-reference.md)
+
+## GitHub Actions Workflows
+
+**Location:** `.github/workflows/`
+
+**Active Workflows:**
+- **ci.yml** - Runs on push/PR: Lint, unit tests (70% coverage minimum), type-check, build
+- **security.yml** - Weekly security scans: Gitleaks (secret detection) + npm audit (high/critical vulnerabilities)
+- **supabase-deploy.yml** - Database deployment pipeline:
+  1. **Validate** - Run pre-migration validation framework
+  2. **Dry Run** - Test migrations against production schema
+  3. **Deploy** - Manual approval required (`workflow_dispatch`)
+
+**Key Details:**
+- All workflows use **Node 22** for consistency
+- Production deployments require manual trigger via GitHub UI
+- Deployment includes automatic validation, dry-run verification, and post-deployment checks
+- Security scans run weekly (Monday 9 AM UTC) + on every push
+
+**⚠️ Production Safety:** Supabase deployments are manual-only to prevent accidental schema changes. Backup step is documented but requires implementation of `migrate:backup` script.
 
 ## Slash Commands
 
