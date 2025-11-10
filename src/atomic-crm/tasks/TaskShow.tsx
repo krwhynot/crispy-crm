@@ -30,7 +30,7 @@ export default function TaskShow() {
         <CardTitle className="flex items-center gap-2">
           {record.title}
           {record.completed_at && (
-            <Badge variant="success">Completed</Badge>
+            <Badge variant="secondary">Completed</Badge>
           )}
         </CardTitle>
       </CardHeader>
