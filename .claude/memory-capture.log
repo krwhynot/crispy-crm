@@ -2305,3 +2305,8 @@
 [2025-11-10 08:42:24] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationList.tsx
 [2025-11-10 08:42:49] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 [2025-11-10 08:43:40] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationInputs.tsx
+[2025-11-10 08:43:45] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationInputs.tsx
+[2025-11-10 08:43:51] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationInputs.tsx
+[2025-11-10 08:44:33] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/OrganizationShow.tsx
+[2025-11-10 08:44:35] [documentation] Write: /tmp/test_org_delete_validation.md
+[2025-11-10 08:50:30] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/organization-hierarchies.spec.ts
