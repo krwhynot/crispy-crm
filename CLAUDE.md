@@ -290,6 +290,63 @@ gap: 16px;
 
 [Design docs](docs/plans/2025-11-08-spacing-layout-system-design.md)
 
+## Tabbed Forms
+
+**Pattern:** All Create/Edit forms use consistent tabbed interface via `TabbedFormInputs` component.
+
+**Status:** Phase 1 complete (all 6 resources migrated) - 2025-11-10
+
+**Location:** `src/components/admin/tabbed-form/`
+
+**Forms Using Tabs:**
+- Organizations (General | Details | Other)
+- Sales (General | Permissions)
+- Tasks (General | Details)
+- Products (General | Relationships | Classification)
+- Contacts (Identity | Position | Contact Info | Account)
+- Opportunities (General | Classification | Relationships | Details)
+
+**Usage:**
+```tsx
+const tabs = [
+  {
+    key: 'general',
+    label: 'General',
+    fields: ['name', 'email'],  // Fields for error tracking
+    content: <GeneralTab />,
+  },
+  {
+    key: 'details',
+    label: 'Details',
+    fields: ['phone', 'address'],
+    content: <DetailsTab />,
+  },
+];
+
+<TabbedFormInputs tabs={tabs} defaultTab="general" />
+```
+
+**Components:**
+- `TabbedFormInputs` - Main container with error tracking
+- `TabTriggerWithErrors` - Tab trigger with error badge
+- `TabPanel` - Tab content wrapper with semantic styling
+
+**Features:**
+- ✓ Automatic error count per tab (from React Hook Form state)
+- ✓ Error badges display count only when > 0
+- ✓ Semantic color variables (--border-subtle, --bg-secondary)
+- ✓ Memoized error calculations for performance
+- ✓ Full accessibility (aria-labels, keyboard nav)
+
+**Design System Compliance:**
+- Uses semantic colors only
+- Padding: `p-6` (24px)
+- Border radius: `rounded-lg`
+- Touch targets: 44px minimum
+- WCAG AA accessibility
+
+[Implementation plan](docs/plans/2025-11-10-tabbed-form-implementation-plan.md) | [Design](docs/plans/2025-11-10-tabbed-form-standardization-design.md)
+
 ## Adding Resources
 
 1. Create `src/atomic-crm/<name>/` with List/Show/Edit/Create
