@@ -276,5 +276,5 @@ Environment variables control which Supabase instance you connect to:
 
 - [Testing Guide](./02-testing.md)
 - [Database Migrations](./03-database-migrations.md)
-- [Supabase Workflow](./05-supabase-workflow.md)
+- [Supabase Workflow](../supabase/WORKFLOW.md)
 - [CLAUDE.md](/CLAUDE.md) - Project constitution and rules

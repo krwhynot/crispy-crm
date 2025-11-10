@@ -24,7 +24,6 @@ docs/
 │   ├── README.md
 │   ├── 01-development-setup.md
 │   ├── 02-testing.md
-│   ├── 05-supabase-workflow.md
 │   └── managing-opportunities.md (from user-guides/)
 ├── architecture/                # Architecture docs (NEW)
 │   ├── README.md
@@ -206,13 +205,12 @@ This directory contains comprehensive guides for both end-users and developers.
 
 - **`01-development-setup.md`** - Initial project setup
 - **`02-testing.md`** - Testing strategy and execution
-- **`05-supabase-workflow.md`** - Working with Supabase locally and in production
 
 ## Getting Started
 
 1. **First time?** Start with `01-development-setup.md`
 2. **Need to test?** See `02-testing.md`
-3. **Database work?** See `05-supabase-workflow.md` or `../supabase/WORKFLOW.md`
+3. **Database work?** See `../supabase/WORKFLOW.md`
 
 ## Related Documentation
 
@@ -299,7 +297,6 @@ This is your central hub for all project documentation, organized by audience an
 - **[guides/](guides/)** - Setup and workflow guides
   - Development setup (01-development-setup.md)
   - Testing (02-testing.md)
-  - Supabase workflow (05-supabase-workflow.md)
 
 ### For Database Work
 - **[database/](database/)** - Database documentation

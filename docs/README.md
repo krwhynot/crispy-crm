@@ -40,7 +40,6 @@ This is your central hub for all project documentation, organized by audience an
 - **[guides/](guides/)** - Setup and workflow guides
   - Development setup (01-development-setup.md)
   - Testing (02-testing.md)
-  - Supabase workflow (05-supabase-workflow.md)
 
 ### For Database Work
 - **[database/](database/)** - Database documentation
