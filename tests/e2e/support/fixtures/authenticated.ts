@@ -16,6 +16,7 @@ export const test = base.extend<{ authenticatedPage: Page }>({
 
     // Page already has auth from storage state
     // Provide the page to the test
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(page);
 
     // Report console errors after test (if any)

@@ -52,7 +52,7 @@ test.describe('Opportunities Activity Timeline', () => {
     consoleMonitor.clear();
   });
 
-  test('should display activity timeline on opportunity show page', async ({ page }) => {
+  test('should display activity timeline on opportunity show page', async ({ _page }) => {
     // Create opportunity to ensure we have data
     const timestamp = Date.now();
     const opportunityName = `Timeline Display ${timestamp}`;
