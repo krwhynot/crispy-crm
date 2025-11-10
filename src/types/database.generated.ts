@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -54,6 +54,7 @@ export interface Database {
           opportunity_id: number | null
           organization_id: number | null
           outcome: string | null
+          related_task_id: number | null
           sentiment: string | null
           subject: string
           tags: string[] | null
@@ -79,6 +80,7 @@ export interface Database {
           opportunity_id?: number | null
           organization_id?: number | null
           outcome?: string | null
+          related_task_id?: number | null
           sentiment?: string | null
           subject: string
           tags?: string[] | null
@@ -104,6 +106,7 @@ export interface Database {
           opportunity_id?: number | null
           organization_id?: number | null
           outcome?: string | null
+          related_task_id?: number | null
           sentiment?: string | null
           subject?: string
           tags?: string[] | null
@@ -153,76 +156,50 @@ export interface Database {
             referencedRelation: "opportunities_summary"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
         ]
       }
-      contact_organizations: {
+      audit_trail: {
         Row: {
-          contact_id: number
-          created_at: string | null
-          created_by: number | null
-          deleted_at: string | null
-          id: number
-          is_primary: boolean | null
-          is_primary_decision_maker: boolean | null
-          notes: string | null
-          organization_id: number
-          relationship_end_date: string | null
-          relationship_start_date: string | null
-          updated_at: string | null
+          audit_id: number
+          changed_at: string
+          changed_by: number | null
+          field_name: string
+          new_value: string | null
+          old_value: string | null
+          record_id: number
+          table_name: string
         }
         Insert: {
-          contact_id: number
-          created_at?: string | null
-          created_by?: number | null
-          deleted_at?: string | null
-          id?: number
-          is_primary?: boolean | null
-          is_primary_decision_maker?: boolean | null
-          notes?: string | null
-          organization_id: number
-          relationship_end_date?: string | null
-          relationship_start_date?: string | null
-          updated_at?: string | null
+          audit_id?: never
+          changed_at?: string
+          changed_by?: number | null
+          field_name: string
+          new_value?: string | null
+          old_value?: string | null
+          record_id: number
+          table_name: string
         }
         Update: {
-          contact_id?: number
-          created_at?: string | null
-          created_by?: number | null
-          deleted_at?: string | null
-          id?: number
-          is_primary?: boolean | null
-          is_primary_decision_maker?: boolean | null
-          notes?: string | null
-          organization_id?: number
-          relationship_end_date?: string | null
-          relationship_start_date?: string | null
-          updated_at?: string | null
+          audit_id?: never
+          changed_at?: string
+          changed_by?: number | null
+          field_name?: string
+          new_value?: string | null
+          old_value?: string | null
+          record_id?: number
+          table_name?: string
         }
         Relationships: [
           {
-            foreignKeyName: "contact_organizations_contact_id_fkey"
-            columns: ["contact_id"]
-            isOneToOne: false
-            referencedRelation: "contacts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "contact_organizations_contact_id_fkey"
-            columns: ["contact_id"]
-            isOneToOne: false
-            referencedRelation: "contacts_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "contact_organizations_contact_id_fkey"
-            columns: ["contact_id"]
-            isOneToOne: false
-            referencedRelation: "contacts_with_account_manager"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "contact_organizations_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "audit_trail_changed_by_fkey"
+            columns: ["changed_by"]
             isOneToOne: false
             referencedRelation: "sales"
             referencedColumns: ["id"]
@@ -236,6 +213,7 @@ export interface Database {
           created_at: string | null
           created_by: number | null
           date: string
+          deleted_at: string | null
           id: number
           sales_id: number | null
           text: string
@@ -248,6 +226,7 @@ export interface Database {
           created_at?: string | null
           created_by?: number | null
           date?: string
+          deleted_at?: string | null
           id?: number
           sales_id?: number | null
           text: string
@@ -260,6 +239,7 @@ export interface Database {
           created_at?: string | null
           created_by?: number | null
           date?: string
+          deleted_at?: string | null
           id?: number
           sales_id?: number | null
           text?: string
@@ -335,7 +315,7 @@ export interface Database {
           phone: Json | null
           postal_code: string | null
           sales_id: number | null
-          search_tsv: unknown | null
+          search_tsv: unknown
           state: string | null
           tags: number[] | null
           title: string | null
@@ -366,7 +346,7 @@ export interface Database {
           phone?: Json | null
           postal_code?: string | null
           sales_id?: number | null
-          search_tsv?: unknown | null
+          search_tsv?: unknown
           state?: string | null
           tags?: number[] | null
           title?: string | null
@@ -397,7 +377,7 @@ export interface Database {
           phone?: Json | null
           postal_code?: string | null
           sales_id?: number | null
-          search_tsv?: unknown | null
+          search_tsv?: unknown
           state?: string | null
           tags?: number[] | null
           title?: string | null
@@ -455,6 +435,7 @@ export interface Database {
           activity_id: number
           contact_id: number | null
           created_at: string | null
+          deleted_at: string | null
           id: number
           notes: string | null
           organization_id: number | null
@@ -464,6 +445,7 @@ export interface Database {
           activity_id: number
           contact_id?: number | null
           created_at?: string | null
+          deleted_at?: string | null
           id?: number
           notes?: string | null
           organization_id?: number | null
@@ -473,6 +455,7 @@ export interface Database {
           activity_id?: number
           contact_id?: number | null
           created_at?: string | null
+          deleted_at?: string | null
           id?: number
           notes?: string | null
           organization_id?: number | null
@@ -548,10 +531,47 @@ export interface Database {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          entity_id: number | null
+          entity_type: string | null
+          id: number
+          message: string
+          read: boolean
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          entity_id?: number | null
+          entity_type?: string | null
+          id?: never
+          message: string
+          read?: boolean
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          entity_id?: number | null
+          entity_type?: string | null
+          id?: never
+          message?: string
+          read?: boolean
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       opportunities: {
         Row: {
           account_manager_id: number | null
           actual_close_date: string | null
+          campaign: string | null
           competition: string | null
           contact_ids: number[] | null
           created_at: string | null
@@ -569,11 +589,14 @@ export interface Database {
           name: string
           next_action: string | null
           next_action_date: string | null
+          notes: string | null
           opportunity_owner_id: number | null
           principal_organization_id: number | null
           priority: Database["public"]["Enums"]["priority_level"] | null
-          search_tsv: unknown | null
+          related_opportunity_id: number | null
+          search_tsv: unknown
           stage: Database["public"]["Enums"]["opportunity_stage"] | null
+          stage_changed_at: string
           stage_manual: boolean | null
           status: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual: boolean | null
@@ -584,6 +607,7 @@ export interface Database {
         Insert: {
           account_manager_id?: number | null
           actual_close_date?: string | null
+          campaign?: string | null
           competition?: string | null
           contact_ids?: number[] | null
           created_at?: string | null
@@ -601,11 +625,14 @@ export interface Database {
           name: string
           next_action?: string | null
           next_action_date?: string | null
+          notes?: string | null
           opportunity_owner_id?: number | null
           principal_organization_id?: number | null
           priority?: Database["public"]["Enums"]["priority_level"] | null
-          search_tsv?: unknown | null
+          related_opportunity_id?: number | null
+          search_tsv?: unknown
           stage?: Database["public"]["Enums"]["opportunity_stage"] | null
+          stage_changed_at?: string
           stage_manual?: boolean | null
           status?: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual?: boolean | null
@@ -616,6 +643,7 @@ export interface Database {
         Update: {
           account_manager_id?: number | null
           actual_close_date?: string | null
+          campaign?: string | null
           competition?: string | null
           contact_ids?: number[] | null
           created_at?: string | null
@@ -633,11 +661,14 @@ export interface Database {
           name?: string
           next_action?: string | null
           next_action_date?: string | null
+          notes?: string | null
           opportunity_owner_id?: number | null
           principal_organization_id?: number | null
           priority?: Database["public"]["Enums"]["priority_level"] | null
-          search_tsv?: unknown | null
+          related_opportunity_id?: number | null
+          search_tsv?: unknown
           stage?: Database["public"]["Enums"]["opportunity_stage"] | null
+          stage_changed_at?: string
           stage_manual?: boolean | null
           status?: Database["public"]["Enums"]["opportunity_status"] | null
           status_manual?: boolean | null
@@ -672,6 +703,20 @@ export interface Database {
             columns: ["opportunity_owner_id"]
             isOneToOne: false
             referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_related_opportunity_id_fkey"
+            columns: ["related_opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_related_opportunity_id_fkey"
+            columns: ["related_opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
             referencedColumns: ["id"]
           },
           {
@@ -760,7 +805,6 @@ export interface Database {
           opportunity_id: number
           organization_id: number
           role: string
-          territory: string | null
           updated_at: string | null
         }
         Insert: {
@@ -773,7 +817,6 @@ export interface Database {
           opportunity_id: number
           organization_id: number
           role: string
-          territory?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -786,7 +829,6 @@ export interface Database {
           opportunity_id?: number
           organization_id?: number
           role?: string
-          territory?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -816,6 +858,7 @@ export interface Database {
       opportunity_products: {
         Row: {
           created_at: string | null
+          deleted_at: string | null
           id: number
           notes: string | null
           opportunity_id: number
@@ -826,6 +869,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string | null
+          deleted_at?: string | null
           id?: number
           notes?: string | null
           opportunity_id: number
@@ -836,6 +880,7 @@ export interface Database {
         }
         Update: {
           created_at?: string | null
+          deleted_at?: string | null
           id?: number
           notes?: string | null
           opportunity_id?: number
@@ -864,6 +909,13 @@ export interface Database {
             columns: ["product_id_reference"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_products_product_id_reference_fkey"
+            columns: ["product_id_reference"]
+            isOneToOne: false
+            referencedRelation: "products_summary"
             referencedColumns: ["id"]
           },
         ]
@@ -972,7 +1024,7 @@ export interface Database {
           postal_code: string | null
           priority: string | null
           sales_id: number | null
-          search_tsv: unknown | null
+          search_tsv: unknown
           segment_id: string | null
           state: string | null
           tax_identifier: string | null
@@ -1005,7 +1057,7 @@ export interface Database {
           postal_code?: string | null
           priority?: string | null
           sales_id?: number | null
-          search_tsv?: unknown | null
+          search_tsv?: unknown
           segment_id?: string | null
           state?: string | null
           tax_identifier?: string | null
@@ -1038,7 +1090,7 @@ export interface Database {
           postal_code?: string | null
           priority?: string | null
           sales_id?: number | null
-          search_tsv?: unknown | null
+          search_tsv?: unknown
           segment_id?: string | null
           state?: string | null
           tax_identifier?: string | null
@@ -1100,66 +1152,51 @@ export interface Database {
       }
       products: {
         Row: {
-          allergens: string[] | null
           category: string
-          certifications: string[] | null
           created_at: string | null
           created_by: number | null
           deleted_at: string | null
           description: string | null
           distributor_id: number | null
           id: number
-          ingredients: string | null
           manufacturer_part_number: string | null
-          marketing_description: string | null
           name: string
-          nutritional_info: Json | null
           principal_id: number
-          search_tsv: unknown | null
+          search_tsv: unknown
           sku: string
           status: Database["public"]["Enums"]["product_status"] | null
           updated_at: string | null
           updated_by: number | null
         }
         Insert: {
-          allergens?: string[] | null
           category: string
-          certifications?: string[] | null
           created_at?: string | null
           created_by?: number | null
           deleted_at?: string | null
           description?: string | null
           distributor_id?: number | null
           id?: number
-          ingredients?: string | null
           manufacturer_part_number?: string | null
-          marketing_description?: string | null
           name: string
-          nutritional_info?: Json | null
           principal_id: number
-          search_tsv?: unknown | null
+          search_tsv?: unknown
           sku: string
           status?: Database["public"]["Enums"]["product_status"] | null
           updated_at?: string | null
           updated_by?: number | null
         }
         Update: {
-          allergens?: string[] | null
           category?: string
-          certifications?: string[] | null
           created_at?: string | null
           created_by?: number | null
           deleted_at?: string | null
           description?: string | null
           distributor_id?: number | null
           id?: number
-          ingredients?: string | null
           manufacturer_part_number?: string | null
-          marketing_description?: string | null
           name?: string
-          nutritional_info?: Json | null
           principal_id?: number
-          search_tsv?: unknown | null
+          search_tsv?: unknown
           sku?: string
           status?: Database["public"]["Enums"]["product_status"] | null
           updated_at?: string | null
@@ -1252,18 +1289,21 @@ export interface Database {
         Row: {
           created_at: string
           created_by: string | null
+          deleted_at: string | null
           id: string
           name: string
         }
         Insert: {
           created_at?: string
           created_by?: string | null
+          deleted_at?: string | null
           id?: string
           name: string
         }
         Update: {
           created_at?: string
           created_by?: string | null
+          deleted_at?: string | null
           id?: string
           name?: string
         }
@@ -1273,6 +1313,7 @@ export interface Database {
         Row: {
           color: string | null
           created_at: string | null
+          deleted_at: string | null
           description: string | null
           id: number
           name: string
@@ -1282,6 +1323,7 @@ export interface Database {
         Insert: {
           color?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: number
           name: string
@@ -1291,6 +1333,7 @@ export interface Database {
         Update: {
           color?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           description?: string | null
           id?: number
           name?: string
@@ -1311,6 +1354,7 @@ export interface Database {
           due_date: string | null
           id: number
           opportunity_id: number | null
+          overdue_notified_at: string | null
           priority: Database["public"]["Enums"]["priority_level"] | null
           reminder_date: string | null
           sales_id: number | null
@@ -1329,6 +1373,7 @@ export interface Database {
           due_date?: string | null
           id?: number
           opportunity_id?: number | null
+          overdue_notified_at?: string | null
           priority?: Database["public"]["Enums"]["priority_level"] | null
           reminder_date?: string | null
           sales_id?: number | null
@@ -1347,6 +1392,7 @@ export interface Database {
           due_date?: string | null
           id?: number
           opportunity_id?: number | null
+          overdue_notified_at?: string | null
           priority?: Database["public"]["Enums"]["priority_level"] | null
           reminder_date?: string | null
           sales_id?: number | null
@@ -1438,6 +1484,14 @@ export interface Database {
       }
     }
     Views: {
+      campaign_choices: {
+        Row: {
+          id: string | null
+          name: string | null
+          opportunity_count: number | null
+        }
+        Relationships: []
+      }
       contacts_summary: {
         Row: {
           address: string | null
@@ -1463,7 +1517,7 @@ export interface Database {
           phone: Json | null
           postal_code: string | null
           sales_id: number | null
-          search_tsv: unknown | null
+          search_tsv: unknown
           state: string | null
           tags: number[] | null
           title: string | null
@@ -1534,7 +1588,7 @@ export interface Database {
           phone: Json | null
           postal_code: string | null
           sales_id: number | null
-          search_tsv: unknown | null
+          search_tsv: unknown
           state: string | null
           tags: number[] | null
           title: string | null
@@ -1587,6 +1641,34 @@ export interface Database {
           },
         ]
       }
+      dashboard_principal_summary: {
+        Row: {
+          account_manager_id: number | null
+          days_since_last_activity: number | null
+          id: number | null
+          is_stuck: boolean | null
+          last_activity_date: string | null
+          last_activity_type:
+            | Database["public"]["Enums"]["interaction_type"]
+            | null
+          max_days_in_stage: number | null
+          next_action: string | null
+          next_action_task: Json | null
+          opportunity_count: number | null
+          principal_name: string | null
+          priority_score: number | null
+          status_indicator: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunities_account_manager_id_fkey"
+            columns: ["account_manager_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       distinct_product_categories: {
         Row: {
           id: string | null
@@ -1598,6 +1680,7 @@ export interface Database {
         Row: {
           account_manager_id: number | null
           actual_close_date: string | null
+          campaign: string | null
           competition: string | null
           contact_ids: number[] | null
           created_at: string | null
@@ -1622,7 +1705,8 @@ export interface Database {
           principal_organization_name: string | null
           priority: Database["public"]["Enums"]["priority_level"] | null
           products: Json | null
-          search_tsv: unknown | null
+          related_opportunity_id: number | null
+          search_tsv: unknown
           stage: Database["public"]["Enums"]["opportunity_stage"] | null
           stage_manual: boolean | null
           status: Database["public"]["Enums"]["opportunity_status"] | null
@@ -1658,6 +1742,20 @@ export interface Database {
             columns: ["opportunity_owner_id"]
             isOneToOne: false
             referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_related_opportunity_id_fkey"
+            columns: ["related_opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_related_opportunity_id_fkey"
+            columns: ["related_opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
             referencedColumns: ["id"]
           },
           {
@@ -1728,7 +1826,7 @@ export interface Database {
           postal_code: string | null
           priority: string | null
           sales_id: number | null
-          search_tsv: unknown | null
+          search_tsv: unknown
           segment_id: string | null
           state: string | null
           tax_identifier: string | null
@@ -1788,6 +1886,62 @@ export interface Database {
           },
         ]
       }
+      products_summary: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          created_by: number | null
+          deleted_at: string | null
+          description: string | null
+          distributor_id: number | null
+          id: number | null
+          manufacturer_part_number: string | null
+          name: string | null
+          principal_id: number | null
+          principal_name: string | null
+          sku: string | null
+          status: Database["public"]["Enums"]["product_status"] | null
+          updated_at: string | null
+          updated_by: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_distributor_id_fkey"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_distributor_id_fkey"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_distributor_id_fkey"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       archive_opportunity_with_relations: {
@@ -1808,6 +1962,7 @@ export interface Database {
           unit_price: number
         }[]
       }
+      check_overdue_tasks: { Args: never; Returns: Json }
       check_product_availability: {
         Args: {
           p_needed_date?: string
@@ -1821,6 +1976,15 @@ export interface Database {
           quantity_available: number
         }[]
       }
+      complete_task_with_followup: {
+        Args: {
+          p_activity_data: Json
+          p_opportunity_stage?: string
+          p_task_id: number
+        }
+        Returns: Json
+      }
+      create_booth_visitor_opportunity: { Args: { _data: Json }; Returns: Json }
       create_opportunity_with_participants: {
         Args: { p_opportunity_data: Json; p_participants: Json[] }
         Returns: number
@@ -1842,26 +2006,24 @@ export interface Database {
           organization_name: string
         }[]
       }
-      get_current_sales_id: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      get_current_user_company_id: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      get_current_user_sales_id: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      get_current_sales_id: { Args: never; Returns: number }
+      get_current_user_company_id: { Args: never; Returns: number }
+      get_current_user_sales_id: { Args: never; Returns: number }
       get_or_create_segment: {
         Args: { p_name: string }
         Returns: {
           created_at: string
           created_by: string | null
+          deleted_at: string | null
           id: string
           name: string
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "segments"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       get_organization_contacts: {
         Args: { p_organization_id: number }
@@ -2122,18 +2284,9 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      extension: {
-        Args: { name: string }
-        Returns: string
-      }
-      filename: {
-        Args: { name: string }
-        Returns: string
-      }
-      foldername: {
-        Args: { name: string }
-        Returns: string[]
-      }
+      extension: { Args: { name: string }; Returns: string }
+      filename: { Args: { name: string }; Returns: string }
+      foldername: { Args: { name: string }; Returns: string[] }
       search: {
         Args: {
           bucketname: string
