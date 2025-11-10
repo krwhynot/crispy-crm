@@ -2316,3 +2316,5 @@
 [2025-11-10 08:59:21] [code] Write: /home/krwhynot/projects/crispy-crm/tests/e2e/organization-hierarchies.spec.ts
 [2025-11-10 09:04:01] [code] Edit: /home/krwhynot/projects/crispy-crm/tests/e2e/organization-hierarchies-performance.spec.ts
 [2025-11-10 09:13:03] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/index.ts
+[2025-11-10 09:13:16] [documentation] Edit: /home/krwhynot/projects/crispy-crm/CLAUDE.md
+[2025-11-10 11:14:55] [code] Edit: /home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/HierarchyBreadcrumb.tsx
