@@ -25,10 +25,7 @@ export default function TaskCreate() {
   };
 
   return (
-    <Create
-      redirect="list"
-      record={defaultValues}
-    >
+    <Create redirect="list" record={defaultValues}>
       <SimpleForm>
         <TextInput
           source="title"
@@ -75,10 +72,7 @@ export default function TaskCreate() {
             helperText="How urgent?"
           />
 
-          <ReferenceInput
-            source="opportunity_id"
-            reference="opportunities"
-          >
+          <ReferenceInput source="opportunity_id" reference="opportunities">
             <AutocompleteInput
               label="Opportunity"
               optionText="title"
@@ -87,10 +81,7 @@ export default function TaskCreate() {
           </ReferenceInput>
         </div>
 
-        <ReferenceInput
-          source="contact_id"
-          reference="contacts_summary"
-        >
+        <ReferenceInput source="contact_id" reference="contacts_summary">
           <AutocompleteInput
             label="Contact"
             optionText={contactOptionText}
