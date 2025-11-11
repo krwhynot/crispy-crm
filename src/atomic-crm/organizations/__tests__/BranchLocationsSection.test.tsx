@@ -1,318 +1,137 @@
-/**
- * Tests for BranchLocationsSection component
- *
- * Tests the branch locations display including:
- * - Rendering nothing when org has no children
- * - Displaying section header with branch count
- * - Fetching and displaying branch organizations in a table
- * - "Add Branch Location" button
- */
+// src/atomic-crm/organizations/__tests__/BranchLocationsSection.test.tsx
 
-import { describe, test, expect, vi, beforeEach } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
-import { Route, Routes } from "react-router-dom";
-import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import {
-  createMockOrganization,
-  createMockDataProvider,
-} from "@/tests/utils/mock-providers";
-import type { OrganizationWithHierarchy } from "@/atomic-crm/types";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { TestMemoryRouter } from "@/test-utils";
 import { BranchLocationsSection } from "../BranchLocationsSection";
+import type { OrganizationWithHierarchy } from "@/atomic-crm/types";
 
-// Mock dependencies
-vi.mock("ra-core", async () => {
-  const actual = await vi.importActual("ra-core");
+// Mock useDataProvider
+const mockGetList = vi.fn();
+vi.mock("react-admin", async () => {
+  const actual = await vi.importActual("react-admin");
   return {
     ...actual,
-    useRecordContext: vi.fn(),
+    useDataProvider: () => ({
+      getList: mockGetList,
+    }),
   };
 });
 
-// Import mocked functions
-import { useRecordContext } from "ra-core";
-
 describe("BranchLocationsSection", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    mockGetList.mockReset();
   });
 
-  test("renders nothing when org has no child_branch_count", async () => {
-    const mockOrg: OrganizationWithHierarchy = {
-      ...createMockOrganization({ id: 1, name: "Parent Corp" }),
+  it("renders nothing when org has no children", () => {
+    const org: OrganizationWithHierarchy = {
+      id: "1",
+      name: "Sysco Denver",
+      organization_type: "distributor",
       child_branch_count: 0,
     };
 
-    (useRecordContext as any).mockReturnValue(mockOrg);
-
-    const { container } = renderWithAdminContext(
-      <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={mockOrg} />}
-        />
-      </Routes>,
-      {
-        resource: "organizations",
-        record: mockOrg,
-        initialEntries: ["/organizations/1/show"],
-      }
+    render(
+      <TestMemoryRouter>
+        <BranchLocationsSection organization={org} />
+      </TestMemoryRouter>
     );
 
-    // Should render nothing (null)
-    expect(container.firstChild).toBeNull();
+    expect(screen.queryByText(/Branch Locations/)).not.toBeInTheDocument();
   });
 
-  test("renders section header with branch count", async () => {
-    const mockOrg: OrganizationWithHierarchy = {
-      ...createMockOrganization({ id: 1, name: "Parent Corp" }),
+  it("renders section header with branch count", async () => {
+    const org: OrganizationWithHierarchy = {
+      id: "1",
+      name: "Sysco Corporate",
+      organization_type: "distributor",
+      child_branch_count: 8,
+    };
+
+    mockGetList.mockResolvedValue({
+      data: [],
+      total: 8,
+    });
+
+    render(
+      <TestMemoryRouter>
+        <BranchLocationsSection organization={org} />
+      </TestMemoryRouter>
+    );
+
+    expect(screen.getByText("Branch Locations (8)")).toBeInTheDocument();
+  });
+
+  it("fetches and displays branch organizations", async () => {
+    const org: OrganizationWithHierarchy = {
+      id: "1",
+      name: "Sysco Corporate",
+      organization_type: "distributor",
       child_branch_count: 3,
     };
 
-    (useRecordContext as any).mockReturnValue(mockOrg);
-
-    renderWithAdminContext(
-      <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={mockOrg} />}
-        />
-      </Routes>,
+    const branches = [
       {
-        resource: "organizations",
-        record: mockOrg,
-        dataProvider: createMockDataProvider({
-          getList: vi.fn().mockResolvedValue({
-            data: [],
-            total: 0,
-          }),
-        }),
-        initialEntries: ["/organizations/1/show"],
-      }
-    );
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(/3 Branch Locations?/i)
-      ).toBeInTheDocument();
-    });
-  });
-
-  test("fetches and displays branch organizations in a table", async () => {
-    const mockOrg: OrganizationWithHierarchy = {
-      ...createMockOrganization({ id: 1, name: "Parent Corp" }),
-      child_branch_count: 2,
-    };
-
-    const mockBranches = [
-      createMockOrganization({
-        id: 2,
-        name: "Branch 1",
-        nb_contacts: 5,
-        nb_opportunities: 3,
-      }),
-      createMockOrganization({
-        id: 3,
-        name: "Branch 2",
+        id: "2",
+        name: "Sysco Denver",
+        city: "Denver",
+        nb_contacts: 12,
+        nb_opportunities: 5,
+      },
+      {
+        id: "3",
+        name: "Sysco Colorado Springs",
+        city: "Colorado Springs",
         nb_contacts: 8,
-        nb_opportunities: 2,
-      }),
+        nb_opportunities: 3,
+      },
     ];
 
-    (useRecordContext as any).mockReturnValue(mockOrg);
+    mockGetList.mockResolvedValue({
+      data: branches,
+      total: 2,
+    });
 
-    renderWithAdminContext(
-      <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={mockOrg} />}
-        />
-      </Routes>,
-      {
-        resource: "organizations",
-        record: mockOrg,
-        dataProvider: createMockDataProvider({
-          getList: vi.fn().mockResolvedValue({
-            data: mockBranches,
-            total: 2,
-          }),
-        }),
-        initialEntries: ["/organizations/1/show"],
-      }
+    render(
+      <TestMemoryRouter>
+        <BranchLocationsSection organization={org} />
+      </TestMemoryRouter>
     );
 
     await waitFor(() => {
-      // Check table headers
-      expect(screen.getByText("Name")).toBeInTheDocument();
-      expect(screen.getByText("City")).toBeInTheDocument();
-      expect(screen.getByText("Contacts")).toBeInTheDocument();
-      expect(screen.getByText("Opportunities")).toBeInTheDocument();
+      expect(screen.getByText("Sysco Denver")).toBeInTheDocument();
+      expect(screen.getByText("Sysco Colorado Springs")).toBeInTheDocument();
+      expect(screen.getByText("Denver")).toBeInTheDocument();
+      expect(screen.getByText("Colorado Springs")).toBeInTheDocument();
+    });
 
-      // Check branch data is displayed
-      expect(screen.getByText("Branch 1")).toBeInTheDocument();
-      expect(screen.getByText("Branch 2")).toBeInTheDocument();
+    // Verify getList was called with correct filter
+    expect(mockGetList).toHaveBeenCalledWith("organizations", {
+      filter: { parent_organization_id: "1" },
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
     });
   });
 
-  test("shows Add Branch Location button", async () => {
-    const mockOrg: OrganizationWithHierarchy = {
-      ...createMockOrganization({ id: 1, name: "Parent Corp" }),
-      child_branch_count: 1,
+  it("shows Add Branch button", () => {
+    const org: OrganizationWithHierarchy = {
+      id: "1",
+      name: "Sysco Corporate",
+      organization_type: "distributor",
+      child_branch_count: 8,
     };
 
-    const mockBranch = createMockOrganization({
-      id: 2,
-      name: "Branch 1",
-    });
-
-    (useRecordContext as any).mockReturnValue(mockOrg);
-
-    renderWithAdminContext(
-      <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={mockOrg} />}
-        />
-      </Routes>,
-      {
-        resource: "organizations",
-        record: mockOrg,
-        dataProvider: createMockDataProvider({
-          getList: vi.fn().mockResolvedValue({
-            data: [mockBranch],
-            total: 1,
-          }),
-        }),
-        initialEntries: ["/organizations/1/show"],
-      }
-    );
-
-    await waitFor(() => {
-      const link = screen.getByText(/add branch location/i);
-      expect(link).toBeInTheDocument();
-    });
-  });
-
-  test("displays loading state while fetching branches", async () => {
-    const mockOrg: OrganizationWithHierarchy = {
-      ...createMockOrganization({ id: 1, name: "Parent Corp" }),
-      child_branch_count: 1,
-    };
-
-    const mockBranch = createMockOrganization({
-      id: 2,
-      name: "Delayed Branch",
-    });
-
-    (useRecordContext as any).mockReturnValue(mockOrg);
-
-    renderWithAdminContext(
-      <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={mockOrg} />}
-        />
-      </Routes>,
-      {
-        resource: "organizations",
-        record: mockOrg,
-        dataProvider: createMockDataProvider({
-          getList: vi.fn(
-            () =>
-              new Promise((resolve) =>
-                setTimeout(
-                  () =>
-                    resolve({
-                      data: [mockBranch],
-                      total: 1,
-                    }),
-                  100
-                )
-              )
-          ),
-        }),
-        initialEntries: ["/organizations/1/show"],
-      }
-    );
-
-    // Eventually should load (skeleton loaders should disappear and table appears)
-    await waitFor(
-      () => {
-        expect(screen.getByText("Name")).toBeInTheDocument();
-      },
-      { timeout: 2000 }
-    );
-  });
-
-  test("displays empty state when no branches exist", async () => {
-    const mockOrg: OrganizationWithHierarchy = {
-      ...createMockOrganization({ id: 1, name: "Parent Corp" }),
-      child_branch_count: 0,
-    };
-
-    (useRecordContext as any).mockReturnValue(mockOrg);
-
-    const { container } = renderWithAdminContext(
-      <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={mockOrg} />}
-        />
-      </Routes>,
-      {
-        resource: "organizations",
-        record: mockOrg,
-        dataProvider: createMockDataProvider({
-          getList: vi.fn().mockResolvedValue({
-            data: [],
-            total: 0,
-          }),
-        }),
-        initialEntries: ["/organizations/1/show"],
-      }
-    );
-
-    // When child_branch_count is 0, component returns null
-    expect(container.firstChild).toBeNull();
-  });
-
-  test("calls getList with correct filter for parent_organization_id", async () => {
-    const mockOrg: OrganizationWithHierarchy = {
-      ...createMockOrganization({ id: 42, name: "Parent Corp" }),
-      child_branch_count: 1,
-    };
-
-    const mockGetList = vi.fn().mockResolvedValue({
+    mockGetList.mockResolvedValue({
       data: [],
       total: 0,
     });
 
-    (useRecordContext as any).mockReturnValue(mockOrg);
-
-    renderWithAdminContext(
-      <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={mockOrg} />}
-        />
-      </Routes>,
-      {
-        resource: "organizations",
-        record: mockOrg,
-        dataProvider: createMockDataProvider({
-          getList: mockGetList,
-        }),
-        initialEntries: ["/organizations/1/show"],
-      }
+    render(
+      <TestMemoryRouter>
+        <BranchLocationsSection organization={org} />
+      </TestMemoryRouter>
     );
 
-    await waitFor(() => {
-      expect(mockGetList).toHaveBeenCalled();
-      const call = mockGetList.mock.calls[0];
-      // getList is called with (resource, params)
-      expect(call[0]).toBe("organizations");
-      expect(call[1].filter).toEqual({
-        parent_organization_id: 42,
-      });
-    });
+    expect(screen.getByRole("link", { name: /Add Branch/i })).toBeInTheDocument();
   });
 });
