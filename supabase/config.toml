@@ -17,6 +17,8 @@ max_rows = 1000
 
 [db]
 # Port to use for the local database URL.
+# NOTE: Setting to 0 would disable external access, but Supabase CLI requires this port
+# To truly minimize ports, we'd need to bypass Supabase CLI entirely
 port = 54322
 # Port used by db diff command to initialize the shadow database.
 shadow_port = 54320
