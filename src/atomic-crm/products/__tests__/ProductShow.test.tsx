@@ -338,7 +338,7 @@ describe("ProductShow", () => {
 
     // Click details tab
     const detailsTab = screen.getByRole("tab", { name: /details/i });
-    detailsTab.click();
+    await user.click(detailsTab);
 
     await waitFor(() => {
       expect(screen.getByText("Specifications")).toBeInTheDocument();
