@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -1769,31 +1769,50 @@ export interface Database {
       }
       organizations_summary: {
         Row: {
-          city: string | null
+          child_branch_count: number | null
           created_at: string | null
-          description: string | null
-          employee_count: number | null
+          deleted_at: string | null
           id: number | null
-          last_opportunity_activity: string | null
           name: string | null
           nb_contacts: number | null
           nb_opportunities: number | null
           organization_type:
             | Database["public"]["Enums"]["organization_type"]
             | null
-          phone: string | null
-          postal_code: string | null
+          parent_organization_id: number | null
+          parent_organization_name: string | null
           priority: string | null
-          segment_id: string | null
-          state: string | null
-          website: string | null
+          sales_id: number | null
+          total_contacts_across_branches: number | null
+          total_opportunities_across_branches: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "organizations_industry_id_fkey"
-            columns: ["segment_id"]
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
             isOneToOne: false
-            referencedRelation: "segments"
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_sales_id_fkey"
+            columns: ["sales_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
             referencedColumns: ["id"]
           },
         ]
