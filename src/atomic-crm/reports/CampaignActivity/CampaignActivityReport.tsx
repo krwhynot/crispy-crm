@@ -58,6 +58,7 @@ export default function CampaignActivityReport() {
   const [selectedActivityTypes, setSelectedActivityTypes] = useState<string[]>(
     INTERACTION_TYPE_OPTIONS.map(opt => opt.value)
   );
+  const [datePreset, setDatePreset] = useState<string>("allTime");
 
   // Fetch all opportunities to get available campaigns
   const { data: allOpportunities = [] } = useGetList<Opportunity>(
