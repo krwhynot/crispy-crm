@@ -44,11 +44,12 @@ const mockOpportunity = {
 describe('UpdateOpportunityStep', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    getOneSpy.mockClear();
   });
 
   describe('Data Loading', () => {
     it('shows loading state while fetching opportunity', () => {
-      mockDataProvider.getOne.mockReturnValue(new Promise(() => {})); // Never resolves
+      getOneSpy.mockReturnValue(new Promise(() => {})); // Never resolves
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
@@ -65,7 +66,7 @@ describe('UpdateOpportunityStep', () => {
     });
 
     it('displays opportunity information when loaded', async () => {
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
@@ -92,7 +93,7 @@ describe('UpdateOpportunityStep', () => {
       // Suppress console.error for this test since we're intentionally testing error state
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-      mockDataProvider.getOne.mockRejectedValueOnce(new Error('Network error'));
+      getOneSpy.mockRejectedValueOnce(new Error('Network error'));
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
@@ -105,6 +106,12 @@ describe('UpdateOpportunityStep', () => {
         />
       );
 
+      // Wait for loading to disappear first
+      await waitFor(() => {
+        expect(screen.queryByText(/Loading opportunity.../i)).not.toBeInTheDocument();
+      });
+
+      // Then check for error message
       await waitFor(() => {
         expect(screen.getByText(/Unable to load opportunity details/i)).toBeInTheDocument();
       });
@@ -119,7 +126,7 @@ describe('UpdateOpportunityStep', () => {
       const user = userEvent.setup();
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-      mockDataProvider.getOne.mockRejectedValueOnce(new Error('Network error'));
+      getOneSpy.mockRejectedValueOnce(new Error('Network error'));
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
@@ -146,7 +153,7 @@ describe('UpdateOpportunityStep', () => {
 
   describe('Stage Selection', () => {
     it('shows stage selector dropdown', async () => {
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
@@ -168,7 +175,7 @@ describe('UpdateOpportunityStep', () => {
 
     it('disables current stage in dropdown', async () => {
       const user = userEvent.setup();
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: { ...mockOpportunity, stage: 'qualification' },
       });
 
@@ -197,7 +204,7 @@ describe('UpdateOpportunityStep', () => {
 
     it('excludes closed stages from selection', async () => {
       const user = userEvent.setup();
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
@@ -227,7 +234,7 @@ describe('UpdateOpportunityStep', () => {
 
     it('shows stage transition indicator when stage is selected', async () => {
       const user = userEvent.setup();
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: { ...mockOpportunity, stage: 'qualification' },
       });
 
@@ -263,7 +270,7 @@ describe('UpdateOpportunityStep', () => {
   describe('Update Functionality', () => {
     it('calls onSkip when no stage is selected and button clicked', async () => {
       const user = userEvent.setup();
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
@@ -291,7 +298,7 @@ describe('UpdateOpportunityStep', () => {
 
     it('calls onUpdate with selected stage', async () => {
       const user = userEvent.setup();
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: { ...mockOpportunity, stage: 'qualification' },
       });
 
@@ -324,7 +331,7 @@ describe('UpdateOpportunityStep', () => {
 
     it('disables buttons while submitting', async () => {
       const user = userEvent.setup();
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
@@ -364,7 +371,7 @@ describe('UpdateOpportunityStep', () => {
   describe('Skip Functionality', () => {
     it('calls onSkip when Skip button is clicked', async () => {
       const user = userEvent.setup();
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
@@ -391,7 +398,7 @@ describe('UpdateOpportunityStep', () => {
 
   describe('Help Text', () => {
     it('shows hint that step is optional', async () => {
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
@@ -412,7 +419,7 @@ describe('UpdateOpportunityStep', () => {
     });
 
     it('shows hint to leave blank when no stage is selected', async () => {
-      mockDataProvider.getOne.mockResolvedValueOnce({
+      getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
 
