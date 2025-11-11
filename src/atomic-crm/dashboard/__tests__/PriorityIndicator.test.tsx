@@ -1,7 +1,70 @@
 import { describe, it, expect } from 'vitest';
+import { calculatePriority } from '../PriorityIndicator';
 
-describe('PriorityIndicator', () => {
-  it('placeholder', () => {
-    expect(true).toBe(true);
+describe('PriorityIndicator - calculatePriority', () => {
+  it('should return "high" when principal has overdue tasks', () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const principal = {
+      tasks: [
+        { due_date: yesterday.toISOString().split('T')[0], status: 'Active' }
+      ],
+      activities: []
+    };
+
+    const priority = calculatePriority(principal);
+    expect(priority).toBe('high');
+  });
+
+  it('should return "high" when principal has low activity (< 3 this week)', () => {
+    const principal = {
+      tasks: [],
+      activities: [
+        { created_at: new Date().toISOString(), type: 'Call' },
+        { created_at: new Date().toISOString(), type: 'Email' }
+      ]
+    };
+
+    const priority = calculatePriority(principal);
+    expect(priority).toBe('high');
+  });
+
+  it('should return "medium" when principal has tasks due in next 48 hours', () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const principal = {
+      tasks: [
+        { due_date: tomorrow.toISOString().split('T')[0], status: 'Active' }
+      ],
+      activities: [
+        { created_at: new Date().toISOString(), type: 'Call' },
+        { created_at: new Date().toISOString(), type: 'Email' },
+        { created_at: new Date().toISOString(), type: 'Meeting' }
+      ]
+    };
+
+    const priority = calculatePriority(principal);
+    expect(priority).toBe('medium');
+  });
+
+  it('should return "low" when principal is on track with good activity', () => {
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+
+    const principal = {
+      tasks: [
+        { due_date: nextWeek.toISOString().split('T')[0], status: 'Active' }
+      ],
+      activities: [
+        { created_at: new Date().toISOString(), type: 'Call' },
+        { created_at: new Date().toISOString(), type: 'Email' },
+        { created_at: new Date().toISOString(), type: 'Meeting' }
+      ]
+    };
+
+    const priority = calculatePriority(principal);
+    expect(priority).toBe('low');
   });
 });
