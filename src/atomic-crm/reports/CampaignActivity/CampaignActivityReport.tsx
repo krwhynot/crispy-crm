@@ -470,13 +470,18 @@ export default function CampaignActivityReport() {
 
   return (
     <ReportLayout title="Campaign Activity Report">
+      {/* Screen reader announcements */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {ariaLiveMessage}
+      </div>
+
       {/* Campaign Selector and Filters */}
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-4">
           <div className="flex-1 sm:max-w-xs">
             <Label htmlFor="campaign-select" className="block text-sm font-medium mb-2">Select Campaign</Label>
             {isLoadingCampaigns ? (
-              <div className="h-10 bg-muted animate-pulse rounded-md" />
+              <div className="h-10 bg-muted animate-pulse rounded-md" role="status" aria-label="Loading campaigns" />
             ) : (
               <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
                 <SelectTrigger id="campaign-select">
@@ -754,7 +759,7 @@ export default function CampaignActivityReport() {
 
       {/* Conditional Rendering: Stale Leads View or Activity Type Breakdown */}
       {isLoadingActivities ? (
-        <div className="space-y-4">
+        <div className="space-y-4" role="status" aria-label="Loading campaign activities">
           <div className="h-6 bg-muted animate-pulse rounded w-48 mb-4" />
           {[1, 2, 3].map((i) => (
             <Card key={i}>

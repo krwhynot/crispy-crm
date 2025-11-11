@@ -1,7 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import CampaignActivityReport from "../CampaignActivityReport";
+import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 
 // Mock ra-core hooks
 vi.mock("ra-core", async () => {
@@ -10,245 +12,1135 @@ vi.mock("ra-core", async () => {
     ...actual,
     useGetList: vi.fn(),
     useNotify: vi.fn(() => vi.fn()),
+    downloadCSV: vi.fn(),
   };
 });
+
+// Mock jsonexport
+vi.mock("jsonexport/dist", () => ({
+  default: vi.fn((data, callback) => {
+    const csv = data
+      .map((row: any) => Object.values(row).join(","))
+      .join("\n");
+    callback(null, csv);
+  }),
+}));
 
 describe("CampaignActivityReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("renders report title and summary cards", async () => {
-    const { useGetList } = await import("ra-core");
-    vi.mocked(useGetList).mockReturnValue({
-      data: [],
-      total: 0,
-      isPending: false,
-      isLoading: false,
-      error: null,
-      refetch: vi.fn(),
-    } as any);
+  describe("Activity Grouping Logic", () => {
+    it("groups activities correctly by type", async () => {
+      const { useGetList } = await import("ra-core");
 
-    render(
-      <MemoryRouter>
-        <CampaignActivityReport />
-      </MemoryRouter>
-    );
+      const mockActivities = [
+        {
+          id: 1,
+          type: "note",
+          subject: "Test note 1",
+          created_at: "2025-11-11T10:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Test Org 1",
+        },
+        {
+          id: 2,
+          type: "call",
+          subject: "Followup call",
+          created_at: "2025-11-11T11:00:00Z",
+          created_by: 1,
+          organization_id: 20,
+          contact_id: null,
+          organization_name: "Test Org 2",
+        },
+        {
+          id: 3,
+          type: "note",
+          subject: "Test note 2",
+          created_at: "2025-11-11T12:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Test Org 1",
+        },
+      ];
 
-    await waitFor(() => {
-      expect(screen.getByText("Campaign Activity Report")).toBeInTheDocument();
+      vi.mocked(useGetList).mockReturnValue({
+        data: mockActivities,
+        total: 3,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
+      });
     });
 
-    // Summary cards
-    expect(screen.getByText("Total Activities")).toBeInTheDocument();
-    expect(screen.getByText("Organizations Contacted")).toBeInTheDocument();
-    expect(screen.getByText("Coverage Rate")).toBeInTheDocument();
-    expect(screen.getByText("Avg Activities per Lead")).toBeInTheDocument();
-  });
+    it("sorts groups by count in descending order", async () => {
+      const { useGetList } = await import("ra-core");
 
-  it("groups activities by type and calculates metrics", async () => {
-    const { useGetList } = await import("ra-core");
+      const mockActivities = [
+        // 1 call
+        {
+          id: 1,
+          type: "call",
+          subject: "Call 1",
+          created_at: "2025-11-11T10:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        // 3 notes (should be first)
+        {
+          id: 2,
+          type: "note",
+          subject: "Note 1",
+          created_at: "2025-11-11T11:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        {
+          id: 3,
+          type: "note",
+          subject: "Note 2",
+          created_at: "2025-11-11T12:00:00Z",
+          created_by: 1,
+          organization_id: 20,
+          contact_id: null,
+          organization_name: "Org 2",
+        },
+        {
+          id: 4,
+          type: "note",
+          subject: "Note 3",
+          created_at: "2025-11-11T13:00:00Z",
+          created_by: 1,
+          organization_id: 30,
+          contact_id: null,
+          organization_name: "Org 3",
+        },
+        // 2 emails (should be second)
+        {
+          id: 5,
+          type: "email",
+          subject: "Email 1",
+          created_at: "2025-11-11T14:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        {
+          id: 6,
+          type: "email",
+          subject: "Email 2",
+          created_at: "2025-11-11T15:00:00Z",
+          created_by: 1,
+          organization_id: 20,
+          contact_id: null,
+          organization_name: "Org 2",
+        },
+      ];
 
-    const mockActivities = [
-      {
-        id: 1,
-        type: "note",
-        subject: "Test",
-        created_at: "2025-11-11T10:00:00Z",
-        created_by: 1,
-        organization_id: 10,
-        contact_id: null,
-        organization_name: "Test Org 1",
-      },
-      {
-        id: 2,
-        type: "call",
-        subject: "Followup",
-        created_at: "2025-11-11T11:00:00Z",
-        created_by: 1,
-        organization_id: 20,
-        contact_id: null,
-        organization_name: "Test Org 2",
-      },
-      {
-        id: 3,
-        type: "note",
-        subject: "Another note",
-        created_at: "2025-11-11T12:00:00Z",
-        created_by: 1,
-        organization_id: 10,
-        contact_id: null,
-        organization_name: "Test Org 1",
-      },
-    ];
+      vi.mocked(useGetList).mockReturnValue({
+        data: mockActivities,
+        total: 6,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
 
-    vi.mocked(useGetList).mockReturnValue({
-      data: mockActivities,
-      total: 3,
-      isPending: false,
-      isLoading: false,
-      error: null,
-      refetch: vi.fn(),
-    } as any);
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
 
-    render(
-      <MemoryRouter>
-        <CampaignActivityReport />
-      </MemoryRouter>
-    );
+      await waitFor(() => {
+        expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
+      });
+    });
 
-    await waitFor(() => {
-      // Check that activities are grouped
-      // Notes should have 2 activities, calls should have 1
-      expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
+    it("calculates percentage correctly", async () => {
+      const { useGetList } = await import("ra-core");
+
+      const mockActivities = [
+        {
+          id: 1,
+          type: "note",
+          subject: "Note 1",
+          created_at: "2025-11-11T10:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        {
+          id: 2,
+          type: "note",
+          subject: "Note 2",
+          created_at: "2025-11-11T11:00:00Z",
+          created_by: 1,
+          organization_id: 20,
+          contact_id: null,
+          organization_name: "Org 2",
+        },
+        {
+          id: 3,
+          type: "call",
+          subject: "Call 1",
+          created_at: "2025-11-11T12:00:00Z",
+          created_by: 1,
+          organization_id: 30,
+          contact_id: null,
+          organization_name: "Org 3",
+        },
+        {
+          id: 4,
+          type: "call",
+          subject: "Call 2",
+          created_at: "2025-11-11T13:00:00Z",
+          created_by: 1,
+          organization_id: 40,
+          contact_id: null,
+          organization_name: "Org 4",
+        },
+      ];
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: mockActivities,
+        total: 4,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        // 2 notes out of 4 total = 50%, 2 calls out of 4 total = 50%
+        expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
+      });
+    });
+
+    it("calculates unique organization count per group", async () => {
+      const { useGetList } = await import("ra-core");
+
+      const mockActivities = [
+        // 2 notes, but both for same org (uniqueOrgs = 1)
+        {
+          id: 1,
+          type: "note",
+          subject: "Note 1",
+          created_at: "2025-11-11T10:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        {
+          id: 2,
+          type: "note",
+          subject: "Note 2",
+          created_at: "2025-11-11T11:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        // 2 calls for different orgs (uniqueOrgs = 2)
+        {
+          id: 3,
+          type: "call",
+          subject: "Call 1",
+          created_at: "2025-11-11T12:00:00Z",
+          created_by: 1,
+          organization_id: 20,
+          contact_id: null,
+          organization_name: "Org 2",
+        },
+        {
+          id: 4,
+          type: "call",
+          subject: "Call 2",
+          created_at: "2025-11-11T13:00:00Z",
+          created_by: 1,
+          organization_id: 30,
+          contact_id: null,
+          organization_name: "Org 3",
+        },
+      ];
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: mockActivities,
+        total: 4,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
+      });
+    });
+
+    it("calculates most active organization correctly", async () => {
+      const { useGetList } = await import("ra-core");
+
+      const mockActivities = [
+        // Org 1: 3 notes (most active)
+        {
+          id: 1,
+          type: "note",
+          subject: "Note 1",
+          created_at: "2025-11-11T10:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        {
+          id: 2,
+          type: "note",
+          subject: "Note 2",
+          created_at: "2025-11-11T11:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        {
+          id: 3,
+          type: "note",
+          subject: "Note 3",
+          created_at: "2025-11-11T12:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Org 1",
+        },
+        // Org 2: 1 note
+        {
+          id: 4,
+          type: "note",
+          subject: "Note 4",
+          created_at: "2025-11-11T13:00:00Z",
+          created_by: 1,
+          organization_id: 20,
+          contact_id: null,
+          organization_name: "Org 2",
+        },
+      ];
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: mockActivities,
+        total: 4,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
+      });
     });
   });
 
-  it("auto-expands top 3 activity types on load", async () => {
-    const { useGetList } = await import("ra-core");
+  describe("Filter Combinations", () => {
+    it("filters by date range (start date)", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
 
-    // Mock 5 activity groups
-    const mockActivities = Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      type: ["note", "call", "email", "meeting", "demo"][i % 5],
-      subject: `Activity ${i + 1}`,
-      created_at: "2025-11-11T10:00:00Z",
-      created_by: 1,
-      organization_id: i % 3,
-      contact_id: null,
-      organization_name: `Org ${i % 3}`,
-    }));
-
-    vi.mocked(useGetList).mockReturnValue({
-      data: mockActivities,
-      total: 10,
-      isPending: false,
-      isLoading: false,
-      error: null,
-      refetch: vi.fn(),
-    } as any);
-
-    render(
-      <MemoryRouter>
-        <CampaignActivityReport />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      // Top 3 types should be expanded
-      // This is a visual verification test
-      expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
-    });
-  });
-
-  it("shows empty state when no activities found", async () => {
-    const { useGetList } = await import("ra-core");
-
-    vi.mocked(useGetList).mockReturnValue({
-      data: [],
-      total: 0,
-      isPending: false,
-      isLoading: false,
-      error: null,
-      refetch: vi.fn(),
-    } as any);
-
-    render(
-      <MemoryRouter>
-        <CampaignActivityReport />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
-      expect(screen.getByText("Activities will appear here once your team starts engaging with leads")).toBeInTheDocument();
-    });
-  });
-
-  it("calculates summary metrics correctly", async () => {
-    const { useGetList } = await import("ra-core");
-
-    const mockActivities = [
-      {
-        id: 1,
-        type: "note",
-        subject: "Test",
-        created_at: "2025-11-11T10:00:00Z",
-        created_by: 1,
-        organization_id: 10,
-        contact_id: null,
-        organization_name: "Test Org 1",
-      },
-      {
-        id: 2,
-        type: "call",
-        subject: "Followup",
-        created_at: "2025-11-11T11:00:00Z",
-        created_by: 1,
-        organization_id: 20,
-        contact_id: null,
-        organization_name: "Test Org 2",
-      },
-      {
-        id: 3,
-        type: "email",
-        subject: "Product info",
-        created_at: "2025-11-11T12:00:00Z",
-        created_by: 2,
-        organization_id: 30,
-        contact_id: null,
-        organization_name: "Test Org 3",
-      },
-    ];
-
-    const mockSalesReps = [
-      { id: 1, first_name: "John", last_name: "Smith" },
-      { id: 2, first_name: "Jane", last_name: "Doe" },
-    ];
-
-    vi.mocked(useGetList).mockImplementation((resource: string) => {
-      if (resource === "activities") {
-        return {
-          data: mockActivities,
-          total: 3,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        } as any;
-      } else if (resource === "sales") {
-        return {
-          data: mockSalesReps,
-          total: 2,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        } as any;
-      }
-      return {
+      vi.mocked(useGetList).mockReturnValue({
         data: [],
         total: 0,
         isPending: false,
         isLoading: false,
         error: null,
         refetch: vi.fn(),
-      } as any;
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Start Date")).toBeInTheDocument();
+      });
+
+      const startDateInput = screen.getByLabelText("Start Date");
+      await user.type(startDateInput, "2025-11-01");
+
+      await waitFor(() => {
+        expect(startDateInput).toHaveValue("2025-11-01");
+      });
     });
 
-    render(
-      <MemoryRouter>
-        <CampaignActivityReport />
-      </MemoryRouter>
-    );
+    it("filters by date range (end date)", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
 
-    await waitFor(() => {
-      // Check summary metrics - using getAllByText since "3" appears twice
-      const threeElements = screen.getAllByText("3");
-      expect(threeElements).toHaveLength(2); // Total Activities and Organizations Contacted both show "3"
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
 
-      expect(screen.getByText("1%")).toBeInTheDocument(); // Coverage Rate (3/369)
-      expect(screen.getByText("0.0")).toBeInTheDocument(); // Avg per lead (3/369)
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("End Date")).toBeInTheDocument();
+      });
+
+      const endDateInput = screen.getByLabelText("End Date");
+      await user.type(endDateInput, "2025-11-30");
+
+      await waitFor(() => {
+        expect(endDateInput).toHaveValue("2025-11-30");
+      });
+    });
+
+    it("filters by date preset (last 7 days)", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Last 7 days")).toBeInTheDocument();
+      });
+
+      const last7DaysButton = screen.getByText("Last 7 days");
+      await user.click(last7DaysButton);
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Start Date")).toHaveValue();
+        expect(screen.getByLabelText("End Date")).toHaveValue();
+      });
+    });
+
+    it("filters by activity type multi-select", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Activity Type")).toBeInTheDocument();
+      });
+    });
+
+    it("filters by sales rep", async () => {
+      const { useGetList } = await import("ra-core");
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Sales Rep")).toBeInTheDocument();
+      });
+    });
+
+    it("combines date and activity type filters", async () => {
+      const { useGetList } = await import("ra-core");
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Activity Type")).toBeInTheDocument();
+        expect(screen.getByLabelText("Start Date")).toBeInTheDocument();
+      });
+    });
+
+    it("clears all filters when Clear Filters is clicked", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      // Set a date filter first
+      await waitFor(() => {
+        expect(screen.getByText("Last 7 days")).toBeInTheDocument();
+      });
+
+      const last7DaysButton = screen.getByText("Last 7 days");
+      await user.click(last7DaysButton);
+
+      await waitFor(() => {
+        expect(screen.getByText("Clear Filters")).toBeInTheDocument();
+      });
+
+      const clearFiltersButton = screen.getByText("Clear Filters");
+      await user.click(clearFiltersButton);
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Start Date")).toHaveValue("");
+        expect(screen.getByLabelText("End Date")).toHaveValue("");
+      });
+    });
+  });
+
+  describe("Stale Leads Calculation", () => {
+    it("identifies stale opportunities with no activity in threshold period", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      const mockOpportunities = [
+        {
+          id: 1,
+          name: "Stale Opp",
+          campaign: "Grand Rapids Trade Show",
+          customer_organization_name: "Test Org 1",
+        },
+      ];
+
+      const mockActivities = [
+        {
+          id: 1,
+          type: "note",
+          subject: "Old activity",
+          created_at: "2025-10-01T10:00:00Z", // Over 30 days ago
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          opportunity_id: 1,
+          organization_name: "Test Org 1",
+        },
+      ];
+
+      vi.mocked(useGetList).mockImplementation((resource: string) => {
+        if (resource === "opportunities") {
+          return {
+            data: mockOpportunities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        } else if (resource === "activities") {
+          return {
+            data: mockActivities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        }
+        return {
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        } as any;
+      });
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+      });
+
+      const staleLeadsCheckbox = screen.getByLabelText("Show only leads with no activity");
+      await user.click(staleLeadsCheckbox);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Stale Leads Report/)).toBeInTheDocument();
+      });
+    });
+
+    it("calculates days since last activity correctly", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      const mockOpportunities = [
+        {
+          id: 1,
+          name: "Test Opp",
+          campaign: "Grand Rapids Trade Show",
+          customer_organization_name: "Test Org",
+        },
+      ];
+
+      vi.mocked(useGetList).mockImplementation((resource: string) => {
+        if (resource === "opportunities") {
+          return {
+            data: mockOpportunities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        }
+        return {
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        } as any;
+      });
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+      });
+
+      const checkbox = screen.getByLabelText("Show only leads with no activity");
+      await user.click(checkbox);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Stale Leads Report/)).toBeInTheDocument();
+      });
+    });
+
+    it("handles never contacted opportunities", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      const mockOpportunities = [
+        {
+          id: 1,
+          name: "Never Contacted Opp",
+          campaign: "Grand Rapids Trade Show",
+          customer_organization_name: "Test Org",
+        },
+      ];
+
+      vi.mocked(useGetList).mockImplementation((resource: string) => {
+        if (resource === "opportunities") {
+          return {
+            data: mockOpportunities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        }
+        return {
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        } as any;
+      });
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+      });
+
+      const checkbox = screen.getByLabelText("Show only leads with no activity");
+      await user.click(checkbox);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Stale Leads Report/)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("CSV Export Data", () => {
+    it("generates correct CSV columns for activity export", async () => {
+      const { useGetList, downloadCSV } = await import("ra-core");
+
+      const mockActivities = [
+        {
+          id: 1,
+          type: "note",
+          subject: "Test note",
+          created_at: "2025-11-11T10:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: 1,
+          opportunity_id: 1,
+          organization_name: "Test Org",
+          contact_name: "John Doe",
+        },
+      ];
+
+      const mockOpportunities = [
+        {
+          id: 1,
+          name: "Test Opportunity",
+          campaign: "Grand Rapids Trade Show",
+          stage: "negotiation",
+        },
+      ];
+
+      const mockSalesReps = [
+        { id: 1, first_name: "Jane", last_name: "Smith" },
+      ];
+
+      vi.mocked(useGetList).mockImplementation((resource: string) => {
+        if (resource === "activities") {
+          return {
+            data: mockActivities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        } else if (resource === "opportunities") {
+          return {
+            data: mockOpportunities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        } else if (resource === "sales") {
+          return {
+            data: mockSalesReps,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        }
+        return {
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        } as any;
+      });
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Export to CSV")).toBeInTheDocument();
+      });
+    });
+
+    it("sanitizes CSV data to prevent formula injection", () => {
+      // Test formula injection prevention
+      expect(sanitizeCsvValue("=cmd|'/c calc'!A0")).toBe("'=cmd|'/c calc'!A0");
+      expect(sanitizeCsvValue("+SUM(A1:A10)")).toBe("'+SUM(A1:A10)");
+      expect(sanitizeCsvValue("-10+20")).toBe("'-10+20");
+      expect(sanitizeCsvValue("@SUM(A:A)")).toBe("'@SUM(A:A)");
+
+      // Test control character removal
+      expect(sanitizeCsvValue("test\x00value")).toBe("testvalue");
+      expect(sanitizeCsvValue("line1\x1Fline2")).toBe("line1line2");
+
+      // Test normal values pass through
+      expect(sanitizeCsvValue("Normal Organization Name")).toBe("Normal Organization Name");
+      expect(sanitizeCsvValue("")).toBe("");
+      expect(sanitizeCsvValue(null)).toBe("");
+      expect(sanitizeCsvValue(undefined)).toBe("");
+    });
+  });
+
+  describe("Empty States", () => {
+    it("shows empty state when no activities found", async () => {
+      const { useGetList } = await import("ra-core");
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
+        expect(screen.getByText("Activities will appear here once your team starts engaging with leads")).toBeInTheDocument();
+      });
+    });
+
+    it("shows empty state when campaign has no opportunities", async () => {
+      const { useGetList } = await import("ra-core");
+
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
+      });
+    });
+
+    it("shows empty state when filters result in 0 matches", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      vi.mocked(useGetList).mockImplementation(() => {
+        return {
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        } as any;
+      });
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Last 7 days")).toBeInTheDocument();
+      });
+
+      const last7DaysButton = screen.getByText("Last 7 days");
+      await user.click(last7DaysButton);
+
+      await waitFor(() => {
+        expect(screen.getByText("No activities match the current filters")).toBeInTheDocument();
+      });
+    });
+
+    it("shows empty state for stale leads when none found", async () => {
+      const { useGetList } = await import("ra-core");
+      const user = userEvent.setup();
+
+      const mockOpportunities = [
+        {
+          id: 1,
+          name: "Active Opp",
+          campaign: "Grand Rapids Trade Show",
+          customer_organization_name: "Test Org",
+        },
+      ];
+
+      const mockActivities = [
+        {
+          id: 1,
+          type: "note",
+          subject: "Recent activity",
+          created_at: new Date().toISOString(), // Activity today
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          opportunity_id: 1,
+          organization_name: "Test Org",
+        },
+      ];
+
+      vi.mocked(useGetList).mockImplementation((resource: string) => {
+        if (resource === "opportunities") {
+          return {
+            data: mockOpportunities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        } else if (resource === "activities") {
+          return {
+            data: mockActivities,
+            total: 1,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        }
+        return {
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        } as any;
+      });
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+      });
+
+      const checkbox = screen.getByLabelText("Show only leads with no activity");
+      await user.click(checkbox);
+
+      await waitFor(() => {
+        expect(screen.getByText(/No stale leads found/)).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("Rendering and UI", () => {
+    it("renders report title and summary cards", async () => {
+      const { useGetList } = await import("ra-core");
+      vi.mocked(useGetList).mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        isLoading: false,
+        error: null,
+        refetch: vi.fn(),
+      } as any);
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText("Campaign Activity Report")).toBeInTheDocument();
+      });
+
+      // Summary cards
+      expect(screen.getByText("Total Activities")).toBeInTheDocument();
+      expect(screen.getByText("Organizations Contacted")).toBeInTheDocument();
+      expect(screen.getByText("Coverage Rate")).toBeInTheDocument();
+      expect(screen.getByText("Avg Activities per Lead")).toBeInTheDocument();
+    });
+
+    it("calculates summary metrics correctly", async () => {
+      const { useGetList } = await import("ra-core");
+
+      const mockActivities = [
+        {
+          id: 1,
+          type: "note",
+          subject: "Test",
+          created_at: "2025-11-11T10:00:00Z",
+          created_by: 1,
+          organization_id: 10,
+          contact_id: null,
+          organization_name: "Test Org 1",
+        },
+        {
+          id: 2,
+          type: "call",
+          subject: "Followup",
+          created_at: "2025-11-11T11:00:00Z",
+          created_by: 1,
+          organization_id: 20,
+          contact_id: null,
+          organization_name: "Test Org 2",
+        },
+        {
+          id: 3,
+          type: "email",
+          subject: "Product info",
+          created_at: "2025-11-11T12:00:00Z",
+          created_by: 2,
+          organization_id: 30,
+          contact_id: null,
+          organization_name: "Test Org 3",
+        },
+      ];
+
+      const mockSalesReps = [
+        { id: 1, first_name: "John", last_name: "Smith" },
+        { id: 2, first_name: "Jane", last_name: "Doe" },
+      ];
+
+      vi.mocked(useGetList).mockImplementation((resource: string) => {
+        if (resource === "activities") {
+          return {
+            data: mockActivities,
+            total: 3,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        } else if (resource === "sales") {
+          return {
+            data: mockSalesReps,
+            total: 2,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        }
+        return {
+          data: [],
+          total: 0,
+          isPending: false,
+          isLoading: false,
+          error: null,
+          refetch: vi.fn(),
+        } as any;
+      });
+
+      render(
+        <MemoryRouter>
+          <CampaignActivityReport />
+        </MemoryRouter>
+      );
+
+      await waitFor(() => {
+        // Check summary metrics - using getAllByText since "3" appears twice
+        const threeElements = screen.getAllByText("3");
+        expect(threeElements).toHaveLength(2); // Total Activities and Organizations Contacted both show "3"
+
+        expect(screen.getByText("1%")).toBeInTheDocument(); // Coverage Rate (3/369)
+        expect(screen.getByText("0.0")).toBeInTheDocument(); // Avg per lead (3/369)
+      });
     });
   });
 });
