@@ -140,9 +140,11 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
             <tbody>
               {group.activities.map((activity) => (
                 <tr key={activity.id} className="border-b hover:bg-muted/50">
-                  <td className="py-2 px-3">Org {activity.organization_id}</td>
-                  <td className="py-2 px-3">
-                    {activity.contact_id ? `Contact ${activity.contact_id}` : "—"}
+                  <td className="py-2 px-3 truncate max-w-xs">
+                    {activity.organization_name || `Organization ${activity.organization_id}`}
+                  </td>
+                  <td className="py-2 px-3 truncate max-w-xs">
+                    {activity.contact_name ? activity.contact_name : "—"}
                   </td>
                   <td className="py-2 px-3">
                     {new Date(activity.created_at).toLocaleDateString()}
@@ -150,7 +152,7 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
                   <td className="py-2 px-3">
                     {salesMap.get(activity.created_by) || "Unassigned"}
                   </td>
-                  <td className="py-2 px-3 truncate">{activity.subject}</td>
+                  <td className="py-2 px-3 truncate max-w-xs">{activity.subject}</td>
                   <td className="py-2 px-3 text-center">
                     <button className="text-primary hover:underline">View</button>
                   </td>
