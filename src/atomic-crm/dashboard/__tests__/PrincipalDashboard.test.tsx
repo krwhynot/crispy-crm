@@ -16,30 +16,30 @@ const mockOpportunities = [
     name: 'Restaurant ABC',
     principal_organization_id: 'principal-1',
     principal_organization: { id: 'principal-1', name: 'Brand A' },
-    expected_value: 5000,
+    estimated_close_date: '2025-12-15',
     stage: 'Negotiation',
     sales_id: 'user-1',
-    status: 'Active'
+    status: 'active'
   },
   {
     id: '2',
     name: 'Cafe XYZ',
     principal_organization_id: 'principal-1',
     principal_organization: { id: 'principal-1', name: 'Brand A' },
-    expected_value: 3000,
+    estimated_close_date: '2025-12-20',
     stage: 'Proposal',
     sales_id: 'user-1',
-    status: 'Active'
+    status: 'active'
   },
   {
     id: '3',
     name: 'Hotel 123',
     principal_organization_id: 'principal-2',
     principal_organization: { id: 'principal-2', name: 'Brand B' },
-    expected_value: 7000,
+    estimated_close_date: '2025-12-10',
     stage: 'Qualification',
     sales_id: 'user-1',
-    status: 'Active'
+    status: 'active'
   }
 ];
 
@@ -109,7 +109,7 @@ describe('PrincipalDashboard', () => {
       'opportunities',
       expect.objectContaining({
         filter: expect.objectContaining({
-          status: 'Active'
+          status: 'active'
         })
       })
     );
