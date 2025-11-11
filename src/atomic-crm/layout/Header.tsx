@@ -115,6 +115,14 @@ const Header = () => {
                             Weekly Activity Summary
                           </Link>
                         </NavigationMenuLink>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/reports/campaign-activity"
+                            className="block px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                          >
+                            Campaign Activity Report
+                          </Link>
+                        </NavigationMenuLink>
                       </NavigationMenuContent>
                     </NavigationMenuItem>
                   </NavigationMenuList>
