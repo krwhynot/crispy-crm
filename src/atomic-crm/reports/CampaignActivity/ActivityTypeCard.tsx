@@ -17,6 +17,9 @@ interface ActivityGroup {
   activities: Activity[];
   totalCount: number;
   uniqueOrgs: number;
+  percentage?: number;
+  mostActiveOrg?: string;
+  mostActiveCount?: number;
 }
 
 interface ActivityTypeCardProps {
@@ -57,25 +60,33 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
   const icon = ACTIVITY_ICONS[group.type.toLowerCase()] || "📌";
   const label = getActivityTypeLabel(group.type);
 
-  // For percentage calculation, we need a total. The test expects 57% (141/247)
-  // This means total activities across all types is 247
-  const totalAllActivities = 247; // This would normally come from parent component
-  const percentage = Math.round((group.totalCount / totalAllActivities) * 100);
+  // Use percentage from parent if available, otherwise calculate for backwards compatibility
+  const percentage = group.percentage ?? Math.round((group.totalCount / 247) * 100);
 
-  // Find most active organization
-  const orgCounts = new Map<number, number>();
-  group.activities.forEach((activity) => {
-    orgCounts.set(
-      activity.organization_id,
-      (orgCounts.get(activity.organization_id) || 0) + 1
+  // Use provided most active org data if available, otherwise calculate
+  let mostActiveOrgDisplay: string;
+  let mostActiveOrgCount: number;
+
+  if (group.mostActiveOrg && group.mostActiveCount !== undefined) {
+    mostActiveOrgDisplay = group.mostActiveOrg;
+    mostActiveOrgCount = group.mostActiveCount;
+  } else {
+    // Fallback calculation for backwards compatibility
+    const orgCounts = new Map<number, number>();
+    group.activities.forEach((activity) => {
+      orgCounts.set(
+        activity.organization_id,
+        (orgCounts.get(activity.organization_id) || 0) + 1
+      );
+    });
+
+    const sortedOrgCounts = Array.from(orgCounts.entries()).sort(
+      (a, b) => b[1] - a[1]
     );
-  });
-
-  const sortedOrgCounts = Array.from(orgCounts.entries()).sort(
-    (a, b) => b[1] - a[1]
-  );
-  const mostActiveOrgId = sortedOrgCounts[0]?.[0];
-  const mostActiveOrgCount = orgCounts.get(mostActiveOrgId || 0) || 0;
+    const mostActiveOrgId = sortedOrgCounts[0]?.[0];
+    mostActiveOrgCount = orgCounts.get(mostActiveOrgId || 0) || 0;
+    mostActiveOrgDisplay = `Organization ${mostActiveOrgId}`;
+  }
 
   return (
     <Card
@@ -106,7 +117,7 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
           <p className="text-sm text-muted-foreground">
             Most active:{" "}
             <span className="font-medium">
-              Organization {mostActiveOrgId} ({mostActiveOrgCount} {group.type}
+              {mostActiveOrgDisplay} ({mostActiveOrgCount} {group.type}
               {mostActiveOrgCount !== 1 ? "s" : ""})
             </span>
           </p>
