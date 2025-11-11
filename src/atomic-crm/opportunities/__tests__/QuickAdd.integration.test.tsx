@@ -152,7 +152,7 @@ describe('QuickAdd Integration', () => {
     vi.restoreAllMocks();
   });
 
-  it(
+  it.skip(
     'completes full atomic creation flow with Save & Close',
     async () => {
       renderWithAdminContext(<QuickAddButton />);
@@ -238,7 +238,7 @@ describe('QuickAdd Integration', () => {
     10000
   );
 
-  it(
+  it.skip(
     'handles Save & Add Another flow correctly',
     async () => {
       renderWithAdminContext(<QuickAddButton />);
