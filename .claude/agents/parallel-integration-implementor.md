@@ -1,7 +1,6 @@
 ---
 name: parallel-integration-implementor
 description: Use this agent when you need to implement integration points, connect different layers of the application, or establish data flow between components in a parallel workflow. This includes registering new features in CRM.tsx, configuring routes, connecting data providers, and setting up permission systems. <example>Context: The user has created multiple parallel agents to build a new feature and now needs to integrate all the components together.\nuser: "Now integrate the dashboard feature we just built into the main application"\nassistant: "I'll use the Task tool to launch the parallel-integration-implementor agent to handle the integration of all components."\n<commentary>Since the user needs to integrate feature components into the application, use the parallel-integration-implementor agent to handle resource registration, routing, and data flow connections.</commentary></example><example>Context: After parallel agents have created frontend and backend components for a reporting module.\nuser: "Connect the reporting module to the main app with proper routing and permissions"\nassistant: "Let me use the parallel-integration-implementor agent to establish all the necessary integration points."\n<commentary>The user needs to integrate a new module with routing and permissions, which is exactly what the parallel-integration-implementor agent specializes in.</commentary></example>
-model: claude-sonnet-4-5-20250929
 color: orange
 ---
 
