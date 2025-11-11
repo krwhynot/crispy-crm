@@ -13,32 +13,23 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AdminContext } from 'react-admin';
 import { UpdateOpportunityStep } from '../UpdateOpportunityStep';
+import { renderWithAdminContext } from '@/tests/utils/render-admin';
+import { createMockDataProvider } from '@/tests/utils/mock-providers';
 
 // Mock the data provider
-const mockDataProvider = {
-  getOne: vi.fn(),
-  getList: vi.fn(),
-  getMany: vi.fn(),
-  getManyReference: vi.fn(),
-  create: vi.fn(),
-  update: vi.fn(),
-  updateMany: vi.fn(),
-  delete: vi.fn(),
-  deleteMany: vi.fn(),
-  rpc: vi.fn(),
-};
+const mockDataProvider = createMockDataProvider();
 
-// Test utility: Wrap component in required providers
+// Mock spies for tracking calls
+const getOneSpy = vi.spyOn(mockDataProvider, 'getOne');
+
+// Test utility: Wrap component in required providers with QueryClient
 const renderWithProviders = (ui: React.ReactElement) => {
-  return render(
-    <AdminContext dataProvider={mockDataProvider}>
-      {ui}
-    </AdminContext>
-  );
+  return renderWithAdminContext(ui, {
+    dataProvider: mockDataProvider,
+  });
 };
 
 // Mock opportunity data
