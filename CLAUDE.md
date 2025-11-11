@@ -10,7 +10,8 @@ Atomic CRM - Full-featured, open-source CRM with React, shadcn-admin-kit, and Su
 
 ## Recent Changes (90 days)
 
-- **Port Consolidation (2025-11-10)**: Successfully reduced exposed ports from 28 to 3 (API: 54321, DB: 54322, Studio: 54323). Disabled Inbucket & Analytics in `config.toml`. Internal services communicate via Docker bridge network. VSCode shows 11 Docker ports but only 3 are host-exposed. Guide: `docs/development/port-consolidation-guide.md`
+- **Cloud-First Development (2025-11-10)**: Migrated from local Docker to Supabase Cloud (aaqnanddcqvfiwhshndl) to eliminate WSL resource constraints. Uses single production project with daily automated backups for safety. RLS policies protect dev data. Dev workflow: `npm run dev` directly (no Docker). Migrations: git-tracked via CI/CD with `--dry-run` validation. Cost-optimized: 0 extra infrastructure. Guide: Below
+- **Port Consolidation (2025-11-10)**: Successfully reduced exposed ports from 28 to 3 (API: 54321, DB: 54322, Studio: 54323). Disabled Inbucket & Analytics in `config.toml`. Internal services communicate via Docker bridge network. VSCode shows 11 Docker ports but only 3 are host-exposed. Note: Docker no longer needed for development (see Cloud-First above). Guide: `docs/development/port-consolidation-guide.md`
 - **Tasks Module + Weekly Activity Report (2025-11-09)**: Complete Tasks CRUD with principal-grouped list view, full test coverage (43 unit tests + 6 E2E tests), filterRegistry integration. Weekly Activity Report groups activities by rep → principal with CSV export. Known issue: Duplicate validation files (`task.ts` current, `tasks.ts` legacy with 28 tests - cleanup pending). Plan: `docs/plans/2025-11-09-tasks-module-weekly-activity-report.md`
 - **Spacing System Phase 1 (2025-11-08)**: Semantic spacing tokens for consistent layouts. CSS custom properties in `src/index.css` for grid, edge padding, vertical rhythm. Applied to Reports Module. Design: `docs/plans/2025-11-08-spacing-layout-system-design.md`
 - **Security & Testing Remediation (2025-11-08)**: 4-phase remediation complete - RLS admin-only policies, CSV validation, 65 new tests (95.4% pass rate), WCAG 2.1 AA compliance, Promise.allSettled error handling
@@ -38,25 +39,48 @@ See [Engineering Constitution](docs/claude/engineering-constitution.md) for comp
 
 **📖 Complete guide:** [docs/supabase/WORKFLOW.md](docs/supabase/WORKFLOW.md)
 
+### Cloud-First Development (Single Production Project)
+
+Using Supabase Cloud (aaqnanddcqvfiwhshndl) for all development with daily automated backups.
+
+**Why this approach:**
+- ✅ Eliminates WSL Docker resource crashes
+- ✅ Zero extra infrastructure costs
+- ✅ Daily backups = safe dev environment
+- ✅ RLS policies protect sensitive data even in dev
+- ✅ Parallel sessions supported
+
 ### Quick Commands
 
 ```bash
-# Local Dev
-npm run db:local:start    # Start Supabase
-npm run db:local:reset    # Reset + seed (supabase/seed.sql)
-npm run dev               # Start UI
+# First time setup (one-time)
+npm run db:link            # Link local to cloud project
+
+# Daily development
+npm run dev                # Start UI (uses cloud DB in .env)
 
 # Migrations
-npx supabase migration new <name>
+npx supabase migration new <name>    # Create new migration
+npm run db:cloud:push:dry-run        # Validate before pushing
+npm run db:cloud:push                # Push to cloud (or let CI/CD handle it)
 
-# Cloud (PRODUCTION)
-npm run db:cloud:push     # Deploy migrations
+# Status
+npm run db:cloud:status    # Show migration history
+npm run db:cloud:diff      # Show pending changes
 ```
 
-### Seed Data
+### Seed Data & Reset
 
 **⚠️ ONLY ONE seed file:** `supabase/seed.sql` (test user: admin@test.com / password123, 16 orgs)
-**❌ NEVER:** `npx supabase db reset --linked` (DELETES ALL PRODUCTION DATA)
+
+**For development data resets:**
+```bash
+npm run db:local:start     # Optional: run local Docker for isolated testing
+npm run db:local:reset     # Reset local DB only (doesn't touch cloud)
+npm run dev:local          # Dev against local Docker (optional)
+```
+
+**⚠️ NEVER:** `npx supabase db reset --linked` (DELETES CLOUD DATA)
 
 ### 🔒 Two-Layer Security
 

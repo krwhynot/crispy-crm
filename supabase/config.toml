@@ -22,9 +22,9 @@ max_rows = 1000
 port = 54322
 # Port used by db diff command to initialize the shadow database.
 shadow_port = 54320
-# The database major version to use. This has to be the same as your remote database's. Run `SHOW
-# server_version;` on the remote database to check.
-major_version = 15
+# The database major version to use. Must match production: run `SHOW server_version;`
+# Production: 17 (cloud-first development)
+major_version = 17
 
 [db.pooler]
 enabled = false
@@ -162,25 +162,17 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 # ============================================================================
 # REMOTE ENVIRONMENT CONFIGURATION
 # ============================================================================
-# Configure environment-specific settings for staging and production.
-# This enables CI/CD workflows and environment-specific configurations.
+# Cloud-first development: Single production project (aaqnanddcqvfiwhshndl)
+# with daily backups and RLS policies for data safety.
+# Cost-optimized: No dev/staging projects (shared single project pre-launch).
 # See: https://supabase.com/docs/guides/deployment/branching/configuration
 
-# Production Environment
+# Production Environment (Cloud-First Development)
+# Shared development/staging database with daily automated backups
 [remotes.production]
 project_id = "aaqnanddcqvfiwhshndl"
 
 # Production seed configuration
-# IMPORTANT: Seeding is disabled on production to prevent accidental data loss
 [remotes.production.db.seed]
 enabled = true
 sql_paths = ["./supabase/seed.sql"]
-
-# Staging Environment (Placeholder)
-# Uncomment and configure when you create a staging Supabase project
-# [remotes.staging]
-# project_id = "your-staging-project-ref"
-#
-# [remotes.staging.db.seed]
-# enabled = true
-# sql_paths = ["./supabase/seed.sql"]
