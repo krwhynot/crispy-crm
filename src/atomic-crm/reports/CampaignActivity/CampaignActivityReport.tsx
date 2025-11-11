@@ -43,6 +43,7 @@ interface Opportunity {
   name: string;
   campaign: string | null;
   customer_organization_name?: string;
+  stage?: string;
 }
 
 interface ActivityGroup {
@@ -56,6 +57,7 @@ interface ActivityGroup {
 }
 
 export default function CampaignActivityReport() {
+  const notify = useNotify();
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
   const [selectedCampaign, setSelectedCampaign] = useState<string>("Grand Rapids Trade Show");
 
@@ -148,6 +150,12 @@ export default function CampaignActivityReport() {
   const salesMap = useMemo(
     () => new Map((salesReps || []).map((s) => [s.id, `${s.first_name} ${s.last_name}`])),
     [salesReps]
+  );
+
+  // Create opportunity map for looking up opportunity details
+  const opportunityMap = useMemo(
+    () => new Map((allOpportunities || []).map((o) => [o.id, o])),
+    [allOpportunities]
   );
 
   // Calculate sales rep options with activity counts from ALL activities (unfiltered)
@@ -363,6 +371,85 @@ export default function CampaignActivityReport() {
       .sort((a, b) => b.daysInactive - a.daysInactive);
   }, [showStaleLeads, staleLeadsThreshold, allOpportunities, selectedCampaign, allCampaignActivities]);
 
+  // CSV Export Function
+  const handleExport = () => {
+    if (showStaleLeads) {
+      // Export stale leads
+      if (staleOpportunities.length === 0) {
+        notify("No stale leads to export", { type: "warning" });
+        return;
+      }
+
+      const exportData = staleOpportunities.map((opp) => ({
+        campaign: sanitizeCsvValue(selectedCampaign),
+        opportunity_name: sanitizeCsvValue(opp.name),
+        organization: sanitizeCsvValue(opp.customer_organization_name || ""),
+        last_activity_date: opp.lastActivityDate ? format(new Date(opp.lastActivityDate), "yyyy-MM-dd") : "Never",
+        days_inactive: opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
+        notes: "", // Not available in current data structure
+      }));
+
+      jsonExport(exportData, (err, csv) => {
+        if (err) {
+          console.error("Export error:", err);
+          notify("Export failed. Please try again.", { type: "error" });
+          return;
+        }
+        const campaignSlug = selectedCampaign
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^\w-]/g, "");
+        const dateStr = format(new Date(), "yyyy-MM-dd");
+        downloadCSV(csv, `campaign-stale-leads-${campaignSlug}-${dateStr}`);
+        notify(`${staleOpportunities.length} stale leads exported successfully`, { type: "success" });
+      });
+    } else {
+      // Export activities
+      if (activityGroups.length === 0 || activities.length === 0) {
+        notify("No activities to export", { type: "warning" });
+        return;
+      }
+
+      const exportData = activityGroups.flatMap((group) =>
+        group.activities.map((activity) => {
+          const opportunity = activity.opportunity_id ? opportunityMap.get(activity.opportunity_id) : null;
+          const daysSinceActivity = Math.floor(
+            (Date.now() - new Date(activity.created_at).getTime()) / (1000 * 60 * 60 * 24)
+          );
+
+          return {
+            campaign: sanitizeCsvValue(selectedCampaign),
+            activity_type: sanitizeCsvValue(activity.type),
+            activity_category: sanitizeCsvValue(activity.type), // Same as activity_type for now
+            subject: sanitizeCsvValue(activity.subject),
+            organization: sanitizeCsvValue(activity.organization_name),
+            contact_name: sanitizeCsvValue(activity.contact_name || ""),
+            date: format(new Date(activity.created_at), "yyyy-MM-dd"),
+            sales_rep: sanitizeCsvValue(salesMap.get(activity.created_by!) || "Unassigned"),
+            days_since_activity: daysSinceActivity,
+            opportunity_name: sanitizeCsvValue(opportunity?.name || ""),
+            opportunity_stage: sanitizeCsvValue(opportunity?.stage || ""),
+          };
+        })
+      );
+
+      jsonExport(exportData, (err, csv) => {
+        if (err) {
+          console.error("Export error:", err);
+          notify("Export failed. Please try again.", { type: "error" });
+          return;
+        }
+        const campaignSlug = selectedCampaign
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^\w-]/g, "");
+        const dateStr = format(new Date(), "yyyy-MM-dd");
+        downloadCSV(csv, `campaign-activity-${campaignSlug}-${dateStr}`);
+        notify(`${exportData.length} activities exported successfully`, { type: "success" });
+      });
+    }
+  };
+
   return (
     <ReportLayout title="Campaign Activity Report">
       {/* Campaign Selector and Filters */}
@@ -383,11 +470,20 @@ export default function CampaignActivityReport() {
               </SelectContent>
             </Select>
           </div>
-          {hasActiveFilters && (
-            <Button variant="outline" onClick={clearFilters}>
-              Clear Filters
+          <div className="flex gap-2">
+            {hasActiveFilters && (
+              <Button variant="outline" onClick={clearFilters}>
+                Clear Filters
+              </Button>
+            )}
+            <Button
+              variant="default"
+              onClick={handleExport}
+              disabled={showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0}
+            >
+              Export to CSV
             </Button>
-          )}
+          </div>
         </div>
 
         {/* Filter Panel */}
