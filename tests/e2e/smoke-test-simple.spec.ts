@@ -9,21 +9,29 @@ test.describe('Simple Smoke Test', () => {
     await expect(page.locator('input[name="email"]')).toBeVisible({ timeout: 10000 });
 
     console.log('✓ Filling credentials (admin@test.com)...');
-    await page.fill('input[name="email"]', 'admin@test.com');
-    await page.fill('input[name="password"]', 'password123');
+    // Fill and trigger proper events for React Admin form validation
+    const emailInput = page.locator('input[name="email"]');
+    const passwordInput = page.locator('input[name="password"]');
+
+    await emailInput.fill('admin@test.com');
+    await emailInput.press('Tab'); // Trigger blur to validate
+
+    await passwordInput.fill('password123');
+    await passwordInput.press('Tab'); // Trigger blur to validate
+
+    // Wait for button to be enabled
+    console.log('✓ Waiting for submit button to be enabled...');
+    await expect(page.locator('button[type="submit"]')).toBeEnabled({ timeout: 5000 });
 
     console.log('✓ Clicking login button...');
     await page.click('button[type="submit"]');
 
     console.log('✓ Waiting for dashboard redirect...');
-    // Wait for successful login - app removes login form
-    await page.waitForSelector('input[name="email"]', { state: 'hidden', timeout: 15000 });
-
-    // Give it a moment to complete navigation
-    await page.waitForTimeout(1000);
+    // Wait for hash routing redirect (React Admin uses /#/)
+    await page.waitForURL(/\/#\//, { timeout: 15000 });
 
     console.log('✅ LOGIN SUCCESSFUL! Page URL:', page.url());
-    expect(page.url()).toContain('localhost:5173');
+    expect(page.url()).toContain('localhost:5173/#/');
 
     // Verify we're on the dashboard (no login form visible)
     const loginFormVisible = await page.locator('input[name="email"]').isVisible().catch(() => false);
