@@ -29,7 +29,7 @@ const mockPrincipal = {
   topOpportunity: {
     id: '1',
     name: 'Restaurant ABC',
-    expected_value: 5000,
+    estimated_close_date: '2025-12-15',
     stage: 'Negotiation'
   },
   priority: 'high' as const
@@ -70,7 +70,7 @@ describe('PrincipalCard', () => {
       </BrowserRouter>
     );
     expect(screen.getByText('Restaurant ABC')).toBeInTheDocument();
-    expect(screen.getByText(/\$5,000/)).toBeInTheDocument();
+    expect(screen.getByText(/Negotiation.*Close:/)).toBeInTheDocument();
   });
 
   it('should have action buttons', () => {
