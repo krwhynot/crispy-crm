@@ -82,7 +82,7 @@ describe('csvUploadValidator', () => {
       const sanitized = sanitizeCsvValue(withControlChars);
 
       expect(sanitized).toBe('JohnDoe');
-      expect(sanitized).not.toMatch(/[\\x00-\\x1F]/);
+      expect(sanitized).not.toMatch(/[\x00-\x1F]/);
     });
 
     it('should remove HTML/script tags', () => {
