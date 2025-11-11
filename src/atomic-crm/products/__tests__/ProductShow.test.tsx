@@ -12,6 +12,7 @@
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Routes, Route } from "react-router-dom";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockProduct } from "@/tests/utils/mock-providers";
@@ -36,8 +37,11 @@ vi.mock("../ProductAside", () => ({
 import { useShowContext, useRecordContext } from "ra-core";
 
 describe("ProductShow", () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    user = userEvent.setup();
   });
 
   test("renders loading state", () => {
