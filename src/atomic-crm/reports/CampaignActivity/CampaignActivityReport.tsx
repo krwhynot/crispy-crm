@@ -234,6 +234,42 @@ export default function CampaignActivityReport() {
     return result.sort((a, b) => b.totalCount - a.totalCount);
   }, [activities]);
 
+  // Helper function: Get last activity date for an opportunity
+  const getLastActivityForOpportunity = (oppId: number, activities: Activity[]): string | null => {
+    const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
+    if (oppActivities.length === 0) return null;
+
+    const sortedActivities = oppActivities.sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+    return sortedActivities[0].created_at;
+  };
+
+  // Calculate stale opportunities (must be before useEffect that uses it)
+  const staleOpportunities = useMemo(() => {
+    if (!showStaleLeads || !allOpportunities) return [];
+
+    const opportunitiesForCampaign = allOpportunities.filter((o) => o.campaign === selectedCampaign);
+    const now = new Date();
+
+    return opportunitiesForCampaign
+      .map((opp) => {
+        const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
+        const daysInactive = lastActivityDate
+          ? Math.floor((now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24))
+          : 999999; // Never had activity - sort to end
+
+        return {
+          ...opp,
+          lastActivityDate,
+          daysInactive,
+        };
+      })
+      .filter((opp) => opp.daysInactive >= staleLeadsThreshold)
+      .sort((a, b) => b.daysInactive - a.daysInactive);
+  }, [showStaleLeads, staleLeadsThreshold, allOpportunities, selectedCampaign, allCampaignActivities]);
+
   // Auto-expand top 3 activity types on load
   React.useEffect(() => {
     if (activityGroups.length > 0 && expandedTypes.size === 0) {
@@ -352,42 +388,6 @@ export default function CampaignActivityReport() {
     });
     return counts;
   }, [allCampaignActivities]);
-
-  // Helper function: Get last activity date for an opportunity
-  const getLastActivityForOpportunity = (oppId: number, activities: Activity[]): string | null => {
-    const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
-    if (oppActivities.length === 0) return null;
-
-    const sortedActivities = oppActivities.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
-
-    return sortedActivities[0].created_at;
-  };
-
-  // Calculate stale opportunities
-  const staleOpportunities = useMemo(() => {
-    if (!showStaleLeads || !allOpportunities) return [];
-
-    const opportunitiesForCampaign = allOpportunities.filter((o) => o.campaign === selectedCampaign);
-    const now = new Date();
-
-    return opportunitiesForCampaign
-      .map((opp) => {
-        const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
-        const daysInactive = lastActivityDate
-          ? Math.floor((now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24))
-          : 999999; // Never had activity - sort to end
-
-        return {
-          ...opp,
-          lastActivityDate,
-          daysInactive,
-        };
-      })
-      .filter((opp) => opp.daysInactive >= staleLeadsThreshold)
-      .sort((a, b) => b.daysInactive - a.daysInactive);
-  }, [showStaleLeads, staleLeadsThreshold, allOpportunities, selectedCampaign, allCampaignActivities]);
 
   // CSV Export Function
   const handleExport = () => {

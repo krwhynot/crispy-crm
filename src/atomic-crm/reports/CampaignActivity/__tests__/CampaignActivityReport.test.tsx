@@ -478,7 +478,6 @@ describe("CampaignActivityReport", () => {
 
     it("filters by activity type multi-select", async () => {
       const { useGetList } = await import("ra-core");
-      const user = userEvent.setup();
 
       vi.mocked(useGetList).mockReturnValue({
         data: [],
@@ -771,7 +770,7 @@ describe("CampaignActivityReport", () => {
 
   describe("CSV Export Data", () => {
     it("generates correct CSV columns for activity export", async () => {
-      const { useGetList, downloadCSV } = await import("ra-core");
+      const { useGetList } = await import("ra-core");
 
       const mockActivities = [
         {
@@ -1092,6 +1091,24 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
+      const mockOpportunities = [
+        {
+          id: 1,
+          name: "Test Opp 1",
+          campaign: "Grand Rapids Trade Show",
+        },
+        {
+          id: 2,
+          name: "Test Opp 2",
+          campaign: "Grand Rapids Trade Show",
+        },
+        {
+          id: 3,
+          name: "Test Opp 3",
+          campaign: "Grand Rapids Trade Show",
+        },
+      ];
+
       const mockSalesReps = [
         { id: 1, first_name: "John", last_name: "Smith" },
         { id: 2, first_name: "Jane", last_name: "Doe" },
@@ -1101,6 +1118,15 @@ describe("CampaignActivityReport", () => {
         if (resource === "activities") {
           return {
             data: mockActivities,
+            total: 3,
+            isPending: false,
+            isLoading: false,
+            error: null,
+            refetch: vi.fn(),
+          } as any;
+        } else if (resource === "opportunities") {
+          return {
+            data: mockOpportunities,
             total: 3,
             isPending: false,
             isLoading: false,
@@ -1138,8 +1164,10 @@ describe("CampaignActivityReport", () => {
         const threeElements = screen.getAllByText("3");
         expect(threeElements).toHaveLength(2); // Total Activities and Organizations Contacted both show "3"
 
-        expect(screen.getByText("1%")).toBeInTheDocument(); // Coverage Rate (3/369)
-        expect(screen.getByText("0.0")).toBeInTheDocument(); // Avg per lead (3/369)
+        // Coverage Rate: 3 orgs contacted / 3 opportunities = 100%
+        expect(screen.getByText("100%")).toBeInTheDocument();
+        // Avg per lead: 3 activities / 3 opportunities = 1.0
+        expect(screen.getByText("1.0")).toBeInTheDocument();
       });
     });
   });
