@@ -284,19 +284,19 @@ CREATE POLICY delete_contactNotes ON "contactNotes"
   USING (public.is_admin());
 
 -- OPPORTUNITY NOTES
-DROP POLICY IF EXISTS select_opportunityNotes ON opportunityNotes;
-DROP POLICY IF EXISTS insert_opportunityNotes ON opportunityNotes;
-DROP POLICY IF EXISTS update_opportunityNotes ON opportunityNotes;
-DROP POLICY IF EXISTS delete_opportunityNotes ON opportunityNotes;
+DROP POLICY IF EXISTS select_opportunityNotes ON "opportunityNotes";
+DROP POLICY IF EXISTS insert_opportunityNotes ON "opportunityNotes";
+DROP POLICY IF EXISTS update_opportunityNotes ON "opportunityNotes";
+DROP POLICY IF EXISTS delete_opportunityNotes ON "opportunityNotes";
 
-CREATE POLICY select_opportunityNotes ON opportunityNotes
+CREATE POLICY select_opportunityNotes ON "opportunityNotes"
   FOR SELECT TO authenticated USING (true);
 
-CREATE POLICY insert_opportunityNotes ON opportunityNotes
+CREATE POLICY insert_opportunityNotes ON "opportunityNotes"
   FOR INSERT TO authenticated
   WITH CHECK (sales_id = public.current_sales_id());
 
-CREATE POLICY update_opportunityNotes ON opportunityNotes
+CREATE POLICY update_opportunityNotes ON "opportunityNotes"
   FOR UPDATE TO authenticated
   USING (
     public.is_manager_or_admin() OR
@@ -307,7 +307,7 @@ CREATE POLICY update_opportunityNotes ON opportunityNotes
     sales_id = public.current_sales_id()
   );
 
-CREATE POLICY delete_opportunityNotes ON opportunityNotes
+CREATE POLICY delete_opportunityNotes ON "opportunityNotes"
   FOR DELETE TO authenticated
   USING (public.is_admin());
 
