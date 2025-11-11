@@ -32,10 +32,10 @@ export const CHUNK_SIZE = 1000;
  * Mitigation: Prefix dangerous values with a single quote (')
  * This renders them as text in spreadsheet applications
  */
-export const FORBIDDEN_FORMULA_PREFIXES = ['=', '+', '-', '@', '\t', '\r'];
+export const FORBIDDEN_FORMULA_PREFIXES = ["=", "+", "-", "@", "\t", "\r"];
 
 /**
  * Marker constant used to identify full name columns that need to be split
  * into first_name and last_name components (reused from contacts module)
  */
-export const FULL_NAME_SPLIT_MARKER = '_full_name_split_';
+export const FULL_NAME_SPLIT_MARKER = "_full_name_split_";

@@ -38,7 +38,7 @@ export const LoginPage = (props: { redirectTo?: string }) => {
                     ? error.message
                     : undefined,
             },
-          },
+          }
         );
       });
   };
@@ -59,31 +59,19 @@ export const LoginPage = (props: { redirectTo?: string }) => {
               <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
             </div>
             <Form className="space-y-8" onSubmit={handleSubmit}>
-              <TextInput
-                label="Email *"
-                source="email"
-                type="email"
-                helperText="Required"
-              />
+              <TextInput label="Email *" source="email" type="email" helperText="Required" />
               <TextInput
                 label="Password *"
                 source="password"
                 type="password"
                 helperText="Required"
               />
-              <Button
-                type="submit"
-                className="cursor-pointer"
-                disabled={loading}
-              >
+              <Button type="submit" className="cursor-pointer" disabled={loading}>
                 Sign in
               </Button>
             </Form>
 
-            <Link
-              to={"/forgot-password"}
-              className="text-sm text-center hover:underline"
-            >
+            <Link to={"/forgot-password"} className="text-sm text-center hover:underline">
               Forgot your password?
             </Link>
           </div>

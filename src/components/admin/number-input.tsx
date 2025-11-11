@@ -1,11 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import {
-  FieldTitle,
-  type InputProps,
-  useInput,
-  useResourceContext,
-} from "ra-core";
+import { FieldTitle, type InputProps, useInput, useResourceContext } from "ra-core";
 import { FormControl, FormField, FormLabel } from "@/components/admin/form";
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/admin/form";
@@ -37,9 +32,7 @@ export const NumberInput = (props: NumberInputProps) => {
     field.onChange(numberValue ?? 0);
   };
 
-  const [value, setValue] = useState<string | undefined>(
-    field.value?.toString() ?? "",
-  );
+  const [value, setValue] = useState<string | undefined>(field.value?.toString() ?? "");
 
   const hasFocus = React.useRef(false);
 
@@ -64,12 +57,7 @@ export const NumberInput = (props: NumberInputProps) => {
     <FormField id={id} className={className} name={field.name}>
       {label !== false && (
         <FormLabel>
-          <FieldTitle
-            label={label}
-            source={source}
-            resource={resource}
-            isRequired={isRequired}
-          />
+          <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
         </FormLabel>
       )}
       <FormControl>
@@ -91,10 +79,7 @@ export const NumberInput = (props: NumberInputProps) => {
 
 export interface NumberInputProps
   extends InputProps,
-    Omit<
-      React.ComponentProps<"input">,
-      "defaultValue" | "onBlur" | "onChange" | "type"
-    > {
+    Omit<React.ComponentProps<"input">, "defaultValue" | "onBlur" | "onChange" | "type"> {
   parse?: (value: string) => number;
 }
 

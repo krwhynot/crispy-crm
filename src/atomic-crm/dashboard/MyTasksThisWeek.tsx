@@ -39,16 +39,20 @@ export const MyTasksThisWeek = () => {
   const today = new Date();
   const sevenDaysFromNow = addDays(today, 7);
 
-  const { data: tasks, isPending, error } = useGetList<Task>(
-    'tasks',
+  const {
+    data: tasks,
+    isPending,
+    error,
+  } = useGetList<Task>(
+    "tasks",
     {
       filter: {
         sales_id: identity?.id, // Note: tasks use sales_id, not assigned_to
         completed: false,
         // Get tasks due this week OR overdue
-        'due_date@lte': format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+        "due_date@lte": format(endOfDay(sevenDaysFromNow), "yyyy-MM-dd"),
       },
-      sort: { field: 'due_date', order: 'ASC' },
+      sort: { field: "due_date", order: "ASC" },
     },
     {
       enabled: !!identity?.id, // Don't query until identity is available
@@ -82,8 +86,7 @@ export const MyTasksThisWeek = () => {
   }
 
   const grouped = groupTasksByUrgency(tasks || []);
-  const totalTasks =
-    grouped.overdue.length + grouped.today.length + grouped.thisWeek.length;
+  const totalTasks = grouped.overdue.length + grouped.today.length + grouped.thisWeek.length;
 
   if (totalTasks === 0) {
     return (
@@ -92,18 +95,13 @@ export const MyTasksThisWeek = () => {
           <CardTitle>My Tasks This Week</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-muted-foreground">
-            You're all caught up! 🎉
-          </p>
+          <p className="text-muted-foreground">You're all caught up! 🎉</p>
           <p className="text-sm text-muted-foreground">
             Consider planning your next steps or reaching out to principals for updates.
           </p>
         </CardContent>
         <CardFooter>
-          <Link
-            to="/tasks/create"
-            className="text-sm text-primary hover:underline"
-          >
+          <Link to="/tasks/create" className="text-sm text-primary hover:underline">
             Create Task →
           </Link>
         </CardFooter>
@@ -144,10 +142,7 @@ export const MyTasksThisWeek = () => {
           )}
         </CardContent>
         <CardFooter>
-          <Link
-            to="/tasks"
-            className="text-sm text-primary hover:underline"
-          >
+          <Link to="/tasks" className="text-sm text-primary hover:underline">
             View All Tasks →
           </Link>
         </CardFooter>
@@ -200,14 +195,14 @@ interface TaskGroupProps {
   title: string;
   tasks: Task[];
   onTaskSelect: (task: Task) => void;
-  variant: 'overdue' | 'today' | 'week';
+  variant: "overdue" | "today" | "week";
 }
 
 function TaskGroup({ title, tasks, onTaskSelect, variant }: TaskGroupProps) {
   const titleColors = {
-    overdue: 'text-destructive',
-    today: 'text-warning',
-    week: 'text-foreground',
+    overdue: "text-destructive",
+    today: "text-warning",
+    week: "text-foreground",
   };
 
   return (
@@ -227,7 +222,7 @@ function TaskGroup({ title, tasks, onTaskSelect, variant }: TaskGroupProps) {
 interface TaskItemProps {
   task: Task;
   onTaskSelect: (task: Task) => void;
-  variant: 'overdue' | 'today' | 'week';
+  variant: "overdue" | "today" | "week";
 }
 
 function TaskItem({ task, onTaskSelect, variant }: TaskItemProps) {
@@ -236,8 +231,8 @@ function TaskItem({ task, onTaskSelect, variant }: TaskItemProps) {
     : 0;
 
   const formattedDueDate = task.due_date
-    ? format(new Date(task.due_date), 'EEE M/d')
-    : 'No due date';
+    ? format(new Date(task.due_date), "EEE M/d")
+    : "No due date";
 
   return (
     <div className="flex items-start gap-2 group">
@@ -249,24 +244,21 @@ function TaskItem({ task, onTaskSelect, variant }: TaskItemProps) {
       />
       <div className="flex-1 min-w-0">
         <div className="text-sm">
-          <Link
-            to={`/tasks/${task.id}`}
-            className="hover:underline"
-          >
+          <Link to={`/tasks/${task.id}`} className="hover:underline">
             {task.title}
           </Link>
         </div>
         <div className="text-xs text-muted-foreground">
-          {variant === 'overdue' && daysLate > 0 && (
+          {variant === "overdue" && daysLate > 0 && (
             <span className="text-destructive font-medium">
-              {daysLate} day{daysLate !== 1 ? 's' : ''} late
+              {daysLate} day{daysLate !== 1 ? "s" : ""} late
             </span>
           )}
-          {variant !== 'overdue' && <span>{formattedDueDate}</span>}
+          {variant !== "overdue" && <span>{formattedDueDate}</span>}
           {task.opportunity_id && (
             <>
-              {' '}
-              →{' '}
+              {" "}
+              →{" "}
               <Link
                 to={`/opportunities/${task.opportunity_id}/show`}
                 className="text-primary hover:underline"

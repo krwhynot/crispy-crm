@@ -2,10 +2,7 @@ import { Download } from "lucide-react";
 import { Translate } from "ra-core";
 
 import { Button } from "../ui/button";
-import type {
-  ResourceInformation,
-  UseBulkExportProps,
-} from "@/hooks/useBulkExport";
+import type { ResourceInformation, UseBulkExportProps } from "@/hooks/useBulkExport";
 import { useBulkExport } from "@/hooks/useBulkExport";
 
 /**
@@ -61,11 +58,10 @@ export const BulkExportButton = <T extends ResourceInformation>({
 
 const defaultIcon = <Download className="h-4 w-4" />;
 
-export type BulkExportButtonProps<T extends ResourceInformation> =
-  UseBulkExportProps<T> & {
-    icon?: React.ReactNode;
-    label?: string;
-  } & React.ComponentProps<typeof Button>;
+export type BulkExportButtonProps<T extends ResourceInformation> = UseBulkExportProps<T> & {
+  icon?: React.ReactNode;
+  label?: string;
+} & React.ComponentProps<typeof Button>;
 
 const sanitizeRestProps = <T extends ResourceInformation>({
   resource: _resource,

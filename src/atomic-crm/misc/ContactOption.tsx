@@ -11,9 +11,7 @@ const ContactOptionRender = () => {
     <div className="flex flex-row gap-4 items-center justify-start">
       <Avatar height={40} width={40} record={record} />
       <div className="flex flex-col items-start gap-1">
-        <span>
-          {formatName(record.first_name, record.last_name)}
-        </span>
+        <span>{formatName(record.first_name, record.last_name)}</span>
         <span className="text-xs text-[color:var(--text-subtle)]">
           {record.title}
           {record.title && record.organization_name && " at "}

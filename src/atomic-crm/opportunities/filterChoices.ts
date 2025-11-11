@@ -16,7 +16,7 @@ export { OPPORTUNITY_STAGE_CHOICES as stageChoices, priorityChoices };
 export interface FilterConfig {
   key: string;
   label: string;
-  type: 'select' | 'multiselect' | 'reference' | 'search' | 'toggle';
+  type: "select" | "multiselect" | "reference" | "search" | "toggle";
   choices?: Array<{ id: string; name: string }>;
   defaultValue?: any;
   dynamicChoices?: boolean;
@@ -28,32 +28,32 @@ export interface FilterConfig {
  */
 export const opportunityFilters: Record<string, FilterConfig> = {
   search: {
-    key: 'q',
-    label: 'Search',
-    type: 'search',
+    key: "q",
+    label: "Search",
+    type: "search",
   },
   customer_organization: {
-    key: 'customer_organization_id',
-    label: 'Customer',
-    type: 'reference',
-    reference: 'organizations',
+    key: "customer_organization_id",
+    label: "Customer",
+    type: "reference",
+    reference: "organizations",
   },
   priority: {
-    key: 'priority',
-    label: 'Priority',
-    type: 'multiselect',
+    key: "priority",
+    label: "Priority",
+    type: "multiselect",
     choices: priorityChoices,
   },
   stage: {
-    key: 'stage',
-    label: 'Stage',
-    type: 'multiselect',
+    key: "stage",
+    label: "Stage",
+    type: "multiselect",
     choices: OPPORTUNITY_STAGE_CHOICES,
   },
   only_mine: {
-    key: 'only_mine',
-    label: 'Only Mine',
-    type: 'toggle',
+    key: "only_mine",
+    label: "Only Mine",
+    type: "toggle",
     defaultValue: false,
   },
 };
@@ -62,9 +62,9 @@ export const opportunityFilters: Record<string, FilterConfig> = {
  * Get default visible stages (excludes closed stages)
  */
 export const getDefaultVisibleStages = (): string[] => {
-  return OPPORTUNITY_STAGE_CHOICES
-    .filter(stage => !['closed_won', 'closed_lost'].includes(stage.id))
-    .map(stage => stage.id);
+  return OPPORTUNITY_STAGE_CHOICES.filter(
+    (stage) => !["closed_won", "closed_lost"].includes(stage.id)
+  ).map((stage) => stage.id);
 };
 
 /**
@@ -78,7 +78,7 @@ export const getFilterChoice = (
   if (!filter?.choices) {
     return undefined;
   }
-  return filter.choices.find(choice => choice.id === choiceId);
+  return filter.choices.find((choice) => choice.id === choiceId);
 };
 
 /**

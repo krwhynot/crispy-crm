@@ -39,11 +39,7 @@ export const SegmentComboboxInput = (props: SegmentComboboxInputProps) => {
 
   const handleCreateSegment = async (name: string) => {
     try {
-      const newSegment = await create(
-        "segments",
-        { data: { name } },
-        { returnPromise: true }
-      );
+      const newSegment = await create("segments", { data: { name } }, { returnPromise: true });
 
       // Auto-select newly created segment
       field.onChange(newSegment.id);
@@ -58,9 +54,9 @@ export const SegmentComboboxInput = (props: SegmentComboboxInputProps) => {
   const selectedSegment = segments?.find((segment) => segment.id === field.value);
 
   // Filter segments based on search query
-  const filteredSegments = segments?.filter((segment) =>
-    segment.name.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredSegments =
+    segments?.filter((segment) => segment.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    [];
 
   // Check if search query matches an existing segment
   const exactMatch = filteredSegments.some(
@@ -73,11 +69,7 @@ export const SegmentComboboxInput = (props: SegmentComboboxInputProps) => {
     <FormField id={field.name} className={cn("w-full", props.className)} name={field.name}>
       {props.label !== false && (
         <FormLabel>
-          <FieldTitle
-            label={props.label}
-            source={props.source}
-            resource="organizations"
-          />
+          <FieldTitle label={props.label} source={props.source} resource="organizations" />
         </FormLabel>
       )}
       <FormControl>
@@ -99,56 +91,56 @@ export const SegmentComboboxInput = (props: SegmentComboboxInputProps) => {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-full p-0">
-        <Command shouldFilter={false}>
-          <CommandInput
-            placeholder="Search segments..."
-            value={searchQuery}
-            onValueChange={setSearchQuery}
-          />
-          <CommandList>
-            {isLoading || isCreating ? (
-              <CommandEmpty>Loading...</CommandEmpty>
-            ) : (
-              <>
-                {filteredSegments.length === 0 && !showCreateOption && (
-                  <CommandEmpty>No segment found.</CommandEmpty>
+            <Command shouldFilter={false}>
+              <CommandInput
+                placeholder="Search segments..."
+                value={searchQuery}
+                onValueChange={setSearchQuery}
+              />
+              <CommandList>
+                {isLoading || isCreating ? (
+                  <CommandEmpty>Loading...</CommandEmpty>
+                ) : (
+                  <>
+                    {filteredSegments.length === 0 && !showCreateOption && (
+                      <CommandEmpty>No segment found.</CommandEmpty>
+                    )}
+                    <CommandGroup>
+                      {filteredSegments.map((segment) => (
+                        <CommandItem
+                          key={segment.id}
+                          value={segment.id}
+                          onSelect={() => {
+                            field.onChange(segment.id === field.value ? "" : segment.id);
+                            setOpen(false);
+                            setSearchQuery("");
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              field.value === segment.id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {segment.name}
+                        </CommandItem>
+                      ))}
+                      {showCreateOption && (
+                        <CommandItem
+                          value={`create-${searchQuery}`}
+                          onSelect={() => handleCreateSegment(searchQuery)}
+                          className="text-primary"
+                        >
+                          <Plus className="mr-2 h-4 w-4" />
+                          Create "{searchQuery}"
+                        </CommandItem>
+                      )}
+                    </CommandGroup>
+                  </>
                 )}
-                <CommandGroup>
-                  {filteredSegments.map((segment) => (
-                    <CommandItem
-                      key={segment.id}
-                      value={segment.id}
-                      onSelect={() => {
-                        field.onChange(segment.id === field.value ? "" : segment.id);
-                        setOpen(false);
-                        setSearchQuery("");
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          field.value === segment.id ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {segment.name}
-                    </CommandItem>
-                  ))}
-                  {showCreateOption && (
-                    <CommandItem
-                      value={`create-${searchQuery}`}
-                      onSelect={() => handleCreateSegment(searchQuery)}
-                      className="text-primary"
-                    >
-                      <Plus className="mr-2 h-4 w-4" />
-                      Create "{searchQuery}"
-                    </CommandItem>
-                  )}
-                </CommandGroup>
-              </>
-            )}
-          </CommandList>
-        </Command>
-      </PopoverContent>
+              </CommandList>
+            </Command>
+          </PopoverContent>
         </Popover>
       </FormControl>
       <FormError />

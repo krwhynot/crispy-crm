@@ -17,16 +17,16 @@
  * - Email/phone: JSONB arrays with type metadata
  */
 
-import { readFileSync, writeFileSync } from 'fs';
-import Papa from 'papaparse';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { createHash } from 'crypto';
+import { readFileSync, writeFileSync } from "fs";
+import Papa from "papaparse";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
+import { createHash } from "crypto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-console.log('📦 Generating FULL seed data from CSVs...\n');
+console.log("📦 Generating FULL seed data from CSVs...\n");
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -39,42 +39,39 @@ console.log('📦 Generating FULL seed data from CSVs...\n');
  */
 function generateDeterministicUUID(name: string): string {
   // UUID v5 namespace for DNS (standard)
-  const namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+  const namespace = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
 
   // Create hash from namespace + name
-  const hash = createHash('sha1')
-    .update(namespace.replace(/-/g, ''))
-    .update(name)
-    .digest('hex');
+  const hash = createHash("sha1").update(namespace.replace(/-/g, "")).update(name).digest("hex");
 
   // Format as UUID v5 (xxxxxxxx-xxxx-5xxx-yxxx-xxxxxxxxxxxx)
   return [
     hash.substring(0, 8),
     hash.substring(8, 12),
-    '5' + hash.substring(13, 16), // Version 5
+    "5" + hash.substring(13, 16), // Version 5
     ((parseInt(hash.substring(16, 18), 16) & 0x3f) | 0x80).toString(16) + hash.substring(18, 20),
     hash.substring(20, 32),
-  ].join('-');
+  ].join("-");
 }
 
 function escapeSQLString(str: string | null | undefined): string {
-  if (str === null || str === undefined || str === '') return 'NULL';
+  if (str === null || str === undefined || str === "") return "NULL";
   // Clean invalid UTF-8 characters and escape single quotes
   const cleaned = String(str)
-    .replace(/�/g, '') // Remove replacement character
+    .replace(/�/g, "") // Remove replacement character
     // eslint-disable-next-line no-control-regex
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ''); // Remove control characters
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ""); // Remove control characters
   return `'${cleaned.replace(/'/g, "''")}'`;
 }
 
 function parseOrgId(value: string): number | null {
-  if (!value || value.trim() === '') return null;
+  if (!value || value.trim() === "") return null;
   const parsed = parseFloat(value);
   return isNaN(parsed) ? null : Math.floor(parsed);
 }
 
-function toPostgresJSON(value: string, fieldType: 'email' | 'phone' = 'email'): string {
-  if (!value || value === '[]' || value.trim() === '') {
+function toPostgresJSON(value: string, fieldType: "email" | "phone" = "email"): string {
+  if (!value || value === "[]" || value.trim() === "") {
     return `'[]'::jsonb`;
   }
 
@@ -82,12 +79,12 @@ function toPostgresJSON(value: string, fieldType: 'email' | 'phone' = 'email'): 
     const parsed = JSON.parse(value);
 
     // Clean up phone numbers: remove .0 suffix from numeric strings
-    if (fieldType === 'phone' && Array.isArray(parsed)) {
+    if (fieldType === "phone" && Array.isArray(parsed)) {
       parsed.forEach((item: any) => {
         if (item.number) {
           // Convert "12247352450.0" to "12247352450"
           const numStr = String(item.number);
-          if (numStr.endsWith('.0')) {
+          if (numStr.endsWith(".0")) {
             item.number = numStr.slice(0, -2);
           }
         }
@@ -106,13 +103,13 @@ function toPostgresJSON(value: string, fieldType: 'email' | 'phone' = 'email'): 
 // READ CSV FILES
 // ============================================================================
 
-console.log('1️⃣  Reading CSV files...');
+console.log("1️⃣  Reading CSV files...");
 
-const orgsPath = resolve(__dirname, '../data/csv-files/organizations_standardized.csv');
-const contactsPath = resolve(__dirname, '../data/csv-files/cleaned/contacts_db_ready.csv');
+const orgsPath = resolve(__dirname, "../data/csv-files/organizations_standardized.csv");
+const contactsPath = resolve(__dirname, "../data/csv-files/cleaned/contacts_db_ready.csv");
 
-const orgsCSV = readFileSync(orgsPath, 'utf-8');
-const contactsCSV = readFileSync(contactsPath, 'utf-8');
+const orgsCSV = readFileSync(orgsPath, "utf-8");
+const contactsCSV = readFileSync(contactsPath, "utf-8");
 
 const orgsParsed = Papa.parse(orgsCSV, {
   header: true,
@@ -136,12 +133,12 @@ console.log(`   Contacts CSV: ${contactsArray.length} rows\n`);
 // PROCESS ORGANIZATIONS (ALL)
 // ============================================================================
 
-console.log('2️⃣  Processing ALL organizations...');
+console.log("2️⃣  Processing ALL organizations...");
 
 // Extract unique segments from CSV
 const uniqueSegments = new Set<string>();
 orgsArray.forEach((org) => {
-  const segmentName = (org.segment_name || '').trim();
+  const segmentName = (org.segment_name || "").trim();
   if (segmentName) {
     uniqueSegments.add(segmentName);
   }
@@ -149,12 +146,12 @@ orgsArray.forEach((org) => {
 
 // Generate deterministic UUIDs for each segment
 const segmentNameToUUID = new Map<string, string>();
-const segmentsForSQL: Array<{id: string, name: string}> = [];
+const segmentsForSQL: Array<{ id: string; name: string }> = [];
 
 // Add special "Unknown" segment with hardcoded UUID (used by OrganizationCreate.tsx default)
-const UNKNOWN_SEGMENT_UUID = '562062be-c15b-417f-b2a1-d4a643d69d52';
-segmentsForSQL.push({ id: UNKNOWN_SEGMENT_UUID, name: 'Unknown' });
-segmentNameToUUID.set('Unknown', UNKNOWN_SEGMENT_UUID);
+const UNKNOWN_SEGMENT_UUID = "562062be-c15b-417f-b2a1-d4a643d69d52";
+segmentsForSQL.push({ id: UNKNOWN_SEGMENT_UUID, name: "Unknown" });
+segmentNameToUUID.set("Unknown", UNKNOWN_SEGMENT_UUID);
 
 // Add segments from CSV
 uniqueSegments.forEach((segmentName) => {
@@ -168,11 +165,11 @@ console.log(`   Unique segments extracted: ${segmentsForSQL.length} (including 1
 // Deduplicate orgs by lowercase name
 const uniqueOrgs = new Map();
 orgsArray.forEach((org, index) => {
-  const key = (org.name || '').trim().toLowerCase();
+  const key = (org.name || "").trim().toLowerCase();
   if (key && !uniqueOrgs.has(key)) {
     uniqueOrgs.set(key, {
       ...org,
-      csvLineNumber: index + 1,  // Used only for contact mapping, not stored in DB
+      csvLineNumber: index + 1, // Used only for contact mapping, not stored in DB
     });
   }
 });
@@ -184,7 +181,7 @@ const orgsForSQL: any[] = [];
 
 uniqueOrgs.forEach((org, nameKey) => {
   const orgId = nextOrgId++;
-  const segmentName = (org.segment_name || '').trim();
+  const segmentName = (org.segment_name || "").trim();
   const segmentId = segmentName ? segmentNameToUUID.get(segmentName) : null;
 
   org.id = orgId;
@@ -199,7 +196,7 @@ console.log(`   Unique organizations: ${orgsForSQL.length}\n`);
 // PROCESS CONTACTS (ALL)
 // ============================================================================
 
-console.log('3️⃣  Processing ALL contacts...');
+console.log("3️⃣  Processing ALL contacts...");
 
 const contactsForSQL: any[] = [];
 let contactId = 1;
@@ -227,11 +224,14 @@ contactsArray.forEach((contact) => {
   }
 
   // Construct name field (required, not-null)
-  const name = contact.name ||
-               (contact.first_name && contact.last_name ? `${contact.first_name} ${contact.last_name}` : null) ||
-               contact.first_name ||
-               contact.last_name ||
-               'Unknown';
+  const name =
+    contact.name ||
+    (contact.first_name && contact.last_name
+      ? `${contact.first_name} ${contact.last_name}`
+      : null) ||
+    contact.first_name ||
+    contact.last_name ||
+    "Unknown";
 
   contactsForSQL.push({
     id: contactId++,
@@ -239,15 +239,15 @@ contactsArray.forEach((contact) => {
     first_name: contact.first_name || null,
     last_name: contact.last_name || null,
     organization_id: orgId,
-    email: contact.email || '[]',
-    phone: contact.phone || '[]',
+    email: contact.email || "[]",
+    phone: contact.phone || "[]",
     title: contact.title || null,
     department: contact.department || null,
     address: contact.address || null,
     city: contact.city || null,
     state: contact.state || null,
     postal_code: contact.postal_code || null,
-    country: contact.country || 'USA',
+    country: contact.country || "USA",
     linkedin_url: contact.linkedin_url || null,
     notes: contact.notes || null,
   });
@@ -261,7 +261,7 @@ console.log(`   Invalid org reference: ${unmatchedCount}\n`);
 // GENERATE SQL
 // ============================================================================
 
-console.log('4️⃣  Generating SQL...\n');
+console.log("4️⃣  Generating SQL...\n");
 
 let sql = `-- ============================================================================
 -- PRODUCTION SEED DATA - Generated from CSV files
@@ -355,10 +355,10 @@ INSERT INTO segments (id, name, created_at, created_by) VALUES\n`;
 const segmentValues = segmentsForSQL
   .sort((a, b) => a.name.localeCompare(b.name)) // Sort alphabetically
   .map((segment, idx) => {
-    return `  ('${segment.id}', ${escapeSQLString(segment.name)}, NOW(), NULL)${idx < segmentsForSQL.length - 1 ? ',' : ''}`;
+    return `  ('${segment.id}', ${escapeSQLString(segment.name)}, NOW(), NULL)${idx < segmentsForSQL.length - 1 ? "," : ""}`;
   });
 
-sql += segmentValues.join('\n');
+sql += segmentValues.join("\n");
 sql += `\nON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
   created_at = EXCLUDED.created_at;
@@ -373,9 +373,9 @@ const orgValues = orgsForSQL.map((org, idx) => {
   const values = [
     org.id,
     escapeSQLString(org.name),
-    escapeSQLString(org.organization_type || 'unknown'),
-    escapeSQLString(org.priority || 'C'),
-    org.segment_id ? `'${org.segment_id}'` : 'NULL',
+    escapeSQLString(org.organization_type || "unknown"),
+    escapeSQLString(org.priority || "C"),
+    org.segment_id ? `'${org.segment_id}'` : "NULL",
     escapeSQLString(org.phone),
     escapeSQLString(org.linkedin_url),
     escapeSQLString(org.address),
@@ -383,12 +383,12 @@ const orgValues = orgsForSQL.map((org, idx) => {
     escapeSQLString(org.state),
     escapeSQLString(org.postal_code),
     escapeSQLString(org.notes),
-  ].join(', ');
+  ].join(", ");
 
-  return `  (${values})${idx < orgsForSQL.length - 1 ? ',' : ';'}`;
+  return `  (${values})${idx < orgsForSQL.length - 1 ? "," : ";"}`;
 });
 
-sql += orgValues.join('\n') + '\n\n';
+sql += orgValues.join("\n") + "\n\n";
 
 // ============================================================================
 // CONTACTS
@@ -406,9 +406,9 @@ const contactValues = contactsForSQL.map((contact, idx) => {
     escapeSQLString(contact.name),
     escapeSQLString(contact.first_name),
     escapeSQLString(contact.last_name),
-    contact.organization_id === null ? 'NULL' : contact.organization_id,
-    toPostgresJSON(contact.email, 'email'),
-    toPostgresJSON(contact.phone, 'phone'),
+    contact.organization_id === null ? "NULL" : contact.organization_id,
+    toPostgresJSON(contact.email, "email"),
+    toPostgresJSON(contact.phone, "phone"),
     escapeSQLString(contact.title),
     escapeSQLString(contact.department),
     escapeSQLString(contact.address),
@@ -418,12 +418,12 @@ const contactValues = contactsForSQL.map((contact, idx) => {
     escapeSQLString(contact.country),
     escapeSQLString(contact.linkedin_url),
     escapeSQLString(contact.notes),
-  ].join(', ');
+  ].join(", ");
 
-  return `  (${values})${idx < contactsForSQL.length - 1 ? ',' : ';'}`;
+  return `  (${values})${idx < contactsForSQL.length - 1 ? "," : ";"}`;
 });
 
-sql += contactValues.join('\n') + '\n\n';
+sql += contactValues.join("\n") + "\n\n";
 
 // ============================================================================
 // SEQUENCE RESETS
@@ -471,17 +471,17 @@ SELECT setval('contacts_id_seq', (SELECT MAX(id) FROM contacts));
 // WRITE OUTPUT
 // ============================================================================
 
-const outputPath = resolve(__dirname, '../supabase/seed.sql');
-writeFileSync(outputPath, sql, 'utf-8');
+const outputPath = resolve(__dirname, "../supabase/seed.sql");
+writeFileSync(outputPath, sql, "utf-8");
 
-console.log('✅ Production seed file generated!');
+console.log("✅ Production seed file generated!");
 console.log(`   Output: supabase/seed.sql`);
 console.log(`   Organizations: ${orgsForSQL.length} (deduplicated)`);
 console.log(`   Contacts: ${contactsForSQL.length}`);
 console.log(`   - With organization: ${matchedCount}`);
 console.log(`   - Without organization: ${withoutOrgCount}`);
 console.log(`   - Invalid org reference: ${unmatchedCount}\n`);
-console.log('📋 Next steps:');
-console.log('   1. Review: head -100 supabase/seed.sql');
-console.log('   2. Test: npm run db:local:reset (runs seed.sql automatically)');
-console.log('   3. Validate with the queries at the end of the file\n');
+console.log("📋 Next steps:");
+console.log("   1. Review: head -100 supabase/seed.sql");
+console.log("   2. Test: npm run db:local:reset (runs seed.sql automatically)");
+console.log("   3. Validate with the queries at the end of the file\n");

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * get_or_create_segment(p_name text) RETURNS SETOF segments

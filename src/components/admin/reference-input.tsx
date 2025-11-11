@@ -7,7 +7,7 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
 
   if (props.validate && process.env.NODE_ENV !== "production") {
     throw new Error(
-      "<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead.",
+      "<ReferenceInput> does not accept a validate prop. Set the validate prop on the child instead."
     );
   }
 

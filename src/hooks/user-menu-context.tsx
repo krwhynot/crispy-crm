@@ -14,9 +14,7 @@ export interface UserMenuContextValue {
 /**
  * @deprecated Use UserMenuContext from `ra-core` once available.
  */
-export const UserMenuContext = createContext<UserMenuContextValue | undefined>(
-  undefined,
-);
+export const UserMenuContext = createContext<UserMenuContextValue | undefined>(undefined);
 
 /**
  * @deprecated Use useUserMenu from `ra-core` once available.

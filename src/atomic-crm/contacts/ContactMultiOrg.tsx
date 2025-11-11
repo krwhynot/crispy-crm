@@ -39,10 +39,7 @@ export const ContactMultiOrg = (props: ContactMultiOrgProps) => {
             <SelectInput optionText="name" emptyText="Select an organization" />
           </ReferenceInput>
 
-          <PrimaryOrganizationCheckbox
-            source="is_primary"
-            label="Primary Organization"
-          />
+          <PrimaryOrganizationCheckbox source="is_primary" label="Primary Organization" />
         </div>
       </SimpleFormIterator>
     </ArrayInput>
@@ -50,10 +47,7 @@ export const ContactMultiOrg = (props: ContactMultiOrgProps) => {
 };
 
 // Custom Checkbox to handle the "only one primary" logic within the ArrayInput
-const PrimaryOrganizationCheckbox = (props: {
-  source: string;
-  label: string;
-}) => {
+const PrimaryOrganizationCheckbox = (props: { source: string; label: string }) => {
   const { source, label } = props;
   const { field, fieldState } = useInput({ source });
   const { getValues, setValue } = useFormContext();
@@ -64,18 +58,12 @@ const PrimaryOrganizationCheckbox = (props: {
 
     if (checked) {
       // If this one is becoming primary, unmark all others
-      const currentOrganizations = getValues(
-        "contact_organizations",
-      ) as ContactOrganization[];
+      const currentOrganizations = getValues("contact_organizations") as ContactOrganization[];
       if (currentOrganizations) {
         currentOrganizations.forEach((org, index) => {
           // Check if it's a different organization and it's currently primary
           if (org && org.id !== record?.id && org.is_primary) {
-            setValue(
-              `contact_organizations.${index}.is_primary`,
-              false,
-              { shouldDirty: true },
-            );
+            setValue(`contact_organizations.${index}.is_primary`, false, { shouldDirty: true });
           }
         });
       }
@@ -97,9 +85,7 @@ const PrimaryOrganizationCheckbox = (props: {
         {label}
       </Label>
       {fieldState.error && (
-        <p className="text-sm font-medium text-destructive">
-          {fieldState.error.message}
-        </p>
+        <p className="text-sm font-medium text-destructive">{fieldState.error.message}</p>
       )}
     </div>
   );

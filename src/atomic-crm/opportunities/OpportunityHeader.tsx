@@ -24,11 +24,7 @@ export const OpportunityHeader = ({
   return (
     <div className="flex justify-between items-center mb-6">
       <div className="flex items-center gap-4">
-        <ReferenceField
-          source="customer_organization_id"
-          reference="organizations"
-          link="show"
-        >
+        <ReferenceField source="customer_organization_id" reference="organizations" link="show">
           <OrganizationAvatar />
         </ReferenceField>
         <h2 className="text-2xl font-semibold">{record.name}</h2>

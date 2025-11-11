@@ -1,6 +1,6 @@
-import type { Locator } from '@playwright/test';
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import type { Locator } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Dashboard Page Object Model
@@ -14,7 +14,7 @@ export class DashboardPage extends BasePage {
    * Uses relative path for baseURL portability
    */
   async navigate(): Promise<void> {
-    await this.goto('/');
+    await this.goto("/");
 
     // Wait for dashboard to be fully loaded by checking for heading
     // Note: React Admin dashboard renders at '/' not '/#/'
@@ -25,7 +25,7 @@ export class DashboardPage extends BasePage {
    * Get "My Principals" heading
    */
   getHeading(): Locator {
-    return this.page.getByRole('heading', { name: /my principals/i });
+    return this.page.getByRole("heading", { name: /my principals/i });
   }
 
   /**
@@ -50,21 +50,21 @@ export class DashboardPage extends BasePage {
    * Get table (using semantic role instead of CSS class)
    */
   getTable(): Locator {
-    return this.page.getByRole('table');
+    return this.page.getByRole("table");
   }
 
   /**
    * Get column header by name
    */
   getColumnHeader(name: string | RegExp): Locator {
-    return this.page.getByRole('columnheader', { name });
+    return this.page.getByRole("columnheader", { name });
   }
 
   /**
    * Get all data rows (excludes header row)
    */
   getDataRows(): Locator {
-    return this.page.getByRole('row').filter({ has: this.page.getByRole('cell') });
+    return this.page.getByRole("row").filter({ has: this.page.getByRole("cell") });
   }
 
   /**
@@ -105,14 +105,14 @@ export class DashboardPage extends BasePage {
    * Get navigation menu
    */
   getNavigation(): Locator {
-    return this.page.getByRole('navigation').first();
+    return this.page.getByRole("navigation").first();
   }
 
   /**
    * Get dashboard navigation link
    */
   getDashboardNavLink(): Locator {
-    return this.getNavigation().getByRole('link', { name: /dashboard/i });
+    return this.getNavigation().getByRole("link", { name: /dashboard/i });
   }
 
   /**
@@ -155,7 +155,7 @@ export class DashboardPage extends BasePage {
   getUpcomingEventsWidget(): Locator {
     // Get the card containing this title
     return this.page.locator('[data-slot="card"]', {
-      has: this.page.locator('[data-slot="card-title"]:has-text("Upcoming by Principal")')
+      has: this.page.locator('[data-slot="card-title"]:has-text("Upcoming by Principal")'),
     });
   }
 
@@ -164,7 +164,7 @@ export class DashboardPage extends BasePage {
    */
   getMyTasksWidget(): Locator {
     return this.page.locator('[data-slot="card"]', {
-      has: this.page.locator('[data-slot="card-title"]:has-text("My Tasks This Week")')
+      has: this.page.locator('[data-slot="card-title"]:has-text("My Tasks This Week")'),
     });
   }
 
@@ -173,7 +173,7 @@ export class DashboardPage extends BasePage {
    */
   getRecentActivityWidget(): Locator {
     return this.page.locator('[data-slot="card"]', {
-      has: this.page.locator('[data-slot="card-title"]:has-text("Recent Activity")')
+      has: this.page.locator('[data-slot="card-title"]:has-text("Recent Activity")'),
     });
   }
 
@@ -182,7 +182,7 @@ export class DashboardPage extends BasePage {
    */
   getPipelineSummaryWidget(): Locator {
     return this.page.locator('[data-slot="card"]', {
-      has: this.page.getByRole('heading', { name: /pipeline summary/i })
+      has: this.page.getByRole("heading", { name: /pipeline summary/i }),
     });
   }
 
@@ -191,7 +191,7 @@ export class DashboardPage extends BasePage {
    */
   getGridContainer(): Locator {
     // Select the grid container by gap-6 class (viewport-agnostic)
-    return this.page.locator('.grid.gap-6').first();
+    return this.page.locator(".grid.gap-6").first();
   }
 
   /**
@@ -199,7 +199,7 @@ export class DashboardPage extends BasePage {
    */
   getLeftColumn(): Locator {
     // The left column is the first direct child div
-    return this.getGridContainer().locator('> div').first();
+    return this.getGridContainer().locator("> div").first();
   }
 
   /**
@@ -207,7 +207,7 @@ export class DashboardPage extends BasePage {
    */
   getRightSidebar(): Locator {
     // The right sidebar is the second direct child div
-    return this.getGridContainer().locator('> div').last();
+    return this.getGridContainer().locator("> div").last();
   }
 
   /**
@@ -255,7 +255,7 @@ export class DashboardPage extends BasePage {
     const hasCardBackground = await widget.evaluate((el) => {
       const styles = window.getComputedStyle(el);
       // Widget should have card background (check CSS variable is set)
-      return styles.backgroundColor !== 'rgba(0, 0, 0, 0)';
+      return styles.backgroundColor !== "rgba(0, 0, 0, 0)";
     });
 
     expect(hasCardBackground).toBe(true);
@@ -265,14 +265,14 @@ export class DashboardPage extends BasePage {
    * Get task checkbox from My Tasks widget
    */
   getTaskCheckbox(taskTitle: string | RegExp): Locator {
-    return this.page.getByRole('checkbox', { name: new RegExp(taskTitle.toString()) });
+    return this.page.getByRole("checkbox", { name: new RegExp(taskTitle.toString()) });
   }
 
   /**
    * Get "View All" link from widget
    */
   getViewAllLink(linkText: string | RegExp): Locator {
-    return this.page.getByRole('link', { name: linkText });
+    return this.page.getByRole("link", { name: linkText });
   }
 
   /**

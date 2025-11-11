@@ -20,10 +20,7 @@ export const FieldToggle = (props: FieldToggleProps) => {
   }, []);
 
   const handleDragStart = () => {
-    document.addEventListener(
-      "dragover",
-      handleDocumentDragOver as EventListener,
-    );
+    document.addEventListener("dragover", handleDocumentDragOver as EventListener);
   };
 
   const handleDrag = (event: React.DragEvent) => {
@@ -34,14 +31,9 @@ export const FieldToggle = (props: FieldToggleProps) => {
     if (x.current == null || y.current == null) {
       return;
     }
-    const elementAtDragCoordinates = document.elementFromPoint(
-      x.current,
-      y.current,
-    );
+    const elementAtDragCoordinates = document.elementFromPoint(x.current, y.current);
     let dropItem =
-      elementAtDragCoordinates === null
-        ? selectedItem
-        : elementAtDragCoordinates.closest("li");
+      elementAtDragCoordinates === null ? selectedItem : elementAtDragCoordinates.closest("li");
 
     if (!dropItem) {
       return;
@@ -56,11 +48,7 @@ export const FieldToggle = (props: FieldToggleProps) => {
       return;
     }
     const dropItemParent = dropItem.parentNode;
-    if (
-      list &&
-      dropItemParent instanceof HTMLElement &&
-      list === dropItemParent.closest("ul")
-    ) {
+    if (list && dropItemParent instanceof HTMLElement && list === dropItemParent.closest("ul")) {
       const dataIndex = dropItem.dataset.index;
       if (dataIndex) {
         dropIndex.current = parseInt(dataIndex, 10);
@@ -102,10 +90,7 @@ export const FieldToggle = (props: FieldToggleProps) => {
       event.stopPropagation();
     }
     selectedItem.dataset.dragActive = "false";
-    document.removeEventListener(
-      "dragover",
-      handleDocumentDragOver as EventListener,
-    );
+    document.removeEventListener("dragover", handleDocumentDragOver as EventListener);
   };
 
   const handleDragOver = (event: React.DragEvent) => {
@@ -126,13 +111,10 @@ export const FieldToggle = (props: FieldToggleProps) => {
       data-index={index}
       className={cn(
         "flex justify-between items-center py-1",
-        "data-[drag-active=true]:bg-transparent data-[drag-active=true]:text-transparent data-[drag-active=true]:outline data-[drag-active=true]:outline-1 data-[drag-active=true]:outline-border",
+        "data-[drag-active=true]:bg-transparent data-[drag-active=true]:text-transparent data-[drag-active=true]:outline data-[drag-active=true]:outline-1 data-[drag-active=true]:outline-border"
       )}
     >
-      <label
-        htmlFor={`switch_${index}`}
-        className="flex items-center gap-2 cursor-pointer"
-      >
+      <label htmlFor={`switch_${index}`} className="flex items-center gap-2 cursor-pointer">
         <Switch
           id={`switch_${index}`}
           checked={selected}
@@ -154,10 +136,7 @@ export interface FieldToggleProps {
   selected: boolean;
   label: React.ReactNode;
   onToggle?: (event: boolean) => void;
-  onMove?: (
-    dragIndex: string | number,
-    dropIndex: string | number | null,
-  ) => void;
+  onMove?: (dragIndex: string | number, dropIndex: string | number | null) => void;
   source: string;
   index: number | string;
 }

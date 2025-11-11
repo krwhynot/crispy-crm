@@ -20,11 +20,7 @@ const foreignKeyMapping = {
   opportunities: "opportunity_id",
 };
 
-export const NoteCreate = ({
-  reference,
-}: {
-  reference: "contacts" | "opportunities";
-}) => {
+export const NoteCreate = ({ reference }: { reference: "contacts" | "opportunities" }) => {
   const resource = useResourceContext();
   const record = useRecordContext();
   const { identity } = useGetIdentity();

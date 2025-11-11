@@ -17,12 +17,7 @@ export const opportunityStageSchema = z.enum([
   "closed_lost",
 ]);
 
-export const opportunityPrioritySchema = z.enum([
-  "low",
-  "medium",
-  "high",
-  "critical",
-]);
+export const opportunityPrioritySchema = z.enum(["low", "medium", "high", "critical"]);
 
 export const leadSourceSchema = z.enum([
   "referral",
@@ -53,7 +48,7 @@ const opportunityBaseSchema = z.object({
       // Default to 30 days from now
       const date = new Date();
       date.setDate(date.getDate() + 30);
-      return date.toISOString().split('T')[0];
+      return date.toISOString().split("T")[0];
     }),
 
   // OpportunityClassificationInputs fields
@@ -62,8 +57,8 @@ const opportunityBaseSchema = z.object({
   lead_source: leadSourceSchema.optional().nullable(),
 
   // OpportunityOrganizationInputs fields
-  customer_organization_id: z.union([z.string(), z.number()]),  // Required - marked with * in UI
-  principal_organization_id: z.union([z.string(), z.number()]),  // Required - marked with * in UI
+  customer_organization_id: z.union([z.string(), z.number()]), // Required - marked with * in UI
+  principal_organization_id: z.union([z.string(), z.number()]), // Required - marked with * in UI
   distributor_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
   account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
 
@@ -74,7 +69,11 @@ const opportunityBaseSchema = z.object({
     .default([]),
 
   // Campaign & Workflow Tracking fields (added 2025-11-03)
-  campaign: z.string().max(100, "Campaign name must be 100 characters or less").optional().nullable(),
+  campaign: z
+    .string()
+    .max(100, "Campaign name must be 100 characters or less")
+    .optional()
+    .nullable(),
   related_opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
   notes: z.string().optional().nullable(), // General notes about the opportunity (separate from activity log)
   tags: z.array(z.string()).optional().default([]),
@@ -118,7 +117,7 @@ export async function validateOpportunityForm(data: any): Promise<void> {
 
       throw {
         message: "Validation failed",
-        body: { errors: formattedErrors },  // React Admin expects errors at body.errors
+        body: { errors: formattedErrors }, // React Admin expects errors at body.errors
       };
     }
     throw error;
@@ -140,17 +139,17 @@ export const createOpportunitySchema = opportunityBaseSchema
       .min(1, "At least one contact is required"),
 
     // Remove default from estimated_close_date for create - must be explicitly provided
-    estimated_close_date: z
-      .string()
-      .min(1, "Expected closing date is required"),
+    estimated_close_date: z.string().min(1, "Expected closing date is required"),
 
     // Products are optional for opportunity creation
     // They can be added later via the UI
     products_to_sync: z
-      .array(z.object({
-        product_id_reference: z.union([z.string(), z.number()]).optional(),
-        notes: z.string().optional().nullable(), // Allow null from form inputs
-      }))
+      .array(
+        z.object({
+          product_id_reference: z.union([z.string(), z.number()]).optional(),
+          notes: z.string().optional().nullable(), // Allow null from form inputs
+        })
+      )
       .optional(),
   })
   .required({
@@ -169,9 +168,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
   .partial()
   .extend({
     // Override contact_ids to remove the default([]) that causes issues with partial updates
-    contact_ids: z
-      .array(z.union([z.string(), z.number()]))
-      .optional(), // No .default([]) here!
+    contact_ids: z.array(z.union([z.string(), z.number()])).optional(), // No .default([]) here!
   })
   .required({
     id: true,
@@ -206,7 +203,7 @@ export async function validateCreateOpportunity(data: any): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        body: { errors: formattedErrors },  // React Admin expects errors at body.errors
+        body: { errors: formattedErrors }, // React Admin expects errors at body.errors
       };
     }
     throw error;
@@ -225,7 +222,7 @@ export async function validateUpdateOpportunity(data: any): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        body: { errors: formattedErrors },  // React Admin expects errors at body.errors
+        body: { errors: formattedErrors }, // React Admin expects errors at body.errors
       };
     }
     throw error;

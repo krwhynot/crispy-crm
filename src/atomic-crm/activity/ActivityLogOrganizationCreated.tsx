@@ -11,9 +11,7 @@ interface ActivityLogOrganizationCreatedProps {
   activity: ActivityOrganizationCreated;
 }
 
-export function ActivityLogOrganizationCreated({
-  activity,
-}: ActivityLogOrganizationCreatedProps) {
+export function ActivityLogOrganizationCreated({ activity }: ActivityLogOrganizationCreatedProps) {
   const context = useActivityLogContext();
   const { organization } = activity;
   return (
@@ -22,17 +20,11 @@ export function ActivityLogOrganizationCreated({
         <OrganizationAvatar width={20} height={20} record={organization} />
 
         <div className="text-sm text-[color:var(--text-subtle)] flex-grow">
-          <ReferenceField
-            source="sales_id"
-            reference="sales"
-            record={activity}
-          >
+          <ReferenceField source="sales_id" reference="sales" record={activity}>
             <SaleName />
-          </ReferenceField>
-          {" "}added organization{" "}
-          <Link to={`/organizations/${organization.id}/show`}>
-            {organization.name}
-          </Link>
+          </ReferenceField>{" "}
+          added organization{" "}
+          <Link to={`/organizations/${organization.id}/show`}>{organization.name}</Link>
           {context === "all" && (
             <>
               <RelativeDate date={activity.date} />

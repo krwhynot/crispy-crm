@@ -1,10 +1,6 @@
 import { createContext, useContext } from "react";
 
-export type activityLogContextValue =
-  | "company"
-  | "contact"
-  | "opportunity"
-  | "all";
+export type activityLogContextValue = "company" | "contact" | "opportunity" | "all";
 
 export const ActivityLogContext = createContext<activityLogContextValue>("all");
 

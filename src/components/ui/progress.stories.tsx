@@ -1,25 +1,25 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Progress } from './progress';
-import React, { useEffect, useState } from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Progress } from "./progress";
+import React, { useEffect, useState } from "react";
 
 const meta = {
-  title: 'UI/Progress',
+  title: "UI/Progress",
   component: Progress,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     value: {
-      control: { type: 'range', min: 0, max: 100, step: 1 },
-      description: 'The progress value (0-100)',
+      control: { type: "range", min: 0, max: 100, step: 1 },
+      description: "The progress value (0-100)",
     },
     max: {
-      control: { type: 'number', min: 1 },
-      description: 'The maximum progress value',
+      control: { type: "number", min: 1 },
+      description: "The maximum progress value",
     },
     getValueLabel: {
-      description: 'Function to get the value label for screen readers',
+      description: "Function to get the value label for screen readers",
     },
   },
 } satisfies Meta<typeof Progress>;
@@ -120,9 +120,7 @@ export const Animated: Story = {
       return (
         <div className="w-[300px] space-y-2">
           <Progress value={progress} />
-          <p className="text-sm text-[color:var(--text-subtle)] text-center">
-            {progress}%
-          </p>
+          <p className="text-sm text-[color:var(--text-subtle)] text-center">{progress}%</p>
         </div>
       );
     };
@@ -182,7 +180,7 @@ export const FileUpload: Story = {
   render: () => {
     const FileUploadProgress = () => {
       const [progress, setProgress] = useState(0);
-      const [status, setStatus] = useState('Preparing...');
+      const [status, setStatus] = useState("Preparing...");
 
       useEffect(() => {
         const timer = setInterval(() => {
@@ -190,15 +188,15 @@ export const FileUpload: Story = {
             const newProgress = Math.min(oldProgress + Math.random() * 10, 100);
 
             if (newProgress < 30) {
-              setStatus('Connecting...');
+              setStatus("Connecting...");
             } else if (newProgress < 60) {
-              setStatus('Uploading...');
+              setStatus("Uploading...");
             } else if (newProgress < 90) {
-              setStatus('Processing...');
+              setStatus("Processing...");
             } else if (newProgress < 100) {
-              setStatus('Finalizing...');
+              setStatus("Finalizing...");
             } else {
-              setStatus('Complete!');
+              setStatus("Complete!");
               clearInterval(timer);
             }
 
@@ -218,9 +216,7 @@ export const FileUpload: Story = {
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} />
-          <p className="text-xs text-[color:var(--text-subtle)]">
-            document.pdf (2.4 MB)
-          </p>
+          <p className="text-xs text-[color:var(--text-subtle)]">document.pdf (2.4 MB)</p>
         </div>
       );
     };
@@ -341,7 +337,7 @@ export const Indeterminate: Story = {
 export const WithAriaLabel: Story = {
   args: {
     value: 66,
-    'aria-label': 'Loading progress',
+    "aria-label": "Loading progress",
   },
   render: (args) => (
     <div className="w-[300px]">
@@ -353,7 +349,7 @@ export const WithAriaLabel: Story = {
 export const WithAriaValueText: Story = {
   args: {
     value: 33,
-    'aria-valuetext': '33 percent complete',
+    "aria-valuetext": "33 percent complete",
   },
   render: (args) => (
     <div className="w-[300px] space-y-2">
@@ -369,13 +365,13 @@ export const WithAriaValueText: Story = {
 export const StepsProgress: Story = {
   render: () => {
     const steps = [
-      { name: 'Account', complete: true },
-      { name: 'Profile', complete: true },
-      { name: 'Settings', complete: false },
-      { name: 'Review', complete: false },
+      { name: "Account", complete: true },
+      { name: "Profile", complete: true },
+      { name: "Settings", complete: false },
+      { name: "Review", complete: false },
     ];
 
-    const completedSteps = steps.filter(s => s.complete).length;
+    const completedSteps = steps.filter((s) => s.complete).length;
     const progress = (completedSteps / steps.length) * 100;
 
     return (
@@ -384,7 +380,7 @@ export const StepsProgress: Story = {
           {steps.map((step, index) => (
             <span
               key={index}
-              className={step.complete ? 'text-primary' : 'text-[color:var(--text-subtle)]'}
+              className={step.complete ? "text-primary" : "text-[color:var(--text-subtle)]"}
             >
               {step.name}
             </span>

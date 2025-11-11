@@ -178,7 +178,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
           filter: {
             "tags@cs": "{1,2,3}",
           },
-        }),
+        })
       );
     });
 
@@ -197,7 +197,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
           filter: {
             "stage@in": "(qualified,proposal,negotiation)",
           },
-        }),
+        })
       );
     });
 
@@ -219,7 +219,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
             "tags@cs": "{5}",
             "last_seen@gte": "2024-01-01",
           },
-        }),
+        })
       );
     });
 
@@ -240,7 +240,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
           filter: {
             first_name: "John",
           },
-        }),
+        })
       );
 
       // Verify tags field was not included
@@ -267,11 +267,11 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         expect.objectContaining({
           filter: {
             "tags@cs": "{1,2}",
-            "email@cs": "{\"test@example.com\",\"test2@example.com\"}",
+            "email@cs": '{"test@example.com","test2@example.com"}',
             first_name: "John",
             "last_name@ilike": "%doe%",
           },
-        }),
+        })
       );
     });
 
@@ -291,7 +291,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
           filter: {
             "phone@cs": "{+1234567890,+0987654321}",
           },
-        }),
+        })
       );
     });
   });
@@ -315,7 +315,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
             "tags@cs": "{4,5,6}",
             "deleted_at@is": null,
           },
-        }),
+        })
       );
     });
   });
@@ -340,7 +340,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
             "tags@cs": "{1,2}",
             "@or": expect.any(Object), // Search transformation
           }),
-        }),
+        })
       );
     });
   });

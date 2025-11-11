@@ -71,17 +71,16 @@ export class ReferentialIntegrityValidator {
           .slice(0, 5)
           .map(
             (c) =>
-              `Contact ${c.first_name} ${c.last_name} (ID: ${c.id}) → Company ID: ${c.company_id}`,
+              `Contact ${c.first_name} ${c.last_name} (ID: ${c.id}) → Company ID: ${c.company_id}`
           ),
       });
     }
 
     // Check for contacts without company assignments
-    const { data: unassignedContacts, error: unassignedError } =
-      await this.supabase
-        .from("contacts")
-        .select("id, first_name, last_name")
-        .is("company_id", null);
+    const { data: unassignedContacts, error: unassignedError } = await this.supabase
+      .from("contacts")
+      .select("id, first_name, last_name")
+      .is("company_id", null);
 
     if (unassignedError) throw unassignedError;
 
@@ -104,10 +103,7 @@ export class ReferentialIntegrityValidator {
    */
   async validateDealCompanyReferences() {
     // Use raw SQL for complex join validation
-    const { data: orphanedDeals, error } = await this.supabase.rpc(
-      "check_orphaned_deals",
-      {},
-    );
+    const { data: orphanedDeals, error } = await this.supabase.rpc("check_orphaned_deals", {});
 
     if (error) throw error;
 
@@ -120,10 +116,7 @@ export class ReferentialIntegrityValidator {
         count: orphanedDeals.length,
         samples: orphanedDeals
           .slice(0, 5)
-          .map(
-            (d) =>
-              `Deal "${d.name}" (ID: ${d.id}) → Company ID: ${d.company_id}`,
-          ),
+          .map((d) => `Deal "${d.name}" (ID: ${d.id}) → Company ID: ${d.company_id}`),
       });
     }
   }
@@ -170,8 +163,7 @@ export class ReferentialIntegrityValidator {
         samples: invalidContactRefs
           .slice(0, 5)
           .map(
-            (ref) =>
-              `Deal "${ref.dealName}" (ID: ${ref.dealId}) → Contact ID: ${ref.contactId}`,
+            (ref) => `Deal "${ref.dealName}" (ID: ${ref.dealId}) → Contact ID: ${ref.contactId}`
           ),
       });
     }
@@ -183,7 +175,7 @@ export class ReferentialIntegrityValidator {
   async validateContactNoteReferences() {
     const { data: orphanedNotes, error } = await this.supabase.rpc(
       "check_orphaned_contact_notes",
-      {},
+      {}
     );
 
     if (error) throw error;
@@ -197,9 +189,7 @@ export class ReferentialIntegrityValidator {
         count: orphanedNotes.length,
         samples: orphanedNotes
           .slice(0, 5)
-          .map(
-            (note) => `Note (ID: ${note.id}) → Contact ID: ${note.contact_id}`,
-          ),
+          .map((note) => `Note (ID: ${note.id}) → Contact ID: ${note.contact_id}`),
       });
     }
   }
@@ -208,10 +198,7 @@ export class ReferentialIntegrityValidator {
    * Validate deal notes have valid references
    */
   async validateDealNoteReferences() {
-    const { data: orphanedNotes, error } = await this.supabase.rpc(
-      "check_orphaned_deal_notes",
-      {},
-    );
+    const { data: orphanedNotes, error } = await this.supabase.rpc("check_orphaned_deal_notes", {});
 
     if (error) throw error;
 
@@ -286,10 +273,7 @@ export class ReferentialIntegrityValidator {
         count: invalidTasks.length,
         samples: invalidTasks
           .slice(0, 5)
-          .map(
-            (task) =>
-              `Task (ID: ${task.taskId}) → ${task.refType} ID: ${task.refId}`,
-          ),
+          .map((task) => `Task (ID: ${task.taskId}) → ${task.refType} ID: ${task.refId}`),
       });
     }
   }
@@ -359,7 +343,7 @@ export class ReferentialIntegrityValidator {
           .slice(0, 5)
           .map(
             (tag) =>
-              `Tag "${tag.tagName}" (ID: ${tag.tagId}) → ${tag.entityType} ID: ${tag.entityId}`,
+              `Tag "${tag.tagName}" (ID: ${tag.tagId}) → ${tag.entityType} ID: ${tag.entityId}`
           ),
       });
     }
@@ -371,23 +355,17 @@ export class ReferentialIntegrityValidator {
   generateReport() {
     const totalViolations = this.violations.length;
     const totalWarnings = this.warnings.length;
-    const criticalCount = this.violations.filter(
-      (v) => v.severity === "CRITICAL",
-    ).length;
-    const highCount = this.violations.filter(
-      (v) => v.severity === "HIGH",
-    ).length;
+    const criticalCount = this.violations.filter((v) => v.severity === "CRITICAL").length;
+    const highCount = this.violations.filter((v) => v.severity === "HIGH").length;
 
     const report = {
-      status:
-        criticalCount > 0 ? "FAILED" : highCount > 0 ? "WARNING" : "PASSED",
+      status: criticalCount > 0 ? "FAILED" : highCount > 0 ? "WARNING" : "PASSED",
       summary: {
         totalViolations,
         totalWarnings,
         criticalCount,
         highCount,
-        mediumCount: this.violations.filter((v) => v.severity === "MEDIUM")
-          .length,
+        mediumCount: this.violations.filter((v) => v.severity === "MEDIUM").length,
         lowCount: this.violations.filter((v) => v.severity === "LOW").length,
       },
       violations: this.violations,
@@ -408,30 +386,20 @@ export class ReferentialIntegrityValidator {
   generateRecommendations() {
     const recommendations = [];
 
-    if (
-      this.violations.some(
-        (v) => v.entity === "contacts" && v.type === "ORPHANED_RECORD",
-      )
-    ) {
+    if (this.violations.some((v) => v.entity === "contacts" && v.type === "ORPHANED_RECORD")) {
       recommendations.push({
         type: "FIX",
         priority: "HIGH",
-        action:
-          "Remove or reassign contacts with invalid company references before migration",
+        action: "Remove or reassign contacts with invalid company references before migration",
         sql: `UPDATE contacts SET company_id = NULL WHERE company_id NOT IN (SELECT id FROM companies);`,
       });
     }
 
-    if (
-      this.violations.some(
-        (v) => v.entity === "deals" && v.type === "ORPHANED_RECORD",
-      )
-    ) {
+    if (this.violations.some((v) => v.entity === "deals" && v.type === "ORPHANED_RECORD")) {
       recommendations.push({
         type: "BLOCK",
         priority: "CRITICAL",
-        action:
-          "Migration cannot proceed with orphaned deals. Fix company references first.",
+        action: "Migration cannot proceed with orphaned deals. Fix company references first.",
         sql: `-- Review and fix these deals manually or delete if invalid`,
       });
     }
@@ -440,8 +408,7 @@ export class ReferentialIntegrityValidator {
       recommendations.push({
         type: "FIX",
         priority: "HIGH",
-        action:
-          "Clean invalid contact references from deals.contact_ids arrays",
+        action: "Clean invalid contact references from deals.contact_ids arrays",
         sql: `-- Custom cleanup script needed for JSONB array cleaning`,
       });
     }
@@ -456,9 +423,7 @@ if (import.meta.url === new URL(process.argv[1], "file://").href) {
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.error(
-      "❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables",
-    );
+    console.error("❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables");
     process.exit(1);
   }
 

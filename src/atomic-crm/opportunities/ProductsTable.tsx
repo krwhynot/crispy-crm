@@ -10,10 +10,10 @@
  * - Empty state when no products
  */
 
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import * as React from "react";
+import { Link } from "react-router-dom";
+import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -21,7 +21,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,7 +31,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 
 interface Product {
   id: number | string;
@@ -74,10 +74,10 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({
   if (!products || products.length === 0) {
     return (
       <div className="rounded-lg border border-border bg-card p-8 text-center">
-        <p className="text-sm text-muted-foreground">No products associated with this opportunity</p>
-        <p className="text-xs text-muted-foreground mt-1">
-          Edit the opportunity to add products
+        <p className="text-sm text-muted-foreground">
+          No products associated with this opportunity
         </p>
+        <p className="text-xs text-muted-foreground mt-1">Edit the opportunity to add products</p>
       </div>
     );
   }
@@ -111,7 +111,7 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({
                   )}
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  {product.principal_name || '—'}
+                  {product.principal_name || "—"}
                 </TableCell>
                 <TableCell className="text-sm">
                   {product.notes ? (
@@ -152,7 +152,10 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleCancelRemove}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmRemove} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleConfirmRemove}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Remove
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -55,11 +55,7 @@ describe("ActivitiesService", () => {
 
       const result = await service.getActivityLog();
 
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        undefined,
-        undefined
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, undefined, undefined);
       expect(result).toEqual(mockActivities);
     });
 
@@ -69,11 +65,7 @@ describe("ActivitiesService", () => {
 
       await service.getActivityLog(organizationId);
 
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        organizationId,
-        undefined
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, organizationId, undefined);
     });
 
     test("should pass salesId filter to getActivityLog", async () => {
@@ -82,11 +74,7 @@ describe("ActivitiesService", () => {
 
       await service.getActivityLog(undefined, salesId);
 
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        undefined,
-        salesId
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, undefined, salesId);
     });
 
     test("should pass both organizationId and salesId filters", async () => {
@@ -96,11 +84,7 @@ describe("ActivitiesService", () => {
 
       await service.getActivityLog(organizationId, salesId);
 
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        organizationId,
-        salesId
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, organizationId, salesId);
     });
 
     test("should return empty array when no activities exist", async () => {
@@ -179,19 +163,11 @@ describe("ActivitiesService", () => {
 
       // Numeric ID
       await service.getActivityLog(123);
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        123,
-        undefined
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, 123, undefined);
 
       // String ID
       await service.getActivityLog("uuid-123");
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        "uuid-123",
-        undefined
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, "uuid-123", undefined);
     });
 
     test("should handle numeric and string IDs for salesId", async () => {
@@ -199,19 +175,11 @@ describe("ActivitiesService", () => {
 
       // Numeric ID
       await service.getActivityLog(undefined, 456);
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        undefined,
-        456
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, undefined, 456);
 
       // String ID
       await service.getActivityLog(undefined, "uuid-456");
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        undefined,
-        "uuid-456"
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, undefined, "uuid-456");
     });
 
     test("should handle activities sorted by date descending", async () => {
@@ -268,9 +236,7 @@ describe("ActivitiesService", () => {
     });
 
     test("should handle network timeout errors", async () => {
-      mockGetActivityLog.mockRejectedValue(
-        new Error("Network request failed: timeout")
-      );
+      mockGetActivityLog.mockRejectedValue(new Error("Network request failed: timeout"));
 
       await expect(service.getActivityLog()).rejects.toThrow(
         "Get activity log failed: Network request failed: timeout"
@@ -278,9 +244,7 @@ describe("ActivitiesService", () => {
     });
 
     test("should handle RLS policy violations", async () => {
-      mockGetActivityLog.mockRejectedValue(
-        new Error("new row violates row-level security policy")
-      );
+      mockGetActivityLog.mockRejectedValue(new Error("new row violates row-level security policy"));
 
       await expect(service.getActivityLog()).rejects.toThrow(
         "Get activity log failed: new row violates row-level security policy"
@@ -288,9 +252,7 @@ describe("ActivitiesService", () => {
     });
 
     test("should handle database connection errors", async () => {
-      mockGetActivityLog.mockRejectedValue(
-        new Error("could not connect to database")
-      );
+      mockGetActivityLog.mockRejectedValue(new Error("could not connect to database"));
 
       await expect(service.getActivityLog()).rejects.toThrow(
         "Get activity log failed: could not connect to database"
@@ -305,11 +267,7 @@ describe("ActivitiesService", () => {
       await service.getActivityLog();
 
       // Verify the dataProvider instance was passed correctly
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        undefined,
-        undefined
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, undefined, undefined);
 
       const receivedProvider = mockGetActivityLog.mock.calls[0][0];
       expect(receivedProvider).toBe(mockDataProvider);
@@ -323,11 +281,7 @@ describe("ActivitiesService", () => {
 
       await service.getActivityLog(orgId, salesId);
 
-      expect(mockGetActivityLog).toHaveBeenCalledWith(
-        mockDataProvider,
-        orgId,
-        salesId
-      );
+      expect(mockGetActivityLog).toHaveBeenCalledWith(mockDataProvider, orgId, salesId);
 
       // Verify exact parameter order
       const [provider, org, sales] = mockGetActivityLog.mock.calls[0];

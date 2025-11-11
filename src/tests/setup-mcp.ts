@@ -25,20 +25,18 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 // Validate that cloud URLs are configured (not localhost)
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   throw new Error(
-    "Missing required environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be configured",
+    "Missing required environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY must be configured"
   );
 }
 
 if (SUPABASE_URL.includes("127.0.0.1") || SUPABASE_URL.includes("localhost")) {
   throw new Error(
-    "Cloud database URL required for MCP tests. Remove localhost URLs from environment configuration.",
+    "Cloud database URL required for MCP tests. Remove localhost URLs from environment configuration."
   );
 }
 
 if (!SUPABASE_SERVICE_KEY) {
-  console.warn(
-    "SUPABASE_SERVICE_ROLE_KEY not configured - some tests may fail",
-  );
+  console.warn("SUPABASE_SERVICE_ROLE_KEY not configured - some tests may fail");
 }
 
 // Connection configuration for cloud database
@@ -89,7 +87,7 @@ const defaultRetryConfig: RetryConfig = {
 // Retry wrapper with exponential backoff
 export async function withRetry<T>(
   operation: () => Promise<T>,
-  config: RetryConfig = defaultRetryConfig,
+  config: RetryConfig = defaultRetryConfig
 ): Promise<T> {
   let lastError: Error;
 
@@ -105,7 +103,7 @@ export async function withRetry<T>(
 
       const delay = Math.min(
         config.baseDelay * Math.pow(config.factor, attempt - 1),
-        config.maxDelay,
+        config.maxDelay
       );
 
       console.warn(`Attempt ${attempt} failed, retrying in ${delay}ms:`, error);
@@ -117,11 +115,7 @@ export async function withRetry<T>(
 }
 
 // Create Supabase clients
-export const supabaseClient = createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY,
-  connectionConfig,
-);
+export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, connectionConfig);
 export const serviceClient = SUPABASE_SERVICE_KEY
   ? createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, connectionConfig)
   : null;
@@ -129,10 +123,7 @@ export const serviceClient = SUPABASE_SERVICE_KEY
 // Connection health check
 export async function checkConnection(): Promise<void> {
   const healthCheck = async () => {
-    const { error } = await supabaseClient
-      .from("init_state")
-      .select("is_initialized")
-      .limit(1);
+    const { error } = await supabaseClient.from("init_state").select("is_initialized").limit(1);
 
     if (error) {
       throw new Error(`Database connection failed: ${error.message}`);
@@ -170,10 +161,7 @@ export async function emergencyCleanup(): Promise<void> {
 
   for (const table of tables) {
     try {
-      const { error } = await serviceClient
-        .from(table)
-        .delete()
-        .like("name", testPattern);
+      const { error } = await serviceClient.from(table).delete().like("name", testPattern);
 
       if (error && !error.message.includes('column "name" does not exist')) {
         console.warn(`Emergency cleanup failed for ${table}:`, error);
@@ -218,16 +206,13 @@ export function createTestDataTracker(): TestDataTracker {
 // Cleanup helper with service role RLS bypass
 export async function cleanupTestData(
   tracker: TestDataTracker,
-  client?: SupabaseClient<any, "public", any>,
+  client?: SupabaseClient<any, "public", any>
 ): Promise<void> {
   const cleanupClient = client || serviceClient || supabaseClient;
   const cleanup = async () => {
     // Clean up in dependency order (children first)
     if (tracker.opportunities.length > 0) {
-      await cleanupClient
-        .from("opportunities")
-        .delete()
-        .in("id", tracker.opportunities);
+      await cleanupClient.from("opportunities").delete().in("id", tracker.opportunities);
     }
 
     if (tracker.tasks.length > 0) {
@@ -239,10 +224,7 @@ export async function cleanupTestData(
     }
 
     if (tracker.organizations.length > 0) {
-      await cleanupClient
-        .from("organizations")
-        .delete()
-        .in("id", tracker.organizations);
+      await cleanupClient.from("organizations").delete().in("id", tracker.organizations);
     }
   };
 

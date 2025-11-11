@@ -100,11 +100,7 @@ export const CreateInDialogButton = ({
                 {children}
                 <FormToolbar>
                   <div className="flex flex-row gap-2 justify-end">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setOpen(false)}
-                    >
+                    <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                       Cancel
                     </Button>
                     <SaveButton label="Create" />

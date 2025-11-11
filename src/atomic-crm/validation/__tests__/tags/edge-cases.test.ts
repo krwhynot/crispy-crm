@@ -4,12 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  tagSchema,
-  validateTagUniqueness,
-  validateTagForSubmission,
-  type Tag,
-} from "../../tags";
+import { tagSchema, validateTagUniqueness, validateTagForSubmission, type Tag } from "../../tags";
 import { z } from "zod";
 
 describe("Tag Edge Cases and Business Rules", () => {
@@ -86,16 +81,7 @@ describe("Tag Edge Cases and Business Rules", () => {
   describe("Business Rules", () => {
     it("should enforce semantic color system", () => {
       // Valid semantic colors in the CRM's simplified color system
-      const semanticColors = [
-        "warm",
-        "yellow",
-        "pink",
-        "green",
-        "teal",
-        "blue",
-        "purple",
-        "gray",
-      ];
+      const semanticColors = ["warm", "yellow", "pink", "green", "teal", "blue", "purple", "gray"];
 
       semanticColors.forEach((color) => {
         const tag = {
@@ -126,14 +112,14 @@ describe("Tag Edge Cases and Business Rules", () => {
         tagSchema.parse({
           name: maxLengthName,
           color: "blue",
-        }),
+        })
       ).not.toThrow();
 
       expect(() =>
         tagSchema.parse({
           name: tooLongName,
           color: "blue",
-        }),
+        })
       ).toThrow(z.ZodError);
     });
 
@@ -164,8 +150,7 @@ describe("Tag Edge Cases and Business Rules", () => {
         },
         {
           data: { name: "Test", color: "invalid" },
-          expectedError:
-            "Invalid color selection. Must be a valid semantic color.",
+          expectedError: "Invalid color selection. Must be a valid semantic color.",
         },
       ];
 

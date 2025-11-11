@@ -2,9 +2,7 @@ import type { HTMLAttributes } from "react";
 import { useFieldValue, useTranslate } from "ra-core";
 import type { FieldProps } from "@/lib/field.type";
 
-export const NumberField = <
-  RecordType extends Record<string, any> = Record<string, any>,
->({
+export const NumberField = <RecordType extends Record<string, any> = Record<string, any>>({
   defaultValue,
   source,
   record,
@@ -23,9 +21,7 @@ export const NumberField = <
     }
 
     return (
-      <span {...rest}>
-        {typeof empty === "string" ? translate(empty, { _: empty }) : empty}
-      </span>
+      <span {...rest}>{typeof empty === "string" ? translate(empty, { _: empty }) : empty}</span>
     );
   }
 
@@ -42,9 +38,8 @@ export const NumberField = <
   );
 };
 
-export interface NumberFieldProps<
-  RecordType extends Record<string, any> = Record<string, any>,
-> extends FieldProps<RecordType>,
+export interface NumberFieldProps<RecordType extends Record<string, any> = Record<string, any>>
+  extends FieldProps<RecordType>,
     HTMLAttributes<HTMLSpanElement> {
   locales?: string | string[];
   options?: object;

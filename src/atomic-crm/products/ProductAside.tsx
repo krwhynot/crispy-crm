@@ -1,15 +1,6 @@
-import {
-  Edit,
-  Building2,
-  Calendar,
-  AlertCircle
-} from "lucide-react";
+import { Edit, Building2, Calendar, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import {
-  useRecordContext,
-  useReference,
-  useCreatePath
-} from "ra-core";
+import { useRecordContext, useReference, useCreatePath } from "ra-core";
 import { formatDistanceToNow } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -78,9 +69,7 @@ export const ProductAside = () => {
       {principal && (
         <>
           <div>
-            <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">
-              Supplier
-            </h4>
+            <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">Supplier</h4>
             <Link
               to={createPath({
                 resource: "organizations",
@@ -94,9 +83,7 @@ export const ProductAside = () => {
                 <div>
                   <p className="text-sm font-medium">{principal.name}</p>
                   {principal.segment && (
-                    <p className="text-xs text-[color:var(--text-subtle)]">
-                      {principal.segment}
-                    </p>
+                    <p className="text-xs text-[color:var(--text-subtle)]">{principal.segment}</p>
                   )}
                 </div>
               </div>
@@ -126,9 +113,7 @@ export const ProductAside = () => {
                 <div>
                   <p className="text-sm font-medium">{distributor.name}</p>
                   {distributor.segment && (
-                    <p className="text-xs text-[color:var(--text-subtle)]">
-                      {distributor.segment}
-                    </p>
+                    <p className="text-xs text-[color:var(--text-subtle)]">{distributor.segment}</p>
                   )}
                 </div>
               </div>
@@ -140,9 +125,7 @@ export const ProductAside = () => {
 
       {/* Metadata */}
       <div>
-        <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">
-          Information
-        </h4>
+        <h4 className="text-sm font-medium mb-2 text-[color:var(--text-subtle)]">Information</h4>
         <div className="space-y-2">
           <div className="flex items-start gap-2">
             <Calendar className="w-4 h-4 mt-0.5 text-[color:var(--text-subtle)]" />
@@ -181,9 +164,7 @@ export const ProductAside = () => {
             <div className="flex items-start gap-2">
               <AlertCircle className="w-4 h-4 text-destructive mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-destructive">
-                  Product Discontinued
-                </p>
+                <p className="text-sm font-medium text-destructive">Product Discontinued</p>
                 <p className="text-xs text-[color:var(--text-subtle)] mt-1">
                   This product is no longer available for ordering
                 </p>
@@ -192,7 +173,6 @@ export const ProductAside = () => {
           </div>
         </>
       )}
-
     </Card>
   );
 };

@@ -4,9 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  organizationSchema,
-} from "../../organizations";
+import { organizationSchema } from "../../organizations";
 
 describe("Organization Business Rules and Edge Cases", () => {
   describe("Business Rules", () => {

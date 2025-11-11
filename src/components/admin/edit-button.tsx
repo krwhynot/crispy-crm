@@ -26,15 +26,9 @@ export const EditButton = (props: EditButtonProps) => {
     id: record?.id,
   });
   return (
-    <Link
-      className={buttonVariants({ variant: "outline" })}
-      to={link}
-      onClick={stopPropagation}
-    >
+    <Link className={buttonVariants({ variant: "outline" })} to={link} onClick={stopPropagation}>
       <Pencil />
-      <Translate i18nKey={props.label ?? "ra.action.edit"}>
-        {props.label ?? "Edit"}
-      </Translate>
+      <Translate i18nKey={props.label ?? "ra.action.edit"}>{props.label ?? "Edit"}</Translate>
     </Link>
   );
 };

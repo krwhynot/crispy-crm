@@ -6,11 +6,7 @@ import { z } from "zod";
  */
 
 // Organization hierarchy constants
-export const PARENT_ELIGIBLE_TYPES = [
-  "distributor",
-  "customer",
-  "principal",
-] as const;
+export const PARENT_ELIGIBLE_TYPES = ["distributor", "customer", "principal"] as const;
 export type ParentEligibleType = (typeof PARENT_ELIGIBLE_TYPES)[number];
 
 export function isParentEligibleType(type: string): type is ParentEligibleType {
@@ -21,9 +17,7 @@ export function canBeParent(org: {
   organization_type: string;
   parent_organization_id?: number | string | null;
 }): boolean {
-  return (
-    isParentEligibleType(org.organization_type) && !org.parent_organization_id
-  );
+  return isParentEligibleType(org.organization_type) && !org.parent_organization_id;
 }
 
 export function canHaveParent(org: {
@@ -71,7 +65,7 @@ const isLinkedinUrl = z.string().refine(
       return false;
     }
   },
-  { message: "Must be a valid LinkedIn organization URL" },
+  { message: "Must be a valid LinkedIn organization URL" }
 );
 
 // Main organization schema with comprehensive validation
@@ -115,9 +109,7 @@ export type Organization = z.infer<typeof organizationSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where organization validation occurs
-export async function validateOrganizationForSubmission(
-  data: any,
-): Promise<void> {
+export async function validateOrganizationForSubmission(data: any): Promise<void> {
   try {
     // Parse and validate the data
     organizationSchema.parse(data);

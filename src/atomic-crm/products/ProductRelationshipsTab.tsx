@@ -10,10 +10,7 @@ export const ProductRelationshipsTab = () => {
         label="Principal/Supplier *"
         filter={{ organization_type: "principal" }}
       >
-        <AutocompleteInput
-          optionText="name"
-          helperText="Select the supplier organization"
-        />
+        <AutocompleteInput optionText="name" helperText="Select the supplier organization" />
       </ReferenceInput>
       <ReferenceInput
         source="distributor_id"
@@ -21,10 +18,7 @@ export const ProductRelationshipsTab = () => {
         label="Distributor"
         filter={{ organization_type: "distributor" }}
       >
-        <AutocompleteInput
-          optionText="name"
-          helperText="Select the distributor organization"
-        />
+        <AutocompleteInput optionText="name" helperText="Select the distributor organization" />
       </ReferenceInput>
     </div>
   );

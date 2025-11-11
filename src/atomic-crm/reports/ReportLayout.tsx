@@ -18,12 +18,7 @@ interface ReportLayoutProps {
  * - Custom actions slot
  * - Semantic spacing
  */
-export function ReportLayout({
-  title,
-  children,
-  onExport,
-  actions,
-}: ReportLayoutProps) {
+export function ReportLayout({ title, children, onExport, actions }: ReportLayoutProps) {
   return (
     <div className="space-y-4 p-6">
       <div className="flex items-center justify-between">

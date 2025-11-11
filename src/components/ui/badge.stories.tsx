@@ -1,24 +1,24 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from './badge';
-import { AlertCircle, CheckCircle2, Info, XCircle } from 'lucide-react';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Badge } from "./badge";
+import { AlertCircle, CheckCircle2, Info, XCircle } from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Badge',
+  title: "UI/Badge",
   component: Badge,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'secondary', 'destructive', 'outline'],
-      description: 'The visual style variant of the badge',
+      control: "select",
+      options: ["default", "secondary", "destructive", "outline"],
+      description: "The visual style variant of the badge",
     },
     asChild: {
-      control: 'boolean',
-      description: 'Whether to render as a child component',
+      control: "boolean",
+      description: "Whether to render as a child component",
     },
   },
 } satisfies Meta<typeof Badge>;
@@ -29,29 +29,29 @@ type Story = StoryObj<typeof meta>;
 // Basic variants
 export const Default: Story = {
   args: {
-    children: 'Default',
-    variant: 'default',
+    children: "Default",
+    variant: "default",
   },
 };
 
 export const Secondary: Story = {
   args: {
-    children: 'Secondary',
-    variant: 'secondary',
+    children: "Secondary",
+    variant: "secondary",
   },
 };
 
 export const Destructive: Story = {
   args: {
-    children: 'Destructive',
-    variant: 'destructive',
+    children: "Destructive",
+    variant: "destructive",
   },
 };
 
 export const Outline: Story = {
   args: {
-    children: 'Outline',
-    variant: 'outline',
+    children: "Outline",
+    variant: "outline",
   },
 };
 
@@ -64,7 +64,7 @@ export const DefaultWithIcon: Story = {
         Success
       </>
     ),
-    variant: 'default',
+    variant: "default",
   },
 };
 
@@ -76,7 +76,7 @@ export const SecondaryWithIcon: Story = {
         Info
       </>
     ),
-    variant: 'secondary',
+    variant: "secondary",
   },
 };
 
@@ -88,7 +88,7 @@ export const DestructiveWithIcon: Story = {
         Error
       </>
     ),
-    variant: 'destructive',
+    variant: "destructive",
   },
 };
 
@@ -100,141 +100,141 @@ export const OutlineWithIcon: Story = {
         Warning
       </>
     ),
-    variant: 'outline',
+    variant: "outline",
   },
 };
 
 // Status badges
 export const StatusNew: Story = {
   args: {
-    children: 'NEW',
-    variant: 'default',
+    children: "NEW",
+    variant: "default",
   },
 };
 
 export const StatusActive: Story = {
   args: {
-    children: 'ACTIVE',
-    variant: 'secondary',
+    children: "ACTIVE",
+    variant: "secondary",
   },
 };
 
 export const StatusPending: Story = {
   args: {
-    children: 'PENDING',
-    variant: 'outline',
+    children: "PENDING",
+    variant: "outline",
   },
 };
 
 export const StatusClosed: Story = {
   args: {
-    children: 'CLOSED',
-    variant: 'destructive',
+    children: "CLOSED",
+    variant: "destructive",
   },
 };
 
 // Number badges
 export const NumberBadge: Story = {
   args: {
-    children: '99+',
-    variant: 'default',
+    children: "99+",
+    variant: "default",
   },
 };
 
 export const CountBadge: Story = {
   args: {
-    children: '3',
-    variant: 'destructive',
+    children: "3",
+    variant: "destructive",
   },
 };
 
 export const VersionBadge: Story = {
   args: {
-    children: 'v2.0.0',
-    variant: 'secondary',
+    children: "v2.0.0",
+    variant: "secondary",
   },
 };
 
 // Category badges
 export const CategoryBadge: Story = {
   args: {
-    children: 'Feature',
-    variant: 'default',
+    children: "Feature",
+    variant: "default",
   },
 };
 
 export const BugBadge: Story = {
   args: {
-    children: 'Bug',
-    variant: 'destructive',
+    children: "Bug",
+    variant: "destructive",
   },
 };
 
 export const ImprovementBadge: Story = {
   args: {
-    children: 'Improvement',
-    variant: 'secondary',
+    children: "Improvement",
+    variant: "secondary",
   },
 };
 
 export const DocumentationBadge: Story = {
   args: {
-    children: 'Docs',
-    variant: 'outline',
+    children: "Docs",
+    variant: "outline",
   },
 };
 
 // Priority badges
 export const PriorityHigh: Story = {
   args: {
-    children: 'High Priority',
-    variant: 'destructive',
+    children: "High Priority",
+    variant: "destructive",
   },
 };
 
 export const PriorityMedium: Story = {
   args: {
-    children: 'Medium Priority',
-    variant: 'secondary',
+    children: "Medium Priority",
+    variant: "secondary",
   },
 };
 
 export const PriorityLow: Story = {
   args: {
-    children: 'Low Priority',
-    variant: 'outline',
+    children: "Low Priority",
+    variant: "outline",
   },
 };
 
 // Size variations (using text size)
 export const SmallText: Story = {
   args: {
-    children: 'Small',
-    variant: 'default',
-    className: 'text-[10px]',
+    children: "Small",
+    variant: "default",
+    className: "text-[10px]",
   },
 };
 
 export const LargeText: Story = {
   args: {
-    children: 'Large',
-    variant: 'default',
-    className: 'text-sm',
+    children: "Large",
+    variant: "default",
+    className: "text-sm",
   },
 };
 
 // Long text
 export const LongText: Story = {
   args: {
-    children: 'This is a very long badge text',
-    variant: 'default',
+    children: "This is a very long badge text",
+    variant: "default",
   },
 };
 
 export const VeryLongText: Story = {
   args: {
-    children: 'This is an extremely long badge text that might need special handling',
-    variant: 'outline',
+    children: "This is an extremely long badge text that might need special handling",
+    variant: "outline",
   },
 };
 
@@ -243,7 +243,7 @@ export const AsLink: Story = {
   args: {
     asChild: true,
     children: <button>Clickable Badge</button>,
-    variant: 'outline',
+    variant: "outline",
   },
 };
 
@@ -264,44 +264,44 @@ export const GroupedBadges: Story = {
 // Environment badges
 export const EnvironmentDev: Story = {
   args: {
-    children: 'Development',
-    variant: 'secondary',
+    children: "Development",
+    variant: "secondary",
   },
 };
 
 export const EnvironmentStaging: Story = {
   args: {
-    children: 'Staging',
-    variant: 'outline',
+    children: "Staging",
+    variant: "outline",
   },
 };
 
 export const EnvironmentProd: Story = {
   args: {
-    children: 'Production',
-    variant: 'default',
+    children: "Production",
+    variant: "default",
   },
 };
 
 // Role badges
 export const RoleAdmin: Story = {
   args: {
-    children: 'Admin',
-    variant: 'destructive',
+    children: "Admin",
+    variant: "destructive",
   },
 };
 
 export const RoleUser: Story = {
   args: {
-    children: 'User',
-    variant: 'secondary',
+    children: "User",
+    variant: "secondary",
   },
 };
 
 export const RoleGuest: Story = {
   args: {
-    children: 'Guest',
-    variant: 'outline',
+    children: "Guest",
+    variant: "outline",
   },
 };
 

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
-import { Button } from './button';
-import { Input } from './input';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+import { Button } from "./button";
+import { Input } from "./input";
 import {
   Plus,
   Settings,
@@ -14,21 +14,22 @@ import {
   Edit,
   Save,
   X,
-} from 'lucide-react';
-import React from 'react';
+} from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Tooltip',
+  title: "UI/Tooltip",
   component: Tooltip,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
+        component:
+          "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="flex min-h-[200px] w-full items-center justify-center">
@@ -288,8 +289,8 @@ export const LongContent: Story = {
       </TooltipTrigger>
       <TooltipContent className="max-w-xs">
         <p>
-          This is a longer tooltip with more detailed information that wraps to multiple lines
-          when needed.
+          This is a longer tooltip with more detailed information that wraps to multiple lines when
+          needed.
         </p>
       </TooltipContent>
     </Tooltip>

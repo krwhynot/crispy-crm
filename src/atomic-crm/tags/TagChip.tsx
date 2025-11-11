@@ -30,7 +30,7 @@ export function TagChip({ tag, onUnlink }: TagChipProps) {
           "border border-[var(--tag-border)]",
           "transition-all duration-200",
           "hover:shadow-sm hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-          getTagColorClass(tag.color),
+          getTagColorClass(tag.color)
         )}
         onClick={handleClick}
         tabIndex={0}

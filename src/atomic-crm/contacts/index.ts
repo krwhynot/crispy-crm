@@ -12,6 +12,5 @@ export default {
   show: ContactShow,
   edit: ContactEdit,
   create: ContactCreate,
-  recordRepresentation: (record: Contact) =>
-    formatName(record?.first_name, record?.last_name),
+  recordRepresentation: (record: Contact) => formatName(record?.first_name, record?.last_name),
 };

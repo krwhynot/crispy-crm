@@ -10,10 +10,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SelectInput } from "../select-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import {
-  SaveContextProvider,
-  Form as RaForm
-} from "ra-core";
+import { SaveContextProvider, Form as RaForm } from "ra-core";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { useForm } from "react-hook-form";
 import { Form } from "../form";
@@ -23,7 +20,7 @@ import React from "react";
 const FormWrapper = ({
   children,
   defaultValues = {},
-  onSubmit = vi.fn()
+  onSubmit = vi.fn(),
 }: {
   children: React.ReactNode;
   defaultValues?: any;
@@ -32,12 +29,12 @@ const FormWrapper = ({
   const saveContext = {
     save: onSubmit,
     saving: false,
-    mutationMode: "pessimistic" as const
+    mutationMode: "pessimistic" as const,
   };
 
   const form = useForm({
     defaultValues,
-    mode: "onChange"
+    mode: "onChange",
   });
 
   return (
@@ -58,7 +55,7 @@ describe("SelectInput", () => {
     { id: "qualified", name: "Qualified" },
     { id: "proposal", name: "Proposal" },
     { id: "closed_won", name: "Closed Won" },
-    { id: "closed_lost", name: "Closed Lost" }
+    { id: "closed_lost", name: "Closed Lost" },
   ];
 
   test("renders choices correctly", async () => {
@@ -66,11 +63,7 @@ describe("SelectInput", () => {
 
     renderWithAdminContext(
       <FormWrapper>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={mockChoices}
-        />
+        <SelectInput source="stage" label="Stage" choices={mockChoices} />
       </FormWrapper>,
       { resource: "opportunities" }
     );
@@ -81,12 +74,15 @@ describe("SelectInput", () => {
 
     // Check all choices are rendered in the dropdown (role=option)
     // Radix UI Select renders options in a portal, so we need a longer timeout
-    await waitFor(() => {
-      mockChoices.forEach(choice => {
-        const option = screen.getByRole("option", { name: choice.name });
-        expect(option).toBeInTheDocument();
-      });
-    }, { timeout: 10000 });
+    await waitFor(
+      () => {
+        mockChoices.forEach((choice) => {
+          const option = screen.getByRole("option", { name: choice.name });
+          expect(option).toBeInTheDocument();
+        });
+      },
+      { timeout: 10000 }
+    );
   });
 
   test("selects and updates form value", async () => {
@@ -95,11 +91,7 @@ describe("SelectInput", () => {
 
     renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={mockChoices}
-        />
+        <SelectInput source="stage" label="Stage" choices={mockChoices} />
       </FormWrapper>,
       { resource: "opportunities" }
     );
@@ -126,14 +118,17 @@ describe("SelectInput", () => {
     const submitButton = screen.getByText("Submit");
     await user.click(submitButton);
 
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledWith(
-        expect.objectContaining({
-          stage: "qualified"
-        }),
-        expect.anything() // React Admin Form passes event as second parameter
-      );
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        expect(onSubmit).toHaveBeenCalledWith(
+          expect.objectContaining({
+            stage: "qualified",
+          }),
+          expect.anything() // React Admin Form passes event as second parameter
+        );
+      },
+      { timeout: 3000 }
+    );
   });
 
   test("works in reference input mode", async () => {
@@ -143,10 +138,10 @@ describe("SelectInput", () => {
         data: [
           { id: 1, name: "Contact 1" },
           { id: 2, name: "Contact 2" },
-          { id: 3, name: "Contact 3" }
+          { id: 3, name: "Contact 3" },
         ],
-        total: 3
-      })
+        total: 3,
+      }),
     };
 
     renderWithAdminContext(
@@ -157,16 +152,13 @@ describe("SelectInput", () => {
       </FormWrapper>,
       {
         resource: "opportunities",
-        dataProvider: mockDataProvider
+        dataProvider: mockDataProvider,
       }
     );
 
     // Wait for data to load
     await waitFor(() => {
-      expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        "contacts",
-        expect.any(Object)
-      );
+      expect(mockDataProvider.getList).toHaveBeenCalledWith("contacts", expect.any(Object));
     });
 
     // Open select to see referenced choices
@@ -186,11 +178,7 @@ describe("SelectInput", () => {
 
     const { rerender } = renderWithAdminContext(
       <FormWrapper defaultValues={{ stage: "lead" }} onSubmit={onSubmit}>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={mockChoices}
-        />
+        <SelectInput source="stage" label="Stage" choices={mockChoices} />
       </FormWrapper>,
       { resource: "opportunities" }
     );
@@ -202,11 +190,7 @@ describe("SelectInput", () => {
     // Change the value programmatically (simulating external update)
     rerender(
       <FormWrapper defaultValues={{ stage: "qualified" }} onSubmit={onSubmit}>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={mockChoices}
-        />
+        <SelectInput source="stage" label="Stage" choices={mockChoices} />
       </FormWrapper>
     );
 
@@ -222,11 +206,7 @@ describe("SelectInput", () => {
 
     renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={mockChoices}
-        />
+        <SelectInput source="stage" label="Stage" choices={mockChoices} />
       </FormWrapper>,
       { resource: "opportunities" }
     );
@@ -284,16 +264,12 @@ describe("SelectInput", () => {
     const choicesWithDisabled = [
       { id: "lead", name: "Lead" },
       { id: "qualified", name: "Qualified", disabled: true },
-      { id: "proposal", name: "Proposal" }
+      { id: "proposal", name: "Proposal" },
     ];
 
     renderWithAdminContext(
       <FormWrapper>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={choicesWithDisabled}
-        />
+        <SelectInput source="stage" label="Stage" choices={choicesWithDisabled} />
       </FormWrapper>,
       { resource: "opportunities" }
     );
@@ -312,7 +288,7 @@ describe("SelectInput", () => {
     const customChoices = [
       { value: 1, label: "First Option", extra: "data1" },
       { value: 2, label: "Second Option", extra: "data2" },
-      { value: 3, label: "Third Option", extra: "data3" }
+      { value: 3, label: "Third Option", extra: "data3" },
     ];
 
     renderWithAdminContext(
@@ -341,18 +317,13 @@ describe("SelectInput", () => {
   test("shows loading skeleton while choices are loading", () => {
     renderWithAdminContext(
       <FormWrapper>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={undefined}
-          isPending={true}
-        />
+        <SelectInput source="stage" label="Stage" choices={undefined} isPending={true} />
       </FormWrapper>,
       { resource: "opportunities" }
     );
 
     // Should show skeleton instead of select
-    const skeleton = document.querySelector('.w-full.h-9');
+    const skeleton = document.querySelector(".w-full.h-9");
     expect(skeleton).toBeInTheDocument();
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
@@ -362,7 +333,7 @@ describe("SelectInput", () => {
     const translatedChoices = [
       { id: "pending", name: "ra.status.pending" },
       { id: "approved", name: "ra.status.approved" },
-      { id: "rejected", name: "ra.status.rejected" }
+      { id: "rejected", name: "ra.status.rejected" },
     ];
 
     // Mock translations
@@ -371,12 +342,12 @@ describe("SelectInput", () => {
         const translations: Record<string, string> = {
           "ra.status.pending": "Pending",
           "ra.status.approved": "Approved",
-          "ra.status.rejected": "Rejected"
+          "ra.status.rejected": "Rejected",
         };
         return translations[key] || key;
       },
       changeLocale: vi.fn(),
-      getLocale: () => "en"
+      getLocale: () => "en",
     };
 
     renderWithAdminContext(
@@ -390,7 +361,7 @@ describe("SelectInput", () => {
       </FormWrapper>,
       {
         resource: "tasks",
-        i18nProvider: mockI18nProvider
+        i18nProvider: mockI18nProvider,
       }
     );
 
@@ -410,12 +381,7 @@ describe("SelectInput", () => {
 
     renderWithAdminContext(
       <FormWrapper>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={mockChoices}
-          onChange={handleChange}
-        />
+        <SelectInput source="stage" label="Stage" choices={mockChoices} onChange={handleChange} />
       </FormWrapper>,
       { resource: "opportunities" }
     );
@@ -472,14 +438,13 @@ describe("SelectInput", () => {
       renderWithAdminContext(
         <FormWrapper>
           {/* @ts-expect-error - Intentionally omitting source to test error */}
-          <SelectInput
-            label="Invalid"
-            choices={mockChoices}
-          />
+          <SelectInput label="Invalid" choices={mockChoices} />
         </FormWrapper>,
         { resource: "test" }
       );
-    }).toThrow("If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop");
+    }).toThrow(
+      "If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop"
+    );
 
     consoleSpy.mockRestore();
   });
@@ -490,12 +455,7 @@ describe("SelectInput", () => {
 
     renderWithAdminContext(
       <FormWrapper defaultValues={{ stage: "lead" }} onSubmit={onSubmit}>
-        <SelectInput
-          source="stage"
-          label="Stage"
-          choices={mockChoices}
-          emptyValue=""
-        />
+        <SelectInput source="stage" label="Stage" choices={mockChoices} emptyValue="" />
       </FormWrapper>,
       { resource: "opportunities" }
     );
@@ -516,7 +476,7 @@ describe("SelectInput", () => {
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          stage: null // SelectInput clears to null, not empty string
+          stage: null, // SelectInput clears to null, not empty string
         }),
         expect.anything() // React Admin Form passes event as second parameter
       );

@@ -105,7 +105,7 @@ if (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
   supabase = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
 } else {
   console.error(
-    "Missing Supabase configuration. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.",
+    "Missing Supabase configuration. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables."
   );
   process.exit(1);
 }
@@ -118,9 +118,7 @@ async function executeSql(sql, description) {
     if (isDryRun) {
       await log(`[DRY RUN] Would execute: ${description}`);
       if (isVerbose) {
-        await log(
-          `SQL: ${sql.substring(0, 200)}${sql.length > 200 ? "..." : ""}`,
-        );
+        await log(`SQL: ${sql.substring(0, 200)}${sql.length > 200 ? "..." : ""}`);
       }
       return { success: true };
     }
@@ -186,7 +184,7 @@ async function rebuildBTreeIndexes() {
     (idx) =>
       targetTables.includes(idx.tablename) &&
       !idx.indexname.endsWith("_pkey") && // Skip primary keys
-      idx.indexdef.includes("btree"),
+      idx.indexdef.includes("btree")
   );
 
   if (btreeIndexes.length === 0) {
@@ -195,13 +193,11 @@ async function rebuildBTreeIndexes() {
   }
 
   for (const index of btreeIndexes) {
-    await log(
-      `Rebuilding B-tree index: ${index.indexname} on ${index.tablename}`,
-    );
+    await log(`Rebuilding B-tree index: ${index.indexname} on ${index.tablename}`);
 
     const result = await executeSql(
       `REINDEX INDEX CONCURRENTLY ${index.indexname};`,
-      `reindexing ${index.indexname}`,
+      `reindexing ${index.indexname}`
     );
 
     if (!result.success) {
@@ -256,28 +252,21 @@ async function rebuildGinIndexes() {
   ];
 
   const targetTables = specificTables || ["contacts", "opportunities"];
-  const filteredIndexes = ginIndexes.filter((idx) =>
-    targetTables.includes(idx.table),
-  );
+  const filteredIndexes = ginIndexes.filter((idx) => targetTables.includes(idx.table));
 
   for (const index of filteredIndexes) {
-    await log(
-      `Processing GIN index: ${index.indexName} on ${index.table}.${index.column}`,
-    );
+    await log(`Processing GIN index: ${index.indexName} on ${index.table}.${index.column}`);
 
     // Try to reindex if exists, otherwise create
     const reindexResult = await executeSql(
       `REINDEX INDEX CONCURRENTLY ${index.indexName};`,
-      `reindexing GIN ${index.indexName}`,
+      `reindexing GIN ${index.indexName}`
     );
 
     if (!reindexResult.success) {
       // Index might not exist, try to create it
       await log(`Creating new GIN index: ${index.indexName}`);
-      await executeSql(
-        index.createSql,
-        `creating GIN index ${index.indexName}`,
-      );
+      await executeSql(index.createSql, `creating GIN index ${index.indexName}`);
     }
   }
 
@@ -343,14 +332,8 @@ async function rebuildFullTextSearch() {
     },
   ];
 
-  const targetTables = specificTables || [
-    "opportunities",
-    "contacts",
-    "companies",
-  ];
-  const filteredConfigs = ftsConfigs.filter((config) =>
-    targetTables.includes(config.table),
-  );
+  const targetTables = specificTables || ["opportunities", "contacts", "companies"];
+  const filteredConfigs = ftsConfigs.filter((config) => targetTables.includes(config.table));
 
   for (const config of filteredConfigs) {
     await log(`Rebuilding full-text search for: ${config.table}`);
@@ -358,21 +341,18 @@ async function rebuildFullTextSearch() {
     // First, ensure the search_vector column exists
     const addColumnResult = await executeSql(
       `ALTER TABLE ${config.table} ADD COLUMN IF NOT EXISTS ${config.tsvectorColumn} tsvector;`,
-      `adding search vector column to ${config.table}`,
+      `adding search vector column to ${config.table}`
     );
 
     if (addColumnResult.success) {
       // Update search vectors
-      await executeSql(
-        config.updateSql,
-        `updating search vectors for ${config.table}`,
-      );
+      await executeSql(config.updateSql, `updating search vectors for ${config.table}`);
 
       // Create or rebuild the GIN index on the tsvector column
       const indexName = `idx_${config.table}_${config.tsvectorColumn}_gin`;
       await executeSql(
         `CREATE INDEX CONCURRENTLY IF NOT EXISTS ${indexName} ON ${config.table} USING gin(${config.tsvectorColumn});`,
-        `creating search index ${indexName}`,
+        `creating search index ${indexName}`
       );
     }
   }
@@ -411,7 +391,7 @@ async function rebuildMaterializedViews() {
 
     await executeSql(
       `REFRESH MATERIALIZED VIEW CONCURRENTLY ${view.matviewname};`,
-      `refreshing materialized view ${view.matviewname}`,
+      `refreshing materialized view ${view.matviewname}`
     );
   }
 
@@ -552,9 +532,7 @@ async function verifySearchFunctionality() {
     }
   }
 
-  await log(
-    `Search verification completed: ${successCount}/${testQueries.length} tests passed`,
-  );
+  await log(`Search verification completed: ${successCount}/${testQueries.length} tests passed`);
   return successCount === testQueries.length;
 }
 
@@ -584,9 +562,7 @@ async function generateReport() {
 
   if (!isDryRun) {
     const verificationPassed = await verifySearchFunctionality();
-    await log(
-      `Search verification: ${verificationPassed ? "PASSED" : "FAILED"}`,
-    );
+    await log(`Search verification: ${verificationPassed ? "PASSED" : "FAILED"}`);
     await log(`Full log available at: ${CONFIG.LOG_FILE}`);
   }
 }
@@ -623,9 +599,7 @@ async function main() {
       await log("Next steps:");
       await log("1. Test search functionality in the application");
       await log("2. Monitor query performance with EXPLAIN ANALYZE");
-      await log(
-        "3. Clear application cache: node scripts/cache-invalidation.js",
-      );
+      await log("3. Clear application cache: node scripts/cache-invalidation.js");
     }
   } catch (error) {
     await log(`Search index rebuild failed: ${error.message}`, "ERROR");

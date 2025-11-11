@@ -33,7 +33,7 @@ const semanticColorSchema = z
     },
     {
       message: "Invalid color selection. Must be a valid semantic color.",
-    },
+    }
   )
   .transform((value) => {
     // If it's already a valid semantic color, return it
@@ -98,9 +98,7 @@ export const tagWithCountSchema = tagSchema.extend({
  * Schema for tag filter options
  */
 export const tagFilterSchema = z.object({
-  colors: z
-    .array(z.enum(VALID_TAG_COLORS as [TagColorName, ...TagColorName[]]))
-    .optional(),
+  colors: z.array(z.enum(VALID_TAG_COLORS as [TagColorName, ...TagColorName[]])).optional(),
   searchTerm: z.string().optional(),
 });
 
@@ -156,7 +154,7 @@ export function validateTagFilter(options: unknown): TagFilterOptions {
 export function validateTagUniqueness(
   name: string,
   existingTags: Tag[],
-  excludeId?: string | number,
+  excludeId?: string | number
 ): string | undefined {
   const normalizedName = name.trim().toLowerCase();
 

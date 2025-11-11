@@ -32,9 +32,7 @@ const rl = createInterface({
 
 rl.on("line", (line) => {
   // Parse ESLint output lines
-  const warningMatch = line.match(
-    /warning\s+(.+?)\s+(@typescript-eslint\/[\w-]+)/,
-  );
+  const warningMatch = line.match(/warning\s+(.+?)\s+(@typescript-eslint\/[\w-]+)/);
   const errorMatch = line.match(/error\s+(.+?)\s+(@typescript-eslint\/[\w-]+)/);
 
   if (warningMatch) {
@@ -68,31 +66,25 @@ rl.on("close", () => {
 
   if (rules["@typescript-eslint/no-explicit-any"] > 0) {
     console.log(
-      `  • Priority: Fix ${rules["@typescript-eslint/no-explicit-any"]} explicit 'any' usages`,
+      `  • Priority: Fix ${rules["@typescript-eslint/no-explicit-any"]} explicit 'any' usages`
     );
-    console.log(
-      "    Focus on security-critical files first (auth, file upload, data processing)",
-    );
+    console.log("    Focus on security-critical files first (auth, file upload, data processing)");
   }
 
   if (rules["@typescript-eslint/no-unsafe-assignment"] > 0) {
     console.log(
-      `  • Review ${rules["@typescript-eslint/no-unsafe-assignment"]} unsafe assignments for potential type violations`,
+      `  • Review ${rules["@typescript-eslint/no-unsafe-assignment"]} unsafe assignments for potential type violations`
     );
   }
 
   if (rules["@typescript-eslint/no-unsafe-member-access"] > 0) {
     console.log(
-      `  • ${rules["@typescript-eslint/no-unsafe-member-access"]} unsafe member accesses could cause runtime errors`,
+      `  • ${rules["@typescript-eslint/no-unsafe-member-access"]} unsafe member accesses could cause runtime errors`
     );
   }
 
   console.log("\nPhase progression:");
-  console.log(
-    '  Phase 1 (Current): All rules set to "warn" - identify and catalog issues',
-  );
-  console.log(
-    '  Phase 2 (Next): Upgrade critical rules to "error" after fixing security paths',
-  );
+  console.log('  Phase 1 (Current): All rules set to "warn" - identify and catalog issues');
+  console.log('  Phase 2 (Next): Upgrade critical rules to "error" after fixing security paths');
   console.log("  Phase 3 (Future): Full enforcement with selective exceptions");
 });

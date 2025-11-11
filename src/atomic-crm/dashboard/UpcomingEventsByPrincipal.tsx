@@ -37,10 +37,10 @@ interface Activity {
 interface PrincipalEvent {
   principalId: number;
   principalName: string;
-  status: 'good' | 'warning' | 'urgent';
+  status: "good" | "warning" | "urgent";
   events: Array<{
     id: string;
-    type: 'task' | 'activity';
+    type: "task" | "activity";
     title: string;
     date: Date;
     description?: string;
@@ -48,9 +48,9 @@ interface PrincipalEvent {
 }
 
 const STATUS_EMOJIS = {
-  urgent: '🔴',
-  warning: '🟡',
-  good: '🟢',
+  urgent: "🔴",
+  warning: "🟡",
+  good: "🟢",
 };
 
 const STATUS_PRIORITY = {
@@ -65,15 +65,19 @@ export const UpcomingEventsByPrincipal = () => {
   const sevenDaysFromNow = addDays(today, 7);
 
   // Fetch upcoming incomplete tasks
-  const { data: tasks, isPending: tasksLoading, error: tasksError } = useGetList<Task>(
-    'tasks',
+  const {
+    data: tasks,
+    isPending: tasksLoading,
+    error: tasksError,
+  } = useGetList<Task>(
+    "tasks",
     {
       filter: {
         completed: false,
-        'due_date@gte': format(startOfDay(today), 'yyyy-MM-dd'),
-        'due_date@lte': format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+        "due_date@gte": format(startOfDay(today), "yyyy-MM-dd"),
+        "due_date@lte": format(endOfDay(sevenDaysFromNow), "yyyy-MM-dd"),
       },
-      sort: { field: 'due_date', order: 'ASC' },
+      sort: { field: "due_date", order: "ASC" },
     },
     {
       enabled: !!identity?.id, // Don't query until identity is available
@@ -81,15 +85,19 @@ export const UpcomingEventsByPrincipal = () => {
   );
 
   // Fetch upcoming scheduled activities
-  const { data: activities, isPending: activitiesLoading, error: activitiesError } = useGetList<Activity>(
-    'activities',
+  const {
+    data: activities,
+    isPending: activitiesLoading,
+    error: activitiesError,
+  } = useGetList<Activity>(
+    "activities",
     {
       filter: {
         created_by: identity?.id, // Note: activities use created_by, not sales_id
-        'activity_date@gte': format(startOfDay(today), 'yyyy-MM-dd'),
-        'activity_date@lte': format(endOfDay(sevenDaysFromNow), 'yyyy-MM-dd'),
+        "activity_date@gte": format(startOfDay(today), "yyyy-MM-dd"),
+        "activity_date@lte": format(endOfDay(sevenDaysFromNow), "yyyy-MM-dd"),
       },
-      sort: { field: 'activity_date', order: 'ASC' },
+      sort: { field: "activity_date", order: "ASC" },
     },
     {
       enabled: !!identity?.id, // Don't query until identity is available
@@ -98,7 +106,7 @@ export const UpcomingEventsByPrincipal = () => {
 
   // Fetch principal summary for status indicators
   const { data: principals } = useGetList(
-    'dashboard_principal_summary',
+    "dashboard_principal_summary",
     {
       filter: { account_manager_id: identity?.id },
     },
@@ -134,11 +142,7 @@ export const UpcomingEventsByPrincipal = () => {
   }
 
   // Group events by principal
-  const eventsByPrincipal = groupEventsByPrincipal(
-    tasks || [],
-    activities || [],
-    principals || []
-  );
+  const eventsByPrincipal = groupEventsByPrincipal(tasks || [], activities || [], principals || []);
 
   if (eventsByPrincipal.length === 0) {
     return (
@@ -147,9 +151,7 @@ export const UpcomingEventsByPrincipal = () => {
           <CardTitle>Upcoming by Principal</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-muted-foreground">
-            No scheduled events this week
-          </p>
+          <p className="text-muted-foreground">No scheduled events this week</p>
           <p className="text-sm text-muted-foreground">
             Schedule meetings or set task deadlines to stay connected with your principals.
           </p>
@@ -200,7 +202,6 @@ function groupEventsByPrincipal(
   // Add activities to event map (similar logic)
   activities.forEach((_activity) => {
     // if (!activity.opportunity_id) return;
-
     // const event = {
     //   id: `activity-${activity.id}`,
     //   type: 'activity' as const,
@@ -208,7 +209,6 @@ function groupEventsByPrincipal(
     //   date: new Date(activity.activity_date),
     //   description: activity.notes,
     // };
-
     // For now, we'll skip activities without direct principal association
   });
 
@@ -235,7 +235,7 @@ function PrincipalEventGroup({ principal }: { principal: PrincipalEvent }) {
     <div className="space-y-2">
       <div className="font-semibold">
         {statusEmoji} {principal.principalName} ({principal.events.length} event
-        {principal.events.length !== 1 ? 's' : ''})
+        {principal.events.length !== 1 ? "s" : ""})
       </div>
       <div className="ml-6 space-y-2">
         {principal.events.map((event) => (
@@ -246,19 +246,17 @@ function PrincipalEventGroup({ principal }: { principal: PrincipalEvent }) {
   );
 }
 
-function EventItem({ event }: { event: PrincipalEvent['events'][0] }) {
-  const formattedDate = format(event.date, 'EEE M/d');
-  const formattedTime = format(event.date, 'h:mma');
-  const isToday = format(event.date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd');
+function EventItem({ event }: { event: PrincipalEvent["events"][0] }) {
+  const formattedDate = format(event.date, "EEE M/d");
+  const formattedTime = format(event.date, "h:mma");
+  const isToday = format(event.date, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
 
   return (
     <div className="text-sm">
       <div>
-        • {isToday ? 'Today' : formattedDate} {formattedTime} - {event.title}
+        • {isToday ? "Today" : formattedDate} {formattedTime} - {event.title}
       </div>
-      {event.description && (
-        <div className="ml-4 text-muted-foreground">({event.description})</div>
-      )}
+      {event.description && <div className="ml-4 text-muted-foreground">({event.description})</div>}
     </div>
   );
 }

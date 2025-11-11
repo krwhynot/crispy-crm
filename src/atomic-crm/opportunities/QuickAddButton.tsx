@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { QuickAddDialog } from './QuickAddDialog';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { QuickAddDialog } from "./QuickAddDialog";
 
 /**
  * Quick Add Button Component

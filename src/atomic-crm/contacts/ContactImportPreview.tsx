@@ -155,8 +155,8 @@ export function ContactImportPreview({
   const validSamples = sampleValidation.filter((r) => r.valid).length;
 
   // Split mappings into mapped and skipped for better UX
-  const mappedColumns = preview.mappings.filter(m => m.target !== null);
-  const skippedColumns = preview.mappings.filter(m => m.target === null);
+  const mappedColumns = preview.mappings.filter((m) => m.target !== null);
+  const skippedColumns = preview.mappings.filter((m) => m.target === null);
 
   // Get available fields for dropdown
   const availableFieldOptions = getAvailableFieldsWithLabels();
@@ -166,7 +166,7 @@ export function ContactImportPreview({
   const duplicateTargets = new Set<string>();
 
   preview.mappings.forEach((mapping) => {
-    if (mapping.target && mapping.target !== '(ignored - no matching field)') {
+    if (mapping.target && mapping.target !== "(ignored - no matching field)") {
       const count = targetFieldCounts.get(mapping.target) || 0;
       targetFieldCounts.set(mapping.target, count + 1);
 
@@ -181,10 +181,7 @@ export function ContactImportPreview({
   return (
     <div className="flex flex-col gap-4">
       {/* Summary Alert */}
-      <Alert
-        variant={preview.hasErrors ? "destructive" : "default"}
-        className="mb-2"
-      >
+      <Alert variant={preview.hasErrors ? "destructive" : "default"} className="mb-2">
         <AlertTitle className="flex items-center gap-2">
           {preview.hasErrors ? (
             <>
@@ -240,7 +237,8 @@ export function ContactImportPreview({
           <AlertDescription>
             <div className="flex flex-col gap-2">
               <p>
-                Multiple CSV columns cannot be mapped to the same CRM field. Please fix the following duplicates:
+                Multiple CSV columns cannot be mapped to the same CRM field. Please fix the
+                following duplicates:
               </p>
               <ul className="list-disc list-inside">
                 {Array.from(duplicateTargets).map((target) => (
@@ -260,8 +258,10 @@ export function ContactImportPreview({
           <CardHeader>
             <CardTitle>Column Mappings</CardTitle>
             <CardDescription>
-              {mappedColumns.length} CSV column{mappedColumns.length !== 1 ? 's' : ''} will be imported
-              {skippedColumns.length > 0 && ` • ${skippedColumns.length} column${skippedColumns.length !== 1 ? 's' : ''} will be skipped`}
+              {mappedColumns.length} CSV column{mappedColumns.length !== 1 ? "s" : ""} will be
+              imported
+              {skippedColumns.length > 0 &&
+                ` • ${skippedColumns.length} column${skippedColumns.length !== 1 ? "s" : ""} will be skipped`}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -283,12 +283,13 @@ export function ContactImportPreview({
 
                   // Get the actual value to display (handle full name marker)
                   // Use special marker for "no mapping" to avoid empty string (Radix UI doesn't allow empty values)
-                  const displayValue = mapping.target === 'first_name + last_name (will be split)'
-                    ? FULL_NAME_SPLIT_MARKER
-                    : mapping.target || '__no_mapping__';
+                  const displayValue =
+                    mapping.target === "first_name + last_name (will be split)"
+                      ? FULL_NAME_SPLIT_MARKER
+                      : mapping.target || "__no_mapping__";
 
                   return (
-                    <TableRow key={index} className={isUserOverride ? 'bg-blue-50' : ''}>
+                    <TableRow key={index} className={isUserOverride ? "bg-blue-50" : ""}>
                       <TableCell className="font-mono text-sm text-gray-600">
                         {mapping.source}
                         {isUserOverride && (
@@ -306,7 +307,10 @@ export function ContactImportPreview({
                             value={displayValue}
                             onValueChange={(value) => {
                               // Convert special marker back to null for "no mapping"
-                              onMappingChange(mapping.source, value === '__no_mapping__' ? null : value);
+                              onMappingChange(
+                                mapping.source,
+                                value === "__no_mapping__" ? null : value
+                              );
                             }}
                           >
                             <SelectTrigger className="w-full">
@@ -397,10 +401,7 @@ export function ContactImportPreview({
       <Collapsible open={expandedSections.sampleData}>
         <Card>
           <CollapsibleTrigger asChild>
-            <CardHeader
-              className="cursor-pointer"
-              onClick={() => toggleSection("sampleData")}
-            >
+            <CardHeader className="cursor-pointer" onClick={() => toggleSection("sampleData")}>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Sample Data Preview</CardTitle>
@@ -470,17 +471,12 @@ export function ContactImportPreview({
         <Collapsible open={expandedSections.organizations}>
           <Card>
             <CollapsibleTrigger asChild>
-              <CardHeader
-                className="cursor-pointer"
-                onClick={() => toggleSection("organizations")}
-              >
+              <CardHeader className="cursor-pointer" onClick={() => toggleSection("organizations")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Building2 className="h-4 w-4" />
                     <CardTitle>New Organizations</CardTitle>
-                    <Badge variant="secondary">
-                      {preview.newOrganizations.length}
-                    </Badge>
+                    <Badge variant="secondary">{preview.newOrganizations.length}</Badge>
                   </div>
                   {expandedSections.organizations ? (
                     <ChevronUp className="h-4 w-4" />
@@ -488,9 +484,7 @@ export function ContactImportPreview({
                     <ChevronDown className="h-4 w-4" />
                   )}
                 </div>
-                <CardDescription>
-                  These organizations will be created automatically
-                </CardDescription>
+                <CardDescription>These organizations will be created automatically</CardDescription>
               </CardHeader>
             </CollapsibleTrigger>
             <CollapsibleContent>
@@ -513,10 +507,7 @@ export function ContactImportPreview({
         <Collapsible open={expandedSections.tags}>
           <Card>
             <CollapsibleTrigger asChild>
-              <CardHeader
-                className="cursor-pointer"
-                onClick={() => toggleSection("tags")}
-              >
+              <CardHeader className="cursor-pointer" onClick={() => toggleSection("tags")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Tag className="h-4 w-4" />
@@ -529,9 +520,7 @@ export function ContactImportPreview({
                     <ChevronDown className="h-4 w-4" />
                   )}
                 </div>
-                <CardDescription>
-                  These tags will be created automatically
-                </CardDescription>
+                <CardDescription>These tags will be created automatically</CardDescription>
               </CardHeader>
             </CollapsibleTrigger>
             <CollapsibleContent>
@@ -554,16 +543,11 @@ export function ContactImportPreview({
         <Collapsible open={expandedSections.errors}>
           <Card className="border-red-200">
             <CollapsibleTrigger asChild>
-              <CardHeader
-                className="cursor-pointer"
-                onClick={() => toggleSection("errors")}
-              >
+              <CardHeader className="cursor-pointer" onClick={() => toggleSection("errors")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <AlertCircle className="h-4 w-4 text-red-500" />
-                    <CardTitle className="text-red-700">
-                      Validation Errors
-                    </CardTitle>
+                    <CardTitle className="text-red-700">Validation Errors</CardTitle>
                     <Badge variant="destructive">{preview.errors.length}</Badge>
                   </div>
                   {expandedSections.errors ? (
@@ -590,8 +574,7 @@ export function ContactImportPreview({
                         <span className="font-medium">Row {error.row}</span>
                         {error.field && (
                           <span className="text-gray-600"> ({error.field})</span>
-                        )}
-                        : {error.message}
+                        )}: {error.message}
                       </div>
                     </div>
                   ))}
@@ -612,10 +595,7 @@ export function ContactImportPreview({
         <Collapsible open={expandedSections.warnings}>
           <Card className="border-yellow-200">
             <CollapsibleTrigger asChild>
-              <CardHeader
-                className="cursor-pointer"
-                onClick={() => toggleSection("warnings")}
-              >
+              <CardHeader className="cursor-pointer" onClick={() => toggleSection("warnings")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-yellow-500" />
@@ -646,9 +626,7 @@ export function ContactImportPreview({
                       <AlertTriangle className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">Row {warning.row}</span>
-                        {warning.field && (
-                          <span className="text-gray-600"> ({warning.field})</span>
-                        )}
+                        {warning.field && <span className="text-gray-600"> ({warning.field})</span>}
                         : {warning.message}
                       </div>
                     </div>
@@ -701,8 +679,9 @@ export function ContactImportPreview({
                   <HelpCircle className="h-4 w-4" />
                   <AlertTitle>What happens if I import these?</AlertTitle>
                   <AlertDescription>
-                    A placeholder contact named "General Contact" will be created for each organization.
-                    This allows you to maintain organizational records even without specific contact details.
+                    A placeholder contact named "General Contact" will be created for each
+                    organization. This allows you to maintain organizational records even without
+                    specific contact details.
                   </AlertDescription>
                 </Alert>
 
@@ -721,7 +700,8 @@ export function ContactImportPreview({
                     htmlFor="import-orgs-without-contacts"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Create placeholder contacts for these {preview.organizationsWithoutContacts.length} organizations
+                    Create placeholder contacts for these{" "}
+                    {preview.organizationsWithoutContacts.length} organizations
                   </Label>
                 </div>
 
@@ -775,9 +755,7 @@ export function ContactImportPreview({
                     <ChevronDown className="h-4 w-4" />
                   )}
                 </div>
-                <CardDescription>
-                  Contacts missing both email and phone information
-                </CardDescription>
+                <CardDescription>Contacts missing both email and phone information</CardDescription>
               </CardHeader>
             </CollapsibleTrigger>
             <CollapsibleContent>
@@ -786,8 +764,9 @@ export function ContactImportPreview({
                   <AlertTriangle className="h-4 w-4" />
                   <AlertTitle>Limited Usefulness</AlertTitle>
                   <AlertDescription>
-                    These contacts have no email or phone number, which significantly limits their value in a CRM.
-                    You can still import them, but you won't be able to contact them through standard channels.
+                    These contacts have no email or phone number, which significantly limits their
+                    value in a CRM. You can still import them, but you won't be able to contact them
+                    through standard channels.
                   </AlertDescription>
                 </Alert>
 

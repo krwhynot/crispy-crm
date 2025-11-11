@@ -1,33 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './button';
-import { ChevronRight, Download, Mail, Plus, Save, Trash2, X } from 'lucide-react';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./button";
+import { ChevronRight, Download, Mail, Plus, Save, Trash2, X } from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Button',
+  title: "UI/Button",
   component: Button,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
-      description: 'The visual style variant of the button',
+      control: "select",
+      options: ["default", "destructive", "outline", "secondary", "ghost", "link"],
+      description: "The visual style variant of the button",
     },
     size: {
-      control: 'select',
-      options: ['default', 'sm', 'lg', 'icon'],
-      description: 'The size of the button',
+      control: "select",
+      options: ["default", "sm", "lg", "icon"],
+      description: "The size of the button",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Whether the button is disabled',
+      control: "boolean",
+      description: "Whether the button is disabled",
     },
     asChild: {
-      control: 'boolean',
-      description: 'Whether to render as a child component',
+      control: "boolean",
+      description: "Whether to render as a child component",
     },
   },
 } satisfies Meta<typeof Button>;
@@ -38,229 +38,229 @@ type Story = StoryObj<typeof meta>;
 // Default variant - all sizes
 export const Default: Story = {
   args: {
-    children: 'Button',
-    variant: 'default',
-    size: 'default',
+    children: "Button",
+    variant: "default",
+    size: "default",
   },
 };
 
 export const DefaultSmall: Story = {
   args: {
-    children: 'Small',
-    variant: 'default',
-    size: 'sm',
+    children: "Small",
+    variant: "default",
+    size: "sm",
   },
 };
 
 export const DefaultLarge: Story = {
   args: {
-    children: 'Large',
-    variant: 'default',
-    size: 'lg',
+    children: "Large",
+    variant: "default",
+    size: "lg",
   },
 };
 
 export const DefaultIcon: Story = {
   args: {
     children: <Plus className="size-4" />,
-    variant: 'default',
-    size: 'icon',
-    'aria-label': 'Add item',
+    variant: "default",
+    size: "icon",
+    "aria-label": "Add item",
   },
 };
 
 // Destructive variant - all sizes
 export const Destructive: Story = {
   args: {
-    children: 'Delete',
-    variant: 'destructive',
-    size: 'default',
+    children: "Delete",
+    variant: "destructive",
+    size: "default",
   },
 };
 
 export const DestructiveSmall: Story = {
   args: {
-    children: 'Delete',
-    variant: 'destructive',
-    size: 'sm',
+    children: "Delete",
+    variant: "destructive",
+    size: "sm",
   },
 };
 
 export const DestructiveLarge: Story = {
   args: {
-    children: 'Delete',
-    variant: 'destructive',
-    size: 'lg',
+    children: "Delete",
+    variant: "destructive",
+    size: "lg",
   },
 };
 
 export const DestructiveIcon: Story = {
   args: {
     children: <Trash2 className="size-4" />,
-    variant: 'destructive',
-    size: 'icon',
-    'aria-label': 'Delete item',
+    variant: "destructive",
+    size: "icon",
+    "aria-label": "Delete item",
   },
 };
 
 // Outline variant - all sizes
 export const Outline: Story = {
   args: {
-    children: 'Outline',
-    variant: 'outline',
-    size: 'default',
+    children: "Outline",
+    variant: "outline",
+    size: "default",
   },
 };
 
 export const OutlineSmall: Story = {
   args: {
-    children: 'Outline',
-    variant: 'outline',
-    size: 'sm',
+    children: "Outline",
+    variant: "outline",
+    size: "sm",
   },
 };
 
 export const OutlineLarge: Story = {
   args: {
-    children: 'Outline',
-    variant: 'outline',
-    size: 'lg',
+    children: "Outline",
+    variant: "outline",
+    size: "lg",
   },
 };
 
 export const OutlineIcon: Story = {
   args: {
     children: <Download className="size-4" />,
-    variant: 'outline',
-    size: 'icon',
-    'aria-label': 'Download',
+    variant: "outline",
+    size: "icon",
+    "aria-label": "Download",
   },
 };
 
 // Secondary variant - all sizes
 export const Secondary: Story = {
   args: {
-    children: 'Secondary',
-    variant: 'secondary',
-    size: 'default',
+    children: "Secondary",
+    variant: "secondary",
+    size: "default",
   },
 };
 
 export const SecondarySmall: Story = {
   args: {
-    children: 'Secondary',
-    variant: 'secondary',
-    size: 'sm',
+    children: "Secondary",
+    variant: "secondary",
+    size: "sm",
   },
 };
 
 export const SecondaryLarge: Story = {
   args: {
-    children: 'Secondary',
-    variant: 'secondary',
-    size: 'lg',
+    children: "Secondary",
+    variant: "secondary",
+    size: "lg",
   },
 };
 
 export const SecondaryIcon: Story = {
   args: {
     children: <Save className="size-4" />,
-    variant: 'secondary',
-    size: 'icon',
-    'aria-label': 'Save',
+    variant: "secondary",
+    size: "icon",
+    "aria-label": "Save",
   },
 };
 
 // Ghost variant - all sizes
 export const Ghost: Story = {
   args: {
-    children: 'Ghost',
-    variant: 'ghost',
-    size: 'default',
+    children: "Ghost",
+    variant: "ghost",
+    size: "default",
   },
 };
 
 export const GhostSmall: Story = {
   args: {
-    children: 'Ghost',
-    variant: 'ghost',
-    size: 'sm',
+    children: "Ghost",
+    variant: "ghost",
+    size: "sm",
   },
 };
 
 export const GhostLarge: Story = {
   args: {
-    children: 'Ghost',
-    variant: 'ghost',
-    size: 'lg',
+    children: "Ghost",
+    variant: "ghost",
+    size: "lg",
   },
 };
 
 export const GhostIcon: Story = {
   args: {
     children: <X className="size-4" />,
-    variant: 'ghost',
-    size: 'icon',
-    'aria-label': 'Close',
+    variant: "ghost",
+    size: "icon",
+    "aria-label": "Close",
   },
 };
 
 // Link variant - all sizes
 export const Link: Story = {
   args: {
-    children: 'Link',
-    variant: 'link',
-    size: 'default',
+    children: "Link",
+    variant: "link",
+    size: "default",
   },
 };
 
 export const LinkSmall: Story = {
   args: {
-    children: 'Small Link',
-    variant: 'link',
-    size: 'sm',
+    children: "Small Link",
+    variant: "link",
+    size: "sm",
   },
 };
 
 export const LinkLarge: Story = {
   args: {
-    children: 'Large Link',
-    variant: 'link',
-    size: 'lg',
+    children: "Large Link",
+    variant: "link",
+    size: "lg",
   },
 };
 
 export const LinkIcon: Story = {
   args: {
     children: <Mail className="size-4" />,
-    variant: 'link',
-    size: 'icon',
-    'aria-label': 'Email',
+    variant: "link",
+    size: "icon",
+    "aria-label": "Email",
   },
 };
 
 // State variations
 export const Disabled: Story = {
   args: {
-    children: 'Disabled',
+    children: "Disabled",
     disabled: true,
-    variant: 'default',
+    variant: "default",
   },
 };
 
 export const DisabledDestructive: Story = {
   args: {
-    children: 'Disabled',
+    children: "Disabled",
     disabled: true,
-    variant: 'destructive',
+    variant: "destructive",
   },
 };
 
 export const DisabledOutline: Story = {
   args: {
-    children: 'Disabled',
+    children: "Disabled",
     disabled: true,
-    variant: 'outline',
+    variant: "outline",
   },
 };
 
@@ -273,7 +273,7 @@ export const WithIconLeft: Story = {
         Email
       </>
     ),
-    variant: 'default',
+    variant: "default",
   },
 };
 
@@ -285,7 +285,7 @@ export const WithIconRight: Story = {
         <ChevronRight className="size-4" />
       </>
     ),
-    variant: 'default',
+    variant: "default",
   },
 };
 
@@ -298,7 +298,7 @@ export const WithIconBoth: Story = {
         <ChevronRight className="size-4" />
       </>
     ),
-    variant: 'secondary',
+    variant: "secondary",
   },
 };
 
@@ -312,14 +312,14 @@ export const Loading: Story = {
       </>
     ),
     disabled: true,
-    variant: 'default',
+    variant: "default",
   },
 };
 
 // Long text handling
 export const WithLongText: Story = {
   args: {
-    children: 'Button with very long text content that should not wrap',
-    variant: 'default',
+    children: "Button with very long text content that should not wrap",
+    variant: "default",
   },
 };

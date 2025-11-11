@@ -101,10 +101,7 @@ export const useTaskFilterChips = () => {
 
   // Due Date
   if (filterValues?.["due_date@gte"] || filterValues?.["due_date@lte"]) {
-    const label = formatDateRange(
-      filterValues["due_date@gte"],
-      filterValues["due_date@lte"]
-    );
+    const label = formatDateRange(filterValues["due_date@gte"], filterValues["due_date@lte"]);
     chips.push({
       key: "due_date",
       value: { gte: filterValues["due_date@gte"], lte: filterValues["due_date@lte"] },
@@ -140,9 +137,7 @@ export const useTaskFilterChips = () => {
 
   // Type
   if (filterValues?.type) {
-    const typeArray = Array.isArray(filterValues.type)
-      ? filterValues.type
-      : [filterValues.type];
+    const typeArray = Array.isArray(filterValues.type) ? filterValues.type : [filterValues.type];
     typeArray.forEach((type) => {
       chips.push({
         key: "type",

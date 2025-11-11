@@ -92,15 +92,8 @@ class MCPDeploymentValidator {
         WHERE status = 'completed';
       `;
 
-      await this.executeMCPQuery(
-        migrationHistoryQuery,
-        "Migration history accessibility",
-      );
-      this.logResult(
-        "Migration",
-        "Migration history table is accessible",
-        "passed",
-      );
+      await this.executeMCPQuery(migrationHistoryQuery, "Migration history accessibility");
+      this.logResult("Migration", "Migration history table is accessible", "passed");
 
       // Check for failed migrations
       const failedMigrationsQuery = `
@@ -111,10 +104,7 @@ class MCPDeploymentValidator {
         LIMIT 5;
       `;
 
-      await this.executeMCPQuery(
-        failedMigrationsQuery,
-        "Failed migrations check",
-      );
+      await this.executeMCPQuery(failedMigrationsQuery, "Failed migrations check");
 
       // Check for in-progress migrations (interrupted migrations)
       const inProgressQuery = `
@@ -124,10 +114,7 @@ class MCPDeploymentValidator {
         AND applied_at < NOW() - INTERVAL '1 hour';
       `;
 
-      await this.executeMCPQuery(
-        inProgressQuery,
-        "Interrupted migrations check",
-      );
+      await this.executeMCPQuery(inProgressQuery, "Interrupted migrations check");
 
       // Validate latest migration number matches expectations
       const latestMigrationQuery = `
@@ -138,10 +125,7 @@ class MCPDeploymentValidator {
         LIMIT 1;
       `;
 
-      await this.executeMCPQuery(
-        latestMigrationQuery,
-        "Latest migration validation",
-      );
+      await this.executeMCPQuery(latestMigrationQuery, "Latest migration validation");
       this.logResult("Migration", "Latest migration state validated", "passed");
 
       // Check rollback eligibility window
@@ -155,22 +139,10 @@ class MCPDeploymentValidator {
         ORDER BY applied_at DESC;
       `;
 
-      await this.executeMCPQuery(
-        rollbackEligibleQuery,
-        "Rollback eligibility window",
-      );
-      this.logResult(
-        "Migration",
-        "Rollback eligibility window verified",
-        "info",
-      );
+      await this.executeMCPQuery(rollbackEligibleQuery, "Rollback eligibility window");
+      this.logResult("Migration", "Rollback eligibility window verified", "info");
     } catch (error) {
-      this.logResult(
-        "Migration",
-        "Migration state validation failed",
-        "failed",
-        error.message,
-      );
+      this.logResult("Migration", "Migration state validation failed", "failed", error.message);
     }
   }
 
@@ -201,18 +173,9 @@ class MCPDeploymentValidator {
 
         try {
           await this.executeMCPQuery(query, `Table ${table} validation`);
-          this.logResult(
-            "Schema",
-            `Table ${table} exists and accessible`,
-            "passed",
-          );
+          this.logResult("Schema", `Table ${table} exists and accessible`, "passed");
         } catch (error) {
-          this.logResult(
-            "Schema",
-            `Table ${table} validation failed`,
-            "failed",
-            error.message,
-          );
+          this.logResult("Schema", `Table ${table} validation failed`, "failed", error.message);
         }
       }
 
@@ -229,18 +192,9 @@ class MCPDeploymentValidator {
 
         try {
           await this.executeMCPQuery(query, `View ${view} validation`);
-          this.logResult(
-            "Schema",
-            `View ${view} exists and accessible`,
-            "passed",
-          );
+          this.logResult("Schema", `View ${view} exists and accessible`, "passed");
         } catch (viewError) {
-          this.logResult(
-            "Schema",
-            `View ${view} validation failed`,
-            "failed",
-            viewError.message,
-          );
+          this.logResult("Schema", `View ${view} validation failed`, "failed", viewError.message);
         }
       }
 
@@ -258,12 +212,7 @@ class MCPDeploymentValidator {
       this.logResult("Schema", "Required enum types validated", "passed");
 
       // Check for deprecated tables/views (should not exist after migration)
-      const deprecatedItems = [
-        "companies",
-        "deals",
-        "companies_view",
-        "deals_view",
-      ];
+      const deprecatedItems = ["companies", "deals", "companies_view", "deals_view"];
 
       for (const item of deprecatedItems) {
         const query = `
@@ -275,27 +224,18 @@ class MCPDeploymentValidator {
 
         try {
           await this.executeMCPQuery(query, `Deprecated ${item} check`);
-          this.logResult(
-            "Schema",
-            `Deprecated ${item} properly removed`,
-            "passed",
-          );
+          this.logResult("Schema", `Deprecated ${item} properly removed`, "passed");
         } catch (depError) {
           this.logResult(
             "Schema",
             `Could not verify ${item} removal`,
             "warnings",
-            depError.message,
+            depError.message
           );
         }
       }
     } catch (error) {
-      this.logResult(
-        "Schema",
-        "Database schema validation failed",
-        "failed",
-        error.message,
-      );
+      this.logResult("Schema", "Database schema validation failed", "failed", error.message);
     }
   }
 
@@ -305,20 +245,14 @@ class MCPDeploymentValidator {
 
     try {
       // Check that generated types file exists and is recent
-      const typesFile = join(
-        __dirname,
-        "..",
-        "src",
-        "types",
-        "database.generated.ts",
-      );
+      const typesFile = join(__dirname, "..", "src", "types", "database.generated.ts");
 
       if (!existsSync(typesFile)) {
         this.logResult(
           "Types",
           "Generated types file missing",
           "failed",
-          "Run npm run generate:types to create database.generated.ts",
+          "Run npm run generate:types to create database.generated.ts"
         );
         return;
       }
@@ -331,7 +265,7 @@ class MCPDeploymentValidator {
           "Types",
           "Generated types may be stale",
           "warnings",
-          `Types file is ${ageHours.toFixed(1)} hours old`,
+          `Types file is ${ageHours.toFixed(1)} hours old`
         );
       } else {
         this.logResult("Types", "Generated types file is current", "passed");
@@ -346,7 +280,7 @@ class MCPDeploymentValidator {
           "Types",
           "Migration hash file missing",
           "warnings",
-          "Types may not be synchronized with migrations",
+          "Types may not be synchronized with migrations"
         );
       }
 
@@ -363,17 +297,12 @@ class MCPDeploymentValidator {
           "Types",
           "TypeScript compilation failed",
           "failed",
-          "Fix TypeScript errors before deployment",
+          "Fix TypeScript errors before deployment"
         );
       }
 
       // Verify transformer files exist for core entities
-      const coreEntities = [
-        "organizations",
-        "contacts",
-        "opportunities",
-        "tasks",
-      ];
+      const coreEntities = ["organizations", "contacts", "opportunities", "tasks"];
       for (const entity of coreEntities) {
         const transformerFile = join(
           __dirname,
@@ -381,25 +310,16 @@ class MCPDeploymentValidator {
           "src",
           "atomic-crm",
           "transformers",
-          `${entity}.ts`,
+          `${entity}.ts`
         );
         if (existsSync(transformerFile)) {
           this.logResult("Types", `Transformer for ${entity} exists`, "passed");
         } else {
-          this.logResult(
-            "Types",
-            `Transformer for ${entity} missing`,
-            "failed",
-          );
+          this.logResult("Types", `Transformer for ${entity} missing`, "failed");
         }
       }
     } catch (error) {
-      this.logResult(
-        "Types",
-        "TypeScript validation failed",
-        "failed",
-        error.message,
-      );
+      this.logResult("Types", "TypeScript validation failed", "failed", error.message);
     }
   }
 
@@ -421,7 +341,7 @@ class MCPDeploymentValidator {
           "Smoke Tests",
           "Database smoke tests failed",
           "failed",
-          "Check database connectivity and basic operations",
+          "Check database connectivity and basic operations"
         );
       }
 
@@ -438,7 +358,7 @@ class MCPDeploymentValidator {
           "Smoke Tests",
           "Critical path tests failed",
           "warnings",
-          "Some business workflows may have issues",
+          "Some business workflows may have issues"
         );
       }
 
@@ -447,12 +367,7 @@ class MCPDeploymentValidator {
       await this.executeMCPQuery(connectivityQuery, "API connectivity test");
       this.logResult("Smoke Tests", "API connectivity verified", "passed");
     } catch (error) {
-      this.logResult(
-        "Smoke Tests",
-        "Smoke test execution failed",
-        "failed",
-        error.message,
-      );
+      this.logResult("Smoke Tests", "Smoke test execution failed", "failed", error.message);
     }
   }
 
@@ -494,18 +409,9 @@ class MCPDeploymentValidator {
       for (const check of performanceQueries) {
         try {
           await this.executeMCPQuery(check.query, check.name);
-          this.logResult(
-            "Performance",
-            `${check.name} executed successfully`,
-            "passed",
-          );
+          this.logResult("Performance", `${check.name} executed successfully`, "passed");
         } catch (error) {
-          this.logResult(
-            "Performance",
-            `${check.name} failed`,
-            "warnings",
-            error.message,
-          );
+          this.logResult("Performance", `${check.name} failed`, "warnings", error.message);
         }
       }
 
@@ -522,12 +428,7 @@ class MCPDeploymentValidator {
       await this.executeMCPQuery(indexQuery, "Index usage statistics");
       this.logResult("Performance", "Index usage statistics collected", "info");
     } catch (error) {
-      this.logResult(
-        "Performance",
-        "Performance validation failed",
-        "warnings",
-        error.message,
-      );
+      this.logResult("Performance", "Performance validation failed", "warnings", error.message);
     }
   }
 
@@ -557,15 +458,8 @@ class MCPDeploymentValidator {
         AND table_name NOT LIKE '%migration%';
       `;
 
-      await this.executeMCPQuery(
-        sensitiveDataQuery,
-        "Sensitive data exposure check",
-      );
-      this.logResult(
-        "Security",
-        "Sensitive data exposure check completed",
-        "info",
-      );
+      await this.executeMCPQuery(sensitiveDataQuery, "Sensitive data exposure check");
+      this.logResult("Security", "Sensitive data exposure check completed", "info");
 
       // Validate that deleted_at filtering is working
       const softDeleteQuery = `
@@ -585,12 +479,7 @@ class MCPDeploymentValidator {
       await this.executeMCPQuery(softDeleteQuery, "Soft delete validation");
       this.logResult("Security", "Soft delete mechanism validated", "passed");
     } catch (error) {
-      this.logResult(
-        "Security",
-        "Security validation failed",
-        "warnings",
-        error.message,
-      );
+      this.logResult("Security", "Security validation failed", "warnings", error.message);
     }
   }
 
@@ -613,8 +502,7 @@ class MCPDeploymentValidator {
       info: this.results.info.length,
       duration_seconds: parseFloat(duration),
       success_rate:
-        (this.results.passed.length /
-          (this.results.passed.length + this.results.failed.length)) *
+        (this.results.passed.length / (this.results.passed.length + this.results.failed.length)) *
         100,
     };
 
@@ -658,18 +546,11 @@ class MCPDeploymentValidator {
     }
 
     if (this.results.warnings.length > 0) {
-      recommendations.push(
-        "⚠️  Review warnings - some may impact performance or functionality",
-      );
+      recommendations.push("⚠️  Review warnings - some may impact performance or functionality");
     }
 
-    if (
-      this.results.failed.length === 0 &&
-      this.results.warnings.length === 0
-    ) {
-      recommendations.push(
-        "✅ Deployment validation passed - system ready for production",
-      );
+    if (this.results.failed.length === 0 && this.results.warnings.length === 0) {
+      recommendations.push("✅ Deployment validation passed - system ready for production");
     }
 
     if (recommendations.length > 0) {
@@ -737,12 +618,7 @@ class MCPDeploymentValidator {
       // Exit with appropriate code for CI
       process.exit(isReady ? 0 : 1);
     } catch (error) {
-      this.logResult(
-        "System",
-        "Deployment validation failed",
-        "failed",
-        error.message,
-      );
+      this.logResult("System", "Deployment validation failed", "failed", error.message);
       console.error(`\n❌ Validation failed: ${error.message}`);
 
       // Still generate report even if validation failed

@@ -10,56 +10,56 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: [
       // React Admin core - pre-bundle these heavy dependencies
-      'ra-core',
-      'ra-i18n-polyglot',
-      'ra-language-english',
+      "ra-core",
+      "ra-i18n-polyglot",
+      "ra-language-english",
 
       // Supabase
-      '@supabase/supabase-js',
-      'ra-supabase-core',
+      "@supabase/supabase-js",
+      "ra-supabase-core",
 
       // UI Libraries - Radix UI components
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-popover',
-      '@radix-ui/react-select',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-checkbox',
-      '@radix-ui/react-label',
-      '@radix-ui/react-separator',
-      '@radix-ui/react-slot',
-      '@radix-ui/react-switch',
-      '@radix-ui/react-tabs',
-      '@radix-ui/react-tooltip',
-      '@radix-ui/react-accordion',
-      '@radix-ui/react-navigation-menu',
-      '@radix-ui/react-progress',
-      '@radix-ui/react-radio-group',
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-popover",
+      "@radix-ui/react-select",
+      "@radix-ui/react-avatar",
+      "@radix-ui/react-checkbox",
+      "@radix-ui/react-label",
+      "@radix-ui/react-separator",
+      "@radix-ui/react-slot",
+      "@radix-ui/react-switch",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-tooltip",
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-navigation-menu",
+      "@radix-ui/react-progress",
+      "@radix-ui/react-radio-group",
 
       // Heavy libraries
-      '@nivo/bar',
-      '@tanstack/react-query',
-      '@hello-pangea/dnd',
+      "@nivo/bar",
+      "@tanstack/react-query",
+      "@hello-pangea/dnd",
 
       // Form libraries
-      'react-hook-form',
-      '@hookform/resolvers',
-      'zod',
+      "react-hook-form",
+      "@hookform/resolvers",
+      "zod",
 
       // Utilities
-      'date-fns',
-      'lodash',
-      'inflection',
-      'clsx',
-      'class-variance-authority',
-      'lucide-react',
+      "date-fns",
+      "lodash",
+      "inflection",
+      "clsx",
+      "class-variance-authority",
+      "lucide-react",
 
       // File handling
-      'papaparse',
-      'jsonexport',
-      'react-dropzone',
-      'react-cropper'
-    ]
+      "papaparse",
+      "jsonexport",
+      "react-dropzone",
+      "react-cropper",
+    ],
   },
   plugins: [
     react(),
@@ -83,35 +83,36 @@ export default defineConfig(({ mode }) => ({
         },
         tags: [
           {
-            injectTo: 'head',
-            tag: 'meta',
+            injectTo: "head",
+            tag: "meta",
             attrs: {
-              'http-equiv': 'Content-Security-Policy',
-              content: mode === 'production'
-                ? // Production: Stricter security
-                  "default-src 'self'; " +
-                  "script-src 'self'; " +
-                  "style-src 'self' 'unsafe-inline'; " +
-                  "img-src 'self' data: https:; " +
-                  "font-src 'self' data:; " +
-                  "connect-src 'self' https://*.supabase.co https://*.supabase.in; " +
-                  "frame-src 'none'; " +
-                  "object-src 'none'; " +
-                  "base-uri 'self'; " +
-                  "form-action 'self';"
-                : // Development: Allow Vite HMR and inline scripts
-                  "default-src 'self'; " +
-                  "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-                  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-                  "img-src 'self' data: https:; " +
-                  "font-src 'self' data: https://fonts.gstatic.com; " +
-                  "connect-src 'self' http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:* https://*.supabase.co https://*.supabase.in; " +
-                  "frame-src 'none'; " +
-                  "object-src 'none'; " +
-                  "base-uri 'self'; " +
-                  "form-action 'self';"
-            }
-          }
+              "http-equiv": "Content-Security-Policy",
+              content:
+                mode === "production"
+                  ? // Production: Stricter security
+                    "default-src 'self'; " +
+                    "script-src 'self'; " +
+                    "style-src 'self' 'unsafe-inline'; " +
+                    "img-src 'self' data: https:; " +
+                    "font-src 'self' data:; " +
+                    "connect-src 'self' https://*.supabase.co https://*.supabase.in; " +
+                    "frame-src 'none'; " +
+                    "object-src 'none'; " +
+                    "base-uri 'self'; " +
+                    "form-action 'self';"
+                  : // Development: Allow Vite HMR and inline scripts
+                    "default-src 'self'; " +
+                    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+                    "img-src 'self' data: https:; " +
+                    "font-src 'self' data: https://fonts.gstatic.com; " +
+                    "connect-src 'self' http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:* https://*.supabase.co https://*.supabase.in; " +
+                    "frame-src 'none'; " +
+                    "object-src 'none'; " +
+                    "base-uri 'self'; " +
+                    "form-action 'self';",
+            },
+          },
         ],
       },
     }),
@@ -119,29 +120,25 @@ export default defineConfig(({ mode }) => ({
   define:
     process.env.NODE_ENV === "production"
       ? {
-          "import.meta.env.VITE_IS_DEMO": JSON.stringify(
-            process.env.VITE_IS_DEMO,
-          ),
-          "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
-            process.env.VITE_SUPABASE_URL,
-          ),
+          "import.meta.env.VITE_IS_DEMO": JSON.stringify(process.env.VITE_IS_DEMO),
+          "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(process.env.VITE_SUPABASE_URL),
           "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(
-            process.env.VITE_SUPABASE_ANON_KEY,
+            process.env.VITE_SUPABASE_ANON_KEY
           ),
         }
       : undefined,
   server: {
     warmup: {
       clientFiles: [
-        './src/main.tsx',
-        './src/App.tsx',
-        './src/atomic-crm/root/CRM.tsx',
-        './src/atomic-crm/dashboard/Dashboard.tsx'
-      ]
+        "./src/main.tsx",
+        "./src/App.tsx",
+        "./src/atomic-crm/root/CRM.tsx",
+        "./src/atomic-crm/dashboard/Dashboard.tsx",
+      ],
     },
     watch: {
-      ignored: ['**/node_modules/**', '**/dist/**', '**/coverage/**', '**/.git/**']
-    }
+      ignored: ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/.git/**"],
+    },
   },
   esbuild: {
     keepNames: true,
@@ -165,11 +162,7 @@ export default defineConfig(({ mode }) => ({
           "vendor-react": ["react", "react-dom", "react-router-dom"],
 
           // React Admin core - loaded on every page
-          "vendor-ra-core": [
-            "ra-core",
-            "ra-i18n-polyglot",
-            "ra-language-english",
-          ],
+          "vendor-ra-core": ["ra-core", "ra-i18n-polyglot", "ra-language-english"],
 
           // Supabase and data providers
           "vendor-supabase": ["@supabase/supabase-js", "ra-supabase-core"],
@@ -204,21 +197,10 @@ export default defineConfig(({ mode }) => ({
           dnd: ["@hello-pangea/dnd"],
 
           // Utilities that don't need to be in main bundle
-          utils: [
-            "lodash",
-            "date-fns",
-            "clsx",
-            "class-variance-authority",
-            "inflection",
-          ],
+          utils: ["lodash", "date-fns", "clsx", "class-variance-authority", "inflection"],
 
           // File handling
-          "file-utils": [
-            "papaparse",
-            "jsonexport",
-            "react-dropzone",
-            "react-cropper",
-          ],
+          "file-utils": ["papaparse", "jsonexport", "react-dropzone", "react-cropper"],
 
           // Icons - frequently used but can be separate
           icons: ["lucide-react"],

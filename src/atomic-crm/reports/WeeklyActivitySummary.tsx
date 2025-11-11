@@ -62,10 +62,7 @@ export default function WeeklyActivitySummary() {
   });
 
   // Build lookup maps
-  const salesMap = useMemo(
-    () => new Map((sales || []).map((s) => [s.id, s])),
-    [sales]
-  );
+  const salesMap = useMemo(() => new Map((sales || []).map((s) => [s.id, s])), [sales]);
 
   const orgMap = useMemo(
     () => new Map((organizations || []).map((o) => [o.id, o])),
@@ -258,9 +255,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
     0
   );
 
-  const principalStats = Array.from(repGroup.principals.values()).sort(
-    (a, b) => b.total - a.total
-  );
+  const principalStats = Array.from(repGroup.principals.values()).sort((a, b) => b.total - a.total);
 
   return (
     <Card>
@@ -289,7 +284,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
               <tr
                 key={stats.org.id || idx}
                 className="border-b"
-                style={stats.total < 3 ? { backgroundColor: 'var(--warning-light)' } : {}}
+                style={stats.total < 3 ? { backgroundColor: "var(--warning-light)" } : {}}
               >
                 <td className="py-2 flex items-center gap-2">
                   {stats.org.name}

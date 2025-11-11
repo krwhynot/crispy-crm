@@ -4,11 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  tagSchema,
-  validateCreateTag,
-  validateUpdateTag,
-} from "../../tags";
+import { tagSchema, validateCreateTag, validateUpdateTag } from "../../tags";
 
 describe("Tag API Boundary Integration", () => {
   it("should validate at creation boundary", () => {

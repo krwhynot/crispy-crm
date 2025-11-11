@@ -110,9 +110,7 @@ export const DashboardWidget = ({
           {title}
         </h3>
         {icon && (
-          <div className="flex-shrink-0 text-muted-foreground opacity-75 scale-75">
-            {icon}
-          </div>
+          <div className="flex-shrink-0 text-muted-foreground opacity-75 scale-75">{icon}</div>
         )}
       </div>
 
@@ -131,9 +129,7 @@ export const DashboardWidget = ({
           <div className="flex flex-col items-center justify-center gap-3 text-center py-4">
             <AlertCircle className="h-8 w-8 text-destructive" />
             <div>
-              <p className="text-sm font-medium text-destructive mb-1">
-                Unable to load
-              </p>
+              <p className="text-sm font-medium text-destructive mb-1">Unable to load</p>
               <p className="text-xs text-muted-foreground">{error.message}</p>
             </div>
             {onRetry && (

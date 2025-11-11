@@ -1,5 +1,3 @@
- 
- 
 import type { AuthProvider } from "ra-core";
 import { supabaseAuthProvider } from "ra-supabase-core";
 import { canAccess } from "../commons/canAccess";
@@ -40,14 +38,17 @@ export const authProvider: AuthProvider = {
    */
   checkAuth: async (params) => {
     // Always check session first - don't trust URL alone
-    const { data: { session }, error } = await supabase.auth.getSession();
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
 
     // If no valid session, only allow public paths
     if (!session || error) {
       if (isPublicPath(window.location.pathname)) {
         return; // Allow access to public pages without session
       }
-      throw new Error('Not authenticated');
+      throw new Error("Not authenticated");
     }
 
     // Valid session exists, proceed with normal auth check
@@ -71,21 +72,20 @@ export const authProvider: AuthProvider = {
  */
 function isPublicPath(pathname: string): boolean {
   const publicPaths = [
-    '/login',
-    '/forgot-password',
-    '/set-password',  // Only accessible via email recovery link
-    '/reset-password',
+    "/login",
+    "/forgot-password",
+    "/set-password", // Only accessible via email recovery link
+    "/reset-password",
   ];
 
-  return publicPaths.some(path => pathname.startsWith(path));
+  return publicPaths.some((path) => pathname.startsWith(path));
 }
 
 let cachedSale: any;
 const getSaleFromCache = async () => {
   if (cachedSale != null) return cachedSale;
 
-  const { data: dataSession, error: errorSession } =
-    await supabase.auth.getSession();
+  const { data: dataSession, error: errorSession } = await supabase.auth.getSession();
 
   // Shouldn't happen after login but just in case
   if (dataSession?.session?.user == null || errorSession) {

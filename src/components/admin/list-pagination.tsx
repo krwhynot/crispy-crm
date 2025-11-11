@@ -24,15 +24,8 @@ export const ListPagination = ({
   className?: string;
 }) => {
   const translate = useTranslate();
-  const {
-    hasPreviousPage,
-    hasNextPage,
-    page,
-    perPage,
-    setPerPage,
-    total,
-    setPage,
-  } = useListPaginationContext();
+  const { hasPreviousPage, hasNextPage, page, perPage, setPerPage, total, setPage } =
+    useListPaginationContext();
 
   const pageStart = (page - 1) * perPage + 1;
   const pageEnd = hasNextPage ? page * perPage : total;
@@ -47,20 +40,17 @@ export const ListPagination = ({
   };
 
   const startPages = range(1, Math.min(boundaryCount, count));
-  const endPages = range(
-    Math.max(count - boundaryCount + 1, boundaryCount + 1),
-    count,
-  );
+  const endPages = range(Math.max(count - boundaryCount + 1, boundaryCount + 1), count);
 
   const siblingsStart = Math.max(
     Math.min(
       // Natural start
       page - siblingCount,
       // Lower boundary when page is high
-      count - boundaryCount - siblingCount * 2 - 1,
+      count - boundaryCount - siblingCount * 2 - 1
     ),
     // Greater than startPages
-    boundaryCount + 2,
+    boundaryCount + 2
   );
 
   const siblingsEnd = Math.min(
@@ -68,10 +58,10 @@ export const ListPagination = ({
       // Natural end
       page + siblingCount,
       // Upper boundary when page is low
-      boundaryCount + siblingCount * 2 + 2,
+      boundaryCount + siblingCount * 2 + 2
     ),
     // Less than endPages
-    count - boundaryCount - 1,
+    count - boundaryCount - 1
   );
 
   const siblingPages = range(siblingsStart, siblingsEnd);
@@ -84,14 +74,10 @@ export const ListPagination = ({
   };
 
   return (
-    <div
-      className={`flex items-center justify-end space-x-2 gap-4 ${className}`}
-    >
+    <div className={`flex items-center justify-end space-x-2 gap-4 ${className}`}>
       <div className="hidden md:flex items-center space-x-2">
         <p className="text-sm font-medium">
-          <Translate i18nKey="ra.navigation.page_rows_per_page">
-            Rows per page
-          </Translate>
+          <Translate i18nKey="ra.navigation.page_rows_per_page">Rows per page</Translate>
         </p>
         <Select
           value={perPage.toString()}
@@ -120,9 +106,7 @@ export const ListPagination = ({
             total: total === -1 ? pageEnd : total,
           }}
         >
-          {total != null
-            ? `${pageStart}-${pageEnd} of ${total === -1 ? pageEnd : total}`
-            : null}
+          {total != null ? `${pageStart}-${pageEnd} of ${total === -1 ? pageEnd : total}` : null}
         </Translate>
       </div>
       <Pagination className="-w-full -mx-auto">
@@ -133,7 +117,7 @@ export const ListPagination = ({
               onClick={pageChangeHandler(page - 1)}
               className={cn(
                 "gap-1 px-2.5 sm:pr-2.5",
-                !hasPreviousPage ? "opacity-50 cursor-not-allowed" : "",
+                !hasPreviousPage ? "opacity-50 cursor-not-allowed" : ""
               )}
               aria-label={translate("ra.navigation.previous", {
                 _: "Previous",
@@ -212,7 +196,7 @@ export const ListPagination = ({
               size="default"
               className={cn(
                 "gap-1 px-2.5 sm:pr-2.5",
-                !hasNextPage ? "opacity-50 cursor-not-allowed" : "",
+                !hasNextPage ? "opacity-50 cursor-not-allowed" : ""
               )}
               aria-label={translate("ra.navigation.next", { _: "Next" })}
             >

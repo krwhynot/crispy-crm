@@ -26,11 +26,7 @@ interface PrincipalChangeWarningProps {
   newType: string;
 }
 
-export const PrincipalChangeWarning = ({
-  open,
-  onClose,
-  newType,
-}: PrincipalChangeWarningProps) => {
+export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChangeWarningProps) => {
   const record = useRecordContext<Organization>();
 
   // Fetch products for this principal
@@ -59,7 +55,10 @@ export const PrincipalChangeWarning = ({
           <AlertDialogDescription className="space-y-4">
             <p className="text-base">
               <strong>{record?.name}</strong> is currently a <strong>Principal</strong> with{" "}
-              <strong>{productCount} product{productCount !== 1 ? "s" : ""}</strong> assigned.
+              <strong>
+                {productCount} product{productCount !== 1 ? "s" : ""}
+              </strong>{" "}
+              assigned.
             </p>
             <p>
               You cannot change this organization to <strong>{newType}</strong> while products are
@@ -96,9 +95,7 @@ export const PrincipalChangeWarning = ({
             )}
 
             <div className="bg-amber-500/10 border border-amber-500/20 rounded-md p-3">
-              <p className="text-sm font-medium">
-                💡 To change this organization type:
-              </p>
+              <p className="text-sm font-medium">💡 To change this organization type:</p>
               <ol className="text-sm text-[color:var(--text-subtle)] mt-2 ml-4 list-decimal space-y-1">
                 <li>Go to the Products page</li>
                 <li>Reassign these {productCount} products to a different principal</li>

@@ -12,10 +12,8 @@ import { cn } from "@/lib/utils";
 
 import { TextField } from "@/components/admin/text-field";
 
-export const RecordField = <
-  RecordType extends Record<string, any> = Record<string, any>,
->(
-  props: RecordFieldProps<RecordType>,
+export const RecordField = <RecordType extends Record<string, any> = Record<string, any>>(
+  props: RecordFieldProps<RecordType>
 ) => {
   const {
     children,
@@ -38,26 +36,17 @@ export const RecordField = <
 
   return (
     <div
-      className={cn(
-        className,
-        "flex",
-        variant === "inline" ? "flex-row" : "flex-col",
-      )}
+      className={cn(className, "flex", variant === "inline" ? "flex-row" : "flex-col")}
       {...rest}
     >
       {label !== "" && label !== false ? (
         <div
           className={cn(
             variant === "inline" ? "block min-w-50" : "text-xs",
-            "text-[color:var(--text-subtle)]",
+            "text-[color:var(--text-subtle)]"
           )}
         >
-          <FieldTitle
-            label={label}
-            source={source}
-            resource={resource}
-            isRequired={false}
-          />
+          <FieldTitle label={label} source={source} resource={resource} isRequired={false} />
         </div>
       ) : null}
       {children ? (
@@ -65,10 +54,7 @@ export const RecordField = <
       ) : render ? (
         record && (
           <span className="flex-1">
-            {render(record) ||
-              (typeof empty === "string"
-                ? translate(empty, { _: empty })
-                : empty)}
+            {render(record) || (typeof empty === "string" ? translate(empty, { _: empty }) : empty)}
           </span>
         )
       ) : field ? (
@@ -87,9 +73,8 @@ export const RecordField = <
 // FIXME remove custom type when using TypeScript >= 5.4 as it is now native
 type NoInfer<T> = T extends infer U ? U : never;
 
-export interface RecordFieldProps<
-  RecordType extends Record<string, any> = Record<string, any>,
-> extends HTMLAttributes<HTMLDivElement> {
+export interface RecordFieldProps<RecordType extends Record<string, any> = Record<string, any>>
+  extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   className?: string;
   empty?: ReactNode;

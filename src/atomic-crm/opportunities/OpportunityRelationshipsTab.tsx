@@ -73,10 +73,7 @@ export const OpportunityRelationshipsTab = () => {
       </div>
 
       {/* Account Manager */}
-      <ReferenceInput
-        source="account_manager_id"
-        reference="sales"
-      >
+      <ReferenceInput source="account_manager_id" reference="sales">
         <SelectInput
           optionText={(choice) =>
             choice?.first_name || choice?.last_name

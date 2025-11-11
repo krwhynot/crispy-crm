@@ -5,15 +5,15 @@ import { TaskDetailsTab } from "./TaskDetailsTab";
 export const TaskInputs = () => {
   const tabs = [
     {
-      key: 'general',
-      label: 'General',
-      fields: ['title', 'description', 'due_date', 'reminder_date'],
+      key: "general",
+      label: "General",
+      fields: ["title", "description", "due_date", "reminder_date"],
       content: <TaskGeneralTab />,
     },
     {
-      key: 'details',
-      label: 'Details',
-      fields: ['priority', 'type', 'opportunity_id', 'contact_id'],
+      key: "details",
+      label: "Details",
+      fields: ["priority", "type", "opportunity_id", "contact_id"],
       content: <TaskDetailsTab />,
     },
   ];

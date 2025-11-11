@@ -1,11 +1,5 @@
 import { useState, useMemo } from "react";
-import {
-  useGetList,
-  useGetIdentity,
-  useListContext,
-  downloadCSV,
-  type Exporter,
-} from "ra-core";
+import { useGetList, useGetIdentity, useListContext, downloadCSV, type Exporter } from "ra-core";
 import jsonExport from "jsonexport/dist";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
@@ -120,11 +114,7 @@ function TaskListContent({ tasks, showCompleted }: TaskListContentProps) {
   const opportunityIds = useMemo(
     () =>
       Array.from(
-        new Set(
-          tasks
-            .filter((t) => t.opportunity_id)
-            .map((t) => t.opportunity_id as number)
-        )
+        new Set(tasks.filter((t) => t.opportunity_id).map((t) => t.opportunity_id as number))
       ),
     [tasks]
   );
@@ -168,9 +158,7 @@ function TaskListContent({ tasks, showCompleted }: TaskListContentProps) {
     const groups = new Map<string, { principal: string; principalId?: number; tasks: TTask[] }>();
 
     // Filter tasks based on showCompleted
-    const filteredTasks = tasks.filter(
-      (task) => showCompleted || !task.completed_at
-    );
+    const filteredTasks = tasks.filter((task) => showCompleted || !task.completed_at);
 
     filteredTasks.forEach((task) => {
       let principalName = "No Principal";
@@ -244,11 +232,7 @@ function TaskGroup({ group }: TaskGroupProps) {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          {isExpanded ? (
-            <ChevronDown className="w-5 h-5" />
-          ) : (
-            <ChevronRight className="w-5 h-5" />
-          )}
+          {isExpanded ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
           <span className="font-semibold text-lg">{group.principal}</span>
           <span className="text-sm text-muted-foreground">
             ({incompleteTasks.length} task{incompleteTasks.length !== 1 ? "s" : ""})
@@ -296,9 +280,8 @@ function TaskListEmpty() {
       <div className="text-center space-y-4">
         <h3 className="text-xl font-semibold">No tasks yet</h3>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Create your first task to start tracking your work with principals and
-          distributors. Tasks help you answer: "What's the ONE thing I need to do this
-          week?"
+          Create your first task to start tracking your work with principals and distributors. Tasks
+          help you answer: "What's the ONE thing I need to do this week?"
         </p>
         <div className="pt-4">
           <CreateButton label="Create your first task" />
@@ -317,9 +300,7 @@ const exporter: Exporter<TTask> = async (records, fetchRelatedRecords) => {
 
   const organizationIds = Array.from(
     new Set(
-      opportunities
-        .filter((opp) => opp.organization_id)
-        .map((opp) => opp.organization_id as number)
+      opportunities.filter((opp) => opp.organization_id).map((opp) => opp.organization_id as number)
     )
   );
 

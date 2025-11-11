@@ -76,9 +76,7 @@ export class DataQualityAssessor {
   async checkCompanyCompleteness() {
     const { data: companies, error } = await this.supabase
       .from("companies")
-      .select(
-        "id, name, sector, size, domain, logo_url, phone, email, website, created_at",
-      );
+      .select("id, name, sector, size, domain, logo_url, phone, email, website, created_at");
 
     if (error) throw error;
 
@@ -126,15 +124,10 @@ export class DataQualityAssessor {
     });
 
     const averageScore =
-      completenessScores.reduce((sum, score) => sum + score, 0) /
-      completenessScores.length;
+      completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
 
-    const incompleteCompanies = completenessScores.filter(
-      (score) => score < 60,
-    ).length;
-    const completeCompanies = completenessScores.filter(
-      (score) => score >= 80,
-    ).length;
+    const incompleteCompanies = completenessScores.filter((score) => score < 60).length;
+    const completeCompanies = completenessScores.filter((score) => score >= 80).length;
 
     return {
       entity: "companies",
@@ -154,9 +147,7 @@ export class DataQualityAssessor {
   async checkContactCompleteness() {
     const { data: contacts, error } = await this.supabase
       .from("contacts")
-      .select(
-        "id, first_name, last_name, title, email, phone, company_id, avatar_url, created_at",
-      );
+      .select("id, first_name, last_name, title, email, phone, company_id, avatar_url, created_at");
 
     if (error) throw error;
 
@@ -181,20 +172,10 @@ export class DataQualityAssessor {
 
       // Important fields
       maxScore += 15; // email
-      if (
-        contact.email &&
-        Array.isArray(contact.email) &&
-        contact.email.length > 0
-      )
-        score += 15;
+      if (contact.email && Array.isArray(contact.email) && contact.email.length > 0) score += 15;
 
       maxScore += 10; // phone
-      if (
-        contact.phone &&
-        Array.isArray(contact.phone) &&
-        contact.phone.length > 0
-      )
-        score += 10;
+      if (contact.phone && Array.isArray(contact.phone) && contact.phone.length > 0) score += 10;
 
       maxScore += 10; // title
       if (contact.title && contact.title.trim() !== "") score += 10;
@@ -210,8 +191,7 @@ export class DataQualityAssessor {
     });
 
     const averageScore =
-      completenessScores.reduce((sum, score) => sum + score, 0) /
-      completenessScores.length;
+      completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
 
     return {
       entity: "contacts",
@@ -232,7 +212,7 @@ export class DataQualityAssessor {
     const { data: deals, error } = await this.supabase
       .from("deals")
       .select(
-        "id, name, stage, expected_revenue, probability, company_id, contact_ids, expected_close_date, created_at",
+        "id, name, stage, expected_revenue, probability, company_id, contact_ids, expected_close_date, created_at"
       );
 
     if (error) throw error;
@@ -261,11 +241,7 @@ export class DataQualityAssessor {
       if (deal.expected_revenue && deal.expected_revenue > 0) score += 15;
 
       maxScore += 10; // contact_ids
-      if (
-        deal.contact_ids &&
-        Array.isArray(deal.contact_ids) &&
-        deal.contact_ids.length > 0
-      )
+      if (deal.contact_ids && Array.isArray(deal.contact_ids) && deal.contact_ids.length > 0)
         score += 10;
 
       maxScore += 10; // expected_close_date
@@ -279,8 +255,7 @@ export class DataQualityAssessor {
     });
 
     const averageScore =
-      completenessScores.reduce((sum, score) => sum + score, 0) /
-      completenessScores.length;
+      completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
 
     return {
       entity: "deals",
@@ -299,9 +274,7 @@ export class DataQualityAssessor {
    */
   async checkNoteCompleteness() {
     const [contactNotesResult, dealNotesResult] = await Promise.all([
-      this.supabase
-        .from("contactNotes")
-        .select("id, text, sales_rep, created_at"),
+      this.supabase.from("contactNotes").select("id, text, sales_rep, created_at"),
       this.supabase.from("dealNotes").select("id, text, sales_rep, created_at"),
     ]);
 
@@ -319,8 +292,7 @@ export class DataQualityAssessor {
       let maxScore = 0;
 
       maxScore += 70; // text
-      if (note.text && note.text.trim() !== "" && note.text.length > 10)
-        score += 70;
+      if (note.text && note.text.trim() !== "" && note.text.length > 10) score += 70;
 
       maxScore += 20; // sales_rep
       if (note.sales_rep && note.sales_rep.trim() !== "") score += 20;
@@ -332,8 +304,7 @@ export class DataQualityAssessor {
     });
 
     const averageScore =
-      completenessScores.reduce((sum, score) => sum + score, 0) /
-      completenessScores.length;
+      completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
 
     return {
       entity: "notes",
@@ -385,8 +356,7 @@ export class DataQualityAssessor {
     });
 
     const averageScore =
-      completenessScores.reduce((sum, score) => sum + score, 0) /
-      completenessScores.length;
+      completenessScores.reduce((sum, score) => sum + score, 0) / completenessScores.length;
 
     return {
       entity: "tasks",
@@ -439,9 +409,7 @@ export class DataQualityAssessor {
    * Check email format accuracy
    */
   async checkEmailFormats() {
-    const { data: contacts, error } = await this.supabase
-      .from("contacts")
-      .select("id, email");
+    const { data: contacts, error } = await this.supabase.from("contacts").select("id, email");
 
     if (error) throw error;
 
@@ -492,9 +460,7 @@ export class DataQualityAssessor {
    * Check phone format accuracy
    */
   async checkPhoneFormats() {
-    const { data: contacts, error } = await this.supabase
-      .from("contacts")
-      .select("id, phone");
+    const { data: contacts, error } = await this.supabase.from("contacts").select("id, phone");
 
     if (error) throw error;
 
@@ -571,8 +537,7 @@ export class DataQualityAssessor {
       }
     }
 
-    const score =
-      totalWebsites === 0 ? 100 : (validWebsites / totalWebsites) * 100;
+    const score = totalWebsites === 0 ? 100 : (validWebsites / totalWebsites) * 100;
 
     return {
       check: "website_formats",
@@ -660,12 +625,9 @@ export class DataQualityAssessor {
       }
     }
 
-    const revenueScore =
-      totalRevenues === 0 ? 100 : (validRevenues / totalRevenues) * 100;
+    const revenueScore = totalRevenues === 0 ? 100 : (validRevenues / totalRevenues) * 100;
     const probabilityScore =
-      totalProbabilities === 0
-        ? 100
-        : (validProbabilities / totalProbabilities) * 100;
+      totalProbabilities === 0 ? 100 : (validProbabilities / totalProbabilities) * 100;
     const overallScore = (revenueScore + probabilityScore) / 2;
 
     return {
@@ -716,9 +678,7 @@ export class DataQualityAssessor {
    */
   async checkNameConsistency() {
     // Check for variations in company names that might be duplicates
-    const { data: companies, error } = await this.supabase
-      .from("companies")
-      .select("id, name");
+    const { data: companies, error } = await this.supabase.from("companies").select("id, name");
 
     if (error) throw error;
 
@@ -739,15 +699,12 @@ export class DataQualityAssessor {
       nameVariations.get(normalized).push(company);
     }
 
-    const duplicateGroups = Array.from(nameVariations.values()).filter(
-      (group) => group.length > 1,
-    );
+    const duplicateGroups = Array.from(nameVariations.values()).filter((group) => group.length > 1);
 
     const score =
       companies.length === 0
         ? 100
-        : ((companies.length -
-            duplicateGroups.reduce((sum, group) => sum + group.length - 1, 0)) /
+        : ((companies.length - duplicateGroups.reduce((sum, group) => sum + group.length - 1, 0)) /
             companies.length) *
           100;
 
@@ -757,10 +714,7 @@ export class DataQualityAssessor {
       details: {
         totalCompanies: companies.length,
         duplicateGroups: duplicateGroups.length,
-        affectedCompanies: duplicateGroups.reduce(
-          (sum, group) => sum + group.length,
-          0,
-        ),
+        affectedCompanies: duplicateGroups.reduce((sum, group) => sum + group.length, 0),
       },
     };
   }
@@ -842,11 +796,7 @@ export class DataQualityAssessor {
     let totalDealsWithContacts = 0;
 
     for (const deal of deals || []) {
-      if (
-        !deal.contact_ids ||
-        !Array.isArray(deal.contact_ids) ||
-        deal.contact_ids.length === 0
-      ) {
+      if (!deal.contact_ids || !Array.isArray(deal.contact_ids) || deal.contact_ids.length === 0) {
         continue;
       }
 
@@ -860,11 +810,7 @@ export class DataQualityAssessor {
           .eq("id", contactId)
           .single();
 
-        if (
-          contactError ||
-          !contact ||
-          contact.company_id !== deal.company_id
-        ) {
+        if (contactError || !contact || contact.company_id !== deal.company_id) {
           isConsistent = false;
           break;
         }
@@ -874,9 +820,7 @@ export class DataQualityAssessor {
     }
 
     const score =
-      totalDealsWithContacts === 0
-        ? 100
-        : (consistentDeals / totalDealsWithContacts) * 100;
+      totalDealsWithContacts === 0 ? 100 : (consistentDeals / totalDealsWithContacts) * 100;
 
     return {
       check: "relationship_consistency",
@@ -944,9 +888,7 @@ export class DataQualityAssessor {
     };
 
     console.log("📊 Data quality assessment complete");
-    console.log(
-      `Overall Score: ${report.overallScore.toFixed(1)}% (${qualityLevel})`,
-    );
+    console.log(`Overall Score: ${report.overallScore.toFixed(1)}% (${qualityLevel})`);
     console.log(`Status: ${report.status}`);
 
     return report;
@@ -998,9 +940,7 @@ if (import.meta.url === new URL(process.argv[1], "file://").href) {
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.error(
-      "❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables",
-    );
+    console.error("❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables");
     process.exit(1);
   }
 
@@ -1015,9 +955,7 @@ if (import.meta.url === new URL(process.argv[1], "file://").href) {
     console.log(`Status: ${report.status}`);
 
     if (report.status === "WARNING") {
-      console.warn(
-        "⚠️ Data quality below 99% threshold - review recommendations",
-      );
+      console.warn("⚠️ Data quality below 99% threshold - review recommendations");
       process.exit(0);
     } else {
       console.log("✅ Data quality passed");

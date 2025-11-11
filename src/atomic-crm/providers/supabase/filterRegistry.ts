@@ -24,8 +24,8 @@ export const filterableFields: Record<string, string[]> = {
     "id",
     "first_name",
     "last_name",
-    "email",           // JSONB field - search applies to email array
-    "phone",           // JSONB field - search applies to phone array
+    "email", // JSONB field - search applies to email array
+    "phone", // JSONB field - search applies to phone array
     "title",
     "department",
     "city",
@@ -38,14 +38,14 @@ export const filterableFields: Record<string, string[]> = {
     "sales_id",
     "created_at",
     "updated_at",
-    "deleted_at",      // Soft delete timestamp
+    "deleted_at", // Soft delete timestamp
     "last_seen",
     "first_seen",
     "gender",
-    "tags",            // Array field
+    "tags", // Array field
     "organization_id",
-    "company_name",    // From organizations join
-    "q",               // Special: full-text search parameter
+    "company_name", // From organizations join
+    "q", // Special: full-text search parameter
   ],
 
   // Contacts Summary View (database view with computed fields)
@@ -54,8 +54,8 @@ export const filterableFields: Record<string, string[]> = {
     "id",
     "first_name",
     "last_name",
-    "email",           // JSONB field - search applies to email array
-    "phone",           // JSONB field - search applies to phone array
+    "email", // JSONB field - search applies to email array
+    "phone", // JSONB field - search applies to phone array
     "title",
     "department",
     "city",
@@ -68,14 +68,14 @@ export const filterableFields: Record<string, string[]> = {
     "sales_id",
     "created_at",
     "updated_at",
-    "deleted_at",      // Soft delete timestamp
+    "deleted_at", // Soft delete timestamp
     "last_seen",
     "first_seen",
     "gender",
-    "tags",            // Array field
+    "tags", // Array field
     "organization_id",
-    "company_name",    // From organizations join
-    "q",               // Special: full-text search parameter
+    "company_name", // From organizations join
+    "q", // Special: full-text search parameter
   ],
 
   // Organizations resource
@@ -96,8 +96,8 @@ export const filterableFields: Record<string, string[]> = {
     "segment_id",
     "created_at",
     "updated_at",
-    "deleted_at",      // Soft delete timestamp
-    "q",               // Special: full-text search parameter
+    "deleted_at", // Soft delete timestamp
+    "q", // Special: full-text search parameter
   ],
 
   // Opportunities resource
@@ -117,30 +117,30 @@ export const filterableFields: Record<string, string[]> = {
     "stage_manual",
     "status_manual",
     "next_action_date",
-    "contact_ids",     // Array field
+    "contact_ids", // Array field
     "opportunity_owner_id",
     "account_manager_id",
     "lead_source",
-    "tags",            // Array field
-    "created_by",      // Added: creator/owner field (equivalent to sales_id in other resources)
+    "tags", // Array field
+    "created_by", // Added: creator/owner field (equivalent to sales_id in other resources)
     "created_at",
     "updated_at",
-    "deleted_at",      // Soft delete timestamp
-    "q",               // Special: full-text search parameter
+    "deleted_at", // Soft delete timestamp
+    "q", // Special: full-text search parameter
   ],
 
   // Dashboard Principal Summary View (principal-centric dashboard)
   dashboard_principal_summary: [
-    "id",                  // Aliased from principal_organization_id in view
+    "id", // Aliased from principal_organization_id in view
     "principal_name",
     "account_manager_id",
     "opportunity_count",
     "last_activity_date",
     "last_activity_type",
     "days_since_last_activity",
-    "status_indicator",    // Enum: good/warning/urgent
+    "status_indicator", // Enum: good/warning/urgent
     "max_days_in_stage",
-    "is_stuck",            // Boolean: 30+ days in same stage
+    "is_stuck", // Boolean: 30+ days in same stage
     "next_action",
     "priority_score",
   ],
@@ -159,34 +159,27 @@ export const filterableFields: Record<string, string[]> = {
     "follow_up_required",
     "follow_up_date",
     "sentiment",
-    "tags",            // Array field
+    "tags", // Array field
     "created_at",
     "updated_at",
-    "deleted_at",      // Soft delete timestamp
-    "created_by",      // FK to sales (for filtering by creator)
+    "deleted_at", // Soft delete timestamp
+    "created_by", // FK to sales (for filtering by creator)
   ],
 
   // Tags resource
-  tags: [
-    "id",
-    "name",
-    "color",
-    "usage_count",
-    "created_at",
-    "updated_at",
-  ],
+  tags: ["id", "name", "color", "usage_count", "created_at", "updated_at"],
 
   // Sales resource (users)
   sales: [
     "id",
-    "user_id",         // UUID reference to auth.users
+    "user_id", // UUID reference to auth.users
     "first_name",
     "last_name",
     "email",
     "phone",
     "administrator",
     "disabled",
-    "deleted_at",      // Soft delete timestamp
+    "deleted_at", // Soft delete timestamp
     "avatar",
     "created_at",
     "updated_at",
@@ -195,21 +188,21 @@ export const filterableFields: Record<string, string[]> = {
   // Tasks resource
   tasks: [
     "id",
-    "title",            // Changed from "text" to match database column
-    "description",      // Task description field
-    "type",             // Task type enum (Call, Email, Meeting, etc.)
-    "priority",         // Priority level enum (low, medium, high, critical)
+    "title", // Changed from "text" to match database column
+    "description", // Task description field
+    "type", // Task type enum (Call, Email, Meeting, etc.)
+    "priority", // Priority level enum (low, medium, high, critical)
     "contact_id",
     "opportunity_id",
     "due_date",
-    "reminder_date",    // Optional reminder date
-    "completed",        // Boolean field for filtering incomplete/complete tasks
-    "completed_at",     // Changed from "done_date" to match database column
-    "sales_id",         // FK to sales (for filtering by assignee)
-    "created_by",       // FK to sales (created by user)
+    "reminder_date", // Optional reminder date
+    "completed", // Boolean field for filtering incomplete/complete tasks
+    "completed_at", // Changed from "done_date" to match database column
+    "sales_id", // FK to sales (for filtering by assignee)
+    "created_by", // FK to sales (created by user)
     "created_at",
     "updated_at",
-    "q",                // Special: full-text search parameter
+    "q", // Special: full-text search parameter
   ],
 
   // Contact Notes resource
@@ -218,7 +211,7 @@ export const filterableFields: Record<string, string[]> = {
     "contact_id",
     "text",
     "date",
-    "attachments",     // Array field
+    "attachments", // Array field
     "sales_id",
     "created_at",
     "updated_at",
@@ -230,19 +223,14 @@ export const filterableFields: Record<string, string[]> = {
     "opportunity_id",
     "text",
     "date",
-    "attachments",     // Array field
+    "attachments", // Array field
     "sales_id",
     "created_at",
     "updated_at",
   ],
 
   // Segments resource
-  segments: [
-    "id",
-    "name",
-    "created_at",
-    "created_by",
-  ],
+  segments: ["id", "name", "created_at", "created_by"],
 
   // Products resource
   products: [
@@ -254,25 +242,22 @@ export const filterableFields: Record<string, string[]> = {
     "sku",
     "category",
     "status",
-    "certifications",  // Array field
-    "allergens",       // Array field
+    "certifications", // Array field
+    "allergens", // Array field
     "ingredients",
     "marketing_description",
     "created_at",
     "updated_at",
     "created_by",
     "updated_by",
-    "deleted_at",      // Soft delete timestamp
+    "deleted_at", // Soft delete timestamp
     "minimum_order_quantity",
     "manufacturer_part_number",
-    "q",               // Special: full-text search parameter
+    "q", // Special: full-text search parameter
   ],
 
   // Distinct Product Categories view (for filter dropdowns)
-  distinct_product_categories: [
-    "id",
-    "name",
-  ],
+  distinct_product_categories: ["id", "name"],
 
   // Notifications resource
   notifications: [
@@ -284,7 +269,7 @@ export const filterableFields: Record<string, string[]> = {
     "entity_id",
     "read",
     "created_at",
-    "q",               // Special: full-text search parameter
+    "q", // Special: full-text search parameter
   ],
 };
 
@@ -302,14 +287,14 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
 
   // PostgREST logical operators have no field prefix - whitelist them
   // These are special operators used for combining conditions
-  const POSTGREST_LOGICAL_OPERATORS = ['@or', '@and', '@not'];
+  const POSTGREST_LOGICAL_OPERATORS = ["@or", "@and", "@not"];
   if (POSTGREST_LOGICAL_OPERATORS.includes(filterKey)) {
     return true;
   }
 
   // Extract base field name, handling React Admin's filter operators
   // Examples: "last_seen@gte" -> "last_seen", "name@like" -> "name"
-  const baseField = filterKey.split('@')[0];
+  const baseField = filterKey.split("@")[0];
 
   return allowedFields.includes(baseField) || allowedFields.includes(filterKey);
 }

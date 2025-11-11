@@ -15,22 +15,16 @@ Object.defineProperty(globalThis, "crypto", {
 });
 
 it("should return gravatar URL for anthony@marmelab.com", async () => {
-  const email: EmailAndType[] = [
-    { email: "anthony@marmelab.com", type: "Work" },
-  ];
+  const email: EmailAndType[] = [{ email: "anthony@marmelab.com", type: "Work" }];
   const record: Partial<Contact> = { email: email };
 
   const avatarUrl = await getContactAvatar(record);
   const hashedEmail = await hash(email[0].email);
-  expect(avatarUrl).toBe(
-    `https://www.gravatar.com/avatar/${hashedEmail}?d=404`,
-  );
+  expect(avatarUrl).toBe(`https://www.gravatar.com/avatar/${hashedEmail}?d=404`);
 });
 
 it("should return favicon URL if gravatar does not exist", async () => {
-  const email: EmailAndType[] = [
-    { email: "no-gravatar@gravatar.com", type: "Work" },
-  ];
+  const email: EmailAndType[] = [{ email: "no-gravatar@gravatar.com", type: "Work" }];
   const record: Partial<Contact> = { email: email };
 
   const avatarUrl = await getContactAvatar(record);
@@ -38,9 +32,7 @@ it("should return favicon URL if gravatar does not exist", async () => {
 });
 
 it("should not return favicon URL if not domain not allowed", async () => {
-  const email: EmailAndType[] = [
-    { email: "no-gravatar@gmail.com", type: "Work" },
-  ];
+  const email: EmailAndType[] = [{ email: "no-gravatar@gmail.com", type: "Work" }];
   const record: Partial<Contact> = { email: email };
 
   const avatarUrl = await getContactAvatar(record);
@@ -63,9 +55,7 @@ it("should return null if an empty array is provided", async () => {
 });
 
 it("should return null if email has no gravatar or validate domain", async () => {
-  const email: EmailAndType[] = [
-    { email: "anthony@fake-domain-marmelab.com", type: "Work" },
-  ];
+  const email: EmailAndType[] = [{ email: "anthony@fake-domain-marmelab.com", type: "Work" }];
   const record: Partial<Contact> = { email: email };
 
   const avatarUrl = await getContactAvatar(record);
@@ -81,7 +71,5 @@ it("should return gravatar URL for 2nd email if 1st email has no gravatar nor va
 
   const avatarUrl = await getContactAvatar(record);
   const hashedEmail = await hash(email[1].email);
-  expect(avatarUrl).toBe(
-    `https://www.gravatar.com/avatar/${hashedEmail}?d=404`,
-  );
+  expect(avatarUrl).toBe(`https://www.gravatar.com/avatar/${hashedEmail}?d=404`);
 });

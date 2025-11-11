@@ -16,11 +16,7 @@ export const OrganizationAvatar = (props: {
 
   return (
     <Avatar className={sizeClass}>
-      <AvatarImage
-        src={record.logo?.src}
-        alt={record.name}
-        className="object-contain"
-      />
+      <AvatarImage src={record.logo?.src} alt={record.name} className="object-contain" />
       <AvatarFallback className={width !== 40 ? "text-xs" : "text-sm"}>
         {record.name.charAt(0)}
       </AvatarFallback>

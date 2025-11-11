@@ -1,21 +1,21 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { QuickAddButton } from '../QuickAddButton';
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QuickAddButton } from "../QuickAddButton";
 
 // Mock dependencies
-vi.mock('../hooks/useQuickAdd', () => ({
+vi.mock("../hooks/useQuickAdd", () => ({
   useQuickAdd: vi.fn(() => ({
     mutate: vi.fn(),
     isPending: false,
   })),
 }));
 
-vi.mock('ra-core', () => ({
+vi.mock("ra-core", () => ({
   useGetList: vi.fn(() => ({
     data: [
-      { id: 1, name: 'Principal A' },
-      { id: 2, name: 'Principal B' },
+      { id: 1, name: "Principal A" },
+      { id: 2, name: "Principal B" },
     ],
     isLoading: false,
   })),
@@ -32,40 +32,40 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
 
-describe('QuickAddButton', () => {
-  it('renders button with correct text', () => {
+describe("QuickAddButton", () => {
+  it("renders button with correct text", () => {
     render(<QuickAddButton />, { wrapper: TestWrapper });
     // Button contains both emoji and text
-    const button = screen.getByRole('button');
+    const button = screen.getByRole("button");
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent('⚡ Quick Add');
+    expect(button).toHaveTextContent("⚡ Quick Add");
   });
 
-  it('has correct variant and size', () => {
+  it("has correct variant and size", () => {
     render(<QuickAddButton />, { wrapper: TestWrapper });
-    const button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-background'); // outline variant includes bg-background
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("bg-background"); // outline variant includes bg-background
   });
 
-  it('opens dialog when clicked', () => {
+  it("opens dialog when clicked", () => {
     render(<QuickAddButton />, { wrapper: TestWrapper });
-    const button = screen.getByRole('button');
+    const button = screen.getByRole("button");
 
     // Dialog should not be visible initially
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
     // Click the button
     fireEvent.click(button);
 
     // Dialog should now be visible
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(screen.getByText('Quick Add Booth Visitor')).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText("Quick Add Booth Visitor")).toBeInTheDocument();
   });
 
-  it('ensures minimum touch target size', () => {
+  it("ensures minimum touch target size", () => {
     render(<QuickAddButton />, { wrapper: TestWrapper });
-    const button = screen.getByRole('button');
-    expect(button).toHaveClass('min-h-[44px]');
-    expect(button).toHaveClass('min-w-[44px]');
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("min-h-[44px]");
+    expect(button).toHaveClass("min-w-[44px]");
   });
 });

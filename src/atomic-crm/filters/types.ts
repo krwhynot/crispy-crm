@@ -49,7 +49,7 @@ export interface FilterChoice {
 export interface FilterConfig {
   key: string;
   label: string;
-  type: 'select' | 'multiselect' | 'reference' | 'search' | 'toggle';
+  type: "select" | "multiselect" | "reference" | "search" | "toggle";
   choices?: FilterChoice[];
   defaultValue?: FilterValue;
   dynamicChoices?: boolean;
@@ -112,29 +112,24 @@ export const isValidFilterValue = (value: any): value is FilterValue => {
   if (value === null || value === undefined) return true;
 
   if (Array.isArray(value)) {
-    return value.every(item =>
-      typeof item === 'string' ||
-      typeof item === 'number'
-    );
+    return value.every((item) => typeof item === "string" || typeof item === "number");
   }
 
-  return typeof value === 'string' ||
-         typeof value === 'number' ||
-         typeof value === 'boolean';
+  return typeof value === "string" || typeof value === "number" || typeof value === "boolean";
 };
 
 /**
  * Constants for filter keys
  */
 export const FILTER_KEYS = {
-  STAGE: 'stage',
-  PRIORITY: 'priority',
-  TAGS: 'tags',
-  CUSTOMER_ORGANIZATION: 'customer_organization_id',
-  OPPORTUNITY_OWNER: 'opportunity_owner_id',
-  ONLY_MINE: 'only_mine',
-  SEARCH: 'q',
-  DELETED_AT: 'deleted_at',
+  STAGE: "stage",
+  PRIORITY: "priority",
+  TAGS: "tags",
+  CUSTOMER_ORGANIZATION: "customer_organization_id",
+  OPPORTUNITY_OWNER: "opportunity_owner_id",
+  ONLY_MINE: "only_mine",
+  SEARCH: "q",
+  DELETED_AT: "deleted_at",
 } as const;
 
-export type FilterKey = typeof FILTER_KEYS[keyof typeof FILTER_KEYS];
+export type FilterKey = (typeof FILTER_KEYS)[keyof typeof FILTER_KEYS];

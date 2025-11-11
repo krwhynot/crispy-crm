@@ -29,9 +29,7 @@ export class StorageService {
       // Sign URL check if path exists in the bucket
       if (fi.path) {
         try {
-          const { data } = supabase.storage
-            .from("attachments")
-            .getPublicUrl(fi.path);
+          const { data } = supabase.storage.from("attachments").getPublicUrl(fi.path);
 
           // If we can get a public URL, the file exists
           if (data?.publicUrl) {
@@ -43,9 +41,7 @@ export class StorageService {
       }
     }
 
-    const dataContent = fi.src
-      ? await fetch(fi.src).then((res) => res.blob())
-      : fi.rawFile;
+    const dataContent = fi.src ? await fetch(fi.src).then((res) => res.blob()) : fi.rawFile;
 
     const file = fi.rawFile;
     const fileExt = file.name.split(".").pop();
@@ -80,15 +76,13 @@ export class StorageService {
   async upload(bucket: string, path: string, file: File | Blob): Promise<{ path: string }> {
     // Validate file size (10MB limit)
     if (file.size > 10 * 1024 * 1024) {
-      throw new Error('File size exceeds 10MB limit');
+      throw new Error("File size exceeds 10MB limit");
     }
 
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(path, file, {
-        cacheControl: '3600',
-        upsert: true,
-      });
+    const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
 
     if (error) {
       console.error(`[StorageService] Upload failed`, error);
@@ -115,9 +109,7 @@ export class StorageService {
    * @param paths Array of file paths to remove
    */
   async remove(bucket: string, paths: string[]): Promise<void> {
-    const { error } = await supabase.storage
-      .from(bucket)
-      .remove(paths);
+    const { error } = await supabase.storage.from(bucket).remove(paths);
 
     if (error) {
       console.error(`[StorageService] Remove failed`, error);
@@ -132,9 +124,7 @@ export class StorageService {
    * @returns Array of file metadata
    */
   async list(bucket: string, path?: string): Promise<StorageFileObject[]> {
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .list(path);
+    const { data, error } = await supabase.storage.from(bucket).list(path);
 
     if (error) {
       console.error(`[StorageService] List failed`, error);
@@ -155,7 +145,7 @@ export class StorageService {
       const { data } = supabase.storage.from(bucket).getPublicUrl(path);
 
       // Try to fetch the URL to verify it exists
-      const response = await fetch(data.publicUrl, { method: 'HEAD' });
+      const response = await fetch(data.publicUrl, { method: "HEAD" });
       return response.ok;
     } catch {
       return false;

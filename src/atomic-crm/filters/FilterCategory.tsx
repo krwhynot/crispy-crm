@@ -46,9 +46,7 @@ export const FilterCategory = ({
         />
       </button>
       {isExpanded && (
-        <div className="flex flex-col items-start gap-2 pl-7 mt-2 mb-2">
-          {children}
-        </div>
+        <div className="flex flex-col items-start gap-2 pl-7 mt-2 mb-2">{children}</div>
       )}
     </div>
   );

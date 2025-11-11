@@ -8,6 +8,5 @@ export default {
   list: SalesList,
   create: SalesCreate,
   edit: SalesEdit,
-  recordRepresentation: (record: Sale) =>
-    formatName(record.first_name, record.last_name),
+  recordRepresentation: (record: Sale) => formatName(record.first_name, record.last_name),
 };

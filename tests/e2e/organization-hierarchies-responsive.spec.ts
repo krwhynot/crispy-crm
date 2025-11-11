@@ -1,4 +1,4 @@
-import { test, expect } from './support/fixtures/authenticated';
+import { test, expect } from "./support/fixtures/authenticated";
 
 /**
  * Organization Hierarchies - iPad Responsive Design E2E Tests
@@ -13,22 +13,22 @@ import { test, expect } from './support/fixtures/authenticated';
  * Simulates iPad (768px viewport) and validates layout behavior
  */
 
-test.describe('Organization Hierarchies - iPad Responsive Design', () => {
+test.describe("Organization Hierarchies - iPad Responsive Design", () => {
   test.beforeEach(async ({ authenticatedPage }) => {
     // Set iPad viewport: 768x1024
     await authenticatedPage.setViewportSize({ width: 768, height: 1024 });
 
     // Navigate to organizations
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
 
     // Wait for page to load
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.waitForLoadState("networkidle");
     await authenticatedPage.waitForTimeout(500);
   });
 
-  test('HierarchyBreadcrumb renders correctly on iPad', async ({ authenticatedPage }) => {
+  test("HierarchyBreadcrumb renders correctly on iPad", async ({ authenticatedPage }) => {
     // Look for first organization that has a parent (hierarchy breadcrumb)
-    const orgRows = authenticatedPage.locator('tbody tr');
+    const orgRows = authenticatedPage.locator("tbody tr");
     const rowCount = await orgRows.count();
 
     if (rowCount === 0) {
@@ -36,10 +36,10 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
     }
 
     // Try to find an org with hierarchy by clicking the first one
-    const firstOrgLink = authenticatedPage.locator('tbody tr:first-child a').first();
+    const firstOrgLink = authenticatedPage.locator("tbody tr:first-child a").first();
     if (await firstOrgLink.isVisible()) {
       await firstOrgLink.click();
-      await authenticatedPage.waitForLoadState('networkidle');
+      await authenticatedPage.waitForLoadState("networkidle");
     }
 
     // Check if breadcrumb exists and is readable
@@ -67,17 +67,17 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
         expect(itemsCount).toBeGreaterThanOrEqual(2);
       }
 
-      console.log('✓ HierarchyBreadcrumb renders correctly on iPad');
+      console.log("✓ HierarchyBreadcrumb renders correctly on iPad");
     }
   });
 
-  test('BranchLocationsSection table scrolls properly on iPad', async ({ authenticatedPage }) => {
+  test("BranchLocationsSection table scrolls properly on iPad", async ({ authenticatedPage }) => {
     // Navigate to organizations list
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
     // Look for an org that might have branches
-    const orgRows = authenticatedPage.locator('tbody tr');
+    const orgRows = authenticatedPage.locator("tbody tr");
     const rowCount = await orgRows.count();
 
     if (rowCount === 0) {
@@ -85,10 +85,10 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
     }
 
     // Click first organization to view detail
-    const firstOrgLink = authenticatedPage.locator('tbody tr:first-child a').first();
+    const firstOrgLink = authenticatedPage.locator("tbody tr:first-child a").first();
     if (await firstOrgLink.isVisible()) {
       await firstOrgLink.click();
-      await authenticatedPage.waitForLoadState('networkidle');
+      await authenticatedPage.waitForLoadState("networkidle");
       await authenticatedPage.waitForTimeout(500);
     }
 
@@ -97,7 +97,7 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
 
     if (await branchSection.isVisible().catch(() => false)) {
       // Find the table within the section
-      const table = branchSection.locator('table');
+      const table = branchSection.locator("table");
 
       if (await table.isVisible()) {
         const boundingBox = await table.boundingBox();
@@ -108,12 +108,15 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
         if (boundingBox && boundingBox.width > 748) {
           // Table is wider than iPad viewport - should have horizontal scroll capability
           const container = branchSection.locator('[class*="overflow"]');
-          const scrollable = await container.first().isVisible().catch(() => false);
+          const scrollable = await container
+            .first()
+            .isVisible()
+            .catch(() => false);
           expect(scrollable || boundingBox.width <= 748).toBeTruthy();
         }
 
         // Verify table content is readable (not collapsed unexpectedly)
-        const tableHeaders = table.locator('th');
+        const tableHeaders = table.locator("th");
         const headerCount = await tableHeaders.count();
         expect(headerCount).toBeGreaterThan(0);
 
@@ -122,12 +125,12 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
     }
   });
 
-  test('ParentOrganizationSection stacks vertically on iPad', async ({ authenticatedPage }) => {
+  test("ParentOrganizationSection stacks vertically on iPad", async ({ authenticatedPage }) => {
     // Navigate to organizations
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
-    const orgRows = authenticatedPage.locator('tbody tr');
+    const orgRows = authenticatedPage.locator("tbody tr");
     const rowCount = await orgRows.count();
 
     if (rowCount === 0) {
@@ -135,10 +138,10 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
     }
 
     // Click first organization
-    const firstOrgLink = authenticatedPage.locator('tbody tr:first-child a').first();
+    const firstOrgLink = authenticatedPage.locator("tbody tr:first-child a").first();
     if (await firstOrgLink.isVisible()) {
       await firstOrgLink.click();
-      await authenticatedPage.waitForLoadState('networkidle');
+      await authenticatedPage.waitForLoadState("networkidle");
       await authenticatedPage.waitForTimeout(500);
     }
 
@@ -156,7 +159,7 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
       }
 
       // Verify content is readable
-      const links = parentSection.locator('a');
+      const links = parentSection.locator("a");
       const linkCount = await links.count();
 
       // If parent section exists, should have at least one link (parent org)
@@ -166,13 +169,13 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
     }
   });
 
-  test('All buttons have minimum 44x44px touch targets on iPad', async ({ authenticatedPage }) => {
+  test("All buttons have minimum 44x44px touch targets on iPad", async ({ authenticatedPage }) => {
     // Navigate to organizations
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
     // Find all buttons on the page
-    const buttons = authenticatedPage.locator('button');
+    const buttons = authenticatedPage.locator("button");
     const buttonCount = await buttons.count();
 
     if (buttonCount === 0) {
@@ -206,15 +209,22 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
     console.log(`✓ Sampled ${Math.min(10, buttonCount)} buttons meet minimum touch target size`);
   });
 
-  test('Filter panel stacks appropriately on iPad', async ({ authenticatedPage }) => {
+  test("Filter panel stacks appropriately on iPad", async ({ authenticatedPage }) => {
     // Navigate to organizations with filters visible
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
     // Look for filter panel
-    const filterPanel = authenticatedPage.locator('[data-testid="filter-panel"], [class*="filter"], [class*="aside"]');
+    const filterPanel = authenticatedPage.locator(
+      '[data-testid="filter-panel"], [class*="filter"], [class*="aside"]'
+    );
 
-    if (await filterPanel.first().isVisible().catch(() => false)) {
+    if (
+      await filterPanel
+        .first()
+        .isVisible()
+        .catch(() => false)
+    ) {
       const boundingBox = await filterPanel.first().boundingBox();
       expect(boundingBox).not.toBeNull();
 
@@ -224,45 +234,49 @@ test.describe('Organization Hierarchies - iPad Responsive Design', () => {
         expect(boundingBox.width).toBeLessThanOrEqual(768);
       }
 
-      console.log('✓ Filter panel renders appropriately on iPad');
+      console.log("✓ Filter panel renders appropriately on iPad");
     } else {
       // Filter might not be visible by default on iPad - that's acceptable
-      console.log('ℹ Filter panel not visible in initial view (expected on iPad)');
+      console.log("ℹ Filter panel not visible in initial view (expected on iPad)");
     }
   });
 
-  test('Organization detail layout is readable on iPad without horizontal scroll', async ({ authenticatedPage }) => {
+  test("Organization detail layout is readable on iPad without horizontal scroll", async ({
+    authenticatedPage,
+  }) => {
     // Navigate to first organization detail
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
-    const orgRows = authenticatedPage.locator('tbody tr');
+    const orgRows = authenticatedPage.locator("tbody tr");
     const rowCount = await orgRows.count();
 
     if (rowCount === 0) {
       test.skip();
     }
 
-    const firstOrgLink = authenticatedPage.locator('tbody tr:first-child a').first();
+    const firstOrgLink = authenticatedPage.locator("tbody tr:first-child a").first();
     if (await firstOrgLink.isVisible()) {
       await firstOrgLink.click();
-      await authenticatedPage.waitForLoadState('networkidle');
+      await authenticatedPage.waitForLoadState("networkidle");
       await authenticatedPage.waitForTimeout(500);
     }
 
     // Get the main content area
-    const mainContent = authenticatedPage.locator('main');
+    const mainContent = authenticatedPage.locator("main");
 
     if (await mainContent.isVisible()) {
       // Check if page has no unexpected overflow
-      const scrollWidth = await mainContent.evaluate(el => el.scrollWidth);
-      const clientWidth = await mainContent.evaluate(el => el.clientWidth);
+      const scrollWidth = await mainContent.evaluate((el) => el.scrollWidth);
+      const clientWidth = await mainContent.evaluate((el) => el.clientWidth);
 
       // Allow some tolerance for acceptable horizontal scroll
       const scrollRatio = scrollWidth / clientWidth;
       expect(scrollRatio).toBeLessThanOrEqual(1.1); // Allow up to 10% overflow
 
-      console.log(`✓ Organization detail layout readable on iPad (scroll ratio: ${scrollRatio.toFixed(2)})`);
+      console.log(
+        `✓ Organization detail layout readable on iPad (scroll ratio: ${scrollRatio.toFixed(2)})`
+      );
     }
   });
 });

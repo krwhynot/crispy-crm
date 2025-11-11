@@ -80,9 +80,7 @@ describe("Task Validation Schemas", () => {
       };
       expect(() => taskSchema.parse(withNumberIds)).not.toThrow();
 
-      expect(() =>
-        taskSchema.parse({ ...validTask, id: "task-123" }),
-      ).not.toThrow();
+      expect(() => taskSchema.parse({ ...validTask, id: "task-123" })).not.toThrow();
       expect(() => taskSchema.parse({ ...validTask, id: 789 })).not.toThrow();
     });
 
@@ -142,7 +140,7 @@ describe("Task Validation Schemas", () => {
       expect(() =>
         createTaskSchema.parse({
           title: "Test",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
@@ -150,7 +148,7 @@ describe("Task Validation Schemas", () => {
           title: "Test",
           contact_id: "contact-123",
           type: "Call",
-        }),
+        })
       ).toThrow(z.ZodError);
     });
 
@@ -202,20 +200,16 @@ describe("Task Validation Schemas", () => {
     });
 
     it("should allow partial updates", () => {
+      expect(() => updateTaskSchema.parse({ id: "t-1", title: "New text" })).not.toThrow();
+      expect(() => updateTaskSchema.parse({ id: "t-1", type: "Email" })).not.toThrow();
       expect(() =>
-        updateTaskSchema.parse({ id: "t-1", title: "New text" }),
-      ).not.toThrow();
-      expect(() =>
-        updateTaskSchema.parse({ id: "t-1", type: "Email" }),
-      ).not.toThrow();
-      expect(() =>
-        updateTaskSchema.parse({ id: "t-1", due_date: "2025-01-01T10:00:00Z" }),
+        updateTaskSchema.parse({ id: "t-1", due_date: "2025-01-01T10:00:00Z" })
       ).not.toThrow();
       expect(() =>
         updateTaskSchema.parse({
           id: "t-1",
           completed_at: "2024-12-31T10:00:00Z",
-        }),
+        })
       ).not.toThrow();
       expect(() => updateTaskSchema.parse({ id: "t-1" })).not.toThrow();
     });
@@ -252,9 +246,7 @@ describe("Task Validation Schemas", () => {
         sales_id: "user-456",
       };
 
-      expect(() =>
-        taskWithReminderSchema.parse(validTaskWithReminder),
-      ).not.toThrow();
+      expect(() => taskWithReminderSchema.parse(validTaskWithReminder)).not.toThrow();
     });
 
     it("should reject tasks with past due dates for reminders", () => {
@@ -269,9 +261,7 @@ describe("Task Validation Schemas", () => {
         sales_id: "user-456",
       };
 
-      expect(() =>
-        taskWithReminderSchema.parse(invalidTaskWithReminder),
-      ).toThrow(z.ZodError);
+      expect(() => taskWithReminderSchema.parse(invalidTaskWithReminder)).toThrow(z.ZodError);
     });
 
     it("should handle tasks without due dates", () => {
@@ -283,9 +273,7 @@ describe("Task Validation Schemas", () => {
         sales_id: "user-456",
       };
 
-      expect(() => taskWithReminderSchema.parse(taskWithoutDueDate)).toThrow(
-        z.ZodError,
-      );
+      expect(() => taskWithReminderSchema.parse(taskWithoutDueDate)).toThrow(z.ZodError);
     });
   });
 

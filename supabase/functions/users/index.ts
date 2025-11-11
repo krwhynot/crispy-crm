@@ -17,10 +17,7 @@ async function updateSaleDisabled(user_id: string, disabled: boolean) {
     .eq("user_id", user_id);
 }
 
-async function updateSaleAdministrator(
-  user_id: string,
-  administrator: boolean,
-) {
+async function updateSaleAdministrator(user_id: string, administrator: boolean) {
   const { data: sales, error: salesError } = await supabaseAdmin
     .from("sales")
     .update({ administrator })
@@ -49,8 +46,7 @@ async function updateSaleAvatar(user_id: string, avatar: string) {
 }
 
 async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Record<string, string>) {
-  const { email, password, first_name, last_name, disabled, administrator } =
-    await req.json();
+  const { email, password, first_name, last_name, disabled, administrator } = await req.json();
 
   if (!currentUserSale.administrator) {
     return createErrorResponse(401, "Not Authorized", corsHeaders);
@@ -62,8 +58,7 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
     user_metadata: { first_name, last_name },
   });
 
-  const { error: emailError } =
-    await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+  const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
 
   if (!data?.user || userError) {
     console.error(`Error inviting user: user_error=${userError}`);
@@ -85,7 +80,7 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
       }),
       {
         headers: { "Content-Type": "application/json", ...corsHeaders },
-      },
+      }
     );
   } catch (e) {
     console.error("Error patching sale:", e);
@@ -94,20 +89,9 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
 }
 
 async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record<string, string>) {
-  const {
-    sales_id,
-    email,
-    first_name,
-    last_name,
-    avatar,
-    administrator,
-    disabled,
-  } = await req.json();
-  const { data: sale } = await supabaseAdmin
-    .from("sales")
-    .select("*")
-    .eq("id", sales_id)
-    .single();
+  const { sales_id, email, first_name, last_name, avatar, administrator, disabled } =
+    await req.json();
+  const { data: sale } = await supabaseAdmin.from("sales").select("*").eq("id", sales_id).single();
 
   if (!sale) {
     return createErrorResponse(404, "Not Found", corsHeaders);
@@ -118,12 +102,11 @@ async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
-  const { data, error: userError } =
-    await supabaseAdmin.auth.admin.updateUserById(sale.user_id, {
-      email,
-      ban_duration: disabled ? "87600h" : "none",
-      user_metadata: { first_name, last_name },
-    });
+  const { data, error: userError } = await supabaseAdmin.auth.admin.updateUserById(sale.user_id, {
+    email,
+    ban_duration: disabled ? "87600h" : "none",
+    user_metadata: { first_name, last_name },
+  });
 
   if (!data?.user || userError) {
     console.error("Error patching user:", userError);
@@ -150,7 +133,7 @@ async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record
           "Content-Type": "application/json",
           ...corsHeaders,
         },
-      },
+      }
     );
   }
 
@@ -166,7 +149,7 @@ async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record
           "Content-Type": "application/json",
           ...corsHeaders,
         },
-      },
+      }
     );
   } catch (e) {
     console.error("Error patching sale:", e);
@@ -189,7 +172,7 @@ Deno.serve(async (req: Request) => {
   const localClient = createClient(
     Deno.env.get("SUPABASE_URL") ?? "",
     Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-    { global: { headers: { Authorization: authHeader } } },
+    { global: { headers: { Authorization: authHeader } } }
   );
   const { data } = await localClient.auth.getUser();
   if (!data?.user) {

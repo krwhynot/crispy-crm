@@ -19,7 +19,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Layers, CircleDot, UserPlus, Download } from "lucide-react";
 import type { Opportunity } from "../types";
-import { OPPORTUNITY_STAGES, getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
+import {
+  OPPORTUNITY_STAGES,
+  getOpportunityStageLabel,
+  getOpportunityStageColor,
+} from "./stageConstants";
 import { useExportOpportunities } from "./hooks/useExportOpportunities";
 
 type BulkAction = "change_stage" | "change_status" | "assign_owner" | null;
@@ -38,7 +42,11 @@ const STATUS_OPTIONS = [
   { value: "expired", label: "Expired", icon: XCircle, variant: "destructive" as const },
 ];
 
-export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems }: BulkActionsToolbarProps) => {
+export const BulkActionsToolbar = ({
+  selectedIds,
+  opportunities,
+  onUnselectItems,
+}: BulkActionsToolbarProps) => {
   const [activeAction, setActiveAction] = useState<BulkAction>(null);
   const [selectedStage, setSelectedStage] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
@@ -109,12 +117,15 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
       // Show results
       if (successCount > 0) {
-        notify(`Successfully updated ${successCount} opportunit${successCount === 1 ? 'y' : 'ies'}`, {
-          type: "success",
-        });
+        notify(
+          `Successfully updated ${successCount} opportunit${successCount === 1 ? "y" : "ies"}`,
+          {
+            type: "success",
+          }
+        );
       }
       if (failureCount > 0) {
-        notify(`Failed to update ${failureCount} opportunit${failureCount === 1 ? 'y' : 'ies'}`, {
+        notify(`Failed to update ${failureCount} opportunit${failureCount === 1 ? "y" : "ies"}`, {
           type: "error",
         });
       }
@@ -181,12 +192,7 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
         {/* Export button */}
         <div className="ml-auto">
-          <Button
-            variant="default"
-            size="sm"
-            onClick={handleExport}
-            className="gap-2"
-          >
+          <Button variant="default" size="sm" onClick={handleExport} className="gap-2">
             <Download className="h-4 w-4" />
             Export CSV
           </Button>
@@ -194,19 +200,25 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
       </div>
 
       {/* Change Stage Dialog */}
-      <Dialog open={activeAction === "change_stage"} onOpenChange={(open) => !open && handleCloseDialog()}>
+      <Dialog
+        open={activeAction === "change_stage"}
+        onOpenChange={(open) => !open && handleCloseDialog()}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Change Stage</DialogTitle>
             <DialogDescription>
-              Update the stage for {selectedIds.length} selected opportunit{selectedIds.length === 1 ? 'y' : 'ies'}
+              Update the stage for {selectedIds.length} selected opportunit
+              {selectedIds.length === 1 ? "y" : "ies"}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             {/* Show affected opportunities */}
             <div className="rounded-lg border border-border bg-muted/50 p-3 max-h-40 overflow-y-auto">
-              <p className="text-xs font-medium text-muted-foreground mb-2">Affected opportunities:</p>
+              <p className="text-xs font-medium text-muted-foreground mb-2">
+                Affected opportunities:
+              </p>
               <div className="space-y-1">
                 {selectedOpportunities.map((opp) => (
                   <div key={opp.id} className="text-sm flex items-center justify-between">
@@ -224,7 +236,9 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
             {/* Stage selector */}
             <div className="space-y-2">
-              <label htmlFor="bulk-stage-select" className="text-sm font-medium">New Stage</label>
+              <label htmlFor="bulk-stage-select" className="text-sm font-medium">
+                New Stage
+              </label>
               <Select value={selectedStage} onValueChange={setSelectedStage}>
                 <SelectTrigger id="bulk-stage-select">
                   <SelectValue placeholder="Select a stage" />
@@ -252,19 +266,25 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
       </Dialog>
 
       {/* Change Status Dialog */}
-      <Dialog open={activeAction === "change_status"} onOpenChange={(open) => !open && handleCloseDialog()}>
+      <Dialog
+        open={activeAction === "change_status"}
+        onOpenChange={(open) => !open && handleCloseDialog()}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Change Status</DialogTitle>
             <DialogDescription>
-              Update the status for {selectedIds.length} selected opportunit{selectedIds.length === 1 ? 'y' : 'ies'}
+              Update the status for {selectedIds.length} selected opportunit
+              {selectedIds.length === 1 ? "y" : "ies"}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             {/* Show affected opportunities */}
             <div className="rounded-lg border border-border bg-muted/50 p-3 max-h-40 overflow-y-auto">
-              <p className="text-xs font-medium text-muted-foreground mb-2">Affected opportunities:</p>
+              <p className="text-xs font-medium text-muted-foreground mb-2">
+                Affected opportunities:
+              </p>
               <div className="space-y-1">
                 {selectedOpportunities.map((opp) => (
                   <div key={opp.id} className="text-sm flex items-center justify-between">
@@ -279,7 +299,9 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
             {/* Status selector */}
             <div className="space-y-2">
-              <label htmlFor="bulk-status-select" className="text-sm font-medium">New Status</label>
+              <label htmlFor="bulk-status-select" className="text-sm font-medium">
+                New Status
+              </label>
               <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                 <SelectTrigger id="bulk-status-select">
                   <SelectValue placeholder="Select a status" />
@@ -307,19 +329,25 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
       </Dialog>
 
       {/* Assign Owner Dialog */}
-      <Dialog open={activeAction === "assign_owner"} onOpenChange={(open) => !open && handleCloseDialog()}>
+      <Dialog
+        open={activeAction === "assign_owner"}
+        onOpenChange={(open) => !open && handleCloseDialog()}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Assign Owner</DialogTitle>
             <DialogDescription>
-              Assign an owner to {selectedIds.length} selected opportunit{selectedIds.length === 1 ? 'y' : 'ies'}
+              Assign an owner to {selectedIds.length} selected opportunit
+              {selectedIds.length === 1 ? "y" : "ies"}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             {/* Show affected opportunities */}
             <div className="rounded-lg border border-border bg-muted/50 p-3 max-h-40 overflow-y-auto">
-              <p className="text-xs font-medium text-muted-foreground mb-2">Affected opportunities:</p>
+              <p className="text-xs font-medium text-muted-foreground mb-2">
+                Affected opportunities:
+              </p>
               <div className="space-y-1">
                 {selectedOpportunities.map((opp) => (
                   <div key={opp.id} className="text-sm">
@@ -331,7 +359,9 @@ export const BulkActionsToolbar = ({ selectedIds, opportunities, onUnselectItems
 
             {/* Owner selector */}
             <div className="space-y-2">
-              <label htmlFor="bulk-owner-select" className="text-sm font-medium">New Owner</label>
+              <label htmlFor="bulk-owner-select" className="text-sm font-medium">
+                New Owner
+              </label>
               <Select value={selectedOwner} onValueChange={setSelectedOwner}>
                 <SelectTrigger id="bulk-owner-select">
                   <SelectValue placeholder="Select an owner" />

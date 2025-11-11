@@ -16,20 +16,20 @@ export interface VirtualizedListItemData<T = unknown> {
 }
 
 // Fixed height list item renderer
-const FixedSizeListItem = React.memo<
-  ReactWindow.ListChildComponentProps<VirtualizedListItemData>
->(({ index, style, data }) => {
-  const { items, ItemComponent, className } = data;
-  const item = items[index];
+const FixedSizeListItem = React.memo<ReactWindow.ListChildComponentProps<VirtualizedListItemData>>(
+  ({ index, style, data }) => {
+    const { items, ItemComponent, className } = data;
+    const item = items[index];
 
-  if (!item) return null;
+    if (!item) return null;
 
-  return (
-    <div style={style} className={cn("flex", className)}>
-      <ItemComponent item={item} index={index} style={style} />
-    </div>
-  );
-});
+    return (
+      <div style={style} className={cn("flex", className)}>
+        <ItemComponent item={item} index={index} style={style} />
+      </div>
+    );
+  }
+);
 
 FixedSizeListItem.displayName = "FixedSizeListItem";
 

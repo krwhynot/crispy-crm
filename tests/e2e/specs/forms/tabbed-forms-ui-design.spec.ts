@@ -171,7 +171,9 @@ test.describe("Tabbed Forms UI Design - Layout Only", () => {
       await expect(generalTab).toHaveAttribute("aria-selected", "false");
 
       // Verify Details panel is visible
-      const detailsPanel = page.locator('[role="tabpanel"]').filter({ hasText: /segment|status|website/i });
+      const detailsPanel = page
+        .locator('[role="tabpanel"]')
+        .filter({ hasText: /segment|status|website/i });
       await expect(detailsPanel).toBeVisible();
     });
   });

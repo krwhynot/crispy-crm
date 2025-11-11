@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
-import { OrganizationsListPage } from '../../support/poms/OrganizationsListPage';
-import { consoleMonitor } from '../../support/utils/console-monitor';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
+import { OrganizationsListPage } from "../../support/poms/OrganizationsListPage";
+import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
  * E2E tests for Organizations UI Audit
@@ -19,20 +19,23 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  * - Testing responsive breakpoints ✓
  */
 
-test.describe('Organizations UI Audit', () => {
+test.describe("Organizations UI Audit", () => {
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring for diagnostics
     await consoleMonitor.attach(page);
 
     // Login using POM (semantic selectors, no CSS)
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
 
     // Wait for either login form or dashboard
-    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+    const isLoginFormVisible = await page
+      .getByLabel(/email/i)
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
 
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
     } else {
       // Already logged in, wait for dashboard
       await page.waitForURL(/\/#\//, { timeout: 10000 });
@@ -47,7 +50,7 @@ test.describe('Organizations UI Audit', () => {
     consoleMonitor.clear();
   });
 
-  test('Organizations List - iPad Portrait (768px)', async ({ page }) => {
+  test("Organizations List - iPad Portrait (768px)", async ({ page }) => {
     // Set iPad portrait viewport
     await page.setViewportSize({ width: 768, height: 1024 });
 
@@ -56,7 +59,7 @@ test.describe('Organizations UI Audit', () => {
     await organizationsPage.waitForOrganizationsLoaded();
 
     // Take full page screenshot
-    await expect(page).toHaveScreenshot('organizations-list-ipad-portrait.png', {
+    await expect(page).toHaveScreenshot("organizations-list-ipad-portrait.png", {
       fullPage: true,
       mask: organizationsPage.getDynamicElements(),
     });
@@ -66,7 +69,7 @@ test.describe('Organizations UI Audit', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('Organizations List - iPad Landscape (1024px)', async ({ page }) => {
+  test("Organizations List - iPad Landscape (1024px)", async ({ page }) => {
     // Set iPad landscape viewport
     await page.setViewportSize({ width: 1024, height: 768 });
 
@@ -75,7 +78,7 @@ test.describe('Organizations UI Audit', () => {
     await organizationsPage.waitForOrganizationsLoaded();
 
     // Take full page screenshot
-    await expect(page).toHaveScreenshot('organizations-list-ipad-landscape.png', {
+    await expect(page).toHaveScreenshot("organizations-list-ipad-landscape.png", {
       fullPage: true,
       mask: organizationsPage.getDynamicElements(),
     });
@@ -85,7 +88,7 @@ test.describe('Organizations UI Audit', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('Organization Card - Close-up (iPad)', async ({ page }) => {
+  test("Organization Card - Close-up (iPad)", async ({ page }) => {
     // Set iPad portrait viewport
     await page.setViewportSize({ width: 768, height: 1024 });
 
@@ -98,14 +101,14 @@ test.describe('Organizations UI Audit', () => {
     await expect(firstCard).toBeVisible();
 
     // Take screenshot of individual card with edit button
-    await expect(firstCard).toHaveScreenshot('organization-card-closeup.png');
+    await expect(firstCard).toHaveScreenshot("organization-card-closeup.png");
 
     // Verify no console errors
     expect(consoleMonitor.hasRLSErrors()).toBe(false);
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('Organization Show Page - iPad Portrait (768px)', async ({ page }) => {
+  test("Organization Show Page - iPad Portrait (768px)", async ({ page }) => {
     // Set iPad portrait viewport
     await page.setViewportSize({ width: 768, height: 1024 });
 
@@ -119,10 +122,10 @@ test.describe('Organizations UI Audit', () => {
     await page.waitForURL(/\/#\/organizations\/\d+\/show/);
 
     // Wait for content to load
-    await page.getByRole('tab', { name: /activity/i }).waitFor({ state: 'visible' });
+    await page.getByRole("tab", { name: /activity/i }).waitFor({ state: "visible" });
 
     // Take full page screenshot of show page
-    await expect(page).toHaveScreenshot('organization-show-ipad-portrait.png', {
+    await expect(page).toHaveScreenshot("organization-show-ipad-portrait.png", {
       fullPage: true,
     });
 
@@ -131,7 +134,7 @@ test.describe('Organizations UI Audit', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('Organization Edit Page - iPad Portrait (768px)', async ({ page }) => {
+  test("Organization Edit Page - iPad Portrait (768px)", async ({ page }) => {
     // Set iPad portrait viewport
     await page.setViewportSize({ width: 768, height: 1024 });
 
@@ -145,14 +148,14 @@ test.describe('Organizations UI Audit', () => {
     await page.waitForURL(/\/#\/organizations\/\d+\/show/);
 
     // Click edit button
-    await page.getByRole('link', { name: /edit/i }).click();
+    await page.getByRole("link", { name: /edit/i }).click();
     await page.waitForURL(/\/#\/organizations\/\d+$/);
 
     // Wait for form to load
-    await page.getByLabel(/name/i).waitFor({ state: 'visible' });
+    await page.getByLabel(/name/i).waitFor({ state: "visible" });
 
     // Take full page screenshot of edit page
-    await expect(page).toHaveScreenshot('organization-edit-ipad-portrait.png', {
+    await expect(page).toHaveScreenshot("organization-edit-ipad-portrait.png", {
       fullPage: true,
     });
 
@@ -161,7 +164,7 @@ test.describe('Organizations UI Audit', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('Touch Target Verification - Edit Button Size', async ({ page }) => {
+  test("Touch Target Verification - Edit Button Size", async ({ page }) => {
     // Set iPad portrait viewport
     await page.setViewportSize({ width: 768, height: 1024 });
 
@@ -177,19 +180,19 @@ test.describe('Organizations UI Audit', () => {
     const boundingBox = await firstEditButton.boundingBox();
 
     // Log button size for manual verification
-    console.log('Edit Button Size:', {
+    console.log("Edit Button Size:", {
       width: boundingBox?.width,
       height: boundingBox?.height,
     });
 
     // Visual verification - take screenshot with button highlighted
     await firstEditButton.hover();
-    await expect(page).toHaveScreenshot('organization-card-edit-button-highlighted.png', {
+    await expect(page).toHaveScreenshot("organization-card-edit-button-highlighted.png", {
       mask: organizationsPage.getDynamicElements(),
     });
   });
 
-  test('Touch Target Verification - Checkbox Size', async ({ page }) => {
+  test("Touch Target Verification - Checkbox Size", async ({ page }) => {
     // Set iPad portrait viewport
     await page.setViewportSize({ width: 768, height: 1024 });
 
@@ -205,14 +208,14 @@ test.describe('Organizations UI Audit', () => {
     const boundingBox = await firstCheckbox.boundingBox();
 
     // Log checkbox size for manual verification
-    console.log('Checkbox Size:', {
+    console.log("Checkbox Size:", {
       width: boundingBox?.width,
       height: boundingBox?.height,
     });
 
     // Visual verification - take screenshot with checkbox highlighted
     await firstCheckbox.hover();
-    await expect(page).toHaveScreenshot('organization-card-checkbox-highlighted.png', {
+    await expect(page).toHaveScreenshot("organization-card-checkbox-highlighted.png", {
       mask: organizationsPage.getDynamicElements(),
     });
   });

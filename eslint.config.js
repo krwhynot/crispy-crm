@@ -72,8 +72,8 @@ export default tseslint.config(
       "esm",
       "prism.js",
       "packages/create-react-admin/templates/**",
-      ".github"
-    ]
+      ".github",
+    ],
   },
   // TypeScript configuration
   {
@@ -92,10 +92,7 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -138,7 +135,8 @@ export default tseslint.config(
         "error",
         {
           selector: "JSXAttribute[name.name='validate']",
-          message: "[VALIDATION] Form-level validation is forbidden per Engineering Constitution. All validation must occur at the API boundary (data provider) using Zod schemas. Use helper text and asterisks for visual cues instead.",
+          message:
+            "[VALIDATION] Form-level validation is forbidden per Engineering Constitution. All validation must occur at the API boundary (data provider) using Zod schemas. Use helper text and asterisks for visual cues instead.",
         },
       ],
 
@@ -150,20 +148,34 @@ export default tseslint.config(
           paths: [
             {
               name: "ra-core",
-              importNames: ["required", "email", "minLength", "maxLength", "minValue", "maxValue", "number", "regex", "choices"],
-              message: "[VALIDATION] React Admin validators are forbidden. Use Zod schemas at the API boundary instead.",
+              importNames: [
+                "required",
+                "email",
+                "minLength",
+                "maxLength",
+                "minValue",
+                "maxValue",
+                "number",
+                "regex",
+                "choices",
+              ],
+              message:
+                "[VALIDATION] React Admin validators are forbidden. Use Zod schemas at the API boundary instead.",
             },
             {
               name: "../providers/supabase/supabase",
-              message: "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+              message:
+                "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
             },
             {
               name: "../../providers/supabase/supabase",
-              message: "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+              message:
+                "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
             },
             {
               name: "../../../providers/supabase/supabase",
-              message: "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+              message:
+                "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
             },
           ],
         },
@@ -234,7 +246,7 @@ export default tseslint.config(
         },
       ],
     },
-  },
+  }
   // Storybook config disabled due to missing dependency
   // storybook.configs["flat/recommended"],
 );

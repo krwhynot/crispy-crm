@@ -15,7 +15,7 @@ export const useTagNames = (tagIds: string[] | undefined) => {
   const [loading, setLoading] = useState(false);
 
   // Create a stable key for dependency array
-  const tagIdsKey = tagIds?.join(',') || '';
+  const tagIdsKey = tagIds?.join(",") || "";
 
   useEffect(() => {
     if (!tagIds || tagIds.length === 0) {
@@ -24,7 +24,7 @@ export const useTagNames = (tagIds: string[] | undefined) => {
 
     const fetchTagNames = async () => {
       // Only fetch IDs we don't already have cached
-      const idsToFetch = tagIds.filter(id => !tagMap[id]);
+      const idsToFetch = tagIds.filter((id) => !tagMap[id]);
 
       if (idsToFetch.length === 0) {
         return;
@@ -32,7 +32,7 @@ export const useTagNames = (tagIds: string[] | undefined) => {
 
       setLoading(true);
       try {
-        const { data } = await dataProvider.getMany('tags', {
+        const { data } = await dataProvider.getMany("tags", {
           ids: idsToFetch,
         });
 
@@ -41,9 +41,9 @@ export const useTagNames = (tagIds: string[] | undefined) => {
           return acc;
         }, {});
 
-        setTagMap(prev => ({ ...prev, ...newMap }));
+        setTagMap((prev) => ({ ...prev, ...newMap }));
       } catch (error) {
-        console.error('Failed to fetch tag names:', error);
+        console.error("Failed to fetch tag names:", error);
       } finally {
         setLoading(false);
       }

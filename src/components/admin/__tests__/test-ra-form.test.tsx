@@ -10,7 +10,7 @@ const TestComponent = () => {
   let formStatus = "No Form";
   try {
     const form = useFormContext();
-    if (form && typeof form.control !== 'undefined') {
+    if (form && typeof form.control !== "undefined") {
       formStatus = "Form Found";
     }
   } catch {
@@ -31,7 +31,7 @@ describe("Test React Admin Form", () => {
     const saveContext = {
       save: vi.fn(),
       saving: false,
-      mutationMode: "pessimistic" as const
+      mutationMode: "pessimistic" as const,
     };
 
     const record = { id: 1, name: "Test" };

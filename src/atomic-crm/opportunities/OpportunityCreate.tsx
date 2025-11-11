@@ -1,8 +1,4 @@
-import {
-  CreateBase,
-  Form,
-  useGetIdentity,
-} from "ra-core";
+import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
@@ -27,9 +23,7 @@ const OpportunityCreate = () => {
   };
 
   return (
-    <CreateBase
-      redirect="show"
-    >
+    <CreateBase redirect="show">
       <div className="mt-2">
         <Form defaultValues={formDefaults}>
           <Card>

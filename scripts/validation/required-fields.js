@@ -53,11 +53,10 @@ export class RequiredFieldsValidator {
    */
   async validateCompanyRequiredFields() {
     // Check for companies without names
-    const { data: companiesWithoutNames, error: nameError } =
-      await this.supabase
-        .from("companies")
-        .select("id, name")
-        .or("name.is.null,name.eq.");
+    const { data: companiesWithoutNames, error: nameError } = await this.supabase
+      .from("companies")
+      .select("id, name")
+      .or("name.is.null,name.eq.");
 
     if (nameError) throw nameError;
 
@@ -71,10 +70,7 @@ export class RequiredFieldsValidator {
         count: companiesWithoutNames.length,
         samples: companiesWithoutNames
           .slice(0, 5)
-          .map(
-            (c) =>
-              `Company ID: ${c.id} has ${c.name ? `name: "${c.name}"` : "NULL name"}`,
-          ),
+          .map((c) => `Company ID: ${c.id} has ${c.name ? `name: "${c.name}"` : "NULL name"}`),
         fixable: true,
       });
     }
@@ -89,13 +85,12 @@ export class RequiredFieldsValidator {
       "Other",
     ];
 
-    const { data: companiesWithInvalidSectors, error: sectorError } =
-      await this.supabase
-        .from("companies")
-        .select("id, name, sector")
-        .or(
-          `sector.is.null,sector.eq.,sector.not.in.(${validSectors.map((s) => `"${s}"`).join(",")})`,
-        );
+    const { data: companiesWithInvalidSectors, error: sectorError } = await this.supabase
+      .from("companies")
+      .select("id, name, sector")
+      .or(
+        `sector.is.null,sector.eq.,sector.not.in.(${validSectors.map((s) => `"${s}"`).join(",")})`
+      );
 
     if (sectorError) throw sectorError;
 
@@ -109,20 +104,16 @@ export class RequiredFieldsValidator {
         count: companiesWithInvalidSectors.length,
         samples: companiesWithInvalidSectors
           .slice(0, 5)
-          .map(
-            (c) =>
-              `Company "${c.name}" (ID: ${c.id}) has sector: ${c.sector || "NULL"}`,
-          ),
+          .map((c) => `Company "${c.name}" (ID: ${c.id}) has sector: ${c.sector || "NULL"}`),
         fixable: true,
       });
     }
 
     // Check for companies without created_at timestamps
-    const { data: companiesWithoutTimestamp, error: timestampError } =
-      await this.supabase
-        .from("companies")
-        .select("id, name, created_at")
-        .is("created_at", null);
+    const { data: companiesWithoutTimestamp, error: timestampError } = await this.supabase
+      .from("companies")
+      .select("id, name, created_at")
+      .is("created_at", null);
 
     if (timestampError) throw timestampError;
 
@@ -166,7 +157,7 @@ export class RequiredFieldsValidator {
           .slice(0, 5)
           .map(
             (c) =>
-              `Contact ID: ${c.id} - First: "${c.first_name || ""}" Last: "${c.last_name || ""}" (Company: ${c.company_id})`,
+              `Contact ID: ${c.id} - First: "${c.first_name || ""}" Last: "${c.last_name || ""}" (Company: ${c.company_id})`
           ),
         fixable: true,
       });
@@ -181,14 +172,8 @@ export class RequiredFieldsValidator {
 
     const contactsWithoutContactInfo =
       contacts?.filter((contact) => {
-        const hasEmail =
-          contact.email &&
-          Array.isArray(contact.email) &&
-          contact.email.length > 0;
-        const hasPhone =
-          contact.phone &&
-          Array.isArray(contact.phone) &&
-          contact.phone.length > 0;
+        const hasEmail = contact.email && Array.isArray(contact.email) && contact.email.length > 0;
+        const hasPhone = contact.phone && Array.isArray(contact.phone) && contact.phone.length > 0;
         return !hasEmail && !hasPhone;
       }) || [];
 
@@ -208,11 +193,10 @@ export class RequiredFieldsValidator {
     }
 
     // Check for contacts without company assignment (critical for new schema)
-    const { data: contactsWithoutCompany, error: companyError } =
-      await this.supabase
-        .from("contacts")
-        .select("id, first_name, last_name")
-        .is("company_id", null);
+    const { data: contactsWithoutCompany, error: companyError } = await this.supabase
+      .from("contacts")
+      .select("id, first_name, last_name")
+      .is("company_id", null);
 
     if (companyError) throw companyError;
 
@@ -260,11 +244,10 @@ export class RequiredFieldsValidator {
     }
 
     // Check for deals without company assignment
-    const { data: dealsWithoutCompany, error: companyError } =
-      await this.supabase
-        .from("deals")
-        .select("id, name")
-        .is("company_id", null);
+    const { data: dealsWithoutCompany, error: companyError } = await this.supabase
+      .from("deals")
+      .select("id, name")
+      .is("company_id", null);
 
     if (companyError) throw companyError;
 
@@ -276,9 +259,7 @@ export class RequiredFieldsValidator {
         severity: "CRITICAL",
         message: `Deals without company assignment (required for opportunities)`,
         count: dealsWithoutCompany.length,
-        samples: dealsWithoutCompany
-          .slice(0, 5)
-          .map((d) => `Deal "${d.name}" (ID: ${d.id})`),
+        samples: dealsWithoutCompany.slice(0, 5).map((d) => `Deal "${d.name}" (ID: ${d.id})`),
         fixable: true,
       });
     }
@@ -293,11 +274,10 @@ export class RequiredFieldsValidator {
       "closed-lost",
     ];
 
-    const { data: dealsWithInvalidStages, error: stageError } =
-      await this.supabase
-        .from("deals")
-        .select("id, name, stage")
-        .not("stage", "in", `(${validStages.map((s) => `"${s}"`).join(",")})`);
+    const { data: dealsWithInvalidStages, error: stageError } = await this.supabase
+      .from("deals")
+      .select("id, name, stage")
+      .not("stage", "in", `(${validStages.map((s) => `"${s}"`).join(",")})`);
 
     if (stageError) throw stageError;
 
@@ -317,11 +297,10 @@ export class RequiredFieldsValidator {
     }
 
     // Check for deals with missing expected_revenue
-    const { data: dealsWithoutRevenue, error: revenueError } =
-      await this.supabase
-        .from("deals")
-        .select("id, name, expected_revenue")
-        .or("expected_revenue.is.null,expected_revenue.lte.0");
+    const { data: dealsWithoutRevenue, error: revenueError } = await this.supabase
+      .from("deals")
+      .select("id, name, expected_revenue")
+      .or("expected_revenue.is.null,expected_revenue.lte.0");
 
     if (revenueError) throw revenueError;
 
@@ -335,10 +314,7 @@ export class RequiredFieldsValidator {
         count: dealsWithoutRevenue.length,
         samples: dealsWithoutRevenue
           .slice(0, 5)
-          .map(
-            (d) =>
-              `Deal "${d.name}" (ID: ${d.id}) has revenue: ${d.expected_revenue}`,
-          ),
+          .map((d) => `Deal "${d.name}" (ID: ${d.id}) has revenue: ${d.expected_revenue}`),
         fixable: false,
       });
     }
@@ -390,9 +366,7 @@ export class RequiredFieldsValidator {
         severity: "MEDIUM",
         message: `Deal notes without text content`,
         count: notesWithoutText.length,
-        samples: notesWithoutText
-          .slice(0, 5)
-          .map((n) => `Note ID: ${n.id} for Deal: ${n.deal_id}`),
+        samples: notesWithoutText.slice(0, 5).map((n) => `Note ID: ${n.id} for Deal: ${n.deal_id}`),
         fixable: true,
       });
     }
@@ -420,21 +394,17 @@ export class RequiredFieldsValidator {
         count: tasksWithoutType.length,
         samples: tasksWithoutType
           .slice(0, 5)
-          .map(
-            (t) =>
-              `Task ID: ${t.id} (Contact: ${t.contact_id}, Deal: ${t.deal_id})`,
-          ),
+          .map((t) => `Task ID: ${t.id} (Contact: ${t.contact_id}, Deal: ${t.deal_id})`),
         fixable: true,
       });
     }
 
     // Check for tasks without any assignment (contact_id or deal_id)
-    const { data: unassignedTasks, error: assignmentError } =
-      await this.supabase
-        .from("tasks")
-        .select("id, type, contact_id, deal_id")
-        .is("contact_id", null)
-        .is("deal_id", null);
+    const { data: unassignedTasks, error: assignmentError } = await this.supabase
+      .from("tasks")
+      .select("id, type, contact_id, deal_id")
+      .is("contact_id", null)
+      .is("deal_id", null);
 
     if (assignmentError) throw assignmentError;
 
@@ -446,9 +416,7 @@ export class RequiredFieldsValidator {
         severity: "LOW",
         message: `Tasks without contact or deal assignment`,
         count: unassignedTasks.length,
-        samples: unassignedTasks
-          .slice(0, 5)
-          .map((t) => `Task "${t.type}" (ID: ${t.id})`),
+        samples: unassignedTasks.slice(0, 5).map((t) => `Task "${t.type}" (ID: ${t.id})`),
         fixable: true,
       });
     }
@@ -488,7 +456,7 @@ export class RequiredFieldsValidator {
     // Check that all companies have at least one contact for the new schema
     const { data: companiesWithoutContacts, error } = await this.supabase.rpc(
       "find_companies_without_contacts",
-      {},
+      {}
     );
 
     if (error) throw error;
@@ -518,9 +486,7 @@ export class RequiredFieldsValidator {
     const dealsWithoutContacts =
       deals?.filter(
         (deal) =>
-          !deal.contact_ids ||
-          !Array.isArray(deal.contact_ids) ||
-          deal.contact_ids.length === 0,
+          !deal.contact_ids || !Array.isArray(deal.contact_ids) || deal.contact_ids.length === 0
       ) || [];
 
     if (dealsWithoutContacts.length > 0) {
@@ -531,16 +497,16 @@ export class RequiredFieldsValidator {
         severity: "MEDIUM",
         message: `Deals without contact assignments (will need opportunity participants post-migration)`,
         count: dealsWithoutContacts.length,
-        samples: dealsWithoutContacts
-          .slice(0, 5)
-          .map((d) => `Deal "${d.name}" (ID: ${d.id})`),
+        samples: dealsWithoutContacts.slice(0, 5).map((d) => `Deal "${d.name}" (ID: ${d.id})`),
         fixable: true,
       });
     }
 
     // Check for data consistency between contact.company_id and deal.company_id for shared contacts
-    const { data: inconsistentDeals, error: consistencyError } =
-      await this.supabase.rpc("find_deal_contact_company_mismatches", {});
+    const { data: inconsistentDeals, error: consistencyError } = await this.supabase.rpc(
+      "find_deal_contact_company_mismatches",
+      {}
+    );
 
     if (consistencyError) throw consistencyError;
 
@@ -556,7 +522,7 @@ export class RequiredFieldsValidator {
           .slice(0, 5)
           .map(
             (d) =>
-              `Deal "${d.deal_name}" (Company: ${d.deal_company_id}) has contact from Company: ${d.contact_company_id}`,
+              `Deal "${d.deal_name}" (Company: ${d.deal_company_id}) has contact from Company: ${d.contact_company_id}`
           ),
         fixable: false,
       });
@@ -569,24 +535,18 @@ export class RequiredFieldsValidator {
   generateReport() {
     const totalViolations = this.violations.length;
     const totalWarnings = this.warnings.length;
-    const criticalCount = this.violations.filter(
-      (v) => v.severity === "CRITICAL",
-    ).length;
-    const highCount = this.violations.filter(
-      (v) => v.severity === "HIGH",
-    ).length;
+    const criticalCount = this.violations.filter((v) => v.severity === "CRITICAL").length;
+    const highCount = this.violations.filter((v) => v.severity === "HIGH").length;
     const fixableCount = this.violations.filter((v) => v.fixable).length;
 
     const report = {
-      status:
-        criticalCount > 0 ? "FAILED" : highCount > 0 ? "WARNING" : "PASSED",
+      status: criticalCount > 0 ? "FAILED" : highCount > 0 ? "WARNING" : "PASSED",
       summary: {
         totalViolations,
         totalWarnings,
         criticalCount,
         highCount,
-        mediumCount: this.violations.filter((v) => v.severity === "MEDIUM")
-          .length,
+        mediumCount: this.violations.filter((v) => v.severity === "MEDIUM").length,
         lowCount: this.violations.filter((v) => v.severity === "LOW").length,
         fixableCount,
       },
@@ -609,11 +569,7 @@ export class RequiredFieldsValidator {
   generateRecommendations() {
     const recommendations = [];
 
-    if (
-      this.violations.some(
-        (v) => v.field === "name" && v.entity === "companies",
-      )
-    ) {
+    if (this.violations.some((v) => v.field === "name" && v.entity === "companies")) {
       recommendations.push({
         type: "BLOCK",
         priority: "CRITICAL",
@@ -622,9 +578,7 @@ export class RequiredFieldsValidator {
       });
     }
 
-    if (
-      this.violations.some((v) => v.field === "name" && v.entity === "contacts")
-    ) {
+    if (this.violations.some((v) => v.field === "name" && v.entity === "contacts")) {
       recommendations.push({
         type: "FIX",
         priority: "HIGH",
@@ -661,9 +615,7 @@ if (import.meta.url === new URL(process.argv[1], "file://").href) {
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.error(
-      "❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables",
-    );
+    console.error("❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables");
     process.exit(1);
   }
 

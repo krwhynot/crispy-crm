@@ -22,22 +22,8 @@ const util = require("util");
 const execPromise = util.promisify(exec);
 
 // Configuration
-const MIGRATION_DIR = path.join(
-  __dirname,
-  "..",
-  "docs",
-  "merged",
-  "migrations",
-  "stage1",
-);
-const ROLLBACK_DIR = path.join(
-  __dirname,
-  "..",
-  "docs",
-  "merged",
-  "migrations",
-  "rollback",
-);
+const MIGRATION_DIR = path.join(__dirname, "..", "docs", "merged", "migrations", "stage1");
+const ROLLBACK_DIR = path.join(__dirname, "..", "docs", "merged", "migrations", "rollback");
 const LOG_FILE = path.join(__dirname, "..", "logs", "migration.log");
 const STATE_FILE = path.join(__dirname, "..", "logs", "migration-state.json");
 
@@ -67,8 +53,7 @@ const MIGRATION_PHASES = [
   {
     id: "phase_1_1",
     name: "Phase 1.1 Foundation Setup",
-    description:
-      "Create enums, enhance companies, rename deals to opportunities",
+    description: "Create enums, enhance companies, rename deals to opportunities",
     critical: true,
     file: "001_phase_1_1_foundation_setup.sql",
   },
@@ -266,13 +251,10 @@ class CRMMigration {
 
     // Initialize Supabase client
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
-    const supabaseKey =
-      process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error(
-        "Supabase credentials not found in environment variables",
-      );
+      throw new Error("Supabase credentials not found in environment variables");
     }
 
     this.supabase = createClient(supabaseUrl, supabaseKey);
@@ -308,24 +290,16 @@ class CRMMigration {
         try {
           // Use the Supabase client to execute raw SQL
           // This will work for most DDL statements
-          const { data, error } = await this.supabase
-            .from("_migrations")
-            .select("*")
-            .limit(0); // Test connection first
+          const { data, error } = await this.supabase.from("_migrations").select("*").limit(0); // Test connection first
 
-          if (
-            error &&
-            error.message.includes('relation "_migrations" does not exist')
-          ) {
+          if (error && error.message.includes('relation "_migrations" does not exist')) {
             // Expected - table doesn't exist yet
           }
 
           // Log the statement being executed (first 100 chars)
           await this.logger.info(`Executing SQL statement`, {
             phase: phaseName,
-            statement:
-              statement.substring(0, 100) +
-              (statement.length > 100 ? "..." : ""),
+            statement: statement.substring(0, 100) + (statement.length > 100 ? "..." : ""),
           });
 
           executedCount++;
@@ -415,9 +389,7 @@ class CRMMigration {
       });
 
       if (phase.critical) {
-        throw new Error(
-          `Critical phase failed: ${phase.name} - ${error.message}`,
-        );
+        throw new Error(`Critical phase failed: ${phase.name} - ${error.message}`);
       }
 
       return false;
@@ -492,7 +464,7 @@ class CRMMigration {
           "  2. Run and reviewed the dry-run results?\n" +
           "  3. Notified all users?\n" +
           "  4. Scheduled a maintenance window?\n" +
-          "\nProceed with migration?",
+          "\nProceed with migration?"
       );
 
       if (!proceed) {
@@ -536,9 +508,7 @@ class CRMMigration {
       } else {
         console.log("✅ MIGRATION COMPLETED SUCCESSFULLY");
         console.log("\nNext steps:");
-        console.log(
-          "1. Run post-migration validation: npm run migrate:validate",
-        );
+        console.log("1. Run post-migration validation: npm run migrate:validate");
         console.log("2. Test critical user flows");
         console.log("3. Monitor error logs closely");
         console.log("4. Keep rollback ready for 48 hours");

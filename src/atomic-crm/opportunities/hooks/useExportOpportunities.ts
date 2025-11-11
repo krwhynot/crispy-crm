@@ -44,9 +44,7 @@ export const useExportOpportunities = () => {
           getOpportunityStageLabel(opp.stage) || "",
           opp.status || "",
           opp.priority || "",
-          opp.estimated_close_date
-            ? format(new Date(opp.estimated_close_date), "yyyy-MM-dd")
-            : "",
+          opp.estimated_close_date ? format(new Date(opp.estimated_close_date), "yyyy-MM-dd") : "",
           opp.description || "",
           opp.campaign || "",
           opp.related_opportunity_id ? `ID: ${opp.related_opportunity_id}` : "",
@@ -63,14 +61,16 @@ export const useExportOpportunities = () => {
         const csvContent = [
           headers.join(","),
           ...rows.map((row) =>
-            row.map((cell) => {
-              // Escape cells containing commas, quotes, or newlines
-              const cellStr = String(cell);
-              if (cellStr.includes(",") || cellStr.includes('"') || cellStr.includes("\n")) {
-                return `"${cellStr.replace(/"/g, '""')}"`;
-              }
-              return cellStr;
-            }).join(",")
+            row
+              .map((cell) => {
+                // Escape cells containing commas, quotes, or newlines
+                const cellStr = String(cell);
+                if (cellStr.includes(",") || cellStr.includes('"') || cellStr.includes("\n")) {
+                  return `"${cellStr.replace(/"/g, '""')}"`;
+                }
+                return cellStr;
+              })
+              .join(",")
           ),
         ].join("\n");
 
@@ -88,9 +88,12 @@ export const useExportOpportunities = () => {
         link.click();
         document.body.removeChild(link);
 
-        notify(`Exported ${opportunities.length} opportunit${opportunities.length === 1 ? 'y' : 'ies'} to CSV`, {
-          type: "success",
-        });
+        notify(
+          `Exported ${opportunities.length} opportunit${opportunities.length === 1 ? "y" : "ies"} to CSV`,
+          {
+            type: "success",
+          }
+        );
       } catch (error) {
         console.error("CSV export error:", error);
         notify("Failed to export opportunities", { type: "error" });

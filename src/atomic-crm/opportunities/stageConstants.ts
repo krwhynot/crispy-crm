@@ -112,7 +112,7 @@ export function isClosedStage(stageValue: string): boolean {
 // Legacy compatibility function for existing components
 export function findOpportunityLabel(
   opportunityStages: { value: string; label: string }[],
-  opportunityValue: string,
+  opportunityValue: string
 ): string {
   return getOpportunityStageLabel(opportunityValue);
 }

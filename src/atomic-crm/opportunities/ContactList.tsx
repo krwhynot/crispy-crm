@@ -11,10 +11,7 @@ export const ContactList = () => {
         <div className="flex flex-row gap-4 items-center" key={contact.id}>
           <Avatar record={contact} />
           <div className="flex flex-col">
-            <RouterLink
-              to={`/contacts/${contact.id}/show`}
-              className="text-sm hover:underline"
-            >
+            <RouterLink to={`/contacts/${contact.id}/show`} className="text-sm hover:underline">
               {contact.first_name} {contact.last_name}
             </RouterLink>
             <span className="text-xs text-[color:var(--text-subtle)]">

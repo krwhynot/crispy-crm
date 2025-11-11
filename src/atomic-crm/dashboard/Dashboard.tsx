@@ -49,7 +49,7 @@ export const Dashboard = () => {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     refresh();
-    announce('Dashboard data refreshed');
+    announce("Dashboard data refreshed");
     // Give feedback for at least 500ms
     setTimeout(() => setIsRefreshing(false), 500);
   };
@@ -70,7 +70,7 @@ export const Dashboard = () => {
             className="gap-2"
             aria-label="Refresh dashboard"
           >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
             Refresh
           </Button>
         </div>

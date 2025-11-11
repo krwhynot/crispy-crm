@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +14,8 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from './dropdown-menu';
-import { Button } from './button';
+} from "./dropdown-menu";
+import { Button } from "./button";
 import {
   User,
   Settings,
@@ -33,21 +33,21 @@ import {
   MessageSquare,
   PlusCircle,
   LifeBuoy,
-} from 'lucide-react';
-import React from 'react';
+} from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/DropdownMenu',
+  title: "UI/DropdownMenu",
   component: DropdownMenu,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'Dropdown menus display a list of actions or options that a user can select.',
+        component: "Dropdown menus display a list of actions or options that a user can select.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="flex min-h-[400px] w-full items-center justify-center">
@@ -164,7 +164,7 @@ export const WithCheckboxes: Story = {
 
 // With radio items
 const DropdownMenuWithRadio = () => {
-  const [position, setPosition] = React.useState('bottom');
+  const [position, setPosition] = React.useState("bottom");
 
   return (
     <DropdownMenu>
@@ -316,7 +316,7 @@ export const WithGroups: Story = {
 
 // Complex nested example
 const ComplexNestedDropdown = () => {
-  const [fontSize, setFontSize] = React.useState('medium');
+  const [fontSize, setFontSize] = React.useState("medium");
   const [showMinimap, setShowMinimap] = React.useState(true);
   const [showBreadcrumbs, setShowBreadcrumbs] = React.useState(true);
   const [wordWrap, setWordWrap] = React.useState(false);

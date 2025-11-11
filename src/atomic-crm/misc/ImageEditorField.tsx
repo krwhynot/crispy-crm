@@ -36,9 +36,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
   return (
     <>
       <div
-        className={`flex ${
-          linkPosition === "right" ? "flex-row" : "flex-col"
-        } items-center ${
+        className={`flex ${linkPosition === "right" ? "flex-row" : "flex-col"} items-center ${
           linkPosition === "right" ? "gap-2" : "gap-1"
         } rounded p-${props.backgroundImageColor ? "4" : "0"}`}
         style={{
@@ -46,11 +44,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
         }}
       >
         {props.type === "avatar" ? (
-          <Avatar
-            {...commonProps}
-            className={`cursor-pointer`}
-            style={{ width, height }}
-          >
+          <Avatar {...commonProps} className={`cursor-pointer`} style={{ width, height }}>
             <AvatarImage src={imageUrl} />
             <AvatarFallback>{emptyText}</AvatarFallback>
           </Avatar>
@@ -72,11 +66,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
           </button>
         )}
       </div>
-      <ImageEditorDialog
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        {...props}
-      />
+      <ImageEditorDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} {...props} />
     </>
   );
 };
@@ -86,9 +76,7 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
   const cropperRef = createRef<ReactCropperElement>();
   const initialValue = useFieldValue({ source: props.source });
   const [file, setFile] = useState<File | undefined>();
-  const [imageSrc, setImageSrc] = useState<string | undefined>(
-    initialValue?.src,
-  );
+  const [imageSrc, setImageSrc] = useState<string | undefined>(initialValue?.src);
   const onDrop = useCallback((files: File[]) => {
     const preview = URL.createObjectURL(files[0]);
     setFile(files[0]);
@@ -109,7 +97,7 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
           title: newFile.name,
           rawFile: newFile,
         },
-        { shouldDirty: true },
+        { shouldDirty: true }
       );
       props.onClose();
 

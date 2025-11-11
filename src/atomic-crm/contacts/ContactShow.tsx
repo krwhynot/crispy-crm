@@ -34,15 +34,12 @@ const ContactShowContent = () => {
                 <div className="text-sm text-[color:var(--text-subtle)]">
                   {record.title}
                   {record.department && ` - ${record.department}`}
-                  {record.title &&
-                    record.organizations?.find((org) => org.is_primary) &&
-                    " at "}
+                  {record.title && record.organizations?.find((org) => org.is_primary) && " at "}
                   {record.organizations?.find((org) => org.is_primary) && (
                     <ReferenceField
                       record={{
-                        organization_id: record.organizations.find(
-                          (org) => org.is_primary,
-                        )?.organization_id,
+                        organization_id: record.organizations.find((org) => org.is_primary)
+                          ?.organization_id,
                       }}
                       source="organization_id"
                       reference="organizations"
@@ -57,9 +54,8 @@ const ContactShowContent = () => {
                 {record.organizations?.find((org) => org.is_primary) && (
                   <ReferenceField
                     record={{
-                      organization_id: record.organizations.find(
-                        (org) => org.is_primary,
-                      )?.organization_id,
+                      organization_id: record.organizations.find((org) => org.is_primary)
+                        ?.organization_id,
                     }}
                     source="organization_id"
                     reference="organizations"
@@ -74,9 +70,7 @@ const ContactShowContent = () => {
             {/* Organizations Section */}
             {record.organizations && record.organizations.length > 0 && (
               <div className="mt-6">
-                <h6 className="text-lg font-semibold mb-4">
-                  Associated Organizations
-                </h6>
+                <h6 className="text-lg font-semibold mb-4">Associated Organizations</h6>
                 <div className="space-y-2">
                   {record.organizations.map((org: any) => (
                     <div

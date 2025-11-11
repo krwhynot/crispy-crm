@@ -67,7 +67,7 @@ export const ReferenceArrayField = <
   RecordType extends RaRecord = RaRecord,
   ReferenceRecordType extends RaRecord = RaRecord,
 >(
-  props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>,
+  props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
 ) => {
   const {
     filter,
@@ -109,10 +109,7 @@ export interface ReferenceArrayFieldProps<
   resource?: string;
   source: NoInfer<HintedString<ExtractRecordPaths<RecordType>>>;
   sort?: SortPayload;
-  queryOptions?: Omit<
-    UseQueryOptions<ReferenceRecordType[], Error>,
-    "queryFn" | "queryKey"
-  >;
+  queryOptions?: Omit<UseQueryOptions<ReferenceRecordType[], Error>, "queryFn" | "queryKey">;
   render?: (props: ListControllerResult<ReferenceRecordType>) => ReactElement;
 }
 
@@ -125,9 +122,7 @@ export interface ReferenceArrayFieldViewProps {
   pagination?: ReactNode;
 }
 
-export const ReferenceArrayFieldView = (
-  props: ReferenceArrayFieldViewProps,
-) => {
+export const ReferenceArrayFieldView = (props: ReferenceArrayFieldViewProps) => {
   const {
     children = defaultChildren,
     className,
@@ -136,15 +131,8 @@ export const ReferenceArrayFieldView = (
     loading,
     pagination,
   } = props;
-  const {
-    isPending,
-    error,
-    total,
-    hasPreviousPage,
-    hasNextPage,
-    data,
-    filterValues,
-  } = useListContext();
+  const { isPending, error, total, hasPreviousPage, hasNextPage, data, filterValues } =
+    useListContext();
 
   return (
     <div className={className}>

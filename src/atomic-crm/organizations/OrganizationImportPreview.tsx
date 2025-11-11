@@ -102,15 +102,14 @@ export function OrganizationImportPreview({
 
   const availableFields = getAvailableFieldsWithLabels();
   // Calculate actual duplicate entries (excluding first occurrence of each name)
-  const duplicateCount = preview.duplicates?.reduce((sum, group) => sum + Math.max(0, group.count - 1), 0) || 0;
+  const duplicateCount =
+    preview.duplicates?.reduce((sum, group) => sum + Math.max(0, group.count - 1), 0) || 0;
 
   // Calculate expected import count based on skip duplicates decision
   // Clamp to prevent negative values
   const expectedImportCount = Math.max(
     0,
-    dataQualityDecisions.skipDuplicates
-      ? preview.validCount - duplicateCount
-      : preview.validCount
+    dataQualityDecisions.skipDuplicates ? preview.validCount - duplicateCount : preview.validCount
   );
 
   return (
@@ -142,16 +141,16 @@ export function OrganizationImportPreview({
                 <span className="flex items-center gap-1">
                   <Copy className="h-3 w-3" />
                   {dataQualityDecisions.skipDuplicates
-                    ? `${duplicateCount} duplicate ${duplicateCount === 1 ? 'entry' : 'entries'} will be skipped`
-                    : `${duplicateCount} duplicate ${duplicateCount === 1 ? 'entry' : 'entries'} detected (will be imported)`
-                  }
+                    ? `${duplicateCount} duplicate ${duplicateCount === 1 ? "entry" : "entries"} will be skipped`
+                    : `${duplicateCount} duplicate ${duplicateCount === 1 ? "entry" : "entries"} detected (will be imported)`}
                 </span>
               </div>
             )}
             {preview.missingNameCount && preview.missingNameCount > 0 && (
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <span>
-                  {preview.missingNameCount} row{preview.missingNameCount === 1 ? '' : 's'} missing required 'name' will be skipped
+                  {preview.missingNameCount} row{preview.missingNameCount === 1 ? "" : "s"} missing
+                  required 'name' will be skipped
                 </span>
               </div>
             )}
@@ -168,8 +167,8 @@ export function OrganizationImportPreview({
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Review Column Mappings</AlertTitle>
           <AlertDescription>
-            {preview.lowConfidenceMappings} column{preview.lowConfidenceMappings > 1 ? 's' : ''} could not be mapped automatically.
-            Please review and adjust the mappings below.
+            {preview.lowConfidenceMappings} column{preview.lowConfidenceMappings > 1 ? "s" : ""}{" "}
+            could not be mapped automatically. Please review and adjust the mappings below.
           </AlertDescription>
         </Alert>
       )}
@@ -177,10 +176,7 @@ export function OrganizationImportPreview({
       <Collapsible open={expandedSections.mappings}>
         <Card>
           <CollapsibleTrigger asChild>
-            <CardHeader
-              className="cursor-pointer"
-              onClick={() => toggleSection("mappings")}
-            >
+            <CardHeader className="cursor-pointer" onClick={() => toggleSection("mappings")}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CardTitle>Column Mappings</CardTitle>
@@ -194,9 +190,7 @@ export function OrganizationImportPreview({
                   <ChevronDown className="h-4 w-4" />
                 )}
               </div>
-              <CardDescription>
-                How CSV columns map to organization fields
-              </CardDescription>
+              <CardDescription>How CSV columns map to organization fields</CardDescription>
             </CardHeader>
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -212,9 +206,10 @@ export function OrganizationImportPreview({
                 </TableHeader>
                 <TableBody>
                   {preview.mappings.map((mapping, index) => {
-                    const currentMapping = userOverrides?.get(mapping.source) !== undefined
-                      ? userOverrides.get(mapping.source)
-                      : mapping.target;
+                    const currentMapping =
+                      userOverrides?.get(mapping.source) !== undefined
+                        ? userOverrides.get(mapping.source)
+                        : mapping.target;
 
                     return (
                       <TableRow key={index}>
@@ -250,7 +245,13 @@ export function OrganizationImportPreview({
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant={mapping.confidence >= 0.8 ? "default" : mapping.confidence >= 0.5 ? "secondary" : "destructive"}
+                            variant={
+                              mapping.confidence >= 0.8
+                                ? "default"
+                                : mapping.confidence >= 0.5
+                                  ? "secondary"
+                                  : "destructive"
+                            }
                           >
                             {Math.round(mapping.confidence * 100)}%
                           </Badge>
@@ -270,16 +271,14 @@ export function OrganizationImportPreview({
         <Collapsible open={expandedSections.duplicates}>
           <Card>
             <CollapsibleTrigger asChild>
-              <CardHeader
-                className="cursor-pointer"
-                onClick={() => toggleSection("duplicates")}
-              >
+              <CardHeader className="cursor-pointer" onClick={() => toggleSection("duplicates")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-orange-600" />
                     <CardTitle>Duplicate Organizations</CardTitle>
                     <Badge variant="secondary">
-                      {preview.duplicates.length} name{preview.duplicates.length > 1 ? 's' : ''}, {duplicateCount} duplicate{duplicateCount > 1 ? 's' : ''}
+                      {preview.duplicates.length} name{preview.duplicates.length > 1 ? "s" : ""},{" "}
+                      {duplicateCount} duplicate{duplicateCount > 1 ? "s" : ""}
                     </Badge>
                   </div>
                   {expandedSections.duplicates ? (
@@ -289,7 +288,9 @@ export function OrganizationImportPreview({
                   )}
                 </div>
                 <CardDescription>
-                  {preview.duplicates.length} organization name{preview.duplicates.length > 1 ? 's appear' : ' appears'} multiple times ({duplicateCount} total duplicate {duplicateCount === 1 ? 'entry' : 'entries'})
+                  {preview.duplicates.length} organization name
+                  {preview.duplicates.length > 1 ? "s appear" : " appears"} multiple times (
+                  {duplicateCount} total duplicate {duplicateCount === 1 ? "entry" : "entries"})
                 </CardDescription>
               </CardHeader>
             </CollapsibleTrigger>
@@ -297,13 +298,17 @@ export function OrganizationImportPreview({
               <CardContent>
                 <div className="space-y-3">
                   {preview.duplicates.slice(0, 10).map((group, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 bg-muted rounded"
+                    >
                       <div className="flex items-center gap-2">
                         <Copy className="h-4 w-4 text-orange-600" />
                         <span className="font-medium">{group.name}</span>
                       </div>
                       <Badge variant="secondary">
-                        {group.count} occurrences (rows: {group.indices.slice(0, 3).join(", ")}{group.indices.length > 3 ? '...' : ''})
+                        {group.count} occurrences (rows: {group.indices.slice(0, 3).join(", ")}
+                        {group.indices.length > 3 ? "..." : ""})
                       </Badge>
                     </div>
                   ))}
@@ -334,7 +339,9 @@ export function OrganizationImportPreview({
                           Skip duplicate organizations
                         </Label>
                         <p className="text-sm text-muted-foreground">
-                          Keep only the first occurrence of each organization name. Later occurrences will be completely ignored (no data merging). Recommended to avoid creating duplicate records.
+                          Keep only the first occurrence of each organization name. Later
+                          occurrences will be completely ignored (no data merging). Recommended to
+                          avoid creating duplicate records.
                         </p>
                       </div>
                     </div>
@@ -350,16 +357,11 @@ export function OrganizationImportPreview({
       <Collapsible open={expandedSections.sampleData}>
         <Card>
           <CollapsibleTrigger asChild>
-            <CardHeader
-              className="cursor-pointer"
-              onClick={() => toggleSection("sampleData")}
-            >
+            <CardHeader className="cursor-pointer" onClick={() => toggleSection("sampleData")}>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Sample Data Preview</CardTitle>
-                  <CardDescription>
-                    First 5 organizations after transformation
-                  </CardDescription>
+                  <CardDescription>First 5 organizations after transformation</CardDescription>
                 </div>
                 {expandedSections.sampleData ? (
                   <ChevronUp className="h-4 w-4" />
@@ -414,10 +416,7 @@ export function OrganizationImportPreview({
         <Collapsible open={expandedSections.tags}>
           <Card>
             <CollapsibleTrigger asChild>
-              <CardHeader
-                className="cursor-pointer"
-                onClick={() => toggleSection("tags")}
-              >
+              <CardHeader className="cursor-pointer" onClick={() => toggleSection("tags")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Tag className="h-4 w-4" />
@@ -430,9 +429,7 @@ export function OrganizationImportPreview({
                     <ChevronDown className="h-4 w-4" />
                   )}
                 </div>
-                <CardDescription>
-                  These tags will be created automatically
-                </CardDescription>
+                <CardDescription>These tags will be created automatically</CardDescription>
               </CardHeader>
             </CollapsibleTrigger>
             <CollapsibleContent>
@@ -455,11 +452,7 @@ export function OrganizationImportPreview({
         <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button
-          variant="default"
-          onClick={handleContinue}
-          disabled={expectedImportCount === 0}
-        >
+        <Button variant="default" onClick={handleContinue} disabled={expectedImportCount === 0}>
           Continue Import ({expectedImportCount} organizations)
         </Button>
       </DialogFooter>

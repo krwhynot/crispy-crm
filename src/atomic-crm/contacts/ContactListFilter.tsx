@@ -1,11 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import {
-  Clock,
-  Tag,
-  Users,
-} from "lucide-react";
+import { Clock, Tag, Users } from "lucide-react";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 import { cn } from "@/lib/utils";
 
@@ -26,99 +22,93 @@ export const ContactListFilter = () => {
     <div className="w-52 min-w-52 order-first">
       <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
         <div className="flex flex-col gap-4">
-      {/* Search - Always visible */}
-      <FilterLiveForm>
-        <SearchInput source="q" placeholder="Search contacts..." />
-      </FilterLiveForm>
+          {/* Search - Always visible */}
+          <FilterLiveForm>
+            <SearchInput source="q" placeholder="Search contacts..." />
+          </FilterLiveForm>
 
-      {/* Active Filters - Conditional */}
-      <SidebarActiveFilters />
+          {/* Active Filters - Conditional */}
+          <SidebarActiveFilters />
 
-      {/* Divider */}
-      <div className="border-b border-border" />
+          {/* Divider */}
+          <div className="border-b border-border" />
 
-      {/* Collapsible Filter Sections */}
-      <div className="flex flex-col gap-2">
-      <FilterCategory label="Last activity" icon={<Clock className="h-4 w-4" />}>
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="Today"
-          value={{
-            "last_seen@gte": endOfYesterday().toISOString(),
-            "last_seen@lte": undefined,
-          }}
-        />
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="This week"
-          value={{
-            "last_seen@gte": startOfWeek(new Date()).toISOString(),
-            "last_seen@lte": undefined,
-          }}
-        />
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="Before this week"
-          value={{
-            "last_seen@gte": undefined,
-            "last_seen@lte": startOfWeek(new Date()).toISOString(),
-          }}
-        />
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="Before this month"
-          value={{
-            "last_seen@gte": undefined,
-            "last_seen@lte": startOfMonth(new Date()).toISOString(),
-          }}
-        />
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label="Before last month"
-          value={{
-            "last_seen@gte": undefined,
-            "last_seen@lte": subMonths(
-              startOfMonth(new Date()),
-              1,
-            ).toISOString(),
-          }}
-        />
-      </FilterCategory>
+          {/* Collapsible Filter Sections */}
+          <div className="flex flex-col gap-2">
+            <FilterCategory label="Last activity" icon={<Clock className="h-4 w-4" />}>
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Today"
+                value={{
+                  "last_seen@gte": endOfYesterday().toISOString(),
+                  "last_seen@lte": undefined,
+                }}
+              />
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="This week"
+                value={{
+                  "last_seen@gte": startOfWeek(new Date()).toISOString(),
+                  "last_seen@lte": undefined,
+                }}
+              />
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Before this week"
+                value={{
+                  "last_seen@gte": undefined,
+                  "last_seen@lte": startOfWeek(new Date()).toISOString(),
+                }}
+              />
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Before this month"
+                value={{
+                  "last_seen@gte": undefined,
+                  "last_seen@lte": startOfMonth(new Date()).toISOString(),
+                }}
+              />
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label="Before last month"
+                value={{
+                  "last_seen@gte": undefined,
+                  "last_seen@lte": subMonths(startOfMonth(new Date()), 1).toISOString(),
+                }}
+              />
+            </FilterCategory>
 
-      <FilterCategory label="Tags" icon={<Tag className="h-4 w-4" />}>
-        {data &&
-          data.map((record) => (
-            <ToggleFilterButton
-              multiselect
-              className="w-full justify-between"
-              key={record.id}
-              label={
-                <Badge
-                  variant="secondary"
-                  className={cn(
-                    "text-xs font-normal cursor-pointer",
-                    getTagColorClass(record?.color),
-                  )}
-                >
-                  {record?.name}
-                </Badge>
-              }
-              value={{ tags: record.id }}
-            />
-          ))}
-      </FilterCategory>
+            <FilterCategory label="Tags" icon={<Tag className="h-4 w-4" />}>
+              {data &&
+                data.map((record) => (
+                  <ToggleFilterButton
+                    multiselect
+                    className="w-full justify-between"
+                    key={record.id}
+                    label={
+                      <Badge
+                        variant="secondary"
+                        className={cn(
+                          "text-xs font-normal cursor-pointer",
+                          getTagColorClass(record?.color)
+                        )}
+                      >
+                        {record?.name}
+                      </Badge>
+                    }
+                    value={{ tags: record.id }}
+                  />
+                ))}
+            </FilterCategory>
 
-      <FilterCategory
-        icon={<Users className="h-4 w-4" />}
-        label="Account Manager"
-      >
-        <ToggleFilterButton
-          className="w-full justify-between"
-          label={"Me"}
-          value={{ sales_id: identity?.id }}
-        />
-      </FilterCategory>
-      </div>
+            <FilterCategory icon={<Users className="h-4 w-4" />} label="Account Manager">
+              <ToggleFilterButton
+                className="w-full justify-between"
+                label={"Me"}
+                value={{ sales_id: identity?.id }}
+              />
+            </FilterCategory>
+          </div>
         </div>
       </Card>
     </div>

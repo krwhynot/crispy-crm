@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Login Page Object Model
@@ -25,16 +25,16 @@ export class LoginPage extends BasePage {
    * Handles case where user might already be logged in
    */
   async loginAsAdmin(): Promise<void> {
-    await this.goto('/');
+    await this.goto("/");
 
     // Wait for app to load (check for either login form or dashboard)
     await this.page.waitForFunction(
       () => {
         // Check if we're already logged in (dashboard visible)
-        if (window.location.hash.includes('#/')) return true;
+        if (window.location.hash.includes("#/")) return true;
         // Or if login form is ready
-        const emailLabel = Array.from(document.querySelectorAll('label')).find(
-          (el) => el.textContent?.toLowerCase().includes('email')
+        const emailLabel = Array.from(document.querySelectorAll("label")).find((el) =>
+          el.textContent?.toLowerCase().includes("email")
         );
         return emailLabel !== undefined;
       },
@@ -47,12 +47,12 @@ export class LoginPage extends BasePage {
 
     if (!isLoginFormVisible) {
       // No login form visible = already logged in
-      console.log('Already logged in, skipping login');
+      console.log("Already logged in, skipping login");
       return;
     }
 
     // Login form is visible, perform login
     await expect(emailInput).toBeVisible({ timeout: 5000 });
-    await this.login('admin@test.com', 'password123');
+    await this.login("admin@test.com", "password123");
   }
 }

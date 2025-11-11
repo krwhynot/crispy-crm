@@ -24,7 +24,7 @@ export const AutocompleteOrganizationInput = ({
             ...(organizationType && { organization_type: organizationType }),
           },
         },
-        { returnPromise: true },
+        { returnPromise: true }
       );
       return newOrganization;
     } catch {

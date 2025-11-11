@@ -20,13 +20,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 // Destructure for easier access
-const {
-  mockLogin,
-  mockCheckAuth,
-  mockCanAccessFn,
-  mockGetSession,
-  mockFrom,
-} = mocks;
+const { mockLogin, mockCheckAuth, mockCanAccessFn, mockGetSession, mockFrom } = mocks;
 
 // Mock the base supabase auth provider
 vi.mock("ra-supabase-core", () => ({
@@ -79,9 +73,7 @@ describe("authProvider", () => {
       const error = new Error("Invalid credentials");
       mockLogin.mockRejectedValue(error);
 
-      await expect(authProvider.login(params)).rejects.toThrow(
-        "Invalid credentials"
-      );
+      await expect(authProvider.login(params)).rejects.toThrow("Invalid credentials");
     });
   });
 
@@ -119,9 +111,7 @@ describe("authProvider", () => {
       delete (window as any).location;
       window.location = { ...originalLocation, pathname: "/opportunities" };
 
-      await expect(authProvider.checkAuth({})).rejects.toThrow(
-        "Not authenticated"
-      );
+      await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
 
       expect(mockGetSession).toHaveBeenCalled();
       expect(mockCheckAuth).not.toHaveBeenCalled();
@@ -161,21 +151,14 @@ describe("authProvider", () => {
       delete (window as any).location;
       window.location = { ...originalLocation, pathname: "/dashboard" };
 
-      await expect(authProvider.checkAuth({})).rejects.toThrow(
-        "Not authenticated"
-      );
+      await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
 
       // Restore window.location
       window.location = originalLocation;
     });
 
     it("should recognize all public paths", async () => {
-      const publicPaths = [
-        "/login",
-        "/forgot-password",
-        "/set-password",
-        "/reset-password",
-      ];
+      const publicPaths = ["/login", "/forgot-password", "/set-password", "/reset-password"];
 
       // Mock no session
       mockGetSession.mockResolvedValue({

@@ -13,13 +13,11 @@ const ProductCreate = () => {
   // Constitution Rule #4: Form state from schema
   const defaultValues = {
     ...productSchema.partial().parse({}),
-    created_by: identity?.id
+    created_by: identity?.id,
   };
 
   return (
-    <CreateBase
-      redirect="show"
-    >
+    <CreateBase redirect="show">
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">
           <Form defaultValues={defaultValues}>

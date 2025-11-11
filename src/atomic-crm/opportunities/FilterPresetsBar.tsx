@@ -9,15 +9,8 @@ import * as React from "react";
 import { useListContext, useListFilterContext, useGetIdentity } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type {
-  LucideIcon} from "lucide-react";
-import {
-  User,
-  Calendar,
-  AlertCircle,
-  Flag,
-  Trophy
-} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { User, Calendar, AlertCircle, Flag, Trophy } from "lucide-react";
 import { getFilterPresets, type FilterPreset } from "./filterPresets";
 import type { Opportunity } from "../types";
 
@@ -35,10 +28,7 @@ export const FilterPresetsBar: React.FC = () => {
   const { data: opportunities } = useListContext<Opportunity>();
   const { filterValues, setFilters, displayedFilters } = useListFilterContext();
 
-  const presets = React.useMemo(
-    () => getFilterPresets(identity?.id),
-    [identity?.id]
-  );
+  const presets = React.useMemo(() => getFilterPresets(identity?.id), [identity?.id]);
 
   // Calculate count for each preset
   const getPresetCount = (preset: FilterPreset): number => {

@@ -51,7 +51,7 @@ export const developmentCSP: CSPConfig = {
     scriptSrc: [
       "'self'",
       "'unsafe-inline'", // Allow inline scripts in dev
-      "'unsafe-eval'",   // Required for Vite HMR
+      "'unsafe-eval'", // Required for Vite HMR
       "'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E='", // Main script hash
     ],
     styleSrc: [
@@ -77,11 +77,7 @@ export const developmentCSP: CSPConfig = {
       "*.supabase.co",
       "wss://*.supabase.co",
     ],
-    fontSrc: [
-      "'self'",
-      "data:",
-      "https://fonts.gstatic.com",
-    ],
+    fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
     objectSrc: ["'none'"],
     frameSrc: ["'none'"],
     baseUri: ["'self'"],
@@ -99,7 +95,7 @@ export const developmentCSP: CSPConfig = {
  */
 export const productionCSP: CSPConfig = {
   reportOnly: false, // Enforce in production
-  reportUri: '/api/csp-report', // Report violations for monitoring
+  reportUri: "/api/csp-report", // Report violations for monitoring
   directives: {
     defaultSrc: ["'self'"],
     scriptSrc: [
@@ -117,19 +113,15 @@ export const productionCSP: CSPConfig = {
       "data:",
       "blob:",
       "https:", // Only HTTPS images in production
-      "https://*.supabase.co",  // Supabase storage
+      "https://*.supabase.co", // Supabase storage
       "https://ui-avatars.com", // Avatar generation service
     ],
     connectSrc: [
       "'self'",
-      "https://*.supabase.co",  // Supabase API
-      "wss://*.supabase.co",    // Supabase realtime WebSocket
+      "https://*.supabase.co", // Supabase API
+      "wss://*.supabase.co", // Supabase realtime WebSocket
     ],
-    fontSrc: [
-      "'self'",
-      "data:",
-      "https://fonts.gstatic.com",
-    ],
+    fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
     objectSrc: ["'none'"],
     frameSrc: ["'none'"],
     baseUri: ["'self'"],
@@ -143,7 +135,7 @@ export const productionCSP: CSPConfig = {
  * Get CSP configuration based on environment
  */
 export function getCSPConfig(): CSPConfig {
-  const isDevelopment = import.meta.env.DEV || process.env.NODE_ENV !== 'production';
+  const isDevelopment = import.meta.env.DEV || process.env.NODE_ENV !== "production";
   return isDevelopment ? developmentCSP : productionCSP;
 }
 
@@ -155,27 +147,25 @@ export function buildCSPHeader(config: CSPConfig = getCSPConfig()): string {
   const directives = Object.entries(config.directives)
     .map(([key, values]) => {
       // Convert camelCase to kebab-case (e.g., defaultSrc -> default-src)
-      const directiveName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+      const directiveName = key.replace(/([A-Z])/g, "-$1").toLowerCase();
 
       // Handle boolean directives (e.g., upgrade-insecure-requests)
-      if (typeof values === 'boolean') {
+      if (typeof values === "boolean") {
         return values ? directiveName : null;
       }
 
       // Handle array directives
       if (Array.isArray(values) && values.length > 0) {
-        return `${directiveName} ${values.join(' ')}`;
+        return `${directiveName} ${values.join(" ")}`;
       }
 
       return null;
     })
     .filter(Boolean)
-    .join('; ');
+    .join("; ");
 
   // Add report-uri if configured
-  const reportDirective = config.reportUri
-    ? `; report-uri ${config.reportUri}`
-    : '';
+  const reportDirective = config.reportUri ? `; report-uri ${config.reportUri}` : "";
 
   return directives + reportDirective;
 }

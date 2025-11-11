@@ -20,11 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Calendar, ChevronDown, ChevronUp, Tag as TagIcon, Target, FileText } from "lucide-react";
 import type { Opportunity } from "../types";
 
@@ -112,7 +108,8 @@ export const WorkflowManagementSection: React.FC = () => {
     navigate(`/opportunities?filter=${encodeURIComponent(JSON.stringify({ tags: [tag] }))}`);
   };
 
-  const isNextActionOverdue = nextActionDate && isValid(parseISO(nextActionDate)) && isPast(parseISO(nextActionDate));
+  const isNextActionOverdue =
+    nextActionDate && isValid(parseISO(nextActionDate)) && isPast(parseISO(nextActionDate));
 
   return (
     <Card className="bg-muted/30 border border-border">
@@ -215,7 +212,10 @@ export const WorkflowManagementSection: React.FC = () => {
         <Collapsible open={isDecisionCriteriaOpen} onOpenChange={setIsDecisionCriteriaOpen}>
           <div className="space-y-2">
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between p-0 h-auto hover:bg-transparent">
+              <Button
+                variant="ghost"
+                className="w-full justify-between p-0 h-auto hover:bg-transparent"
+              >
                 <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
                   <FileText className="w-3.5 h-3.5" />
                   <span>Decision Criteria</span>

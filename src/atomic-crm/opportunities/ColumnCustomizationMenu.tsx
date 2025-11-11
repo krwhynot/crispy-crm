@@ -69,14 +69,9 @@ export function ColumnCustomizationMenu({
             </div>
 
             <div className="px-4 py-2">
-              <p className="text-xs font-medium text-muted-foreground mb-2">
-                Visible Stages
-              </p>
+              <p className="text-xs font-medium text-muted-foreground mb-2">Visible Stages</p>
               {OPPORTUNITY_STAGES.map((stage) => (
-                <label
-                  key={stage.value}
-                  className="flex items-center gap-2 py-1 cursor-pointer"
-                >
+                <label key={stage.value} className="flex items-center gap-2 py-1 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={visibleStages.includes(stage.value)}

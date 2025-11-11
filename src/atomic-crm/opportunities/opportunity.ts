@@ -1,14 +1,11 @@
-import type {
-  OpportunityStage} from "./stageConstants";
-import {
-  getOpportunityStageLabel
-} from "./stageConstants";
+import type { OpportunityStage } from "./stageConstants";
+import { getOpportunityStageLabel } from "./stageConstants";
 
 export type { OpportunityStage } from "./stageConstants";
 
 export const findOpportunityLabel = (
   opportunityStages: OpportunityStage[],
-  opportunityValue: string,
+  opportunityValue: string
 ) => {
   // Use centralized stage label lookup instead of array search
   return getOpportunityStageLabel(opportunityValue);

@@ -1,10 +1,6 @@
 import type { FallbackProps } from "react-error-boundary";
 
-import {
-  useDefaultTitle,
-  useResetErrorBoundaryOnLocationChange,
-  Translate,
-} from "ra-core";
+import { useDefaultTitle, useResetErrorBoundaryOnLocationChange, Translate } from "ra-core";
 import { CircleAlert, History } from "lucide-react";
 import {
   Accordion,
@@ -46,9 +42,7 @@ export const Error = (props: InternalErrorProps & {}) => {
               </AccordionItem>
             </Accordion>
 
-            <p className="text-center ">
-              Need help with this error? Try the following:
-            </p>
+            <p className="text-center ">Need help with this error? Try the following:</p>
             <div>
               <ul className="list-disc">
                 <li>

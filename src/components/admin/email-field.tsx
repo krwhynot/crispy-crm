@@ -6,10 +6,8 @@ import { cn } from "@/lib/utils";
 import { genericMemo } from "@/lib/genericMemo";
 import type { FieldProps } from "@/lib/field.type";
 
-const EmailFieldImpl = <
-  RecordType extends Record<string, any> = Record<string, any>,
->(
-  inProps: EmailFieldProps<RecordType>,
+const EmailFieldImpl = <RecordType extends Record<string, any> = Record<string, any>>(
+  inProps: EmailFieldProps<RecordType>
 ) => {
   const { className, empty, defaultValue, source, record, ...rest } = inProps;
   const value = useFieldValue({ defaultValue, source, record });
@@ -42,11 +40,9 @@ EmailFieldImpl.displayName = "EmailFieldImpl";
 
 export const EmailField = genericMemo(EmailFieldImpl);
 
-export interface EmailFieldProps<
-  RecordType extends Record<string, any> = Record<string, any>,
-> extends FieldProps<RecordType>,
+export interface EmailFieldProps<RecordType extends Record<string, any> = Record<string, any>>
+  extends FieldProps<RecordType>,
     AnchorHTMLAttributes<HTMLAnchorElement> {}
 
 // useful to prevent click bubbling in a DataTable with rowClick
-const stopPropagation = (e: React.MouseEvent<HTMLAnchorElement>) =>
-  e.stopPropagation();
+const stopPropagation = (e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation();

@@ -16,18 +16,17 @@ export const LatestNotes = () => {
       sort: { field: "created_at", order: "DESC" },
       filter: { sales_id: identity?.id },
     },
-    { enabled: Number.isInteger(identity?.id) },
+    { enabled: Number.isInteger(identity?.id) }
   );
-  const { data: opportunityNotesData, isPending: opportunityNotesLoading } =
-    useGetList(
-      "opportunityNotes",
-      {
-        pagination: { page: 1, perPage: 5 },
-        sort: { field: "created_at", order: "DESC" },
-        filter: { sales_id: identity?.id },
-      },
-      { enabled: Number.isInteger(identity?.id) },
-    );
+  const { data: opportunityNotesData, isPending: opportunityNotesLoading } = useGetList(
+    "opportunityNotes",
+    {
+      pagination: { page: 1, perPage: 5 },
+      sort: { field: "created_at", order: "DESC" },
+      filter: { sales_id: identity?.id },
+    },
+    { enabled: Number.isInteger(identity?.id) }
+  );
   if (contactNotesLoading || opportunityNotesLoading) {
     return null;
   }
@@ -45,7 +44,7 @@ export const LatestNotes = () => {
       opportunityNotesData.map((note) => ({
         ...note,
         type: "opportunityNote",
-      })),
+      }))
     )
     .sort((a, b) => new Date(b.created_at).valueOf() - new Date(a.created_at).valueOf())
     .slice(0, 5);
@@ -63,11 +62,7 @@ export const LatestNotes = () => {
       <Card>
         <CardContent>
           {allNotes.map((note) => (
-            <div
-              id={`${note.type}_${note.id}`}
-              key={`${note.type}_${note.id}`}
-              className="mb-8"
-            >
+            <div id={`${note.type}_${note.id}`} key={`${note.type}_${note.id}`} className="mb-8">
               <div className="text-sm text-[color:var(--text-subtle)]">
                 on{" "}
                 {note.type === "opportunityNote" ? (
@@ -96,12 +91,7 @@ export const LatestNotes = () => {
 const Opportunity = ({ note }: any) => (
   <>
     Opportunity{" "}
-    <ReferenceField
-      record={note}
-      source="opportunity_id"
-      reference="opportunities"
-      link="show"
-    >
+    <ReferenceField record={note} source="opportunity_id" reference="opportunities" link="show">
       <TextField source="name" />
     </ReferenceField>
   </>

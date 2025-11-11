@@ -24,13 +24,11 @@ import { faker } from "@faker-js/faker";
  * Default mock data provider implementing all CRUD methods
  * Returns resolved promises with mock data
  */
-export const createMockDataProvider = (
-  overrides?: Partial<DataProvider>,
-): DataProvider => {
+export const createMockDataProvider = (overrides?: Partial<DataProvider>): DataProvider => {
   const defaultProvider: DataProvider = {
     getList: async <RecordType extends Record<string, any> = any>(
       _resource: string,
-      _params: GetListParams,
+      _params: GetListParams
     ) => {
       // Simulate pessimistic mode delay
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -47,7 +45,7 @@ export const createMockDataProvider = (
 
     getOne: async <RecordType extends Record<string, any> = any>(
       resource: string,
-      params: GetOneParams,
+      params: GetOneParams
     ) => {
       return {
         data: { id: params.id } as RecordType,
@@ -56,7 +54,7 @@ export const createMockDataProvider = (
 
     getMany: async <RecordType extends Record<string, any> = any>(
       resource: string,
-      params: GetManyParams,
+      params: GetManyParams
     ) => {
       return {
         data: params.ids.map((id) => ({ id })) as RecordType[],
@@ -65,7 +63,7 @@ export const createMockDataProvider = (
 
     getManyReference: async <RecordType extends Record<string, any> = any>(
       _resource: string,
-      _params: GetManyReferenceParams,
+      _params: GetManyReferenceParams
     ) => {
       return {
         data: [] as RecordType[],
@@ -79,7 +77,7 @@ export const createMockDataProvider = (
 
     create: async <RecordType extends Record<string, any> = any>(
       resource: string,
-      params: CreateParams,
+      params: CreateParams
     ) => {
       // Simulate pessimistic mode delay
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -94,7 +92,7 @@ export const createMockDataProvider = (
 
     update: async <RecordType extends Record<string, any> = any>(
       resource: string,
-      params: UpdateParams,
+      params: UpdateParams
     ) => {
       // Simulate pessimistic mode delay
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -112,7 +110,7 @@ export const createMockDataProvider = (
 
     delete: async <RecordType extends Record<string, any> = any>(
       resource: string,
-      params: DeleteParams,
+      params: DeleteParams
     ) => {
       return {
         data: params.previousData as RecordType,
@@ -298,12 +296,7 @@ export const createMockTask = (overrides?: any) => ({
     "Administrative",
     "None",
   ]),
-  status: faker.helpers.arrayElement([
-    "pending",
-    "in_progress",
-    "completed",
-    "cancelled",
-  ]),
+  status: faker.helpers.arrayElement(["pending", "in_progress", "completed", "cancelled"]),
   priority: faker.helpers.arrayElement(["low", "medium", "high"]),
   due_date: faker.date.future().toISOString().split("T")[0],
   sales_id: faker.number.int({ min: 1, max: 20 }),
@@ -361,15 +354,14 @@ export const createRLSViolationError = (field?: string) => ({
 /**
  * Create a network timeout error
  */
-export const createNetworkError = () =>
-  new Error("Network request failed: timeout");
+export const createNetworkError = () => new Error("Network request failed: timeout");
 
 /**
  * Create a validation error with field-specific messages
  */
 export const createValidationError = (
   errors: Record<string, string>,
-  message = "Validation failed",
+  message = "Validation failed"
 ) => ({
   message,
   errors,
@@ -378,10 +370,7 @@ export const createValidationError = (
 /**
  * Create a rejected data provider method (for testing error states)
  */
-export const createRejectedDataProvider = (
-  method: keyof DataProvider,
-  error: any,
-) => {
+export const createRejectedDataProvider = (method: keyof DataProvider, error: any) => {
   const provider = createMockDataProvider();
   return {
     ...provider,

@@ -44,11 +44,7 @@ const mockContacts = [
     title: "Procurement Manager",
     email: [{ email: "bob.johnson@global.com", type: "Work" }],
     phone: [{ number: "+1-555-0125", type: "Work" }],
-    organization_names: [
-      "Global Systems Ltd",
-      "Consulting Firm Inc",
-      "Tech Distributors Ltd",
-    ],
+    organization_names: ["Global Systems Ltd", "Consulting Firm Inc", "Tech Distributors Ltd"],
     primary_organization_name: "Global Systems Ltd",
     role: "buyer",
     purchase_influence: "High",
@@ -106,7 +102,7 @@ const mockConfiguration = {
     { id: "influencer", name: "Influencer" },
     { id: "buyer", name: "Buyer" },
     { id: "end_user", name: "End User" },
-  ]
+  ],
 };
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -146,24 +142,21 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
             filteredContacts = filteredContacts.filter((contact) =>
               contact.organization_names.some((name) =>
                 mockOrganizations.find(
-                  (org) =>
-                    org.id === params.filter.organization_id &&
-                    org.name === name,
-                ),
-              ),
+                  (org) => org.id === params.filter.organization_id && org.name === name
+                )
+              )
             );
           }
 
           if (params.filter.role) {
             filteredContacts = filteredContacts.filter(
-              (contact) => contact.role === params.filter.role,
+              (contact) => contact.role === params.filter.role
             );
           }
 
           if (params.filter.purchase_influence) {
             filteredContacts = filteredContacts.filter(
-              (contact) =>
-                contact.purchase_influence === params.filter.purchase_influence,
+              (contact) => contact.purchase_influence === params.filter.purchase_influence
             );
           }
 
@@ -174,9 +167,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
                 contact.first_name.toLowerCase().includes(query) ||
                 contact.last_name.toLowerCase().includes(query) ||
                 contact.title?.toLowerCase().includes(query) ||
-                contact.organization_names.some((name) =>
-                  name.toLowerCase().includes(query),
-                ),
+                contact.organization_names.some((name) => name.toLowerCase().includes(query))
             );
           }
         }
@@ -211,7 +202,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -225,7 +216,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -239,7 +230,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -255,7 +246,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -271,7 +262,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -286,7 +277,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -305,7 +296,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
           filter: expect.objectContaining({
             organization_id: 1,
           }),
-        }),
+        })
       );
     });
   });
@@ -314,7 +305,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -333,7 +324,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
           filter: expect.objectContaining({
             role: "decision_maker",
           }),
-        }),
+        })
       );
     });
   });
@@ -342,7 +333,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -361,7 +352,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
           filter: expect.objectContaining({
             purchase_influence: "High",
           }),
-        }),
+        })
       );
     });
   });
@@ -370,7 +361,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -389,7 +380,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
           filter: expect.objectContaining({
             q: "John",
           }),
-        }),
+        })
       );
     });
   });
@@ -398,7 +389,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -417,7 +408,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
           filter: expect.objectContaining({
             q: "Acme",
           }),
-        }),
+        })
       );
     });
   });
@@ -426,7 +417,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -443,7 +434,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
         "contacts_summary",
         expect.objectContaining({
           sort: { field: "last_name", order: "ASC" },
-        }),
+        })
       );
     });
   });
@@ -452,7 +443,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -469,7 +460,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
         "contacts_summary",
         expect.objectContaining({
           sort: { field: "primary_organization_name", order: "ASC" },
-        }),
+        })
       );
     });
   });
@@ -478,7 +469,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -513,7 +504,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -528,7 +519,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -551,7 +542,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
             organization_id: 1,
             role: "decision_maker",
           }),
-        }),
+        })
       );
     });
   });
@@ -571,7 +562,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     render(
       <TestWrapper>
         <ContactList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {

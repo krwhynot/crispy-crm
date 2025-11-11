@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
-import { OpportunitiesListPage } from '../../support/poms/OpportunitiesListPage';
-import { OpportunityShowPage } from '../../support/poms/OpportunityShowPage';
-import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
-import { consoleMonitor } from '../../support/utils/console-monitor';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
+import { OpportunitiesListPage } from "../../support/poms/OpportunitiesListPage";
+import { OpportunityShowPage } from "../../support/poms/OpportunityShowPage";
+import { OpportunityFormPage } from "../../support/poms/OpportunityFormPage";
+import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
  * Opportunities Stage Transitions Test Suite
@@ -15,7 +15,7 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  * FOLLOWS: playwright-e2e-testing skill requirements
  */
 
-test.describe('Opportunities Stage Transitions', () => {
+test.describe("Opportunities Stage Transitions", () => {
   let listPage: OpportunitiesListPage;
   let showPage: OpportunityShowPage;
   let formPage: OpportunityFormPage;
@@ -26,12 +26,15 @@ test.describe('Opportunities Stage Transitions', () => {
 
     // Login using POM
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
 
-    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+    const isLoginFormVisible = await page
+      .getByLabel(/email/i)
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
 
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
     } else {
       await page.waitForURL(/\/#\//, { timeout: 10000 });
     }
@@ -52,15 +55,15 @@ test.describe('Opportunities Stage Transitions', () => {
     consoleMonitor.clear();
   });
 
-  test('should display available stage transition buttons', async ({ _page }) => {
+  test("should display available stage transition buttons", async ({ _page }) => {
     // Create test opportunity in initial stage
     const timestamp = Date.now();
     const opportunityName = `Workflow Test ${timestamp}`;
-    const initialStage = 'Prospecting';
+    const initialStage = "Prospecting";
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
+    await formPage.selectOrganization("Acme Corp");
     await formPage.selectStage(initialStage);
     await formPage.submit();
 
@@ -83,19 +86,19 @@ test.describe('Opportunities Stage Transitions', () => {
       // Should have at least one transition button
       expect(buttonCount).toBeGreaterThan(0);
     } else {
-      console.log('Workflow section not found - may use different UI pattern');
+      console.log("Workflow section not found - may use different UI pattern");
     }
   });
 
-  test('should transition through standard opportunity stages', async ({ page }) => {
+  test("should transition through standard opportunity stages", async ({ page }) => {
     // Create opportunity in Prospecting
     const timestamp = Date.now();
     const opportunityName = `Stage Flow ${timestamp}`;
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
-    await formPage.selectStage('Prospecting');
+    await formPage.selectOrganization("Acme Corp");
+    await formPage.selectStage("Prospecting");
     await formPage.submit();
 
     // Navigate to show page
@@ -103,7 +106,7 @@ test.describe('Opportunities Stage Transitions', () => {
     await listPage.viewOpportunity(opportunityName);
 
     // Verify starting stage
-    await showPage.expectInStage('Prospecting');
+    await showPage.expectInStage("Prospecting");
 
     // Try to transition to Qualification
     const workflowSection = showPage.getWorkflowSection();
@@ -111,7 +114,7 @@ test.describe('Opportunities Stage Transitions', () => {
 
     if (hasWorkflowSection) {
       // Look for "Move to Qualification" or similar button
-      const qualificationButton = workflowSection.getByRole('button', {
+      const qualificationButton = workflowSection.getByRole("button", {
         name: /qualification|qualify/i,
       });
 
@@ -122,32 +125,32 @@ test.describe('Opportunities Stage Transitions', () => {
         await page.waitForTimeout(1000);
 
         // Verify stage updated
-        await showPage.expectInStage('Qualification');
+        await showPage.expectInStage("Qualification");
       } else {
-        console.log('Stage transition button not found - testing manual edit instead');
+        console.log("Stage transition button not found - testing manual edit instead");
 
         // Alternative: Use edit form to change stage
         await showPage.clickEdit();
-        await formPage.selectStage('Qualification');
+        await formPage.selectStage("Qualification");
         await formPage.submit();
 
         await listPage.goto();
         await listPage.viewOpportunity(opportunityName);
-        await showPage.expectInStage('Qualification');
+        await showPage.expectInStage("Qualification");
       }
     }
   });
 
-  test('should update stage via edit form', async ({ page }) => {
+  test("should update stage via edit form", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Edit Stage ${timestamp}`;
-    const initialStage = 'Prospecting';
-    const targetStage = 'Proposal';
+    const initialStage = "Prospecting";
+    const targetStage = "Proposal";
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
+    await formPage.selectOrganization("Acme Corp");
     await formPage.selectStage(initialStage);
     await formPage.submit();
 
@@ -162,7 +165,7 @@ test.describe('Opportunities Stage Transitions', () => {
     await formPage.submit();
 
     // Verify stage updated
-    if (page.url().includes('/show')) {
+    if (page.url().includes("/show")) {
       await showPage.expectInStage(targetStage);
     } else {
       await listPage.goto();
@@ -171,17 +174,17 @@ test.describe('Opportunities Stage Transitions', () => {
     }
   });
 
-  test('should mark opportunity as Closed Won', async ({ page }) => {
+  test("should mark opportunity as Closed Won", async ({ page }) => {
     // Create opportunity ready to close
     const timestamp = Date.now();
     const opportunityName = `Close Won ${timestamp}`;
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
-    await formPage.selectStage('Negotiation');
-    await formPage.fillValue('50000');
-    await formPage.fillProbability('90');
+    await formPage.selectOrganization("Acme Corp");
+    await formPage.selectStage("Negotiation");
+    await formPage.fillValue("50000");
+    await formPage.fillProbability("90");
     await formPage.submit();
 
     // Navigate to show page
@@ -193,7 +196,7 @@ test.describe('Opportunities Stage Transitions', () => {
     const hasWorkflowSection = await workflowSection.isVisible().catch(() => false);
 
     if (hasWorkflowSection) {
-      const closeWonButton = workflowSection.getByRole('button', {
+      const closeWonButton = workflowSection.getByRole("button", {
         name: /close.*won|won|mark.*won/i,
       });
 
@@ -204,44 +207,44 @@ test.describe('Opportunities Stage Transitions', () => {
         await page.waitForTimeout(1000);
 
         // Verify stage is Closed Won
-        await showPage.expectInStage('Closed Won');
+        await showPage.expectInStage("Closed Won");
       } else {
         // Alternative: Edit form
         await showPage.clickEdit();
-        await formPage.selectStage('Closed Won');
+        await formPage.selectStage("Closed Won");
         await formPage.submit();
 
-        if (!page.url().includes('/show')) {
+        if (!page.url().includes("/show")) {
           await listPage.goto();
           await listPage.viewOpportunity(opportunityName);
         }
 
-        await showPage.expectInStage('Closed Won');
+        await showPage.expectInStage("Closed Won");
       }
     } else {
       // No workflow UI - use edit form
       await showPage.clickEdit();
-      await formPage.selectStage('Closed Won');
+      await formPage.selectStage("Closed Won");
       await formPage.submit();
 
-      if (!page.url().includes('/show')) {
+      if (!page.url().includes("/show")) {
         await listPage.goto();
         await listPage.viewOpportunity(opportunityName);
       }
 
-      await showPage.expectInStage('Closed Won');
+      await showPage.expectInStage("Closed Won");
     }
   });
 
-  test('should mark opportunity as Closed Lost', async ({ page }) => {
+  test("should mark opportunity as Closed Lost", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Close Lost ${timestamp}`;
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
-    await formPage.selectStage('Proposal');
+    await formPage.selectOrganization("Acme Corp");
+    await formPage.selectStage("Proposal");
     await formPage.submit();
 
     // Navigate to show page
@@ -253,7 +256,7 @@ test.describe('Opportunities Stage Transitions', () => {
     const hasWorkflowSection = await workflowSection.isVisible().catch(() => false);
 
     if (hasWorkflowSection) {
-      const closeLostButton = workflowSection.getByRole('button', {
+      const closeLostButton = workflowSection.getByRole("button", {
         name: /close.*lost|lost|mark.*lost/i,
       });
 
@@ -263,36 +266,36 @@ test.describe('Opportunities Stage Transitions', () => {
         await closeLostButton.click();
         await page.waitForTimeout(1000);
 
-        await showPage.expectInStage('Closed Lost');
+        await showPage.expectInStage("Closed Lost");
       } else {
         // Alternative: Edit form
         await showPage.clickEdit();
-        await formPage.selectStage('Closed Lost');
+        await formPage.selectStage("Closed Lost");
         await formPage.submit();
 
-        if (!page.url().includes('/show')) {
+        if (!page.url().includes("/show")) {
           await listPage.goto();
           await listPage.viewOpportunity(opportunityName);
         }
 
-        await showPage.expectInStage('Closed Lost');
+        await showPage.expectInStage("Closed Lost");
       }
     } else {
       // No workflow UI - use edit form
       await showPage.clickEdit();
-      await formPage.selectStage('Closed Lost');
+      await formPage.selectStage("Closed Lost");
       await formPage.submit();
 
-      if (!page.url().includes('/show')) {
+      if (!page.url().includes("/show")) {
         await listPage.goto();
         await listPage.viewOpportunity(opportunityName);
       }
 
-      await showPage.expectInStage('Closed Lost');
+      await showPage.expectInStage("Closed Lost");
     }
   });
 
-  test('should prevent invalid stage transitions (if business rules exist)', async ({ _page }) => {
+  test("should prevent invalid stage transitions (if business rules exist)", async ({ _page }) => {
     // This test validates business rules like:
     // - Can't go from Prospecting directly to Closed Won
     // - Must complete required fields before advancing
@@ -302,8 +305,8 @@ test.describe('Opportunities Stage Transitions', () => {
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
-    await formPage.selectStage('Prospecting');
+    await formPage.selectOrganization("Acme Corp");
+    await formPage.selectStage("Prospecting");
     // Intentionally skip required fields (if any)
     await formPage.submit();
 
@@ -316,7 +319,7 @@ test.describe('Opportunities Stage Transitions', () => {
 
     if (hasWorkflowSection) {
       // Verify Closed Won button is disabled or not present from Prospecting
-      const closeWonButton = workflowSection.getByRole('button', {
+      const closeWonButton = workflowSection.getByRole("button", {
         name: /close.*won/i,
       });
 
@@ -331,20 +334,20 @@ test.describe('Opportunities Stage Transitions', () => {
         expect(isCloseWonAvailable).toBe(false);
       }
     } else {
-      console.log('No workflow restrictions implemented - manual transitions allowed');
+      console.log("No workflow restrictions implemented - manual transitions allowed");
     }
   });
 
-  test('should track stage transition in activity timeline', async ({ page }) => {
+  test("should track stage transition in activity timeline", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Timeline Track ${timestamp}`;
-    const initialStage = 'Prospecting';
-    const nextStage = 'Qualification';
+    const initialStage = "Prospecting";
+    const nextStage = "Qualification";
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
+    await formPage.selectOrganization("Acme Corp");
     await formPage.selectStage(initialStage);
     await formPage.submit();
 
@@ -356,7 +359,7 @@ test.describe('Opportunities Stage Transitions', () => {
     await formPage.submit();
 
     // Navigate to show page to check timeline
-    if (!page.url().includes('/show')) {
+    if (!page.url().includes("/show")) {
       await listPage.goto();
       await listPage.viewOpportunity(opportunityName);
     }
@@ -367,51 +370,54 @@ test.describe('Opportunities Stage Transitions', () => {
 
     if (hasTimeline) {
       // Look for activity mentioning stage change
-      const stageActivity = timeline.locator('text=/stage|moved|changed/i');
-      const hasStageActivity = await stageActivity.first().isVisible({ timeout: 2000 }).catch(() => false);
+      const stageActivity = timeline.locator("text=/stage|moved|changed/i");
+      const hasStageActivity = await stageActivity
+        .first()
+        .isVisible({ timeout: 2000 })
+        .catch(() => false);
 
       if (hasStageActivity) {
         // Verify activity mentions both stages
         const activityText = await stageActivity.first().textContent();
         expect(activityText).toBeTruthy();
       } else {
-        console.log('Stage transition not automatically tracked in timeline');
+        console.log("Stage transition not automatically tracked in timeline");
       }
     }
   });
 
-  test('should display stage history with timestamps', async ({ page }) => {
+  test("should display stage history with timestamps", async ({ page }) => {
     // Create and transition opportunity through multiple stages
     const timestamp = Date.now();
     const opportunityName = `History Test ${timestamp}`;
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
-    await formPage.selectStage('Prospecting');
+    await formPage.selectOrganization("Acme Corp");
+    await formPage.selectStage("Prospecting");
     await formPage.submit();
 
     // First transition
     await listPage.goto();
     await listPage.viewOpportunity(opportunityName);
     await showPage.clickEdit();
-    await formPage.selectStage('Qualification');
+    await formPage.selectStage("Qualification");
     await formPage.submit();
 
     // Wait a bit to ensure different timestamps
     await page.waitForTimeout(1000);
 
     // Second transition
-    if (!page.url().includes('/show')) {
+    if (!page.url().includes("/show")) {
       await listPage.goto();
       await listPage.viewOpportunity(opportunityName);
     }
     await showPage.clickEdit();
-    await formPage.selectStage('Proposal');
+    await formPage.selectStage("Proposal");
     await formPage.submit();
 
     // Check for history/timeline
-    if (!page.url().includes('/show')) {
+    if (!page.url().includes("/show")) {
       await listPage.goto();
       await listPage.viewOpportunity(opportunityName);
     }
@@ -435,15 +441,15 @@ test.describe('Opportunities Stage Transitions', () => {
     }
   });
 
-  test('should maintain stage consistency across list and detail views', async ({ _page }) => {
+  test("should maintain stage consistency across list and detail views", async ({ _page }) => {
     // Create opportunity with specific stage
     const timestamp = Date.now();
     const opportunityName = `Consistency ${timestamp}`;
-    const stage = 'Proposal';
+    const stage = "Proposal";
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
+    await formPage.selectOrganization("Acme Corp");
     await formPage.selectStage(stage);
     await formPage.submit();
 
@@ -456,7 +462,7 @@ test.describe('Opportunities Stage Transitions', () => {
     await showPage.expectInStage(stage);
 
     // Change stage
-    const newStage = 'Negotiation';
+    const newStage = "Negotiation";
     await showPage.clickEdit();
     await formPage.selectStage(newStage);
     await formPage.submit();
@@ -469,10 +475,10 @@ test.describe('Opportunities Stage Transitions', () => {
     await showPage.expectInStage(newStage);
   });
 
-  test('should handle rapid stage transitions without errors', async ({ page }) => {
+  test("should handle rapid stage transitions without errors", async ({ page }) => {
     const consoleErrors: string[] = [];
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
+    page.on("console", (msg) => {
+      if (msg.type() === "error") {
         consoleErrors.push(msg.text());
       }
     });
@@ -483,12 +489,12 @@ test.describe('Opportunities Stage Transitions', () => {
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
-    await formPage.selectStage('Prospecting');
+    await formPage.selectOrganization("Acme Corp");
+    await formPage.selectStage("Prospecting");
     await formPage.submit();
 
     // Rapidly change stages
-    const stages = ['Qualification', 'Proposal', 'Negotiation'];
+    const stages = ["Qualification", "Proposal", "Negotiation"];
 
     for (const stage of stages) {
       await listPage.goto();
@@ -502,16 +508,16 @@ test.describe('Opportunities Stage Transitions', () => {
     // Verify final stage
     await listPage.goto();
     await listPage.viewOpportunity(opportunityName);
-    await showPage.expectInStage('Negotiation');
+    await showPage.expectInStage("Negotiation");
 
     // Check for errors
-    const rlsErrors = consoleErrors.filter(err =>
-      err.includes('RLS') || err.includes('permission')
+    const rlsErrors = consoleErrors.filter(
+      (err) => err.includes("RLS") || err.includes("permission")
     );
     expect(rlsErrors).toHaveLength(0);
 
-    const reactErrors = consoleErrors.filter(err =>
-      err.includes('React') || err.includes('Warning')
+    const reactErrors = consoleErrors.filter(
+      (err) => err.includes("React") || err.includes("Warning")
     );
     expect(reactErrors).toHaveLength(0);
   });

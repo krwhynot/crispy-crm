@@ -21,8 +21,8 @@ export const ThisWeeksActivities = () => {
     const end = endOfWeek(now, { weekStartsOn: 1 });
 
     return {
-      startOfWeekISO: start.toISOString().split('T')[0],
-      endOfWeekISO: end.toISOString().split('T')[0],
+      startOfWeekISO: start.toISOString().split("T")[0],
+      endOfWeekISO: end.toISOString().split("T")[0],
     };
   }, []);
 
@@ -58,8 +58,8 @@ export const ThisWeeksActivities = () => {
           {count === 0
             ? "No activities this week"
             : count === 1
-            ? "activity this week"
-            : "activities this week"}
+              ? "activity this week"
+              : "activities this week"}
         </div>
       </div>
     </DashboardWidget>

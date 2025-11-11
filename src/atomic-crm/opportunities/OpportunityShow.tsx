@@ -124,11 +124,18 @@ const OpportunityShowContent = () => {
                       <>
                         {isPast(new Date(record.estimated_close_date)) ? (
                           <Badge variant="destructive">
-                            {formatDistanceToNow(new Date(record.estimated_close_date), { addSuffix: true })}
+                            {formatDistanceToNow(new Date(record.estimated_close_date), {
+                              addSuffix: true,
+                            })}
                           </Badge>
                         ) : (
-                          <Badge variant="secondary" className="bg-[var(--brand-100)] text-[var(--brand-700)] border-[var(--brand-300)]">
-                            {formatDistanceToNow(new Date(record.estimated_close_date), { addSuffix: true })}
+                          <Badge
+                            variant="secondary"
+                            className="bg-[var(--brand-100)] text-[var(--brand-700)] border-[var(--brand-300)]"
+                          >
+                            {formatDistanceToNow(new Date(record.estimated_close_date), {
+                              addSuffix: true,
+                            })}
                           </Badge>
                         )}
                       </>
@@ -199,11 +206,7 @@ const OpportunityShowContent = () => {
                       <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
                         Account Manager
                       </span>
-                      <ReferenceField
-                        source="account_manager_id"
-                        reference="sales"
-                        link={false}
-                      />
+                      <ReferenceField source="account_manager_id" reference="sales" link={false} />
                     </div>
                   )}
 
@@ -213,7 +216,9 @@ const OpportunityShowContent = () => {
                         Lead Source
                       </span>
                       <span className="text-sm">
-                        {record.lead_source.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        {record.lead_source
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
                       </span>
                     </div>
                   )}
@@ -226,10 +231,7 @@ const OpportunityShowContent = () => {
                     <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase mb-2">
                       Contacts
                     </span>
-                    <ReferenceArrayField
-                      source="contact_ids"
-                      reference="contacts_summary"
-                    >
+                    <ReferenceArrayField source="contact_ids" reference="contacts_summary">
                       <ContactList />
                     </ReferenceArrayField>
                   </div>
@@ -258,18 +260,10 @@ const OpportunityShowContent = () => {
                       Created By
                     </span>
                     <div className="flex items-center gap-2">
-                      <ReferenceField
-                        source="created_by"
-                        reference="sales"
-                        link={false}
-                      >
+                      <ReferenceField source="created_by" reference="sales" link={false}>
                         <SaleAvatar size="sm" />
                       </ReferenceField>
-                      <ReferenceField
-                        source="created_by"
-                        reference="sales"
-                        link={false}
-                      />
+                      <ReferenceField source="created_by" reference="sales" link={false} />
                     </div>
                   </div>
                 )}
@@ -375,7 +369,7 @@ const ArchiveButton = ({ record }: { record: Opportunity }) => {
         onError: () => {
           notify("Error: opportunity not archived", { type: "error" });
         },
-      },
+      }
     );
   };
 

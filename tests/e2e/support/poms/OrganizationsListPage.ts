@@ -1,5 +1,5 @@
-import type { Page, Locator } from '@playwright/test';
-import { BasePage } from './BasePage';
+import type { Page, Locator } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Page Object Model for Organizations List Page
@@ -18,7 +18,7 @@ export class OrganizationsListPage extends BasePage {
    * Navigate to organizations list page
    */
   async gotoOrganizationsList(): Promise<void> {
-    await this.goto('/#/organizations');
+    await this.goto("/#/organizations");
     await this.waitForURL(/\/#\/organizations/);
   }
 
@@ -27,7 +27,7 @@ export class OrganizationsListPage extends BasePage {
    */
   async waitForOrganizationsLoaded(): Promise<void> {
     // Wait for at least one organization card to be visible
-    await this.page.getByRole('link').first().waitFor({ state: 'visible', timeout: 10000 });
+    await this.page.getByRole("link").first().waitFor({ state: "visible", timeout: 10000 });
   }
 
   /**
@@ -35,28 +35,28 @@ export class OrganizationsListPage extends BasePage {
    */
   getOrganizationCards(): Locator {
     // Organization cards are rendered as links
-    return this.page.getByRole('link').filter({ has: this.page.locator('h6') });
+    return this.page.getByRole("link").filter({ has: this.page.locator("h6") });
   }
 
   /**
    * Get a specific organization card by name
    */
   getOrganizationCardByName(name: string | RegExp): Locator {
-    return this.page.getByRole('link').filter({ hasText: name });
+    return this.page.getByRole("link").filter({ hasText: name });
   }
 
   /**
    * Get all edit buttons (positioned in cards)
    */
   getEditButtons(): Locator {
-    return this.page.getByRole('button', { name: /edit/i });
+    return this.page.getByRole("button", { name: /edit/i });
   }
 
   /**
    * Get all checkboxes (for bulk selection)
    */
   getSelectionCheckboxes(): Locator {
-    return this.page.getByRole('checkbox');
+    return this.page.getByRole("checkbox");
   }
 
   /**
@@ -81,8 +81,8 @@ export class OrganizationsListPage extends BasePage {
   getDynamicElements(): Locator[] {
     return [
       // Mask contact/opportunity counts as they may vary
-      this.page.locator('text=/\\d+ contact/'),
-      this.page.locator('text=/\\d+ opportunit/'),
+      this.page.locator("text=/\\d+ contact/"),
+      this.page.locator("text=/\\d+ opportunit/"),
     ];
   }
 }

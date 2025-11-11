@@ -51,10 +51,7 @@ export class UniqueConstraintValidator {
    * Check for duplicate company names (case-insensitive)
    */
   async validateCompanyNameUniqueness() {
-    const { data: duplicates, error } = await this.supabase.rpc(
-      "find_duplicate_company_names",
-      {},
-    );
+    const { data: duplicates, error } = await this.supabase.rpc("find_duplicate_company_names", {});
 
     if (error) throw error;
 
@@ -67,10 +64,7 @@ export class UniqueConstraintValidator {
         count: duplicates.length,
         samples: duplicates
           .slice(0, 5)
-          .map(
-            (dup) =>
-              `"${dup.name}" appears ${dup.count} times (IDs: ${dup.ids.join(", ")})`,
-          ),
+          .map((dup) => `"${dup.name}" appears ${dup.count} times (IDs: ${dup.ids.join(", ")})`),
         fixable: true,
       });
     }
@@ -83,7 +77,7 @@ export class UniqueConstraintValidator {
     // Check primary emails
     const { data: emailDuplicates, error } = await this.supabase.rpc(
       "find_duplicate_contact_emails",
-      {},
+      {}
     );
 
     if (error) throw error;
@@ -99,7 +93,7 @@ export class UniqueConstraintValidator {
           .slice(0, 5)
           .map(
             (dup) =>
-              `Email "${dup.email}" in company ${dup.company_id} (Contact IDs: ${dup.contact_ids.join(", ")})`,
+              `Email "${dup.email}" in company ${dup.company_id} (Contact IDs: ${dup.contact_ids.join(", ")})`
           ),
         fixable: true,
       });
@@ -154,7 +148,7 @@ export class UniqueConstraintValidator {
           .slice(0, 5)
           .map(
             (dup) =>
-              `Email "${dup.email}" in company ${dup.companyId} (${dup.contacts.length} contacts)`,
+              `Email "${dup.email}" in company ${dup.companyId} (${dup.contacts.length} contacts)`
           ),
         fixable: true,
       });
@@ -217,7 +211,7 @@ export class UniqueConstraintValidator {
           .slice(0, 5)
           .map(
             (dup) =>
-              `Phone "${dup.phone}" in company ${dup.companyId} (${dup.contacts.length} contacts)`,
+              `Phone "${dup.phone}" in company ${dup.companyId} (${dup.contacts.length} contacts)`
           ),
         fixable: true,
       });
@@ -228,10 +222,7 @@ export class UniqueConstraintValidator {
    * Check for duplicate opportunity names within the same company
    */
   async validateOpportunityNameWithinCompany() {
-    const { data: duplicates, error } = await this.supabase.rpc(
-      "find_duplicate_deal_names",
-      {},
-    );
+    const { data: duplicates, error } = await this.supabase.rpc("find_duplicate_deal_names", {});
 
     if (error) throw error;
 
@@ -244,10 +235,7 @@ export class UniqueConstraintValidator {
         count: duplicates.length,
         samples: duplicates
           .slice(0, 5)
-          .map(
-            (dup) =>
-              `"${dup.name}" in company ${dup.company_id} (${dup.count} occurrences)`,
-          ),
+          .map((dup) => `"${dup.name}" in company ${dup.company_id} (${dup.count} occurrences)`),
         fixable: true,
       });
     }
@@ -294,10 +282,7 @@ export class UniqueConstraintValidator {
         count: companiesWithManyContacts.length,
         samples: companiesWithManyContacts
           .slice(0, 5)
-          .map(
-            (item) =>
-              `Company ${item.companyId} has ${item.contactCount} contacts`,
-          ),
+          .map((item) => `Company ${item.companyId} has ${item.contactCount} contacts`),
         fixable: false,
       });
     }
@@ -307,10 +292,7 @@ export class UniqueConstraintValidator {
    * Check for duplicate tag names
    */
   async validateTagNameUniqueness() {
-    const { data: duplicates, error } = await this.supabase.rpc(
-      "find_duplicate_tag_names",
-      {},
-    );
+    const { data: duplicates, error } = await this.supabase.rpc("find_duplicate_tag_names", {});
 
     if (error) throw error;
 
@@ -323,10 +305,7 @@ export class UniqueConstraintValidator {
         count: duplicates.length,
         samples: duplicates
           .slice(0, 5)
-          .map(
-            (dup) =>
-              `"${dup.name}" appears ${dup.count} times (IDs: ${dup.ids.join(", ")})`,
-          ),
+          .map((dup) => `"${dup.name}" appears ${dup.count} times (IDs: ${dup.ids.join(", ")})`),
         fixable: true,
       });
     }
@@ -338,9 +317,7 @@ export class UniqueConstraintValidator {
   async validateUserEmailUniqueness() {
     // This checks the auth.users table if accessible
     try {
-      const { data: users, error } = await this.supabase
-        .from("auth.users")
-        .select("id, email");
+      const { data: users, error } = await this.supabase.from("auth.users").select("id, email");
 
       if (error) {
         // If we can't access auth.users, skip this check
@@ -363,7 +340,7 @@ export class UniqueConstraintValidator {
       }
 
       const duplicateEmails = Array.from(emailCounts.entries()).filter(
-        ([email, count]) => count > 1,
+        ([email, count]) => count > 1
       );
 
       if (duplicateEmails.length > 0) {
@@ -398,24 +375,18 @@ export class UniqueConstraintValidator {
   generateReport() {
     const totalConflicts = this.conflicts.length;
     const totalWarnings = this.warnings.length;
-    const criticalCount = this.conflicts.filter(
-      (c) => c.severity === "CRITICAL",
-    ).length;
-    const highCount = this.conflicts.filter(
-      (c) => c.severity === "HIGH",
-    ).length;
+    const criticalCount = this.conflicts.filter((c) => c.severity === "CRITICAL").length;
+    const highCount = this.conflicts.filter((c) => c.severity === "HIGH").length;
     const fixableCount = this.conflicts.filter((c) => c.fixable).length;
 
     const report = {
-      status:
-        criticalCount > 0 ? "FAILED" : highCount > 0 ? "WARNING" : "PASSED",
+      status: criticalCount > 0 ? "FAILED" : highCount > 0 ? "WARNING" : "PASSED",
       summary: {
         totalConflicts,
         totalWarnings,
         criticalCount,
         highCount,
-        mediumCount: this.conflicts.filter((c) => c.severity === "MEDIUM")
-          .length,
+        mediumCount: this.conflicts.filter((c) => c.severity === "MEDIUM").length,
         lowCount: this.conflicts.filter((c) => c.severity === "LOW").length,
         fixableCount,
       },
@@ -469,8 +440,7 @@ export class UniqueConstraintValidator {
       recommendations.push({
         type: "BLOCK",
         priority: "CRITICAL",
-        action:
-          "Migration cannot proceed with duplicate user emails in auth system",
+        action: "Migration cannot proceed with duplicate user emails in auth system",
         sql: `-- Contact Supabase support to resolve auth.users email duplicates`,
       });
     }
@@ -485,9 +455,7 @@ if (import.meta.url === new URL(process.argv[1], "file://").href) {
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.error(
-      "❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables",
-    );
+    console.error("❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables");
     process.exit(1);
   }
 

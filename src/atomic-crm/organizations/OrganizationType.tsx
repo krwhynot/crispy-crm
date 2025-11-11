@@ -23,10 +23,10 @@ const organizationTypeColors: Record<OrganizationType, string> = {
 // Priority colors for visual distinction using semantic state colors
 // Follows urgency spectrum: Red (high) → Amber (medium-high) → Gray (medium) → Light gray (low)
 const priorityColors = {
-  A: "bg-destructive text-white hover:bg-destructive/90",                          // High priority: Red
-  B: "border-transparent bg-[var(--warning-default)] text-white hover:bg-[var(--warning-hover)]",  // Medium-High: Amber
-  C: "bg-secondary text-secondary-foreground hover:bg-secondary/90",               // Medium: Neutral gray
-  D: "bg-muted text-[color:var(--text-subtle)] hover:bg-muted/90",                // Low: Light gray
+  A: "bg-destructive text-white hover:bg-destructive/90", // High priority: Red
+  B: "border-transparent bg-[var(--warning-default)] text-white hover:bg-[var(--warning-hover)]", // Medium-High: Amber
+  C: "bg-secondary text-secondary-foreground hover:bg-secondary/90", // Medium: Neutral gray
+  D: "bg-muted text-[color:var(--text-subtle)] hover:bg-muted/90", // Low: Light gray
 };
 
 export const OrganizationType = () => {
@@ -40,17 +40,14 @@ export const OrganizationType = () => {
         <Badge
           className={`text-xs px-2 py-0.5 ${organizationTypeColors[record.organization_type] || organizationTypeColors.unknown}`}
         >
-          {organizationTypeLabels[record.organization_type] ||
-            record.organization_type}
+          {organizationTypeLabels[record.organization_type] || record.organization_type}
         </Badge>
       )}
 
       {/* Priority Badge */}
       {record.priority && (
         <Badge
-          className={
-            priorityColors[record.priority] || "bg-muted text-[color:var(--text-subtle)]"
-          }
+          className={priorityColors[record.priority] || "bg-muted text-[color:var(--text-subtle)]"}
           variant="default"
         >
           Priority {record.priority}

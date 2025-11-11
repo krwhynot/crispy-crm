@@ -43,9 +43,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         quickAddSchema.parse(invalidData);
       } catch (error) {
         if (error instanceof z.ZodError) {
-          const firstNameError = error.issues.find(
-            (issue) => issue.path[0] === "first_name"
-          );
+          const firstNameError = error.issues.find((issue) => issue.path[0] === "first_name");
           expect(firstNameError).toBeDefined();
           // Zod gives type error when field is missing entirely
           expect(firstNameError?.code).toBe("invalid_type");
@@ -84,9 +82,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         quickAddSchema.parse(invalidData);
       } catch (error) {
         if (error instanceof z.ZodError) {
-          const lastNameError = error.issues.find(
-            (issue) => issue.path[0] === "last_name"
-          );
+          const lastNameError = error.issues.find((issue) => issue.path[0] === "last_name");
           expect(lastNameError).toBeDefined();
           expect(lastNameError?.code).toBe("invalid_type");
         }
@@ -109,9 +105,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         quickAddSchema.parse(invalidData);
       } catch (error) {
         if (error instanceof z.ZodError) {
-          const orgNameError = error.issues.find(
-            (issue) => issue.path[0] === "org_name"
-          );
+          const orgNameError = error.issues.find((issue) => issue.path[0] === "org_name");
           expect(orgNameError).toBeDefined();
           expect(orgNameError?.code).toBe("invalid_type");
         }
@@ -180,9 +174,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         quickAddSchema.parse(invalidData);
       } catch (error) {
         if (error instanceof z.ZodError) {
-          const campaignError = error.issues.find(
-            (issue) => issue.path[0] === "campaign"
-          );
+          const campaignError = error.issues.find((issue) => issue.path[0] === "campaign");
           expect(campaignError).toBeDefined();
           expect(campaignError?.code).toBe("invalid_type");
         }
@@ -205,9 +197,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         quickAddSchema.parse(invalidData);
       } catch (error) {
         if (error instanceof z.ZodError) {
-          const principalError = error.issues.find(
-            (issue) => issue.path[0] === "principal_id"
-          );
+          const principalError = error.issues.find((issue) => issue.path[0] === "principal_id");
           expect(principalError).toBeDefined();
           expect(principalError?.code).toBe("invalid_type");
         }
@@ -280,9 +270,7 @@ describe("Quick Add Booth Visitor Validation", () => {
         if (error instanceof z.ZodError) {
           const phoneError = error.issues.find((issue) => issue.path[0] === "phone");
           expect(phoneError).toBeDefined();
-          expect(phoneError?.message).toContain(
-            "Phone or Email required (at least one)"
-          );
+          expect(phoneError?.message).toContain("Phone or Email required (at least one)");
         }
       }
     });
@@ -320,11 +308,7 @@ describe("Quick Add Booth Visitor Validation", () => {
 
   describe("Email Format Validation", () => {
     it("should accept valid email formats", () => {
-      const validEmails = [
-        "user@example.com",
-        "first.last@company.co.uk",
-        "admin+test@domain.io",
-      ];
+      const validEmails = ["user@example.com", "first.last@company.co.uk", "admin+test@domain.io"];
 
       validEmails.forEach((email) => {
         const data = {

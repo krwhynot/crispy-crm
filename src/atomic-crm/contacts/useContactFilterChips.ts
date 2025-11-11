@@ -96,10 +96,7 @@ export const useContactFilterChips = () => {
 
   // Last activity
   if (filterValues?.["last_seen@gte"] || filterValues?.["last_seen@lte"]) {
-    const label = formatDateRange(
-      filterValues["last_seen@gte"],
-      filterValues["last_seen@lte"]
-    );
+    const label = formatDateRange(filterValues["last_seen@gte"], filterValues["last_seen@lte"]);
     chips.push({
       key: "last_seen",
       value: { gte: filterValues["last_seen@gte"], lte: filterValues["last_seen@lte"] },
@@ -110,9 +107,7 @@ export const useContactFilterChips = () => {
 
   // Tags
   if (filterValues?.tags) {
-    const tagArray = Array.isArray(filterValues.tags)
-      ? filterValues.tags
-      : [filterValues.tags];
+    const tagArray = Array.isArray(filterValues.tags) ? filterValues.tags : [filterValues.tags];
     tagArray.forEach((tagId) => {
       chips.push({
         key: "tags",

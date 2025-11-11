@@ -13,7 +13,7 @@
  * @module secureStorage
  */
 
-export type StorageType = 'session' | 'local';
+export type StorageType = "session" | "local";
 
 export interface StorageOptions {
   /**
@@ -42,15 +42,12 @@ export interface StorageOptions {
  * const stages = getStorageItem<string[]>('filter.opportunity_stages');
  * // Returns: ['new_lead', 'initial_outreach'] or null
  */
-export function getStorageItem<T = any>(
-  key: string,
-  options: StorageOptions = {}
-): T | null {
-  const storageType = options.type || 'session';
+export function getStorageItem<T = any>(key: string, options: StorageOptions = {}): T | null {
+  const storageType = options.type || "session";
 
   try {
     // Try preferred storage type first
-    const storage = storageType === 'session' ? sessionStorage : localStorage;
+    const storage = storageType === "session" ? sessionStorage : localStorage;
     const item = storage.getItem(key);
 
     if (item) {
@@ -58,7 +55,7 @@ export function getStorageItem<T = any>(
     }
 
     // Fallback to alternate storage if not found (migration path)
-    const fallbackStorage = storageType === 'session' ? localStorage : sessionStorage;
+    const fallbackStorage = storageType === "session" ? localStorage : sessionStorage;
     const fallbackItem = fallbackStorage.getItem(key);
 
     if (fallbackItem) {
@@ -95,10 +92,10 @@ export function setStorageItem<T = any>(
   value: T,
   options: StorageOptions = {}
 ): boolean {
-  const storageType = options.type || 'session';
+  const storageType = options.type || "session";
 
   try {
-    const storage = storageType === 'session' ? sessionStorage : localStorage;
+    const storage = storageType === "session" ? sessionStorage : localStorage;
     storage.setItem(key, JSON.stringify(value));
     return true;
   } catch (e) {
@@ -106,7 +103,7 @@ export function setStorageItem<T = any>(
 
     // Try fallback storage if preferred fails (quota exceeded, etc.)
     try {
-      const fallbackStorage = storageType === 'session' ? localStorage : sessionStorage;
+      const fallbackStorage = storageType === "session" ? localStorage : sessionStorage;
       fallbackStorage.setItem(key, JSON.stringify(value));
       console.warn(`[Storage] Used fallback storage for key "${key}"`);
       return true;
@@ -157,7 +154,7 @@ export function clearStorageByPrefix(prefix: string): void {
       }
     }
 
-    keysToRemove.forEach(key => storage.removeItem(key));
+    keysToRemove.forEach((key) => storage.removeItem(key));
   };
 
   try {

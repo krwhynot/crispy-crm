@@ -15,14 +15,8 @@ export class MigrationGoNoGoDecision {
   constructor(supabaseUrl, supabaseKey) {
     this.supabase = createClient(supabaseUrl, supabaseKey);
     this.validators = {
-      referentialIntegrity: new ReferentialIntegrityValidator(
-        supabaseUrl,
-        supabaseKey,
-      ),
-      uniqueConstraints: new UniqueConstraintValidator(
-        supabaseUrl,
-        supabaseKey,
-      ),
+      referentialIntegrity: new ReferentialIntegrityValidator(supabaseUrl, supabaseKey),
+      uniqueConstraints: new UniqueConstraintValidator(supabaseUrl, supabaseKey),
       requiredFields: new RequiredFieldsValidator(supabaseUrl, supabaseKey),
       dataQuality: new DataQualityAssessor(supabaseUrl, supabaseKey),
     };
@@ -52,9 +46,7 @@ export class MigrationGoNoGoDecision {
    * Run complete validation and make go/no-go decision
    */
   async evaluateMigrationReadiness() {
-    console.log(
-      "🎯 Starting comprehensive migration readiness evaluation...\n",
-    );
+    console.log("🎯 Starting comprehensive migration readiness evaluation...\n");
 
     const startTime = Date.now();
     const results = {};
@@ -72,12 +64,9 @@ export class MigrationGoNoGoDecision {
     // Run all validators
     try {
       console.log("🔍 Running validation suite...");
-      results.referentialIntegrity =
-        await this.validators.referentialIntegrity.validateAll();
-      results.uniqueConstraints =
-        await this.validators.uniqueConstraints.validateAll();
-      results.requiredFields =
-        await this.validators.requiredFields.validateAll();
+      results.referentialIntegrity = await this.validators.referentialIntegrity.validateAll();
+      results.uniqueConstraints = await this.validators.uniqueConstraints.validateAll();
+      results.requiredFields = await this.validators.requiredFields.validateAll();
       results.dataQuality = await this.validators.dataQuality.assessAll();
 
       // System readiness checks
@@ -106,9 +95,7 @@ export class MigrationGoNoGoDecision {
     this.makeFinalDecision(decision);
 
     const endTime = Date.now();
-    console.log(
-      `\n⏱️ Evaluation completed in ${(endTime - startTime) / 1000}s`,
-    );
+    console.log(`\n⏱️ Evaluation completed in ${(endTime - startTime) / 1000}s`);
 
     return this.generateFinalReport(results, decision, startTime);
   }
@@ -134,10 +121,7 @@ export class MigrationGoNoGoDecision {
       });
     }
 
-    if (
-      riResult.summary.highCount >
-      this.criteria.criticalBlockers.referentialIntegrity.maxHigh
-    ) {
+    if (riResult.summary.highCount > this.criteria.criticalBlockers.referentialIntegrity.maxHigh) {
       decision.blockers.push({
         type: "REFERENTIAL_INTEGRITY",
         severity: "HIGH",
@@ -150,8 +134,7 @@ export class MigrationGoNoGoDecision {
     // Unique constraint blockers
     const ucResult = results.uniqueConstraints;
     if (
-      ucResult.summary.criticalCount >
-      this.criteria.criticalBlockers.uniqueConstraints.maxCritical
+      ucResult.summary.criticalCount > this.criteria.criticalBlockers.uniqueConstraints.maxCritical
     ) {
       decision.blockers.push({
         type: "UNIQUE_CONSTRAINTS",
@@ -162,10 +145,7 @@ export class MigrationGoNoGoDecision {
       });
     }
 
-    if (
-      ucResult.summary.highCount >
-      this.criteria.criticalBlockers.uniqueConstraints.maxHigh
-    ) {
+    if (ucResult.summary.highCount > this.criteria.criticalBlockers.uniqueConstraints.maxHigh) {
       decision.blockers.push({
         type: "UNIQUE_CONSTRAINTS",
         severity: "HIGH",
@@ -178,8 +158,7 @@ export class MigrationGoNoGoDecision {
     // Required fields blockers
     const rfResult = results.requiredFields;
     if (
-      rfResult.summary.criticalCount >
-      this.criteria.criticalBlockers.requiredFields.maxCritical
+      rfResult.summary.criticalCount > this.criteria.criticalBlockers.requiredFields.maxCritical
     ) {
       decision.blockers.push({
         type: "REQUIRED_FIELDS",
@@ -190,10 +169,7 @@ export class MigrationGoNoGoDecision {
       });
     }
 
-    if (
-      rfResult.summary.highCount >
-      this.criteria.criticalBlockers.requiredFields.maxHigh
-    ) {
+    if (rfResult.summary.highCount > this.criteria.criticalBlockers.requiredFields.maxHigh) {
       decision.blockers.push({
         type: "REQUIRED_FIELDS",
         severity: "HIGH",
@@ -214,10 +190,7 @@ export class MigrationGoNoGoDecision {
 
     // Data quality threshold
     const dqResult = results.dataQuality;
-    if (
-      dqResult.overallScore <
-      this.criteria.warningThresholds.dataQuality.minScore
-    ) {
+    if (dqResult.overallScore < this.criteria.warningThresholds.dataQuality.minScore) {
       decision.warnings.push({
         type: "DATA_QUALITY",
         severity: "WARNING",
@@ -238,8 +211,7 @@ export class MigrationGoNoGoDecision {
         type: "HIGH_VIOLATION_COUNT",
         severity: "WARNING",
         message: `Total violations (${totalViolations}) exceed threshold (${this.criteria.warningThresholds.totalViolations.max})`,
-        impact:
-          "High number of data issues may require extensive post-migration cleanup",
+        impact: "High number of data issues may require extensive post-migration cleanup",
         category: "volume",
       });
     }
@@ -249,13 +221,9 @@ export class MigrationGoNoGoDecision {
       (results.uniqueConstraints.summary.fixableCount || 0) +
       (results.requiredFields.summary.fixableCount || 0);
 
-    const fixablePercentage =
-      totalViolations === 0 ? 100 : (totalFixable / totalViolations) * 100;
+    const fixablePercentage = totalViolations === 0 ? 100 : (totalFixable / totalViolations) * 100;
 
-    if (
-      fixablePercentage <
-      this.criteria.warningThresholds.fixableViolations.minPercentage
-    ) {
+    if (fixablePercentage < this.criteria.warningThresholds.fixableViolations.minPercentage) {
       decision.warnings.push({
         type: "LOW_FIXABLE_PERCENTAGE",
         severity: "WARNING",
@@ -284,10 +252,7 @@ export class MigrationGoNoGoDecision {
 
     try {
       // Database connection check
-      const { data, error } = await this.supabase
-        .from("companies")
-        .select("id")
-        .limit(1);
+      const { data, error } = await this.supabase.from("companies").select("id").limit(1);
       checks.databaseConnection = !error;
 
       // Disk space check (estimated)
@@ -407,9 +372,7 @@ export class MigrationGoNoGoDecision {
    */
   makeFinalDecision(decision) {
     if (decision.blockers.length > 0) {
-      const criticalBlockers = decision.blockers.filter(
-        (b) => b.severity === "CRITICAL",
-      );
+      const criticalBlockers = decision.blockers.filter((b) => b.severity === "CRITICAL");
       if (criticalBlockers.length > 0) {
         decision.recommendation = "BLOCK";
       } else {
@@ -482,18 +445,16 @@ export class MigrationGoNoGoDecision {
 
     console.log(`\n${emoji} RECOMMENDATION: ${decision}`);
     console.log(`🎯 CONFIDENCE: ${report.confidence}%`);
-    console.log(
-      `⏱️ EVALUATION TIME: ${(report.executionTime / 1000).toFixed(1)}s`,
-    );
+    console.log(`⏱️ EVALUATION TIME: ${(report.executionTime / 1000).toFixed(1)}s`);
 
     console.log("\n📊 VALIDATION SUMMARY:");
     console.log(`   Blockers: ${report.summary.totalBlockers}`);
     console.log(`   Warnings: ${report.summary.totalWarnings}`);
     console.log(
-      `   Fixes Available: ${report.summary.automatedFixes}/${report.summary.totalFixes}`,
+      `   Fixes Available: ${report.summary.automatedFixes}/${report.summary.totalFixes}`
     );
     console.log(
-      `   Data Quality: ${report.validationResults.dataQuality.overallScore.toFixed(1)}%`,
+      `   Data Quality: ${report.validationResults.dataQuality.overallScore.toFixed(1)}%`
     );
 
     if (report.blockers.length > 0) {
@@ -568,9 +529,7 @@ if (import.meta.url === new URL(process.argv[1], "file://").href) {
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.error(
-      "❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables",
-    );
+    console.error("❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables");
     process.exit(1);
   }
 

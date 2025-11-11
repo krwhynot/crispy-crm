@@ -9,9 +9,7 @@ interface ActivityLogOpportunityCreatedProps {
   activity: RaRecord & ActivityOpportunityCreated;
 }
 
-export function ActivityLogOpportunityCreated({
-  activity,
-}: ActivityLogOpportunityCreatedProps) {
+export function ActivityLogOpportunityCreated({ activity }: ActivityLogOpportunityCreatedProps) {
   const context = useActivityLogContext();
   const { opportunity } = activity;
   return (
@@ -23,9 +21,7 @@ export function ActivityLogOpportunityCreated({
             Sales ID: {activity.sales_id}
           </span>{" "}
           added opportunity{" "}
-          <Link to={`/opportunities/${opportunity.id}/show`}>
-            {opportunity.name}
-          </Link>{" "}
+          <Link to={`/opportunities/${opportunity.id}/show`}>{opportunity.name}</Link>{" "}
           {context !== "company" && (
             <>
               to organization {activity.customer_organization_id}{" "}

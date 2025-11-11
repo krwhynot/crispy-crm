@@ -54,9 +54,7 @@ function oklchToLinearSrgb(l, c, h) {
 }
 
 function linearToSrgb(linear) {
-  return linear <= 0.0031308
-    ? 12.92 * linear
-    : 1.055 * Math.pow(linear, 1 / 2.4) - 0.055;
+  return linear <= 0.0031308 ? 12.92 * linear : 1.055 * Math.pow(linear, 1 / 2.4) - 0.055;
 }
 
 function oklchToRgb(l, c, h) {
@@ -169,7 +167,7 @@ function resolveColorVar(varName, colorMap, depth = 0) {
   if (!value) return null;
 
   // If value is direct OKLCH, return it
-  if (value.startsWith('oklch(')) return value;
+  if (value.startsWith("oklch(")) return value;
 
   // If value is var() reference, resolve recursively
   const varMatch = value.match(/var\(--([a-z-]+)\)/);
@@ -198,16 +196,7 @@ async function validateContrast() {
   const colors = extractColorsFromCss();
 
   // Define test cases
-  const tagColorPairs = [
-    "warm",
-    "green",
-    "teal",
-    "blue",
-    "purple",
-    "yellow",
-    "gray",
-    "pink",
-  ];
+  const tagColorPairs = ["warm", "green", "teal", "blue", "purple", "yellow", "gray", "pink"];
 
   const semanticTests = [
     {
@@ -323,9 +312,7 @@ async function validateContrast() {
           fg: fgVar,
         });
         results.summary.passed++;
-        console.log(
-          `✅ Tag ${colorName}: ${ratio.toFixed(2)}:1 (min ${minRatio}:1)`,
-        );
+        console.log(`✅ Tag ${colorName}: ${ratio.toFixed(2)}:1 (min ${minRatio}:1)`);
       } else {
         results.failed.push({
           mode,
@@ -337,9 +324,7 @@ async function validateContrast() {
           message: `Contrast ratio ${ratio.toFixed(2)}:1 is below WCAG AA minimum of ${minRatio}:1`,
         });
         results.summary.failed++;
-        console.log(
-          `❌ Tag ${colorName}: ${ratio.toFixed(2)}:1 (min ${minRatio}:1) - FAILED`,
-        );
+        console.log(`❌ Tag ${colorName}: ${ratio.toFixed(2)}:1 (min ${minRatio}:1) - FAILED`);
       }
     }
 
@@ -385,9 +370,7 @@ async function validateContrast() {
           fg: test.fg,
         });
         results.summary.passed++;
-        console.log(
-          `✅ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1)`,
-        );
+        console.log(`✅ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1)`);
       } else {
         results.failed.push({
           mode,
@@ -400,7 +383,7 @@ async function validateContrast() {
         });
         results.summary.failed++;
         console.log(
-          `❌ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1) - FAILED`,
+          `❌ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1) - FAILED`
         );
       }
     }
@@ -442,9 +425,7 @@ async function validateContrast() {
           fg: test.fg,
         });
         results.summary.passed++;
-        console.log(
-          `✅ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1)`,
-        );
+        console.log(`✅ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1)`);
       } else {
         results.failed.push({
           mode,
@@ -457,7 +438,7 @@ async function validateContrast() {
         });
         results.summary.failed++;
         console.log(
-          `❌ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1) - FAILED`,
+          `❌ ${test.description}: ${ratio.toFixed(2)}:1 (min ${test.minRatio}:1) - FAILED`
         );
       }
     }
@@ -507,9 +488,7 @@ function generateReport(results) {
 async function main() {
   console.log("🎨 Color Contrast Validation Script");
   console.log("═".repeat(60));
-  console.log(
-    "Validating WCAG contrast ratios for all color combinations...\n",
-  );
+  console.log("Validating WCAG contrast ratios for all color combinations...\n");
 
   try {
     const results = await validateContrast();
@@ -521,9 +500,7 @@ async function main() {
         console.error("\n❌ CI Build Failed: WCAG violations detected");
         process.exit(1);
       }
-      console.log(
-        "\n✅ CI Build Passed: All contrast ratios meet WCAG AA standards",
-      );
+      console.log("\n✅ CI Build Passed: All contrast ratios meet WCAG AA standards");
     }
 
     // Exit with appropriate code

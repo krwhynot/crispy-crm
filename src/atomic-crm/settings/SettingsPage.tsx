@@ -2,8 +2,7 @@ import { RecordField } from "@/components/admin/record-field";
 import { TextInput } from "@/components/admin/text-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-} from "@/components/ui/tooltip";
+import {} from "@/components/ui/tooltip";
 import { useMutation } from "@tanstack/react-query";
 import { CircleX, Pencil, Save } from "lucide-react";
 import {
@@ -127,9 +126,7 @@ const SettingsForm = ({
       <Card>
         <CardContent>
           <div className="mb-4 flex flex-row justify-between">
-            <h2 className="text-xl font-semibold text-[color:var(--text-subtle)]">
-              My info
-            </h2>
+            <h2 className="text-xl font-semibold text-[color:var(--text-subtle)]">My info</h2>
           </div>
 
           <div className="space-y-4 mb-4">
@@ -147,11 +144,7 @@ const SettingsForm = ({
           <div className="flex flex-row justify-end gap-2">
             {!isEditMode && (
               <>
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={handleClickOpenPasswordChange}
-                >
+                <Button variant="outline" type="button" onClick={handleClickOpenPasswordChange}>
                   Change password
                 </Button>
               </>
@@ -180,13 +173,7 @@ const SettingsForm = ({
   );
 };
 
-const TextRender = ({
-  source,
-  isEditMode,
-}: {
-  source: string;
-  isEditMode: boolean;
-}) => {
+const TextRender = ({ source, isEditMode }: { source: string; isEditMode: boolean }) => {
   if (isEditMode) {
     return <TextInput source={source} helperText={false} />;
   }

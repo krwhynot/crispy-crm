@@ -117,7 +117,7 @@ describe("OpportunityCard", () => {
 
     renderWithDragContext(<OpportunityCard index={0} />);
 
-    const loader = document.querySelector('.animate-pulse');
+    const loader = document.querySelector(".animate-pulse");
     expect(loader).toBeInTheDocument();
   });
 

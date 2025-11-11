@@ -31,17 +31,17 @@ export function inferActivityTypeFromTaskTitle(taskTitle: string): string {
   // Use word boundaries to avoid matching partial words
   // \b ensures we match whole words only
   if (/\b(call|phone)\b/.test(title)) {
-    return 'call';
+    return "call";
   }
 
   if (/\b(email|e-mail)\b/.test(title)) {
-    return 'email';
+    return "email";
   }
 
   if (/\b(meeting|demo|presentation|appointment)\b/.test(title)) {
-    return 'meeting';
+    return "meeting";
   }
 
   // Default fallback
-  return 'check_in';
+  return "check_in";
 }

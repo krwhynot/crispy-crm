@@ -194,7 +194,7 @@ describe("Error Simulation Helpers", () => {
         name: "Name is required",
         amount: "Amount must be positive",
       },
-      "Form validation failed",
+      "Form validation failed"
     );
 
     expect(error.message).toBe("Form validation failed");
@@ -209,7 +209,7 @@ describe("Error Simulation Helpers", () => {
     await expect(
       provider.create("opportunities", {
         data: { name: "Test" },
-      }),
+      })
     ).rejects.toEqual(error);
   });
 

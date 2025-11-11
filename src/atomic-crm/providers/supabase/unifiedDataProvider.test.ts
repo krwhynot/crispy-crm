@@ -58,16 +58,14 @@ vi.mock("../../validation/opportunities", () => ({
 }));
 
 vi.mock("../../validation/organizations", () => ({
-  validateOrganizationForSubmission: vi
-    .fn()
-    .mockImplementation(async (data) => {
-      if (!data.name) {
-        throw {
-          message: "Validation failed",
-          errors: { name: "Organization name is required" },
-        };
-      }
-    }),
+  validateOrganizationForSubmission: vi.fn().mockImplementation(async (data) => {
+    if (!data.name) {
+      throw {
+        message: "Validation failed",
+        errors: { name: "Organization name is required" },
+      };
+    }
+  }),
 }));
 
 vi.mock("../../validation/contacts", () => ({
@@ -273,7 +271,7 @@ describe("UnifiedDataProvider Validation Integration", () => {
       await expect(
         unifiedDataProvider.create("opportunities", {
           data: { amount: 100 },
-        }),
+        })
       ).rejects.toMatchObject({
         message: "Validation failed",
         errors: { name: "Opportunity name is required" },
@@ -285,7 +283,7 @@ describe("UnifiedDataProvider Validation Integration", () => {
       await expect(
         unifiedDataProvider.create("organizations", {
           data: { website: "https://example.com" },
-        }),
+        })
       ).rejects.toMatchObject({
         message: "Validation failed",
         errors: { name: "Organization name is required" },
@@ -297,7 +295,7 @@ describe("UnifiedDataProvider Validation Integration", () => {
       await expect(
         unifiedDataProvider.create("contacts", {
           data: { email: "test@example.com" },
-        }),
+        })
       ).rejects.toMatchObject({
         message: "Validation failed",
         errors: {
@@ -327,7 +325,7 @@ describe("UnifiedDataProvider Validation Integration", () => {
           id: 1,
           data: { name: "" },
           previousData: { id: 1, name: "Old Name" },
-        }),
+        })
       ).rejects.toMatchObject({
         message: "Validation failed",
       });
@@ -371,30 +369,30 @@ describe("UnifiedDataProvider Validation Integration", () => {
     it("should delegate sales creation to SalesService", async () => {
       // This test validates that the unified provider includes custom service methods
       // The actual implementation is tested in the service-specific tests
-      expect(typeof unifiedDataProvider.salesCreate).toBe('function');
-      expect(typeof unifiedDataProvider.salesUpdate).toBe('function');
-      expect(typeof unifiedDataProvider.updatePassword).toBe('function');
+      expect(typeof unifiedDataProvider.salesCreate).toBe("function");
+      expect(typeof unifiedDataProvider.salesUpdate).toBe("function");
+      expect(typeof unifiedDataProvider.updatePassword).toBe("function");
     });
 
     it("should include opportunity service methods", () => {
-      expect(typeof unifiedDataProvider.unarchiveOpportunity).toBe('function');
+      expect(typeof unifiedDataProvider.unarchiveOpportunity).toBe("function");
     });
 
     it("should include activity service methods", () => {
-      expect(typeof unifiedDataProvider.getActivityLog).toBe('function');
+      expect(typeof unifiedDataProvider.getActivityLog).toBe("function");
     });
 
     it("should include junction table service methods", () => {
-      expect(typeof unifiedDataProvider.getContactOrganizations).toBe('function');
-      expect(typeof unifiedDataProvider.addContactToOrganization).toBe('function');
-      expect(typeof unifiedDataProvider.removeContactFromOrganization).toBe('function');
-      expect(typeof unifiedDataProvider.setPrimaryOrganization).toBe('function');
-      expect(typeof unifiedDataProvider.getOpportunityParticipants).toBe('function');
-      expect(typeof unifiedDataProvider.addOpportunityParticipant).toBe('function');
-      expect(typeof unifiedDataProvider.removeOpportunityParticipant).toBe('function');
-      expect(typeof unifiedDataProvider.getOpportunityContacts).toBe('function');
-      expect(typeof unifiedDataProvider.addOpportunityContact).toBe('function');
-      expect(typeof unifiedDataProvider.removeOpportunityContact).toBe('function');
+      expect(typeof unifiedDataProvider.getContactOrganizations).toBe("function");
+      expect(typeof unifiedDataProvider.addContactToOrganization).toBe("function");
+      expect(typeof unifiedDataProvider.removeContactFromOrganization).toBe("function");
+      expect(typeof unifiedDataProvider.setPrimaryOrganization).toBe("function");
+      expect(typeof unifiedDataProvider.getOpportunityParticipants).toBe("function");
+      expect(typeof unifiedDataProvider.addOpportunityParticipant).toBe("function");
+      expect(typeof unifiedDataProvider.removeOpportunityParticipant).toBe("function");
+      expect(typeof unifiedDataProvider.getOpportunityContacts).toBe("function");
+      expect(typeof unifiedDataProvider.addOpportunityContact).toBe("function");
+      expect(typeof unifiedDataProvider.removeOpportunityContact).toBe("function");
     });
   });
 
@@ -407,15 +405,15 @@ describe("UnifiedDataProvider Validation Integration", () => {
       expect(resourceUsesTransformers("sales")).toBe(true);
       expect(resourceUsesTransformers("contacts")).toBe(true);
       expect(resourceUsesTransformers("organizations")).toBe(true);
-      expect(resourceUsesTransformers("tags")).toBe(false);  // tags don't have transformers
+      expect(resourceUsesTransformers("tags")).toBe(false); // tags don't have transformers
       expect(resourceUsesTransformers("unknown")).toBe(false);
     });
 
     it("should have transformer pipeline configured", async () => {
       // The transformer pipeline is configured in the unified provider
       // Individual transformer functionality is tested in their own unit tests
-      const { resourceUsesTransformers } = await import('./unifiedDataProvider');
-      expect(typeof resourceUsesTransformers).toBe('function');
+      const { resourceUsesTransformers } = await import("./unifiedDataProvider");
+      expect(typeof resourceUsesTransformers).toBe("function");
     });
   });
 });

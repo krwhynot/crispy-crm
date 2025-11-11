@@ -71,7 +71,7 @@ export const SelectInput = (props: SelectInputProps) => {
   useEffect(() => {
     if (emptyValue == null) {
       throw new Error(
-        `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`,
+        `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
       );
     }
   }, [emptyValue]);
@@ -94,20 +94,19 @@ export const SelectInput = (props: SelectInputProps) => {
 
   if (source === undefined) {
     throw new Error(
-      `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop`,
+      `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop`
     );
   }
 
   if (!isPending && !fetchError && allChoices === undefined) {
     throw new Error(
-      `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`,
+      `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
     );
   }
 
   const getRecordRepresentation = useGetRecordRepresentation(resource);
   const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
-    optionText:
-      optionText ?? (isFromReference ? getRecordRepresentation : undefined),
+    optionText: optionText ?? (isFromReference ? getRecordRepresentation : undefined),
     optionValue,
     disableValue,
     translateChoice: translateChoice ?? !isFromReference,
@@ -139,10 +138,7 @@ export const SelectInput = (props: SelectInputProps) => {
       : emptyText;
   }, [emptyText, translate]);
 
-  const renderMenuItemOption = useCallback(
-    (choice: any) => getChoiceText(choice),
-    [getChoiceText],
-  );
+  const renderMenuItemOption = useCallback((choice: any) => getChoiceText(choice), [getChoiceText]);
 
   const handleChange = useCallback(
     async (value: string) => {
@@ -150,13 +146,11 @@ export const SelectInput = (props: SelectInputProps) => {
         field.onChange(emptyValue);
       } else {
         // Find the choice by value and pass it to field.onChange
-        const choice = allChoices?.find(
-          (choice) => getChoiceValue(choice) === value,
-        );
+        const choice = allChoices?.find((choice) => getChoiceValue(choice) === value);
         field.onChange(choice ? getChoiceValue(choice) : value);
       }
     },
-    [field, getChoiceValue, emptyValue, allChoices],
+    [field, getChoiceValue, emptyValue, allChoices]
   );
 
   const {
@@ -175,11 +169,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
   if (isPending) {
     return (
-      <FormField
-        id={id}
-        name={field.name}
-        className={cn("w-full min-w-20", className)}
-      >
+      <FormField id={id} name={field.name} className={cn("w-full min-w-20", className)}>
         {label !== "" && label !== false && (
           <FormLabel>
             <FieldTitle
@@ -240,9 +230,7 @@ export const SelectInput = (props: SelectInputProps) => {
               value={field.value?.toString() || emptyValue}
               onValueChange={handleChangeWithCreateSupport}
             >
-              <SelectTrigger
-                className={cn("w-full transition-all hover:bg-accent")}
-              >
+              <SelectTrigger className={cn("w-full transition-all hover:bg-accent")}>
                 <SelectValue placeholder={renderEmptyItemOption()} />
 
                 {field.value && field.value !== emptyValue ? (
@@ -251,7 +239,7 @@ export const SelectInput = (props: SelectInputProps) => {
                     className="p-0 ml-auto pointer-events-auto hover:bg-transparent text-[color:var(--text-subtle)] opacity-50 hover:opacity-100"
                     onClick={handleReset}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
+                      if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         handleReset(e as unknown as React.MouseEvent);
                       }
@@ -269,15 +257,9 @@ export const SelectInput = (props: SelectInputProps) => {
                   const isDisabled = getDisableValue(choice);
 
                   return (
-                    <SelectItem
-                      key={value}
-                      value={value?.toString()}
-                      disabled={isDisabled}
-                    >
+                    <SelectItem key={value} value={value?.toString()} disabled={isDisabled}>
                       {renderMenuItemOption(
-                        !!createItem && choice?.id === createItem.id
-                          ? createItem
-                          : choice,
+                        !!createItem && choice?.id === createItem.id ? createItem : choice
                       )}
                     </SelectItem>
                   );

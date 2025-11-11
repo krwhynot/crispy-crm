@@ -1,11 +1,5 @@
 import { Card } from "@/components/ui/card";
-import {
-  endOfToday,
-  endOfTomorrow,
-  endOfWeek,
-  getDay,
-  startOfToday,
-} from "date-fns";
+import { endOfToday, endOfTomorrow, endOfWeek, getDay, startOfToday } from "date-fns";
 import { CheckSquare } from "lucide-react";
 import { AddTask } from "../tasks/AddTask";
 import { TasksListEmpty } from "./TasksListEmpty";
@@ -14,7 +8,7 @@ import { TasksListFilter } from "./TasksListFilter";
 const trackDashboardEvent = (cardType: string) => {
   console.log(`dashboard_card_click: ${cardType}`, {
     timestamp: new Date().toISOString(),
-    viewport: window.innerWidth < 768 ? 'mobile' : 'desktop'
+    viewport: window.innerWidth < 768 ? "mobile" : "desktop",
   });
 };
 
@@ -60,7 +54,7 @@ export const TasksList = () => {
       </div>
       <Card
         className="rounded-xl p-4 mb-2 cursor-pointer"
-        onClick={() => trackDashboardEvent('tasks')}
+        onClick={() => trackDashboardEvent("tasks")}
       >
         <div className="flex flex-col gap-4 max-h-[320px] overflow-y-auto">
           <TasksListEmpty />

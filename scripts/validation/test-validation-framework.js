@@ -51,10 +51,9 @@ try {
 
   // Verify data quality threshold
   const goNoGo = validators.goNoGo;
-  const dataQualityThreshold =
-    goNoGo.criteria.warningThresholds.dataQuality.minScore;
+  const dataQualityThreshold = goNoGo.criteria.warningThresholds.dataQuality.minScore;
   console.log(
-    `✅ Data quality warning threshold: ${dataQualityThreshold}% (>1% warning as required)`,
+    `✅ Data quality warning threshold: ${dataQualityThreshold}% (>1% warning as required)`
   );
 
   console.log("\n📊 VALIDATION FRAMEWORK SUMMARY");

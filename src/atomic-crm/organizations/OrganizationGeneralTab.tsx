@@ -60,15 +60,10 @@ export const OrganizationGeneralTab = () => {
           "user_id@not.is": null,
         }}
       >
-        <SelectInput
-          label="Account manager"
-          helperText={false}
-          optionText={saleOptionRenderer}
-        />
+        <SelectInput label="Account manager" helperText={false} optionText={saleOptionRenderer} />
       </ReferenceInput>
     </div>
   );
 };
 
-const saleOptionRenderer = (choice: Sale) =>
-  formatName(choice.first_name, choice.last_name);
+const saleOptionRenderer = (choice: Sale) => formatName(choice.first_name, choice.last_name);

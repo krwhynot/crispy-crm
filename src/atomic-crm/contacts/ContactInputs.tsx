@@ -7,27 +7,27 @@ import { ContactAccountTab } from "./ContactAccountTab";
 export const ContactInputs = () => {
   const tabs = [
     {
-      key: 'identity',
-      label: 'Identity',
-      fields: ['first_name', 'last_name'],
+      key: "identity",
+      label: "Identity",
+      fields: ["first_name", "last_name"],
       content: <ContactIdentityTab />,
     },
     {
-      key: 'position',
-      label: 'Position',
-      fields: ['title', 'department', 'organization_id'],
+      key: "position",
+      label: "Position",
+      fields: ["title", "department", "organization_id"],
       content: <ContactPositionTab />,
     },
     {
-      key: 'contact_info',
-      label: 'Contact Info',
-      fields: ['email', 'phone', 'linkedin_url'],
+      key: "contact_info",
+      label: "Contact Info",
+      fields: ["email", "phone", "linkedin_url"],
       content: <ContactInfoTab />,
     },
     {
-      key: 'account',
-      label: 'Account',
-      fields: ['sales_id', 'notes'],
+      key: "account",
+      label: "Account",
+      fields: ["sales_id", "notes"],
       content: <ContactAccountTab />,
     },
   ];

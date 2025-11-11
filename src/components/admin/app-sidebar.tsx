@@ -37,10 +37,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link to="/">
                 <Shell className="!size-5" />
                 <span className="text-base font-semibold">Acme Inc.</span>
@@ -53,17 +50,11 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {hasDashboard ? (
-                <DashboardMenuItem onClick={handleClick} />
-              ) : null}
+              {hasDashboard ? <DashboardMenuItem onClick={handleClick} /> : null}
               {Object.keys(resources)
                 .filter((name) => resources[name].hasList)
                 .map((name) => (
-                  <ResourceMenuItem
-                    key={name}
-                    name={name}
-                    onClick={handleClick}
-                  />
+                  <ResourceMenuItem key={name} name={name} onClick={handleClick} />
                 ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -92,13 +83,7 @@ export const DashboardMenuItem = ({ onClick }: { onClick?: () => void }) => {
   );
 };
 
-export const ResourceMenuItem = ({
-  name,
-  onClick,
-}: {
-  name: string;
-  onClick?: () => void;
-}) => {
+export const ResourceMenuItem = ({ name, onClick }: { name: string; onClick?: () => void }) => {
   const { canAccess, isPending } = useCanAccess({
     resource: name,
     action: "list",
@@ -122,11 +107,7 @@ export const ResourceMenuItem = ({
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={!!match}>
         <Link to={to} state={{ _scrollToTop: true }} onClick={onClick}>
-          {resources[name].icon ? (
-            createElement(resources[name].icon)
-          ) : (
-            <List />
-          )}
+          {resources[name].icon ? createElement(resources[name].icon) : <List />}
           {getResourceLabel(name, 2)}
         </Link>
       </SidebarMenuButton>

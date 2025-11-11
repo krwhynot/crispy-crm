@@ -43,7 +43,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
       // Ensure field is considered as touched
       field.onBlur();
     },
-    [field],
+    [field]
   );
 
   return (
@@ -56,12 +56,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
           onCheckedChange={handleChange}
         />
         <FormLabel htmlFor={id}>
-          <FieldTitle
-            label={label}
-            source={source}
-            resource={resource}
-            isRequired={isRequired}
-          />
+          <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
         </FormLabel>
       </div>
       <InputHelperText helperText={helperText} />

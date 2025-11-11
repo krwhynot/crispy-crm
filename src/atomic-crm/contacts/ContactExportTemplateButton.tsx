@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { FileDown } from "lucide-react";
 import { downloadCSV } from "ra-core";
 
@@ -72,8 +68,8 @@ export const ContactExportTemplateButton = () => {
         <div className="space-y-2">
           <p className="font-semibold">Download Import Template</p>
           <p className="text-xs">
-            Get a CSV template with the correct column headers and a sample
-            row. The organization_name field is required for all contacts.
+            Get a CSV template with the correct column headers and a sample row. The
+            organization_name field is required for all contacts.
           </p>
           <div className="text-xs space-y-1 border-t pt-2">
             <p>

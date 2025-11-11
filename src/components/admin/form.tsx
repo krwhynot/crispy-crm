@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  createContext,
-  type MouseEventHandler,
-  useCallback,
-  useContext,
-  useMemo,
-} from "react";
+import { createContext, type MouseEventHandler, useCallback, useContext, useMemo } from "react";
 import {
   type CreateParams,
   type RaRecord,
@@ -34,9 +28,7 @@ interface FormItemContextValue {
   name: string;
 }
 
-const FormItemContext = createContext<FormItemContextValue>(
-  {} as FormItemContextValue,
-);
+const FormItemContext = createContext<FormItemContextValue>({} as FormItemContextValue);
 
 const useFormField = () => {
   const { getFieldState, formState } = useFormContext();
@@ -51,7 +43,7 @@ const useFormField = () => {
       formMessageId: `${id}-message`,
       ...fieldState,
     }),
-    [id, fieldState],
+    [id, fieldState]
   );
 };
 
@@ -61,17 +53,12 @@ function FormField({ className, id, name, ...props }: FormItemProps) {
       id,
       name,
     }),
-    [id, name],
+    [id, name]
   );
 
   return (
     <FormItemContext.Provider value={contextValue}>
-      <div
-        data-slot="form-item"
-        className={cn("grid gap-2", className)}
-        role="group"
-        {...props}
-      />
+      <div data-slot="form-item" className={cn("grid gap-2", className)} role="group" {...props} />
     </FormItemContext.Provider>
   );
 }
@@ -81,10 +68,7 @@ type FormItemProps = Omit<React.ComponentProps<"div">, "id"> & {
   name: string;
 };
 
-function FormLabel({
-  className,
-  ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+function FormLabel({ className, ...props }: React.ComponentProps<typeof LabelPrimitive.Root>) {
   const { error, formItemId } = useFormField();
 
   return (
@@ -99,18 +83,13 @@ function FormLabel({
 }
 
 function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
-  const { error, formItemId, formDescriptionId, formMessageId } =
-    useFormField();
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
 
   return (
     <Slot
       data-slot="form-control"
       id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
+      aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
       aria-invalid={!!error}
       {...props}
     />
@@ -150,9 +129,7 @@ const FormError = ({ className, ...props }: React.ComponentProps<"p">) => {
   );
 };
 
-const SaveButton = <RecordType extends RaRecord = RaRecord>(
-  props: SaveButtonProps<RecordType>,
-) => {
+const SaveButton = <RecordType extends RaRecord = RaRecord>(props: SaveButtonProps<RecordType>) => {
   const {
     className,
     icon = defaultIcon,
@@ -176,21 +153,14 @@ const SaveButton = <RecordType extends RaRecord = RaRecord>(
   // if alwaysEnable is undefined and the form wasn't prefilled
   const recordFromLocation = useRecordFromLocation();
   const disabled = valueOrDefault(
-    alwaysEnable === false || alwaysEnable === undefined
-      ? undefined
-      : !alwaysEnable,
-    disabledProp ||
-      (!isDirty && recordFromLocation == null) ||
-      isValidating ||
-      isSubmitting,
+    alwaysEnable === false || alwaysEnable === undefined ? undefined : !alwaysEnable,
+    disabledProp || (!isDirty && recordFromLocation == null) || isValidating || isSubmitting
   );
 
   warning(
     type === "submit" &&
-      ((mutationOptions &&
-        (mutationOptions.onSuccess || mutationOptions.onError)) ||
-        transform),
-    'Cannot use <SaveButton mutationOptions> props on a button of type "submit". To override the default mutation options on a particular save button, set the <SaveButton type="button"> prop, or set mutationOptions in the main view component (<Create> or <Edit>).',
+      ((mutationOptions && (mutationOptions.onSuccess || mutationOptions.onError)) || transform),
+    'Cannot use <SaveButton mutationOptions> props on a button of type "submit". To override the default mutation options on a particular save button, set the <SaveButton type="button"> prop, or set mutationOptions in the main view component (<Create> or <Edit>).'
   );
 
   const handleSubmit = useCallback(
@@ -206,7 +176,7 @@ const SaveButton = <RecordType extends RaRecord = RaRecord>(
         setSubmissionErrors(errors, form.setError);
       }
     },
-    [form.setError, saveContext, mutationOptions, transform],
+    [form.setError, saveContext, mutationOptions, transform]
   );
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
@@ -224,7 +194,7 @@ const SaveButton = <RecordType extends RaRecord = RaRecord>(
         await form.handleSubmit(handleSubmit)(event);
       }
     },
-    [onClick, type, form, handleSubmit],
+    [onClick, type, form, handleSubmit]
   );
 
   const displayedLabel = label && translate(label, { _: label });
@@ -235,10 +205,7 @@ const SaveButton = <RecordType extends RaRecord = RaRecord>(
       type={type}
       disabled={disabled}
       onClick={handleClick}
-      className={cn(
-        disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
-        className,
-      )}
+      className={cn(disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer", className)}
       {...rest}
     >
       {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : icon}
@@ -249,10 +216,7 @@ const SaveButton = <RecordType extends RaRecord = RaRecord>(
 
 const defaultIcon = <Save className="h-4 w-4" />;
 
-interface Props<
-  RecordType extends RaRecord = RaRecord,
-  MutationOptionsError = unknown,
-> {
+interface Props<RecordType extends RaRecord = RaRecord, MutationOptionsError = unknown> {
   className?: string;
   disabled?: boolean;
   icon?: React.ReactNode;
@@ -263,20 +227,13 @@ interface Props<
     CreateParams<RecordType> | UpdateParams<RecordType>
   >;
   transform?: TransformData;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link";
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
 }
 
-export type SaveButtonProps<RecordType extends RaRecord = RaRecord> =
-  Props<RecordType> &
-    React.ComponentProps<"button"> & {
-      alwaysEnable?: boolean;
-    };
+export type SaveButtonProps<RecordType extends RaRecord = RaRecord> = Props<RecordType> &
+  React.ComponentProps<"button"> & {
+    alwaysEnable?: boolean;
+  };
 
 const valueOrDefault = (value: any, defaultValue: any) =>
   typeof value === "undefined" ? defaultValue : value;

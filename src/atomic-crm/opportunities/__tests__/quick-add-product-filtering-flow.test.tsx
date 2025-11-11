@@ -13,39 +13,67 @@
  * 6. Submit form → Opportunity created with correct products
  */
 
-import * as React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { QuickAddButton } from '../QuickAddButton';
-import type { Product } from '@/atomic-crm/types';
+import * as React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QuickAddButton } from "../QuickAddButton";
+import type { Product } from "@/atomic-crm/types";
 
 // Mock data
 const mockPrincipals = [
-  { id: 100, name: 'Principal A', organization_type: 'principal' },
-  { id: 200, name: 'Principal B', organization_type: 'principal' },
+  { id: 100, name: "Principal A", organization_type: "principal" },
+  { id: 200, name: "Principal B", organization_type: "principal" },
 ];
 
 const mockProductsPrincipalA: Product[] = [
-  { id: 1, name: 'Product A1', sku: 'SKU-A1', principal_id: 100, category: 'beverages', status: 'active' },
-  { id: 2, name: 'Product A2', sku: 'SKU-A2', principal_id: 100, category: 'snacks', status: 'active' },
+  {
+    id: 1,
+    name: "Product A1",
+    sku: "SKU-A1",
+    principal_id: 100,
+    category: "beverages",
+    status: "active",
+  },
+  {
+    id: 2,
+    name: "Product A2",
+    sku: "SKU-A2",
+    principal_id: 100,
+    category: "snacks",
+    status: "active",
+  },
 ];
 
 const mockProductsPrincipalB: Product[] = [
-  { id: 3, name: 'Product B1', sku: 'SKU-B1', principal_id: 200, category: 'beverages', status: 'active' },
-  { id: 4, name: 'Product B2', sku: 'SKU-B2', principal_id: 200, category: 'snacks', status: 'active' },
+  {
+    id: 3,
+    name: "Product B1",
+    sku: "SKU-B1",
+    principal_id: 200,
+    category: "beverages",
+    status: "active",
+  },
+  {
+    id: 4,
+    name: "Product B2",
+    sku: "SKU-B2",
+    principal_id: 200,
+    category: "snacks",
+    status: "active",
+  },
 ];
 
 // Mock hooks
 const mockUseGetList = vi.fn();
 const mockUseQuickAddMutate = vi.fn();
 
-vi.mock('ra-core', () => ({
+vi.mock("ra-core", () => ({
   useGetList: (...args: any[]) => mockUseGetList(...args),
 }));
 
-vi.mock('../hooks/useQuickAdd', () => ({
+vi.mock("../hooks/useQuickAdd", () => ({
   useQuickAdd: () => ({
     mutate: mockUseQuickAddMutate,
     isPending: false,
@@ -53,7 +81,7 @@ vi.mock('../hooks/useQuickAdd', () => ({
 }));
 
 // Mock useFilteredProducts to return products based on principalId
-vi.mock('../hooks/useFilteredProducts', () => ({
+vi.mock("../hooks/useFilteredProducts", () => ({
   useFilteredProducts: (principalId: number | null | undefined) => {
     if (!principalId) {
       return {
@@ -89,7 +117,7 @@ const createTestWrapper = () => {
   );
 };
 
-describe('Quick Add Flow with Product Filtering', () => {
+describe("Quick Add Flow with Product Filtering", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
@@ -102,65 +130,65 @@ describe('Quick Add Flow with Product Filtering', () => {
     });
   });
 
-  describe('Dialog Interaction', () => {
-    it('opens Quick Add dialog when button is clicked', async () => {
+  describe("Dialog Interaction", () => {
+    it("opens Quick Add dialog when button is clicked", async () => {
       render(<QuickAddButton />, { wrapper: createTestWrapper() });
 
       // Dialog should not be visible initially
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
       // Click the Quick Add button
-      const button = screen.getByRole('button', { name: /quick add/i });
+      const button = screen.getByRole("button", { name: /quick add/i });
       fireEvent.click(button);
 
       // Dialog should now be visible
       await waitFor(() => {
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
 
-      expect(screen.getByText('Quick Add Booth Visitor')).toBeInTheDocument();
+      expect(screen.getByText("Quick Add Booth Visitor")).toBeInTheDocument();
     });
 
-    it('displays all form sections in correct order', async () => {
+    it("displays all form sections in correct order", async () => {
       render(<QuickAddButton />, { wrapper: createTestWrapper() });
-      fireEvent.click(screen.getByRole('button', { name: /quick add/i }));
+      fireEvent.click(screen.getByRole("button", { name: /quick add/i }));
 
       await waitFor(() => {
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
 
       // Verify form sections exist (using actual section headers from QuickAddForm.tsx)
-      expect(screen.getByText('Pre-filled Information')).toBeInTheDocument();
-      expect(screen.getByText('Contact Information')).toBeInTheDocument();
-      expect(screen.getByText('Organization Information')).toBeInTheDocument();
-      expect(screen.getByText('Optional Details')).toBeInTheDocument();
+      expect(screen.getByText("Pre-filled Information")).toBeInTheDocument();
+      expect(screen.getByText("Contact Information")).toBeInTheDocument();
+      expect(screen.getByText("Organization Information")).toBeInTheDocument();
+      expect(screen.getByText("Optional Details")).toBeInTheDocument();
     });
   });
 
-  describe('Principal Selection and Product Filtering', () => {
-    it('shows message to select principal before products can be selected', async () => {
+  describe("Principal Selection and Product Filtering", () => {
+    it("shows message to select principal before products can be selected", async () => {
       const user = userEvent.setup();
       render(<QuickAddButton />, { wrapper: createTestWrapper() });
 
       // Open dialog
-      await user.click(screen.getByRole('button', { name: /quick add/i }));
+      await user.click(screen.getByRole("button", { name: /quick add/i }));
 
       await waitFor(() => {
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
 
       // Product section should show "Select a Principal first" message
-      expect(screen.getByText('Select a Principal first to filter products')).toBeInTheDocument();
+      expect(screen.getByText("Select a Principal first to filter products")).toBeInTheDocument();
     });
 
-    it('form contains all required field labels', async () => {
+    it("form contains all required field labels", async () => {
       const user = userEvent.setup();
       render(<QuickAddButton />, { wrapper: createTestWrapper() });
 
-      await user.click(screen.getByRole('button', { name: /quick add/i }));
+      await user.click(screen.getByRole("button", { name: /quick add/i }));
 
       await waitFor(() => {
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
 
       // Verify all form field labels are present (not checking form controls since Select uses buttons)
@@ -173,8 +201,5 @@ describe('Quick Add Flow with Product Filtering', () => {
       expect(screen.getByText(/^Email$/)).toBeInTheDocument();
       expect(screen.getByText(/^Organization Name \*$/)).toBeInTheDocument();
     });
-
   });
-
 });
-

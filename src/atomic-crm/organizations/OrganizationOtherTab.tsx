@@ -5,11 +5,7 @@ import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 export const OrganizationOtherTab = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-      <TextInput
-        source="website"
-        helperText="Format: https://example.com"
-        label="Website"
-      />
+      <TextInput source="website" helperText="Format: https://example.com" label="Website" />
       <TextInput
         source="linkedin_url"
         label="LinkedIn URL"
@@ -18,11 +14,7 @@ export const OrganizationOtherTab = () => {
       <div className="lg:col-span-2">
         <ArrayInput source="context_links" helperText={false} label="Context Links">
           <SimpleFormIterator disableReordering fullWidth getItemLabel={false}>
-            <TextInput
-              source=""
-              label={false}
-              helperText="Enter a valid URL"
-            />
+            <TextInput source="" label={false} helperText="Enter a valid URL" />
           </SimpleFormIterator>
         </ArrayInput>
       </div>

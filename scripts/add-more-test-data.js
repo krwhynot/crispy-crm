@@ -83,30 +83,115 @@ const CATEGORIES = [
 
 // Product templates for variety
 const PRODUCT_IDEAS = [
-  { category: "beverages", name: "Hibiscus Iced Tea", brand: "Botanical Brews", subcategory: "Tea" },
-  { category: "beverages", name: "Mango Smoothie Mix", brand: "Tropical Blends", subcategory: "Smoothies" },
-  { category: "dairy", name: "Goat Cheese Log", brand: "Artisan Dairy", subcategory: "Specialty Cheese" },
+  {
+    category: "beverages",
+    name: "Hibiscus Iced Tea",
+    brand: "Botanical Brews",
+    subcategory: "Tea",
+  },
+  {
+    category: "beverages",
+    name: "Mango Smoothie Mix",
+    brand: "Tropical Blends",
+    subcategory: "Smoothies",
+  },
+  {
+    category: "dairy",
+    name: "Goat Cheese Log",
+    brand: "Artisan Dairy",
+    subcategory: "Specialty Cheese",
+  },
   { category: "dairy", name: "Oat Milk Creamer", brand: "PlantWise", subcategory: "Plant-Based" },
-  { category: "frozen", name: "Cauliflower Rice", brand: "Healthy Harvest", subcategory: "Vegetables" },
-  { category: "frozen", name: "Veggie Burger Patties", brand: "Plant Power", subcategory: "Plant-Based" },
-  { category: "fresh_produce", name: "Organic Kale", brand: "Green Acres", subcategory: "Leafy Greens" },
-  { category: "fresh_produce", name: "Avocados", brand: "Farm Fresh", subcategory: "Specialty Produce" },
-  { category: "meat_poultry", name: "Italian Sausage", brand: "Butcher's Best", subcategory: "Sausage" },
-  { category: "seafood", name: "Crab Cakes", brand: "Coastal Cuisine", subcategory: "Prepared Seafood" },
-  { category: "snacks", name: "Dark Chocolate Almonds", brand: "Sweet & Nutty", subcategory: "Nuts" },
+  {
+    category: "frozen",
+    name: "Cauliflower Rice",
+    brand: "Healthy Harvest",
+    subcategory: "Vegetables",
+  },
+  {
+    category: "frozen",
+    name: "Veggie Burger Patties",
+    brand: "Plant Power",
+    subcategory: "Plant-Based",
+  },
+  {
+    category: "fresh_produce",
+    name: "Organic Kale",
+    brand: "Green Acres",
+    subcategory: "Leafy Greens",
+  },
+  {
+    category: "fresh_produce",
+    name: "Avocados",
+    brand: "Farm Fresh",
+    subcategory: "Specialty Produce",
+  },
+  {
+    category: "meat_poultry",
+    name: "Italian Sausage",
+    brand: "Butcher's Best",
+    subcategory: "Sausage",
+  },
+  {
+    category: "seafood",
+    name: "Crab Cakes",
+    brand: "Coastal Cuisine",
+    subcategory: "Prepared Seafood",
+  },
+  {
+    category: "snacks",
+    name: "Dark Chocolate Almonds",
+    brand: "Sweet & Nutty",
+    subcategory: "Nuts",
+  },
   { category: "snacks", name: "Rice Cakes", brand: "Light Bites", subcategory: "Grain Snacks" },
   { category: "condiments", name: "Chipotle Mayo", brand: "Spicy Spreads", subcategory: "Mayo" },
   { category: "condiments", name: "Honey Mustard", brand: "Golden Jar", subcategory: "Mustard" },
-  { category: "baking_supplies", name: "Vanilla Extract", brand: "Baker's Pride", subcategory: "Extracts" },
-  { category: "baking_supplies", name: "Baking Powder", brand: "Rise & Shine", subcategory: "Leavening" },
-  { category: "spices_seasonings", name: "Italian Seasoning", brand: "The Spice Route", subcategory: "Blends" },
-  { category: "spices_seasonings", name: "Garlic Powder", brand: "Flavor First", subcategory: "Single Spice" },
-  { category: "canned_goods", name: "Diced Tomatoes", brand: "Valley Harvest", subcategory: "Tomatoes" },
+  {
+    category: "baking_supplies",
+    name: "Vanilla Extract",
+    brand: "Baker's Pride",
+    subcategory: "Extracts",
+  },
+  {
+    category: "baking_supplies",
+    name: "Baking Powder",
+    brand: "Rise & Shine",
+    subcategory: "Leavening",
+  },
+  {
+    category: "spices_seasonings",
+    name: "Italian Seasoning",
+    brand: "The Spice Route",
+    subcategory: "Blends",
+  },
+  {
+    category: "spices_seasonings",
+    name: "Garlic Powder",
+    brand: "Flavor First",
+    subcategory: "Single Spice",
+  },
+  {
+    category: "canned_goods",
+    name: "Diced Tomatoes",
+    brand: "Valley Harvest",
+    subcategory: "Tomatoes",
+  },
   { category: "canned_goods", name: "Black Beans", brand: "Protein Pantry", subcategory: "Beans" },
   { category: "pasta_grains", name: "Fettuccine", brand: "Italian Import", subcategory: "Pasta" },
   { category: "pasta_grains", name: "Wild Rice", brand: "Ancient Grains", subcategory: "Rice" },
-  { category: "oils_vinegars", name: "Extra Virgin Olive Oil", brand: "Mediterranean Gold", subcategory: "Oil" },
-  { category: "oils_vinegars", name: "Apple Cider Vinegar", brand: "Farm Fresh", subcategory: "Vinegar" },
+  {
+    category: "oils_vinegars",
+    name: "Extra Virgin Olive Oil",
+    brand: "Mediterranean Gold",
+    subcategory: "Oil",
+  },
+  {
+    category: "oils_vinegars",
+    name: "Apple Cider Vinegar",
+    brand: "Farm Fresh",
+    subcategory: "Vinegar",
+  },
   { category: "oils_vinegars", name: "Avocado Oil", brand: "Pure Press", subcategory: "Oil" },
 ];
 
@@ -114,7 +199,15 @@ const PRODUCT_IDEAS = [
 const ALLERGENS = ["dairy", "eggs", "fish", "shellfish", "tree_nuts", "peanuts", "wheat", "soy"];
 
 // Certifications
-const CERTIFICATIONS = ["organic", "non_gmo", "gluten_free", "kosher", "halal", "vegan", "fair_trade"];
+const CERTIFICATIONS = [
+  "organic",
+  "non_gmo",
+  "gluten_free",
+  "kosher",
+  "halal",
+  "vegan",
+  "fair_trade",
+];
 
 class AdditionalDataSeeder {
   constructor() {
@@ -126,8 +219,7 @@ class AdditionalDataSeeder {
 
   async initialize() {
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
-    const supabaseKey =
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
       throw new Error("Missing required environment variables");
@@ -147,11 +239,26 @@ class AdditionalDataSeeder {
     this.spinner.start(`Generating ${CONFIG.ORGANIZATION_COUNT} organizations...`);
 
     for (let i = 0; i < CONFIG.ORGANIZATION_COUNT; i++) {
-      const companyName = ADDITIONAL_COMPANY_NAMES[i] ||
+      const companyName =
+        ADDITIONAL_COMPANY_NAMES[i] ||
         `${faker.helpers.arrayElement([
-          "Prime", "Fresh", "Golden", "Gourmet", "Chef's", "Artisan", "Modern", "Classic"
+          "Prime",
+          "Fresh",
+          "Golden",
+          "Gourmet",
+          "Chef's",
+          "Artisan",
+          "Modern",
+          "Classic",
         ])} ${faker.helpers.arrayElement([
-          "Kitchen", "Dining", "Foods", "Cuisine", "Bistro", "Eatery", "Market", "Provisions"
+          "Kitchen",
+          "Dining",
+          "Foods",
+          "Cuisine",
+          "Bistro",
+          "Eatery",
+          "Market",
+          "Provisions",
         ])}`;
 
       const orgType = faker.helpers.arrayElement(FB_ORGANIZATION_TYPES);
@@ -164,15 +271,24 @@ class AdditionalDataSeeder {
         industry: orgType,
         segment: faker.helpers.arrayElement(["SMB", "Mid-Market", "Enterprise"]),
         priority: faker.helpers.arrayElement(["A", "B", "C", "D"]),
-        website: `https://${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
+        website: `https://${companyName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")}.com`,
         address: faker.location.streetAddress(true),
         city: faker.location.city(),
         state: faker.location.state(),
         postal_code: faker.location.zipCode(),
         country: "United States",
-        linkedin_url: `https://linkedin.com/company/${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
+        linkedin_url: `https://linkedin.com/company/${companyName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")}`,
         phone: faker.phone.number(),
-        email: `info@${companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}.com`,
+        email: `info@${companyName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")}.com`,
         annual_revenue: faker.number.int({ min: 500000, max: 50000000 }),
         employee_count: faker.number.int({ min: 10, max: 2000 }),
         founded_year: faker.number.int({ min: 1990, max: 2024 }),
@@ -203,7 +319,7 @@ class AdditionalDataSeeder {
       console.log(chalk.yellow("\n📝 DRY RUN - Organizations that would be inserted:"));
       console.log(chalk.gray(`  Total organizations: ${this.organizations.length}`));
       if (CONFIG.VERBOSE) {
-        this.organizations.forEach(org => {
+        this.organizations.forEach((org) => {
           console.log(chalk.gray(`    - ${org.name} (${org.industry})`));
         });
       }
@@ -225,7 +341,7 @@ class AdditionalDataSeeder {
 
       this.spinner.succeed("Organizations inserted successfully");
       console.log(chalk.green(`  ✓ Added ${this.organizations.length} organizations`));
-      this.organizations.forEach(org => {
+      this.organizations.forEach((org) => {
         console.log(chalk.gray(`    - ${org.name}`));
       });
     } catch (error) {
@@ -237,10 +353,7 @@ class AdditionalDataSeeder {
   async loadAllOrganizations() {
     this.spinner.start("Loading all organizations for product linking...");
 
-    const { data, error } = await this.supabase
-      .from("organizations")
-      .select("id, name")
-      .limit(200);
+    const { data, error } = await this.supabase.from("organizations").select("id, name").limit(200);
 
     if (error) throw error;
 
@@ -260,15 +373,15 @@ class AdditionalDataSeeder {
       const template = PRODUCT_IDEAS[i % PRODUCT_IDEAS.length];
       const principal = faker.helpers.arrayElement(this.allOrganizations);
 
-      const productAllergens = faker.helpers.maybe(
-        () => faker.helpers.arrayElements(ALLERGENS, { min: 1, max: 3 }),
-        { probability: 0.4 }
-      ) || [];
+      const productAllergens =
+        faker.helpers.maybe(() => faker.helpers.arrayElements(ALLERGENS, { min: 1, max: 3 }), {
+          probability: 0.4,
+        }) || [];
 
-      const productCerts = faker.helpers.maybe(
-        () => faker.helpers.arrayElements(CERTIFICATIONS, { min: 1, max: 2 }),
-        { probability: 0.3 }
-      ) || [];
+      const productCerts =
+        faker.helpers.maybe(() => faker.helpers.arrayElements(CERTIFICATIONS, { min: 1, max: 2 }), {
+          probability: 0.3,
+        }) || [];
 
       // Include brand in product name since brand column was removed
       const fullProductName = `${template.brand} ${template.name}`;
@@ -342,7 +455,7 @@ class AdditionalDataSeeder {
       console.log(chalk.gray(`  Total products: ${this.products.length}`));
 
       const breakdown = {};
-      this.products.forEach(p => {
+      this.products.forEach((p) => {
         breakdown[p.category] = (breakdown[p.category] || 0) + 1;
       });
 
@@ -353,7 +466,7 @@ class AdditionalDataSeeder {
 
       if (CONFIG.VERBOSE) {
         console.log("\nSample products:");
-        this.products.slice(0, 3).forEach(p => {
+        this.products.slice(0, 3).forEach((p) => {
           console.log(chalk.gray(`    - ${p.name} (${p.status})`));
         });
       }
@@ -364,9 +477,7 @@ class AdditionalDataSeeder {
     this.spinner.start("Inserting products...");
 
     try {
-      const { error } = await this.supabase
-        .from("products")
-        .insert(this.products);
+      const { error } = await this.supabase.from("products").insert(this.products);
 
       if (error) throw error;
 
@@ -374,7 +485,7 @@ class AdditionalDataSeeder {
       console.log(chalk.green(`  ✓ Added ${this.products.length} products`));
 
       const breakdown = {};
-      this.products.forEach(p => {
+      this.products.forEach((p) => {
         breakdown[p.category] = (breakdown[p.category] || 0) + 1;
       });
 
@@ -406,7 +517,6 @@ class AdditionalDataSeeder {
       console.log(chalk.green("\n✨ Additional test data generation complete!"));
       console.log(chalk.gray(`  Organizations added: ${CONFIG.ORGANIZATION_COUNT}`));
       console.log(chalk.gray(`  Products added: ${CONFIG.PRODUCT_COUNT}`));
-
     } catch (error) {
       console.error(chalk.red("\n❌ Error:"), error.message);
       if (CONFIG.VERBOSE) {

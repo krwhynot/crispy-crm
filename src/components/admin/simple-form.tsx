@@ -16,25 +16,18 @@ export const SimpleForm = ({
   className?: string;
   toolbar?: ReactNode;
 } & FormProps) => (
-  <Form
-    className={cn(`flex flex-col gap-4 w-full max-w-lg`, className)}
-    {...rest}
-  >
+  <Form className={cn(`flex flex-col gap-4 w-full max-w-lg`, className)} {...rest}>
     {children}
     {toolbar}
   </Form>
 );
 
-export const FormToolbar = ({
-  children,
-  className,
-  ...rest
-}: FormToolbarProps) => (
+export const FormToolbar = ({ children, className, ...rest }: FormToolbarProps) => (
   <div
     {...rest}
     className={cn(
       "sticky mt-6 mb-4 pt-4 pb-4 px-6 md:block md:pt-2 md:pb-0 bottom-0 bg-card",
-      className,
+      className
     )}
     role="toolbar"
   >

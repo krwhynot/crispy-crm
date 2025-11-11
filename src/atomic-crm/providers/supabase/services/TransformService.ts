@@ -4,7 +4,7 @@ import type {
   ContactNote,
   OpportunityNote,
   Organization,
-  Sale
+  Sale,
 } from "../../../types";
 import { processContactAvatar, processOrganizationLogo } from "../../../utils/avatar.utils";
 import type { StorageService } from "./StorageService";
@@ -30,22 +30,25 @@ type TransformerFunction<T = TransformableData> = (data: T) => Promise<T>;
 export class TransformService {
   constructor(private storageService: StorageService) {}
 
-  private transformerRegistry: Record<string, {
-    transform?: TransformerFunction<TransformableData>;
-  }> = {
+  private transformerRegistry: Record<
+    string,
+    {
+      transform?: TransformerFunction<TransformableData>;
+    }
+  > = {
     contactNotes: {
       transform: async (data: TransformableData) => {
         const noteData = data as Partial<ContactNote>;
         if (noteData.attachments && Array.isArray(noteData.attachments)) {
           // Upload all attachments in parallel for better performance
           const uploadPromises = noteData.attachments
-            .filter(attachment => attachment && typeof attachment === 'object')
-            .map(attachment => this.storageService.uploadToBucket(attachment as RAFile));
+            .filter((attachment) => attachment && typeof attachment === "object")
+            .map((attachment) => this.storageService.uploadToBucket(attachment as RAFile));
 
           await Promise.all(uploadPromises);
         }
         return noteData;
-      }
+      },
     },
     opportunityNotes: {
       transform: async (data: TransformableData) => {
@@ -53,22 +56,22 @@ export class TransformService {
         if (noteData.attachments && Array.isArray(noteData.attachments)) {
           // Upload all attachments in parallel for better performance
           const uploadPromises = noteData.attachments
-            .filter(attachment => attachment && typeof attachment === 'object')
-            .map(attachment => this.storageService.uploadToBucket(attachment as RAFile));
+            .filter((attachment) => attachment && typeof attachment === "object")
+            .map((attachment) => this.storageService.uploadToBucket(attachment as RAFile));
 
           await Promise.all(uploadPromises);
         }
         return noteData;
-      }
+      },
     },
     sales: {
       transform: async (data: TransformableData) => {
         const saleData = data as Partial<Sale>;
-        if (saleData.avatar && typeof saleData.avatar === 'object') {
+        if (saleData.avatar && typeof saleData.avatar === "object") {
           await this.storageService.uploadToBucket(saleData.avatar as RAFile);
         }
         return saleData;
-      }
+      },
     },
     contacts: {
       transform: async (data: TransformableData) => {
@@ -81,7 +84,8 @@ export class TransformService {
 
         // Combine first_name and last_name into name field (required by database)
         if (cleanedData.first_name || cleanedData.last_name) {
-          cleanedData.name = `${cleanedData.first_name || ''} ${cleanedData.last_name || ''}`.trim();
+          cleanedData.name =
+            `${cleanedData.first_name || ""} ${cleanedData.last_name || ""}`.trim();
         }
 
         // Add timestamp for create operations
@@ -96,7 +100,7 @@ export class TransformService {
         }
 
         return cleanedData;
-      }
+      },
     },
     organizations: {
       transform: async (data: TransformableData) => {
@@ -105,9 +109,11 @@ export class TransformService {
         const processedData = await processOrganizationLogo(orgData);
 
         // Handle raw file uploads for logos
-        if (processedData.logo &&
-            typeof processedData.logo === 'object' &&
-            (processedData.logo as RAFile).rawFile instanceof File) {
+        if (
+          processedData.logo &&
+          typeof processedData.logo === "object" &&
+          (processedData.logo as RAFile).rawFile instanceof File
+        ) {
           await this.storageService.uploadToBucket(processedData.logo as RAFile);
         }
 
@@ -118,7 +124,7 @@ export class TransformService {
         }
 
         return processedData;
-      }
+      },
     },
   };
 
@@ -128,8 +134,10 @@ export class TransformService {
    * @returns True if the resource has a transformer
    */
   hasTransform(resource: string): boolean {
-    return resource in this.transformerRegistry &&
-           this.transformerRegistry[resource]?.transform !== undefined;
+    return (
+      resource in this.transformerRegistry &&
+      this.transformerRegistry[resource]?.transform !== undefined
+    );
   }
 
   /**
@@ -138,10 +146,7 @@ export class TransformService {
    * @param data The data to transform
    * @returns The transformed data
    */
-  async transform<T extends TransformableData>(
-    resource: string,
-    data: T
-  ): Promise<T> {
+  async transform<T extends TransformableData>(resource: string, data: T): Promise<T> {
     const transformer = this.transformerRegistry[resource];
 
     if (!transformer?.transform) {

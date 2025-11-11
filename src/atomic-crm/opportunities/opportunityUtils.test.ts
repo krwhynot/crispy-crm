@@ -13,9 +13,7 @@ export const calculateOpportunityProbability = (stage: string): number => {
     closed_lost: 0,
   };
 
-  return stageProbabilities[stage] !== undefined
-    ? stageProbabilities[stage]
-    : 50;
+  return stageProbabilities[stage] !== undefined ? stageProbabilities[stage] : 50;
 };
 
 export const formatOpportunityStage = (stage: string): string => {
@@ -66,21 +64,15 @@ describe("Opportunity Utils", () => {
     });
 
     it("should format initial_outreach stage", () => {
-      expect(formatOpportunityStage("initial_outreach")).toBe(
-        "Initial Outreach",
-      );
+      expect(formatOpportunityStage("initial_outreach")).toBe("Initial Outreach");
     });
 
     it("should format sample_visit_offered stage", () => {
-      expect(formatOpportunityStage("sample_visit_offered")).toBe(
-        "Sample/Visit Offered",
-      );
+      expect(formatOpportunityStage("sample_visit_offered")).toBe("Sample/Visit Offered");
     });
 
     it("should format awaiting_response stage", () => {
-      expect(formatOpportunityStage("awaiting_response")).toBe(
-        "Awaiting Response",
-      );
+      expect(formatOpportunityStage("awaiting_response")).toBe("Awaiting Response");
     });
 
     it("should format feedback_logged stage", () => {
@@ -188,9 +180,7 @@ describe("Opportunity Utils", () => {
 
       expect(contactOrgRelationship.contact_id).toBeTruthy();
       expect(contactOrgRelationship.organization_id).toBeTruthy();
-      expect(typeof contactOrgRelationship.is_primary_organization).toBe(
-        "boolean",
-      );
+      expect(typeof contactOrgRelationship.is_primary_organization).toBe("boolean");
       expect(contactOrgRelationship.role).toBeTruthy();
       expect(contactOrgRelationship.purchase_influence).toBeTruthy();
       expect(contactOrgRelationship.decision_authority).toBeTruthy();
@@ -203,9 +193,7 @@ describe("Opportunity Utils", () => {
         { contact_id: 1, organization_id: 3, is_primary_organization: false },
       ];
 
-      const primaryCount = relationships.filter(
-        (rel) => rel.is_primary_organization,
-      ).length;
+      const primaryCount = relationships.filter((rel) => rel.is_primary_organization).length;
       expect(primaryCount).toBe(1);
     });
   });

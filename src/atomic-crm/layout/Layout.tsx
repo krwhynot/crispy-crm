@@ -17,9 +17,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       <Header />
       <main className="max-w-screen-xl mx-auto pt-4 px-4 pb-16" id="main-content">
         <ErrorBoundary FallbackComponent={Error}>
-          <Suspense fallback={<Skeleton className="h-12 w-12 rounded-full" />}>
-            {children}
-          </Suspense>
+          <Suspense fallback={<Skeleton className="h-12 w-12 rounded-full" />}>{children}</Suspense>
         </ErrorBoundary>
       </main>
       <footer className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">

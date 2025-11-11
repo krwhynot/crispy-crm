@@ -92,9 +92,7 @@ describe("Note Validation Schemas", () => {
         sales_id: "user-456",
       };
 
-      expect(() => contactNoteSchema.parse(withoutContactId)).toThrow(
-        z.ZodError,
-      );
+      expect(() => contactNoteSchema.parse(withoutContactId)).toThrow(z.ZodError);
     });
 
     it("should require sales_id", () => {
@@ -153,24 +151,18 @@ describe("Note Validation Schemas", () => {
         sales_id: "user-456",
       };
 
-      expect(() => opportunityNoteSchema.parse(withoutOpportunityId)).toThrow(
-        z.ZodError,
-      );
+      expect(() => opportunityNoteSchema.parse(withoutOpportunityId)).toThrow(z.ZodError);
     });
 
     it("should not require status field", () => {
       // Notes don't have a status field (removed during migration)
-      expect(() =>
-        opportunityNoteSchema.parse(validOpportunityNote),
-      ).not.toThrow();
+      expect(() => opportunityNoteSchema.parse(validOpportunityNote)).not.toThrow();
     });
 
     it("should handle attachments", () => {
       const noteWithAttachments = {
         ...validOpportunityNote,
-        attachments: [
-          { src: "https://example.com/proposal.pdf", title: "Proposal" },
-        ],
+        attachments: [{ src: "https://example.com/proposal.pdf", title: "Proposal" }],
       };
 
       const result = opportunityNoteSchema.parse(noteWithAttachments);
@@ -201,9 +193,7 @@ describe("Note Validation Schemas", () => {
           sales_id: "user-456",
         };
 
-        expect(() => validateCreateContactNote(invalidData)).toThrow(
-          z.ZodError,
-        );
+        expect(() => validateCreateContactNote(invalidData)).toThrow(z.ZodError);
       });
     });
 

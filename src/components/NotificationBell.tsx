@@ -63,10 +63,7 @@ export const NotificationBell = () => {
   }, [identity?.user_id, isLoading]);
 
   // Accessible label
-  const ariaLabel =
-    unreadCount > 0
-      ? `Notifications (${unreadCount} unread)`
-      : "Notifications";
+  const ariaLabel = unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications";
 
   return (
     <NotificationDropdown>

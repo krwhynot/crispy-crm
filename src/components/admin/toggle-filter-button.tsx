@@ -32,9 +32,7 @@ export const ToggleFilterButton = ({
 
   const handleClick = () =>
     setFilters(
-      multiselect
-        ? toggleFilterMulti(value, currentFilters)
-        : toggleFilter(value, currentFilters)
+      multiselect ? toggleFilterMulti(value, currentFilters) : toggleFilter(value, currentFilters)
     );
 
   return (
@@ -45,14 +43,19 @@ export const ToggleFilterButton = ({
         "cursor-pointer",
         "flex flex-row items-center gap-2 px-2.5",
         "min-w-0", // Allow text truncation
-        className,
+        className
       )}
       size={size}
     >
       <span className="truncate">
         {typeof label === "string" ? translate(label, { _: label }) : label}
       </span>
-      {isSelected && (multiselect ? <Check className="h-4 w-4 opacity-50" /> : <CircleX className="opacity-50" />)}
+      {isSelected &&
+        (multiselect ? (
+          <Check className="h-4 w-4 opacity-50" />
+        ) : (
+          <CircleX className="opacity-50" />
+        ))}
     </Button>
   );
 };
@@ -61,16 +64,13 @@ const toggleFilter = (value: any, filters: any) => {
   // Ensure filters is an object
   const safeFilters = filters || {};
 
-  const isSelected = matches(
-    pickBy(value, (val) => typeof val !== "undefined"),
-  )(safeFilters);
+  const isSelected = matches(pickBy(value, (val) => typeof val !== "undefined"))(safeFilters);
 
   if (isSelected) {
     const keysToRemove = Object.keys(value);
     return Object.keys(safeFilters).reduce(
-      (acc, key) =>
-        keysToRemove.includes(key) ? acc : { ...acc, [key]: safeFilters[key] },
-      {},
+      (acc, key) => (keysToRemove.includes(key) ? acc : { ...acc, [key]: safeFilters[key] }),
+      {}
     );
   }
 

@@ -15,9 +15,7 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL || "http://localhost:54321";
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseKey) {
-  console.error(
-    chalk.red("Error: VITE_SUPABASE_ANON_KEY environment variable is required"),
-  );
+  console.error(chalk.red("Error: VITE_SUPABASE_ANON_KEY environment variable is required"));
   process.exit(1);
 }
 
@@ -93,10 +91,7 @@ async function listOpportunities() {
 
 async function getOpportunityDetails() {
   // First get a random opportunity ID
-  const { data: opportunities } = await supabase
-    .from("opportunities")
-    .select("id")
-    .limit(100);
+  const { data: opportunities } = await supabase.from("opportunities").select("id").limit(100);
 
   if (!opportunities || opportunities.length === 0) {
     throw new Error("No opportunities found");
@@ -117,7 +112,7 @@ async function getOpportunityDetails() {
         commission_rate,
         organization:companies(name)
       )
-    `,
+    `
     )
     .eq("id", randomId)
     .single();
@@ -136,7 +131,7 @@ async function listContacts() {
       contact_organizations(
         organization:companies(name, organization_type)
       )
-    `,
+    `
     )
     .limit(30)
     .order("last_seen", { ascending: false });
@@ -147,10 +142,7 @@ async function listContacts() {
 
 async function getContactWithOrganizations() {
   // Get a random contact
-  const { data: contacts } = await supabase
-    .from("contacts")
-    .select("id")
-    .limit(100);
+  const { data: contacts } = await supabase.from("contacts").select("id").limit(100);
 
   if (!contacts || contacts.length === 0) {
     throw new Error("No contacts found");
@@ -174,7 +166,7 @@ async function getContactWithOrganizations() {
           sector
         )
       )
-    `,
+    `
     )
     .eq("id", randomId)
     .single();
@@ -219,11 +211,7 @@ async function getDashboardData() {
     supabase.from("opportunities").select("stage").eq("status", "active"),
 
     // Recent activities
-    supabase
-      .from("activities")
-      .select("*")
-      .order("activity_date", { ascending: false })
-      .limit(10),
+    supabase.from("activities").select("*").order("activity_date", { ascending: false }).limit(10),
 
     // Top opportunities by amount
     supabase
@@ -272,7 +260,7 @@ async function complexJoinQuery() {
           contact:contacts(first_name, last_name)
         )
       )
-    `,
+    `
     )
     .eq("status", "active")
     .gte("amount", 10000)
@@ -286,15 +274,9 @@ async function createActivity() {
   const types = ["call", "email", "meeting", "demo"];
 
   // Get random contact and organization
-  const { data: contacts } = await supabase
-    .from("contacts")
-    .select("id")
-    .limit(10);
+  const { data: contacts } = await supabase.from("contacts").select("id").limit(10);
 
-  const { data: orgs } = await supabase
-    .from("companies")
-    .select("id")
-    .limit(10);
+  const { data: orgs } = await supabase.from("companies").select("id").limit(10);
 
   if (!contacts || !orgs) {
     throw new Error("Unable to fetch test data");
@@ -312,11 +294,7 @@ async function createActivity() {
     sentiment: faker.helpers.arrayElement(["positive", "neutral", "negative"]),
   };
 
-  const { data, error } = await supabase
-    .from("activities")
-    .insert([activity])
-    .select()
-    .single();
+  const { data, error } = await supabase.from("activities").insert([activity]).select().single();
 
   if (error) throw error;
 
@@ -340,19 +318,13 @@ async function simulateUser(userId) {
 
   const requestDelay = 1000 / LOAD_TEST_CONFIG.requestsPerSecond;
 
-  while (
-    Date.now() - metrics.startTime <
-    LOAD_TEST_CONFIG.testDuration * 1000
-  ) {
+  while (Date.now() - metrics.startTime < LOAD_TEST_CONFIG.testDuration * 1000) {
     const endpoint = selectRandomEndpoint();
     const startTime = performance.now();
 
     try {
       metrics.concurrentConnections++;
-      metrics.peakConcurrency = Math.max(
-        metrics.peakConcurrency,
-        metrics.concurrentConnections,
-      );
+      metrics.peakConcurrency = Math.max(metrics.peakConcurrency, metrics.concurrentConnections);
 
       await endpoint.fn();
 
@@ -367,12 +339,9 @@ async function simulateUser(userId) {
       metrics.failedRequests++;
       userMetrics.errors++;
       const errorType = error.message || "Unknown error";
-      metrics.errorsByType[errorType] =
-        (metrics.errorsByType[errorType] || 0) + 1;
+      metrics.errorsByType[errorType] = (metrics.errorsByType[errorType] || 0) + 1;
 
-      console.error(
-        chalk.red(`User ${userId} - ${endpoint.name} failed: ${errorType}`),
-      );
+      console.error(chalk.red(`User ${userId} - ${endpoint.name} failed: ${errorType}`));
     } finally {
       metrics.concurrentConnections--;
       metrics.totalRequests++;
@@ -464,9 +433,7 @@ async function runLoadTest() {
   console.log(chalk.yellow("Configuration:"));
   console.log(`  - Concurrent Users: ${LOAD_TEST_CONFIG.concurrentUsers}`);
   console.log(`  - Test Duration: ${LOAD_TEST_CONFIG.testDuration}s`);
-  console.log(
-    `  - Requests/Second/User: ${LOAD_TEST_CONFIG.requestsPerSecond}`,
-  );
+  console.log(`  - Requests/Second/User: ${LOAD_TEST_CONFIG.requestsPerSecond}`);
   console.log(`  - Ramp-up Time: ${LOAD_TEST_CONFIG.rampUpTime}s`);
   console.log(`  - Target: ${supabaseUrl}\n`);
 
@@ -474,10 +441,7 @@ async function runLoadTest() {
 
   // Test connectivity
   try {
-    const { error } = await supabase
-      .from("opportunities")
-      .select("id")
-      .limit(1);
+    const { error } = await supabase.from("opportunities").select("id").limit(1);
     if (error) throw error;
   } catch (error) {
     spinner.fail("Failed to connect to Supabase");
@@ -491,8 +455,7 @@ async function runLoadTest() {
 
   // Start virtual users with ramp-up
   const userPromises = [];
-  const rampUpDelay =
-    (LOAD_TEST_CONFIG.rampUpTime * 1000) / LOAD_TEST_CONFIG.concurrentUsers;
+  const rampUpDelay = (LOAD_TEST_CONFIG.rampUpTime * 1000) / LOAD_TEST_CONFIG.concurrentUsers;
 
   for (let i = 0; i < LOAD_TEST_CONFIG.concurrentUsers; i++) {
     userPromises.push(
@@ -500,7 +463,7 @@ async function runLoadTest() {
         await new Promise((r) => setTimeout(r, i * rampUpDelay));
         const result = await simulateUser(i + 1);
         resolve(result);
-      }),
+      })
     );
   }
 
@@ -582,9 +545,7 @@ async function runLoadTest() {
 
   assessments.forEach((a) => console.log(`  ${a}`));
 
-  console.log(
-    chalk.cyan(`\n📁 Full report saved to: ${chalk.white(reportFile)}\n`),
-  );
+  console.log(chalk.cyan(`\n📁 Full report saved to: ${chalk.white(reportFile)}\n`));
 
   // Exit with appropriate code
   process.exit(errorRate > 5 ? 1 : 0);

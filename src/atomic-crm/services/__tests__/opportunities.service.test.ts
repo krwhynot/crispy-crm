@@ -37,10 +37,9 @@ describe("OpportunitiesService", () => {
 
       await service.archiveOpportunity(mockOpportunity);
 
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-        "archive_opportunity_with_relations",
-        { opp_id: mockOpportunity.id }
-      );
+      expect(mockDataProvider.rpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
+        opp_id: mockOpportunity.id,
+      });
     });
 
     test("should cascade to related records (activities, notes, participants, tasks)", async () => {
@@ -61,7 +60,7 @@ describe("OpportunitiesService", () => {
       const mockResponse = {
         success: true,
         archived_count: 1,
-        related_records: { activities: 5, notes: 3, participants: 2, tasks: 4 }
+        related_records: { activities: 5, notes: 3, participants: 2, tasks: 4 },
       };
       mockDataProvider.rpc = vi.fn().mockResolvedValue(mockResponse);
 
@@ -79,9 +78,9 @@ describe("OpportunitiesService", () => {
     });
 
     test("should handle database constraint errors gracefully", async () => {
-      mockDataProvider.rpc = vi.fn().mockRejectedValue(
-        new Error("violates foreign key constraint")
-      );
+      mockDataProvider.rpc = vi
+        .fn()
+        .mockRejectedValue(new Error("violates foreign key constraint"));
 
       await expect(service.archiveOpportunity(mockOpportunity)).rejects.toThrow(
         "Archive opportunity failed: violates foreign key constraint"
@@ -93,17 +92,15 @@ describe("OpportunitiesService", () => {
 
       // Numeric ID
       await service.archiveOpportunity({ ...mockOpportunity, id: 123 });
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-        "archive_opportunity_with_relations",
-        { opp_id: 123 }
-      );
+      expect(mockDataProvider.rpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
+        opp_id: 123,
+      });
 
       // String ID
       await service.archiveOpportunity({ ...mockOpportunity, id: "uuid-123" });
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-        "archive_opportunity_with_relations",
-        { opp_id: "uuid-123" }
-      );
+      expect(mockDataProvider.rpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
+        opp_id: "uuid-123",
+      });
     });
 
     test("should log error details on failure", async () => {
@@ -135,10 +132,9 @@ describe("OpportunitiesService", () => {
 
       await service.unarchiveOpportunity(mockOpportunity);
 
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-        "unarchive_opportunity_with_relations",
-        { opp_id: mockOpportunity.id }
-      );
+      expect(mockDataProvider.rpc).toHaveBeenCalledWith("unarchive_opportunity_with_relations", {
+        opp_id: mockOpportunity.id,
+      });
     });
 
     test("should cascade to related records (activities, notes, participants, tasks)", async () => {
@@ -157,7 +153,7 @@ describe("OpportunitiesService", () => {
       const mockResponse = {
         success: true,
         unarchived_count: 1,
-        related_records: { activities: 5, notes: 3, participants: 2, tasks: 4 }
+        related_records: { activities: 5, notes: 3, participants: 2, tasks: 4 },
       };
       mockDataProvider.rpc = vi.fn().mockResolvedValue(mockResponse);
 
@@ -178,7 +174,7 @@ describe("OpportunitiesService", () => {
       // RPC function should be idempotent
       mockDataProvider.rpc = vi.fn().mockResolvedValue({
         success: true,
-        unarchived_count: 0 // No records updated
+        unarchived_count: 0, // No records updated
       });
 
       const result = await service.unarchiveOpportunity({
@@ -194,17 +190,15 @@ describe("OpportunitiesService", () => {
 
       // Numeric ID
       await service.unarchiveOpportunity({ ...mockOpportunity, id: 456 });
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-        "unarchive_opportunity_with_relations",
-        { opp_id: 456 }
-      );
+      expect(mockDataProvider.rpc).toHaveBeenCalledWith("unarchive_opportunity_with_relations", {
+        opp_id: 456,
+      });
 
       // String ID
       await service.unarchiveOpportunity({ ...mockOpportunity, id: "uuid-456" });
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-        "unarchive_opportunity_with_relations",
-        { opp_id: "uuid-456" }
-      );
+      expect(mockDataProvider.rpc).toHaveBeenCalledWith("unarchive_opportunity_with_relations", {
+        opp_id: "uuid-456",
+      });
     });
 
     test("should log error details on failure", async () => {
@@ -227,7 +221,8 @@ describe("OpportunitiesService", () => {
 
   describe("Archive/Unarchive Integration", () => {
     test("should support archive -> unarchive workflow", async () => {
-      mockDataProvider.rpc = vi.fn()
+      mockDataProvider.rpc = vi
+        .fn()
         .mockResolvedValueOnce({ success: true, archived_count: 1 })
         .mockResolvedValueOnce({ success: true, unarchived_count: 1 });
 
@@ -284,16 +279,15 @@ describe("OpportunitiesService", () => {
 
       await service.archiveOpportunity({ ...mockOpportunity, id: undefined as any });
 
-      expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-        "archive_opportunity_with_relations",
-        { opp_id: undefined }
-      );
+      expect(mockDataProvider.rpc).toHaveBeenCalledWith("archive_opportunity_with_relations", {
+        opp_id: undefined,
+      });
     });
 
     test("should handle network timeout errors", async () => {
-      mockDataProvider.rpc = vi.fn().mockRejectedValue(
-        new Error("Network request failed: timeout")
-      );
+      mockDataProvider.rpc = vi
+        .fn()
+        .mockRejectedValue(new Error("Network request failed: timeout"));
 
       await expect(service.archiveOpportunity(mockOpportunity)).rejects.toThrow(
         "Archive opportunity failed: Network request failed: timeout"
@@ -301,9 +295,9 @@ describe("OpportunitiesService", () => {
     });
 
     test("should handle RLS policy violations", async () => {
-      mockDataProvider.rpc = vi.fn().mockRejectedValue(
-        new Error("new row violates row-level security policy")
-      );
+      mockDataProvider.rpc = vi
+        .fn()
+        .mockRejectedValue(new Error("new row violates row-level security policy"));
 
       await expect(service.archiveOpportunity(mockOpportunity)).rejects.toThrow(
         "Archive opportunity failed: new row violates row-level security policy"

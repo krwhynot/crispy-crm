@@ -7,11 +7,7 @@ export interface TabPanelProps {
   className?: string;
 }
 
-export const TabPanel = ({
-  value,
-  children,
-  className,
-}: TabPanelProps) => {
+export const TabPanel = ({ value, children, className }: TabPanelProps) => {
   return (
     <TabsContent
       value={value}

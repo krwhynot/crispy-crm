@@ -11,9 +11,7 @@ export async function getOrganizationAvatar(record: Partial<Company>): Promise<{
   if (!record.website) {
     return null;
   }
-  const websiteUrlWithoutScheme = record.website
-    .replace(/^https?:\/\//, "")
-    .replace(/\/$/, "");
+  const websiteUrlWithoutScheme = record.website.replace(/^https?:\/\//, "").replace(/\/$/, "");
   return {
     src: `https://favicon.show/${websiteUrlWithoutScheme}`,
     title: "Organization favicon",

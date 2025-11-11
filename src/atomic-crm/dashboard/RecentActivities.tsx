@@ -1,6 +1,19 @@
 import { useGetList, useRedirect } from "ra-core";
 import { formatDistanceToNow } from "date-fns";
-import { Activity as ActivityIcon, Phone, Mail, Users, FileText, ClipboardCheck, Calendar, Building, MapPin, FileSignature, MessageCircle, Share2 } from "lucide-react";
+import {
+  Activity as ActivityIcon,
+  Phone,
+  Mail,
+  Users,
+  FileText,
+  ClipboardCheck,
+  Calendar,
+  Building,
+  MapPin,
+  FileSignature,
+  MessageCircle,
+  Share2,
+} from "lucide-react";
 import type { ActivityRecord, Sale } from "../types";
 import { DashboardWidget } from "./DashboardWidget";
 
@@ -95,10 +108,13 @@ export const RecentActivities = () => {
   });
 
   // Create a map of sales ID to full name for quick lookup
-  const salesMap = sales?.reduce((acc, sale) => {
-    acc[sale.id] = `${sale.first_name} ${sale.last_name}`;
-    return acc;
-  }, {} as Record<string, string>);
+  const salesMap = sales?.reduce(
+    (acc, sale) => {
+      acc[sale.id] = `${sale.first_name} ${sale.last_name}`;
+      return acc;
+    },
+    {} as Record<string, string>
+  );
 
   const handleActivityClick = (activityId: string | number) => {
     // Navigate to the activity details (assuming activities resource exists)
@@ -118,9 +134,7 @@ export const RecentActivities = () => {
     >
       <div className="flex flex-col w-full gap-3 max-h-[400px] overflow-y-auto">
         {activities && activities.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            No recent activities
-          </div>
+          <div className="text-center py-8 text-muted-foreground">No recent activities</div>
         ) : (
           activities?.map((activity) => {
             const userName = activity.created_by
@@ -129,10 +143,7 @@ export const RecentActivities = () => {
             const timeAgo = activity.activity_date
               ? formatDistanceToNow(new Date(activity.activity_date), { addSuffix: true })
               : "Date unknown";
-            const description = truncateText(
-              activity.description || activity.subject,
-              60
-            );
+            const description = truncateText(activity.description || activity.subject, 60);
 
             return (
               <div
@@ -151,12 +162,8 @@ export const RecentActivities = () => {
               >
                 {/* Header: Icon, User, Type */}
                 <div className="flex items-center gap-2">
-                  <div className="text-primary">
-                    {getActivityTypeIcon(activity.type)}
-                  </div>
-                  <span className="font-medium text-sm text-foreground">
-                    {userName}
-                  </span>
+                  <div className="text-primary">{getActivityTypeIcon(activity.type)}</div>
+                  <span className="font-medium text-sm text-foreground">{userName}</span>
                   <span className="text-xs text-muted-foreground">-</span>
                   <span className="text-xs text-muted-foreground">
                     {formatActivityType(activity.type)}
@@ -164,14 +171,10 @@ export const RecentActivities = () => {
                 </div>
 
                 {/* Description */}
-                <div className="text-sm text-muted-foreground pl-6">
-                  {description}
-                </div>
+                <div className="text-sm text-muted-foreground pl-6">{description}</div>
 
                 {/* Time ago */}
-                <div className="text-xs text-muted-foreground pl-6">
-                  {timeAgo}
-                </div>
+                <div className="text-xs text-muted-foreground pl-6">{timeAgo}</div>
               </div>
             );
           })

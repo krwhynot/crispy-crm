@@ -1,19 +1,7 @@
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CircleX, Edit, Save, Trash2 } from "lucide-react";
-import {
-  Form,
-  useDelete,
-  useNotify,
-  useResourceContext,
-  useUpdate,
-  WithRecord,
-} from "ra-core";
+import { Form, useDelete, useNotify, useResourceContext, useUpdate, WithRecord } from "ra-core";
 import { useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 
@@ -50,7 +38,7 @@ export const Note = ({
       onSuccess: () => {
         notify("Note deleted", { type: "info", undoable: true });
       },
-    },
+    }
   );
 
   const handleDelete = () => {
@@ -75,15 +63,12 @@ export const Note = ({
           setEditing(false);
           setHover(false);
         },
-      },
+      }
     );
   };
 
   return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
+    <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div className="flex items-center space-x-4 w-full">
         {resource === "contactNotes" ? (
           <Avatar width={20} height={20} />
@@ -94,11 +79,7 @@ export const Note = ({
             record={note}
             link={false}
           >
-            <ReferenceField
-              source="customer_organization_id"
-              reference="organizations"
-              link="show"
-            >
+            <ReferenceField source="customer_organization_id" reference="organizations" link="show">
               <OrganizationAvatar width={20} height={20} />
             </ReferenceField>
           </ReferenceField>
@@ -114,9 +95,7 @@ export const Note = ({
             <WithRecord render={(record) => <SaleName sale={record} />} />
           </ReferenceField>{" "}
           added a note{" "}
-          {showStatus && note.status && (
-            <Status className="ml-2" status={note.status} />
-          )}
+          {showStatus && note.status && <Status className="ml-2" status={note.status} />}
         </div>
         <span className={`${isHover ? "visible" : "invisible"}`}>
           <TooltipProvider>

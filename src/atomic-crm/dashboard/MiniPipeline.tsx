@@ -13,9 +13,7 @@ export const MiniPipeline = () => {
   const stageCounts = useMemo(() => {
     if (!data) return [];
 
-    const active = data.filter(
-      (opp) => !["closed_won", "closed_lost"].includes(opp.stage),
-    ).length;
+    const active = data.filter((opp) => !["closed_won", "closed_lost"].includes(opp.stage)).length;
 
     const won = data.filter((opp) => opp.stage === "closed_won").length;
     const lost = data.filter((opp) => opp.stage === "closed_lost").length;
@@ -43,10 +41,12 @@ export const MiniPipeline = () => {
         {stageCounts.map((stage, index) => (
           <div
             key={stage.label}
-            className={`flex items-center justify-between py-3 ${index > 0 ? 'border-t border-[color:var(--divider-subtle)]' : ''}`}
+            className={`flex items-center justify-between py-3 ${index > 0 ? "border-t border-[color:var(--divider-subtle)]" : ""}`}
           >
             <span className="text-sm text-[color:var(--text-body)]">{stage.label}</span>
-            <span className="text-xl font-bold tabular-nums text-[color:var(--text-metric)]">{stage.count}</span>
+            <span className="text-xl font-bold tabular-nums text-[color:var(--text-metric)]">
+              {stage.count}
+            </span>
           </div>
         ))}
       </div>

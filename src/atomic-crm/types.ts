@@ -12,12 +12,7 @@ import type { OpportunityStageValue } from "./opportunities/stageConstants";
 import type { Database } from "@/types/database.generated";
 
 // Type definitions for enhanced CRM features
-export type OrganizationType =
-  | "customer"
-  | "prospect"
-  | "principal"
-  | "distributor"
-  | "unknown";
+export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "unknown";
 
 // Use generated enum as single source of truth for interaction types
 type InteractionType = Database["public"]["Enums"]["interaction_type"];

@@ -12,9 +12,7 @@ interface ActivityLogContactCreatedProps {
   activity: ActivityContactCreated;
 }
 
-export function ActivityLogContactCreated({
-  activity,
-}: ActivityLogContactCreatedProps) {
+export function ActivityLogContactCreated({ activity }: ActivityLogContactCreatedProps) {
   const context = useActivityLogContext();
   const { contact } = activity;
   return (
@@ -24,12 +22,11 @@ export function ActivityLogContactCreated({
         <span className="text-[color:var(--text-subtle)] text-sm flex-grow">
           <ReferenceField source="sales_id" reference="sales" record={activity}>
             <SaleName />
-          </ReferenceField>
-          {" "}added{" "}
+          </ReferenceField>{" "}
+          added{" "}
           <Link to={`/contacts/${contact.id}/show`}>
             {formatName(contact.first_name, contact.last_name)}
-          </Link>
-          {" "}
+          </Link>{" "}
           {context !== "company" && <>to organization {activity.customer_organization_id}</>}
         </span>
         {context === "company" && (

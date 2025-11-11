@@ -34,11 +34,7 @@ export const PRODUCT_CATEGORIES = FB_CONSUMABLE_CATEGORIES;
 
 // Product status enum matching database
 // Removed: seasonal, limited_availability (2025-10-18)
-export const productStatusSchema = z.enum([
-  "active",
-  "discontinued",
-  "coming_soon",
-]);
+export const productStatusSchema = z.enum(["active", "discontinued", "coming_soon"]);
 
 // Export the enum values for form components (Constitution Rule #5)
 export const PRODUCT_STATUSES = productStatusSchema.options;

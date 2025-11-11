@@ -237,11 +237,11 @@ describe("OpportunityList localStorage persistence", () => {
   test("persists stage filter preferences to localStorage", () => {
     // Simulate the function that updates stage preferences
     const updateStagePreferences = (selectedStages: string[]): void => {
-      const allStages = OPPORTUNITY_STAGE_CHOICES.map(choice => choice.id);
-      const hiddenStages = allStages.filter(stage => !selectedStages.includes(stage));
+      const allStages = OPPORTUNITY_STAGE_CHOICES.map((choice) => choice.id);
+      const hiddenStages = allStages.filter((stage) => !selectedStages.includes(stage));
 
       if (hiddenStages.length > 0) {
-        localStorage.setItem('opportunity_hidden_stages', JSON.stringify(hiddenStages));
+        localStorage.setItem("opportunity_hidden_stages", JSON.stringify(hiddenStages));
       }
     };
 
@@ -250,7 +250,7 @@ describe("OpportunityList localStorage persistence", () => {
     updateStagePreferences(selectedStages);
 
     expect(localStorageMock.setItem).toHaveBeenCalledWith(
-      'opportunity_hidden_stages',
+      "opportunity_hidden_stages",
       expect.stringContaining("closed_won")
     );
   });
@@ -258,7 +258,7 @@ describe("OpportunityList localStorage persistence", () => {
   test("reads default stage filter from localStorage", () => {
     // Mock localStorage to return hidden stages
     localStorageMock.getItem.mockImplementation((key) => {
-      if (key === 'opportunity_hidden_stages') {
+      if (key === "opportunity_hidden_stages") {
         return JSON.stringify(["closed_won", "closed_lost"]);
       }
       return null;
@@ -267,13 +267,12 @@ describe("OpportunityList localStorage persistence", () => {
     // Simulate the function that gets initial stage filter
     const getInitialStageFilter = (): string[] | undefined => {
       const hiddenStages = JSON.parse(
-        localStorage.getItem('opportunity_hidden_stages') ||
-        '["closed_won", "closed_lost"]'
+        localStorage.getItem("opportunity_hidden_stages") || '["closed_won", "closed_lost"]'
       );
 
-      return OPPORTUNITY_STAGE_CHOICES
-        .map(choice => choice.id)
-        .filter(stage => !hiddenStages.includes(stage));
+      return OPPORTUNITY_STAGE_CHOICES.map((choice) => choice.id).filter(
+        (stage) => !hiddenStages.includes(stage)
+      );
     };
 
     const visibleStages = getInitialStageFilter();
@@ -294,8 +293,8 @@ describe("OpportunityList dynamic filter choices", () => {
           "Retail",
           "Manufacturing",
           "Retail", // Duplicate to test uniqueness
-          null,     // Null to test filtering
-          "",       // Empty to test filtering
+          null, // Null to test filtering
+          "", // Empty to test filtering
         ],
         total: 5,
       }),
@@ -303,20 +302,19 @@ describe("OpportunityList dynamic filter choices", () => {
 
     // Simulate the context fetching logic
     const fetchContexts = async () => {
-      const { data } = await mockDataProvider.getList('opportunities', {
+      const { data } = await mockDataProvider.getList("opportunities", {
         pagination: { page: 1, perPage: 1000 },
         filter: { "deleted_at@is": null },
       });
 
       // Extract unique, non-null contexts
-      const uniqueContexts = [...new Set(
-        data
-          .filter((context: string) => context && context.trim() !== '')
-      )];
+      const uniqueContexts = [
+        ...new Set(data.filter((context: string) => context && context.trim() !== "")),
+      ];
 
-      return uniqueContexts.map(context => ({
+      return uniqueContexts.map((context) => ({
         id: context,
-        name: context
+        name: context,
       }));
     };
 
@@ -326,9 +324,9 @@ describe("OpportunityList dynamic filter choices", () => {
     expect(choices).toContainEqual({ id: "Retail", name: "Retail" });
     expect(choices).toContainEqual({ id: "Manufacturing", name: "Manufacturing" });
     expect(mockDataProvider.getList).toHaveBeenCalledWith(
-      'opportunities',
+      "opportunities",
       expect.objectContaining({
-        filter: { "deleted_at@is": null }
+        filter: { "deleted_at@is": null },
       })
     );
   });

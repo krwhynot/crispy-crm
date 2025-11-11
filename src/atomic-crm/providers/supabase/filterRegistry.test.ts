@@ -99,9 +99,7 @@ describe("filterRegistry", () => {
 
       it("should return true for valid organization fields", () => {
         expect(isValidFilterField("organizations", "name")).toBe(true);
-        expect(isValidFilterField("organizations", "organization_type")).toBe(
-          true
-        );
+        expect(isValidFilterField("organizations", "organization_type")).toBe(true);
         expect(isValidFilterField("organizations", "segment_id")).toBe(true);
         expect(isValidFilterField("organizations", "priority")).toBe(true);
       });
@@ -110,12 +108,8 @@ describe("filterRegistry", () => {
         expect(isValidFilterField("opportunities", "name")).toBe(true);
         expect(isValidFilterField("opportunities", "stage")).toBe(true);
         expect(isValidFilterField("opportunities", "status")).toBe(true);
-        expect(
-          isValidFilterField("opportunities", "principal_organization_id")
-        ).toBe(true);
-        expect(isValidFilterField("opportunities", "account_manager_id")).toBe(
-          true
-        );
+        expect(isValidFilterField("opportunities", "principal_organization_id")).toBe(true);
+        expect(isValidFilterField("opportunities", "account_manager_id")).toBe(true);
       });
 
       it("should return true for valid product fields", () => {
@@ -128,12 +122,8 @@ describe("filterRegistry", () => {
 
     describe("invalid fields", () => {
       it("should return false for non-existent fields", () => {
-        expect(isValidFilterField("contacts", "non_existent_field")).toBe(
-          false
-        );
-        expect(isValidFilterField("organizations", "invalid_column")).toBe(
-          false
-        );
+        expect(isValidFilterField("contacts", "non_existent_field")).toBe(false);
+        expect(isValidFilterField("organizations", "invalid_column")).toBe(false);
         expect(isValidFilterField("opportunities", "fake_field")).toBe(false);
       });
 
@@ -158,19 +148,13 @@ describe("filterRegistry", () => {
     describe("React Admin filter operators", () => {
       it("should handle @gte (greater than or equal) operator", () => {
         expect(isValidFilterField("contacts", "created_at@gte")).toBe(true);
-        expect(isValidFilterField("opportunities", "estimated_close_date@gte")).toBe(
-          true
-        );
-        expect(isValidFilterField("activities", "activity_date@gte")).toBe(
-          true
-        );
+        expect(isValidFilterField("opportunities", "estimated_close_date@gte")).toBe(true);
+        expect(isValidFilterField("activities", "activity_date@gte")).toBe(true);
       });
 
       it("should handle @lte (less than or equal) operator", () => {
         expect(isValidFilterField("contacts", "updated_at@lte")).toBe(true);
-        expect(isValidFilterField("opportunities", "actual_close_date@lte")).toBe(
-          true
-        );
+        expect(isValidFilterField("opportunities", "actual_close_date@lte")).toBe(true);
         expect(isValidFilterField("tasks", "due_date@lte")).toBe(true);
       });
 
@@ -197,12 +181,8 @@ describe("filterRegistry", () => {
 
       it("should reject operators on invalid fields", () => {
         expect(isValidFilterField("contacts", "invalid_field@gte")).toBe(false);
-        expect(isValidFilterField("organizations", "fake_column@lte")).toBe(
-          false
-        );
-        expect(isValidFilterField("opportunities", "nonexistent@like")).toBe(
-          false
-        );
+        expect(isValidFilterField("organizations", "fake_column@lte")).toBe(false);
+        expect(isValidFilterField("opportunities", "nonexistent@like")).toBe(false);
       });
 
       it("should handle multiple @ symbols correctly", () => {
@@ -295,23 +275,15 @@ describe("filterRegistry", () => {
 
       it("should validate principal-centric dashboard filters", () => {
         // Dashboard filtering scenarios
-        expect(
-          isValidFilterField("dashboard_principal_summary", "account_manager_id")
-        ).toBe(true);
-        expect(
-          isValidFilterField("dashboard_principal_summary", "status_indicator")
-        ).toBe(true);
-        expect(
-          isValidFilterField("dashboard_principal_summary", "is_stuck")
-        ).toBe(true);
+        expect(isValidFilterField("dashboard_principal_summary", "account_manager_id")).toBe(true);
+        expect(isValidFilterField("dashboard_principal_summary", "status_indicator")).toBe(true);
+        expect(isValidFilterField("dashboard_principal_summary", "is_stuck")).toBe(true);
       });
 
       it("should validate soft delete filters", () => {
         // Filter for deleted records
         expect(isValidFilterField("contacts", "deleted_at")).toBe(true);
-        expect(isValidFilterField("opportunities", "deleted_at@neq")).toBe(
-          true
-        );
+        expect(isValidFilterField("opportunities", "deleted_at@neq")).toBe(true);
         expect(isValidFilterField("products", "deleted_at@is")).toBe(true);
       });
 

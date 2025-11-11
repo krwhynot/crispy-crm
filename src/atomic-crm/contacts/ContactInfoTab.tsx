@@ -15,22 +15,17 @@ export const ContactInfoTab = () => {
     if (first_name || last_name || !email) return;
     const [first, last] = email.split("@")[0].split(".");
     setValue("first_name", first.charAt(0).toUpperCase() + first.slice(1));
-    setValue(
-      "last_name",
-      last ? last.charAt(0).toUpperCase() + last.slice(1) : "",
-    );
+    setValue("last_name", last ? last.charAt(0).toUpperCase() + last.slice(1) : "");
   };
 
-  const handleEmailPaste: React.ClipboardEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  > = (e) => {
+  const handleEmailPaste: React.ClipboardEventHandler<HTMLTextAreaElement | HTMLInputElement> = (
+    e
+  ) => {
     const email = e.clipboardData?.getData("text/plain");
     handleEmailChange(email);
   };
 
-  const handleEmailBlur = (
-    e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ) => {
+  const handleEmailBlur = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const email = e.target.value;
     handleEmailChange(email);
   };

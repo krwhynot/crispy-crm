@@ -10,7 +10,7 @@ import type { ReactElement, ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const SimpleListItem = <RecordType extends RaRecord = any>(
-  props: SimpleListItemProps<RecordType>,
+  props: SimpleListItemProps<RecordType>
 ) => {
   const { children, linkType, rowClick, style, rowIndex } = props;
   const resource = useResourceContext(props);
@@ -18,8 +18,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
   const navigate = useNavigate();
   // If we don't have a function to get the path, we can compute the path immediately and set the href
   // on the Link correctly without onClick (better for accessibility)
-  const isFunctionLink =
-    typeof linkType === "function" || typeof rowClick === "function";
+  const isFunctionLink = typeof linkType === "function" || typeof rowClick === "function";
   const pathForRecord = useGetPathForRecord({
     link: isFunctionLink ? false : (linkType ?? rowClick),
     resource,
@@ -85,7 +84,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
 
 export type FunctionToElement<RecordType extends RaRecord = any> = (
   record: RecordType,
-  id: Identifier,
+  id: Identifier
 ) => ReactNode;
 
 export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
@@ -134,5 +133,5 @@ export interface SimpleListItemProps<RecordType extends RaRecord = any>
 export type RowClickFunction<RecordType extends RaRecord = RaRecord> = (
   id: Identifier,
   resource: string,
-  record: RecordType,
+  record: RecordType
 ) => string | false | Promise<string | false>;

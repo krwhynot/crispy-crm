@@ -8,11 +8,7 @@ describe("TabTriggerWithErrors", () => {
     render(
       <Tabs defaultValue="general">
         <TabsList>
-          <TabTriggerWithErrors
-            value="general"
-            label="General"
-            errorCount={0}
-          />
+          <TabTriggerWithErrors value="general" label="General" errorCount={0} />
         </TabsList>
       </Tabs>
     );
@@ -24,11 +20,7 @@ describe("TabTriggerWithErrors", () => {
     render(
       <Tabs defaultValue="general">
         <TabsList>
-          <TabTriggerWithErrors
-            value="general"
-            label="General"
-            errorCount={2}
-          />
+          <TabTriggerWithErrors value="general" label="General" errorCount={2} />
         </TabsList>
       </Tabs>
     );
@@ -40,29 +32,19 @@ describe("TabTriggerWithErrors", () => {
     const { container } = render(
       <Tabs defaultValue="general">
         <TabsList>
-          <TabTriggerWithErrors
-            value="general"
-            label="General"
-            errorCount={2}
-          />
+          <TabTriggerWithErrors value="general" label="General" errorCount={2} />
         </TabsList>
       </Tabs>
     );
     const button = container.querySelector("button");
-    expect(button?.getAttribute("aria-label")).toBe(
-      "General tab, 2 errors"
-    );
+    expect(button?.getAttribute("aria-label")).toBe("General tab, 2 errors");
   });
 
   it("applies correct aria-label without errors", () => {
     const { container } = render(
       <Tabs defaultValue="general">
         <TabsList>
-          <TabTriggerWithErrors
-            value="general"
-            label="General"
-            errorCount={0}
-          />
+          <TabTriggerWithErrors value="general" label="General" errorCount={0} />
         </TabsList>
       </Tabs>
     );

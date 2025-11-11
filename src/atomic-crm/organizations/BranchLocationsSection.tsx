@@ -34,9 +34,7 @@ interface BranchOrganization {
   nb_opportunities?: number;
 }
 
-export function BranchLocationsSection({
-  org,
-}: BranchLocationsSectionProps) {
+export function BranchLocationsSection({ org }: BranchLocationsSectionProps) {
   const dataProvider = useDataProvider();
   const [branches, setBranches] = useState<BranchOrganization[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,9 +56,7 @@ export function BranchLocationsSection({
         });
         setBranches(result.data as BranchOrganization[]);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load branches"
-        );
+        setError(err instanceof Error ? err.message : "Failed to load branches");
       } finally {
         setIsLoading(false);
       }
@@ -105,11 +101,7 @@ export function BranchLocationsSection({
           </div>
         )}
 
-        {error && (
-          <div className="text-red-500 text-sm p-4 bg-red-50 rounded">
-            {error}
-          </div>
-        )}
+        {error && <div className="text-red-500 text-sm p-4 bg-red-50 rounded">{error}</div>}
 
         {!isLoading && !error && branches.length > 0 && (
           <div className="overflow-x-auto">
@@ -118,20 +110,13 @@ export function BranchLocationsSection({
                 <tr>
                   <th className="text-left py-2 px-2 font-semibold">Name</th>
                   <th className="text-left py-2 px-2 font-semibold">City</th>
-                  <th className="text-center py-2 px-2 font-semibold">
-                    Contacts
-                  </th>
-                  <th className="text-center py-2 px-2 font-semibold">
-                    Opportunities
-                  </th>
+                  <th className="text-center py-2 px-2 font-semibold">Contacts</th>
+                  <th className="text-center py-2 px-2 font-semibold">Opportunities</th>
                 </tr>
               </thead>
               <tbody>
                 {branches.map((branch) => (
-                  <tr
-                    key={branch.id}
-                    className="border-b hover:bg-accent/5 transition-colors"
-                  >
+                  <tr key={branch.id} className="border-b hover:bg-accent/5 transition-colors">
                     <td className="py-2 px-2">
                       <RouterLink
                         to={`/organizations/${branch.id}/show`}
@@ -140,9 +125,7 @@ export function BranchLocationsSection({
                         {branch.name}
                       </RouterLink>
                     </td>
-                    <td className="py-2 px-2 text-muted-foreground">
-                      {branch.city || "-"}
-                    </td>
+                    <td className="py-2 px-2 text-muted-foreground">{branch.city || "-"}</td>
                     <td className="py-2 px-2 text-center text-muted-foreground">
                       {branch.nb_contacts ?? 0}
                     </td>

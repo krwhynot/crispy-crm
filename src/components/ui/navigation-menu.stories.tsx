@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -6,18 +6,18 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from './navigation-menu';
-import { navigationMenuTriggerStyle } from './navigation-menu.constants';
-import React from 'react';
-import { cn } from '@/lib/utils';
+} from "./navigation-menu";
+import { navigationMenuTriggerStyle } from "./navigation-menu.constants";
+import React from "react";
+import { cn } from "@/lib/utils";
 
 const meta = {
-  title: 'UI/NavigationMenu',
+  title: "UI/NavigationMenu",
   component: NavigationMenu,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="flex min-h-[400px] min-w-[800px] items-start justify-center pt-20">
@@ -162,8 +162,8 @@ export const TwoColumnLayout: Story = {
                 <NavigationMenuLink>
                   <div className="mb-1 text-sm font-medium">Enterprise</div>
                   <p className="text-sm text-[color:var(--text-subtle)]">
-                    Comprehensive solution for large organizations with advanced
-                    security and compliance features
+                    Comprehensive solution for large organizations with advanced security and
+                    compliance features
                   </p>
                 </NavigationMenuLink>
               </li>
@@ -212,15 +212,11 @@ export const WithFeaturedContent: Story = {
               <div className="grid grid-cols-2 gap-3">
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Blog</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
-                    Latest news and updates
-                  </p>
+                  <p className="text-sm text-[color:var(--text-subtle)]">Latest news and updates</p>
                 </NavigationMenuLink>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Guides</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
-                    In-depth tutorials
-                  </p>
+                  <p className="text-sm text-[color:var(--text-subtle)]">In-depth tutorials</p>
                 </NavigationMenuLink>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Case Studies</div>
@@ -263,19 +259,13 @@ export const ComplexNavigation: Story = {
                   <h4 className="mb-3 text-sm font-medium text-primary">Frontend</h4>
                   <ul className="space-y-2">
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        React Components
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">React Components</NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        Design System
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">Design System</NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        Templates
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">Templates</NavigationMenuLink>
                     </li>
                   </ul>
                 </div>
@@ -283,19 +273,13 @@ export const ComplexNavigation: Story = {
                   <h4 className="mb-3 text-sm font-medium text-primary">Backend</h4>
                   <ul className="space-y-2">
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        API Routes
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">API Routes</NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        Database
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">Database</NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        Authentication
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">Authentication</NavigationMenuLink>
                     </li>
                   </ul>
                 </div>
@@ -303,19 +287,13 @@ export const ComplexNavigation: Story = {
                   <h4 className="mb-3 text-sm font-medium text-primary">Deployment</h4>
                   <ul className="space-y-2">
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        Hosting
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">Hosting</NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        CI/CD
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">CI/CD</NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="text-sm">
-                        Monitoring
-                      </NavigationMenuLink>
+                      <NavigationMenuLink className="text-sm">Monitoring</NavigationMenuLink>
                     </li>
                   </ul>
                 </div>
@@ -339,17 +317,13 @@ export const ComplexNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Careers</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
-                    Join our growing team
-                  </p>
+                  <p className="text-sm text-[color:var(--text-subtle)]">Join our growing team</p>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Contact</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
-                    Get in touch with us
-                  </p>
+                  <p className="text-sm text-[color:var(--text-subtle)]">Get in touch with us</p>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -357,9 +331,7 @@ export const ComplexNavigation: Story = {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            Pricing
-          </NavigationMenuLink>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>Pricing</NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
@@ -418,9 +390,7 @@ export const MixedNavigation: Story = {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            Home
-          </NavigationMenuLink>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
@@ -472,15 +442,11 @@ export const MixedNavigation: Story = {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            Pricing
-          </NavigationMenuLink>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>Pricing</NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            Contact
-          </NavigationMenuLink>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>Contact</NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
@@ -494,7 +460,7 @@ const AnimationStatesComponent = () => {
   return (
     <div className="space-y-4">
       <div className="rounded-lg border bg-secondary/10 p-3">
-        <p className="text-sm font-medium">Active Item: {activeItem || 'None'}</p>
+        <p className="text-sm font-medium">Active Item: {activeItem || "None"}</p>
         <p className="text-xs text-[color:var(--text-subtle)]">
           Click triggers to see animation states
         </p>
@@ -504,7 +470,7 @@ const AnimationStatesComponent = () => {
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuTrigger
-              onPointerEnter={() => setActiveItem('item-1')}
+              onPointerEnter={() => setActiveItem("item-1")}
               onPointerLeave={() => setActiveItem(null)}
             >
               Hover for Animation
@@ -512,8 +478,8 @@ const AnimationStatesComponent = () => {
             <NavigationMenuContent>
               <div className="w-[400px] p-6">
                 <p className="text-sm">
-                  Watch the smooth fade-in and slide animations as this content appears.
-                  The viewport animates from the trigger position.
+                  Watch the smooth fade-in and slide animations as this content appears. The
+                  viewport animates from the trigger position.
                 </p>
               </div>
             </NavigationMenuContent>
@@ -521,7 +487,7 @@ const AnimationStatesComponent = () => {
 
           <NavigationMenuItem>
             <NavigationMenuTrigger
-              onPointerEnter={() => setActiveItem('item-2')}
+              onPointerEnter={() => setActiveItem("item-2")}
               onPointerLeave={() => setActiveItem(null)}
             >
               Another Animation
@@ -529,8 +495,8 @@ const AnimationStatesComponent = () => {
             <NavigationMenuContent>
               <div className="w-[400px] p-6">
                 <p className="text-sm">
-                  The content smoothly transitions between different menu items.
-                  Notice the chevron rotation animation in the trigger.
+                  The content smoothly transitions between different menu items. Notice the chevron
+                  rotation animation in the trigger.
                 </p>
               </div>
             </NavigationMenuContent>
@@ -580,17 +546,13 @@ export const ResponsiveMenu: Story = {
             <NavigationMenuTrigger>Desktop Only</NavigationMenuTrigger>
             <NavigationMenuContent>
               <div className="w-[400px] p-6">
-                <p className="text-sm">
-                  This menu item is only visible on larger screens.
-                </p>
+                <p className="text-sm">This menu item is only visible on larger screens.</p>
               </div>
             </NavigationMenuContent>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Link
-            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Link</NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
@@ -651,8 +613,8 @@ export const SemanticColors: Story = {
               <NavigationMenuContent>
                 <div className="w-[400px] p-6">
                   <p className="text-sm">
-                    The navigation menu adapts to different background colors
-                    while maintaining proper contrast and readability.
+                    The navigation menu adapts to different background colors while maintaining
+                    proper contrast and readability.
                   </p>
                 </div>
               </NavigationMenuContent>
@@ -695,7 +657,7 @@ export const SemanticColors: Story = {
 
 // Active state example
 const WithActiveStatesComponent = () => {
-  const [activePath, setActivePath] = React.useState('/products');
+  const [activePath, setActivePath] = React.useState("/products");
 
   return (
     <div className="space-y-4">
@@ -708,9 +670,9 @@ const WithActiveStatesComponent = () => {
             <NavigationMenuLink
               className={cn(
                 navigationMenuTriggerStyle(),
-                activePath === '/' && 'bg-accent text-accent-foreground'
+                activePath === "/" && "bg-accent text-accent-foreground"
               )}
-              onClick={() => setActivePath('/')}
+              onClick={() => setActivePath("/")}
             >
               Home
             </NavigationMenuLink>
@@ -719,7 +681,7 @@ const WithActiveStatesComponent = () => {
           <NavigationMenuItem>
             <NavigationMenuTrigger
               className={cn(
-                activePath.startsWith('/products') && 'bg-accent text-accent-foreground'
+                activePath.startsWith("/products") && "bg-accent text-accent-foreground"
               )}
             >
               Products
@@ -728,8 +690,8 @@ const WithActiveStatesComponent = () => {
               <ul className="grid w-[400px] gap-3 p-4">
                 <li>
                   <NavigationMenuLink
-                    onClick={() => setActivePath('/products/analytics')}
-                    data-active={activePath === '/products/analytics'}
+                    onClick={() => setActivePath("/products/analytics")}
+                    data-active={activePath === "/products/analytics"}
                   >
                     <div className="text-sm font-medium">Analytics</div>
                     <p className="text-sm text-[color:var(--text-subtle)]">
@@ -739,13 +701,11 @@ const WithActiveStatesComponent = () => {
                 </li>
                 <li>
                   <NavigationMenuLink
-                    onClick={() => setActivePath('/products/commerce')}
-                    data-active={activePath === '/products/commerce'}
+                    onClick={() => setActivePath("/products/commerce")}
+                    data-active={activePath === "/products/commerce"}
                   >
                     <div className="text-sm font-medium">Commerce</div>
-                    <p className="text-sm text-[color:var(--text-subtle)]">
-                      E-commerce solutions
-                    </p>
+                    <p className="text-sm text-[color:var(--text-subtle)]">E-commerce solutions</p>
                   </NavigationMenuLink>
                 </li>
               </ul>
@@ -756,9 +716,9 @@ const WithActiveStatesComponent = () => {
             <NavigationMenuLink
               className={cn(
                 navigationMenuTriggerStyle(),
-                activePath === '/about' && 'bg-accent text-accent-foreground'
+                activePath === "/about" && "bg-accent text-accent-foreground"
               )}
-              onClick={() => setActivePath('/about')}
+              onClick={() => setActivePath("/about")}
             >
               About
             </NavigationMenuLink>

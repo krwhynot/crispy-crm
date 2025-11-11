@@ -42,11 +42,7 @@ interface QuickCompleteTaskModalProps {
   onComplete: () => void;
 }
 
-export function QuickCompleteTaskModal({
-  task,
-  onClose,
-  onComplete,
-}: QuickCompleteTaskModalProps) {
+export function QuickCompleteTaskModal({ task, onClose, onComplete }: QuickCompleteTaskModalProps) {
   const [step, setStep] = useState<FlowStep>(FlowStep.LOG_ACTIVITY);
   const [activityData, setActivityData] = useState<ActivityData | null>(null);
   const [_isSubmitting, _setIsSubmitting] = useState(false);
@@ -84,10 +80,7 @@ export function QuickCompleteTaskModal({
    * Complete the entire workflow
    * Calls atomic database function to ensure all operations succeed together
    */
-  const handleComplete = async (
-    activity: ActivityData,
-    opportunityStage: string | null,
-  ) => {
+  const handleComplete = async (activity: ActivityData, opportunityStage: string | null) => {
     setIsSubmitting(true);
 
     try {
@@ -145,22 +138,15 @@ export function QuickCompleteTaskModal({
             {step === FlowStep.COMPLETE && "Task Completed!"}
           </DialogTitle>
           <DialogDescription>
-            {step === FlowStep.LOG_ACTIVITY &&
-              "Log the activity to complete this task"}
-            {step === FlowStep.UPDATE_OPPORTUNITY &&
-              "Optionally update the opportunity stage"}
-            {step === FlowStep.COMPLETE &&
-              "Your task has been completed successfully"}
+            {step === FlowStep.LOG_ACTIVITY && "Log the activity to complete this task"}
+            {step === FlowStep.UPDATE_OPPORTUNITY && "Optionally update the opportunity stage"}
+            {step === FlowStep.COMPLETE && "Your task has been completed successfully"}
           </DialogDescription>
         </DialogHeader>
 
         {/* Step 1: Log Activity */}
         {step === FlowStep.LOG_ACTIVITY && (
-          <LogActivityStep
-            task={task}
-            onSave={handleActivitySaved}
-            onCancel={onClose}
-          />
+          <LogActivityStep task={task} onSave={handleActivitySaved} onCancel={onClose} />
         )}
 
         {/* Step 2: Update Opportunity */}

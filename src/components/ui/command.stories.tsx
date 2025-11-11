@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Command,
   CommandDialog,
@@ -9,8 +9,8 @@ import {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
-} from './command';
-import { Button } from './button';
+} from "./command";
+import { Button } from "./button";
 import {
   Calculator,
   Calendar,
@@ -31,21 +31,21 @@ import {
   Clock,
   Download,
   Upload,
-} from 'lucide-react';
-import React from 'react';
+} from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Command',
+  title: "UI/Command",
   component: Command,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'Command menu component with search and keyboard navigation.',
+        component: "Command menu component with search and keyboard navigation.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="flex min-h-[400px] w-full items-center justify-center">
@@ -108,24 +108,24 @@ const CommandDialogExample = () => {
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);
       }
     };
 
-    document.addEventListener('keydown', down);
-    return () => document.removeEventListener('keydown', down);
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
   }, []);
 
   return (
     <>
       <div className="text-center">
         <p className="text-sm text-[color:var(--text-subtle)] mb-4">
-          Press{' '}
+          Press{" "}
           <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-[color:var(--text-subtle)] opacity-100">
             <span className="text-xs">⌘</span>K
-          </kbd>{' '}
+          </kbd>{" "}
           to open command palette
         </p>
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -178,17 +178,17 @@ export const DialogExample: Story = {
 
 // With search functionality
 const CommandWithSearch = () => {
-  const [search, setSearch] = React.useState('');
+  const [search, setSearch] = React.useState("");
 
   const items = [
-    { id: 1, name: 'Calendar', icon: Calendar, group: 'Apps' },
-    { id: 2, name: 'Search Emoji', icon: Smile, group: 'Apps' },
-    { id: 3, name: 'Calculator', icon: Calculator, group: 'Apps' },
-    { id: 4, name: 'Profile', icon: User, group: 'Settings' },
-    { id: 5, name: 'Billing', icon: CreditCard, group: 'Settings' },
-    { id: 6, name: 'Settings', icon: Settings, group: 'Settings' },
-    { id: 7, name: 'Mail', icon: Mail, group: 'Communication' },
-    { id: 8, name: 'Messages', icon: MessageSquare, group: 'Communication' },
+    { id: 1, name: "Calendar", icon: Calendar, group: "Apps" },
+    { id: 2, name: "Search Emoji", icon: Smile, group: "Apps" },
+    { id: 3, name: "Calculator", icon: Calculator, group: "Apps" },
+    { id: 4, name: "Profile", icon: User, group: "Settings" },
+    { id: 5, name: "Billing", icon: CreditCard, group: "Settings" },
+    { id: 6, name: "Settings", icon: Settings, group: "Settings" },
+    { id: 7, name: "Mail", icon: Mail, group: "Communication" },
+    { id: 8, name: "Messages", icon: MessageSquare, group: "Communication" },
   ];
 
   const groups = [...new Set(items.map((item) => item.group))];
@@ -284,29 +284,29 @@ export const WithDisabledItems: Story = {
 
 // Interactive filtering demo
 const CommandInteractiveFilter = () => {
-  const [selectedItem, setSelectedItem] = React.useState('');
+  const [selectedItem, setSelectedItem] = React.useState("");
 
   return (
     <div>
       <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
-        Selected: {selectedItem || 'None'}
+        Selected: {selectedItem || "None"}
       </p>
       <Command className="rounded-lg border shadow-md">
         <CommandInput placeholder="Start typing to filter..." />
         <CommandList>
           <CommandEmpty>No matching commands.</CommandEmpty>
           <CommandGroup heading="Quick Actions">
-            <CommandItem onSelect={() => setSelectedItem('New File')}>
+            <CommandItem onSelect={() => setSelectedItem("New File")}>
               <FileText className="mr-2 size-4" />
               New File
               <CommandShortcut>⌘N</CommandShortcut>
             </CommandItem>
-            <CommandItem onSelect={() => setSelectedItem('Open File')}>
+            <CommandItem onSelect={() => setSelectedItem("Open File")}>
               <FileText className="mr-2 size-4" />
               Open File
               <CommandShortcut>⌘O</CommandShortcut>
             </CommandItem>
-            <CommandItem onSelect={() => setSelectedItem('Save File')}>
+            <CommandItem onSelect={() => setSelectedItem("Save File")}>
               <Download className="mr-2 size-4" />
               Save File
               <CommandShortcut>⌘S</CommandShortcut>
@@ -314,15 +314,15 @@ const CommandInteractiveFilter = () => {
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Applications">
-            <CommandItem onSelect={() => setSelectedItem('Music Player')}>
+            <CommandItem onSelect={() => setSelectedItem("Music Player")}>
               <Music className="mr-2 size-4" />
               Music Player
             </CommandItem>
-            <CommandItem onSelect={() => setSelectedItem('Travel Planner')}>
+            <CommandItem onSelect={() => setSelectedItem("Travel Planner")}>
               <Plane className="mr-2 size-4" />
               Travel Planner
             </CommandItem>
-            <CommandItem onSelect={() => setSelectedItem('Time Tracker')}>
+            <CommandItem onSelect={() => setSelectedItem("Time Tracker")}>
               <Clock className="mr-2 size-4" />
               Time Tracker
             </CommandItem>
@@ -339,26 +339,26 @@ export const InteractiveFilter: Story = {
 
 // Keyboard navigation demo
 const CommandKeyboardNavigation = () => {
-  const [selected, setSelected] = React.useState('');
+  const [selected, setSelected] = React.useState("");
 
   return (
     <div>
       <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
         Use ↑↓ arrows to navigate, Enter to select, Esc to clear focus
       </p>
-      <p className="mb-4 text-sm">Selected: {selected || 'None'}</p>
+      <p className="mb-4 text-sm">Selected: {selected || "None"}</p>
       <Command className="rounded-lg border shadow-md">
         <CommandInput placeholder="Focus here and use arrow keys..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Navigation Test">
-            <CommandItem onSelect={() => setSelected('First Item')}>
+            <CommandItem onSelect={() => setSelected("First Item")}>
               First Item (↓ to next)
             </CommandItem>
-            <CommandItem onSelect={() => setSelected('Second Item')}>Second Item</CommandItem>
+            <CommandItem onSelect={() => setSelected("Second Item")}>Second Item</CommandItem>
             <CommandItem disabled>Disabled (skipped in navigation)</CommandItem>
-            <CommandItem onSelect={() => setSelected('Third Item')}>Third Item</CommandItem>
-            <CommandItem onSelect={() => setSelected('Last Item')}>
+            <CommandItem onSelect={() => setSelected("Third Item")}>Third Item</CommandItem>
+            <CommandItem onSelect={() => setSelected("Last Item")}>
               Last Item (↑ to previous)
             </CommandItem>
           </CommandGroup>

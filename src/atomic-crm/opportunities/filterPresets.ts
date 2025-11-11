@@ -39,8 +39,8 @@ export const getFilterPresets = (userId?: string): FilterPreset[] => {
       description: "Opportunities with expected close date within 30 days",
       icon: "Calendar",
       filters: {
-        estimated_close_date_gte: today.toISOString().split('T')[0],
-        estimated_close_date_lte: thirtyDaysFromNow.toISOString().split('T')[0],
+        estimated_close_date_gte: today.toISOString().split("T")[0],
+        estimated_close_date_lte: thirtyDaysFromNow.toISOString().split("T")[0],
       },
     },
     {
@@ -58,7 +58,7 @@ export const getFilterPresets = (userId?: string): FilterPreset[] => {
       description: "Opportunities with overdue or upcoming actions",
       icon: "Flag",
       filters: {
-        next_action_date_lte: today.toISOString().split('T')[0],
+        next_action_date_lte: today.toISOString().split("T")[0],
       },
     },
     {
@@ -68,7 +68,7 @@ export const getFilterPresets = (userId?: string): FilterPreset[] => {
       icon: "Trophy",
       filters: {
         stage: "closed_won",
-        updated_at_gte: addDays(today, -30).toISOString().split('T')[0],
+        updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
       },
     },
   ];

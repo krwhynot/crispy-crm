@@ -24,9 +24,7 @@ interface HierarchyBreadcrumbProps {
   organization: OrganizationWithHierarchy;
 }
 
-export const HierarchyBreadcrumb = ({
-  organization,
-}: HierarchyBreadcrumbProps) => {
+export const HierarchyBreadcrumb = ({ organization }: HierarchyBreadcrumbProps) => {
   const navigate = useNavigate();
 
   // Return null if no parent organization
@@ -39,10 +37,7 @@ export const HierarchyBreadcrumb = ({
       <BreadcrumbList>
         {/* Organizations link */}
         <BreadcrumbItem>
-          <BreadcrumbLink
-            onClick={() => navigate("/organizations")}
-            className="cursor-pointer"
-          >
+          <BreadcrumbLink onClick={() => navigate("/organizations")} className="cursor-pointer">
             Organizations
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -52,9 +47,7 @@ export const HierarchyBreadcrumb = ({
         {/* Parent organization link */}
         <BreadcrumbItem>
           <BreadcrumbLink
-            onClick={() =>
-              navigate(`/organizations/${organization.parent_organization_id}/show`)
-            }
+            onClick={() => navigate(`/organizations/${organization.parent_organization_id}/show`)}
             className="cursor-pointer"
           >
             {organization.parent_organization_name}

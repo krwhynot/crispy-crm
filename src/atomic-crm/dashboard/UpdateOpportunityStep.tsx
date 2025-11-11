@@ -41,11 +41,7 @@ export function UpdateOpportunityStep({
   onUpdate,
   onSkip,
 }: UpdateOpportunityStepProps) {
-  const {
-    data: opportunity,
-    isLoading,
-    error,
-  } = useGetOne("opportunities", { id: opportunityId });
+  const { data: opportunity, isLoading, error } = useGetOne("opportunities", { id: opportunityId });
 
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,9 +63,7 @@ export function UpdateOpportunityStep({
     return (
       <div className="flex items-center justify-center py-8">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        <span className="ml-2 text-sm text-muted-foreground">
-          Loading opportunity...
-        </span>
+        <span className="ml-2 text-sm text-muted-foreground">Loading opportunity...</span>
       </div>
     );
   }
@@ -78,9 +72,7 @@ export function UpdateOpportunityStep({
   if (error || !opportunity) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-destructive">
-          Unable to load opportunity details.
-        </p>
+        <p className="text-sm text-destructive">Unable to load opportunity details.</p>
         <Button onClick={onSkip} className="w-full">
           Continue Anyway
         </Button>
@@ -93,19 +85,16 @@ export function UpdateOpportunityStep({
 
   // Filter out closed stages from selection (can't move back to them)
   const availableStages = OPPORTUNITY_STAGES.filter(
-    (stage) => !["closed_won", "closed_lost"].includes(stage.value),
+    (stage) => !["closed_won", "closed_lost"].includes(stage.value)
   );
 
   return (
     <div className="space-y-4">
       {/* Current Opportunity Info */}
       <div className="rounded-md bg-muted/50 p-3">
-        <p className="text-sm font-medium text-foreground">
-          {opportunity.name || "Opportunity"}
-        </p>
+        <p className="text-sm font-medium text-foreground">{opportunity.name || "Opportunity"}</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Current Stage:{" "}
-          <span className="font-medium text-foreground">{currentStageLabel}</span>
+          Current Stage: <span className="font-medium text-foreground">{currentStageLabel}</span>
         </p>
       </div>
 
@@ -137,38 +126,23 @@ export function UpdateOpportunityStep({
           </SelectContent>
         </Select>
         {!selectedStage && (
-          <p className="text-xs text-muted-foreground">
-            Leave blank to keep current stage
-          </p>
+          <p className="text-xs text-muted-foreground">Leave blank to keep current stage</p>
         )}
         {selectedStage && selectedStage !== currentStage && (
           <p className="text-xs text-muted-foreground flex items-center gap-1">
-            Will move from {currentStageLabel}{" "}
-            <ArrowRight className="inline h-3 w-3" /> {getOpportunityStageLabel(selectedStage)}
+            Will move from {currentStageLabel} <ArrowRight className="inline h-3 w-3" />{" "}
+            {getOpportunityStageLabel(selectedStage)}
           </p>
         )}
       </div>
 
       {/* Action Buttons */}
       <div className="flex gap-2 pt-2">
-        <Button
-          variant="outline"
-          onClick={onSkip}
-          disabled={isSubmitting}
-          className="flex-1"
-        >
+        <Button variant="outline" onClick={onSkip} disabled={isSubmitting} className="flex-1">
           Skip
         </Button>
-        <Button
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className="flex-1"
-        >
-          {isSubmitting
-            ? "Updating..."
-            : selectedStage
-              ? "Update & Close"
-              : "Keep Stage & Close"}
+        <Button onClick={handleSubmit} disabled={isSubmitting} className="flex-1">
+          {isSubmitting ? "Updating..." : selectedStage ? "Update & Close" : "Keep Stage & Close"}
         </Button>
       </div>
 

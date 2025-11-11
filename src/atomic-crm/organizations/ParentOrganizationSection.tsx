@@ -139,15 +139,8 @@ export const ParentOrganizationSection = () => {
 
       {/* Action Buttons */}
       <div className="flex flex-col gap-2 mt-4">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-9 w-full"
-          asChild
-        >
-          <a href={`/organizations/${record.id}/edit`}>
-            Change Parent
-          </a>
+        <Button variant="outline" size="sm" className="h-9 w-full" asChild>
+          <a href={`/organizations/${record.id}/edit`}>Change Parent</a>
         </Button>
 
         <Button

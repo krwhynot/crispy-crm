@@ -46,7 +46,7 @@ const mockSupabaseClient = {
     single: vi.fn().mockResolvedValue({ data: null, error: null }),
     maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
     then: vi.fn((resolve) =>
-      resolve({ data: [], error: null, count: 0, status: 200, statusText: "OK" }),
+      resolve({ data: [], error: null, count: 0, status: 200, statusText: "OK" })
     ),
   })),
   auth: {

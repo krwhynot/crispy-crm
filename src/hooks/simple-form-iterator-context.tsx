@@ -7,9 +7,9 @@ import { createContext, useContext } from "react";
  * @see {SimpleFormIterator}
  * @see {ArrayInput}
  */
-export const SimpleFormIteratorContext = createContext<
-  SimpleFormIteratorContextValue | undefined
->(undefined);
+export const SimpleFormIteratorContext = createContext<SimpleFormIteratorContextValue | undefined>(
+  undefined
+);
 
 /**
  * @deprecated Use SimpleFormIteratorContextValue from `ra-core` once available.
@@ -28,9 +28,7 @@ export interface SimpleFormIteratorContextValue {
 export const useSimpleFormIterator = () => {
   const context = useContext(SimpleFormIteratorContext);
   if (!context) {
-    throw new Error(
-      "useSimpleFormIterator must be used inside a SimpleFormIterator",
-    );
+    throw new Error("useSimpleFormIterator must be used inside a SimpleFormIterator");
   }
   return context;
 };
@@ -62,9 +60,7 @@ export interface SimpleFormIteratorItemContextValue {
 export const useSimpleFormIteratorItem = () => {
   const context = useContext(SimpleFormIteratorItemContext);
   if (!context) {
-    throw new Error(
-      "useSimpleFormIteratorItem must be used inside a SimpleFormIteratorItem",
-    );
+    throw new Error("useSimpleFormIteratorItem must be used inside a SimpleFormIteratorItem");
   }
   return context;
 };

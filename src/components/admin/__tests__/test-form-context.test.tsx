@@ -24,7 +24,7 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   const saveContext = {
     save: () => {},
     saving: false,
-    mutationMode: "pessimistic" as const
+    mutationMode: "pessimistic" as const,
   };
 
   const methods = useForm({ defaultValues: {} });
@@ -32,9 +32,7 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <SaveContextProvider value={saveContext}>
       <RaForm defaultValues={{}} onSubmit={() => {}}>
-        <Form {...methods}>
-          {children}
-        </Form>
+        <Form {...methods}>{children}</Form>
       </RaForm>
     </SaveContextProvider>
   );

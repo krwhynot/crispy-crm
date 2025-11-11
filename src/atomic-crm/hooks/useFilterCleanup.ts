@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { useStore } from 'ra-core';
-import { isValidFilterField } from '../providers/supabase/filterRegistry';
+import { useEffect } from "react";
+import { useStore } from "ra-core";
+import { isValidFilterField } from "../providers/supabase/filterRegistry";
 
 /**
  * useFilterCleanup Hook - Client-side Filter Validation
@@ -60,7 +60,7 @@ export const useFilterCleanup = (resource: string) => {
             // Invalid filter - log and remove
             console.warn(
               `[useFilterCleanup] Resource "${resource}" found stale filter "${filterKey}" in localStorage. ` +
-              `This field no longer exists in the database schema. Removing it.`
+                `This field no longer exists in the database schema. Removing it.`
             );
             modified = true;
           }
@@ -75,7 +75,7 @@ export const useFilterCleanup = (resource: string) => {
 
         console.info(
           `[useFilterCleanup] Cleaned stale filters for resource "${resource}". ` +
-          `localStorage and React Admin store updated.`
+            `localStorage and React Admin store updated.`
         );
       }
     } catch (error) {

@@ -28,10 +28,7 @@ interface NotificationDropdownProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export const NotificationDropdown = ({
-  children,
-  onOpenChange,
-}: NotificationDropdownProps) => {
+export const NotificationDropdown = ({ children, onOpenChange }: NotificationDropdownProps) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { data: identity } = useGetIdentity();
@@ -41,7 +38,7 @@ export const NotificationDropdown = ({
     if (!identity?.user_id) return;
 
     setIsLoading(true);
-    const { data, error} = await supabase
+    const { data, error } = await supabase
       .from("notifications")
       .select("*")
       .eq("user_id", identity.user_id)
@@ -110,21 +107,12 @@ export const NotificationDropdown = ({
   return (
     <DropdownMenu onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="w-[400px] p-0"
-        sideOffset={8}
-      >
+      <DropdownMenuContent align="end" className="w-[400px] p-0" sideOffset={8}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="font-semibold text-sm">Notifications</h2>
           {unreadCount > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={markAllAsRead}
-              className="h-8 text-xs"
-            >
+            <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-8 text-xs">
               Mark all as read
             </Button>
           )}
@@ -176,11 +164,7 @@ interface NotificationItemProps {
   getEntityLink: (entityType: string | null, entityId: number | null) => string | null;
 }
 
-const NotificationItem = ({
-  notification,
-  onMarkAsRead,
-  getEntityLink,
-}: NotificationItemProps) => {
+const NotificationItem = ({ notification, onMarkAsRead, getEntityLink }: NotificationItemProps) => {
   const entityLink = getEntityLink(notification.entity_type, notification.entity_id);
   const timeAgo = formatDistanceToNow(new Date(notification.created_at), {
     addSuffix: true,

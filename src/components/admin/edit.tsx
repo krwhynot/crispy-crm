@@ -12,24 +12,14 @@ import {
 } from "ra-core";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbPage,
-} from "@/components/admin/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 import { cn } from "@/lib/utils";
 import { ShowButton } from "@/components/admin/show-button";
 import { DeleteButton } from "./delete-button";
 
 export interface EditProps extends EditViewProps, EditBaseProps {}
 
-export const Edit = ({
-  title,
-  children,
-  actions,
-  className,
-  ...rest
-}: EditProps) => (
+export const Edit = ({ title, children, actions, className, ...rest }: EditProps) => (
   <EditBase {...rest}>
     <EditView title={title} actions={actions} className={className}>
       {children}
@@ -44,19 +34,12 @@ export interface EditViewProps {
   className?: string;
 }
 
-export const EditView = ({
-  title,
-  actions,
-  className,
-  children,
-}: EditViewProps) => {
+export const EditView = ({ title, actions, className, children }: EditViewProps) => {
   const context = useEditContext();
 
   const resource = useResourceContext();
   if (!resource) {
-    throw new Error(
-      "The EditView component must be used within a ResourceContextProvider",
-    );
+    throw new Error("The EditView component must be used within a ResourceContextProvider");
   }
   const getResourceLabel = useGetResourceLabel();
   const listLabel = getResourceLabel(resource, 2);
@@ -91,12 +74,7 @@ export const EditView = ({
         </BreadcrumbItem>
         <BreadcrumbPage>{recordRepresentation}</BreadcrumbPage>
       </Breadcrumb>
-      <div
-        className={cn(
-          "flex justify-between items-start flex-wrap gap-2 my-2",
-          className,
-        )}
-      >
+      <div className={cn("flex justify-between items-start flex-wrap gap-2 my-2", className)}>
         <h2 className="text-2xl font-bold tracking-tight">
           {title !== undefined ? title : context.defaultTitle}
         </h2>

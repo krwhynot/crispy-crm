@@ -10,7 +10,9 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* Typography */
-  --font-sans: 'Nunito', 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans:
+    "Nunito", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -85,15 +87,15 @@
   --spacing-edge-mobile: 16px;
 
   /* Vertical Rhythm */
-  --spacing-section: 32px;        /* Between major sections */
-  --spacing-widget: 24px;         /* Card-to-card, row-to-row spacing */
-  --spacing-content: 16px;        /* Within cards, between elements */
-  --spacing-compact: 12px;        /* Tight groupings */
+  --spacing-section: 32px; /* Between major sections */
+  --spacing-widget: 24px; /* Card-to-card, row-to-row spacing */
+  --spacing-content: 16px; /* Within cards, between elements */
+  --spacing-compact: 12px; /* Tight groupings */
 
   /* Widget/Card Internals */
   --spacing-widget-padding: 20px;
   --spacing-widget-min-height: 280px;
-  --spacing-top-offset: 80px;     /* Space below navbar */
+  --spacing-top-offset: 80px; /* Space below navbar */
 }
 
 /*
@@ -138,79 +140,79 @@
  */
 
 :root {
-  --radius: 0.5rem;  /* 8px - MFB organic aesthetic */
+  --radius: 0.5rem; /* 8px - MFB organic aesthetic */
 
   /* Core Neutrals - OKLCH format with paper cream undertone (hue 92° for consistency) */
-  --neutral-50:  oklch(97.8% 0.008 92);  /* Lightest - card backgrounds */
-  --neutral-100: oklch(95.5% 0.010 92);  /* Subtle backgrounds */
-  --neutral-200: oklch(90% 0.005 92);    /* Borders, dividers - matched to paper cream hue */
-  --neutral-300: oklch(84.3% 0.015 85);  /* Inactive elements */
-  --neutral-400: oklch(71.6% 0.018 85);  /* Muted text */
-  --neutral-500: oklch(57.7% 0.020 85);  /* Secondary text */
-  --neutral-600: oklch(46.0% 0.018 85);  /* Body text */
-  --neutral-700: oklch(38.1% 0.015 85);  /* Headings */
-  --neutral-800: oklch(28.5% 0.012 85);  /* Dark text */
-  --neutral-900: oklch(21.7% 0.010 85);  /* Near black */
-  --neutral-950: oklch(13.1% 0.008 85);  /* Darkest */
+  --neutral-50: oklch(97.8% 0.008 92); /* Lightest - card backgrounds */
+  --neutral-100: oklch(95.5% 0.01 92); /* Subtle backgrounds */
+  --neutral-200: oklch(90% 0.005 92); /* Borders, dividers - matched to paper cream hue */
+  --neutral-300: oklch(84.3% 0.015 85); /* Inactive elements */
+  --neutral-400: oklch(71.6% 0.018 85); /* Muted text */
+  --neutral-500: oklch(57.7% 0.02 85); /* Secondary text */
+  --neutral-600: oklch(46% 0.018 85); /* Body text */
+  --neutral-700: oklch(38.1% 0.015 85); /* Headings */
+  --neutral-800: oklch(28.5% 0.012 85); /* Dark text */
+  --neutral-900: oklch(21.7% 0.01 85); /* Near black */
+  --neutral-950: oklch(13.1% 0.008 85); /* Darkest */
 
   /* Primary Brand Colors - Forest Green (hue 142°) */
-  --brand-100: oklch(88% 0.045 142);        /* #C8E6C9 - Very light sage */
-  --brand-300: oklch(75% 0.065 142);        /* #81C784 - Soft sage */
-  --brand-500: oklch(38% 0.085 142);        /* #336600 identity color (forest green) */
-  --brand-650: oklch(45% 0.090 142);        /* #3D7A00 - Hover state */
-  --brand-700: oklch(32% 0.080 142);        /* #2B5600 - Darker emphasis */
-  --brand-750: oklch(28% 0.075 142);        /* #244A00 - Active state */
-  --brand-800: oklch(24% 0.070 142);        /* #1E3F00 - Darkest pressed state */
+  --brand-100: oklch(88% 0.045 142); /* #C8E6C9 - Very light sage */
+  --brand-300: oklch(75% 0.065 142); /* #81C784 - Soft sage */
+  --brand-500: oklch(38% 0.085 142); /* #336600 identity color (forest green) */
+  --brand-650: oklch(45% 0.09 142); /* #3D7A00 - Hover state */
+  --brand-700: oklch(32% 0.08 142); /* #2B5600 - Darker emphasis */
+  --brand-750: oklch(28% 0.075 142); /* #244A00 - Active state */
+  --brand-800: oklch(24% 0.07 142); /* #1E3F00 - Darkest pressed state */
 
   /* Accent Colors - Clay/Terracotta (hue 72° - warmed for harmony with forest green) */
-  --accent-clay-700: oklch(52% 0.105 72);         /* #B8640A - Dark clay */
-  --accent-clay-600: oklch(58% 0.100 72);         /* #C97316 - Medium-dark clay */
-  --accent-clay-500: oklch(63% 0.095 72);         /* #D97E1F - Clay orange */
-  --accent-clay-400: oklch(72% 0.080 72);         /* #E9A958 - Light clay */
-  --accent-clay-300: oklch(82% 0.060 72);         /* #F4D4A8 - Very light clay */
+  --accent-clay-700: oklch(52% 0.105 72); /* #B8640A - Dark clay */
+  --accent-clay-600: oklch(58% 0.1 72); /* #C97316 - Medium-dark clay */
+  --accent-clay-500: oklch(63% 0.095 72); /* #D97E1F - Clay orange */
+  --accent-clay-400: oklch(72% 0.08 72); /* #E9A958 - Light clay */
+  --accent-clay-300: oklch(82% 0.06 72); /* #F4D4A8 - Very light clay */
 
   /* Foundation colors (semantic mappings) */
-  --background: oklch(97.5% 0.010 92);          /* Paper cream - subtle warmth, improved card separation */
-  --foreground: oklch(20% 0.012 85);            /* Slightly warmer dark text */
-  --card: oklch(100% 0 0);                      /* Pure white - material layering principle */
-  --card-foreground: var(--neutral-700);        /* Card text */
-  --popover: oklch(100% 0 0);                   /* Pure white popover surface */
-  --popover-foreground: var(--neutral-700);     /* Popover text */
+  --background: oklch(97.5% 0.01 92); /* Paper cream - subtle warmth, improved card separation */
+  --foreground: oklch(20% 0.012 85); /* Slightly warmer dark text */
+  --card: oklch(100% 0 0); /* Pure white - material layering principle */
+  --card-foreground: var(--neutral-700); /* Card text */
+  --popover: oklch(100% 0 0); /* Pure white popover surface */
+  --popover-foreground: var(--neutral-700); /* Popover text */
 
   /* Interactive colors */
-  --primary: var(--brand-500);                  /* Forest green for buttons - WCAG AAA compliant (10.8:1) */
-  --primary-foreground: oklch(99% 0 0);         /* White text on primary */
-  --secondary: var(--neutral-100);              /* Secondary buttons */
-  --secondary-foreground: var(--neutral-700);   /* Dark text on secondary */
-  --muted: var(--neutral-200);                  /* Muted surfaces */
-  --muted-foreground: var(--neutral-400);       /* Muted text */
-  --accent: var(--accent-clay-500);             /* Accent color (clay orange) */
-  --accent-foreground: oklch(0.985 0 0);        /* White text on accent */
+  --primary: var(--brand-500); /* Forest green for buttons - WCAG AAA compliant (10.8:1) */
+  --primary-foreground: oklch(99% 0 0); /* White text on primary */
+  --secondary: var(--neutral-100); /* Secondary buttons */
+  --secondary-foreground: var(--neutral-700); /* Dark text on secondary */
+  --muted: var(--neutral-200); /* Muted surfaces */
+  --muted-foreground: var(--neutral-400); /* Muted text */
+  --accent: var(--accent-clay-500); /* Accent color (clay orange) */
+  --accent-foreground: oklch(0.985 0 0); /* White text on accent */
 
   /* Overlay/backdrop colors */
-  --overlay: oklch(0 0 0 / 50%);                /* Black 50% opacity for modals */
-  --overlay-light: oklch(0 0 0 / 30%);          /* Lighter overlay variant */
-  --destructive: oklch(58% 0.180 27);           /* Slightly lighter terracotta for cream background */
-  --destructive-foreground: oklch(99% 0 0);     /* White text on destructive */
+  --overlay: oklch(0 0 0 / 50%); /* Black 50% opacity for modals */
+  --overlay-light: oklch(0 0 0 / 30%); /* Lighter overlay variant */
+  --destructive: oklch(58% 0.18 27); /* Slightly lighter terracotta for cream background */
+  --destructive-foreground: oklch(99% 0 0); /* White text on destructive */
 
   /* Borders and focus */
-  --border: var(--neutral-200);                 /* Borders */
-  --input: var(--neutral-200);                  /* Input borders */
-  --ring: oklch(55% 0.095 142);                 /* #4D9900 - Brightened focus ring for visibility */
+  --border: var(--neutral-200); /* Borders */
+  --input: var(--neutral-200); /* Input borders */
+  --ring: oklch(55% 0.095 142); /* #4D9900 - Brightened focus ring for visibility */
 
   /* Success states (emerald green) - hue 155° to differentiate from forest green brand */
   --success-subtle: oklch(92% 0.08 155);
-  --success-default: oklch(56% 0.115 155);      /* #10B981 - Brighter emerald */
-  --success-strong: oklch(48% 0.120 155);
+  --success-default: oklch(56% 0.115 155); /* #10B981 - Brighter emerald */
+  --success-strong: oklch(48% 0.12 155);
   --success-bg: oklch(95% 0.05 155);
-  --success-border: oklch(78% 0.090 155);
+  --success-border: oklch(78% 0.09 155);
   --success-hover: oklch(60% 0.112 155);
   --success-active: oklch(52% 0.117 155);
   --success-disabled: oklch(72% 0.06 155);
 
   /* Warning states (golden amber) - kept at warm hue 85° */
   --warning-subtle: oklch(94% 0.055 85);
-  --warning-default: oklch(68% 0.140 85);
+  --warning-default: oklch(68% 0.14 85);
   --warning-strong: oklch(58% 0.145 85);
   --warning-bg: oklch(96% 0.045 85);
   --warning-border: oklch(82% 0.115 85);
@@ -219,24 +221,24 @@
   --warning-disabled: oklch(78% 0.065 85);
 
   /* Info states (sage-teal) - shifted to warmer hue 200° */
-  --info-subtle: oklch(94% 0.040 200);
+  --info-subtle: oklch(94% 0.04 200);
   --info-default: oklch(58% 0.065 200);
-  --info-strong: oklch(48% 0.070 200);
-  --info-bg: oklch(96% 0.030 200);
+  --info-strong: oklch(48% 0.07 200);
+  --info-bg: oklch(96% 0.03 200);
   --info-border: oklch(80% 0.055 200);
   --info-hover: oklch(62% 0.062 200);
   --info-active: oklch(54% 0.067 200);
-  --info-disabled: oklch(72% 0.040 200);
+  --info-disabled: oklch(72% 0.04 200);
 
   /* Error/Destructive extended (terracotta) - kept at hue 25° */
   --error-subtle: oklch(92% 0.075 25);
-  --error-default: oklch(58% 0.130 25);
+  --error-default: oklch(58% 0.13 25);
   --error-strong: oklch(48% 0.135 25);
   --error-bg: oklch(95% 0.055 25);
   --error-border: oklch(80% 0.105 25);
   --error-hover: oklch(62% 0.127 25);
   --error-active: oklch(54% 0.132 25);
-  --error-disabled: oklch(72% 0.070 25);
+  --error-disabled: oklch(72% 0.07 25);
 
   /* Tag colors - V2: More aggressive contrast for better readability */
   --tag-warm-bg: oklch(87% 0.07 80);
@@ -249,7 +251,7 @@
   --tag-blue-fg: oklch(20% 0.02 85);
   --tag-purple-bg: oklch(87% 0.06 305);
   --tag-purple-fg: oklch(20% 0.02 85);
-  --tag-yellow-bg: oklch(92% 0.10 110);
+  --tag-yellow-bg: oklch(92% 0.1 110);
   --tag-yellow-fg: oklch(20% 0.02 85);
   --tag-gray-bg: oklch(90% 0.015 85);
   --tag-gray-fg: oklch(20% 0.02 85);
@@ -278,93 +280,93 @@
   /* Chart System: Earth-Tone Palette (MFB Garden Theme) */
 
   /* Chart 1: Warm Tan/Soil (Baseline/Benchmark) */
-  --chart-1: oklch(55% 0.035 60);              /* Warm brown */
-  --chart-1-fill: oklch(55% 0.035 60);         /* Light fill */
-  --chart-1-stroke: oklch(37% 0.035 60);       /* Darker stroke for AA */
+  --chart-1: oklch(55% 0.035 60); /* Warm brown */
+  --chart-1-fill: oklch(55% 0.035 60); /* Light fill */
+  --chart-1-stroke: oklch(37% 0.035 60); /* Darker stroke for AA */
 
   /* Chart 2: Forest Green (Our Data/Primary) - Brightened for visibility */
-  --chart-2: oklch(52% 0.095 142);             /* #4A8D00 - Brightened from brand-500 */
-  --chart-2-fill: oklch(52% 0.095 142);        /* Lightened for chart visibility */
-  --chart-2-stroke: oklch(35% 0.085 142);      /* #2D6600 - Darker stroke for AA */
+  --chart-2: oklch(52% 0.095 142); /* #4A8D00 - Brightened from brand-500 */
+  --chart-2-fill: oklch(52% 0.095 142); /* Lightened for chart visibility */
+  --chart-2-stroke: oklch(35% 0.085 142); /* #2D6600 - Darker stroke for AA */
 
   /* Chart 3: Terracotta/Clay (Revenue/High Priority) - Adjusted for harmony */
-  --chart-3: oklch(63% 0.095 72);              /* Adjusted clay orange */
+  --chart-3: oklch(63% 0.095 72); /* Adjusted clay orange */
   --chart-3-fill: oklch(70% 0.095 72);
   --chart-3-stroke: oklch(40% 0.095 72);
 
   /* Chart 4: Sage/Olive (Secondary/Neutral) - Harmonized with forest green */
-  --chart-4: oklch(60% 0.060 138);             /* Sage shifted closer to brand hue */
-  --chart-4-fill: oklch(68% 0.060 138);
-  --chart-4-stroke: oklch(38% 0.060 138);
+  --chart-4: oklch(60% 0.06 138); /* Sage shifted closer to brand hue */
+  --chart-4-fill: oklch(68% 0.06 138);
+  --chart-4-stroke: oklch(38% 0.06 138);
 
   /* Chart 5: Golden Amber (Warning/Attention) */
-  --chart-5: oklch(70% 0.125 85);              /* Golden amber */
+  --chart-5: oklch(70% 0.125 85); /* Golden amber */
   --chart-5-fill: oklch(73% 0.125 85);
   --chart-5-stroke: oklch(43% 0.125 85);
 
   /* Chart 6: Sage-Teal (Cool Counterpoint) */
-  --chart-6: oklch(58% 0.065 180);             /* Sage-teal */
+  --chart-6: oklch(58% 0.065 180); /* Sage-teal */
   --chart-6-fill: oklch(65% 0.065 180);
   --chart-6-stroke: oklch(35% 0.065 180);
 
   /* Chart 7: Eggplant (Deep Neutral/Inactive) */
-  --chart-7: oklch(48% 0.065 295);             /* Eggplant */
+  --chart-7: oklch(48% 0.065 295); /* Eggplant */
   --chart-7-fill: oklch(55% 0.065 295);
   --chart-7-stroke: oklch(30% 0.065 295);
 
   /* Chart 8: Mushroom Gray (Fallback/Misc) */
-  --chart-8: oklch(50% 0.012 85);              /* Mushroom gray */
+  --chart-8: oklch(50% 0.012 85); /* Mushroom gray */
   --chart-8-fill: oklch(58% 0.012 85);
   --chart-8-stroke: oklch(35% 0.012 85);
 
   /* Chart support tokens */
-  --chart-gridline: oklch(90% 0.010 92);       /* Subtle paper cream gridlines */
-  --chart-axis-text: var(--muted-foreground);  /* Axis labels */
-  --chart-disabled: oklch(78% 0.008 85);       /* Disabled/muted data */
+  --chart-gridline: oklch(90% 0.01 92); /* Subtle paper cream gridlines */
+  --chart-axis-text: var(--muted-foreground); /* Axis labels */
+  --chart-disabled: oklch(78% 0.008 85); /* Disabled/muted data */
 
   /* Sidebar Colors - Paper cream tint with forest green accents */
-  --sidebar: oklch(98% 0.010 92);                    /* Subtle paper cream tint */
-  --sidebar-foreground: var(--neutral-700);          /* Sidebar text */
-  --sidebar-primary: var(--brand-700);               /* #2B5600 - Primary items (forest green) */
+  --sidebar: oklch(98% 0.01 92); /* Subtle paper cream tint */
+  --sidebar-foreground: var(--neutral-700); /* Sidebar text */
+  --sidebar-primary: var(--brand-700); /* #2B5600 - Primary items (forest green) */
   --sidebar-primary-foreground: oklch(99% 0.015 85); /* Warm white text */
-  --sidebar-accent: oklch(96% 0.025 100);            /* Light hover tint */
-  --sidebar-accent-foreground: var(--neutral-700);   /* Dark text */
-  --sidebar-border: var(--neutral-200);              /* Warm border */
-  --sidebar-ring: oklch(55% 0.095 142);              /* Brightened focus ring */
-  --sidebar-active-bg: oklch(93% 0.025 142);         /* #E8F5E9 - Active item: light sage */
-  --sidebar-active-text: var(--brand-700);           /* #2B5600 - Active text: forest green */
-  --sidebar-active-indicator: var(--brand-650);      /* #3D7A00 - Active indicator bar */
+  --sidebar-accent: oklch(96% 0.025 100); /* Light hover tint */
+  --sidebar-accent-foreground: var(--neutral-700); /* Dark text */
+  --sidebar-border: var(--neutral-200); /* Warm border */
+  --sidebar-ring: oklch(55% 0.095 142); /* Brightened focus ring */
+  --sidebar-active-bg: oklch(93% 0.025 142); /* #E8F5E9 - Active item: light sage */
+  --sidebar-active-text: var(--brand-700); /* #2B5600 - Active text: forest green */
+  --sidebar-active-indicator: var(--brand-650); /* #3D7A00 - Active indicator bar */
 
   /* Warm-Tinted Shadow System (Zen Recommendations) */
   /* Shadow ink with subtle warmth matching canvas hue - prevents "soot" appearance */
-  --shadow-ink: oklch(30% 0.010 92);
+  --shadow-ink: oklch(30% 0.01 92);
 
   /* Stroke System - Hairline borders for card edge definition */
-  --stroke-card: oklch(93% 0.004 92);        /* 1px border around elevated cards */
-  --stroke-card-hover: oklch(91% 0.006 92);  /* Slightly darker on hover */
+  --stroke-card: oklch(93% 0.004 92); /* 1px border around elevated cards */
+  --stroke-card-hover: oklch(91% 0.006 92); /* Slightly darker on hover */
 
   /* NEW: Tag border token */
-  --tag-border: oklch(0 0 0 / 0.2);          /* 20% black for tag borders */
+  --tag-border: oklch(0 0 0 / 0.2); /* 20% black for tag borders */
 
   /* Divider System - Internal separators */
-  --divider-subtle: oklch(96% 0.004 92);     /* On white surfaces, internal dividers */
-  --divider-strong: oklch(94.5% 0.004 92);   /* Section separators */
+  --divider-subtle: oklch(96% 0.004 92); /* On white surfaces, internal dividers */
+  --divider-strong: oklch(94.5% 0.004 92); /* Section separators */
 
   /* Interactive Surface System - Hover/focus states */
-  --surface-interactive-hover: oklch(99% 0.006 92);  /* Warm hover tint for interactive elements */
+  --surface-interactive-hover: oklch(99% 0.006 92); /* Warm hover tint for interactive elements */
 
   /* Text Hierarchy - Improved contrast for widget titles and metrics */
   /* Zen Recommendation: Warm-tint all text for complete cohesion with paper cream background */
-  --text-title: oklch(22% 0.01 92);          /* Widget titles, headings - darker with warm tint */
-  --text-metric: oklch(18% 0.01 92);         /* Metric numbers - darkest for emphasis */
-  --text-body: oklch(29% 0.008 92);          /* Standard body text - subtle warm brown instead of neutral gray */
-  --text-subtle: oklch(41% 0.006 92);        /* Timestamps, metadata - maintains readability with warmth */
+  --text-title: oklch(22% 0.01 92); /* Widget titles, headings - darker with warm tint */
+  --text-metric: oklch(18% 0.01 92); /* Metric numbers - darkest for emphasis */
+  --text-body: oklch(
+    29% 0.008 92
+  ); /* Standard body text - subtle warm brown instead of neutral gray */
+  --text-subtle: oklch(41% 0.006 92); /* Timestamps, metadata - maintains readability with warmth */
 
   /* Avatar Micro-Elevation - Ring + shadow + highlight for depth */
-  --avatar-shadow:
-    0 0 0 1px oklch(93% 0.004 92),
-    0 1px 2px 0 var(--shadow-ink) / 0.10;
-  --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.30);
+  --avatar-shadow: 0 0 0 1px oklch(93% 0.004 92), 0 1px 2px 0 var(--shadow-ink) / 0.1;
+  --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.3);
 
   /*
    * Usage Guide:
@@ -395,19 +397,13 @@
 
   /* Elevation System (Light Mode) - Warm-tinted dual-layer shadows */
   /* Elevation 1: Static content cards, default widgets */
-  --elevation-1:
-    0 1px 2px 0 var(--shadow-ink) / 0.10,
-    0 4px 8px -2px var(--shadow-ink) / 0.16;
+  --elevation-1: 0 1px 2px 0 var(--shadow-ink) / 0.1, 0 4px 8px -2px var(--shadow-ink) / 0.16;
 
   /* Elevation 2: Interactive widgets (hover), important panels */
-  --elevation-2:
-    0 2px 3px 0 var(--shadow-ink) / 0.12,
-    0 8px 16px -4px var(--shadow-ink) / 0.18;
+  --elevation-2: 0 2px 3px 0 var(--shadow-ink) / 0.12, 0 8px 16px -4px var(--shadow-ink) / 0.18;
 
   /* Elevation 3: Modals, floating menus, maximum prominence */
-  --elevation-3:
-    0 3px 6px -2px var(--shadow-ink) / 0.14,
-    0 16px 24px -8px var(--shadow-ink) / 0.20;
+  --elevation-3: 0 3px 6px -2px var(--shadow-ink) / 0.14, 0 16px 24px -8px var(--shadow-ink) / 0.2;
 
   /* Legacy shadow tokens - map to elevation system for backward compatibility */
   --shadow-card-1: var(--elevation-1);
@@ -424,69 +420,71 @@
 
 .dark {
   /* Inverted Neutrals - OKLCH format */
-  --neutral-50:  oklch(23.4% 0.021 288.0);  /* Darkest (was 900) */
-  --neutral-100: oklch(31.5% 0.019 287.6);  /* Dark (was 800) */
-  --neutral-200: oklch(39.6% 0.017 287.2);  /* (was 700) */
-  --neutral-300: oklch(47.7% 0.015 286.8);  /* (was 600) */
-  --neutral-400: oklch(55.8% 0.013 286.4);  /* (was 500) */
-  --neutral-500: oklch(63.9% 0.011 286.0);  /* (was 400) */
-  --neutral-600: oklch(72.1% 0.009 285.6);  /* (was 300) */
-  --neutral-700: oklch(80.2% 0.007 285.2);  /* (was 200) */
-  --neutral-800: oklch(88.4% 0.005 284.8);  /* (was 100) */
-  --neutral-900: oklch(97.1% 0.002 284.5);  /* Lightest (was 50) */
+  --neutral-50: oklch(23.4% 0.021 288); /* Darkest (was 900) */
+  --neutral-100: oklch(31.5% 0.019 287.6); /* Dark (was 800) */
+  --neutral-200: oklch(39.6% 0.017 287.2); /* (was 700) */
+  --neutral-300: oklch(47.7% 0.015 286.8); /* (was 600) */
+  --neutral-400: oklch(55.8% 0.013 286.4); /* (was 500) */
+  --neutral-500: oklch(63.9% 0.011 286); /* (was 400) */
+  --neutral-600: oklch(72.1% 0.009 285.6); /* (was 300) */
+  --neutral-700: oklch(80.2% 0.007 285.2); /* (was 200) */
+  --neutral-800: oklch(88.4% 0.005 284.8); /* (was 100) */
+  --neutral-900: oklch(97.1% 0.002 284.5); /* Lightest (was 50) */
 
   /* Adjusted Brand Colors for Dark Mode - Forest Green */
-  --brand-50: oklch(20% 0.050 142);         /* Extra dark for high-contrast backgrounds */
-  --brand-100: oklch(26% 0.055 142);        /* Darkest tint */
-  --brand-300: oklch(45% 0.075 142);        /* Medium dark */
-  --brand-500: oklch(55% 0.095 142);        /* Lightened for visibility */
-  --brand-650: oklch(50% 0.090 142);        /* Hover state (darker in dark mode) */
-  --brand-700: oklch(60% 0.100 142);        /* Primary (lighter for dark bg) */
-  --brand-750: oklch(55% 0.095 142);        /* Active state */
-  --brand-800: var(--brand-300);            /* Use lighter for hover */
+  --brand-50: oklch(20% 0.05 142); /* Extra dark for high-contrast backgrounds */
+  --brand-100: oklch(26% 0.055 142); /* Darkest tint */
+  --brand-300: oklch(45% 0.075 142); /* Medium dark */
+  --brand-500: oklch(55% 0.095 142); /* Lightened for visibility */
+  --brand-650: oklch(50% 0.09 142); /* Hover state (darker in dark mode) */
+  --brand-700: oklch(60% 0.1 142); /* Primary (lighter for dark bg) */
+  --brand-750: oklch(55% 0.095 142); /* Active state */
+  --brand-800: var(--brand-300); /* Use lighter for hover */
 
   /* Adjusted Accent Colors for Dark Mode - Clay for consistency */
-  --accent-clay-700-dark: oklch(65% 0.105 72);    /* Lightened clay for dark backgrounds */
-  --accent-clay-600-dark: oklch(70% 0.100 72);    /* Medium-light clay */
-  --accent-clay-500-dark: oklch(75% 0.095 72);    /* Light clay */
+  --accent-clay-700-dark: oklch(65% 0.105 72); /* Lightened clay for dark backgrounds */
+  --accent-clay-600-dark: oklch(70% 0.1 72); /* Medium-light clay */
+  --accent-clay-500-dark: oklch(75% 0.095 72); /* Light clay */
 
-  --destructive-dark: oklch(70.4% 0.191 22.216);  /* Foundational token for dark destructive */
+  --destructive-dark: oklch(70.4% 0.191 22.216); /* Foundational token for dark destructive */
 
   /* Foundation colors (semantic mappings) */
-  --background: var(--neutral-50);          /* Dark background */
-  --foreground: var(--neutral-900);         /* Light text */
-  --card: var(--neutral-100);              /* Card surface */
-  --card-foreground: var(--neutral-900);    /* Card text */
-  --popover: var(--neutral-100);           /* Popover surface */
+  --background: var(--neutral-50); /* Dark background */
+  --foreground: var(--neutral-900); /* Light text */
+  --card: var(--neutral-100); /* Card surface */
+  --card-foreground: var(--neutral-900); /* Card text */
+  --popover: var(--neutral-100); /* Popover surface */
   --popover-foreground: var(--neutral-900); /* Popover text */
 
   /* Interactive colors */
-  --primary: var(--brand-700);              /* Primary buttons - forest green */
+  --primary: var(--brand-700); /* Primary buttons - forest green */
   --primary-foreground: oklch(12% 0.02 142); /* Very dark green text (12:1 contrast) */
-  --secondary: var(--neutral-200);          /* Secondary buttons */
+  --secondary: var(--neutral-200); /* Secondary buttons */
   --secondary-foreground: var(--neutral-900); /* Light text */
-  --muted: var(--neutral-200);             /* Muted surfaces */
-  --muted-foreground: var(--neutral-700);   /* Muted text - 8:1 contrast (was neutral-600) */
-  --accent: var(--accent-clay-600-dark);    /* Clay accent for brand consistency */
-  --accent-foreground: oklch(12% 0.02 72);  /* Very dark text for accessibility */
+  --muted: var(--neutral-200); /* Muted surfaces */
+  --muted-foreground: var(--neutral-700); /* Muted text - 8:1 contrast (was neutral-600) */
+  --accent: var(--accent-clay-600-dark); /* Clay accent for brand consistency */
+  --accent-foreground: oklch(12% 0.02 72); /* Very dark text for accessibility */
   --destructive: var(--destructive-dark);
-  --destructive-foreground: oklch(12% 0.02 25);  /* Very dark text on destructive for accessibility */
+  --destructive-foreground: oklch(
+    12% 0.02 25
+  ); /* Very dark text on destructive for accessibility */
 
   /* Overlay/backdrop colors - dark mode */
-  --overlay: oklch(0 0 0 / 70%);              /* Higher opacity in dark mode */
-  --overlay-light: oklch(0 0 0 / 50%);        /* Medium opacity for dark mode */
+  --overlay: oklch(0 0 0 / 70%); /* Higher opacity in dark mode */
+  --overlay-light: oklch(0 0 0 / 50%); /* Medium opacity for dark mode */
 
   /* Borders and focus */
-  --border: oklch(1 0 0 / 15%);            /* Transparent white border */
-  --input: oklch(1 0 0 / 15%);             /* Input borders */
-  --ring: oklch(55% 0.095 142);            /* Focus ring - same brightness as light mode */
+  --border: oklch(1 0 0 / 15%); /* Transparent white border */
+  --input: oklch(1 0 0 / 15%); /* Input borders */
+  --ring: oklch(55% 0.095 142); /* Focus ring - same brightness as light mode */
 
   /* Success states - dark mode (emerald hue 155° to differentiate from brand) */
   --success-subtle: oklch(25% 0.08 155);
   --success-default: oklch(55% 0.12 155);
   --success-strong: oklch(65% 0.11 155);
   --success-bg: oklch(20% 0.06 155);
-  --success-border: oklch(40% 0.10 155);
+  --success-border: oklch(40% 0.1 155);
   --success-hover: oklch(50% 0.13 155);
   --success-active: oklch(60% 0.12 155);
   --success-disabled: oklch(35% 0.05 155);
@@ -506,7 +504,7 @@
   --info-default: oklch(55% 0.12 200);
   --info-strong: oklch(65% 0.11 200);
   --info-bg: oklch(20% 0.06 200);
-  --info-border: oklch(42% 0.10 200);
+  --info-border: oklch(42% 0.1 200);
   --info-hover: oklch(50% 0.13 200);
   --info-active: oklch(60% 0.12 200);
   --info-disabled: oklch(38% 0.05 200);
@@ -533,7 +531,7 @@
   --tag-blue-fg: oklch(20% 0.02 85);
   --tag-purple-bg: oklch(87% 0.06 305);
   --tag-purple-fg: oklch(20% 0.02 85);
-  --tag-yellow-bg: oklch(92% 0.10 110);
+  --tag-yellow-bg: oklch(92% 0.1 110);
   --tag-yellow-fg: oklch(20% 0.02 85);
   --tag-gray-bg: oklch(90% 0.015 85);
   --tag-gray-fg: oklch(20% 0.02 85);
@@ -562,24 +560,24 @@
   /* Chart System: Earth-Tone Palette (Dark Mode) - Lighter fills for visibility */
 
   /* Chart 1: Warm Tan/Soil (Baseline/Benchmark) - Lighter for dark bg */
-  --chart-1: oklch(65% 0.035 60);              /* Lighter tan */
+  --chart-1: oklch(65% 0.035 60); /* Lighter tan */
   --chart-1-fill: oklch(65% 0.035 60);
-  --chart-1-stroke: oklch(85% 0.035 60);       /* Light stroke for dark bg */
+  --chart-1-stroke: oklch(85% 0.035 60); /* Light stroke for dark bg */
 
   /* Chart 2: Forest Green (Our Data/Primary) - Lightened for dark mode */
-  --chart-2: oklch(65% 0.095 142);             /* Lighter forest green */
+  --chart-2: oklch(65% 0.095 142); /* Lighter forest green */
   --chart-2-fill: oklch(65% 0.095 142);
   --chart-2-stroke: oklch(85% 0.095 142);
 
   /* Chart 3: Terracotta/Clay (Revenue/High Priority) - Adjusted for harmony */
-  --chart-3: oklch(72% 0.095 72);              /* Lighter adjusted clay */
+  --chart-3: oklch(72% 0.095 72); /* Lighter adjusted clay */
   --chart-3-fill: oklch(72% 0.095 72);
   --chart-3-stroke: oklch(85% 0.095 72);
 
   /* Chart 4: Sage/Olive (Secondary/Neutral) - Harmonized with forest green */
-  --chart-4: oklch(70% 0.060 138);
-  --chart-4-fill: oklch(70% 0.060 138);
-  --chart-4-stroke: oklch(85% 0.060 138);
+  --chart-4: oklch(70% 0.06 138);
+  --chart-4-fill: oklch(70% 0.06 138);
+  --chart-4-stroke: oklch(85% 0.06 138);
 
   /* Chart 5: Golden Amber (Warning/Attention) - Lighter */
   --chart-5: oklch(78% 0.118 85);
@@ -602,43 +600,43 @@
   --chart-8-stroke: oklch(85% 0.012 85);
 
   /* Chart support tokens - dark mode */
-  --chart-gridline: oklch(30% 0.015 85);       /* Darker gridlines for dark bg */
+  --chart-gridline: oklch(30% 0.015 85); /* Darker gridlines for dark bg */
   --chart-axis-text: var(--muted-foreground);
-  --chart-disabled: oklch(35% 0.008 85);       /* Disabled/muted data */
+  --chart-disabled: oklch(35% 0.008 85); /* Disabled/muted data */
 
   /* Sidebar Colors - Dark Mode with Forest Green */
-  --sidebar: var(--neutral-100);                     /* Sidebar background */
-  --sidebar-foreground: var(--neutral-900);          /* Sidebar text */
-  --sidebar-primary: var(--brand-700);               /* Primary items - forest green */
+  --sidebar: var(--neutral-100); /* Sidebar background */
+  --sidebar-foreground: var(--neutral-900); /* Sidebar text */
+  --sidebar-primary: var(--brand-700); /* Primary items - forest green */
   --sidebar-primary-foreground: oklch(12% 0.02 142); /* Dark green text */
-  --sidebar-accent: var(--neutral-200);              /* Accent/hover */
-  --sidebar-accent-foreground: var(--neutral-900);   /* Light text */
-  --sidebar-border: oklch(1 0 0 / 10%);             /* Border */
-  --sidebar-ring: oklch(55% 0.095 142);              /* Brightened focus ring */
-  --sidebar-active-bg: var(--brand-50);              /* Active background - darker for 6.4:1 contrast */
-  --sidebar-active-text: var(--brand-700);           /* Active text - forest green (60% lightness) */
-  --sidebar-active-indicator: var(--brand-700);      /* Active indicator */
+  --sidebar-accent: var(--neutral-200); /* Accent/hover */
+  --sidebar-accent-foreground: var(--neutral-900); /* Light text */
+  --sidebar-border: oklch(1 0 0 / 10%); /* Border */
+  --sidebar-ring: oklch(55% 0.095 142); /* Brightened focus ring */
+  --sidebar-active-bg: var(--brand-50); /* Active background - darker for 6.4:1 contrast */
+  --sidebar-active-text: var(--brand-700); /* Active text - forest green (60% lightness) */
+  --sidebar-active-indicator: var(--brand-700); /* Active indicator */
 
   /* Dark Mode Shadow Ink - Cool-tinted to match neutral hue (287°) */
-  --shadow-ink-dark: oklch(10% 0.015 287);           /* Very dark cool-tinted shadow */
+  --shadow-ink-dark: oklch(10% 0.015 287); /* Very dark cool-tinted shadow */
 
   /* Shadow system - 3-tier elevation (dark mode) with cool tinting */
   --shadow-card-1: 0 2px 4px var(--shadow-ink-dark) / 0.35;
-  --shadow-card-2: 0 3px 6px var(--shadow-ink-dark) / 0.40;
+  --shadow-card-2: 0 3px 6px var(--shadow-ink-dark) / 0.4;
   --shadow-card-3: 0 4px 8px var(--shadow-ink-dark) / 0.45;
   --shadow-card-1-hover: 0 3px 8px var(--shadow-ink-dark) / 0.45;
-  --shadow-card-2-hover: 0 5px 14px var(--shadow-ink-dark) / 0.50;
+  --shadow-card-2-hover: 0 5px 14px var(--shadow-ink-dark) / 0.5;
   --shadow-card-3-hover: 0 7px 18px var(--shadow-ink-dark) / 0.55;
 
   /* Column shadows - dark mode with cool tinting */
-  --shadow-col: 0 3px 10px var(--shadow-ink-dark) / 0.40;
+  --shadow-col: 0 3px 10px var(--shadow-ink-dark) / 0.4;
   --shadow-col-inner: inset 0 1px 2px var(--shadow-ink-dark) / 0.08;
 
   /* Text Hierarchy - Dark Mode (Inverted for readability) */
-  --text-metric: oklch(97% 0.002 287);       /* Numbers/emphasis - brightest (15:1 contrast) */
-  --text-title: oklch(90% 0.004 286);        /* Headings - very light (12:1 contrast) */
-  --text-body: oklch(88% 0.005 285);         /* Standard body text (11:1 contrast) */
-  --text-subtle: oklch(80% 0.007 285);       /* Timestamps, metadata (8:1 contrast) */
+  --text-metric: oklch(97% 0.002 287); /* Numbers/emphasis - brightest (15:1 contrast) */
+  --text-title: oklch(90% 0.004 286); /* Headings - very light (12:1 contrast) */
+  --text-body: oklch(88% 0.005 285); /* Standard body text (11:1 contrast) */
+  --text-subtle: oklch(80% 0.007 285); /* Timestamps, metadata (8:1 contrast) */
 }
 
 a,

@@ -25,18 +25,15 @@ export interface ProductDiff {
  * ONLY compares: product_id_reference, notes
  * Does NOT compare: id, product_name, product_category (denormalized)
  */
-export function productsAreDifferent(
-  dbProduct: Product,
-  formProduct: Product
-): boolean {
+export function productsAreDifferent(dbProduct: Product, formProduct: Product): boolean {
   // Compare product_id_reference
   if (String(dbProduct.product_id_reference) !== String(formProduct.product_id_reference)) {
     return true;
   }
 
   // Compare notes (treat undefined/null as empty string)
-  const dbNotes = (dbProduct.notes ?? '').trim();
-  const formNotes = (formProduct.notes ?? '').trim();
+  const dbNotes = (dbProduct.notes ?? "").trim();
+  const formNotes = (formProduct.notes ?? "").trim();
   if (dbNotes !== formNotes) {
     return true;
   }
@@ -52,10 +49,7 @@ export function productsAreDifferent(
  * @param formItems - Products from form (may or may not have IDs)
  * @returns ProductDiff with creates, updates, and deletes arrays
  */
-export function diffProducts(
-  dbItems: Product[] = [],
-  formItems: Product[] = []
-): ProductDiff {
+export function diffProducts(dbItems: Product[] = [], formItems: Product[] = []): ProductDiff {
   const creates: Product[] = [];
   const updates: Product[] = [];
   const deletes: (string | number)[] = [];

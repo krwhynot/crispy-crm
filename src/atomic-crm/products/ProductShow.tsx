@@ -1,13 +1,6 @@
 import { Package, BarChart3 } from "lucide-react";
-import {
-  ShowBase,
-  useRecordContext,
-  useShowContext,
-} from "ra-core";
-import {
-  useMatch,
-  useNavigate,
-} from "react-router-dom";
+import { ShowBase, useRecordContext, useShowContext } from "ra-core";
+import { useMatch, useNavigate } from "react-router-dom";
 import type { VariantProps } from "class-variance-authority";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -69,16 +62,13 @@ const ProductShowContent = () => {
               </div>
               <div className="flex gap-2">
                 {record.status && (
-                  <Badge
-                    variant={statusColors[record.status]}
-                    className="text-xs"
-                  >
+                  <Badge variant={statusColors[record.status]} className="text-xs">
                     {record.status}
                   </Badge>
                 )}
                 {record.category && (
                   <Badge variant="outline" className="text-xs">
-                    {record.category.replace(/_/g, ' ')}
+                    {record.category.replace(/_/g, " ")}
                   </Badge>
                 )}
                 {record.brand && (
@@ -143,7 +133,7 @@ const ProductOverviewTab = () => {
             {record.category && (
               <div>
                 <p className="text-sm text-[color:var(--text-subtle)]">Category</p>
-                <p className="font-medium">{record.category.replace(/_/g, ' ')}</p>
+                <p className="font-medium">{record.category.replace(/_/g, " ")}</p>
               </div>
             )}
             {record.subcategory && (
@@ -209,7 +199,7 @@ const ProductDetailsTab = () => {
             {record.category && (
               <div className="flex justify-between">
                 <span className="text-sm text-[color:var(--text-subtle)]">Category</span>
-                <span className="text-sm font-medium">{record.category.replace(/_/g, ' ')}</span>
+                <span className="text-sm font-medium">{record.category.replace(/_/g, " ")}</span>
               </div>
             )}
             {record.subcategory && (
@@ -224,7 +214,6 @@ const ProductDetailsTab = () => {
     </div>
   );
 };
-
 
 const ProductActivityTab = () => {
   const record = useRecordContext<Product>();

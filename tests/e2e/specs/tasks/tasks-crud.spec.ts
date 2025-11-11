@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
-import { TasksListPage } from '../../support/poms/TasksListPage';
-import { TaskFormPage } from '../../support/poms/TaskFormPage';
-import { TaskShowPage } from '../../support/poms/TaskShowPage';
-import { consoleMonitor } from '../../support/utils/console-monitor';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
+import { TasksListPage } from "../../support/poms/TasksListPage";
+import { TaskFormPage } from "../../support/poms/TaskFormPage";
+import { TaskShowPage } from "../../support/poms/TaskShowPage";
+import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
  * E2E tests for Tasks CRUD operations
@@ -20,14 +20,14 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  * This is acceptable as it still uses POMs and avoids code duplication
  */
 
-test.describe('Tasks CRUD Operations', () => {
+test.describe("Tasks CRUD Operations", () => {
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
     // Login using POM (semantic selectors, no CSS)
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
 
     // Wait for either login form or dashboard
     const isLoginFormVisible = await page
@@ -36,7 +36,7 @@ test.describe('Tasks CRUD Operations', () => {
       .catch(() => false);
 
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
     } else {
       // Already logged in, wait for dashboard
       await page.waitForURL(/\/#\//, { timeout: 10000 });
@@ -51,18 +51,16 @@ test.describe('Tasks CRUD Operations', () => {
     consoleMonitor.clear();
   });
 
-  test('CREATE - Create a new task', async ({ page }) => {
+  test("CREATE - Create a new task", async ({ page }) => {
     // Generate unique test data with timestamp
     const timestamp = Date.now();
-    const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .slice(0, 10); // 7 days from now
+    const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10); // 7 days from now
 
     const testTask = {
       title: `Test Task ${timestamp}`,
       dueDate: futureDate,
-      priority: 'high' as const,
-      type: 'Call',
+      priority: "high" as const,
+      type: "Call",
       description: `Test description for task ${timestamp}`,
     };
 
@@ -88,11 +86,11 @@ test.describe('Tasks CRUD Operations', () => {
     });
 
     // Assert no console errors
-    expect(consoleMonitor.hasRLSErrors(), 'RLS errors detected').toBe(false);
-    expect(consoleMonitor.hasReactErrors(), 'React errors detected').toBe(false);
+    expect(consoleMonitor.hasRLSErrors(), "RLS errors detected").toBe(false);
+    expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(false);
   });
 
-  test('READ - View task list', async ({ page }) => {
+  test("READ - View task list", async ({ page }) => {
     const listPage = new TasksListPage(page);
 
     // Navigate to tasks list
@@ -106,7 +104,7 @@ test.describe('Tasks CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('READ - View task details', async ({ page }) => {
+  test("READ - View task details", async ({ page }) => {
     const listPage = new TasksListPage(page);
     const showPage = new TaskShowPage(page);
 
@@ -124,24 +122,22 @@ test.describe('Tasks CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('UPDATE - Edit a task', async ({ page }) => {
+  test("UPDATE - Edit a task", async ({ page }) => {
     // Generate unique test data with timestamp
     const timestamp = Date.now();
-    const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .slice(0, 10);
+    const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
     const originalTask = {
       title: `Original Task ${timestamp}`,
       dueDate: futureDate,
-      priority: 'medium' as const,
-      type: 'Email',
+      priority: "medium" as const,
+      type: "Email",
       description: `Original description ${timestamp}`,
     };
 
     const updatedData = {
       title: `Updated Task ${timestamp}`,
-      priority: 'critical' as const,
+      priority: "critical" as const,
       description: `Updated description ${timestamp}`,
     };
 
@@ -168,18 +164,16 @@ test.describe('Tasks CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('DELETE - Delete a task', async ({ page }) => {
+  test("DELETE - Delete a task", async ({ page }) => {
     // Generate unique test data with timestamp
     const timestamp = Date.now();
-    const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .slice(0, 10);
+    const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
     const deleteTask = {
       title: `Delete Task ${timestamp}`,
       dueDate: futureDate,
-      priority: 'low' as const,
-      type: 'Meeting',
+      priority: "low" as const,
+      type: "Meeting",
     };
 
     // Initialize POMs
@@ -196,7 +190,7 @@ test.describe('Tasks CRUD Operations', () => {
     await showPage.deleteTask();
 
     // Verify redirect to list
-    await expect(page).toHaveURL('/#/tasks');
+    await expect(page).toHaveURL("/#/tasks");
 
     // Verify task is no longer visible
     await listPage.expectTaskNotVisible(deleteTask.title);
@@ -206,7 +200,7 @@ test.describe('Tasks CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('VALIDATION - Form validation prevents submission without required fields', async ({
+  test("VALIDATION - Form validation prevents submission without required fields", async ({
     page,
   }) => {
     const listPage = new TasksListPage(page);

@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
-import { useDataProvider, useNotify } from 'ra-core';
-import type { QuickAddInput } from '@/atomic-crm/validation/quickAdd';
+import { useMutation } from "@tanstack/react-query";
+import { useDataProvider, useNotify } from "ra-core";
+import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 
 /**
  * Quick Add Hook for Booth Visitor Creation
@@ -27,20 +27,20 @@ export const useQuickAdd = () => {
     },
     onSuccess: (result, formData) => {
       // Update localStorage with last used campaign and principal
-      localStorage.setItem('last_campaign', formData.campaign);
-      localStorage.setItem('last_principal', formData.principal_id.toString());
+      localStorage.setItem("last_campaign", formData.campaign);
+      localStorage.setItem("last_principal", formData.principal_id.toString());
 
       // Show success toast with 2-second auto-hide
       const message = `✅ Created: ${formData.first_name} ${formData.last_name} - ${formData.org_name}`;
       notify(message, {
-        type: 'success',
-        autoHideDuration: 2000
+        type: "success",
+        autoHideDuration: 2000,
       });
     },
     onError: (error: Error) => {
       // Show error toast - form data is preserved automatically by React Hook Form
       notify(`Failed to create booth visitor: ${error.message}`, {
-        type: 'error'
+        type: "error",
       });
     },
   });

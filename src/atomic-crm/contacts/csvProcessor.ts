@@ -11,10 +11,10 @@
  * - Removes control characters and potential HTML/script tags
  */
 
-import type { ContactImportSchema } from './useContactImport';
-import { mapHeadersToFields } from './columnAliases';
-import { FULL_NAME_SPLIT_MARKER } from './csvConstants';
-import { sanitizeCsvValue } from '../utils/csvUploadValidator';
+import type { ContactImportSchema } from "./useContactImport";
+import { mapHeadersToFields } from "./columnAliases";
+import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
+import { sanitizeCsvValue } from "../utils/csvUploadValidator";
 
 /**
  * Split a full name string into first and last name components
@@ -29,26 +29,26 @@ import { sanitizeCsvValue } from '../utils/csvUploadValidator';
  * identifier in contact lists and is the most predictable behavior for formal names.
  */
 export function splitFullName(fullName: string): { first_name: string; last_name: string } {
-  if (!fullName || typeof fullName !== 'string') {
-    return { first_name: '', last_name: '' };
+  if (!fullName || typeof fullName !== "string") {
+    return { first_name: "", last_name: "" };
   }
 
   const nameParts = fullName.trim().split(/\s+/);
 
-  if (nameParts.length === 0 || fullName.trim() === '') {
+  if (nameParts.length === 0 || fullName.trim() === "") {
     // Empty name
-    return { first_name: '', last_name: '' };
+    return { first_name: "", last_name: "" };
   } else if (nameParts.length === 1) {
     // Single name part - treat as last name
     // Examples: "Smith", "Mike", "Figueroa"
-    return { first_name: '', last_name: nameParts[0] };
+    return { first_name: "", last_name: nameParts[0] };
   } else {
     // Multiple parts - first is first_name, rest is last_name
     // Examples: "John Doe" → first: "John", last: "Doe"
     //           "Mary Jane Smith" → first: "Mary", last: "Jane Smith"
     return {
       first_name: nameParts[0],
-      last_name: nameParts.slice(1).join(' '),
+      last_name: nameParts.slice(1).join(" "),
     };
   }
 }
@@ -64,7 +64,7 @@ export function splitFullName(fullName: string): { first_name: string; last_name
 function transformHeaders(headers: string[]): string[] {
   const mappings = mapHeadersToFields(headers);
 
-  return headers.map(header => {
+  return headers.map((header) => {
     if (!header) return header;
     const mapped = mappings[header];
     // Return the mapped value, or original header if no mapping found
@@ -80,13 +80,10 @@ function transformHeaders(headers: string[]): string[] {
  * @param dataRows - Raw data rows (arrays of values)
  * @returns Array of Contact objects ready for validation and import
  */
-export function processCsvData(
-  headers: string[],
-  dataRows: any[][]
-): ContactImportSchema[] {
+export function processCsvData(headers: string[], dataRows: any[][]): ContactImportSchema[] {
   const transformedHeaders = transformHeaders(headers);
 
-  return dataRows.map(row => {
+  return dataRows.map((row) => {
     const contact: any = {};
 
     headers.forEach((originalHeader, index) => {
@@ -98,7 +95,7 @@ export function processCsvData(
 
       // Handle full name splitting
       if (transformedHeader === FULL_NAME_SPLIT_MARKER) {
-        const { first_name, last_name } = splitFullName(value || '');
+        const { first_name, last_name } = splitFullName(value || "");
         contact.first_name = sanitizeCsvValue(first_name);
         contact.last_name = sanitizeCsvValue(last_name);
       } else {
@@ -124,7 +121,7 @@ export function processCsvDataWithMappings(
   dataRows: any[][],
   customMappings: Record<string, string | null>
 ): ContactImportSchema[] {
-  return dataRows.map(row => {
+  return dataRows.map((row) => {
     const contact: any = {};
 
     headers.forEach((originalHeader, index) => {
@@ -136,7 +133,7 @@ export function processCsvDataWithMappings(
 
       // Handle full name splitting
       if (targetField === FULL_NAME_SPLIT_MARKER) {
-        const { first_name, last_name } = splitFullName(value || '');
+        const { first_name, last_name } = splitFullName(value || "");
         contact.first_name = sanitizeCsvValue(first_name);
         contact.last_name = sanitizeCsvValue(last_name);
       } else if (targetField) {
@@ -166,7 +163,7 @@ export function parseRawCsvData(rawData: any[][]): {
   headers: string[];
 } {
   if (!Array.isArray(rawData) || rawData.length < 4) {
-    throw new Error('CSV file is too short (less than 4 rows)');
+    throw new Error("CSV file is too short (less than 4 rows)");
   }
 
   // Row 3 (index 2) contains the actual headers

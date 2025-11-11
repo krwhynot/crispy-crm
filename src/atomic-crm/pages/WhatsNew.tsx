@@ -23,12 +23,7 @@ interface FeatureTour {
   title: string;
   description: string;
   icon: React.ReactNode;
-  category:
-    | "opportunities"
-    | "contacts"
-    | "organizations"
-    | "activities"
-    | "b2b";
+  category: "opportunities" | "contacts" | "organizations" | "activities" | "b2b";
   isNew: boolean;
   steps?: TourStep[];
 }
@@ -62,8 +57,7 @@ const newFeatures: FeatureTour[] = [
         title: "Advanced Stages",
         description:
           "Food service pipeline: New Lead, Initial Outreach, Sample/Visit Offered, Awaiting Response, Feedback Logged, Demo Scheduled, Closed Won/Lost.",
-        action:
-          "Change an opportunity stage to see automatic probability updates",
+        action: "Change an opportunity stage to see automatic probability updates",
         tip: "Stages can be updated manually or automatically based on activities.",
       },
       {
@@ -86,8 +80,7 @@ const newFeatures: FeatureTour[] = [
     steps: [
       {
         title: "Primary Organization",
-        description:
-          "Each contact has a primary organization shown prominently in their profile.",
+        description: "Each contact has a primary organization shown prominently in their profile.",
         action: "Check your top contacts to verify primary organizations",
         tip: "Primary organization determines default company context for new opportunities.",
       },
@@ -125,15 +118,13 @@ const newFeatures: FeatureTour[] = [
       },
       {
         title: "Priority Levels",
-        description:
-          "Assign A/B/C/D priority levels for account management focus.",
+        description: "Assign A/B/C/D priority levels for account management focus.",
         action: "Set A priority for your most important accounts",
         tip: "A-priority accounts get highlighted treatment throughout the system.",
       },
       {
         title: "Parent Organizations",
-        description:
-          "Link subsidiaries to parent organizations for better relationship mapping.",
+        description: "Link subsidiaries to parent organizations for better relationship mapping.",
         action: "Set up parent-child relationships for related organizations",
         tip: "This helps track enterprise accounts with multiple entities.",
       },
@@ -164,8 +155,7 @@ const newFeatures: FeatureTour[] = [
       },
       {
         title: "Follow-up Tracking",
-        description:
-          "Activities can automatically schedule follow-ups with reminders.",
+        description: "Activities can automatically schedule follow-ups with reminders.",
         action: "Set a follow-up when creating an activity",
         tip: "Follow-ups appear in your task dashboard with due dates.",
       },
@@ -182,8 +172,7 @@ const newFeatures: FeatureTour[] = [
     steps: [
       {
         title: "Principal Relationships",
-        description:
-          "Mark organizations as principals and track their distributor networks.",
+        description: "Mark organizations as principals and track their distributor networks.",
         action: "Set up principal organizations if applicable",
         tip: "Principals are suppliers who work through distributor channels.",
       },
@@ -196,8 +185,7 @@ const newFeatures: FeatureTour[] = [
       },
       {
         title: "Commission Tracking",
-        description:
-          "Set commission rates and territories for distributor relationships.",
+        description: "Set commission rates and territories for distributor relationships.",
         action: "Configure commission rates for relevant opportunities",
         tip: "Commission data helps with distributor performance analysis.",
       },
@@ -206,23 +194,16 @@ const newFeatures: FeatureTour[] = [
 ];
 
 export const WhatsNew = () => {
-  const [selectedFeature, setSelectedFeature] = useState<FeatureTour>(
-    newFeatures[0],
-  );
+  const [selectedFeature, setSelectedFeature] = useState<FeatureTour>(newFeatures[0]);
   const [currentStep, setCurrentStep] = useState(0);
-  const [completedFeatures, setCompletedFeatures] = useState<Set<string>>(
-    new Set(),
-  );
+  const [completedFeatures, setCompletedFeatures] = useState<Set<string>>(new Set());
 
   const handleFeatureComplete = (featureId: string) => {
     setCompletedFeatures((prev) => new Set([...prev, featureId]));
   };
 
   const nextStep = () => {
-    if (
-      selectedFeature.steps &&
-      currentStep < selectedFeature.steps.length - 1
-    ) {
+    if (selectedFeature.steps && currentStep < selectedFeature.steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -260,8 +241,7 @@ export const WhatsNew = () => {
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold">What's New in Atomic CRM</h1>
         <p className="text-[color:var(--text-subtle)]">
-          Discover the powerful new features and enhancements from your
-          migration
+          Discover the powerful new features and enhancements from your migration
         </p>
       </div>
 
@@ -295,16 +275,10 @@ export const WhatsNew = () => {
                   {completedFeatures.has(feature.id) && (
                     <div className="flex items-center gap-2 text-success-default">
                       <CheckCircle className="h-4 w-4" />
-                      <span className="text-sm font-medium">
-                        Tour Completed
-                      </span>
+                      <span className="text-sm font-medium">Tour Completed</span>
                     </div>
                   )}
-                  <Button
-                    onClick={() => startTour(feature)}
-                    variant="outline"
-                    className="w-full"
-                  >
+                  <Button onClick={() => startTour(feature)} variant="outline" className="w-full">
                     <Play className="h-4 w-4 mr-2" />
                     Start Feature Tour
                   </Button>
@@ -353,42 +327,28 @@ export const WhatsNew = () => {
 
                     {selectedFeature.steps[currentStep].action && (
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-blue-900 mb-2">
-                          Try it now:
-                        </h4>
-                        <p className="text-blue-800">
-                          {selectedFeature.steps[currentStep].action}
-                        </p>
+                        <h4 className="font-medium text-blue-900 mb-2">Try it now:</h4>
+                        <p className="text-blue-800">{selectedFeature.steps[currentStep].action}</p>
                       </div>
                     )}
 
                     {selectedFeature.steps[currentStep].tip && (
                       <div className="bg-yellow-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-yellow-900 mb-2">
-                          💡 Pro Tip:
-                        </h4>
-                        <p className="text-yellow-800">
-                          {selectedFeature.steps[currentStep].tip}
-                        </p>
+                        <h4 className="font-medium text-yellow-900 mb-2">💡 Pro Tip:</h4>
+                        <p className="text-yellow-800">{selectedFeature.steps[currentStep].tip}</p>
                       </div>
                     )}
                   </div>
 
                   <div className="flex justify-between">
-                    <Button
-                      onClick={prevStep}
-                      disabled={currentStep === 0}
-                      variant="outline"
-                    >
+                    <Button onClick={prevStep} disabled={currentStep === 0} variant="outline">
                       <ChevronLeft className="h-4 w-4 mr-2" />
                       Previous
                     </Button>
                     <div className="space-x-2">
                       {currentStep === selectedFeature.steps.length - 1 ? (
                         <Button
-                          onClick={() =>
-                            handleFeatureComplete(selectedFeature.id)
-                          }
+                          onClick={() => handleFeatureComplete(selectedFeature.id)}
                           className="bg-green-600 hover:bg-green-700"
                         >
                           <CheckCircle className="h-4 w-4 mr-2" />
@@ -406,8 +366,7 @@ export const WhatsNew = () => {
               ) : (
                 <div className="text-center py-8">
                   <p className="text-[color:var(--text-subtle)]">
-                    Select a feature from the overview tab to start the
-                    interactive tour.
+                    Select a feature from the overview tab to start the interactive tour.
                   </p>
                 </div>
               )}
@@ -425,9 +384,7 @@ export const WhatsNew = () => {
                   <Button
                     key={feature.id}
                     onClick={() => startTour(feature)}
-                    variant={
-                      selectedFeature.id === feature.id ? "default" : "outline"
-                    }
+                    variant={selectedFeature.id === feature.id ? "default" : "outline"}
                     className="h-auto p-3 justify-start"
                   >
                     <div className="flex items-center gap-3">
@@ -497,41 +454,25 @@ export const WhatsNew = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="space-y-2">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full justify-start"
-                  >
+                  <Button asChild variant="outline" className="w-full justify-start">
                     <a href="/migration/checklist">
                       <CheckCircle className="h-4 w-4 mr-2" />
                       Complete Verification Checklist
                     </a>
                   </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full justify-start"
-                  >
+                  <Button asChild variant="outline" className="w-full justify-start">
                     <a href="/opportunities">
                       <Briefcase className="h-4 w-4 mr-2" />
                       View Your Opportunities
                     </a>
                   </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full justify-start"
-                  >
+                  <Button asChild variant="outline" className="w-full justify-start">
                     <a href="/contacts">
                       <Users className="h-4 w-4 mr-2" />
                       Review Contact Organizations
                     </a>
                   </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full justify-start"
-                  >
+                  <Button asChild variant="outline" className="w-full justify-start">
                     <a href="/organizations">
                       <Building className="h-4 w-4 mr-2" />
                       Set Organization Types
@@ -547,8 +488,7 @@ export const WhatsNew = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-[color:var(--text-subtle)]">
-                  Need help with the new features or have feedback about the
-                  migration?
+                  Need help with the new features or have feedback about the migration?
                 </p>
                 <div className="flex gap-3">
                   <Button asChild>

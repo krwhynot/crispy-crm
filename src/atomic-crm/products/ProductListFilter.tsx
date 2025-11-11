@@ -57,10 +57,7 @@ export const ProductListFilter = () => {
         <SearchInput source="q" />
       </FilterLiveForm>
 
-      <FilterCategory
-        icon={<Tag className="h-4 w-4" />}
-        label="Product Status"
-      >
+      <FilterCategory icon={<Tag className="h-4 w-4" />} label="Product Status">
         {productStatuses.map((status) => (
           <ToggleFilterButton
             key={status.id}
@@ -71,10 +68,7 @@ export const ProductListFilter = () => {
         ))}
       </FilterCategory>
 
-      <FilterCategory
-        icon={<Package className="h-4 w-4" />}
-        label="Category"
-      >
+      <FilterCategory icon={<Package className="h-4 w-4" />} label="Category">
         {isLoadingCategories ? (
           <div className="text-sm text-muted-foreground px-3 py-1">Loading...</div>
         ) : (
@@ -90,10 +84,7 @@ export const ProductListFilter = () => {
       </FilterCategory>
 
       {principals && principals.length > 0 && (
-        <FilterCategory
-          icon={<Building2 className="h-4 w-4" />}
-          label="Principal/Supplier"
-        >
+        <FilterCategory icon={<Building2 className="h-4 w-4" />} label="Principal/Supplier">
           {principals.map((principal) => (
             <ToggleFilterButton
               key={principal.id}

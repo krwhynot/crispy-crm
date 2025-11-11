@@ -9,12 +9,7 @@ interface TagEditModalProps {
   onSuccess?(tag: Tag): Promise<void>;
 }
 
-export function TagEditModal({
-  tag,
-  open,
-  onClose,
-  onSuccess,
-}: TagEditModalProps) {
+export function TagEditModal({ tag, open, onClose, onSuccess }: TagEditModalProps) {
   const [update] = useUpdate<Tag>();
 
   const handleEditTag = async (data: Pick<Tag, "name" | "color">) => {
@@ -25,17 +20,11 @@ export function TagEditModal({
         onSuccess: async (tag) => {
           await onSuccess?.(tag);
         },
-      },
+      }
     );
   };
 
   return (
-    <TagDialog
-      open={open}
-      title="Edit tag"
-      onClose={onClose}
-      onSubmit={handleEditTag}
-      tag={tag}
-    />
+    <TagDialog open={open} title="Edit tag" onClose={onClose} onSubmit={handleEditTag} tag={tag} />
   );
 }

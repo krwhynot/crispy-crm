@@ -74,20 +74,18 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     expect(screen.getByLabelText(/opportunity name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/opportunity name/i)).toHaveAttribute(
-      "required",
-    );
+    expect(screen.getByLabelText(/opportunity name/i)).toHaveAttribute("required");
   });
 
   it("should render description input", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
@@ -97,7 +95,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const stageSelect = screen.getByLabelText(/lifecycle stage/i);
@@ -109,7 +107,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const prioritySelect = screen.getByLabelText(/priority/i);
@@ -120,7 +118,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const probabilityInput = screen.getByLabelText(/probability/i);
@@ -133,7 +131,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     expect(screen.getByLabelText(/customer organization/i)).toBeInTheDocument();
@@ -143,22 +141,18 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
-    expect(
-      screen.getByLabelText(/principal organization/i),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/distributor organization/i),
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/principal organization/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/distributor organization/i)).toBeInTheDocument();
   });
 
   it("should render contacts input with required validation", async () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     expect(screen.getByLabelText(/contacts/i)).toBeInTheDocument();
@@ -168,7 +162,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const amountInput = screen.getByLabelText(/amount/i);
@@ -180,7 +174,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const dateInput = screen.getByLabelText(/expected closing date/i);
@@ -192,7 +186,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const contextSelect = screen.getByLabelText(/opportunity context/i);
@@ -203,7 +197,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const nameInput = screen.getByLabelText(/opportunity name/i);
@@ -221,7 +215,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const probabilityInput = screen.getByLabelText(/probability/i);
@@ -239,7 +233,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Check for section headers
@@ -251,7 +245,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const stageSelect = screen.getByLabelText(/lifecycle stage/i);
@@ -273,7 +267,7 @@ describe("OpportunityInputs", () => {
     render(
       <TestWrapper>
         <OpportunityInputs />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const prioritySelect = screen.getByLabelText(/priority/i);

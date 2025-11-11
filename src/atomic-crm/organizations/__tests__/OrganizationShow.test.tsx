@@ -35,7 +35,9 @@ vi.mock("ra-core", async () => {
 
 // Mock ReferenceManyField
 vi.mock("@/components/admin/reference-many-field", () => ({
-  ReferenceManyField: ({ children }: any) => <div data-testid="reference-many-field">{children}</div>,
+  ReferenceManyField: ({ children }: any) => (
+    <div data-testid="reference-many-field">{children}</div>
+  ),
 }));
 
 // Mock SortButton

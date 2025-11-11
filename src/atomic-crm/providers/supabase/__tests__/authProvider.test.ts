@@ -19,11 +19,11 @@
  * users can't log in. 0% test coverage = high risk of breaking changes.
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { authProvider } from '../authProvider';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { authProvider } from "../authProvider";
 
 // Mock the Supabase client
-vi.mock('../supabase', () => ({
+vi.mock("../supabase", () => ({
   supabase: {
     auth: {
       getSession: vi.fn(),
@@ -35,15 +35,15 @@ vi.mock('../supabase', () => ({
   },
 }));
 
-import { supabase } from '../supabase';
+import { supabase } from "../supabase";
 
-describe('authProvider', () => {
+describe("authProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Reset any cached state between tests
     global.window = Object.create(window);
-    Object.defineProperty(window, 'location', {
-      value: { pathname: '/dashboard' },
+    Object.defineProperty(window, "location", {
+      value: { pathname: "/dashboard" },
       writable: true,
     });
   });
@@ -52,30 +52,30 @@ describe('authProvider', () => {
     vi.restoreAllMocks();
   });
 
-  describe('checkAuth', () => {
-    it.skip('should allow access when valid session exists', async () => {
+  describe("checkAuth", () => {
+    it.skip("should allow access when valid session exists", async () => {
       // Skipped: Testing ra-supabase-core internals is complex
       // Our custom checkAuth logic is tested in other tests
     });
 
-    it('should reject when no session exists on protected path', async () => {
+    it("should reject when no session exists on protected path", async () => {
       // Mock no session
       vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
         data: { session: null },
         error: null,
       } as any);
 
-      Object.defineProperty(window, 'location', {
-        value: { pathname: '/dashboard' },
+      Object.defineProperty(window, "location", {
+        value: { pathname: "/dashboard" },
         writable: true,
       });
 
-      await expect(authProvider.checkAuth({})).rejects.toThrow('Not authenticated');
+      await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
     });
 
-    it('should allow access to public paths without session', async () => {
+    it("should allow access to public paths without session", async () => {
       // Test each public path
-      const publicPaths = ['/login', '/forgot-password', '/set-password', '/reset-password'];
+      const publicPaths = ["/login", "/forgot-password", "/set-password", "/reset-password"];
 
       for (const path of publicPaths) {
         vi.clearAllMocks();
@@ -86,7 +86,7 @@ describe('authProvider', () => {
           error: null,
         } as any);
 
-        Object.defineProperty(window, 'location', {
+        Object.defineProperty(window, "location", {
           value: { pathname: path },
           writable: true,
         });
@@ -95,30 +95,30 @@ describe('authProvider', () => {
       }
     });
 
-    it('should reject when session exists but has error', async () => {
+    it("should reject when session exists but has error", async () => {
       // Mock session with error
       vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
         data: { session: null },
-        error: { message: 'Session expired' },
+        error: { message: "Session expired" },
       } as any);
 
-      Object.defineProperty(window, 'location', {
-        value: { pathname: '/dashboard' },
+      Object.defineProperty(window, "location", {
+        value: { pathname: "/dashboard" },
         writable: true,
       });
 
-      await expect(authProvider.checkAuth({})).rejects.toThrow('Not authenticated');
+      await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
     });
   });
 
-  describe('getIdentity', () => {
-    it('should return user identity from cached sale', async () => {
+  describe("getIdentity", () => {
+    it("should return user identity from cached sale", async () => {
       // Mock valid session
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
           session: {
-            user: { id: 'user-456', email: 'jane@example.com', aud: 'authenticated' },
-            access_token: 'valid-token',
+            user: { id: "user-456", email: "jane@example.com", aud: "authenticated" },
+            access_token: "valid-token",
           },
         },
         error: null,
@@ -127,7 +127,7 @@ describe('authProvider', () => {
       // Mock getUser for ra-supabase-core
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: {
-          user: { id: 'user-456', email: 'jane@example.com', aud: 'authenticated' },
+          user: { id: "user-456", email: "jane@example.com", aud: "authenticated" },
         },
         error: null,
       } as any);
@@ -139,9 +139,9 @@ describe('authProvider', () => {
             maybeSingle: vi.fn().mockResolvedValue({
               data: {
                 id: 2,
-                first_name: 'Jane',
-                last_name: 'Smith',
-                avatar_url: 'https://example.com/avatar.jpg',
+                first_name: "Jane",
+                last_name: "Smith",
+                avatar_url: "https://example.com/avatar.jpg",
                 is_admin: true,
               },
               error: null,
@@ -154,18 +154,18 @@ describe('authProvider', () => {
 
       expect(identity).toEqual({
         id: 2,
-        fullName: 'Jane Smith',
-        avatar: 'https://example.com/avatar.jpg',
+        fullName: "Jane Smith",
+        avatar: "https://example.com/avatar.jpg",
       });
     });
 
-    it('should throw error when user has no sales record', async () => {
+    it("should throw error when user has no sales record", async () => {
       // Mock valid session but no sales record
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
           session: {
-            user: { id: 'user-orphan', email: 'orphan@example.com' },
-            access_token: 'valid-token',
+            user: { id: "user-orphan", email: "orphan@example.com" },
+            access_token: "valid-token",
           },
         },
         error: null,
@@ -186,13 +186,13 @@ describe('authProvider', () => {
       await expect(authProvider.getIdentity()).rejects.toThrow();
     });
 
-    it('should throw error when sales query fails', async () => {
+    it("should throw error when sales query fails", async () => {
       // Mock valid session
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
           session: {
-            user: { id: 'user-error', email: 'error@example.com' },
-            access_token: 'valid-token',
+            user: { id: "user-error", email: "error@example.com" },
+            access_token: "valid-token",
           },
         },
         error: null,
@@ -204,7 +204,7 @@ describe('authProvider', () => {
           match: vi.fn().mockReturnValue({
             maybeSingle: vi.fn().mockResolvedValue({
               data: null,
-              error: { message: 'Database connection failed' },
+              error: { message: "Database connection failed" },
             }),
           }),
         }),
@@ -214,14 +214,14 @@ describe('authProvider', () => {
     });
   });
 
-  describe('canAccess', () => {
-    it('should grant admin access to all resources', async () => {
+  describe("canAccess", () => {
+    it("should grant admin access to all resources", async () => {
       // Mock admin user
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
           session: {
-            user: { id: 'admin-user', email: 'admin@example.com' },
-            access_token: 'valid-token',
+            user: { id: "admin-user", email: "admin@example.com" },
+            access_token: "valid-token",
           },
         },
         error: null,
@@ -233,8 +233,8 @@ describe('authProvider', () => {
             maybeSingle: vi.fn().mockResolvedValue({
               data: {
                 id: 3,
-                first_name: 'Admin',
-                last_name: 'User',
+                first_name: "Admin",
+                last_name: "User",
                 is_admin: true,
               },
               error: null,
@@ -244,20 +244,20 @@ describe('authProvider', () => {
       } as any);
 
       const canAccessContacts = await authProvider.canAccess({
-        resource: 'contacts',
-        action: 'delete',
+        resource: "contacts",
+        action: "delete",
       });
 
       expect(canAccessContacts).toBe(true);
     });
 
-    it('should deny regular user access to admin-only actions', async () => {
+    it("should deny regular user access to admin-only actions", async () => {
       // Mock regular user
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
           session: {
-            user: { id: 'regular-user', email: 'user@example.com' },
-            access_token: 'valid-token',
+            user: { id: "regular-user", email: "user@example.com" },
+            access_token: "valid-token",
           },
         },
         error: null,
@@ -269,8 +269,8 @@ describe('authProvider', () => {
             maybeSingle: vi.fn().mockResolvedValue({
               data: {
                 id: 4,
-                first_name: 'Regular',
-                last_name: 'User',
+                first_name: "Regular",
+                last_name: "User",
                 is_admin: false,
               },
               error: null,
@@ -280,22 +280,22 @@ describe('authProvider', () => {
       } as any);
 
       const canDelete = await authProvider.canAccess({
-        resource: 'contacts',
-        action: 'delete',
+        resource: "contacts",
+        action: "delete",
       });
 
       // Regular users shouldn't be able to delete
       // This depends on canAccess implementation
-      expect(typeof canDelete).toBe('boolean');
+      expect(typeof canDelete).toBe("boolean");
     });
 
-    it('should return false when user has no sales record', async () => {
+    it("should return false when user has no sales record", async () => {
       // Mock session but no sales record
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
           session: {
-            user: { id: 'no-sale', email: 'nosale@example.com', aud: 'authenticated' },
-            access_token: 'valid-token',
+            user: { id: "no-sale", email: "nosale@example.com", aud: "authenticated" },
+            access_token: "valid-token",
           },
         },
         error: null,
@@ -313,40 +313,40 @@ describe('authProvider', () => {
       } as any);
 
       const canAccess = await authProvider.canAccess({
-        resource: 'contacts',
-        action: 'read',
+        resource: "contacts",
+        action: "read",
       });
 
       // Should return false since sale lookup returns null
       // Note: canAccess implementation may vary
-      expect(typeof canAccess).toBe('boolean');
+      expect(typeof canAccess).toBe("boolean");
     });
   });
 
-  describe('login', () => {
-    it('should clear cached sale on login', async () => {
+  describe("login", () => {
+    it("should clear cached sale on login", async () => {
       // We can't directly test the base provider's login,
       // but we can verify our wrapper clears the cache
       // This is a structural test - verifies the login method exists
       expect(authProvider.login).toBeDefined();
-      expect(typeof authProvider.login).toBe('function');
+      expect(typeof authProvider.login).toBe("function");
     });
   });
 
-  describe('Sale Caching', () => {
-    it.skip('should cache sale record after first fetch', async () => {
+  describe("Sale Caching", () => {
+    it.skip("should cache sale record after first fetch", async () => {
       // Skipped: Caching is internal implementation detail
       // Testing this requires complex mock setup and test isolation
       // Manual/E2E testing is more appropriate for caching behavior
     });
   });
 
-  describe('Public Path Whitelist', () => {
-    it('should have explicit whitelist of public paths', () => {
+  describe("Public Path Whitelist", () => {
+    it("should have explicit whitelist of public paths", () => {
       // This tests the security fix from Phase 1
       // Public paths should be explicitly defined, not URL-pattern based
       expect(authProvider.checkAuth).toBeDefined();
-      expect(typeof authProvider.checkAuth).toBe('function');
+      expect(typeof authProvider.checkAuth).toBe("function");
     });
   });
 });

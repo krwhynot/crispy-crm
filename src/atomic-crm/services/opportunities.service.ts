@@ -17,13 +17,13 @@ export class OpportunitiesService {
    */
   async archiveOpportunity(opportunity: Opportunity): Promise<any> {
     try {
-      return await this.dataProvider.rpc('archive_opportunity_with_relations', {
-        opp_id: opportunity.id
+      return await this.dataProvider.rpc("archive_opportunity_with_relations", {
+        opp_id: opportunity.id,
       });
     } catch (error: any) {
       console.error(`[OpportunitiesService] Failed to archive opportunity`, {
         opportunityId: opportunity.id,
-        error
+        error,
       });
       throw new Error(`Archive opportunity failed: ${error.message}`);
     }
@@ -38,13 +38,13 @@ export class OpportunitiesService {
    */
   async unarchiveOpportunity(opportunity: Opportunity): Promise<any> {
     try {
-      return await this.dataProvider.rpc('unarchive_opportunity_with_relations', {
-        opp_id: opportunity.id
+      return await this.dataProvider.rpc("unarchive_opportunity_with_relations", {
+        opp_id: opportunity.id,
       });
     } catch (error: any) {
       console.error(`[OpportunitiesService] Failed to unarchive opportunity`, {
         opportunityId: opportunity.id,
-        error
+        error,
       });
       throw new Error(`Unarchive opportunity failed: ${error.message}`);
     }

@@ -8,11 +8,7 @@ interface TagCreateModalProps {
   onSuccess?(tag: Tag): Promise<void>;
 }
 
-export function TagCreateModal({
-  open,
-  onClose,
-  onSuccess,
-}: TagCreateModalProps) {
+export function TagCreateModal({ open, onClose, onSuccess }: TagCreateModalProps) {
   const [create] = useCreate<Tag>();
 
   const handleCreateTag = async (data: Pick<Tag, "name" | "color">) => {
@@ -23,16 +19,11 @@ export function TagCreateModal({
         onSuccess: async (tag) => {
           await onSuccess?.(tag);
         },
-      },
+      }
     );
   };
 
   return (
-    <TagDialog
-      open={open}
-      title="Create a new tag"
-      onClose={onClose}
-      onSubmit={handleCreateTag}
-    />
+    <TagDialog open={open} title="Create a new tag" onClose={onClose} onSubmit={handleCreateTag} />
   );
 }

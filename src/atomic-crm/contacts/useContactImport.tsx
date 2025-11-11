@@ -2,10 +2,18 @@ import type { DataProvider } from "ra-core";
 import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Organization, Tag } from "../types";
-import { mapHeadersToFields as _mapHeadersToFields, isFullNameColumn as _isFullNameColumn, findCanonicalField as _findCanonicalField } from "./columnAliases";
+import {
+  mapHeadersToFields as _mapHeadersToFields,
+  isFullNameColumn as _isFullNameColumn,
+  findCanonicalField as _findCanonicalField,
+} from "./columnAliases";
 import { importContactSchema as _importContactSchema } from "../validation/contacts";
 import { ZodError } from "zod";
-import { applyDataQualityTransformations, validateTransformedContacts, isContactWithoutContactInfo } from "./contactImport.logic";
+import {
+  applyDataQualityTransformations,
+  validateTransformedContacts,
+  isContactWithoutContactInfo,
+} from "./contactImport.logic";
 
 export interface ContactImportSchema {
   first_name: string;
@@ -55,10 +63,10 @@ export interface DataQualityDecisions {
 }
 
 export interface ImportOptions {
-  preview?: boolean;  // If true, validate only without database writes
-  onProgress?: (current: number, total: number) => void;  // Progress callback
-  startingRow?: number;  // The absolute starting row number for this batch (1-indexed)
-  dataQualityDecisions?: DataQualityDecisions;  // User decisions about data quality issues
+  preview?: boolean; // If true, validate only without database writes
+  onProgress?: (current: number, total: number) => void; // Progress callback
+  startingRow?: number; // The absolute starting row number for this batch (1-indexed)
+  dataQualityDecisions?: DataQualityDecisions; // User decisions about data quality issues
 }
 
 export function useContactImport() {
@@ -71,7 +79,7 @@ export function useContactImport() {
   const organizationsCache = useMemo(
     () => new Map<string, Organization>(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dataProvider],
+    [dataProvider]
   );
   const getOrganizations = useCallback(
     async (names: string[], preview = false) =>
@@ -86,9 +94,9 @@ export function useContactImport() {
               created_at: new Date().toISOString(),
               sales_id: identity?.id,
             }),
-            dataProvider,
+            dataProvider
           ),
-    [organizationsCache, identity?.id, dataProvider],
+    [organizationsCache, identity?.id, dataProvider]
   );
 
   // Tags cache to avoid creating the same tag multiple times and costly roundtrips
@@ -107,9 +115,9 @@ export function useContactImport() {
               name,
               color: "gray",
             }),
-            dataProvider,
+            dataProvider
           ),
-    [tagsCache, dataProvider],
+    [tagsCache, dataProvider]
   );
 
   const processBatch = useCallback(
@@ -133,7 +141,7 @@ export function useContactImport() {
       const { successful, failed } = validateTransformedContacts(transformedContacts);
 
       // Immediately add validation failures to the error list
-      failed.forEach(failure => {
+      failed.forEach((failure) => {
         errors.push({
           row: startingRow + failure.originalIndex,
           data: failure.data,
@@ -145,7 +153,7 @@ export function useContactImport() {
       let contactsToProcess = successful;
       if (!dataQualityDecisions?.importContactsWithoutContactInfo) {
         const skippedContacts = new Set<number>();
-        contactsToProcess = successful.filter(contact => {
+        contactsToProcess = successful.filter((contact) => {
           if (isContactWithoutContactInfo(contact)) {
             skippedContacts.add(contact.originalIndex);
             return false;
@@ -162,13 +170,17 @@ export function useContactImport() {
           contactsToProcess
             .map((contact) => contact.organization_name?.trim())
             .filter((name): name is string => !!name),
-          preview,
+          preview
         ),
-        getTags(contactsToProcess.flatMap((contact) => parseTags(contact.tags)), preview),
+        getTags(
+          contactsToProcess.flatMap((contact) => parseTags(contact.tags)),
+          preview
+        ),
       ]);
 
       // Handle partial failures - use empty map if fetch failed
-      const organizations = fetchResults[0].status === "fulfilled" ? fetchResults[0].value : new Map();
+      const organizations =
+        fetchResults[0].status === "fulfilled" ? fetchResults[0].value : new Map();
       const tags = fetchResults[1].status === "fulfilled" ? fetchResults[1].value : new Map();
 
       // Log warnings if fetches failed (non-critical for import process)
@@ -205,7 +217,7 @@ export function useContactImport() {
           } = contactData;
 
           // Organization logic check
-          const trimmedOrgName = String(organization_name || '').trim();
+          const trimmedOrgName = String(organization_name || "").trim();
           const organization = organizations.get(trimmedOrgName);
           if (trimmedOrgName && !organization?.id && !preview) {
             rowErrors.push({
@@ -296,7 +308,7 @@ export function useContactImport() {
               onProgress(index + 1 + failed.length, totalProcessed);
             }
           }
-        }),
+        })
       );
 
       // 5. Tally results
@@ -317,7 +329,12 @@ export function useContactImport() {
           errors.push({
             row: 0, // Cannot determine row number here
             data: {},
-            errors: [{ field: "processing", message: result.reason?.message || "Unknown processing error" }],
+            errors: [
+              {
+                field: "processing",
+                message: result.reason?.message || "Unknown processing error",
+              },
+            ],
           });
         }
       });
@@ -336,7 +353,7 @@ export function useContactImport() {
 
       return finalResult;
     },
-    [dataProvider, getOrganizations, getTags, identity?.id, today],
+    [dataProvider, getOrganizations, getTags, identity?.id, today]
   );
 
   return processBatch;
@@ -347,7 +364,7 @@ const fetchRecordsWithCache = async function <T>(
   cache: Map<string, T>,
   names: string[],
   getCreateData: (name: string) => Partial<T>,
-  dataProvider: DataProvider,
+  dataProvider: DataProvider
 ) {
   const trimmedNames = [...new Set(names.map((name) => name.trim()))];
   const uncachedRecordNames = trimmedNames.filter((name) => !cache.has(name));
@@ -356,9 +373,7 @@ const fetchRecordsWithCache = async function <T>(
   if (uncachedRecordNames.length > 0) {
     const response = await dataProvider.getList(resource, {
       filter: {
-        "name@in": `(${uncachedRecordNames
-          .map((name) => `"${name}"`)
-          .join(",")})`,
+        "name@in": `(${uncachedRecordNames.map((name) => `"${name}"`).join(",")})`,
       },
       pagination: { page: 1, perPage: trimmedNames.length },
       sort: { field: "id", order: "ASC" },
@@ -377,14 +392,16 @@ const fetchRecordsWithCache = async function <T>(
       });
       cache.set(name, response.data);
       return { name, success: true, data: response.data };
-    }),
+    })
   );
 
   // Log any failures (non-blocking - contacts can still be created without these records)
-  const failures = createResults.filter(r => r.status === "rejected");
+  const failures = createResults.filter((r) => r.status === "rejected");
   if (failures.length > 0) {
-    console.warn(`Failed to create ${failures.length} ${resource} records:`,
-      failures.map((f: any) => f.reason?.message || f.reason));
+    console.warn(
+      `Failed to create ${failures.length} ${resource} records:`,
+      failures.map((f: any) => f.reason?.message || f.reason)
+    );
   }
 
   // now all records are in cache, return a map of all records

@@ -59,9 +59,7 @@ class MCPMigrationCreator {
       const highestNumber = Math.max(...numberedMigrations);
       return highestNumber + 1;
     } catch (error) {
-      console.warn(
-        `Warning: Could not scan migration directory: ${error.message}`,
-      );
+      console.warn(`Warning: Could not scan migration directory: ${error.message}`);
       return 108;
     }
   }
@@ -339,46 +337,32 @@ $$ LANGUAGE plpgsql;
       case "column":
         details.tableName = await this.prompt("Target table name: ");
         details.columnName = await this.prompt("Column name: ");
-        details.columnType = await this.prompt(
-          "Column type (e.g., VARCHAR(255), INTEGER): ",
-        );
+        details.columnType = await this.prompt("Column type (e.g., VARCHAR(255), INTEGER): ");
         details.columnConstraints =
-          (await this.prompt(
-            "Column constraints (optional, press Enter to skip): ",
-          )) || "DEFAULT NULL";
+          (await this.prompt("Column constraints (optional, press Enter to skip): ")) ||
+          "DEFAULT NULL";
         details.addIndex =
-          (
-            await this.prompt("Add index for this column? (y/n): ")
-          ).toLowerCase() === "y";
+          (await this.prompt("Add index for this column? (y/n): ")).toLowerCase() === "y";
         details.updateExisting =
-          (
-            await this.prompt("Update existing records? (y/n): ")
-          ).toLowerCase() === "y";
+          (await this.prompt("Update existing records? (y/n): ")).toLowerCase() === "y";
         break;
 
       case "data":
         details.tableName = await this.prompt("Target table name: ");
         details.backupCondition =
-          (await this.prompt(
-            'Backup condition (SQL WHERE clause, or "true" for all): ',
-          )) || "true";
+          (await this.prompt('Backup condition (SQL WHERE clause, or "true" for all): ')) || "true";
         break;
 
       case "index":
         details.tableName = await this.prompt("Target table name: ");
         details.columnName = await this.prompt("Column name(s) for index: ");
         details.indexType =
-          (await this.prompt(
-            "Index type (btree, gin, gist, etc., press Enter for default): ",
-          )) || "";
+          (await this.prompt("Index type (btree, gin, gist, etc., press Enter for default): ")) ||
+          "";
         details.concurrent =
-          (
-            await this.prompt("Create index concurrently? (y/n): ")
-          ).toLowerCase() === "y";
+          (await this.prompt("Create index concurrently? (y/n): ")).toLowerCase() === "y";
         details.indexName =
-          (await this.prompt(
-            "Index name (press Enter for auto-generated): ",
-          )) || null;
+          (await this.prompt("Index name (press Enter for auto-generated): ")) || null;
         details.columns = details.columnName;
         break;
     }
@@ -410,11 +394,7 @@ $$ LANGUAGE plpgsql;
       }
 
       // Generate migration content
-      const content = this.generateMigrationTemplate(
-        type,
-        description,
-        migrationOptions,
-      );
+      const content = this.generateMigrationTemplate(type, description, migrationOptions);
 
       // Write the migration file
       writeFileSync(filepath, content);
@@ -531,8 +511,7 @@ MIGRATION TYPES:
   }
 
   const typeIndex = args.indexOf("--type");
-  const type =
-    typeIndex !== -1 && args[typeIndex + 1] ? args[typeIndex + 1] : "generic";
+  const type = typeIndex !== -1 && args[typeIndex + 1] ? args[typeIndex + 1] : "generic";
 
   const dryRun = args.includes("--dry-run");
 

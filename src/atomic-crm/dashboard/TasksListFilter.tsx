@@ -35,7 +35,7 @@ export const TasksListFilter = ({
         sales_id: identity?.id,
       },
     },
-    { enabled: !!identity },
+    { enabled: !!identity }
   );
 
   const listContext = useList({

@@ -2,12 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button.constants";
 import { Eye } from "lucide-react";
-import {
-  Translate,
-  useCreatePath,
-  useRecordContext,
-  useResourceContext,
-} from "ra-core";
+import { Translate, useCreatePath, useRecordContext, useResourceContext } from "ra-core";
 
 export interface ShowButtonProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   label?: string;
@@ -32,9 +27,7 @@ export const ShowButton = (props: ShowButtonProps) => {
       {...rest}
     >
       {icon ?? <Eye />}
-      <Translate i18nKey={label ?? "ra.action.show"}>
-        {label ?? "Show"}
-      </Translate>
+      <Translate i18nKey={label ?? "ra.action.show"}>{label ?? "Show"}</Translate>
     </Link>
   );
 };

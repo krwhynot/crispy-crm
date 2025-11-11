@@ -1,4 +1,4 @@
-import { test, expect } from './support/fixtures/authenticated';
+import { test, expect } from "./support/fixtures/authenticated";
 
 /**
  * Organization Hierarchies - Performance E2E Tests
@@ -10,13 +10,13 @@ import { test, expect } from './support/fixtures/authenticated';
  * - Efficient query performance
  */
 
-test.describe('Organization Hierarchies - Performance', () => {
-  test('Organizations list loads efficiently', async ({ authenticatedPage }) => {
+test.describe("Organization Hierarchies - Performance", () => {
+  test("Organizations list loads efficiently", async ({ authenticatedPage }) => {
     const startTime = Date.now();
 
     // Navigate to organizations
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
     const loadTime = Date.now() - startTime;
 
@@ -26,20 +26,20 @@ test.describe('Organization Hierarchies - Performance', () => {
     expect(loadTime).toBeLessThan(2000);
   });
 
-  test('Organization detail with hierarchies renders quickly', async ({ authenticatedPage }) => {
+  test("Organization detail with hierarchies renders quickly", async ({ authenticatedPage }) => {
     // Navigate to organizations
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
     // Get first organization link
-    const firstOrgLink = authenticatedPage.locator('tbody tr:first-child a').first();
+    const firstOrgLink = authenticatedPage.locator("tbody tr:first-child a").first();
 
     if (await firstOrgLink.isVisible().catch(() => false)) {
       const startTime = Date.now();
 
       // Click to navigate
       await firstOrgLink.click();
-      await authenticatedPage.waitForLoadState('networkidle');
+      await authenticatedPage.waitForLoadState("networkidle");
 
       const loadTime = Date.now() - startTime;
 
@@ -50,15 +50,15 @@ test.describe('Organization Hierarchies - Performance', () => {
     }
   });
 
-  test('Branch table renders without N+1 queries', async ({ authenticatedPage }) => {
+  test("Branch table renders without N+1 queries", async ({ authenticatedPage }) => {
     // Navigate to organizations
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
     // Track network requests
     const networkRequests: Array<{ url: string; status: number }> = [];
 
-    authenticatedPage.on('response', response => {
+    authenticatedPage.on("response", (response) => {
       networkRequests.push({
         url: response.url(),
         status: response.status(),
@@ -66,30 +66,27 @@ test.describe('Organization Hierarchies - Performance', () => {
     });
 
     // Navigate to first org
-    const firstOrgLink = authenticatedPage.locator('tbody tr:first-child a').first();
+    const firstOrgLink = authenticatedPage.locator("tbody tr:first-child a").first();
 
     if (await firstOrgLink.isVisible().catch(() => false)) {
       await firstOrgLink.click();
-      await authenticatedPage.waitForLoadState('networkidle');
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Verify branch section loads efficiently
       const branchSection = authenticatedPage.locator('[data-testid="branch-locations-section"]');
 
       if (await branchSection.isVisible().catch(() => false)) {
         // Get table rows
-        const table = branchSection.locator('table');
+        const table = branchSection.locator("table");
 
         if (await table.isVisible()) {
-          const rowCount = await table.locator('tbody tr').count();
+          const rowCount = await table.locator("tbody tr").count();
 
           console.log(`Branch table with ${rowCount} rows rendered`);
 
           // Count API calls
           const apiCalls = networkRequests.filter(
-            req =>
-              req.url.includes('/rest/v1') &&
-              req.status >= 200 &&
-              req.status < 400
+            (req) => req.url.includes("/rest/v1") && req.status >= 200 && req.status < 400
           );
 
           console.log(`API calls made: ${apiCalls.length}`);
@@ -102,18 +99,18 @@ test.describe('Organization Hierarchies - Performance', () => {
     }
   });
 
-  test('Hierarchy components are interactive without delay', async ({ authenticatedPage }) => {
+  test("Hierarchy components are interactive without delay", async ({ authenticatedPage }) => {
     // Navigate to organizations
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
-    const firstOrgLink = authenticatedPage.locator('tbody tr:first-child a').first();
+    const firstOrgLink = authenticatedPage.locator("tbody tr:first-child a").first();
 
     if (await firstOrgLink.isVisible().catch(() => false)) {
       const startTime = Date.now();
 
       await firstOrgLink.click();
-      await authenticatedPage.waitForLoadState('networkidle');
+      await authenticatedPage.waitForLoadState("networkidle");
 
       const breadcrumb = authenticatedPage.locator('[data-testid="hierarchy-breadcrumb"]');
 
@@ -126,25 +123,25 @@ test.describe('Organization Hierarchies - Performance', () => {
         expect(breadcrumbLoadTime).toBeLessThan(3000);
 
         // Verify breadcrumb links are clickable
-        const parentLinks = breadcrumb.locator('a');
+        const parentLinks = breadcrumb.locator("a");
         const parentLinkCount = await parentLinks.count();
 
         if (parentLinkCount > 0) {
           const parentLink = parentLinks.first();
           expect(await parentLink.isEnabled()).toBeTruthy();
 
-          console.log('✓ Breadcrumb links are interactive');
+          console.log("✓ Breadcrumb links are interactive");
         }
       }
     }
   });
 
-  test('Hierarchy columns do not impact page load performance', async ({ authenticatedPage }) => {
+  test("Hierarchy columns do not impact page load performance", async ({ authenticatedPage }) => {
     const startTime = Date.now();
 
     // Navigate to organizations with hierarchy columns
-    await authenticatedPage.goto('http://localhost:5174/#/organizations');
-    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.goto("http://localhost:5174/#/organizations");
+    await authenticatedPage.waitForLoadState("networkidle");
 
     const loadTime = Date.now() - startTime;
 

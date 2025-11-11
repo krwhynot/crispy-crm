@@ -15,9 +15,7 @@ import { AuthCallback } from "@/components/admin/authentication";
 
 const defaultStore = localStorageStore();
 
-const AdminContext = (props: CoreAdminContextProps) => (
-  <CoreAdminContext {...props} />
-);
+const AdminContext = (props: CoreAdminContextProps) => <CoreAdminContext {...props} />;
 
 const AdminUI = (props: CoreAdminUIProps) => (
   <ThemeProvider>

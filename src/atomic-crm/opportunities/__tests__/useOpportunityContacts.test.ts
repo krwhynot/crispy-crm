@@ -14,9 +14,7 @@ describe("useOpportunityContacts", () => {
       isLoading: false,
     });
 
-    const { result } = renderHook(() =>
-      useOpportunityContacts([1, 2])
-    );
+    const { result } = renderHook(() => useOpportunityContacts([1, 2]));
 
     await waitFor(() => {
       expect(result.current.primaryContact).toEqual({

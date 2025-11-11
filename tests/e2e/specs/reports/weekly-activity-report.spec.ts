@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
-import { WeeklyActivityReportPage } from '../../support/poms/WeeklyActivityReportPage';
-import { consoleMonitor } from '../../support/utils/console-monitor';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
+import { WeeklyActivityReportPage } from "../../support/poms/WeeklyActivityReportPage";
+import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
  * E2E tests for Weekly Activity Summary Report
@@ -15,14 +15,14 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  * - Test data isolation via date range selection ✓
  */
 
-test.describe('Weekly Activity Summary Report', () => {
+test.describe("Weekly Activity Summary Report", () => {
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
     // Login using POM (semantic selectors, no CSS)
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
 
     // Wait for either login form or dashboard
     const isLoginFormVisible = await page
@@ -31,7 +31,7 @@ test.describe('Weekly Activity Summary Report', () => {
       .catch(() => false);
 
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
     }
     // If not visible, storage state has already authenticated us - no need to wait
   });
@@ -44,7 +44,7 @@ test.describe('Weekly Activity Summary Report', () => {
     consoleMonitor.clear();
   });
 
-  test('LOAD - Report page loads successfully', async ({ page }) => {
+  test("LOAD - Report page loads successfully", async ({ page }) => {
     const reportPage = new WeeklyActivityReportPage(page);
 
     // Navigate to report
@@ -57,12 +57,12 @@ test.describe('Weekly Activity Summary Report', () => {
     await expect(reportPage.getExportButton()).toBeVisible();
 
     // Assert no console errors
-    expect(consoleMonitor.hasRLSErrors(), 'RLS errors detected').toBe(false);
-    expect(consoleMonitor.hasReactErrors(), 'React errors detected').toBe(false);
-    expect(consoleMonitor.hasNetworkErrors(), 'Network errors detected').toBe(false);
+    expect(consoleMonitor.hasRLSErrors(), "RLS errors detected").toBe(false);
+    expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(false);
+    expect(consoleMonitor.hasNetworkErrors(), "Network errors detected").toBe(false);
   });
 
-  test('DATA - Summary statistics are displayed', async ({ page }) => {
+  test("DATA - Summary statistics are displayed", async ({ page }) => {
     const reportPage = new WeeklyActivityReportPage(page);
 
     // Navigate to report
@@ -88,14 +88,17 @@ test.describe('Weekly Activity Summary Report', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('DATA - Rep cards and activity tables render', async ({ page }) => {
+  test("DATA - Rep cards and activity tables render", async ({ page }) => {
     const reportPage = new WeeklyActivityReportPage(page);
 
     // Navigate to report
     await reportPage.navigate();
 
     // Check if we have activity data (not empty state)
-    const hasData = await page.getByText(/no activities found/i).isVisible().catch(() => false);
+    const hasData = await page
+      .getByText(/no activities found/i)
+      .isVisible()
+      .catch(() => false);
 
     if (hasData) {
       // Empty state - verify message is displayed
@@ -117,7 +120,7 @@ test.describe('Weekly Activity Summary Report', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('FILTER - Date range can be changed', async ({ page }) => {
+  test("FILTER - Date range can be changed", async ({ page }) => {
     const reportPage = new WeeklyActivityReportPage(page);
 
     // Navigate to report
@@ -132,8 +135,8 @@ test.describe('Weekly Activity Summary Report', () => {
     lastMonthEnd.setMonth(lastMonthEnd.getMonth() + 1);
     lastMonthEnd.setDate(0); // Last day of month
 
-    const startDateStr = lastMonthStart.toISOString().split('T')[0];
-    const endDateStr = lastMonthEnd.toISOString().split('T')[0];
+    const startDateStr = lastMonthStart.toISOString().split("T")[0];
+    const endDateStr = lastMonthEnd.toISOString().split("T")[0];
 
     // Change date range
     await reportPage.setDateRange(startDateStr, endDateStr);
@@ -142,8 +145,8 @@ test.describe('Weekly Activity Summary Report', () => {
     // Condition-based: wait for either data or "no activities" message
     await page.waitForFunction(
       () => {
-        const hasTable = document.querySelector('table') !== null;
-        const hasNoDataMsg = document.body.textContent?.includes('No activities found');
+        const hasTable = document.querySelector("table") !== null;
+        const hasNoDataMsg = document.body.textContent?.includes("No activities found");
         return hasTable || hasNoDataMsg;
       },
       { timeout: 10000 }
@@ -161,14 +164,14 @@ test.describe('Weekly Activity Summary Report', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('EXPORT - CSV export triggers success notification', async ({ page }) => {
+  test("EXPORT - CSV export triggers success notification", async ({ page }) => {
     const reportPage = new WeeklyActivityReportPage(page);
 
     // Navigate to report
     await reportPage.navigate();
 
     // Set up download event listener before clicking export
-    const downloadPromise = page.waitForEvent('download', { timeout: 10000 });
+    const downloadPromise = page.waitForEvent("download", { timeout: 10000 });
 
     // Click export button
     await reportPage.clickExportButton();
@@ -188,7 +191,7 @@ test.describe('Weekly Activity Summary Report', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('UI - Low activity warning badge appears for principals with < 3 activities', async ({
+  test("UI - Low activity warning badge appears for principals with < 3 activities", async ({
     page,
   }) => {
     const reportPage = new WeeklyActivityReportPage(page);
@@ -197,7 +200,10 @@ test.describe('Weekly Activity Summary Report', () => {
     await reportPage.navigate();
 
     // Check if any data exists
-    const hasNoData = await page.getByText(/no activities found/i).isVisible().catch(() => false);
+    const hasNoData = await page
+      .getByText(/no activities found/i)
+      .isVisible()
+      .catch(() => false);
 
     if (!hasNoData) {
       // Look for low activity warning badge
@@ -212,14 +218,14 @@ test.describe('Weekly Activity Summary Report', () => {
         await reportPage.expectLowActivityWarningVisible();
 
         // Verify the row with warning has yellow background (semantic color)
-        const warningRow = page.getByText(/⚠️ low activity/i).locator('..');
-        const bgColor = await warningRow.evaluate((el) =>
-          window.getComputedStyle(el).backgroundColor
+        const warningRow = page.getByText(/⚠️ low activity/i).locator("..");
+        const bgColor = await warningRow.evaluate(
+          (el) => window.getComputedStyle(el).backgroundColor
         );
 
         // Should have a background color (not transparent/default)
-        expect(bgColor).not.toBe('rgba(0, 0, 0, 0)');
-        expect(bgColor).not.toBe('');
+        expect(bgColor).not.toBe("rgba(0, 0, 0, 0)");
+        expect(bgColor).not.toBe("");
       }
     }
 

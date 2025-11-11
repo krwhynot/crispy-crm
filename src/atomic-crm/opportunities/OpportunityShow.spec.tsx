@@ -13,8 +13,7 @@ import { ConfigurationContext } from "../root/ConfigurationContext";
 const mockOpportunity = {
   id: 1,
   name: "Enterprise Software Deal",
-  description:
-    "Large-scale enterprise software implementation for client transformation",
+  description: "Large-scale enterprise software implementation for client transformation",
   stage: "initial_outreach",
   priority: "high",
   amount: 50000,
@@ -222,15 +221,13 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
       expect(screen.getByText("Enterprise Software Deal")).toBeInTheDocument();
       expect(
-        screen.getByText(
-          "Large-scale enterprise software implementation for client transformation",
-        ),
+        screen.getByText("Large-scale enterprise software implementation for client transformation")
       ).toBeInTheDocument();
     });
   });
@@ -239,7 +236,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -252,7 +249,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -265,7 +262,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -277,7 +274,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -291,7 +288,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -306,7 +303,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -319,7 +316,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -334,16 +331,12 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Discovery call with technical team"),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("Follow-up on proposal requirements"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Discovery call with technical team")).toBeInTheDocument();
+      expect(screen.getByText("Follow-up on proposal requirements")).toBeInTheDocument();
     });
   });
 
@@ -351,7 +344,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -366,7 +359,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -388,7 +381,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -402,7 +395,7 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -416,26 +409,20 @@ describe("OpportunityShow - Unified Provider", () => {
     render(
       <TestWrapper>
         <OpportunityShow />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
       // Should show activity count and recent activities
-      expect(
-        screen.getByText("Discovery call with technical team"),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("Follow-up on proposal requirements"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Discovery call with technical team")).toBeInTheDocument();
+      expect(screen.getByText("Follow-up on proposal requirements")).toBeInTheDocument();
 
       // Should show activity descriptions
       expect(
-        screen.getByText(
-          "Discussed technical requirements and integration needs",
-        ),
+        screen.getByText("Discussed technical requirements and integration needs")
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Sent detailed technical specifications document"),
+        screen.getByText("Sent detailed technical specifications document")
       ).toBeInTheDocument();
     });
   });

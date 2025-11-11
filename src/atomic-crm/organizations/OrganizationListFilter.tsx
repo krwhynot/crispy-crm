@@ -30,11 +30,11 @@ export const OrganizationListFilter = () => {
 
   // Organization type colors using MFB Garden to Table theme
   const _organizationTypeColors: Record<string, string> = {
-    customer: "secondary",      // Warm tan - welcoming
-    prospect: "secondary",      // Sage/olive - growth
-    principal: "default",       // Eggplant/purple - important/primary
-    distributor: "secondary",   // Teal - active/connected
-    unknown: "outline",         // Mushroom gray - neutral
+    customer: "secondary", // Warm tan - welcoming
+    prospect: "secondary", // Sage/olive - growth
+    principal: "default", // Eggplant/purple - important/primary
+    distributor: "secondary", // Teal - active/connected
+    unknown: "outline", // Mushroom gray - neutral
   };
 
   const priorities = [
@@ -68,29 +68,23 @@ export const OrganizationListFilter = () => {
 
           {/* Collapsible Filter Sections */}
           <div className="flex flex-col gap-2">
-            <FilterCategory
-              icon={<Tag className="h-4 w-4" />}
-              label="Organization Type"
-            >
+            <FilterCategory icon={<Tag className="h-4 w-4" />} label="Organization Type">
               {organizationTypes.map((type) => {
-                const colorClass = {
-                  customer: "bg-[color:var(--tag-warm-bg)] text-[color:var(--tag-warm-fg)]",
-                  prospect: "bg-[color:var(--tag-sage-bg)] text-[color:var(--tag-sage-fg)]",
-                  principal: "bg-[color:var(--tag-purple-bg)] text-[color:var(--tag-purple-fg)]",
-                  distributor: "bg-[color:var(--tag-teal-bg)] text-[color:var(--tag-teal-fg)]",
-                  unknown: "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]",
-                }[type.id] || "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]";
+                const colorClass =
+                  {
+                    customer: "bg-[color:var(--tag-warm-bg)] text-[color:var(--tag-warm-fg)]",
+                    prospect: "bg-[color:var(--tag-sage-bg)] text-[color:var(--tag-sage-fg)]",
+                    principal: "bg-[color:var(--tag-purple-bg)] text-[color:var(--tag-purple-fg)]",
+                    distributor: "bg-[color:var(--tag-teal-bg)] text-[color:var(--tag-teal-fg)]",
+                    unknown: "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]",
+                  }[type.id] || "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]";
 
                 return (
                   <ToggleFilterButton
                     multiselect
                     key={type.id}
                     className="w-full justify-between"
-                    label={
-                      <Badge className={`text-xs px-1 py-0 ${colorClass}`}>
-                        {type.name}
-                      </Badge>
-                    }
+                    label={<Badge className={`text-xs px-1 py-0 ${colorClass}`}>{type.name}</Badge>}
                     value={{ organization_type: type.id }}
                   />
                 );
@@ -104,10 +98,7 @@ export const OrganizationListFilter = () => {
                   key={priority.id}
                   className="w-full justify-between"
                   label={
-                    <Badge
-                      variant={priorityColors[priority.id]}
-                      className="text-xs px-1 py-0"
-                    >
+                    <Badge variant={priorityColors[priority.id]} className="text-xs px-1 py-0">
                       {priority.name}
                     </Badge>
                   }
@@ -128,10 +119,7 @@ export const OrganizationListFilter = () => {
               ))}
             </FilterCategory>
 
-            <FilterCategory
-              icon={<Users className="h-4 w-4" />}
-              label="Account Manager"
-            >
+            <FilterCategory icon={<Users className="h-4 w-4" />} label="Account Manager">
               <ToggleFilterButton
                 className="w-full justify-between"
                 label={"Me"}

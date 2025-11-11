@@ -45,9 +45,7 @@ describe("BulkActionsToolbar", () => {
   describe("Data Filtering Logic", () => {
     it("should filter selected opportunities from full list", () => {
       const selectedIds = [1];
-      const selectedOpportunities = mockOpportunities.filter((opp) =>
-        selectedIds.includes(opp.id)
-      );
+      const selectedOpportunities = mockOpportunities.filter((opp) => selectedIds.includes(opp.id));
 
       expect(selectedOpportunities).toHaveLength(1);
       expect(selectedOpportunities[0].id).toBe(1);
@@ -56,19 +54,15 @@ describe("BulkActionsToolbar", () => {
 
     it("should handle multiple selected opportunities", () => {
       const selectedIds = [1, 2];
-      const selectedOpportunities = mockOpportunities.filter((opp) =>
-        selectedIds.includes(opp.id)
-      );
+      const selectedOpportunities = mockOpportunities.filter((opp) => selectedIds.includes(opp.id));
 
       expect(selectedOpportunities).toHaveLength(2);
-      expect(selectedOpportunities.map(o => o.id)).toEqual([1, 2]);
+      expect(selectedOpportunities.map((o) => o.id)).toEqual([1, 2]);
     });
 
     it("should return empty array when no items selected", () => {
       const selectedIds: number[] = [];
-      const selectedOpportunities = mockOpportunities.filter((opp) =>
-        selectedIds.includes(opp.id)
-      );
+      const selectedOpportunities = mockOpportunities.filter((opp) => selectedIds.includes(opp.id));
 
       expect(selectedOpportunities).toHaveLength(0);
     });
@@ -77,26 +71,24 @@ describe("BulkActionsToolbar", () => {
   describe("Selection State Logic", () => {
     it("should calculate allSelected state correctly", () => {
       const selectedIds = [1, 2];
-      const allSelected = selectedIds.length === mockOpportunities.length &&
-        mockOpportunities.length > 0;
+      const allSelected =
+        selectedIds.length === mockOpportunities.length && mockOpportunities.length > 0;
 
       expect(allSelected).toBe(true);
     });
 
     it("should calculate someSelected state correctly", () => {
       const selectedIds = [1];
-      const someSelected = selectedIds.length > 0 &&
-        selectedIds.length < mockOpportunities.length;
+      const someSelected = selectedIds.length > 0 && selectedIds.length < mockOpportunities.length;
 
       expect(someSelected).toBe(true);
     });
 
     it("should handle no selection state", () => {
       const selectedIds: number[] = [];
-      const allSelected = selectedIds.length === mockOpportunities.length &&
-        mockOpportunities.length > 0;
-      const someSelected = selectedIds.length > 0 &&
-        selectedIds.length < mockOpportunities.length;
+      const allSelected =
+        selectedIds.length === mockOpportunities.length && mockOpportunities.length > 0;
+      const someSelected = selectedIds.length > 0 && selectedIds.length < mockOpportunities.length;
 
       expect(allSelected).toBe(false);
       expect(someSelected).toBe(false);
@@ -106,21 +98,21 @@ describe("BulkActionsToolbar", () => {
   describe("Pluralization Logic", () => {
     it("should use singular form for 1 item", () => {
       const count = 1;
-      const text = `${count} opportunit${count === 1 ? 'y' : 'ies'} selected`;
+      const text = `${count} opportunit${count === 1 ? "y" : "ies"} selected`;
 
       expect(text).toBe("1 opportunity selected");
     });
 
     it("should use plural form for multiple items", () => {
       const count = 2;
-      const text = `${count} opportunit${count === 1 ? 'y' : 'ies'} selected`;
+      const text = `${count} opportunit${count === 1 ? "y" : "ies"} selected`;
 
       expect(text).toBe("2 opportunities selected");
     });
 
     it("should use plural form for zero items", () => {
       const count = 0;
-      const text = `${count} opportunit${count === 1 ? 'y' : 'ies'} selected`;
+      const text = `${count} opportunit${count === 1 ? "y" : "ies"} selected`;
 
       expect(text).toBe("0 opportunities selected");
     });

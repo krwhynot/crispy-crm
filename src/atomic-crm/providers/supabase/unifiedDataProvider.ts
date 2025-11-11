@@ -25,11 +25,7 @@ import type { QuickAddInput } from "../validation/quickAdd";
 
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
-import {
-  getDatabaseResource,
-  applySearchParams,
-  normalizeResponseData,
-} from "./dataProviderUtils";
+import { getDatabaseResource, applySearchParams, normalizeResponseData } from "./dataProviderUtils";
 import { diffProducts } from "../../opportunities/diffProducts";
 
 // Import decomposed services
@@ -44,7 +40,12 @@ import {
 } from "../../services";
 
 // Import RPC validation schemas
-import { RPC_SCHEMAS, type RPCFunctionName, edgeFunctionSchemas, type EdgeFunctionName } from "../../validation/rpc";
+import {
+  RPC_SCHEMAS,
+  type RPCFunctionName,
+  edgeFunctionSchemas,
+  type EdgeFunctionName,
+} from "../../validation/rpc";
 
 // Import types for custom methods
 import type { SalesFormData, Sale, Opportunity, OpportunityParticipant } from "../../types";
@@ -81,12 +82,7 @@ const junctionsService = new JunctionsService(baseDataProvider);
  * Log error with context for debugging
  * Integrated from resilientDataProvider for consolidated error logging
  */
-function logError(
-  method: string,
-  resource: string,
-  params: any,
-  error: unknown,
-): void {
+function logError(method: string, resource: string, params: any, error: unknown): void {
   const context = {
     method,
     resource,
@@ -103,8 +99,7 @@ function logError(
   };
 
   console.error(`[DataProvider Error]`, context, {
-    error: error instanceof Error ? error.message :
-           (error?.message ? error.message : String(error)),
+    error: error instanceof Error ? error.message : error?.message ? error.message : String(error),
     stack: error instanceof Error ? error.stack : undefined,
     validationErrors: error?.body?.errors || error?.errors || undefined,
     fullError: error,
@@ -112,9 +107,9 @@ function logError(
 
   // Log validation errors in detail for debugging
   if (error?.body?.errors) {
-    console.error('[Validation Errors Detail]', JSON.stringify(error.body.errors, null, 2));
+    console.error("[Validation Errors Detail]", JSON.stringify(error.body.errors, null, 2));
   } else if (error?.errors) {
-    console.error('[Validation Errors Detail]', JSON.stringify(error.errors, null, 2));
+    console.error("[Validation Errors Detail]", JSON.stringify(error.errors, null, 2));
   }
 }
 
@@ -125,7 +120,7 @@ function logError(
 async function validateData(
   resource: string,
   data: any,
-  operation: "create" | "update" = "create",
+  operation: "create" | "update" = "create"
 ): Promise<void> {
   // For opportunities, merge defaults for fields that React Hook Form might not include
   // when they haven't been touched (even though defaultValues were set)
@@ -133,8 +128,8 @@ async function validateData(
   if (resource === "opportunities" && operation === "create") {
     // Merge with defaults - ensures validation receives proper types even for untouched fields
     dataToValidate = {
-      contact_ids: [],                      // Default to empty array (will fail min(1) validation with proper message)
-      ...data,                              // User's data overwrites defaults
+      contact_ids: [], // Default to empty array (will fail min(1) validation with proper message)
+      ...data, // User's data overwrites defaults
     };
   }
 
@@ -149,8 +144,8 @@ async function validateData(
 
       // Convert Zod issues to field-error map
       for (const issue of error.issues) {
-        const fieldPath = issue.path.join('.');
-        const fieldName = fieldPath || '_error';
+        const fieldPath = issue.path.join(".");
+        const fieldName = fieldPath || "_error";
         fieldErrors[fieldName] = issue.message;
       }
 
@@ -161,7 +156,7 @@ async function validateData(
     }
 
     // If already in expected format (has errors object at top level)
-    if (error.errors && typeof error.errors === 'object') {
+    if (error.errors && typeof error.errors === "object") {
       throw {
         message: error.message || "Validation failed",
         errors: error.errors,
@@ -190,10 +185,10 @@ async function validateData(
 async function transformData<T>(
   resource: string,
   data: Partial<T>,
-  _operation: "create" | "update" = "create",
+  _operation: "create" | "update" = "create"
 ): Promise<Partial<T>> {
   // Use the TransformService
-  return await transformService.transform(resource, data) as Partial<T>;
+  return (await transformService.transform(resource, data)) as Partial<T>;
 }
 
 /**
@@ -209,11 +204,11 @@ function isWrappedResponse<T extends { id: any }>(
   return (
     response !== null &&
     response !== undefined &&
-    typeof response === 'object' &&
-    'data' in response &&
+    typeof response === "object" &&
+    "data" in response &&
     response.data !== null &&
-    typeof response.data === 'object' &&
-    'id' in response.data
+    typeof response.data === "object" &&
+    "id" in response.data
   );
 }
 
@@ -224,9 +219,7 @@ function isWrappedResponse<T extends { id: any }>(
  * @param rpcData The raw data returned from a Supabase RPC call
  * @returns A React Admin-compatible response object
  */
-function formatRpcResponse<T extends { id: any }>(
-  rpcData: RpcWrappedResponse<T>
-): { data: T } {
+function formatRpcResponse<T extends { id: any }>(rpcData: RpcWrappedResponse<T>): { data: T } {
   // Use type guard for safer unwrapping
   if (isWrappedResponse(rpcData)) {
     return { data: rpcData.data };
@@ -264,7 +257,7 @@ function handleRpcError(error: any): never {
 async function processForDatabase<T>(
   resource: string,
   data: Partial<T>,
-  operation: "create" | "update" = "create",
+  operation: "create" | "update" = "create"
 ): Promise<Partial<T>> {
   // Validate first (original field names)
   await validateData(resource, data, operation);
@@ -275,7 +268,6 @@ async function processForDatabase<T>(
   return processedData;
 }
 
-
 /**
  * Wrap a data provider method with error logging and transformations
  * Ensures validation errors are properly formatted for React Admin's inline display
@@ -284,7 +276,7 @@ async function wrapMethod<T>(
   method: string,
   resource: string,
   params: any,
-  operation: () => Promise<T>,
+  operation: () => Promise<T>
 ): Promise<T> {
   try {
     return await operation();
@@ -293,14 +285,17 @@ async function wrapMethod<T>(
 
     // Handle idempotent delete - if resource doesn't exist, treat as success
     // This happens with React Admin's undoable mode where UI updates before API call
-    if (method === 'delete' && error.message?.includes('Cannot coerce the result to a single JSON object')) {
+    if (
+      method === "delete" &&
+      error.message?.includes("Cannot coerce the result to a single JSON object")
+    ) {
       // Return successful delete response - resource was already deleted
       return { data: params.previousData } as T;
     }
 
     // For validation errors, ensure React Admin format
     // This allows errors to be displayed inline next to form fields
-    if (error.body?.errors && typeof error.body.errors === 'object') {
+    if (error.body?.errors && typeof error.body.errors === "object") {
       // Already in correct format { message, body: { errors: { field: message } } }
       throw error;
     }
@@ -310,7 +305,7 @@ async function wrapMethod<T>(
       const fieldErrors: Record<string, string> = {};
 
       // Try to parse field from error details
-      if (typeof error.details === 'string') {
+      if (typeof error.details === "string") {
         // Simple heuristic to extract field name from error
         const match = error.details.match(/column "(\w+)"/i);
         if (match) {
@@ -335,10 +330,7 @@ async function wrapMethod<T>(
  * Create the unified data provider with integrated transformations and error logging
  */
 export const unifiedDataProvider: DataProvider = {
-  async getList(
-    resource: string,
-    params: GetListParams,
-  ): Promise<any> {
+  async getList(resource: string, params: GetListParams): Promise<any> {
     return wrapMethod("getList", resource, params, async () => {
       // Create a mutable copy of params to potentially modify filters
       const processedParams = { ...params };
@@ -346,7 +338,10 @@ export const unifiedDataProvider: DataProvider = {
       // CRITICAL: Validate and clean filters BEFORE applying search parameters
       // This prevents 400 errors from stale cached filters referencing non-existent columns
       if (processedParams.filter) {
-        processedParams.filter = validationService.validateFilters(resource, processedParams.filter);
+        processedParams.filter = validationService.validateFilters(
+          resource,
+          processedParams.filter
+        );
       }
 
       // Handle hierarchy filters for organizations
@@ -398,10 +393,7 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getOne(
-    resource: string,
-    params: GetOneParams,
-  ): Promise<any> {
+  async getOne(resource: string, params: GetOneParams): Promise<any> {
     return wrapMethod("getOne", resource, params, async () => {
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "one");
@@ -417,10 +409,7 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getMany(
-    resource: string,
-    params: GetManyParams,
-  ): Promise<any> {
+  async getMany(resource: string, params: GetManyParams): Promise<any> {
     return wrapMethod("getMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -444,10 +433,7 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getManyReference(
-    resource: string,
-    params: GetManyReferenceParams,
-  ): Promise<any> {
+  async getManyReference(resource: string, params: GetManyReferenceParams): Promise<any> {
     return wrapMethod("getManyReference", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -459,7 +445,7 @@ export const unifiedDataProvider: DataProvider = {
           ...params,
           filter: params.filter || {},
         } as GetListParams,
-        false, // getManyReference doesn't use summary views
+        false // getManyReference doesn't use summary views
       );
 
       const result = await baseDataProvider.getManyReference(dbResource, {
@@ -475,19 +461,12 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async create(
-    resource: string,
-    params: CreateParams,
-  ): Promise<any> {
+  async create(resource: string, params: CreateParams): Promise<any> {
     return wrapMethod("create", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
       // Validate and process data
-      const processedData = await processForDatabase(
-        resource,
-        params.data,
-        "create",
-      );
+      const processedData = await processForDatabase(resource, params.data, "create");
 
       // Check for preview/dry-run mode
       if (params.meta?.dryRun === true) {
@@ -496,15 +475,16 @@ export const unifiedDataProvider: DataProvider = {
         return {
           data: {
             ...processedData,
-            id: 'dry-run-provisional-id',
+            id: "dry-run-provisional-id",
           },
         };
       }
 
       // Special handling for segments - use RPC for get_or_create
       if (resource === "segments") {
-        const { data, error} = await supabase
-          .rpc('get_or_create_segment', { p_name: processedData.name });
+        const { data, error } = await supabase.rpc("get_or_create_segment", {
+          p_name: processedData.name,
+        });
 
         if (error) throw error;
 
@@ -520,7 +500,7 @@ export const unifiedDataProvider: DataProvider = {
           delete processedData.products_to_sync;
 
           // DEBUG: Log what we're sending to RPC
-          console.log('[RPC sync_opportunity_with_products] Calling with:', {
+          console.log("[RPC sync_opportunity_with_products] Calling with:", {
             opportunity_data: processedData,
             products_to_create: products,
             products_to_update: [],
@@ -536,8 +516,8 @@ export const unifiedDataProvider: DataProvider = {
           });
 
           if (error) {
-            console.error('[RPC sync_opportunity_with_products] Error:', error);
-            console.error('[RPC sync_opportunity_with_products] Error details:', {
+            console.error("[RPC sync_opportunity_with_products] Error:", error);
+            console.error("[RPC sync_opportunity_with_products] Error details:", {
               message: error.message,
               details: error.details,
               hint: error.hint,
@@ -548,7 +528,7 @@ export const unifiedDataProvider: DataProvider = {
             handleRpcError(error);
           }
 
-          console.log('[RPC sync_opportunity_with_products] Success:', data);
+          console.log("[RPC sync_opportunity_with_products] Success:", data);
           // Use helper function for consistent response formatting
           return formatRpcResponse(data);
         }
@@ -565,10 +545,7 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async update(
-    resource: string,
-    params: UpdateParams,
-  ): Promise<any> {
+  async update(resource: string, params: UpdateParams): Promise<any> {
     return wrapMethod("update", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -576,11 +553,7 @@ export const unifiedDataProvider: DataProvider = {
       const dataToProcess = { ...params.data, id: params.id };
 
       // Validate and process data
-      const processedData = await processForDatabase(
-        resource,
-        dataToProcess,
-        "update",
-      );
+      const processedData = await processForDatabase(resource, dataToProcess, "update");
 
       // Special handling for opportunities
       if (resource === "opportunities") {
@@ -590,7 +563,7 @@ export const unifiedDataProvider: DataProvider = {
           if (!params.previousData?.products) {
             throw new Error(
               "Cannot update products: previousData.products is missing. " +
-              "Ensure the form fetches the complete record with meta.select."
+                "Ensure the form fetches the complete record with meta.select."
             );
           }
 
@@ -638,11 +611,7 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getResourceName(resource);
 
       // Validate data for updates
-      const processedData = await processForDatabase(
-        resource,
-        params.data,
-        "update",
-      );
+      const processedData = await processForDatabase(resource, params.data, "update");
 
       const result = await baseDataProvider.updateMany(dbResource, {
         ...params,
@@ -653,10 +622,7 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async delete(
-    resource: string,
-    params: DeleteParams,
-  ): Promise<any> {
+  async delete(resource: string, params: DeleteParams): Promise<any> {
     return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -699,7 +665,7 @@ export const unifiedDataProvider: DataProvider = {
       if (supportsSoftDelete(dbResource)) {
         // Soft delete many: set deleted_at timestamp for each
         return Promise.all(
-          params.ids.map(id =>
+          params.ids.map((id) =>
             baseDataProvider.update(dbResource, {
               id,
               data: { deleted_at: new Date().toISOString() },
@@ -720,7 +686,7 @@ export const unifiedDataProvider: DataProvider = {
 
   async salesUpdate(
     id: Identifier,
-    data: Partial<Omit<SalesFormData, "password">>,
+    data: Partial<Omit<SalesFormData, "password">>
   ): Promise<Partial<Omit<SalesFormData, "password">>> {
     return salesService.salesUpdate(id, data);
   },
@@ -753,21 +719,21 @@ export const unifiedDataProvider: DataProvider = {
   async addContactToOrganization(
     contactId: Identifier,
     organizationId: Identifier,
-    params: any = {},
+    params: any = {}
   ): Promise<{ data: any }> {
     return junctionsService.addContactToOrganization(contactId, organizationId, params);
   },
 
   async removeContactFromOrganization(
     contactId: Identifier,
-    organizationId: Identifier,
+    organizationId: Identifier
   ): Promise<{ data: { id: string } }> {
     return junctionsService.removeContactFromOrganization(contactId, organizationId);
   },
 
   async setPrimaryOrganization(
     contactId: Identifier,
-    organizationId: Identifier,
+    organizationId: Identifier
   ): Promise<{ data: { success: boolean } }> {
     return junctionsService.setPrimaryOrganization(contactId, organizationId);
   },
@@ -780,14 +746,14 @@ export const unifiedDataProvider: DataProvider = {
   async addOpportunityParticipant(
     opportunityId: Identifier,
     organizationId: Identifier,
-    params: Partial<OpportunityParticipant> = {},
+    params: Partial<OpportunityParticipant> = {}
   ): Promise<{ data: any }> {
     return junctionsService.addOpportunityParticipant(opportunityId, organizationId, params);
   },
 
   async removeOpportunityParticipant(
     opportunityId: Identifier,
-    organizationId: Identifier,
+    organizationId: Identifier
   ): Promise<{ data: { id: string } }> {
     return junctionsService.removeOpportunityParticipant(opportunityId, organizationId);
   },
@@ -800,14 +766,14 @@ export const unifiedDataProvider: DataProvider = {
   async addOpportunityContact(
     opportunityId: Identifier,
     contactId: Identifier,
-    params: any = {},
+    params: any = {}
   ): Promise<{ data: any }> {
     return junctionsService.addOpportunityContact(opportunityId, contactId, params);
   },
 
   async removeOpportunityContact(
     opportunityId: Identifier,
-    contactId: Identifier,
+    contactId: Identifier
   ): Promise<{ data: { id: string } }> {
     return junctionsService.removeOpportunityContact(opportunityId, contactId);
   },
@@ -820,19 +786,21 @@ export const unifiedDataProvider: DataProvider = {
   async addOpportunityContactViaJunction(
     opportunityId: Identifier,
     contactId: Identifier,
-    metadata?: { role?: string; is_primary?: boolean; notes?: string },
+    metadata?: { role?: string; is_primary?: boolean; notes?: string }
   ): Promise<{ data: any }> {
     return junctionsService.addOpportunityContact(opportunityId, contactId, metadata);
   },
 
-  async removeOpportunityContactViaJunction(junctionId: Identifier): Promise<{ data: { id: string } }> {
+  async removeOpportunityContactViaJunction(
+    junctionId: Identifier
+  ): Promise<{ data: { id: string } }> {
     try {
       await this.delete("opportunity_contacts", { id: junctionId });
       return { data: { id: String(junctionId) } };
     } catch (error: any) {
       console.error(`[DataProvider] Failed to remove opportunity contact via junction`, {
         junctionId,
-        error
+        error,
       });
       throw new Error(`Remove opportunity contact failed: ${error.message}`);
     }
@@ -871,14 +839,14 @@ export const unifiedDataProvider: DataProvider = {
       const { data, error } = await supabase.rpc(functionName, params);
 
       if (error) {
-        logError('rpc', functionName, params, error);
+        logError("rpc", functionName, params, error);
         throw new Error(`RPC ${functionName} failed: ${error.message}`);
       }
 
       console.log(`[DataProvider RPC] ${functionName} succeeded`, data);
       return data;
     } catch (error) {
-      logError('rpc', functionName, params, error);
+      logError("rpc", functionName, params, error);
       throw error;
     }
   },
@@ -904,25 +872,23 @@ export const unifiedDataProvider: DataProvider = {
 
         // Validate file size (10MB limit)
         if (file.size > 10 * 1024 * 1024) {
-          throw new Error('File size exceeds 10MB limit');
+          throw new Error("File size exceeds 10MB limit");
         }
 
-        const { data, error } = await supabase.storage
-          .from(bucket)
-          .upload(path, file, {
-            cacheControl: '3600',
-            upsert: true,
-          });
+        const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
 
         if (error) {
-          logError('storage.upload', bucket, { path, size: file.size }, error);
+          logError("storage.upload", bucket, { path, size: file.size }, error);
           throw new Error(`Upload failed: ${error.message}`);
         }
 
         console.log(`[DataProvider Storage] Upload succeeded`, data);
         return data;
       } catch (error) {
-        logError('storage.upload', bucket, { path }, error);
+        logError("storage.upload", bucket, { path }, error);
         throw error;
       }
     },
@@ -948,18 +914,16 @@ export const unifiedDataProvider: DataProvider = {
       try {
         console.log(`[DataProvider Storage] Removing from ${bucket}`, paths);
 
-        const { error } = await supabase.storage
-          .from(bucket)
-          .remove(paths);
+        const { error } = await supabase.storage.from(bucket).remove(paths);
 
         if (error) {
-          logError('storage.remove', bucket, { paths }, error);
+          logError("storage.remove", bucket, { paths }, error);
           throw new Error(`Remove failed: ${error.message}`);
         }
 
         console.log(`[DataProvider Storage] Remove succeeded`);
       } catch (error) {
-        logError('storage.remove', bucket, { paths }, error);
+        logError("storage.remove", bucket, { paths }, error);
         throw error;
       }
     },
@@ -972,21 +936,19 @@ export const unifiedDataProvider: DataProvider = {
      */
     async list(bucket: string, path?: string): Promise<any[]> {
       try {
-        console.log(`[DataProvider Storage] Listing ${bucket}/${path || ''}`);
+        console.log(`[DataProvider Storage] Listing ${bucket}/${path || ""}`);
 
-        const { data, error } = await supabase.storage
-          .from(bucket)
-          .list(path);
+        const { data, error } = await supabase.storage.from(bucket).list(path);
 
         if (error) {
-          logError('storage.list', bucket, { path }, error);
+          logError("storage.list", bucket, { path }, error);
           throw new Error(`List failed: ${error.message}`);
         }
 
         console.log(`[DataProvider Storage] Listed ${data?.length || 0} files`);
         return data || [];
       } catch (error) {
-        logError('storage.list', bucket, { path }, error);
+        logError("storage.list", bucket, { path }, error);
         throw error;
       }
     },
@@ -1002,10 +964,10 @@ export const unifiedDataProvider: DataProvider = {
   async invoke<T = any>(
     functionName: string,
     options: {
-      method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+      method?: "GET" | "POST" | "PUT" | "DELETE";
       body?: any;
       headers?: Record<string, string>;
-    } = {},
+    } = {}
   ): Promise<T> {
     try {
       console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
@@ -1026,13 +988,13 @@ export const unifiedDataProvider: DataProvider = {
       }
 
       const { data, error } = await supabase.functions.invoke<T>(functionName, {
-        method: options.method || 'POST',
+        method: options.method || "POST",
         body: options.body,
         headers: options.headers,
       });
 
       if (error) {
-        logError('invoke', functionName, options, error);
+        logError("invoke", functionName, options, error);
         throw new Error(`Edge function ${functionName} failed: ${error.message}`);
       }
 
@@ -1043,7 +1005,7 @@ export const unifiedDataProvider: DataProvider = {
       console.log(`[DataProvider Edge] ${functionName} succeeded`, data);
       return data;
     } catch (error) {
-      logError('invoke', functionName, options, error);
+      logError("invoke", functionName, options, error);
       throw error;
     }
   },
@@ -1057,22 +1019,21 @@ export const unifiedDataProvider: DataProvider = {
    */
   async createBoothVisitor(data: QuickAddInput): Promise<{ data: any }> {
     try {
-      console.log('[DataProvider] Creating booth visitor', data);
+      console.log("[DataProvider] Creating booth visitor", data);
 
-      const { data: result, error } = await supabase.rpc(
-        'create_booth_visitor_opportunity',
-        { _data: data }
-      );
+      const { data: result, error } = await supabase.rpc("create_booth_visitor_opportunity", {
+        _data: data,
+      });
 
       if (error) {
-        logError('createBoothVisitor', 'booth_visitor', data, error);
+        logError("createBoothVisitor", "booth_visitor", data, error);
         throw new Error(`Create booth visitor failed: ${error.message}`);
       }
 
-      console.log('[DataProvider] Booth visitor created successfully', result);
+      console.log("[DataProvider] Booth visitor created successfully", result);
       return { data: result };
     } catch (error) {
-      logError('createBoothVisitor', 'booth_visitor', data, error);
+      logError("createBoothVisitor", "booth_visitor", data, error);
       throw error;
     }
   },

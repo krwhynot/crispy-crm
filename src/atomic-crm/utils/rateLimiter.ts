@@ -58,9 +58,7 @@ export class ClientRateLimiter {
     const now = Date.now();
 
     // Remove requests outside the window
-    const validRequests = state.requests.filter(
-      time => now - time < this.config.windowMs
-    );
+    const validRequests = state.requests.filter((time) => now - time < this.config.windowMs);
 
     if (validRequests.length < this.config.maxRequests) {
       // Allow operation, record timestamp
@@ -83,9 +81,7 @@ export class ClientRateLimiter {
   getRemaining(): number {
     const state = this.getState();
     const now = Date.now();
-    const validRequests = state.requests.filter(
-      time => now - time < this.config.windowMs
-    );
+    const validRequests = state.requests.filter((time) => now - time < this.config.windowMs);
     return Math.max(0, this.config.maxRequests - validRequests.length);
   }
 
@@ -110,13 +106,13 @@ export class ClientRateLimiter {
    */
   getResetTimeFormatted(): string {
     const ms = this.getResetTime();
-    if (ms === 0) return 'now';
+    if (ms === 0) return "now";
 
     const minutes = Math.ceil(ms / 60000);
-    if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''}`;
+    if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""}`;
 
     const hours = Math.ceil(minutes / 60);
-    return `${hours} hour${hours > 1 ? 's' : ''}`;
+    return `${hours} hour${hours > 1 ? "s" : ""}`;
   }
 
   /**
@@ -136,7 +132,7 @@ export class ClientRateLimiter {
         return JSON.parse(stored);
       }
     } catch (e) {
-      console.warn('[Rate Limiter] Failed to load state:', e);
+      console.warn("[Rate Limiter] Failed to load state:", e);
     }
 
     return { requests: [], firstRequest: Date.now() };
@@ -149,7 +145,7 @@ export class ClientRateLimiter {
     try {
       sessionStorage.setItem(this.config.storageKey, JSON.stringify(state));
     } catch (e) {
-      console.error('[Rate Limiter] Failed to save state:', e);
+      console.error("[Rate Limiter] Failed to save state:", e);
     }
   }
 }
@@ -165,7 +161,7 @@ export class ClientRateLimiter {
 export const contactImportLimiter = new ClientRateLimiter({
   maxRequests: 10, // 10 imports per day
   windowMs: 24 * 60 * 60 * 1000,
-  storageKey: 'rate_limit_contact_import',
+  storageKey: "rate_limit_contact_import",
 });
 
 /**
@@ -175,5 +171,5 @@ export const contactImportLimiter = new ClientRateLimiter({
 export const organizationImportLimiter = new ClientRateLimiter({
   maxRequests: 10,
   windowMs: 24 * 60 * 60 * 1000,
-  storageKey: 'rate_limit_organization_import',
+  storageKey: "rate_limit_organization_import",
 });

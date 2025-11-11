@@ -52,7 +52,7 @@ export function generateOpportunityName(params: OpportunityNameParams): string {
 
   // Return empty string if both customer and principal are missing/empty after trimming
   if (parts.length === 0) {
-    return '';
+    return "";
   }
 
   // Add quarter and year
@@ -61,11 +61,11 @@ export function generateOpportunityName(params: OpportunityNameParams): string {
   parts.push(`Q${quarter} ${year}`);
 
   // Join parts with " - " separator
-  let name = parts.join(' - ');
+  let name = parts.join(" - ");
 
   // Truncate to 200 characters if needed
   if (name.length > 200) {
-    name = name.substring(0, 197) + '...';
+    name = name.substring(0, 197) + "...";
   }
 
   return name;

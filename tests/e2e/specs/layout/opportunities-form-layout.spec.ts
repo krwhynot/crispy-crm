@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
 
 /**
  * Opportunity Form Layout Tests
@@ -16,35 +16,38 @@ import { LoginPage } from '../../support/poms/LoginPage';
  * - Dialog positioning (CreateInDialogButton)
  */
 
-test.describe('Opportunity Form Layout', () => {
+test.describe("Opportunity Form Layout", () => {
   test.beforeEach(async ({ page }) => {
     // Login
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
     await page.waitForTimeout(1000);
 
-    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+    const isLoginFormVisible = await page
+      .getByLabel(/email/i)
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
       await page.waitForTimeout(2000);
     }
 
-    await page.getByRole('navigation').first().waitFor({ state: 'visible', timeout: 10000 });
+    await page.getByRole("navigation").first().waitFor({ state: "visible", timeout: 10000 });
 
     // Navigate to opportunity create form
-    await page.goto('/#/opportunities/create');
+    await page.goto("/#/opportunities/create");
     await page.waitForTimeout(1500); // Allow form to fully render
   });
 
-  test.describe('Desktop Layout (1280px)', () => {
+  test.describe("Desktop Layout (1280px)", () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: 1280, height: 720 });
       await page.waitForTimeout(500); // Allow responsive layout to settle
     });
 
-    test('form sections have consistent vertical spacing', async ({ page }) => {
+    test("form sections have consistent vertical spacing", async ({ page }) => {
       // Get the major form sections
-      const sections = await page.locator('.rounded-lg.border.border-border.bg-card').all();
+      const sections = await page.locator(".rounded-lg.border.border-border.bg-card").all();
 
       expect(sections.length).toBeGreaterThanOrEqual(4); // At least 4 major sections
 
@@ -64,13 +67,13 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('text inputs in same row have consistent height', async ({ page }) => {
+    test("text inputs in same row have consistent height", async ({ page }) => {
       // Get inputs from "Campaign & Workflow Tracking" section which has side-by-side inputs
       const campaignInput = page.getByLabel(/campaign/i);
       const nextActionInput = page.getByLabel(/next action$/i); // Exact match to avoid "next action date"
 
-      await campaignInput.waitFor({ state: 'visible' });
-      await nextActionInput.waitFor({ state: 'visible' });
+      await campaignInput.waitFor({ state: "visible" });
+      await nextActionInput.waitFor({ state: "visible" });
 
       const campaignBox = await campaignInput.boundingBox();
       const nextActionBox = await nextActionInput.boundingBox();
@@ -84,14 +87,14 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test.skip('dropdown/select height matches text input height', async ({ page }) => {
+    test.skip("dropdown/select height matches text input height", async ({ page }) => {
       // TODO: Fix selector - Stage field exists but getByLabel doesn't find it reliably
       // Compare Stage select with a text input
       const stageSelect = page.getByLabel(/stage/i);
       const campaignInput = page.getByLabel(/campaign/i);
 
-      await stageSelect.waitFor({ state: 'visible' });
-      await campaignInput.waitFor({ state: 'visible' });
+      await stageSelect.waitFor({ state: "visible" });
+      await campaignInput.waitFor({ state: "visible" });
 
       const stageBox = await stageSelect.boundingBox();
       const campaignBox = await campaignInput.boundingBox();
@@ -105,14 +108,14 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('section headers are left-aligned with section content', async ({ page }) => {
+    test("section headers are left-aligned with section content", async ({ page }) => {
       // Get first section (Opportunity Details)
-      const section = page.locator('.rounded-lg.border.border-border.bg-card').first();
-      const sectionHeader = section.locator('h3').first();
-      const firstInput = section.locator('input').first();
+      const section = page.locator(".rounded-lg.border.border-border.bg-card").first();
+      const sectionHeader = section.locator("h3").first();
+      const firstInput = section.locator("input").first();
 
-      await sectionHeader.waitFor({ state: 'visible' });
-      await firstInput.waitFor({ state: 'visible' });
+      await sectionHeader.waitFor({ state: "visible" });
+      await firstInput.waitFor({ state: "visible" });
 
       const headerBox = await sectionHeader.boundingBox();
       const inputBox = await firstInput.boundingBox();
@@ -126,13 +129,13 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('grid columns maintain consistent left alignment', async ({ page }) => {
+    test("grid columns maintain consistent left alignment", async ({ page }) => {
       // Get inputs from "Campaign & Workflow Tracking" that are in same column
       const campaignInput = page.getByLabel(/campaign/i);
       const nextActionInput = page.getByLabel(/next action$/i);
 
-      await campaignInput.waitFor({ state: 'visible' });
-      await nextActionInput.waitFor({ state: 'visible' });
+      await campaignInput.waitFor({ state: "visible" });
+      await nextActionInput.waitFor({ state: "visible" });
 
       const campaignBox = await campaignInput.boundingBox();
       const nextActionBox = await nextActionInput.boundingBox();
@@ -146,14 +149,14 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test.skip('date inputs match text input dimensions', async ({ page }) => {
+    test.skip("date inputs match text input dimensions", async ({ page }) => {
       // TODO: Fix selector - Expected Closing Date field exists but getByLabel doesn't find it reliably
       // Compare date input with text input
       const dateInput = page.getByLabel(/expected.*close|close.*date/i);
       const nameInput = page.getByLabel(/opportunity name/i);
 
-      await dateInput.waitFor({ state: 'visible' });
-      await nameInput.waitFor({ state: 'visible' });
+      await dateInput.waitFor({ state: "visible" });
+      await nameInput.waitFor({ state: "visible" });
 
       const dateBox = await dateInput.boundingBox();
       const nameBox = await nameInput.boundingBox();
@@ -167,13 +170,13 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('multiline text area has appropriate minimum height', async ({ page }) => {
+    test("multiline text area has appropriate minimum height", async ({ page }) => {
       // Description field (multiline)
       const descInput = page.getByLabel(/description/i);
       const nameInput = page.getByLabel(/opportunity name/i);
 
-      await descInput.waitFor({ state: 'visible' });
-      await nameInput.waitFor({ state: 'visible' });
+      await descInput.waitFor({ state: "visible" });
+      await nameInput.waitFor({ state: "visible" });
 
       const descBox = await descInput.boundingBox();
       const nameBox = await nameInput.boundingBox();
@@ -187,7 +190,7 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('no horizontal scrolling on desktop', async ({ page }) => {
+    test("no horizontal scrolling on desktop", async ({ page }) => {
       const bodyWidth = await page.evaluate(() => document.body.scrollWidth);
       const viewportWidth = page.viewportSize()?.width || 0;
 
@@ -196,14 +199,14 @@ test.describe('Opportunity Form Layout', () => {
     });
   });
 
-  test.describe('iPad Portrait Layout (768px)', () => {
+  test.describe("iPad Portrait Layout (768px)", () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: 768, height: 1024 });
       await page.waitForTimeout(500);
     });
 
-    test('form sections stack vertically with consistent spacing', async ({ page }) => {
-      const sections = await page.locator('.rounded-lg.border.border-border.bg-card').all();
+    test("form sections stack vertically with consistent spacing", async ({ page }) => {
+      const sections = await page.locator(".rounded-lg.border.border-border.bg-card").all();
 
       expect(sections.length).toBeGreaterThanOrEqual(4);
 
@@ -222,14 +225,14 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('grid columns collapse to single column on tablet', async ({ page }) => {
+    test("grid columns collapse to single column on tablet", async ({ page }) => {
       // On tablet, lg:grid-cols-2 should become single column
       // Campaign and Next Action should stack vertically
       const campaignInput = page.getByLabel(/campaign/i);
       const nextActionInput = page.getByLabel(/next action$/i);
 
-      await campaignInput.waitFor({ state: 'visible' });
-      await nextActionInput.waitFor({ state: 'visible' });
+      await campaignInput.waitFor({ state: "visible" });
+      await nextActionInput.waitFor({ state: "visible" });
 
       const campaignBox = await campaignInput.boundingBox();
       const nextActionBox = await nextActionInput.boundingBox();
@@ -250,12 +253,12 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('inputs maintain consistent height on tablet', async ({ page }) => {
+    test("inputs maintain consistent height on tablet", async ({ page }) => {
       const nameInput = page.getByLabel(/opportunity name/i);
       const campaignInput = page.getByLabel(/campaign/i);
 
-      await nameInput.waitFor({ state: 'visible' });
-      await campaignInput.waitFor({ state: 'visible' });
+      await nameInput.waitFor({ state: "visible" });
+      await campaignInput.waitFor({ state: "visible" });
 
       const nameBox = await nameInput.boundingBox();
       const campaignBox = await campaignInput.boundingBox();
@@ -268,17 +271,17 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('no horizontal scrolling on tablet', async ({ page }) => {
+    test("no horizontal scrolling on tablet", async ({ page }) => {
       const bodyWidth = await page.evaluate(() => document.body.scrollWidth);
       const viewportWidth = page.viewportSize()?.width || 0;
 
       expect(bodyWidth).toBeLessThanOrEqual(viewportWidth + 5);
     });
 
-    test('touch targets meet minimum size on tablet', async ({ page }) => {
+    test("touch targets meet minimum size on tablet", async ({ page }) => {
       // Check save button (critical action)
-      const saveButton = page.getByRole('button', { name: /save|create/i });
-      await saveButton.waitFor({ state: 'visible' });
+      const saveButton = page.getByRole("button", { name: /save|create/i });
+      await saveButton.waitFor({ state: "visible" });
 
       const buttonBox = await saveButton.boundingBox();
 
@@ -292,19 +295,19 @@ test.describe('Opportunity Form Layout', () => {
     });
   });
 
-  test.describe('Mobile Layout (375px)', () => {
+  test.describe("Mobile Layout (375px)", () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 });
       await page.waitForTimeout(500);
     });
 
-    test('all form fields stack vertically on mobile', async ({ page }) => {
+    test("all form fields stack vertically on mobile", async ({ page }) => {
       // On mobile, all inputs should be full-width and stacked
       const nameInput = page.getByLabel(/opportunity name/i);
       const campaignInput = page.getByLabel(/campaign/i);
 
-      await nameInput.waitFor({ state: 'visible' });
-      await campaignInput.waitFor({ state: 'visible' });
+      await nameInput.waitFor({ state: "visible" });
+      await campaignInput.waitFor({ state: "visible" });
 
       const nameBox = await nameInput.boundingBox();
       const campaignBox = await campaignInput.boundingBox();
@@ -321,7 +324,7 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test.skip('no horizontal scrolling on mobile', async ({ page }) => {
+    test.skip("no horizontal scrolling on mobile", async ({ page }) => {
       // SKIPPED: Mobile horizontal scrolling is a documented limitation
       // Why: 5 navigation tabs (Dashboard, Contacts, Organizations, Opportunities, Products)
       // physically cannot fit on 375px viewport without scrolling (~614px required)
@@ -333,9 +336,9 @@ test.describe('Opportunity Form Layout', () => {
       expect(bodyWidth).toBeLessThanOrEqual(viewportWidth + 5);
     });
 
-    test('touch targets meet minimum size on mobile', async ({ page }) => {
-      const saveButton = page.getByRole('button', { name: /save|create/i });
-      await saveButton.waitFor({ state: 'visible' });
+    test("touch targets meet minimum size on mobile", async ({ page }) => {
+      const saveButton = page.getByRole("button", { name: /save|create/i });
+      await saveButton.waitFor({ state: "visible" });
 
       const buttonBox = await saveButton.boundingBox();
 
@@ -347,12 +350,12 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('section padding is appropriate for mobile', async ({ page }) => {
+    test("section padding is appropriate for mobile", async ({ page }) => {
       // Check first section
-      const section = page.locator('.rounded-lg.border.border-border.bg-card').first();
-      const sectionHeader = section.locator('h3').first();
+      const section = page.locator(".rounded-lg.border.border-border.bg-card").first();
+      const sectionHeader = section.locator("h3").first();
 
-      await sectionHeader.waitFor({ state: 'visible' });
+      await sectionHeader.waitFor({ state: "visible" });
 
       const sectionBox = await section.boundingBox();
       const headerBox = await sectionHeader.boundingBox();
@@ -368,12 +371,12 @@ test.describe('Opportunity Form Layout', () => {
       }
     });
 
-    test('inputs fill available width on mobile', async ({ page }) => {
+    test("inputs fill available width on mobile", async ({ page }) => {
       const nameInput = page.getByLabel(/opportunity name/i);
-      const section = page.locator('.rounded-lg.border.border-border.bg-card').first();
+      const section = page.locator(".rounded-lg.border.border-border.bg-card").first();
 
-      await nameInput.waitFor({ state: 'visible' });
-      await section.waitFor({ state: 'visible' });
+      await nameInput.waitFor({ state: "visible" });
+      await section.waitFor({ state: "visible" });
 
       const inputBox = await nameInput.boundingBox();
       const sectionBox = await section.boundingBox();
@@ -392,8 +395,8 @@ test.describe('Opportunity Form Layout', () => {
     });
   });
 
-  test.describe('Cross-Viewport Consistency', () => {
-    test('form maintains consistent element hierarchy across sizes', async ({ page }) => {
+  test.describe("Cross-Viewport Consistency", () => {
+    test("form maintains consistent element hierarchy across sizes", async ({ page }) => {
       const viewports = [
         { width: 1280, height: 720 },
         { width: 768, height: 1024 },
@@ -406,17 +409,17 @@ test.describe('Opportunity Form Layout', () => {
         await page.setViewportSize(viewport);
         await page.waitForTimeout(500);
 
-        const sections = await page.locator('.rounded-lg.border.border-border.bg-card').all();
+        const sections = await page.locator(".rounded-lg.border.border-border.bg-card").all();
         sectionCounts.push(sections.length);
       }
 
       // All viewports should have same number of sections
-      const allEqual = sectionCounts.every(count => count === sectionCounts[0]);
+      const allEqual = sectionCounts.every((count) => count === sectionCounts[0]);
       expect(allEqual).toBe(true);
       expect(sectionCounts[0]).toBeGreaterThanOrEqual(4);
     });
 
-    test('buttons maintain consistent height across viewports', async ({ page }) => {
+    test("buttons maintain consistent height across viewports", async ({ page }) => {
       const viewports = [
         { width: 1280, height: 720 },
         { width: 768, height: 1024 },
@@ -429,8 +432,8 @@ test.describe('Opportunity Form Layout', () => {
         await page.setViewportSize(viewport);
         await page.waitForTimeout(500);
 
-        const saveButton = page.getByRole('button', { name: /save|create/i });
-        await saveButton.waitFor({ state: 'visible' });
+        const saveButton = page.getByRole("button", { name: /save|create/i });
+        await saveButton.waitFor({ state: "visible" });
 
         const buttonBox = await saveButton.boundingBox();
         if (buttonBox) {

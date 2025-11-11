@@ -43,9 +43,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
   const parentSourceContext = useSourceContext();
   const finalSource = parentSourceContext.getSource(arraySource);
 
-  const sanitizedValidate = Array.isArray(validate)
-    ? composeSyncValidators(validate)
-    : validate;
+  const sanitizedValidate = Array.isArray(validate) ? composeSyncValidators(validate) : validate;
   const getValidationErrorMessage = useGetValidationErrorMessage();
 
   const { getValues } = useFormContext();
@@ -114,10 +112,9 @@ export const ArrayInput = (props: ArrayInputProps) => {
         return parentSourceContext.getSource(`${arraySource}.${source}`);
       },
       // if Array source is items, and child source is name, .0.name => resources.orders.fields.items.name
-      getLabel: (source: string) =>
-        parentSourceContext.getLabel(`${arraySource}.${source}`),
+      getLabel: (source: string) => parentSourceContext.getLabel(`${arraySource}.${source}`),
     }),
-    [parentSourceContext, arraySource],
+    [parentSourceContext, arraySource]
   );
 
   if (isPending) {
@@ -126,12 +123,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
   return (
     <FormField
-      className={cn(
-        "ra-input",
-        `ra-input-${finalSource}`,
-        className,
-        "w-full flex flex-col gap-2",
-      )}
+      className={cn("ra-input", `ra-input-${finalSource}`, className, "w-full flex flex-col gap-2")}
       name={finalSource}
       {...sanitizeInputRestProps(rest)}
     >
@@ -145,9 +137,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
       </Label>
       <ArrayInputContext.Provider value={fieldProps}>
         <OptionalResourceContextProvider value={resourceFromProps}>
-          <SourceContextProvider value={sourceContext}>
-            {children}
-          </SourceContextProvider>
+          <SourceContextProvider value={sourceContext}>{children}</SourceContextProvider>
         </OptionalResourceContextProvider>
       </ArrayInputContext.Provider>
 
@@ -157,8 +147,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
   );
 };
 
-export interface ArrayInputProps
-  extends Omit<InputProps, "disabled" | "readOnly"> {
+export interface ArrayInputProps extends Omit<InputProps, "disabled" | "readOnly"> {
   className?: string;
   children: React.ReactNode;
   isFetching?: boolean;

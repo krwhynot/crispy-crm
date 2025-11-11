@@ -43,19 +43,10 @@ export const ExportButton = (props: ExportButtonProps) => {
         })
         .then(
           ({ data }) =>
-            exporter &&
-            exporter(
-              data,
-              fetchRelatedRecords(dataProvider),
-              dataProvider,
-              resource,
-            ),
+            exporter && exporter(data, fetchRelatedRecords(dataProvider), dataProvider, resource)
         )
         .catch((error) => {
-          console.error(
-            "Export failed:",
-            error instanceof Error ? error.message : String(error),
-          );
+          console.error("Export failed:", error instanceof Error ? error.message : String(error));
           notify("HTTP Error", { type: "error" });
         });
       if (typeof onClick === "function") {
@@ -73,16 +64,11 @@ export const ExportButton = (props: ExportButtonProps) => {
       resource,
       sort,
       meta,
-    ],
+    ]
   );
 
   return (
-    <Button
-      variant="outline"
-      onClick={handleClick}
-      disabled={total === 0}
-      className={className}
-    >
+    <Button variant="outline" onClick={handleClick} disabled={total === 0} className={className}>
       {icon}
       <Translate i18nKey={label}>Export</Translate>
     </Button>

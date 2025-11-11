@@ -1,17 +1,13 @@
 // FIXME: This should be exported from the ra-core package
-interface CanAccessParams<
-  RecordType extends Record<string, any> = Record<string, any>,
-> {
+interface CanAccessParams<RecordType extends Record<string, any> = Record<string, any>> {
   action: string;
   resource: string;
   record?: RecordType;
 }
 
-export const canAccess = <
-  RecordType extends Record<string, any> = Record<string, any>,
->(
+export const canAccess = <RecordType extends Record<string, any> = Record<string, any>>(
   role: string,
-  params: CanAccessParams<RecordType>,
+  params: CanAccessParams<RecordType>
 ) => {
   if (role === "admin") {
     return true;

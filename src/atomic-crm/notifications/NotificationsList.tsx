@@ -60,9 +60,7 @@ const NotificationsListLayout = () => {
 };
 
 const NotificationsListActions = () => (
-  <TopToolbar>
-    {/* No actions needed for notifications list */}
-  </TopToolbar>
+  <TopToolbar>{/* No actions needed for notifications list */}</TopToolbar>
 );
 
 const NotificationsListFilter = () => {
@@ -215,19 +213,19 @@ const NotificationsBulkActions = () => {
     try {
       // Phase 3: Use Promise.allSettled() to handle partial failures gracefully
       const results = await Promise.allSettled(
-        selectedIds.map((id) =>
-          update("notifications", { id, data: { read: true } })
-        )
+        selectedIds.map((id) => update("notifications", { id, data: { read: true } }))
       );
 
       // Count successes and failures
-      const successes = results.filter(r => r.status === "fulfilled").length;
-      const failures = results.filter(r => r.status === "rejected").length;
+      const successes = results.filter((r) => r.status === "fulfilled").length;
+      const failures = results.filter((r) => r.status === "rejected").length;
 
       if (failures === 0) {
         notify(`${successes} notification(s) marked as read`, { type: "success" });
       } else if (successes > 0) {
-        notify(`${successes} notification(s) marked as read, ${failures} failed`, { type: "warning" });
+        notify(`${successes} notification(s) marked as read, ${failures} failed`, {
+          type: "warning",
+        });
       } else {
         notify("Failed to mark notifications as read", { type: "error" });
       }
@@ -239,12 +237,7 @@ const NotificationsBulkActions = () => {
   };
 
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={markAllAsRead}
-      className="h-8 text-xs"
-    >
+    <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-8 text-xs">
       <Check className="h-4 w-4 mr-2" />
       Mark as read
     </Button>

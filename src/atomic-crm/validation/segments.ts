@@ -12,11 +12,7 @@ import { z } from "zod";
  */
 export const segmentSchema = z.object({
   id: z.string().uuid().optional(),
-  name: z
-    .string()
-    .min(1, "Segment name is required")
-    .max(100, "Segment name too long")
-    .trim(),
+  name: z.string().min(1, "Segment name is required").max(100, "Segment name too long").trim(),
   created_at: z.string().optional(),
   created_by: z.string().uuid().optional(),
 });

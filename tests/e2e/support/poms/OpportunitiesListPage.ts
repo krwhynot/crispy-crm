@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Page Object Model for Opportunities List page
@@ -12,7 +12,7 @@ export class OpportunitiesListPage extends BasePage {
    * Navigate to opportunities list
    */
   async goto(): Promise<void> {
-    await this.page.goto('/#/opportunities');
+    await this.page.goto("/#/opportunities");
     await this.waitForPageLoad();
   }
 
@@ -22,8 +22,14 @@ export class OpportunitiesListPage extends BasePage {
   async waitForPageLoad(): Promise<void> {
     // Wait for either list view or Kanban view to be visible
     await Promise.race([
-      this.page.getByRole('table').waitFor({ state: 'visible', timeout: 10000 }).catch(() => null),
-      this.page.locator('[data-testid="kanban-board"]').waitFor({ state: 'visible', timeout: 10000 }).catch(() => null),
+      this.page
+        .getByRole("table")
+        .waitFor({ state: "visible", timeout: 10000 })
+        .catch(() => null),
+      this.page
+        .locator('[data-testid="kanban-board"]')
+        .waitFor({ state: "visible", timeout: 10000 })
+        .catch(() => null),
     ]);
   }
 
@@ -33,9 +39,10 @@ export class OpportunitiesListPage extends BasePage {
    */
   getCreateButton() {
     // Accept both button and link roles for flexibility
-    return this.page.getByRole('button', { name: /create|new opportunity/i }).or(
-      this.page.getByRole('link', { name: /create|new opportunity/i })
-    ).first();
+    return this.page
+      .getByRole("button", { name: /create|new opportunity/i })
+      .or(this.page.getByRole("link", { name: /create|new opportunity/i }))
+      .first();
   }
 
   /**
@@ -50,9 +57,7 @@ export class OpportunitiesListPage extends BasePage {
    * Search for opportunities
    */
   async search(query: string): Promise<void> {
-    const searchInput = this.page.getByRole('searchbox').or(
-      this.page.getByPlaceholder(/search/i)
-    );
+    const searchInput = this.page.getByRole("searchbox").or(this.page.getByPlaceholder(/search/i));
     await searchInput.fill(query);
     // Wait for search to update results
     await this.page.waitForTimeout(500);
@@ -62,14 +67,14 @@ export class OpportunitiesListPage extends BasePage {
    * Get all opportunity rows in list view
    */
   getOpportunityRows() {
-    return this.page.getByRole('row').filter({ has: this.page.getByRole('cell') });
+    return this.page.getByRole("row").filter({ has: this.page.getByRole("cell") });
   }
 
   /**
    * Get opportunity row by name
    */
   getOpportunityRowByName(name: string) {
-    return this.page.getByRole('row').filter({ hasText: name });
+    return this.page.getByRole("row").filter({ hasText: name });
   }
 
   /**
@@ -77,7 +82,7 @@ export class OpportunitiesListPage extends BasePage {
    */
   async viewOpportunity(name: string): Promise<void> {
     const row = this.getOpportunityRowByName(name);
-    await row.getByRole('link').first().click();
+    await row.getByRole("link").first().click();
     await this.page.waitForURL(/\/#\/opportunities\/\d+\/show/);
   }
 
@@ -86,32 +91,36 @@ export class OpportunitiesListPage extends BasePage {
    */
   async switchToKanbanView(): Promise<void> {
     // Look for view switcher button
-    const kanbanButton = this.page.getByRole('button', { name: /kanban|board/i });
+    const kanbanButton = this.page.getByRole("button", { name: /kanban|board/i });
     await kanbanButton.click();
-    await this.page.locator('[data-testid="kanban-board"]').waitFor({ state: 'visible' });
+    await this.page.locator('[data-testid="kanban-board"]').waitFor({ state: "visible" });
   }
 
   /**
    * Switch to list view
    */
   async switchToListView(): Promise<void> {
-    const listButton = this.page.getByRole('button', { name: /list|table/i });
+    const listButton = this.page.getByRole("button", { name: /list|table/i });
     await listButton.click();
-    await this.page.getByRole('table').waitFor({ state: 'visible' });
+    await this.page.getByRole("table").waitFor({ state: "visible" });
   }
 
   /**
    * Get Kanban column by stage name
    */
   getKanbanColumn(stageName: string) {
-    return this.page.locator('[data-testid="kanban-column"]').filter({ hasText: new RegExp(stageName, 'i') });
+    return this.page
+      .locator('[data-testid="kanban-column"]')
+      .filter({ hasText: new RegExp(stageName, "i") });
   }
 
   /**
    * Get opportunity card in Kanban view
    */
   getOpportunityCard(opportunityName: string) {
-    return this.page.locator('[data-testid="opportunity-card"]').filter({ hasText: opportunityName });
+    return this.page
+      .locator('[data-testid="opportunity-card"]')
+      .filter({ hasText: opportunityName });
   }
 
   /**
@@ -146,15 +155,15 @@ export class OpportunitiesListPage extends BasePage {
    */
   async applyFilter(filterName: string, value: string): Promise<void> {
     // Open filters if not visible
-    const filterButton = this.page.getByRole('button', { name: /filter/i });
+    const filterButton = this.page.getByRole("button", { name: /filter/i });
     if (await filterButton.isVisible()) {
       await filterButton.click();
     }
 
     // Select filter value
-    const filterInput = this.page.getByLabel(new RegExp(filterName, 'i'));
+    const filterInput = this.page.getByLabel(new RegExp(filterName, "i"));
     await filterInput.click();
-    await this.page.getByRole('option', { name: new RegExp(value, 'i') }).click();
+    await this.page.getByRole("option", { name: new RegExp(value, "i") }).click();
 
     // Wait for results to update
     await this.page.waitForTimeout(500);
@@ -201,7 +210,7 @@ export class OpportunitiesListPage extends BasePage {
    * Get column customization menu button
    */
   getCustomizeColumnsButton() {
-    return this.page.getByRole('button', { name: /customize columns/i });
+    return this.page.getByRole("button", { name: /customize columns/i });
   }
 
   /**
@@ -210,21 +219,21 @@ export class OpportunitiesListPage extends BasePage {
   async openCustomizationMenu(): Promise<void> {
     await this.getCustomizeColumnsButton().click();
     // Wait for menu to be visible
-    await this.page.getByText('Visible Stages').waitFor({ state: 'visible' });
+    await this.page.getByText("Visible Stages").waitFor({ state: "visible" });
   }
 
   /**
    * Click "Collapse All" in customization menu
    */
   async clickCollapseAll(): Promise<void> {
-    await this.page.getByRole('button', { name: /collapse all/i }).click();
+    await this.page.getByRole("button", { name: /collapse all/i }).click();
   }
 
   /**
    * Click "Expand All" in customization menu
    */
   async clickExpandAll(): Promise<void> {
-    await this.page.getByRole('button', { name: /expand all/i }).click();
+    await this.page.getByRole("button", { name: /expand all/i }).click();
   }
 
   /**
@@ -232,7 +241,7 @@ export class OpportunitiesListPage extends BasePage {
    */
   async toggleStageVisibility(stageName: string): Promise<void> {
     // Find the checkbox by its associated label
-    const label = this.page.locator('label').filter({ hasText: new RegExp(stageName, 'i') });
+    const label = this.page.locator("label").filter({ hasText: new RegExp(stageName, "i") });
     const checkbox = label.locator('input[type="checkbox"]');
     await checkbox.click();
   }
@@ -242,7 +251,7 @@ export class OpportunitiesListPage extends BasePage {
    */
   getQuickAddButton(stageName: string) {
     const column = this.getKanbanColumn(stageName);
-    return column.getByRole('button', { name: /\+ new opportunity/i });
+    return column.getByRole("button", { name: /\+ new opportunity/i });
   }
 
   /**
@@ -252,16 +261,18 @@ export class OpportunitiesListPage extends BasePage {
     await this.getQuickAddButton(stageName).click();
 
     // Wait for modal to appear
-    await this.page.getByRole('heading', { name: /new opportunity/i }).waitFor({ state: 'visible' });
+    await this.page
+      .getByRole("heading", { name: /new opportunity/i })
+      .waitFor({ state: "visible" });
 
     // Fill name field
     await this.page.getByLabel(/name/i).fill(opportunityName);
 
     // Click create button
-    await this.page.getByRole('button', { name: /create/i }).click();
+    await this.page.getByRole("button", { name: /create/i }).click();
 
     // Wait for modal to close
-    await this.page.getByRole('heading', { name: /new opportunity/i }).waitFor({ state: 'hidden' });
+    await this.page.getByRole("heading", { name: /new opportunity/i }).waitFor({ state: "hidden" });
   }
 
   /**
@@ -269,7 +280,7 @@ export class OpportunitiesListPage extends BasePage {
    */
   getCardActionsButton(opportunityName: string) {
     const card = this.getOpportunityCard(opportunityName);
-    return card.getByRole('button', { name: /actions menu/i });
+    return card.getByRole("button", { name: /actions menu/i });
   }
 
   /**
@@ -278,7 +289,7 @@ export class OpportunitiesListPage extends BasePage {
   async openCardActions(opportunityName: string): Promise<void> {
     await this.getCardActionsButton(opportunityName).click();
     // Wait for menu to appear
-    await this.page.getByRole('button', { name: /view details/i }).waitFor({ state: 'visible' });
+    await this.page.getByRole("button", { name: /view details/i }).waitFor({ state: "visible" });
   }
 
   /**
@@ -286,7 +297,7 @@ export class OpportunitiesListPage extends BasePage {
    */
   async isColumnCollapsed(stageName: string): Promise<boolean> {
     const column = this.getKanbanColumn(stageName);
-    const collapseButton = column.getByRole('button', { name: /expand column/i });
+    const collapseButton = column.getByRole("button", { name: /expand column/i });
     return await collapseButton.isVisible();
   }
 

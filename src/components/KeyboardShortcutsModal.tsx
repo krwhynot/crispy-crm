@@ -1,11 +1,11 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
 interface Shortcut {
   keys: string[];
@@ -19,69 +19,69 @@ interface ShortcutGroup {
 }
 
 const isMac = () => {
-  return typeof window !== 'undefined' && /Mac|iPhone|iPod|iPad/.test(navigator.platform);
+  return typeof window !== "undefined" && /Mac|iPhone|iPod|iPad/.test(navigator.platform);
 };
 
 const shortcutGroups: ShortcutGroup[] = [
   {
-    title: 'Global',
+    title: "Global",
     shortcuts: [
       {
-        keys: ['Ctrl', 'K'],
-        mac: ['⌘', 'K'],
-        description: 'Focus search bar',
+        keys: ["Ctrl", "K"],
+        mac: ["⌘", "K"],
+        description: "Focus search bar",
       },
       {
-        keys: ['/'],
-        description: 'Focus search bar (alternative)',
+        keys: ["/"],
+        description: "Focus search bar (alternative)",
       },
       {
-        keys: ['Ctrl', 'N'],
-        mac: ['⌘', 'N'],
-        description: 'Create new record',
+        keys: ["Ctrl", "N"],
+        mac: ["⌘", "N"],
+        description: "Create new record",
       },
       {
-        keys: ['Esc'],
-        description: 'Close modal or cancel',
+        keys: ["Esc"],
+        description: "Close modal or cancel",
       },
     ],
   },
   {
-    title: 'Forms',
+    title: "Forms",
     shortcuts: [
       {
-        keys: ['Ctrl', 'S'],
-        mac: ['⌘', 'S'],
-        description: 'Save form',
+        keys: ["Ctrl", "S"],
+        mac: ["⌘", "S"],
+        description: "Save form",
       },
       {
-        keys: ['Enter'],
-        description: 'Submit form',
+        keys: ["Enter"],
+        description: "Submit form",
       },
       {
-        keys: ['Tab'],
-        description: 'Move to next field',
+        keys: ["Tab"],
+        description: "Move to next field",
       },
       {
-        keys: ['Shift', 'Tab'],
-        description: 'Move to previous field',
+        keys: ["Shift", "Tab"],
+        description: "Move to previous field",
       },
     ],
   },
   {
-    title: 'Lists',
+    title: "Lists",
     shortcuts: [
       {
-        keys: ['↑', '↓'],
-        description: 'Navigate list items',
+        keys: ["↑", "↓"],
+        description: "Navigate list items",
       },
       {
-        keys: ['Space'],
-        description: 'Select item for bulk actions',
+        keys: ["Space"],
+        description: "Select item for bulk actions",
       },
       {
-        keys: ['Delete'],
-        description: 'Delete selected items',
+        keys: ["Delete"],
+        description: "Delete selected items",
       },
     ],
   },
@@ -146,7 +146,7 @@ export const KeyboardShortcutsModal = ({ open, onOpenChange }: KeyboardShortcuts
 
         <div className="mt-6 pt-4 border-t text-xs text-muted-foreground">
           <p>
-            Tip: Most shortcuts are context-aware and will only work when appropriate. For example,{' '}
+            Tip: Most shortcuts are context-aware and will only work when appropriate. For example,{" "}
             <kbd className="px-1 py-0.5 rounded bg-muted font-mono">Ctrl+S</kbd> only works when
             editing a form.
           </p>

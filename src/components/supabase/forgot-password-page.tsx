@@ -40,7 +40,7 @@ export const ForgotPasswordPage = () => {
                   ? error.message
                   : undefined,
           },
-        },
+        }
       );
     } finally {
       setLoading(false);
@@ -61,10 +61,7 @@ export const ForgotPasswordPage = () => {
           })}
         </p>
       </div>
-      <Form<FormData>
-        className="space-y-8"
-        onSubmit={submit as SubmitHandler<FieldValues>}
-      >
+      <Form<FormData> className="space-y-8" onSubmit={submit as SubmitHandler<FieldValues>}>
         <TextInput
           source="email"
           label={`${translate("ra.auth.email", { _: "Email" })} *`}

@@ -21,9 +21,7 @@ export async function hash(string: string): Promise<string> {
   const utf8 = new TextEncoder().encode(string);
   const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((bytes) => bytes.toString(16).padStart(2, "0"))
-    .join("");
+  const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
   return hashHex;
 }
 
@@ -72,9 +70,7 @@ export async function getFaviconUrl(domain: string): Promise<string | null> {
  * @param record - Contact record with email information
  * @returns Promise resolving to avatar URL or null if none found
  */
-export async function getContactAvatar(
-  record: Partial<Contact>
-): Promise<string | null> {
+export async function getContactAvatar(record: Partial<Contact>): Promise<string | null> {
   if (!record.email || !record.email.length) {
     return null;
   }
@@ -114,9 +110,7 @@ export async function getContactAvatar(
  * @param record - Organization record with website information
  * @returns Promise resolving to logo object or null if none found
  */
-export async function getOrganizationAvatar(
-  record: Partial<Organization>
-): Promise<{
+export async function getOrganizationAvatar(record: Partial<Organization>): Promise<{
   src: string;
   title: string;
 } | null> {
@@ -126,9 +120,7 @@ export async function getOrganizationAvatar(
   if (!record.website) {
     return null;
   }
-  const websiteUrlWithoutScheme = record.website
-    .replace(/^https?:\/\//, "")
-    .replace(/\/$/, "");
+  const websiteUrlWithoutScheme = record.website.replace(/^https?:\/\//, "").replace(/\/$/, "");
   return {
     src: `https://favicon.show/${websiteUrlWithoutScheme}`,
     title: "Organization favicon",
@@ -245,7 +237,5 @@ export function getOrganizationName(organization: Partial<Organization>): string
  * @returns Clean domain string
  */
 export function cleanWebsiteUrl(website: string): string {
-  return website
-    .replace(/^https?:\/\//, "")
-    .replace(/\/$/, "");
+  return website.replace(/^https?:\/\//, "").replace(/\/$/, "");
 }
