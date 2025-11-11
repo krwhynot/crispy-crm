@@ -11,11 +11,11 @@
       - generic [ref=e13]:
         - group [ref=e14]:
           - generic [ref=e16]: Email *
-          - textbox "Email *" [ref=e17]
+          - textbox "Email *" [ref=e17]: admin@test.com
           - generic [ref=e18]: Required
         - group [ref=e19]:
           - generic [ref=e21]: Password *
-          - textbox "Password *" [ref=e22]
+          - textbox "Password *" [ref=e22]: password123
           - generic [ref=e23]: Required
         - button "Sign in" [ref=e24] [cursor=pointer]
       - link "Forgot your password?" [ref=e25] [cursor=pointer]:

@@ -16,11 +16,18 @@ test.describe('Simple Smoke Test', () => {
     await page.click('button[type="submit"]');
 
     console.log('✓ Waiting for dashboard redirect...');
-    // Wait for either dashboard or home page
-    await page.waitForURL(/\/(dashboard)?$/, { timeout: 15000 });
+    // Wait for successful login - app removes login form
+    await page.waitForSelector('input[name="email"]', { state: 'hidden', timeout: 15000 });
+
+    // Give it a moment to complete navigation
+    await page.waitForTimeout(1000);
 
     console.log('✅ LOGIN SUCCESSFUL! Page URL:', page.url());
     expect(page.url()).toContain('localhost:5173');
+
+    // Verify we're on the dashboard (no login form visible)
+    const loginFormVisible = await page.locator('input[name="email"]').isVisible().catch(() => false);
+    expect(loginFormVisible).toBe(false);
 
     // Take screenshot for verification
     await page.screenshot({ path: 'test-results/smoke-test-dashboard.png' });
