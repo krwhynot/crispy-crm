@@ -1,4 +1,4 @@
-import { Check, Calendar, Mail, Phone, Users, FileText, Target } from "lucide-react";
+import { Check, Mail, Phone, Users, FileText, Target } from "lucide-react";
 import { useGetList, RecordContextProvider } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";

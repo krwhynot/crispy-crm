@@ -1,7 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { CoreAdminContext } from "ra-core";
-import { OpportunitiesByPrincipalReport } from "./OpportunitiesByPrincipalReport";
+import { describe, it, expect, vi } from "vitest";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 
 // Mock the modules
