@@ -10,7 +10,7 @@ Atomic CRM - Full-featured, open-source CRM with React, shadcn-admin-kit, and Su
 
 ## Recent Changes (90 days)
 
-- **Port Consolidation (2025-11-10)**: Docker Compose optimization reduces exposed ports from 28 to 3 (Vite, API, Studio). All Supabase services communicate via Docker's internal network. Requires Docker Desktop WSL2 integration (one-time setup). Guide: `docs/development/port-consolidation-guide.md`
+- **Port Consolidation (2025-11-10)**: Successfully reduced exposed ports from 28 to 3 (API: 54321, DB: 54322, Studio: 54323). Disabled Inbucket & Analytics in `config.toml`. Internal services communicate via Docker bridge network. VSCode shows 11 Docker ports but only 3 are host-exposed. Guide: `docs/development/port-consolidation-guide.md`
 - **Tasks Module + Weekly Activity Report (2025-11-09)**: Complete Tasks CRUD with principal-grouped list view, full test coverage (43 unit tests + 6 E2E tests), filterRegistry integration. Weekly Activity Report groups activities by rep → principal with CSV export. Known issue: Duplicate validation files (`task.ts` current, `tasks.ts` legacy with 28 tests - cleanup pending). Plan: `docs/plans/2025-11-09-tasks-module-weekly-activity-report.md`
 - **Spacing System Phase 1 (2025-11-08)**: Semantic spacing tokens for consistent layouts. CSS custom properties in `src/index.css` for grid, edge padding, vertical rhythm. Applied to Reports Module. Design: `docs/plans/2025-11-08-spacing-layout-system-design.md`
 - **Security & Testing Remediation (2025-11-08)**: 4-phase remediation complete - RLS admin-only policies, CSV validation, 65 new tests (95.4% pass rate), WCAG 2.1 AA compliance, Promise.allSettled error handling
