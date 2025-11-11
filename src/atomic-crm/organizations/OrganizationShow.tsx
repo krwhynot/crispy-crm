@@ -141,7 +141,7 @@ const OrganizationShowContent = () => {
           </CardContent>
         </Card>
         <BranchLocationsSection org={record as OrganizationWithHierarchy} />
-        <ParentOrganizationSection organization={record as OrganizationWithHierarchy} />
+        <ParentOrganizationSection />
       </main>
 
       <aside aria-label="Organization information">
