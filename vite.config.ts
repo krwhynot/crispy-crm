@@ -145,6 +145,14 @@ export default defineConfig(({ mode }) => ({
   },
   esbuild: {
     keepNames: true,
+    // Reduce memory usage during builds by limiting worker threads
+    target: "ES2020",
+    // Drop unused code and optimize minification
+    drop: [],
+  },
+  // Limit esbuild workers to reduce memory pressure (default = auto CPU count)
+  ssr: {
+    noExternal: [],
   },
   build: {
     // Disable source maps for production builds (7.7MB savings)
