@@ -562,7 +562,37 @@ npm run test:e2e:headed  # Visible browser mode
 npx supabase stop && npx supabase start
 ```
 
-[Full guide](docs/development/testing-quick-reference.md)
+### Playwright MCP (AI-Assisted Test Generation)
+
+**Purpose:** Interactive test generation and debugging (complements traditional Playwright)
+
+```bash
+# Generate tests via Claude conversation
+/test-with-mcp                 # Slash command for test generation
+
+# Manual MCP commands (optional)
+npm run mcp:test:ipad          # iPad viewport (768x1024)
+npm run mcp:test:desktop       # Desktop viewport (1440x900)
+npm run mcp:debug              # Full tracing/video
+npm run mcp:view-trace         # View captured traces
+```
+
+**Workflow:** MCP exploration → Generate traditional Playwright code → Commit to Git → CI/CD executes
+
+**Use Cases:**
+- Generate new tests for features interactively
+- Debug failing tests with AI assistance
+- Accessibility audits (WCAG 2.1 AA compliance)
+- Edge case discovery
+
+**Available MCP Servers** (configured in `.mcp.json`):
+- `playwright-ipad` - iPad Pro viewport (768x1024)
+- `playwright-desktop` - Desktop viewport (1440x900)
+- `playwright-debug` - Full debugging with traces/video
+
+**NOT for:** CI/CD execution (use traditional Playwright tests instead)
+
+[Full MCP guide](docs/development/playwright-mcp-guide.md) | [Traditional testing guide](docs/development/testing-quick-reference.md)
 
 ## GitHub Actions Workflows
 
