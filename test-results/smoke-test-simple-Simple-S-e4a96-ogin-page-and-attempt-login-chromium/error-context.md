@@ -17,8 +17,8 @@
           - generic [ref=e21]: Password *
           - textbox "Password *" [ref=e22]: password123
           - generic [ref=e23]: Required
-        - button "Sign in" [ref=e24] [cursor=pointer]
-      - link "Forgot your password?" [ref=e25] [cursor=pointer]:
+        - button "Sign in" [disabled]
+      - link "Forgot your password?" [ref=e24] [cursor=pointer]:
         - /url: "#/forgot-password"
   - region "Notifications alt+T"
 ```
