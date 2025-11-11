@@ -682,7 +682,7 @@ export default function CampaignActivityReport() {
                     </Label>
                   </div>
                   {showStaleLeads && staleOpportunities.length > 0 && (
-                    <div className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded">
+                    <div className="text-xs font-medium text-warning bg-warning/10 px-2 py-1 rounded">
                       ⚠️ {staleOpportunities.length} {staleOpportunities.length === 1 ? 'lead needs' : 'leads need'} follow-up
                     </div>
                   )}
