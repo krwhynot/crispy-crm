@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { useGetList } from 'react-admin';
 import { PrincipalCard } from './PrincipalCard';
-import { calculatePriority, Priority } from './PriorityIndicator';
+import type { Priority } from './PriorityIndicator';
+import { calculatePriority } from './PriorityIndicator';
 import { PrincipalCardSkeleton } from './PrincipalCardSkeleton';
 
 interface Opportunity {
@@ -47,14 +48,14 @@ export const PrincipalDashboard = () => {
       filter: {
         status: 'Active'
       },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: 10000 },
       sort: { field: 'expected_value', order: 'DESC' }
     }
   );
 
   // Fetch user's tasks
   const { data: tasks, isLoading: tasksLoading, error: tasksError } = useGetList('tasks', {
-    pagination: { page: 1, perPage: 500 },
+    pagination: { page: 1, perPage: 10000 },
     sort: { field: 'due_date', order: 'ASC' }
   });
 
@@ -66,18 +67,19 @@ export const PrincipalDashboard = () => {
       filter: {
         created_at: { gte: sevenDaysAgo.toISOString() }
       },
-      pagination: { page: 1, perPage: 500 },
+      pagination: { page: 1, perPage: 10000 },
       sort: { field: 'created_at', order: 'DESC' }
     }
   );
 
   // Group data by principal
   const principals = useMemo(() => {
-    if (!opportunities || opportunities.length === 0) {
-      return [];
-    }
+    try {
+      if (!opportunities || opportunities.length === 0) {
+        return [];
+      }
 
-    const principalMap = new Map<string, Principal>();
+      const principalMap = new Map<string, Principal>();
 
     // Group opportunities by principal
     opportunities.forEach((opp: Opportunity) => {
@@ -108,20 +110,23 @@ export const PrincipalDashboard = () => {
       }
     });
 
-    // Add tasks to principals
+    // Create opportunity lookup map once (O(n))
+    const oppMap = new Map(opportunities.map((o: Opportunity) => [o.id, o]));
+
+    // Add tasks to principals (O(n))
     if (tasks) {
       tasks.forEach((task: Task) => {
-        const opp = opportunities.find((o: Opportunity) => o.id === task.opportunity_id);
+        const opp = oppMap.get(task.opportunity_id);  // O(1) lookup
         if (opp && principalMap.has(opp.principal_organization_id)) {
           principalMap.get(opp.principal_organization_id)!.tasks.push(task);
         }
       });
     }
 
-    // Add activities to principals
+    // Add activities to principals (O(n))
     if (activities) {
       activities.forEach((activity: Activity) => {
-        const opp = opportunities.find((o: Opportunity) => o.id === activity.opportunity_id);
+        const opp = oppMap.get(activity.opportunity_id);  // O(1) lookup
         if (opp && principalMap.has(opp.principal_organization_id)) {
           principalMap.get(opp.principal_organization_id)!.activities.push(activity);
         }
@@ -144,6 +149,10 @@ export const PrincipalDashboard = () => {
       }
       return b.tasks.length - a.tasks.length;
     });
+    } catch (error) {
+      console.error('Dashboard data aggregation failed:', error);
+      return [];  // Fail gracefully - show empty dashboard instead of crash
+    }
   }, [opportunities, tasks, activities]);
 
   const isLoading = oppLoading || tasksLoading || activitiesLoading;
@@ -155,8 +164,8 @@ export const PrincipalDashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Principal Dashboard</h1>
         </div>
-        <div className="text-center py-12 bg-red-50 rounded-lg border border-red-200">
-          <p className="text-red-600">
+        <div className="text-center py-12 bg-destructive/5 rounded-lg border border-destructive/20">
+          <p className="text-destructive">
             Error loading dashboard. Please try refreshing the page.
           </p>
         </div>
@@ -237,7 +246,7 @@ export const PrincipalDashboard = () => {
               <p className="text-sm text-gray-600">Total Tasks</p>
               <p className="text-2xl font-bold text-gray-900">{totalTasks}</p>
               {overdueTasks > 0 && (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-destructive">
                   {overdueTasks} overdue
                 </p>
               )}
