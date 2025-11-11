@@ -48,36 +48,36 @@ COMMENT ON COLUMN sales.is_admin IS 'DEPRECATED: Use role column instead. Kept f
 -- =====================================================================
 
 -- Get current user's role
-CREATE OR REPLACE FUNCTION auth.user_role()
+CREATE OR REPLACE FUNCTION public.user_role()
 RETURNS user_role AS $$
   SELECT role FROM sales WHERE user_id = auth.uid()
 $$ LANGUAGE SQL STABLE SECURITY DEFINER;
 
-COMMENT ON FUNCTION auth.user_role() IS 'Returns the role of the currently authenticated user';
+COMMENT ON FUNCTION public.user_role() IS 'Returns the role of the currently authenticated user';
 
 -- Check if current user is admin
-CREATE OR REPLACE FUNCTION auth.is_admin()
+CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN AS $$
   SELECT role = 'admin' FROM sales WHERE user_id = auth.uid()
 $$ LANGUAGE SQL STABLE SECURITY DEFINER;
 
-COMMENT ON FUNCTION auth.is_admin() IS 'Returns true if current user has admin role';
+COMMENT ON FUNCTION public.is_admin() IS 'Returns true if current user has admin role';
 
 -- Check if current user is manager or admin
-CREATE OR REPLACE FUNCTION auth.is_manager_or_admin()
+CREATE OR REPLACE FUNCTION public.is_manager_or_admin()
 RETURNS BOOLEAN AS $$
   SELECT role IN ('admin', 'manager') FROM sales WHERE user_id = auth.uid()
 $$ LANGUAGE SQL STABLE SECURITY DEFINER;
 
-COMMENT ON FUNCTION auth.is_manager_or_admin() IS 'Returns true if current user has manager or admin role';
+COMMENT ON FUNCTION public.is_manager_or_admin() IS 'Returns true if current user has manager or admin role';
 
 -- Get current user's sales_id
-CREATE OR REPLACE FUNCTION auth.current_sales_id()
+CREATE OR REPLACE FUNCTION public.current_sales_id()
 RETURNS BIGINT AS $$
   SELECT id FROM sales WHERE user_id = auth.uid()
 $$ LANGUAGE SQL STABLE SECURITY DEFINER;
 
-COMMENT ON FUNCTION auth.current_sales_id() IS 'Returns the sales record ID for the currently authenticated user';
+COMMENT ON FUNCTION public.current_sales_id() IS 'Returns the sales record ID for the currently authenticated user';
 
 -- =====================================================================
 -- PART 4: Update handle_new_user() to Assign Default Role
@@ -129,24 +129,24 @@ CREATE POLICY select_tasks ON tasks
 -- INSERT: All users can create tasks (assigned to themselves by default)
 CREATE POLICY insert_tasks ON tasks
   FOR INSERT TO authenticated
-  WITH CHECK (sales_id = auth.current_sales_id());
+  WITH CHECK (sales_id = public.current_sales_id());
 
 -- UPDATE: Reps can only update their own, managers/admins can update all
 CREATE POLICY update_tasks ON tasks
   FOR UPDATE TO authenticated
   USING (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    sales_id = public.current_sales_id()
   )
   WITH CHECK (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    sales_id = public.current_sales_id()
   );
 
 -- DELETE: Only admins can delete tasks
 CREATE POLICY delete_tasks ON tasks
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- =====================================================================
 -- PART 6: Update RLS Policies - Shared Resources
@@ -172,7 +172,7 @@ CREATE POLICY update_contacts ON contacts
 
 CREATE POLICY delete_contacts ON contacts
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- ORGANIZATIONS
 DROP POLICY IF EXISTS select_organizations ON organizations;
@@ -193,7 +193,7 @@ CREATE POLICY update_organizations ON organizations
 
 CREATE POLICY delete_organizations ON organizations
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- PRODUCTS
 DROP POLICY IF EXISTS select_products ON products;
@@ -214,7 +214,7 @@ CREATE POLICY update_products ON products
 
 CREATE POLICY delete_products ON products
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- =====================================================================
 -- PART 7: Update RLS Policies - Opportunities
@@ -232,56 +232,56 @@ CREATE POLICY select_opportunities ON opportunities
 -- INSERT: Reps create opportunities assigned to themselves
 CREATE POLICY insert_opportunities ON opportunities
   FOR INSERT TO authenticated
-  WITH CHECK (sales_id = auth.current_sales_id());
+  WITH CHECK (account_manager_id = public.current_sales_id());
 
 -- UPDATE: Reps can update their own, managers/admins can update all
 CREATE POLICY update_opportunities ON opportunities
   FOR UPDATE TO authenticated
   USING (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    account_manager_id = public.current_sales_id()
   )
   WITH CHECK (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    account_manager_id = public.current_sales_id()
   );
 
 -- DELETE: Only admins can delete
 CREATE POLICY delete_opportunities ON opportunities
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- =====================================================================
 -- PART 8: Update RLS Policies - Notes (Contact & Opportunity)
 -- =====================================================================
 
 -- CONTACT NOTES
-DROP POLICY IF EXISTS select_contactNotes ON contactNotes;
-DROP POLICY IF EXISTS insert_contactNotes ON contactNotes;
-DROP POLICY IF EXISTS update_contactNotes ON contactNotes;
-DROP POLICY IF EXISTS delete_contactNotes ON contactNotes;
+DROP POLICY IF EXISTS select_contactNotes ON "contactNotes";
+DROP POLICY IF EXISTS insert_contactNotes ON "contactNotes";
+DROP POLICY IF EXISTS update_contactNotes ON "contactNotes";
+DROP POLICY IF EXISTS delete_contactNotes ON "contactNotes";
 
-CREATE POLICY select_contactNotes ON contactNotes
+CREATE POLICY select_contactNotes ON "contactNotes"
   FOR SELECT TO authenticated USING (true);
 
-CREATE POLICY insert_contactNotes ON contactNotes
+CREATE POLICY insert_contactNotes ON "contactNotes"
   FOR INSERT TO authenticated
-  WITH CHECK (sales_id = auth.current_sales_id());
+  WITH CHECK (sales_id = public.current_sales_id());
 
-CREATE POLICY update_contactNotes ON contactNotes
+CREATE POLICY update_contactNotes ON "contactNotes"
   FOR UPDATE TO authenticated
   USING (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    sales_id = public.current_sales_id()
   )
   WITH CHECK (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    sales_id = public.current_sales_id()
   );
 
-CREATE POLICY delete_contactNotes ON contactNotes
+CREATE POLICY delete_contactNotes ON "contactNotes"
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- OPPORTUNITY NOTES
 DROP POLICY IF EXISTS select_opportunityNotes ON opportunityNotes;
@@ -294,22 +294,22 @@ CREATE POLICY select_opportunityNotes ON opportunityNotes
 
 CREATE POLICY insert_opportunityNotes ON opportunityNotes
   FOR INSERT TO authenticated
-  WITH CHECK (sales_id = auth.current_sales_id());
+  WITH CHECK (sales_id = public.current_sales_id());
 
 CREATE POLICY update_opportunityNotes ON opportunityNotes
   FOR UPDATE TO authenticated
   USING (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    sales_id = public.current_sales_id()
   )
   WITH CHECK (
-    auth.is_manager_or_admin() OR
-    sales_id = auth.current_sales_id()
+    public.is_manager_or_admin() OR
+    sales_id = public.current_sales_id()
   );
 
 CREATE POLICY delete_opportunityNotes ON opportunityNotes
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- =====================================================================
 -- PART 9: Update RLS Policies - Sales Table (Role Management)
@@ -327,24 +327,24 @@ CREATE POLICY select_sales ON sales
 -- INSERT: Only admins can create new sales records
 CREATE POLICY insert_sales ON sales
   FOR INSERT TO authenticated
-  WITH CHECK (auth.is_admin());
+  WITH CHECK (public.is_admin());
 
 -- UPDATE: Admins can update all, others can only update their own profile
 CREATE POLICY update_sales ON sales
   FOR UPDATE TO authenticated
   USING (
-    auth.is_admin() OR
+    public.is_admin() OR
     user_id = auth.uid()
   )
   WITH CHECK (
-    auth.is_admin() OR
+    public.is_admin() OR
     (user_id = auth.uid() AND role = (SELECT role FROM sales WHERE user_id = auth.uid()))
   );
 
 -- DELETE: Only admins can delete (soft delete recommended)
 CREATE POLICY delete_sales ON sales
   FOR DELETE TO authenticated
-  USING (auth.is_admin());
+  USING (public.is_admin());
 
 -- =====================================================================
 -- PART 10: Sync Trigger to Keep is_admin Compatible
@@ -392,9 +392,9 @@ BEGIN
   RAISE NOTICE '========================================';
   RAISE NOTICE 'Helper functions created:';
   RAISE NOTICE '  - auth.user_role()';
-  RAISE NOTICE '  - auth.is_admin()';
-  RAISE NOTICE '  - auth.is_manager_or_admin()';
-  RAISE NOTICE '  - auth.current_sales_id()';
+  RAISE NOTICE '  - public.is_admin()';
+  RAISE NOTICE '  - public.is_manager_or_admin()';
+  RAISE NOTICE '  - public.current_sales_id()';
   RAISE NOTICE '========================================';
   RAISE NOTICE 'RLS Policies updated for:';
   RAISE NOTICE '  - tasks (personal ownership)';
