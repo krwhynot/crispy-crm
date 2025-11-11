@@ -176,7 +176,7 @@ export const PrincipalDashboard = () => {
         </div>
 
         {/* Loading skeletons */}
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
             <PrincipalCardSkeleton key={i} />
           ))}
@@ -219,7 +219,7 @@ export const PrincipalDashboard = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {principals.map((principal) => (
             <PrincipalCard key={principal.id} principal={principal} />
           ))}
@@ -232,7 +232,7 @@ export const PrincipalDashboard = () => {
           data-testid="dashboard-summary-stats"
           className="mt-8 pt-6 border-t border-gray-200"
         >
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div>
               <p className="text-sm text-gray-600">Total Tasks</p>
               <p className="text-2xl font-bold text-gray-900">{totalTasks}</p>
