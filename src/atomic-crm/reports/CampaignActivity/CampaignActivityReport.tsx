@@ -24,6 +24,7 @@ interface Activity {
   created_by: number;
   organization_id: number;
   contact_id: number | null;
+  opportunity_id: number | null;
   organization_name: string;
   contact_name?: string;
 }
@@ -59,6 +60,7 @@ export default function CampaignActivityReport() {
     INTERACTION_TYPE_OPTIONS.map(opt => opt.value)
   );
   const [datePreset, setDatePreset] = useState<string>("allTime");
+  const [selectedSalesRep, setSelectedSalesRep] = useState<number | null>(null);
 
   // Fetch all opportunities to get available campaigns
   const { data: allOpportunities = [] } = useGetList<Opportunity>(
@@ -86,7 +88,20 @@ export default function CampaignActivityReport() {
       .sort((a, b) => b.count - a.count);
   }, [allOpportunities]);
 
-  // Fetch activities for the selected campaign
+  // Fetch ALL activities for the selected campaign (unfiltered, for counts)
+  const { data: allCampaignActivities = [] } = useGetList<Activity>(
+    "activities",
+    {
+      pagination: { page: 1, perPage: 10000 },
+      filter: {
+        "opportunities.campaign": selectedCampaign,
+        "opportunities.deleted_at@is": null,
+      },
+      sort: { field: "created_at", order: "DESC" },
+    }
+  );
+
+  // Fetch activities for the selected campaign (with filters applied)
   const { data: activities = [] } = useGetList<Activity>(
     "activities",
     {
@@ -99,6 +114,7 @@ export default function CampaignActivityReport() {
         ...(selectedActivityTypes.length > 0 &&
             selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length &&
             { type: selectedActivityTypes }),
+        ...(selectedSalesRep !== null && { created_by: selectedSalesRep }),
       },
       sort: { field: "created_at", order: "DESC" },
     }
@@ -126,6 +142,25 @@ export default function CampaignActivityReport() {
     () => new Map((salesReps || []).map((s) => [s.id, `${s.first_name} ${s.last_name}`])),
     [salesReps]
   );
+
+  // Calculate sales rep options with activity counts from ALL activities (unfiltered)
+  const salesRepOptions = useMemo(() => {
+    const repCounts = new Map<number, number>();
+
+    allCampaignActivities.forEach((activity) => {
+      if (activity.created_by) {
+        repCounts.set(activity.created_by, (repCounts.get(activity.created_by) || 0) + 1);
+      }
+    });
+
+    return Array.from(repCounts.entries())
+      .map(([id, count]) => ({
+        id,
+        name: salesMap.get(id) || `Rep ${id}`,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
+  }, [allCampaignActivities, salesMap]);
 
   // Group activities by type
   const activityGroups = useMemo(() => {
@@ -209,7 +244,8 @@ export default function CampaignActivityReport() {
   };
 
   // Date preset handlers
-  const setDatePreset = (preset: string) => {
+  const setDatePresetHandler = (preset: string) => {
+    setDatePreset(preset);
     const today = new Date();
     switch (preset) {
       case "last7":
@@ -240,7 +276,10 @@ export default function CampaignActivityReport() {
   // Activity type toggle handler
   const toggleActivityType = (type: string) => {
     if (selectedActivityTypes.includes(type)) {
-      setSelectedActivityTypes(selectedActivityTypes.filter(t => t !== type));
+      // Don't allow deselecting if it's the last one
+      if (selectedActivityTypes.length > 1) {
+        setSelectedActivityTypes(selectedActivityTypes.filter(t => t !== type));
+      }
     } else {
       setSelectedActivityTypes([...selectedActivityTypes, type]);
     }
@@ -259,21 +298,24 @@ export default function CampaignActivityReport() {
   const clearFilters = () => {
     setDateRange(null);
     setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map(opt => opt.value));
+    setDatePreset("allTime");
+    setSelectedSalesRep(null);
   };
 
   // Check if any filters are active
   const hasActiveFilters = dateRange !== null ||
-    selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length;
+    selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length ||
+    selectedSalesRep !== null;
 
   // Calculate activity counts by type for all activities (unfiltered)
   const activityTypeCounts = useMemo(() => {
     const counts = new Map<string, number>();
-    activities.forEach((activity) => {
+    allCampaignActivities.forEach((activity) => {
       const type = activity.type || "Unknown";
       counts.set(type, (counts.get(type) || 0) + 1);
     });
     return counts;
-  }, [activities]);
+  }, [allCampaignActivities]);
 
   return (
     <ReportLayout title="Campaign Activity Report">
@@ -305,37 +347,37 @@ export default function CampaignActivityReport() {
         {/* Filter Panel */}
         <Card>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Date Range Filter */}
               <div>
                 <h4 className="text-sm font-medium mb-3">Date Range</h4>
                 <div className="space-y-3">
                   <div className="flex gap-2 flex-wrap">
                     <Button
-                      variant={dateRange === null ? "default" : "outline"}
+                      variant={datePreset === "allTime" ? "default" : "outline"}
                       size="sm"
-                      onClick={() => setDatePreset("allTime")}
+                      onClick={() => setDatePresetHandler("allTime")}
                     >
                       All time
                     </Button>
                     <Button
-                      variant={dateRange?.start === format(subDays(new Date(), 7), "yyyy-MM-dd") ? "default" : "outline"}
+                      variant={datePreset === "last7" ? "default" : "outline"}
                       size="sm"
-                      onClick={() => setDatePreset("last7")}
+                      onClick={() => setDatePresetHandler("last7")}
                     >
                       Last 7 days
                     </Button>
                     <Button
-                      variant={dateRange?.start === format(subDays(new Date(), 30), "yyyy-MM-dd") ? "default" : "outline"}
+                      variant={datePreset === "last30" ? "default" : "outline"}
                       size="sm"
-                      onClick={() => setDatePreset("last30")}
+                      onClick={() => setDatePresetHandler("last30")}
                     >
                       Last 30 days
                     </Button>
                     <Button
-                      variant={dateRange?.start === format(startOfMonth(new Date()), "yyyy-MM-dd") ? "default" : "outline"}
+                      variant={datePreset === "thisMonth" ? "default" : "outline"}
                       size="sm"
-                      onClick={() => setDatePreset("thisMonth")}
+                      onClick={() => setDatePresetHandler("thisMonth")}
                     >
                       This month
                     </Button>
@@ -347,7 +389,15 @@ export default function CampaignActivityReport() {
                         id="start-date"
                         type="date"
                         value={dateRange?.start || ""}
-                        onChange={(e) => setDateRange(prev => ({ start: e.target.value, end: prev?.end || format(new Date(), "yyyy-MM-dd") }))}
+                        onChange={(e) => {
+                          const newStart = e.target.value;
+                          setDatePreset(""); // Clear preset when manual input
+                          const endDate = dateRange?.end || format(new Date(), "yyyy-MM-dd");
+                          // Only update if start <= end
+                          if (newStart <= endDate) {
+                            setDateRange({ start: newStart, end: endDate });
+                          }
+                        }}
                         className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
                       />
                     </div>
@@ -357,7 +407,15 @@ export default function CampaignActivityReport() {
                         id="end-date"
                         type="date"
                         value={dateRange?.end || ""}
-                        onChange={(e) => setDateRange(prev => ({ start: prev?.start || format(new Date(), "yyyy-MM-dd"), end: e.target.value }))}
+                        onChange={(e) => {
+                          const newEnd = e.target.value;
+                          setDatePreset(""); // Clear preset when manual input
+                          const startDate = dateRange?.start || format(new Date(), "yyyy-MM-dd");
+                          // Only update if start <= end
+                          if (startDate <= newEnd) {
+                            setDateRange({ start: startDate, end: newEnd });
+                          }
+                        }}
                         className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
                       />
                     </div>
@@ -398,6 +456,27 @@ export default function CampaignActivityReport() {
                     );
                   })}
                 </div>
+              </div>
+
+              {/* Sales Rep Filter */}
+              <div>
+                <h4 className="text-sm font-medium mb-3">Sales Rep</h4>
+                <Select
+                  value={selectedSalesRep?.toString() || "all"}
+                  onValueChange={(value) => setSelectedSalesRep(value === "all" ? null : parseInt(value, 10))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Reps" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Reps ({allCampaignActivities.length})</SelectItem>
+                    {salesRepOptions.map((rep) => (
+                      <SelectItem key={rep.id} value={rep.id.toString()}>
+                        {rep.name} ({rep.count})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </CardContent>
