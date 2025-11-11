@@ -15,6 +15,7 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
       id: sale.id,
       fullName: `${sale.first_name} ${sale.last_name}`,
       avatar: sale.avatar_url,
+      role: sale.role || 'rep', // Default to 'rep' if not set
     };
   },
 });
@@ -59,8 +60,8 @@ export const authProvider: AuthProvider = {
     const sale = await getSaleFromCache();
     if (sale == null) return false;
 
-    // Compute access rights from the sale role
-    const role = sale.is_admin ? "admin" : "user";
+    // Use the new role field (fallback to is_admin for backward compatibility)
+    const role = sale.role || (sale.is_admin ? "admin" : "user");
     return canAccess(role, params);
   },
 };
@@ -94,7 +95,7 @@ const getSaleFromCache = async () => {
 
   const { data: dataSale, error: errorSale } = await supabase
     .from("sales")
-    .select("id, first_name, last_name, avatar_url, is_admin")
+    .select("id, first_name, last_name, avatar_url, is_admin, role")
     .match({ user_id: dataSession?.session?.user.id })
     .maybeSingle();
 

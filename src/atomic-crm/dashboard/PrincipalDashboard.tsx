@@ -10,7 +10,7 @@ interface Opportunity {
   name: string;
   principal_organization_id: string;
   principal_organization?: { id: string; name: string };
-  expected_value: number;
+  estimated_close_date: string;
   stage: string;
   sales_id: string;
   status: string;
