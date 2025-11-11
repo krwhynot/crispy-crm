@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useNotify } from 'ra-core';
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useNotify } from "ra-core";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 interface KeyboardShortcutsProviderProps {
   children: React.ReactNode;
@@ -24,17 +24,15 @@ export const KeyboardShortcutsProvider = ({ children }: KeyboardShortcutsProvide
 
   const handleSave = useCallback(() => {
     // Find the submit button in the current form and click it
-    const submitButton = document.querySelector<HTMLButtonElement>(
-      'form button[type="submit"]'
-    );
+    const submitButton = document.querySelector<HTMLButtonElement>('form button[type="submit"]');
 
     if (submitButton) {
       submitButton.click();
     } else {
       // Fallback: trigger form submit event
-      const form = document.querySelector('form');
+      const form = document.querySelector("form");
       if (form) {
-        form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+        form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
       }
     }
   }, []);
@@ -49,7 +47,7 @@ export const KeyboardShortcutsProvider = ({ children }: KeyboardShortcutsProvide
       navigate(`/${resource}/create`);
     } else {
       // If not on a resource page, show notification
-      notify('Navigate to a resource to create a new record', { type: 'info' });
+      notify("Navigate to a resource to create a new record", { type: "info" });
     }
   }, [navigate, notify]);
 
@@ -91,7 +89,7 @@ export const KeyboardShortcutsProvider = ({ children }: KeyboardShortcutsProvide
       if (bulkDeleteButton) {
         bulkDeleteButton.click();
       } else {
-        notify('Select items and use the delete button in the toolbar', { type: 'info' });
+        notify("Select items and use the delete button in the toolbar", { type: "info" });
       }
     }
   }, [notify]);

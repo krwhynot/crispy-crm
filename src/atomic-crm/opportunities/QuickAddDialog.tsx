@@ -4,8 +4,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/dialog';
-import { QuickAddForm } from './QuickAddForm';
+} from "@/components/ui/dialog";
+import { QuickAddForm } from "./QuickAddForm";
 
 interface QuickAddDialogProps {
   open: boolean;

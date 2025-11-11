@@ -53,8 +53,7 @@ vi.mock("./supabase", () => ({
   supabase: {
     auth: {
       getUser: (...args: any[]) =>
-        mocks.mockGetUser(...args) ||
-        Promise.resolve({ data: { user: { id: "user-123" } } }),
+        mocks.mockGetUser(...args) || Promise.resolve({ data: { user: { id: "user-123" } } }),
     },
   },
 }));
@@ -160,16 +159,15 @@ describe("unifiedDataProvider - Error Handling", () => {
     it("should propagate network errors on getOne", async () => {
       mockGetOne.mockRejectedValue(new Error("ERR_NETWORK"));
 
-      await expect(
-        unifiedDataProvider.getOne("contacts", { id: 1 })
-      ).rejects.toThrow("ERR_NETWORK");
+      await expect(unifiedDataProvider.getOne("contacts", { id: 1 })).rejects.toThrow(
+        "ERR_NETWORK"
+      );
     });
   });
 
   describe("RLS (Row Level Security) errors", () => {
     it("should propagate permission denied on getList", async () => {
       mockGetList.mockRejectedValue({
-        
         message: "permission denied for table contacts",
       });
 
@@ -180,7 +178,6 @@ describe("unifiedDataProvider - Error Handling", () => {
           filter: {},
         })
       ).rejects.toMatchObject({
-        
         message: expect.stringContaining("permission denied"),
       });
     });
@@ -203,7 +200,6 @@ describe("unifiedDataProvider - Error Handling", () => {
     it("should propagate RLS denial on update", async () => {
       vi.clearAllMocks();
       mockUpdate.mockRejectedValue({
-        
         message: "permission denied for table tags",
         details: "RLS policy prevents update",
       });
@@ -220,7 +216,6 @@ describe("unifiedDataProvider - Error Handling", () => {
     it("should propagate RLS errors on delete", async () => {
       vi.clearAllMocks();
       mockDelete.mockRejectedValue({
-        
         message: "permission denied for table tags",
       });
 
@@ -254,8 +249,10 @@ describe("unifiedDataProvider - Error Handling", () => {
     it("should propagate foreign key constraint violations", async () => {
       vi.clearAllMocks();
       // Use Error object with code and details properties to match Supabase error format
-      const error: any = new Error('insert or update on table "activities" violates foreign key constraint');
-      error.code = '23503';
+      const error: any = new Error(
+        'insert or update on table "activities" violates foreign key constraint'
+      );
+      error.code = "23503";
       error.details = 'Key (contact_id)=(999) is not present in table "contacts".';
       mockCreate.mockRejectedValue(error);
 
@@ -358,9 +355,7 @@ describe("unifiedDataProvider - Error Handling", () => {
         message: "The result contains 0 rows",
       });
 
-      await expect(
-        unifiedDataProvider.getOne("contacts", { id: 99999 })
-      ).rejects.toMatchObject({
+      await expect(unifiedDataProvider.getOne("contacts", { id: 99999 })).rejects.toMatchObject({
         code: "PGRST116",
       });
     });
@@ -439,14 +434,13 @@ describe("unifiedDataProvider - Error Handling", () => {
     it("should propagate errors on getMany", async () => {
       mockGetMany.mockRejectedValue(new Error("Batch fetch failed"));
 
-      await expect(
-        unifiedDataProvider.getMany("contacts", { ids: [1, 2, 3] })
-      ).rejects.toThrow("Batch fetch failed");
+      await expect(unifiedDataProvider.getMany("contacts", { ids: [1, 2, 3] })).rejects.toThrow(
+        "Batch fetch failed"
+      );
     });
 
     it("should propagate errors on updateMany", async () => {
       mockUpdateMany.mockRejectedValue({
-        
         message: "permission denied",
       });
 
@@ -455,15 +449,12 @@ describe("unifiedDataProvider - Error Handling", () => {
           ids: [1, 2, 3],
           data: { tags: ["test"] },
         })
-      ).rejects.toMatchObject({
-        
-      });
+      ).rejects.toMatchObject({});
     });
 
     it("should propagate errors on deleteMany", async () => {
       vi.clearAllMocks();
       mockDeleteMany.mockRejectedValue({
-        
         message: "foreign key constraint violation",
       });
 
@@ -471,9 +462,7 @@ describe("unifiedDataProvider - Error Handling", () => {
         unifiedDataProvider.deleteMany("tags", {
           ids: [1, 2, 3],
         })
-      ).rejects.toMatchObject({
-        
-      });
+      ).rejects.toMatchObject({});
     });
   });
 

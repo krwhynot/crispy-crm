@@ -5,11 +5,7 @@ import { formatDistanceToNow } from "date-fns";
 import type { Product } from "../types";
 
 export const ProductListContent = () => {
-  const {
-    data: products,
-    error,
-    isPending,
-  } = useListContext<Product>();
+  const { data: products, error, isPending } = useListContext<Product>();
 
   if (isPending) {
     return (
@@ -44,9 +40,7 @@ export const ProductListContent = () => {
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-4">
-                  <h3 className="font-semibold text-lg">
-                    {product.name || "Untitled Product"}
-                  </h3>
+                  <h3 className="font-semibold text-lg">{product.name || "Untitled Product"}</h3>
                   <span className="text-sm text-[color:var(--text-subtle)]">
                     SKU: {product.sku || "N/A"}
                   </span>
@@ -58,9 +52,7 @@ export const ProductListContent = () => {
                 </div>
 
                 {product.description && (
-                  <p className="mt-2 text-sm line-clamp-2">
-                    {product.description}
-                  </p>
+                  <p className="mt-2 text-sm line-clamp-2">{product.description}</p>
                 )}
 
                 <div className="flex items-center gap-4 mt-3 text-xs text-[color:var(--text-subtle)]">

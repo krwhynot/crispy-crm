@@ -65,9 +65,9 @@ describe("SalesService", () => {
         ...createMockDataProvider(),
       } as any);
 
-      await expect(
-        serviceWithoutInvoke.salesCreate(mockSalesFormData)
-      ).rejects.toThrow("DataProvider does not support Edge Function operations");
+      await expect(serviceWithoutInvoke.salesCreate(mockSalesFormData)).rejects.toThrow(
+        "DataProvider does not support Edge Function operations"
+      );
     });
 
     test("should throw if Edge Function returns no data", async () => {
@@ -87,9 +87,7 @@ describe("SalesService", () => {
     });
 
     test("should handle Edge Function errors with enhanced error message", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Email already exists")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Email already exists"));
 
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
         "Sales creation failed: Email already exists"
@@ -98,9 +96,7 @@ describe("SalesService", () => {
 
     test("should log error details on failure", async () => {
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Database error")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Database error"));
 
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow();
 
@@ -158,9 +154,9 @@ describe("SalesService", () => {
     });
 
     test("should handle validation errors from Edge Function", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Password must be at least 8 characters")
-      );
+      mockDataProvider.invoke = vi
+        .fn()
+        .mockRejectedValue(new Error("Password must be at least 8 characters"));
 
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
         "Sales creation failed: Password must be at least 8 characters"
@@ -211,17 +207,17 @@ describe("SalesService", () => {
         ...createMockDataProvider(),
       } as any);
 
-      await expect(
-        serviceWithoutInvoke.salesUpdate(1, { first_name: "John" })
-      ).rejects.toThrow("DataProvider does not support Edge Function operations");
+      await expect(serviceWithoutInvoke.salesUpdate(1, { first_name: "John" })).rejects.toThrow(
+        "DataProvider does not support Edge Function operations"
+      );
     });
 
     test("should throw if Edge Function returns no data", async () => {
       mockDataProvider.invoke = vi.fn().mockResolvedValue(null);
 
-      await expect(
-        service.salesUpdate(1, { first_name: "John" })
-      ).rejects.toThrow("Sales update failed: No data returned from Edge Function");
+      await expect(service.salesUpdate(1, { first_name: "John" })).rejects.toThrow(
+        "Sales update failed: No data returned from Edge Function"
+      );
     });
 
     test("should handle partial updates", async () => {
@@ -284,9 +280,7 @@ describe("SalesService", () => {
 
     test("should log error details on failure", async () => {
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Database error")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Database error"));
 
       const updateData = { first_name: "John" };
       await expect(service.salesUpdate(1, updateData)).rejects.toThrow();
@@ -326,13 +320,11 @@ describe("SalesService", () => {
     });
 
     test("should handle Edge Function errors", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Email already exists")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Email already exists"));
 
-      await expect(
-        service.salesUpdate(1, { email: "duplicate@example.com" })
-      ).rejects.toThrow("Sales update failed: Email already exists");
+      await expect(service.salesUpdate(1, { email: "duplicate@example.com" })).rejects.toThrow(
+        "Sales update failed: Email already exists"
+      );
     });
   });
 
@@ -377,9 +369,7 @@ describe("SalesService", () => {
     });
 
     test("should handle Edge Function errors", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("User not found")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("User not found"));
 
       await expect(service.updatePassword(1)).rejects.toThrow(
         "Password update failed: User not found"
@@ -388,9 +378,7 @@ describe("SalesService", () => {
 
     test("should log error details on failure", async () => {
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Database error")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Database error"));
 
       await expect(service.updatePassword(1)).rejects.toThrow();
 
@@ -428,9 +416,9 @@ describe("SalesService", () => {
     });
 
     test("should handle network timeout errors", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Network request failed: timeout")
-      );
+      mockDataProvider.invoke = vi
+        .fn()
+        .mockRejectedValue(new Error("Network request failed: timeout"));
 
       await expect(service.updatePassword(1)).rejects.toThrow(
         "Password update failed: Network request failed: timeout"
@@ -448,9 +436,7 @@ describe("SalesService", () => {
     });
 
     test("should handle network errors", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("Network request failed")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Network request failed"));
 
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
         "Sales creation failed: Network request failed"
@@ -458,9 +444,9 @@ describe("SalesService", () => {
     });
 
     test("should handle RLS policy violations", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("new row violates row-level security policy")
-      );
+      mockDataProvider.invoke = vi
+        .fn()
+        .mockRejectedValue(new Error("new row violates row-level security policy"));
 
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
         "Sales creation failed: new row violates row-level security policy"
@@ -468,9 +454,7 @@ describe("SalesService", () => {
     });
 
     test("should handle auth errors", async () => {
-      mockDataProvider.invoke = vi.fn().mockRejectedValue(
-        new Error("JWT expired")
-      );
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("JWT expired"));
 
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
         "Sales creation failed: JWT expired"
@@ -490,7 +474,8 @@ describe("SalesService", () => {
         administrator: false,
         disabled: false,
       };
-      mockDataProvider.invoke = vi.fn()
+      mockDataProvider.invoke = vi
+        .fn()
         .mockResolvedValueOnce(createResponse)
         .mockResolvedValueOnce(createResponse)
         .mockResolvedValueOnce(true);
@@ -503,7 +488,8 @@ describe("SalesService", () => {
     });
 
     test("should handle concurrent operations gracefully", async () => {
-      mockDataProvider.invoke = vi.fn()
+      mockDataProvider.invoke = vi
+        .fn()
         .mockResolvedValueOnce({ id: 1 } as Sale)
         .mockResolvedValueOnce({ id: 2 } as Sale);
 

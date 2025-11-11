@@ -18,11 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Filter, X } from "lucide-react";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
@@ -156,10 +152,7 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
                       checked={selectedTypes.includes(option.value)}
                       onCheckedChange={() => handleTypeToggle(option.value)}
                     />
-                    <label
-                      htmlFor={`type-${option.value}`}
-                      className="text-sm cursor-pointer"
-                    >
+                    <label htmlFor={`type-${option.value}`} className="text-sm cursor-pointer">
                       {option.label}
                     </label>
                   </div>
@@ -209,10 +202,7 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
                       checked={selectedUsers.includes(user.id.toString())}
                       onCheckedChange={() => handleUserToggle(user.id.toString())}
                     />
-                    <label
-                      htmlFor={`user-${user.id}`}
-                      className="text-sm cursor-pointer"
-                    >
+                    <label htmlFor={`user-${user.id}`} className="text-sm cursor-pointer">
                       {user.first_name} {user.last_name}
                     </label>
                   </div>
@@ -252,10 +242,7 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
           {dateFrom && (
             <Badge variant="secondary" className="gap-1">
               From: {dateFrom}
-              <button
-                onClick={() => setDateFrom("")}
-                className="ml-1 hover:text-destructive"
-              >
+              <button onClick={() => setDateFrom("")} className="ml-1 hover:text-destructive">
                 <X className="w-3 h-3" />
               </button>
             </Badge>
@@ -263,10 +250,7 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
           {dateTo && (
             <Badge variant="secondary" className="gap-1">
               To: {dateTo}
-              <button
-                onClick={() => setDateTo("")}
-                className="ml-1 hover:text-destructive"
-              >
+              <button onClick={() => setDateTo("")} className="ml-1 hover:text-destructive">
                 <X className="w-3 h-3" />
               </button>
             </Badge>

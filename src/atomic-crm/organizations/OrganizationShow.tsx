@@ -7,12 +7,7 @@ import {
   useRecordContext,
   useShowContext,
 } from "ra-core";
-import {
-  Link as RouterLink,
-  useLocation,
-  useMatch,
-  useNavigate,
-} from "react-router-dom";
+import { Link as RouterLink, useLocation, useMatch, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -88,10 +83,7 @@ const OrganizationShowContent = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="activity" className="pt-2">
-                <ActivityLog
-                  organizationId={record.id}
-                  context="organization"
-                />
+                <ActivityLog organizationId={record.id} context="organization" />
               </TabsContent>
               <TabsContent value="contacts">
                 {record.nb_contacts ? (
@@ -103,9 +95,7 @@ const OrganizationShowContent = () => {
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-row justify-end space-x-2 mt-1">
                         {!!record.nb_contacts && (
-                          <SortButton
-                            fields={["last_name", "first_name", "last_seen"]}
-                          />
+                          <SortButton fields={["last_name", "first_name", "last_seen"]} />
                         )}
                         <CreateRelatedContactButton />
                       </div>
@@ -178,9 +168,7 @@ const ContactsIterator = () => {
                 <div className="text-sm text-muted-foreground">
                   {contact.title}
                   {contact.nb_tasks
-                    ? ` - ${contact.nb_tasks} task${
-                        contact.nb_tasks > 1 ? "s" : ""
-                      }`
+                    ? ` - ${contact.nb_tasks} task${contact.nb_tasks > 1 ? "s" : ""}`
                     : ""}
                   &nbsp; &nbsp;
                   <TagsList />
@@ -208,11 +196,7 @@ const CreateRelatedContactButton = () => {
     <Button variant="outline" asChild size="sm" className="h-9">
       <RouterLink
         to="/contacts/create"
-        state={
-          organization
-            ? { record: { organization_id: organization.id } }
-            : undefined
-        }
+        state={organization ? { record: { organization_id: organization.id } } : undefined}
         className="flex items-center gap-2"
       >
         <UserPlus className="h-4 w-4" />
@@ -228,11 +212,7 @@ const CreateRelatedOpportunityButton = () => {
     <Button variant="outline" asChild size="sm" className="h-9">
       <RouterLink
         to="/opportunities/create"
-        state={
-          organization
-            ? { record: { customer_organization_id: organization.id } }
-            : undefined
-        }
+        state={organization ? { record: { customer_organization_id: organization.id } } : undefined}
         className="flex items-center gap-2"
       >
         <Briefcase className="h-4 w-4" />
@@ -243,11 +223,7 @@ const CreateRelatedOpportunityButton = () => {
 };
 
 const OpportunitiesIterator = () => {
-  const {
-    data: opportunities,
-    error,
-    isPending,
-  } = useListContext<Opportunity>();
+  const { data: opportunities, error, isPending } = useListContext<Opportunity>();
   const { opportunityStages } = useConfigurationContext();
   if (isPending || error) return null;
 
@@ -278,8 +254,7 @@ const OpportunitiesIterator = () => {
               </div>
               <div className="text-right">
                 <div className="text-sm text-muted-foreground">
-                  last activity {formatDistance(opportunity.updated_at, now)}{" "}
-                  ago{" "}
+                  last activity {formatDistance(opportunity.updated_at, now)} ago{" "}
                 </div>
               </div>
             </RouterLink>

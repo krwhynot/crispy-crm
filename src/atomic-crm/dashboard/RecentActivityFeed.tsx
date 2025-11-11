@@ -33,23 +33,27 @@ interface Activity {
 }
 
 const ACTIVITY_ICONS: Record<string, string> = {
-  Call: '📞',
-  Email: '📧',
-  Meeting: '🤝',
-  Note: '📝',
-  'Follow-up': '📝',
-  Presentation: '🤝',
-  Demo: '🤝',
+  Call: "📞",
+  Email: "📧",
+  Meeting: "🤝",
+  Note: "📝",
+  "Follow-up": "📝",
+  Presentation: "🤝",
+  Demo: "🤝",
 };
 
 export const RecentActivityFeed = () => {
   const { identity } = useGetIdentity();
 
-  const { data: activities, isPending, error } = useGetList<Activity>(
-    'activities',
+  const {
+    data: activities,
+    isPending,
+    error,
+  } = useGetList<Activity>(
+    "activities",
     {
       filter: { created_by: identity?.id }, // Note: activities use created_by, not sales_id
-      sort: { field: 'activity_date', order: 'DESC' },
+      sort: { field: "activity_date", order: "DESC" },
       pagination: { page: 1, perPage: 7 },
     },
     {
@@ -90,18 +94,13 @@ export const RecentActivityFeed = () => {
           <CardTitle>Recent Activity</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-muted-foreground">
-            No recent activity logged
-          </p>
+          <p className="text-muted-foreground">No recent activity logged</p>
           <p className="text-sm text-muted-foreground">
             Log your calls and meetings to keep your pipeline up to date and track engagement.
           </p>
         </CardContent>
         <CardFooter>
-          <Link
-            to="/activities/create"
-            className="text-sm text-primary hover:underline"
-          >
+          <Link to="/activities/create" className="text-sm text-primary hover:underline">
             Log Activity →
           </Link>
         </CardFooter>
@@ -120,10 +119,7 @@ export const RecentActivityFeed = () => {
         ))}
       </CardContent>
       <CardFooter>
-        <Link
-          to="/activities"
-          className="text-sm text-primary hover:underline"
-        >
+        <Link to="/activities" className="text-sm text-primary hover:underline">
           View All Activity →
         </Link>
       </CardFooter>
@@ -136,7 +132,7 @@ interface ActivityItemProps {
 }
 
 function ActivityItem({ activity }: ActivityItemProps) {
-  const icon = ACTIVITY_ICONS[activity.type] || '📋';
+  const icon = ACTIVITY_ICONS[activity.type] || "📋";
   const activityDate = new Date(activity.activity_date);
   const now = new Date();
 
@@ -144,9 +140,7 @@ function ActivityItem({ activity }: ActivityItemProps) {
   const timeAgo = formatDistanceToNow(activityDate, { addSuffix: true });
   const isRecent = now.getTime() - activityDate.getTime() < 24 * 60 * 60 * 1000; // Less than 24 hours
 
-  const formattedTime = isRecent
-    ? timeAgo
-    : format(activityDate, 'MMM d, h:mma');
+  const formattedTime = isRecent ? timeAgo : format(activityDate, "MMM d, h:mma");
 
   // Truncate notes for display
   const displayNotes = activity.notes
@@ -159,16 +153,13 @@ function ActivityItem({ activity }: ActivityItemProps) {
     <div className="space-y-1">
       <div className="text-xs text-muted-foreground">{formattedTime}</div>
       <div className="text-sm">
-        <Link
-          to={`/activities/${activity.id}`}
-          className="hover:underline"
-        >
+        <Link to={`/activities/${activity.id}`} className="hover:underline">
           {icon} {activity.type} - {displayNotes}
         </Link>
       </div>
       {activity.opportunity_id && (
         <div className="text-xs text-muted-foreground ml-6">
-          →{' '}
+          →{" "}
           <Link
             to={`/opportunities/${activity.opportunity_id}/show`}
             className="text-primary hover:underline"

@@ -98,9 +98,7 @@ export const OpportunitiesByPrincipal = () => {
     >
       {principalCounts.length === 0 ? (
         <div className="flex flex-col items-center justify-center w-full text-center">
-          <p className="text-sm md:text-base text-muted-foreground">
-            No active opportunities
-          </p>
+          <p className="text-sm md:text-base text-muted-foreground">No active opportunities</p>
         </div>
       ) : (
         <div className="w-full space-y-1 max-h-[300px] overflow-y-auto">

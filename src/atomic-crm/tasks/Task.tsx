@@ -25,13 +25,7 @@ import { useEffect, useState } from "react";
 import type { Contact, Task as TData } from "../types";
 import TaskEdit from "./TaskEdit";
 
-export const Task = ({
-  task,
-  showContact,
-}: {
-  task: TData;
-  showContact?: boolean;
-}) => {
+export const Task = ({ task, showContact }: { task: TData; showContact?: boolean }) => {
   const notify = useNotify();
   const queryClient = useQueryClient();
 
@@ -58,8 +52,7 @@ export const Task = ({
     setOpenEdit(false);
   };
 
-  const [update, { isPending: isUpdatePending, isSuccess, variables }] =
-    useUpdate();
+  const [update, { isPending: isUpdatePending, isSuccess, variables }] = useUpdate();
   const { handleDelete } = useDeleteWithUndoController({
     record: task,
     redirect: false,
@@ -88,11 +81,7 @@ export const Task = ({
 
   useEffect(() => {
     // We do not want to invalidate the query when a tack is checked or unchecked
-    if (
-      isUpdatePending ||
-      !isSuccess ||
-      variables?.data?.completed_at != undefined
-    ) {
+    if (isUpdatePending || !isSuccess || variables?.data?.completed_at != undefined) {
       return;
     }
 
@@ -141,8 +130,7 @@ export const Task = ({
                       <>
                         {" "}
                         (Re:&nbsp;
-                        {referenceRecord?.first_name}{" "}
-                        {referenceRecord?.last_name})
+                        {referenceRecord?.first_name} {referenceRecord?.last_name})
                       </>
                     );
                   }}
@@ -209,9 +197,7 @@ export const Task = ({
       </div>
 
       {/* This part is for editing the Task directly via a Dialog */}
-      {openEdit && (
-        <TaskEdit taskId={task.id} open={openEdit} close={handleCloseEdit} />
-      )}
+      {openEdit && <TaskEdit taskId={task.id} open={openEdit} close={handleCloseEdit} />}
     </>
   );
 };

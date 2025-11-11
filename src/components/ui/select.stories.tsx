@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Select,
   SelectContent,
@@ -8,24 +8,24 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from './select';
-import React from 'react';
+} from "./select";
+import React from "react";
 
 const meta = {
-  title: 'UI/Select',
+  title: "UI/Select",
   component: Select,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     disabled: {
-      control: 'boolean',
-      description: 'Whether the select is disabled',
+      control: "boolean",
+      description: "Whether the select is disabled",
     },
     defaultValue: {
-      control: 'text',
-      description: 'Default selected value',
+      control: "text",
+      description: "Default selected value",
     },
   },
 } satisfies Meta<typeof Select>;
@@ -227,7 +227,8 @@ export const LongOptionText: Story = {
           This is a very long option text that might need to be truncated
         </SelectItem>
         <SelectItem value="verylong">
-          This is an extremely long option text that definitely needs proper handling to avoid layout issues
+          This is an extremely long option text that definitely needs proper handling to avoid
+          layout issues
         </SelectItem>
       </SelectContent>
     </Select>

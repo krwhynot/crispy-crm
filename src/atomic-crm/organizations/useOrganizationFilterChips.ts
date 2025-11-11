@@ -138,10 +138,7 @@ export const useOrganizationFilterChips = () => {
   const removeFilterValue = (key: string, value: any) => {
     const newFilters = { ...filterValues };
 
-    if (
-      key === "organization_type" &&
-      Array.isArray(newFilters.organization_type)
-    ) {
+    if (key === "organization_type" && Array.isArray(newFilters.organization_type)) {
       newFilters.organization_type = newFilters.organization_type.filter(
         (id: any) => String(id) !== String(value)
       );
@@ -149,9 +146,7 @@ export const useOrganizationFilterChips = () => {
         delete newFilters.organization_type;
       }
     } else if (key === "priority" && Array.isArray(newFilters.priority)) {
-      newFilters.priority = newFilters.priority.filter(
-        (id: any) => String(id) !== String(value)
-      );
+      newFilters.priority = newFilters.priority.filter((id: any) => String(id) !== String(value));
       if (newFilters.priority.length === 0) {
         delete newFilters.priority;
       }

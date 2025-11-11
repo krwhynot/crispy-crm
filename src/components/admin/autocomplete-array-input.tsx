@@ -1,18 +1,8 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  FormControl,
-  FormError,
-  FormField,
-  FormLabel,
-} from "@/components/admin/form";
+import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
+import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
 import { Command as CommandPrimitive } from "cmdk";
 import type { ChoicesProps, InputProps } from "ra-core";
 import {
@@ -36,10 +26,8 @@ export const AutocompleteArrayInput = (
       filterToQuery?: (searchText: string) => any;
       translateChoice?: boolean;
       placeholder?: string;
-      inputText?:
-        | React.ReactNode
-        | ((option: any | undefined) => React.ReactNode);
-    },
+      inputText?: React.ReactNode | ((option: any | undefined) => React.ReactNode);
+    }
 ) => {
   const { filterToQuery = DefaultFilterToQuery, inputText } = props;
   const {
@@ -51,13 +39,11 @@ export const AutocompleteArrayInput = (
   } = useChoicesContext(props);
   const { id, field, isRequired } = useInput({ ...props, source });
   const translate = useTranslate();
-  const { placeholder = translate("ra.action.search", { _: "Search..." }) } =
-    props;
+  const { placeholder = translate("ra.action.search", { _: "Search..." }) } = props;
 
   const getRecordRepresentation = useGetRecordRepresentation(resource);
   const { getChoiceText, getChoiceValue } = useChoices({
-    optionText:
-      props.optionText ?? (isFromReference ? getRecordRepresentation : "name"),
+    optionText: props.optionText ?? (isFromReference ? getRecordRepresentation : "name"),
     optionValue: props.optionValue ?? "id",
     disableValue: props.disableValue,
     translateChoice: props.translateChoice ?? !isFromReference,
@@ -67,9 +53,7 @@ export const AutocompleteArrayInput = (
   const [open, setOpen] = React.useState(false);
 
   const handleUnselect = useEvent((choice: any) => {
-    field.onChange(
-      field.value.filter((v: any) => v !== getChoiceValue(choice)),
-    );
+    field.onChange(field.value.filter((v: any) => v !== getChoiceValue(choice)));
   });
 
   const handleKeyDown = useEvent((e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -88,10 +72,10 @@ export const AutocompleteArrayInput = (
   });
 
   const availableChoices = allChoices.filter(
-    (choice) => !field.value.includes(getChoiceValue(choice)),
+    (choice) => !field.value.includes(getChoiceValue(choice))
   );
   const selectedChoices = allChoices.filter((choice) =>
-    field.value.includes(getChoiceValue(choice)),
+    field.value.includes(getChoiceValue(choice))
   );
   const [filterValue, setFilterValue] = React.useState("");
 
@@ -105,7 +89,7 @@ export const AutocompleteArrayInput = (
       }
       return getChoiceText(selectedChoice);
     },
-    [inputText, getChoiceText],
+    [inputText, getChoiceText]
   );
 
   return (
@@ -193,10 +177,7 @@ export const AutocompleteArrayInput = (
                             if (isFromReference) {
                               setFilters(filterToQuery(""));
                             }
-                            field.onChange([
-                              ...field.value,
-                              getChoiceValue(choice),
-                            ]);
+                            field.onChange([...field.value, getChoiceValue(choice)]);
                           }}
                           className="cursor-pointer"
                         >

@@ -11,7 +11,7 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
   const [loading, setLoading] = useState(false);
 
   // Create a stable key for dependency array
-  const organizationIdsKey = organizationIds?.join(',') || '';
+  const organizationIdsKey = organizationIds?.join(",") || "";
 
   useEffect(() => {
     if (!organizationIds || organizationIds.length === 0) {
@@ -20,7 +20,7 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
 
     const fetchOrganizationNames = async () => {
       // Only fetch IDs we don't already have cached
-      const idsToFetch = organizationIds.filter(id => !organizationMap[id]);
+      const idsToFetch = organizationIds.filter((id) => !organizationMap[id]);
 
       if (idsToFetch.length === 0) {
         return;
@@ -28,7 +28,7 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
 
       setLoading(true);
       try {
-        const { data } = await dataProvider.getMany('organizations', {
+        const { data } = await dataProvider.getMany("organizations", {
           ids: idsToFetch,
         });
 
@@ -37,9 +37,9 @@ export const useOrganizationNames = (organizationIds: string[] | undefined) => {
           return acc;
         }, {});
 
-        setOrganizationMap(prev => ({ ...prev, ...newMap }));
+        setOrganizationMap((prev) => ({ ...prev, ...newMap }));
       } catch (error) {
-        console.error('Failed to fetch organization names:', error);
+        console.error("Failed to fetch organization names:", error);
       } finally {
         setLoading(false);
       }

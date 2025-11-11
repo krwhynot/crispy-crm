@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Contact Show Page Object Model
@@ -36,7 +36,7 @@ export class ContactShowPage extends BasePage {
     await confirmButton.click();
 
     // Wait for redirect to list
-    await this.waitForURL('/#/contacts');
+    await this.waitForURL("/#/contacts");
   }
 
   /**
@@ -90,7 +90,7 @@ export class ContactShowPage extends BasePage {
    * Verify heading is visible (indicates page loaded)
    */
   async expectPageLoaded(): Promise<void> {
-    const heading = this.page.locator('h1, h2').first();
+    const heading = this.page.locator("h1, h2").first();
     await expect(heading).toBeVisible({ timeout: 5000 });
   }
 }

@@ -11,7 +11,7 @@ import React from "react";
 export const useVirtualizedListHeight = (
   maxHeight?: number,
   minHeight?: number,
-  offsetFromBottom = 100,
+  offsetFromBottom = 100
 ) => {
   const [height, setHeight] = React.useState(maxHeight || 400);
 

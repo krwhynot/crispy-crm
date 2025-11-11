@@ -1,10 +1,10 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from "react";
 
 /**
  * Detect if running on Mac for Cmd vs Ctrl
  */
 const isMac = () => {
-  return typeof window !== 'undefined' && /Mac|iPhone|iPod|iPad/.test(navigator.platform);
+  return typeof window !== "undefined" && /Mac|iPhone|iPod|iPad/.test(navigator.platform);
 };
 
 /**
@@ -25,7 +25,7 @@ const shouldPreventShortcut = (target: EventTarget | null): boolean => {
   const isContentEditable = target.isContentEditable;
 
   // Block shortcuts in inputs, textareas, and contenteditable elements
-  if (tagName === 'input' || tagName === 'textarea' || isContentEditable) {
+  if (tagName === "input" || tagName === "textarea" || isContentEditable) {
     return true;
   }
 
@@ -44,7 +44,7 @@ const shouldPreventShortcut = (target: EventTarget | null): boolean => {
  */
 const isTextarea = (target: EventTarget | null): boolean => {
   if (!(target instanceof HTMLElement)) return false;
-  return target.tagName.toLowerCase() === 'textarea' || target.isContentEditable;
+  return target.tagName.toLowerCase() === "textarea" || target.isContentEditable;
 };
 
 /**
@@ -52,7 +52,7 @@ const isTextarea = (target: EventTarget | null): boolean => {
  */
 const isInForm = (target: EventTarget | null): boolean => {
   if (!(target instanceof HTMLElement)) return false;
-  return target.closest('form') !== null;
+  return target.closest("form") !== null;
 };
 
 export interface KeyboardShortcutHandlers {
@@ -84,7 +84,7 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
       const target = event.target;
 
       // Ctrl/Cmd + S: Save
-      if (key === 's' && isModifierPressed(event)) {
+      if (key === "s" && isModifierPressed(event)) {
         // Only in forms
         if (isInForm(target)) {
           event.preventDefault();
@@ -94,7 +94,7 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
       }
 
       // Ctrl/Cmd + N: New record
-      if (key === 'n' && isModifierPressed(event)) {
+      if (key === "n" && isModifierPressed(event)) {
         // Don't prevent if in input fields
         if (!shouldPreventShortcut(target)) {
           event.preventDefault();
@@ -104,7 +104,7 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
       }
 
       // Ctrl/Cmd + K or /: Focus search
-      if ((key === 'k' && isModifierPressed(event)) || key === '/') {
+      if ((key === "k" && isModifierPressed(event)) || key === "/") {
         // Don't prevent if in input fields
         if (!shouldPreventShortcut(target)) {
           event.preventDefault();
@@ -120,14 +120,14 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
       }
 
       // Escape: Cancel/close modal
-      if (key === 'Escape') {
+      if (key === "Escape") {
         handlers.onCancel?.();
         // Let default behavior also work (closing modals, etc.)
         return;
       }
 
       // Enter: Submit form (not in textarea)
-      if (key === 'Enter') {
+      if (key === "Enter") {
         // Only in forms, not in textareas
         if (isInForm(target) && !isTextarea(target)) {
           // Let default form submit happen, but also call handler
@@ -137,7 +137,7 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
       }
 
       // Delete: Delete selected (with confirmation)
-      if (key === 'Delete') {
+      if (key === "Delete") {
         // Only if not in input/textarea
         if (!shouldPreventShortcut(target)) {
           handlers.onDelete?.();
@@ -149,15 +149,15 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
   );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleKeyDown]);
 
   return {
     isMac: isMac(),
-    modifierKey: isMac() ? '⌘' : 'Ctrl',
+    modifierKey: isMac() ? "⌘" : "Ctrl",
   };
 };

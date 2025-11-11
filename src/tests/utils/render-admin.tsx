@@ -8,18 +8,11 @@
 import type { ReactElement } from "react";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
-import type {
-  DataProvider,
-  AuthProvider,
-  I18nProvider} from "ra-core";
-import {
-  CoreAdminContext,
-  RecordContextProvider,
-  ResourceContextProvider
-} from "ra-core";
+import type { DataProvider, AuthProvider, I18nProvider } from "ra-core";
+import { CoreAdminContext, RecordContextProvider, ResourceContextProvider } from "ra-core";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import englishMessages from "ra-language-english";
-import type { QueryClient} from "@tanstack/react-query";
+import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { createTestQueryClient } from "../setup";
@@ -103,7 +96,7 @@ export interface RenderAdminResult extends RenderResult {
  */
 export function renderWithAdminContext(
   ui: ReactElement,
-  options: RenderAdminOptions = {},
+  options: RenderAdminOptions = {}
 ): RenderAdminResult {
   const {
     dataProvider: dataProviderOverrides,
@@ -188,7 +181,7 @@ export function renderWithRecordContext(
     record: any;
     resource?: string;
     queryClient?: QueryClient;
-  } & Omit<RenderOptions, "wrapper">,
+  } & Omit<RenderOptions, "wrapper">
 ): RenderAdminResult {
   const { record, resource, queryClient: queryClientOption, ...renderOptions } = options;
 

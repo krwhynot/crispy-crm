@@ -1,39 +1,39 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Checkbox } from './checkbox';
-import React, { useState } from 'react';
-import { Label } from './label';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Checkbox } from "./checkbox";
+import React, { useState } from "react";
+import { Label } from "./label";
 
 const meta = {
-  title: 'UI/Checkbox',
+  title: "UI/Checkbox",
   component: Checkbox,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     checked: {
-      control: 'boolean',
-      description: 'The controlled checked state of the checkbox',
+      control: "boolean",
+      description: "The controlled checked state of the checkbox",
     },
     defaultChecked: {
-      control: 'boolean',
-      description: 'The default checked state when uncontrolled',
+      control: "boolean",
+      description: "The default checked state when uncontrolled",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Whether the checkbox is disabled',
+      control: "boolean",
+      description: "Whether the checkbox is disabled",
     },
     required: {
-      control: 'boolean',
-      description: 'Whether the checkbox is required',
+      control: "boolean",
+      description: "Whether the checkbox is required",
     },
     name: {
-      control: 'text',
-      description: 'The name of the checkbox for form submission',
+      control: "text",
+      description: "The name of the checkbox for form submission",
     },
     value: {
-      control: 'text',
-      description: 'The value of the checkbox for form submission',
+      control: "text",
+      description: "The value of the checkbox for form submission",
     },
   },
 } satisfies Meta<typeof Checkbox>;
@@ -61,7 +61,7 @@ export const Unchecked: Story = {
 export const Indeterminate: Story = {
   render: () => {
     const IndeterminateExample = () => {
-      const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
+      const [checked, setChecked] = useState<boolean | "indeterminate">("indeterminate");
 
       return (
         <div className="flex items-center space-x-2">
@@ -69,7 +69,7 @@ export const Indeterminate: Story = {
             id="indeterminate"
             checked={checked}
             onCheckedChange={(value) => {
-              if (value === 'indeterminate') return;
+              if (value === "indeterminate") return;
               setChecked(value);
             }}
           />
@@ -165,7 +165,7 @@ export const Controlled: Story = {
               id="controlled"
               checked={checked}
               onCheckedChange={(value) => {
-                if (typeof value === 'boolean') {
+                if (typeof value === "boolean") {
                   setChecked(value);
                 }
               }}
@@ -173,7 +173,7 @@ export const Controlled: Story = {
             <Label htmlFor="controlled">Controlled checkbox</Label>
           </div>
           <p className="text-sm text-[color:var(--text-subtle)]">
-            State: {checked ? 'Checked' : 'Unchecked'}
+            State: {checked ? "Checked" : "Unchecked"}
           </p>
         </div>
       );
@@ -189,10 +189,10 @@ export const CheckboxGroup: Story = {
       const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
       const items = [
-        { id: 'option1', label: 'Option 1' },
-        { id: 'option2', label: 'Option 2' },
-        { id: 'option3', label: 'Option 3' },
-        { id: 'option4', label: 'Option 4' },
+        { id: "option1", label: "Option 1" },
+        { id: "option2", label: "Option 2" },
+        { id: "option3", label: "Option 3" },
+        { id: "option4", label: "Option 4" },
       ];
 
       return (
@@ -207,7 +207,7 @@ export const CheckboxGroup: Story = {
                     if (checked) {
                       setSelectedItems([...selectedItems, item.id]);
                     } else {
-                      setSelectedItems(selectedItems.filter(id => id !== item.id));
+                      setSelectedItems(selectedItems.filter((id) => id !== item.id));
                     }
                   }}
                 />
@@ -216,7 +216,7 @@ export const CheckboxGroup: Story = {
             ))}
           </div>
           <p className="text-sm text-[color:var(--text-subtle)]">
-            Selected: {selectedItems.join(', ') || 'None'}
+            Selected: {selectedItems.join(", ") || "None"}
           </p>
         </div>
       );
@@ -228,7 +228,7 @@ export const CheckboxGroup: Story = {
 // Accessibility
 export const WithAriaLabel: Story = {
   args: {
-    'aria-label': 'Accept terms',
+    "aria-label": "Accept terms",
   },
 };
 
@@ -261,7 +261,9 @@ export const SmallCheckbox: Story = {
   render: () => (
     <div className="flex items-center space-x-2">
       <Checkbox id="small" className="h-3 w-3" />
-      <Label htmlFor="small" className="text-sm">Small checkbox</Label>
+      <Label htmlFor="small" className="text-sm">
+        Small checkbox
+      </Label>
     </div>
   ),
 };
@@ -270,7 +272,9 @@ export const LargeCheckbox: Story = {
   render: () => (
     <div className="flex items-center space-x-2">
       <Checkbox id="large" className="h-6 w-6" />
-      <Label htmlFor="large" className="text-lg">Large checkbox</Label>
+      <Label htmlFor="large" className="text-lg">
+        Large checkbox
+      </Label>
     </div>
   ),
 };

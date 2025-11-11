@@ -29,9 +29,7 @@ export default function TaskShow() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           {record.title}
-          {record.completed_at && (
-            <Badge variant="secondary">Completed</Badge>
-          )}
+          {record.completed_at && <Badge variant="secondary">Completed</Badge>}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -50,9 +48,7 @@ export default function TaskShow() {
 
           <div>
             <h4 className="text-sm font-semibold mb-1">Priority</h4>
-            <Badge variant={getPriorityVariant(record.priority)}>
-              {record.priority}
-            </Badge>
+            <Badge variant={getPriorityVariant(record.priority)}>{record.priority}</Badge>
           </div>
 
           <div>
@@ -85,12 +81,7 @@ export default function TaskShow() {
         {record.contact_id && (
           <div>
             <h4 className="text-sm font-semibold mb-1">Contact</h4>
-            <ReferenceField
-              source="contact_id"
-              reference="contacts"
-              record={record}
-              link="show"
-            >
+            <ReferenceField source="contact_id" reference="contacts" record={record} link="show">
               <RecordRepresentation />
             </ReferenceField>
           </div>
@@ -104,7 +95,9 @@ export default function TaskShow() {
   );
 }
 
-function getPriorityVariant(priority?: string): "default" | "secondary" | "destructive" | "outline" {
+function getPriorityVariant(
+  priority?: string
+): "default" | "secondary" | "destructive" | "outline" {
   switch (priority) {
     case "critical":
       return "destructive";

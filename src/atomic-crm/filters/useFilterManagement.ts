@@ -50,7 +50,7 @@ export const useFilterManagement = () => {
     const currentValue = filterValues?.[key];
 
     if (Array.isArray(currentValue)) {
-      const newValue = currentValue.filter(v => v !== valueToRemove);
+      const newValue = currentValue.filter((v) => v !== valueToRemove);
 
       if (newValue.length === 0) {
         // Remove filter entirely if array is empty
@@ -114,7 +114,7 @@ export const useFilterManagement = () => {
     if (Array.isArray(value)) {
       return value.length > 0;
     }
-    return value !== undefined && value !== null && value !== '';
+    return value !== undefined && value !== null && value !== "";
   };
 
   /**
@@ -125,12 +125,12 @@ export const useFilterManagement = () => {
 
     return Object.entries(filterValues).filter(([key, value]) => {
       // Skip internal filters
-      if (key.includes('@') || key === 'deleted_at') return false;
+      if (key.includes("@") || key === "deleted_at") return false;
 
       if (Array.isArray(value)) {
         return value.length > 0;
       }
-      return value !== undefined && value !== null && value !== '';
+      return value !== undefined && value !== null && value !== "";
     }).length;
   }, [filterValues]);
 

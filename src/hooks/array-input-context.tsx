@@ -8,9 +8,7 @@ import type { UseFieldArrayReturn } from "react-hook-form";
  * @see {ArrayInput}
  * @see {@link https://react-hook-form.com/docs/usefieldarray}
  */
-export const ArrayInputContext = createContext<
-  ArrayInputContextValue | undefined
->(undefined);
+export const ArrayInputContext = createContext<ArrayInputContextValue | undefined>(undefined);
 
 /**
  * @deprecated Use ArrayInputContextValue from `ra-core` once available.
@@ -20,9 +18,7 @@ export type ArrayInputContextValue = UseFieldArrayReturn;
 /**
  * @deprecated Use useArrayInput from `ra-core` once available.
  */
-export const useArrayInput = (
-  props?: Partial<ArrayInputContextValue>,
-): ArrayInputContextValue => {
+export const useArrayInput = (props?: Partial<ArrayInputContextValue>): ArrayInputContextValue => {
   const context = useContext(ArrayInputContext);
   const memo = useMemo(
     () =>
@@ -37,16 +33,14 @@ export const useArrayInput = (
         swap: props?.swap,
         update: props?.update,
       }) as ArrayInputContextValue,
-    [props],
+    [props]
   );
 
   if (props?.fields) {
     return memo;
   }
   if (!context) {
-    throw new Error(
-      "useArrayInput must be used inside an ArrayInputContextProvider",
-    );
+    throw new Error("useArrayInput must be used inside an ArrayInputContextProvider");
   }
 
   return context;

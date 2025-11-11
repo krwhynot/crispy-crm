@@ -70,7 +70,10 @@ const baseActivitiesSchema = z.object({
   attachments: z.array(z.string()).optional().nullable(),
   location: z.string().optional().nullable(),
   attendees: z.array(z.string()).optional().nullable(),
-  tags: z.array(z.union([z.string(), z.number()])).optional().nullable(),
+  tags: z
+    .array(z.union([z.string(), z.number()]))
+    .optional()
+    .nullable(),
 
   // System fields
   created_by: z.union([z.string(), z.number()]).optional().nullable(),

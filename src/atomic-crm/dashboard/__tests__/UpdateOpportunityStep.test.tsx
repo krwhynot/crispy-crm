@@ -12,18 +12,18 @@
  * 5. Error handling
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { UpdateOpportunityStep } from '../UpdateOpportunityStep';
-import { renderWithAdminContext } from '@/tests/utils/render-admin';
-import { createMockDataProvider } from '@/tests/utils/mock-providers';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { UpdateOpportunityStep } from "../UpdateOpportunityStep";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { createMockDataProvider } from "@/tests/utils/mock-providers";
 
 // Mock the data provider
 const mockDataProvider = createMockDataProvider();
 
 // Mock spies for tracking calls
-const getOneSpy = vi.spyOn(mockDataProvider, 'getOne');
+const getOneSpy = vi.spyOn(mockDataProvider, "getOne");
 
 // Test utility: Wrap component in required providers with QueryClient
 const renderWithProviders = (ui: React.ReactElement) => {
@@ -35,37 +35,33 @@ const renderWithProviders = (ui: React.ReactElement) => {
 // Mock opportunity data
 const mockOpportunity = {
   id: 2,
-  name: 'Restaurant ABC - $5,000',
-  stage: 'qualification',
+  name: "Restaurant ABC - $5,000",
+  stage: "qualification",
   principal_organization_id: 100,
   customer_organization_id: 200,
 };
 
-describe('UpdateOpportunityStep', () => {
+describe("UpdateOpportunityStep", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     getOneSpy.mockClear();
   });
 
-  describe('Data Loading', () => {
-    it('shows loading state while fetching opportunity', () => {
+  describe("Data Loading", () => {
+    it("shows loading state while fetching opportunity", () => {
       getOneSpy.mockReturnValue(new Promise(() => {})); // Never resolves
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       expect(screen.getByText(/Loading opportunity.../i)).toBeInTheDocument();
     });
 
-    it('displays opportunity information when loaded', async () => {
+    it("displays opportunity information when loaded", async () => {
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
@@ -74,11 +70,7 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       await waitFor(() => {
@@ -89,21 +81,17 @@ describe('UpdateOpportunityStep', () => {
       expect(screen.getByText(/Qualification/i)).toBeInTheDocument();
     });
 
-    it.skip('shows error state when fetch fails', async () => {
+    it.skip("shows error state when fetch fails", async () => {
       // Suppress console.error for this test since we're intentionally testing error state
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      getOneSpy.mockImplementationOnce(() => Promise.reject(new Error('Network error')));
+      getOneSpy.mockImplementationOnce(() => Promise.reject(new Error("Network error")));
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       // Wait for loading to disappear first
@@ -117,26 +105,22 @@ describe('UpdateOpportunityStep', () => {
       });
 
       // Should show "Continue Anyway" button
-      expect(screen.getByRole('button', { name: /Continue Anyway/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Continue Anyway/i })).toBeInTheDocument();
 
       consoleErrorSpy.mockRestore();
     });
 
     it.skip('calls onSkip when "Continue Anyway" is clicked in error state', async () => {
       const user = userEvent.setup();
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      getOneSpy.mockImplementationOnce(() => Promise.reject(new Error('Network error')));
+      getOneSpy.mockImplementationOnce(() => Promise.reject(new Error("Network error")));
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       // Wait for loading to disappear first
@@ -146,10 +130,10 @@ describe('UpdateOpportunityStep', () => {
 
       // Then wait for error button
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Continue Anyway/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Continue Anyway/i })).toBeInTheDocument();
       });
 
-      await user.click(screen.getByRole('button', { name: /Continue Anyway/i }));
+      await user.click(screen.getByRole("button", { name: /Continue Anyway/i }));
 
       expect(onSkip).toHaveBeenCalled();
 
@@ -157,8 +141,8 @@ describe('UpdateOpportunityStep', () => {
     });
   });
 
-  describe('Stage Selection', () => {
-    it('shows stage selector dropdown', async () => {
+  describe("Stage Selection", () => {
+    it("shows stage selector dropdown", async () => {
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
@@ -167,11 +151,7 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       await waitFor(() => {
@@ -179,21 +159,17 @@ describe('UpdateOpportunityStep', () => {
       });
     });
 
-    it.skip('disables current stage in dropdown', async () => {
+    it.skip("disables current stage in dropdown", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
-        data: { ...mockOpportunity, stage: 'qualification' },
+        data: { ...mockOpportunity, stage: "qualification" },
       });
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       // Wait for initial data to load
@@ -208,7 +184,7 @@ describe('UpdateOpportunityStep', () => {
       expect(currentIndicator).toBeInTheDocument();
     });
 
-    it('excludes closed stages from selection', async () => {
+    it("excludes closed stages from selection", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
@@ -218,11 +194,7 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       // Wait for initial data to load
@@ -233,26 +205,22 @@ describe('UpdateOpportunityStep', () => {
 
       // "Closed Won" and "Closed Lost" should not be in the list
       await waitFor(() => {
-        expect(screen.queryByRole('option', { name: /Closed Won/i })).not.toBeInTheDocument();
-        expect(screen.queryByRole('option', { name: /Closed Lost/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole("option", { name: /Closed Won/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole("option", { name: /Closed Lost/i })).not.toBeInTheDocument();
       });
     });
 
-    it.skip('shows stage transition indicator when stage is selected', async () => {
+    it.skip("shows stage transition indicator when stage is selected", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
-        data: { ...mockOpportunity, stage: 'qualification' },
+        data: { ...mockOpportunity, stage: "qualification" },
       });
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       // Wait for initial data to load
@@ -263,7 +231,7 @@ describe('UpdateOpportunityStep', () => {
 
       // Find the option by its role and name, which is more resilient
       // findByRole will wait for it to appear
-      const proposalOption = await screen.findByRole('option', { name: /Proposal/i });
+      const proposalOption = await screen.findByRole("option", { name: /Proposal/i });
       await user.click(proposalOption);
 
       // Now, assert that the indicator text appears
@@ -273,8 +241,8 @@ describe('UpdateOpportunityStep', () => {
     });
   });
 
-  describe('Update Functionality', () => {
-    it('calls onSkip when no stage is selected and button clicked', async () => {
+  describe("Update Functionality", () => {
+    it("calls onSkip when no stage is selected and button clicked", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
@@ -284,39 +252,31 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Keep Stage & Close/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Keep Stage & Close/i })).toBeInTheDocument();
       });
 
       // Click "Keep Stage & Close" (no stage selected) - should call onSkip
-      await user.click(screen.getByRole('button', { name: /Keep Stage & Close/i }));
+      await user.click(screen.getByRole("button", { name: /Keep Stage & Close/i }));
 
       expect(onSkip).toHaveBeenCalled();
       expect(onUpdate).not.toHaveBeenCalled();
     });
 
-    it.skip('calls onUpdate with selected stage', async () => {
+    it.skip("calls onUpdate with selected stage", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
-        data: { ...mockOpportunity, stage: 'qualification' },
+        data: { ...mockOpportunity, stage: "qualification" },
       });
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       // Wait for initial data to load
@@ -325,17 +285,17 @@ describe('UpdateOpportunityStep', () => {
       // Open dropdown and select Proposal stage
       await user.click(stageSelect);
 
-      const proposalOption = await screen.findByRole('option', { name: /Proposal/i });
+      const proposalOption = await screen.findByRole("option", { name: /Proposal/i });
       await user.click(proposalOption);
 
       // Click Update & Close
-      const updateButton = await screen.findByRole('button', { name: /Update & Close/i });
+      const updateButton = await screen.findByRole("button", { name: /Update & Close/i });
       await user.click(updateButton);
 
-      expect(onUpdate).toHaveBeenCalledWith('proposal');
+      expect(onUpdate).toHaveBeenCalledWith("proposal");
     });
 
-    it.skip('disables buttons while submitting', async () => {
+    it.skip("disables buttons while submitting", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
@@ -346,11 +306,7 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       // Wait for initial data to load
@@ -358,24 +314,24 @@ describe('UpdateOpportunityStep', () => {
 
       // Select a stage to trigger update flow (not skip flow)
       await user.click(stageSelect);
-      const proposalOption = await screen.findByRole('option', { name: /Proposal/i });
+      const proposalOption = await screen.findByRole("option", { name: /Proposal/i });
       await user.click(proposalOption);
 
       // Now click the Update button (text should be "Update & Close")
-      const updateButton = await screen.findByRole('button', { name: /Update & Close/i });
+      const updateButton = await screen.findByRole("button", { name: /Update & Close/i });
       await user.click(updateButton);
 
       // After the click, wait for the UI to reflect the "submitting" state
       await waitFor(() => {
-        const submittingButton = screen.getByRole('button', { name: /Updating.../i });
+        const submittingButton = screen.getByRole("button", { name: /Updating.../i });
         expect(submittingButton).toBeDisabled();
-        expect(screen.getByRole('button', { name: /Skip/i })).toBeDisabled();
+        expect(screen.getByRole("button", { name: /Skip/i })).toBeDisabled();
       });
     });
   });
 
-  describe('Skip Functionality', () => {
-    it('calls onSkip when Skip button is clicked', async () => {
+  describe("Skip Functionality", () => {
+    it("calls onSkip when Skip button is clicked", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
@@ -385,25 +341,21 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Skip/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Skip/i })).toBeInTheDocument();
       });
 
-      await user.click(screen.getByRole('button', { name: /Skip/i }));
+      await user.click(screen.getByRole("button", { name: /Skip/i }));
 
       expect(onSkip).toHaveBeenCalled();
     });
   });
 
-  describe('Help Text', () => {
-    it('shows hint that step is optional', async () => {
+  describe("Help Text", () => {
+    it("shows hint that step is optional", async () => {
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
@@ -412,11 +364,7 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       await waitFor(() => {
@@ -424,7 +372,7 @@ describe('UpdateOpportunityStep', () => {
       });
     });
 
-    it('shows hint to leave blank when no stage is selected', async () => {
+    it("shows hint to leave blank when no stage is selected", async () => {
       getOneSpy.mockResolvedValueOnce({
         data: mockOpportunity,
       });
@@ -433,11 +381,7 @@ describe('UpdateOpportunityStep', () => {
       const onSkip = vi.fn();
 
       renderWithProviders(
-        <UpdateOpportunityStep
-          opportunityId={2}
-          onUpdate={onUpdate}
-          onSkip={onSkip}
-        />
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
       );
 
       await waitFor(() => {

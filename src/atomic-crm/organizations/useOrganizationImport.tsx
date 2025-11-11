@@ -7,7 +7,7 @@ import {
   applyDataQualityTransformations,
   validateTransformedOrganizations,
   type DataQualityDecisions as LogicDataQualityDecisions,
-  type OrganizationImportSchema as LogicOrganizationImportSchema
+  type OrganizationImportSchema as LogicOrganizationImportSchema,
 } from "./organizationImport.logic";
 
 /**
@@ -72,15 +72,23 @@ export function useOrganizationImport() {
               name,
               color: "gray",
             }),
-            dataProvider,
+            dataProvider
           ),
-    [tagsCache, dataProvider],
+    [tagsCache, dataProvider]
   );
 
   const processBatch = useCallback(
-    async (batch: OrganizationImportSchema[], options: ImportOptions = {}): Promise<ImportResult> => {
+    async (
+      batch: OrganizationImportSchema[],
+      options: ImportOptions = {}
+    ): Promise<ImportResult> => {
       const { preview = false, onProgress, startingRow = 1, dataQualityDecisions } = options;
-      console.log("processBatch called with:", { batchSize: batch.length, preview, startingRow, dataQualityDecisions });
+      console.log("processBatch called with:", {
+        batchSize: batch.length,
+        preview,
+        startingRow,
+        dataQualityDecisions,
+      });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
@@ -93,13 +101,16 @@ export function useOrganizationImport() {
       }
 
       // 1. Apply data quality transformations based on user decisions
-      const { transformedOrganizations } = applyDataQualityTransformations(batch, dataQualityDecisions);
+      const { transformedOrganizations } = applyDataQualityTransformations(
+        batch,
+        dataQualityDecisions
+      );
 
       // 2. Validate the entire transformed batch using business logic
       const { successful, failed } = validateTransformedOrganizations(transformedOrganizations);
 
       // Immediately add validation failures to the error list
-      failed.forEach(failure => {
+      failed.forEach((failure) => {
         errors.push({
           row: startingRow + failure.originalIndex,
           data: failure.data,
@@ -110,7 +121,7 @@ export function useOrganizationImport() {
       // 3. Fetch related records (tags) for valid organizations only
       const tags = await getTags(
         successful.flatMap((org) => parseTags(org.tags)),
-        preview,
+        preview
       );
 
       // 4. Process all valid organizations with Promise.allSettled
@@ -149,7 +160,7 @@ export function useOrganizationImport() {
           }
 
           try {
-            const _tagList = parseTags(tagNames || '')
+            const _tagList = parseTags(tagNames || "")
               .map((name) => tags.get(name))
               .filter((tag): tag is Tag => !!tag);
 
@@ -212,7 +223,7 @@ export function useOrganizationImport() {
               onProgress(index + 1 + failed.length, totalProcessed);
             }
           }
-        }),
+        })
       );
 
       // 5. Tally results
@@ -235,7 +246,12 @@ export function useOrganizationImport() {
           errors.push({
             row: rowNumber,
             data: failedOrgData,
-            errors: [{ field: "processing", message: result.reason?.message || "Unknown processing error" }],
+            errors: [
+              {
+                field: "processing",
+                message: result.reason?.message || "Unknown processing error",
+              },
+            ],
           });
         }
       });
@@ -255,7 +271,7 @@ export function useOrganizationImport() {
       console.log("processBatch returning:", finalResult);
       return finalResult;
     },
-    [dataProvider, getTags, identity?.id, today],
+    [dataProvider, getTags, identity?.id, today]
   );
 
   return processBatch;
@@ -266,7 +282,7 @@ const fetchRecordsWithCache = async function <T>(
   cache: Map<string, T>,
   names: string[],
   getCreateData: (name: string) => Partial<T>,
-  dataProvider: DataProvider,
+  dataProvider: DataProvider
 ) {
   const trimmedNames = [...new Set(names.map((name) => name.trim()))];
   const uncachedRecordNames = trimmedNames.filter((name) => !cache.has(name));
@@ -274,9 +290,7 @@ const fetchRecordsWithCache = async function <T>(
   if (uncachedRecordNames.length > 0) {
     const response = await dataProvider.getList(resource, {
       filter: {
-        "name@in": `(${uncachedRecordNames
-          .map((name) => `"${name}"`)
-          .join(",")})`,
+        "name@in": `(${uncachedRecordNames.map((name) => `"${name}"`).join(",")})`,
       },
       pagination: { page: 1, perPage: trimmedNames.length },
       sort: { field: "id", order: "ASC" },
@@ -293,7 +307,7 @@ const fetchRecordsWithCache = async function <T>(
         data: getCreateData(name),
       });
       cache.set(name, response.data);
-    }),
+    })
   );
 
   return trimmedNames.reduce((acc, name) => {

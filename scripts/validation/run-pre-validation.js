@@ -42,7 +42,7 @@ const log = {
   error: (msg) => console.log(`${colors.red}✖${colors.reset} ${msg}`),
   header: (msg) =>
     console.log(
-      `\n${colors.bright}${colors.cyan}${"=".repeat(60)}${colors.reset}\n${colors.bright}${msg}${colors.reset}\n${colors.cyan}${"=".repeat(60)}${colors.reset}`,
+      `\n${colors.bright}${colors.cyan}${"=".repeat(60)}${colors.reset}\n${colors.bright}${msg}${colors.reset}\n${colors.cyan}${"=".repeat(60)}${colors.reset}`
     ),
 };
 
@@ -75,9 +75,7 @@ class PreMigrationValidator {
     const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl) {
-      throw new Error(
-        "Missing database configuration. Set DATABASE_URL or VITE_SUPABASE_URL",
-      );
+      throw new Error("Missing database configuration. Set DATABASE_URL or VITE_SUPABASE_URL");
     }
 
     // Extract project ID from Supabase URL
@@ -98,9 +96,7 @@ class PreMigrationValidator {
   async createClient() {
     const client = new Client({
       connectionString: this.connectionString,
-      ssl: this.connectionString.includes("supabase.co")
-        ? { rejectUnauthorized: false }
-        : false,
+      ssl: this.connectionString.includes("supabase.co") ? { rejectUnauthorized: false } : false,
     });
 
     await client.connect();
@@ -141,11 +137,7 @@ class PreMigrationValidator {
     }
 
     // Execute validation SQL
-    await this.executeSQLFile(
-      client,
-      validationFile,
-      "Pre-migration validation",
-    );
+    await this.executeSQLFile(client, validationFile, "Pre-migration validation");
 
     // Retrieve results
     if (!this.isDryRun) {
@@ -270,12 +262,7 @@ class PreMigrationValidator {
               : check.status === "WARN"
                 ? colors.yellow
                 : colors.red;
-          const statusIcon =
-            check.status === "PASS"
-              ? "✔"
-              : check.status === "WARN"
-                ? "⚠"
-                : "✖";
+          const statusIcon = check.status === "PASS" ? "✔" : check.status === "WARN" ? "⚠" : "✖";
 
           let message = `  ${statusColor}${statusIcon}${colors.reset} ${check.message}`;
           if (check.percentage !== null) {
@@ -288,15 +275,9 @@ class PreMigrationValidator {
 
     // Display summary
     console.log(`\n${colors.bright}Summary:${colors.reset}`);
-    console.log(
-      `  ${colors.green}Passed:${colors.reset} ${this.results.passCount}`,
-    );
-    console.log(
-      `  ${colors.yellow}Warnings:${colors.reset} ${this.results.warnCount}`,
-    );
-    console.log(
-      `  ${colors.red}Failed:${colors.reset} ${this.results.failCount}`,
-    );
+    console.log(`  ${colors.green}Passed:${colors.reset} ${this.results.passCount}`);
+    console.log(`  ${colors.yellow}Warnings:${colors.reset} ${this.results.warnCount}`);
+    console.log(`  ${colors.red}Failed:${colors.reset} ${this.results.failCount}`);
 
     // Display Go/No-Go decision
     if (this.results.goNoGo) {
@@ -309,45 +290,35 @@ class PreMigrationValidator {
             : colors.red;
 
       log.header("GO/NO-GO DECISION");
-      console.log(
-        `${decisionColor}${colors.bright}${decision.message}${colors.reset}`,
-      );
+      console.log(`${decisionColor}${colors.bright}${decision.message}${colors.reset}`);
 
       if (decision.status === "FAIL") {
         console.log(
-          `\n${colors.red}${colors.bright}⚠ CRITICAL: Do not proceed with migration until all failures are resolved.${colors.reset}`,
+          `\n${colors.red}${colors.bright}⚠ CRITICAL: Do not proceed with migration until all failures are resolved.${colors.reset}`
         );
       } else if (decision.status === "WARN") {
         console.log(
-          `\n${colors.yellow}${colors.bright}⚠ WARNING: Review all warnings and confirm they are acceptable before proceeding.${colors.reset}`,
+          `\n${colors.yellow}${colors.bright}⚠ WARNING: Review all warnings and confirm they are acceptable before proceeding.${colors.reset}`
         );
       } else {
         console.log(
-          `\n${colors.green}${colors.bright}✔ SUCCESS: Migration validation passed. You may proceed with migration.${colors.reset}`,
+          `\n${colors.green}${colors.bright}✔ SUCCESS: Migration validation passed. You may proceed with migration.${colors.reset}`
         );
       }
     }
 
     // Display IDs for reference
     console.log(
-      `\n${colors.cyan}Validation Run ID:${colors.reset} ${this.validationRunId || "N/A"}`,
+      `\n${colors.cyan}Validation Run ID:${colors.reset} ${this.validationRunId || "N/A"}`
     );
-    console.log(
-      `${colors.cyan}State Capture ID:${colors.reset} ${this.captureRunId || "N/A"}`,
-    );
+    console.log(`${colors.cyan}State Capture ID:${colors.reset} ${this.captureRunId || "N/A"}`);
   }
 
   /**
    * Generate validation report
    */
   generateReport() {
-    const reportPath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "logs",
-      "pre-migration-validation.json",
-    );
+    const reportPath = path.join(__dirname, "..", "..", "logs", "pre-migration-validation.json");
     const reportDir = path.dirname(reportPath);
 
     if (!fs.existsSync(reportDir)) {
@@ -381,9 +352,7 @@ class PreMigrationValidator {
 
     try {
       log.header("CRM MIGRATION PRE-VALIDATION");
-      log.info(
-        `Starting pre-migration validation${this.isDryRun ? " (DRY RUN)" : ""}...`,
-      );
+      log.info(`Starting pre-migration validation${this.isDryRun ? " (DRY RUN)" : ""}...`);
 
       // Create database connection
       client = await this.createClient();

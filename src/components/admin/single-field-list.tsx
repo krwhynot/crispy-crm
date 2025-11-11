@@ -1,8 +1,4 @@
-import {
-  RecordContextProvider,
-  RecordRepresentation,
-  useListContext,
-} from "ra-core";
+import { RecordContextProvider, RecordRepresentation, useListContext } from "ra-core";
 import { Badge } from "@/components/ui/badge";
 
 export const SingleFieldList = <RecordType = any,>({

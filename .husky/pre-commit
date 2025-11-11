@@ -8,7 +8,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Check if any .env files are being committed
-env_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.env$|\.env\.')
+env_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.env$|\.env\.' || true)
 
 if [ -n "$env_files" ]; then
   echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"

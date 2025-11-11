@@ -42,15 +42,7 @@ export const RESOURCE_MAPPING = {
  * Resources that support full-text search
  */
 export const SEARCHABLE_RESOURCES = {
-  organizations: [
-    "name",
-    "phone",
-    "website",
-    "postal_code",
-    "city",
-    "state",
-    "description",
-  ],
+  organizations: ["name", "phone", "website", "postal_code", "city", "state", "description"],
   organizations_summary: [
     "name",
     "phone",
@@ -60,14 +52,15 @@ export const SEARCHABLE_RESOURCES = {
     "state",
     "description",
   ],
-  contacts: [
-    "first_name",
-    "last_name",
-    "company_name",
-    "title",
-  ],
+  contacts: ["first_name", "last_name", "company_name", "title"],
   opportunities: ["name", "category", "description", "next_action"],
-  opportunities_summary: ["name", "category", "description", "next_action", "principal_organization_name"],
+  opportunities_summary: [
+    "name",
+    "category",
+    "description",
+    "next_action",
+    "principal_organization_name",
+  ],
   contacts_summary: ["first_name", "last_name"],
   products: ["name", "sku", "brand", "description", "manufacturer_part_number"],
   // deals: REMOVED - use opportunities
@@ -132,9 +125,7 @@ export const RESOURCE_LIFECYCLE_CONFIG = {
  * Get the actual database resource name from the mapping
  */
 export function getResourceName(resource: string): string {
-  return (
-    RESOURCE_MAPPING[resource as keyof typeof RESOURCE_MAPPING] || resource
-  );
+  return RESOURCE_MAPPING[resource as keyof typeof RESOURCE_MAPPING] || resource;
 }
 
 /**
@@ -149,7 +140,5 @@ export function supportsSoftDelete(resource: string): boolean {
  * Get searchable fields for a resource
  */
 export function getSearchableFields(resource: string): readonly string[] {
-  return (
-    SEARCHABLE_RESOURCES[resource as keyof typeof SEARCHABLE_RESOURCES] || []
-  );
+  return SEARCHABLE_RESOURCES[resource as keyof typeof SEARCHABLE_RESOURCES] || [];
 }

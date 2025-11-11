@@ -17,13 +17,10 @@ const path = require("path");
 class PostMigrationValidation {
   constructor() {
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
-    const supabaseKey =
-      process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error(
-        "Supabase credentials not found in environment variables",
-      );
+      throw new Error("Supabase credentials not found in environment variables");
     }
 
     this.supabase = createClient(supabaseUrl, supabaseKey);
@@ -38,10 +35,7 @@ class PostMigrationValidation {
     const displayName = expectedName || tableName;
 
     try {
-      const { error } = await this.supabase
-        .from(tableName)
-        .select("id")
-        .limit(1);
+      const { error } = await this.supabase.from(tableName).select("id").limit(1);
 
       if (error && error.code === "42P01") {
         // Table doesn't exist
@@ -94,9 +88,7 @@ class PostMigrationValidation {
     // Check new columns exist
     const { data: sampleOpp, error: sampleError } = await this.supabase
       .from("opportunities")
-      .select(
-        "id, stage, status, priority, probability, customer_organization_id",
-      )
+      .select("id, stage, status, priority, probability, customer_organization_id")
       .limit(1)
       .single();
 
@@ -113,10 +105,7 @@ class PostMigrationValidation {
     }
 
     // Check backward compatibility view
-    const { error: dealsViewError } = await this.supabase
-      .from("deals")
-      .select("id")
-      .limit(1);
+    const { error: dealsViewError } = await this.supabase.from("deals").select("id").limit(1);
 
     if (dealsViewError) {
       this.validationResults.warnings.push({
@@ -144,11 +133,10 @@ class PostMigrationValidation {
       .from("contact_organizations")
       .select("id", { count: "exact", head: true });
 
-    const { data: contactsWithCompany, error: contactsError } =
-      await this.supabase
-        .from("contacts")
-        .select("id", { count: "exact", head: true })
-        .not("company_id", "is", null);
+    const { data: contactsWithCompany, error: contactsError } = await this.supabase
+      .from("contacts")
+      .select("id", { count: "exact", head: true })
+      .not("company_id", "is", null);
 
     if (!junctionError && !contactsError) {
       if (junctionCount >= contactsWithCompany) {
@@ -250,10 +238,7 @@ class PostMigrationValidation {
 
     if (notesError && notesError.code === "42P01") {
       // Table might not have been renamed yet
-      const { error: dealNotesError } = await this.supabase
-        .from("dealNotes")
-        .select("id")
-        .limit(1);
+      const { error: dealNotesError } = await this.supabase.from("dealNotes").select("id").limit(1);
 
       if (!dealNotesError) {
         this.validationResults.warnings.push({
@@ -397,9 +382,7 @@ class PostMigrationValidation {
           console.log(`✅ ${description} completed successfully`);
           resolve(code);
         } else {
-          console.log(
-            `⚠️ ${description} completed with warnings (code: ${code})`,
-          );
+          console.log(`⚠️ ${description} completed with warnings (code: ${code})`);
           resolve(code); // Don't reject on warnings
         }
       });
@@ -413,9 +396,7 @@ class PostMigrationValidation {
 
   async run() {
     try {
-      console.log(
-        "🔍 Starting Comprehensive Post-Migration Validation Suite...",
-      );
+      console.log("🔍 Starting Comprehensive Post-Migration Validation Suite...");
       console.log("=".repeat(60));
 
       // Run built-in validation checks
@@ -432,10 +413,7 @@ class PostMigrationValidation {
       // Run comprehensive verification
       console.log("\n📋 Phase 2: Comprehensive Verification");
       try {
-        await this.runExternalScript(
-          "migration-verify.js",
-          "Comprehensive Migration Verification",
-        );
+        await this.runExternalScript("migration-verify.js", "Comprehensive Migration Verification");
       } catch (error) {
         console.error("Verification script failed:", error.message);
       }
@@ -443,10 +421,7 @@ class PostMigrationValidation {
       // Generate HTML report
       console.log("\n📋 Phase 3: Report Generation");
       try {
-        await this.runExternalScript(
-          "migration-report.js",
-          "HTML Report Generation",
-        );
+        await this.runExternalScript("migration-report.js", "HTML Report Generation");
       } catch (error) {
         console.error("Report generation failed:", error.message);
       }

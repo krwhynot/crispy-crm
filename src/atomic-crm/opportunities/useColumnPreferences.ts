@@ -28,17 +28,13 @@ export function useColumnPreferences() {
 
   const toggleCollapse = (stage: OpportunityStageValue) => {
     setCollapsedStages((prev) =>
-      prev.includes(stage)
-        ? prev.filter((s) => s !== stage)
-        : [...prev, stage]
+      prev.includes(stage) ? prev.filter((s) => s !== stage) : [...prev, stage]
     );
   };
 
   const toggleVisibility = (stage: OpportunityStageValue) => {
     setVisibleStages((prev) =>
-      prev.includes(stage)
-        ? prev.filter((s) => s !== stage)
-        : [...prev, stage]
+      prev.includes(stage) ? prev.filter((s) => s !== stage) : [...prev, stage]
     );
   };
 

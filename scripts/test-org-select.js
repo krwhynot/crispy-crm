@@ -15,10 +15,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 console.log("Testing SELECT from organizations table...\n");
 
-const { data, error } = await supabase
-  .from("organizations")
-  .select("*")
-  .limit(10);
+const { data, error } = await supabase.from("organizations").select("*").limit(10);
 
 if (error) {
   console.error("Error:", error);

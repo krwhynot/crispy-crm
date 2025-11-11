@@ -37,12 +37,7 @@ export type OpportunityStage =
   | "closed_lost"
   | "nurturing";
 
-export type OpportunityStatus =
-  | "active"
-  | "on_hold"
-  | "nurturing"
-  | "stalled"
-  | "expired";
+export type OpportunityStatus = "active" | "on_hold" | "nurturing" | "stalled" | "expired";
 
 export type InteractionType =
   | "call"
@@ -63,26 +58,13 @@ export type PriorityLevel = "low" | "medium" | "high" | "critical";
 
 export type PurchaseInfluence = "High" | "Medium" | "Low" | "Unknown";
 
-export type DecisionAuthority =
-  | "Decision Maker"
-  | "Influencer"
-  | "End User"
-  | "Gatekeeper";
+export type DecisionAuthority = "Decision Maker" | "Influencer" | "End User" | "Gatekeeper";
 
-export type RelationshipType =
-  | "professional"
-  | "personal"
-  | "historical"
-  | "competitive";
+export type RelationshipType = "professional" | "personal" | "historical" | "competitive";
 
 export type Sentiment = "positive" | "neutral" | "negative";
 
-export type ParticipantRole =
-  | "customer"
-  | "principal"
-  | "distributor"
-  | "partner"
-  | "competitor";
+export type ParticipantRole = "customer" | "principal" | "distributor" | "partner" | "competitor";
 
 // =====================================================
 // BASE TYPES

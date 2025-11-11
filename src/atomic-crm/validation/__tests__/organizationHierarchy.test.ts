@@ -11,11 +11,7 @@ import {
 describe("organizationHierarchy", () => {
   describe("PARENT_ELIGIBLE_TYPES", () => {
     it("includes distributor, customer, principal", () => {
-      expect(PARENT_ELIGIBLE_TYPES).toEqual([
-        "distributor",
-        "customer",
-        "principal",
-      ]);
+      expect(PARENT_ELIGIBLE_TYPES).toEqual(["distributor", "customer", "principal"]);
     });
   });
 

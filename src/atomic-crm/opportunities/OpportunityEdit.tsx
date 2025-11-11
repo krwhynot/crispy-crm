@@ -103,11 +103,7 @@ const EditHeader = () => {
     <div className="flex justify-between items-start mb-4">
       <div className="flex items-center gap-4">
         {opportunity.customer_organization_id && (
-          <ReferenceField
-            source="customer_organization_id"
-            reference="organizations"
-            link={false}
-          >
+          <ReferenceField source="customer_organization_id" reference="organizations" link={false}>
             <OrganizationAvatar />
           </ReferenceField>
         )}

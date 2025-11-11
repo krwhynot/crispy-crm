@@ -11,7 +11,7 @@ export const useSalesNames = (salesIds: string[] | undefined) => {
   const [loading, setLoading] = useState(false);
 
   // Create a stable key for dependency array
-  const salesIdsKey = salesIds?.join(',') || '';
+  const salesIdsKey = salesIds?.join(",") || "";
 
   useEffect(() => {
     if (!salesIds || salesIds.length === 0) {
@@ -20,7 +20,7 @@ export const useSalesNames = (salesIds: string[] | undefined) => {
 
     const fetchSalesNames = async () => {
       // Only fetch IDs we don't already have cached
-      const idsToFetch = salesIds.filter(id => !salesMap[id]);
+      const idsToFetch = salesIds.filter((id) => !salesMap[id]);
 
       if (idsToFetch.length === 0) {
         return;
@@ -28,7 +28,7 @@ export const useSalesNames = (salesIds: string[] | undefined) => {
 
       setLoading(true);
       try {
-        const { data } = await dataProvider.getMany('sales', {
+        const { data } = await dataProvider.getMany("sales", {
           ids: idsToFetch,
         });
 
@@ -37,9 +37,9 @@ export const useSalesNames = (salesIds: string[] | undefined) => {
           return acc;
         }, {});
 
-        setSalesMap(prev => ({ ...prev, ...newMap }));
+        setSalesMap((prev) => ({ ...prev, ...newMap }));
       } catch (error) {
-        console.error('Failed to fetch sales names:', error);
+        console.error("Failed to fetch sales names:", error);
       } finally {
         setLoading(false);
       }

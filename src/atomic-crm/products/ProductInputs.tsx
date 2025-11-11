@@ -6,21 +6,21 @@ import { ProductClassificationTab } from "./ProductClassificationTab";
 export const ProductInputs = () => {
   const tabs = [
     {
-      key: 'general',
-      label: 'General',
-      fields: ['name', 'sku', 'description'],
+      key: "general",
+      label: "General",
+      fields: ["name", "sku", "description"],
       content: <ProductGeneralTab />,
     },
     {
-      key: 'relationships',
-      label: 'Relationships',
-      fields: ['principal_id', 'distributor_id'],
+      key: "relationships",
+      label: "Relationships",
+      fields: ["principal_id", "distributor_id"],
       content: <ProductRelationshipsTab />,
     },
     {
-      key: 'classification',
-      label: 'Classification',
-      fields: ['category', 'status'],
+      key: "classification",
+      label: "Classification",
+      fields: ["category", "status"],
       content: <ProductClassificationTab />,
     },
   ];

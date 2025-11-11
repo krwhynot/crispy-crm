@@ -130,7 +130,7 @@ describe("Opportunity Lifecycle Workflows", () => {
       render(
         <TestWrapper>
           <OpportunityCreate />
-        </TestWrapper>,
+        </TestWrapper>
       );
 
       // Fill in required fields
@@ -189,7 +189,7 @@ describe("Opportunity Lifecycle Workflows", () => {
       render(
         <TestWrapper>
           <OpportunityCreate />
-        </TestWrapper>,
+        </TestWrapper>
       );
 
       // Try to submit without required fields
@@ -209,7 +209,7 @@ describe("Opportunity Lifecycle Workflows", () => {
       render(
         <TestWrapper>
           <OpportunityCreate />
-        </TestWrapper>,
+        </TestWrapper>
       );
 
       // Fill in minimal required fields
@@ -270,7 +270,7 @@ describe("Opportunity Lifecycle Workflows", () => {
       render(
         <TestWrapper>
           <OpportunityEdit />
-        </TestWrapper>,
+        </TestWrapper>
       );
 
       await waitFor(() => {
@@ -320,14 +320,12 @@ describe("Opportunity Lifecycle Workflows", () => {
         render(
           <TestWrapper>
             <OpportunityEdit />
-          </TestWrapper>,
+          </TestWrapper>
         );
 
         await waitFor(() => {
           expect(screen.getByDisplayValue(stage)).toBeInTheDocument();
-          expect(
-            screen.getByDisplayValue(probability.toString()),
-          ).toBeInTheDocument();
+          expect(screen.getByDisplayValue(probability.toString())).toBeInTheDocument();
         });
       }
     });
@@ -336,7 +334,7 @@ describe("Opportunity Lifecycle Workflows", () => {
       render(
         <TestWrapper>
           <OpportunityEdit />
-        </TestWrapper>,
+        </TestWrapper>
       );
 
       await waitFor(() => {
@@ -425,7 +423,7 @@ describe("Opportunity Lifecycle Workflows", () => {
           counts[opp.stage] = (counts[opp.stage] || 0) + 1;
           return counts;
         },
-        {} as Record<string, number>,
+        {} as Record<string, number>
       );
 
       expect(stageCount).toEqual({

@@ -13,15 +13,8 @@ export const OpportunityDetailsTab = () => {
         helperText={false}
         placeholder="e.g., Q4 2025 Trade Show"
       />
-      <ReferenceInput
-        source="related_opportunity_id"
-        reference="opportunities"
-      >
-        <SelectInput
-          optionText="name"
-          label="Related Opportunity"
-          helperText={false}
-        />
+      <ReferenceInput source="related_opportunity_id" reference="opportunities">
+        <SelectInput optionText="name" label="Related Opportunity" helperText={false} />
       </ReferenceInput>
       <TextInput
         source="notes"
@@ -33,12 +26,7 @@ export const OpportunityDetailsTab = () => {
       />
       <ArrayInput source="tags" label="Tags">
         <SimpleFormIterator inline disableReordering>
-          <TextInput
-            source=""
-            label={false}
-            helperText={false}
-            placeholder="Add tag"
-          />
+          <TextInput source="" label={false} helperText={false} placeholder="Add tag" />
         </SimpleFormIterator>
       </ArrayInput>
       <TextInput

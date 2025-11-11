@@ -20,10 +20,7 @@ interface ActivityLogIteratorProps {
   pageSize: number;
 }
 
-export function ActivityLogIterator({
-  activities,
-  pageSize,
-}: ActivityLogIteratorProps) {
+export function ActivityLogIterator({ activities, pageSize }: ActivityLogIteratorProps) {
   const [activitiesDisplayed, setActivityDisplayed] = useState(pageSize);
 
   const filteredActivities = activities.slice(0, activitiesDisplayed);
@@ -41,9 +38,7 @@ export function ActivityLogIterator({
         <button
           type="button"
           onClick={() => {
-            setActivityDisplayed(
-              (activitiesDisplayed) => activitiesDisplayed + pageSize,
-            );
+            setActivityDisplayed((activitiesDisplayed) => activitiesDisplayed + pageSize);
           }}
           className="flex w-full justify-center text-sm underline hover:no-underline"
         >

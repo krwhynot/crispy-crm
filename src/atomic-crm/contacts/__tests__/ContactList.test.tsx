@@ -20,7 +20,7 @@ vi.mock("ra-core", async () => {
     useListContext: vi.fn(),
     useGetList: vi.fn(),
     useGetIdentity: vi.fn(() => ({
-      identity: { id: 1, fullName: "Test User" }
+      identity: { id: 1, fullName: "Test User" },
     })),
     FilterLiveForm: ({ children }: any) => <div>{children}</div>,
     downloadCSV: vi.fn(),
@@ -40,11 +40,16 @@ vi.mock("jsonexport/dist", () => ({
 vi.mock("../ContactListItem", () => ({
   ContactListItem: ({ contact }: any) => (
     <div data-testid={`contact-${contact.id}`}>
-      <span>{contact.first_name} {contact.last_name}</span>
+      <span>
+        {contact.first_name} {contact.last_name}
+      </span>
       {contact.company_name && <span>{contact.company_name}</span>}
-      {contact.tags && contact.tags.map((tagId: number) => (
-        <span key={tagId} data-testid={`tag-${tagId}`}>Tag {tagId}</span>
-      ))}
+      {contact.tags &&
+        contact.tags.map((tagId: number) => (
+          <span key={tagId} data-testid={`tag-${tagId}`}>
+            Tag {tagId}
+          </span>
+        ))}
     </div>
   ),
 }));
@@ -190,7 +195,7 @@ describe("ContactListContent", () => {
 
   test("renders with contacts_summary view data", async () => {
     // Simulate contacts_summary view which includes denormalized company names
-    const contactsWithSummary = mockContacts.map(contact => ({
+    const contactsWithSummary = mockContacts.map((contact) => ({
       ...contact,
       // Simulating view's denormalized data
       company_name: contact.organizations?.[0]?.organization_name || contact.company_name || null,
@@ -209,11 +214,11 @@ describe("ContactListContent", () => {
     await waitFor(() => {
       // ContactListContent uses its own internal ContactListItem component
       // Should have rendered some contacts (3 in our test data)
-      const links = screen.getAllByRole('link');
+      const links = screen.getAllByRole("link");
       expect(links.length).toBeGreaterThanOrEqual(3);
 
       // Verify we have contact links
-      expect(links[0]).toHaveAttribute('href', expect.stringContaining('/contacts/'));
+      expect(links[0]).toHaveAttribute("href", expect.stringContaining("/contacts/"));
     });
   });
 
@@ -224,11 +229,11 @@ describe("ContactListContent", () => {
 
     await waitFor(() => {
       // Should have contacts with tags (ContactListContent handles its own tag rendering)
-      const links = screen.getAllByRole('link');
+      const links = screen.getAllByRole("link");
       expect(links.length).toBeGreaterThan(0);
 
       // Verify contact links
-      expect(links[0]).toHaveAttribute('href', expect.stringContaining('/contacts/'));
+      expect(links[0]).toHaveAttribute("href", expect.stringContaining("/contacts/"));
     });
   });
 
@@ -350,7 +355,7 @@ describe("ContactList localStorage cleanup", () => {
 
     // Simulate the cleanup logic from ContactList
     const cleanupInvalidFilter = () => {
-      const key = 'RaStore.contacts.listParams';
+      const key = "RaStore.contacts.listParams";
       const storedParams = localStorage.getItem(key);
       if (storedParams) {
         try {
@@ -426,9 +431,7 @@ describe("ContactList exporter", () => {
       const organizations = mockOrganizations;
 
       const contacts = records.map((contact) => {
-        const primaryOrganization = contact.organizations?.find(
-          (org: any) => org.is_primary,
-        );
+        const primaryOrganization = contact.organizations?.find((org: any) => org.is_primary);
 
         return {
           ...contact,
@@ -438,7 +441,9 @@ describe("ContactList exporter", () => {
           sales: `${sales[contact.sales_id as keyof typeof sales].first_name} ${
             sales[contact.sales_id as keyof typeof sales].last_name
           }`,
-          tags: contact.tags.map((tagId: number) => tags[tagId as keyof typeof tags].name).join(", "),
+          tags: contact.tags
+            .map((tagId: number) => tags[tagId as keyof typeof tags].name)
+            .join(", "),
           email_work: contact.email?.find((email: any) => email.type === "Work")?.email,
           email_home: contact.email?.find((email: any) => email.type === "Home")?.email,
           phone_work: contact.phone?.find((phone: any) => phone.type === "Work")?.number,

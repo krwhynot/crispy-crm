@@ -24,11 +24,7 @@ export const ListNoResults = (props: ListNoResultsProps) => {
               name: getResourceLabel(resource, 0),
               _: "No results found with the current filters.",
             })}{" "}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setFilters({}, [])}
-            >
+            <Button variant="outline" size="sm" onClick={() => setFilters({}, [])}>
               {translate("ra.navigation.clear_filters", {
                 _: "Clear filters",
               })}

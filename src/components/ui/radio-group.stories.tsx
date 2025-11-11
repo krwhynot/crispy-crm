@@ -1,36 +1,36 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { RadioGroup, RadioGroupItem } from './radio-group';
-import React, { useState } from 'react';
-import { Label } from './label';
+import type { Meta, StoryObj } from "@storybook/react";
+import { RadioGroup, RadioGroupItem } from "./radio-group";
+import React, { useState } from "react";
+import { Label } from "./label";
 
 const meta = {
-  title: 'UI/RadioGroup',
+  title: "UI/RadioGroup",
   component: RadioGroup,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     defaultValue: {
-      control: 'text',
-      description: 'The default selected value',
+      control: "text",
+      description: "The default selected value",
     },
     value: {
-      control: 'text',
-      description: 'The controlled selected value',
+      control: "text",
+      description: "The controlled selected value",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Whether the radio group is disabled',
+      control: "boolean",
+      description: "Whether the radio group is disabled",
     },
     required: {
-      control: 'boolean',
-      description: 'Whether the radio group is required',
+      control: "boolean",
+      description: "Whether the radio group is required",
     },
     orientation: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-      description: 'The orientation of the radio group',
+      control: "select",
+      options: ["horizontal", "vertical"],
+      description: "The orientation of the radio group",
     },
   },
 } satisfies Meta<typeof RadioGroup>;
@@ -66,27 +66,21 @@ export const WithDescriptions: Story = {
         <RadioGroupItem value="card" id="card" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="card">Card Payment</Label>
-          <p className="text-sm text-[color:var(--text-subtle)]">
-            Pay with credit or debit card
-          </p>
+          <p className="text-sm text-[color:var(--text-subtle)]">Pay with credit or debit card</p>
         </div>
       </div>
       <div className="flex items-start space-x-2">
         <RadioGroupItem value="paypal" id="paypal" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="paypal">PayPal</Label>
-          <p className="text-sm text-[color:var(--text-subtle)]">
-            Pay with your PayPal account
-          </p>
+          <p className="text-sm text-[color:var(--text-subtle)]">Pay with your PayPal account</p>
         </div>
       </div>
       <div className="flex items-start space-x-2">
         <RadioGroupItem value="apple" id="apple" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="apple">Apple Pay</Label>
-          <p className="text-sm text-[color:var(--text-subtle)]">
-            Pay with Apple Pay
-          </p>
+          <p className="text-sm text-[color:var(--text-subtle)]">Pay with Apple Pay</p>
         </div>
       </div>
     </RadioGroup>
@@ -139,7 +133,7 @@ export const WithDisabledItems: Story = {
 export const Controlled: Story = {
   render: () => {
     const ControlledExample = () => {
-      const [value, setValue] = useState('option1');
+      const [value, setValue] = useState("option1");
 
       return (
         <div className="space-y-4">
@@ -157,9 +151,7 @@ export const Controlled: Story = {
               <Label htmlFor="opt3">Option 3</Label>
             </div>
           </RadioGroup>
-          <p className="text-sm text-[color:var(--text-subtle)]">
-            Selected: {value}
-          </p>
+          <p className="text-sm text-[color:var(--text-subtle)]">Selected: {value}</p>
         </div>
       );
     };
@@ -346,7 +338,12 @@ export const WithIcons: Story = {
         <div className="grid gap-1.5 leading-none">
           <div className="flex items-center gap-2">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <Label htmlFor="public">Public</Label>
           </div>
@@ -360,13 +357,16 @@ export const WithIcons: Story = {
         <div className="grid gap-1.5 leading-none">
           <div className="flex items-center gap-2">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
             </svg>
             <Label htmlFor="private">Private</Label>
           </div>
-          <p className="text-sm text-[color:var(--text-subtle)]">
-            Only you can see this
-          </p>
+          <p className="text-sm text-[color:var(--text-subtle)]">Only you can see this</p>
         </div>
       </div>
     </RadioGroup>

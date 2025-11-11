@@ -1,20 +1,20 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Alert, AlertDescription, AlertTitle } from './alert';
-import React from 'react';
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, Terminal, X } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Alert, AlertDescription, AlertTitle } from "./alert";
+import React from "react";
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, Terminal, X } from "lucide-react";
 
 const meta = {
-  title: 'UI/Alert',
+  title: "UI/Alert",
   component: Alert,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'destructive'],
-      description: 'The visual style variant of the alert',
+      control: "select",
+      options: ["default", "destructive"],
+      description: "The visual style variant of the alert",
     },
   },
 } satisfies Meta<typeof Alert>;
@@ -28,9 +28,7 @@ export const Default: Story = {
     <div className="w-[400px]">
       <Alert>
         <AlertTitle>Heads up!</AlertTitle>
-        <AlertDescription>
-          You can add components to your app using the cli.
-        </AlertDescription>
+        <AlertDescription>You can add components to your app using the cli.</AlertDescription>
       </Alert>
     </div>
   ),
@@ -41,9 +39,7 @@ export const Destructive: Story = {
     <div className="w-[400px]">
       <Alert variant="destructive">
         <AlertTitle>Error</AlertTitle>
-        <AlertDescription>
-          Your session has expired. Please log in again.
-        </AlertDescription>
+        <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
       </Alert>
     </div>
   ),
@@ -56,9 +52,7 @@ export const WithInfoIcon: Story = {
       <Alert>
         <Info />
         <AlertTitle>Information</AlertTitle>
-        <AlertDescription>
-          This is an informational alert to keep you updated.
-        </AlertDescription>
+        <AlertDescription>This is an informational alert to keep you updated.</AlertDescription>
       </Alert>
     </div>
   ),
@@ -70,9 +64,7 @@ export const WithSuccessIcon: Story = {
       <Alert className="border-green-200 text-green-800 [&>svg]:text-green-600">
         <CheckCircle2 />
         <AlertTitle>Success!</AlertTitle>
-        <AlertDescription>
-          Your changes have been saved successfully.
-        </AlertDescription>
+        <AlertDescription>Your changes have been saved successfully.</AlertDescription>
       </Alert>
     </div>
   ),
@@ -122,9 +114,7 @@ export const DescriptionOnly: Story = {
   render: () => (
     <div className="w-[400px]">
       <Alert>
-        <AlertDescription>
-          This is a simple notification without a title.
-        </AlertDescription>
+        <AlertDescription>This is a simple notification without a title.</AlertDescription>
       </Alert>
     </div>
   ),
@@ -137,9 +127,9 @@ export const LongContent: Story = {
         <Info />
         <AlertTitle>System Maintenance Notice</AlertTitle>
         <AlertDescription>
-          Our systems will undergo scheduled maintenance on Sunday, March 15th from 2:00 AM to 6:00 AM EST.
-          During this time, you may experience intermittent service disruptions. We apologize for any
-          inconvenience and appreciate your patience.
+          Our systems will undergo scheduled maintenance on Sunday, March 15th from 2:00 AM to 6:00
+          AM EST. During this time, you may experience intermittent service disruptions. We
+          apologize for any inconvenience and appreciate your patience.
         </AlertDescription>
       </Alert>
     </div>
@@ -170,11 +160,8 @@ export const WithLink: Story = {
       <Alert>
         <AlertTitle>Documentation</AlertTitle>
         <AlertDescription>
-          Learn more about this feature in our{' '}
-          <button className="underline font-medium">
-            documentation
-          </button>
-          .
+          Learn more about this feature in our{" "}
+          <button className="underline font-medium">documentation</button>.
         </AlertDescription>
       </Alert>
     </div>
@@ -245,30 +232,22 @@ export const MultipleAlerts: Story = {
       <Alert className="border-blue-200 text-blue-800 [&>svg]:text-blue-600">
         <Info />
         <AlertTitle>Info</AlertTitle>
-        <AlertDescription>
-          This is an informational message.
-        </AlertDescription>
+        <AlertDescription>This is an informational message.</AlertDescription>
       </Alert>
       <Alert className="border-green-200 text-green-800 [&>svg]:text-green-600">
         <CheckCircle2 />
         <AlertTitle>Success</AlertTitle>
-        <AlertDescription>
-          Operation completed successfully.
-        </AlertDescription>
+        <AlertDescription>Operation completed successfully.</AlertDescription>
       </Alert>
       <Alert className="border-yellow-200 text-yellow-800 [&>svg]:text-yellow-600">
         <AlertTriangle />
         <AlertTitle>Warning</AlertTitle>
-        <AlertDescription>
-          Please review before proceeding.
-        </AlertDescription>
+        <AlertDescription>Please review before proceeding.</AlertDescription>
       </Alert>
       <Alert variant="destructive">
         <AlertCircle />
         <AlertTitle>Error</AlertTitle>
-        <AlertDescription>
-          Something went wrong.
-        </AlertDescription>
+        <AlertDescription>Something went wrong.</AlertDescription>
       </Alert>
     </div>
   ),
@@ -373,18 +352,14 @@ export const StatusExamples: Story = {
           <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
           <AlertTitle>System Status: Online</AlertTitle>
         </div>
-        <AlertDescription>
-          All systems are operational.
-        </AlertDescription>
+        <AlertDescription>All systems are operational.</AlertDescription>
       </Alert>
       <Alert className="border-yellow-200">
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 bg-yellow-500 rounded-full animate-pulse" />
           <AlertTitle>System Status: Degraded</AlertTitle>
         </div>
-        <AlertDescription>
-          Some features may be slower than usual.
-        </AlertDescription>
+        <AlertDescription>Some features may be slower than usual.</AlertDescription>
       </Alert>
       <Alert variant="destructive">
         <div className="flex items-center gap-2">

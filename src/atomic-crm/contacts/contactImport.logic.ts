@@ -57,7 +57,7 @@ export function applyDataQualityTransformations(
   decisions: DataQualityDecisions = {
     importOrganizationsWithoutContacts: false,
     importContactsWithoutContactInfo: false,
-  },
+  }
 ) {
   const autoFilledContacts = new Set<number>();
 
@@ -99,15 +99,15 @@ export function validateTransformedContacts(contacts: ContactImportSchema[]) {
   });
 
   const successful = validationResults
-    .filter(r => r.success)
-    .map(r => ({ ...r.contact, originalIndex: r.index }));
+    .filter((r) => r.success)
+    .map((r) => ({ ...r.contact, originalIndex: r.index }));
 
   const failed = validationResults
-    .filter(r => !r.success)
-    .map(r => ({
+    .filter((r) => !r.success)
+    .map((r) => ({
       originalIndex: r.index,
       data: r.contact,
-      errors: r.error!.issues.map(issue => ({
+      errors: r.error!.issues.map((issue) => ({
         field: issue.path.join("."),
         message: issue.message,
       })),

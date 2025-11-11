@@ -19,9 +19,7 @@ export const SimpleListLoading = (props: SimpleListLoadingProps) => {
       {times(nbFakeLines, (key) => (
         <li key={key} className="flex items-center space-x-3 p-3">
           {hasLeftAvatarOrIcon && (
-            <div className="w-10 h-10 bg-loading-pulse rounded-full flex-shrink-0">
-              &nbsp;
-            </div>
+            <div className="w-10 h-10 bg-loading-pulse rounded-full flex-shrink-0">&nbsp;</div>
           )}
           <div className="flex-1 min-w-0">
             <div className="mb-1">
@@ -35,9 +33,7 @@ export const SimpleListLoading = (props: SimpleListLoadingProps) => {
             {hasSecondaryText && <ListPlaceholder className="w-1/4" />}
           </div>
           {hasRightAvatarOrIcon && (
-            <div className="w-10 h-10 bg-loading-pulse rounded-full flex-shrink-0">
-              &nbsp;
-            </div>
+            <div className="w-10 h-10 bg-loading-pulse rounded-full flex-shrink-0">&nbsp;</div>
           )}
         </li>
       ))}

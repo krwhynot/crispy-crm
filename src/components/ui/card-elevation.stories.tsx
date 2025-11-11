@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Card } from './card';
-import { Checkbox } from './checkbox';
-import { Avatar, AvatarFallback } from './avatar';
-import { Badge } from './badge';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Card } from "./card";
+import { Checkbox } from "./checkbox";
+import { Avatar, AvatarFallback } from "./avatar";
+import { Badge } from "./badge";
+import React from "react";
 
 /**
  * Elevation System Stories
@@ -18,17 +18,18 @@ import React from 'react';
  * See: /.docs/design-system/elevation.md
  */
 const meta = {
-  title: 'Design System/Elevation',
+  title: "Design System/Elevation",
   component: Card,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
-        component: 'Visual elevation system for interactive surfaces in Atomic CRM. Provides tactile feedback through layered shadows, transforms, and semantic design tokens.',
+        component:
+          "Visual elevation system for interactive surfaces in Atomic CRM. Provides tactile feedback through layered shadows, transforms, and semantic design tokens.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="max-w-2xl space-y-8">
@@ -52,15 +53,15 @@ export const LowElevation: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">Low Elevation (Default)</h3>
+        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+          Low Elevation (Default)
+        </h3>
         <p className="text-xs text-[color:var(--text-subtle)] mb-4">
           Hover to see shadow increase and subtle lift. Used for list items.
         </p>
       </div>
 
-      <div
-        className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-      >
+      <div className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <Checkbox className="relative z-10 shrink-0" />
           <Avatar className="shrink-0 h-8 w-8">
@@ -81,9 +82,7 @@ export const LowElevation: Story = {
         </span>
       </div>
 
-      <div
-        className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-      >
+      <div className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <Checkbox className="relative z-10 shrink-0" />
           <Avatar className="shrink-0 h-8 w-8">
@@ -129,16 +128,26 @@ export const StaticCard: Story = {
             <h4 className="text-sm font-semibold mb-2">Last Activity</h4>
             <div className="space-y-1 text-sm">
               <button className="w-full text-left px-2 py-1 rounded hover:bg-muted">Today</button>
-              <button className="w-full text-left px-2 py-1 rounded hover:bg-muted">This week</button>
-              <button className="w-full text-left px-2 py-1 rounded hover:bg-muted">This month</button>
+              <button className="w-full text-left px-2 py-1 rounded hover:bg-muted">
+                This week
+              </button>
+              <button className="w-full text-left px-2 py-1 rounded hover:bg-muted">
+                This month
+              </button>
             </div>
           </div>
           <div>
             <h4 className="text-sm font-semibold mb-2">Tags</h4>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary" className="text-xs">Important</Badge>
-              <Badge variant="secondary" className="text-xs">Follow-up</Badge>
-              <Badge variant="secondary" className="text-xs">Lead</Badge>
+              <Badge variant="secondary" className="text-xs">
+                Important
+              </Badge>
+              <Badge variant="secondary" className="text-xs">
+                Follow-up
+              </Badge>
+              <Badge variant="secondary" className="text-xs">
+                Lead
+              </Badge>
             </div>
           </div>
         </div>
@@ -156,7 +165,9 @@ export const ElevationComparison: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">Elevation System Comparison</h3>
+        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+          Elevation System Comparison
+        </h3>
         <p className="text-xs text-[color:var(--text-subtle)] mb-4">
           Hover over each card to see the different elevation responses.
         </p>
@@ -165,25 +176,35 @@ export const ElevationComparison: Story = {
       <div className="grid gap-6">
         {/* Low Elevation */}
         <div>
-          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">LOW (shadow-sm → shadow-md)</div>
+          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">
+            LOW (shadow-sm → shadow-md)
+          </div>
           <div className="rounded-lg border border-transparent bg-card px-4 py-3 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 cursor-pointer">
             <p className="text-sm font-medium">Contact List Item</p>
-            <p className="text-xs text-[color:var(--text-subtle)]">Subtle elevation for dense lists</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">
+              Subtle elevation for dense lists
+            </p>
           </div>
         </div>
 
         {/* Medium Elevation (documented but not yet implemented in Storybook) */}
         <div>
-          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">MEDIUM (--shadow-card-2)</div>
+          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">
+            MEDIUM (--shadow-card-2)
+          </div>
           <div className="rounded-lg border border-transparent bg-card px-4 py-3 transition-all duration-150 hover:border-primary shadow-[0_4px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.15)] motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01] cursor-pointer">
             <p className="text-sm font-medium">Opportunity Card</p>
-            <p className="text-xs text-[color:var(--text-subtle)]">Enhanced elevation with border color change</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">
+              Enhanced elevation with border color change
+            </p>
           </div>
         </div>
 
         {/* Static (no elevation) */}
         <div>
-          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">STATIC (no hover)</div>
+          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">
+            STATIC (no hover)
+          </div>
           <div className="rounded-lg border border-border bg-card px-4 py-3 shadow-sm">
             <p className="text-sm font-medium">Filter Sidebar</p>
             <p className="text-xs text-[color:var(--text-subtle)]">No interactive states needed</p>
@@ -203,16 +224,17 @@ export const AccessibilityFeatures: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">Accessibility Features</h3>
+        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+          Accessibility Features
+        </h3>
         <p className="text-xs text-[color:var(--text-subtle)] mb-4">
-          Tab through these cards to see focus indicators. All patterns include WCAG 2.1 AA compliant focus states.
+          Tab through these cards to see focus indicators. All patterns include WCAG 2.1 AA
+          compliant focus states.
         </p>
       </div>
 
       <div className="space-y-3">
-        <div
-          className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-        >
+        <div className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
           <Checkbox className="relative z-10" />
           <button className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
             Keyboard navigable card
@@ -220,9 +242,7 @@ export const AccessibilityFeatures: Story = {
           </button>
         </div>
 
-        <div
-          className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-        >
+        <div className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
           <Checkbox className="relative z-10" aria-label="Select item" />
           <button className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
             Focus ring appears on keyboard focus
@@ -230,9 +250,7 @@ export const AccessibilityFeatures: Story = {
           </button>
         </div>
 
-        <div
-          className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-        >
+        <div className="group relative flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
           <Checkbox className="relative z-10" aria-label="Select item" />
           <button className="flex-1 text-sm font-medium text-primary hover:underline focus:outline-none">
             Screen reader friendly structure
@@ -285,19 +303,23 @@ export const EmptyState: Story = {
  * Shows what the InteractiveCard component will look like
  */
 export const Phase2ComponentPreview: Story = {
-  name: 'Phase 2: InteractiveCard Component',
+  name: "Phase 2: InteractiveCard Component",
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">Phase 2: Component Extraction</h3>
+        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+          Phase 2: Component Extraction
+        </h3>
         <p className="text-xs text-[color:var(--text-subtle)] mb-4">
-          When Organizations module triggers the "Rule of Three", this pattern will be extracted into a reusable <code className="text-xs bg-muted px-1 rounded">InteractiveCard</code> component.
+          When Organizations module triggers the "Rule of Three", this pattern will be extracted
+          into a reusable <code className="text-xs bg-muted px-1 rounded">InteractiveCard</code>{" "}
+          component.
         </p>
       </div>
 
       <div className="p-4 bg-muted/30 rounded-lg border border-border">
         <pre className="text-xs overflow-x-auto">
-{`<InteractiveCard elevation="low">
+          {`<InteractiveCard elevation="low">
   <Checkbox />
   <Link to="/contacts/123">
     Contact Name
@@ -307,7 +329,9 @@ export const Phase2ComponentPreview: Story = {
       </div>
 
       <div className="text-xs text-[color:var(--text-subtle)] space-y-2">
-        <p><strong>Benefits:</strong></p>
+        <p>
+          <strong>Benefits:</strong>
+        </p>
         <ul className="list-disc list-inside space-y-1 ml-2">
           <li>Single source of truth for elevation patterns</li>
           <li>Automatic updates when design tokens change</li>
@@ -317,9 +341,13 @@ export const Phase2ComponentPreview: Story = {
       </div>
 
       <div className="text-xs text-[color:var(--text-subtle)] space-y-2 mt-4">
-        <p><strong>Extraction Trigger:</strong></p>
+        <p>
+          <strong>Extraction Trigger:</strong>
+        </p>
         <p>Third usage in Organizations list view (~60 min implementation)</p>
-        <p><strong>Refactor Scope:</strong> Contacts + Organizations + Dashboard (if needed)</p>
+        <p>
+          <strong>Refactor Scope:</strong> Contacts + Organizations + Dashboard (if needed)
+        </p>
       </div>
     </div>
   ),

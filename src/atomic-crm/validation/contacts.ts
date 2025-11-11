@@ -22,7 +22,7 @@ const isLinkedinUrl = z
         return false;
       }
     },
-    { message: "URL must be from linkedin.com" },
+    { message: "URL must be from linkedin.com" }
   )
   .optional()
   .nullable();
@@ -56,7 +56,7 @@ export const contactOrganizationSchema = z
     // Check for removed legacy fields and provide helpful error messages
     if ("is_primary_contact" in data) {
       throw new Error(
-        "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead.",
+        "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead."
       );
     }
     return true;
@@ -120,18 +120,18 @@ const contactBaseSchema = z.object({
 function transformContactData(data: any) {
   // Compute name from first + last if not provided
   if (!data.name && (data.first_name || data.last_name)) {
-    data.name = [data.first_name, data.last_name].filter(Boolean).join(' ') || 'Unknown';
+    data.name = [data.first_name, data.last_name].filter(Boolean).join(" ") || "Unknown";
   }
 
   // Ensure first_name and last_name are set if name is provided but they aren't
   if (data.name && !data.first_name && !data.last_name) {
-    const parts = data.name.split(' ');
+    const parts = data.name.split(" ");
     if (parts.length >= 2) {
       data.first_name = parts[0];
-      data.last_name = parts.slice(1).join(' ');
+      data.last_name = parts.slice(1).join(" ");
     } else {
       data.first_name = data.name;
-      data.last_name = '';
+      data.last_name = "";
     }
   }
 
@@ -179,107 +179,114 @@ export const importContactSchema = z
       .trim()
       .min(1, { message: "Organization name is required" }),
     // Email fields - validate format but allow empty/null for lenient imports
-    email_work: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string().trim().email({ message: "Invalid email address" }),
-    ]).optional().nullable(),
-    email_home: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string().trim().email({ message: "Invalid email address" }),
-    ]).optional().nullable(),
-    email_other: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string().trim().email({ message: "Invalid email address" }),
-    ]).optional().nullable(),
+    email_work: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string().trim().email({ message: "Invalid email address" }),
+      ])
+      .optional()
+      .nullable(),
+    email_home: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string().trim().email({ message: "Invalid email address" }),
+      ])
+      .optional()
+      .nullable(),
+    email_other: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string().trim().email({ message: "Invalid email address" }),
+      ])
+      .optional()
+      .nullable(),
     // Phone fields - allow empty, null, string, or number (PapaParse converts numeric strings to numbers)
-    phone_work: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-      z.number().transform(String), // Convert numbers to strings
-    ]).optional().nullable(),
-    phone_home: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-      z.number().transform(String), // Convert numbers to strings
-    ]).optional().nullable(),
-    phone_other: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-      z.number().transform(String), // Convert numbers to strings
-    ]).optional().nullable(),
+    phone_work: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string(),
+        z.number().transform(String), // Convert numbers to strings
+      ])
+      .optional()
+      .nullable(),
+    phone_home: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string(),
+        z.number().transform(String), // Convert numbers to strings
+      ])
+      .optional()
+      .nullable(),
+    phone_other: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string(),
+        z.number().transform(String), // Convert numbers to strings
+      ])
+      .optional()
+      .nullable(),
     // LinkedIn URL - allow empty, null, or valid LinkedIn URL
-    linkedin_url: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string().refine(
-        (url) => {
-          try {
-            const parsedUrl = new URL(url);
-            return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
-          } catch {
-            return false;
-          }
-        },
-        { message: "LinkedIn URL must be a valid URL from linkedin.com" },
-      ),
-    ]).optional().nullable(),
+    linkedin_url: z
+      .union([
+        z.literal(""),
+        z.literal(null),
+        z.undefined(),
+        z.string().refine(
+          (url) => {
+            try {
+              const parsedUrl = new URL(url);
+              return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
+            } catch {
+              return false;
+            }
+          },
+          { message: "LinkedIn URL must be a valid URL from linkedin.com" }
+        ),
+      ])
+      .optional()
+      .nullable(),
     // Other optional fields - allow empty, null, or any string
-    title: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
-    notes: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
-    tags: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
-    first_seen: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
-    last_seen: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
-    gender: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
+    title: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
+    notes: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
+    tags: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
+    first_seen: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
+    last_seen: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
+    gender: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
     // Avatar field - allow URL strings for importing avatar images
-    avatar: z.union([
-      z.literal(""),
-      z.literal(null),
-      z.undefined(),
-      z.string(),
-    ]).optional().nullable(),
+    avatar: z
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .optional()
+      .nullable(),
   })
   .superRefine((data, ctx) => {
     // Require at least first name or last name
@@ -390,9 +397,7 @@ export const createContactSchema = contactBaseSchema
 
 // Update-specific schema (more flexible)
 // ID is passed in params.id by React Admin, not in data
-export const updateContactSchema = contactBaseSchema
-  .partial()
-  .transform(transformContactData);
+export const updateContactSchema = contactBaseSchema.partial().transform(transformContactData);
 
 // Export validation functions for specific operations
 export async function validateCreateContact(data: any): Promise<void> {

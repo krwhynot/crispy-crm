@@ -8,7 +8,7 @@ import type {
   Tag,
   Organization,
   Sale,
-  ActivityRecord
+  ActivityRecord,
 } from "../../../types";
 import type { ProductFormData } from "../../../validation/products";
 import type { Segment } from "../../../validation/segments";
@@ -16,12 +16,15 @@ import type { Segment } from "../../../validation/segments";
 // Import all validation schemas
 import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
 import { validateOrganizationForSubmission } from "../../../validation/organizations";
-import { validateCreateOpportunity, validateUpdateOpportunity } from "../../../validation/opportunities";
+import {
+  validateCreateOpportunity,
+  validateUpdateOpportunity,
+} from "../../../validation/opportunities";
 import {
   validateCreateContactNote,
   validateUpdateContactNote,
   validateCreateOpportunityNote,
-  validateUpdateOpportunityNote
+  validateUpdateOpportunityNote,
 } from "../../../validation/notes";
 import { validateTaskForSubmission } from "../../../validation/tasks";
 import { validateProductForm } from "../../../validation/products";
@@ -30,7 +33,7 @@ import { validateSalesForm } from "../../../validation/sales";
 import {
   validateActivitiesForm,
   validateEngagementsForm,
-  validateInteractionsForm
+  validateInteractionsForm,
 } from "../../../validation/activities";
 import { validateCreateSegment, validateUpdateSegment } from "../../../validation/segments";
 import { filterableFields, isValidFilterField } from "../filterRegistry";
@@ -198,7 +201,7 @@ export class ValidationService {
     if (!allowedFields) {
       console.warn(
         `[ValidationService] No filterable fields defined for resource: "${resource}". ` +
-        `Skipping filter validation. Consider adding this resource to filterRegistry.ts`
+          `Skipping filter validation. Consider adding this resource to filterRegistry.ts`
       );
       return filters; // No validation possible, return as-is
     }
@@ -215,8 +218,8 @@ export class ValidationService {
           // Invalid filter - log warning and remove it
           console.warn(
             `[ValidationService] Resource "${resource}" received invalid filter field: "${filterKey}". ` +
-            `This field does not exist in the database schema. Removing it to prevent API errors. ` +
-            `If this field should be filterable, add it to filterRegistry.ts`
+              `This field does not exist in the database schema. Removing it to prevent API errors. ` +
+              `If this field should be filterable, add it to filterRegistry.ts`
           );
           modified = true;
         }
@@ -226,8 +229,10 @@ export class ValidationService {
     if (modified) {
       console.info(
         `[ValidationService] Filters cleaned for resource "${resource}".`,
-        `\nOriginal:`, filters,
-        `\nCleaned:`, cleanedFilters
+        `\nOriginal:`,
+        filters,
+        `\nCleaned:`,
+        cleanedFilters
       );
     }
 

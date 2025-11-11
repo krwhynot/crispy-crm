@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { FilterChip } from "./FilterChip";
 import { useOrganizationNames } from "./useOrganizationNames";
 import { useSalesNames } from "./useSalesNames";
@@ -60,7 +65,7 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Active Filters</span>
               <span className="text-xs text-[color:var(--text-subtle)]">
-                ({filterChips.length} filter{filterChips.length !== 1 ? 's' : ''})
+                ({filterChips.length} filter{filterChips.length !== 1 ? "s" : ""})
               </span>
             </div>
           </AccordionTrigger>

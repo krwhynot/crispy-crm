@@ -1,13 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { endOfToday, startOfToday, addDays } from "date-fns";
-import {
-  Calendar,
-  CheckSquare,
-  Star,
-  Tag,
-  Users,
-} from "lucide-react";
+import { Calendar, CheckSquare, Star, Tag, Users } from "lucide-react";
 import { FilterLiveForm, useGetIdentity } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
@@ -97,10 +91,7 @@ export const TaskListFilter = () => {
                   key={priority}
                   className="w-full justify-between"
                   label={
-                    <Badge
-                      variant={priorityColors[priority] as any}
-                      className="text-xs px-1 py-0"
-                    >
+                    <Badge variant={priorityColors[priority] as any} className="text-xs px-1 py-0">
                       {priority.charAt(0).toUpperCase() + priority.slice(1)}
                     </Badge>
                   }
@@ -121,10 +112,7 @@ export const TaskListFilter = () => {
               ))}
             </FilterCategory>
 
-            <FilterCategory
-              icon={<Users className="h-4 w-4" />}
-              label="Assigned To"
-            >
+            <FilterCategory icon={<Users className="h-4 w-4" />} label="Assigned To">
               <ToggleFilterButton
                 className="w-full justify-between"
                 label={"Me"}

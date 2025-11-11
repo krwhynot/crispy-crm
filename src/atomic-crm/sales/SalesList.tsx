@@ -27,10 +27,7 @@ const OptionsField = (_props: { label?: string | boolean }) => {
         </Badge>
       )}
       {record.disabled && (
-        <Badge
-          variant="outline"
-          className="[border-color:var(--border-warning)]"
-        >
+        <Badge variant="outline" className="[border-color:var(--border-warning)]">
           Disabled
         </Badge>
       )}

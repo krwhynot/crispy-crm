@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Contact Form Page Object Model
@@ -33,7 +33,7 @@ export class ContactFormPage extends BasePage {
    * Add an email to the contact
    * Handles the JSONB array pattern (click Add, then fill)
    */
-  async addEmail(email: string, _type: 'Work' | 'Home' = 'Work'): Promise<void> {
+  async addEmail(email: string, _type: "Work" | "Home" = "Work"): Promise<void> {
     // Find and click the Add button for email section
     // React Admin SimpleFormIterator uses "Add" button
     const addButton = this.getButton(/add/i).first();
@@ -128,7 +128,7 @@ export class ContactFormPage extends BasePage {
    * Verify we're still on the form (validation prevented submission)
    */
   async expectStillOnForm(isCreate: boolean): Promise<void> {
-    const expectedURL = isCreate ? '/#/contacts/create' : /\/#\/contacts\/\d+$/;
+    const expectedURL = isCreate ? "/#/contacts/create" : /\/#\/contacts\/\d+$/;
     await expect(this.page).toHaveURL(expectedURL);
   }
 }

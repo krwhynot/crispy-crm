@@ -23,14 +23,11 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
   );
 
   // Fetch child opportunities (opportunities that reference this one)
-  const { data: childOpportunities } = useGetList<Opportunity>(
-    "opportunities",
-    {
-      filter: { related_opportunity_id: opportunity.id, "deleted_at@is": null },
-      pagination: { page: 1, perPage: 100 },
-      sort: { field: "created_at", order: "DESC" },
-    }
-  );
+  const { data: childOpportunities } = useGetList<Opportunity>("opportunities", {
+    filter: { related_opportunity_id: opportunity.id, "deleted_at@is": null },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "created_at", order: "DESC" },
+  });
 
   // Only render if there's a parent or children
   if (!parentOpportunity && (!childOpportunities || childOpportunities.length === 0)) {

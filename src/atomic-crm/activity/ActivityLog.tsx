@@ -15,11 +15,7 @@ interface ActivityLogProps {
   context?: "organization" | "contact" | "opportunity" | "all";
 }
 
-export function ActivityLog({
-  organizationId,
-  pageSize = 20,
-  context = "all",
-}: ActivityLogProps) {
+export function ActivityLog({ organizationId, pageSize = 20, context = "all" }: ActivityLogProps) {
   const dataProvider = useDataProvider();
 
   // Create service instance using the base data provider

@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
-import { OpportunitiesListPage } from '../../support/poms/OpportunitiesListPage';
-import { OpportunityShowPage } from '../../support/poms/OpportunityShowPage';
-import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
-import { consoleMonitor } from '../../support/utils/console-monitor';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
+import { OpportunitiesListPage } from "../../support/poms/OpportunitiesListPage";
+import { OpportunityShowPage } from "../../support/poms/OpportunityShowPage";
+import { OpportunityFormPage } from "../../support/poms/OpportunityFormPage";
+import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
  * Opportunities Activity Timeline Test Suite
@@ -15,7 +15,7 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  * FOLLOWS: playwright-e2e-testing skill requirements
  */
 
-test.describe('Opportunities Activity Timeline', () => {
+test.describe("Opportunities Activity Timeline", () => {
   let listPage: OpportunitiesListPage;
   let showPage: OpportunityShowPage;
   let formPage: OpportunityFormPage;
@@ -26,12 +26,15 @@ test.describe('Opportunities Activity Timeline', () => {
 
     // Login using POM
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
 
-    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+    const isLoginFormVisible = await page
+      .getByLabel(/email/i)
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
 
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
     } else {
       await page.waitForURL(/\/#\//, { timeout: 10000 });
     }
@@ -52,13 +55,13 @@ test.describe('Opportunities Activity Timeline', () => {
     consoleMonitor.clear();
   });
 
-  test('should display activity timeline on opportunity show page', async ({ _page }) => {
+  test("should display activity timeline on opportunity show page", async ({ _page }) => {
     // Create opportunity to ensure we have data
     const timestamp = Date.now();
     const opportunityName = `Timeline Display ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     // Navigate to show page
     await listPage.goto();
@@ -76,18 +79,18 @@ test.describe('Opportunities Activity Timeline', () => {
       const itemCount = await activityItems.count();
       expect(itemCount).toBeGreaterThan(0);
     } else {
-      console.log('Activity timeline not implemented or uses different UI pattern');
+      console.log("Activity timeline not implemented or uses different UI pattern");
     }
   });
 
-  test('should add note to opportunity', async ({ page }) => {
+  test("should add note to opportunity", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Add Note ${timestamp}`;
     const noteText = `Test note added at ${new Date().toISOString()}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     // Navigate to show page
     await listPage.goto();
@@ -99,12 +102,12 @@ test.describe('Opportunities Activity Timeline', () => {
 
     if (hasTimeline) {
       // Check if add note functionality exists
-      const addNoteButton = page.getByRole('button', { name: /add note|add activity|new note/i });
+      const addNoteButton = page.getByRole("button", { name: /add note|add activity|new note/i });
       const hasAddButton = await addNoteButton.isVisible({ timeout: 2000 }).catch(() => false);
 
-      const noteTextarea = page.getByRole('textbox', { name: /note|comment/i }).or(
-        page.getByPlaceholder(/note|comment/i)
-      );
+      const noteTextarea = page
+        .getByRole("textbox", { name: /note|comment/i })
+        .or(page.getByPlaceholder(/note|comment/i));
       const hasTextarea = await noteTextarea.isVisible({ timeout: 2000 }).catch(() => false);
 
       if (hasAddButton || hasTextarea) {
@@ -113,18 +116,18 @@ test.describe('Opportunities Activity Timeline', () => {
         // Verify note appears in timeline
         await showPage.expectActivityVisible(noteText);
       } else {
-        console.log('Add note functionality not found - may be implemented differently');
+        console.log("Add note functionality not found - may be implemented differently");
       }
     }
   });
 
-  test('should display activity items in chronological order', async ({ page }) => {
+  test("should display activity items in chronological order", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Chronological ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     // Add multiple notes with delays
     await listPage.goto();
@@ -134,9 +137,9 @@ test.describe('Opportunities Activity Timeline', () => {
     const hasTimeline = await timeline.isVisible().catch(() => false);
 
     if (hasTimeline) {
-      const noteTextarea = page.getByRole('textbox', { name: /note|comment/i }).or(
-        page.getByPlaceholder(/note|comment/i)
-      );
+      const noteTextarea = page
+        .getByRole("textbox", { name: /note|comment/i })
+        .or(page.getByPlaceholder(/note|comment/i));
       const hasNoteUI = await noteTextarea.isVisible({ timeout: 2000 }).catch(() => false);
 
       if (hasNoteUI) {
@@ -166,13 +169,13 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should track opportunity creation in timeline', async ({ _page }) => {
+  test("should track opportunity creation in timeline", async ({ _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Creation Track ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     // Navigate to show page
     await listPage.goto();
@@ -191,20 +194,20 @@ test.describe('Opportunities Activity Timeline', () => {
       expect(firstText).toBeTruthy();
 
       // At minimum, verify timeline has content
-      expect(firstText).not.toBe('');
+      expect(firstText).not.toBe("");
     }
   });
 
-  test('should track field updates in timeline', async ({ page }) => {
+  test("should track field updates in timeline", async ({ page }) => {
     // Create opportunity with initial values
     const timestamp = Date.now();
     const opportunityName = `Field Update ${timestamp}`;
-    const initialValue = '10000';
-    const updatedValue = '25000';
+    const initialValue = "10000";
+    const updatedValue = "25000";
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
+    await formPage.selectOrganization("Acme Corp");
     await formPage.fillValue(initialValue);
     await formPage.submit();
 
@@ -216,7 +219,7 @@ test.describe('Opportunities Activity Timeline', () => {
     await formPage.submit();
 
     // Check timeline for update event
-    if (!page.url().includes('/show')) {
+    if (!page.url().includes("/show")) {
       await listPage.goto();
       await listPage.viewOpportunity(opportunityName);
     }
@@ -226,25 +229,28 @@ test.describe('Opportunities Activity Timeline', () => {
 
     if (hasTimeline) {
       // Look for activity mentioning value change
-      const updateActivity = timeline.locator('text=/value|amount|updated|changed/i');
-      const hasUpdateActivity = await updateActivity.first().isVisible({ timeout: 2000 }).catch(() => false);
+      const updateActivity = timeline.locator("text=/value|amount|updated|changed/i");
+      const hasUpdateActivity = await updateActivity
+        .first()
+        .isVisible({ timeout: 2000 })
+        .catch(() => false);
 
       if (hasUpdateActivity) {
         const activityText = await updateActivity.first().textContent();
         expect(activityText).toBeTruthy();
       } else {
-        console.log('Field updates not automatically tracked in timeline');
+        console.log("Field updates not automatically tracked in timeline");
       }
     }
   });
 
-  test('should display activity with author information', async ({ _page }) => {
+  test("should display activity with author information", async ({ _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Author Info ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     // Navigate to show page
     await listPage.goto();
@@ -259,8 +265,8 @@ test.describe('Opportunities Activity Timeline', () => {
       const firstItem = activityItems.first();
 
       // Look for user identifiers (email, name, avatar)
-      const hasEmail = await firstItem.locator('text=/admin@test.com/i').count();
-      const hasName = await firstItem.locator('text=/admin|user/i').count();
+      const hasEmail = await firstItem.locator("text=/admin@test.com/i").count();
+      const hasName = await firstItem.locator("text=/admin|user/i").count();
       const hasAvatar = await firstItem.locator('[data-testid="avatar"], img').count();
 
       // Should have at least one user identifier
@@ -269,13 +275,13 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should display activity timestamps', async ({ _page }) => {
+  test("should display activity timestamps", async ({ _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Timestamps ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     // Navigate to show page
     await listPage.goto();
@@ -291,7 +297,9 @@ test.describe('Opportunities Activity Timeline', () => {
 
       // Look for time elements or timestamp indicators
       const timeElements = await firstItem.locator('time, [data-testid="timestamp"]').count();
-      const hasRelativeTime = await firstItem.locator('text=/ago|just now|yesterday|today/i').count();
+      const hasRelativeTime = await firstItem
+        .locator("text=/ago|just now|yesterday|today/i")
+        .count();
 
       // Should have timestamp information
       const hasTimestamp = timeElements > 0 || hasRelativeTime > 0;
@@ -299,13 +307,13 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should group activities by date or time period', async ({ _page }) => {
+  test("should group activities by date or time period", async ({ _page }) => {
     // Create opportunity and add activities over time
     const timestamp = Date.now();
     const opportunityName = `Grouped Activities ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     // Navigate to show page
     await listPage.goto();
@@ -316,9 +324,9 @@ test.describe('Opportunities Activity Timeline', () => {
 
     if (hasTimeline) {
       // Look for date headers or grouping elements
-      const dateHeaders = timeline.locator('[data-testid="date-header"], h3, h4').or(
-        timeline.locator('text=/today|yesterday|last week/i')
-      );
+      const dateHeaders = timeline
+        .locator('[data-testid="date-header"], h3, h4')
+        .or(timeline.locator("text=/today|yesterday|last week/i"));
 
       const hasGrouping = await dateHeaders.count();
 
@@ -327,12 +335,12 @@ test.describe('Opportunities Activity Timeline', () => {
         const firstHeader = dateHeaders.first();
         await expect(firstHeader).toBeVisible();
       } else {
-        console.log('Activity grouping not implemented - linear timeline');
+        console.log("Activity grouping not implemented - linear timeline");
       }
     }
   });
 
-  test('should handle empty timeline state', async ({ _page }) => {
+  test("should handle empty timeline state", async ({ _page }) => {
     // This test assumes we can create an opportunity without triggering automatic activities
     // In reality, creation itself might be an activity
 
@@ -340,7 +348,7 @@ test.describe('Opportunities Activity Timeline', () => {
     const opportunityName = `Empty Timeline ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     await listPage.goto();
     await listPage.viewOpportunity(opportunityName);
@@ -358,7 +366,7 @@ test.describe('Opportunities Activity Timeline', () => {
 
       // If truly empty, should show empty state message
       if (count === 0) {
-        const emptyMessage = timeline.locator('text=/no activity|no notes|no history/i');
+        const emptyMessage = timeline.locator("text=/no activity|no notes|no history/i");
         const hasEmptyMessage = await emptyMessage.isVisible().catch(() => false);
 
         if (hasEmptyMessage) {
@@ -368,26 +376,26 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should display different activity types with icons or badges', async ({ page }) => {
+  test("should display different activity types with icons or badges", async ({ page }) => {
     // Create opportunity and perform different actions
     const timestamp = Date.now();
     const opportunityName = `Activity Types ${timestamp}`;
 
     await listPage.clickCreate();
     await formPage.fillName(opportunityName);
-    await formPage.selectOrganization('Acme Corp');
-    await formPage.selectStage('Prospecting');
+    await formPage.selectOrganization("Acme Corp");
+    await formPage.selectStage("Prospecting");
     await formPage.submit();
 
     // Change stage to create different activity type
     await listPage.goto();
     await listPage.viewOpportunity(opportunityName);
     await showPage.clickEdit();
-    await formPage.selectStage('Qualification');
+    await formPage.selectStage("Qualification");
     await formPage.submit();
 
     // Check timeline
-    if (!page.url().includes('/show')) {
+    if (!page.url().includes("/show")) {
       await listPage.goto();
       await listPage.viewOpportunity(opportunityName);
     }
@@ -407,18 +415,18 @@ test.describe('Opportunities Activity Timeline', () => {
       const hasVisualIndicator = hasIcon > 0 || hasBadge > 0;
 
       if (!hasVisualIndicator) {
-        console.log('Activity types not visually distinguished - may use text only');
+        console.log("Activity types not visually distinguished - may use text only");
       }
     }
   });
 
-  test('should allow filtering or searching timeline activities', async ({ page }) => {
+  test("should allow filtering or searching timeline activities", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Filter Timeline ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     await listPage.goto();
     await listPage.viewOpportunity(opportunityName);
@@ -428,27 +436,27 @@ test.describe('Opportunities Activity Timeline', () => {
 
     if (hasTimeline) {
       // Look for filter or search controls
-      const filterButton = page.getByRole('button', { name: /filter|show|hide/i });
+      const filterButton = page.getByRole("button", { name: /filter|show|hide/i });
       const searchInput = timeline.locator('[type="search"], [placeholder*="search"]');
 
       const hasFilterControls = await filterButton.isVisible({ timeout: 2000 }).catch(() => false);
       const hasSearchInput = await searchInput.isVisible({ timeout: 2000 }).catch(() => false);
 
       if (hasFilterControls || hasSearchInput) {
-        console.log('Timeline filtering available');
+        console.log("Timeline filtering available");
       } else {
-        console.log('Timeline filtering not implemented - showing all activities');
+        console.log("Timeline filtering not implemented - showing all activities");
       }
     }
   });
 
-  test('should refresh timeline with real-time updates', async ({ page }) => {
+  test("should refresh timeline with real-time updates", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Real-time ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     await listPage.goto();
     await listPage.viewOpportunity(opportunityName);
@@ -461,9 +469,9 @@ test.describe('Opportunities Activity Timeline', () => {
       const initialCount = await activityItems.count();
 
       // Add note (if supported)
-      const noteTextarea = page.getByRole('textbox', { name: /note|comment/i }).or(
-        page.getByPlaceholder(/note|comment/i)
-      );
+      const noteTextarea = page
+        .getByRole("textbox", { name: /note|comment/i })
+        .or(page.getByPlaceholder(/note|comment/i));
       const hasNoteUI = await noteTextarea.isVisible({ timeout: 2000 }).catch(() => false);
 
       if (hasNoteUI) {
@@ -480,13 +488,13 @@ test.describe('Opportunities Activity Timeline', () => {
     }
   });
 
-  test('should handle long activity text with proper formatting', async ({ page }) => {
+  test("should handle long activity text with proper formatting", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Long Text ${timestamp}`;
 
     await listPage.clickCreate();
-    await formPage.createOpportunity(opportunityName, 'Acme Corp');
+    await formPage.createOpportunity(opportunityName, "Acme Corp");
 
     await listPage.goto();
     await listPage.viewOpportunity(opportunityName);
@@ -495,29 +503,31 @@ test.describe('Opportunities Activity Timeline', () => {
     const hasTimeline = await timeline.isVisible().catch(() => false);
 
     if (hasTimeline) {
-      const noteTextarea = page.getByRole('textbox', { name: /note|comment/i }).or(
-        page.getByPlaceholder(/note|comment/i)
-      );
+      const noteTextarea = page
+        .getByRole("textbox", { name: /note|comment/i })
+        .or(page.getByPlaceholder(/note|comment/i));
       const hasNoteUI = await noteTextarea.isVisible({ timeout: 2000 }).catch(() => false);
 
       if (hasNoteUI) {
         // Add a very long note
-        const longNote = `This is a very long note that contains multiple sentences and should test the text wrapping and formatting capabilities of the activity timeline. ${'Lorem ipsum dolor sit amet. '.repeat(10)}`;
+        const longNote = `This is a very long note that contains multiple sentences and should test the text wrapping and formatting capabilities of the activity timeline. ${"Lorem ipsum dolor sit amet. ".repeat(10)}`;
 
         await showPage.addNote(longNote);
 
         // Verify note appears (truncated or full)
-        const noteActivity = showPage.getActivityItemByText('This is a very long note');
+        const noteActivity = showPage.getActivityItemByText("This is a very long note");
         await expect(noteActivity).toBeVisible();
 
         // Check for "show more" or expansion controls
-        const expandButton = noteActivity.locator('button:has-text("show more"), button:has-text("expand")');
+        const expandButton = noteActivity.locator(
+          'button:has-text("show more"), button:has-text("expand")'
+        );
         const hasExpandControl = await expandButton.count();
 
         if (hasExpandControl > 0) {
-          console.log('Long text expansion controls available');
+          console.log("Long text expansion controls available");
         } else {
-          console.log('Long text displayed in full or auto-truncated');
+          console.log("Long text displayed in full or auto-truncated");
         }
       }
     }

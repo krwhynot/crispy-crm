@@ -73,10 +73,9 @@ const OrganizationEditContent = ({
     // Reset form field back to principal
     if (record) {
       // The form will automatically revert since the mutation was cancelled
-      notify(
-        "Organization type change cancelled. Please reassign products first.",
-        { type: "warning" }
-      );
+      notify("Organization type change cancelled. Please reassign products first.", {
+        type: "warning",
+      });
     }
   };
 

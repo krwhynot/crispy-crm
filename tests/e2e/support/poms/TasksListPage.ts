@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Tasks List Page Object Model
@@ -12,7 +12,7 @@ export class TasksListPage extends BasePage {
    * Navigate to tasks list
    */
   async navigate(): Promise<void> {
-    await this.goto('/#/tasks');
+    await this.goto("/#/tasks");
     await this.waitForURL(/#\/tasks/);
   }
 

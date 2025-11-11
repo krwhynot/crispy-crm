@@ -1,18 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from './sheet';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import React, { useState } from 'react';
-import { Separator } from './separator';
+import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./sheet";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
+import React, { useState } from "react";
+import { Separator } from "./separator";
 
 const meta = {
-  title: 'UI/Sheet',
+  title: "UI/Sheet",
   component: Sheet,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="flex min-h-[600px] min-w-[600px] items-center justify-center">
@@ -105,9 +113,7 @@ export const TopSide: Story = {
       <SheetContent side="top" className="h-auto">
         <SheetHeader>
           <SheetTitle>Notification Panel</SheetTitle>
-          <SheetDescription>
-            Important notifications and alerts appear here.
-          </SheetDescription>
+          <SheetDescription>Important notifications and alerts appear here.</SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-2 py-4">
           <div className="rounded-lg border bg-card p-3">
@@ -158,7 +164,7 @@ export const BottomSide: Story = {
 // Controlled sheet with animation state tracking
 const ControlledSheet = () => {
   const [open, setOpen] = useState(false);
-  const [animationState, setAnimationState] = useState('closed');
+  const [animationState, setAnimationState] = useState("closed");
 
   return (
     <div className="flex flex-col gap-4">
@@ -169,11 +175,11 @@ const ControlledSheet = () => {
         open={open}
         onOpenChange={(isOpen) => {
           setOpen(isOpen);
-          setAnimationState(isOpen ? 'opening → open' : 'closing → closed');
+          setAnimationState(isOpen ? "opening → open" : "closing → closed");
           if (isOpen) {
-            setTimeout(() => setAnimationState('open'), 500);
+            setTimeout(() => setAnimationState("open"), 500);
           } else {
-            setTimeout(() => setAnimationState('closed'), 300);
+            setTimeout(() => setAnimationState("closed"), 300);
           }
         }}
       >
@@ -188,12 +194,8 @@ const ControlledSheet = () => {
             </SheetDescription>
           </SheetHeader>
           <div className="py-4">
-            <p>Sheet is currently: {open ? 'open' : 'closed'}</p>
-            <Button
-              className="mt-4"
-              onClick={() => setOpen(false)}
-              variant="outline"
-            >
+            <p>Sheet is currently: {open ? "open" : "closed"}</p>
+            <Button className="mt-4" onClick={() => setOpen(false)} variant="outline">
               Close Sheet
             </Button>
           </div>
@@ -217,18 +219,16 @@ export const WithScrollableContent: Story = {
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Terms of Service</SheetTitle>
-          <SheetDescription>
-            Please read and accept our terms of service.
-          </SheetDescription>
+          <SheetDescription>Please read and accept our terms of service.</SheetDescription>
         </SheetHeader>
         <div className="py-4">
           {Array.from({ length: 20 }, (_, i) => (
             <div key={i} className="mb-4">
               <h3 className="mb-2 font-semibold">Section {i + 1}</h3>
               <p className="text-sm text-[color:var(--text-subtle)]">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                ad minim veniam, quis nostrud exercitation ullamco laboris.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                exercitation ullamco laboris.
               </p>
             </div>
           ))}
@@ -261,12 +261,8 @@ export const MobileResponsive: Story = {
             Resize your viewport to see how this sheet adapts to different screen sizes.
           </p>
           <div className="mt-4 space-y-2">
-            <div className="rounded bg-primary/10 p-2 text-xs">
-              Mobile: Full width
-            </div>
-            <div className="rounded bg-secondary/10 p-2 text-xs">
-              Tablet/Desktop: max-w-sm
-            </div>
+            <div className="rounded bg-primary/10 p-2 text-xs">Mobile: Full width</div>
+            <div className="rounded bg-secondary/10 p-2 text-xs">Tablet/Desktop: max-w-sm</div>
           </div>
         </div>
       </SheetContent>
@@ -376,14 +372,14 @@ export const SemanticColors: Story = {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Semantic Colors</SheetTitle>
-          <SheetDescription>
-            Demonstrating proper semantic color usage in sheets.
-          </SheetDescription>
+          <SheetDescription>Demonstrating proper semantic color usage in sheets.</SheetDescription>
         </SheetHeader>
         <div className="space-y-4 py-4">
           <div className="rounded-lg border border-border bg-background p-3">
             <p className="text-sm font-medium">Default Border & Background</p>
-            <p className="text-xs text-[color:var(--text-subtle)]">Using --border and --background</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">
+              Using --border and --background
+            </p>
           </div>
 
           <div className="rounded-lg border border-primary bg-primary/10 p-3">
@@ -393,7 +389,9 @@ export const SemanticColors: Story = {
 
           <div className="rounded-lg border border-destructive bg-destructive/10 p-3">
             <p className="text-sm font-medium text-destructive">Destructive State</p>
-            <p className="text-xs text-[color:var(--text-subtle)]">Using --destructive for warnings</p>
+            <p className="text-xs text-[color:var(--text-subtle)]">
+              Using --destructive for warnings
+            </p>
           </div>
 
           <div className="rounded-lg border border-secondary bg-secondary p-3">

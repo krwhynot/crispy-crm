@@ -1,6 +1,6 @@
-import { test, expect } from './support/fixtures/authenticated';
-import { DashboardPage } from './support/poms/DashboardPage';
-import { consoleMonitor } from './support/utils/console-monitor';
+import { test, expect } from "./support/fixtures/authenticated";
+import { DashboardPage } from "./support/poms/DashboardPage";
+import { consoleMonitor } from "./support/utils/console-monitor";
 
 /**
  * Principal-Centric Dashboard E2E Tests - iPad Focus
@@ -20,7 +20,7 @@ import { consoleMonitor } from './support/utils/console-monitor';
  * - Condition-based waiting (no arbitrary timeouts)
  */
 
-test.describe('Dashboard - iPad (768x1024)', () => {
+test.describe("Dashboard - iPad (768x1024)", () => {
   let dashboard: DashboardPage;
 
   test.beforeEach(async ({ authenticatedPage }) => {
@@ -38,28 +38,31 @@ test.describe('Dashboard - iPad (768x1024)', () => {
 
     if (errors.length > 0) {
       // Attach detailed report to test results for debugging
-      await test.info().attach('console-report', {
+      await test.info().attach("console-report", {
         body: consoleMonitor.getReport(),
-        contentType: 'text/plain',
+        contentType: "text/plain",
       });
     }
 
     // Fail test if console errors were detected
-    expect(errors, 'Console errors were detected during the test. See attached report.').toHaveLength(0);
+    expect(
+      errors,
+      "Console errors were detected during the test. See attached report."
+    ).toHaveLength(0);
   });
 
-  test.describe('Core Elements', () => {
+  test.describe("Core Elements", () => {
     test('displays "My Principals" heading', async () => {
       await expect(dashboard.getHeading()).toBeVisible();
     });
 
-    test('displays refresh button', async () => {
+    test("displays refresh button", async () => {
       const refreshButton = dashboard.getRefreshButton();
       await expect(refreshButton).toBeVisible();
       await expect(refreshButton).toBeEnabled();
     });
 
-    test('refresh button works', async () => {
+    test("refresh button works", async () => {
       const refreshButton = dashboard.getRefreshButton();
 
       // Verify button is initially enabled
@@ -73,7 +76,7 @@ test.describe('Dashboard - iPad (768x1024)', () => {
       await expect(refreshButton).toBeEnabled();
     });
 
-    test('has no console errors on load', async () => {
+    test("has no console errors on load", async () => {
       // Console monitoring happens automatically via fixture
       expect(consoleMonitor.hasRLSErrors()).toBe(false);
       expect(consoleMonitor.hasReactErrors()).toBe(false);
@@ -81,12 +84,12 @@ test.describe('Dashboard - iPad (768x1024)', () => {
     });
   });
 
-  test.describe('Principal Table Structure', () => {
-    test('displays all 6 column headers', async () => {
+  test.describe("Principal Table Structure", () => {
+    test("displays all 6 column headers", async () => {
       await dashboard.expectAllColumnHeaders();
     });
 
-    test('table is visible', async () => {
+    test("table is visible", async () => {
       const table = dashboard.getTable();
       await expect(table).toBeVisible();
 
@@ -99,7 +102,7 @@ test.describe('Dashboard - iPad (768x1024)', () => {
       }
     });
 
-    test('table structure is valid', async () => {
+    test("table structure is valid", async () => {
       // Table should have column headers
       await expect(dashboard.getColumnHeader(/principal/i)).toBeVisible();
 
@@ -112,13 +115,13 @@ test.describe('Dashboard - iPad (768x1024)', () => {
     });
   });
 
-  test.describe('Layout and Responsiveness', () => {
-    test('no horizontal scrolling on iPad', async () => {
+  test.describe("Layout and Responsiveness", () => {
+    test("no horizontal scrolling on iPad", async () => {
       const hasScroll = await dashboard.hasHorizontalScroll();
       expect(hasScroll).toBe(false);
     });
 
-    test('table adapts to tablet layout', async () => {
+    test("table adapts to tablet layout", async () => {
       const table = dashboard.getTable();
       const box = await table.boundingBox();
 
@@ -130,7 +133,7 @@ test.describe('Dashboard - iPad (768x1024)', () => {
       }
     });
 
-    test('dashboard content fits reasonably', async () => {
+    test("dashboard content fits reasonably", async () => {
       const pageHeight = await dashboard.getPageHeight();
       const viewportHeight = dashboard.getViewportHeight();
 
@@ -139,7 +142,7 @@ test.describe('Dashboard - iPad (768x1024)', () => {
       expect(pageHeight).toBeLessThan(viewportHeight * 2);
     });
 
-    test('touch targets meet minimum size', async () => {
+    test("touch targets meet minimum size", async () => {
       // Refresh button should be touch-friendly (44x44px minimum)
       const refreshButton = dashboard.getRefreshButton();
       const meetsTouchSize = await dashboard.meetsTouchTargetSize(refreshButton, 36);
@@ -148,8 +151,8 @@ test.describe('Dashboard - iPad (768x1024)', () => {
     });
   });
 
-  test.describe('Table Interactions', () => {
-    test('table rows are clickable (if data exists)', async () => {
+  test.describe("Table Interactions", () => {
+    test("table rows are clickable (if data exists)", async () => {
       const isEmpty = await dashboard.isTableEmpty();
 
       if (!isEmpty) {
@@ -157,17 +160,15 @@ test.describe('Dashboard - iPad (768x1024)', () => {
         await expect(firstRow).toBeVisible();
 
         // Row should have pointer cursor
-        const cursor = await firstRow.evaluate((el) =>
-          window.getComputedStyle(el).cursor
-        );
-        expect(cursor).toBe('pointer');
+        const cursor = await firstRow.evaluate((el) => window.getComputedStyle(el).cursor);
+        expect(cursor).toBe("pointer");
       } else {
         // Skip test if no data - not a failure
         test.skip();
       }
     });
 
-    test('refresh button updates data', async () => {
+    test("refresh button updates data", async () => {
       const refreshButton = dashboard.getRefreshButton();
 
       // Click refresh
@@ -182,8 +183,8 @@ test.describe('Dashboard - iPad (768x1024)', () => {
     });
   });
 
-  test.describe('Navigation', () => {
-    test('navigation tabs remain accessible on iPad', async () => {
+  test.describe("Navigation", () => {
+    test("navigation tabs remain accessible on iPad", async () => {
       const navigation = dashboard.getNavigation();
       await expect(navigation).toBeVisible();
 
@@ -193,10 +194,10 @@ test.describe('Dashboard - iPad (768x1024)', () => {
     });
   });
 
-  test.describe('Visual Regression', () => {
-    test('capture dashboard at iPad resolution', async ({ authenticatedPage }) => {
+  test.describe("Visual Regression", () => {
+    test("capture dashboard at iPad resolution", async ({ authenticatedPage }) => {
       // Visual snapshot embedded in functional test (per skill)
-      await expect(authenticatedPage).toHaveScreenshot('dashboard-ipad.png', {
+      await expect(authenticatedPage).toHaveScreenshot("dashboard-ipad.png", {
         fullPage: true,
         // Mask dynamic elements like timestamps
         mask: [dashboard.getColumnHeader(/last activity/i)],

@@ -32,9 +32,7 @@ describe("ContactCreate", () => {
       const inputData = {
         first_name: "John",
         last_name: "Doe",
-        email: createEmailArray([
-          { email: "john@example.com", type: "Work" },
-        ]),
+        email: createEmailArray([{ email: "john@example.com", type: "Work" }]),
         sales_id: 1,
       };
 
@@ -108,7 +106,7 @@ describe("ContactCreate", () => {
             last_name: "User",
             email: [{ email: "test@example.com", type: "Work" }],
             sales_id: 1,
-          }
+          },
         });
       } catch (error) {
         expect(error).toEqual(serverError);
@@ -121,7 +119,7 @@ describe("ContactCreate", () => {
     test("handles validation errors from API", async () => {
       const validationErrors = createValidationError({
         "email.0.email": "Email already exists",
-        "organization_id": "Organization not found",
+        organization_id: "Organization not found",
       });
 
       const mockCreate = vi.fn().mockRejectedValue(validationErrors);

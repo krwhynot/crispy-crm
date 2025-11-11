@@ -6,9 +6,7 @@ export async function hash(string: string) {
   const utf8 = new TextEncoder().encode(string);
   const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((bytes) => bytes.toString(16).padStart(2, "0"))
-    .join("");
+  const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, "0")).join("");
   return hashHex;
 }
 
@@ -37,9 +35,7 @@ async function getFaviconUrl(domain: string): Promise<string | null> {
 }
 
 // Main function to get the avatar URL
-export async function getContactAvatar(
-  record: Partial<Contact>,
-): Promise<string | null> {
+export async function getContactAvatar(record: Partial<Contact>): Promise<string | null> {
   if (!record.email || !record.email.length) {
     return null;
   }

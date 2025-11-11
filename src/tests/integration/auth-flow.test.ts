@@ -7,15 +7,7 @@
  * Depends on Task 1.3 (authentication cache fixes) which has been completed.
  */
 
-import {
-  describe,
-  test,
-  expect,
-  beforeEach,
-  afterEach,
-  vi,
-  beforeAll,
-} from "vitest";
+import { describe, test, expect, beforeEach, afterEach, vi, beforeAll } from "vitest";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@supabase/supabase-js";
 import * as dotenv from "dotenv";
@@ -373,8 +365,7 @@ describe("Authentication Flow Integration Tests", () => {
     test("set-password page URL validation", () => {
       // Test valid tokens
       mockLocation.pathname = "/set-password";
-      mockLocation.search =
-        "?access_token=valid_token&refresh_token=valid_refresh";
+      mockLocation.search = "?access_token=valid_token&refresh_token=valid_refresh";
 
       const urlParams = new URLSearchParams(mockLocation.search);
       const access_token = urlParams.get("access_token");
@@ -397,17 +388,13 @@ describe("Authentication Flow Integration Tests", () => {
 
       publicAuthPages.forEach((page) => {
         mockLocation.pathname = page;
-        const isPublicPage = publicAuthPages.some(
-          (p) => mockLocation.pathname === p,
-        );
+        const isPublicPage = publicAuthPages.some((p) => mockLocation.pathname === p);
         expect(isPublicPage).toBe(true);
       });
 
       publicHashPages.forEach((hash) => {
         mockLocation.hash = hash;
-        const isPublicHashPage = publicHashPages.some((h) =>
-          mockLocation.hash.includes(h),
-        );
+        const isPublicHashPage = publicHashPages.some((h) => mockLocation.hash.includes(h));
         expect(isPublicHashPage).toBe(true);
       });
     });
@@ -435,10 +422,7 @@ describe("Authentication Flow Integration Tests", () => {
 
     test("service role has full database access", async () => {
       // Service role should be able to query counts
-      const { error } = await serviceClient
-        .from("organizations")
-        .select("count")
-        .limit(1);
+      const { error } = await serviceClient.from("organizations").select("count").limit(1);
 
       // Should succeed with service role
       expect(error).toBeNull();
@@ -448,14 +432,14 @@ describe("Authentication Flow Integration Tests", () => {
   describe("Error Handling Tests", () => {
     test("network errors are handled gracefully", async () => {
       vi.spyOn(supabaseClient.auth, "signInWithPassword").mockRejectedValue(
-        new Error("Network error"),
+        new Error("Network error")
       );
 
       await expect(
         supabaseClient.auth.signInWithPassword({
           email: "test@example.com",
           password: "password",
-        }),
+        })
       ).rejects.toThrow("Network error");
     });
 

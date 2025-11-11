@@ -1,12 +1,6 @@
 import { useCallback } from "react";
 import type { InputProps } from "ra-core";
-import {
-  FieldTitle,
-  useChoicesContext,
-  useInput,
-  useTranslate,
-  type ChoicesProps,
-} from "ra-core";
+import { FieldTitle, useChoicesContext, useInput, useTranslate, type ChoicesProps } from "ra-core";
 import { X } from "lucide-react";
 
 import {
@@ -45,10 +39,7 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
   } = props;
   const translate = useTranslate();
 
-  const {
-    allChoices,
-    source,
-  } = useChoicesContext({
+  const { allChoices, source } = useChoicesContext({
     choices: choicesProp,
     resource: resourceProp,
     source: sourceProp,
@@ -85,19 +76,13 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
   );
 
   const selectedCount = field.value?.length || 0;
-  const displayText = selectedCount > 0
-    ? `${emptyText} (${selectedCount} selected)`
-    : emptyText;
+  const displayText = selectedCount > 0 ? `${emptyText} (${selectedCount} selected)` : emptyText;
 
   return (
     <FormField>
       {label !== false && (
         <FormLabel htmlFor={field.name}>
-          <FieldTitle
-            label={label}
-            source={source}
-            resource={resourceProp}
-          />
+          <FieldTitle label={label} source={source} resource={resourceProp} />
         </FormLabel>
       )}
       <DropdownMenu>

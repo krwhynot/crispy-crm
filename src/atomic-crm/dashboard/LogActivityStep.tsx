@@ -128,9 +128,7 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
           </SelectContent>
         </Select>
         {detectedType && (
-          <p className="text-xs text-muted-foreground">
-            Auto-detected from task title
-          </p>
+          <p className="text-xs text-muted-foreground">Auto-detected from task title</p>
         )}
       </div>
 
@@ -181,11 +179,7 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
 
       {/* Action Buttons */}
       <div className="pt-2">
-        <Button
-          onClick={handleSave}
-          disabled={!isValid || isSubmitting}
-          className="w-full"
-        >
+        <Button onClick={handleSave} disabled={!isValid || isSubmitting} className="w-full">
           {isSubmitting ? "Saving..." : "Save & Continue →"}
         </Button>
       </div>

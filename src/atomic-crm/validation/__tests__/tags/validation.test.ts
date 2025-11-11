@@ -52,16 +52,7 @@ describe("Tag Validation Schemas", () => {
     });
 
     it("should validate semantic colors", () => {
-      const validColors = [
-        "warm",
-        "green",
-        "teal",
-        "blue",
-        "purple",
-        "yellow",
-        "gray",
-        "pink",
-      ];
+      const validColors = ["warm", "green", "teal", "blue", "purple", "yellow", "gray", "pink"];
 
       validColors.forEach((color) => {
         const tag = { name: "Test", color };
@@ -109,9 +100,7 @@ describe("Tag Validation Schemas", () => {
     });
 
     it("should accept both string and number IDs", () => {
-      expect(() =>
-        tagSchema.parse({ ...validTag, id: "string-id" }),
-      ).not.toThrow();
+      expect(() => tagSchema.parse({ ...validTag, id: "string-id" })).not.toThrow();
       expect(() => tagSchema.parse({ ...validTag, id: 12345 })).not.toThrow();
     });
 
@@ -140,9 +129,7 @@ describe("Tag Validation Schemas", () => {
     it("should reject creation without required fields", () => {
       expect(() => createTagSchema.parse({})).toThrow(z.ZodError);
       expect(() => createTagSchema.parse({ name: "Test" })).toThrow(z.ZodError);
-      expect(() => createTagSchema.parse({ color: "blue" })).toThrow(
-        z.ZodError,
-      );
+      expect(() => createTagSchema.parse({ color: "blue" })).toThrow(z.ZodError);
     });
 
     it("should not allow id field on creation", () => {
@@ -199,11 +186,9 @@ describe("Tag Validation Schemas", () => {
     });
 
     it("should allow partial updates", () => {
-      expect(() =>
-        updateTagSchema.parse({ id: "tag-1", name: "New Name" }),
-      ).not.toThrow();
-      expect(() =>
-        updateTagSchema.parse({ id: "tag-1", color: "warm" }), // Use semantic color
+      expect(() => updateTagSchema.parse({ id: "tag-1", name: "New Name" })).not.toThrow();
+      expect(
+        () => updateTagSchema.parse({ id: "tag-1", color: "warm" }) // Use semantic color
       ).not.toThrow();
       expect(() => updateTagSchema.parse({ id: "tag-1" })).not.toThrow();
     });
@@ -213,14 +198,14 @@ describe("Tag Validation Schemas", () => {
         updateTagSchema.parse({
           id: "tag-1",
           color: "invalid_color",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
         updateTagSchema.parse({
           id: "tag-1",
           name: "a".repeat(51),
-        }),
+        })
       ).toThrow(z.ZodError);
     });
 
@@ -257,7 +242,7 @@ describe("Tag Validation Schemas", () => {
           name: "Tag",
           color: "warm", // Use semantic color
           count: -1,
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
@@ -265,7 +250,7 @@ describe("Tag Validation Schemas", () => {
           name: "Tag",
           color: "warm", // Use semantic color
           count: 3.14,
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
@@ -273,7 +258,7 @@ describe("Tag Validation Schemas", () => {
           name: "Tag",
           color: "warm", // Use semantic color
           count: 0,
-        }),
+        })
       ).not.toThrow();
     });
   });
@@ -300,7 +285,7 @@ describe("Tag Validation Schemas", () => {
       expect(() =>
         tagFilterSchema.parse({
           colors: ["warm", "invalid_color", "blue"], // Use semantic colors
-        }),
+        })
       ).toThrow(z.ZodError);
     });
   });

@@ -6,14 +6,14 @@ export function formatName(firstName?: string | null, lastName?: string | null):
   const last = lastName?.trim();
 
   if (!first && !last) {
-    return '--';
+    return "--";
   }
 
   if (first && last) {
     return `${first} ${last}`;
   }
 
-  return first || last || '--';
+  return first || last || "--";
 }
 
 /**
@@ -21,5 +21,5 @@ export function formatName(firstName?: string | null, lastName?: string | null):
  */
 export function formatFullName(name?: string | null): string {
   const trimmed = name?.trim();
-  return trimmed || '--';
+  return trimmed || "--";
 }

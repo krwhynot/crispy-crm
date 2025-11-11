@@ -23,7 +23,7 @@ export const ContactList = () => {
 
   // Clean up stale cached filters from localStorage
   // Generic hook validates all filters against filterRegistry.ts
-  useFilterCleanup('contacts');
+  useFilterCleanup("contacts");
 
   if (!identity) return null;
 
@@ -83,11 +83,8 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
   // Collect all organization IDs from all contacts' organizations arrays
   const organizationIds = Array.from(
     new Set(
-      records.flatMap(
-        (contact) =>
-          contact.organizations?.map((org) => org.organization_id) || [],
-      ),
-    ),
+      records.flatMap((contact) => contact.organizations?.map((org) => org.organization_id) || [])
+    )
   );
 
   // Fetch organization names for all unique organization IDs
@@ -96,15 +93,13 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
       ? await fetchRelatedRecords<Organization>(
           organizationIds.map((id) => ({ id, organization_id: id })),
           "organization_id",
-          "organizations",
+          "organizations"
         )
       : {};
 
   const contacts = records.map((contact) => {
     // Find the primary organization from the organizations array
-    const primaryOrganization = contact.organizations?.find(
-      (org) => org.is_primary,
-    );
+    const primaryOrganization = contact.organizations?.find((org) => org.is_primary);
 
     // Build the export object with canonical field names matching import expectations
     const exportedContact: any = {

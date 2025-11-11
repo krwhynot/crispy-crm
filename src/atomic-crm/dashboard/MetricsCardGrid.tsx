@@ -31,13 +31,10 @@ interface MetricCard {
  */
 export const MetricsCardGrid = () => {
   // Fetch contacts - use total count, not array length
-  const { total: totalContacts, isPending: contactsPending } = useGetList(
-    "contacts",
-    {
-      pagination: { page: 1, perPage: 1 }, // Only need count, not data
-      filter: { "deleted_at@is": null },
-    }
-  );
+  const { total: totalContacts, isPending: contactsPending } = useGetList("contacts", {
+    pagination: { page: 1, perPage: 1 }, // Only need count, not data
+    filter: { "deleted_at@is": null },
+  });
 
   // Fetch organizations - use total count, not array length
   const { total: totalOrganizations, isPending: organizationsPending } = useGetList(
@@ -52,20 +49,17 @@ export const MetricsCardGrid = () => {
   const sevenDaysAgo = useMemo(() => {
     const date = new Date();
     date.setDate(date.getDate() - 7);
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   }, []);
 
   // Fetch activities from last 7 days
-  const { data: activities, isPending: activitiesPending } = useGetList(
-    "activities",
-    {
-      pagination: { page: 1, perPage: 10000 },
-      filter: {
-        "deleted_at@is": null,
-        "activity_date@gte": sevenDaysAgo,
-      },
-    }
-  );
+  const { data: activities, isPending: activitiesPending } = useGetList("activities", {
+    pagination: { page: 1, perPage: 10000 },
+    filter: {
+      "deleted_at@is": null,
+      "activity_date@gte": sevenDaysAgo,
+    },
+  });
 
   // Combined loading state
   const isPending = contactsPending || organizationsPending || activitiesPending;
@@ -157,7 +151,7 @@ const MetricCard = ({ metric }: MetricCardProps) => {
           {/* Inline icon */}
           <div className="flex-shrink-0 w-4 h-4 md:w-5 md:h-5 text-muted-foreground opacity-75">
             {React.cloneElement(metric.icon as React.ReactElement, {
-              className: "w-full h-full"
+              className: "w-full h-full",
             })}
           </div>
           <h3 className="text-[10px] md:text-xs font-semibold text-muted-foreground tracking-wide uppercase truncate">

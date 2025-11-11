@@ -1,4 +1,4 @@
-import type { Page, Locator } from '@playwright/test';
+import type { Page, Locator } from "@playwright/test";
 
 /**
  * Base Page Object Model
@@ -37,14 +37,14 @@ export class BasePage {
    * Get a button by its accessible name
    */
   getButton(name: string | RegExp): Locator {
-    return this.page.getByRole('button', { name });
+    return this.page.getByRole("button", { name });
   }
 
   /**
    * Get a link by its accessible name
    */
   getLink(name: string | RegExp): Locator {
-    return this.page.getByRole('link', { name });
+    return this.page.getByRole("link", { name });
   }
 
   /**
@@ -65,6 +65,6 @@ export class BasePage {
    * Get a row in a table/grid
    */
   getRow(): Locator {
-    return this.page.getByRole('row');
+    return this.page.getByRole("row");
   }
 }

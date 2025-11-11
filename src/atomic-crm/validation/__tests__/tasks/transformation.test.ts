@@ -4,10 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  validateTaskForSubmission,
-  transformTaskDate,
-} from "../../tasks";
+import { validateTaskForSubmission, transformTaskDate } from "../../tasks";
 
 describe("Task Transformation Utilities", () => {
   describe("validateTaskForSubmission", () => {

@@ -105,15 +105,11 @@ export const OrganizationCard = (props: { record?: Company }) => {
                     className={`text-xs px-1 py-0 ${organizationTypeColorClasses[record.organization_type] || organizationTypeColorClasses.unknown}`}
                   >
                     <Building2 className="w-3 h-3 mr-0.5" />
-                    {organizationTypeLabels[record.organization_type] ||
-                      record.organization_type}
+                    {organizationTypeLabels[record.organization_type] || record.organization_type}
                   </Badge>
                 )}
                 {record.priority && (
-                  <Badge
-                    variant={priorityColors[record.priority]}
-                    className="text-xs px-1 py-0"
-                  >
+                  <Badge variant={priorityColors[record.priority]} className="text-xs px-1 py-0">
                     <Star className="w-3 h-3 mr-0.5" />
                     {record.priority}
                   </Badge>
@@ -126,9 +122,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
             {record.nb_contacts ? (
               <div className="flex items-center gap-0.5">
                 <Building2 className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium">
-                  {record.nb_contacts}
-                </span>
+                <span className="text-sm font-medium">{record.nb_contacts}</span>
                 <span className="text-xs text-muted-foreground">
                   {record.nb_contacts > 1 ? "contacts" : "contact"}
                 </span>
@@ -137,9 +131,7 @@ export const OrganizationCard = (props: { record?: Company }) => {
             {record.nb_opportunities ? (
               <div className="flex items-center gap-0.5">
                 <DollarSign className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium">
-                  {record.nb_opportunities}
-                </span>
+                <span className="text-sm font-medium">{record.nb_opportunities}</span>
                 <span className="text-xs text-muted-foreground">
                   {record.nb_opportunities > 1 ? "opportunities" : "opportunity"}
                 </span>

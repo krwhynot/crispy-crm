@@ -1,8 +1,4 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbPage,
-} from "@/components/admin/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 import {
   CreateBase,
   type CreateBaseProps,
@@ -19,13 +15,7 @@ import { cn } from "@/lib/utils";
 
 export interface CreateProps extends CreateViewProps, CreateBaseProps {}
 
-export const Create = ({
-  title,
-  children,
-  actions,
-  className,
-  ...rest
-}: CreateProps) => (
+export const Create = ({ title, children, actions, className, ...rest }: CreateProps) => (
   <CreateBase {...rest}>
     <CreateView title={title} actions={actions} className={className}>
       {children}
@@ -40,19 +30,12 @@ export interface CreateViewProps {
   title?: ReactNode | string | false;
 }
 
-export const CreateView = ({
-  actions,
-  title,
-  children,
-  className,
-}: CreateViewProps) => {
+export const CreateView = ({ actions, title, children, className }: CreateViewProps) => {
   const context = useCreateContext();
 
   const resource = useResourceContext();
   if (!resource) {
-    throw new Error(
-      "The CreateView component must be used within a ResourceContextProvider",
-    );
+    throw new Error("The CreateView component must be used within a ResourceContextProvider");
   }
   const getResourceLabel = useGetResourceLabel();
   const listLabel = getResourceLabel(resource, 2);
@@ -80,12 +63,7 @@ export const CreateView = ({
           <Translate i18nKey="ra.action.create">Create</Translate>
         </BreadcrumbPage>
       </Breadcrumb>
-      <div
-        className={cn(
-          "flex justify-between items-start flex-wrap gap-2 my-2",
-          className,
-        )}
-      >
+      <div className={cn("flex justify-between items-start flex-wrap gap-2 my-2", className)}>
         <h2 className="text-2xl font-bold tracking-tight">
           {title !== undefined ? title : context.defaultTitle}
         </h2>

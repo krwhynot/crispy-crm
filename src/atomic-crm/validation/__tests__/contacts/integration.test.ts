@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  validateContactForm,
-  validateCreateContact,
-  validateUpdateContact,
-} from "../../contacts";
+import { validateContactForm, validateCreateContact, validateUpdateContact } from "../../contacts";
 
 describe("Contact Validation Functions - UI as Source of Truth", () => {
   describe("validateContactForm", () => {

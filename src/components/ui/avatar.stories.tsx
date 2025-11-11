@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Avatar, AvatarFallback, AvatarImage } from './avatar';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import React from "react";
 
 const meta = {
-  title: 'UI/Avatar',
+  title: "UI/Avatar",
   component: Avatar,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     className: {
-      control: 'text',
-      description: 'Additional CSS classes',
+      control: "text",
+      description: "Additional CSS classes",
     },
   },
 } satisfies Meta<typeof Avatar>;
@@ -24,10 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => (
     <Avatar>
-      <AvatarImage
-        src="https://github.com/shadcn.png"
-        alt="@shadcn"
-      />
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   ),
@@ -37,10 +34,7 @@ export const Default: Story = {
 export const FallbackInitials: Story = {
   render: () => (
     <Avatar>
-      <AvatarImage
-        src="/broken-image.jpg"
-        alt="John Doe"
-      />
+      <AvatarImage src="/broken-image.jpg" alt="John Doe" />
       <AvatarFallback>JD</AvatarFallback>
     </Avatar>
   ),

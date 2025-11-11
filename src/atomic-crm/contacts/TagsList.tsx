@@ -12,11 +12,7 @@ const ColoredBadge = (props: any) => {
     <Badge
       {...props}
       variant="outline"
-      className={cn(
-        "font-normal border-0",
-        getTagColorClass(record.color),
-        props.className,
-      )}
+      className={cn("font-normal border-0", getTagColorClass(record.color), props.className)}
     >
       {record.name}
     </Badge>
@@ -24,12 +20,7 @@ const ColoredBadge = (props: any) => {
 };
 
 export const TagsList = () => (
-  <ReferenceArrayField
-    className="inline-block"
-    resource="contacts"
-    source="tags"
-    reference="tags"
-  >
+  <ReferenceArrayField className="inline-block" resource="contacts" source="tags" reference="tags">
     <SingleFieldList>
       <ColoredBadge source="name" />
     </SingleFieldList>

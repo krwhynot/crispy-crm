@@ -1,6 +1,6 @@
 import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/stageConstants";
 import { priorityChoices } from "../opportunities/priorityChoices";
-import type { FilterValues, FilterChipData, SingleFilterValue} from "./types";
+import type { FilterValues, FilterChipData, SingleFilterValue } from "./types";
 import { FILTER_KEYS } from "./types";
 
 /**
@@ -12,7 +12,7 @@ import { FILTER_KEYS } from "./types";
  * Format stage filter value to human-readable label
  */
 export const formatStageLabel = (value: string): string => {
-  const choice = OPPORTUNITY_STAGE_CHOICES.find(c => c.id === value);
+  const choice = OPPORTUNITY_STAGE_CHOICES.find((c) => c.id === value);
   return choice?.name || value;
 };
 
@@ -20,7 +20,7 @@ export const formatStageLabel = (value: string): string => {
  * Format priority filter value to human-readable label
  */
 export const formatPriorityLabel = (value: string): string => {
-  const choice = priorityChoices.find(c => c.id === value);
+  const choice = priorityChoices.find((c) => c.id === value);
   return choice?.name || value;
 };
 
@@ -28,7 +28,7 @@ export const formatPriorityLabel = (value: string): string => {
  * Format category filter value (pass-through for now)
  */
 export const formatCategoryLabel = (value: string): string => {
-  return value || 'No Category';
+  return value || "No Category";
 };
 
 /**
@@ -66,11 +66,11 @@ export const formatFilterLabel = (
 
     default:
       // Generic formatting for unknown filters
-      if (typeof value === 'boolean') {
-        return value ? 'Yes' : 'No';
+      if (typeof value === "boolean") {
+        return value ? "Yes" : "No";
       }
       if (value === null || value === undefined) {
-        return 'None';
+        return "None";
       }
       return String(value);
   }
@@ -82,13 +82,13 @@ export const formatFilterLabel = (
 export const shouldDisplayFilter = (key: string): boolean => {
   // Skip internal/system filters
   const hiddenFilters = [
-    'deleted_at',
-    'sales_id',
-    'q', // search query
+    "deleted_at",
+    "sales_id",
+    "q", // search query
   ];
 
   // Skip PostgREST operators
-  if (key.includes('@')) {
+  if (key.includes("@")) {
     return false;
   }
 
@@ -109,10 +109,10 @@ export const flattenFilterValues = (filterValues: FilterValues): FilterChipData[
 
     if (Array.isArray(value)) {
       // Create individual entries for each array item
-      value.forEach(item => {
+      value.forEach((item) => {
         flattened.push({ key, value: item });
       });
-    } else if (value !== null && value !== undefined && value !== '') {
+    } else if (value !== null && value !== undefined && value !== "") {
       // Single non-empty value
       flattened.push({ key, value });
     }

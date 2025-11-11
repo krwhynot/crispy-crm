@@ -115,9 +115,7 @@ async function clearBrowserCache() {
   await log("");
   await log("Alternatively, run in browser console:");
   await log("  Object.keys(localStorage).forEach(key => {");
-  await log(
-    '    if (key === "CRM" || key.startsWith("ra-") || key.includes("supabase")) {',
-  );
+  await log('    if (key === "CRM" || key.startsWith("ra-") || key.includes("supabase")) {');
   await log("      localStorage.removeItem(key);");
   await log("    }");
   await log("  });");
@@ -152,10 +150,7 @@ async function clearReactQueryCache() {
  */
 async function clearSupabaseCache() {
   if (!supabase) {
-    await log(
-      "Supabase client not configured, skipping Supabase cache clearing",
-      "WARN",
-    );
+    await log("Supabase client not configured, skipping Supabase cache clearing", "WARN");
     return;
   }
 
@@ -179,16 +174,13 @@ async function clearSupabaseCache() {
       }
 
       // Refresh materialized views if any exist
-      const { data: views, error: viewsError } = await supabase.rpc(
-        "execute_sql",
-        {
-          sql: `
+      const { data: views, error: viewsError } = await supabase.rpc("execute_sql", {
+        sql: `
           SELECT schemaname, matviewname
           FROM pg_matviews
           WHERE schemaname = 'public'
         `,
-        },
-      );
+      });
 
       if (!viewsError && views) {
         for (const view of views) {
@@ -199,7 +191,7 @@ async function clearSupabaseCache() {
           if (refreshError) {
             await log(
               `Failed to refresh view ${view.matviewname}: ${refreshError.message}`,
-              "ERROR",
+              "ERROR"
             );
           } else {
             await log(`Refreshed materialized view: ${view.matviewname}`);
@@ -213,9 +205,7 @@ async function clearSupabaseCache() {
     await log(`Supabase cache clearing failed: ${error.message}`, "ERROR");
   }
 
-  await log(
-    "Cache TTL: PostgreSQL - session based, Views - manual refresh required",
-  );
+  await log("Cache TTL: PostgreSQL - session based, Views - manual refresh required");
 }
 
 /**
@@ -228,19 +218,17 @@ async function clearCdnCache() {
   }
 
   await log("=== CDN Cache Clearing ===");
-  await log(
-    "If using a CDN (CloudFlare, AWS CloudFront, etc.), clear cache for:",
-  );
+  await log("If using a CDN (CloudFlare, AWS CloudFront, etc.), clear cache for:");
   await log("- Static assets (/assets/*)");
   await log("- API responses (/api/*)");
   await log("- HTML pages with embedded data");
   await log("");
   await log("Common CDN cache clearing commands:");
   await log(
-    'CloudFlare: curl -X POST "https://api.cloudflare.com/client/v4/zones/{zone_id}/purge_cache"',
+    'CloudFlare: curl -X POST "https://api.cloudflare.com/client/v4/zones/{zone_id}/purge_cache"'
   );
   await log(
-    'AWS CloudFront: aws cloudfront create-invalidation --distribution-id {id} --paths "/*"',
+    'AWS CloudFront: aws cloudfront create-invalidation --distribution-id {id} --paths "/*"'
   );
   await log("Vercel: vercel --prod --confirm (redeploy)");
   await log("");
@@ -258,12 +246,7 @@ async function clearApplicationCache() {
   await log("=== Application Cache Clearing ===");
 
   // Check for any custom cache files
-  const cacheDirectories = [
-    "node_modules/.cache",
-    ".next/cache",
-    "dist/cache",
-    "build/cache",
-  ];
+  const cacheDirectories = ["node_modules/.cache", ".next/cache", "dist/cache", "build/cache"];
 
   for (const dir of cacheDirectories) {
     try {
@@ -296,9 +279,7 @@ async function generateReport() {
   await log(`Timestamp: ${new Date().toISOString()}`);
   await log("");
   await log("Cache layers processed:");
-  await log(
-    `✓ Browser localStorage: ${skipBrowser ? "SKIPPED" : "INSTRUCTIONS PROVIDED"}`,
-  );
+  await log(`✓ Browser localStorage: ${skipBrowser ? "SKIPPED" : "INSTRUCTIONS PROVIDED"}`);
   await log("✓ React Query cache: AUTOMATIC ON MIGRATION");
   await log(`✓ Supabase cache: ${supabase ? "PROCESSED" : "NOT CONFIGURED"}`);
   await log(`✓ CDN cache: ${skipCdn ? "SKIPPED" : "INSTRUCTIONS PROVIDED"}`);
@@ -359,9 +340,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
 
-export {
-  clearBrowserCache,
-  clearSupabaseCache,
-  clearCdnCache,
-  clearApplicationCache,
-};
+export { clearBrowserCache, clearSupabaseCache, clearCdnCache, clearApplicationCache };

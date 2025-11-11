@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Card,
   CardHeader,
@@ -7,20 +7,20 @@ import {
   CardContent,
   CardFooter,
   CardAction,
-} from './card';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import { MoreHorizontal } from 'lucide-react';
-import React from 'react';
+} from "./card";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
+import { MoreHorizontal } from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Card',
+  title: "UI/Card",
   component: Card,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="w-[400px]">
@@ -43,11 +43,14 @@ export const Default: Story = {
       </CardHeader>
       <CardContent>
         <p className="text-sm">
-          This is the main content area of the card. You can add any content here including text, images, forms, or other components.
+          This is the main content area of the card. You can add any content here including text,
+          images, forms, or other components.
         </p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="mr-2">Cancel</Button>
+        <Button variant="outline" className="mr-2">
+          Cancel
+        </Button>
         <Button>Confirm</Button>
       </CardFooter>
     </Card>
@@ -89,7 +92,9 @@ export const WithImage: Story = {
         </p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full">View Gallery</Button>
+        <Button variant="outline" className="w-full">
+          View Gallery
+        </Button>
       </CardFooter>
     </Card>
   ),
@@ -166,7 +171,8 @@ export const WithoutFooter: Story = {
       </CardHeader>
       <CardContent>
         <p className="text-sm">
-          Sometimes you just need a simple card to display content without any actions at the bottom.
+          Sometimes you just need a simple card to display content without any actions at the
+          bottom.
         </p>
       </CardContent>
     </Card>
@@ -178,9 +184,7 @@ export const MinimalContent: Story = {
   render: () => (
     <Card>
       <CardContent className="pt-6">
-        <p className="text-sm">
-          A minimal card with only content. No header or footer needed.
-        </p>
+        <p className="text-sm">A minimal card with only content. No header or footer needed.</p>
       </CardContent>
     </Card>
   ),
@@ -211,9 +215,7 @@ export const Statistics: Story = {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">$45,231.89</div>
-        <p className="text-xs text-[color:var(--text-subtle)]">
-          +20.1% from last month
-        </p>
+        <p className="text-xs text-[color:var(--text-subtle)]">+20.1% from last month</p>
       </CardContent>
     </Card>
   ),

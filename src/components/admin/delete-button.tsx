@@ -22,13 +22,7 @@ export interface DeleteButtonProps {
   resource?: string;
   successMessage?: string;
   className?: string;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link";
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
 }
 
 export const DeleteButton = (props: DeleteButtonProps) => {
@@ -63,7 +57,7 @@ export const DeleteButton = (props: DeleteButtonProps) => {
         smart_count: 1,
         _: resource ? singularize(resource) : undefined,
       }),
-      true,
+      true
     ),
   });
   // We don't support React elements for this

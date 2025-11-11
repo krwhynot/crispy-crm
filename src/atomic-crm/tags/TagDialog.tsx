@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button.constants";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -26,21 +21,13 @@ interface TagDialogProps {
   onClose(): void;
 }
 
-export function TagDialog({
-  open,
-  tag,
-  title,
-  onClose,
-  onSubmit,
-}: TagDialogProps) {
+export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProps) {
   const [newTagName, setNewTagName] = useState("");
   const [newTagColor, setNewTagColor] = useState<TagColorName>(colors[0]);
   const [disabled, setDisabled] = useState(false);
   const [colorError, setColorError] = useState<string | undefined>();
 
-  const handleNewTagNameChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleNewTagNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewTagName(event.target.value);
   };
 
@@ -73,9 +60,7 @@ export function TagDialog({
   useEffect(() => {
     setNewTagName(tag?.name ?? "");
     // Normalize the color to semantic name (handles both hex and semantic)
-    const normalizedColor = tag?.color
-      ? normalizeColorToSemantic(tag.color)
-      : colors[0];
+    const normalizedColor = tag?.color ? normalizeColorToSemantic(tag.color) : colors[0];
     setNewTagColor(normalizedColor);
   }, [tag]);
 
@@ -117,9 +102,7 @@ export function TagDialog({
                   </div>
                 ))}
               </div>
-              {colorError && (
-                <p className="text-sm text-destructive mt-1">{colorError}</p>
-              )}
+              {colorError && <p className="text-sm text-destructive mt-1">{colorError}</p>}
             </div>
           </div>
 
@@ -130,9 +113,7 @@ export function TagDialog({
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "text-primary",
-                disabled || !newTagName.trim()
-                  ? "opacity-50 cursor-not-allowed"
-                  : "cursor-pointer",
+                disabled || !newTagName.trim() ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
               )}
             >
               <SaveIcon />

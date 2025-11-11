@@ -5,15 +5,15 @@ import { SalesPermissionsTab } from "./SalesPermissionsTab";
 export function SalesInputs() {
   const tabs = [
     {
-      key: 'general',
-      label: 'General',
-      fields: ['first_name', 'last_name', 'email'],
+      key: "general",
+      label: "General",
+      fields: ["first_name", "last_name", "email"],
       content: <SalesGeneralTab />,
     },
     {
-      key: 'permissions',
-      label: 'Permissions',
-      fields: ['administrator', 'disabled'],
+      key: "permissions",
+      label: "Permissions",
+      fields: ["administrator", "disabled"],
       content: <SalesPermissionsTab />,
     },
   ];

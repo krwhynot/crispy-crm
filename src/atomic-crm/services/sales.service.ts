@@ -9,9 +9,11 @@ import type { Sale, SalesFormData } from "../types";
  * per Engineering Constitution principle #2: Single Source of Truth
  */
 export class SalesService {
-  constructor(private dataProvider: DataProvider & {
-    invoke?: <T = any>(functionName: string, options?: any) => Promise<T>;
-  }) {}
+  constructor(
+    private dataProvider: DataProvider & {
+      invoke?: <T = any>(functionName: string, options?: any) => Promise<T>;
+    }
+  ) {}
 
   /**
    * Create a new sales account manager via Edge function
@@ -22,10 +24,12 @@ export class SalesService {
     // Use the extended invoke capability from unifiedDataProvider
     if (!this.dataProvider.invoke) {
       console.error(`[SalesService] DataProvider missing invoke capability`, {
-        operation: 'salesCreate',
-        body
+        operation: "salesCreate",
+        body,
       });
-      throw new Error(`Sales creation failed: DataProvider does not support Edge Function operations`);
+      throw new Error(
+        `Sales creation failed: DataProvider does not support Edge Function operations`
+      );
     }
 
     try {
@@ -36,7 +40,7 @@ export class SalesService {
 
       if (!data) {
         console.error(`[SalesService] Create account manager returned no data`, {
-          body
+          body,
         });
         throw new Error(`Sales creation failed: No data returned from Edge Function`);
       }
@@ -45,7 +49,7 @@ export class SalesService {
     } catch (error: any) {
       console.error(`[SalesService] Failed to create account manager`, {
         body,
-        error
+        error,
       });
       throw new Error(`Sales creation failed: ${error.message}`);
     }
@@ -59,18 +63,19 @@ export class SalesService {
    */
   async salesUpdate(
     id: Identifier,
-    data: Partial<Omit<SalesFormData, "password">>,
+    data: Partial<Omit<SalesFormData, "password">>
   ): Promise<Partial<Omit<SalesFormData, "password">>> {
-    const { email, first_name, last_name, administrator, avatar, disabled } =
-      data;
+    const { email, first_name, last_name, administrator, avatar, disabled } = data;
 
     if (!this.dataProvider.invoke) {
       console.error(`[SalesService] DataProvider missing invoke capability`, {
-        operation: 'salesUpdate',
+        operation: "salesUpdate",
         id,
-        data
+        data,
       });
-      throw new Error(`Sales update failed: DataProvider does not support Edge Function operations`);
+      throw new Error(
+        `Sales update failed: DataProvider does not support Edge Function operations`
+      );
     }
 
     try {
@@ -90,7 +95,7 @@ export class SalesService {
       if (!sale) {
         console.error(`[SalesService] Update account manager returned no data`, {
           id,
-          data
+          data,
         });
         throw new Error(`Sales update failed: No data returned from Edge Function`);
       }
@@ -100,7 +105,7 @@ export class SalesService {
       console.error(`[SalesService] Failed to update account manager`, {
         id,
         data,
-        error
+        error,
       });
       throw new Error(`Sales update failed: ${error.message}`);
     }
@@ -114,10 +119,12 @@ export class SalesService {
   async updatePassword(id: Identifier): Promise<boolean> {
     if (!this.dataProvider.invoke) {
       console.error(`[SalesService] DataProvider missing invoke capability`, {
-        operation: 'updatePassword',
-        id
+        operation: "updatePassword",
+        id,
       });
-      throw new Error(`Password update failed: DataProvider does not support Edge Function operations`);
+      throw new Error(
+        `Password update failed: DataProvider does not support Edge Function operations`
+      );
     }
 
     try {
@@ -130,7 +137,7 @@ export class SalesService {
 
       if (!passwordUpdated) {
         console.error(`[SalesService] Update password returned false`, {
-          id
+          id,
         });
         throw new Error(`Password update failed: Edge Function returned false`);
       }
@@ -139,7 +146,7 @@ export class SalesService {
     } catch (error: any) {
       console.error(`[SalesService] Failed to update password`, {
         id,
-        error
+        error,
       });
       throw new Error(`Password update failed: ${error.message}`);
     }

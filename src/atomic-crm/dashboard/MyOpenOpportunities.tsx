@@ -34,7 +34,9 @@ export const MyOpenOpportunities = () => {
 
   const handleClick = () => {
     // Navigate to opportunities list with "My Opportunities" filter applied
-    navigate(`/opportunities?filter=${encodeURIComponent(JSON.stringify({ opportunity_owner_id: identity?.id, status: "active" }))}`);
+    navigate(
+      `/opportunities?filter=${encodeURIComponent(JSON.stringify({ opportunity_owner_id: identity?.id, status: "active" }))}`
+    );
   };
 
   return (
@@ -47,9 +49,7 @@ export const MyOpenOpportunities = () => {
       icon={<Briefcase className="h-4 w-4" />}
     >
       <div className="flex items-center justify-center gap-2 w-full">
-        <div className="text-2xl md:text-3xl font-bold tabular-nums text-foreground">
-          {count}
-        </div>
+        <div className="text-2xl md:text-3xl font-bold tabular-nums text-foreground">{count}</div>
         <div className="text-[10px] md:text-xs text-muted-foreground">
           {count === 1 ? "opportunity" : "opportunities"}
         </div>

@@ -5,7 +5,7 @@ export type OpportunitiesByStage = Record<Opportunity["stage"], Opportunity[]>;
 
 export const getOpportunitiesByStage = (
   unorderedOpportunities: Opportunity[],
-  opportunityStages?: { value: string; label: string }[],
+  opportunityStages?: { value: string; label: string }[]
 ) => {
   // Use centralized stages if no stages provided
   const stages =
@@ -27,17 +27,15 @@ export const getOpportunitiesByStage = (
       },
       stages.reduce(
         (obj, stage) => ({ ...obj, [stage.value]: [] }),
-        {} as Record<Opportunity["stage"], Opportunity[]>,
-      ),
+        {} as Record<Opportunity["stage"], Opportunity[]>
+      )
     );
   // Sort each column by created_at DESC (newest first)
   stages.forEach((stage) => {
     if (opportunitiesByStage[stage.value]) {
-      opportunitiesByStage[stage.value] = opportunitiesByStage[
-        stage.value
-      ].sort(
+      opportunitiesByStage[stage.value] = opportunitiesByStage[stage.value].sort(
         (recordA: Opportunity, recordB: Opportunity) =>
-          new Date(recordB.created_at).getTime() - new Date(recordA.created_at).getTime(),
+          new Date(recordB.created_at).getTime() - new Date(recordA.created_at).getTime()
       );
     }
   });

@@ -55,7 +55,7 @@ class MCPMigrationEngine {
 
     if (!this.projectId) {
       throw new Error(
-        "Project ID is required. Set VITE_SUPABASE_PROJECT_ID environment variable or pass --project-id",
+        "Project ID is required. Set VITE_SUPABASE_PROJECT_ID environment variable or pass --project-id"
       );
     }
 
@@ -79,7 +79,7 @@ class MCPMigrationEngine {
         const stateData = readFileSync(STATE_FILE, "utf8");
         this.state = { ...this.state, ...JSON.parse(stateData) };
         this.log(
-          `Loaded migration state: ${this.state.status}, applied: ${this.state.appliedMigrations.join(", ")}`,
+          `Loaded migration state: ${this.state.status}, applied: ${this.state.appliedMigrations.join(", ")}`
         );
       }
     } catch (error) {
@@ -165,13 +165,8 @@ class MCPMigrationEngine {
       const result = await this.executeMCPQuery(query);
       return result || [];
     } catch (error) {
-      if (
-        error.message.includes('relation "migration_history" does not exist')
-      ) {
-        this.log(
-          "Migration history table does not exist yet - will be created",
-          "info",
-        );
+      if (error.message.includes('relation "migration_history" does not exist')) {
+        this.log("Migration history table does not exist yet - will be created", "info");
         return [];
       }
       throw error;
@@ -213,20 +208,14 @@ class MCPMigrationEngine {
       this.log(`Successfully applied migration: ${migrationName}`, "info");
       return { success: true, message: "Migration applied successfully" };
     } catch (error) {
-      this.log(
-        `Failed to apply migration ${migrationName}: ${error.message}`,
-        "error",
-      );
+      this.log(`Failed to apply migration ${migrationName}: ${error.message}`, "error");
       throw error;
     }
   }
 
   async updateMigrationHistory(migrationName, migrationContent, status) {
     if (this.dryRun) {
-      this.log(
-        `Dry run: Would update migration history for ${migrationName}`,
-        "info",
-      );
+      this.log(`Dry run: Would update migration history for ${migrationName}`, "info");
       return;
     }
 
@@ -276,14 +265,10 @@ class MCPMigrationEngine {
     try {
       await access(filePath);
       const content = readFileSync(filePath, "utf8");
-      this.log(
-        `Loaded migration file: ${filename} (${content.length} characters)`,
-      );
+      this.log(`Loaded migration file: ${filename} (${content.length} characters)`);
       return content;
     } catch (error) {
-      throw new Error(
-        `Failed to read migration file ${filename}: ${error.message}`,
-      );
+      throw new Error(`Failed to read migration file ${filename}: ${error.message}`);
     }
   }
 
@@ -291,9 +276,7 @@ class MCPMigrationEngine {
     const validationRules = [
       {
         name: "Has proper header comment",
-        test: (content) =>
-          content.includes("-- Migration:") &&
-          content.includes("-- Description:"),
+        test: (content) => content.includes("-- Migration:") && content.includes("-- Description:"),
         severity: "warning",
       },
       {
@@ -303,9 +286,7 @@ class MCPMigrationEngine {
       },
       {
         name: "Uses IF NOT EXISTS for CREATE statements where appropriate",
-        test: (content) =>
-          !content.includes("CREATE TABLE") ||
-          content.includes("IF NOT EXISTS"),
+        test: (content) => !content.includes("CREATE TABLE") || content.includes("IF NOT EXISTS"),
         severity: "warning",
       },
       {
@@ -332,16 +313,13 @@ class MCPMigrationEngine {
     if (issues.length > 0) {
       this.log(`Validation issues found in ${filename}:`, "warn");
       issues.forEach((issue) => {
-        this.log(
-          `  ${issue.severity.toUpperCase()}: ${issue.rule}`,
-          issue.severity,
-        );
+        this.log(`  ${issue.severity.toUpperCase()}: ${issue.rule}`, issue.severity);
       });
 
       const hasErrors = issues.some((i) => i.severity === "error");
       if (hasErrors && !this.dryRun) {
         const proceed = await this.prompt(
-          "Migration has validation errors. Continue anyway? (yes/no): ",
+          "Migration has validation errors. Continue anyway? (yes/no): "
         );
         if (proceed.toLowerCase() !== "yes") {
           throw new Error("Migration cancelled due to validation errors");
@@ -355,9 +333,7 @@ class MCPMigrationEngine {
   async getPendingMigrations() {
     const allFiles = await this.getAllMigrationFiles();
     const appliedMigrations = await this.getMigrationHistory();
-    const appliedNames = new Set(
-      appliedMigrations.map((m) => m.migration_name),
-    );
+    const appliedNames = new Set(appliedMigrations.map((m) => m.migration_name));
 
     const pending = allFiles.filter((file) => !appliedNames.has(file));
 
@@ -373,8 +349,7 @@ class MCPMigrationEngine {
       await this.saveState();
 
       // Get migrations to apply
-      const migrationsToApply =
-        migrationFiles || (await this.getPendingMigrations());
+      const migrationsToApply = migrationFiles || (await this.getPendingMigrations());
 
       if (migrationsToApply.length === 0) {
         this.log("No pending migrations found");
@@ -424,31 +399,23 @@ class MCPMigrationEngine {
           if (!options.continueOnError) {
             this.state.status = "failed";
             await this.saveState();
-            throw new Error(
-              `Migration failed at ${filename}: ${error.message}`,
-            );
+            throw new Error(`Migration failed at ${filename}: ${error.message}`);
           }
         }
       }
 
       // Final status
       this.state.currentMigration = null;
-      this.state.status =
-        successful === migrationsToApply.length ? "completed" : "partial";
+      this.state.status = successful === migrationsToApply.length ? "completed" : "partial";
       await this.saveState();
 
       this.log("\n=== Migration Application Results ===");
-      this.log(
-        `Successfully applied: ${successful}/${migrationsToApply.length} migrations`,
-      );
+      this.log(`Successfully applied: ${successful}/${migrationsToApply.length} migrations`);
 
       if (this.state.errors.length > 0) {
         this.log(`Errors encountered: ${this.state.errors.length}`, "warn");
         this.state.errors.forEach((error, index) => {
-          this.log(
-            `  ${index + 1}. ${error.migration}: ${error.error}`,
-            "error",
-          );
+          this.log(`  ${index + 1}. ${error.migration}: ${error.error}`, "error");
         });
       }
 
@@ -477,9 +444,7 @@ class MCPMigrationEngine {
     console.log("⚠️  These changes cannot be easily undone");
     console.log("⚠️  Rollback window: 48 hours after application");
 
-    const proceed = await this.prompt(
-      "\nProceed with migration application? (yes/no): ",
-    );
+    const proceed = await this.prompt("\nProceed with migration application? (yes/no): ");
     if (proceed.toLowerCase() !== "yes") {
       throw new Error("Migration cancelled by user");
     }
@@ -487,19 +452,12 @@ class MCPMigrationEngine {
 
   async checkRollbackEligibility() {
     const cutoff = Date.now() - this.state.rollbackWindow;
-    const eligibleMigrations = this.state.appliedMigrations.filter(
-      (migration) => {
-        // Check if migration was applied within rollback window
-        const history = this.getMigrationHistory();
-        const migrationRecord = history.find(
-          (h) => h.migration_name === migration,
-        );
-        return (
-          migrationRecord &&
-          new Date(migrationRecord.applied_at).getTime() > cutoff
-        );
-      },
-    );
+    const eligibleMigrations = this.state.appliedMigrations.filter((migration) => {
+      // Check if migration was applied within rollback window
+      const history = this.getMigrationHistory();
+      const migrationRecord = history.find((h) => h.migration_name === migration);
+      return migrationRecord && new Date(migrationRecord.applied_at).getTime() > cutoff;
+    });
 
     return eligibleMigrations;
   }

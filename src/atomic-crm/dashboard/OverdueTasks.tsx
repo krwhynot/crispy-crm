@@ -53,11 +53,7 @@ export const OverdueTasks = () => {
           {count}
         </div>
         <div className="text-sm md:text-base text-muted-foreground mt-2">
-          {count === 0
-            ? "No overdue tasks"
-            : count === 1
-            ? "overdue task"
-            : "overdue tasks"}
+          {count === 0 ? "No overdue tasks" : count === 1 ? "overdue task" : "overdue tasks"}
         </div>
         {hasOverdue && (
           <div className="mt-3 px-3 py-1 rounded-full bg-destructive/10 text-destructive text-xs font-medium">

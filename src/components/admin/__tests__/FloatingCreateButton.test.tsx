@@ -91,7 +91,7 @@ describe("FloatingCreateButton", () => {
       <div
         onClick={handleClick}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') handleClick();
+          if (e.key === "Enter" || e.key === " ") handleClick();
         }}
         role="button"
         tabIndex={0}

@@ -11,12 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Plus } from "lucide-react";
 import {
   CreateBase,
@@ -88,12 +83,7 @@ export const AddTask = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="p-2 cursor-pointer"
-                onClick={handleOpen}
-              >
+              <Button size="sm" variant="ghost" className="p-2 cursor-pointer" onClick={handleOpen}>
                 <Plus className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
@@ -102,12 +92,7 @@ export const AddTask = ({
         </TooltipProvider>
       ) : (
         <div className="my-2">
-          <Button
-            variant="outline"
-            className="h-6 cursor-pointer"
-            onClick={handleOpen}
-            size="sm"
-          >
+          <Button variant="outline" className="h-6 cursor-pointer" onClick={handleOpen} size="sm">
             <Plus className="w-4 h-4" />
             Add task
           </Button>
@@ -137,15 +122,8 @@ export const AddTask = ({
             <Form className="flex flex-col gap-4">
               <DialogHeader>
                 <DialogTitle>
-                  {!selectContact
-                    ? "Create a new task for "
-                    : "Create a new task"}
-                  {!selectContact && (
-                    <RecordRepresentation
-                      record={contact}
-                      resource="contacts"
-                    />
-                  )}
+                  {!selectContact ? "Create a new task for " : "Create a new task"}
+                  {!selectContact && <RecordRepresentation record={contact} resource="contacts" />}
                 </DialogTitle>
               </DialogHeader>
               <div className="flex flex-col gap-4">
@@ -163,10 +141,7 @@ export const AddTask = ({
                   helperText="Optional details"
                 />
                 {selectContact && (
-                  <ReferenceInput
-                    source="contact_id"
-                    reference="contacts_summary"
-                  >
+                  <ReferenceInput source="contact_id" reference="contacts_summary">
                     <AutocompleteInput
                       label="Contact *"
                       optionText={contactOptionText}

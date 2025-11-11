@@ -50,11 +50,7 @@ const results = {
 function logResult(category, message, status) {
   const symbol = status === "passed" ? "✓" : status === "failed" ? "✗" : "⚠";
   const color =
-    status === "passed"
-      ? colors.green
-      : status === "failed"
-        ? colors.red
-        : colors.yellow;
+    status === "passed" ? colors.green : status === "failed" ? colors.red : colors.yellow;
 
   console.log(`${color}${symbol} [${category}] ${message}${colors.reset}`);
 
@@ -85,25 +81,16 @@ function checkFile(filePath, category, description) {
  * Check database objects
  */
 async function checkDatabaseObjects() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}Checking Database Objects...${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}Checking Database Objects...${colors.reset}`);
 
   try {
     // Check opportunities table
-    const { error: oppError } = await supabase
-      .from("opportunities")
-      .select("id")
-      .limit(1);
+    const { error: oppError } = await supabase.from("opportunities").select("id").limit(1);
 
     if (!oppError) {
       logResult("Database", "opportunities table exists", "passed");
     } else {
-      logResult(
-        "Database",
-        "opportunities table missing or inaccessible",
-        "failed",
-      );
+      logResult("Database", "opportunities table missing or inaccessible", "failed");
     }
 
     // Check junction tables
@@ -120,19 +107,12 @@ async function checkDatabaseObjects() {
         // Empty table is OK
         logResult("Database", `${table} table exists`, "passed");
       } else {
-        logResult(
-          "Database",
-          `${table} table missing: ${error.message}`,
-          "failed",
-        );
+        logResult("Database", `${table} table missing: ${error.message}`, "failed");
       }
     }
 
     // Check views
-    const { error: viewError } = await supabase
-      .from("opportunities_summary")
-      .select("*")
-      .limit(1);
+    const { error: viewError } = await supabase.from("opportunities_summary").select("*").limit(1);
 
     if (!viewError || viewError.code === "PGRST116") {
       logResult("Database", "opportunities_summary view exists", "passed");
@@ -148,9 +128,7 @@ async function checkDatabaseObjects() {
  * Check critical files
  */
 function checkCriticalFiles() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}Checking Critical Files...${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}Checking Critical Files...${colors.reset}`);
 
   const criticalFiles = [
     // Migration scripts
@@ -232,15 +210,9 @@ function checkCriticalFiles() {
  * Check UI text migration
  */
 function checkUITextMigration() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}Checking UI Text Migration...${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}Checking UI Text Migration...${colors.reset}`);
 
-  const opportunityDir = path.join(
-    __dirname,
-    "..",
-    "src/atomic-crm/opportunities",
-  );
+  const opportunityDir = path.join(__dirname, "..", "src/atomic-crm/opportunities");
   const componentsToCheck = fs
     .readdirSync(opportunityDir)
     .filter((f) => f.endsWith(".tsx") && !f.includes(".spec."));
@@ -260,11 +232,7 @@ function checkUITextMigration() {
       if (matches) {
         // Filter out technical terms
         const problematicMatches = matches.filter((m) => {
-          return (
-            !m.includes("dealNotes") &&
-            !m.includes("/deals") &&
-            !m.includes("Deal")
-          );
+          return !m.includes("dealNotes") && !m.includes("/deals") && !m.includes("Deal");
         });
 
         if (problematicMatches.length > 0) {
@@ -276,11 +244,7 @@ function checkUITextMigration() {
   });
 
   if (!hasIssues) {
-    logResult(
-      "UI Text",
-      "All opportunity components use correct terminology",
-      "passed",
-    );
+    logResult("UI Text", "All opportunity components use correct terminology", "passed");
   }
 
   // Check dashboard components
@@ -294,11 +258,7 @@ function checkUITextMigration() {
     if (fs.existsSync(fullPath)) {
       const content = fs.readFileSync(fullPath, "utf-8");
       if (content.includes("Deal") || content.includes("deal")) {
-        logResult(
-          "UI Text",
-          `Legacy terminology in ${path.basename(filePath)}`,
-          "warning",
-        );
+        logResult("UI Text", `Legacy terminology in ${path.basename(filePath)}`, "warning");
       }
     }
   });
@@ -308,22 +268,16 @@ function checkUITextMigration() {
  * Check backward compatibility
  */
 function checkBackwardCompatibility() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}Checking Backward Compatibility...${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}Checking Backward Compatibility...${colors.reset}`);
 
   const bcPath = path.join(
     __dirname,
     "..",
-    "src/atomic-crm/providers/commons/backwardCompatibility.ts",
+    "src/atomic-crm/providers/commons/backwardCompatibility.ts"
   );
 
   if (!fs.existsSync(bcPath)) {
-    logResult(
-      "Backward Compatibility",
-      "Missing backward compatibility module",
-      "failed",
-    );
+    logResult("Backward Compatibility", "Missing backward compatibility module", "failed");
     return false;
   }
 
@@ -360,9 +314,7 @@ function checkBackwardCompatibility() {
  * Check test coverage
  */
 function checkTestCoverage() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}Checking Test Coverage...${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}Checking Test Coverage...${colors.reset}`);
 
   const testFiles = [
     // Unit tests
@@ -408,15 +360,9 @@ function checkTestCoverage() {
  * Check production safety features
  */
 function checkProductionSafety() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}Checking Production Safety...${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}Checking Production Safety...${colors.reset}`);
 
-  const safetyScript = path.join(
-    __dirname,
-    "..",
-    "scripts/migration-production-safe.sql",
-  );
+  const safetyScript = path.join(__dirname, "..", "scripts/migration-production-safe.sql");
 
   if (!fs.existsSync(safetyScript)) {
     logResult("Safety", "Production-safe migration script missing", "failed");
@@ -454,9 +400,7 @@ function checkProductionSafety() {
  * Run all tests
  */
 function runTests() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}Running Test Suites...${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}Running Test Suites...${colors.reset}`);
 
   try {
     // Run final sweep tests
@@ -473,11 +417,7 @@ function runTests() {
       return false;
     }
   } catch (error) {
-    logResult(
-      "Tests",
-      "Test execution failed - tests may not be configured",
-      "warning",
-    );
+    logResult("Tests", "Test execution failed - tests may not be configured", "warning");
     return false;
   }
 }
@@ -486,81 +426,57 @@ function runTests() {
  * Generate final report
  */
 function generateReport() {
-  console.log(
-    `\n${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}`,
-  );
-  console.log(
-    `${colors.cyan}${colors.bright}FINAL VERIFICATION REPORT${colors.reset}`,
-  );
-  console.log(
-    `${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}\n`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}`);
+  console.log(`${colors.cyan}${colors.bright}FINAL VERIFICATION REPORT${colors.reset}`);
+  console.log(`${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}\n`);
 
-  const totalChecks =
-    results.passed.length + results.failed.length + results.warnings.length;
+  const totalChecks = results.passed.length + results.failed.length + results.warnings.length;
   const passRate = ((results.passed.length / totalChecks) * 100).toFixed(1);
 
   console.log(`${colors.green}Passed: ${results.passed.length}${colors.reset}`);
-  console.log(
-    `${colors.yellow}Warnings: ${results.warnings.length}${colors.reset}`,
-  );
+  console.log(`${colors.yellow}Warnings: ${results.warnings.length}${colors.reset}`);
   console.log(`${colors.red}Failed: ${results.failed.length}${colors.reset}`);
   console.log(`\nPass Rate: ${passRate}%`);
 
   if (results.failed.length > 0) {
-    console.log(
-      `\n${colors.red}${colors.bright}Critical Failures:${colors.reset}`,
-    );
+    console.log(`\n${colors.red}${colors.bright}Critical Failures:${colors.reset}`);
     results.failed.forEach((item) => {
-      console.log(
-        `  ${colors.red}✗ [${item.category}] ${item.message}${colors.reset}`,
-      );
+      console.log(`  ${colors.red}✗ [${item.category}] ${item.message}${colors.reset}`);
     });
   }
 
   if (results.warnings.length > 0) {
     console.log(`\n${colors.yellow}${colors.bright}Warnings:${colors.reset}`);
     results.warnings.forEach((item) => {
-      console.log(
-        `  ${colors.yellow}⚠ [${item.category}] ${item.message}${colors.reset}`,
-      );
+      console.log(`  ${colors.yellow}⚠ [${item.category}] ${item.message}${colors.reset}`);
     });
   }
 
   // Final decision
-  console.log(
-    `\n${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}`,
-  );
+  console.log(`\n${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}`);
 
   const isReady = results.failed.length === 0;
 
   if (isReady) {
     console.log(
-      `${colors.green}${colors.bright}✓ MIGRATION READY - System is prepared for production migration${colors.reset}`,
+      `${colors.green}${colors.bright}✓ MIGRATION READY - System is prepared for production migration${colors.reset}`
     );
     console.log(
-      `${colors.green}Note: Address warnings before proceeding if possible${colors.reset}`,
+      `${colors.green}Note: Address warnings before proceeding if possible${colors.reset}`
     );
   } else {
     console.log(
-      `${colors.red}${colors.bright}✗ NOT READY - Critical issues must be resolved${colors.reset}`,
+      `${colors.red}${colors.bright}✗ NOT READY - Critical issues must be resolved${colors.reset}`
     );
     console.log(
-      `${colors.red}DO NOT PROCEED with migration until all failures are fixed${colors.reset}`,
+      `${colors.red}DO NOT PROCEED with migration until all failures are fixed${colors.reset}`
     );
   }
 
-  console.log(
-    `${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}\n`,
-  );
+  console.log(`${colors.cyan}${colors.bright}${"=".repeat(60)}${colors.reset}\n`);
 
   // Save report to file
-  const reportPath = path.join(
-    __dirname,
-    "..",
-    "logs",
-    "final-verification-report.json",
-  );
+  const reportPath = path.join(__dirname, "..", "logs", "final-verification-report.json");
   const reportDir = path.dirname(reportPath);
 
   if (!fs.existsSync(reportDir)) {
@@ -587,7 +503,7 @@ function generateReport() {
  */
 async function main() {
   console.log(
-    `${colors.cyan}${colors.bright}CRM Migration - Final Verification (Task 4.7)${colors.reset}`,
+    `${colors.cyan}${colors.bright}CRM Migration - Final Verification (Task 4.7)${colors.reset}`
   );
   console.log(`${colors.cyan}${"=".repeat(60)}${colors.reset}`);
   console.log("This script verifies ALL tasks are 100% complete\n");
@@ -612,8 +528,6 @@ async function main() {
 
 // Run the verification
 main().catch((error) => {
-  console.error(
-    `${colors.red}Verification failed: ${error.message}${colors.reset}`,
-  );
+  console.error(`${colors.red}Verification failed: ${error.message}${colors.reset}`);
   process.exit(1);
 });

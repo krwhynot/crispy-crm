@@ -37,37 +37,26 @@ const Header = () => {
       <header className="bg-secondary">
         <div className="px-4">
           <div className="flex justify-between items-center flex-1">
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-secondary-foreground no-underline"
-            >
-              <img
-                className="[.light_&]:hidden h-8"
-                src={darkModeLogo}
-                alt={title}
-              />
+            <Link to="/" className="flex items-center gap-2 text-secondary-foreground no-underline">
+              <img className="[.light_&]:hidden h-8" src={darkModeLogo} alt={title} />
               <div
                 className="[.dark_&]:hidden h-8 w-32 bg-[var(--brand-700)]"
                 style={{
                   WebkitMaskImage: `url(${lightModeLogo})`,
                   maskImage: `url(${lightModeLogo})`,
-                  WebkitMaskSize: 'contain',
-                  maskSize: 'contain',
-                  WebkitMaskRepeat: 'no-repeat',
-                  maskRepeat: 'no-repeat',
-                  WebkitMaskPosition: 'left center',
-                  maskPosition: 'left center'
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskPosition: "left center",
+                  maskPosition: "left center",
                 }}
                 aria-label={title}
               />
             </Link>
             <div>
               <nav className="flex">
-                <NavigationTab
-                  label="Dashboard"
-                  to="/"
-                  isActive={currentPath === "/"}
-                />
+                <NavigationTab label="Dashboard" to="/" isActive={currentPath === "/"} />
                 <NavigationTab
                   label="Contacts"
                   to="/contacts"
@@ -88,11 +77,7 @@ const Header = () => {
                   to="/products"
                   isActive={currentPath === "/products"}
                 />
-                <NavigationTab
-                  label="Tasks"
-                  to="/tasks"
-                  isActive={currentPath === "/tasks"}
-                />
+                <NavigationTab label="Tasks" to="/tasks" isActive={currentPath === "/tasks"} />
                 <NavigationTab
                   label="Reports"
                   to="/reports/weekly-activity"

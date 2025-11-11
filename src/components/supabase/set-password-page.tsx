@@ -70,7 +70,7 @@ export const SetPasswordPage = () => {
                   ? error.message
                   : undefined,
           },
-        },
+        }
       );
     } finally {
       setLoading(false);
@@ -86,10 +86,7 @@ export const SetPasswordPage = () => {
           })}
         </h1>
       </div>
-      <Form<FormData>
-        className="space-y-8"
-        onSubmit={submit as SubmitHandler<FieldValues>}
-      >
+      <Form<FormData> className="space-y-8" onSubmit={submit as SubmitHandler<FieldValues>}>
         <TextInput
           label={`${translate("ra.auth.password", { _: "Password" })} *`}
           autoComplete="new-password"

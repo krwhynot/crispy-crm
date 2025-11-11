@@ -134,18 +134,12 @@ export const CRM = ({
       >
         <CustomRoutes noLayout>
           <Route path={SetPasswordPage.path} element={<SetPasswordPage />} />
-          <Route
-            path={ForgotPasswordPage.path}
-            element={<ForgotPasswordPage />}
-          />
+          <Route path={ForgotPasswordPage.path} element={<ForgotPasswordPage />} />
         </CustomRoutes>
 
         <CustomRoutes>
           <Route path={SettingsPage.path} element={<SettingsPage />} />
-          <Route
-            path="/reports/weekly-activity"
-            element={<reports.WeeklyActivitySummary />}
-          />
+          <Route path="/reports/weekly-activity" element={<reports.WeeklyActivitySummary />} />
         </CustomRoutes>
         <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />

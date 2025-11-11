@@ -13,4 +13,4 @@
  * - columnAliases.ts: Returns this marker for full name columns
  * - csvProcessor.ts: Detects this marker to trigger name splitting
  */
-export const FULL_NAME_SPLIT_MARKER = '_full_name_split_';
+export const FULL_NAME_SPLIT_MARKER = "_full_name_split_";

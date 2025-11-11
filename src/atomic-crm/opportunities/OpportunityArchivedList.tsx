@@ -33,74 +33,58 @@ export const OpportunityArchivedList = () => {
   if (!identity || isPending || !total || !archivedLists) return null;
 
   // Group archived lists by date
-  const archivedListsByDate: { [date: string]: Opportunity[] } =
-    archivedLists.reduce(
-      (acc, opportunity) => {
-        const date = new Date(opportunity.deleted_at).toDateString();
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(opportunity);
-        return acc;
-      },
-      {} as { [date: string]: Opportunity[] },
-    );
+  const archivedListsByDate: { [date: string]: Opportunity[] } = archivedLists.reduce(
+    (acc, opportunity) => {
+      const date = new Date(opportunity.deleted_at).toDateString();
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(opportunity);
+      return acc;
+    },
+    {} as { [date: string]: Opportunity[] }
+  );
 
   return (
     <div className="w-full flex flex-row items-center justify-center">
-      <Button
-        variant="ghost"
-        onClick={() => setOpenDialog(true)}
-        className="my-4"
-      >
+      <Button variant="ghost" onClick={() => setOpenDialog(true)} className="my-4">
         View archived opportunities
       </Button>
       <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
         <DialogContent className="lg:max-w-4xl overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
           <DialogTitle>Archived Opportunities</DialogTitle>
           <div className="flex flex-col gap-8">
-            {Object.entries(archivedListsByDate).map(
-              ([date, opportunities]) => (
-                <div key={date} className="flex flex-col gap-4">
-                  <h4 className="font-bold">{getRelativeTimeString(date)}</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                    {opportunities.map((opportunity: Opportunity) => (
-                      <div
-                        key={opportunity.id}
-                        className="bg-card rounded-lg border border-border p-4"
-                      >
-                        <h3 className="font-medium text-sm text-foreground mb-2">
-                          {opportunity.name}
-                        </h3>
-                        <div className="text-xs text-muted-foreground space-y-1">
+            {Object.entries(archivedListsByDate).map(([date, opportunities]) => (
+              <div key={date} className="flex flex-col gap-4">
+                <h4 className="font-bold">{getRelativeTimeString(date)}</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                  {opportunities.map((opportunity: Opportunity) => (
+                    <div
+                      key={opportunity.id}
+                      className="bg-card rounded-lg border border-border p-4"
+                    >
+                      <h3 className="font-medium text-sm text-foreground mb-2">
+                        {opportunity.name}
+                      </h3>
+                      <div className="text-xs text-muted-foreground space-y-1">
+                        <div>Stage: {getOpportunityStageLabel(opportunity.stage)}</div>
+                        {opportunity.estimated_close_date && (
                           <div>
-                            Stage: {getOpportunityStageLabel(opportunity.stage)}
+                            Close Date:{" "}
+                            {format(new Date(opportunity.estimated_close_date), "MMM d, yyyy")}
                           </div>
-                          {opportunity.estimated_close_date && (
-                            <div>
-                              Close Date:{" "}
-                              {format(
-                                new Date(opportunity.estimated_close_date),
-                                "MMM d, yyyy"
-                              )}
-                            </div>
-                          )}
-                          {opportunity.deleted_at && (
-                            <div className="text-destructive mt-2">
-                              Archived:{" "}
-                              {format(
-                                new Date(opportunity.deleted_at),
-                                "MMM d, yyyy"
-                              )}
-                            </div>
-                          )}
-                        </div>
+                        )}
+                        {opportunity.deleted_at && (
+                          <div className="text-destructive mt-2">
+                            Archived: {format(new Date(opportunity.deleted_at), "MMM d, yyyy")}
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-              ),
-            )}
+              </div>
+            ))}
           </div>
         </DialogContent>
       </Dialog>

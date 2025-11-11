@@ -84,9 +84,7 @@ export const CampaignGroupedList = () => {
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-2">
         <FolderOpen className="w-5 h-5 text-[color:var(--text-subtle)]" />
-        <h2 className="text-lg font-semibold">
-          Campaigns ({campaignNames.length})
-        </h2>
+        <h2 className="text-lg font-semibold">Campaigns ({campaignNames.length})</h2>
       </div>
 
       <Accordion type="multiple" className="space-y-2">
@@ -109,7 +107,9 @@ export const CampaignGroupedList = () => {
                   <div className="flex flex-col items-start">
                     <span className="font-semibold text-base">{campaignName}</span>
                     <span className="text-xs text-[color:var(--text-subtle)]">
-                      {totalOpportunities} {totalOpportunities === 1 ? "opportunity" : "opportunities"} across {customerNames.length} {customerNames.length === 1 ? "customer" : "customers"}
+                      {totalOpportunities}{" "}
+                      {totalOpportunities === 1 ? "opportunity" : "opportunities"} across{" "}
+                      {customerNames.length} {customerNames.length === 1 ? "customer" : "customers"}
                     </span>
                   </div>
                 </div>

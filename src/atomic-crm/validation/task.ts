@@ -21,12 +21,7 @@ export type TaskType = z.infer<typeof taskTypeSchema>;
  * Priority Level Enum
  * Matches database enum: priority_level
  */
-export const priorityLevelSchema = z.enum([
-  "low",
-  "medium",
-  "high",
-  "critical",
-]);
+export const priorityLevelSchema = z.enum(["low", "medium", "high", "critical"]);
 
 export type PriorityLevel = z.infer<typeof priorityLevelSchema>;
 

@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
-import { OpportunitiesListPage } from '../../support/poms/OpportunitiesListPage';
-import { OpportunityShowPage } from '../../support/poms/OpportunityShowPage';
-import { OpportunityFormPage } from '../../support/poms/OpportunityFormPage';
-import { consoleMonitor } from '../../support/utils/console-monitor';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
+import { OpportunitiesListPage } from "../../support/poms/OpportunitiesListPage";
+import { OpportunityShowPage } from "../../support/poms/OpportunityShowPage";
+import { OpportunityFormPage } from "../../support/poms/OpportunityFormPage";
+import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
  * Opportunities CRUD Test Suite
@@ -20,27 +20,30 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  * - Timestamp-based test data for isolation ✓
  */
 
-test.describe('Opportunities CRUD Operations', () => {
+test.describe("Opportunities CRUD Operations", () => {
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
     // Always do explicit login (simpler and more reliable than storage state)
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
     await page.waitForTimeout(1000); // Let page stabilize
 
     //Check if we need to login
-    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+    const isLoginFormVisible = await page
+      .getByLabel(/email/i)
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
 
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
       // Wait for dashboard to load
       await page.waitForTimeout(2000);
     }
 
     // Verify we're authenticated (use first nav element to avoid strict mode violation)
-    await page.getByRole('navigation').first().waitFor({ state: 'visible', timeout: 10000 });
+    await page.getByRole("navigation").first().waitFor({ state: "visible", timeout: 10000 });
   });
 
   test.afterEach(async () => {
@@ -51,7 +54,7 @@ test.describe('Opportunities CRUD Operations', () => {
     consoleMonitor.clear();
   });
 
-  test('should create opportunity with minimal required fields', async ({ page }) => {
+  test("should create opportunity with minimal required fields", async ({ page }) => {
     // Initialize POMs
     const listPage = new OpportunitiesListPage(page);
     const showPage = new OpportunityShowPage(page);
@@ -63,7 +66,7 @@ test.describe('Opportunities CRUD Operations', () => {
     // Generate unique test data using timestamp
     const timestamp = Date.now();
     const opportunityName = `Test Opportunity ${timestamp}`;
-    const orgName = 'A&W'; // From seed.sql (id: 12, customer type)
+    const orgName = "A&W"; // From seed.sql (id: 12, customer type)
 
     // Navigate to create form
     await listPage.clickCreate();
@@ -77,7 +80,7 @@ test.describe('Opportunities CRUD Operations', () => {
     await page.waitForURL(/\/#\/opportunities(\/\d+\/show)?/, { timeout: 10000 });
 
     // If redirected to show page, verify opportunity name
-    if (page.url().includes('/show')) {
+    if (page.url().includes("/show")) {
       const displayedName = await showPage.getOpportunityName();
       expect(displayedName).toContain(opportunityName);
     } else {
@@ -87,20 +90,20 @@ test.describe('Opportunities CRUD Operations', () => {
 
     // Verify no console errors
     const consoleErrors: string[] = [];
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
+    page.on("console", (msg) => {
+      if (msg.type() === "error") {
         consoleErrors.push(msg.text());
       }
     });
 
     // Check for RLS errors
-    const rlsErrors = consoleErrors.filter(err =>
-      err.includes('RLS') || err.includes('permission')
+    const rlsErrors = consoleErrors.filter(
+      (err) => err.includes("RLS") || err.includes("permission")
     );
     expect(rlsErrors).toHaveLength(0);
   });
 
-  test('should create opportunity with complete data including products', async ({ page }) => {
+  test("should create opportunity with complete data including products", async ({ page }) => {
     // Initialize POMs
     const listPage = new OpportunitiesListPage(page);
     const showPage = new OpportunityShowPage(page);
@@ -112,15 +115,15 @@ test.describe('Opportunities CRUD Operations', () => {
     const timestamp = Date.now();
     const opportunityData = {
       name: `Complete Opportunity ${timestamp}`,
-      organization: 'A&W',
-      stage: 'Qualification',
-      value: '50000',
-      probability: '60',
-      expectedCloseDate: '2025-12-31',
+      organization: "A&W",
+      stage: "Qualification",
+      value: "50000",
+      probability: "60",
+      expectedCloseDate: "2025-12-31",
       description: `Test opportunity created at ${new Date().toISOString()}`,
       products: [
-        { name: 'Product A', quantity: '5' },
-        { name: 'Product B', quantity: '10' },
+        { name: "Product A", quantity: "5" },
+        { name: "Product B", quantity: "10" },
       ],
     };
 
@@ -158,7 +161,7 @@ test.describe('Opportunities CRUD Operations', () => {
     }
   });
 
-  test('should read and display opportunity details', async ({ page }) => {
+  test("should read and display opportunity details", async ({ page }) => {
     // Initialize POMs
     const listPage = new OpportunitiesListPage(page);
     const showPage = new OpportunityShowPage(page);
@@ -170,7 +173,7 @@ test.describe('Opportunities CRUD Operations', () => {
     // Create test opportunity first
     const timestamp = Date.now();
     const opportunityName = `Read Test ${timestamp}`;
-    const orgName = 'A&W';
+    const orgName = "A&W";
 
     await listPage.clickCreate();
     await formPage.createOpportunity(opportunityName, orgName);
@@ -197,7 +200,7 @@ test.describe('Opportunities CRUD Operations', () => {
     await expect(showPage.getDeleteButton()).toBeVisible();
   });
 
-  test('should update opportunity details', async ({ page }) => {
+  test("should update opportunity details", async ({ page }) => {
     // Initialize POMs
     const listPage = new OpportunitiesListPage(page);
     const showPage = new OpportunityShowPage(page);
@@ -210,7 +213,7 @@ test.describe('Opportunities CRUD Operations', () => {
     const timestamp = Date.now();
     const originalName = `Update Test Original ${timestamp}`;
     const updatedName = `Update Test Modified ${timestamp}`;
-    const orgName = 'A&W';
+    const orgName = "A&W";
 
     await listPage.clickCreate();
     await formPage.createOpportunity(originalName, orgName);
@@ -233,7 +236,7 @@ test.describe('Opportunities CRUD Operations', () => {
     await page.waitForURL(/\/#\/opportunities/, { timeout: 10000 });
 
     // Verify updated name appears
-    if (page.url().includes('/show')) {
+    if (page.url().includes("/show")) {
       const displayedName = await showPage.getOpportunityName();
       expect(displayedName).toContain(updatedName);
     } else {
@@ -246,7 +249,7 @@ test.describe('Opportunities CRUD Operations', () => {
     await expect(oldNameRow).not.toBeVisible();
   });
 
-  test('should delete opportunity', async ({ page }) => {
+  test("should delete opportunity", async ({ page }) => {
     // Initialize POMs
     const listPage = new OpportunitiesListPage(page);
     const showPage = new OpportunityShowPage(page);
@@ -258,7 +261,7 @@ test.describe('Opportunities CRUD Operations', () => {
     // Create test opportunity
     const timestamp = Date.now();
     const opportunityName = `Delete Test ${timestamp}`;
-    const orgName = 'A&W';
+    const orgName = "A&W";
 
     await listPage.clickCreate();
     await formPage.createOpportunity(opportunityName, orgName);
@@ -277,7 +280,7 @@ test.describe('Opportunities CRUD Operations', () => {
     await listPage.expectOpportunityNotVisible(opportunityName);
   });
 
-  test('should handle validation errors on create', async ({ page }) => {
+  test("should handle validation errors on create", async ({ page }) => {
     // Initialize POMs
     const listPage = new OpportunitiesListPage(page);
     const formPage = new OpportunityFormPage(page);
@@ -294,19 +297,19 @@ test.describe('Opportunities CRUD Operations', () => {
 
     // Verify still on create page (no redirect)
     await page.waitForTimeout(1000);
-    expect(page.url()).toContain('/create');
+    expect(page.url()).toContain("/create");
 
     // Verify validation errors appear (React Admin typically shows inline errors)
     // This is a basic check - specific validation UI depends on your form configuration
-    const errorMessages = page.locator('[role="alert"]').or(
-      page.locator('.error, [class*="error"]')
-    );
+    const errorMessages = page
+      .locator('[role="alert"]')
+      .or(page.locator('.error, [class*="error"]'));
 
     // Wait for at least one error to appear
     await expect(errorMessages.first()).toBeVisible({ timeout: 2000 });
   });
 
-  test('should maintain test data isolation with concurrent creates', async ({ page }) => {
+  test("should maintain test data isolation with concurrent creates", async ({ page }) => {
     // Initialize POMs
     const listPage = new OpportunitiesListPage(page);
     const formPage = new OpportunityFormPage(page);
@@ -329,11 +332,11 @@ test.describe('Opportunities CRUD Operations', () => {
 
     // Create both opportunities
     await listPage.clickCreate();
-    await formPage.createOpportunity(name1, 'A&W');
+    await formPage.createOpportunity(name1, "A&W");
 
     await listPage.goto();
     await listPage.clickCreate();
-    await formPage.createOpportunity(name2, 'A&W');
+    await formPage.createOpportunity(name2, "A&W");
 
     // Verify both exist independently
     await listPage.goto();

@@ -80,13 +80,7 @@ export const Notification = (props: ToasterProps) => {
 
   return (
     <CloseNotificationContext.Provider value={handleRequestClose}>
-      <Toaster
-        richColors
-        theme={theme}
-        closeButton
-        position="bottom-center"
-        {...props}
-      />
+      <Toaster richColors theme={theme} closeButton position="bottom-center" {...props} />
     </CloseNotificationContext.Provider>
   );
 };

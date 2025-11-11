@@ -56,7 +56,7 @@ import { SimpleListLoading } from "./SimpleListLoading.tsx";
  * );
  */
 export const SimpleList = <RecordType extends RaRecord = any>(
-  props: SimpleListProps<RecordType>,
+  props: SimpleListProps<RecordType>
 ) => {
   const {
     className,
@@ -139,38 +139,22 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
 }
 
 const SimpleListItemContent = <RecordType extends RaRecord = any>(
-  props: SimpleListItemProps<RecordType>,
+  props: SimpleListItemProps<RecordType>
 ) => {
-  const {
-    leftAvatar,
-    leftIcon,
-    primaryText,
-    rightAvatar,
-    rightIcon,
-    secondaryText,
-    tertiaryText,
-  } = props;
+  const { leftAvatar, leftIcon, primaryText, rightAvatar, rightIcon, secondaryText, tertiaryText } =
+    props;
   const resource = useResourceContext(props);
   const record = useRecordContext<RecordType>(props);
   const getRecordRepresentation = useGetRecordRepresentation(resource);
   const translate = useTranslate();
 
-  const renderAvatar = (
-    record: RecordType,
-    avatarCallback: FunctionToElement<RecordType>,
-  ) => {
+  const renderAvatar = (record: RecordType, avatarCallback: FunctionToElement<RecordType>) => {
     const avatarValue = avatarCallback(record, record.id);
     if (
       typeof avatarValue === "string" &&
       (avatarValue.startsWith("http") || avatarValue.startsWith("data:"))
     ) {
-      return (
-        <img
-          src={avatarValue}
-          alt=""
-          className="w-10 h-10 rounded-full object-cover"
-        />
-      );
+      return <img src={avatarValue} alt="" className="w-10 h-10 rounded-full object-cover" />;
     } else {
       return (
         <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm">
@@ -184,12 +168,8 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
 
   return (
     <div className="flex items-center space-x-3 p-3">
-      {leftIcon && (
-        <div className="flex-shrink-0">{leftIcon(record, record.id)}</div>
-      )}
-      {leftAvatar && (
-        <div className="flex-shrink-0">{renderAvatar(record, leftAvatar)}</div>
-      )}
+      {leftIcon && <div className="flex-shrink-0">{leftIcon(record, record.id)}</div>}
+      {leftAvatar && <div className="flex-shrink-0">{renderAvatar(record, leftAvatar)}</div>}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
           <div className="text-sm font-medium truncate text-[color:var(--text-body)]">

@@ -74,9 +74,7 @@ console.log("\n=== Test 3: Organization with context_links ===");
 const orgWithLinks = {
   name: "Test Organization 3",
   organization_type: "customer",
-  context_links: [
-    { url: "https://example.com", title: "Example" },
-  ],
+  context_links: [{ url: "https://example.com", title: "Example" }],
 };
 
 console.log("Inserting:", JSON.stringify(orgWithLinks, null, 2));

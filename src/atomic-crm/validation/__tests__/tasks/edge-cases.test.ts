@@ -4,11 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  taskSchema,
-  createTaskSchema,
-  updateTaskSchema,
-} from "../../tasks";
+import { taskSchema, createTaskSchema, updateTaskSchema } from "../../tasks";
 import { z } from "zod";
 
 describe("Task Edge Cases and Business Rules", () => {
@@ -103,7 +99,7 @@ describe("Task Edge Cases and Business Rules", () => {
           type: "Call",
           due_date: "2024-12-31",
           sales_id: "u-1",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       // Empty contact_id
@@ -114,7 +110,7 @@ describe("Task Edge Cases and Business Rules", () => {
           type: "Call",
           due_date: "2024-12-31",
           sales_id: "u-1",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       // Empty due_date
@@ -125,7 +121,7 @@ describe("Task Edge Cases and Business Rules", () => {
           type: "Call",
           due_date: "",
           sales_id: "u-1",
-        }),
+        })
       ).toThrow(z.ZodError);
     });
 

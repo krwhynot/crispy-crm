@@ -27,9 +27,7 @@ describe("Note Edge Cases and Error Handling", () => {
 
     it("should respect custom size limits", () => {
       expect(validateAttachmentSize(4 * 1024 * 1024, 5)).toBeUndefined(); // 4MB with 5MB limit
-      expect(validateAttachmentSize(6 * 1024 * 1024, 5)).toBe(
-        "File size must be less than 5MB",
-      );
+      expect(validateAttachmentSize(6 * 1024 * 1024, 5)).toBe("File size must be less than 5MB");
     });
   });
 
@@ -53,11 +51,9 @@ describe("Note Edge Cases and Error Handling", () => {
 
     it("should respect custom allowed extensions", () => {
       const customAllowed = [".pdf", ".txt"];
-      expect(
-        validateAttachmentType("file.pdf", customAllowed),
-      ).toBeUndefined();
+      expect(validateAttachmentType("file.pdf", customAllowed)).toBeUndefined();
       expect(validateAttachmentType("file.jpg", customAllowed)).toContain(
-        "File type .jpg is not allowed",
+        "File type .jpg is not allowed"
       );
     });
   });
@@ -79,9 +75,7 @@ describe("Note Edge Cases and Error Handling", () => {
         // Missing opportunity_id and sales_id
       };
 
-      expect(() => opportunityNoteSchema.parse(incompleteNote)).toThrow(
-        z.ZodError,
-      );
+      expect(() => opportunityNoteSchema.parse(incompleteNote)).toThrow(z.ZodError);
     });
 
     it("should validate attachment URLs", () => {
@@ -93,9 +87,7 @@ describe("Note Edge Cases and Error Handling", () => {
         attachments: [{ src: "not-a-url", title: "Invalid" }],
       };
 
-      expect(() => contactNoteSchema.parse(noteWithInvalidAttachment)).toThrow(
-        z.ZodError,
-      );
+      expect(() => contactNoteSchema.parse(noteWithInvalidAttachment)).toThrow(z.ZodError);
     });
   });
 

@@ -28,7 +28,7 @@ Deno.serve(async (_req) => {
     // Get today's date at midnight (server time)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const todayISO = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+    const todayISO = today.toISOString().split("T")[0]; // YYYY-MM-DD format
 
     // Query overdue tasks that haven't been notified yet
     const { data: overdueTasks, error: tasksError } = await supabaseAdmin
@@ -49,16 +49,16 @@ Deno.serve(async (_req) => {
 
     if (!overdueTasks || overdueTasks.length === 0) {
       console.log("No overdue tasks found");
-      return new Response(
-        JSON.stringify({ message: "No overdue tasks to notify", count: 0 }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ message: "No overdue tasks to notify", count: 0 }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     console.log(`Found ${overdueTasks.length} overdue tasks`);
 
     // Get sales records to map sales_id to user_id
-    const salesIds = [...new Set(overdueTasks.map(t => t.sales_id))];
+    const salesIds = [...new Set(overdueTasks.map((t) => t.sales_id))];
     const { data: salesRecords, error: salesError } = await supabaseAdmin
       .from("sales")
       .select("id, user_id")
@@ -103,7 +103,7 @@ Deno.serve(async (_req) => {
       const notification = {
         user_id: userId,
         type: "task_overdue",
-        message: `Task "${task.title}" is ${daysOverdue} day${daysOverdue === 1 ? '' : 's'} overdue`,
+        message: `Task "${task.title}" is ${daysOverdue} day${daysOverdue === 1 ? "" : "s"} overdue`,
         entity_type: "task",
         entity_id: task.id,
       };
@@ -114,9 +114,7 @@ Deno.serve(async (_req) => {
 
     // Insert all notifications
     if (notifications.length > 0) {
-      const { error: notifError } = await supabaseAdmin
-        .from("notifications")
-        .insert(notifications);
+      const { error: notifError } = await supabaseAdmin.from("notifications").insert(notifications);
 
       if (notifError) {
         console.error("Error creating notifications:", notifError);

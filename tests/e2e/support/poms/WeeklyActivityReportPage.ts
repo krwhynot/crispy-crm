@@ -1,5 +1,5 @@
-import { expect, type Locator } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect, type Locator } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Page Object Model for Weekly Activity Summary Report
@@ -15,7 +15,7 @@ export class WeeklyActivityReportPage extends BasePage {
    * Navigate to the Weekly Activity Summary report
    */
   async navigate(): Promise<void> {
-    await this.goto('/#/reports/weekly-activity');
+    await this.goto("/#/reports/weekly-activity");
     await this.waitForPageLoad();
   }
 
@@ -26,21 +26,23 @@ export class WeeklyActivityReportPage extends BasePage {
     // Wait for React loading state to clear (condition-based waiting)
     await this.page.waitForFunction(
       () => {
-        const loadingText = document.body.textContent?.includes('Loading...');
+        const loadingText = document.body.textContent?.includes("Loading...");
         return !loadingText;
       },
       { timeout: 15000 }
     );
 
     // Now wait for title to be visible
-    await expect(this.page.getByRole('heading', { name: /weekly activity summary/i })).toBeVisible({ timeout: 5000 });
+    await expect(this.page.getByRole("heading", { name: /weekly activity summary/i })).toBeVisible({
+      timeout: 5000,
+    });
   }
 
   /**
    * Get the page title heading
    */
   getTitleHeading(): Locator {
-    return this.page.getByRole('heading', { name: /weekly activity summary/i });
+    return this.page.getByRole("heading", { name: /weekly activity summary/i });
   }
 
   /**
@@ -81,7 +83,7 @@ export class WeeklyActivityReportPage extends BasePage {
    * Get summary stat card by name
    */
   getSummaryStatCard(statName: string | RegExp): Locator {
-    return this.page.getByText(statName).locator('..');
+    return this.page.getByText(statName).locator("..");
   }
 
   /**
@@ -89,8 +91,8 @@ export class WeeklyActivityReportPage extends BasePage {
    */
   async getSummaryStatValue(statName: string | RegExp): Promise<string> {
     const card = this.getSummaryStatCard(statName);
-    const value = await card.locator('p.text-2xl').textContent();
-    return value?.trim() || '';
+    const value = await card.locator("p.text-2xl").textContent();
+    return value?.trim() || "";
   }
 
   /**
@@ -125,12 +127,12 @@ export class WeeklyActivityReportPage extends BasePage {
    * Check if the table has the correct headers
    */
   async expectTableHeadersVisible(): Promise<void> {
-    await expect(this.page.getByRole('columnheader', { name: /principal/i })).toBeVisible();
-    await expect(this.page.getByRole('columnheader', { name: /calls/i })).toBeVisible();
-    await expect(this.page.getByRole('columnheader', { name: /emails/i })).toBeVisible();
-    await expect(this.page.getByRole('columnheader', { name: /meetings/i })).toBeVisible();
-    await expect(this.page.getByRole('columnheader', { name: /notes/i })).toBeVisible();
-    await expect(this.page.getByRole('columnheader', { name: /total/i })).toBeVisible();
+    await expect(this.page.getByRole("columnheader", { name: /principal/i })).toBeVisible();
+    await expect(this.page.getByRole("columnheader", { name: /calls/i })).toBeVisible();
+    await expect(this.page.getByRole("columnheader", { name: /emails/i })).toBeVisible();
+    await expect(this.page.getByRole("columnheader", { name: /meetings/i })).toBeVisible();
+    await expect(this.page.getByRole("columnheader", { name: /notes/i })).toBeVisible();
+    await expect(this.page.getByRole("columnheader", { name: /total/i })).toBeVisible();
   }
 
   /**
@@ -161,7 +163,9 @@ export class WeeklyActivityReportPage extends BasePage {
    */
   async waitForExportSuccess(): Promise<void> {
     // Wait for success notification to appear
-    await expect(this.page.getByText(/report exported successfully/i)).toBeVisible({ timeout: 5000 });
+    await expect(this.page.getByText(/report exported successfully/i)).toBeVisible({
+      timeout: 5000,
+    });
   }
 
   /**
@@ -170,7 +174,7 @@ export class WeeklyActivityReportPage extends BasePage {
   async expectActivityDataPresent(): Promise<void> {
     // Check that we have at least one activity row
     // Using getByRole for semantic selector
-    const rows = this.page.getByRole('row');
+    const rows = this.page.getByRole("row");
     const count = await rows.count();
 
     // Should have header row + at least one data row

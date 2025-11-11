@@ -1,8 +1,4 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbPage,
-} from "@/components/admin/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 import type { ListBaseProps, RaRecord } from "ra-core";
 import {
   ListBase,
@@ -23,9 +19,7 @@ import { ExportButton } from "@/components/admin/export-button";
 import { ListPagination } from "@/components/admin/list-pagination";
 import { FilterForm } from "@/components/admin/filter-form";
 
-export const List = <RecordType extends RaRecord = RaRecord>(
-  props: ListProps<RecordType>,
-) => {
+export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<RecordType>) => {
   const {
     debounce,
     disableAuthentication,
@@ -67,14 +61,12 @@ export interface ListProps<RecordType extends RaRecord = RaRecord>
     ListViewProps<RecordType> {}
 
 export const ListView = <RecordType extends RaRecord = RaRecord>(
-  props: ListViewProps<RecordType>,
+  props: ListViewProps<RecordType>
 ) => {
   const { filters, pagination = defaultPagination, children, actions } = props;
   const resource = useResourceContext();
   if (!resource) {
-    throw new Error(
-      "The ListView component must be used within a ResourceContextProvider",
-    );
+    throw new Error("The ListView component must be used within a ResourceContextProvider");
   }
   const getResourceLabel = useGetResourceLabel();
   const resourceLabel = getResourceLabel(resource, 2);
@@ -124,6 +116,4 @@ export interface ListViewProps<RecordType extends RaRecord = RaRecord> {
   className?: string;
 }
 
-export type FiltersType =
-  | ReactElement<FilterElementProps>
-  | ReactElement<FilterElementProps>[];
+export type FiltersType = ReactElement<FilterElementProps> | ReactElement<FilterElementProps>[];

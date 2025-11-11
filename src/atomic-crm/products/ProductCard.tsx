@@ -55,11 +55,8 @@ export const ProductCard = (props: { record?: Product }) => {
               <p className="text-xs text-[color:var(--text-subtle)]">SKU: {record.sku}</p>
               <div className="flex gap-1 mt-1 justify-center flex-wrap">
                 {record.status && (
-                  <Badge
-                    variant={statusColors[record.status]}
-                    className="text-xs px-1 py-0"
-                  >
-                    {record.status.replace(/_/g, ' ')}
+                  <Badge variant={statusColors[record.status]} className="text-xs px-1 py-0">
+                    {record.status.replace(/_/g, " ")}
                   </Badge>
                 )}
                 {record.principal_name && (

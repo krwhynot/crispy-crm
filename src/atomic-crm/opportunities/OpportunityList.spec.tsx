@@ -159,7 +159,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -173,7 +173,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -187,7 +187,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -201,7 +201,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -215,7 +215,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -229,7 +229,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {
@@ -243,7 +243,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -262,7 +262,7 @@ describe("OpportunityList", () => {
           filter: expect.objectContaining({
             stage: "initial_outreach",
           }),
-        }),
+        })
       );
     });
   });
@@ -271,7 +271,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -290,7 +290,7 @@ describe("OpportunityList", () => {
           filter: expect.objectContaining({
             priority: "high",
           }),
-        }),
+        })
       );
     });
   });
@@ -299,7 +299,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -315,9 +315,8 @@ describe("OpportunityList", () => {
       expect(mockDataProvider.getList).toHaveBeenCalledWith(
         "opportunities_summary",
         expect.objectContaining({
-          filter: expect.objectContaining({
-          }),
-        }),
+          filter: expect.objectContaining({}),
+        })
       );
     });
   });
@@ -326,7 +325,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -345,7 +344,7 @@ describe("OpportunityList", () => {
           filter: expect.objectContaining({
             q: "Enterprise",
           }),
-        }),
+        })
       );
     });
   });
@@ -354,7 +353,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -371,7 +370,7 @@ describe("OpportunityList", () => {
         "opportunities_summary",
         expect.objectContaining({
           sort: { field: "amount", order: "ASC" },
-        }),
+        })
       );
     });
   });
@@ -380,7 +379,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Wait for initial load
@@ -397,7 +396,7 @@ describe("OpportunityList", () => {
         "opportunities_summary",
         expect.objectContaining({
           sort: { field: "probability", order: "ASC" },
-        }),
+        })
       );
     });
   });
@@ -417,7 +416,7 @@ describe("OpportunityList", () => {
     render(
       <TestWrapper>
         <OpportunityList />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     await waitFor(() => {

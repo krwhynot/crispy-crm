@@ -10,7 +10,7 @@
 
 import type { GetListParams } from "ra-core";
 import { getSearchableFields, supportsSoftDelete, getResourceName } from "./resources";
-import { escapeCacheManager } from './dataProviderCache';
+import { escapeCacheManager } from "./dataProviderCache";
 
 /**
  * Cache for searchable fields to avoid repeated lookups
@@ -56,8 +56,8 @@ export function escapeForPostgREST(value: string | number | boolean | null | und
     result = str;
   } else {
     // IMPORTANT: Escape backslashes first, then quotes
-    let escaped = str.replace(/\\/g, '\\\\');  // Backslash → \\
-    escaped = escaped.replace(/"/g, '\\"');    // Quote → \"
+    let escaped = str.replace(/\\/g, "\\\\"); // Backslash → \\
+    escaped = escaped.replace(/"/g, '\\"'); // Quote → \"
     result = `"${escaped}"`;
   }
 
@@ -83,7 +83,7 @@ type FilterRecord = Record<string, FilterValue>;
  * { status: ["active", "pending"] } → { "status@in": "(active,pending)" }
  */
 export function transformArrayFilters(filter: FilterRecord | undefined | null): FilterRecord {
-  if (!filter || typeof filter !== 'object') {
+  if (!filter || typeof filter !== "object") {
     return filter || {};
   }
 
@@ -91,7 +91,7 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
 
   // Fields that are stored as JSONB arrays in PostgreSQL
   // These use the @cs (contains) operator
-  const jsonbArrayFields = ['tags', 'email', 'phone'];
+  const jsonbArrayFields = ["tags", "email", "phone"];
 
   for (const [key, value] of Object.entries(filter)) {
     // Skip null/undefined values
@@ -100,7 +100,7 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
     }
 
     // Preserve existing PostgREST operators (keys containing @)
-    if (key.includes('@')) {
+    if (key.includes("@")) {
       transformed[key] = value;
       continue;
     }
@@ -115,11 +115,11 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
       if (jsonbArrayFields.includes(key)) {
         // JSONB array contains - format: {1,2,3}
         // This checks if the JSONB array contains any of the specified values
-        transformed[`${key}@cs`] = `{${value.map(escapeForPostgREST).join(',')}}`;
+        transformed[`${key}@cs`] = `{${value.map(escapeForPostgREST).join(",")}}`;
       } else {
         // Regular IN operator - format: (val1,val2,val3)
         // This checks if the field value is in the list
-        transformed[`${key}@in`] = `(${value.map(escapeForPostgREST).join(',')})`;
+        transformed[`${key}@in`] = `(${value.map(escapeForPostgREST).join(",")})`;
       }
     } else {
       // JSONB array fields: Single value needs @cs operator too
@@ -139,7 +139,10 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
  * Apply full-text search to query parameters
  * Replicates the behavior from the original dataProvider's applyFullTextSearch function
  */
-export function applyFullTextSearch(columns: readonly string[], shouldAddSoftDeleteFilter: boolean = true) {
+export function applyFullTextSearch(
+  columns: readonly string[],
+  shouldAddSoftDeleteFilter: boolean = true
+) {
   return (params: GetListParams): GetListParams => {
     if (!params.filter?.q) {
       return params;
@@ -148,9 +151,8 @@ export function applyFullTextSearch(columns: readonly string[], shouldAddSoftDel
     const { q, ...filter } = params.filter;
 
     // Apply soft delete filter automatically for supported resources (unless it's a view)
-    const softDeleteFilter = params.filter?.includeDeleted || !shouldAddSoftDeleteFilter
-      ? {}
-      : { "deleted_at@is": null };
+    const softDeleteFilter =
+      params.filter?.includeDeleted || !shouldAddSoftDeleteFilter ? {} : { "deleted_at@is": null };
 
     return {
       ...params,
@@ -173,7 +175,7 @@ export function applyFullTextSearch(columns: readonly string[], shouldAddSoftDel
  */
 export function getDatabaseResource(
   resource: string,
-  operation: "list" | "one" | "create" | "update" | "delete" = "list",
+  operation: "list" | "one" | "create" | "update" | "delete" = "list"
 ): string {
   const actualResource = getResourceName(resource);
 
@@ -204,7 +206,7 @@ export function getDatabaseResource(
 export function applySearchParams(
   resource: string,
   params: GetListParams,
-  useView: boolean = true,
+  useView: boolean = true
 ): GetListParams {
   const searchableFields = getCachedSearchableFields(resource);
 
@@ -215,9 +217,8 @@ export function applySearchParams(
 
   // Apply soft delete filter for all supported resources, even without search
   // But skip for views as they handle this internally and adding the filter causes PostgREST errors
-  const needsSoftDeleteFilter = supportsSoftDelete(resource) &&
-    !params.filter?.includeDeleted &&
-    !isView;
+  const needsSoftDeleteFilter =
+    supportsSoftDelete(resource) && !params.filter?.includeDeleted && !isView;
 
   // Transform array filters to PostgREST operators
   const transformedFilter = transformArrayFilters(params.filter);
@@ -258,7 +259,10 @@ export function applySearchParams(
 
   // Use the applyFullTextSearch helper for resources with search configuration
   // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
-  const searchParams = applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
+  const searchParams = applyFullTextSearch(
+    searchableFields,
+    needsSoftDeleteFilter
+  )({
     ...params,
     filter: transformedFilter,
   });
@@ -280,7 +284,9 @@ interface JsonbArrayRecord {
  * This prevents runtime errors when components expect array data
  * Engineering Constitution: BOY SCOUT RULE - fixing data inconsistencies
  */
-export function normalizeJsonbArrayFields<T extends JsonbArrayRecord>(data: T | null | undefined): T | null | undefined {
+export function normalizeJsonbArrayFields<T extends JsonbArrayRecord>(
+  data: T | null | undefined
+): T | null | undefined {
   if (!data) return data;
 
   // Helper to ensure a value is always an array
@@ -291,7 +297,7 @@ export function normalizeJsonbArrayFields<T extends JsonbArrayRecord>(data: T | 
     if (!Array.isArray(value)) {
       // Data has been migrated to arrays - this shouldn't happen anymore
       // If it's an object, wrap it in an array, otherwise return empty array
-      return typeof value === 'object' ? [value] : [];
+      return typeof value === "object" ? [value] : [];
     }
     return value;
   };
@@ -320,7 +326,9 @@ export function normalizeResponseData<T extends JsonbArrayRecord>(
 ): T | T[] | null | undefined {
   // Handle array of records (getList, getMany, getManyReference)
   if (Array.isArray(data)) {
-    return data.map(record => normalizeJsonbArrayFields(record)).filter((r): r is T => r !== null && r !== undefined);
+    return data
+      .map((record) => normalizeJsonbArrayFields(record))
+      .filter((r): r is T => r !== null && r !== undefined);
   }
 
   // Handle single record (getOne)

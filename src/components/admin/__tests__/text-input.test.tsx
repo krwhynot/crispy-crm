@@ -10,10 +10,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TextInput } from "../text-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import {
-  SaveContextProvider,
-  Form as RaForm,
-} from "ra-core";
+import { SaveContextProvider, Form as RaForm } from "ra-core";
 import { useForm } from "react-hook-form";
 import { Form } from "../form";
 import React from "react";
@@ -31,12 +28,12 @@ const FormWrapper = ({
   const saveContext = {
     save: onSubmit,
     saving: false,
-    mutationMode: "pessimistic" as const
+    mutationMode: "pessimistic" as const,
   };
 
   const form = useForm({
     defaultValues,
-    mode: "onChange"
+    mode: "onChange",
   });
 
   return (
@@ -84,7 +81,7 @@ describe("TextInput", () => {
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          email: "test@example.com"
+          email: "test@example.com",
         }),
         expect.anything() // React Hook Form also passes the event
       );
@@ -98,11 +95,7 @@ describe("TextInput", () => {
   test("renders textarea in multiline mode", () => {
     renderWithAdminContext(
       <FormWrapper>
-        <TextInput
-          source="description"
-          label="Description"
-          multiline
-        />
+        <TextInput source="description" label="Description" multiline />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -117,11 +110,7 @@ describe("TextInput", () => {
 
     renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
-        <TextInput
-          source="notes"
-          label="Notes"
-          multiline
-        />
+        <TextInput source="notes" label="Notes" multiline />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -136,7 +125,7 @@ describe("TextInput", () => {
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          notes: multilineText
+          notes: multilineText,
         }),
         expect.anything() // React Hook Form also passes the event
       );
@@ -146,11 +135,7 @@ describe("TextInput", () => {
   test("respects disabled and readOnly props", () => {
     const { rerender } = renderWithAdminContext(
       <FormWrapper>
-        <TextInput
-          source="name"
-          label="Name"
-          disabled
-        />
+        <TextInput source="name" label="Name" disabled />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -161,11 +146,7 @@ describe("TextInput", () => {
     // Test readOnly
     rerender(
       <FormWrapper>
-        <TextInput
-          source="name"
-          label="Name"
-          readOnly
-        />
+        <TextInput source="name" label="Name" readOnly />
       </FormWrapper>
     );
 
@@ -176,11 +157,7 @@ describe("TextInput", () => {
   test("handles date input type correctly", () => {
     renderWithAdminContext(
       <FormWrapper defaultValues={{ date: "2025-01-15T10:30:00" }}>
-        <TextInput
-          source="date"
-          label="Date"
-          type="date"
-        />
+        <TextInput source="date" label="Date" type="date" />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -194,11 +171,7 @@ describe("TextInput", () => {
   test("handles datetime-local input type correctly", () => {
     renderWithAdminContext(
       <FormWrapper defaultValues={{ datetime: "2025-01-15T10:30:00" }}>
-        <TextInput
-          source="datetime"
-          label="Date Time"
-          type="datetime-local"
-        />
+        <TextInput source="datetime" label="Date Time" type="datetime-local" />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -212,11 +185,7 @@ describe("TextInput", () => {
   test("displays helper text when provided", () => {
     renderWithAdminContext(
       <FormWrapper>
-        <TextInput
-          source="email"
-          label="Email"
-          helperText="Enter your email address"
-        />
+        <TextInput source="email" label="Email" helperText="Enter your email address" />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -227,10 +196,7 @@ describe("TextInput", () => {
   test("hides label when label prop is false", () => {
     renderWithAdminContext(
       <FormWrapper>
-        <TextInput
-          source="hidden_label"
-          label={false}
-        />
+        <TextInput source="hidden_label" label={false} />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -243,11 +209,7 @@ describe("TextInput", () => {
   test("applies custom className", () => {
     renderWithAdminContext(
       <FormWrapper>
-        <TextInput
-          source="custom"
-          label="Custom"
-          className="custom-class"
-        />
+        <TextInput source="custom" label="Custom" className="custom-class" />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -259,10 +221,7 @@ describe("TextInput", () => {
   test("preserves form field name from source prop", () => {
     renderWithAdminContext(
       <FormWrapper>
-        <TextInput
-          source="contact.email"
-          label="Contact Email"
-        />
+        <TextInput source="contact.email" label="Contact Email" />
       </FormWrapper>,
       { resource: "test" }
     );
@@ -273,5 +232,4 @@ describe("TextInput", () => {
     const input = screen.getByRole("textbox");
     expect(input).toHaveAttribute("name", "contact.email");
   });
-
 });

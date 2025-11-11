@@ -37,7 +37,7 @@ interface DashboardPrincipalSummary extends RaRecord {
   last_activity_date: string | null;
   last_activity_type: string | null;
   days_since_last_activity: number | null;
-  status_indicator: 'good' | 'warning' | 'urgent';
+  status_indicator: "good" | "warning" | "urgent";
   max_days_in_stage: number;
   is_stuck: boolean;
   next_action: string | null;
@@ -50,18 +50,14 @@ const StatusField = ({ record }: { record?: DashboardPrincipalSummary }) => {
   if (!record) return null;
 
   const statusConfig = {
-    good: { label: '🟢 Good', className: 'text-green-600' },
-    warning: { label: '🟡 Warning', className: 'text-yellow-600' },
-    urgent: { label: '🔴 Urgent', className: 'text-red-600' },
+    good: { label: "🟢 Good", className: "text-green-600" },
+    warning: { label: "🟡 Warning", className: "text-yellow-600" },
+    urgent: { label: "🔴 Urgent", className: "text-red-600" },
   };
 
   const config = statusConfig[record.status_indicator];
 
-  return (
-    <span className={`font-medium ${config.className}`}>
-      {config.label}
-    </span>
-  );
+  return <span className={`font-medium ${config.className}`}>{config.label}</span>;
 };
 
 // Last activity field with date + type
@@ -71,8 +67,8 @@ const LastActivityField = ({ record }: { record?: DashboardPrincipalSummary }) =
   }
 
   const date = new Date(record.last_activity_date);
-  const formattedDate = format(date, 'MMM d, yyyy');
-  const activityType = record.last_activity_type || 'Activity';
+  const formattedDate = format(date, "MMM d, yyyy");
+  const activityType = record.last_activity_type || "Activity";
 
   return (
     <div className="flex flex-col">
@@ -99,7 +95,7 @@ const StuckField = ({ record }: { record?: DashboardPrincipalSummary }) => {
 // Next action field with checkbox for quick completion
 const NextActionField = ({
   record,
-  onTaskSelect
+  onTaskSelect,
 }: {
   record?: DashboardPrincipalSummary;
   onTaskSelect: (task: Task) => void;
@@ -136,23 +132,23 @@ const DashboardGrid = memo(({ onTaskSelect }: { onTaskSelect: (task: Task) => vo
         return `/organizations/${id}/show`;
       }}
       sx={{
-        '& .RaDatagrid-table': {
-          borderCollapse: 'separate',
+        "& .RaDatagrid-table": {
+          borderCollapse: "separate",
           borderSpacing: 0,
         },
-        '& .RaDatagrid-thead': {
-          backgroundColor: 'var(--secondary)',
+        "& .RaDatagrid-thead": {
+          backgroundColor: "var(--secondary)",
         },
-        '& .RaDatagrid-headerCell': {
+        "& .RaDatagrid-headerCell": {
           fontWeight: 600,
-          padding: '12px 16px',
+          padding: "12px 16px",
         },
-        '& .RaDatagrid-rowCell': {
-          padding: '12px 16px',
+        "& .RaDatagrid-rowCell": {
+          padding: "12px 16px",
         },
-        '& .RaDatagrid-row:hover': {
-          backgroundColor: 'var(--accent)',
-          cursor: 'pointer',
+        "& .RaDatagrid-row:hover": {
+          backgroundColor: "var(--accent)",
+          cursor: "pointer",
         },
       }}
     >
@@ -171,11 +167,7 @@ const DashboardGrid = memo(({ onTaskSelect }: { onTaskSelect: (task: Task) => vo
       />
 
       {/* Column 2: Opportunity Count */}
-      <TextField
-        source="opportunity_count"
-        label="# Opps"
-        textAlign="center"
-      />
+      <TextField source="opportunity_count" label="# Opps" textAlign="center" />
 
       {/* Column 3: Status Indicator */}
       <FunctionField
@@ -186,7 +178,9 @@ const DashboardGrid = memo(({ onTaskSelect }: { onTaskSelect: (task: Task) => vo
       {/* Column 4: Last Activity */}
       <FunctionField
         label="Last Activity"
-        render={(record?: RaRecord) => <LastActivityField record={record as DashboardPrincipalSummary} />}
+        render={(record?: RaRecord) => (
+          <LastActivityField record={record as DashboardPrincipalSummary} />
+        )}
       />
 
       {/* Column 5: Stuck Indicator */}
@@ -224,33 +218,33 @@ export const PrincipalDashboardTable = () => {
 
   return (
     <>
-    <List
-      resource="dashboard_principal_summary"
-      filter={{ account_manager_id: salesId }}
-      sort={{ field: 'priority_score', order: 'DESC' }}
-      perPage={25}
-      pagination={false}
-      actions={false}
-      sx={{
-        '& .RaList-main': {
-          boxShadow: 'none',
-        },
-      }}
-    >
-      <DashboardGrid onTaskSelect={setSelectedTask} />
-    </List>
-
-    {/* Quick Complete Task Modal */}
-    {selectedTask && (
-      <QuickCompleteTaskModal
-        task={selectedTask}
-        onClose={() => setSelectedTask(null)}
-        onComplete={() => {
-          setSelectedTask(null);
-          refresh();
+      <List
+        resource="dashboard_principal_summary"
+        filter={{ account_manager_id: salesId }}
+        sort={{ field: "priority_score", order: "DESC" }}
+        perPage={25}
+        pagination={false}
+        actions={false}
+        sx={{
+          "& .RaList-main": {
+            boxShadow: "none",
+          },
         }}
-      />
-    )}
+      >
+        <DashboardGrid onTaskSelect={setSelectedTask} />
+      </List>
+
+      {/* Quick Complete Task Modal */}
+      {selectedTask && (
+        <QuickCompleteTaskModal
+          task={selectedTask}
+          onClose={() => setSelectedTask(null)}
+          onComplete={() => {
+            setSelectedTask(null);
+            refresh();
+          }}
+        />
+      )}
     </>
   );
 };

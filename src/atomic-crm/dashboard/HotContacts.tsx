@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Plus, Users } from "lucide-react";
 import { useGetIdentity, useGetList } from "ra-core";
 import { Link } from "react-router-dom";
@@ -17,7 +12,7 @@ import type { Contact } from "../types";
 const trackDashboardEvent = (cardType: string) => {
   console.log(`dashboard_card_click: ${cardType}`, {
     timestamp: new Date().toISOString(),
-    viewport: window.innerWidth < 768 ? 'mobile' : 'desktop'
+    viewport: window.innerWidth < 768 ? "mobile" : "desktop",
   });
 };
 
@@ -34,7 +29,7 @@ export const HotContacts = () => {
       sort: { field: "last_seen", order: "DESC" },
       filter: { sales_id: identity?.id },
     },
-    { enabled: Number.isInteger(identity?.id) },
+    { enabled: Number.isInteger(identity?.id) }
   );
 
   return (
@@ -66,7 +61,7 @@ export const HotContacts = () => {
       </div>
       <Card
         className="rounded-xl py-0 cursor-pointer"
-        onClick={() => trackDashboardEvent('contacts')}
+        onClick={() => trackDashboardEvent("contacts")}
       >
         <SimpleList<Contact>
           linkType="show"
@@ -75,9 +70,7 @@ export const HotContacts = () => {
           isPending={contactsLoading}
           resource="contacts"
           className="[&>li:first-child>a]:rounded-t-xl [&>li:last-child>a]:rounded-b-xl"
-          primaryText={(contact) =>
-            `${contact.first_name} ${contact.last_name}`
-          }
+          primaryText={(contact) => `${contact.first_name} ${contact.last_name}`}
           secondaryText={(contact) => (
             <>
               {contact.title} at {contact.company_name}
@@ -86,9 +79,7 @@ export const HotContacts = () => {
           leftAvatar={(contact) => <Avatar record={contact} />}
           empty={
             <div className="p-4">
-              <p className="text-sm">
-                Your recently seen contacts will appear here.
-              </p>
+              <p className="text-sm">Your recently seen contacts will appear here.</p>
             </div>
           }
         />

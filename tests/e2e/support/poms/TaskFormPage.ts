@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Task Form Page Object Model
@@ -33,10 +33,10 @@ export class TaskFormPage extends BasePage {
   /**
    * Select priority from dropdown
    */
-  async selectPriority(priority: 'low' | 'medium' | 'high' | 'critical'): Promise<void> {
+  async selectPriority(priority: "low" | "medium" | "high" | "critical"): Promise<void> {
     const priorityInput = this.page.getByLabel(/priority/i);
     await priorityInput.click();
-    await this.page.getByRole('option', { name: new RegExp(priority, 'i') }).click();
+    await this.page.getByRole("option", { name: new RegExp(priority, "i") }).click();
   }
 
   /**
@@ -45,7 +45,7 @@ export class TaskFormPage extends BasePage {
   async selectType(type: string): Promise<void> {
     const typeInput = this.page.getByLabel(/^type$/i);
     await typeInput.click();
-    await this.page.getByRole('option', { name: new RegExp(type, 'i') }).click();
+    await this.page.getByRole("option", { name: new RegExp(type, "i") }).click();
   }
 
   /**
@@ -61,7 +61,7 @@ export class TaskFormPage extends BasePage {
   async fillTaskForm(data: {
     title: string;
     dueDate: string;
-    priority?: 'low' | 'medium' | 'high' | 'critical';
+    priority?: "low" | "medium" | "high" | "critical";
     type?: string;
     description?: string;
   }): Promise<void> {
@@ -87,7 +87,7 @@ export class TaskFormPage extends BasePage {
   async createTask(data: {
     title: string;
     dueDate: string;
-    priority?: 'low' | 'medium' | 'high' | 'critical';
+    priority?: "low" | "medium" | "high" | "critical";
     type?: string;
     description?: string;
   }): Promise<void> {
@@ -97,8 +97,8 @@ export class TaskFormPage extends BasePage {
     // Wait for redirect to show page or list
     await this.page.waitForURL(
       (url) =>
-        url.hash.includes('/tasks') &&
-        (url.hash.includes('/show') || !url.hash.includes('/create')),
+        url.hash.includes("/tasks") &&
+        (url.hash.includes("/show") || !url.hash.includes("/create")),
       { timeout: 10000 }
     );
   }
@@ -109,7 +109,7 @@ export class TaskFormPage extends BasePage {
   async updateTask(data: {
     title?: string;
     dueDate?: string;
-    priority?: 'low' | 'medium' | 'high' | 'critical';
+    priority?: "low" | "medium" | "high" | "critical";
     type?: string;
     description?: string;
   }): Promise<void> {
@@ -149,7 +149,7 @@ export class TaskFormPage extends BasePage {
    * Verify we're still on the form (validation prevented submission)
    */
   async expectStillOnForm(isCreate: boolean): Promise<void> {
-    const expectedURL = isCreate ? '/#/tasks/create' : /\/#\/tasks\/\d+$/;
+    const expectedURL = isCreate ? "/#/tasks/create" : /\/#\/tasks\/\d+$/;
     await expect(this.page).toHaveURL(expectedURL);
   }
 }

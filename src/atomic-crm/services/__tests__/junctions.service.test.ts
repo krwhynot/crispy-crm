@@ -36,23 +36,16 @@ describe("JunctionsService", () => {
           { id: 102, name: "Beta Inc" },
         ];
 
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: mockJunctions, total: 2 });
-        mockDataProvider.getMany = vi
-          .fn()
-          .mockResolvedValue({ data: mockOrgs });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: mockJunctions, total: 2 });
+        mockDataProvider.getMany = vi.fn().mockResolvedValue({ data: mockOrgs });
 
         const result = await service.getContactOrganizations(contactId);
 
-        expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          "contact_organizations",
-          {
-            filter: { contact_id: contactId },
-            pagination: { page: 1, perPage: 100 },
-            sort: { field: "is_primary", order: "DESC" },
-          }
-        );
+        expect(mockDataProvider.getList).toHaveBeenCalledWith("contact_organizations", {
+          filter: { contact_id: contactId },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: "is_primary", order: "DESC" },
+        });
         expect(mockDataProvider.getMany).toHaveBeenCalledWith("organizations", {
           ids: [101, 102],
         });
@@ -62,9 +55,7 @@ describe("JunctionsService", () => {
       });
 
       test("should handle empty results gracefully", async () => {
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: [], total: 0 });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [], total: 0 });
         mockDataProvider.getMany = vi.fn();
 
         const result = await service.getContactOrganizations(1);
@@ -79,9 +70,7 @@ describe("JunctionsService", () => {
           { id: 2, contact_id: 1, organization_id: null, is_primary: false },
         ];
 
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: mockJunctions, total: 2 });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: mockJunctions, total: 2 });
         mockDataProvider.getMany = vi
           .fn()
           .mockResolvedValue({ data: [{ id: 101, name: "Acme Corp" }] });
@@ -95,9 +84,7 @@ describe("JunctionsService", () => {
       });
 
       test("should throw on data provider error", async () => {
-        mockDataProvider.getList = vi
-          .fn()
-          .mockRejectedValue(new Error("Database error"));
+        mockDataProvider.getList = vi.fn().mockRejectedValue(new Error("Database error"));
 
         await expect(service.getContactOrganizations(1)).rejects.toThrow(
           "Get contact organizations failed: Database error"
@@ -116,14 +103,9 @@ describe("JunctionsService", () => {
           is_primary: false,
         };
 
-        mockDataProvider.create = vi
-          .fn()
-          .mockResolvedValue({ data: createdRecord });
+        mockDataProvider.create = vi.fn().mockResolvedValue({ data: createdRecord });
 
-        const result = await service.addContactToOrganization(
-          contactId,
-          organizationId
-        );
+        const result = await service.addContactToOrganization(contactId, organizationId);
 
         expect(mockDataProvider.create).toHaveBeenCalledWith(
           "contact_organizations",
@@ -160,9 +142,9 @@ describe("JunctionsService", () => {
           .fn()
           .mockRejectedValue(new Error("duplicate key value violates unique constraint"));
 
-        await expect(
-          service.addContactToOrganization(1, 101)
-        ).rejects.toThrow("Add contact to organization failed:");
+        await expect(service.addContactToOrganization(1, 101)).rejects.toThrow(
+          "Add contact to organization failed:"
+        );
       });
     });
 
@@ -176,37 +158,22 @@ describe("JunctionsService", () => {
           organization_id: organizationId,
         };
 
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: [junctionRecord], total: 1 });
-        mockDataProvider.delete = vi
-          .fn()
-          .mockResolvedValue({ data: junctionRecord });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [junctionRecord], total: 1 });
+        mockDataProvider.delete = vi.fn().mockResolvedValue({ data: junctionRecord });
 
-        const result = await service.removeContactFromOrganization(
-          contactId,
-          organizationId
-        );
+        const result = await service.removeContactFromOrganization(contactId, organizationId);
 
-        expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          "contact_organizations",
-          {
-            filter: { contact_id: contactId, organization_id: organizationId },
-            pagination: { page: 1, perPage: 1 },
-            sort: { field: "id", order: "ASC" },
-          }
-        );
-        expect(mockDataProvider.delete).toHaveBeenCalledWith(
-          "contact_organizations",
-          { id: 1 }
-        );
+        expect(mockDataProvider.getList).toHaveBeenCalledWith("contact_organizations", {
+          filter: { contact_id: contactId, organization_id: organizationId },
+          pagination: { page: 1, perPage: 1 },
+          sort: { field: "id", order: "ASC" },
+        });
+        expect(mockDataProvider.delete).toHaveBeenCalledWith("contact_organizations", { id: 1 });
         expect(result.data.id).toBe("1-101");
       });
 
       test("should handle non-existent junction gracefully (idempotency)", async () => {
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: [], total: 0 });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [], total: 0 });
         mockDataProvider.delete = vi.fn();
 
         const result = await service.removeContactFromOrganization(1, 101);
@@ -222,13 +189,10 @@ describe("JunctionsService", () => {
 
         const result = await service.setPrimaryOrganization(1, 101);
 
-        expect(mockDataProvider.rpc).toHaveBeenCalledWith(
-          "set_primary_organization",
-          {
-            p_contact_id: 1,
-            p_organization_id: 101,
-          }
-        );
+        expect(mockDataProvider.rpc).toHaveBeenCalledWith("set_primary_organization", {
+          p_contact_id: 1,
+          p_organization_id: 101,
+        });
         expect(result.data.success).toBe(true);
       });
 
@@ -239,15 +203,13 @@ describe("JunctionsService", () => {
 
         const serviceWithoutRPC = new JunctionsService(providerWithoutRPC as any);
 
-        await expect(
-          serviceWithoutRPC.setPrimaryOrganization(1, 101)
-        ).rejects.toThrow("DataProvider does not support RPC operations");
+        await expect(serviceWithoutRPC.setPrimaryOrganization(1, 101)).rejects.toThrow(
+          "DataProvider does not support RPC operations"
+        );
       });
 
       test("should throw on RPC error", async () => {
-        mockDataProvider.rpc = vi
-          .fn()
-          .mockRejectedValue(new Error("RPC failed"));
+        mockDataProvider.rpc = vi.fn().mockRejectedValue(new Error("RPC failed"));
 
         await expect(service.setPrimaryOrganization(1, 101)).rejects.toThrow(
           "Set primary organization failed: RPC failed"
@@ -281,23 +243,16 @@ describe("JunctionsService", () => {
           { id: 102, name: "Principal Inc" },
         ];
 
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: mockParticipants, total: 2 });
-        mockDataProvider.getMany = vi
-          .fn()
-          .mockResolvedValue({ data: mockOrgs });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: mockParticipants, total: 2 });
+        mockDataProvider.getMany = vi.fn().mockResolvedValue({ data: mockOrgs });
 
         const result = await service.getOpportunityParticipants(opportunityId);
 
-        expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          "opportunity_participants",
-          {
-            filter: { opportunity_id: opportunityId },
-            pagination: { page: 1, perPage: 100 },
-            sort: { field: "is_primary", order: "DESC" },
-          }
-        );
+        expect(mockDataProvider.getList).toHaveBeenCalledWith("opportunity_participants", {
+          filter: { opportunity_id: opportunityId },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: "is_primary", order: "DESC" },
+        });
         expect(result.data).toHaveLength(2);
         expect(result.data[0].organization.name).toBe("Customer Corp");
         expect(result.data[1].organization.name).toBe("Principal Inc");
@@ -308,9 +263,7 @@ describe("JunctionsService", () => {
           data: [{ id: 1, opportunity_id: 1, organization_id: 101 }],
           total: 1,
         });
-        mockDataProvider.getMany = vi
-          .fn()
-          .mockRejectedValue(new Error("Batch fetch failed"));
+        mockDataProvider.getMany = vi.fn().mockRejectedValue(new Error("Batch fetch failed"));
 
         await expect(service.getOpportunityParticipants(1)).rejects.toThrow(
           "Failed to fetch participant organizations: Batch fetch failed"
@@ -328,9 +281,7 @@ describe("JunctionsService", () => {
           is_primary: false,
         };
 
-        mockDataProvider.create = vi
-          .fn()
-          .mockResolvedValue({ data: createdParticipant });
+        mockDataProvider.create = vi.fn().mockResolvedValue({ data: createdParticipant });
 
         const result = await service.addOpportunityParticipant(1, 101);
 
@@ -395,17 +346,12 @@ describe("JunctionsService", () => {
 
         const result = await service.removeOpportunityParticipant(1, 101);
 
-        expect(mockDataProvider.delete).toHaveBeenCalledWith(
-          "opportunity_participants",
-          { id: 1 }
-        );
+        expect(mockDataProvider.delete).toHaveBeenCalledWith("opportunity_participants", { id: 1 });
         expect(result.data.id).toBe("1-101");
       });
 
       test("should be idempotent (no error if participant doesn't exist)", async () => {
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: [], total: 0 });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [], total: 0 });
         mockDataProvider.delete = vi.fn();
 
         const result = await service.removeOpportunityParticipant(1, 101);
@@ -441,23 +387,16 @@ describe("JunctionsService", () => {
           { id: 202, first_name: "Jane", last_name: "Smith" },
         ];
 
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: mockContacts, total: 2 });
-        mockDataProvider.getMany = vi
-          .fn()
-          .mockResolvedValue({ data: mockContactData });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: mockContacts, total: 2 });
+        mockDataProvider.getMany = vi.fn().mockResolvedValue({ data: mockContactData });
 
         const result = await service.getOpportunityContacts(opportunityId);
 
-        expect(mockDataProvider.getList).toHaveBeenCalledWith(
-          "opportunity_contacts",
-          {
-            filter: { opportunity_id: opportunityId },
-            pagination: { page: 1, perPage: 100 },
-            sort: { field: "is_primary", order: "DESC" },
-          }
-        );
+        expect(mockDataProvider.getList).toHaveBeenCalledWith("opportunity_contacts", {
+          filter: { opportunity_id: opportunityId },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: "is_primary", order: "DESC" },
+        });
         expect(mockDataProvider.getMany).toHaveBeenCalledWith("contacts", {
           ids: [201, 202],
         });
@@ -516,10 +455,7 @@ describe("JunctionsService", () => {
 
         const result = await service.removeOpportunityContact(1, 201);
 
-        expect(mockDataProvider.delete).toHaveBeenCalledWith(
-          "opportunity_contacts",
-          { id: 1 }
-        );
+        expect(mockDataProvider.delete).toHaveBeenCalledWith("opportunity_contacts", { id: 1 });
         expect(result.data.id).toBe("1-201");
       });
     });
@@ -535,12 +471,8 @@ describe("JunctionsService", () => {
           { id: 202, first_name: "Jane" },
         ];
 
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: mockJunctions, total: 2 });
-        mockDataProvider.getMany = vi
-          .fn()
-          .mockResolvedValue({ data: mockContacts });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: mockJunctions, total: 2 });
+        mockDataProvider.getMany = vi.fn().mockResolvedValue({ data: mockContacts });
 
         const result = await service.getOpportunityContactsViaJunction(1);
 
@@ -549,9 +481,7 @@ describe("JunctionsService", () => {
       });
 
       test("should return empty array if no junctions exist", async () => {
-        mockDataProvider.getList = vi
-          .fn()
-          .mockResolvedValue({ data: [], total: 0 });
+        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [], total: 0 });
         mockDataProvider.getMany = vi.fn();
 
         const result = await service.getOpportunityContactsViaJunction(1);
@@ -613,21 +543,16 @@ describe("JunctionsService", () => {
 
         const result = await service.removeOpportunityContactViaJunctionId(1);
 
-        expect(mockDataProvider.delete).toHaveBeenCalledWith(
-          "opportunity_contacts",
-          { id: 1 }
-        );
+        expect(mockDataProvider.delete).toHaveBeenCalledWith("opportunity_contacts", { id: 1 });
         expect(result.data.id).toBe(1);
       });
 
       test("should throw on delete error", async () => {
-        mockDataProvider.delete = vi
-          .fn()
-          .mockRejectedValue(new Error("Record not found"));
+        mockDataProvider.delete = vi.fn().mockRejectedValue(new Error("Record not found"));
 
-        await expect(
-          service.removeOpportunityContactViaJunctionId(999)
-        ).rejects.toThrow("Remove opportunity contact via junction ID failed:");
+        await expect(service.removeOpportunityContactViaJunctionId(999)).rejects.toThrow(
+          "Remove opportunity contact via junction ID failed:"
+        );
       });
     });
 
@@ -641,9 +566,7 @@ describe("JunctionsService", () => {
           is_primary: false,
         };
 
-        mockDataProvider.getOne = vi
-          .fn()
-          .mockResolvedValue({ data: currentRecord });
+        mockDataProvider.getOne = vi.fn().mockResolvedValue({ data: currentRecord });
         mockDataProvider.update = vi.fn().mockResolvedValue({
           data: { ...currentRecord, role: "Decision Maker", is_primary: true },
         });
@@ -653,18 +576,12 @@ describe("JunctionsService", () => {
           is_primary: true,
         });
 
-        expect(mockDataProvider.getOne).toHaveBeenCalledWith(
-          "opportunity_contacts",
-          { id: 1 }
-        );
-        expect(mockDataProvider.update).toHaveBeenCalledWith(
-          "opportunity_contacts",
-          {
-            id: 1,
-            data: { role: "Decision Maker", is_primary: true },
-            previousData: currentRecord,
-          }
-        );
+        expect(mockDataProvider.getOne).toHaveBeenCalledWith("opportunity_contacts", { id: 1 });
+        expect(mockDataProvider.update).toHaveBeenCalledWith("opportunity_contacts", {
+          id: 1,
+          data: { role: "Decision Maker", is_primary: true },
+          previousData: currentRecord,
+        });
       });
 
       test("should support partial updates", async () => {
@@ -688,9 +605,7 @@ describe("JunctionsService", () => {
       });
 
       test("should throw if record doesn't exist", async () => {
-        mockDataProvider.getOne = vi
-          .fn()
-          .mockRejectedValue(new Error("Record not found"));
+        mockDataProvider.getOne = vi.fn().mockRejectedValue(new Error("Record not found"));
 
         await expect(
           service.updateOpportunityContactMetadata(999, { is_primary: true })

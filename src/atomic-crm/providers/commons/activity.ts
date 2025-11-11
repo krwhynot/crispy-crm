@@ -9,7 +9,7 @@ import type { Activity } from "../../types";
 export async function getActivityLog(
   dataProvider: DataProvider,
   organizationId?: Identifier,
-  salesId?: Identifier,
+  salesId?: Identifier
 ): Promise<Activity[]> {
   // Call RPC function with parameters
   const data = await dataProvider.rpc("get_activity_log", {

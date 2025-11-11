@@ -37,10 +37,7 @@ export const extractValidSavedQueries = (savedQueries: SavedQuery[]) => {
  * @deprecated Use areValidSavedQueries from `ra-core` once available.
  */
 export const areValidSavedQueries = (savedQueries: SavedQuery[]) => {
-  if (
-    Array.isArray(savedQueries) &&
-    savedQueries.every((query) => isValidSavedQuery(query))
-  ) {
+  if (Array.isArray(savedQueries) && savedQueries.every((query) => isValidSavedQuery(query))) {
     return true;
   }
 };

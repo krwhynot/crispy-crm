@@ -22,17 +22,14 @@ export const TagsListEdit = () => {
   const record = useRecordContext<Contact>();
   const [open, setOpen] = useState(false);
 
-  const { data: allTags, isPending: isPendingAllTags } = useGetList<Tag>(
-    "tags",
-    {
-      pagination: { page: 1, perPage: 10 },
-      sort: { field: "name", order: "ASC" },
-    },
-  );
+  const { data: allTags, isPending: isPendingAllTags } = useGetList<Tag>("tags", {
+    pagination: { page: 1, perPage: 10 },
+    sort: { field: "name", order: "ASC" },
+  });
   const { data: tags, isPending: isPendingRecordTags } = useGetMany<Tag>(
     "tags",
     { ids: record?.tags },
-    { enabled: record && record.tags && record.tags.length > 0 },
+    { enabled: record && record.tags && record.tags.length > 0 }
   );
   const [update] = useUpdate<Contact>();
 
@@ -88,10 +85,10 @@ export const TagsListEdit = () => {
           onSuccess: () => {
             setOpen(false);
           },
-        },
+        }
       );
     },
-    [update, record],
+    [update, record]
   );
 
   if (isPendingRecordTags || isPendingAllTags) return null;
@@ -114,27 +111,17 @@ export const TagsListEdit = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {unselectedTags?.map((tag) => (
-              <DropdownMenuItem
-                key={tag.id}
-                onClick={() => handleTagAdd(tag.id)}
-              >
+              <DropdownMenuItem key={tag.id} onClick={() => handleTagAdd(tag.id)}>
                 <Badge
                   variant="secondary"
-                  className={cn(
-                    "text-xs font-normal",
-                    getTagColorClass(tag.color),
-                  )}
+                  className={cn("text-xs font-normal", getTagColorClass(tag.color))}
                 >
                   {tag.name}
                 </Badge>
               </DropdownMenuItem>
             ))}
             <DropdownMenuItem onClick={openTagCreateDialog}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start p-0 cursor-pointer"
-              >
+              <Button variant="ghost" size="sm" className="w-full justify-start p-0 cursor-pointer">
                 <Edit className="h-3 w-3 mr-2" />
                 Create new tag
               </Button>
@@ -143,11 +130,7 @@ export const TagsListEdit = () => {
         </DropdownMenu>
       </div>
 
-      <TagCreateModal
-        open={open}
-        onClose={handleTagCreateClose}
-        onSuccess={handleTagCreated}
-      />
+      <TagCreateModal open={open} onClose={handleTagCreateClose} onSuccess={handleTagCreated} />
     </div>
   );
 };

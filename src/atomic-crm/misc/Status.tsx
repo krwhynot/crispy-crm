@@ -14,13 +14,7 @@ function getStatusBackgroundClass(status: string): string {
   return statusMap[status] || "bg-muted";
 }
 
-export const Status = ({
-  status,
-  className,
-}: {
-  status: string;
-  className?: string;
-}) => {
+export const Status = ({ status, className }: { status: string; className?: string }) => {
   const { noteStatuses } = useConfigurationContext();
   if (!status || !noteStatuses) return null;
   const statusObject = noteStatuses.find((s: any) => s.value === status);
@@ -29,10 +23,7 @@ export const Status = ({
   return (
     <div className={cn("group relative inline-block mr-2", className)}>
       <span
-        className={cn(
-          "inline-block w-2.5 h-2.5 rounded-full",
-          getStatusBackgroundClass(status)
-        )}
+        className={cn("inline-block w-2.5 h-2.5 rounded-full", getStatusBackgroundClass(status))}
       />
       <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs bg-popover text-popover-foreground border border-border rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10 shadow-sm">
         {statusObject.label}

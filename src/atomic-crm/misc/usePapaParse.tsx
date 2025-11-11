@@ -104,7 +104,7 @@ export function usePapaParse<T>({
           if (!processBatch) {
             setImporter({
               state: "error",
-              error: new Error('processBatch function not provided'),
+              error: new Error("processBatch function not provided"),
             });
             return;
           }
@@ -136,8 +136,7 @@ export function usePapaParse<T>({
                   return {
                     ...previous,
                     importCount,
-                    remainingTime:
-                      meanTime * (transformedData.length - importCount),
+                    remainingTime: meanTime * (transformedData.length - importCount),
                   };
                 }
                 return previous;
@@ -149,7 +148,7 @@ export function usePapaParse<T>({
                       ...previous,
                       errorCount: previous.errorCount + batch.length,
                     }
-                  : previous,
+                  : previous
               );
             }
           }
@@ -161,7 +160,7 @@ export function usePapaParse<T>({
                   state: "complete",
                   remainingTime: null,
                 }
-              : previous,
+              : previous
           );
         },
         error(error) {
@@ -173,7 +172,7 @@ export function usePapaParse<T>({
         dynamicTyping: false, // Keep all values as strings to avoid type conversion issues (e.g., phone numbers)
       });
     },
-    [batchSize, processBatch, onPreview, previewRowCount],
+    [batchSize, processBatch, onPreview, previewRowCount]
   );
 
   return useMemo(
@@ -182,6 +181,6 @@ export function usePapaParse<T>({
       parseCsv,
       reset,
     }),
-    [importer, parseCsv, reset],
+    [importer, parseCsv, reset]
   );
 }

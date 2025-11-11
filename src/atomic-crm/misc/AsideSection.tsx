@@ -13,9 +13,7 @@ export function AsideSection({ title, children, noGap }: AsideSectionProps) {
     <div className="mb-6 text-sm">
       <h3 className="font-medium pb-1">{title}</h3>
       <Separator />
-      <div className={cn("pt-2 flex flex-col", { "gap-1": !noGap })}>
-        {children}
-      </div>
+      <div className={cn("pt-2 flex flex-col", { "gap-1": !noGap })}>{children}</div>
     </div>
   );
 }

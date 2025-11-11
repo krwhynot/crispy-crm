@@ -2,7 +2,16 @@ import { useGetList } from "ra-core";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BarChart3 } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Opportunity } from "../types";
 import { DashboardWidget } from "./DashboardWidget";
@@ -64,10 +73,7 @@ export const PipelineByStage = () => {
   }, [opportunities, opportunityStages]);
 
   // Calculate total for percentage display
-  const total = useMemo(
-    () => chartData.reduce((sum, item) => sum + item.count, 0),
-    [chartData]
-  );
+  const total = useMemo(() => chartData.reduce((sum, item) => sum + item.count, 0), [chartData]);
 
   // Handle bar click - navigate to opportunities filtered by stage
   const handleBarClick = (data: { stage: string }) => {
@@ -103,13 +109,13 @@ export const PipelineByStage = () => {
   // Dynamic bar colors using semantic variables
   const getBarColor = (index: number) => {
     const colors = [
-      "hsl(var(--brand-500))",    // Primary brand green
-      "hsl(var(--brand-650))",    // Hover state green
-      "hsl(var(--accent))",       // Clay orange
+      "hsl(var(--brand-500))", // Primary brand green
+      "hsl(var(--brand-650))", // Hover state green
+      "hsl(var(--accent))", // Clay orange
       "hsl(var(--accent-clay-600))", // Medium-dark clay
-      "hsl(var(--brand-300))",    // Soft sage
+      "hsl(var(--brand-300))", // Soft sage
       "hsl(var(--accent-clay-400))", // Light clay
-      "hsl(var(--brand-700))",    // Darker emphasis
+      "hsl(var(--brand-700))", // Darker emphasis
       "hsl(var(--accent-clay-700))", // Dark clay
     ];
     return colors[index % colors.length];

@@ -18,10 +18,7 @@ describe("BranchLocationsSection", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={org} />}
-        />
+        <Route path="/organizations/:id/show" element={<BranchLocationsSection org={org} />} />
       </Routes>,
       {
         resource: "organizations",
@@ -42,10 +39,7 @@ describe("BranchLocationsSection", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={org} />}
-        />
+        <Route path="/organizations/:id/show" element={<BranchLocationsSection org={org} />} />
       </Routes>,
       {
         resource: "organizations",
@@ -94,10 +88,7 @@ describe("BranchLocationsSection", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={org} />}
-        />
+        <Route path="/organizations/:id/show" element={<BranchLocationsSection org={org} />} />
       </Routes>,
       {
         resource: "organizations",
@@ -132,10 +123,7 @@ describe("BranchLocationsSection", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route
-          path="/organizations/:id/show"
-          element={<BranchLocationsSection org={org} />}
-        />
+        <Route path="/organizations/:id/show" element={<BranchLocationsSection org={org} />} />
       </Routes>,
       {
         resource: "organizations",

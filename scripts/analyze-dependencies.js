@@ -137,7 +137,7 @@ if (circularDeps.length > 0) {
       console.log("  Cycle:");
       cycle.forEach((file, index) => {
         console.log(
-          `    ${index === 0 ? "┌─" : index === cycle.length - 1 ? "└─>" : "├─"} ${file}`,
+          `    ${index === 0 ? "┌─" : index === cycle.length - 1 ? "└─>" : "├─"} ${file}`
         );
       });
       console.log("");
@@ -179,14 +179,13 @@ for (const [file, deps] of dependencyGraph) {
 
 // Sort modules by coupling
 const sortedModules = Array.from(modules.entries()).sort(
-  (a, b) => b[1].externalDeps - a[1].externalDeps,
+  (a, b) => b[1].externalDeps - a[1].externalDeps
 );
 
 console.log("Module Coupling Analysis:");
 console.log("─".repeat(80));
 for (const [module, data] of sortedModules) {
-  const coupling =
-    data.externalDeps / (data.internalDeps + data.externalDeps + 1);
+  const coupling = data.externalDeps / (data.internalDeps + data.externalDeps + 1);
   console.log(`  ${module}:`);
   console.log(`    Files: ${data.files}`);
   console.log(`    Internal dependencies: ${data.internalDeps}`);

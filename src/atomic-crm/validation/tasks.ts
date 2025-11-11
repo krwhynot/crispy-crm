@@ -11,14 +11,14 @@ import { z } from "zod";
  * Task type enum matching PostgreSQL task_type enum
  */
 export const taskTypeEnum = z.enum([
-  'Call',           // Phone conversations
-  'Email',          // Email communications
-  'Meeting',        // In-person/virtual meetings & demos
-  'Follow-up',      // Re-engagement reminders
-  'Proposal',       // Quotes and proposals
-  'Discovery',      // Needs analysis & qualification
-  'Administrative', // Internal tasks
-  'None'           // Default/unspecified
+  "Call", // Phone conversations
+  "Email", // Email communications
+  "Meeting", // In-person/virtual meetings & demos
+  "Follow-up", // Re-engagement reminders
+  "Proposal", // Quotes and proposals
+  "Discovery", // Needs analysis & qualification
+  "Administrative", // Internal tasks
+  "None", // Default/unspecified
 ]);
 
 /**
@@ -39,7 +39,7 @@ export const taskSchema = z.object({
   description: z.string().nullable().optional(),
   completed: z.boolean().optional(),
   completed_at: z.string().nullable().optional(),
-  priority: z.enum(['low', 'medium', 'high']).default('medium').optional(),
+  priority: z.enum(["low", "medium", "high"]).default("medium").optional(),
   opportunity_id: z.union([z.string(), z.number()]).nullable().optional(),
   reminder_date: z.string().nullable().optional(),
 
@@ -70,7 +70,7 @@ export const taskWithReminderSchema = taskSchema.refine(
   {
     message: "Tasks with reminders must have a future due date",
     path: ["due_date"],
-  },
+  }
 );
 
 /**

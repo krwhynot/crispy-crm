@@ -73,7 +73,9 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="stage" className="block text-sm font-medium mb-1">Stage</label>
+                <label htmlFor="stage" className="block text-sm font-medium mb-1">
+                  Stage
+                </label>
                 <input
                   id="stage"
                   type="text"

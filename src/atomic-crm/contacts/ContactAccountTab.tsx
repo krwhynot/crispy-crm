@@ -32,5 +32,4 @@ export const ContactAccountTab = () => {
   );
 };
 
-const saleOptionRenderer = (choice: Sale) =>
-  `${choice.first_name} ${choice.last_name}`;
+const saleOptionRenderer = (choice: Sale) => `${choice.first_name} ${choice.last_name}`;

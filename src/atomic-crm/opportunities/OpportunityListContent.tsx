@@ -14,11 +14,7 @@ import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 export const OpportunityListContent = () => {
   const allOpportunityStages = OPPORTUNITY_STAGES_LEGACY;
 
-  const {
-    data: unorderedOpportunities,
-    isPending,
-    filterValues,
-  } = useListContext<Opportunity>();
+  const { data: unorderedOpportunities, isPending, filterValues } = useListContext<Opportunity>();
 
   const [update] = useUpdate();
   const notify = useNotify();
@@ -33,22 +29,23 @@ export const OpportunityListContent = () => {
   } = useColumnPreferences();
 
   // Filter stages based on active filter and user preferences
-  const visibleStages = filterValues?.stage && Array.isArray(filterValues.stage) && filterValues.stage.length > 0
-    ? allOpportunityStages.filter((stage) =>
-        filterValues.stage.includes(stage.value) && userVisibleStages.includes(stage.value)
-      )
-    : allOpportunityStages.filter((stage) => userVisibleStages.includes(stage.value));
+  const visibleStages =
+    filterValues?.stage && Array.isArray(filterValues.stage) && filterValues.stage.length > 0
+      ? allOpportunityStages.filter(
+          (stage) =>
+            filterValues.stage.includes(stage.value) && userVisibleStages.includes(stage.value)
+        )
+      : allOpportunityStages.filter((stage) => userVisibleStages.includes(stage.value));
 
-  const [opportunitiesByStage, setOpportunitiesByStage] =
-    useState<OpportunitiesByStage>(
-      getOpportunitiesByStage([], allOpportunityStages),
-    );
+  const [opportunitiesByStage, setOpportunitiesByStage] = useState<OpportunitiesByStage>(
+    getOpportunitiesByStage([], allOpportunityStages)
+  );
 
   useEffect(() => {
     if (unorderedOpportunities) {
       const newOpportunitiesByStage = getOpportunitiesByStage(
         unorderedOpportunities,
-        allOpportunityStages,
+        allOpportunityStages
       );
       if (!isEqual(newOpportunitiesByStage, opportunitiesByStage)) {
         setOpportunitiesByStage(newOpportunitiesByStage);
@@ -66,10 +63,7 @@ export const OpportunityListContent = () => {
     }
 
     // Dropped in the same position
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return;
     }
 
@@ -129,7 +123,7 @@ export const OpportunityListContent = () => {
           // Rollback UI on error
           setOpportunitiesByStage(previousState);
         },
-      },
+      }
     );
   };
 
@@ -146,7 +140,10 @@ export const OpportunityListContent = () => {
         />
       </div>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-[var(--border)] shadow-inner" data-testid="kanban-board">
+        <div
+          className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-[var(--border)] shadow-inner"
+          data-testid="kanban-board"
+        >
           {visibleStages.map((stage) => (
             <OpportunityColumn
               stage={stage.value}

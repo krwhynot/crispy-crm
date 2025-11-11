@@ -7,12 +7,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/b
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { QuickAddButton } from "./QuickAddButton";
 
-import {
-  Translate,
-  useGetIdentity,
-  useListContext,
-  useGetResourceLabel,
-} from "ra-core";
+import { Translate, useGetIdentity, useListContext, useGetResourceLabel } from "ra-core";
 import { Link } from "react-router-dom";
 
 import { TopToolbar } from "../layout/TopToolbar";
@@ -28,11 +23,11 @@ import { useOpportunityFilters } from "../filters/useOpportunityFilters";
 import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 
 // Helper functions for view preference persistence
-const OPPORTUNITY_VIEW_KEY = 'opportunity.view.preference';
+const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
 
 const getViewPreference = (): OpportunityView => {
   const saved = localStorage.getItem(OPPORTUNITY_VIEW_KEY);
-  return (saved === 'list' || saved === 'kanban' || saved === 'campaign') ? saved : 'kanban';
+  return saved === "list" || saved === "kanban" || saved === "campaign" ? saved : "kanban";
 };
 
 const saveViewPreference = (view: OpportunityView) => {
@@ -104,9 +99,9 @@ const OpportunityLayout = ({ view }: { view: OpportunityView }) => {
 
   return (
     <div className="w-full">
-      {view === 'kanban' ? (
+      {view === "kanban" ? (
         <OpportunityListContent />
-      ) : view === 'campaign' ? (
+      ) : view === "campaign" ? (
         <CampaignGroupedList />
       ) : (
         <OpportunityRowListView />
@@ -116,7 +111,13 @@ const OpportunityLayout = ({ view }: { view: OpportunityView }) => {
   );
 };
 
-const OpportunityActions = ({ view, onViewChange }: { view: OpportunityView; onViewChange: (view: OpportunityView) => void }) => {
+const OpportunityActions = ({
+  view,
+  onViewChange,
+}: {
+  view: OpportunityView;
+  onViewChange: (view: OpportunityView) => void;
+}) => {
   return (
     <TopToolbar>
       <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />

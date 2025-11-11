@@ -1,23 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import { Info, Settings, HelpCircle, User, Calendar, Clock } from 'lucide-react';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
+import { Info, Settings, HelpCircle, User, Calendar, Clock } from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Popover',
+  title: "UI/Popover",
   component: Popover,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
-        component: 'Displays rich content in a portal, triggered by a button.',
+        component: "Displays rich content in a portal, triggered by a button.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="flex min-h-[400px] w-full items-center justify-center">
@@ -183,9 +183,7 @@ const ControlledPopover = () => {
       </div>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline">
-            {open ? 'Close' : 'Open'} popover
-          </Button>
+          <Button variant="outline">{open ? "Close" : "Open"} popover</Button>
         </PopoverTrigger>
         <PopoverContent>
           <div className="space-y-2">
@@ -309,9 +307,7 @@ export const HelpPopover: Story = {
             </p>
           </div>
           <div className="space-y-2">
-            <button className="flex items-center text-sm hover:underline">
-              📚 Documentation
-            </button>
+            <button className="flex items-center text-sm hover:underline">📚 Documentation</button>
             <button className="flex items-center text-sm hover:underline">
               💬 Community Forum
             </button>
@@ -330,14 +326,14 @@ export const HelpPopover: Story = {
 
 // Date picker popover (mock)
 const DatePickerPopover = () => {
-  const [date, setDate] = React.useState('');
+  const [date, setDate] = React.useState("");
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-[240px] justify-start text-left">
           <Calendar className="mr-2 h-4 w-4" />
-          {date || 'Pick a date'}
+          {date || "Pick a date"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
@@ -347,7 +343,7 @@ const DatePickerPopover = () => {
               <h4 className="font-medium">March 2024</h4>
             </div>
             <div className="grid grid-cols-7 gap-1 text-center text-xs">
-              {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
+              {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
                 <div key={day} className="font-medium text-[color:var(--text-subtle)]">
                   {day}
                 </div>
@@ -377,29 +373,27 @@ export const DatePicker: Story = {
 
 // Time picker popover
 const TimePickerPopover = () => {
-  const [time, setTime] = React.useState('');
+  const [time, setTime] = React.useState("");
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-[180px] justify-start text-left">
           <Clock className="mr-2 h-4 w-4" />
-          {time || 'Select time'}
+          {time || "Select time"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-48 p-2">
         <div className="grid gap-1">
-          {['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM'].map(
-            (t) => (
-              <button
-                key={t}
-                onClick={() => setTime(t)}
-                className="text-left px-2 py-1 text-sm rounded hover:bg-muted"
-              >
-                {t}
-              </button>
-            )
-          )}
+          {["09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM"].map((t) => (
+            <button
+              key={t}
+              onClick={() => setTime(t)}
+              className="text-left px-2 py-1 text-sm rounded hover:bg-muted"
+            >
+              {t}
+            </button>
+          ))}
         </div>
       </PopoverContent>
     </Popover>
@@ -412,7 +406,7 @@ export const TimePicker: Story = {
 
 // Keyboard navigation demo
 const KeyboardNavigationPopover = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState("");
 
   return (
     <div>
@@ -446,9 +440,7 @@ const KeyboardNavigationPopover = () => {
               </div>
               <Button className="w-full">Submit (Tab here, then Escape)</Button>
             </div>
-            {value && (
-              <p className="text-sm text-[color:var(--text-subtle)]">You typed: {value}</p>
-            )}
+            {value && <p className="text-sm text-[color:var(--text-subtle)]">You typed: {value}</p>}
           </div>
         </PopoverContent>
       </Popover>

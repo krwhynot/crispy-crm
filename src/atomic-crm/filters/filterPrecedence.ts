@@ -1,6 +1,6 @@
-import type { FilterValues} from "./types";
+import type { FilterValues } from "./types";
 import { FILTER_KEYS } from "./types";
-import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/secureStorage';
+import { getStorageItem, setStorageItem, removeStorageItem } from "../utils/secureStorage";
 
 /**
  * Filter precedence utilities
@@ -20,7 +20,7 @@ export const parseUrlFilters = (search: string): FilterValues => {
 
     for (const [key, value] of params.entries()) {
       // Skip React Admin internal params
-      if (key === 'page' || key === 'perPage' || key === 'sort' || key === 'order') {
+      if (key === "page" || key === "perPage" || key === "sort" || key === "order") {
         continue;
       }
 
@@ -40,7 +40,7 @@ export const parseUrlFilters = (search: string): FilterValues => {
 
     return filters;
   } catch (error) {
-    console.warn('Failed to parse URL filters:', error);
+    console.warn("Failed to parse URL filters:", error);
     return {};
   }
 };
@@ -52,7 +52,7 @@ export const parseUrlFilters = (search: string): FilterValues => {
 export const getStoredFilterPreferences = (key: string): any => {
   try {
     // SECURITY: Use sessionStorage instead of localStorage
-    return getStorageItem<any>(key, { type: 'session' });
+    return getStorageItem<any>(key, { type: "session" });
   } catch {
     return null;
   }
@@ -65,9 +65,9 @@ export const getStoredFilterPreferences = (key: string): any => {
 export const saveFilterPreferences = (key: string, value: any): void => {
   try {
     // SECURITY: Use sessionStorage instead of localStorage
-    setStorageItem(key, value, { type: 'session' });
+    setStorageItem(key, value, { type: "session" });
   } catch (error) {
-    console.warn('Failed to save filter preferences:', error);
+    console.warn("Failed to save filter preferences:", error);
   }
 };
 
@@ -76,21 +76,21 @@ export const saveFilterPreferences = (key: string, value: any): void => {
  */
 export const getDefaultVisibleStages = (): string[] => {
   // These are the stages to EXCLUDE by default
-  const closedStages = ['closed_won', 'closed_lost'];
+  const closedStages = ["closed_won", "closed_lost"];
 
   // Get all stages from the imported choices
   const allStages = [
-    'new_lead',
-    'initial_outreach',
-    'sample_visit_offered',
-    'awaiting_response',
-    'feedback_logged',
-    'demo_scheduled',
-    'closed_won',
-    'closed_lost'
+    "new_lead",
+    "initial_outreach",
+    "sample_visit_offered",
+    "awaiting_response",
+    "feedback_logged",
+    "demo_scheduled",
+    "closed_won",
+    "closed_lost",
   ];
 
-  return allStages.filter(stage => !closedStages.includes(stage));
+  return allStages.filter((stage) => !closedStages.includes(stage));
 };
 
 /**
@@ -104,7 +104,7 @@ export const getInitialFilterValue = (
   defaultValue?: any
 ): any => {
   // 1. URL has highest priority (if present and valid)
-  if (urlValue !== undefined && urlValue !== null && urlValue !== '') {
+  if (urlValue !== undefined && urlValue !== null && urlValue !== "") {
     return urlValue;
   }
 
@@ -126,7 +126,7 @@ export const getInitialStageFilter = (urlFilters?: FilterValues): string[] => {
   // Use nullish coalescing chain for precedence
   const stageFilter =
     urlFilters?.[FILTER_KEYS.STAGE] ??
-    getStoredFilterPreferences('opportunity_hidden_stages') ??
+    getStoredFilterPreferences("opportunity_hidden_stages") ??
     getDefaultVisibleStages();
 
   // Ensure it's always an array
@@ -134,7 +134,7 @@ export const getInitialStageFilter = (urlFilters?: FilterValues): string[] => {
     return stageFilter;
   }
 
-  if (typeof stageFilter === 'string') {
+  if (typeof stageFilter === "string") {
     return [stageFilter];
   }
 
@@ -151,16 +151,15 @@ export const updateStagePreferences = (stages: string[]): void => {
 
   // Only save if different from defaults
   const isDifferent =
-    stages.length !== defaults.length ||
-    !stages.every(stage => defaults.includes(stage));
+    stages.length !== defaults.length || !stages.every((stage) => defaults.includes(stage));
 
   if (isDifferent) {
-    saveFilterPreferences('opportunity_hidden_stages', stages);
+    saveFilterPreferences("opportunity_hidden_stages", stages);
   } else {
     // Remove from storage if back to defaults
     try {
       // SECURITY: Use sessionStorage instead of localStorage
-      removeStorageItem('opportunity_hidden_stages');
+      removeStorageItem("opportunity_hidden_stages");
     } catch {
       // Ignore errors
     }
@@ -180,14 +179,14 @@ export const buildInitialFilters = (
   // Apply precedence for each default filter
   for (const [key, defaultValue] of Object.entries(defaults)) {
     const value = getInitialFilterValue(key, urlFilters[key], defaultValue);
-    if (value !== undefined && value !== null && value !== '') {
+    if (value !== undefined && value !== null && value !== "") {
       initialFilters[key] = value;
     }
   }
 
   // Include any URL filters not in defaults
   for (const [key, value] of Object.entries(urlFilters)) {
-    if (!initialFilters[key] && value !== undefined && value !== null && value !== '') {
+    if (!initialFilters[key] && value !== undefined && value !== null && value !== "") {
       initialFilters[key] = value;
     }
   }

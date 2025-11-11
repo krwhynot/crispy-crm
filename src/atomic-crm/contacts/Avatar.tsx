@@ -1,8 +1,4 @@
-import {
-  AvatarFallback,
-  AvatarImage,
-  Avatar as ShadcnAvatar,
-} from "@/components/ui/avatar";
+import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from "@/components/ui/avatar";
 import { useRecordContext } from "ra-core";
 
 import type { Contact } from "../types";

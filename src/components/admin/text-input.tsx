@@ -1,15 +1,5 @@
-import {
-  type InputProps,
-  useInput,
-  useResourceContext,
-  FieldTitle,
-} from "ra-core";
-import {
-  FormControl,
-  FormError,
-  FormField,
-  FormLabel,
-} from "@/components/admin/form";
+import { type InputProps, useInput, useResourceContext, FieldTitle } from "ra-core";
+import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
 import { cn } from "@/lib/utils.ts";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,12 +39,7 @@ export const TextInput = (props: TextInputProps) => {
     <FormField id={id} className={cn(className, "w-full")} name={field.name}>
       {label !== false && (
         <FormLabel>
-          <FieldTitle
-            label={label}
-            source={source}
-            resource={resource}
-            isRequired={isRequired}
-          />
+          <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
         </FormLabel>
       )}
       <FormControl>

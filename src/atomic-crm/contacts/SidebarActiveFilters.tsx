@@ -3,8 +3,7 @@ import { cn } from "@/lib/utils";
 import { useContactFilterChips } from "./useContactFilterChips";
 
 export const SidebarActiveFilters = () => {
-  const { chips, removeFilterValue, clearAllFilters, hasActiveFilters } =
-    useContactFilterChips();
+  const { chips, removeFilterValue, clearAllFilters, hasActiveFilters } = useContactFilterChips();
 
   // Auto-hide when no filters
   if (!hasActiveFilters) {
@@ -39,12 +38,8 @@ export const SidebarActiveFilters = () => {
             title={`${chip.category}: ${chip.label}`} // Tooltip for truncated text
           >
             <div className="flex-1 min-w-0 text-xs">
-              <span className="text-[color:var(--text-subtle)] font-medium">
-                {chip.category}:
-              </span>{" "}
-              <span className="text-[color:var(--text-body)] truncate block">
-                {chip.label}
-              </span>
+              <span className="text-[color:var(--text-subtle)] font-medium">{chip.category}:</span>{" "}
+              <span className="text-[color:var(--text-body)] truncate block">{chip.label}</span>
             </div>
             <button
               onClick={() => removeFilterValue(chip.key, chip.value)}

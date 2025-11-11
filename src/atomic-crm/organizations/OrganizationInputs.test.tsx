@@ -2,31 +2,27 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-import type { Company } from '../types';
-import { ConfigurationContext } from '../root/ConfigurationContext';
-import { vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import type { Company } from "../types";
+import { ConfigurationContext } from "../root/ConfigurationContext";
+import { vi } from "vitest";
 
 // Mock useRecordContext from ra-core
-vi.mock('ra-core', async () => {
-  const actual = await vi.importActual('ra-core');
+vi.mock("ra-core", async () => {
+  const actual = await vi.importActual("ra-core");
   return {
     ...actual,
-    useRecordContext: vi.fn(() => ({ id: 1, name: 'Test Org' })),
+    useRecordContext: vi.fn(() => ({ id: 1, name: "Test Org" })),
   };
 });
 
 // Import ra-core components after mock definition
-import {
-  CoreAdminContext as AdminContext,
-  SaveContextProvider,
-  Form as RaForm
-} from 'ra-core';
-import { Form } from '@/components/admin/form';
-import { OrganizationInputs } from './OrganizationInputs';
+import { CoreAdminContext as AdminContext, SaveContextProvider, Form as RaForm } from "ra-core";
+import { Form } from "@/components/admin/form";
+import { OrganizationInputs } from "./OrganizationInputs";
 
 const mockDataProvider = {
   getList: vi.fn(),
@@ -41,43 +37,53 @@ const mockDataProvider = {
 };
 
 const mockConfiguration = {
-  opportunityCategories: ['Software', 'Hardware', 'Services', 'Support'],
+  opportunityCategories: ["Software", "Hardware", "Services", "Support"],
   contactGender: [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-    { value: 'other', label: 'Other' }
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "other", label: "Other" },
   ],
   contactRoles: [
-    { id: 'decision_maker', name: 'Decision Maker' },
-    { id: 'influencer', name: 'Influencer' },
-    { id: 'buyer', name: 'Buyer' }
-  ]
+    { id: "decision_maker", name: "Decision Maker" },
+    { id: "influencer", name: "Influencer" },
+    { id: "buyer", name: "Buyer" },
+  ],
 };
 
-const MockFormWrapper = ({ children, defaultValues = {} }: { children: React.ReactNode; defaultValues?: any }) => {
+const MockFormWrapper = ({
+  children,
+  defaultValues = {},
+}: {
+  children: React.ReactNode;
+  defaultValues?: any;
+}) => {
   const saveContext = {
     save: vi.fn(),
     saving: false,
-    mutationMode: 'pessimistic' as const
+    mutationMode: "pessimistic" as const,
   };
 
   const form = useForm({
     defaultValues,
-    mode: 'onChange'
+    mode: "onChange",
   });
 
   return (
     <SaveContextProvider value={saveContext}>
       <RaForm defaultValues={defaultValues} onSubmit={vi.fn()}>
-        <Form {...form}>
-          {children}
-        </Form>
+        <Form {...form}>{children}</Form>
       </RaForm>
     </SaveContextProvider>
   );
 };
 
-const TestWrapper = ({ children, defaultValues }: { children: React.ReactNode; defaultValues?: Partial<Company> }) => {
+const TestWrapper = ({
+  children,
+  defaultValues,
+}: {
+  children: React.ReactNode;
+  defaultValues?: Partial<Company>;
+}) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { retry: false },
@@ -86,16 +92,14 @@ const TestWrapper = ({ children, defaultValues }: { children: React.ReactNode; d
   });
 
   // Merge with default name to prevent useRecordContext issues
-  const mergedDefaults = { name: 'Test Org', ...defaultValues };
+  const mergedDefaults = { name: "Test Org", ...defaultValues };
 
   return (
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>
         <AdminContext dataProvider={mockDataProvider}>
           <ConfigurationContext.Provider value={mockConfiguration}>
-            <MockFormWrapper defaultValues={mergedDefaults}>
-              {children}
-            </MockFormWrapper>
+            <MockFormWrapper defaultValues={mergedDefaults}>{children}</MockFormWrapper>
           </ConfigurationContext.Provider>
         </AdminContext>
       </MemoryRouter>
@@ -103,16 +107,16 @@ const TestWrapper = ({ children, defaultValues }: { children: React.ReactNode; d
   );
 };
 
-describe('OrganizationInputs - Tabbed Form', () => {
+describe("OrganizationInputs - Tabbed Form", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
     // Mock segments data for SegmentComboboxInput
     mockDataProvider.getList.mockResolvedValue({
       data: [
-        { id: 1, name: 'Enterprise' },
-        { id: 2, name: 'SMB' },
-        { id: 3, name: 'Startup' }
+        { id: 1, name: "Enterprise" },
+        { id: 2, name: "SMB" },
+        { id: 3, name: "Startup" },
       ],
       total: 3,
     });
@@ -123,25 +127,25 @@ describe('OrganizationInputs - Tabbed Form', () => {
 
     // Mock getOne for sales reference
     mockDataProvider.getOne.mockResolvedValue({
-      data: { id: 1, first_name: 'John', last_name: 'Doe' },
+      data: { id: 1, first_name: "John", last_name: "Doe" },
     });
   });
 
-  it('should render all three tabs (General, Details, Other)', async () => {
+  it("should render all three tabs (General, Details, Other)", async () => {
     render(
-      <TestWrapper defaultValues={{ name: 'Test Org' }}>
+      <TestWrapper defaultValues={{ name: "Test Org" }}>
         <OrganizationInputs />
       </TestWrapper>
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('tab', { name: /general/i })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: /details/i })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: /other/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /general/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /details/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /other/i })).toBeInTheDocument();
     });
   });
 
-  it('should display General tab content by default', async () => {
+  it("should display General tab content by default", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -161,7 +165,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     });
   });
 
-  it('should navigate to Details tab when clicked', async () => {
+  it("should navigate to Details tab when clicked", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -169,7 +173,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     );
 
     // Click Details tab
-    const detailsTab = screen.getByRole('tab', { name: /details/i });
+    const detailsTab = screen.getByRole("tab", { name: /details/i });
 
     // Verify tab exists and is clickable
     expect(detailsTab).toBeInTheDocument();
@@ -179,7 +183,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     // This test verifies the tab structure is correct
   });
 
-  it('should navigate to Other tab when clicked', async () => {
+  it("should navigate to Other tab when clicked", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -187,7 +191,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     );
 
     // Click Other tab
-    const otherTab = screen.getByRole('tab', { name: /other/i });
+    const otherTab = screen.getByRole("tab", { name: /other/i });
 
     // Verify tab exists and is clickable
     expect(otherTab).toBeInTheDocument();
@@ -197,7 +201,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     // This test verifies the tab structure is correct
   });
 
-  it('should show error count badge on General tab when validation fails', async () => {
+  it("should show error count badge on General tab when validation fails", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -207,7 +211,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     // This test verifies the structure exists for error badges
     // The actual validation logic would need to be triggered through React Admin's form context
     await waitFor(() => {
-      const generalTab = screen.getByRole('tab', { name: /general/i });
+      const generalTab = screen.getByRole("tab", { name: /general/i });
       expect(generalTab).toBeInTheDocument();
 
       // The component structure supports error badges via the Badge component
@@ -215,30 +219,30 @@ describe('OrganizationInputs - Tabbed Form', () => {
     });
   });
 
-  it('should preserve form data when switching between tabs', async () => {
+  it("should preserve form data when switching between tabs", async () => {
     render(
-      <TestWrapper defaultValues={{ name: 'Initial Name' }}>
+      <TestWrapper defaultValues={{ name: "Initial Name" }}>
         <OrganizationInputs />
       </TestWrapper>
     );
 
     // Find the name input field and verify initial value
-    const nameInputs = screen.getAllByRole('textbox');
+    const nameInputs = screen.getAllByRole("textbox");
     const nameInput = nameInputs[0]; // First textbox should be the name field
 
     // Change the value
-    fireEvent.change(nameInput, { target: { value: 'Test Organization' } });
+    fireEvent.change(nameInput, { target: { value: "Test Organization" } });
 
     // Verify the input value changed
     await waitFor(() => {
-      expect(nameInput).toHaveValue('Test Organization');
+      expect(nameInput).toHaveValue("Test Organization");
     });
 
     // The form data is preserved across tab switches by React Hook Form
     // This test verifies that the input accepts changes
   });
 
-  it('should have responsive grid layout in all tabs', async () => {
+  it("should have responsive grid layout in all tabs", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -247,33 +251,33 @@ describe('OrganizationInputs - Tabbed Form', () => {
 
     await waitFor(() => {
       // Check General tab grid
-      const generalContent = screen.getByRole('tabpanel', { hidden: false });
-      const generalGrid = generalContent.querySelector('.grid');
-      expect(generalGrid).toHaveClass('grid-cols-1', 'lg:grid-cols-2');
+      const generalContent = screen.getByRole("tabpanel", { hidden: false });
+      const generalGrid = generalContent.querySelector(".grid");
+      expect(generalGrid).toHaveClass("grid-cols-1", "lg:grid-cols-2");
     });
 
     // Check Details tab grid
-    const detailsTab = screen.getByRole('tab', { name: /details/i });
+    const detailsTab = screen.getByRole("tab", { name: /details/i });
     fireEvent.click(detailsTab);
 
     await waitFor(() => {
-      const detailsContent = screen.getByRole('tabpanel', { hidden: false });
-      const detailsGrid = detailsContent.querySelector('.grid');
-      expect(detailsGrid).toHaveClass('grid-cols-1', 'lg:grid-cols-2');
+      const detailsContent = screen.getByRole("tabpanel", { hidden: false });
+      const detailsGrid = detailsContent.querySelector(".grid");
+      expect(detailsGrid).toHaveClass("grid-cols-1", "lg:grid-cols-2");
     });
 
     // Check Other tab grid
-    const otherTab = screen.getByRole('tab', { name: /other/i });
+    const otherTab = screen.getByRole("tab", { name: /other/i });
     fireEvent.click(otherTab);
 
     await waitFor(() => {
-      const otherContent = screen.getByRole('tabpanel', { hidden: false });
-      const otherGrid = otherContent.querySelector('.grid');
-      expect(otherGrid).toHaveClass('grid-cols-1', 'lg:grid-cols-2');
+      const otherContent = screen.getByRole("tabpanel", { hidden: false });
+      const otherGrid = otherContent.querySelector(".grid");
+      expect(otherGrid).toHaveClass("grid-cols-1", "lg:grid-cols-2");
     });
   });
 
-  it('should render all 15 organization fields across tabs', async () => {
+  it("should render all 15 organization fields across tabs", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -281,9 +285,9 @@ describe('OrganizationInputs - Tabbed Form', () => {
     );
 
     // Check that all three tabs exist
-    const generalTab = screen.getByRole('tab', { name: /general/i });
-    const detailsTab = screen.getByRole('tab', { name: /details/i });
-    const otherTab = screen.getByRole('tab', { name: /other/i });
+    const generalTab = screen.getByRole("tab", { name: /general/i });
+    const detailsTab = screen.getByRole("tab", { name: /details/i });
+    const otherTab = screen.getByRole("tab", { name: /other/i });
 
     // Verify all tabs are present
     expect(generalTab).toBeInTheDocument();
@@ -291,7 +295,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     expect(otherTab).toBeInTheDocument();
 
     // Verify that the component renders input fields
-    const textboxes = screen.getAllByRole('textbox');
+    const textboxes = screen.getAllByRole("textbox");
     expect(textboxes.length).toBeGreaterThan(0);
 
     // The component includes fields distributed across 3 tabs
@@ -300,7 +304,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
     // Other tab: website, linkedin url, context links
   });
 
-  it('should use semantic colors for error badges', async () => {
+  it("should use semantic colors for error badges", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -309,7 +313,7 @@ describe('OrganizationInputs - Tabbed Form', () => {
 
     await waitFor(() => {
       // Check that tabs exist
-      const generalTab = screen.getByRole('tab', { name: /general/i });
+      const generalTab = screen.getByRole("tab", { name: /general/i });
       expect(generalTab).toBeInTheDocument();
 
       // Error badges should use variant="destructive" (semantic color)

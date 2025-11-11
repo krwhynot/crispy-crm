@@ -1,20 +1,20 @@
-import { OPPORTUNITY_STAGE_CHOICES } from '../opportunities/stageConstants';
-import { getStorageItem, setStorageItem } from '../utils/secureStorage';
+import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/stageConstants";
+import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 
 /**
  * Storage key for opportunity stage preferences
  * Phase 1 Security Remediation: Now uses sessionStorage instead of localStorage
  * (cleared on tab close for better privacy)
  */
-const STORAGE_KEY = 'filter.opportunity_stages';
+const STORAGE_KEY = "filter.opportunity_stages";
 
 /**
  * Default visible stages - excludes closed stages by default
  * Users typically want to focus on active opportunities
  */
-const DEFAULT_VISIBLE_STAGES = OPPORTUNITY_STAGE_CHOICES
-  .filter(c => !['closed_won', 'closed_lost'].includes(c.id))
-  .map(c => c.id);
+const DEFAULT_VISIBLE_STAGES = OPPORTUNITY_STAGE_CHOICES.filter(
+  (c) => !["closed_won", "closed_lost"].includes(c.id)
+).map((c) => c.id);
 
 /**
  * Get stored stage preferences from sessionStorage
@@ -27,7 +27,7 @@ const DEFAULT_VISIBLE_STAGES = OPPORTUNITY_STAGE_CHOICES
 export const getStoredStagePreferences = (): string[] => {
   try {
     // SECURITY: Use sessionStorage instead of localStorage
-    const stored = getStorageItem<string[]>(STORAGE_KEY, { type: 'session' });
+    const stored = getStorageItem<string[]>(STORAGE_KEY, { type: "session" });
     if (!stored) return DEFAULT_VISIBLE_STAGES;
 
     // Handle corrupted data (null, non-array values)
@@ -53,9 +53,9 @@ export const saveStagePreferences = (selectedStages: string[]): void => {
 
   try {
     // SECURITY: Use sessionStorage instead of localStorage
-    setStorageItem(STORAGE_KEY, selectedStages, { type: 'session' });
+    setStorageItem(STORAGE_KEY, selectedStages, { type: "session" });
   } catch (error) {
-    console.warn('Failed to save stage preferences:', error);
+    console.warn("Failed to save stage preferences:", error);
   }
 };
 
@@ -78,7 +78,7 @@ export const getDefaultVisibleStages = (): string[] => {
 export const getInitialStageFilter = (): string[] | undefined => {
   // 1. Check URL parameters (highest priority)
   const urlParams = new URLSearchParams(window.location.search);
-  const urlFilter = urlParams.get('filter');
+  const urlFilter = urlParams.get("filter");
   if (urlFilter) {
     try {
       const parsed = JSON.parse(urlFilter);

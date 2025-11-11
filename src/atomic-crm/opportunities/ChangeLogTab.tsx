@@ -117,9 +117,7 @@ export const ChangeLogTab = () => {
   });
 
   // Extract unique field names and users for filter dropdowns
-  const uniqueFields = Array.from(
-    new Set(auditEntries.map((e) => e.field_name))
-  ).sort();
+  const uniqueFields = Array.from(new Set(auditEntries.map((e) => e.field_name))).sort();
 
   const uniqueUsers = Array.from(
     new Set(
@@ -135,13 +133,7 @@ export const ChangeLogTab = () => {
   // Export functionality
   const handleExport = () => {
     // Convert filtered entries to CSV
-    const csvHeaders = [
-      "Timestamp",
-      "Field",
-      "Old Value",
-      "New Value",
-      "Changed By",
-    ];
+    const csvHeaders = ["Timestamp", "Field", "Old Value", "New Value", "Changed By"];
 
     const csvRows = filteredEntries.map((entry) => [
       format(new Date(entry.changed_at), "yyyy-MM-dd HH:mm:ss"),
@@ -153,9 +145,7 @@ export const ChangeLogTab = () => {
 
     const csvContent = [
       csvHeaders.join(","),
-      ...csvRows.map((row) =>
-        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
-      ),
+      ...csvRows.map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")),
     ].join("\n");
 
     // Create download link
@@ -193,10 +183,7 @@ export const ChangeLogTab = () => {
   };
 
   const hasActiveFilters =
-    filterField !== "all" ||
-    filterUser !== "all" ||
-    filterDateFrom !== "" ||
-    filterDateTo !== "";
+    filterField !== "all" || filterUser !== "all" || filterDateFrom !== "" || filterDateTo !== "";
 
   if (isLoading) {
     return (
@@ -212,20 +199,23 @@ export const ChangeLogTab = () => {
         <History className="w-12 h-12 text-[color:var(--text-subtle)] mb-4" />
         <h3 className="text-lg font-semibold mb-2">No Changes Yet</h3>
         <p className="text-sm text-[color:var(--text-subtle)] max-w-md">
-          When you make changes to this opportunity, they'll appear here with full history
-          tracking who changed what and when.
+          When you make changes to this opportunity, they'll appear here with full history tracking
+          who changed what and when.
         </p>
       </div>
     );
   }
 
   // Group filtered entries by date for better readability
-  const groupedByDate = filteredEntries.reduce((acc, entry) => {
-    const date = format(new Date(entry.changed_at), "yyyy-MM-dd");
-    if (!acc[date]) acc[date] = [];
-    acc[date].push(entry);
-    return acc;
-  }, {} as Record<string, AuditTrailEntry[]>);
+  const groupedByDate = filteredEntries.reduce(
+    (acc, entry) => {
+      const date = format(new Date(entry.changed_at), "yyyy-MM-dd");
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(entry);
+      return acc;
+    },
+    {} as Record<string, AuditTrailEntry[]>
+  );
 
   return (
     <div className="space-y-6 pt-4">
@@ -388,7 +378,11 @@ export const ChangeLogTab = () => {
  * - Old value → New value (or "Created" for INSERT operations)
  * - Timestamp and user who made the change
  */
-const ChangeLogEntry = ({ entry, formatFieldName, formatValue }: {
+const ChangeLogEntry = ({
+  entry,
+  formatFieldName,
+  formatValue,
+}: {
   entry: AuditTrailEntry;
   formatFieldName: (fieldName: string) => string;
   formatValue: (value: string | null) => string;
@@ -402,9 +396,7 @@ const ChangeLogEntry = ({ entry, formatFieldName, formatValue }: {
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm font-semibold">
-                {formatFieldName(entry.field_name)}
-              </span>
+              <span className="text-sm font-semibold">{formatFieldName(entry.field_name)}</span>
               {isCreation && (
                 <Badge variant="default" className="text-xs">
                   Created
@@ -420,9 +412,7 @@ const ChangeLogEntry = ({ entry, formatFieldName, formatValue }: {
             <div className="text-sm space-y-1">
               {!isCreation && (
                 <div className="flex items-start gap-2">
-                  <span className="text-[color:var(--text-subtle)] min-w-[60px]">
-                    From:
-                  </span>
+                  <span className="text-[color:var(--text-subtle)] min-w-[60px]">From:</span>
                   <span className="text-[color:var(--destructive)] line-through">
                     {formatValue(entry.old_value)}
                   </span>
@@ -442,9 +432,7 @@ const ChangeLogEntry = ({ entry, formatFieldName, formatValue }: {
           <div className="flex flex-col items-end text-xs text-[color:var(--text-subtle)] shrink-0">
             <div className="flex items-center gap-1 mb-1">
               <User className="w-3 h-3" />
-              <span>
-                {entry.sales_name || `User #${entry.changed_by}` || "System"}
-              </span>
+              <span>{entry.sales_name || `User #${entry.changed_by}` || "System"}</span>
             </div>
             <span>{format(new Date(entry.changed_at), "h:mm a")}</span>
           </div>

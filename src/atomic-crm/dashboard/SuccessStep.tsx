@@ -19,12 +19,8 @@ export function SuccessStep() {
       </div>
 
       {/* Success Message */}
-      <h3 className="text-lg font-semibold text-foreground">
-        Task Completed!
-      </h3>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Activity logged and opportunity updated
-      </p>
+      <h3 className="text-lg font-semibold text-foreground">Task Completed!</h3>
+      <p className="mt-2 text-sm text-muted-foreground">Activity logged and opportunity updated</p>
 
       {/* Closing Indicator */}
       <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">

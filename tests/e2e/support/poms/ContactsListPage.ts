@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Contacts List Page Object Model
@@ -12,7 +12,7 @@ export class ContactsListPage extends BasePage {
    * Navigate to contacts list
    */
   async navigate(): Promise<void> {
-    await this.goto('/#/contacts');
+    await this.goto("/#/contacts");
 
     // Wait for grid to be visible
     await expect(this.getContactsGrid()).toBeVisible({ timeout: 10000 });
@@ -23,7 +23,7 @@ export class ContactsListPage extends BasePage {
    */
   getContactsGrid() {
     // React Admin uses role="grid" for DataGrid
-    return this.page.getByRole('grid').first();
+    return this.page.getByRole("grid").first();
   }
 
   /**
@@ -64,7 +64,7 @@ export class ContactsListPage extends BasePage {
     await this.getLink(/create/i).click();
 
     // Wait for navigation to create page
-    await this.waitForURL('/#/contacts/create');
+    await this.waitForURL("/#/contacts/create");
   }
 
   /**

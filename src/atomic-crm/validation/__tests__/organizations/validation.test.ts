@@ -31,7 +31,16 @@ describe("Organization Validation Schemas", () => {
       });
 
       it("should reject invalid organization types", () => {
-        const invalidTypes = ["", "client", "supplier", "employee", "vendor", "competitor", "investor", "other"];
+        const invalidTypes = [
+          "",
+          "client",
+          "supplier",
+          "employee",
+          "vendor",
+          "competitor",
+          "investor",
+          "other",
+        ];
 
         invalidTypes.forEach((type) => {
           expect(() => organizationTypeSchema.parse(type)).toThrow(z.ZodError);
@@ -78,21 +87,21 @@ describe("Organization Validation Schemas", () => {
         organizationSchema.parse({
           ...validOrganization,
           website: "https://example.com",
-        }),
+        })
       ).not.toThrow();
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           website: "http://example.com",
-        }),
+        })
       ).not.toThrow();
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           website: "https://subdomain.example.com/path",
-        }),
+        })
       ).not.toThrow();
 
       // Invalid URLs
@@ -100,14 +109,14 @@ describe("Organization Validation Schemas", () => {
         organizationSchema.parse({
           ...validOrganization,
           website: "not-a-url",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           website: "example.com",
-        }),
+        })
       ).toThrow(z.ZodError);
     });
 
@@ -117,14 +126,14 @@ describe("Organization Validation Schemas", () => {
         organizationSchema.parse({
           ...validOrganization,
           linkedin_url: "https://www.linkedin.com/company/example",
-        }),
+        })
       ).not.toThrow();
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           linkedin_url: "https://linkedin.com/company/test-org",
-        }),
+        })
       ).not.toThrow();
 
       // Invalid LinkedIn URLs
@@ -132,14 +141,14 @@ describe("Organization Validation Schemas", () => {
         organizationSchema.parse({
           ...validOrganization,
           linkedin_url: "https://facebook.com/company/example",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           linkedin_url: "not-a-url",
-        }),
+        })
       ).toThrow(z.ZodError);
     });
 
@@ -151,28 +160,28 @@ describe("Organization Validation Schemas", () => {
         organizationSchema.parse({
           ...validOrganization,
           id: "string-id",
-        }),
+        })
       ).not.toThrow();
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           id: 12345,
-        }),
+        })
       ).not.toThrow();
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           parent_id: "parent-123",
-        }),
+        })
       ).not.toThrow();
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
           parent_id: 456,
-        }),
+        })
       ).not.toThrow();
     });
 
@@ -200,9 +209,7 @@ describe("Organization Validation Schemas", () => {
 
     it("should reject creation without required fields", () => {
       expect(() => createOrganizationSchema.parse({})).toThrow(z.ZodError);
-      expect(() => createOrganizationSchema.parse({ name: "" })).toThrow(
-        z.ZodError,
-      );
+      expect(() => createOrganizationSchema.parse({ name: "" })).toThrow(z.ZodError);
     });
 
     it("should not allow id field on creation", () => {
@@ -253,24 +260,18 @@ describe("Organization Validation Schemas", () => {
         name: "Updated Name",
       };
 
-      expect(() => updateOrganizationSchema.parse(invalidUpdate)).toThrow(
-        z.ZodError,
-      );
+      expect(() => updateOrganizationSchema.parse(invalidUpdate)).toThrow(z.ZodError);
     });
 
     it("should allow partial updates", () => {
+      expect(() => updateOrganizationSchema.parse({ id: "org-1", name: "New Name" })).not.toThrow();
       expect(() =>
-        updateOrganizationSchema.parse({ id: "org-1", name: "New Name" }),
+        updateOrganizationSchema.parse({ id: "org-1", organization_type: "principal" })
       ).not.toThrow();
       expect(() =>
-        updateOrganizationSchema.parse({ id: "org-1", organization_type: "principal" }),
+        updateOrganizationSchema.parse({ id: "org-1", website: "https://example.com" })
       ).not.toThrow();
-      expect(() =>
-        updateOrganizationSchema.parse({ id: "org-1", website: "https://example.com" }),
-      ).not.toThrow();
-      expect(() =>
-        updateOrganizationSchema.parse({ id: "org-1" }),
-      ).not.toThrow();
+      expect(() => updateOrganizationSchema.parse({ id: "org-1" })).not.toThrow();
     });
 
     it("should validate updated fields", () => {
@@ -278,21 +279,21 @@ describe("Organization Validation Schemas", () => {
         updateOrganizationSchema.parse({
           id: "org-1",
           organization_type: "invalid_type",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
         updateOrganizationSchema.parse({
           id: "org-1",
           website: "not-a-url",
-        }),
+        })
       ).toThrow(z.ZodError);
 
       expect(() =>
         updateOrganizationSchema.parse({
           id: "org-1",
           linkedin_url: "https://facebook.com/page",
-        }),
+        })
       ).toThrow(z.ZodError);
     });
   });

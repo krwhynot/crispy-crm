@@ -79,16 +79,14 @@ export const Breadcrumb = ({ children, ref }: BreadcrumbProps) => {
             React.Children.map(children, (child, index) => (
               <React.Fragment key={index}>
                 {child}
-                {index < React.Children.count(children) - 1 ? (
-                  <BreadcrumbSeparator />
-                ) : null}
+                {index < React.Children.count(children) - 1 ? <BreadcrumbSeparator /> : null}
               </React.Fragment>
             ))
           )}
         </BreadcrumbList>
       </BaseBreadcrumb>
     </>,
-    breadcrumbPortal,
+    breadcrumbPortal
   );
 };
 

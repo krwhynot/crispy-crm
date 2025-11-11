@@ -9,18 +9,8 @@ import {
   useEffect,
 } from "react";
 import type { InputProps } from "ra-core";
-import {
-  FieldTitle,
-  RecordContextProvider,
-  shallowEqual,
-  useInput,
-  useTranslate,
-} from "ra-core";
-import type {
-  FileRejection,
-  DropEvent,
-  DropzoneInputProps,
-} from "react-dropzone";
+import { FieldTitle, RecordContextProvider, shallowEqual, useInput, useTranslate } from "ra-core";
+import type { FileRejection, DropEvent, DropzoneInputProps } from "react-dropzone";
 import { useDropzone, type DropzoneOptions } from "react-dropzone";
 import { XCircle } from "lucide-react";
 
@@ -119,11 +109,7 @@ export const FileInput = (props: FileInputProps) => {
   });
   const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
-  const onDrop = (
-    newFiles: any[],
-    rejectedFiles: FileRejection[],
-    event: DropEvent,
-  ) => {
+  const onDrop = (newFiles: any[], rejectedFiles: FileRejection[], event: DropEvent) => {
     const updatedFiles = multiple ? [...files, ...newFiles] : [...newFiles];
 
     if (multiple) {
@@ -149,9 +135,7 @@ export const FileInput = (props: FileInputProps) => {
     }
 
     if (multiple) {
-      const filteredFiles = files.filter(
-        (stateFile) => !shallowEqual(stateFile, file),
-      );
+      const filteredFiles = files.filter((stateFile) => !shallowEqual(stateFile, file));
       onChange(filteredFiles);
       onBlur();
     } else {
@@ -190,12 +174,7 @@ export const FileInput = (props: FileInputProps) => {
         htmlFor={id}
         className={disabled || readOnly ? "cursor-default" : "cursor-pointer"}
       >
-        <FieldTitle
-          label={label}
-          source={source}
-          resource={resource}
-          isRequired={isRequired}
-        />
+        <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
       </FormLabel>
 
       <div
@@ -205,7 +184,7 @@ export const FileInput = (props: FileInputProps) => {
             "hover:border-sidebar-ring focus:outline-none",
             disabled || readOnly
               ? "bg-muted cursor-not-allowed"
-              : "bg-muted text-[color:var(--text-subtle)] cursor-pointer",
+              : "bg-muted text-[color:var(--text-subtle)] cursor-pointer"
           ),
         })}
       >
@@ -238,9 +217,7 @@ export const FileInput = (props: FileInputProps) => {
               onRemove={onRemove(file)}
               removeIcon={removeIcon}
             >
-              <RecordContextProvider value={file}>
-                {childrenElement}
-              </RecordContextProvider>
+              <RecordContextProvider value={file}>{childrenElement}</RecordContextProvider>
             </FileInputPreview>
           ))}
         </div>

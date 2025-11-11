@@ -34,11 +34,7 @@ export const ProductClassificationTab = () => {
         createItemLabel="Add custom category: %{item}"
         helperText="Select F&B category or type to create custom"
       />
-      <SelectInput
-        source="status"
-        label="Status *"
-        choices={productStatuses}
-      />
+      <SelectInput source="status" label="Status *" choices={productStatuses} />
     </div>
   );
 };

@@ -1,11 +1,6 @@
 import { TextInput } from "@/components/admin/text-input";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw } from "lucide-react";
 import { useAutoGenerateName } from "./useAutoGenerateName";
 import { NamingConventionHelp } from "./NamingConventionHelp";
@@ -51,13 +46,7 @@ export const OpportunityGeneralTab = ({ mode }: OpportunityGeneralTabProps) => {
           <NamingConventionHelp />
         </div>
       </div>
-      <TextInput
-        source="description"
-        label="Description"
-        multiline
-        rows={2}
-        helperText={false}
-      />
+      <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
       <TextInput
         source="estimated_close_date"
         label="Expected Closing Date *"

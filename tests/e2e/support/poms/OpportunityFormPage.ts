@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Page Object Model for Opportunity Create/Edit forms
@@ -12,7 +12,7 @@ export class OpportunityFormPage extends BasePage {
    * Navigate to create page
    */
   async gotoCreate(): Promise<void> {
-    await this.page.goto('/#/opportunities/create');
+    await this.page.goto("/#/opportunities/create");
     await this.waitForPageLoad();
   }
 
@@ -28,7 +28,7 @@ export class OpportunityFormPage extends BasePage {
    * Wait for form to load
    */
   async waitForPageLoad(): Promise<void> {
-    await this.page.getByRole('form').or(this.page.locator('form')).waitFor({ state: 'visible' });
+    await this.page.getByRole("form").or(this.page.locator("form")).waitFor({ state: "visible" });
   }
 
   /**
@@ -44,27 +44,30 @@ export class OpportunityFormPage extends BasePage {
   async selectOrganization(orgName: string): Promise<void> {
     // Find combobox button by text content since React Admin doesn't always use proper label association
     // Look for the section containing "Customer Organization" text, then find the combobox within it
-    const section = this.page.locator(':text("Customer Organization")').locator('..').locator('..');
-    const comboboxButton = section.getByRole('combobox');
+    const section = this.page.locator(':text("Customer Organization")').locator("..").locator("..");
+    const comboboxButton = section.getByRole("combobox");
 
     // Click to open the dropdown
     await comboboxButton.click();
 
     // Wait for the actual input field to appear in the opened dropdown/dialog
-    const searchInput = this.page.getByRole('textbox', { name: /search/i }).or(
-      this.page.locator('input[type="text"]').filter({ has: this.page.locator(':text("Search")') })
-    ).or(
-      this.page.locator('input[type="text"]').last()
-    );
-    await searchInput.waitFor({ state: 'visible', timeout: 3000 });
+    const searchInput = this.page
+      .getByRole("textbox", { name: /search/i })
+      .or(
+        this.page
+          .locator('input[type="text"]')
+          .filter({ has: this.page.locator(':text("Search")') })
+      )
+      .or(this.page.locator('input[type="text"]').last());
+    await searchInput.waitFor({ state: "visible", timeout: 3000 });
     await searchInput.fill(orgName);
 
     // Wait for autocomplete options
     await this.page.waitForTimeout(500);
 
     // Select from dropdown - use first match to avoid "Create..." option and duplicates
-    const option = this.page.getByRole('option', { name: new RegExp(`^${orgName}$`, 'i') }).first();
-    await option.waitFor({ state: 'visible' });
+    const option = this.page.getByRole("option", { name: new RegExp(`^${orgName}$`, "i") }).first();
+    await option.waitFor({ state: "visible" });
     await option.click();
   }
 
@@ -73,27 +76,35 @@ export class OpportunityFormPage extends BasePage {
    */
   async selectPrincipal(principalName: string): Promise<void> {
     // Find combobox button by text content since React Admin doesn't always use proper label association
-    const section = this.page.locator(':text("Principal Organization")').locator('..').locator('..');
-    const comboboxButton = section.getByRole('combobox');
+    const section = this.page
+      .locator(':text("Principal Organization")')
+      .locator("..")
+      .locator("..");
+    const comboboxButton = section.getByRole("combobox");
 
     // Click to open the dropdown
     await comboboxButton.click();
 
     // Wait for the actual input field to appear in the opened dropdown/dialog
-    const searchInput = this.page.getByRole('textbox', { name: /search/i }).or(
-      this.page.locator('input[type="text"]').filter({ has: this.page.locator(':text("Search")') })
-    ).or(
-      this.page.locator('input[type="text"]').last()
-    );
-    await searchInput.waitFor({ state: 'visible', timeout: 3000 });
+    const searchInput = this.page
+      .getByRole("textbox", { name: /search/i })
+      .or(
+        this.page
+          .locator('input[type="text"]')
+          .filter({ has: this.page.locator(':text("Search")') })
+      )
+      .or(this.page.locator('input[type="text"]').last());
+    await searchInput.waitFor({ state: "visible", timeout: 3000 });
     await searchInput.fill(principalName);
 
     // Wait for autocomplete options
     await this.page.waitForTimeout(500);
 
     // Select from dropdown - use first match to avoid "Create..." option and duplicates
-    const option = this.page.getByRole('option', { name: new RegExp(`^${principalName}$`, 'i') }).first();
-    await option.waitFor({ state: 'visible' });
+    const option = this.page
+      .getByRole("option", { name: new RegExp(`^${principalName}$`, "i") })
+      .first();
+    await option.waitFor({ state: "visible" });
     await option.click();
   }
 
@@ -105,8 +116,8 @@ export class OpportunityFormPage extends BasePage {
     await stageInput.click();
 
     // Select from dropdown
-    const option = this.page.getByRole('option', { name: new RegExp(stageName, 'i') });
-    await option.waitFor({ state: 'visible' });
+    const option = this.page.getByRole("option", { name: new RegExp(stageName, "i") });
+    await option.waitFor({ state: "visible" });
     await option.click();
   }
 
@@ -136,9 +147,9 @@ export class OpportunityFormPage extends BasePage {
    * Fill description
    */
   async fillDescription(description: string): Promise<void> {
-    const descInput = this.page.getByLabel(/description|notes/i).or(
-      this.page.getByRole('textbox', { name: /description/i })
-    );
+    const descInput = this.page
+      .getByLabel(/description|notes/i)
+      .or(this.page.getByRole("textbox", { name: /description/i }));
     await descInput.fill(description);
   }
 
@@ -147,7 +158,7 @@ export class OpportunityFormPage extends BasePage {
    */
   async addProduct(productName: string, quantity?: string): Promise<void> {
     // Click add product button
-    const addButton = this.page.getByRole('button', { name: /add product/i });
+    const addButton = this.page.getByRole("button", { name: /add product/i });
     await addButton.click();
 
     // Fill product details
@@ -159,8 +170,8 @@ export class OpportunityFormPage extends BasePage {
     await this.page.waitForTimeout(500);
 
     // Select from dropdown
-    const option = this.page.getByRole('option', { name: new RegExp(productName, 'i') });
-    await option.waitFor({ state: 'visible' });
+    const option = this.page.getByRole("option", { name: new RegExp(productName, "i") });
+    await option.waitFor({ state: "visible" });
     await option.click();
 
     // Fill quantity if provided
@@ -258,8 +269,8 @@ export class OpportunityFormPage extends BasePage {
    */
   async selectContact(contactName: string): Promise<void> {
     //  Find the Contacts section combobox
-    const contactsSection = this.page.locator(':text("Contacts")').locator('..').locator('..');
-    const combobox = contactsSection.getByRole('combobox').last(); // Use last to get the actual input, not just the label
+    const contactsSection = this.page.locator(':text("Contacts")').locator("..").locator("..");
+    const combobox = contactsSection.getByRole("combobox").last(); // Use last to get the actual input, not just the label
 
     // Click to open the dropdown
     await combobox.click();
@@ -272,8 +283,8 @@ export class OpportunityFormPage extends BasePage {
     await this.page.waitForTimeout(500);
 
     // Select from dropdown - use first match
-    const option = this.page.getByRole('option', { name: new RegExp(contactName, 'i') }).first();
-    await option.waitFor({ state: 'visible', timeout: 3000 });
+    const option = this.page.getByRole("option", { name: new RegExp(contactName, "i") }).first();
+    await option.waitFor({ state: "visible", timeout: 3000 });
     await option.click();
   }
 
@@ -290,7 +301,11 @@ export class OpportunityFormPage extends BasePage {
    * NOTE: Products are OPTIONAL per the validation schema (line 149-154 in opportunities.ts)
    * NOTE: Since seed data has contacts with NULL organization_id, we create a test contact inline
    */
-  async createOpportunity(name: string, organization: string, principalOrg: string = 'Wicks'): Promise<void> {
+  async createOpportunity(
+    name: string,
+    organization: string,
+    principalOrg: string = "Wicks"
+  ): Promise<void> {
     await this.fillName(name);
     await this.selectOrganization(organization);
     await this.selectPrincipal(principalOrg);
@@ -300,8 +315,8 @@ export class OpportunityFormPage extends BasePage {
 
     // Create a test contact inline using the "New Contact" button
     // This is necessary because seed data contacts have NULL organization_id
-    const newContactButton = this.page.getByRole('button', { name: /new contact/i });
-    await newContactButton.waitFor({ state: 'visible', timeout: 3000 });
+    const newContactButton = this.page.getByRole("button", { name: /new contact/i });
+    await newContactButton.waitFor({ state: "visible", timeout: 3000 });
     await newContactButton.click();
 
     // Wait for the contact creation dialog to open
@@ -315,46 +330,49 @@ export class OpportunityFormPage extends BasePage {
     const contactDialog = this.page.locator('[role="dialog"]').first();
 
     const firstNameInput = contactDialog.getByLabel(/first.*name/i);
-    await firstNameInput.waitFor({ state: 'visible', timeout: 3000 });
+    await firstNameInput.waitFor({ state: "visible", timeout: 3000 });
     await firstNameInput.fill(`TestContact${timestamp}`);
 
     const lastNameInput = contactDialog.getByLabel(/last.*name/i);
-    await lastNameInput.waitFor({ state: 'visible', timeout: 3000 });
+    await lastNameInput.waitFor({ state: "visible", timeout: 3000 });
     await lastNameInput.fill(`TestLast${timestamp}`);
 
     // Add email (REQUIRED for contact creation per contacts.ts:401-408)
     // Email is an ArrayInput - need to add an entry
     // The Add button is a plus icon (⊕) next to "Email addresses" label
-    const emailSection = contactDialog.locator(':text("Email addresses")').locator('..').locator('..');
-    const addEmailButton = emailSection.getByRole('button').first();
-    await addEmailButton.waitFor({ state: 'visible', timeout: 3000 });
+    const emailSection = contactDialog
+      .locator(':text("Email addresses")')
+      .locator("..")
+      .locator("..");
+    const addEmailButton = emailSection.getByRole("button").first();
+    await addEmailButton.waitFor({ state: "visible", timeout: 3000 });
     await addEmailButton.click();
     await this.page.waitForTimeout(300);
 
     // Fill the email input (appears after clicking Add) - scoped to dialog
     const emailInput = contactDialog.locator('input[placeholder*="Email"]').first();
-    await emailInput.waitFor({ state: 'visible', timeout: 3000 });
+    await emailInput.waitFor({ state: "visible", timeout: 3000 });
     await emailInput.clear(); // Clear any existing content
     await emailInput.fill(`test${timestamp}@example.com`);
 
     // Select email type (REQUIRED - one of "Work"|"Home"|"Other")
     // The type SelectInput is rendered as a button with role="combobox" next to the email input
     // Since we just added an email entry, the type combobox is the last one in the email section
-    const emailTypeButton = emailSection.getByRole('combobox').last();
-    await emailTypeButton.waitFor({ state: 'visible', timeout: 3000 });
+    const emailTypeButton = emailSection.getByRole("combobox").last();
+    await emailTypeButton.waitFor({ state: "visible", timeout: 3000 });
     await emailTypeButton.click();
 
     // Select "Work" from the dropdown
-    const workOption = this.page.getByRole('option', { name: /^work$/i }).first();
-    await workOption.waitFor({ state: 'visible', timeout: 3000 });
+    const workOption = this.page.getByRole("option", { name: /^work$/i }).first();
+    await workOption.waitFor({ state: "visible", timeout: 3000 });
     await workOption.click();
 
     // Wait for validation to complete
     await this.page.waitForTimeout(500);
 
     // Submit the contact (this auto-adds it to the opportunity) - scoped to dialog
-    const saveContactButton = contactDialog.getByRole('button', { name: /save|create/i });
-    await saveContactButton.waitFor({ state: 'visible', timeout: 3000 });
+    const saveContactButton = contactDialog.getByRole("button", { name: /save|create/i });
+    await saveContactButton.waitFor({ state: "visible", timeout: 3000 });
     await saveContactButton.click();
 
     // Wait for contact to be added
@@ -368,7 +386,9 @@ export class OpportunityFormPage extends BasePage {
    */
   async expectValidationError(fieldLabel: string): Promise<void> {
     // Look for error message near the field
-    const fieldContainer = this.page.getByLabel(new RegExp(fieldLabel, 'i')).locator('xpath=ancestor::div[contains(@class, "field") or contains(@class, "form")]');
+    const fieldContainer = this.page
+      .getByLabel(new RegExp(fieldLabel, "i"))
+      .locator('xpath=ancestor::div[contains(@class, "field") or contains(@class, "form")]');
     const errorMessage = fieldContainer.locator('[role="alert"], .error, [class*="error"]');
     await expect(errorMessage).toBeVisible();
   }
@@ -377,7 +397,7 @@ export class OpportunityFormPage extends BasePage {
    * Verify form field has value
    */
   async expectFieldValue(fieldLabel: string, expectedValue: string): Promise<void> {
-    const field = this.page.getByLabel(new RegExp(fieldLabel, 'i'));
+    const field = this.page.getByLabel(new RegExp(fieldLabel, "i"));
     await expect(field).toHaveValue(expectedValue);
   }
 }

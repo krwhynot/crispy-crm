@@ -51,12 +51,7 @@ describe("Task Validation Schemas (task.ts)", () => {
 
   describe("priorityLevelSchema", () => {
     it("should accept all valid priority levels", () => {
-      const validPriorities: PriorityLevel[] = [
-        "low",
-        "medium",
-        "high",
-        "critical",
-      ];
+      const validPriorities: PriorityLevel[] = ["low", "medium", "high", "critical"];
 
       validPriorities.forEach((priority) => {
         const result = priorityLevelSchema.safeParse(priority);

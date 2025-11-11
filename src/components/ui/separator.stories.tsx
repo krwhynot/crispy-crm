@@ -1,27 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Separator } from './separator';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Separator } from "./separator";
+import React from "react";
 
 const meta = {
-  title: 'UI/Separator',
+  title: "UI/Separator",
   component: Separator,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     orientation: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-      description: 'The orientation of the separator',
+      control: "select",
+      options: ["horizontal", "vertical"],
+      description: "The orientation of the separator",
     },
     decorative: {
-      control: 'boolean',
-      description: 'Whether the separator is purely decorative (no semantic meaning)',
+      control: "boolean",
+      description: "Whether the separator is purely decorative (no semantic meaning)",
     },
     className: {
-      control: 'text',
-      description: 'Additional CSS classes',
+      control: "text",
+      description: "Additional CSS classes",
     },
   },
 } satisfies Meta<typeof Separator>;
@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 // Default horizontal separator
 export const Horizontal: Story = {
   args: {
-    orientation: 'horizontal',
+    orientation: "horizontal",
   },
   render: (args) => (
     <div className="w-[400px]">
@@ -57,7 +57,7 @@ export const Horizontal: Story = {
 // Vertical separator
 export const Vertical: Story = {
   args: {
-    orientation: 'vertical',
+    orientation: "vertical",
   },
   render: (args) => (
     <div className="flex h-[200px] items-center">
@@ -113,25 +113,15 @@ export const MultipleHorizontal: Story = {
 export const NavigationBar: Story = {
   render: () => (
     <nav className="flex h-10 items-center rounded-lg border bg-background px-4">
-      <button className="text-sm font-medium hover:text-primary">
-        Home
-      </button>
+      <button className="text-sm font-medium hover:text-primary">Home</button>
       <Separator orientation="vertical" className="mx-4" />
-      <button className="text-sm font-medium hover:text-primary">
-        Products
-      </button>
+      <button className="text-sm font-medium hover:text-primary">Products</button>
       <Separator orientation="vertical" className="mx-4" />
-      <button className="text-sm font-medium hover:text-primary">
-        Services
-      </button>
+      <button className="text-sm font-medium hover:text-primary">Services</button>
       <Separator orientation="vertical" className="mx-4" />
-      <button className="text-sm font-medium hover:text-primary">
-        About
-      </button>
+      <button className="text-sm font-medium hover:text-primary">About</button>
       <Separator orientation="vertical" className="mx-4" />
-      <button className="text-sm font-medium hover:text-primary">
-        Contact
-      </button>
+      <button className="text-sm font-medium hover:text-primary">Contact</button>
     </nav>
   ),
 };
@@ -159,8 +149,8 @@ export const SidebarLayout: Story = {
         <h2 className="mb-2 text-lg font-semibold">Main Content</h2>
         <Separator className="mb-4" />
         <p className="text-sm text-[color:var(--text-subtle)]">
-          This layout demonstrates the use of both horizontal and vertical separators
-          to divide content areas.
+          This layout demonstrates the use of both horizontal and vertical separators to divide
+          content areas.
         </p>
       </main>
     </div>

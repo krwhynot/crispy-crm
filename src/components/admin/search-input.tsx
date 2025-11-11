@@ -9,7 +9,7 @@ export const SearchInput = (inProps: SearchInputProps) => {
 
   if (label) {
     throw new Error(
-      "<SearchInput> isn't designed to be used with a label prop. Use <TextInput> if you need a label.",
+      "<SearchInput> isn't designed to be used with a label prop. Use <TextInput> if you need a label."
     );
   }
 

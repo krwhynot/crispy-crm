@@ -14,13 +14,7 @@ import { Avatar } from "./Avatar";
 import { TagsList } from "./TagsList";
 
 export const ContactListContent = () => {
-  const {
-    data: contacts,
-    error,
-    isPending,
-    onToggleItem,
-    selectedIds,
-  } = useListContext<Contact>();
+  const { data: contacts, error, isPending, onToggleItem, selectedIds } = useListContext<Contact>();
   const isSmall = useIsMobile();
 
   if (isPending) {
@@ -36,9 +30,7 @@ export const ContactListContent = () => {
     <div className="space-y-2">
       {contacts.map((contact) => (
         <RecordContextProvider key={contact.id} value={contact}>
-          <div
-            className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-          >
+          <div className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
             {/* Left cluster: Checkbox + Avatar + Contact Info */}
             <div className="flex items-center gap-3 min-w-0 flex-1">
               <Checkbox
@@ -85,12 +77,11 @@ export const ContactListContent = () => {
                     <span className="opacity-60 mx-0.5">at</span>
                   )}
                   {contact.organization_id && (
-                    <ReferenceField
-                      source="organization_id"
-                      reference="organizations"
-                      link={false}
-                    >
-                      <TextField source="name" className="font-semibold text-[color:var(--text-body)]" />
+                    <ReferenceField source="organization_id" reference="organizations" link={false}>
+                      <TextField
+                        source="name"
+                        className="font-semibold text-[color:var(--text-body)]"
+                      />
                     </ReferenceField>
                   )}
 
@@ -108,8 +99,7 @@ export const ContactListContent = () => {
                 <div className="text-xs text-[color:var(--text-subtle)] relative z-10">
                   <div title={contact.last_seen}>
                     {!isSmall && "last activity "}
-                    {formatRelative(contact.last_seen, now)}{" "}
-                    <Status status={contact.status} />
+                    {formatRelative(contact.last_seen, now)} <Status status={contact.status} />
                   </div>
                 </div>
               )}

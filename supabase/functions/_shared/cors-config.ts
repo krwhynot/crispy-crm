@@ -29,9 +29,7 @@ function parseAllowedOrigins(): string[] {
   if (!envOrigins) {
     // Default to development origins in local environment
     const isProduction = Deno.env.get("DENO_ENV") === "production";
-    return isProduction
-      ? DEFAULT_PRODUCTION_ORIGINS
-      : DEFAULT_DEVELOPMENT_ORIGINS;
+    return isProduction ? DEFAULT_PRODUCTION_ORIGINS : DEFAULT_DEVELOPMENT_ORIGINS;
   }
 
   return envOrigins
@@ -43,10 +41,7 @@ function parseAllowedOrigins(): string[] {
 /**
  * Validate if an origin is allowed based on the allowlist
  */
-function isOriginAllowed(
-  origin: string | null,
-  allowedOrigins: string[],
-): boolean {
+function isOriginAllowed(origin: string | null, allowedOrigins: string[]): boolean {
   if (!origin) {
     return false;
   }
@@ -58,9 +53,7 @@ function isOriginAllowed(
  * Generate CORS headers with dynamic origin validation
  * This replaces the insecure "*" wildcard with proper origin validation
  */
-export function createCorsHeaders(
-  requestOrigin?: string | null,
-): Record<string, string> {
+export function createCorsHeaders(requestOrigin?: string | null): Record<string, string> {
   const allowedOrigins = parseAllowedOrigins();
 
   // Determine the allowed origin for this request
@@ -78,8 +71,7 @@ export function createCorsHeaders(
 
   return {
     "Access-Control-Allow-Origin": allowOrigin,
-    "Access-Control-Allow-Headers":
-      "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
     "Access-Control-Allow-Methods": "POST, PATCH, DELETE",
     "Access-Control-Allow-Credentials": "true",
   };

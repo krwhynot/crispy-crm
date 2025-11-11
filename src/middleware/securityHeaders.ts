@@ -11,7 +11,7 @@
  * Engineering Constitution: SINGLE SOURCE OF TRUTH - CSP config centralized in config/csp-config.ts
  */
 
-import { getCSPConfig, buildCSPHeader } from '@/config/csp-config';
+import { getCSPConfig, buildCSPHeader } from "@/config/csp-config";
 
 interface SecurityHeadersConfig {
   environment: "development" | "production";
@@ -21,9 +21,7 @@ interface SecurityHeadersConfig {
  * Get all security headers for the application
  * Uses centralized CSP configuration from config/csp-config.ts
  */
-export function getSecurityHeaders(
-  _config: SecurityHeadersConfig,
-): Record<string, string> {
+export function getSecurityHeaders(_config: SecurityHeadersConfig): Record<string, string> {
   const cspConfig = getCSPConfig();
   const cspHeader = buildCSPHeader(cspConfig);
 
@@ -82,11 +80,8 @@ export const defaultConfigs = {
 /**
  * Express/Connect middleware function for security headers
  */
-export function securityHeadersMiddleware(
-  config?: Partial<SecurityHeadersConfig>,
-) {
-  const environment =
-    process.env.NODE_ENV === "production" ? "production" : "development";
+export function securityHeadersMiddleware(config?: Partial<SecurityHeadersConfig>) {
+  const environment = process.env.NODE_ENV === "production" ? "production" : "development";
   const fullConfig = {
     ...defaultConfigs[environment],
     ...config,

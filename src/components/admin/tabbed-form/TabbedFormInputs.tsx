@@ -17,11 +17,7 @@ export interface TabbedFormInputsProps {
   className?: string;
 }
 
-export const TabbedFormInputs = ({
-  tabs,
-  defaultTab,
-  className,
-}: TabbedFormInputsProps) => {
+export const TabbedFormInputs = ({ tabs, defaultTab, className }: TabbedFormInputsProps) => {
   const { errors } = useFormState();
   const errorKeys = Object.keys(errors || {});
 
@@ -29,18 +25,13 @@ export const TabbedFormInputs = ({
   const errorCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     for (const tab of tabs) {
-      counts[tab.key] = errorKeys.filter((key) =>
-        tab.fields.includes(key)
-      ).length;
+      counts[tab.key] = errorKeys.filter((key) => tab.fields.includes(key)).length;
     }
     return counts;
   }, [errorKeys, tabs]);
 
   return (
-    <Tabs
-      defaultValue={defaultTab || tabs[0]?.key}
-      className={className}
-    >
+    <Tabs defaultValue={defaultTab || tabs[0]?.key} className={className}>
       <TabsList className="h-auto min-h-0 inline-flex justify-start rounded-t-lg bg-muted p-[1px] gap-[1px] border-b-0">
         {tabs.map((tab) => (
           <TabTriggerWithErrors

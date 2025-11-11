@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Task Show Page Object Model
@@ -15,7 +15,7 @@ export class TaskShowPage extends BasePage {
     await this.waitForURL(/\/#\/tasks\/\d+\/show/);
 
     // Wait for task title to be visible (indicates page loaded)
-    const heading = this.page.getByRole('heading', { level: 2 });
+    const heading = this.page.getByRole("heading", { level: 2 });
     await expect(heading.first()).toBeVisible({ timeout: 10000 });
   }
 
@@ -35,13 +35,13 @@ export class TaskShowPage extends BasePage {
 
     // Verify priority if provided
     if (data.priority) {
-      const priorityBadge = this.getText(new RegExp(data.priority, 'i'));
+      const priorityBadge = this.getText(new RegExp(data.priority, "i"));
       await expect(priorityBadge).toBeVisible({ timeout: 5000 });
     }
 
     // Verify type if provided
     if (data.type) {
-      const typeText = this.getText(new RegExp(data.type, 'i'));
+      const typeText = this.getText(new RegExp(data.type, "i"));
       await expect(typeText).toBeVisible({ timeout: 5000 });
     }
   }
@@ -84,8 +84,8 @@ export class TaskShowPage extends BasePage {
     // Confirm deletion in dialog
     // React Admin uses a confirmation dialog
     const confirmButton = this.page
-      .getByRole('button', { name: /confirm/i })
-      .or(this.page.getByRole('button', { name: /delete/i }));
+      .getByRole("button", { name: /confirm/i })
+      .or(this.page.getByRole("button", { name: /delete/i }));
 
     await expect(confirmButton).toBeVisible({ timeout: 5000 });
     await confirmButton.click();

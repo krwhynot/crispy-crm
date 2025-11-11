@@ -7,22 +7,15 @@ import useAppBarHeight from "../misc/useAppBarHeight";
 import type { Contact } from "../types";
 import { OpportunityCreate } from "./OpportunityCreate";
 
-export const OpportunityEmpty = ({
-  children,
-}: {
-  children?: React.ReactNode;
-}) => {
+export const OpportunityEmpty = ({ children }: { children?: React.ReactNode }) => {
   const location = useLocation();
   const matchCreate = matchPath("/opportunities/create", location.pathname);
   const appbarHeight = useAppBarHeight();
 
   // get Contact data
-  const { data: contacts, isPending: contactsLoading } = useGetList<Contact>(
-    "contacts",
-    {
-      pagination: { page: 1, perPage: 1 },
-    },
-  );
+  const { data: contacts, isPending: contactsLoading } = useGetList<Contact>("contacts", {
+    pagination: { page: 1, perPage: 1 },
+  });
 
   if (contactsLoading) return <Progress value={50} />;
 

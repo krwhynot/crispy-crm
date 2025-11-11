@@ -11,9 +11,7 @@ function createErrorResponse(status: number, message: string, corsHeaders: Recor
 }
 
 async function updatePassword(user: any, corsHeaders: Record<string, string>) {
-  const { data, error } = await supabaseAdmin.auth.resetPasswordForEmail(
-    user.email,
-  );
+  const { data, error } = await supabaseAdmin.auth.resetPasswordForEmail(user.email);
 
   if (!data || error) {
     return createErrorResponse(500, "Internal Server Error", corsHeaders);
@@ -25,7 +23,7 @@ async function updatePassword(user: any, corsHeaders: Record<string, string>) {
     }),
     {
       headers: { "Content-Type": "application/json", ...corsHeaders },
-    },
+    }
   );
 }
 
@@ -44,7 +42,7 @@ Deno.serve(async (req: Request) => {
   const localClient = createClient(
     Deno.env.get("SUPABASE_URL") ?? "",
     Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-    { global: { headers: { Authorization: authHeader } } },
+    { global: { headers: { Authorization: authHeader } } }
   );
 
   const { data } = await localClient.auth.getUser();

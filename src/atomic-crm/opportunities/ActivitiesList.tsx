@@ -39,8 +39,8 @@ export const ActivitiesList = () => {
                     activity.sentiment === "positive"
                       ? "border-green-500 text-green-700"
                       : activity.sentiment === "negative"
-                      ? "border-red-500 text-red-700"
-                      : "border-gray-500 text-gray-700"
+                        ? "border-red-500 text-red-700"
+                        : "border-gray-500 text-gray-700"
                   }
                 >
                   {activity.sentiment}
@@ -55,9 +55,7 @@ export const ActivitiesList = () => {
           <div className="text-sm font-medium">{activity.subject}</div>
 
           {activity.description && (
-            <div className="text-sm text-[color:var(--text-subtle)]">
-              {activity.description}
-            </div>
+            <div className="text-sm text-[color:var(--text-subtle)]">{activity.description}</div>
           )}
 
           {activity.duration_minutes && (

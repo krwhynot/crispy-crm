@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Page } from "@playwright/test";
 
 /**
  * Console error monitoring utility
@@ -16,9 +16,9 @@ export class ConsoleMonitor {
   async attach(page: Page): Promise<void> {
     this.errors = [];
 
-    page.on('console', (msg) => {
+    page.on("console", (msg) => {
       const type = msg.type();
-      if (type === 'error' || type === 'warning') {
+      if (type === "error" || type === "warning") {
         this.errors.push({
           type,
           message: msg.text(),
@@ -27,9 +27,9 @@ export class ConsoleMonitor {
       }
     });
 
-    page.on('pageerror', (error) => {
+    page.on("pageerror", (error) => {
       this.errors.push({
-        type: 'exception',
+        type: "exception",
         message: error.message,
         timestamp: Date.now(),
       });
@@ -49,9 +49,9 @@ export class ConsoleMonitor {
   hasRLSErrors(): boolean {
     return this.errors.some(
       (e) =>
-        e.message.includes('permission denied') ||
-        e.message.includes('RLS') ||
-        e.message.includes('row-level security')
+        e.message.includes("permission denied") ||
+        e.message.includes("RLS") ||
+        e.message.includes("row-level security")
     );
   }
 
@@ -61,9 +61,7 @@ export class ConsoleMonitor {
   hasReactErrors(): boolean {
     return this.errors.some(
       (e) =>
-        e.message.includes('React') ||
-        e.message.includes('Hook') ||
-        e.message.includes('component')
+        e.message.includes("React") || e.message.includes("Hook") || e.message.includes("component")
     );
   }
 
@@ -73,9 +71,9 @@ export class ConsoleMonitor {
   hasNetworkErrors(): boolean {
     return this.errors.some(
       (e) =>
-        e.message.includes('Failed to fetch') ||
-        e.message.includes('Network') ||
-        e.message.includes('CORS')
+        e.message.includes("Failed to fetch") ||
+        e.message.includes("Network") ||
+        e.message.includes("CORS")
     );
   }
 
@@ -84,22 +82,22 @@ export class ConsoleMonitor {
    */
   getReport(): string {
     if (this.errors.length === 0) {
-      return 'No console errors detected';
+      return "No console errors detected";
     }
 
     let report = `\n=== Console Errors Report (${this.errors.length} errors) ===\n`;
 
     if (this.hasRLSErrors()) {
-      report += '\n⚠️  RLS/Permission errors detected!\n';
+      report += "\n⚠️  RLS/Permission errors detected!\n";
     }
     if (this.hasReactErrors()) {
-      report += '⚠️  React errors detected!\n';
+      report += "⚠️  React errors detected!\n";
     }
     if (this.hasNetworkErrors()) {
-      report += '⚠️  Network errors detected!\n';
+      report += "⚠️  Network errors detected!\n";
     }
 
-    report += '\nErrors:\n';
+    report += "\nErrors:\n";
     this.errors.forEach((error, idx) => {
       report += `\n${idx + 1}. [${error.type.toUpperCase()}] ${error.message}\n`;
     });

@@ -1,6 +1,6 @@
-import type { Page } from '@playwright/test';
-import { test as base } from '@playwright/test';
-import { consoleMonitor } from '../utils/console-monitor';
+import type { Page } from "@playwright/test";
+import { test as base } from "@playwright/test";
+import { consoleMonitor } from "../utils/console-monitor";
 
 /**
  * Authenticated page fixture
@@ -29,4 +29,4 @@ export const test = base.extend<{ authenticatedPage: Page }>({
   },
 });
 
-export { expect } from '@playwright/test';
+export { expect } from "@playwright/test";

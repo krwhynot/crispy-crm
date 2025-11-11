@@ -43,11 +43,7 @@ const ShowViewGuesser = (props: { enableLog?: boolean }) => {
   useEffect(() => {
     if (record && !child) {
       const inferredElements = getElementsFromRecords([record], showFieldTypes);
-      const inferredChild = new InferredElement(
-        showFieldTypes.show,
-        null,
-        inferredElements,
-      );
+      const inferredChild = new InferredElement(showFieldTypes.show, null, inferredElements);
       setChild(inferredChild.getElement());
 
       if (!enableLog) return;
@@ -59,11 +55,9 @@ const ShowViewGuesser = (props: { enableLog?: boolean }) => {
             new Set(
               Array.from(representation.matchAll(/<([^/\s>]+)/g))
                 .map((match) => match[1])
-                .filter(
-                  (component) => component !== "span" && component !== "div",
-                ),
-            ),
-          ),
+                .filter((component) => component !== "span" && component !== "div")
+            )
+          )
         )
         .sort();
 
@@ -71,19 +65,14 @@ const ShowViewGuesser = (props: { enableLog?: boolean }) => {
         `Guessed Show:
 
 ${components
-  .map(
-    (component) =>
-      `import { ${component} } from "@/components/admin/${kebabCase(
-        component,
-      )}";`,
-  )
+  .map((component) => `import { ${component} } from "@/components/admin/${kebabCase(component)}";`)
   .join("\n")}
 
 export const ${capitalize(singularize(resource))}Show = () => (
     <Show>
 ${inferredChild.getRepresentation()}
     </Show>
-);`,
+);`
       );
     }
   }, [record, child, resource, enableLog]);
@@ -93,16 +82,12 @@ ${inferredChild.getRepresentation()}
 
 const showFieldTypes: InferredTypeMap = {
   show: {
-    component: (props: any) => (
-      <div className="flex flex-col gap-4">{props.children}</div>
-    ),
+    component: (props: any) => <div className="flex flex-col gap-4">{props.children}</div>,
     representation: (
       _props: any,
-      children: { getRepresentation: () => string }[],
+      children: { getRepresentation: () => string }[]
     ) => `        <div className="flex flex-col gap-4">
-${children
-  .map((child) => `            ${child.getRepresentation()}`)
-  .join("\n")}
+${children.map((child) => `            ${child.getRepresentation()}`).join("\n")}
         </div>`,
   },
   reference: {

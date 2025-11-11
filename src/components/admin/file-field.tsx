@@ -1,11 +1,6 @@
 import type { HTMLAttributes } from "react";
 import get from "lodash/get";
-import {
-  type ExtractRecordPaths,
-  type HintedString,
-  useFieldValue,
-  useTranslate,
-} from "ra-core";
+import { type ExtractRecordPaths, type HintedString, useFieldValue, useTranslate } from "ra-core";
 import { cn } from "@/lib/utils";
 import type { FieldProps } from "@/lib/field.type";
 
@@ -22,23 +17,11 @@ import type { FieldProps } from "@/lib/field.type";
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-export const FileField = <
-  RecordType extends Record<string, any> = Record<string, any>,
->(
-  props: FileFieldProps<RecordType>,
+export const FileField = <RecordType extends Record<string, any> = Record<string, any>>(
+  props: FileFieldProps<RecordType>
 ) => {
-  const {
-    className,
-    empty,
-    title,
-    src,
-    target,
-    download,
-    defaultValue,
-    source,
-    record,
-    ...rest
-  } = props;
+  const { className, empty, title, src, target, download, defaultValue, source, record, ...rest } =
+    props;
   const sourceValue = useFieldValue({ defaultValue, source, record });
   const titleValue =
     useFieldValue({
@@ -48,10 +31,7 @@ export const FileField = <
     })?.toString() ?? title;
   const translate = useTranslate();
 
-  if (
-    sourceValue == null ||
-    (Array.isArray(sourceValue) && sourceValue.length === 0)
-  ) {
+  if (sourceValue == null || (Array.isArray(sourceValue) && sourceValue.length === 0)) {
     if (!empty) {
       return null;
     }
@@ -105,9 +85,8 @@ export const FileField = <
   );
 };
 
-export interface FileFieldProps<
-  RecordType extends Record<string, any> = Record<string, any>,
-> extends FieldProps<RecordType>,
+export interface FileFieldProps<RecordType extends Record<string, any> = Record<string, any>>
+  extends FieldProps<RecordType>,
     HTMLAttributes<HTMLElement> {
   /**
    * The source of the link to the file, for an array of files.

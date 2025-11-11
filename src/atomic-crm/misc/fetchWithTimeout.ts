@@ -2,7 +2,7 @@ type FetchParams = Parameters<typeof fetch>;
 
 export async function fetchWithTimeout(
   resource: string,
-  options: FetchParams[1] & { timeout?: number } = {},
+  options: FetchParams[1] & { timeout?: number } = {}
 ) {
   const { timeout = 2000 } = options;
 

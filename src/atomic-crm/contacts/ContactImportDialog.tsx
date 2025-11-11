@@ -1,11 +1,6 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, CheckCircle2, Users } from "lucide-react";
@@ -21,7 +16,11 @@ import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactI
 import { findCanonicalField, isFullNameColumn, mapHeadersToFields } from "./columnAliases";
 import { processCsvDataWithMappings } from "./csvProcessor";
 import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
-import { validateCsvFile, getSecurePapaParseConfig, type CsvValidationError } from "../utils/csvUploadValidator";
+import {
+  validateCsvFile,
+  getSecurePapaParseConfig,
+  type CsvValidationError,
+} from "../utils/csvUploadValidator";
 import { contactImportLimiter } from "../utils/rateLimiter";
 
 import { FileInput } from "@/components/admin/file-input";
@@ -34,7 +33,7 @@ import * as sampleCsv from "./contacts_export.csv?raw";
 const ENABLE_IMPORT_PREVIEW = true;
 
 const SAMPLE_URL = `data:text/csv;name=crm_contacts_sample.csv;charset=utf-8,${encodeURIComponent(
-  sampleCsv.default,
+  sampleCsv.default
 )}`;
 
 interface ContactImportModalProps {
@@ -42,12 +41,9 @@ interface ContactImportModalProps {
   onClose(): void;
 }
 
-type ImportState = 'idle' | 'running' | 'complete' | 'error';
+type ImportState = "idle" | "running" | "complete" | "error";
 
-export function ContactImportDialog({
-  open,
-  onClose,
-}: ContactImportModalProps) {
+export function ContactImportDialog({ open, onClose }: ContactImportModalProps) {
   const refresh = useRefresh();
   const processBatchHook = useContactImport();
 
@@ -65,7 +61,7 @@ export function ContactImportDialog({
   const [rawDataRows, setRawDataRows] = useState<any[][]>([]);
 
   // State for the actual import process (replaces actualImporter)
-  const [importState, setImportState] = useState<ImportState>('idle');
+  const [importState, setImportState] = useState<ImportState>("idle");
   const [importProgress, setImportProgress] = useState({ count: 0, total: 0 });
 
   // Import result state - accumulate across all batches
@@ -86,73 +82,78 @@ export function ContactImportDialog({
     errors: [],
     startTime: null,
   });
-  const rowOffsetRef = React.useRef(0);  // Track absolute row position in CSV file
+  const rowOffsetRef = React.useRef(0); // Track absolute row position in CSV file
 
   // Handle preview mode
-  const onPreview = useCallback((data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: any[][] }) => {
-    if (!ENABLE_IMPORT_PREVIEW) return;
+  const onPreview = useCallback(
+    (data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: any[][] }) => {
+      if (!ENABLE_IMPORT_PREVIEW) return;
 
-    const { rows, headers, rawDataRows: dataRows } = data;
+      const { rows, headers, rawDataRows: dataRows } = data;
 
+      // Store raw data for re-processing when user changes mappings
+      setRawHeaders(headers);
+      if (dataRows) {
+        setRawDataRows(dataRows);
+      }
 
-    // Store raw data for re-processing when user changes mappings
-    setRawHeaders(headers);
-    if (dataRows) {
-      setRawDataRows(dataRows);
-    }
+      // Run data quality analysis
+      const organizationsWithoutContacts = findOrganizationsWithoutContacts(rows);
+      const contactsWithoutContactInfo = findContactsWithoutContactInfo(rows);
 
-    // Run data quality analysis
-    const organizationsWithoutContacts = findOrganizationsWithoutContacts(rows);
-    const contactsWithoutContactInfo = findContactsWithoutContactInfo(rows);
+      // Generate initial preview data with auto-detected mappings
+      const mappings = headers.map((header, index) => {
+        const canonicalField = findCanonicalField(header);
+        const isFullName = isFullNameColumn(header);
+        const target =
+          canonicalField || (isFullName ? "first_name + last_name (will be split)" : null);
 
+        // Calculate confidence: 1.0 for exact matches, 0.9 for full name patterns, 0 for no match
+        let confidence = 0;
+        if (canonicalField) confidence = 1.0;
+        else if (isFullName) confidence = 0.9;
 
-    // Generate initial preview data with auto-detected mappings
-    const mappings = headers.map((header, index) => {
-      const canonicalField = findCanonicalField(header);
-      const isFullName = isFullNameColumn(header);
-      const target = canonicalField || (isFullName ? 'first_name + last_name (will be split)' : null);
+        // Get sample value from first row if available
+        const sampleValue = dataRows?.[0]?.[index]
+          ? String(dataRows[0][index]).substring(0, 50)
+          : undefined;
 
-      // Calculate confidence: 1.0 for exact matches, 0.9 for full name patterns, 0 for no match
-      let confidence = 0;
-      if (canonicalField) confidence = 1.0;
-      else if (isFullName) confidence = 0.9;
+        return {
+          source: header || "(empty)",
+          target,
+          confidence,
+          sampleValue,
+        };
+      });
 
-      // Get sample value from first row if available
-      const sampleValue = dataRows?.[0]?.[index] ? String(dataRows[0][index]).substring(0, 50) : undefined;
-
-      return {
-        source: header || '(empty)',
-        target,
-        confidence,
-        sampleValue,
+      const preview: PreviewData = {
+        mappings,
+        sampleRows: rows.slice(0, 5),
+        validCount: rows.length,
+        skipCount: 0,
+        totalRows: rows.length,
+        errors: [],
+        warnings: [],
+        newOrganizations: extractNewOrganizations(rows),
+        newTags: extractNewTags(rows),
+        hasErrors: false,
+        lowConfidenceMappings: mappings.filter((m) => m.confidence > 0 && m.confidence < 0.8)
+          .length,
+        organizationsWithoutContacts,
+        contactsWithoutContactInfo,
       };
-    });
 
-    const preview: PreviewData = {
-      mappings,
-      sampleRows: rows.slice(0, 5),
-      validCount: rows.length,
-      skipCount: 0,
-      totalRows: rows.length,
-      errors: [],
-      warnings: [],
-      newOrganizations: extractNewOrganizations(rows),
-      newTags: extractNewTags(rows),
-      hasErrors: false,
-      lowConfidenceMappings: mappings.filter(m => m.confidence > 0 && m.confidence < 0.8).length,
-      organizationsWithoutContacts,
-      contactsWithoutContactInfo,
-    };
-
-    setPreviewData(preview);
-    setShowPreview(true);
-  }, []);
+      setPreviewData(preview);
+      setShowPreview(true);
+    },
+    []
+  );
 
   // Handle user changing a column mapping - simplified to only manage state
   const handleMappingChange = useCallback((csvHeader: string, targetField: string | null) => {
-    setUserOverrides(prev => {
+    setUserOverrides((prev) => {
       const next = new Map(prev);
-      if (targetField === null || targetField === '') {
+      if (targetField === null || targetField === "") {
         // Clear override → revert to auto-detection
         next.delete(csvHeader);
       } else {
@@ -169,7 +170,7 @@ export function ContactImportDialog({
     const autoMappings = mapHeadersToFields(rawHeaders);
     const finalMappings: Record<string, string | null> = {};
 
-    rawHeaders.forEach(header => {
+    rawHeaders.forEach((header) => {
       // Priority: User override > Auto-detection
       finalMappings[header] = userOverrides.get(header) ?? autoMappings[header];
     });
@@ -197,7 +198,7 @@ export function ContactImportDialog({
     const contactsWithoutContactInfo = findContactsWithoutContactInfo(reprocessedContacts);
 
     // Generate updated mappings for UI display
-    const updatedMappings = rawHeaders.map(header => {
+    const updatedMappings = rawHeaders.map((header) => {
       const target = mergedMappings[header];
 
       // Calculate confidence: 1.0 for user override or auto-match, 0.9 for full name
@@ -215,40 +216,46 @@ export function ContactImportDialog({
       let sampleValue: string | undefined;
       if (firstContact) {
         // For full name splits, show the combined first + last
-        if (target === FULL_NAME_SPLIT_MARKER || target === 'first_name + last_name (will be split)') {
-          const first = firstContact['first_name'] || '';
-          const last = firstContact['last_name'] || '';
-          sampleValue = [first, last].filter(Boolean).join(' ').substring(0, 50);
+        if (
+          target === FULL_NAME_SPLIT_MARKER ||
+          target === "first_name + last_name (will be split)"
+        ) {
+          const first = firstContact["first_name"] || "";
+          const last = firstContact["last_name"] || "";
+          sampleValue = [first, last].filter(Boolean).join(" ").substring(0, 50);
         } else if (target && firstContact[target]) {
           sampleValue = String(firstContact[target]).substring(0, 50);
         }
       }
 
       return {
-        source: header || '(empty)',
-        target: target === FULL_NAME_SPLIT_MARKER ? 'first_name + last_name (will be split)' : target,
+        source: header || "(empty)",
+        target:
+          target === FULL_NAME_SPLIT_MARKER ? "first_name + last_name (will be split)" : target,
         confidence,
         sampleValue,
       };
     });
 
     // Detect conflicting mappings (full name split + explicit first/last name)
-    const warnings: PreviewData['warnings'] = [];
+    const warnings: PreviewData["warnings"] = [];
     const targetValues = Object.values(mergedMappings);
     const hasFullNameSplit = targetValues.includes(FULL_NAME_SPLIT_MARKER);
-    const hasExplicitFirstName = targetValues.includes('first_name');
-    const hasExplicitLastName = targetValues.includes('last_name');
+    const hasExplicitFirstName = targetValues.includes("first_name");
+    const hasExplicitLastName = targetValues.includes("last_name");
 
     if (hasFullNameSplit && hasExplicitFirstName) {
       warnings.push({
         row: 0,
-        message: "A column is mapped to 'Full Name (split)' and another to 'First Name'. The explicit 'First Name' column will take precedence."
+        message:
+          "A column is mapped to 'Full Name (split)' and another to 'First Name'. The explicit 'First Name' column will take precedence.",
       });
     }
     if (hasFullNameSplit && hasExplicitLastName) {
       warnings.push({
         row: 0,
-        message: "A column is mapped to 'Full Name (split)' and another to 'Last Name'. The explicit 'Last Name' column will take precedence."
+        message:
+          "A column is mapped to 'Full Name (split)' and another to 'Last Name'. The explicit 'Last Name' column will take precedence.",
       });
     }
 
@@ -263,60 +270,68 @@ export function ContactImportDialog({
       newOrganizations: extractNewOrganizations(reprocessedContacts),
       newTags: extractNewTags(reprocessedContacts),
       hasErrors: false,
-      lowConfidenceMappings: updatedMappings.filter(m => m.confidence > 0 && m.confidence < 0.8).length,
+      lowConfidenceMappings: updatedMappings.filter((m) => m.confidence > 0 && m.confidence < 0.8)
+        .length,
       organizationsWithoutContacts,
       contactsWithoutContactInfo,
     };
   }, [reprocessedContacts, mergedMappings, rawHeaders, rawDataRows, userOverrides, previewData]);
 
   // Enhanced processBatch wrapper with result accumulation across batches
-  const processBatch = useCallback(async (batch: ContactImportSchema[]) => {
-    // Set start time on first batch
-    if (!accumulatedResultRef.current.startTime) {
-      accumulatedResultRef.current.startTime = new Date();
-    }
+  const processBatch = useCallback(
+    async (batch: ContactImportSchema[]) => {
+      // Set start time on first batch
+      if (!accumulatedResultRef.current.startTime) {
+        accumulatedResultRef.current.startTime = new Date();
+      }
 
-    try {
-      const result = await processBatchHook(batch, {
-        preview: false,
-        startingRow: rowOffsetRef.current + 1,  // Pass correct starting row for this batch
-        dataQualityDecisions,  // Pass user's data quality decisions
-        onProgress: () => {
-          setImportProgress(prev => ({ ...prev, count: prev.count + 1 }));
-        }
-      });
-
-      rowOffsetRef.current += batch.length;  // Increment offset for next batch
-
-      // Accumulate results across all batches
-      accumulatedResultRef.current.totalProcessed += result.totalProcessed;
-      accumulatedResultRef.current.successCount += result.successCount;
-      accumulatedResultRef.current.skippedCount += result.skippedCount;
-      accumulatedResultRef.current.failedCount += result.failedCount;
-      accumulatedResultRef.current.errors.push(...result.errors);
-    } catch (error: any) {
-      const errorMessage = error.message || "A critical error occurred during batch processing.";
-      const batchStartRow = rowOffsetRef.current + 1;
-
-      // Add an error entry for each contact in the failed batch
-      batch.forEach((contactData, index) => {
-        accumulatedResultRef.current.errors.push({
-          row: batchStartRow + index,
-          data: contactData,
-          errors: [{ field: "batch_processing", message: errorMessage }],
+      try {
+        const result = await processBatchHook(batch, {
+          preview: false,
+          startingRow: rowOffsetRef.current + 1, // Pass correct starting row for this batch
+          dataQualityDecisions, // Pass user's data quality decisions
+          onProgress: () => {
+            setImportProgress((prev) => ({ ...prev, count: prev.count + 1 }));
+          },
         });
-      });
 
-      // Count entire batch as failed
-      accumulatedResultRef.current.totalProcessed += batch.length;
-      accumulatedResultRef.current.failedCount += batch.length;
-      rowOffsetRef.current += batch.length;  // Ensure offset is still incremented
-    }
-  }, [processBatchHook, dataQualityDecisions]);
+        rowOffsetRef.current += batch.length; // Increment offset for next batch
+
+        // Accumulate results across all batches
+        accumulatedResultRef.current.totalProcessed += result.totalProcessed;
+        accumulatedResultRef.current.successCount += result.successCount;
+        accumulatedResultRef.current.skippedCount += result.skippedCount;
+        accumulatedResultRef.current.failedCount += result.failedCount;
+        accumulatedResultRef.current.errors.push(...result.errors);
+      } catch (error: any) {
+        const errorMessage = error.message || "A critical error occurred during batch processing.";
+        const batchStartRow = rowOffsetRef.current + 1;
+
+        // Add an error entry for each contact in the failed batch
+        batch.forEach((contactData, index) => {
+          accumulatedResultRef.current.errors.push({
+            row: batchStartRow + index,
+            data: contactData,
+            errors: [{ field: "batch_processing", message: errorMessage }],
+          });
+        });
+
+        // Count entire batch as failed
+        accumulatedResultRef.current.totalProcessed += batch.length;
+        accumulatedResultRef.current.failedCount += batch.length;
+        rowOffsetRef.current += batch.length; // Ensure offset is still incremented
+      }
+    },
+    [processBatchHook, dataQualityDecisions]
+  );
 
   // Use a single importer for the preview step only
   // SECURITY: Apply secure Papa Parse configuration (Phase 1 Security Remediation)
-  const { importer: previewImporter, parseCsv, reset: resetPreviewImporter } = usePapaParse<ContactImportSchema>({
+  const {
+    importer: previewImporter,
+    parseCsv,
+    reset: resetPreviewImporter,
+  } = usePapaParse<ContactImportSchema>({
     onPreview: onPreview,
     previewRowCount: 100,
     papaConfig: getSecurePapaParseConfig(),
@@ -328,66 +343,69 @@ export function ContactImportDialog({
 
   // Handle preview confirmation and start the actual import
   // THIS IS THE FIX: Use reprocessedContacts (with user overrides) instead of re-parsing the file
-  const handlePreviewContinue = useCallback(async (decisions: DataQualityDecisions) => {
-    // SECURITY: Check rate limit before starting import (Phase 1 Security Remediation)
-    if (!contactImportLimiter.canProceed()) {
-      const resetTime = contactImportLimiter.getResetTimeFormatted();
-      const remaining = contactImportLimiter.getRemaining();
-      alert(
-        `Import rate limit exceeded.\n\n` +
-        `You have ${remaining} imports remaining.\n` +
-        `Rate limit resets in ${resetTime}.\n\n` +
-        `This limit prevents accidental bulk data corruption and protects database performance.`
-      );
-      return;
-    }
+  const handlePreviewContinue = useCallback(
+    async (decisions: DataQualityDecisions) => {
+      // SECURITY: Check rate limit before starting import (Phase 1 Security Remediation)
+      if (!contactImportLimiter.canProceed()) {
+        const resetTime = contactImportLimiter.getResetTimeFormatted();
+        const remaining = contactImportLimiter.getRemaining();
+        alert(
+          `Import rate limit exceeded.\n\n` +
+            `You have ${remaining} imports remaining.\n` +
+            `Rate limit resets in ${resetTime}.\n\n` +
+            `This limit prevents accidental bulk data corruption and protects database performance.`
+        );
+        return;
+      }
 
-    // Store data quality decisions for validation logic
-    setDataQualityDecisions(decisions);
+      // Store data quality decisions for validation logic
+      setDataQualityDecisions(decisions);
 
-    // Reset accumulated results for new import
-    accumulatedResultRef.current = {
-      totalProcessed: 0,
-      successCount: 0,
-      skippedCount: 0,
-      failedCount: 0,
-      errors: [],
-      startTime: null,
-    };
-    rowOffsetRef.current = 0;  // Reset row offset for new import
+      // Reset accumulated results for new import
+      accumulatedResultRef.current = {
+        totalProcessed: 0,
+        successCount: 0,
+        skippedCount: 0,
+        failedCount: 0,
+        errors: [],
+        startTime: null,
+      };
+      rowOffsetRef.current = 0; // Reset row offset for new import
 
-    setShowPreview(false);
-    setImportState('running');
-    setImportProgress({ count: 0, total: reprocessedContacts.length });
+      setShowPreview(false);
+      setImportState("running");
+      setImportProgress({ count: 0, total: reprocessedContacts.length });
 
-    // Process the reprocessedContacts (which have user overrides applied) in batches
-    const batchSize = 10;
-    for (let i = 0; i < reprocessedContacts.length; i += batchSize) {
-      const batch = reprocessedContacts.slice(i, i + batchSize);
-      await processBatch(batch);
-      setImportProgress(prev => ({ ...prev, count: i + batch.length }));
-    }
+      // Process the reprocessedContacts (which have user overrides applied) in batches
+      const batchSize = 10;
+      for (let i = 0; i < reprocessedContacts.length; i += batchSize) {
+        const batch = reprocessedContacts.slice(i, i + batchSize);
+        await processBatch(batch);
+        setImportProgress((prev) => ({ ...prev, count: i + batch.length }));
+      }
 
-    setImportState('complete');
+      setImportState("complete");
 
-    // Build and show final result
-    const endTime = new Date();
-    const startTime = accumulatedResultRef.current.startTime || endTime;
-    const finalResult: ImportResult = {
-      totalProcessed: accumulatedResultRef.current.totalProcessed,
-      successCount: accumulatedResultRef.current.successCount,
-      skippedCount: accumulatedResultRef.current.skippedCount,
-      failedCount: accumulatedResultRef.current.failedCount,
-      errors: accumulatedResultRef.current.errors,
-      duration: endTime.getTime() - startTime.getTime(),
-      startTime: startTime,
-      endTime: endTime,
-    };
+      // Build and show final result
+      const endTime = new Date();
+      const startTime = accumulatedResultRef.current.startTime || endTime;
+      const finalResult: ImportResult = {
+        totalProcessed: accumulatedResultRef.current.totalProcessed,
+        successCount: accumulatedResultRef.current.successCount,
+        skippedCount: accumulatedResultRef.current.skippedCount,
+        failedCount: accumulatedResultRef.current.failedCount,
+        errors: accumulatedResultRef.current.errors,
+        duration: endTime.getTime() - startTime.getTime(),
+        startTime: startTime,
+        endTime: endTime,
+      };
 
-    setImportResult(finalResult);
-    setShowResult(true);
-    refresh();
-  }, [reprocessedContacts, processBatch, refresh]);
+      setImportResult(finalResult);
+      setShowResult(true);
+      refresh();
+    },
+    [reprocessedContacts, processBatch, refresh]
+  );
 
   const handleFileChange = async (file: File | null) => {
     // Clear previous validation errors
@@ -437,7 +455,7 @@ export function ContactImportDialog({
 
   const handleClose = () => {
     resetPreviewImporter();
-    setImportState('idle');
+    setImportState("idle");
     setShowPreview(false);
     setShowResult(false);
     setPreviewData(null);
@@ -456,7 +474,7 @@ export function ContactImportDialog({
       errors: [],
       startTime: null,
     };
-    rowOffsetRef.current = 0;  // Reset row offset
+    rowOffsetRef.current = 0; // Reset row offset
 
     onClose();
   };
@@ -498,13 +516,17 @@ export function ContactImportDialog({
 
                     {/* Progress Bar */}
                     <div className="space-y-2">
-                      <Progress value={(importProgress.count / importProgress.total) * 100} className="h-3" />
+                      <Progress
+                        value={(importProgress.count / importProgress.total) * 100}
+                        className="h-3"
+                      />
                       <div className="flex justify-between text-sm text-muted-foreground">
                         <span>
                           Processing {importProgress.count} of {importProgress.total} contacts
                         </span>
                         <span>
-                          {Math.round((importProgress.count / importProgress.total) * 100)}% Complete
+                          {Math.round((importProgress.count / importProgress.total) * 100)}%
+                          Complete
                         </span>
                       </div>
                     </div>
@@ -513,10 +535,10 @@ export function ContactImportDialog({
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                       <div className="space-y-1">
                         <p className="text-sm font-medium">Processed</p>
-                        <p className="text-2xl font-bold text-primary">
-                          {importProgress.count}
+                        <p className="text-2xl font-bold text-primary">{importProgress.count}</p>
+                        <p className="text-xs text-muted-foreground">
+                          of {importProgress.total} contacts
                         </p>
-                        <p className="text-xs text-muted-foreground">of {importProgress.total} contacts</p>
                       </div>
 
                       <div className="space-y-1">
@@ -549,8 +571,7 @@ export function ContactImportDialog({
               {previewImporter.state === "error" && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    Failed to import this file, please make sure your provided a
-                    valid CSV file.
+                    Failed to import this file, please make sure your provided a valid CSV file.
                   </AlertDescription>
                 </Alert>
               )}
@@ -563,17 +584,22 @@ export function ContactImportDialog({
                       <div className="space-y-2">
                         <h3 className="text-lg font-semibold">Import Complete!</h3>
                         <p className="text-sm text-muted-foreground">
-                          Successfully processed {accumulatedResultRef.current.totalProcessed} contacts
+                          Successfully processed {accumulatedResultRef.current.totalProcessed}{" "}
+                          contacts
                         </p>
                       </div>
                       <div className="flex gap-4 text-sm">
                         <div className="flex items-center gap-1">
                           <Users className="h-4 w-4 text-success" />
-                          <span className="font-medium">{accumulatedResultRef.current.successCount} imported</span>
+                          <span className="font-medium">
+                            {accumulatedResultRef.current.successCount} imported
+                          </span>
                         </div>
                         {accumulatedResultRef.current.failedCount > 0 && (
                           <div className="flex items-center gap-1">
-                            <span className="text-destructive">• {accumulatedResultRef.current.failedCount} errors</span>
+                            <span className="text-destructive">
+                              • {accumulatedResultRef.current.failedCount} errors
+                            </span>
                           </div>
                         )}
                       </div>
@@ -582,16 +608,13 @@ export function ContactImportDialog({
                 </Card>
               )}
 
-              {(previewImporter.state === "idle" && importState === 'idle') && (
+              {previewImporter.state === "idle" && importState === "idle" && (
                 <>
                   <Alert>
                     <AlertDescription className="flex flex-col gap-4">
                       Here is a sample CSV file you can use as a template
                       <Button asChild variant="outline" size="sm">
-                        <Link
-                          to={SAMPLE_URL}
-                          download={"crm_contacts_sample.csv"}
-                        >
+                        <Link to={SAMPLE_URL} download={"crm_contacts_sample.csv"}>
                           Download CSV sample
                         </Link>
                       </Button>{" "}
@@ -640,17 +663,15 @@ export function ContactImportDialog({
           </Form>
 
           <div className="flex justify-start pt-6 gap-2">
-            {importState === 'idle' ? (
-              <Button onClick={startImport} disabled={!file || previewImporter.state === 'parsing'}>
-                {previewImporter.state === 'parsing' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+            {importState === "idle" ? (
+              <Button onClick={startImport} disabled={!file || previewImporter.state === "parsing"}>
+                {previewImporter.state === "parsing" ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : null}
                 Import
               </Button>
             ) : (
-              <Button
-                variant="outline"
-                onClick={handleClose}
-                disabled={importState === "running"}
-              >
+              <Button variant="outline" onClick={handleClose} disabled={importState === "running"}>
                 Close
               </Button>
             )}
@@ -694,7 +715,7 @@ export function ContactImportDialog({
 // Helper function to extract unique organizations from parsed data
 function extractNewOrganizations(rows: ContactImportSchema[]): string[] {
   const organizations = new Set<string>();
-  rows.forEach(row => {
+  rows.forEach((row) => {
     if (row.organization_name) {
       organizations.add(row.organization_name.trim());
     }
@@ -705,9 +726,9 @@ function extractNewOrganizations(rows: ContactImportSchema[]): string[] {
 // Helper function to extract unique tags from parsed data
 function extractNewTags(rows: ContactImportSchema[]): string[] {
   const tags = new Set<string>();
-  rows.forEach(row => {
+  rows.forEach((row) => {
     if (row.tags) {
-      row.tags.split(',').forEach(tag => {
+      row.tags.split(",").forEach((tag) => {
         const trimmed = tag.trim();
         if (trimmed) {
           tags.add(trimmed);
@@ -720,7 +741,9 @@ function extractNewTags(rows: ContactImportSchema[]): string[] {
 
 // Helper function to find organizations without contact persons
 // These are rows with organization_name but no first_name AND no last_name
-function findOrganizationsWithoutContacts(rows: ContactImportSchema[]): Array<{ organization_name: string; row: number }> {
+function findOrganizationsWithoutContacts(
+  rows: ContactImportSchema[]
+): Array<{ organization_name: string; row: number }> {
   const orgOnlyEntries: Array<{ organization_name: string; row: number }> = [];
 
   rows.forEach((row, index) => {
@@ -737,21 +760,26 @@ function findOrganizationsWithoutContacts(rows: ContactImportSchema[]): Array<{ 
 
 // Helper function to find contacts without email or phone
 // These are contacts with a name but missing ALL email fields AND ALL phone fields
-function findContactsWithoutContactInfo(rows: ContactImportSchema[]): Array<{ name: string; organization_name: string; row: number }> {
+function findContactsWithoutContactInfo(
+  rows: ContactImportSchema[]
+): Array<{ name: string; organization_name: string; row: number }> {
   const contactsWithoutInfo: Array<{ name: string; organization_name: string; row: number }> = [];
 
   rows.forEach((row, index) => {
     if (isContactWithoutContactInfo(row)) {
       const hasFirstName = row.first_name && String(row.first_name).trim();
       const hasLastName = row.last_name && String(row.last_name).trim();
-      const name = [
-        hasFirstName ? String(row.first_name).trim() : '',
-        hasLastName ? String(row.last_name).trim() : ''
-      ].filter(Boolean).join(' ') || 'Unknown';
+      const name =
+        [
+          hasFirstName ? String(row.first_name).trim() : "",
+          hasLastName ? String(row.last_name).trim() : "",
+        ]
+          .filter(Boolean)
+          .join(" ") || "Unknown";
 
       contactsWithoutInfo.push({
         name,
-        organization_name: row.organization_name ? String(row.organization_name).trim() : '',
+        organization_name: row.organization_name ? String(row.organization_name).trim() : "",
         row: index + 4, // +3 for header rows, +1 for 1-indexed
       });
     }

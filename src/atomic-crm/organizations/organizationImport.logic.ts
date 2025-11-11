@@ -9,15 +9,15 @@
  * - Data quality transformations
  */
 
-import { organizationSchema } from '../validation/organizations';
-import { FORBIDDEN_FORMULA_PREFIXES } from './csvConstants';
+import { organizationSchema } from "../validation/organizations";
+import { FORBIDDEN_FORMULA_PREFIXES } from "./csvConstants";
 
 /**
  * Organization import schema type - matches the structure we'll receive from CSV
  */
 export interface OrganizationImportSchema {
   name: string;
-  priority?: 'A' | 'B' | 'C' | 'D';
+  priority?: "A" | "B" | "C" | "D";
   segment_id?: string | null;
   phone?: string | null;
   address?: string | null;
@@ -27,7 +27,7 @@ export interface OrganizationImportSchema {
   linkedin_url?: string | null;
   description?: string | null;
   website?: string | null;
-  organization_type?: 'customer' | 'prospect' | 'principal' | 'distributor' | 'unknown';
+  organization_type?: "customer" | "prospect" | "principal" | "distributor" | "unknown";
   sales_id?: string | number | null;
   tags?: string; // Comma-separated tag names (e.g., "VIP,Enterprise,West Coast")
 }
@@ -84,12 +84,12 @@ export interface TransformResult {
  * @returns Sanitized value safe for spreadsheet applications
  */
 export function sanitizeFormulaInjection(value: string): string {
-  if (!value || typeof value !== 'string') {
+  if (!value || typeof value !== "string") {
     return value;
   }
 
   // Check if the value starts with any forbidden prefix
-  const startsWithForbiddenPrefix = FORBIDDEN_FORMULA_PREFIXES.some(prefix =>
+  const startsWithForbiddenPrefix = FORBIDDEN_FORMULA_PREFIXES.some((prefix) =>
     value.startsWith(prefix)
   );
 
@@ -122,8 +122,8 @@ export function validateOrganizationRow(row: any): ValidationResult {
   }
 
   // Collect all validation errors
-  const errors = result.error.issues.map(issue => ({
-    field: issue.path.join('.'),
+  const errors = result.error.issues.map((issue) => ({
+    field: issue.path.join("."),
     message: issue.message,
   }));
 
@@ -145,9 +145,9 @@ export function validateOrganizationRow(row: any): ValidationResult {
  */
 export function detectDuplicateOrganizations(
   orgs: OrganizationImportSchema[],
-  strategy: 'name' = 'name'
+  strategy: "name" = "name"
 ): DuplicateReport {
-  if (strategy !== 'name') {
+  if (strategy !== "name") {
     throw new Error(`Unsupported duplicate detection strategy: ${strategy}`);
   }
 
@@ -169,7 +169,7 @@ export function detectDuplicateOrganizations(
   });
 
   // Filter to only groups with duplicates (2+ entries)
-  const duplicates: DuplicateReport['duplicates'] = [];
+  const duplicates: DuplicateReport["duplicates"] = [];
 
   nameMap.forEach((indices, _normalizedName) => {
     if (indices.length > 1) {
@@ -213,20 +213,22 @@ export function applyDataQualityTransformations(
   _decisions: DataQualityDecisions = {}
 ): TransformResult {
   const transformedSet = new Set<number>();
-  const validPriorities = ['A', 'B', 'C', 'D'];
+  const validPriorities = ["A", "B", "C", "D"];
 
   const transformedOrganizations = orgs.map((org, index) => {
     const transformed = { ...org };
 
     // Normalize invalid priority values to "C" (medium priority)
     if (transformed.priority && !validPriorities.includes(transformed.priority)) {
-      console.log(`[Import] Normalizing invalid priority "${transformed.priority}" to "C" for row ${index + 2}`);
-      transformed.priority = 'C';
+      console.log(
+        `[Import] Normalizing invalid priority "${transformed.priority}" to "C" for row ${index + 2}`
+      );
+      transformed.priority = "C";
       transformedSet.add(index);
     }
 
     // Auto-correct LinkedIn URLs
-    if (transformed.linkedin_url && typeof transformed.linkedin_url === 'string') {
+    if (transformed.linkedin_url && typeof transformed.linkedin_url === "string") {
       const originalUrl = transformed.linkedin_url.trim();
 
       // Skip if empty
@@ -237,20 +239,24 @@ export function applyDataQualityTransformations(
 
       // Add protocol if missing
       let correctedUrl = originalUrl;
-      if (!originalUrl.startsWith('http://') && !originalUrl.startsWith('https://')) {
-        correctedUrl = 'https://' + originalUrl;
+      if (!originalUrl.startsWith("http://") && !originalUrl.startsWith("https://")) {
+        correctedUrl = "https://" + originalUrl;
       }
 
       // Check if it's a valid LinkedIn URL after correction
       const linkedinRegex = /^https?:\/\/(?:www\.)?linkedin\.com\//i;
       if (!linkedinRegex.test(correctedUrl)) {
         // Not a LinkedIn URL - set to null instead of failing validation
-        console.log(`[Import] Removing invalid LinkedIn URL "${originalUrl}" for row ${index + 2} (not a linkedin.com URL)`);
+        console.log(
+          `[Import] Removing invalid LinkedIn URL "${originalUrl}" for row ${index + 2} (not a linkedin.com URL)`
+        );
         transformed.linkedin_url = null;
         transformedSet.add(index);
       } else if (correctedUrl !== originalUrl) {
         // URL was corrected
-        console.log(`[Import] Auto-corrected LinkedIn URL for row ${index + 2}: "${originalUrl}" -> "${correctedUrl}"`);
+        console.log(
+          `[Import] Auto-corrected LinkedIn URL for row ${index + 2}: "${originalUrl}" -> "${correctedUrl}"`
+        );
         transformed.linkedin_url = correctedUrl;
         transformedSet.add(index);
       }
@@ -284,16 +290,16 @@ export function validateTransformedOrganizations(organizations: OrganizationImpo
   });
 
   const successful = validationResults
-    .filter(r => r.success)
-    .map(r => ({ ...r.organization, originalIndex: r.index }));
+    .filter((r) => r.success)
+    .map((r) => ({ ...r.organization, originalIndex: r.index }));
 
   const failed = validationResults
-    .filter(r => !r.success)
-    .map(r => ({
+    .filter((r) => !r.success)
+    .map((r) => ({
       originalIndex: r.index,
       data: r.organization,
-      errors: r.error!.issues.map(issue => ({
-        field: issue.path.join('.'),
+      errors: r.error!.issues.map((issue) => ({
+        field: issue.path.join("."),
         message: issue.message,
       })),
     }));

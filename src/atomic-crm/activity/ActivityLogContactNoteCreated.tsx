@@ -17,41 +17,29 @@ function ContactAvatar() {
   return <Avatar width={20} height={20} record={record} />;
 }
 
-export function ActivityLogContactNoteCreated({
-  activity,
-}: ActivityLogContactNoteCreatedProps) {
+export function ActivityLogContactNoteCreated({ activity }: ActivityLogContactNoteCreatedProps) {
   const context = useActivityLogContext();
   const { contactNote } = activity;
   return (
     <ActivityLogNote
       header={
         <div className="flex items-center gap-2 w-full">
-          <ReferenceField
-            source="contact_id"
-            reference="contacts"
-            record={activity.contactNote}
-          >
+          <ReferenceField source="contact_id" reference="contacts" record={activity.contactNote}>
             <ContactAvatar />
           </ReferenceField>
 
           <div className="flex flex-row flex-grow">
             <div className="text-sm text-[color:var(--text-subtle)] flex-grow">
-              <ReferenceField
-                source="sales_id"
-                reference="sales"
-                record={activity}
-              >
+              <ReferenceField source="sales_id" reference="sales" record={activity}>
                 <SaleName />
-              </ReferenceField>
-              {" "}added a note about{" "}
+              </ReferenceField>{" "}
+              added a note about{" "}
               <ReferenceField
                 source="contact_id"
                 reference="contacts"
                 record={activity.contactNote}
               >
-                <TextField source="first_name" />
-                {" "}
-                <TextField source="last_name" />
+                <TextField source="first_name" /> <TextField source="last_name" />
               </ReferenceField>
             </div>
 

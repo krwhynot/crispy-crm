@@ -131,8 +131,8 @@ export function MultiSelectCombobox({
     selectedLabels.length === 0
       ? placeholder
       : selectedLabels.length === 1
-      ? selectedLabels[0]
-      : `${selectedLabels.length} selected`;
+        ? selectedLabels[0]
+        : `${selectedLabels.length} selected`;
 
   const handleSelect = (optionValue: string) => {
     const newValue = value.includes(optionValue)

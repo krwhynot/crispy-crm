@@ -3,12 +3,7 @@ import * as React from "react";
 import type { MouseEvent } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
  * A Button with a tooltip which ensures the tooltip is closed on click to avoid ghost tooltips
@@ -50,9 +45,7 @@ export const IconButtonWithTooltip = ({
             type="button"
             variant="ghost"
             size="icon"
-            aria-label={
-              typeof translatedLabel === "string" ? translatedLabel : undefined
-            }
+            aria-label={typeof translatedLabel === "string" ? translatedLabel : undefined}
             onClick={handleClick}
             disabled={disabled}
             onMouseEnter={handleOpen}
@@ -70,8 +63,7 @@ export const IconButtonWithTooltip = ({
   );
 };
 
-export interface IconButtonWithTooltipProps
-  extends React.ComponentProps<"button"> {
+export interface IconButtonWithTooltipProps extends React.ComponentProps<"button"> {
   label: React.ReactNode;
   children: React.ReactNode;
 }

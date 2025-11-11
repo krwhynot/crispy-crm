@@ -28,9 +28,7 @@ export const MultiOrganizationInput = () => {
   // Validate that exactly one organization has is_primary = true
   React.useEffect(() => {
     const organizations = organizationsRaw || [];
-    const primaryCount = organizations.filter(
-      (org: ContactOrganization) => org.is_primary,
-    ).length;
+    const primaryCount = organizations.filter((org: ContactOrganization) => org.is_primary).length;
 
     if (primaryCount === 0 && organizations.length > 0) {
       // Set first organization as primary if none is marked
@@ -77,11 +75,7 @@ export const MultiOrganizationInput = () => {
               >
                 <AutocompleteOrganizationInput />
               </ReferenceInput>
-              <BooleanInput
-                source="is_primary"
-                label="Primary Organization"
-                helperText={false}
-              />
+              <BooleanInput source="is_primary" label="Primary Organization" helperText={false} />
             </div>
           </SimpleFormIterator>
         </ArrayInput>

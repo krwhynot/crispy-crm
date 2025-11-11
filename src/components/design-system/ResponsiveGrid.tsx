@@ -1,7 +1,7 @@
 // src/components/design-system/ResponsiveGrid.tsx
 
-import * as React from 'react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 /**
  * Grid layout variants
@@ -10,8 +10,8 @@ import { cn } from '@/lib/utils';
  * Don't over-engineer - other layouts can use Tailwind directly
  */
 type GridVariant =
-  | 'dashboard'  // 70/30 split (main content + sidebar)
-  | 'cards';     // Auto-fit responsive cards
+  | "dashboard" // 70/30 split (main content + sidebar)
+  | "cards"; // Auto-fit responsive cards
 
 interface ResponsiveGridProps {
   /**
@@ -65,7 +65,7 @@ const gridVariants: Record<GridVariant, string> = {
    *
    * Used in: Dashboard, Opportunity detail, Reports
    */
-  dashboard: 'grid grid-cols-1 lg:grid-cols-[7fr_3fr]',
+  dashboard: "grid grid-cols-1 lg:grid-cols-[7fr_3fr]",
 
   /**
    * Cards: Auto-fit responsive card grid
@@ -76,20 +76,16 @@ const gridVariants: Record<GridVariant, string> = {
    *
    * Used in: Contact list, Organization list, Principal cards
    */
-  cards: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+  cards: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
 };
 
 export const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({
   variant,
-  gap = 'gap-6',
+  gap = "gap-6",
   children,
   className,
 }) => {
-  return (
-    <div className={cn(gridVariants[variant], gap, className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn(gridVariants[variant], gap, className)}>{children}</div>;
 };
 
-ResponsiveGrid.displayName = 'ResponsiveGrid';
+ResponsiveGrid.displayName = "ResponsiveGrid";

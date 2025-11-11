@@ -50,14 +50,9 @@ interface OrganizationImportResultProps {
   allowRetry?: boolean;
 }
 
-export function OrganizationImportResult({
-  open,
-  onClose,
-  result,
-}: OrganizationImportResultProps) {
-  const successRate = result.totalProcessed > 0
-    ? Math.round((result.successCount / result.totalProcessed) * 100)
-    : 0;
+export function OrganizationImportResult({ open, onClose, result }: OrganizationImportResultProps) {
+  const successRate =
+    result.totalProcessed > 0 ? Math.round((result.successCount / result.totalProcessed) * 100) : 0;
 
   const hasErrors = result.failedCount > 0 || result.skippedCount > 0;
   const isComplete = result.successCount === result.totalProcessed;
@@ -110,7 +105,10 @@ export function OrganizationImportResult({
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `organization_import_errors_${new Date().toISOString().split("T")[0]}.csv`);
+    link.setAttribute(
+      "download",
+      `organization_import_errors_${new Date().toISOString().split("T")[0]}.csv`
+    );
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
@@ -197,8 +195,8 @@ export function OrganizationImportResult({
                   successRate >= 90
                     ? "bg-green-600"
                     : successRate >= 70
-                    ? "bg-yellow-600"
-                    : "bg-red-600"
+                      ? "bg-yellow-600"
+                      : "bg-red-600"
                 }`}
                 style={{ width: `${successRate}%` }}
               />
@@ -274,9 +272,7 @@ export function OrganizationImportResult({
                       <Badge variant="outline" className="text-xs">
                         Row {error.row}
                       </Badge>
-                      <span className="font-medium text-sm">
-                        {error.data.name || "(no name)"}
-                      </span>
+                      <span className="font-medium text-sm">{error.data.name || "(no name)"}</span>
                     </div>
                     <ul className="text-xs text-red-700 space-y-1 ml-4 list-disc list-inside">
                       {error.errors.map((fieldError, index) => (
@@ -305,8 +301,8 @@ export function OrganizationImportResult({
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle>Skipped Rows</AlertTitle>
               <AlertDescription>
-                {result.skippedCount} {result.skippedCount === 1 ? "row was" : "rows were"}{" "}
-                skipped during import. Review the error details above for specific reasons.
+                {result.skippedCount} {result.skippedCount === 1 ? "row was" : "rows were"} skipped
+                during import. Review the error details above for specific reasons.
               </AlertDescription>
             </Alert>
           )}
@@ -316,11 +312,7 @@ export function OrganizationImportResult({
           <div className="flex gap-2 w-full justify-between">
             <div className="flex gap-2">
               {hasErrors && result.errors.length > 0 && (
-                <Button
-                  variant="outline"
-                  onClick={handleDownloadErrors}
-                  className="gap-2"
-                >
+                <Button variant="outline" onClick={handleDownloadErrors} className="gap-2">
                   <FileText className="h-4 w-4" />
                   Download Error Report
                 </Button>

@@ -28,10 +28,8 @@ import type { FieldProps } from "@/lib/field.type";
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-const DateFieldImpl = <
-  RecordType extends Record<string, any> = Record<string, any>,
->(
-  inProps: DateFieldProps<RecordType>,
+const DateFieldImpl = <RecordType extends Record<string, any> = Record<string, any>>(
+  inProps: DateFieldProps<RecordType>
 ) => {
   const {
     empty,
@@ -48,9 +46,7 @@ const DateFieldImpl = <
   const translate = useTranslate();
 
   if (!showTime && !showDate) {
-    throw new Error(
-      "<DateField> cannot have showTime and showDate false at the same time",
-    );
+    throw new Error("<DateField> cannot have showTime and showDate false at the same time");
   }
 
   const value = useFieldValue({ source, record, defaultValue });
@@ -60,9 +56,7 @@ const DateFieldImpl = <
     }
 
     return (
-      <span {...rest}>
-        {typeof empty === "string" ? translate(empty, { _: empty }) : empty}
-      </span>
+      <span {...rest}>{typeof empty === "string" ? translate(empty, { _: empty }) : empty}</span>
     );
   }
 
@@ -80,9 +74,7 @@ const DateFieldImpl = <
       // who may see a different date when calling toLocaleDateString().
       const dateOptions =
         options ??
-        (typeof value === "string" && value.length <= 10
-          ? { timeZone: "UTC" }
-          : undefined);
+        (typeof value === "string" && value.length <= 10 ? { timeZone: "UTC" } : undefined);
       dateString = toLocaleStringSupportsLocales
         ? date.toLocaleDateString(locales, dateOptions)
         : date.toLocaleDateString();
@@ -99,9 +91,8 @@ DateFieldImpl.displayName = "DateFieldImpl";
 
 export const DateField = genericMemo(DateFieldImpl);
 
-export interface DateFieldProps<
-  RecordType extends Record<string, any> = Record<string, any>,
-> extends FieldProps<RecordType>,
+export interface DateFieldProps<RecordType extends Record<string, any> = Record<string, any>>
+  extends FieldProps<RecordType>,
     HTMLAttributes<HTMLSpanElement> {
   locales?: Intl.LocalesArgument;
   options?: Intl.DateTimeFormatOptions;

@@ -1,5 +1,5 @@
-import { expect } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
 /**
  * Page Object Model for Opportunity Show/Detail page
@@ -21,15 +21,15 @@ export class OpportunityShowPage extends BasePage {
    */
   async waitForPageLoad(): Promise<void> {
     // Wait for opportunity name heading to be visible
-    await this.page.getByRole('heading', { level: 1 }).waitFor({ state: 'visible' });
+    await this.page.getByRole("heading", { level: 1 }).waitFor({ state: "visible" });
   }
 
   /**
    * Get opportunity name from heading
    */
   async getOpportunityName(): Promise<string> {
-    const heading = this.page.getByRole('heading', { level: 1 });
-    return await heading.textContent() || '';
+    const heading = this.page.getByRole("heading", { level: 1 });
+    return (await heading.textContent()) || "";
   }
 
   /**
@@ -61,8 +61,8 @@ export class OpportunityShowPage extends BasePage {
     await this.getDeleteButton().click();
 
     // Wait for confirmation dialog
-    const confirmButton = this.page.getByRole('button', { name: /confirm|yes|delete/i });
-    await confirmButton.waitFor({ state: 'visible' });
+    const confirmButton = this.page.getByRole("button", { name: /confirm|yes|delete/i });
+    await confirmButton.waitFor({ state: "visible" });
     await confirmButton.click();
 
     // Wait for redirect to list
@@ -73,17 +73,19 @@ export class OpportunityShowPage extends BasePage {
    * Get field value by label
    */
   async getFieldValue(label: string): Promise<string> {
-    const field = this.page.getByText(new RegExp(label, 'i')).locator('xpath=following-sibling::*[1]');
-    return await field.textContent() || '';
+    const field = this.page
+      .getByText(new RegExp(label, "i"))
+      .locator("xpath=following-sibling::*[1]");
+    return (await field.textContent()) || "";
   }
 
   /**
    * Get stage badge
    */
   getStageBadge() {
-    return this.page.locator('[data-testid="stage-badge"]').or(
-      this.page.getByText(/stage/i).locator('xpath=following-sibling::*[1]')
-    );
+    return this.page
+      .locator('[data-testid="stage-badge"]')
+      .or(this.page.getByText(/stage/i).locator("xpath=following-sibling::*[1]"));
   }
 
   /**
@@ -91,30 +93,32 @@ export class OpportunityShowPage extends BasePage {
    */
   async getCurrentStage(): Promise<string> {
     const badge = this.getStageBadge();
-    return await badge.textContent() || '';
+    return (await badge.textContent()) || "";
   }
 
   /**
    * Get workflow section
    */
   getWorkflowSection() {
-    return this.page.locator('[data-testid="workflow-section"]').or(
-      this.page.getByRole('region', { name: /workflow/i })
-    );
+    return this.page
+      .locator('[data-testid="workflow-section"]')
+      .or(this.page.getByRole("region", { name: /workflow/i }));
   }
 
   /**
    * Get stage transition buttons
    */
   getStageTransitionButtons() {
-    return this.getWorkflowSection().getByRole('button');
+    return this.getWorkflowSection().getByRole("button");
   }
 
   /**
    * Click stage transition button
    */
   async clickStageTransition(buttonText: string): Promise<void> {
-    const button = this.getWorkflowSection().getByRole('button', { name: new RegExp(buttonText, 'i') });
+    const button = this.getWorkflowSection().getByRole("button", {
+      name: new RegExp(buttonText, "i"),
+    });
     await button.click();
 
     // Wait for stage update
@@ -125,16 +129,18 @@ export class OpportunityShowPage extends BasePage {
    * Get products table
    */
   getProductsTable() {
-    return this.page.locator('[data-testid="products-table"]').or(
-      this.page.getByRole('table').filter({ has: this.page.getByText(/product/i) })
-    );
+    return this.page
+      .locator('[data-testid="products-table"]')
+      .or(this.page.getByRole("table").filter({ has: this.page.getByText(/product/i) }));
   }
 
   /**
    * Get product rows
    */
   getProductRows() {
-    return this.getProductsTable().getByRole('row').filter({ has: this.page.getByRole('cell') });
+    return this.getProductsTable()
+      .getByRole("row")
+      .filter({ has: this.page.getByRole("cell") });
   }
 
   /**
@@ -155,18 +161,18 @@ export class OpportunityShowPage extends BasePage {
    * Get activity timeline
    */
   getActivityTimeline() {
-    return this.page.locator('[data-testid="activity-timeline"]').or(
-      this.page.getByRole('region', { name: /activity|timeline|history/i })
-    );
+    return this.page
+      .locator('[data-testid="activity-timeline"]')
+      .or(this.page.getByRole("region", { name: /activity|timeline|history/i }));
   }
 
   /**
    * Get activity items
    */
   getActivityItems() {
-    return this.getActivityTimeline().locator('[data-testid="activity-item"]').or(
-      this.getActivityTimeline().getByRole('listitem')
-    );
+    return this.getActivityTimeline()
+      .locator('[data-testid="activity-item"]')
+      .or(this.getActivityTimeline().getByRole("listitem"));
   }
 
   /**
@@ -188,19 +194,19 @@ export class OpportunityShowPage extends BasePage {
    */
   async addNote(noteText: string): Promise<void> {
     // Find add note button or textarea
-    const addButton = this.page.getByRole('button', { name: /add note|add activity/i });
+    const addButton = this.page.getByRole("button", { name: /add note|add activity/i });
     if (await addButton.isVisible()) {
       await addButton.click();
     }
 
     // Fill note textarea
-    const textarea = this.page.getByRole('textbox', { name: /note|comment/i }).or(
-      this.page.getByPlaceholder(/note|comment/i)
-    );
+    const textarea = this.page
+      .getByRole("textbox", { name: /note|comment/i })
+      .or(this.page.getByPlaceholder(/note|comment/i));
     await textarea.fill(noteText);
 
     // Submit
-    const submitButton = this.page.getByRole('button', { name: /save|submit|add/i });
+    const submitButton = this.page.getByRole("button", { name: /save|submit|add/i });
     await submitButton.click();
 
     // Wait for note to appear
@@ -211,7 +217,10 @@ export class OpportunityShowPage extends BasePage {
    * Get organization link
    */
   getOrganizationLink() {
-    return this.page.getByText(/organization/i).locator('xpath=following-sibling::*[1]').getByRole('link');
+    return this.page
+      .getByText(/organization/i)
+      .locator("xpath=following-sibling::*[1]")
+      .getByRole("link");
   }
 
   /**
@@ -226,8 +235,10 @@ export class OpportunityShowPage extends BasePage {
    * Get principal/owner name
    */
   async getPrincipalName(): Promise<string> {
-    const principal = this.page.getByText(/principal|owner|assigned/i).locator('xpath=following-sibling::*[1]');
-    return await principal.textContent() || '';
+    const principal = this.page
+      .getByText(/principal|owner|assigned/i)
+      .locator("xpath=following-sibling::*[1]");
+    return (await principal.textContent()) || "";
   }
 
   /**
@@ -242,7 +253,9 @@ export class OpportunityShowPage extends BasePage {
    * Verify opportunity value/amount
    */
   async expectValue(expectedValue: string): Promise<void> {
-    const valueField = this.page.getByText(/value|amount/i).locator('xpath=following-sibling::*[1]');
+    const valueField = this.page
+      .getByText(/value|amount/i)
+      .locator("xpath=following-sibling::*[1]");
     await expect(valueField).toContainText(expectedValue);
   }
 }

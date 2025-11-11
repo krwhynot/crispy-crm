@@ -39,11 +39,7 @@ vi.mock("ra-core", async () => {
   };
 });
 
-import {
-  CoreAdminContext as AdminContext,
-  SaveContextProvider,
-  Form as RaForm,
-} from "ra-core";
+import { CoreAdminContext as AdminContext, SaveContextProvider, Form as RaForm } from "ra-core";
 import { Form } from "@/components/admin/form";
 import { ParentOrganizationInput } from "../ParentOrganizationInput";
 
@@ -104,9 +100,7 @@ const TestWrapper = ({
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>
         <AdminContext dataProvider={mockDataProvider}>
-          <MockFormWrapper defaultValues={defaultValues}>
-            {children}
-          </MockFormWrapper>
+          <MockFormWrapper defaultValues={defaultValues}>{children}</MockFormWrapper>
         </AdminContext>
       </MemoryRouter>
     </QueryClientProvider>

@@ -14,226 +14,213 @@
 export const ORGANIZATION_COLUMN_ALIASES: Record<string, string[]> = {
   // Organization name field (primary identifier)
   name: [
-    'name',
-    'organization',
-    'organizations',
-    'organisation',
-    'organisations',
-    'company',
-    'company name',
-    'company_name',
-    'business',
-    'business name',
-    'business_name',
-    'org',
-    'org name',
-    'org_name',
-    'organization name',
-    'organization_name',
-    'customer',
-    'customer name',
-    'account',
-    'account name',
-    'vendor',
-    'vendor name',
+    "name",
+    "organization",
+    "organizations",
+    "organisation",
+    "organisations",
+    "company",
+    "company name",
+    "company_name",
+    "business",
+    "business name",
+    "business_name",
+    "org",
+    "org name",
+    "org_name",
+    "organization name",
+    "organization_name",
+    "customer",
+    "customer name",
+    "account",
+    "account name",
+    "vendor",
+    "vendor name",
   ],
 
   // Priority field (A, B, C, D)
   priority: [
-    'priority',
-    'priority-focus',
-    'priority focus',
-    'priority a-d',
-    'priority (a-d)',
-    'priority-focus (a-d)',
-    'priority-focus (a-d) a-highest',
-    'priority level',
-    'priority_level',
-    'tier',
-    'ranking',
-    'importance',
+    "priority",
+    "priority-focus",
+    "priority focus",
+    "priority a-d",
+    "priority (a-d)",
+    "priority-focus (a-d)",
+    "priority-focus (a-d) a-highest",
+    "priority level",
+    "priority_level",
+    "tier",
+    "ranking",
+    "importance",
   ],
 
   // Segment/Industry field
   segment_id: [
-    'segment',
-    'segment_id',
-    'industry',
-    'sector',
-    'vertical',
-    'market',
-    'category',
-    'type',
-    'business type',
-    'business_type',
+    "segment",
+    "segment_id",
+    "industry",
+    "sector",
+    "vertical",
+    "market",
+    "category",
+    "type",
+    "business type",
+    "business_type",
   ],
 
   // Phone field
   phone: [
-    'phone',
-    'phone number',
-    'phone_number',
-    'phonenumber',
-    'telephone',
-    'tel',
-    'contact number',
-    'contact_number',
-    'office phone',
-    'office_phone',
-    'business phone',
-    'business_phone',
-    'main phone',
-    'main_phone',
+    "phone",
+    "phone number",
+    "phone_number",
+    "phonenumber",
+    "telephone",
+    "tel",
+    "contact number",
+    "contact_number",
+    "office phone",
+    "office_phone",
+    "business phone",
+    "business_phone",
+    "main phone",
+    "main_phone",
   ],
 
   // Address field
   address: [
-    'address',
-    'street address',
-    'street_address',
-    'streetaddress',
-    'street',
-    'address line 1',
-    'address_line_1',
-    'address1',
-    'physical address',
-    'physical_address',
-    'mailing address',
-    'mailing_address',
-    'location',
+    "address",
+    "street address",
+    "street_address",
+    "streetaddress",
+    "street",
+    "address line 1",
+    "address_line_1",
+    "address1",
+    "physical address",
+    "physical_address",
+    "mailing address",
+    "mailing_address",
+    "location",
   ],
 
   // City field
-  city: [
-    'city',
-    'town',
-    'municipality',
-    'locality',
-  ],
+  city: ["city", "town", "municipality", "locality"],
 
   // State field
-  state: [
-    'state',
-    'state abbr',
-    'state_abbr',
-    'stateabbr',
-    'province',
-    'region',
-    'territory',
-  ],
+  state: ["state", "state abbr", "state_abbr", "stateabbr", "province", "region", "territory"],
 
   // Postal code field
   postal_code: [
-    'postal_code',
-    'postal code',
-    'zip',
-    'zip code',
-    'zip_code',
-    'zipcode',
-    'postcode',
-    'post code',
-    'post_code',
+    "postal_code",
+    "postal code",
+    "zip",
+    "zip code",
+    "zip_code",
+    "zipcode",
+    "postcode",
+    "post code",
+    "post_code",
   ],
 
   // LinkedIn URL field
   linkedin_url: [
-    'linkedin',
-    'linkedin_url',
-    'linkedin url',
-    'linkedin profile',
-    'linkedin_profile',
-    'linkedin link',
-    'linkedin_link',
-    'linkedin page',
-    'linkedin_page',
-    'li url',
-    'li_url',
-    'social media',
-    'social_media',
+    "linkedin",
+    "linkedin_url",
+    "linkedin url",
+    "linkedin profile",
+    "linkedin_profile",
+    "linkedin link",
+    "linkedin_link",
+    "linkedin page",
+    "linkedin_page",
+    "li url",
+    "li_url",
+    "social media",
+    "social_media",
   ],
 
   // Notes/Description field
   description: [
-    'notes',
-    'note',
-    'description',
-    'comments',
-    'comment',
-    'remarks',
-    'remark',
-    'memo',
-    'memos',
-    'details',
-    'detail',
-    'additional info',
-    'additional_info',
-    'additional information',
-    'observations',
-    'observation',
+    "notes",
+    "note",
+    "description",
+    "comments",
+    "comment",
+    "remarks",
+    "remark",
+    "memo",
+    "memos",
+    "details",
+    "detail",
+    "additional info",
+    "additional_info",
+    "additional information",
+    "observations",
+    "observation",
   ],
 
   // Website field
   website: [
-    'website',
-    'web site',
-    'web_site',
-    'url',
-    'web',
-    'homepage',
-    'home page',
-    'home_page',
-    'site',
-    'web address',
-    'web_address',
-    'company website',
-    'company_website',
+    "website",
+    "web site",
+    "web_site",
+    "url",
+    "web",
+    "homepage",
+    "home page",
+    "home_page",
+    "site",
+    "web address",
+    "web_address",
+    "company website",
+    "company_website",
   ],
 
   // Organization type field
   organization_type: [
-    'organization_type',
-    'organization type',
-    'org type',
-    'org_type',
-    'type',
-    'category',
-    'classification',
-    'customer type',
-    'customer_type',
-    'account type',
-    'account_type',
+    "organization_type",
+    "organization type",
+    "org type",
+    "org_type",
+    "type",
+    "category",
+    "classification",
+    "customer type",
+    "customer_type",
+    "account type",
+    "account_type",
   ],
 
   // Distributor field (if mapped to a specific field in your schema)
   // If this is a relationship to another organization, you might handle it differently
   distributor: [
-    'distributor',
-    'distributor name',
-    'distributor_name',
-    'dist',
-    'dist name',
-    'distribution partner',
-    'distribution_partner',
+    "distributor",
+    "distributor name",
+    "distributor_name",
+    "dist",
+    "dist name",
+    "distribution partner",
+    "distribution_partner",
   ],
 
   // Sales rep field (if applicable)
   sales_id: [
-    'sales',
-    'sales_id',
-    'sales rep',
-    'sales_rep',
-    'salesrep',
-    'account manager',
-    'account_manager',
-    'primary acct manager',
-    'primary acct. manager',
-    'secondary acct manager',
-    'secondary acct. manager',
-    'rep',
-    'representative',
-    'assigned to',
-    'assigned_to',
-    'owner',
+    "sales",
+    "sales_id",
+    "sales rep",
+    "sales_rep",
+    "salesrep",
+    "account manager",
+    "account_manager",
+    "primary acct manager",
+    "primary acct. manager",
+    "secondary acct manager",
+    "secondary acct. manager",
+    "rep",
+    "representative",
+    "assigned to",
+    "assigned_to",
+    "owner",
   ],
 };
 
@@ -246,20 +233,22 @@ export const ORGANIZATION_COLUMN_ALIASES: Record<string, string[]> = {
  * - Collapses multiple spaces
  */
 export function normalizeHeader(header: string): string {
-  if (!header || typeof header !== 'string') {
-    return '';
+  if (!header || typeof header !== "string") {
+    return "";
   }
 
-  return header
-    .toLowerCase()
-    .trim()
-    // Remove parentheses and everything inside them (e.g., "(DropDown)" -> "")
-    .replace(/\([^)]*\)/g, ' ')
-    // Remove special characters except spaces, underscores, hyphens
-    .replace(/[^a-z0-9\s_-]/g, ' ')
-    // Collapse multiple spaces to single space
-    .replace(/\s+/g, ' ')
-    .trim();
+  return (
+    header
+      .toLowerCase()
+      .trim()
+      // Remove parentheses and everything inside them (e.g., "(DropDown)" -> "")
+      .replace(/\([^)]*\)/g, " ")
+      // Remove special characters except spaces, underscores, hyphens
+      .replace(/[^a-z0-9\s_-]/g, " ")
+      // Collapse multiple spaces to single space
+      .replace(/\s+/g, " ")
+      .trim()
+  );
 }
 
 // --- Performance Optimizations: Pre-computed lookup tables ---
@@ -287,7 +276,7 @@ for (const [fieldName, aliases] of Object.entries(ORGANIZATION_COLUMN_ALIASES)) 
  * Returns null if no match is found
  */
 export function findCanonicalField(userHeader: string): string | null {
-  if (!userHeader || typeof userHeader !== 'string') {
+  if (!userHeader || typeof userHeader !== "string") {
     return null;
   }
 
@@ -308,9 +297,9 @@ export function getUnmappedHeaders(headers: string[]): string[] {
     return [];
   }
 
-  return headers.filter(header => {
+  return headers.filter((header) => {
     // Skip empty headers and whitespace-only strings
-    if (!header || typeof header !== 'string' || !header.trim()) {
+    if (!header || typeof header !== "string" || !header.trim()) {
       return false;
     }
 
@@ -335,7 +324,7 @@ export function mapHeadersToFields(headers: string[]): Record<string, string | n
   const mappings: Record<string, string | null> = {};
 
   for (const header of headers) {
-    if (!header || typeof header !== 'string') {
+    if (!header || typeof header !== "string") {
       continue;
     }
 
@@ -351,8 +340,8 @@ export function mapHeadersToFields(headers: string[]): Record<string, string | n
  * Useful for preview displays
  */
 export function getHeaderMappingDescription(header: string): string {
-  if (!header || typeof header !== 'string') {
-    return '(ignored - empty header)';
+  if (!header || typeof header !== "string") {
+    return "(ignored - empty header)";
   }
 
   const canonical = findCanonicalField(header);
@@ -360,7 +349,7 @@ export function getHeaderMappingDescription(header: string): string {
     return canonical;
   }
 
-  return '(ignored - no matching field)';
+  return "(ignored - no matching field)";
 }
 
 /**
@@ -368,7 +357,7 @@ export function getHeaderMappingDescription(header: string): string {
  * Returns an array of missing required fields
  */
 export function validateRequiredMappings(mappings: Record<string, string | null>): string[] {
-  const requiredFields = ['name']; // Only name is strictly required for organizations
+  const requiredFields = ["name"]; // Only name is strictly required for organizations
   const mappedFields = new Set(Object.values(mappings).filter(Boolean));
 
   const missingFields: string[] = [];
@@ -401,8 +390,8 @@ export function getAvailableFields(): string[] {
 export function getAvailableFieldsWithLabels(): Array<{ value: string; label: string }> {
   const fields = getAvailableFields();
 
-  return fields.map(field => ({
+  return fields.map((field) => ({
     value: field,
-    label: field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+    label: field.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
   }));
 }

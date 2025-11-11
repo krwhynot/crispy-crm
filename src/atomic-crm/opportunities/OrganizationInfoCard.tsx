@@ -13,12 +13,7 @@ import * as React from "react";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Building2, Star, Users, TruckIcon } from "lucide-react";
 import type { Opportunity } from "../types";
 
@@ -26,9 +21,7 @@ interface OrganizationInfoCardProps {
   opportunity: Opportunity;
 }
 
-export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({
-  opportunity,
-}) => {
+export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({ opportunity }) => {
   return (
     <Card className="bg-muted/30 border border-border">
       <CardContent className="p-4">
@@ -44,19 +37,13 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({
               <Users className="w-3.5 h-3.5" />
               <span>Customer</span>
             </div>
-            <ReferenceField
-              source="customer_organization_id"
-              reference="organizations"
-              link="show"
-            >
+            <ReferenceField source="customer_organization_id" reference="organizations" link="show">
               <TextField
                 source="name"
                 className="text-sm font-medium text-foreground hover:underline cursor-pointer"
               />
             </ReferenceField>
-            <span className="text-xs text-muted-foreground">
-              Who is buying
-            </span>
+            <span className="text-xs text-muted-foreground">Who is buying</span>
           </div>
 
           {/* Principal Organization ⭐ MOST IMPORTANT */}
@@ -67,9 +54,7 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({
                   <TooltipTrigger asChild>
                     <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
                       <Star className="w-3.5 h-3.5 text-[var(--brand-600)] fill-[var(--brand-600)]" />
-                      <span className="font-bold text-[var(--brand-700)]">
-                        Principal
-                      </span>
+                      <span className="font-bold text-[var(--brand-700)]">Principal</span>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -114,9 +99,7 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({
                   className="text-sm font-medium text-foreground hover:underline cursor-pointer"
                 />
               </ReferenceField>
-              <span className="text-xs text-muted-foreground">
-                Distribution partner
-              </span>
+              <span className="text-xs text-muted-foreground">Distribution partner</span>
             </div>
           )}
         </div>

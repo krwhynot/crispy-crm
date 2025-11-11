@@ -24,8 +24,7 @@ const readline = require("readline");
 // Configuration
 const CONFIG = {
   supabaseUrl: process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL,
-  supabaseAnonKey:
-    process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
+  supabaseAnonKey: process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
   supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
 
   // Safety parameters
@@ -102,10 +101,7 @@ class ProgressMonitor {
 
   start() {
     this.isRunning = true;
-    this.intervalId = setInterval(
-      () => this.checkProgress(),
-      CONFIG.progressCheckInterval,
-    );
+    this.intervalId = setInterval(() => this.checkProgress(), CONFIG.progressCheckInterval);
   }
 
   stop() {
@@ -128,9 +124,7 @@ class ProgressMonitor {
       for (const entry of progress) {
         if (entry.status === "in_progress") {
           const percentComplete =
-            entry.total_rows > 0
-              ? ((entry.rows_processed / entry.total_rows) * 100).toFixed(2)
-              : 0;
+            entry.total_rows > 0 ? ((entry.rows_processed / entry.total_rows) * 100).toFixed(2) : 0;
 
           await this.logger.log("PROGRESS", `${entry.phase} - ${entry.step}`, {
             rows_processed: entry.rows_processed,
@@ -168,10 +162,7 @@ class ResourceMonitor {
   }
 
   start() {
-    this.intervalId = setInterval(
-      () => this.checkResources(),
-      CONFIG.resourceCheckInterval,
-    );
+    this.intervalId = setInterval(() => this.checkResources(), CONFIG.resourceCheckInterval);
   }
 
   stop() {
@@ -183,26 +174,19 @@ class ResourceMonitor {
   async checkResources() {
     try {
       // Check active connections
-      const { data: connections } = await this.supabase.rpc(
-        "get_connection_count",
-      );
+      const { data: connections } = await this.supabase.rpc("get_connection_count");
 
       // Check database size
       const { data: dbSize } = await this.supabase.rpc("get_database_size");
 
       // Check long-running queries
-      const { data: longQueries } = await this.supabase.rpc(
-        "get_long_queries",
-        {
-          duration_seconds: 60,
-        },
-      );
+      const { data: longQueries } = await this.supabase.rpc("get_long_queries", {
+        duration_seconds: 60,
+      });
 
       await this.logger.log("RESOURCES", "Resource check", {
         active_connections: connections,
-        database_size_gb: dbSize
-          ? (dbSize / 1024 / 1024 / 1024).toFixed(2)
-          : "unknown",
+        database_size_gb: dbSize ? (dbSize / 1024 / 1024 / 1024).toFixed(2) : "unknown",
         long_running_queries: longQueries ? longQueries.length : 0,
       });
 
@@ -214,13 +198,9 @@ class ResourceMonitor {
       }
 
       if (longQueries && longQueries.length > 5) {
-        await this.logger.log(
-          "WARNING",
-          "Multiple long-running queries detected",
-          {
-            count: longQueries.length,
-          },
-        );
+        await this.logger.log("WARNING", "Multiple long-running queries detected", {
+          count: longQueries.length,
+        });
       }
     } catch (error) {
       await this.logger.log("WARNING", "Failed to check resources", {
@@ -250,15 +230,11 @@ class SafetyValidator {
 
     try {
       // Check 1: Verify backup exists
-      const { data: backupTables } = await this.supabase.rpc(
-        "check_backup_tables",
-      );
+      const { data: backupTables } = await this.supabase.rpc("check_backup_tables");
       checks.backup_exists = backupTables && backupTables.length > 0;
 
       // Check 2: Verify connection count
-      const { data: connections } = await this.supabase.rpc(
-        "get_connection_count",
-      );
+      const { data: connections } = await this.supabase.rpc("get_connection_count");
       checks.low_connection_count = connections < 10;
 
       // Check 3: Verify disk space
@@ -312,7 +288,7 @@ class SafetyValidator {
         (answer) => {
           rl.close();
           resolve(answer === "YES");
-        },
+        }
       );
     });
   }
@@ -340,10 +316,7 @@ class MigrationExecutor {
         // Ask for confirmation to proceed anyway
         const downtimeConfirmed = await this.safetyValidator.confirmDowntime();
         if (!downtimeConfirmed) {
-          await this.logger.log(
-            "ERROR",
-            "Migration aborted - downtime not confirmed",
-          );
+          await this.logger.log("ERROR", "Migration aborted - downtime not confirmed");
           return false;
         }
       }
@@ -362,10 +335,7 @@ class MigrationExecutor {
       const migrationSuccess = await this.executeMigrationSql();
 
       if (!migrationSuccess) {
-        await this.logger.log(
-          "ERROR",
-          "Migration failed - initiating rollback",
-        );
+        await this.logger.log("ERROR", "Migration failed - initiating rollback");
         await this.rollback();
         return false;
       }
@@ -374,10 +344,7 @@ class MigrationExecutor {
       const validationPassed = await this.validateMigration();
 
       if (!validationPassed) {
-        await this.logger.log(
-          "ERROR",
-          "Validation failed - initiating rollback",
-        );
+        await this.logger.log("ERROR", "Validation failed - initiating rollback");
         await this.rollback();
         return false;
       }
@@ -460,21 +427,14 @@ class MigrationExecutor {
         // Skip comments and empty statements
         if (!statement || statement.startsWith("--")) continue;
 
-        await this.logger.log(
-          "INFO",
-          `Executing statement ${statementCount}/${totalStatements}`,
-        );
+        await this.logger.log("INFO", `Executing statement ${statementCount}/${totalStatements}`);
 
         try {
           await this.supabase.rpc("execute_sql", { sql: statement + ";" });
         } catch (error) {
-          await this.logger.log(
-            "ERROR",
-            `Statement failed: ${statement.substring(0, 100)}...`,
-            {
-              error: error.message,
-            },
-          );
+          await this.logger.log("ERROR", `Statement failed: ${statement.substring(0, 100)}...`, {
+            error: error.message,
+          });
           return false;
         }
 
@@ -482,11 +442,7 @@ class MigrationExecutor {
         if (statementCount % 10 === 0) {
           const progress = await this.progressMonitor.getLatestProgress();
           if (progress) {
-            await this.logger.log(
-              "INFO",
-              "Migration progress update",
-              progress,
-            );
+            await this.logger.log("INFO", "Migration progress update", progress);
           }
         }
       }
@@ -531,13 +487,9 @@ class MigrationExecutor {
           result: data,
         });
       } catch (error) {
-        await this.logger.log(
-          "ERROR",
-          `Validation failed: ${validation.name}`,
-          {
-            error: error.message,
-          },
-        );
+        await this.logger.log("ERROR", `Validation failed: ${validation.name}`, {
+          error: error.message,
+        });
         return false;
       }
     }
@@ -548,12 +500,7 @@ class MigrationExecutor {
   async postMigrationOptimization() {
     await this.logger.log("INFO", "Running post-migration optimization");
 
-    const tables = [
-      "opportunities",
-      "contact_organizations",
-      "companies",
-      "contacts",
-    ];
+    const tables = ["opportunities", "contact_organizations", "companies", "contacts"];
 
     for (const table of tables) {
       try {
@@ -590,13 +537,9 @@ class MigrationExecutor {
 
       await this.logger.log("WARNING", "Migration rolled back successfully");
     } catch (error) {
-      await this.logger.log(
-        "ERROR",
-        "Rollback failed - manual intervention required",
-        {
-          error: error.message,
-        },
-      );
+      await this.logger.log("ERROR", "Rollback failed - manual intervention required", {
+        error: error.message,
+      });
     }
   }
 }

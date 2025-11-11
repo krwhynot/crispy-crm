@@ -21,9 +21,7 @@ export function SalesCreate() {
       return salesService.salesCreate(data);
     },
     onSuccess: () => {
-      notify(
-        "User created. They will soon receive an email to set their password.",
-      );
+      notify("User created. They will soon receive an email to set their password.");
       redirect("/sales");
     },
     onError: () => {

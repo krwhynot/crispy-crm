@@ -1,39 +1,39 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Switch } from './switch';
-import React, { useState } from 'react';
-import { Label } from './label';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Switch } from "./switch";
+import React, { useState } from "react";
+import { Label } from "./label";
 
 const meta = {
-  title: 'UI/Switch',
+  title: "UI/Switch",
   component: Switch,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     checked: {
-      control: 'boolean',
-      description: 'The controlled checked state of the switch',
+      control: "boolean",
+      description: "The controlled checked state of the switch",
     },
     defaultChecked: {
-      control: 'boolean',
-      description: 'The default checked state when uncontrolled',
+      control: "boolean",
+      description: "The default checked state when uncontrolled",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Whether the switch is disabled',
+      control: "boolean",
+      description: "Whether the switch is disabled",
     },
     required: {
-      control: 'boolean',
-      description: 'Whether the switch is required',
+      control: "boolean",
+      description: "Whether the switch is required",
     },
     name: {
-      control: 'text',
-      description: 'The name of the switch for form submission',
+      control: "text",
+      description: "The name of the switch for form submission",
     },
     value: {
-      control: 'text',
-      description: 'The value of the switch for form submission',
+      control: "text",
+      description: "The value of the switch for form submission",
     },
   },
 } satisfies Meta<typeof Switch>;
@@ -121,16 +121,10 @@ export const Controlled: Story = {
       return (
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
-            <Switch
-              id="controlled"
-              checked={checked}
-              onCheckedChange={setChecked}
-            />
+            <Switch id="controlled" checked={checked} onCheckedChange={setChecked} />
             <Label htmlFor="controlled">Controlled switch</Label>
           </div>
-          <p className="text-sm text-[color:var(--text-subtle)]">
-            State: {checked ? 'On' : 'Off'}
-          </p>
+          <p className="text-sm text-[color:var(--text-subtle)]">State: {checked ? "On" : "Off"}</p>
         </div>
       );
     };
@@ -174,9 +168,7 @@ export const SettingsPanel: Story = {
               <Switch
                 id="notifications"
                 checked={settings.notifications}
-                onCheckedChange={(checked) =>
-                  setSettings({ ...settings, notifications: checked })
-                }
+                onCheckedChange={(checked) => setSettings({ ...settings, notifications: checked })}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -184,9 +176,7 @@ export const SettingsPanel: Story = {
               <Switch
                 id="dark-mode"
                 checked={settings.darkMode}
-                onCheckedChange={(checked) =>
-                  setSettings({ ...settings, darkMode: checked })
-                }
+                onCheckedChange={(checked) => setSettings({ ...settings, darkMode: checked })}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -194,9 +184,7 @@ export const SettingsPanel: Story = {
               <Switch
                 id="auto-save"
                 checked={settings.autoSave}
-                onCheckedChange={(checked) =>
-                  setSettings({ ...settings, autoSave: checked })
-                }
+                onCheckedChange={(checked) => setSettings({ ...settings, autoSave: checked })}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -204,9 +192,7 @@ export const SettingsPanel: Story = {
               <Switch
                 id="analytics"
                 checked={settings.analytics}
-                onCheckedChange={(checked) =>
-                  setSettings({ ...settings, analytics: checked })
-                }
+                onCheckedChange={(checked) => setSettings({ ...settings, analytics: checked })}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -214,9 +200,7 @@ export const SettingsPanel: Story = {
               <Switch
                 id="beta"
                 checked={settings.betaFeatures}
-                onCheckedChange={(checked) =>
-                  setSettings({ ...settings, betaFeatures: checked })
-                }
+                onCheckedChange={(checked) => setSettings({ ...settings, betaFeatures: checked })}
               />
             </div>
           </div>
@@ -230,7 +214,7 @@ export const SettingsPanel: Story = {
 // Accessibility
 export const WithAriaLabel: Story = {
   args: {
-    'aria-label': 'Toggle dark mode',
+    "aria-label": "Toggle dark mode",
   },
 };
 
@@ -290,7 +274,9 @@ export const SmallSwitch: Story = {
   render: () => (
     <div className="flex items-center space-x-2">
       <Switch id="small" className="h-4 w-7 [&>span]:h-3 [&>span]:w-3" />
-      <Label htmlFor="small" className="text-sm">Small switch</Label>
+      <Label htmlFor="small" className="text-sm">
+        Small switch
+      </Label>
     </div>
   ),
 };
@@ -299,7 +285,9 @@ export const LargeSwitch: Story = {
   render: () => (
     <div className="flex items-center space-x-2">
       <Switch id="large" className="h-7 w-12 [&>span]:h-6 [&>span]:w-6" />
-      <Label htmlFor="large" className="text-lg">Large switch</Label>
+      <Label htmlFor="large" className="text-lg">
+        Large switch
+      </Label>
     </div>
   ),
 };

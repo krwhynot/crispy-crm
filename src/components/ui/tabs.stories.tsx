@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import { CreditCard, Settings, User, Lock, Bell, Palette } from 'lucide-react';
-import React from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
+import { CreditCard, Settings, User, Lock, Bell, Palette } from "lucide-react";
+import React from "react";
 
 const meta = {
-  title: 'UI/Tabs',
+  title: "UI/Tabs",
   component: Tabs,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div className="w-[600px]">
@@ -87,11 +87,15 @@ export const Default: Story = {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label htmlFor="notifications">Email notifications</Label>
-                <Button variant="outline" size="sm">Configure</Button>
+                <Button variant="outline" size="sm">
+                  Configure
+                </Button>
               </div>
               <div className="flex items-center justify-between">
                 <Label htmlFor="privacy">Privacy settings</Label>
-                <Button variant="outline" size="sm">Manage</Button>
+                <Button variant="outline" size="sm">
+                  Manage
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -365,16 +369,24 @@ export const SettingsPage: Story = {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-sm">Marketing emails</p>
-                <p className="text-xs text-[color:var(--text-subtle)]">Receive emails about new features and updates</p>
+                <p className="text-xs text-[color:var(--text-subtle)]">
+                  Receive emails about new features and updates
+                </p>
               </div>
-              <Button variant="outline" size="sm">Configure</Button>
+              <Button variant="outline" size="sm">
+                Configure
+              </Button>
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-sm">Security alerts</p>
-                <p className="text-xs text-[color:var(--text-subtle)]">Receive alerts about account security</p>
+                <p className="text-xs text-[color:var(--text-subtle)]">
+                  Receive alerts about account security
+                </p>
               </div>
-              <Button variant="outline" size="sm">Configure</Button>
+              <Button variant="outline" size="sm">
+                Configure
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -389,7 +401,9 @@ export const SettingsPage: Story = {
             <div className="space-y-4">
               <div>
                 <Label>Color Scheme</Label>
-                <p className="text-sm text-[color:var(--text-subtle)]">Choose between light and dark mode</p>
+                <p className="text-sm text-[color:var(--text-subtle)]">
+                  Choose between light and dark mode
+                </p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline">Light</Button>

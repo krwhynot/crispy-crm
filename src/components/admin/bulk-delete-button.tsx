@@ -29,11 +29,8 @@ export interface BulkDeleteButtonProps<
   };
 }
 
-export const BulkDeleteButton = <
-  RecordType extends RaRecord = any,
-  MutationOptionsError = unknown,
->(
-  props: BulkDeleteButtonProps<RecordType, MutationOptionsError>,
+export const BulkDeleteButton = <RecordType extends RaRecord = any, MutationOptionsError = unknown>(
+  props: BulkDeleteButtonProps<RecordType, MutationOptionsError>
 ) => {
   const {
     mutationMode = "undoable",
@@ -44,10 +41,7 @@ export const BulkDeleteButton = <
   } = props;
   const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
   const resource = useResourceContext(props);
-  const [deleteMany, { isPending }] = useDeleteMany<
-    RecordType,
-    MutationOptionsError
-  >();
+  const [deleteMany, { isPending }] = useDeleteMany<RecordType, MutationOptionsError>();
   const { selectedIds, onUnselectItems } = useListContext();
   const notify = useNotify();
   const refresh = useRefresh();
@@ -73,8 +67,7 @@ export const BulkDeleteButton = <
           });
         },
         onError: (error: MutationOptionsError) => {
-          const errorMessage =
-            typeof error === "string" ? error : (error as any)?.message;
+          const errorMessage = typeof error === "string" ? error : (error as any)?.message;
           notify(errorMessage || "ra.notification.http_error", {
             type: "error",
             messageArgs: { _: errorMessage },
@@ -82,7 +75,7 @@ export const BulkDeleteButton = <
           refresh();
         },
         ...otherMutationOptions,
-      },
+      }
     );
   };
   return (
@@ -94,9 +87,7 @@ export const BulkDeleteButton = <
       className={cn("h-9", className)}
     >
       {icon}
-      <Translate i18nKey={label ?? "ra.action.delete"}>
-        {label ?? "Delete"}
-      </Translate>
+      <Translate i18nKey={label ?? "ra.action.delete"}>{label ?? "Delete"}</Translate>
     </Button>
   );
 };

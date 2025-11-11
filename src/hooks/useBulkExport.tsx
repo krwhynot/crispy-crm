@@ -13,9 +13,9 @@ import { useCallback, useMemo } from "react";
  *
  * @deprecated Import from 'ra-core' instead.
  */
-export function useBulkExport<
-  ResourceInformationsType extends Partial<{ resource: string }>,
->(props: UseBulkExportProps<ResourceInformationsType>) {
+export function useBulkExport<ResourceInformationsType extends Partial<{ resource: string }>>(
+  props: UseBulkExportProps<ResourceInformationsType>
+) {
   const { exporter: customExporter, meta } = props;
 
   const resource = useResourceContext(props);
@@ -29,17 +29,12 @@ export function useBulkExport<
       dataProvider
         .getMany(resource, { ids: selectedIds, meta })
         .then(({ data }) =>
-          exporter(
-            data,
-            fetchRelatedRecords(dataProvider),
-            dataProvider,
-            resource,
-          ),
+          exporter(data, fetchRelatedRecords(dataProvider), dataProvider, resource)
         )
         .catch((error) => {
           console.error(
             "Bulk export failed:",
-            error instanceof Error ? error.message : String(error),
+            error instanceof Error ? error.message : String(error)
           );
           notify("ra.notification.http_error", {
             type: "error",

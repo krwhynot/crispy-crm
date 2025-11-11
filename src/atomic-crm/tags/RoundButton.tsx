@@ -6,11 +6,7 @@ interface RoundButtonProps {
   selected: boolean;
 }
 
-export const RoundButton = ({
-  color,
-  handleClick,
-  selected,
-}: RoundButtonProps) => {
+export const RoundButton = ({ color, handleClick, selected }: RoundButtonProps) => {
   // Convert hex color to semantic color name and get the CSS class
   const semanticColorName = normalizeColorToSemantic(color);
   const colorClass = getTagColorClass(color);

@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../../support/poms/LoginPage';
-import { ContactsListPage } from '../../support/poms/ContactsListPage';
-import { ContactFormPage } from '../../support/poms/ContactFormPage';
-import { ContactShowPage } from '../../support/poms/ContactShowPage';
-import { consoleMonitor } from '../../support/utils/console-monitor';
+import { test, expect } from "@playwright/test";
+import { LoginPage } from "../../support/poms/LoginPage";
+import { ContactsListPage } from "../../support/poms/ContactsListPage";
+import { ContactFormPage } from "../../support/poms/ContactFormPage";
+import { ContactShowPage } from "../../support/poms/ContactShowPage";
+import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
  * E2E tests for Contacts CRUD operations
@@ -20,20 +20,23 @@ import { consoleMonitor } from '../../support/utils/console-monitor';
  * This is acceptable as it still uses POMs and avoids code duplication
  */
 
-test.describe('Contacts CRUD Operations', () => {
+test.describe("Contacts CRUD Operations", () => {
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
     // Login using POM (semantic selectors, no CSS)
     const loginPage = new LoginPage(page);
-    await loginPage.goto('/');
+    await loginPage.goto("/");
 
     // Wait for either login form or dashboard
-    const isLoginFormVisible = await page.getByLabel(/email/i).isVisible({ timeout: 2000 }).catch(() => false);
+    const isLoginFormVisible = await page
+      .getByLabel(/email/i)
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
 
     if (isLoginFormVisible) {
-      await loginPage.login('admin@test.com', 'password123');
+      await loginPage.login("admin@test.com", "password123");
     } else {
       // Already logged in, wait for dashboard
       await page.waitForURL(/\/#\//, { timeout: 10000 });
@@ -48,7 +51,7 @@ test.describe('Contacts CRUD Operations', () => {
     consoleMonitor.clear();
   });
 
-  test('CREATE - Create a new contact', async ({ page }) => {
+  test("CREATE - Create a new contact", async ({ page }) => {
     // Generate unique test data with timestamp
     const timestamp = Date.now();
     const testContact = {
@@ -76,11 +79,11 @@ test.describe('Contacts CRUD Operations', () => {
     await showPage.expectContactVisible(testContact);
 
     // Assert no console errors
-    expect(consoleMonitor.hasRLSErrors(), 'RLS errors detected').toBe(false);
-    expect(consoleMonitor.hasReactErrors(), 'React errors detected').toBe(false);
+    expect(consoleMonitor.hasRLSErrors(), "RLS errors detected").toBe(false);
+    expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(false);
   });
 
-  test('READ - View contact list', async ({ page }) => {
+  test("READ - View contact list", async ({ page }) => {
     const listPage = new ContactsListPage(page);
 
     // Navigate to contacts list
@@ -94,7 +97,7 @@ test.describe('Contacts CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('READ - View contact details', async ({ page }) => {
+  test("READ - View contact details", async ({ page }) => {
     const listPage = new ContactsListPage(page);
     const showPage = new ContactShowPage(page);
 
@@ -112,7 +115,7 @@ test.describe('Contacts CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('UPDATE - Edit a contact', async ({ page }) => {
+  test("UPDATE - Edit a contact", async ({ page }) => {
     // Generate unique test data with timestamp
     const timestamp = Date.now();
     const originalContact = {
@@ -151,7 +154,7 @@ test.describe('Contacts CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('DELETE - Delete a contact', async ({ page }) => {
+  test("DELETE - Delete a contact", async ({ page }) => {
     // Generate unique test data with timestamp
     const timestamp = Date.now();
     const deleteContact = {
@@ -174,7 +177,7 @@ test.describe('Contacts CRUD Operations', () => {
     await showPage.deleteContact();
 
     // Verify redirect to list
-    await expect(page).toHaveURL('/#/contacts');
+    await expect(page).toHaveURL("/#/contacts");
 
     // Verify contact is no longer visible
     await listPage.expectContactNotVisible(deleteContact.email);
@@ -184,7 +187,9 @@ test.describe('Contacts CRUD Operations', () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test('VALIDATION - Form validation prevents submission without required fields', async ({ page }) => {
+  test("VALIDATION - Form validation prevents submission without required fields", async ({
+    page,
+  }) => {
     const listPage = new ContactsListPage(page);
     const formPage = new ContactFormPage(page);
 

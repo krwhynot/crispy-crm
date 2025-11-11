@@ -50,9 +50,7 @@ describe("Note Transformation Utilities", () => {
           date: "2024-01-15T10:00:00Z",
           contact_id: "contact-123",
           sales_id: "user-456",
-          attachments: [
-            { src: "https://example.com/contract.pdf", title: "Contract" },
-          ],
+          attachments: [{ src: "https://example.com/contract.pdf", title: "Contract" }],
         };
 
         const result = createContactNoteSchema.parse(createWithAttachments);
@@ -69,9 +67,7 @@ describe("Note Transformation Utilities", () => {
           sales_id: "user-456",
         };
 
-        expect(() =>
-          createOpportunityNoteSchema.parse(validCreate),
-        ).not.toThrow();
+        expect(() => createOpportunityNoteSchema.parse(validCreate)).not.toThrow();
       });
 
       it("should not require status field", () => {
@@ -82,9 +78,7 @@ describe("Note Transformation Utilities", () => {
           sales_id: "user-456",
         };
 
-        expect(() =>
-          createOpportunityNoteSchema.parse(createData),
-        ).not.toThrow();
+        expect(() => createOpportunityNoteSchema.parse(createData)).not.toThrow();
       });
     });
   });
@@ -105,27 +99,21 @@ describe("Note Transformation Utilities", () => {
           text: "Updated text",
         };
 
-        expect(() => updateContactNoteSchema.parse(invalidUpdate)).toThrow(
-          z.ZodError,
-        );
+        expect(() => updateContactNoteSchema.parse(invalidUpdate)).toThrow(z.ZodError);
       });
 
       it("should allow partial updates", () => {
-        expect(() =>
-          updateContactNoteSchema.parse({ id: "n-1", text: "New text" }),
-        ).not.toThrow();
+        expect(() => updateContactNoteSchema.parse({ id: "n-1", text: "New text" })).not.toThrow();
         expect(() =>
           updateContactNoteSchema.parse({
             id: "n-1",
             date: "2024-01-20T10:00:00Z",
-          }),
+          })
         ).not.toThrow();
         expect(() =>
-          updateContactNoteSchema.parse({ id: "n-1", status: "completed" }),
+          updateContactNoteSchema.parse({ id: "n-1", status: "completed" })
         ).not.toThrow();
-        expect(() =>
-          updateContactNoteSchema.parse({ id: "n-1" }),
-        ).not.toThrow(); // Just id
+        expect(() => updateContactNoteSchema.parse({ id: "n-1" })).not.toThrow(); // Just id
       });
     });
 
@@ -136,9 +124,7 @@ describe("Note Transformation Utilities", () => {
           text: "Updated opportunity note",
         };
 
-        expect(() =>
-          updateOpportunityNoteSchema.parse(validUpdate),
-        ).not.toThrow();
+        expect(() => updateOpportunityNoteSchema.parse(validUpdate)).not.toThrow();
       });
 
       it("should allow updating attachments", () => {
@@ -152,9 +138,7 @@ describe("Note Transformation Utilities", () => {
           ],
         };
 
-        expect(() =>
-          updateOpportunityNoteSchema.parse(updateWithAttachments),
-        ).not.toThrow();
+        expect(() => updateOpportunityNoteSchema.parse(updateWithAttachments)).not.toThrow();
       });
     });
   });
@@ -171,9 +155,7 @@ describe("Note Transformation Utilities", () => {
 
         const result = validateContactNoteForSubmission(inputData);
         expect(result.text).toBe("Note for submission");
-        expect(result.date).toMatch(
-          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
-        );
+        expect(result.date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
       });
     });
 
@@ -188,9 +170,7 @@ describe("Note Transformation Utilities", () => {
 
         const result = validateOpportunityNoteForSubmission(inputData);
         expect(result.text).toBe("Opportunity note for submission");
-        expect(result.date).toMatch(
-          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
-        );
+        expect(result.date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
       });
     });
   });

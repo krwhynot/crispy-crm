@@ -19,9 +19,7 @@ export function ParentOrganizationInput() {
     >
       <AutocompleteInput
         label="Parent Organization (optional)"
-        optionText={(choice: any) =>
-          choice ? `${choice.name} (${choice.organization_type})` : ""
-        }
+        optionText={(choice: any) => (choice ? `${choice.name} (${choice.organization_type})` : "")}
         filterToQuery={(searchText: string) => ({
           name: { $ilike: `%${searchText}%` },
         })}

@@ -44,7 +44,9 @@ vi.mock("@/components/admin/reference-field", () => ({
 
 // Mock ReferenceManyField (for notes)
 vi.mock("@/components/admin/reference-many-field", () => ({
-  ReferenceManyField: ({ children }: any) => <div data-testid="reference-many-field">{children}</div>,
+  ReferenceManyField: ({ children }: any) => (
+    <div data-testid="reference-many-field">{children}</div>
+  ),
 }));
 
 // Mock TextField

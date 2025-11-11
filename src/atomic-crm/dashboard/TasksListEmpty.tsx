@@ -11,12 +11,14 @@ export const TasksListEmpty = () => {
         sales_id: identity?.id,
       },
     },
-    { enabled: !!identity },
+    { enabled: !!identity }
   );
 
   if (total) return null;
 
   return (
-    <p className="text-sm text-[color:var(--text-body)]">Tasks added to your contacts will appear here.</p>
+    <p className="text-sm text-[color:var(--text-body)]">
+      Tasks added to your contacts will appear here.
+    </p>
   );
 };

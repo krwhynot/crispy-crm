@@ -18,7 +18,7 @@ import {
   FormDescription,
   FormError,
   SaveButton,
-  useFormField
+  useFormField,
 } from "../form";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { SaveContextProvider, type SaveContextValue } from "ra-core";
@@ -42,7 +42,7 @@ const TestFormFieldConsumer = () => {
 const FormWrapper = ({
   children,
   defaultValues = {},
-  onSubmit = vi.fn()
+  onSubmit = vi.fn(),
 }: {
   children: React.ReactNode;
   defaultValues?: any;
@@ -50,14 +50,12 @@ const FormWrapper = ({
 }) => {
   const form = useForm({
     defaultValues,
-    mode: "onChange" // Enable onChange validation for tests
+    mode: "onChange", // Enable onChange validation for tests
   });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        {children}
-      </form>
+      <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
     </Form>
   );
 };
@@ -111,7 +109,7 @@ describe("FormLabel", () => {
 
     const TestFormWithError = () => {
       const form = useForm({
-        defaultValues: { email: "" }
+        defaultValues: { email: "" },
       });
 
       return (
@@ -122,7 +120,9 @@ describe("FormLabel", () => {
               <input {...form.register("email", { required: "Email is required" })} />
               <FormError />
             </FormField>
-            <button type="button" onClick={() => form.trigger("email")}>Validate</button>
+            <button type="button" onClick={() => form.trigger("email")}>
+              Validate
+            </button>
           </form>
         </Form>
       );
@@ -164,7 +164,7 @@ describe("FormControl", () => {
 
     const TestFormWithValidation = () => {
       const form = useForm({
-        defaultValues: { username: "" }
+        defaultValues: { username: "" },
       });
 
       return (
@@ -175,7 +175,9 @@ describe("FormControl", () => {
                 <input {...form.register("username", { required: true })} />
               </FormControl>
             </FormField>
-            <button type="button" onClick={() => form.trigger("username")}>Validate</button>
+            <button type="button" onClick={() => form.trigger("username")}>
+              Validate
+            </button>
           </form>
         </Form>
       );
@@ -215,23 +217,27 @@ describe("FormError", () => {
 
     const TestFormWithError = () => {
       const form = useForm({
-        defaultValues: { email: "" }
+        defaultValues: { email: "" },
       });
 
       return (
         <Form {...form}>
           <form>
             <FormField id="email" name="email">
-              <input {...form.register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address"
-                }
-              })} />
+              <input
+                {...form.register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
+              />
               <FormError />
             </FormField>
-            <button type="button" onClick={() => form.trigger("email")}>Validate</button>
+            <button type="button" onClick={() => form.trigger("email")}>
+              Validate
+            </button>
           </form>
         </Form>
       );
@@ -264,7 +270,7 @@ describe("FormError", () => {
         // Simulate server error
         form.setError("username", {
           type: "manual",
-          root: { message: "Username already taken" }
+          root: { message: "Username already taken" },
         });
       }, [form]);
 
@@ -307,7 +313,7 @@ describe("SaveButton", () => {
     saveContext = {
       save: mockSave,
       saving: false,
-      mutationMode: "pessimistic"
+      mutationMode: "pessimistic",
     };
   });
 
@@ -329,7 +335,7 @@ describe("SaveButton", () => {
 
     const TestFormWithInput = () => {
       const form = useForm({
-        defaultValues: { name: "" }
+        defaultValues: { name: "" },
       });
 
       return (
@@ -359,13 +365,13 @@ describe("SaveButton", () => {
     const user = userEvent.setup();
 
     // Mock save that takes time
-    const slowSave = vi.fn().mockImplementation(() =>
-      new Promise(resolve => setTimeout(resolve, 100))
-    );
+    const slowSave = vi
+      .fn()
+      .mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
 
     const TestFormWithSlowSave = () => {
       const form = useForm({
-        defaultValues: { name: "test" }
+        defaultValues: { name: "test" },
       });
 
       const [saving, setSaving] = React.useState(false);
@@ -384,7 +390,7 @@ describe("SaveButton", () => {
       const saveContextValue = {
         save: handleSave,
         saving,
-        mutationMode: "pessimistic" as const
+        mutationMode: "pessimistic" as const,
       };
 
       return (
@@ -428,18 +434,20 @@ describe("SaveButton", () => {
 
     const TestFormWithSubmitting = () => {
       const form = useForm({
-        defaultValues: { name: "" }
+        defaultValues: { name: "" },
       });
       const [isSubmitting, setIsSubmitting] = React.useState(false);
 
       return (
         <SaveContextProvider value={saveContext}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(async () => {
-              setIsSubmitting(true);
-              await new Promise(resolve => setTimeout(resolve, 100));
-              setIsSubmitting(false);
-            })}>
+            <form
+              onSubmit={form.handleSubmit(async () => {
+                setIsSubmitting(true);
+                await new Promise((resolve) => setTimeout(resolve, 100));
+                setIsSubmitting(false);
+              })}
+            >
               <input {...form.register("name")} />
               <SaveButton />
               {isSubmitting && <div data-testid="submitting">Submitting...</div>}
@@ -469,18 +477,18 @@ describe("SaveButton", () => {
     const saveWithErrors = vi.fn().mockImplementation(() =>
       Promise.resolve({
         email: "Invalid email format",
-        username: "Username already exists"
+        username: "Username already exists",
       })
     );
 
     const errorSaveContext = {
       ...saveContext,
-      save: saveWithErrors
+      save: saveWithErrors,
     };
 
     const TestFormWithMultipleErrors = () => {
       const form = useForm({
-        defaultValues: { email: "bad", username: "taken" }
+        defaultValues: { email: "bad", username: "taken" },
       });
 
       React.useEffect(() => {
@@ -541,7 +549,7 @@ describe("SaveButton", () => {
 
     const TestFormWithCustomClick = () => {
       const form = useForm({
-        defaultValues: { name: "" }
+        defaultValues: { name: "" },
       });
 
       React.useEffect(() => {
@@ -573,11 +581,7 @@ describe("SaveButton", () => {
     renderWithAdminContext(
       <SaveContextProvider value={saveContext}>
         <FormWrapper>
-          <SaveButton
-            label="Update Record"
-            variant="destructive"
-            alwaysEnable
-          />
+          <SaveButton label="Update Record" variant="destructive" alwaysEnable />
         </FormWrapper>
       </SaveContextProvider>
     );
@@ -594,12 +598,12 @@ describe("SaveButton", () => {
 
     const customSaveContext = {
       ...saveContext,
-      save: customSave
+      save: customSave,
     };
 
     const TestFormWithButtonType = () => {
       const form = useForm({
-        defaultValues: { name: "test" }
+        defaultValues: { name: "test" },
       });
 
       return (
@@ -631,7 +635,7 @@ describe("SaveButton", () => {
 
     const TestFormWithTransform = () => {
       const form = useForm({
-        defaultValues: { name: "" }
+        defaultValues: { name: "" },
       });
 
       React.useEffect(() => {
@@ -641,7 +645,7 @@ describe("SaveButton", () => {
       const saveContext = {
         save: mockSave,
         saving: false,
-        mutationMode: "pessimistic" as const
+        mutationMode: "pessimistic" as const,
       };
 
       return (
@@ -678,8 +682,8 @@ describe("SaveButton", () => {
         defaultValues: {
           email: "",
           password: "",
-          confirmPassword: ""
-        }
+          confirmPassword: "",
+        },
       });
 
       const handleSubmit = form.handleSubmit((data) => {
@@ -715,7 +719,11 @@ describe("SaveButton", () => {
               <FormError />
             </FormField>
             <FormField id="confirmPassword" name="confirmPassword">
-              <input {...form.register("confirmPassword")} type="password" placeholder="Confirm Password" />
+              <input
+                {...form.register("confirmPassword")}
+                type="password"
+                placeholder="Confirm Password"
+              />
               <FormError />
             </FormField>
             <button type="submit">Submit</button>

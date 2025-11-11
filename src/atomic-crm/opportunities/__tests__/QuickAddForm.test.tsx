@@ -1,14 +1,14 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { QuickAddForm } from '../QuickAddForm';
-import { useQuickAdd } from '../hooks/useQuickAdd';
-import { useGetList } from 'ra-core';
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QuickAddForm } from "../QuickAddForm";
+import { useQuickAdd } from "../hooks/useQuickAdd";
+import { useGetList } from "ra-core";
 
 // Mock the external dependencies
-vi.mock('../hooks/useQuickAdd');
-vi.mock('ra-core', () => ({
+vi.mock("../hooks/useQuickAdd");
+vi.mock("ra-core", () => ({
   useGetList: vi.fn(),
 }));
 
@@ -21,7 +21,7 @@ const mockLocalStorage = {
   length: 0,
   key: vi.fn(),
 };
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, "localStorage", { value: mockLocalStorage });
 
 // Test wrapper component
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -31,14 +31,10 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
       mutations: { retry: false },
     },
   });
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
 
-describe('QuickAddForm', () => {
+describe("QuickAddForm", () => {
   const mockOnSuccess = vi.fn();
   const mockMutate = vi.fn();
 
@@ -52,20 +48,20 @@ describe('QuickAddForm', () => {
     });
 
     (useGetList as Mock).mockImplementation((resource) => {
-      if (resource === 'organizations') {
+      if (resource === "organizations") {
         return {
           data: [
-            { id: 1, name: 'Principal A' },
-            { id: 2, name: 'Principal B' },
+            { id: 1, name: "Principal A" },
+            { id: 2, name: "Principal B" },
           ],
           isLoading: false,
         };
       }
-      if (resource === 'products') {
+      if (resource === "products") {
         return {
           data: [
-            { id: 101, name: 'Product 1' },
-            { id: 102, name: 'Product 2' },
+            { id: 101, name: "Product 1" },
+            { id: 102, name: "Product 2" },
           ],
           isLoading: false,
         };
@@ -74,13 +70,13 @@ describe('QuickAddForm', () => {
     });
 
     mockLocalStorage.getItem.mockImplementation((key) => {
-      if (key === 'last_campaign') return 'Test Campaign';
-      if (key === 'last_principal') return '1';
+      if (key === "last_campaign") return "Test Campaign";
+      if (key === "last_principal") return "1";
       return null;
     });
   });
 
-  it('renders all form fields', () => {
+  it("renders all form fields", () => {
     render(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
@@ -107,12 +103,12 @@ describe('QuickAddForm', () => {
     expect(screen.getByLabelText(/quick note/i)).toBeInTheDocument();
 
     // Footer buttons
-    expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /save & add another/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /save & close/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /save & add another/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /save & close/i })).toBeInTheDocument();
   });
 
-  it('pre-fills from localStorage', () => {
+  it("pre-fills from localStorage", () => {
     render(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
@@ -120,10 +116,10 @@ describe('QuickAddForm', () => {
     );
 
     const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
-    expect(campaignInput.value).toBe('Test Campaign');
+    expect(campaignInput.value).toBe("Test Campaign");
   });
 
-  it('validates phone OR email requirement', async () => {
+  it("validates phone OR email requirement", async () => {
     const user = userEvent.setup();
 
     render(
@@ -137,19 +133,19 @@ describe('QuickAddForm', () => {
     await user.clear(campaignInput);
 
     // Fill required fields except phone/email
-    await user.type(campaignInput, 'Test Campaign');
-    await user.type(screen.getByLabelText(/first name \*/i), 'John');
-    await user.type(screen.getByLabelText(/last name \*/i), 'Doe');
-    await user.type(screen.getByLabelText(/organization name \*/i), 'Acme Corp');
+    await user.type(campaignInput, "Test Campaign");
+    await user.type(screen.getByLabelText(/first name \*/i), "John");
+    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
     // City uses a combobox button, find by placeholder text
-    const cityButton = screen.getByText('Select or type city...');
+    const cityButton = screen.getByText("Select or type city...");
     await user.click(cityButton);
 
-    await user.type(screen.getByLabelText(/state \*/i), 'NY');
+    await user.type(screen.getByLabelText(/state \*/i), "NY");
 
     // Try to submit without phone or email
-    await user.click(screen.getByRole('button', { name: /save & close/i }));
+    await user.click(screen.getByRole("button", { name: /save & close/i }));
 
     // Should show validation error
     await waitFor(() => {
@@ -157,7 +153,7 @@ describe('QuickAddForm', () => {
     });
   });
 
-  it.skip('handles Save & Add Another correctly', async () => {
+  it.skip("handles Save & Add Another correctly", async () => {
     // TODO: This test requires proper Combobox test helpers for city field interaction
     // The city field uses shadcn Combobox which is complex to test with Testing Library
     // See integration test file for recommended test helper patterns
@@ -174,17 +170,17 @@ describe('QuickAddForm', () => {
     );
 
     // Fill form
-    await user.type(screen.getByLabelText(/first name \*/i), 'John');
-    await user.type(screen.getByLabelText(/last name \*/i), 'Doe');
-    await user.type(screen.getByLabelText(/^email$/i), 'john@example.com');
-    await user.type(screen.getByLabelText(/organization name \*/i), 'Acme Corp');
+    await user.type(screen.getByLabelText(/first name \*/i), "John");
+    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
+    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
     // City field requires Combobox interaction - complex in tests
     // State field
-    await user.type(screen.getByLabelText(/state \*/i), 'CA');
+    await user.type(screen.getByLabelText(/state \*/i), "CA");
 
     // Click Save & Add Another
-    await user.click(screen.getByRole('button', { name: /save & add another/i }));
+    await user.click(screen.getByRole("button", { name: /save & add another/i }));
 
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalled();
@@ -192,14 +188,14 @@ describe('QuickAddForm', () => {
 
       // Form should be reset except campaign and principal
       const firstNameInput = screen.getByLabelText(/first name \*/i) as HTMLInputElement;
-      expect(firstNameInput.value).toBe('');
+      expect(firstNameInput.value).toBe("");
 
       const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
-      expect(campaignInput.value).toBe('Test Campaign'); // Should persist
+      expect(campaignInput.value).toBe("Test Campaign"); // Should persist
     });
   });
 
-  it.skip('handles Save & Close correctly', async () => {
+  it.skip("handles Save & Close correctly", async () => {
     // TODO: This test requires proper Combobox test helpers for city field interaction
     // The city field uses shadcn Combobox which is complex to test with Testing Library
     // See integration test file for recommended test helper patterns
@@ -216,17 +212,17 @@ describe('QuickAddForm', () => {
     );
 
     // Fill form
-    await user.type(screen.getByLabelText(/first name \*/i), 'John');
-    await user.type(screen.getByLabelText(/last name \*/i), 'Doe');
-    await user.type(screen.getByLabelText(/^phone$/i), '555-1234');
-    await user.type(screen.getByLabelText(/organization name \*/i), 'Acme Corp');
+    await user.type(screen.getByLabelText(/first name \*/i), "John");
+    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/^phone$/i), "555-1234");
+    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
     // City field requires Combobox interaction - complex in tests
     // State field
-    await user.type(screen.getByLabelText(/state \*/i), 'IL');
+    await user.type(screen.getByLabelText(/state \*/i), "IL");
 
     // Click Save & Close
-    await user.click(screen.getByRole('button', { name: /save & close/i }));
+    await user.click(screen.getByRole("button", { name: /save & close/i }));
 
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalled();
@@ -234,13 +230,13 @@ describe('QuickAddForm', () => {
     });
   });
 
-  it('filters products by selected principal', async () => {
+  it("filters products by selected principal", async () => {
     userEvent.setup();
 
     // Mock no principal selected initially
     mockLocalStorage.getItem.mockImplementation((key) => {
-      if (key === 'last_campaign') return 'Test Campaign';
-      if (key === 'last_principal') return null;
+      if (key === "last_campaign") return "Test Campaign";
+      if (key === "last_principal") return null;
       return null;
     });
 
@@ -257,7 +253,7 @@ describe('QuickAddForm', () => {
     // This would require more complex mocking of Select component interactions
   });
 
-  it('validates all required fields', async () => {
+  it("validates all required fields", async () => {
     const user = userEvent.setup();
 
     // Set localStorage to have no pre-filled values
@@ -270,7 +266,7 @@ describe('QuickAddForm', () => {
     );
 
     // Try to submit empty form
-    await user.click(screen.getByRole('button', { name: /save & close/i }));
+    await user.click(screen.getByRole("button", { name: /save & close/i }));
 
     await waitFor(() => {
       // Check for at least some key validation messages
@@ -280,7 +276,7 @@ describe('QuickAddForm', () => {
     });
   });
 
-  it('clears phone/email validation when either field is filled', async () => {
+  it("clears phone/email validation when either field is filled", async () => {
     const user = userEvent.setup();
 
     render(
@@ -290,13 +286,13 @@ describe('QuickAddForm', () => {
     );
 
     // Fill required fields except phone/email
-    await user.type(screen.getByLabelText(/first name \*/i), 'John');
-    await user.type(screen.getByLabelText(/last name \*/i), 'Doe');
-    await user.type(screen.getByLabelText(/organization name \*/i), 'Acme Corp');
-    await user.type(screen.getByLabelText(/state \*/i), 'CA');
+    await user.type(screen.getByLabelText(/first name \*/i), "John");
+    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
+    await user.type(screen.getByLabelText(/state \*/i), "CA");
 
     // Try to submit without phone or email
-    await user.click(screen.getByRole('button', { name: /save & close/i }));
+    await user.click(screen.getByRole("button", { name: /save & close/i }));
 
     // Should show validation error
     await waitFor(() => {
@@ -304,7 +300,7 @@ describe('QuickAddForm', () => {
     });
 
     // Now fill email
-    await user.type(screen.getByLabelText(/^email$/i), 'john@example.com');
+    await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
 
     // Error should be cleared
     await waitFor(() => {
@@ -312,7 +308,7 @@ describe('QuickAddForm', () => {
     });
   });
 
-  it('handles Cancel button correctly', async () => {
+  it("handles Cancel button correctly", async () => {
     const user = userEvent.setup();
 
     render(
@@ -321,13 +317,13 @@ describe('QuickAddForm', () => {
       </TestWrapper>
     );
 
-    await user.click(screen.getByRole('button', { name: /cancel/i }));
+    await user.click(screen.getByRole("button", { name: /cancel/i }));
 
     expect(mockOnSuccess).toHaveBeenCalled();
     expect(mockMutate).not.toHaveBeenCalled();
   });
 
-  it('disables buttons when mutation is pending', () => {
+  it("disables buttons when mutation is pending", () => {
     (useQuickAdd as Mock).mockReturnValue({
       mutate: mockMutate,
       isPending: true,
@@ -339,8 +335,8 @@ describe('QuickAddForm', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByRole('button', { name: /cancel/i })).toBeDisabled();
-    expect(screen.getByRole('button', { name: /save & add another/i })).toBeDisabled();
-    expect(screen.getByRole('button', { name: /save & close/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /cancel/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /save & add another/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /save & close/i })).toBeDisabled();
   });
 });

@@ -21,19 +21,19 @@
  * [ ] Touch targets are 44x44px minimum
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { renderWithAdminContext } from '@/tests/utils/render-admin';
-import { QuickAddButton } from '../QuickAddButton';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { QuickAddButton } from "../QuickAddButton";
 
 // Mock the useNotify hook for toast notifications
 const mockNotify = vi.fn();
 const mockCreateBoothVisitor = vi.fn();
 const mockGetList = vi.fn();
 
-vi.mock('ra-core', async () => {
-  const actual = await vi.importActual('ra-core');
+vi.mock("ra-core", async () => {
+  const actual = await vi.importActual("ra-core");
   return {
     ...actual,
     useNotify: () => mockNotify,
@@ -42,22 +42,22 @@ vi.mock('ra-core', async () => {
       getList: mockGetList,
     }),
     useGetList: vi.fn((resource: string) => {
-      if (resource === 'organizations') {
+      if (resource === "organizations") {
         return {
           data: [
-            { id: 1, name: 'Principal A', status: 'active' },
-            { id: 2, name: 'Principal B', status: 'active' },
+            { id: 1, name: "Principal A", status: "active" },
+            { id: 2, name: "Principal B", status: "active" },
           ],
           total: 2,
           isLoading: false,
         };
       }
-      if (resource === 'products') {
+      if (resource === "products") {
         return {
           data: [
-            { id: 1, name: 'Product 1', principal_id: 1 },
-            { id: 2, name: 'Product 2', principal_id: 2 },
-            { id: 3, name: 'Product 3', principal_id: 1 },
+            { id: 1, name: "Product 1", principal_id: 1 },
+            { id: 2, name: "Product 2", principal_id: 2 },
+            { id: 3, name: "Product 3", principal_id: 1 },
           ],
           total: 3,
           isLoading: false,
@@ -69,26 +69,26 @@ vi.mock('ra-core', async () => {
 });
 
 // Mock the configuration context
-vi.mock('../../root/ConfigurationContext', () => ({
+vi.mock("../../root/ConfigurationContext", () => ({
   useConfiguration: () => ({
     getList: vi.fn().mockReturnValue({}),
     recordRepresentation: {
-      principals: (record: any) => record?.name || '',
-      campaigns: (record: any) => record?.name || '',
-      products: (record: any) => record?.name || '',
+      principals: (record: any) => record?.name || "",
+      campaigns: (record: any) => record?.name || "",
+      products: (record: any) => record?.name || "",
     },
     stages: [
-      { value: 'new_lead', label: 'New Lead' },
-      { value: 'demo_scheduled', label: 'Demo Scheduled' },
+      { value: "new_lead", label: "New Lead" },
+      { value: "demo_scheduled", label: "Demo Scheduled" },
     ],
     gender: [
-      { value: 'male', label: 'Male' },
-      { value: 'female', label: 'Female' },
+      { value: "male", label: "Male" },
+      { value: "female", label: "Female" },
     ],
   }),
 }));
 
-describe('QuickAdd Integration', () => {
+describe("QuickAdd Integration", () => {
   let user: ReturnType<typeof userEvent.setup>;
 
   beforeEach(() => {
@@ -107,39 +107,39 @@ describe('QuickAdd Integration', () => {
     });
 
     mockGetList.mockImplementation((resource: string) => {
-      if (resource === 'principals') {
+      if (resource === "principals") {
         return Promise.resolve({
           data: [
-            { id: 1, name: 'Principal A', status: 'active' },
-            { id: 2, name: 'Principal B', status: 'active' },
+            { id: 1, name: "Principal A", status: "active" },
+            { id: 2, name: "Principal B", status: "active" },
           ],
           total: 2,
         });
       }
-      if (resource === 'campaigns') {
+      if (resource === "campaigns") {
         return Promise.resolve({
           data: [
-            { id: 1, name: 'Trade Show 2024', status: 'active' },
-            { id: 2, name: 'Conference 2024', status: 'active' },
+            { id: 1, name: "Trade Show 2024", status: "active" },
+            { id: 2, name: "Conference 2024", status: "active" },
           ],
           total: 2,
         });
       }
-      if (resource === 'products') {
+      if (resource === "products") {
         return Promise.resolve({
           data: [
-            { id: 1, name: 'Product 1', principal_id: 1 },
-            { id: 2, name: 'Product 2', principal_id: 2 },
-            { id: 3, name: 'Product 3', principal_id: 1 },
+            { id: 1, name: "Product 1", principal_id: 1 },
+            { id: 2, name: "Product 2", principal_id: 2 },
+            { id: 3, name: "Product 3", principal_id: 1 },
           ],
           total: 3,
         });
       }
-      if (resource === 'cities') {
+      if (resource === "cities") {
         return Promise.resolve({
           data: [
-            { id: 1, city: 'Chicago', state_prov: 'IL' },
-            { id: 2, city: 'Los Angeles', state_prov: 'CA' },
+            { id: 1, city: "Chicago", state_prov: "IL" },
+            { id: 2, city: "Los Angeles", state_prov: "CA" },
           ],
           total: 2,
         });
@@ -152,54 +152,56 @@ describe('QuickAdd Integration', () => {
     vi.restoreAllMocks();
   });
 
-  it.skip(
-    'completes full atomic creation flow with Save & Close',
-    async () => {
-      renderWithAdminContext(<QuickAddButton />);
+  it.skip("completes full atomic creation flow with Save & Close", async () => {
+    renderWithAdminContext(<QuickAddButton />);
 
     // 1. Open dialog
     const quickAddButton = screen.getByText(/quick add/i);
     await user.click(quickAddButton);
 
     // 2. Verify dialog opened
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(screen.getByText('Quick Add Booth Visitor')).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText("Quick Add Booth Visitor")).toBeInTheDocument();
 
     // 3. Fill form fields
-    await user.type(screen.getByLabelText(/first name/i), 'John');
-    await user.type(screen.getByLabelText(/last name/i), 'Doe');
-    await user.type(screen.getByLabelText(/email/i), 'john.doe@example.com');
-    await user.type(screen.getByLabelText(/phone/i), '555-1234');
-    await user.type(screen.getByLabelText(/organization name/i), 'Acme Corp');
+    await user.type(screen.getByLabelText(/first name/i), "John");
+    await user.type(screen.getByLabelText(/last name/i), "Doe");
+    await user.type(screen.getByLabelText(/email/i), "john.doe@example.com");
+    await user.type(screen.getByLabelText(/phone/i), "555-1234");
+    await user.type(screen.getByLabelText(/organization name/i), "Acme Corp");
 
     // City field uses Combobox component - wait for it to be ready, then interact
-    const cityCombobox = await screen.findByRole('combobox', { name: /city/i });
+    const cityCombobox = await screen.findByRole("combobox", { name: /city/i });
     await user.click(cityCombobox);
 
     // Wait for the search input to appear before typing
-    const searchInput = await screen.findByPlaceholderText('Select or type city...', {}, { timeout: 3000 });
-    await user.type(searchInput, 'Chicago');
+    const searchInput = await screen.findByPlaceholderText(
+      "Select or type city...",
+      {},
+      { timeout: 3000 }
+    );
+    await user.type(searchInput, "Chicago");
 
     // Wait for the option to appear after typing
-    const option = await screen.findByRole('option', { name: 'Chicago' }, { timeout: 3000 });
+    const option = await screen.findByRole("option", { name: "Chicago" }, { timeout: 3000 });
     await user.click(option);
 
     // State should auto-fill when city is selected
     await waitFor(() => {
-      expect(screen.getByLabelText(/state/i)).toHaveValue('IL');
+      expect(screen.getByLabelText(/state/i)).toHaveValue("IL");
     });
 
     // Type campaign name (it's a text field, not a select)
-    await user.type(screen.getByLabelText(/campaign/i), 'Trade Show 2024');
+    await user.type(screen.getByLabelText(/campaign/i), "Trade Show 2024");
 
     // Find principal select trigger button (shadcn Select uses button with role="combobox")
     // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText('Principal *');
+    const principalLabel = screen.getByText("Principal *");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
-    if (!principalTrigger) throw new Error('Principal trigger not found');
+    if (!principalTrigger) throw new Error("Principal trigger not found");
     await user.click(principalTrigger);
-    await user.click(await screen.findByRole('option', { name: 'Principal A' }));
+    await user.click(await screen.findByRole("option", { name: "Principal A" }));
 
     // 4. Submit with Save & Close
     const saveCloseButton = screen.getByText(/save & close/i);
@@ -209,76 +211,76 @@ describe('QuickAdd Integration', () => {
     await waitFor(() => {
       expect(mockCreateBoothVisitor).toHaveBeenCalledWith(
         expect.objectContaining({
-          first_name: 'John',
-          last_name: 'Doe',
-          email: 'john.doe@example.com',
-          phone: '555-1234',
-          org_name: 'Acme Corp',
-          campaign: 'Trade Show 2024',
+          first_name: "John",
+          last_name: "Doe",
+          email: "john.doe@example.com",
+          phone: "555-1234",
+          org_name: "Acme Corp",
+          campaign: "Trade Show 2024",
           principal_id: 1,
         })
       );
     });
 
     // 6. Verify success toast shown
-    expect(mockNotify).toHaveBeenCalledWith(
-      '✅ Created: John Doe - Acme Corp',
-      { type: 'success', autoHideDuration: 2000 }
-    );
+    expect(mockNotify).toHaveBeenCalledWith("✅ Created: John Doe - Acme Corp", {
+      type: "success",
+      autoHideDuration: 2000,
+    });
 
     // 7. Verify localStorage updated
-    expect(localStorage.getItem('last_campaign')).toBe('Trade Show 2024');
-    expect(localStorage.getItem('last_principal')).toBe('1');
+    expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2024");
+    expect(localStorage.getItem("last_principal")).toBe("1");
 
     // 8. Verify dialog closed
     await waitFor(() => {
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
-    },
-    10000
-  );
+  }, 10000);
 
-  it.skip(
-    'handles Save & Add Another flow correctly',
-    async () => {
-      renderWithAdminContext(<QuickAddButton />);
+  it.skip("handles Save & Add Another flow correctly", async () => {
+    renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog
     await user.click(screen.getByText(/quick add/i));
 
     // Fill form
-    await user.type(screen.getByLabelText(/first name/i), 'Jane');
-    await user.type(screen.getByLabelText(/last name/i), 'Smith');
-    await user.type(screen.getByLabelText(/email/i), 'jane@example.com');
-    await user.type(screen.getByLabelText(/organization name/i), 'Tech Corp');
+    await user.type(screen.getByLabelText(/first name/i), "Jane");
+    await user.type(screen.getByLabelText(/last name/i), "Smith");
+    await user.type(screen.getByLabelText(/email/i), "jane@example.com");
+    await user.type(screen.getByLabelText(/organization name/i), "Tech Corp");
 
     // City field uses Combobox component - wait for it to be ready, then interact
-    const cityCombobox = await screen.findByRole('combobox', { name: /city/i });
+    const cityCombobox = await screen.findByRole("combobox", { name: /city/i });
     await user.click(cityCombobox);
 
     // Wait for the search input to appear before typing
-    const searchInput = await screen.findByPlaceholderText('Select or type city...', {}, { timeout: 3000 });
-    await user.type(searchInput, 'Los Angeles');
+    const searchInput = await screen.findByPlaceholderText(
+      "Select or type city...",
+      {},
+      { timeout: 3000 }
+    );
+    await user.type(searchInput, "Los Angeles");
 
     // Wait for the option to appear after typing
-    const option = await screen.findByRole('option', { name: 'Los Angeles' }, { timeout: 3000 });
+    const option = await screen.findByRole("option", { name: "Los Angeles" }, { timeout: 3000 });
     await user.click(option);
 
     // State should auto-fill when city is selected
     await waitFor(() => {
-      expect(screen.getByLabelText(/state/i)).toHaveValue('CA');
+      expect(screen.getByLabelText(/state/i)).toHaveValue("CA");
     });
 
     // Type campaign name (it's a text field, not a select)
-    await user.type(screen.getByLabelText(/campaign/i), 'Conference 2024');
+    await user.type(screen.getByLabelText(/campaign/i), "Conference 2024");
 
     // Find principal select trigger button
-    const principalLabel = screen.getByText('Principal *');
+    const principalLabel = screen.getByText("Principal *");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
-    if (!principalTrigger) throw new Error('Principal trigger not found');
+    if (!principalTrigger) throw new Error("Principal trigger not found");
     await user.click(principalTrigger);
-    await user.click(await screen.findByRole('option', { name: 'Principal B' }));
+    await user.click(await screen.findByRole("option", { name: "Principal B" }));
 
     // Submit with Save & Add Another
     const saveAddButton = screen.getByText(/save & add another/i);
@@ -288,71 +290,67 @@ describe('QuickAdd Integration', () => {
     await waitFor(() => {
       expect(mockCreateBoothVisitor).toHaveBeenCalledWith(
         expect.objectContaining({
-          first_name: 'Jane',
-          last_name: 'Smith',
-          email: 'jane@example.com',
-          org_name: 'Tech Corp',
-          campaign: 'Conference 2024',
+          first_name: "Jane",
+          last_name: "Smith",
+          email: "jane@example.com",
+          org_name: "Tech Corp",
+          campaign: "Conference 2024",
           principal_id: 2,
         })
       );
     });
 
     // Verify success toast
-    expect(mockNotify).toHaveBeenCalledWith(
-      '✅ Created: Jane Smith - Tech Corp',
-      { type: 'success', autoHideDuration: 2000 }
-    );
+    expect(mockNotify).toHaveBeenCalledWith("✅ Created: Jane Smith - Tech Corp", {
+      type: "success",
+      autoHideDuration: 2000,
+    });
 
     // Verify dialog stays open
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     // Verify form fields are cleared (except campaign/principal)
-    expect(screen.getByLabelText(/first name/i)).toHaveValue('');
-    expect(screen.getByLabelText(/last name/i)).toHaveValue('');
-    expect(screen.getByLabelText(/email/i)).toHaveValue('');
-    expect(screen.getByLabelText(/organization name/i)).toHaveValue('');
+    expect(screen.getByLabelText(/first name/i)).toHaveValue("");
+    expect(screen.getByLabelText(/last name/i)).toHaveValue("");
+    expect(screen.getByLabelText(/email/i)).toHaveValue("");
+    expect(screen.getByLabelText(/organization name/i)).toHaveValue("");
 
     // Verify campaign/principal preserved (they're input/select fields)
-    expect(screen.getByLabelText(/campaign/i)).toHaveValue('Conference 2024');
+    expect(screen.getByLabelText(/campaign/i)).toHaveValue("Conference 2024");
     // Principal is in a Select trigger, verify by finding the combobox
-    const principalLabelEl = screen.getByText('Principal *');
+    const principalLabelEl = screen.getByText("Principal *");
     const principalContainerEl = principalLabelEl.parentElement;
     const principalTriggerElement = principalContainerEl?.querySelector('[role="combobox"]');
-    expect(principalTriggerElement).toHaveTextContent('Principal B');
+    expect(principalTriggerElement).toHaveTextContent("Principal B");
 
     // Verify focus returns to first name field
     await waitFor(() => {
       expect(screen.getByLabelText(/first name/i)).toHaveFocus();
     });
-    },
-    10000
-  );
+  }, 10000);
 
-  it.skip('handles errors and preserves form data', async () => {
+  it.skip("handles errors and preserves form data", async () => {
     // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
     // Setup error mock
-    mockCreateBoothVisitor.mockRejectedValueOnce(
-      new Error('Database connection failed')
-    );
+    mockCreateBoothVisitor.mockRejectedValueOnce(new Error("Database connection failed"));
 
     renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog and fill form
     await user.click(screen.getByText(/quick add/i));
 
-    await user.type(screen.getByLabelText(/first name/i), 'Error');
-    await user.type(screen.getByLabelText(/last name/i), 'Test');
-    await user.type(screen.getByLabelText(/email/i), 'error@test.com');
-    await user.type(screen.getByLabelText(/organization name/i), 'Test Org');
+    await user.type(screen.getByLabelText(/first name/i), "Error");
+    await user.type(screen.getByLabelText(/last name/i), "Test");
+    await user.type(screen.getByLabelText(/email/i), "error@test.com");
+    await user.type(screen.getByLabelText(/organization name/i), "Test Org");
 
     // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText('Select or type city...');
+    const cityButton = screen.getByText("Select or type city...");
     await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText('Search cities...'), 'New York');
-    await user.keyboard('{Escape}'); // Close the Combobox dropdown
+    await user.type(screen.getByPlaceholderText("Search cities..."), "New York");
+    await user.keyboard("{Escape}"); // Close the Combobox dropdown
 
-    await user.type(screen.getByLabelText(/state/i), 'NY');
+    await user.type(screen.getByLabelText(/state/i), "NY");
 
     // Submit
     await user.click(screen.getByText(/save & close/i));
@@ -360,25 +358,25 @@ describe('QuickAdd Integration', () => {
     // Verify error toast shown
     await waitFor(() => {
       expect(mockNotify).toHaveBeenCalledWith(
-        'Failed to create booth visitor: Database connection failed',
-        { type: 'error' }
+        "Failed to create booth visitor: Database connection failed",
+        { type: "error" }
       );
     });
 
     // Verify dialog stays open
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     // Verify form data preserved
-    expect(screen.getByLabelText(/first name/i)).toHaveValue('Error');
-    expect(screen.getByLabelText(/last name/i)).toHaveValue('Test');
-    expect(screen.getByLabelText(/email/i)).toHaveValue('error@test.com');
-    expect(screen.getByLabelText(/organization name/i)).toHaveValue('Test Org');
+    expect(screen.getByLabelText(/first name/i)).toHaveValue("Error");
+    expect(screen.getByLabelText(/last name/i)).toHaveValue("Test");
+    expect(screen.getByLabelText(/email/i)).toHaveValue("error@test.com");
+    expect(screen.getByLabelText(/organization name/i)).toHaveValue("Test Org");
 
     // Verify no automatic retry (fail fast principle)
     expect(mockCreateBoothVisitor).toHaveBeenCalledTimes(1);
   });
 
-  it.skip('validates phone OR email requirement', async () => {
+  it.skip("validates phone OR email requirement", async () => {
     // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
     renderWithAdminContext(<QuickAddButton />);
 
@@ -386,17 +384,17 @@ describe('QuickAdd Integration', () => {
     await user.click(screen.getByText(/quick add/i));
 
     // Fill only required fields (no phone or email)
-    await user.type(screen.getByLabelText(/first name/i), 'Test');
-    await user.type(screen.getByLabelText(/last name/i), 'User');
-    await user.type(screen.getByLabelText(/organization name/i), 'Org');
+    await user.type(screen.getByLabelText(/first name/i), "Test");
+    await user.type(screen.getByLabelText(/last name/i), "User");
+    await user.type(screen.getByLabelText(/organization name/i), "Org");
 
     // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText('Select or type city...');
+    const cityButton = screen.getByText("Select or type city...");
     await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText('Search cities...'), 'Boston');
-    await user.keyboard('{Escape}'); // Close the Combobox dropdown
+    await user.type(screen.getByPlaceholderText("Search cities..."), "Boston");
+    await user.keyboard("{Escape}"); // Close the Combobox dropdown
 
-    await user.type(screen.getByLabelText(/state/i), 'MA');
+    await user.type(screen.getByLabelText(/state/i), "MA");
 
     // Try to submit - should be blocked
     const saveButton = screen.getByText(/save & close/i);
@@ -411,7 +409,7 @@ describe('QuickAdd Integration', () => {
     expect(mockCreateBoothVisitor).not.toHaveBeenCalled();
 
     // Now add just email and try again
-    await user.type(screen.getByLabelText(/email/i), 'test@example.com');
+    await user.type(screen.getByLabelText(/email/i), "test@example.com");
     await user.click(saveButton);
 
     // Should now submit successfully
@@ -426,18 +424,18 @@ describe('QuickAdd Integration', () => {
     await user.click(screen.getByText(/quick add/i));
 
     // Fill with only phone (no email)
-    await user.type(screen.getByLabelText(/first name/i), 'Phone');
-    await user.type(screen.getByLabelText(/last name/i), 'Only');
-    await user.type(screen.getByLabelText(/phone/i), '555-9999');
-    await user.type(screen.getByLabelText(/organization name/i), 'Phone Org');
+    await user.type(screen.getByLabelText(/first name/i), "Phone");
+    await user.type(screen.getByLabelText(/last name/i), "Only");
+    await user.type(screen.getByLabelText(/phone/i), "555-9999");
+    await user.type(screen.getByLabelText(/organization name/i), "Phone Org");
 
     // City uses Combobox - find button and click to interact
-    const cityButton2 = screen.getByText('Select or type city...');
+    const cityButton2 = screen.getByText("Select or type city...");
     await user.click(cityButton2);
-    await user.type(screen.getByPlaceholderText('Search cities...'), 'Seattle');
-    await user.keyboard('{Escape}'); // Close the Combobox dropdown
+    await user.type(screen.getByPlaceholderText("Search cities..."), "Seattle");
+    await user.keyboard("{Escape}"); // Close the Combobox dropdown
 
-    await user.type(screen.getByLabelText(/state/i), 'WA');
+    await user.type(screen.getByLabelText(/state/i), "WA");
 
     // Submit should work
     await user.click(screen.getByText(/save & close/i));
@@ -445,16 +443,16 @@ describe('QuickAdd Integration', () => {
     await waitFor(() => {
       expect(mockCreateBoothVisitor).toHaveBeenCalledWith(
         expect.objectContaining({
-          first_name: 'Phone',
-          last_name: 'Only',
-          phone: '555-9999',
-          org_name: 'Phone Org',
+          first_name: "Phone",
+          last_name: "Only",
+          phone: "555-9999",
+          org_name: "Phone Org",
         })
       );
     });
   });
 
-  it.skip('filters products by selected principal', async () => {
+  it.skip("filters products by selected principal", async () => {
     // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
     renderWithAdminContext(<QuickAddButton />);
 
@@ -470,16 +468,17 @@ describe('QuickAdd Integration', () => {
     // Select Principal A
     // Find principal select trigger button (shadcn Select uses button with role="combobox")
     // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText('Principal *');
+    const principalLabel = screen.getByText("Principal *");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
-    if (!principalTrigger) throw new Error('Principal trigger not found');
+    if (!principalTrigger) throw new Error("Principal trigger not found");
     await user.click(principalTrigger);
-    await user.click(await screen.findByRole('option', { name: 'Principal A' }));
+    await user.click(await screen.findByRole("option", { name: "Principal A" }));
 
     // Wait for products to be filtered
     await waitFor(() => {
-      expect(mockGetList).toHaveBeenCalledWith('products',
+      expect(mockGetList).toHaveBeenCalledWith(
+        "products",
         expect.objectContaining({
           filter: expect.objectContaining({
             principal_id: 1,
@@ -490,11 +489,12 @@ describe('QuickAdd Integration', () => {
 
     // Now select Principal B
     await user.click(principalTrigger);
-    await user.click(screen.getByText('Principal B'));
+    await user.click(screen.getByText("Principal B"));
 
     // Verify products re-filtered for Principal B
     await waitFor(() => {
-      expect(mockGetList).toHaveBeenCalledWith('products',
+      expect(mockGetList).toHaveBeenCalledWith(
+        "products",
         expect.objectContaining({
           filter: expect.objectContaining({
             principal_id: 2,
@@ -504,7 +504,7 @@ describe('QuickAdd Integration', () => {
     });
   });
 
-  it.skip('auto-fills state when city is selected from autocomplete', async () => {
+  it.skip("auto-fills state when city is selected from autocomplete", async () => {
     // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
     renderWithAdminContext(<QuickAddButton />);
 
@@ -513,42 +513,43 @@ describe('QuickAdd Integration', () => {
 
     // Type in city field to trigger autocomplete
     // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText('Select or type city...');
+    const cityButton = screen.getByText("Select or type city...");
     await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText('Search cities...'), 'Chi');
-    await user.keyboard('{Escape}'); // Close the Combobox dropdown
+    await user.type(screen.getByPlaceholderText("Search cities..."), "Chi");
+    await user.keyboard("{Escape}"); // Close the Combobox dropdown
 
     // Wait for autocomplete to load
     await waitFor(() => {
-      expect(mockGetList).toHaveBeenCalledWith('cities',
+      expect(mockGetList).toHaveBeenCalledWith(
+        "cities",
         expect.objectContaining({
           filter: expect.objectContaining({
-            'city@ilike': 'Chi',
+            "city@ilike": "Chi",
           }),
         })
       );
     });
 
     // Select Chicago from autocomplete
-    const chicagoOption = await screen.findByText('Chicago');
+    const chicagoOption = await screen.findByText("Chicago");
     await user.click(chicagoOption);
 
     // Verify state auto-filled with IL
     const stateField = screen.getByLabelText(/state/i);
-    expect(stateField).toHaveValue('IL');
+    expect(stateField).toHaveValue("IL");
 
     // Clear and test manual entry
     await user.clear(cityField);
     await user.clear(stateField);
-    await user.type(cityField, 'International City');
-    await user.type(stateField, 'XX');
+    await user.type(cityField, "International City");
+    await user.type(stateField, "XX");
 
     // Verify manual entry still works
-    expect(cityField).toHaveValue('International City');
-    expect(stateField).toHaveValue('XX');
+    expect(cityField).toHaveValue("International City");
+    expect(stateField).toHaveValue("XX");
   });
 
-  it.skip('preserves campaign and principal preferences across sessions', async () => {
+  it.skip("preserves campaign and principal preferences across sessions", async () => {
     // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
     // First session - set preferences
     renderWithAdminContext(<QuickAddButton />);
@@ -556,30 +557,30 @@ describe('QuickAdd Integration', () => {
     await user.click(screen.getByText(/quick add/i));
 
     // Type campaign name (it's a text field, not a select)
-    await user.type(screen.getByLabelText(/campaign/i), 'Trade Show 2024');
+    await user.type(screen.getByLabelText(/campaign/i), "Trade Show 2024");
 
     // Find principal select trigger button (shadcn Select uses button with role="combobox")
     // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText('Principal *');
+    const principalLabel = screen.getByText("Principal *");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
-    if (!principalTrigger) throw new Error('Principal trigger not found');
+    if (!principalTrigger) throw new Error("Principal trigger not found");
     await user.click(principalTrigger);
-    await user.click(await screen.findByRole('option', { name: 'Principal A' }));
+    await user.click(await screen.findByRole("option", { name: "Principal A" }));
 
     // Fill minimal form
-    await user.type(screen.getByLabelText(/first name/i), 'First');
-    await user.type(screen.getByLabelText(/last name/i), 'Session');
-    await user.type(screen.getByLabelText(/email/i), 'first@test.com');
-    await user.type(screen.getByLabelText(/organization name/i), 'First Org');
+    await user.type(screen.getByLabelText(/first name/i), "First");
+    await user.type(screen.getByLabelText(/last name/i), "Session");
+    await user.type(screen.getByLabelText(/email/i), "first@test.com");
+    await user.type(screen.getByLabelText(/organization name/i), "First Org");
 
     // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText('Select or type city...');
+    const cityButton = screen.getByText("Select or type city...");
     await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText('Search cities...'), 'Miami');
-    await user.keyboard('{Escape}'); // Close the Combobox dropdown
+    await user.type(screen.getByPlaceholderText("Search cities..."), "Miami");
+    await user.keyboard("{Escape}"); // Close the Combobox dropdown
 
-    await user.type(screen.getByLabelText(/state/i), 'FL');
+    await user.type(screen.getByLabelText(/state/i), "FL");
 
     // Save
     await user.click(screen.getByText(/save & close/i));
@@ -589,8 +590,8 @@ describe('QuickAdd Integration', () => {
     });
 
     // Verify preferences saved
-    expect(localStorage.getItem('last_campaign')).toBe('Trade Show 2024');
-    expect(localStorage.getItem('last_principal')).toBe('1');
+    expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2024");
+    expect(localStorage.getItem("last_principal")).toBe("1");
 
     // Second session - verify preferences loaded
     const { unmount } = renderWithAdminContext(<QuickAddButton />);
@@ -599,31 +600,31 @@ describe('QuickAdd Integration', () => {
 
     // Verify campaign and principal pre-selected
     await waitFor(() => {
-      expect(screen.getByLabelText(/campaign/i)).toHaveValue('Trade Show 2024');
+      expect(screen.getByLabelText(/campaign/i)).toHaveValue("Trade Show 2024");
       // Principal trigger shows selected value
-      const principalLabelElement = screen.getByText('Principal *');
+      const principalLabelElement = screen.getByText("Principal *");
       const principalContainerElement = principalLabelElement.parentElement;
       const principalTriggerEl = principalContainerElement?.querySelector('[role="combobox"]');
-      expect(principalTriggerEl).toHaveTextContent('Principal A');
+      expect(principalTriggerEl).toHaveTextContent("Principal A");
     });
 
     unmount();
   });
 
-  it('ensures all touch targets meet minimum size requirements', async () => {
+  it("ensures all touch targets meet minimum size requirements", async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // Check Quick Add button itself - verify it has button classes (shadcn buttons have standard sizes)
-    const quickAddButton = screen.getByRole('button', { name: /quick add/i });
+    const quickAddButton = screen.getByRole("button", { name: /quick add/i });
     expect(quickAddButton).toBeInTheDocument();
 
     // Open dialog
     await user.click(quickAddButton);
 
     // Check action buttons in dialog - verify they exist and are buttons with proper roles
-    const saveCloseButton = screen.getByRole('button', { name: /save & close/i });
-    const saveAddButton = screen.getByRole('button', { name: /save & add another/i });
-    const cancelButton = screen.getByRole('button', { name: /cancel/i });
+    const saveCloseButton = screen.getByRole("button", { name: /save & close/i });
+    const saveAddButton = screen.getByRole("button", { name: /save & add another/i });
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
 
     // All buttons should exist (shadcn Button components have default size classes that meet accessibility)
     // JSDOM doesn't compute layout, so we verify semantic structure instead

@@ -4,10 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  validateOrganizationForSubmission,
-  validateOrganizationForm,
-} from "../../organizations";
+import { validateOrganizationForSubmission, validateOrganizationForm } from "../../organizations";
 
 describe("Organization Validation Functions", () => {
   describe("validateOrganizationForm", () => {
@@ -17,9 +14,7 @@ describe("Organization Validation Functions", () => {
         organization_type: "customer",
       };
 
-      await expect(
-        validateOrganizationForm(validData),
-      ).resolves.toBeUndefined();
+      await expect(validateOrganizationForm(validData)).resolves.toBeUndefined();
     });
 
     it("should format errors for React Admin", async () => {
@@ -51,9 +46,7 @@ describe("Organization Validation Functions", () => {
         await validateOrganizationForm(invalidLinkedIn);
         expect.fail("Should have thrown validation error");
       } catch (error: any) {
-        expect(error.errors.linkedin_url).toBe(
-          "Must be a valid LinkedIn organization URL",
-        );
+        expect(error.errors.linkedin_url).toBe("Must be a valid LinkedIn organization URL");
       }
     });
 
@@ -87,9 +80,7 @@ describe("Organization Validation Functions", () => {
         website: "https://example.com",
       };
 
-      await expect(
-        validateOrganizationForSubmission(inputData),
-      ).resolves.toBeUndefined();
+      await expect(validateOrganizationForSubmission(inputData)).resolves.toBeUndefined();
     });
 
     it("should throw for missing required fields", async () => {
@@ -98,9 +89,7 @@ describe("Organization Validation Functions", () => {
         organization_type: "customer",
       };
 
-      await expect(
-        validateOrganizationForSubmission(minimalData),
-      ).rejects.toMatchObject({
+      await expect(validateOrganizationForSubmission(minimalData)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
@@ -111,9 +100,7 @@ describe("Organization Validation Functions", () => {
         organization_type: "invalid",
       };
 
-      await expect(
-        validateOrganizationForSubmission(invalidData),
-      ).rejects.toMatchObject({
+      await expect(validateOrganizationForSubmission(invalidData)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
@@ -127,9 +114,7 @@ describe("Organization Validation Functions", () => {
       };
 
       // Since validateOrganizationForSubmission returns void, we just check it doesn't throw
-      await expect(
-        validateOrganizationForSubmission(dataWithExtras),
-      ).resolves.toBeUndefined();
+      await expect(validateOrganizationForSubmission(dataWithExtras)).resolves.toBeUndefined();
     });
   });
 

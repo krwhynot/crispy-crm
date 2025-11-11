@@ -58,12 +58,16 @@ vi.mock("@/components/admin/reference-field", () => ({
 
 // Mock ReferenceArrayField
 vi.mock("@/components/admin/reference-array-field", () => ({
-  ReferenceArrayField: ({ children }: any) => <div data-testid="reference-array-field">{children}</div>,
+  ReferenceArrayField: ({ children }: any) => (
+    <div data-testid="reference-array-field">{children}</div>
+  ),
 }));
 
 // Mock ReferenceManyField
 vi.mock("@/components/admin/reference-many-field", () => ({
-  ReferenceManyField: ({ children }: any) => <div data-testid="reference-many-field">{children}</div>,
+  ReferenceManyField: ({ children }: any) => (
+    <div data-testid="reference-many-field">{children}</div>
+  ),
 }));
 
 // Mock OpportunityHeader
@@ -88,9 +92,7 @@ vi.mock("../OrganizationInfoCard", () => ({
 
 vi.mock("../ProductsTable", () => ({
   ProductsTable: ({ products }: any) => (
-    <div data-testid="products-table">
-      Products: {products?.length || 0}
-    </div>
+    <div data-testid="products-table">Products: {products?.length || 0}</div>
   ),
 }));
 
@@ -115,9 +117,7 @@ vi.mock("../ChangeLogTab", () => ({
 }));
 
 vi.mock("../ActivityTimelineFilters", () => ({
-  ActivityTimelineFilters: () => (
-    <div data-testid="activity-filters">Filters</div>
-  ),
+  ActivityTimelineFilters: () => <div data-testid="activity-filters">Filters</div>,
 }));
 
 vi.mock("../notes", () => ({
@@ -391,7 +391,9 @@ describe("OpportunityShow", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("This is a detailed description of the opportunity.")).toBeInTheDocument();
+      expect(
+        screen.getByText("This is a detailed description of the opportunity.")
+      ).toBeInTheDocument();
     });
   });
 

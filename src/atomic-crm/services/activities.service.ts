@@ -24,7 +24,7 @@ export class ActivitiesService {
       console.error(`[ActivitiesService] Failed to get activity log`, {
         organizationId,
         salesId,
-        error
+        error,
       });
       throw new Error(`Get activity log failed: ${error.message}`);
     }

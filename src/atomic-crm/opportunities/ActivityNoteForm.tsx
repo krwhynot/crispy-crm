@@ -42,7 +42,9 @@ const ContactSelectField = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor="contact_id" className="text-sm font-medium">Contact</label>
+      <label htmlFor="contact_id" className="text-sm font-medium">
+        Contact
+      </label>
       <Controller
         name="contact_id"
         control={control}
@@ -66,17 +68,12 @@ const ContactSelectField = ({
           </Select>
         )}
       />
-      {error && (
-        <p className="text-sm text-[color:var(--destructive)]">{error}</p>
-      )}
+      {error && <p className="text-sm text-[color:var(--destructive)]">{error}</p>}
     </div>
   );
 };
 
-export const ActivityNoteForm = ({
-  opportunity,
-  onSuccess,
-}: ActivityNoteFormProps) => {
+export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormProps) => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const { opportunityStages } = useConfigurationContext();
@@ -142,7 +139,9 @@ export const ActivityNoteForm = ({
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {/* Date Picker */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="activity_date" className="text-sm font-medium">Date</label>
+          <label htmlFor="activity_date" className="text-sm font-medium">
+            Date
+          </label>
           <Controller
             name="activity_date"
             control={control}
@@ -150,11 +149,7 @@ export const ActivityNoteForm = ({
               <Input
                 id="activity_date"
                 type="date"
-                value={
-                  field.value instanceof Date
-                    ? field.value.toISOString().split("T")[0]
-                    : ""
-                }
+                value={field.value instanceof Date ? field.value.toISOString().split("T")[0] : ""}
                 onChange={(e) => {
                   const date = e.target.value ? new Date(e.target.value) : new Date();
                   field.onChange(date);
@@ -171,15 +166,14 @@ export const ActivityNoteForm = ({
 
         {/* Interaction Type Select */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="type" className="text-sm font-medium">Type</label>
+          <label htmlFor="type" className="text-sm font-medium">
+            Type
+          </label>
           <Controller
             name="type"
             control={control}
             render={({ field }) => (
-              <Select
-                value={field.value}
-                onValueChange={field.onChange}
-              >
+              <Select value={field.value} onValueChange={field.onChange}>
                 <SelectTrigger id="type">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
@@ -194,9 +188,7 @@ export const ActivityNoteForm = ({
             )}
           />
           {errors.type && (
-            <p className="text-sm text-[color:var(--destructive)]">
-              {errors.type.message}
-            </p>
+            <p className="text-sm text-[color:var(--destructive)]">{errors.type.message}</p>
           )}
         </div>
 
@@ -209,7 +201,9 @@ export const ActivityNoteForm = ({
 
         {/* Stage Select */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="stage" className="text-sm font-medium">Stage</label>
+          <label htmlFor="stage" className="text-sm font-medium">
+            Stage
+          </label>
           <Controller
             name="stage"
             control={control}
@@ -238,16 +232,16 @@ export const ActivityNoteForm = ({
             Changing stage will update the opportunity immediately
           </p>
           {errors.stage && (
-            <p className="text-sm text-[color:var(--destructive)]">
-              {errors.stage.message}
-            </p>
+            <p className="text-sm text-[color:var(--destructive)]">{errors.stage.message}</p>
           )}
         </div>
       </div>
 
       {/* Subject Textarea */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="subject" className="text-sm font-medium">Subject</label>
+        <label htmlFor="subject" className="text-sm font-medium">
+          Subject
+        </label>
         <Controller
           name="subject"
           control={control}
@@ -261,9 +255,7 @@ export const ActivityNoteForm = ({
           )}
         />
         {errors.subject && (
-          <p className="text-sm text-[color:var(--destructive)]">
-            {errors.subject.message}
-          </p>
+          <p className="text-sm text-[color:var(--destructive)]">{errors.subject.message}</p>
         )}
       </div>
 

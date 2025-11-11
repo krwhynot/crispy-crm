@@ -1,5 +1,5 @@
-import { test, expect } from './support/fixtures/authenticated';
-import { consoleMonitor } from './support/utils/console-monitor';
+import { test, expect } from "./support/fixtures/authenticated";
+import { consoleMonitor } from "./support/utils/console-monitor";
 
 /**
  * Design System Coverage E2E Tests
@@ -27,49 +27,56 @@ import { consoleMonitor } from './support/utils/console-monitor';
  * - No console errors
  */
 
-test.describe('Design System Coverage', () => {
+test.describe("Design System Coverage", () => {
   test.afterEach(async () => {
     const errors = consoleMonitor.getErrors();
 
     if (errors.length > 0) {
-      await test.info().attach('console-report', {
+      await test.info().attach("console-report", {
         body: consoleMonitor.getReport(),
-        contentType: 'text/plain',
+        contentType: "text/plain",
       });
     }
 
-    expect(errors, 'Console errors detected. See attached report.').toHaveLength(0);
+    expect(errors, "Console errors detected. See attached report.").toHaveLength(0);
   });
 
-  test.describe('Contacts Module', () => {
-    test.describe('ContactShow', () => {
+  test.describe("Contacts Module", () => {
+    test.describe("ContactShow", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
         // Navigate to first contact
-        await authenticatedPage.goto('/#/contacts');
+        await authenticatedPage.goto("/#/contacts");
         await authenticatedPage.waitForTimeout(1000);
 
-        const firstContact = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
-        await firstContact.waitFor({ state: 'visible' });
+        const firstContact = authenticatedPage
+          .getByRole("link")
+          .filter({ hasText: /^[A-Z]/ })
+          .first();
+        await firstContact.waitFor({ state: "visible" });
         await firstContact.click();
         await authenticatedPage.waitForTimeout(1000);
       });
 
-      test('has ARIA main landmark', async ({ authenticatedPage }) => {
-        const main = authenticatedPage.getByRole('main', { name: /contact details/i });
+      test("has ARIA main landmark", async ({ authenticatedPage }) => {
+        const main = authenticatedPage.getByRole("main", { name: /contact details/i });
         await expect(main).toBeVisible();
       });
 
-      test('has ARIA complementary landmark', async ({ authenticatedPage }) => {
-        const aside = authenticatedPage.getByRole('complementary', { name: /contact information/i });
+      test("has ARIA complementary landmark", async ({ authenticatedPage }) => {
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /contact information/i,
+        });
         await expect(aside).toBeVisible();
       });
 
-      test('displays two-column layout on desktop (1280px)', async ({ authenticatedPage }) => {
+      test("displays two-column layout on desktop (1280px)", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
         await authenticatedPage.waitForTimeout(500);
 
-        const main = authenticatedPage.getByRole('main', { name: /contact details/i });
-        const aside = authenticatedPage.getByRole('complementary', { name: /contact information/i });
+        const main = authenticatedPage.getByRole("main", { name: /contact details/i });
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /contact information/i,
+        });
 
         const mainBox = await main.boundingBox();
         const asideBox = await aside.boundingBox();
@@ -86,7 +93,7 @@ test.describe('Design System Coverage', () => {
         }
       });
 
-      test('no horizontal scrolling on desktop', async ({ authenticatedPage }) => {
+      test("no horizontal scrolling on desktop", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
         await authenticatedPage.waitForTimeout(500);
 
@@ -97,60 +104,72 @@ test.describe('Design System Coverage', () => {
       });
     });
 
-    test.describe('ContactEdit', () => {
+    test.describe("ContactEdit", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
-        await authenticatedPage.goto('/#/contacts');
+        await authenticatedPage.goto("/#/contacts");
         await authenticatedPage.waitForTimeout(1000);
 
-        const firstContact = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
+        const firstContact = authenticatedPage
+          .getByRole("link")
+          .filter({ hasText: /^[A-Z]/ })
+          .first();
         await firstContact.click();
         await authenticatedPage.waitForTimeout(1000);
 
-        const editButton = authenticatedPage.getByRole('button', { name: /edit/i });
+        const editButton = authenticatedPage.getByRole("button", { name: /edit/i });
         await editButton.click();
         await authenticatedPage.waitForTimeout(1000);
       });
 
-      test('has ARIA main landmark', async ({ authenticatedPage }) => {
-        const main = authenticatedPage.getByRole('main', { name: /edit contact/i });
+      test("has ARIA main landmark", async ({ authenticatedPage }) => {
+        const main = authenticatedPage.getByRole("main", { name: /edit contact/i });
         await expect(main).toBeVisible();
       });
 
-      test('has ARIA complementary landmark', async ({ authenticatedPage }) => {
-        const aside = authenticatedPage.getByRole('complementary', { name: /contact information/i });
+      test("has ARIA complementary landmark", async ({ authenticatedPage }) => {
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /contact information/i,
+        });
         await expect(aside).toBeVisible();
       });
     });
   });
 
-  test.describe('Organizations Module', () => {
-    test.describe('OrganizationShow', () => {
+  test.describe("Organizations Module", () => {
+    test.describe("OrganizationShow", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
-        await authenticatedPage.goto('/#/organizations');
+        await authenticatedPage.goto("/#/organizations");
         await authenticatedPage.waitForTimeout(1000);
 
-        const firstOrg = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
-        await firstOrg.waitFor({ state: 'visible' });
+        const firstOrg = authenticatedPage
+          .getByRole("link")
+          .filter({ hasText: /^[A-Z]/ })
+          .first();
+        await firstOrg.waitFor({ state: "visible" });
         await firstOrg.click();
         await authenticatedPage.waitForTimeout(1000);
       });
 
-      test('has ARIA main landmark', async ({ authenticatedPage }) => {
-        const main = authenticatedPage.getByRole('main', { name: /organization details/i });
+      test("has ARIA main landmark", async ({ authenticatedPage }) => {
+        const main = authenticatedPage.getByRole("main", { name: /organization details/i });
         await expect(main).toBeVisible();
       });
 
-      test('has ARIA complementary landmark', async ({ authenticatedPage }) => {
-        const aside = authenticatedPage.getByRole('complementary', { name: /organization information/i });
+      test("has ARIA complementary landmark", async ({ authenticatedPage }) => {
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /organization information/i,
+        });
         await expect(aside).toBeVisible();
       });
 
-      test('displays two-column layout on desktop', async ({ authenticatedPage }) => {
+      test("displays two-column layout on desktop", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
         await authenticatedPage.waitForTimeout(500);
 
-        const main = authenticatedPage.getByRole('main', { name: /organization details/i });
-        const aside = authenticatedPage.getByRole('complementary', { name: /organization information/i });
+        const main = authenticatedPage.getByRole("main", { name: /organization details/i });
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /organization information/i,
+        });
 
         const mainBox = await main.boundingBox();
         const asideBox = await aside.boundingBox();
@@ -165,60 +184,72 @@ test.describe('Design System Coverage', () => {
       });
     });
 
-    test.describe('OrganizationEdit', () => {
+    test.describe("OrganizationEdit", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
-        await authenticatedPage.goto('/#/organizations');
+        await authenticatedPage.goto("/#/organizations");
         await authenticatedPage.waitForTimeout(1000);
 
-        const firstOrg = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
+        const firstOrg = authenticatedPage
+          .getByRole("link")
+          .filter({ hasText: /^[A-Z]/ })
+          .first();
         await firstOrg.click();
         await authenticatedPage.waitForTimeout(1000);
 
-        const editButton = authenticatedPage.getByRole('button', { name: /edit/i });
+        const editButton = authenticatedPage.getByRole("button", { name: /edit/i });
         await editButton.click();
         await authenticatedPage.waitForTimeout(1000);
       });
 
-      test('has ARIA main landmark', async ({ authenticatedPage }) => {
-        const main = authenticatedPage.getByRole('main', { name: /edit organization/i });
+      test("has ARIA main landmark", async ({ authenticatedPage }) => {
+        const main = authenticatedPage.getByRole("main", { name: /edit organization/i });
         await expect(main).toBeVisible();
       });
 
-      test('has ARIA complementary landmark', async ({ authenticatedPage }) => {
-        const aside = authenticatedPage.getByRole('complementary', { name: /organization information/i });
+      test("has ARIA complementary landmark", async ({ authenticatedPage }) => {
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /organization information/i,
+        });
         await expect(aside).toBeVisible();
       });
     });
   });
 
-  test.describe('Products Module', () => {
-    test.describe('ProductShow', () => {
+  test.describe("Products Module", () => {
+    test.describe("ProductShow", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
-        await authenticatedPage.goto('/#/products');
+        await authenticatedPage.goto("/#/products");
         await authenticatedPage.waitForTimeout(1000);
 
-        const firstProduct = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
-        await firstProduct.waitFor({ state: 'visible' });
+        const firstProduct = authenticatedPage
+          .getByRole("link")
+          .filter({ hasText: /^[A-Z]/ })
+          .first();
+        await firstProduct.waitFor({ state: "visible" });
         await firstProduct.click();
         await authenticatedPage.waitForTimeout(1000);
       });
 
-      test('has ARIA main landmark', async ({ authenticatedPage }) => {
-        const main = authenticatedPage.getByRole('main', { name: /product details/i });
+      test("has ARIA main landmark", async ({ authenticatedPage }) => {
+        const main = authenticatedPage.getByRole("main", { name: /product details/i });
         await expect(main).toBeVisible();
       });
 
-      test('has ARIA complementary landmark', async ({ authenticatedPage }) => {
-        const aside = authenticatedPage.getByRole('complementary', { name: /product information/i });
+      test("has ARIA complementary landmark", async ({ authenticatedPage }) => {
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /product information/i,
+        });
         await expect(aside).toBeVisible();
       });
 
-      test('displays two-column layout on desktop', async ({ authenticatedPage }) => {
+      test("displays two-column layout on desktop", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
         await authenticatedPage.waitForTimeout(500);
 
-        const main = authenticatedPage.getByRole('main', { name: /product details/i });
-        const aside = authenticatedPage.getByRole('complementary', { name: /product information/i });
+        const main = authenticatedPage.getByRole("main", { name: /product details/i });
+        const aside = authenticatedPage.getByRole("complementary", {
+          name: /product information/i,
+        });
 
         const mainBox = await main.boundingBox();
         const asideBox = await aside.boundingBox();
@@ -232,10 +263,10 @@ test.describe('Design System Coverage', () => {
         }
       });
 
-      test('tabs navigation works correctly', async ({ authenticatedPage }) => {
-        const overviewTab = authenticatedPage.getByRole('tab', { name: /overview/i });
-        const detailsTab = authenticatedPage.getByRole('tab', { name: /details/i });
-        const activityTab = authenticatedPage.getByRole('tab', { name: /activity/i });
+      test("tabs navigation works correctly", async ({ authenticatedPage }) => {
+        const overviewTab = authenticatedPage.getByRole("tab", { name: /overview/i });
+        const detailsTab = authenticatedPage.getByRole("tab", { name: /details/i });
+        const activityTab = authenticatedPage.getByRole("tab", { name: /activity/i });
 
         await expect(overviewTab).toBeVisible();
         await expect(detailsTab).toBeVisible();
@@ -247,24 +278,27 @@ test.describe('Design System Coverage', () => {
 
         // Verify URL updated
         const url = authenticatedPage.url();
-        expect(url).toContain('/details');
+        expect(url).toContain("/details");
       });
     });
   });
 
-  test.describe('Responsive Behavior', () => {
-    test('all modules stack to single column on mobile (375px)', async ({ authenticatedPage }) => {
+  test.describe("Responsive Behavior", () => {
+    test("all modules stack to single column on mobile (375px)", async ({ authenticatedPage }) => {
       await authenticatedPage.setViewportSize({ width: 375, height: 667 });
 
       // Test ContactShow
-      await authenticatedPage.goto('/#/contacts');
+      await authenticatedPage.goto("/#/contacts");
       await authenticatedPage.waitForTimeout(1000);
-      const firstContact = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
+      const firstContact = authenticatedPage
+        .getByRole("link")
+        .filter({ hasText: /^[A-Z]/ })
+        .first();
       await firstContact.click();
       await authenticatedPage.waitForTimeout(1000);
 
-      const main = authenticatedPage.getByRole('main', { name: /contact details/i });
-      const aside = authenticatedPage.getByRole('complementary', { name: /contact information/i });
+      const main = authenticatedPage.getByRole("main", { name: /contact details/i });
+      const aside = authenticatedPage.getByRole("complementary", { name: /contact information/i });
 
       await expect(main).toBeVisible();
       await expect(aside).toBeVisible();
@@ -281,17 +315,20 @@ test.describe('Design System Coverage', () => {
       }
     });
 
-    test('touch targets meet minimum size on iPad (768px)', async ({ authenticatedPage }) => {
+    test("touch targets meet minimum size on iPad (768px)", async ({ authenticatedPage }) => {
       await authenticatedPage.setViewportSize({ width: 768, height: 1024 });
 
-      await authenticatedPage.goto('/#/contacts');
+      await authenticatedPage.goto("/#/contacts");
       await authenticatedPage.waitForTimeout(1000);
-      const firstContact = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
+      const firstContact = authenticatedPage
+        .getByRole("link")
+        .filter({ hasText: /^[A-Z]/ })
+        .first();
       await firstContact.click();
       await authenticatedPage.waitForTimeout(1000);
 
-      const editButton = authenticatedPage.getByRole('button', { name: /edit/i });
-      await editButton.waitFor({ state: 'visible' });
+      const editButton = authenticatedPage.getByRole("button", { name: /edit/i });
+      await editButton.waitFor({ state: "visible" });
 
       const buttonBox = await editButton.boundingBox();
       expect(buttonBox).not.toBeNull();
@@ -303,20 +340,19 @@ test.describe('Design System Coverage', () => {
     });
   });
 
-  test.describe('Accessibility', () => {
-    test('no console errors on any page', async ({ authenticatedPage }) => {
-      const pages = [
-        '/#/contacts',
-        '/#/organizations',
-        '/#/products',
-      ];
+  test.describe("Accessibility", () => {
+    test("no console errors on any page", async ({ authenticatedPage }) => {
+      const pages = ["/#/contacts", "/#/organizations", "/#/products"];
 
       for (const page of pages) {
         await authenticatedPage.goto(page);
         await authenticatedPage.waitForTimeout(1000);
 
         // Click first item
-        const firstItem = authenticatedPage.getByRole('link').filter({ hasText: /^[A-Z]/ }).first();
+        const firstItem = authenticatedPage
+          .getByRole("link")
+          .filter({ hasText: /^[A-Z]/ })
+          .first();
         await firstItem.click();
         await authenticatedPage.waitForTimeout(1000);
 

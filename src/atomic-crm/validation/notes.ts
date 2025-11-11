@@ -69,9 +69,7 @@ export const createContactNoteSchema = contactNoteSchema.omit({ id: true });
 /**
  * Schema for updating a contact note
  */
-export const updateContactNoteSchema = contactNoteSchema
-  .partial()
-  .required({ id: true });
+export const updateContactNoteSchema = contactNoteSchema.partial().required({ id: true });
 
 /**
  * Schema for creating an opportunity note
@@ -83,9 +81,7 @@ export const createOpportunityNoteSchema = opportunityNoteSchema.omit({
 /**
  * Schema for updating an opportunity note
  */
-export const updateOpportunityNoteSchema = opportunityNoteSchema
-  .partial()
-  .required({ id: true });
+export const updateOpportunityNoteSchema = opportunityNoteSchema.partial().required({ id: true });
 
 /**
  * Inferred types from schemas
@@ -95,12 +91,8 @@ export type ContactNote = z.infer<typeof contactNoteSchema>;
 export type OpportunityNote = z.infer<typeof opportunityNoteSchema>;
 export type CreateContactNoteInput = z.infer<typeof createContactNoteSchema>;
 export type UpdateContactNoteInput = z.infer<typeof updateContactNoteSchema>;
-export type CreateOpportunityNoteInput = z.infer<
-  typeof createOpportunityNoteSchema
->;
-export type UpdateOpportunityNoteInput = z.infer<
-  typeof updateOpportunityNoteSchema
->;
+export type CreateOpportunityNoteInput = z.infer<typeof createOpportunityNoteSchema>;
+export type UpdateOpportunityNoteInput = z.infer<typeof updateOpportunityNoteSchema>;
 
 /**
  * Validate contact note creation data
@@ -108,9 +100,7 @@ export type UpdateOpportunityNoteInput = z.infer<
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateCreateContactNote(
-  data: unknown,
-): CreateContactNoteInput {
+export function validateCreateContactNote(data: unknown): CreateContactNoteInput {
   return createContactNoteSchema.parse(data);
 }
 
@@ -120,9 +110,7 @@ export function validateCreateContactNote(
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateUpdateContactNote(
-  data: unknown,
-): UpdateContactNoteInput {
+export function validateUpdateContactNote(data: unknown): UpdateContactNoteInput {
   return updateContactNoteSchema.parse(data);
 }
 
@@ -132,9 +120,7 @@ export function validateUpdateContactNote(
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateCreateOpportunityNote(
-  data: unknown,
-): CreateOpportunityNoteInput {
+export function validateCreateOpportunityNote(data: unknown): CreateOpportunityNoteInput {
   return createOpportunityNoteSchema.parse(data);
 }
 
@@ -144,9 +130,7 @@ export function validateCreateOpportunityNote(
  * @returns Validated note data
  * @throws Zod validation error if data is invalid
  */
-export function validateUpdateOpportunityNote(
-  data: unknown,
-): UpdateOpportunityNoteInput {
+export function validateUpdateOpportunityNote(data: unknown): UpdateOpportunityNoteInput {
   return updateOpportunityNoteSchema.parse(data);
 }
 
@@ -191,9 +175,7 @@ export function validateContactNoteForSubmission(data: unknown): ContactNote {
  * @param data - Note data to validate and transform
  * @returns Transformed note data ready for database
  */
-export function validateOpportunityNoteForSubmission(
-  data: unknown,
-): OpportunityNote {
+export function validateOpportunityNoteForSubmission(data: unknown): OpportunityNote {
   const validated = opportunityNoteSchema.parse(data);
 
   // Transform date to ISO format with milliseconds
@@ -209,9 +191,7 @@ export function validateOpportunityNoteForSubmission(
  * @param note - Note to check
  * @returns True if note has attachments
  */
-export function noteHasAttachments(
-  note: ContactNote | OpportunityNote,
-): boolean {
+export function noteHasAttachments(note: ContactNote | OpportunityNote): boolean {
   return Array.isArray(note.attachments) && note.attachments.length > 0;
 }
 
@@ -223,7 +203,7 @@ export function noteHasAttachments(
  */
 export function validateAttachmentSize(
   sizeInBytes: number,
-  maxSizeMB: number = 10,
+  maxSizeMB: number = 10
 ): string | undefined {
   const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
@@ -242,19 +222,9 @@ export function validateAttachmentSize(
  */
 export function validateAttachmentType(
   fileName: string,
-  allowedExtensions: string[] = [
-    ".pdf",
-    ".doc",
-    ".docx",
-    ".txt",
-    ".png",
-    ".jpg",
-    ".jpeg",
-  ],
+  allowedExtensions: string[] = [".pdf", ".doc", ".docx", ".txt", ".png", ".jpg", ".jpeg"]
 ): string | undefined {
-  const fileExtension = fileName
-    .toLowerCase()
-    .substring(fileName.lastIndexOf("."));
+  const fileExtension = fileName.toLowerCase().substring(fileName.lastIndexOf("."));
 
   if (!allowedExtensions.includes(fileExtension)) {
     return `File type ${fileExtension} is not allowed. Allowed types: ${allowedExtensions.join(", ")}`;

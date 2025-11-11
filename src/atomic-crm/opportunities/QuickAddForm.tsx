@@ -29,14 +29,11 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const firstNameRef = useRef<HTMLInputElement>(null);
 
   // Fetch principals for dropdown
-  const { data: principalsList, isLoading: principalsLoading } = useGetList(
-    "organizations",
-    {
-      filter: { organization_type: "principal" },
-      pagination: { page: 1, perPage: 100 },
-      sort: { field: "name", order: "ASC" },
-    }
-  );
+  const { data: principalsList, isLoading: principalsLoading } = useGetList("organizations", {
+    filter: { organization_type: "principal" },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "name", order: "ASC" },
+  });
 
   // Initialize form with defaults from localStorage
   const {
@@ -50,17 +47,17 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   } = useForm<QuickAddInput>({
     resolver: zodResolver(quickAddSchema),
     defaultValues: {
-      campaign: localStorage.getItem('last_campaign') || '',
-      principal_id: Number(localStorage.getItem('last_principal')) || undefined,
+      campaign: localStorage.getItem("last_campaign") || "",
+      principal_id: Number(localStorage.getItem("last_principal")) || undefined,
       product_ids: [],
-      first_name: '',
-      last_name: '',
-      phone: '',
-      email: '',
-      org_name: '',
-      city: '',
-      state: '',
-      quick_note: '',
+      first_name: "",
+      last_name: "",
+      phone: "",
+      email: "",
+      org_name: "",
+      city: "",
+      state: "",
+      quick_note: "",
     },
   });
 
@@ -68,8 +65,11 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const principalId = watch("principal_id");
 
   // Fetch products filtered by selected principal
-  const { products: productsList, isLoading: productsLoading, isReady: productsReady } =
-    useFilteredProducts(principalId);
+  const {
+    products: productsList,
+    isLoading: productsLoading,
+    isReady: productsReady,
+  } = useFilteredProducts(principalId);
 
   // Watch values for dependent fields
   const cityValue = watch("city");
@@ -78,14 +78,17 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
   // Clear phone/email validation error when either field has content
   useEffect(() => {
-    if ((phoneValue || emailValue) && errors.phone?.message === "Phone or Email required (at least one)") {
+    if (
+      (phoneValue || emailValue) &&
+      errors.phone?.message === "Phone or Email required (at least one)"
+    ) {
       clearErrors("phone");
     }
   }, [phoneValue, emailValue, errors.phone, clearErrors]);
 
   // Handle city selection
   const handleCitySelect = (cityName: string) => {
-    const selectedCity = US_CITIES.find(c => c.city === cityName);
+    const selectedCity = US_CITIES.find((c) => c.city === cityName);
     if (selectedCity) {
       setValue("city", selectedCity.city);
       setValue("state", selectedCity.state);
@@ -108,32 +111,34 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
             campaign: data.campaign,
             principal_id: data.principal_id,
             product_ids: [],
-            first_name: '',
-            last_name: '',
-            phone: '',
-            email: '',
-            org_name: '',
-            city: '',
-            state: '',
-            quick_note: '',
+            first_name: "",
+            last_name: "",
+            phone: "",
+            email: "",
+            org_name: "",
+            city: "",
+            state: "",
+            quick_note: "",
           });
           // Focus first name field for next entry
           setTimeout(() => firstNameRef.current?.focus(), 100);
         }
-      }
+      },
     });
   };
 
   // Convert products and principals to combobox options
-  const principalOptions = principalsList?.map(org => ({
-    value: org.id.toString(),
-    label: org.name,
-  })) || [];
+  const principalOptions =
+    principalsList?.map((org) => ({
+      value: org.id.toString(),
+      label: org.name,
+    })) || [];
 
-  const productOptions = productsList?.map(product => ({
-    value: product.id.toString(),
-    label: product.name,
-  })) || [];
+  const productOptions =
+    productsList?.map((product) => ({
+      value: product.id.toString(),
+      label: product.name,
+    })) || [];
 
   // Map all US cities for Combobox (Command component handles filtering)
   const cityOptions = US_CITIES.map(({ city }) => ({
@@ -171,7 +176,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
                 <SelectValue placeholder={principalsLoading ? "Loading..." : "Select principal"} />
               </SelectTrigger>
               <SelectContent>
-                {principalOptions.map(option => (
+                {principalOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
@@ -189,8 +194,13 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
           {productsReady ? (
             <MultiSelectCombobox
               options={productOptions}
-              value={watch("product_ids")?.map(id => id.toString()) || []}
-              onValueChange={(values) => setValue("product_ids", values.map(v => Number(v)))}
+              value={watch("product_ids")?.map((id) => id.toString()) || []}
+              onValueChange={(values) =>
+                setValue(
+                  "product_ids",
+                  values.map((v) => Number(v))
+                )
+              }
               placeholder={productsLoading ? "Loading products..." : "Select products..."}
               searchPlaceholder="Search products..."
               emptyText="No products found"
@@ -224,11 +234,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
           <div className="space-y-2">
             <Label htmlFor="last_name">Last Name *</Label>
-            <Input
-              id="last_name"
-              {...register("last_name")}
-              placeholder="Doe"
-            />
+            <Input id="last_name" {...register("last_name")} placeholder="Doe" />
             {errors.last_name && (
               <p className="text-sm text-destructive">{errors.last_name.message}</p>
             )}
@@ -236,32 +242,20 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
           <div className="space-y-2">
             <Label htmlFor="phone">Phone</Label>
-            <Input
-              id="phone"
-              type="tel"
-              {...register("phone")}
-              placeholder="555-123-4567"
-            />
-            {errors.phone && (
-              <p className="text-sm text-destructive">{errors.phone.message}</p>
-            )}
+            <Input id="phone" type="tel" {...register("phone")} placeholder="555-123-4567" />
+            {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              {...register("email")}
-              placeholder="john@example.com"
-            />
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
-            )}
+            <Input id="email" type="email" {...register("email")} placeholder="john@example.com" />
+            {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
           </div>
         </div>
         {!phoneValue && !emailValue && (
-          <p className="text-sm text-muted-foreground">At least one of Phone or Email is required</p>
+          <p className="text-sm text-muted-foreground">
+            At least one of Phone or Email is required
+          </p>
         )}
       </div>
 
@@ -271,11 +265,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
         <div className="grid gap-4 grid-cols-1">
           <div className="space-y-2">
             <Label htmlFor="org_name">Organization Name *</Label>
-            <Input
-              id="org_name"
-              {...register("org_name")}
-              placeholder="Acme Corporation"
-            />
+            <Input id="org_name" {...register("org_name")} placeholder="Acme Corporation" />
             {errors.org_name && (
               <p className="text-sm text-destructive">{errors.org_name.message}</p>
             )}
@@ -294,9 +284,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
                 emptyText="Type to search cities"
                 className="w-full"
               />
-              {errors.city && (
-                <p className="text-sm text-destructive">{errors.city.message}</p>
-              )}
+              {errors.city && <p className="text-sm text-destructive">{errors.city.message}</p>}
             </div>
 
             <div className="space-y-2">
@@ -305,14 +293,10 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
                 id="state"
                 {...register("state")}
                 placeholder="CA"
-                readOnly={!!US_CITIES.find(c => c.city === cityValue)}
-                className={cn(
-                  US_CITIES.find(c => c.city === cityValue) && "bg-muted"
-                )}
+                readOnly={!!US_CITIES.find((c) => c.city === cityValue)}
+                className={cn(US_CITIES.find((c) => c.city === cityValue) && "bg-muted")}
               />
-              {errors.state && (
-                <p className="text-sm text-destructive">{errors.state.message}</p>
-              )}
+              {errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
             </div>
           </div>
         </div>
@@ -333,12 +317,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
       {/* Footer Actions */}
       <div className="flex items-center justify-between pt-4 border-t">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onSuccess}
-          disabled={isPending}
-        >
+        <Button type="button" variant="outline" onClick={onSuccess} disabled={isPending}>
           Cancel
         </Button>
 

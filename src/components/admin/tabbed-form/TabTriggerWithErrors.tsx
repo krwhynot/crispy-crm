@@ -7,14 +7,11 @@ export interface TabTriggerWithErrorsProps {
   errorCount: number;
 }
 
-export const TabTriggerWithErrors = ({
-  value,
-  label,
-  errorCount,
-}: TabTriggerWithErrorsProps) => {
-  const ariaLabel = errorCount > 0
-    ? `${label} tab, ${errorCount} error${errorCount > 1 ? 's' : ''}`
-    : `${label} tab`;
+export const TabTriggerWithErrors = ({ value, label, errorCount }: TabTriggerWithErrorsProps) => {
+  const ariaLabel =
+    errorCount > 0
+      ? `${label} tab, ${errorCount} error${errorCount > 1 ? "s" : ""}`
+      : `${label} tab`;
 
   return (
     <TabsTrigger
