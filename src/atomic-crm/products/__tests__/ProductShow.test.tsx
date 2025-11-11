@@ -53,7 +53,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -87,7 +87,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -142,7 +142,7 @@ describe("ProductShow", () => {
 
       const { unmount } = renderWithAdminContext(
         <Routes>
-          <Route path="/products/:id/show" element={<ProductShow />} />
+          <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
         </Routes>,
         {
           resource: "products",
@@ -178,7 +178,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -212,7 +212,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -246,7 +246,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -283,7 +283,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -327,7 +327,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -362,7 +362,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -373,7 +373,7 @@ describe("ProductShow", () => {
 
     // Click activity tab
     const activityTab = screen.getByRole("tab", { name: /activity/i });
-    activityTab.click();
+    await user.click(activityTab);
 
     await waitFor(() => {
       expect(screen.getByText("Activity Log")).toBeInTheDocument();
@@ -390,7 +390,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -419,7 +419,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -452,7 +452,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
@@ -489,7 +489,7 @@ describe("ProductShow", () => {
 
     renderWithAdminContext(
       <Routes>
-        <Route path="/products/:id/show" element={<ProductShow />} />
+        <Route path="/products/:id/show/:tab?" element={<ProductShow />} />
       </Routes>,
       {
         resource: "products",
