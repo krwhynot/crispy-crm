@@ -313,8 +313,8 @@ describe("ContactShow", () => {
     );
 
     await waitFor(() => {
-      // Should render ReferenceManyField for notes
-      expect(screen.getByTestId("reference-many-field")).toBeInTheDocument();
+      // Notes section is now in a tab - check for tabs structure
+      expect(screen.getByRole("tab", { name: /notes/i })).toBeInTheDocument();
     });
   });
 

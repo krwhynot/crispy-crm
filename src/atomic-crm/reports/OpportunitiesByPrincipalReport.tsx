@@ -13,7 +13,7 @@ import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/stageConstants";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
-import type { Opportunity, Organization, Sale } from "../types";
+import type { Opportunity, Sale } from "../types";
 
 interface PrincipalGroup {
   principalId: string | null;
@@ -149,7 +149,7 @@ export default function OpportunitiesByPrincipalReport() {
     }
 
     return groups;
-  }, [opportunities]);
+  }, [opportunities, expandedPrincipals.size]);
 
   // Toggle principal expansion
   const togglePrincipalExpansion = (principalId: string | null) => {
