@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PriorityIndicator, Priority } from './PriorityIndicator';
+import type { Priority } from './PriorityIndicator';
+import { PriorityIndicator } from './PriorityIndicator';
 
 export interface PrincipalTask {
   id: string;
@@ -79,7 +80,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
           <p className="font-semibold">
             {principal.tasks.length} tasks
             {overdueTasks.length > 0 && (
-              <span className="text-red-600 ml-1">
+              <span className="text-destructive ml-1">
                 ({overdueTasks.length} overdue)
               </span>
             )}
@@ -93,13 +94,13 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
 
       {/* Top opportunity */}
       {principal.topOpportunity && (
-        <div className="mb-4 p-3 bg-blue-50 rounded border border-blue-200">
+        <div className="mb-4 p-3 bg-primary/5 rounded border border-primary/20">
           <p className="text-xs text-gray-600 mb-1">Top Opportunity</p>
           <button
             onClick={() =>
               navigate(`/opportunities/${principal.topOpportunity!.id}`)
             }
-            className="text-sm font-medium text-blue-600 hover:underline"
+            className="text-sm font-medium text-primary hover:underline"
           >
             {principal.topOpportunity.name}
           </button>

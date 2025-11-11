@@ -74,19 +74,19 @@ describe('PriorityIndicator - Component', () => {
   it('should render red indicator for high priority', () => {
     render(<PriorityIndicatorComponent priority="high" />);
     const indicator = screen.getByTestId('priority-indicator');
-    expect(indicator).toHaveClass('bg-red-100');
+    expect(indicator).toHaveClass('bg-destructive/10');
   });
 
   it('should render yellow indicator for medium priority', () => {
     render(<PriorityIndicatorComponent priority="medium" />);
     const indicator = screen.getByTestId('priority-indicator');
-    expect(indicator).toHaveClass('bg-yellow-100');
+    expect(indicator).toHaveClass('bg-yellow-50');
   });
 
   it('should render green indicator for low priority', () => {
     render(<PriorityIndicatorComponent priority="low" />);
     const indicator = screen.getByTestId('priority-indicator');
-    expect(indicator).toHaveClass('bg-green-100');
+    expect(indicator).toHaveClass('bg-green-50');
   });
 
   it('should render icon matching priority', () => {
