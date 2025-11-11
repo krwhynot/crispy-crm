@@ -124,6 +124,13 @@ export const createMockDataProvider = (
         data: params.ids,
       };
     },
+
+    // RPC method for calling database functions (e.g., get_activity_log)
+    rpc: async (functionName: string, params?: Record<string, any>) => {
+      // Default: return empty array for activity logs and other RPC calls
+      // Tests can override this method to return specific data
+      return [];
+    },
   };
 
   // Merge overrides with defaults
