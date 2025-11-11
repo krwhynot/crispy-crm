@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { Route } from "react-router-dom";
 import organizations from "../organizations";
 import contacts from "../contacts";
-import { Dashboard } from "../dashboard/Dashboard";
+import PrincipalDashboard from "../dashboard/PrincipalDashboard";
 import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
