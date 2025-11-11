@@ -81,8 +81,12 @@ export const PrincipalDashboard = () => {
 
       const principalMap = new Map<string, Principal>();
 
-    // Group opportunities by principal
+    // Group opportunities by principal (skip opportunities without a principal)
     opportunities.forEach((opp: Opportunity) => {
+      if (!opp.principal_organization_id) {
+        return; // Skip opportunities without a principal
+      }
+
       if (!principalMap.has(opp.principal_organization_id)) {
         // Use the principal_organization.name if available, otherwise use the ID
         const principalName = opp.principal_organization?.name || opp.principal_organization_id;
