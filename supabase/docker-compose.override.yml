@@ -1,0 +1,90 @@
+# Docker Compose Override - Memory Limits for Supabase Local Development
+# This file is automatically picked up by Docker Compose and applies resource
+# limits to reduce overall system memory usage during development.
+#
+# Apply these limits: Kong 512MB, Database 2GB, others 256MB
+# Expected savings: 3-4GB total reduction in memory usage
+
+version: "3.8"
+
+services:
+  # Kong API Gateway - routes all requests
+  kong:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # PostgreSQL Database - most memory-intensive
+  postgres:
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  # Supabase Studio - web dashboard
+  studio:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # PostgREST - auto REST API
+  rest:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Authentication service (GoTrue)
+  auth:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Realtime WebSocket service
+  realtime:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Edge Functions runtime
+  edge-runtime:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # PostgreSQL Meta introspection
+  pg-meta:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Mailpit - email testing
+  inbucket:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
