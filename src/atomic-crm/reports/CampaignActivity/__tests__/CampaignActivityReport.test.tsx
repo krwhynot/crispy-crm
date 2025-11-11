@@ -128,7 +128,7 @@ describe("CampaignActivityReport", () => {
       refetch: vi.fn(),
     } as any);
 
-    const { getByRole } = render(
+    render(
       <MemoryRouter>
         <CampaignActivityReport />
       </MemoryRouter>
@@ -243,11 +243,10 @@ describe("CampaignActivityReport", () => {
     );
 
     await waitFor(() => {
-      // Check summary metrics
-      expect(screen.getByText("3")).toBeInTheDocument(); // Total Activities
-      // 3 unique organizations
-      const uniqueOrgsElements = screen.getAllByText("3");
-      expect(uniqueOrgsElements.length).toBeGreaterThan(0);
+      // Check summary metrics - using getAllByText since "3" appears twice
+      const threeElements = screen.getAllByText("3");
+      expect(threeElements).toHaveLength(2); // Total Activities and Organizations Contacted both show "3"
+
       expect(screen.getByText("1%")).toBeInTheDocument(); // Coverage Rate (3/369)
       expect(screen.getByText("0.0")).toBeInTheDocument(); // Avg per lead (3/369)
     });
