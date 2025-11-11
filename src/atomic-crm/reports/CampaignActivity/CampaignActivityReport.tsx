@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { ActivityTypeCard } from "./ActivityTypeCard";
 import { StaleLeadsView } from "./StaleLeadsView";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
@@ -70,9 +71,10 @@ export default function CampaignActivityReport() {
   const [selectedSalesRep, setSelectedSalesRep] = useState<number | null>(null);
   const [showStaleLeads, setShowStaleLeads] = useState<boolean>(false);
   const [staleLeadsThreshold, setStaleLeadsThreshold] = useState<number>(7);
+  const [ariaLiveMessage, setAriaLiveMessage] = useState<string>("");
 
   // Fetch all opportunities to get available campaigns
-  const { data: allOpportunities = [] } = useGetList<Opportunity>(
+  const { data: allOpportunities = [], isPending: opportunitiesPending } = useGetList<Opportunity>(
     "opportunities",
     {
       pagination: { page: 1, perPage: 10000 },
@@ -98,7 +100,7 @@ export default function CampaignActivityReport() {
   }, [allOpportunities]);
 
   // Fetch ALL activities for the selected campaign (unfiltered, for counts)
-  const { data: allCampaignActivities = [] } = useGetList<Activity>(
+  const { data: allCampaignActivities = [], isPending: allActivitiesPending } = useGetList<Activity>(
     "activities",
     {
       pagination: { page: 1, perPage: 10000 },
@@ -111,7 +113,7 @@ export default function CampaignActivityReport() {
   );
 
   // Fetch activities for the selected campaign (with filters applied)
-  const { data: activities = [] } = useGetList<Activity>(
+  const { data: activities = [], isPending: activitiesPending } = useGetList<Activity>(
     "activities",
     {
       pagination: { page: 1, perPage: 10000 },
@@ -240,6 +242,18 @@ export default function CampaignActivityReport() {
     }
   }, [activityGroups, expandedTypes.size]);
 
+  // Announce view changes to screen readers
+  React.useEffect(() => {
+    if (showStaleLeads) {
+      setAriaLiveMessage(`Switched to stale leads view. Showing ${staleOpportunities.length} opportunities with no activity in the last ${staleLeadsThreshold} days.`);
+    } else {
+      setAriaLiveMessage(`Switched to activity breakdown view. Showing ${activityGroups.length} activity types.`);
+    }
+    // Clear message after announcement
+    const timer = setTimeout(() => setAriaLiveMessage(""), 1000);
+    return () => clearTimeout(timer);
+  }, [showStaleLeads, staleOpportunities.length, staleLeadsThreshold, activityGroups.length]);
+
   // Calculate summary metrics
   const totalActivities = activities.length;
   const uniqueOrgs = new Set(activities.map((a) => a.organization_id)).size;
@@ -324,6 +338,10 @@ export default function CampaignActivityReport() {
     selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length ||
     selectedSalesRep !== null ||
     showStaleLeads;
+
+  // Check if data is loading
+  const isLoadingCampaigns = opportunitiesPending;
+  const isLoadingActivities = activitiesPending || allActivitiesPending;
 
   // Calculate activity counts by type for all activities (unfiltered)
   const activityTypeCounts = useMemo(() => {
@@ -454,32 +472,37 @@ export default function CampaignActivityReport() {
     <ReportLayout title="Campaign Activity Report">
       {/* Campaign Selector and Filters */}
       <div className="mb-6">
-        <div className="flex items-end gap-4 mb-4">
-          <div className="flex-1 max-w-xs">
+        <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-4">
+          <div className="flex-1 sm:max-w-xs">
             <Label htmlFor="campaign-select" className="block text-sm font-medium mb-2">Select Campaign</Label>
-            <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
-              <SelectTrigger id="campaign-select">
-                <SelectValue placeholder="Choose a campaign" />
-              </SelectTrigger>
-              <SelectContent>
-                {campaignOptions.map((campaign) => (
-                  <SelectItem key={campaign.name} value={campaign.name}>
-                    {campaign.name} ({campaign.count} opportunities)
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {isLoadingCampaigns ? (
+              <div className="h-10 bg-muted animate-pulse rounded-md" />
+            ) : (
+              <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+                <SelectTrigger id="campaign-select">
+                  <SelectValue placeholder="Choose a campaign" />
+                </SelectTrigger>
+                <SelectContent>
+                  {campaignOptions.map((campaign) => (
+                    <SelectItem key={campaign.name} value={campaign.name}>
+                      {campaign.name} ({campaign.count} opportunities)
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             {hasActiveFilters && (
-              <Button variant="outline" onClick={clearFilters}>
+              <Button variant="outline" onClick={clearFilters} className="w-full sm:w-auto">
                 Clear Filters
               </Button>
             )}
             <Button
               variant="default"
               onClick={handleExport}
-              disabled={showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0}
+              disabled={isLoadingActivities || (showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0)}
+              className="w-full sm:w-auto"
             >
               Export to CSV
             </Button>
@@ -667,53 +690,87 @@ export default function CampaignActivityReport() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Activities
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalActivities}</div>
-          </CardContent>
-        </Card>
+        {isLoadingActivities ? (
+          <>
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i}>
+                <CardHeader className="pb-2">
+                  <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
+                </CardHeader>
+                <CardContent>
+                  <div className="h-8 bg-muted animate-pulse rounded w-1/2" />
+                </CardContent>
+              </Card>
+            ))}
+          </>
+        ) : (
+          <>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Activities
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{totalActivities}</div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Organizations Contacted
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{uniqueOrgs}</div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Organizations Contacted
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{uniqueOrgs}</div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Coverage Rate
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{coverageRate}%</div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Coverage Rate
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{coverageRate}%</div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Avg Activities per Lead
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{avgActivitiesPerLead}</div>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Avg Activities per Lead
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{avgActivitiesPerLead}</div>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       {/* Conditional Rendering: Stale Leads View or Activity Type Breakdown */}
-      {showStaleLeads ? (
+      {isLoadingActivities ? (
+        <div className="space-y-4">
+          <div className="h-6 bg-muted animate-pulse rounded w-48 mb-4" />
+          {[1, 2, 3].map((i) => (
+            <Card key={i}>
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 bg-muted animate-pulse rounded" />
+                  <div className="flex-1">
+                    <div className="h-5 bg-muted animate-pulse rounded w-32 mb-2" />
+                    <div className="h-4 bg-muted animate-pulse rounded w-64" />
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      ) : showStaleLeads ? (
         <StaleLeadsView
           campaignName={selectedCampaign}
           threshold={staleLeadsThreshold}
@@ -733,12 +790,59 @@ export default function CampaignActivityReport() {
           ))}
         </div>
       ) : (
-        <div className="rounded-lg border border-dashed border-muted-foreground p-8 text-center">
-          <p className="text-muted-foreground">No activities found for this campaign</p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Activities will appear here once your team starts engaging with leads
-          </p>
-        </div>
+        <Card>
+          <CardContent className="py-12 text-center">
+            <div className="mb-4 text-4xl">📭</div>
+            {hasActiveFilters ? (
+              <>
+                <p className="text-lg font-medium text-muted-foreground mb-2">
+                  No activities match the current filters
+                </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Try adjusting your filters to see more results
+                </p>
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                  {dateRange && (
+                    <Badge variant="secondary">
+                      Date Range: {dateRange.start} to {dateRange.end}
+                    </Badge>
+                  )}
+                  {selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length && (
+                    <Badge variant="secondary">
+                      {selectedActivityTypes.length} Activity {selectedActivityTypes.length === 1 ? 'Type' : 'Types'} Selected
+                    </Badge>
+                  )}
+                  {selectedSalesRep && (
+                    <Badge variant="secondary">
+                      Sales Rep: {salesMap.get(selectedSalesRep) || 'Unknown'}
+                    </Badge>
+                  )}
+                </div>
+                <Button variant="outline" onClick={clearFilters} size="sm">
+                  Clear All Filters
+                </Button>
+              </>
+            ) : totalOpportunities === 0 ? (
+              <>
+                <p className="text-lg font-medium text-muted-foreground mb-2">
+                  This campaign has no opportunities yet
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Add opportunities to this campaign to start tracking activities
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-lg font-medium text-muted-foreground mb-2">
+                  No activities found for this campaign
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Activities will appear here once your team starts engaging with leads
+                </p>
+              </>
+            )}
+          </CardContent>
+        </Card>
       )}
     </ReportLayout>
   );
