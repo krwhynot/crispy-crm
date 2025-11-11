@@ -1,48 +1,101 @@
-# Docker Compose Override - Memory Limits for Supabase Local Development
-# This file is automatically picked up by Docker Compose and applies resource
-# limits to reduce overall system memory usage during development.
-#
-# Apply these limits: Kong 512MB, Database 2GB, others 256MB
-# Expected savings: 3-4GB total reduction in memory usage
+# ============================================================================
+# Docker Compose Override - Resource Limits for Supabase Local Development
+# ============================================================================
+# Optimized for: 32GB System RAM, Docker in WSL2, 1-2 Claude Sessions
+# Total container memory: ~4.5GB (leaves 10GB free in 14GB WSL2 allocation)
+# ============================================================================
 
 version: "3.8"
 
 services:
-  # Kong API Gateway - routes all requests
-  kong:
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-        reservations:
-          memory: 256M
-
-  # PostgreSQL Database - most memory-intensive
+  # ============================================================================
+  # PostgreSQL Database - Most memory-intensive service
+  # Memory: 2GB, CPUs: 2 (needs resources for queries and indexing)
+  # ============================================================================
   postgres:
     deploy:
       resources:
         limits:
           memory: 2G
+          cpus: '2.0'
         reservations:
           memory: 1G
+          cpus: '0.5'
+    # Mount custom PostgreSQL configuration
+    volumes:
+      - ./docker/postgres-dev.conf:/etc/postgresql/postgresql.conf:ro
+    # Apply custom configuration
+    command: >
+      postgres
+      -c config_file=/etc/postgresql/postgresql.conf
+    # Shared memory size must be >= shared_buffers (512MB in our config)
+    shm_size: 1gb
+    environment:
+      POSTGRES_INITDB_ARGS: "--data-checksums"
 
-  # Supabase Studio - web dashboard
+  # ============================================================================
+  # Kong API Gateway - Routes all HTTP requests
+  # Memory: 512MB, CPUs: 1 (handles routing, not heavy processing)
+  # ============================================================================
+  kong:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  # ============================================================================
+  # Edge Functions Runtime - For Supabase Functions development
+  # Memory: 512MB, CPUs: 1 (you use Core + Functions)
+  # ============================================================================
+  edge-runtime:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    profiles:
+      - default
+      - functions  # Part of default since you use Functions
+
+  # ============================================================================
+  # Supabase Studio - Web Dashboard (optional for headless dev)
+  # Memory: 512MB, CPUs: 1
+  # ============================================================================
   studio:
     deploy:
       resources:
         limits:
           memory: 512M
+          cpus: '1.0'
         reservations:
           memory: 256M
+          cpus: '0.25'
+    profiles:
+      - default
+      - full  # Can be excluded with --profile minimal
 
-  # PostgREST - auto REST API
+  # ============================================================================
+  # Core Services - Essential for development
+  # Memory: 256MB each, CPUs: 0.5
+  # ============================================================================
+
+  # PostgREST - REST API generation
   rest:
     deploy:
       resources:
         limits:
           memory: 256M
+          cpus: '0.5'
         reservations:
           memory: 128M
+          cpus: '0.1'
 
   # Authentication service (GoTrue)
   auth:
@@ -50,8 +103,10 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: '0.5'
         reservations:
           memory: 128M
+          cpus: '0.1'
 
   # Realtime WebSocket service
   realtime:
@@ -59,32 +114,53 @@ services:
       resources:
         limits:
           memory: 256M
+          cpus: '0.5'
         reservations:
           memory: 128M
+          cpus: '0.1'
 
-  # Edge Functions runtime
-  edge-runtime:
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-        reservations:
-          memory: 128M
-
-  # PostgreSQL Meta introspection
+  # PostgreSQL Meta introspection API
   pg-meta:
     deploy:
       resources:
         limits:
           memory: 256M
+          cpus: '0.5'
         reservations:
           memory: 128M
+          cpus: '0.1'
 
-  # Mailpit - email testing
+  # ============================================================================
+  # Optional Services - Only start when needed
+  # ============================================================================
+
+  # Mailpit/Inbucket - Email testing (disabled in config.toml)
   inbucket:
     deploy:
       resources:
         limits:
           memory: 256M
+          cpus: '0.5'
         reservations:
           memory: 128M
+          cpus: '0.1'
+    profiles:
+      - email-testing  # Only starts with: --profile email-testing
+
+# ============================================================================
+# Resource Summary:
+# - PostgreSQL:      2.0 GB
+# - Kong:            512 MB
+# - Edge Functions:  512 MB
+# - Studio:          512 MB
+# - Core Services:   1.0 GB (4 × 256MB)
+# - Email (if used): 256 MB
+# ----------------------
+# Total (default):   ~4.5 GB
+# Total (minimal):   ~3.5 GB (without Studio)
+# ============================================================================
+
+# Usage:
+# - Normal start:     npx supabase start
+# - Minimal mode:     docker compose --profile minimal up
+# - With email:       docker compose --profile email-testing up
