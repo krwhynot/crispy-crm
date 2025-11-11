@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { calculatePriority } from '../PriorityIndicator';
+import { render, screen } from '@testing-library/react';
+import { calculatePriority, PriorityIndicator as PriorityIndicatorComponent } from '../PriorityIndicator';
 
 describe('PriorityIndicator - calculatePriority', () => {
   it('should return "high" when principal has overdue tasks', () => {
