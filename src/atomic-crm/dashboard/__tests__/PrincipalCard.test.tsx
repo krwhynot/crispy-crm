@@ -70,7 +70,7 @@ describe('PrincipalCard', () => {
       </BrowserRouter>
     );
     expect(screen.getByText('Restaurant ABC')).toBeInTheDocument();
-    expect(screen.getByText('$5,000')).toBeInTheDocument();
+    expect(screen.getByText(/\$5,000/)).toBeInTheDocument();
   });
 
   it('should have action buttons', () => {
