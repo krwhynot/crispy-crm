@@ -233,9 +233,11 @@ describe("JunctionsService", () => {
       });
 
       test("should throw if dataProvider lacks RPC capability", async () => {
-        const serviceWithoutRPC = new JunctionsService({
-          ...createMockDataProvider(),
-        } as any);
+        const providerWithoutRPC = createMockDataProvider();
+        // Remove rpc method to simulate a provider without RPC support
+        delete (providerWithoutRPC as any).rpc;
+
+        const serviceWithoutRPC = new JunctionsService(providerWithoutRPC as any);
 
         await expect(
           serviceWithoutRPC.setPrimaryOrganization(1, 101)
