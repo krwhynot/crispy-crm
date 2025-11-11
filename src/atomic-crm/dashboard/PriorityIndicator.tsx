@@ -53,6 +53,41 @@ export function calculatePriority(principal: PrincipalData): Priority {
   return 'low';
 }
 
-export const PriorityIndicator = () => {
-  return <div>Priority Indicator - Placeholder</div>;
+interface PriorityIndicatorProps {
+  priority: Priority;
+}
+
+const priorityConfig = {
+  high: {
+    bgColor: 'bg-red-100',
+    borderColor: 'border-red-300',
+    icon: '⚠️',
+    label: 'Needs attention'
+  },
+  medium: {
+    bgColor: 'bg-yellow-100',
+    borderColor: 'border-yellow-300',
+    icon: '⚡',
+    label: 'Tasks due soon'
+  },
+  low: {
+    bgColor: 'bg-green-100',
+    borderColor: 'border-green-300',
+    icon: '✅',
+    label: 'On track'
+  }
+};
+
+export const PriorityIndicator = ({ priority }: PriorityIndicatorProps) => {
+  const config = priorityConfig[priority];
+
+  return (
+    <div
+      data-testid="priority-indicator"
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border ${config.bgColor} ${config.borderColor}`}
+    >
+      <span data-testid="priority-icon">{config.icon}</span>
+      <span className="text-sm font-medium">{config.label}</span>
+    </div>
+  );
 };

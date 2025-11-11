@@ -69,3 +69,39 @@ describe('PriorityIndicator - calculatePriority', () => {
     expect(priority).toBe('low');
   });
 });
+
+describe('PriorityIndicator - Component', () => {
+  it('should render red indicator for high priority', () => {
+    render(<PriorityIndicatorComponent priority="high" />);
+    const indicator = screen.getByTestId('priority-indicator');
+    expect(indicator).toHaveClass('bg-red-100');
+  });
+
+  it('should render yellow indicator for medium priority', () => {
+    render(<PriorityIndicatorComponent priority="medium" />);
+    const indicator = screen.getByTestId('priority-indicator');
+    expect(indicator).toHaveClass('bg-yellow-100');
+  });
+
+  it('should render green indicator for low priority', () => {
+    render(<PriorityIndicatorComponent priority="low" />);
+    const indicator = screen.getByTestId('priority-indicator');
+    expect(indicator).toHaveClass('bg-green-100');
+  });
+
+  it('should render icon matching priority', () => {
+    const { rerender } = render(
+      <PriorityIndicatorComponent priority="high" />
+    );
+    let icon = screen.getByTestId('priority-icon');
+    expect(icon).toHaveTextContent('⚠️');
+
+    rerender(<PriorityIndicatorComponent priority="medium" />);
+    icon = screen.getByTestId('priority-icon');
+    expect(icon).toHaveTextContent('⚡');
+
+    rerender(<PriorityIndicatorComponent priority="low" />);
+    icon = screen.getByTestId('priority-icon');
+    expect(icon).toHaveTextContent('✅');
+  });
+});
