@@ -59,19 +59,19 @@ interface PriorityIndicatorProps {
 
 const priorityConfig = {
   high: {
-    bgColor: 'bg-red-100',
-    borderColor: 'border-red-300',
+    bgColor: 'bg-destructive/10',
+    borderColor: 'border-destructive/30',
     icon: '⚠️',
     label: 'Needs attention'
   },
   medium: {
-    bgColor: 'bg-yellow-100',
+    bgColor: 'bg-yellow-50',
     borderColor: 'border-yellow-300',
     icon: '⚡',
     label: 'Tasks due soon'
   },
   low: {
-    bgColor: 'bg-green-100',
+    bgColor: 'bg-green-50',
     borderColor: 'border-green-300',
     icon: '✅',
     label: 'On track'
