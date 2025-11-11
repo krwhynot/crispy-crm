@@ -140,6 +140,7 @@ export const CRM = ({
         <CustomRoutes>
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports/weekly-activity" element={<reports.WeeklyActivitySummary />} />
+          <Route path="/reports/opportunities-by-principal" element={<reports.OpportunitiesByPrincipalReport />} />
         </CustomRoutes>
         <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />

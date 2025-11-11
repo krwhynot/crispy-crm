@@ -2,6 +2,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ResponsiveGrid } from "@/components/design-system";
 import { ShowBase, useShowContext } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
@@ -9,6 +10,7 @@ import { NoteCreate, NotesIterator } from "../notes";
 import type { Contact } from "../types";
 import { Avatar } from "./Avatar";
 import { ContactAside } from "./ContactAside";
+import { ActivitiesTab } from "./ActivitiesTab";
 
 export const ContactShow = () => (
   <ShowBase>
@@ -67,48 +69,65 @@ const ContactShowContent = () => {
                 )}
               </div>
             </div>
-            {/* Organizations Section */}
-            {record.organizations && record.organizations.length > 0 && (
-              <div className="mt-6">
-                <h6 className="text-lg font-semibold mb-4">Associated Organizations</h6>
-                <div className="space-y-2">
-                  {record.organizations.map((org: any) => (
-                    <div
-                      key={org.organization_id}
-                      className="flex items-center justify-between p-3 border rounded-lg"
-                    >
-                      <div className="flex-1">
-                        <ReferenceField
-                          record={{ organization_id: org.organization_id }}
-                          source="organization_id"
-                          reference="organizations"
-                          link="show"
-                          className="font-medium"
-                        >
-                          <TextField source="name" />
-                        </ReferenceField>
-                      </div>
-                      <div className="text-sm">
-                        {org.is_primary && (
-                          <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                            Primary
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
-            <ReferenceManyField
-              target="contact_id"
-              reference="contactNotes"
-              sort={{ field: "created_at", order: "DESC" }}
-              empty={<NoteCreate reference="contacts" />}
-            >
-              <NotesIterator reference="contacts" />
-            </ReferenceManyField>
+            <Tabs defaultValue="details" className="mt-4">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="details">Details</TabsTrigger>
+                <TabsTrigger value="notes">Notes</TabsTrigger>
+                <TabsTrigger value="activities">Activities</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="details" className="pt-2">
+                {/* Organizations Section */}
+                {record.organizations && record.organizations.length > 0 && (
+                  <div className="mt-4">
+                    <h6 className="text-lg font-semibold mb-4">Associated Organizations</h6>
+                    <div className="space-y-2">
+                      {record.organizations.map((org: any) => (
+                        <div
+                          key={org.organization_id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div className="flex-1">
+                            <ReferenceField
+                              record={{ organization_id: org.organization_id }}
+                              source="organization_id"
+                              reference="organizations"
+                              link="show"
+                              className="font-medium"
+                            >
+                              <TextField source="name" />
+                            </ReferenceField>
+                          </div>
+                          <div className="text-sm">
+                            {org.is_primary && (
+                              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                Primary
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="notes" className="pt-2">
+                <ReferenceManyField
+                  target="contact_id"
+                  reference="contactNotes"
+                  sort={{ field: "created_at", order: "DESC" }}
+                  empty={<NoteCreate reference="contacts" />}
+                >
+                  <NotesIterator reference="contacts" />
+                </ReferenceManyField>
+              </TabsContent>
+
+              <TabsContent value="activities" className="pt-2">
+                <ActivitiesTab contactId={record.id} />
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       </main>

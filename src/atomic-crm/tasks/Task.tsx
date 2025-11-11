@@ -24,6 +24,7 @@ import { useDeleteWithUndoController, useNotify, useUpdate } from "ra-core";
 import { useEffect, useState } from "react";
 import type { Contact, Task as TData } from "../types";
 import TaskEdit from "./TaskEdit";
+import { QuickLogActivity } from "../activities/QuickLogActivity";
 
 export const Task = ({ task, showContact }: { task: TData; showContact?: boolean }) => {
   const notify = useNotify();
@@ -47,9 +48,14 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
   const nextMondayFormatted = format(nextMonday, "EEE, MMM d");
 
   const [openEdit, setOpenEdit] = useState(false);
+  const [openActivityDialog, setOpenActivityDialog] = useState(false);
 
   const handleCloseEdit = () => {
     setOpenEdit(false);
+  };
+
+  const handleCloseActivityDialog = () => {
+    setOpenActivityDialog(false);
   };
 
   const [update, { isPending: isUpdatePending, isSuccess, variables }] = useUpdate();
@@ -76,6 +82,13 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
         completed_at: checked ? new Date().toISOString() : null,
       },
       previousData: task,
+    }, {
+      onSuccess: () => {
+        // Only open activity dialog when task is being completed (not uncompleted)
+        if (checked) {
+          setOpenActivityDialog(true);
+        }
+      },
     });
   };
 
@@ -198,6 +211,15 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
 
       {/* This part is for editing the Task directly via a Dialog */}
       {openEdit && <TaskEdit taskId={task.id} open={openEdit} close={handleCloseEdit} />}
+
+      {/* Quick log activity dialog after task completion */}
+      {openActivityDialog && (
+        <QuickLogActivity
+          open={openActivityDialog}
+          onClose={handleCloseActivityDialog}
+          task={task}
+        />
+      )}
     </>
   );
 };
