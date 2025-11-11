@@ -41,6 +41,12 @@ interface Principal {
 }
 
 export const PrincipalDashboard = () => {
+  // Memoize the 7-day cutoff date so the filter doesn't change on every render
+  // This prevents an infinite loop where changing filter → re-fetch → re-render → new date → changed filter
+  const sevenDaysAgo = useMemo(() => {
+    return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  }, []);
+
   // Fetch user's active opportunities (grouped by principal)
   const { data: opportunities, isLoading: oppLoading, error: oppError } = useGetList(
     'opportunities',
@@ -60,7 +66,6 @@ export const PrincipalDashboard = () => {
   });
 
   // Fetch user's recent activities (last 7 days)
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const { data: activities, isLoading: activitiesLoading, error: activitiesError } = useGetList(
     'activities',
     {
