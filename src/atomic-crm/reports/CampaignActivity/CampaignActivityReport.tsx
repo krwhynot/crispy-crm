@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { useGetList } from "ra-core";
+import { useGetList, useNotify, downloadCSV } from "ra-core";
+import jsonExport from "jsonexport/dist";
 import { ReportLayout } from "@/atomic-crm/reports/ReportLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -13,7 +14,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ActivityTypeCard } from "./ActivityTypeCard";
+import { StaleLeadsView } from "./StaleLeadsView";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
+import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { format, subDays, startOfMonth } from "date-fns";
 
 interface Activity {
@@ -37,7 +40,9 @@ interface Sale {
 
 interface Opportunity {
   id: number;
+  name: string;
   campaign: string | null;
+  customer_organization_name?: string;
 }
 
 interface ActivityGroup {
@@ -61,6 +66,8 @@ export default function CampaignActivityReport() {
   );
   const [datePreset, setDatePreset] = useState<string>("allTime");
   const [selectedSalesRep, setSelectedSalesRep] = useState<number | null>(null);
+  const [showStaleLeads, setShowStaleLeads] = useState<boolean>(false);
+  const [staleLeadsThreshold, setStaleLeadsThreshold] = useState<number>(7);
 
   // Fetch all opportunities to get available campaigns
   const { data: allOpportunities = [] } = useGetList<Opportunity>(
@@ -300,12 +307,15 @@ export default function CampaignActivityReport() {
     setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map(opt => opt.value));
     setDatePreset("allTime");
     setSelectedSalesRep(null);
+    setShowStaleLeads(false);
+    setStaleLeadsThreshold(7);
   };
 
   // Check if any filters are active
   const hasActiveFilters = dateRange !== null ||
     selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length ||
-    selectedSalesRep !== null;
+    selectedSalesRep !== null ||
+    showStaleLeads;
 
   // Calculate activity counts by type for all activities (unfiltered)
   const activityTypeCounts = useMemo(() => {
@@ -316,6 +326,42 @@ export default function CampaignActivityReport() {
     });
     return counts;
   }, [allCampaignActivities]);
+
+  // Helper function: Get last activity date for an opportunity
+  const getLastActivityForOpportunity = (oppId: number, activities: Activity[]): string | null => {
+    const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
+    if (oppActivities.length === 0) return null;
+
+    const sortedActivities = oppActivities.sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+    return sortedActivities[0].created_at;
+  };
+
+  // Calculate stale opportunities
+  const staleOpportunities = useMemo(() => {
+    if (!showStaleLeads || !allOpportunities) return [];
+
+    const opportunitiesForCampaign = allOpportunities.filter((o) => o.campaign === selectedCampaign);
+    const now = new Date();
+
+    return opportunitiesForCampaign
+      .map((opp) => {
+        const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
+        const daysInactive = lastActivityDate
+          ? Math.floor((now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24))
+          : 999999; // Never had activity - sort to end
+
+        return {
+          ...opp,
+          lastActivityDate,
+          daysInactive,
+        };
+      })
+      .filter((opp) => opp.daysInactive >= staleLeadsThreshold)
+      .sort((a, b) => b.daysInactive - a.daysInactive);
+  }, [showStaleLeads, staleLeadsThreshold, allOpportunities, selectedCampaign, allCampaignActivities]);
 
   return (
     <ReportLayout title="Campaign Activity Report">
@@ -347,7 +393,7 @@ export default function CampaignActivityReport() {
         {/* Filter Panel */}
         <Card>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Date Range Filter */}
               <div>
                 <h4 className="text-sm font-medium mb-3">Date Range</h4>
@@ -478,6 +524,46 @@ export default function CampaignActivityReport() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Stale Leads Filter */}
+              <div>
+                <h4 className="text-sm font-medium mb-3">Stale Leads</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="show-stale-leads"
+                      checked={showStaleLeads}
+                      onCheckedChange={(checked) => setShowStaleLeads(checked === true)}
+                    />
+                    <Label htmlFor="show-stale-leads" className="text-sm font-normal cursor-pointer">
+                      Show only leads with no activity
+                    </Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="stale-threshold" className="text-xs whitespace-nowrap">
+                      in last
+                    </Label>
+                    <input
+                      id="stale-threshold"
+                      type="number"
+                      min="1"
+                      max="365"
+                      value={staleLeadsThreshold}
+                      onChange={(e) => setStaleLeadsThreshold(parseInt(e.target.value, 10) || 7)}
+                      disabled={!showStaleLeads}
+                      className="w-16 px-2 py-1 border rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                    <Label htmlFor="stale-threshold" className="text-xs">
+                      days
+                    </Label>
+                  </div>
+                  {showStaleLeads && staleOpportunities.length > 0 && (
+                    <div className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded">
+                      ⚠️ {staleOpportunities.length} {staleOpportunities.length === 1 ? 'lead needs' : 'leads need'} follow-up
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -530,8 +616,14 @@ export default function CampaignActivityReport() {
         </Card>
       </div>
 
-      {/* Activity Type Breakdown */}
-      {activityGroups.length > 0 ? (
+      {/* Conditional Rendering: Stale Leads View or Activity Type Breakdown */}
+      {showStaleLeads ? (
+        <StaleLeadsView
+          campaignName={selectedCampaign}
+          threshold={staleLeadsThreshold}
+          staleOpportunities={staleOpportunities}
+        />
+      ) : activityGroups.length > 0 ? (
         <div>
           <h3 className="text-lg font-semibold mb-4">Activity Type Breakdown</h3>
           {activityGroups.map((group) => (
