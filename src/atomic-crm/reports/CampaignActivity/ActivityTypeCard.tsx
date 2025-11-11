@@ -10,6 +10,8 @@ interface Activity {
   created_by: number;
   organization_id: number;
   contact_id: number | null;
+  organization_name?: string;
+  contact_name?: string;
 }
 
 interface ActivityGroup {

@@ -2,7 +2,19 @@ import React, { useMemo, useState } from "react";
 import { useGetList } from "ra-core";
 import { ReportLayout } from "@/atomic-crm/reports/ReportLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { ActivityTypeCard } from "./ActivityTypeCard";
+import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
+import { format, subDays, startOfMonth } from "date-fns";
 
 interface Activity {
   id: number;
@@ -22,6 +34,11 @@ interface Sale {
   last_name: string;
 }
 
+interface Opportunity {
+  id: number;
+  campaign: string | null;
+}
+
 interface ActivityGroup {
   type: string;
   activities: Activity[];
@@ -34,15 +51,53 @@ interface ActivityGroup {
 
 export default function CampaignActivityReport() {
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
+  const [selectedCampaign, setSelectedCampaign] = useState<string>("Grand Rapids Trade Show");
 
-  // Fetch activities for the campaign (MVP: hardcode campaign or use default)
+  // Filter state
+  const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
+  const [selectedActivityTypes, setSelectedActivityTypes] = useState<string[]>(
+    INTERACTION_TYPE_OPTIONS.map(opt => opt.value)
+  );
+
+  // Fetch all opportunities to get available campaigns
+  const { data: allOpportunities = [] } = useGetList<Opportunity>(
+    "opportunities",
+    {
+      pagination: { page: 1, perPage: 10000 },
+      filter: {
+        "deleted_at@is": null,
+      },
+    }
+  );
+
+  // Get distinct campaigns with opportunity counts
+  const campaignOptions = useMemo(() => {
+    const campaigns = new Map<string, number>();
+
+    allOpportunities.forEach((opp) => {
+      if (opp.campaign) {
+        campaigns.set(opp.campaign, (campaigns.get(opp.campaign) || 0) + 1);
+      }
+    });
+
+    return Array.from(campaigns.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [allOpportunities]);
+
+  // Fetch activities for the selected campaign
   const { data: activities = [] } = useGetList<Activity>(
     "activities",
     {
       pagination: { page: 1, perPage: 10000 },
       filter: {
-        "opportunities.campaign": "Grand Rapids Trade Show",
+        "opportunities.campaign": selectedCampaign,
         "opportunities.deleted_at@is": null,
+        ...(dateRange?.start && { "created_at@gte": dateRange.start }),
+        ...(dateRange?.end && { "created_at@lte": dateRange.end }),
+        ...(selectedActivityTypes.length > 0 &&
+            selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length &&
+            { type: selectedActivityTypes }),
       },
       sort: { field: "created_at", order: "DESC" },
     }
@@ -137,7 +192,8 @@ export default function CampaignActivityReport() {
   // Calculate summary metrics
   const totalActivities = activities.length;
   const uniqueOrgs = new Set(activities.map((a) => a.organization_id)).size;
-  const totalOpportunities = 369; // Hardcoded for MVP, will be parameterized later
+  const totalOpportunities =
+    allOpportunities.filter((opp) => opp.campaign === selectedCampaign).length || 1;
   const coverageRate = totalOpportunities > 0 ? Math.round((uniqueOrgs / totalOpportunities) * 100) : 0;
   const avgActivitiesPerLead = totalOpportunities > 0 ? (totalActivities / totalOpportunities).toFixed(1) : "0.0";
 
@@ -151,8 +207,202 @@ export default function CampaignActivityReport() {
     setExpandedTypes(newExpanded);
   };
 
+  // Date preset handlers
+  const setDatePreset = (preset: string) => {
+    const today = new Date();
+    switch (preset) {
+      case "last7":
+        setDateRange({
+          start: format(subDays(today, 7), "yyyy-MM-dd"),
+          end: format(today, "yyyy-MM-dd"),
+        });
+        break;
+      case "last30":
+        setDateRange({
+          start: format(subDays(today, 30), "yyyy-MM-dd"),
+          end: format(today, "yyyy-MM-dd"),
+        });
+        break;
+      case "thisMonth":
+        setDateRange({
+          start: format(startOfMonth(today), "yyyy-MM-dd"),
+          end: format(today, "yyyy-MM-dd"),
+        });
+        break;
+      case "allTime":
+      default:
+        setDateRange(null);
+        break;
+    }
+  };
+
+  // Activity type toggle handler
+  const toggleActivityType = (type: string) => {
+    if (selectedActivityTypes.includes(type)) {
+      setSelectedActivityTypes(selectedActivityTypes.filter(t => t !== type));
+    } else {
+      setSelectedActivityTypes([...selectedActivityTypes, type]);
+    }
+  };
+
+  // Select/deselect all activity types
+  const toggleAllActivityTypes = () => {
+    if (selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length) {
+      setSelectedActivityTypes([]);
+    } else {
+      setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map(opt => opt.value));
+    }
+  };
+
+  // Clear all filters (keeps campaign selected)
+  const clearFilters = () => {
+    setDateRange(null);
+    setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map(opt => opt.value));
+  };
+
+  // Check if any filters are active
+  const hasActiveFilters = dateRange !== null ||
+    selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length;
+
+  // Calculate activity counts by type for all activities (unfiltered)
+  const activityTypeCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    activities.forEach((activity) => {
+      const type = activity.type || "Unknown";
+      counts.set(type, (counts.get(type) || 0) + 1);
+    });
+    return counts;
+  }, [activities]);
+
   return (
     <ReportLayout title="Campaign Activity Report">
+      {/* Campaign Selector and Filters */}
+      <div className="mb-6">
+        <div className="flex items-end gap-4 mb-4">
+          <div className="flex-1 max-w-xs">
+            <Label htmlFor="campaign-select" className="block text-sm font-medium mb-2">Select Campaign</Label>
+            <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+              <SelectTrigger id="campaign-select">
+                <SelectValue placeholder="Choose a campaign" />
+              </SelectTrigger>
+              <SelectContent>
+                {campaignOptions.map((campaign) => (
+                  <SelectItem key={campaign.name} value={campaign.name}>
+                    {campaign.name} ({campaign.count} opportunities)
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {hasActiveFilters && (
+            <Button variant="outline" onClick={clearFilters}>
+              Clear Filters
+            </Button>
+          )}
+        </div>
+
+        {/* Filter Panel */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Date Range Filter */}
+              <div>
+                <h4 className="text-sm font-medium mb-3">Date Range</h4>
+                <div className="space-y-3">
+                  <div className="flex gap-2 flex-wrap">
+                    <Button
+                      variant={dateRange === null ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setDatePreset("allTime")}
+                    >
+                      All time
+                    </Button>
+                    <Button
+                      variant={dateRange?.start === format(subDays(new Date(), 7), "yyyy-MM-dd") ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setDatePreset("last7")}
+                    >
+                      Last 7 days
+                    </Button>
+                    <Button
+                      variant={dateRange?.start === format(subDays(new Date(), 30), "yyyy-MM-dd") ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setDatePreset("last30")}
+                    >
+                      Last 30 days
+                    </Button>
+                    <Button
+                      variant={dateRange?.start === format(startOfMonth(new Date()), "yyyy-MM-dd") ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setDatePreset("thisMonth")}
+                    >
+                      This month
+                    </Button>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <div className="flex-1">
+                      <Label htmlFor="start-date" className="text-xs">Start Date</Label>
+                      <input
+                        id="start-date"
+                        type="date"
+                        value={dateRange?.start || ""}
+                        onChange={(e) => setDateRange(prev => ({ start: e.target.value, end: prev?.end || format(new Date(), "yyyy-MM-dd") }))}
+                        className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Label htmlFor="end-date" className="text-xs">End Date</Label>
+                      <input
+                        id="end-date"
+                        type="date"
+                        value={dateRange?.end || ""}
+                        onChange={(e) => setDateRange(prev => ({ start: prev?.start || format(new Date(), "yyyy-MM-dd"), end: e.target.value }))}
+                        className="w-full mt-1 px-3 py-2 border rounded-md text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Activity Type Filter */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-medium">Activity Type</h4>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    onClick={toggleAllActivityTypes}
+                    className="h-auto p-0 text-xs"
+                  >
+                    {selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length ? "Deselect All" : "Select All"}
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                  {INTERACTION_TYPE_OPTIONS.map((option) => {
+                    const count = activityTypeCounts.get(option.value) || 0;
+                    return (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`activity-type-${option.value}`}
+                          checked={selectedActivityTypes.includes(option.value)}
+                          onCheckedChange={() => toggleActivityType(option.value)}
+                        />
+                        <Label
+                          htmlFor={`activity-type-${option.value}`}
+                          className="text-sm font-normal cursor-pointer flex-1"
+                        >
+                          {option.label} ({count})
+                        </Label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <Card>
