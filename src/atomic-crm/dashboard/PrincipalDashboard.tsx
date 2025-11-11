@@ -46,10 +46,10 @@ export const PrincipalDashboard = () => {
     'opportunities',
     {
       filter: {
-        status: 'Active'
+        status: 'active'
       },
       pagination: { page: 1, perPage: 10000 },
-      sort: { field: 'expected_value', order: 'DESC' }
+      sort: { field: 'estimated_close_date', order: 'ASC' }
     }
   );
 
@@ -65,7 +65,7 @@ export const PrincipalDashboard = () => {
     'activities',
     {
       filter: {
-        created_at: { gte: sevenDaysAgo.toISOString() }
+        "created_at@gte": sevenDaysAgo.toISOString()
       },
       pagination: { page: 1, perPage: 10000 },
       sort: { field: 'created_at', order: 'DESC' }
@@ -99,8 +99,10 @@ export const PrincipalDashboard = () => {
 
       const principal = principalMap.get(opp.principal_organization_id)!;
 
-      // Set top opportunity (highest value)
-      if (!principal.topOpportunity || opp.expected_value > principal.topOpportunity.expected_value) {
+      // Set top opportunity (soonest estimated close date)
+      if (!principal.topOpportunity ||
+          (opp.estimated_close_date && (!principal.topOpportunity.estimated_close_date ||
+           opp.estimated_close_date < principal.topOpportunity.estimated_close_date))) {
         principal.topOpportunity = opp;
       }
 

@@ -19,7 +19,7 @@ export interface PrincipalActivity {
 export interface TopOpportunity {
   id: string;
   name: string;
-  expected_value: number;
+  estimated_close_date: string;
   stage: string;
 }
 
@@ -105,8 +105,9 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
             {principal.topOpportunity.name}
           </button>
           <p className="text-xs text-gray-600 mt-1">
-            {principal.topOpportunity.stage} - $
-            {principal.topOpportunity.expected_value.toLocaleString()}
+            {principal.topOpportunity.stage}
+            {principal.topOpportunity.estimated_close_date &&
+              ` - Close: ${new Date(principal.topOpportunity.estimated_close_date).toLocaleDateString()}`}
           </p>
         </div>
       )}
