@@ -35,9 +35,31 @@ describe("ActivityTypeCard", () => {
     // Check icon and type name
     expect(screen.getByText("Note")).toBeInTheDocument();
 
-    // Check summary stats
-    expect(screen.getByText("141 activities")).toBeInTheDocument();
-    expect(screen.getByText("119 unique orgs")).toBeInTheDocument();
-    expect(screen.getByText("57%")).toBeInTheDocument(); // 141/247 activities
+    // Check summary stats - the text is split across multiple elements
+    const summaryText = screen.getByText((content, element) => {
+      return element?.textContent === "141 activities • 119 unique orgs • 57%";
+    });
+    expect(summaryText).toBeInTheDocument();
+  });
+
+  it("should render expanded card with activity table", () => {
+    render(
+      <ActivityTypeCard
+        group={mockActivityGroup}
+        isExpanded={true}
+        onToggle={vi.fn()}
+        salesMap={mockSalesMap}
+      />
+    );
+
+    // Check table is rendered
+    expect(screen.getByRole("table")).toBeInTheDocument();
+
+    // Check table headers
+    expect(screen.getByText("Organization")).toBeInTheDocument();
+    expect(screen.getByText("Contact")).toBeInTheDocument();
+    expect(screen.getByText("Date")).toBeInTheDocument();
+    expect(screen.getByText("Rep")).toBeInTheDocument();
+    expect(screen.getByText("Subject")).toBeInTheDocument();
   });
 });
