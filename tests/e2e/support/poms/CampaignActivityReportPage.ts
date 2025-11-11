@@ -13,14 +13,33 @@ export class CampaignActivityReportPage extends BasePage {
    */
   async navigate(): Promise<void> {
     await this.goto("/#/reports/campaign-activity");
-    await this.page.waitForLoadState("networkidle");
+    await this.waitForPageLoad();
+  }
+
+  /**
+   * Wait for the report page to fully load
+   */
+  async waitForPageLoad(): Promise<void> {
+    // Wait for React loading state to clear (condition-based waiting)
+    await this.page.waitForFunction(
+      () => {
+        const loadingText = document.body.textContent?.includes("Loading...");
+        return !loadingText;
+      },
+      { timeout: 15000 }
+    );
+
+    // Now wait for title to be visible
+    await expect(this.page.getByText("Campaign Activity Report")).toBeVisible({
+      timeout: 5000,
+    });
   }
 
   /**
    * Get the page title heading
    */
   getTitleHeading(): Locator {
-    return this.page.getByRole("heading", { name: /campaign activity report/i });
+    return this.page.getByText("Campaign Activity Report");
   }
 
   /**
@@ -247,14 +266,14 @@ export class CampaignActivityReportPage extends BasePage {
    * Get start date input
    */
   getStartDateInput(): Locator {
-    return this.page.getByLabel(/start date/i);
+    return this.page.locator('input[id="start-date"]');
   }
 
   /**
    * Get end date input
    */
   getEndDateInput(): Locator {
-    return this.page.getByLabel(/end date/i);
+    return this.page.locator('input[id="end-date"]');
   }
 
   /**
