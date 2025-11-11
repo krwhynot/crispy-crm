@@ -156,6 +156,7 @@ describe("authProvider", () => {
         id: 2,
         fullName: "Jane Smith",
         avatar: "https://example.com/avatar.jpg",
+        role: "rep",
       });
     });
 
