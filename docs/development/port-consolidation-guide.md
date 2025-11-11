@@ -1,10 +1,10 @@
 # Port Consolidation Guide
 
-**Status:** ✅ Implemented (2025-11-10)
+**Status:** ✅ Implemented & Verified (2025-11-10)
 
 ## Overview
 
-This project uses **Docker Compose port optimization** to reduce the number of exposed ports from **28+ to 3** while maintaining full development functionality.
+This project successfully reduced the number of exposed ports from **28 to 3** through `config.toml` optimization, maintaining full development functionality.
 
 ## The Problem
 
@@ -56,20 +56,22 @@ Docker Bridge Network (internal)
 
 ## Implementation
 
-### File: `supabase/docker/docker-compose.override.yml`
+### Method: `supabase/config.toml` Optimization
 
-This file overrides the default Supabase Docker Compose configuration to:
-1. **Expose only essential ports** (Kong API, Studio UI)
-2. **Keep all other services internal** to Docker network
+The solution uses Supabase's native configuration file to:
+1. **Disable unnecessary services** (Inbucket, Analytics)
+2. **Keep only essential ports** (API, DB, Studio)
 3. **Maintain full functionality** for local development
 
 ### How It Works
 
 When you run `npx supabase start`:
-1. Supabase CLI generates base `docker-compose.yml` in `.supabase/`
-2. Docker Compose automatically detects and merges `supabase/docker/docker-compose.override.yml`
-3. Override takes precedence: `ports: []` removes host exposure
-4. Services communicate via Docker DNS (e.g., `db:5432`, `auth:9999`)
+1. Supabase CLI reads `config.toml` and only starts enabled services
+2. Disabled services (Inbucket, Analytics) don't start or expose ports
+3. Internal services communicate via Docker bridge network
+4. Only 3 ports are exposed to the host machine
+
+**Note:** The `docker-compose.override.yml` file was created but is not used by Supabase CLI (preserved for reference)
 
 ## Setup Requirements
 
@@ -129,6 +131,24 @@ inbucket:
 npx supabase stop
 npx supabase start
 ```
+
+## Understanding VSCode Port Display
+
+### Why VSCode Shows More Ports
+
+VSCode's Ports panel displays **all Docker port declarations**, not just exposed ports:
+
+**What VSCode Shows (11 entries):**
+- 3 IPv4 exposed ports (`0.0.0.0:54321`, `54322`, `54323`)
+- 3 IPv6 exposed ports (`[::]:54321`, `54322`, `54323`)
+- 5 internal Docker ports (`3000`, `4000`, `8080`, `8081`, `9999`)
+
+**What Actually Matters (3 ports):**
+- Only the 3 host-exposed ports are accessible from your machine
+- Internal ports are for container-to-container communication only
+- IPv6 entries are duplicates of IPv4 (same ports, different protocol)
+
+This is normal Docker/VSCode behavior and doesn't indicate a problem.
 
 ## Troubleshooting
 
