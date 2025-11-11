@@ -91,27 +91,31 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
   }
 
   return (
-    <Card
-      className="mb-4 cursor-pointer hover:border-primary/50 transition-colors"
-      onClick={onToggle}
-    >
+    <Card className="mb-4">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">{icon}</span>
-            <div>
-              <h3 className="font-semibold text-base">{label}</h3>
-              <p className="text-sm text-muted-foreground">
-                {group.totalCount} activities • {group.uniqueOrgs} unique orgs • {percentage}%
-              </p>
+        <button
+          onClick={onToggle}
+          className="w-full text-left cursor-pointer hover:opacity-80 transition-opacity"
+          aria-expanded={isExpanded}
+          aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${label} section with ${group.totalCount} activities`}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl" aria-hidden="true">{icon}</span>
+              <div>
+                <h3 className="font-semibold text-base">{label}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {group.totalCount} activities • {group.uniqueOrgs} unique orgs • {percentage}%
+                </p>
+              </div>
             </div>
+            {isExpanded ? (
+              <ChevronDown className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
+            )}
           </div>
-          {isExpanded ? (
-            <ChevronDown className="h-5 w-5" />
-          ) : (
-            <ChevronRight className="h-5 w-5" />
-          )}
-        </div>
+        </button>
       </CardHeader>
 
       {!isExpanded && (
@@ -128,40 +132,42 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
 
       {isExpanded && (
         <CardContent className="pt-0">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-2 px-3 font-semibold">Organization</th>
-                <th className="text-left py-2 px-3 font-semibold">Contact</th>
-                <th className="text-left py-2 px-3 font-semibold">Date</th>
-                <th className="text-left py-2 px-3 font-semibold">Rep</th>
-                <th className="text-left py-2 px-3 font-semibold">Subject</th>
-                <th className="text-center py-2 px-3 font-semibold">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {group.activities.map((activity) => (
-                <tr key={activity.id} className="border-b hover:bg-muted/50">
-                  <td className="py-2 px-3 truncate max-w-xs">
-                    {activity.organization_name || `Organization ${activity.organization_id}`}
-                  </td>
-                  <td className="py-2 px-3 truncate max-w-xs">
-                    {activity.contact_name ? activity.contact_name : "—"}
-                  </td>
-                  <td className="py-2 px-3">
-                    {new Date(activity.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="py-2 px-3">
-                    {salesMap.get(activity.created_by) || "Unassigned"}
-                  </td>
-                  <td className="py-2 px-3 truncate max-w-xs">{activity.subject}</td>
-                  <td className="py-2 px-3 text-center">
-                    <button className="text-primary hover:underline">View</button>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b">
+                  <th scope="col" className="text-left py-2 px-3 font-semibold sticky left-0 bg-card">Organization</th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">Contact</th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">Date</th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">Rep</th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">Subject</th>
+                  <th scope="col" className="text-center py-2 px-3 font-semibold">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {group.activities.map((activity) => (
+                  <tr key={activity.id} className="border-b hover:bg-muted/50">
+                    <td className="py-2 px-3 truncate max-w-xs sticky left-0 bg-card">
+                      {activity.organization_name || `Organization ${activity.organization_id}`}
+                    </td>
+                    <td className="py-2 px-3 truncate max-w-xs">
+                      {activity.contact_name ? activity.contact_name : "—"}
+                    </td>
+                    <td className="py-2 px-3 whitespace-nowrap">
+                      {new Date(activity.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="py-2 px-3 whitespace-nowrap">
+                      {salesMap.get(activity.created_by) || "Unassigned"}
+                    </td>
+                    <td className="py-2 px-3 truncate max-w-xs">{activity.subject}</td>
+                    <td className="py-2 px-3 text-center">
+                      <button className="text-primary hover:underline min-w-[44px] min-h-[44px] inline-flex items-center justify-center">View</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </CardContent>
       )}
     </Card>

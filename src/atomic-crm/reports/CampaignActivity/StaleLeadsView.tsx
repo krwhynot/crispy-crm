@@ -64,26 +64,26 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-3 font-semibold">Opportunity</th>
-                    <th className="text-left py-3 px-3 font-semibold">Organization</th>
-                    <th className="text-left py-3 px-3 font-semibold">Last Activity</th>
-                    <th className="text-left py-3 px-3 font-semibold">Days Inactive</th>
-                    <th className="text-center py-3 px-3 font-semibold">Action</th>
+                    <th scope="col" className="text-left py-3 px-3 font-semibold sticky left-0 bg-card">Opportunity</th>
+                    <th scope="col" className="text-left py-3 px-3 font-semibold">Organization</th>
+                    <th scope="col" className="text-left py-3 px-3 font-semibold">Last Activity</th>
+                    <th scope="col" className="text-left py-3 px-3 font-semibold">Days Inactive</th>
+                    <th scope="col" className="text-center py-3 px-3 font-semibold">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {staleOpportunities.map((opp) => (
                     <tr key={opp.id} className="border-b hover:bg-muted/50">
-                      <td className="py-3 px-3 truncate max-w-xs">
+                      <td className="py-3 px-3 truncate max-w-xs sticky left-0 bg-card">
                         {opp.name || `Opportunity ${opp.id}`}
                       </td>
                       <td className="py-3 px-3 truncate max-w-xs">
                         {opp.customer_organization_name || "—"}
                       </td>
-                      <td className="py-3 px-3">
+                      <td className="py-3 px-3 whitespace-nowrap">
                         {formatLastActivity(opp.lastActivityDate)}
                       </td>
-                      <td className="py-3 px-3">
+                      <td className="py-3 px-3 whitespace-nowrap">
                         <span
                           className={
                             opp.daysInactive >= 999999
@@ -101,7 +101,8 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
                           variant="link"
                           size="sm"
                           onClick={() => navigate(`/opportunities/${opp.id}/show`)}
-                          className="h-auto p-0"
+                          className="h-auto p-0 min-w-[44px] min-h-[44px]"
+                          aria-label={`View opportunity ${opp.name || opp.id}`}
                         >
                           View Opportunity
                         </Button>
