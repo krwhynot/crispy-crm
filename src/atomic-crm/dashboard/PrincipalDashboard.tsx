@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useGetList } from 'react-admin';
 import { PrincipalCard } from './PrincipalCard';
 import { calculatePriority, Priority } from './PriorityIndicator';
+import { PrincipalCardSkeleton } from './PrincipalCardSkeleton';
 
 interface Opportunity {
   id: string;
@@ -166,13 +167,19 @@ export const PrincipalDashboard = () => {
   // Handle loading state
   if (isLoading) {
     return (
-      <div
-        data-testid="dashboard-loading"
-        className="flex items-center justify-center h-64"
-      >
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-2"></div>
-          <p className="text-gray-600">Loading your principals...</p>
+      <div className="space-y-6 p-6" data-testid="dashboard-loading">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Principal Dashboard</h1>
+          <p className="text-gray-600 mt-1">
+            Week of {new Date().toLocaleDateString()}
+          </p>
+        </div>
+
+        {/* Loading skeletons */}
+        <div className="grid grid-cols-1 gap-6">
+          {[1, 2, 3].map((i) => (
+            <PrincipalCardSkeleton key={i} />
+          ))}
         </div>
       </div>
     );
