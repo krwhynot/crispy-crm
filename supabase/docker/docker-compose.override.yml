@@ -1,0 +1,83 @@
+version: '3.8'
+
+# ============================================================================
+# Docker Compose Override for Port Consolidation
+# ============================================================================
+# This file reduces the number of ports exposed to the host machine from 28+ to 3.
+# All Supabase services continue to run normally but communicate via Docker's
+# internal bridge network instead of exposing every port to the host.
+#
+# EXPOSED PORTS (3 total):
+#   - 54321: Supabase API (Kong gateway) - Primary API endpoint
+#   - 54323: Supabase Studio - Web UI for database management
+#   - 5173:  Vite dev server (runs outside Docker) - React app
+#
+# INTERNAL PORTS (not exposed to host):
+#   - 54322: PostgreSQL database
+#   - 54320: Shadow database (migrations)
+#   - 54324: Inbucket (email testing)
+#   - Plus ~20+ other service ports
+#
+# To expose additional services (e.g., Inbucket for email testing):
+#   Uncomment the relevant service below and add its port mapping.
+# ============================================================================
+
+services:
+  # --- EXPOSED SERVICES ---
+
+  # Kong: API Gateway (primary entry point for your application)
+  kong:
+    ports:
+      - "54321:8000"  # REST API, GraphQL, Auth endpoints
+
+  # Studio: Database management UI
+  studio:
+    ports:
+      - "54323:3000"  # Supabase Studio web interface
+
+  # --- INTERNAL SERVICES (no host exposure) ---
+  # By defining these services with empty ports lists, we override
+  # the base docker-compose.yml and keep them internal to Docker network.
+
+  db:
+    ports: []  # PostgreSQL - accessed via Kong API
+
+  auth:
+    ports: []  # GoTrue auth service
+
+  rest:
+    ports: []  # PostgREST
+
+  realtime:
+    ports: []  # Realtime subscriptions
+
+  storage:
+    ports: []  # Storage API
+
+  imgproxy:
+    ports: []  # Image optimization
+
+  meta:
+    ports: []  # Metadata service
+
+  functions:
+    ports: []  # Edge functions
+
+  analytics:
+    ports: []  # Analytics service
+
+  # Inbucket: Email testing server
+  # Uncomment to expose email testing UI:
+  # inbucket:
+  #   ports:
+  #     - "54324:9000"  # Web interface for viewing test emails
+  inbucket:
+    ports: []
+
+  # Vector: Logging service
+  vector:
+    ports: []
+
+  # Logflare: Log aggregation
+  logflare:
+    ports: []
