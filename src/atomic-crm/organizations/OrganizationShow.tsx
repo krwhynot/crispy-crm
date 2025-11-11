@@ -28,6 +28,7 @@ import { OrganizationAvatar } from "./OrganizationAvatar";
 import { HierarchyBreadcrumb } from "./HierarchyBreadcrumb";
 import { BranchLocationsSection } from "./BranchLocationsSection";
 import { ParentOrganizationSection } from "./ParentOrganizationSection";
+import { ActivitiesTab } from "./ActivitiesTab";
 
 const OrganizationShow = () => (
   <ShowBase>
@@ -65,7 +66,7 @@ const OrganizationShowContent = () => {
               <h5 className="text-xl ml-2 flex-1">{record.name}</h5>
             </div>
             <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="activity">Activity</TabsTrigger>
                 <TabsTrigger value="contacts">
                   {record.nb_contacts
@@ -81,9 +82,13 @@ const OrganizationShowContent = () => {
                       : `${record.nb_opportunities} opportunities`
                     : "No Opportunities"}
                 </TabsTrigger>
+                <TabsTrigger value="activities">Activities</TabsTrigger>
               </TabsList>
               <TabsContent value="activity" className="pt-2">
                 <ActivityLog organizationId={record.id} context="organization" />
+              </TabsContent>
+              <TabsContent value="activities" className="pt-2">
+                <ActivitiesTab organizationId={record.id} />
               </TabsContent>
               <TabsContent value="contacts">
                 {record.nb_contacts ? (
