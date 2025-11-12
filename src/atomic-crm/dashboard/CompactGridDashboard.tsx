@@ -22,17 +22,16 @@ export const CompactGridDashboard: React.FC = () => {
     'dashboard_principal_summary',
     {
       pagination: { page: 1, perPage: 100 },
-      sort: { field: 'name', order: 'ASC' }
+      sort: { field: 'principal_name', order: 'ASC' }
     }
   );
 
-  // Fetch tasks for this week
+  // Fetch tasks for this week (incomplete tasks only)
   const { data: tasksData = [], isPending: tasksLoading } = useGetList<Task>(
     'tasks',
     {
       filter: {
         completed: false,
-        due_date_lte: endOfWeekDate.toISOString().split('T')[0],
       },
       pagination: { page: 1, perPage: 20 },
       sort: { field: 'due_date', order: 'ASC' },
