@@ -4,6 +4,7 @@ import { endOfWeek } from 'date-fns';
 import { CompactDashboardHeader } from './CompactDashboardHeader';
 import { CompactPrincipalTable } from './CompactPrincipalTable';
 import { CompactTasksWidget } from './CompactTasksWidget';
+import { CompactRecentActivity } from './CompactRecentActivity';
 import type { Task } from '../types';
 
 interface Principal {
@@ -91,9 +92,7 @@ export const CompactGridDashboard: React.FC = () => {
           {/* Right Column - Activity & Pipeline */}
           <div className="space-y-4">
             <div className="bg-white rounded-lg p-3">
-              <div className="h-[140px] flex items-center justify-center text-sm text-muted-foreground">
-                Recent Activity - Coming Soon
-              </div>
+              <CompactRecentActivity />
             </div>
             <div className="bg-white rounded-lg p-3">
               <div className="h-[180px] flex items-center justify-center text-sm text-muted-foreground">
