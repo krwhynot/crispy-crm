@@ -1,0 +1,328 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - heading "Principal Dashboard" [level=1] [ref=e29]
+        - paragraph [ref=e30]: Week of 11/12/2025
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e35]: Upcoming by Principal
+            - generic [ref=e36]:
+              - paragraph [ref=e37]: No scheduled events this week
+              - paragraph [ref=e38]: Schedule meetings or set task deadlines to stay connected with your principals.
+          - generic [ref=e39]:
+            - heading "Principal Performance Command Center" [level=3] [ref=e41]:
+              - generic [ref=e42]:
+                - img [ref=e43]
+                - generic [ref=e45]: Principal Performance Command Center
+            - table [ref=e48]:
+              - rowgroup [ref=e49]:
+                - row "Principal Pipeline This Week Reps Quick Actions" [ref=e50]:
+                  - cell "Principal" [ref=e51]
+                  - cell "Pipeline" [ref=e52]
+                  - cell "This Week" [ref=e53]
+                  - cell "Reps" [ref=e54]
+                  - cell "Quick Actions" [ref=e55]
+              - rowgroup [ref=e56]:
+                - row "RJC 3 9 A" [ref=e57] [cursor=pointer]:
+                  - cell "RJC" [ref=e58]
+                  - cell "3" [ref=e59]:
+                    - generic [ref=e60]: "3"
+                  - cell "9" [ref=e61]
+                  - cell "A" [ref=e62]:
+                    - generic "Admin User" [ref=e64]: A
+                  - cell [ref=e65]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+                - row "Rapid Rasoi 73 0 A" [ref=e66] [cursor=pointer]:
+                  - cell "Rapid Rasoi" [ref=e67]
+                  - cell "73" [ref=e68]:
+                    - generic [ref=e69]: "73"
+                  - cell "0" [ref=e70]
+                  - cell "A" [ref=e71]:
+                    - generic "Admin User" [ref=e73]: A
+                  - cell [ref=e74]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+                - row "Kaufholds 1 3 A" [ref=e75] [cursor=pointer]:
+                  - cell "Kaufholds" [ref=e76]
+                  - cell "1" [ref=e77]:
+                    - generic [ref=e78]: "1"
+                  - cell "3" [ref=e79]
+                  - cell "A" [ref=e80]:
+                    - generic "Admin User" [ref=e82]: A
+                  - cell [ref=e83]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+                - row "Better Balance 1 3 A" [ref=e84] [cursor=pointer]:
+                  - cell "Better Balance" [ref=e85]
+                  - cell "1" [ref=e86]:
+                    - generic [ref=e87]: "1"
+                  - cell "3" [ref=e88]
+                  - cell "A" [ref=e89]:
+                    - generic "Admin User" [ref=e91]: A
+                  - cell [ref=e92]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+                - row "Frites Street 1 3 A" [ref=e93] [cursor=pointer]:
+                  - cell "Frites Street" [ref=e94]
+                  - cell "1" [ref=e95]:
+                    - generic [ref=e96]: "1"
+                  - cell "3" [ref=e97]
+                  - cell "A" [ref=e98]:
+                    - generic "Admin User" [ref=e100]: A
+                  - cell [ref=e101]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+                - row "Wicks 2 6 A" [ref=e102] [cursor=pointer]:
+                  - cell "Wicks" [ref=e103]
+                  - cell "2" [ref=e104]:
+                    - generic [ref=e105]: "2"
+                  - cell "6" [ref=e106]
+                  - cell "A" [ref=e107]:
+                    - generic "Admin User" [ref=e109]: A
+                  - cell [ref=e110]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+                - row "Swap Foods USA 141 0 A" [ref=e111] [cursor=pointer]:
+                  - cell "Swap Foods USA" [ref=e112]
+                  - cell "141" [ref=e113]:
+                    - generic [ref=e114]: "141"
+                  - cell "0" [ref=e115]
+                  - cell "A" [ref=e116]:
+                    - generic "Admin User" [ref=e118]: A
+                  - cell [ref=e119]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+                - row "Kaufholds Kurds Inc 155 0 A" [ref=e120] [cursor=pointer]:
+                  - cell "Kaufholds Kurds Inc" [ref=e121]
+                  - cell "155" [ref=e122]:
+                    - generic [ref=e123]: "155"
+                  - cell "0" [ref=e124]
+                  - cell "A" [ref=e125]:
+                    - generic "Admin User" [ref=e127]: A
+                  - cell [ref=e128]:
+                    - generic:
+                      - button "Log Call (Alt+C)":
+                        - img
+                      - button "Log Email (Alt+E)":
+                        - img
+                      - button "Assign Task (Alt+T)":
+                        - img
+                      - button:
+                        - img
+        - complementary "Supporting information" [ref=e129]:
+          - generic [ref=e130]:
+            - heading "MY TASKS THIS WEEK" [level=3] [ref=e132]:
+              - generic [ref=e133]:
+                - img [ref=e134]
+                - generic [ref=e137]: MY TASKS THIS WEEK
+            - generic [ref=e139]:
+              - generic [ref=e142]: "6"
+              - generic [ref=e143]:
+                - generic [ref=e144]:
+                  - generic [ref=e146]: ⚠️ OVERDUE
+                  - 'button "View task: Follow up on RJC pricing proposal" [ref=e147] [cursor=pointer]':
+                    - 'checkbox "Complete task: Follow up on RJC pricing proposal" [ref=e148]'
+                    - generic [ref=e149]: Follow up on RJC pricing proposal
+                    - generic [ref=e150]: Nov 9
+                  - 'button "View task: Send contract to purchasing team" [ref=e151] [cursor=pointer]':
+                    - 'checkbox "Complete task: Send contract to purchasing team" [ref=e152]'
+                    - generic [ref=e153]: Send contract to purchasing team
+                    - generic [ref=e154]: Nov 10
+                - generic [ref=e155]:
+                  - generic [ref=e157]: 📅 DUE TODAY
+                  - 'button "View task: Call customer about spring menu timeline" [ref=e158] [cursor=pointer]':
+                    - 'checkbox "Complete task: Call customer about spring menu timeline" [ref=e159]'
+                    - generic [ref=e160]: Call customer about spring menu timeline
+                    - generic [ref=e161]: Nov 11
+                  - 'button "View task: Prepare sample kit for demo" [ref=e162] [cursor=pointer]':
+                    - 'checkbox "Complete task: Prepare sample kit for demo" [ref=e163]'
+                    - generic [ref=e164]: Prepare sample kit for demo
+                    - generic [ref=e165]: Nov 11
+                - generic [ref=e166]:
+                  - generic [ref=e168]: 📆 THIS WEEK
+                  - 'button "View task: Schedule meeting with owner" [ref=e169] [cursor=pointer]':
+                    - 'checkbox "Complete task: Schedule meeting with owner" [ref=e170]'
+                    - generic [ref=e171]: Schedule meeting with owner
+                    - generic [ref=e172]: Nov 13
+                  - 'button "View task: Send thank you note" [ref=e173] [cursor=pointer]':
+                    - 'checkbox "Complete task: Send thank you note" [ref=e174]'
+                    - generic [ref=e175]: Send thank you note
+                    - generic [ref=e176]: Nov 14
+              - link "View all tasks →" [ref=e178] [cursor=pointer]:
+                - /url: "#/tasks"
+          - generic [ref=e179]:
+            - heading "RECENT ACTIVITY" [level=3] [ref=e181]:
+              - generic [ref=e182]:
+                - img [ref=e183]
+                - generic [ref=e185]: RECENT ACTIVITY
+            - generic [ref=e187]:
+              - generic [ref=e190]: "7"
+              - generic [ref=e191]:
+                - 'button "View activity: Quick check-in call" [ref=e192] [cursor=pointer]':
+                  - img [ref=e193]
+                  - generic [ref=e195]: Quick check-in call
+                  - generic [ref=e196]: 4h ago
+                - 'button "View activity: Pricing discussion with chef" [ref=e197] [cursor=pointer]':
+                  - img [ref=e198]
+                  - generic [ref=e200]: Pricing discussion with chef
+                  - generic [ref=e201]: 1d ago
+                - 'button "View activity: Left message - food procurement line - call back" [ref=e202] [cursor=pointer]':
+                  - img [ref=e203]
+                  - generic [ref=e206]: Left message - food procurement line - call back
+                  - generic [ref=e207]: 1d ago
+                - 'button "View activity: Number not in service" [ref=e208] [cursor=pointer]':
+                  - img [ref=e209]
+                  - generic [ref=e212]: Number not in service
+                  - generic [ref=e213]: 1d ago
+                - 'button "View activity: Call back Friday for Rachel" [ref=e214] [cursor=pointer]':
+                  - img [ref=e215]
+                  - generic [ref=e218]: Call back Friday for Rachel
+                  - generic [ref=e219]: 1d ago
+                - 'button "View activity: Call back after 3:00" [ref=e220] [cursor=pointer]':
+                  - img [ref=e221]
+                  - generic [ref=e224]: Call back after 3:00
+                  - generic [ref=e225]: 1d ago
+                - 'button "View activity: Number not in service" [ref=e226] [cursor=pointer]':
+                  - img [ref=e227]
+                  - generic [ref=e230]: Number not in service
+                  - generic [ref=e231]: 1d ago
+              - link "View all activities →" [ref=e233] [cursor=pointer]:
+                - /url: "#/activities"
+          - generic [ref=e234]:
+            - heading "PIPELINE SUMMARY" [level=3] [ref=e236]:
+              - generic [ref=e237]:
+                - img [ref=e238]
+                - generic [ref=e241]: PIPELINE SUMMARY
+            - generic [ref=e244]:
+              - generic [ref=e245]:
+                - generic [ref=e246]: Total Opportunities
+                - generic [ref=e247]: "377"
+              - generic [ref=e248]:
+                - heading "BY STAGE" [level=4] [ref=e249]
+                - generic [ref=e250]:
+                  - generic [ref=e251]:
+                    - generic [ref=e252]: "New Lead:"
+                    - generic [ref=e254]: "1"
+                  - generic [ref=e255]:
+                    - generic [ref=e256]: "Initial Outreach:"
+                    - generic [ref=e258]: "371"
+                  - generic [ref=e259]:
+                    - generic [ref=e260]: "Sample/Visit Offered:"
+                    - generic [ref=e262]: "2"
+                  - generic [ref=e263]:
+                    - generic [ref=e264]: "Awaiting Response:"
+                    - generic [ref=e266]: "1"
+                  - generic [ref=e267]:
+                    - generic [ref=e268]: "Feedback Logged:"
+                    - generic [ref=e270]: "1"
+                  - generic [ref=e271]:
+                    - generic [ref=e272]: "Demo Scheduled:"
+                    - generic [ref=e274]: "1"
+              - generic [ref=e275]:
+                - heading "BY STATUS" [level=4] [ref=e276]
+                - generic [ref=e277]:
+                  - generic [ref=e278]:
+                    - generic [ref=e279]: "🟢 Active:"
+                    - generic [ref=e280]: "377"
+                  - generic [ref=e281]:
+                    - generic [ref=e282]: "⚠️ Stuck (30+d):"
+                    - generic [ref=e283]: "0"
+                  - generic [ref=e284]:
+                    - generic [ref=e285]: "🔴 At Risk:"
+                    - generic [ref=e286]: "0"
+              - generic [ref=e288]:
+                - generic [ref=e289]: "Pipeline Health:"
+                - generic [ref=e290]: 🟢 Healthy
+  - contentinfo [ref=e291]:
+    - generic [ref=e293]:
+      - paragraph [ref=e294]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e295] [cursor=pointer]:
+        - img [ref=e296]
+        - generic [ref=e298]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
