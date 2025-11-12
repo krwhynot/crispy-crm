@@ -20,8 +20,8 @@ export const CompactGridDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <CompactDashboardHeader />
-      <div className="p-3">
-        <div className="grid grid-cols-1 lg:grid-cols-[40%_30%_30%] gap-4">
+      <div className="p-2 md:p-3 lg:p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[40%_30%_30%] gap-4">
           {/* Left Column - Principal Table */}
           <div className="bg-white rounded-lg p-3">
             <CompactPrincipalTable data={principals} />
