@@ -1,9 +1,5 @@
-import React, { useMemo } from 'react';
-import { useGetList } from 'react-admin';
-import { OpportunitiesByPrincipalDesktop } from './OpportunitiesByPrincipalDesktop';
-import type { Priority } from './PriorityIndicator';
-import { calculatePriority } from './PriorityIndicator';
-import { PrincipalCardSkeleton } from './PrincipalCardSkeleton';
+import React from 'react';
+import { OpportunitiesByPrincipalDesktopContainer } from './OpportunitiesByPrincipalDesktopContainer';
 import '../styles/desktop.css';
 
 interface Opportunity {

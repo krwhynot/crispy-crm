@@ -1,4 +1,4 @@
-import { useGetList, useGetIdentity } from "react-admin";
+import { useGetList } from "react-admin";
 import { OpportunitiesByPrincipalDesktop } from "./OpportunitiesByPrincipalDesktop";
 import type { RaRecord } from "react-admin";
 
@@ -23,31 +23,32 @@ interface DashboardPrincipalSummary extends RaRecord {
  * for the desktop-optimized OpportunitiesByPrincipalDesktop component
  */
 export const OpportunitiesByPrincipalDesktopContainer = () => {
-  const { identity } = useGetIdentity();
-
   // Fetch principal summary data
-  const { data, isLoading } = useGetList<DashboardPrincipalSummary>(
+  const { data, isLoading, error } = useGetList<DashboardPrincipalSummary>(
     "dashboard_principal_summary",
     {
       pagination: { page: 1, perPage: 100 },
       sort: { field: "priority_score", order: "DESC" },
-      filter: identity?.accountManagerId
-        ? { account_manager_id: identity.accountManagerId }
-        : {},
     }
   );
 
-  // Transform data to match OpportunitiesByPrincipalDesktop's interface
-  const transformedData = data?.map((record) => ({
-    principalId: String(record.id),
-    principalName: record.principal_name,
-    opportunityCount: record.opportunity_count,
-    // Calculate weekly activities (days since last activity < 7)
-    weeklyActivities: record.days_since_last_activity !== null && record.days_since_last_activity < 7 ? 1 : 0,
-    // For now, use empty array for assigned reps (can be enhanced later)
-    assignedReps: identity?.full_name ? [identity.full_name] : [],
-  })) || [];
+  // Handle error state
+  if (error) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="text-center">
+          <p className="text-destructive font-medium">
+            Failed to load principal dashboard
+          </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            {error.message || "An unexpected error occurred"}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
+  // Handle loading state
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -55,6 +56,15 @@ export const OpportunitiesByPrincipalDesktopContainer = () => {
       </div>
     );
   }
+
+  // Transform data to match OpportunitiesByPrincipalDesktop's interface
+  const transformedData = data?.map((record) => ({
+    principalId: String(record.id),
+    principalName: record.principal_name,
+    opportunityCount: record.opportunity_count,
+    weeklyActivities: record.weekly_activity_count,
+    assignedReps: record.assigned_reps,
+  })) || [];
 
   return <OpportunitiesByPrincipalDesktop data={transformedData} />;
 };
