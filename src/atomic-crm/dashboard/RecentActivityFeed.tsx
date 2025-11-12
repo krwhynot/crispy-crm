@@ -36,7 +36,7 @@ export const RecentActivityFeed = () => {
     "activities",
     {
       filter: {
-        created_at_gte: sevenDaysAgo,
+        "created_at@gte": sevenDaysAgo.toISOString(),
       },
       sort: { field: "created_at", order: "DESC" },
       pagination: { page: 1, perPage: 7 },
