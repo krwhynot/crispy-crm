@@ -241,3 +241,50 @@ export const PipelineSummary = () => {
     </DashboardWidget>
   );
 };
+
+/**
+ * Stage Row Component
+ * Displays opportunity count by stage with stuck indicator
+ */
+interface StageRowProps {
+  stage: string;
+  count: number;
+  stuckCount: number;
+}
+
+function StageRow({ stage, count, stuckCount }: StageRowProps) {
+  const stageLabel = OPPORTUNITY_STAGES.find((s) => s.value === stage)?.label || stage;
+
+  return (
+    <div className="flex justify-between items-center text-sm py-1">
+      <span className="text-foreground">{stageLabel}:</span>
+      <div className="flex items-center gap-2">
+        <span className="font-medium">{count}</span>
+        {stuckCount > 0 && (
+          <span className="text-xs text-warning">⚠️ {stuckCount} stuck</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Status Row Component
+ * Displays opportunity count by status with emoji icon
+ */
+interface StatusRowProps {
+  icon: string;
+  label: string;
+  count: number;
+}
+
+function StatusRow({ icon, label, count }: StatusRowProps) {
+  return (
+    <div className="flex justify-between items-center text-sm py-1">
+      <span className="text-foreground">
+        {icon} {label}:
+      </span>
+      <span className="font-medium">{count}</span>
+    </div>
+  );
+}
