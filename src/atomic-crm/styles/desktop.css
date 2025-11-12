@@ -1,4 +1,4 @@
-@reference "tailwindcss";
+@reference "../../index.css";
 
 /**
  * Desktop-Optimized CSS Utilities
@@ -134,7 +134,7 @@
 }
 
 .desktop-form textarea {
-  @apply resize-vertical;
+  @apply resize-y;
 }
 
 .desktop-form input:disabled,
@@ -161,7 +161,7 @@
 
 /* Form section headers */
 .desktop-form-section {
-  @apply space-y-4 pb-6 border-b border-border-subtle;
+  @apply space-y-4 pb-6 border-b border-border;
 }
 
 .desktop-form-section:last-child {
