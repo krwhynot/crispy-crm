@@ -41,7 +41,6 @@ export default function OverviewTab() {
 
   const kpis = useMemo(() => {
     const totalOpportunities = opportunities.length;
-    const pipelineValue = opportunities.reduce((sum, opp) => sum + (opp.amount || 0), 0);
     const weekActivities = activities.filter(a => {
       const date = new Date(a.created_at);
       const weekAgo = new Date();
@@ -54,7 +53,6 @@ export default function OverviewTab() {
 
     return {
       totalOpportunities,
-      pipelineValue,
       weekActivities,
       staleLeads,
     };
@@ -73,28 +71,20 @@ export default function OverviewTab() {
   return (
     <div className="space-y-6">
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(3)].map((_, i) => (
             <Skeleton key={i} className="h-32" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <KPICard
             title="Total Opportunities"
             value={kpis.totalOpportunities}
             change={12}
             trend="up"
             icon={TrendingUp}
-            subtitle={`$${Math.round(kpis.pipelineValue / 1000)}k pipeline`}
-          />
-          <KPICard
-            title="Pipeline Value"
-            value={`$${Math.round(kpis.pipelineValue / 1000)}k`}
-            change={8}
-            trend="up"
-            icon={DollarSign}
-            subtitle={`Avg $${Math.round(kpis.pipelineValue / Math.max(kpis.totalOpportunities, 1) / 1000)}k`}
+            subtitle="Opportunities in pipeline"
           />
           <KPICard
             title="Activities This Week"

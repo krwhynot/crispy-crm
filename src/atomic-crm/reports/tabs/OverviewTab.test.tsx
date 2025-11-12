@@ -64,7 +64,6 @@ describe('OverviewTab', () => {
     render(<OverviewTab />, { wrapper: Wrapper });
 
     expect(screen.getByText('Total Opportunities')).toBeInTheDocument();
-    expect(screen.getByText('Pipeline Value')).toBeInTheDocument();
     expect(screen.getByText('Activities This Week')).toBeInTheDocument();
     expect(screen.getByText('Stale Leads')).toBeInTheDocument();
   });
