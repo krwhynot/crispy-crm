@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { useGetList } from 'ra-core';
 import {
   TrendingUp,
-  DollarSign,
   Activity,
   AlertCircle
 } from 'lucide-react';
