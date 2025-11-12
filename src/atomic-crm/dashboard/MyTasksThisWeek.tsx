@@ -1,29 +1,32 @@
-import { useGetList, useGetIdentity, useRefresh } from "react-admin";
-import { Link } from "react-router-dom";
-import { format, addDays, startOfDay, endOfDay, isPast, isToday } from "date-fns";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { useGetList, useGetIdentity } from "react-admin";
+import { Link, useNavigate } from "react-router-dom";
+import { endOfWeek, startOfDay, format } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { QuickCompleteTaskModal } from "./QuickCompleteTaskModal";
 import type { Task } from "../types";
+import { CheckSquare } from "lucide-react";
 
 /**
  * My Tasks This Week Widget
  *
- * Shows incomplete tasks due this week, prioritized by urgency.
- * Groups tasks into: Overdue → Today → This Week
+ * Rebuilt from scratch with table-style design matching principal table.
+ * Displays incomplete tasks due this week, grouped by urgency.
  *
- * Data Source: tasks table
- * Filter: assigned_to = current_user.sales_id, completed = false
- * Sort: due_date ASC, priority DESC
+ * Design: docs/plans/2025-11-12-sidebar-widget-redesign.md (Task 2)
+ *
+ * Table Structure:
+ * - Header: "MY TASKS THIS WEEK" with count badge
+ * - Sub-headers: OVERDUE / TODAY / THIS WEEK
+ * - Columns: [Checkbox] [Task Title] [Due Date Badge]
+ * - Row height: h-8 (matching principal table)
+ * - Hover: hover:bg-muted/30 (matching principal table)
  *
  * Interactions:
- * - Checkbox: Opens QuickCompleteTaskModal for progressive disclosure workflow
- * - Task text: Open task detail
- * - "View All Tasks": Navigate to /tasks
- *
- * Design: docs/plans/2025-11-07-dashboard-widgets-design.md (Widget 3)
- * Feature: Dashboard Quick Actions (docs/plans/2025-11-10-dashboard-quick-actions-design.md)
+ * - Checkbox: Opens QuickCompleteTaskModal
+ * - Row click: Navigate to /tasks/{id}
+ * - Footer link: Navigate to /tasks
  */
 
 interface GroupedTasks {
@@ -34,119 +37,168 @@ interface GroupedTasks {
 
 export const MyTasksThisWeek = () => {
   const { identity } = useGetIdentity();
-  const refresh = useRefresh();
+  const navigate = useNavigate();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const today = new Date();
-  const sevenDaysFromNow = addDays(today, 7);
 
-  const {
-    data: tasks,
-    isPending,
-    error,
-  } = useGetList<Task>(
+  const today = new Date();
+  const endOfWeekDate = endOfWeek(today);
+
+  const { data: tasks, isPending, error } = useGetList<Task>(
     "tasks",
     {
       filter: {
-        sales_id: identity?.id, // Note: tasks use sales_id, not assigned_to
         completed: false,
-        // Get tasks due this week OR overdue
-        "due_date@lte": format(endOfDay(sevenDaysFromNow), "yyyy-MM-dd"),
+        due_date_lte: format(endOfWeekDate, "yyyy-MM-dd"),
+        sales_id: identity?.id,
       },
       sort: { field: "due_date", order: "ASC" },
+      pagination: { page: 1, perPage: 50 },
     },
     {
-      enabled: !!identity?.id, // Don't query until identity is available
+      enabled: !!identity?.id,
     }
   );
 
+  // Group tasks by urgency
+  const groupedTasks = groupTasksByUrgency(tasks || []);
+  const totalTasks =
+    groupedTasks.overdue.length + groupedTasks.today.length + groupedTasks.thisWeek.length;
+
+  // Loading state
   if (isPending) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>My Tasks This Week</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">Loading...</p>
-        </CardContent>
-      </Card>
+      <div className="rounded-md border border-border bg-card">
+        {/* Header */}
+        <div className="border-b border-border px-3 py-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              MY TASKS THIS WEEK
+            </h3>
+          </div>
+        </div>
+
+        {/* Loading skeleton rows */}
+        <div className="px-3 py-2 space-y-1">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-8 bg-muted animate-pulse rounded" />
+          ))}
+        </div>
+
+        <div className="text-center py-2 text-xs text-muted-foreground">Loading tasks...</div>
+      </div>
     );
   }
 
+  // Error state
   if (error) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>My Tasks This Week</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-destructive">Unable to load tasks. Please refresh.</p>
-        </CardContent>
-      </Card>
+      <div className="rounded-md border border-border bg-card">
+        {/* Header */}
+        <div className="border-b border-border px-3 py-2">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            MY TASKS THIS WEEK
+          </h3>
+        </div>
+
+        {/* Error message */}
+        <div className="px-3 py-4">
+          <p className="text-sm text-destructive">Failed to load tasks</p>
+        </div>
+      </div>
     );
   }
 
-  const grouped = groupTasksByUrgency(tasks || []);
-  const totalTasks = grouped.overdue.length + grouped.today.length + grouped.thisWeek.length;
-
+  // Empty state
   if (totalTasks === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>My Tasks This Week</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <p className="text-muted-foreground">You're all caught up! 🎉</p>
-          <p className="text-sm text-muted-foreground">
-            Consider planning your next steps or reaching out to principals for updates.
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Link to="/tasks/create" className="text-sm text-primary hover:underline">
-            Create Task →
+      <div className="rounded-md border border-border bg-card">
+        {/* Header */}
+        <div className="border-b border-border px-3 py-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              MY TASKS THIS WEEK
+            </h3>
+            <CheckSquare className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          </div>
+        </div>
+
+        {/* Empty message */}
+        <div className="px-3 py-4">
+          <p className="text-sm text-muted-foreground">No tasks this week</p>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t-2 border-border px-3 py-2">
+          <Link to="/tasks" className="text-sm text-primary hover:underline">
+            View all tasks →
           </Link>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     );
   }
 
+  // Success state with tasks
   return (
     <>
-      <Card>
-        <CardHeader>
-          <CardTitle>My Tasks This Week</CardTitle>
-        </CardHeader>
-        <CardContent className="max-h-[350px] overflow-y-auto space-y-4">
-          {grouped.overdue.length > 0 && (
-            <TaskGroup
+      <div className="rounded-md border border-border bg-card">
+        {/* Header with count badge */}
+        <div className="border-b border-border px-3 py-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                MY TASKS THIS WEEK
+              </h3>
+              <Badge variant="secondary" className="h-5 px-2 text-xs">
+                {totalTasks}
+              </Badge>
+            </div>
+            <CheckSquare className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          </div>
+        </div>
+
+        {/* Table rows */}
+        <div className="max-h-[400px] overflow-y-auto">
+          {/* Overdue section */}
+          {groupedTasks.overdue.length > 0 && (
+            <TaskSection
               title="⚠️ OVERDUE"
-              tasks={grouped.overdue}
-              onTaskSelect={setSelectedTask}
+              tasks={groupedTasks.overdue}
               variant="overdue"
+              onTaskSelect={setSelectedTask}
+              onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
             />
           )}
-          {grouped.today.length > 0 && (
-            <TaskGroup
+
+          {/* Today section */}
+          {groupedTasks.today.length > 0 && (
+            <TaskSection
               title="📅 DUE TODAY"
-              tasks={grouped.today}
-              onTaskSelect={setSelectedTask}
+              tasks={groupedTasks.today}
               variant="today"
-            />
-          )}
-          {grouped.thisWeek.length > 0 && (
-            <TaskGroup
-              title="📆 THIS WEEK"
-              tasks={grouped.thisWeek}
               onTaskSelect={setSelectedTask}
-              variant="week"
+              onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
             />
           )}
-        </CardContent>
-        <CardFooter>
+
+          {/* This week section */}
+          {groupedTasks.thisWeek.length > 0 && (
+            <TaskSection
+              title="📆 THIS WEEK"
+              tasks={groupedTasks.thisWeek}
+              variant="week"
+              onTaskSelect={setSelectedTask}
+              onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
+            />
+          )}
+        </div>
+
+        {/* Footer with border */}
+        <div className="border-t-2 border-border px-3 py-2">
           <Link to="/tasks" className="text-sm text-primary hover:underline">
-            View All Tasks →
+            View all tasks →
           </Link>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
 
       {/* Quick Complete Task Modal */}
       {selectedTask && (
@@ -155,7 +207,7 @@ export const MyTasksThisWeek = () => {
           onClose={() => setSelectedTask(null)}
           onComplete={() => {
             setSelectedTask(null);
-            refresh();
+            // Note: removed useRefresh() - parent will re-fetch on modal close
           }}
         />
       )}
@@ -163,6 +215,9 @@ export const MyTasksThisWeek = () => {
   );
 };
 
+/**
+ * Group tasks by urgency (overdue, today, this week)
+ */
 function groupTasksByUrgency(tasks: Task[]): GroupedTasks {
   const grouped: GroupedTasks = {
     overdue: [],
@@ -170,20 +225,27 @@ function groupTasksByUrgency(tasks: Task[]): GroupedTasks {
     thisWeek: [],
   };
 
+  const now = new Date();
+  const todayStart = startOfDay(now);
+
   tasks.forEach((task) => {
     if (!task.due_date) {
-      // Tasks without due dates go to "thisWeek"
       grouped.thisWeek.push(task);
       return;
     }
 
-    const dueDate = startOfDay(new Date(task.due_date));
+    // Parse due date as local date (not UTC)
+    const dueDate = new Date(task.due_date + "T00:00:00");
+    const dueDateStart = startOfDay(dueDate);
 
-    if (isPast(dueDate) && !isToday(dueDate)) {
-      grouped.overdue.push(task);
-    } else if (isToday(dueDate)) {
+    // Check if it's today by comparing date parts
+    if (dueDateStart.getTime() === todayStart.getTime()) {
       grouped.today.push(task);
+    } else if (dueDateStart < todayStart) {
+      // Past dates that are not today are overdue
+      grouped.overdue.push(task);
     } else {
+      // Future dates
       grouped.thisWeek.push(task);
     }
   });
@@ -191,84 +253,125 @@ function groupTasksByUrgency(tasks: Task[]): GroupedTasks {
   return grouped;
 }
 
-interface TaskGroupProps {
+/**
+ * Task Section Component
+ * Renders a group of tasks with sub-header
+ */
+interface TaskSectionProps {
   title: string;
   tasks: Task[];
-  onTaskSelect: (task: Task) => void;
   variant: "overdue" | "today" | "week";
+  onTaskSelect: (task: Task) => void;
+  onRowClick: (taskId: number) => void;
 }
 
-function TaskGroup({ title, tasks, onTaskSelect, variant }: TaskGroupProps) {
-  const titleColors = {
-    overdue: "text-destructive",
-    today: "text-warning",
-    week: "text-foreground",
-  };
-
+function TaskSection({ title, tasks, variant, onTaskSelect, onRowClick }: TaskSectionProps) {
   return (
-    <div className="space-y-2">
-      <h4 className={`text-sm font-semibold ${titleColors[variant]}`}>
-        {title} ({tasks.length})
-      </h4>
-      <div className="space-y-2">
-        {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} onTaskSelect={onTaskSelect} variant={variant} />
-        ))}
+    <div>
+      {/* Sub-header */}
+      <div className="bg-muted/30 h-6 px-3 flex items-center">
+        <span className="text-xs font-semibold text-foreground">{title}</span>
       </div>
+
+      {/* Task rows */}
+      {tasks.map((task) => (
+        <TaskRow
+          key={task.id}
+          task={task}
+          variant={variant}
+          onTaskSelect={onTaskSelect}
+          onRowClick={onRowClick}
+        />
+      ))}
     </div>
   );
 }
 
-interface TaskItemProps {
+/**
+ * Task Row Component
+ * Individual task row with checkbox, title, and due date badge
+ */
+interface TaskRowProps {
   task: Task;
+  variant: "overdue" | "today" | "week";
   onTaskSelect: (task: Task) => void;
+  onRowClick: (taskId: number) => void;
+}
+
+function TaskRow({ task, variant, onTaskSelect, onRowClick }: TaskRowProps) {
+  const handleCheckboxChange = () => {
+    onTaskSelect(task);
+  };
+
+  const handleRowClick = () => {
+    onRowClick(task.id as number);
+  };
+
+  return (
+    <div
+      className="h-8 px-3 py-1 flex items-center gap-2 hover:bg-muted/30 cursor-pointer border-b border-border/50"
+      onClick={handleRowClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`View task: ${task.title}`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleRowClick();
+        }
+      }}
+    >
+      {/* Checkbox */}
+      <span
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        role="presentation"
+      >
+        <Checkbox
+          checked={false}
+          onCheckedChange={handleCheckboxChange}
+          aria-label={`Complete task: ${task.title}`}
+          className="h-4 w-4"
+        />
+      </span>
+
+      {/* Task title */}
+      <span className="flex-1 text-sm truncate">{task.title}</span>
+
+      {/* Due date badge */}
+      <DueDateBadge task={task} variant={variant} />
+    </div>
+  );
+}
+
+/**
+ * Due Date Badge Component
+ * Displays due date with semantic colors
+ */
+interface DueDateBadgeProps {
+  task: Task;
   variant: "overdue" | "today" | "week";
 }
 
-function TaskItem({ task, onTaskSelect, variant }: TaskItemProps) {
-  const daysLate = task.due_date
-    ? Math.floor((new Date().getTime() - new Date(task.due_date).getTime()) / (1000 * 60 * 60 * 24))
-    : 0;
+function DueDateBadge({ task, variant }: DueDateBadgeProps) {
+  if (!task.due_date) {
+    return <Badge variant="outline" className="text-xs text-muted-foreground">No date</Badge>;
+  }
 
-  const formattedDueDate = task.due_date
-    ? format(new Date(task.due_date), "EEE M/d")
-    : "No due date";
+  const dueDate = new Date(task.due_date);
+  const formattedDate = format(dueDate, "MMM d");
+
+  // Semantic colors based on variant
+  const variantStyles = {
+    overdue: "bg-destructive/10 text-destructive border-destructive/20",
+    today: "bg-warning/10 text-warning border-warning/20",
+    week: "bg-muted text-muted-foreground border-border",
+  };
 
   return (
-    <div className="flex items-start gap-2 group">
-      <Checkbox
-        checked={false}
-        onCheckedChange={() => onTaskSelect(task)}
-        className="mt-0.5"
-        aria-label={`Complete task: ${task.title}`}
-      />
-      <div className="flex-1 min-w-0">
-        <div className="text-sm">
-          <Link to={`/tasks/${task.id}`} className="hover:underline">
-            {task.title}
-          </Link>
-        </div>
-        <div className="text-xs text-muted-foreground">
-          {variant === "overdue" && daysLate > 0 && (
-            <span className="text-destructive font-medium">
-              {daysLate} day{daysLate !== 1 ? "s" : ""} late
-            </span>
-          )}
-          {variant !== "overdue" && <span>{formattedDueDate}</span>}
-          {task.opportunity_id && (
-            <>
-              {" "}
-              →{" "}
-              <Link
-                to={`/opportunities/${task.opportunity_id}/show`}
-                className="text-primary hover:underline"
-              >
-                View Opportunity
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
+    <Badge variant="outline" className={`text-xs ${variantStyles[variant]}`}>
+      {formattedDate}
+    </Badge>
   );
 }
