@@ -156,7 +156,7 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
                 {/* Inline quick actions (visible on hover) */}
                 <td className="px-2">
                   <div className={`
-                    flex gap-1 justify-end transition-opacity inline-actions
+                    flex gap-1 justify-end transition-opacity
                     ${hoveredRow === row.principalId ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
                   `}>
                     <Button
