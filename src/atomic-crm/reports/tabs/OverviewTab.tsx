@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { KPICard } from '../components/KPICard';
 import { ChartWrapper } from '../components/ChartWrapper';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGlobalFilters } from '../contexts/GlobalFilterContext';
 import { PipelineChart } from '../charts/PipelineChart';
 import { OPPORTUNITY_STAGE_CHOICES } from '../../opportunities/stageConstants';
@@ -72,40 +73,48 @@ export default function OverviewTab() {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <KPICard
-          title="Total Opportunities"
-          value={kpis.totalOpportunities}
-          change={12}
-          trend="up"
-          icon={TrendingUp}
-          subtitle={`$${Math.round(kpis.pipelineValue / 1000)}k pipeline`}
-        />
-        <KPICard
-          title="Pipeline Value"
-          value={`$${Math.round(kpis.pipelineValue / 1000)}k`}
-          change={8}
-          trend="up"
-          icon={DollarSign}
-          subtitle={`Avg $${Math.round(kpis.pipelineValue / Math.max(kpis.totalOpportunities, 1) / 1000)}k`}
-        />
-        <KPICard
-          title="Activities This Week"
-          value={kpis.weekActivities}
-          change={-5}
-          trend="down"
-          icon={Activity}
-          subtitle="Most: Emails"
-        />
-        <KPICard
-          title="Stale Leads"
-          value={kpis.staleLeads}
-          change={0}
-          trend="neutral"
-          icon={AlertCircle}
-          subtitle="> 7 days inactive"
-        />
-      </div>
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="h-32" />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <KPICard
+            title="Total Opportunities"
+            value={kpis.totalOpportunities}
+            change={12}
+            trend="up"
+            icon={TrendingUp}
+            subtitle={`$${Math.round(kpis.pipelineValue / 1000)}k pipeline`}
+          />
+          <KPICard
+            title="Pipeline Value"
+            value={`$${Math.round(kpis.pipelineValue / 1000)}k`}
+            change={8}
+            trend="up"
+            icon={DollarSign}
+            subtitle={`Avg $${Math.round(kpis.pipelineValue / Math.max(kpis.totalOpportunities, 1) / 1000)}k`}
+          />
+          <KPICard
+            title="Activities This Week"
+            value={kpis.weekActivities}
+            change={-5}
+            trend="down"
+            icon={Activity}
+            subtitle="Most: Emails"
+          />
+          <KPICard
+            title="Stale Leads"
+            value={kpis.staleLeads}
+            change={0}
+            trend="neutral"
+            icon={AlertCircle}
+            subtitle="> 7 days inactive"
+          />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ChartWrapper title="Pipeline by Stage" isLoading={isLoading}>
