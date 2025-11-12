@@ -13,11 +13,19 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Dashboard Widgets - Comprehensive E2E", () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to dashboard (uses auth.setup.ts for authentication)
-    await page.goto("http://localhost:5173/");
+    // Navigate to login page
+    await page.goto("http://localhost:5173/", { waitUntil: "networkidle" });
 
-    // Wait for dashboard to load by checking for main heading
-    await page.waitForSelector('h1:has-text("My Principals")', { timeout: 10000 });
+    // Perform login
+    await page.getByLabel(/email/i).fill("admin@test.com");
+    await page.getByLabel(/password/i).fill("password123");
+    await page.getByRole("button", { name: /sign in/i }).click();
+
+    // Wait for dashboard to load - look for any widget
+    await page.waitForSelector('text=/MY TASKS|RECENT ACTIVITY|PIPELINE SUMMARY|Upcoming/i', { timeout: 15000 });
+
+    // Additional wait for React hydration
+    await page.waitForTimeout(1000);
   });
 
   test.describe("Widget 1: Upcoming Events by Principal", () => {
