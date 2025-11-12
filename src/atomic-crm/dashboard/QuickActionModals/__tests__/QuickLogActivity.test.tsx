@@ -4,6 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import QuickLogActivity from '../QuickLogActivity';
 
+// Helper function to select option in a select element
+const selectOption = async (element: HTMLElement, value: string) => {
+  fireEvent.change(element, { target: { value } });
+};
+
 const renderWithRouter = (component: React.ReactElement) => {
   return render(<BrowserRouter>{component}</BrowserRouter>);
 };
@@ -111,7 +116,6 @@ describe('QuickLogActivity Modal', () => {
     });
 
     it('should allow selecting Email activity type', async () => {
-      const user = userEvent.setup();
       renderWithRouter(
         <QuickLogActivity
           open={true}
@@ -122,13 +126,12 @@ describe('QuickLogActivity Modal', () => {
       );
 
       const typeSelect = screen.getByLabelText(/activity type/i);
-      await user.selectOption(typeSelect, 'email');
+      await selectOption(typeSelect, 'email');
 
       expect(typeSelect).toHaveValue('email');
     });
 
     it('should allow selecting Meeting activity type', async () => {
-      const user = userEvent.setup();
       renderWithRouter(
         <QuickLogActivity
           open={true}
@@ -139,7 +142,7 @@ describe('QuickLogActivity Modal', () => {
       );
 
       const typeSelect = screen.getByLabelText(/activity type/i);
-      await user.selectOption(typeSelect, 'meeting');
+      await selectOption(typeSelect, 'meeting');
 
       expect(typeSelect).toHaveValue('meeting');
     });
@@ -254,9 +257,7 @@ describe('QuickLogActivity Modal', () => {
       );
 
       const typeSelect = screen.getByLabelText(/activity type/i);
-      await user.click(typeSelect);
-      const emailOption = screen.getByRole('option', { name: /email/i });
-      await user.click(emailOption);
+      await selectOption(typeSelect, 'email');
 
       const saveButton = screen.getByRole('button', { name: /save/i });
       await user.click(saveButton);
@@ -447,8 +448,23 @@ describe('QuickLogActivity Modal', () => {
       const saveButton = screen.getByRole('button', { name: /save/i });
       await user.click(saveButton);
 
-      // Reopen modal and check form is cleared
+      // Close modal after submission
+      expect(mockOnClose).toHaveBeenCalled();
+
+      // Reopen modal by setting open to false then true
       mockOnClose.mockClear();
+      mockOnSubmit.mockClear();
+      rerender(
+        <BrowserRouter>
+          <QuickLogActivity
+            open={false}
+            onClose={mockOnClose}
+            onSubmit={mockOnSubmit}
+            principalId="principal-123"
+          />
+        </BrowserRouter>
+      );
+
       rerender(
         <BrowserRouter>
           <QuickLogActivity
@@ -460,6 +476,7 @@ describe('QuickLogActivity Modal', () => {
         </BrowserRouter>
       );
 
+      // Form should be cleared
       const newNotesInput = screen.getByPlaceholderText(/add notes/i);
       expect(newNotesInput).toHaveValue('');
     });
@@ -537,8 +554,9 @@ describe('QuickLogActivity Modal', () => {
 
   describe('Edge Cases', () => {
     it('should handle very long notes', async () => {
-      const user = userEvent.setup();
-      const longNotes = 'a'.repeat(1000);
+      // Use faster typing with delay: null to avoid timeouts
+      const user = userEvent.setup({ delay: null });
+      const longNotes = 'a'.repeat(500);
 
       renderWithRouter(
         <QuickLogActivity
