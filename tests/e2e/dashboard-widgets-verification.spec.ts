@@ -46,7 +46,7 @@ test("Dashboard displays all 5 widgets", async ({ page }) => {
     { text: "PIPELINE SUMMARY", description: "Pipeline Summary widget" },
     { text: "MY TASKS THIS WEEK", description: "My Tasks widget" },
     { text: "RECENT ACTIVITY", description: "Recent Activity widget" },
-    { text: "My Principals", description: "Principal Table" },
+    { text: "PRINCIPAL PERFORMANCE COMMAND CENTER", description: "Principal Table" },
   ];
 
   for (const indicator of widgetIndicators) {
