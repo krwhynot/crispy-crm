@@ -1,3 +1,10 @@
+<GENERATED-CODE>
+I will update `RecentActivityFeed.tsx` to stabilize the query filter.
+
+1.  Modify `src/atomic-crm/dashboard/RecentActivityFeed.tsx` to use the `useMemo` hook for the date calculation, ensuring a stable query key for `useGetList`.
+
+<UPDATED_EXISTING_FILE: src/atomic-crm/dashboard/RecentActivityFeed.tsx>
+```typescript
 import { useGetList } from "react-admin";
 import { Link, useNavigate } from "react-router-dom";
 import { subDays, startOfDay } from "date-fns";
@@ -31,13 +38,18 @@ import { useMemo } from "react";
 export const RecentActivityFeed = () => {
   const navigate = useNavigate();
 
-  const sevenDaysAgo = subDays(new Date(), 7);
+  // Stabilize the date filter using useMemo to prevent re-fetching on every render.
+  // This creates a stable query key for useGetList.
+  const sevenDaysAgoFilter = useMemo(
+    () => subDays(startOfDay(new Date()), 7).toISOString(),
+    []
+  );
 
   const { data: activities, isPending, error } = useGetList<ActivityRecord>(
     "activities",
     {
       filter: {
-        "created_at@gte": sevenDaysAgo.toISOString(),
+        "created_at@gte": sevenDaysAgoFilter,
       },
       sort: { field: "created_at", order: "DESC" },
       pagination: { page: 1, perPage: 7 },
@@ -50,7 +62,7 @@ export const RecentActivityFeed = () => {
     hasError: !!error,
     error,
     dataCount: activities?.length,
-    filter: { "created_at@gte": sevenDaysAgo.toISOString() },
+    filter: { "created_at@gte": sevenDaysAgoFilter },
   });
 
   const totalActivities = activities?.length || 0;
@@ -192,3 +204,6 @@ function ActivityRow({ activity, onRowClick }: ActivityRowProps) {
     </div>
   );
 }
+```
+</UPDATED_EXISTING_FILE>
+</GENERATED-CODE>
