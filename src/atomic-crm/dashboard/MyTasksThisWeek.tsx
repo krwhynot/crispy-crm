@@ -1,4 +1,4 @@
-import { useGetList, useGetIdentity } from "react-admin";
+import { useGetList, useGetIdentity, useRefresh } from "react-admin";
 import { Link, useNavigate } from "react-router-dom";
 import { endOfWeek, startOfDay, format } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,6 +7,7 @@ import { useState } from "react";
 import { QuickCompleteTaskModal } from "./QuickCompleteTaskModal";
 import type { Task } from "../types";
 import { CheckSquare } from "lucide-react";
+import { DashboardWidget } from "./DashboardWidget";
 
 /**
  * My Tasks This Week Widget

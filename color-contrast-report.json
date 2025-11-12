@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-11-08T23:11:39.050Z",
+  "timestamp": "2025-11-12T07:56:40.309Z",
   "summary": {
-    "totalTests": 20,
-    "passed": 20,
+    "totalTests": 19,
+    "passed": 19,
     "failed": 0,
     "warnings": 0
   },
@@ -158,14 +158,6 @@
       "minRatio": 4.5,
       "bg": "tag-pink-bg",
       "fg": "tag-pink-fg"
-    },
-    {
-      "mode": "dark",
-      "test": "Destructive button",
-      "ratio": "7.03",
-      "minRatio": 4.5,
-      "bg": "destructive",
-      "fg": "destructive-foreground"
     }
   ],
   "failed": [],
