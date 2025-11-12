@@ -35,67 +35,67 @@ BEGIN
 
   -- Opportunity 1: Lead stage (organization 1 - RJC)
   INSERT INTO opportunities (
-    name, description, stage, status, expected_revenue, expected_close_date,
+    name, description, stage, status, expected_close_date,
     organization_id, account_manager_id, priority, created_at, updated_at, created_by
   ) VALUES (
     'RJC - Artisan Cheese Program',
     'Premium cheese selection for upscale menu',
-    'lead', 'active', 75000, NOW() + INTERVAL '45 days',
+    'lead', 'active', NOW() + INTERVAL '45 days',
     1, v_sales_id, 'high', NOW() - INTERVAL '5 days', NOW(), v_sales_id
   ) RETURNING id INTO v_opp_id;
 
   -- Opportunity 2: Qualification stage (organization 7 - Rapid Rasoi)
   INSERT INTO opportunities (
-    name, description, stage, status, expected_revenue, expected_close_date,
+    name, description, stage, status, expected_close_date,
     organization_id, account_manager_id, priority, created_at, updated_at, created_by
   ) VALUES (
     'Rapid Rasoi - Paneer Supply Contract',
     'Monthly paneer delivery program',
-    'qualification', 'active', 120000, NOW() + INTERVAL '30 days',
+    'qualification', 'active', NOW() + INTERVAL '30 days',
     7, v_sales_id, 'high', NOW() - INTERVAL '45 days', NOW(), v_sales_id
   ) RETURNING id INTO v_opp_id;
 
   -- Opportunity 3: Demo stage (organization 13 - Kaufholds)
   INSERT INTO opportunities (
-    name, description, stage, status, expected_revenue, expected_close_date,
+    name, description, stage, status, expected_close_date,
     organization_id, account_manager_id, priority, created_at, updated_at, created_by
   ) VALUES (
     'Kaufholds - Spring Menu Launch',
     'Seasonal cheese curds and specialty items',
-    'demo', 'active', 45000, NOW() + INTERVAL '60 days',
+    'demo', 'active', NOW() + INTERVAL '60 days',
     13, v_sales_id, 'medium', NOW() - INTERVAL '60 days', NOW(), v_sales_id
   ) RETURNING id INTO v_opp_id;
 
   -- Opportunity 4: Proposal stage (organization 26 - Better Balance)
   INSERT INTO opportunities (
-    name, description, stage, status, expected_revenue, expected_close_date,
+    name, description, stage, status, expected_close_date,
     organization_id, account_manager_id, priority, created_at, updated_at, created_by
   ) VALUES (
     'Better Balance - Plant-Based Program',
     'Vegan cheese alternatives for health-conscious menu',
-    'proposal', 'active', 32000, NOW() + INTERVAL '20 days',
+    'proposal', 'active', NOW() + INTERVAL '20 days',
     26, v_sales_id, 'medium', NOW() - INTERVAL '90 days', NOW(), v_sales_id
   ) RETURNING id INTO v_opp_id;
 
   -- Opportunity 5: Negotiation stage - STUCK (organization 44 - Frites Street)
   INSERT INTO opportunities (
-    name, description, stage, status, expected_revenue, expected_close_date,
+    name, description, stage, status, expected_close_date,
     organization_id, account_manager_id, priority, created_at, updated_at, created_by, days_in_stage
   ) VALUES (
     'Frites Street - Belgian Cheese Import Deal',
     'Exclusive import partnership for authentic Belgian cheeses',
-    'negotiation', 'active', 85000, NOW() + INTERVAL '15 days',
+    'negotiation', 'active', NOW() + INTERVAL '15 days',
     44, v_sales_id, 'critical', NOW() - INTERVAL '40 days', NOW() - INTERVAL '35 days', v_sales_id, 35
   ) RETURNING id INTO v_opp_id;
 
   -- Opportunity 6: Closed-won (organization 97 - Wicks)
   INSERT INTO opportunities (
-    name, description, stage, status, expected_revenue, expected_close_date,
+    name, description, stage, status, expected_close_date,
     organization_id, account_manager_id, priority, created_at, updated_at, created_by, close_date
   ) VALUES (
     'Wicks - Monthly Subscription Program',
     'Recurring cheese delivery for brunch menu',
-    'closed-won', 'won', 18000, NOW() - INTERVAL '3 days',
+    'closed-won', 'won', NOW() - INTERVAL '3 days',
     97, v_sales_id, 'low', NOW() - INTERVAL '45 days', NOW(), v_sales_id, NOW()
   ) RETURNING id INTO v_opp_id;
 

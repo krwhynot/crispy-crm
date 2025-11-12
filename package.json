@@ -53,6 +53,7 @@
     "db:local:stop": "./scripts/docker/supabase-docker.sh stop",
     "db:local:restart": "./scripts/docker/supabase-docker.sh restart",
     "db:local:reset": "npx supabase db reset",
+    "db:local:seed:e2e": "psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -f supabase/seed-e2e.sql",
     "db:local:status": "./scripts/docker/supabase-docker.sh status",
     "db:local:stats": "./scripts/docker/supabase-docker.sh stats",
     "db:local:cleanup": "./scripts/docker/supabase-docker.sh cleanup",
