@@ -45,7 +45,9 @@ export const CompactGridDashboard: React.FC = () => {
   const principals = principalsData.map(p => ({
     id: p.id,
     name: p.principal_name,
-    activity: `${p.opportunity_count || 0}/week` // Format: "X opportunities/week"
+    opportunityCount: p.opportunity_count || 0,
+    weeklyActivities: 0, // TODO: Calculate from activities in last 7 days
+    assignedReps: [], // TODO: Get from opportunities relationship
   }));
 
   // Transform tasks data for compact widget
