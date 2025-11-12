@@ -50,11 +50,12 @@ test.describe("Dashboard Widgets - Comprehensive E2E", () => {
       // Wait for table to load
       await page.waitForSelector('table', { timeout: 10000 });
 
-      // Verify column headers
+      // Verify column headers (actual production columns)
       await expect(page.getByRole('columnheader', { name: /principal/i })).toBeVisible();
-      await expect(page.getByRole('columnheader', { name: /#\s*opps/i })).toBeVisible();
-      await expect(page.getByRole('columnheader', { name: /status/i })).toBeVisible();
-      await expect(page.getByRole('columnheader', { name: /last activity/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /pipeline/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /this week/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /reps/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /quick actions/i })).toBeVisible();
     });
 
     test("navigates to organization detail when clicking principal name", async ({ page }) => {
