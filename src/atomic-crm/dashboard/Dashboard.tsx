@@ -7,6 +7,10 @@ import { PrincipalDashboardTable } from "./PrincipalDashboardTable";
 import { UpcomingEventsByPrincipal } from "./UpcomingEventsByPrincipal";
 import { MyTasksThisWeek } from "./MyTasksThisWeek";
 import { RecentActivityFeed } from "./RecentActivityFeed";
+import QuickLogActivity from "./QuickActionModals/QuickLogActivity";
+import { useKeyboardShortcuts, globalShortcuts } from "@/atomic-crm/utils/keyboardShortcuts";
+import { useContextMenu, ContextMenu, type ContextMenuItem } from "@/atomic-crm/utils/contextMenu";
+import "../styles/desktop.css";
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
@@ -33,8 +37,11 @@ const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
  */
 export const Dashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [quickLogOpen, setQuickLogOpen] = useState(false);
+  const [selectedPrincipalId, setSelectedPrincipalId] = useState<string | null>(null);
   const refresh = useRefresh();
   const announce = useAriaAnnounce();
+  const { showContextMenu, closeContextMenu, contextMenuComponent } = useContextMenu();
 
   // Auto-refresh every 5 minutes
   useEffect(() => {
@@ -45,6 +52,25 @@ export const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, [refresh]);
 
+  // Register keyboard shortcuts
+  useKeyboardShortcuts([
+    {
+      key: "l",
+      ctrl: true,
+      handler: () => {
+        setQuickLogOpen(true);
+        announce("Quick log activity modal opened");
+      },
+      description: "Quick log activity (Ctrl+L)",
+    },
+    {
+      key: "r",
+      ctrl: true,
+      handler: () => handleRefresh(),
+      description: "Refresh dashboard (Ctrl+R)",
+    },
+  ]);
+
   // Manual refresh handler
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -54,25 +80,57 @@ export const Dashboard = () => {
     setTimeout(() => setIsRefreshing(false), 500);
   };
 
+  // Handle quick log activity submission
+  const handleQuickLogSubmit = (data: {
+    type: "call" | "email" | "meeting";
+    notes: string;
+    principalId: string;
+  }) => {
+    announce(
+      `Activity logged: ${data.type} for principal ${data.principalId}. Notes: ${data.notes || "None"}`
+    );
+    setQuickLogOpen(false);
+    // TODO: Call API to create activity
+  };
+
   return (
     <main role="main" aria-label="Dashboard">
       <div className="space-y-4">
-        {/* Dashboard Header with Refresh Button */}
+        {/* Dashboard Header with Action Buttons */}
         <div className="flex items-center justify-between">
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
-            My Principals
-          </h1>
-          <Button
-            variant="outline"
-            size="default"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="gap-2"
-            aria-label="Refresh dashboard"
-          >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
+          <div>
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
+              My Principals
+            </h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              Keyboard shortcuts: <kbd className="px-2 py-1 bg-muted rounded text-xs">Ctrl+L</kbd> Quick log
+              <kbd className="px-2 py-1 bg-muted rounded text-xs ml-2">Ctrl+R</kbd> Refresh
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="default"
+              size="default"
+              onClick={() => setQuickLogOpen(true)}
+              className="gap-2"
+              aria-label="Quick log activity (Ctrl+L)"
+              title="Quick log activity"
+            >
+              + Quick Log
+            </Button>
+            <Button
+              variant="outline"
+              size="default"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="gap-2"
+              aria-label="Refresh dashboard (Ctrl+R)"
+              title="Refresh dashboard"
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+          </div>
         </div>
 
         {/* Grid Layout: 70% main content (left) + 30% sidebar (right) */}
@@ -92,6 +150,17 @@ export const Dashboard = () => {
             {/* PipelineSummary widget to be added */}
           </aside>
         </div>
+
+        {/* Quick Log Activity Modal */}
+        <QuickLogActivity
+          open={quickLogOpen}
+          onClose={() => setQuickLogOpen(false)}
+          onSubmit={handleQuickLogSubmit}
+          principalId={selectedPrincipalId || "current-principal"}
+        />
+
+        {/* Context Menu */}
+        {contextMenuComponent}
       </div>
     </main>
   );

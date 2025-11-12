@@ -15,43 +15,53 @@
 }
 
 .desktop-table thead {
-  @apply bg-bg-secondary border-b border-border-subtle sticky top-0 z-10;
+  @apply border-b sticky top-0 z-10;
+  background-color: var(--neutral-100);
+  border-color: var(--border);
 }
 
 .desktop-table thead th {
-  @apply px-4 py-3 text-left text-sm font-semibold text-text-primary;
+  @apply px-4 py-3 text-left text-sm font-semibold;
   padding: var(--spacing-widget-padding);
   text-align: left;
+  color: var(--text-title);
 }
 
 .desktop-table tbody tr {
-  @apply border-b border-border-subtle hover:bg-bg-hover transition-colors;
+  @apply border-b transition-colors;
   height: var(--row-height-comfortable);
+  border-color: var(--border);
+}
+
+.desktop-table tbody tr:hover {
+  background-color: var(--neutral-100);
 }
 
 .desktop-table tbody td {
-  @apply px-4 py-2 text-sm text-text-secondary;
+  @apply px-4 py-2 text-sm;
   padding: var(--row-padding-desktop);
+  color: var(--text-body);
 }
 
 .desktop-table tbody tr:hover td {
-  @apply text-text-primary;
+  color: var(--text-title);
 }
 
 /* Striped rows for better readability */
 .desktop-table tbody tr:nth-child(even) {
-  @apply bg-bg-secondary/50;
+  background-color: var(--neutral-50);
 }
 
 /* Frozen first column for horizontal scrolling tables */
 .desktop-table td:first-child,
 .desktop-table th:first-child {
-  @apply sticky left-0 z-5 bg-white;
+  @apply sticky left-0 z-5;
+  background-color: var(--card);
 }
 
 .desktop-table tbody tr:hover td:first-child,
 .desktop-table tbody tr:nth-child(even) td:first-child {
-  @apply bg-bg-hover;
+  background-color: var(--neutral-100);
 }
 
 /* Numeric columns alignment */
