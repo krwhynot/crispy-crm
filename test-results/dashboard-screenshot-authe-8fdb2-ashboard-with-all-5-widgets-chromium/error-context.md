@@ -1,0 +1,239 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - heading "Principal Dashboard" [level=1] [ref=e29]
+        - paragraph [ref=e30]: Week of 11/12/2025
+      - generic [ref=e31]:
+        - generic [ref=e33]:
+          - heading "Principal Performance Command Center" [level=3] [ref=e35]:
+            - generic [ref=e36]:
+              - img [ref=e37]
+              - generic [ref=e39]: Principal Performance Command Center
+          - table [ref=e42]:
+            - rowgroup [ref=e43]:
+              - row "Principal Pipeline This Week Reps Quick Actions" [ref=e44]:
+                - cell [ref=e45]
+                - cell "Principal" [ref=e46]
+                - cell "Pipeline" [ref=e47]
+                - cell "This Week" [ref=e48]
+                - cell "Reps" [ref=e49]
+                - cell "Quick Actions" [ref=e50]
+            - rowgroup [ref=e51]:
+              - row "RJC 3 5 A" [ref=e52] [cursor=pointer]:
+                - cell [ref=e53]:
+                  - button [ref=e54]:
+                    - img
+                - cell "RJC" [ref=e55]
+                - cell "3" [ref=e56]:
+                  - generic [ref=e57]: "3"
+                - cell "5" [ref=e58]
+                - cell "A" [ref=e59]:
+                  - generic "Admin User" [ref=e61]: A
+                - cell [ref=e62]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+              - row "Rapid Rasoi 73 0 A" [ref=e63] [cursor=pointer]:
+                - cell [ref=e64]:
+                  - button [ref=e65]:
+                    - img
+                - cell "Rapid Rasoi" [ref=e66]
+                - cell "73" [ref=e67]:
+                  - generic [ref=e68]: "73"
+                - cell "0" [ref=e69]
+                - cell "A" [ref=e70]:
+                  - generic "Admin User" [ref=e72]: A
+                - cell [ref=e73]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+              - row "Kaufholds 1 3 A" [ref=e74] [cursor=pointer]:
+                - cell [ref=e75]:
+                  - button [ref=e76]:
+                    - img
+                - cell "Kaufholds" [ref=e77]
+                - cell "1" [ref=e78]:
+                  - generic [ref=e79]: "1"
+                - cell "3" [ref=e80]
+                - cell "A" [ref=e81]:
+                  - generic "Admin User" [ref=e83]: A
+                - cell [ref=e84]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+              - row "Better Balance 1 2 A" [ref=e85] [cursor=pointer]:
+                - cell [ref=e86]:
+                  - button [ref=e87]:
+                    - img
+                - cell "Better Balance" [ref=e88]
+                - cell "1" [ref=e89]:
+                  - generic [ref=e90]: "1"
+                - cell "2" [ref=e91]
+                - cell "A" [ref=e92]:
+                  - generic "Admin User" [ref=e94]: A
+                - cell [ref=e95]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+              - row "Frites Street 1 2 A" [ref=e96] [cursor=pointer]:
+                - cell [ref=e97]:
+                  - button [ref=e98]:
+                    - img
+                - cell "Frites Street" [ref=e99]
+                - cell "1" [ref=e100]:
+                  - generic [ref=e101]: "1"
+                - cell "2" [ref=e102]
+                - cell "A" [ref=e103]:
+                  - generic "Admin User" [ref=e105]: A
+                - cell [ref=e106]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+              - row "Wicks 2 5 A" [ref=e107] [cursor=pointer]:
+                - cell [ref=e108]:
+                  - button [ref=e109]:
+                    - img
+                - cell "Wicks" [ref=e110]
+                - cell "2" [ref=e111]:
+                  - generic [ref=e112]: "2"
+                - cell "5" [ref=e113]
+                - cell "A" [ref=e114]:
+                  - generic "Admin User" [ref=e116]: A
+                - cell [ref=e117]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+              - row "Swap Foods USA 141 0 A" [ref=e118] [cursor=pointer]:
+                - cell [ref=e119]:
+                  - button [ref=e120]:
+                    - img
+                - cell "Swap Foods USA" [ref=e121]
+                - cell "141" [ref=e122]:
+                  - generic [ref=e123]: "141"
+                - cell "0" [ref=e124]
+                - cell "A" [ref=e125]:
+                  - generic "Admin User" [ref=e127]: A
+                - cell [ref=e128]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+              - row "Kaufholds Kurds Inc 155 0 A" [ref=e129] [cursor=pointer]:
+                - cell [ref=e130]:
+                  - button [ref=e131]:
+                    - img
+                - cell "Kaufholds Kurds Inc" [ref=e132]
+                - cell "155" [ref=e133]:
+                  - generic [ref=e134]: "155"
+                - cell "0" [ref=e135]
+                - cell "A" [ref=e136]:
+                  - generic "Admin User" [ref=e138]: A
+                - cell [ref=e139]:
+                  - generic:
+                    - button "Log Call (Alt+C)":
+                      - img
+                    - button "Log Email (Alt+E)":
+                      - img
+                    - button "Assign Task (Alt+T)":
+                      - img
+                    - button:
+                      - img
+        - complementary "Supporting information" [ref=e140]:
+          - generic [ref=e141]:
+            - heading "MY TASKS THIS WEEK" [level=3] [ref=e143]:
+              - generic [ref=e144]:
+                - img [ref=e145]
+                - generic [ref=e148]: MY TASKS THIS WEEK
+            - generic [ref=e150]:
+              - paragraph [ref=e152]: No tasks this week
+              - link "View all tasks →" [ref=e154] [cursor=pointer]:
+                - /url: "#/tasks"
+          - generic [ref=e155]:
+            - heading "RECENT ACTIVITY" [level=3] [ref=e157]:
+              - generic [ref=e158]:
+                - img [ref=e159]
+                - generic [ref=e161]: RECENT ACTIVITY
+            - generic [ref=e170]: Loading activities...
+  - contentinfo [ref=e171]:
+    - generic [ref=e173]:
+      - paragraph [ref=e174]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e175] [cursor=pointer]:
+        - img [ref=e176]
+        - generic [ref=e178]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
