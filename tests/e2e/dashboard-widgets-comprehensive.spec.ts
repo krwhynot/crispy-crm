@@ -5,7 +5,7 @@ import { test, expect } from "@playwright/test";
  *
  * Tests all 5 widgets with their respective actions:
  * 1. Upcoming Events by Principal - Read-only display
- * 2. My Principals Table - Navigation & task completion
+ * 2. Principal Performance Command Center - Navigation & task completion
  * 3. My Tasks This Week - Task management & navigation
  * 4. Recent Activity Feed - Activity navigation
  * 5. Pipeline Summary - Metrics display
@@ -45,7 +45,7 @@ test.describe("Dashboard Widgets - Comprehensive E2E", () => {
     });
   });
 
-  test.describe("Widget 2: My Principals Table", () => {
+  test.describe("Widget 2: Principal Performance Command Center", () => {
     test("displays principal table with all columns", async ({ page }) => {
       // Wait for table to load
       await page.waitForSelector('table', { timeout: 10000 });

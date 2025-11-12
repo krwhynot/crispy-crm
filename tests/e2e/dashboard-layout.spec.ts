@@ -52,7 +52,7 @@ test.describe("Dashboard - iPad (768x1024)", () => {
   });
 
   test.describe("Core Elements", () => {
-    test('displays "My Principals" heading', async () => {
+    test('displays "Principal Dashboard" heading', async () => {
       await expect(dashboard.getHeading()).toBeVisible();
     });
 
