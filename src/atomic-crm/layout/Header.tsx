@@ -86,47 +86,11 @@ const Header = () => {
                   isActive={currentPath === "/products"}
                 />
                 <NavigationTab label="Tasks" to="/tasks" isActive={currentPath === "/tasks"} />
-                <NavigationMenu className="relative">
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuTrigger
-                        className={`px-1.5 lg:px-6 py-3 text-xs md:text-sm font-medium transition-colors border-b-2 bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent ${
-                          currentPath === "/reports"
-                            ? "text-secondary-foreground border-secondary-foreground"
-                            : "text-secondary-foreground/70 border-transparent hover:text-secondary-foreground/80"
-                        }`}
-                      >
-                        Reports
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent className="min-w-[200px]">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to="/reports/opportunities-by-principal"
-                            className="block px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                          >
-                            Opportunities by Principal
-                          </Link>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to="/reports/weekly-activity"
-                            className="block px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                          >
-                            Weekly Activity Summary
-                          </Link>
-                        </NavigationMenuLink>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to="/reports/campaign-activity"
-                            className="block px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                          >
-                            Campaign Activity Report
-                          </Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
+                <NavigationTab
+                  label="Reports"
+                  to="/reports"
+                  isActive={currentPath === "/reports"}
+                />
               </nav>
             </div>
             <div className="flex items-center">
