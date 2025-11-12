@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import organizations from "../organizations";
 import contacts from "../contacts";
-import PrincipalDashboard from "../dashboard/PrincipalDashboard";
+import { CompactGridDashboard } from "../dashboard/CompactGridDashboard";
 import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
@@ -129,7 +129,7 @@ export const CRM = ({
         layout={Layout}
         loginPage={StartPage}
         i18nProvider={i18nProvider}
-        dashboard={PrincipalDashboard}
+        dashboard={CompactGridDashboard}
         requireAuth
         disableTelemetry
         {...rest}
