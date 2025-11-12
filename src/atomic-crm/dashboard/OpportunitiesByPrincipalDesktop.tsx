@@ -1,6 +1,6 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Star, ChevronDown, Phone, Mail, Calendar, MoreVertical, FileText } from "lucide-react";
+import { Star, Phone, Mail, Calendar, MoreVertical, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,7 +25,6 @@ interface Props {
 
 export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
   const navigate = useNavigate();
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
   const handleQuickLog = useCallback((principalId: string, type: 'call' | 'email' | 'meeting') => {
@@ -45,18 +44,6 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
     navigate(`/tasks/create?principal_id=${principalId}`);
   }, [navigate]);
 
-  const toggleExpand = useCallback((id: string) => {
-    setExpandedRows(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
-  }, []);
-
   return (
     <DashboardWidget
       title={
@@ -71,7 +58,6 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
         <table className="w-full desktop-table">
           <thead className="bg-muted/50 text-xs uppercase tracking-wider">
             <tr>
-              <th className="w-8 px-2 py-2"></th>
               <th className="text-left px-3 py-2 font-semibold">Principal</th>
               <th className="text-center px-2 py-2 w-20">Pipeline</th>
               <th className="text-center px-2 py-2 w-24">This Week</th>
@@ -90,25 +76,6 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
                 onMouseEnter={() => setHoveredRow(row.principalId)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
-                {/* Expand toggle */}
-                <td className="px-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleExpand(row.principalId);
-                    }}
-                  >
-                    <ChevronDown
-                      className={`w-3 h-3 transition-transform ${
-                        expandedRows.has(row.principalId) ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </Button>
-                </td>
-
                 {/* Principal name */}
                 <td
                   className="px-3 py-1 font-medium text-sm cursor-pointer"
