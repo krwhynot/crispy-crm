@@ -1,7 +1,8 @@
 import { useSearchParams } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GlobalFilterProvider } from './contexts/GlobalFilterContext';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+import { cleanupOldReportKeys } from './utils/cleanupMigration';
 
 const OverviewTab = lazy(() => import('./tabs/OverviewTab'));
 const OpportunitiesTab = lazy(() => import('./tabs/OpportunitiesTab'));
@@ -11,6 +12,11 @@ const CampaignActivityTab = lazy(() => import('./tabs/CampaignActivityTab'));
 export default function ReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'overview';
+
+  useEffect(() => {
+    // Clean up old localStorage keys on first mount
+    cleanupOldReportKeys();
+  }, []);
 
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
