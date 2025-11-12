@@ -354,6 +354,23 @@ const useReportData = (reportType: string, filters: GlobalFilters) => {
 - Performance optimization
 - Comprehensive testing
 
+**Phase 5: Cleanup (Week 4-5)**
+- Remove dropdown menu code from Header.tsx
+- Delete old report routes from CRM.tsx
+- Remove ReportLayout wrapper component (replaced by tabs)
+- Clean up unused report-specific filter components
+- Remove backward compatibility shims
+- Consolidate duplicate data fetching logic
+- Update all report links throughout the codebase
+- Archive old report components to `_deprecated/` folder
+- Update user documentation and help text
+- Remove feature flags if used during migration
+- Optimize bundle size (tree-shake unused Chart.js modules)
+- Run final performance audit and address bottlenecks
+- Update CI/CD tests to reflect new structure
+- Remove old E2E tests for dropdown navigation
+- Clean up localStorage keys from old implementation
+
 ### 8. Testing Strategy
 
 **Unit Tests:**
