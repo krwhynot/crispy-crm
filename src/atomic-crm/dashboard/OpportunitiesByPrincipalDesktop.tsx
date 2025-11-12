@@ -79,7 +79,10 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
                 {/* Principal name */}
                 <td
                   className="px-3 py-1 font-medium text-sm cursor-pointer"
-                  onClick={() => navigate(`/opportunities?principal=${row.principalId}`)}
+                  onClick={() => {
+                    const filter = JSON.stringify({ principal_organization_id: [row.principalId] });
+                    navigate(`/opportunities?filter=${encodeURIComponent(filter)}`);
+                  }}
                 >
                   {row.principalName}
                 </td>

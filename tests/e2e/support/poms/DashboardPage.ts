@@ -22,10 +22,10 @@ export class DashboardPage extends BasePage {
   }
 
   /**
-   * Get "My Principals" heading
+   * Get "Principal Dashboard" heading
    */
   getHeading(): Locator {
-    return this.page.getByRole("heading", { name: /my principals/i });
+    return this.page.getByRole("heading", { name: /principal dashboard/i });
   }
 
   /**
