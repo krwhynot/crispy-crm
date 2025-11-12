@@ -146,7 +146,7 @@ export const Dashboard = () => {
           <aside className="space-y-6" aria-label="Supporting information">
             <MyTasksThisWeek />
             <RecentActivityFeed />
-            {/* PipelineSummary widget to be added */}
+            <PipelineSummary />
           </aside>
         </div>
 
