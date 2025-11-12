@@ -12,7 +12,9 @@ import {
 interface Principal {
   id: number;
   name: string;
-  activity: string;
+  opportunityCount: number;
+  weeklyActivities?: number;
+  assignedReps?: string[];
 }
 
 interface Props {
@@ -57,9 +59,11 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-xs text-gray-600 border-b">
-            <th className="pb-1">Principal</th>
-            <th className="pb-1 text-center">Activity</th>
-            <th className="pb-1 w-24"></th>
+            <th className="pb-1 px-2">Principal</th>
+            <th className="pb-1 px-2 text-center w-16">Pipeline</th>
+            <th className="pb-1 px-2 text-center w-16">This Week</th>
+            <th className="pb-1 px-2 text-center w-20">Reps</th>
+            <th className="pb-1 w-28">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -71,8 +75,50 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
               onMouseLeave={() => setHoveredRow(null)}
               onClick={() => handleRowClick(principal.id, principal.name)}
             >
-              <td className="py-1">{principal.name}</td>
-              <td className="py-1 text-center text-xs">{principal.activity}</td>
+              {/* Principal name */}
+              <td className="py-1 px-2 font-medium text-sm">{principal.name}</td>
+
+              {/* Opportunity count (Pipeline) */}
+              <td className="py-1 px-2 text-center">
+                <span className="inline-flex items-center justify-center min-w-[1.5rem] px-1.5 py-0.5 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">
+                  {principal.opportunityCount}
+                </span>
+              </td>
+
+              {/* Weekly activity count */}
+              <td className="py-1 px-2 text-center text-xs">
+                <span className={principal.weeklyActivities && principal.weeklyActivities < 3 ? 'text-red-600 font-semibold' : 'text-gray-600'}>
+                  {principal.weeklyActivities ?? 0}
+                </span>
+              </td>
+
+              {/* Assigned reps */}
+              <td className="py-1 px-2">
+                <div className="flex -space-x-1.5 justify-center">
+                  {principal.assignedReps && principal.assignedReps.length > 0 ? (
+                    <>
+                      {principal.assignedReps.slice(0, 2).map((rep, idx) => (
+                        <div
+                          key={idx}
+                          className="w-5 h-5 rounded-full bg-gray-200 border border-white flex items-center justify-center text-xs font-medium"
+                          title={rep}
+                        >
+                          {rep[0]}
+                        </div>
+                      ))}
+                      {principal.assignedReps.length > 2 && (
+                        <div className="w-5 h-5 rounded-full bg-gray-300 border border-white flex items-center justify-center text-xs">
+                          +{principal.assignedReps.length - 2}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-xs text-gray-400">-</span>
+                  )}
+                </div>
+              </td>
+
+              {/* Quick actions */}
               <td className="py-1">
                 {/* Quick actions (visible on hover) */}
                 <div className={`
