@@ -1,7 +1,9 @@
 import React from 'react';
 import { OpportunitiesByPrincipalDesktopContainer } from './OpportunitiesByPrincipalDesktopContainer';
+import { UpcomingEventsByPrincipal } from './UpcomingEventsByPrincipal';
 import { MyTasksThisWeek } from './MyTasksThisWeek';
 import { RecentActivityFeed } from './RecentActivityFeed';
+import { PipelineSummary } from './PipelineSummary';
 import '../styles/desktop.css';
 
 /**
@@ -10,10 +12,12 @@ import '../styles/desktop.css';
  * Layout: Grid with 70% main content (left) + 30% sidebar (right)
  * Responsive: Stacks to single column on iPad portrait and mobile
  *
- * Widgets (3 total):
- * 1. Principal Table - Main priority-sorted relationship view (left)
- * 2. My Tasks This Week - Task management with urgency grouping (sidebar)
- * 3. Recent Activity Feed - Last 7 activities for context (sidebar)
+ * Widgets (5 total):
+ * 1. Upcoming Events by Principal - This week's scheduled activities (left)
+ * 2. Principal Table - Main priority-sorted relationship view (left)
+ * 3. My Tasks This Week - Task management with urgency grouping (sidebar)
+ * 4. Recent Activity Feed - Last 7 activities for context (sidebar)
+ * 5. Pipeline Summary - Pipeline metrics and health indicators (sidebar)
  *
  * Data is fetched independently by each widget container using
  * the dashboard_principal_summary database view and related tables.
@@ -33,6 +37,7 @@ export const PrincipalDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
         {/* Left Column - Main Focus */}
         <div className="space-y-6">
+          <UpcomingEventsByPrincipal />
           <OpportunitiesByPrincipalDesktopContainer />
         </div>
 
@@ -40,6 +45,7 @@ export const PrincipalDashboard = () => {
         <aside className="space-y-6" aria-label="Supporting information">
           <MyTasksThisWeek />
           <RecentActivityFeed />
+          <PipelineSummary />
         </aside>
       </div>
     </div>
