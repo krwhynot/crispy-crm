@@ -87,9 +87,9 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
                         <span
                           className={
                             opp.daysInactive >= 999999
-                              ? "text-red-600 font-semibold"
+                              ? "text-destructive font-semibold"
                               : opp.daysInactive >= threshold * 2
-                              ? "text-amber-600 font-semibold"
+                              ? "text-warning font-semibold"
                               : "text-muted-foreground"
                           }
                         >
