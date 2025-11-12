@@ -74,6 +74,34 @@ export function calculatePipelineMetrics(opportunities: Opportunity[]): Pipeline
   };
 }
 
+interface PipelineHealth {
+  icon: string;
+  label: string;
+}
+
+/**
+ * Calculate overall pipeline health based on stuck deals and urgent principals
+ *
+ * Health Levels:
+ * - 🟢 Healthy: No stuck deals, no urgent principals
+ * - 🟡 Fair: 1-3 stuck deals OR 1 urgent principal
+ * - 🔴 Needs Attention: >3 stuck deals OR >1 urgent principals
+ *
+ * Design Reference: docs/plans/2025-11-07-dashboard-widgets-design.md:424-437
+ */
+export function calculatePipelineHealth(
+  stuckDeals: number,
+  urgentPrincipals: number
+): PipelineHealth {
+  if (stuckDeals > 3 || urgentPrincipals > 1) {
+    return { icon: "🔴", label: "Needs Attention" };
+  }
+  if (stuckDeals > 0 || urgentPrincipals > 0) {
+    return { icon: "🟡", label: "Fair" };
+  }
+  return { icon: "🟢", label: "Healthy" };
+}
+
 /**
  * Pipeline Summary Widget
  *
