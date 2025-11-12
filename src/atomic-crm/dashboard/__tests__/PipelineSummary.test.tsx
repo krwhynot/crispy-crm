@@ -1,5 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { PipelineSummary, calculatePipelineMetrics } from "../PipelineSummary";
+import {
+  PipelineSummary,
+  calculatePipelineMetrics,
+  calculatePipelineHealth,
+} from "../PipelineSummary";
 import { TestMemoryRouter } from "ra-core";
 import { describe, it, expect, vi } from "vitest";
 
@@ -131,5 +135,61 @@ describe("calculatePipelineMetrics", () => {
     expect(metrics.byStage).toEqual([]);
     expect(metrics.stuck).toBe(0);
     expect(metrics.active).toBe(0);
+  });
+});
+
+describe("calculatePipelineHealth", () => {
+  it("returns 'Healthy' when no stuck deals and no urgent principals", () => {
+    const health = calculatePipelineHealth(0, 0);
+
+    expect(health).toEqual({
+      icon: "🟢",
+      label: "Healthy",
+    });
+  });
+
+  it("returns 'Fair' when 1-3 stuck deals", () => {
+    const health = calculatePipelineHealth(2, 0);
+
+    expect(health).toEqual({
+      icon: "🟡",
+      label: "Fair",
+    });
+  });
+
+  it("returns 'Fair' when 1 urgent principal", () => {
+    const health = calculatePipelineHealth(0, 1);
+
+    expect(health).toEqual({
+      icon: "🟡",
+      label: "Fair",
+    });
+  });
+
+  it("returns 'Needs Attention' when >3 stuck deals", () => {
+    const health = calculatePipelineHealth(4, 0);
+
+    expect(health).toEqual({
+      icon: "🔴",
+      label: "Needs Attention",
+    });
+  });
+
+  it("returns 'Needs Attention' when >1 urgent principals", () => {
+    const health = calculatePipelineHealth(0, 2);
+
+    expect(health).toEqual({
+      icon: "🔴",
+      label: "Needs Attention",
+    });
+  });
+
+  it("returns 'Needs Attention' for combination of issues", () => {
+    const health = calculatePipelineHealth(2, 2);
+
+    expect(health).toEqual({
+      icon: "🔴",
+      label: "Needs Attention",
+    });
   });
 });
