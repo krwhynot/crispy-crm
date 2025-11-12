@@ -7,9 +7,10 @@ import { PrincipalDashboard } from '../PrincipalDashboard';
 vi.mock('react-admin', () => ({
   useGetList: vi.fn(),
   useGetIdentity: vi.fn(),
+  useRefresh: vi.fn(),
 }));
 
-import { useGetList, useGetIdentity } from 'react-admin';
+import { useGetList, useGetIdentity, useRefresh } from 'react-admin';
 
 const mockOpportunities = [
   {
@@ -20,6 +21,7 @@ const mockOpportunities = [
     estimated_close_date: '2025-12-15',
     stage: 'Negotiation',
     sales_id: 'user-1',
+    account_manager_id: 'user-1',
     status: 'active'
   },
   {
@@ -30,6 +32,7 @@ const mockOpportunities = [
     estimated_close_date: '2025-12-20',
     stage: 'Proposal',
     sales_id: 'user-1',
+    account_manager_id: 'user-1',
     status: 'active'
   },
   {
@@ -40,6 +43,7 @@ const mockOpportunities = [
     estimated_close_date: '2025-12-10',
     stage: 'Qualification',
     sales_id: 'user-1',
+    account_manager_id: 'user-1',
     status: 'active'
   }
 ];
@@ -89,6 +93,7 @@ describe('PrincipalDashboard', () => {
 
   it('should render loading state initially', () => {
     (useGetIdentity as any).mockReturnValue({ identity: { id: 1 } });
+    (useRefresh as any).mockReturnValue(vi.fn());
     (useGetList as any).mockReturnValue({ data: [], isLoading: true });
     render(
       <BrowserRouter>
@@ -99,6 +104,8 @@ describe('PrincipalDashboard', () => {
   });
 
   it('should fetch user opportunities on mount', () => {
+    (useGetIdentity as any).mockReturnValue({ identity: { id: 1 } });
+    (useRefresh as any).mockReturnValue(vi.fn());
     (useGetList as any).mockReturnValue({ data: [], isLoading: false });
     render(
       <BrowserRouter>
@@ -118,6 +125,8 @@ describe('PrincipalDashboard', () => {
   });
 
   it('should render principal cards when data loads', async () => {
+    (useGetIdentity as any).mockReturnValue({ identity: { id: 1 } });
+    (useRefresh as any).mockReturnValue(vi.fn());
     // Mock the three useGetList calls in order
     (useGetList as any)
       .mockReturnValueOnce({ data: mockOpportunities, isLoading: false })
@@ -139,6 +148,8 @@ describe('PrincipalDashboard', () => {
   });
 
   it('should render summary stats footer with correct counts', async () => {
+    (useGetIdentity as any).mockReturnValue({ identity: { id: 1 } });
+    (useRefresh as any).mockReturnValue(vi.fn());
     (useGetList as any)
       .mockReturnValueOnce({ data: mockOpportunities, isLoading: false })
       .mockReturnValueOnce({ data: mockTasks, isLoading: false })
