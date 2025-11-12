@@ -5,10 +5,11 @@ import { PrincipalDashboard } from '../PrincipalDashboard';
 
 // Mock useGetList hook
 vi.mock('react-admin', () => ({
-  useGetList: vi.fn()
+  useGetList: vi.fn(),
+  useGetIdentity: vi.fn(),
 }));
 
-import { useGetList } from 'react-admin';
+import { useGetList, useGetIdentity } from 'react-admin';
 
 const mockOpportunities = [
   {
@@ -87,6 +88,7 @@ describe('PrincipalDashboard', () => {
   });
 
   it('should render loading state initially', () => {
+    (useGetIdentity as any).mockReturnValue({ identity: { id: 1 } });
     (useGetList as any).mockReturnValue({ data: [], isLoading: true });
     render(
       <BrowserRouter>
