@@ -1,5 +1,11 @@
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { CompactDashboardHeader } from '../CompactDashboardHeader';
+
+// Mock react-admin hooks
+vi.mock('react-admin', () => ({
+  useRefresh: vi.fn(() => vi.fn()),
+}));
 
 describe('CompactDashboardHeader', () => {
   it('displays title and date on single line', () => {
