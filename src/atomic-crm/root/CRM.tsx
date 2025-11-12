@@ -12,7 +12,6 @@ import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
 import notifications from "../notifications";
-import reports from "../reports";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
