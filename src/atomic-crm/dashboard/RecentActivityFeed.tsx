@@ -31,27 +31,23 @@ import { useMemo } from "react";
 export const RecentActivityFeed = () => {
   const navigate = useNavigate();
 
-  const sevenDaysAgo = subDays(new Date(), 7);
+  // Stabilize the date filter using useMemo to prevent re-fetching on every render.
+  // This creates a stable query key for useGetList.
+  const sevenDaysAgoFilter = useMemo(
+    () => subDays(startOfDay(new Date()), 7).toISOString(),
+    []
+  );
 
   const { data: activities, isPending, error } = useGetList<ActivityRecord>(
     "activities",
     {
       filter: {
-        "created_at@gte": sevenDaysAgo.toISOString(),
+        "created_at@gte": sevenDaysAgoFilter,
       },
       sort: { field: "created_at", order: "DESC" },
       pagination: { page: 1, perPage: 7 },
     }
   );
-
-  // DEBUG: Log state for investigation
-  console.log('[RecentActivityFeed] State:', {
-    isPending,
-    hasError: !!error,
-    error,
-    dataCount: activities?.length,
-    filter: { "created_at@gte": sevenDaysAgo.toISOString() },
-  });
 
   const totalActivities = activities?.length || 0;
 
