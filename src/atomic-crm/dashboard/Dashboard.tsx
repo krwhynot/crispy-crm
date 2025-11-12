@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAriaAnnounce } from "@/lib/design-system";
-import { PrincipalDashboardTable } from "./PrincipalDashboardTable";
+import { OpportunitiesByPrincipalDesktopContainer } from "./OpportunitiesByPrincipalDesktopContainer";
 import { UpcomingEventsByPrincipal } from "./UpcomingEventsByPrincipal";
 import { MyTasksThisWeek } from "./MyTasksThisWeek";
 import { RecentActivityFeed } from "./RecentActivityFeed";
@@ -138,9 +138,7 @@ export const Dashboard = () => {
           {/* Left Column - Main Focus */}
           <div className="space-y-6">
             <UpcomingEventsByPrincipal />
-            <div className="rounded-lg border border-border bg-card">
-              <PrincipalDashboardTable />
-            </div>
+            <OpportunitiesByPrincipalDesktopContainer />
           </div>
 
           {/* Right Sidebar - Supporting Context */}

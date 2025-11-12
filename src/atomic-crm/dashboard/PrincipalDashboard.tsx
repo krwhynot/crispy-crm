@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import { useGetList } from 'react-admin';
-import { PrincipalCard } from './PrincipalCard';
+import { OpportunitiesByPrincipalDesktop } from './OpportunitiesByPrincipalDesktop';
 import type { Priority } from './PriorityIndicator';
 import { calculatePriority } from './PriorityIndicator';
 import { PrincipalCardSkeleton } from './PrincipalCardSkeleton';
+import '../styles/desktop.css';
 
 interface Opportunity {
   id: string;
@@ -221,6 +222,15 @@ export const PrincipalDashboard = () => {
     0
   );
 
+  // Transform principals data for desktop component
+  const desktopData = principals.map(principal => ({
+    principalId: principal.id,
+    principalName: principal.name || `Principal #${principal.id}`, // Fallback for missing names
+    opportunityCount: opportunities?.filter((o: Opportunity) => o.principal_organization_id === principal.id).length || 0,
+    weeklyActivities: principal.activities.length,
+    assignedReps: [] // TODO: Get actual assigned reps from data
+  }));
+
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
@@ -231,7 +241,7 @@ export const PrincipalDashboard = () => {
         </p>
       </div>
 
-      {/* Principal Cards Grid */}
+      {/* Desktop Principal Table */}
       {principals.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
           <p className="text-gray-600">
@@ -239,11 +249,7 @@ export const PrincipalDashboard = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {principals.map((principal) => (
-            <PrincipalCard key={principal.id} principal={principal} />
-          ))}
-        </div>
+        <OpportunitiesByPrincipalDesktop data={desktopData} />
       )}
 
       {/* Summary Stats Footer */}
