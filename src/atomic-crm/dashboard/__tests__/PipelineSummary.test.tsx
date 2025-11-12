@@ -193,3 +193,96 @@ describe("calculatePipelineHealth", () => {
     });
   });
 });
+
+describe("PipelineSummary with data", () => {
+  it("displays total opportunities count", () => {
+    const { useGetList, useGetIdentity } = require("react-admin");
+
+    useGetIdentity.mockReturnValue({ identity: { id: 1 } });
+    useGetList.mockReturnValue({
+      data: [
+        { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
+        { id: 2, stage: "initial_outreach", status: "active", days_in_stage: 10 },
+      ],
+      isPending: false,
+      error: null,
+    });
+
+    render(
+      <TestMemoryRouter>
+        <PipelineSummary />
+      </TestMemoryRouter>
+    );
+
+    expect(screen.getByText("Total Opportunities")).toBeInTheDocument();
+    expect(screen.getByText("2")).toBeInTheDocument();
+  });
+
+  it("displays pipeline health score", () => {
+    const { useGetList, useGetIdentity } = require("react-admin");
+
+    useGetIdentity.mockReturnValue({ identity: { id: 1 } });
+    useGetList.mockReturnValue({
+      data: [
+        { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
+      ],
+      isPending: false,
+      error: null,
+    });
+
+    render(
+      <TestMemoryRouter>
+        <PipelineSummary />
+      </TestMemoryRouter>
+    );
+
+    expect(screen.getByText(/Pipeline Health:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Healthy/i)).toBeInTheDocument();
+  });
+
+  it("displays stage breakdown", () => {
+    const { useGetList, useGetIdentity } = require("react-admin");
+
+    useGetIdentity.mockReturnValue({ identity: { id: 1 } });
+    useGetList.mockReturnValue({
+      data: [
+        { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
+        { id: 2, stage: "new_lead", status: "active", days_in_stage: 10 },
+      ],
+      isPending: false,
+      error: null,
+    });
+
+    render(
+      <TestMemoryRouter>
+        <PipelineSummary />
+      </TestMemoryRouter>
+    );
+
+    expect(screen.getByText(/BY STAGE/i)).toBeInTheDocument();
+    expect(screen.getByText(/New Lead:/i)).toBeInTheDocument();
+  });
+
+  it("warns about stuck deals", () => {
+    const { useGetList, useGetIdentity } = require("react-admin");
+
+    useGetIdentity.mockReturnValue({ identity: { id: 1 } });
+    useGetList.mockReturnValue({
+      data: [
+        { id: 1, stage: "new_lead", status: "active", days_in_stage: 35 },
+        { id: 2, stage: "initial_outreach", status: "active", days_in_stage: 40 },
+      ],
+      isPending: false,
+      error: null,
+    });
+
+    render(
+      <TestMemoryRouter>
+        <PipelineSummary />
+      </TestMemoryRouter>
+    );
+
+    expect(screen.getByText(/2 stuck deals/i)).toBeInTheDocument();
+    expect(screen.getByText(/Fair/i)).toBeInTheDocument();
+  });
+});
