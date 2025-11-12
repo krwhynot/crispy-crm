@@ -43,6 +43,15 @@ export const RecentActivityFeed = () => {
     }
   );
 
+  // DEBUG: Log state for investigation
+  console.log('[RecentActivityFeed] State:', {
+    isPending,
+    hasError: !!error,
+    error,
+    dataCount: activities?.length,
+    filter: { "created_at@gte": sevenDaysAgo.toISOString() },
+  });
+
   const totalActivities = activities?.length || 0;
 
   return (
