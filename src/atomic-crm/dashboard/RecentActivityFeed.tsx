@@ -1,173 +1,184 @@
-import { useGetList, useGetIdentity } from "react-admin";
-import { Link } from "react-router-dom";
-import { format, formatDistanceToNow } from "date-fns";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { useGetList } from "react-admin";
+import { Link, useNavigate } from "react-router-dom";
+import { subDays } from "date-fns";
+import { Badge } from "@/components/ui/badge";
+import { Activity as ActivityIcon } from "lucide-react";
+import { DashboardWidget } from "./DashboardWidget";
+import { formatRelativeTime } from "@/atomic-crm/utils/formatRelativeTime";
+import { getActivityIcon } from "@/atomic-crm/utils/getActivityIcon";
+import type { ActivityRecord } from "../types";
 
 /**
  * Recent Activity Feed Widget
  *
- * Shows last 7 activities to provide context and jog memory.
- * Displays activity type with icon, relative timestamp, and principal link.
+ * Rebuilt from scratch with table-style design matching principal table.
+ * Displays last 7 days of activities in chronological order (newest first).
  *
- * Data Source: activities table
- * Filter: sales_id = current_user.sales_id
- * Sort: activity_date DESC
- * Limit: 7 most recent
+ * Design: docs/plans/2025-11-12-sidebar-widget-redesign.md (Task 3)
+ *
+ * Table Structure:
+ * - Header: "RECENT ACTIVITY" with count badge
+ * - Columns: [Type Icon] [Description] [Timestamp]
+ * - Row height: h-8 (matching principal table)
+ * - Hover: hover:bg-muted/30 (matching principal table)
  *
  * Interactions:
- * - Click activity: Open activity detail
- * - Click principal link: Filter principal table
- * - "View All Activity": Navigate to /activities
- *
- * Design: docs/plans/2025-11-07-dashboard-widgets-design.md (Widget 4)
+ * - Row click: Navigate to /activities/{id}
+ * - Footer link: Navigate to /activities
  */
 
-interface Activity {
-  id: number;
-  type: string;
-  activity_date: string;
-  sales_id: number;
-  opportunity_id?: number;
-  contact_id?: number;
-  notes?: string;
-}
-
-const ACTIVITY_ICONS: Record<string, string> = {
-  Call: "📞",
-  Email: "📧",
-  Meeting: "🤝",
-  Note: "📝",
-  "Follow-up": "📝",
-  Presentation: "🤝",
-  Demo: "🤝",
-};
-
 export const RecentActivityFeed = () => {
-  const { identity } = useGetIdentity();
+  const navigate = useNavigate();
 
-  const {
-    data: activities,
-    isPending,
-    error,
-  } = useGetList<Activity>(
+  const sevenDaysAgo = subDays(new Date(), 7);
+
+  const { data: activities, isPending, error } = useGetList<ActivityRecord>(
     "activities",
     {
-      filter: { created_by: identity?.id }, // Note: activities use created_by, not sales_id
-      sort: { field: "activity_date", order: "DESC" },
+      filter: {
+        created_at_gte: sevenDaysAgo,
+      },
+      sort: { field: "created_at", order: "DESC" },
       pagination: { page: 1, perPage: 7 },
-    },
-    {
-      enabled: !!identity?.id, // Don't query until identity is available
     }
   );
 
-  if (isPending) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">Loading...</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-destructive">Unable to load activities. Please refresh.</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!activities || activities.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <p className="text-muted-foreground">No recent activity logged</p>
-          <p className="text-sm text-muted-foreground">
-            Log your calls and meetings to keep your pipeline up to date and track engagement.
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Link to="/activities/create" className="text-sm text-primary hover:underline">
-            Log Activity →
-          </Link>
-        </CardFooter>
-      </Card>
-    );
-  }
+  const totalActivities = activities?.length || 0;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Recent Activity</CardTitle>
-      </CardHeader>
-      <CardContent className="max-h-[280px] overflow-y-auto space-y-3">
-        {activities.map((activity) => (
-          <ActivityItem key={activity.id} activity={activity} />
-        ))}
-      </CardContent>
-      <CardFooter>
-        <Link to="/activities" className="text-sm text-primary hover:underline">
-          View All Activity →
-        </Link>
-      </CardFooter>
-    </Card>
+    <DashboardWidget
+      title={
+        <div className="flex items-center gap-2">
+          <ActivityIcon className="w-4 h-4" />
+          <span>RECENT ACTIVITY</span>
+        </div>
+      }
+      className="col-span-full"
+    >
+      {/* Loading state */}
+      {isPending && (
+        <div className="w-full">
+          {/* Loading skeleton rows */}
+          <div className="px-3 py-2 space-y-1">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-8 bg-muted animate-pulse rounded" />
+            ))}
+          </div>
+          <div className="text-center py-2 text-xs text-muted-foreground">Loading activities...</div>
+        </div>
+      )}
+
+      {/* Error state */}
+      {!isPending && error && (
+        <div className="w-full">
+          <div className="px-3 py-4">
+            <p className="text-sm text-destructive">Failed to load activities</p>
+          </div>
+
+          {/* Footer */}
+          <div className="border-t-2 border-border px-3 py-2">
+            <Link to="/activities" className="text-sm text-primary hover:underline">
+              View all activities →
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!isPending && !error && totalActivities === 0 && (
+        <div className="w-full">
+          <div className="px-3 py-4">
+            <p className="text-sm text-muted-foreground">No recent activity</p>
+          </div>
+
+          {/* Footer */}
+          <div className="border-t-2 border-border px-3 py-2">
+            <Link to="/activities" className="text-sm text-primary hover:underline">
+              View all activities →
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Success state with activities */}
+      {!isPending && !error && totalActivities > 0 && (
+        <div className="w-full">
+          {/* Header with count badge */}
+          <div className="border-b border-border px-3 py-2">
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="h-5 px-2 text-xs">
+                {totalActivities}
+              </Badge>
+            </div>
+          </div>
+
+          {/* Table rows */}
+          <div className="max-h-[400px] overflow-y-auto">
+            {activities.map((activity) => (
+              <ActivityRow
+                key={activity.id}
+                activity={activity}
+                onRowClick={(activityId) => navigate(`/activities/${activityId}`)}
+              />
+            ))}
+          </div>
+
+          {/* Footer with border */}
+          <div className="border-t-2 border-border px-3 py-2">
+            <Link to="/activities" className="text-sm text-primary hover:underline">
+              View all activities →
+            </Link>
+          </div>
+        </div>
+      )}
+    </DashboardWidget>
   );
 };
 
-interface ActivityItemProps {
-  activity: Activity;
+/**
+ * Activity Row Component
+ * Individual activity row with icon, description, and timestamp
+ */
+interface ActivityRowProps {
+  activity: ActivityRecord;
+  onRowClick: (activityId: number) => void;
 }
 
-function ActivityItem({ activity }: ActivityItemProps) {
-  const icon = ACTIVITY_ICONS[activity.type] || "📋";
-  const activityDate = new Date(activity.activity_date);
-  const now = new Date();
+function ActivityRow({ activity, onRowClick }: ActivityRowProps) {
+  const Icon = getActivityIcon(activity.type);
 
-  // Format based on how recent the activity is
-  const timeAgo = formatDistanceToNow(activityDate, { addSuffix: true });
-  const isRecent = now.getTime() - activityDate.getTime() < 24 * 60 * 60 * 1000; // Less than 24 hours
+  const handleRowClick = () => {
+    onRowClick(activity.id as number);
+  };
 
-  const formattedTime = isRecent ? timeAgo : format(activityDate, "MMM d, h:mma");
-
-  // Truncate notes for display
-  const displayNotes = activity.notes
-    ? activity.notes.length > 50
-      ? `${activity.notes.substring(0, 50)}...`
-      : activity.notes
-    : activity.type;
+  // Format description: {activity_type} with {contact_name} · {organization_name}
+  // For now, we'll use subject as description (we'd need to join contact/org data for full description)
+  const description = activity.subject || activity.type;
 
   return (
-    <div className="space-y-1">
-      <div className="text-xs text-muted-foreground">{formattedTime}</div>
-      <div className="text-sm">
-        <Link to={`/activities/${activity.id}`} className="hover:underline">
-          {icon} {activity.type} - {displayNotes}
-        </Link>
-      </div>
-      {activity.opportunity_id && (
-        <div className="text-xs text-muted-foreground ml-6">
-          →{" "}
-          <Link
-            to={`/opportunities/${activity.opportunity_id}/show`}
-            className="text-primary hover:underline"
-          >
-            View Opportunity
-          </Link>
-        </div>
-      )}
+    <div
+      className="h-8 px-3 py-1 flex items-center gap-3 hover:bg-muted/30 cursor-pointer border-b border-border/50"
+      onClick={handleRowClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`View activity: ${description}`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleRowClick();
+        }
+      }}
+    >
+      {/* Type Icon */}
+      <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+
+      {/* Description */}
+      <span className="flex-1 text-sm truncate">{description}</span>
+
+      {/* Timestamp */}
+      <span className="text-xs text-muted-foreground flex-shrink-0">
+        {formatRelativeTime(activity.created_at)}
+      </span>
     </div>
   );
 }
