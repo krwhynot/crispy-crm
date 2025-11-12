@@ -33,6 +33,7 @@ describe('ExportScheduler', () => {
   afterEach(() => {
     vi.clearAllTimers();
     vi.useRealTimers();
+    localStorageMock.clear(); // Clear localStorage after each test for isolation
   });
 
   describe('Schedule Management', () => {
