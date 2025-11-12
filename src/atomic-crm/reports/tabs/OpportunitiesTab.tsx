@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const OpportunitiesByPrincipalReport = lazy(
-  () => import('../../OpportunitiesByPrincipalReport')
+  () => import('../OpportunitiesByPrincipalReport')
 );
 
 export default function OpportunitiesTab() {
