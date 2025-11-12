@@ -8,8 +8,10 @@ import type { Task } from '../types';
 
 interface Principal {
   id: number;
-  name: string;
-  activity: string;
+  principal_name: string;
+  opportunity_count?: number;
+  last_activity_date?: string;
+  status_indicator?: string;
 }
 
 export const CompactGridDashboard: React.FC = () => {
@@ -41,8 +43,8 @@ export const CompactGridDashboard: React.FC = () => {
   // Transform principals data for compact table
   const principals = principalsData.map(p => ({
     id: p.id,
-    name: p.name,
-    activity: p.activity || '0/0'
+    name: p.principal_name,
+    activity: `${p.opportunity_count || 0}/week` // Format: "X opportunities/week"
   }));
 
   // Transform tasks data for compact widget
