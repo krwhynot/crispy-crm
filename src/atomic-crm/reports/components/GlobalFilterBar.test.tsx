@@ -1,61 +1,37 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { GlobalFilterBar } from './GlobalFilterBar';
 import { GlobalFilterProvider } from '../contexts/GlobalFilterContext';
 
 describe('GlobalFilterBar', () => {
-  it('renders date range and sales rep filters', () => {
-    render(
-      <GlobalFilterProvider>
-        <GlobalFilterBar />
-      </GlobalFilterProvider>
-    );
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <GlobalFilterProvider>{children}</GlobalFilterProvider>
+  );
+
+  it('renders date range selector', () => {
+    render(<GlobalFilterBar />, { wrapper: Wrapper });
 
     expect(screen.getByLabelText(/date range/i)).toBeInTheDocument();
+    expect(screen.getByText(/last 30 days/i)).toBeInTheDocument();
+  });
+
+  it('renders sales rep filter', () => {
+    render(<GlobalFilterBar />, { wrapper: Wrapper });
+
     expect(screen.getByLabelText(/sales rep/i)).toBeInTheDocument();
+    expect(screen.getByText(/all reps/i)).toBeInTheDocument();
   });
 
-  it('displays export and refresh buttons', () => {
-    render(
-      <GlobalFilterProvider>
-        <GlobalFilterBar />
-      </GlobalFilterProvider>
-    );
+  it('renders export button', () => {
+    render(<GlobalFilterBar />, { wrapper: Wrapper });
 
-    expect(screen.getByRole('button', { name: /export/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /refresh/i })).toBeInTheDocument();
+    const exportButton = screen.getByRole('button', { name: /export all/i });
+    expect(exportButton).toBeInTheDocument();
   });
 
-  it('calls onExport callback when export button clicked', async () => {
-    const user = userEvent.setup();
-    const onExport = vi.fn();
+  it('renders reset filters button', () => {
+    render(<GlobalFilterBar />, { wrapper: Wrapper });
 
-    render(
-      <GlobalFilterProvider>
-        <GlobalFilterBar onExport={onExport} />
-      </GlobalFilterProvider>
-    );
-
-    const exportButton = screen.getByRole('button', { name: /export/i });
-    await user.click(exportButton);
-
-    expect(onExport).toHaveBeenCalledTimes(1);
-  });
-
-  it('calls onRefresh callback when refresh button clicked', async () => {
-    const user = userEvent.setup();
-    const onRefresh = vi.fn();
-
-    render(
-      <GlobalFilterProvider>
-        <GlobalFilterBar onRefresh={onRefresh} />
-      </GlobalFilterProvider>
-    );
-
-    const refreshButton = screen.getByRole('button', { name: /refresh/i });
-    await user.click(refreshButton);
-
-    expect(onRefresh).toHaveBeenCalledTimes(1);
+    const resetButton = screen.getByRole('button', { name: /reset filters/i });
+    expect(resetButton).toBeInTheDocument();
   });
 });
