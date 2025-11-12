@@ -441,6 +441,14 @@ const useReportData = (reportType: string, filters: GlobalFilters) => {
 - [ ] Performance optimization
 - [ ] Accessibility audit
 - [ ] Documentation update
+- [ ] Remove dropdown navigation code
+- [ ] Archive old report components
+- [ ] Clean up unused filters
+- [ ] Remove backward compatibility code
+- [ ] Update all report links
+- [ ] Optimize Chart.js bundle
+- [ ] Final performance audit
+- [ ] Clean up old localStorage keys
 
 ## References
 
