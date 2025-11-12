@@ -85,6 +85,7 @@ export class KeyboardShortcutManager {
   private buildKey(shortcut: ShortcutHandler): string {
     const parts = [];
     if (shortcut.ctrl) parts.push('ctrl');
+    if (shortcut.meta) parts.push('meta');
     if (shortcut.alt) parts.push('alt');
     if (shortcut.shift) parts.push('shift');
     parts.push(shortcut.key.toLowerCase());
@@ -94,14 +95,16 @@ export class KeyboardShortcutManager {
   handleKeyPress = (e: KeyboardEvent) => {
     if (!this.enabled) return;
 
-    // Don't trigger in input fields unless explicitly allowed
-    const target = e.target as HTMLElement;
-    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+    // Don't trigger in input fields unless modifier key is pressed
+    if (shouldPreventShortcut(e.target)) {
+      // Allow Ctrl/Cmd shortcuts even in input fields for common actions like save
       if (!e.ctrlKey && !e.metaKey) return;
     }
 
     const parts = [];
-    if (e.ctrlKey || e.metaKey) parts.push('ctrl');
+    // Keep Ctrl and Meta separate (don't normalize Cmd to Ctrl)
+    if (e.ctrlKey) parts.push('ctrl');
+    if (e.metaKey) parts.push('meta');
     if (e.altKey) parts.push('alt');
     if (e.shiftKey) parts.push('shift');
     parts.push(e.key.toLowerCase());
@@ -130,10 +133,12 @@ export class KeyboardShortcutManager {
 
   showHelp() {
     const shortcuts = this.getShortcuts();
-    console.table(shortcuts.map(s => ({
-      shortcut: this.buildKey(s),
-      description: s.description
-    })));
+    if (process.env.NODE_ENV !== 'production') {
+      console.table(shortcuts.map(s => ({
+        shortcut: this.buildKey(s),
+        description: s.description
+      })));
+    }
   }
 }
 
@@ -143,6 +148,23 @@ export const globalShortcuts = new KeyboardShortcutManager();
 // Hook for React components
 import { useEffect } from 'react';
 
+/**
+ * React hook for registering keyboard shortcuts
+ *
+ * WARNING: This hook uses dependency array for cleanup. To avoid infinite
+ * re-registration, ensure shortcuts array is memoized with useMemo or useState.
+ *
+ * Example:
+ * ```tsx
+ * const shortcuts = useMemo(() => [
+ *   { key: 's', ctrl: true, handler: handleSave, description: 'Save' }
+ * ], [handleSave]);
+ *
+ * useKeyboardShortcuts(shortcuts);
+ * ```
+ *
+ * @param shortcuts - Array of shortcut handlers to register
+ */
 export const useKeyboardShortcuts = (shortcuts: ShortcutHandler[]) => {
   useEffect(() => {
     shortcuts.forEach(s => globalShortcuts.register(s));
@@ -155,4 +177,20 @@ export const useKeyboardShortcuts = (shortcuts: ShortcutHandler[]) => {
       shortcuts.forEach(s => globalShortcuts.unregister(s));
     };
   }, [shortcuts]);
+};
+
+/**
+ * Utility to get platform-specific modifier key name
+ * @returns "⌘" for Mac, "Ctrl" for others
+ */
+export const getModifierKeyName = (): string => {
+  return isMac() ? "⌘" : "Ctrl";
+};
+
+/**
+ * Check if running on Mac platform
+ * @returns true if Mac/iOS, false otherwise
+ */
+export const getIsMac = (): boolean => {
+  return isMac();
 };
