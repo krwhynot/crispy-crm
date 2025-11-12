@@ -39,6 +39,7 @@ interface GroupedTasks {
 export const MyTasksThisWeek = () => {
   const { identity } = useGetIdentity();
   const navigate = useNavigate();
+  const refresh = useRefresh();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const today = new Date();
@@ -65,141 +66,110 @@ export const MyTasksThisWeek = () => {
   const totalTasks =
     groupedTasks.overdue.length + groupedTasks.today.length + groupedTasks.thisWeek.length;
 
-  // Loading state
-  if (isPending) {
-    return (
-      <div className="rounded-md border border-border bg-card">
-        {/* Header */}
-        <div className="border-b border-border px-3 py-2">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              MY TASKS THIS WEEK
-            </h3>
-          </div>
-        </div>
-
-        {/* Loading skeleton rows */}
-        <div className="px-3 py-2 space-y-1">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-8 bg-muted animate-pulse rounded" />
-          ))}
-        </div>
-
-        <div className="text-center py-2 text-xs text-muted-foreground">Loading tasks...</div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="rounded-md border border-border bg-card">
-        {/* Header */}
-        <div className="border-b border-border px-3 py-2">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            MY TASKS THIS WEEK
-          </h3>
-        </div>
-
-        {/* Error message */}
-        <div className="px-3 py-4">
-          <p className="text-sm text-destructive">Failed to load tasks</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Empty state
-  if (totalTasks === 0) {
-    return (
-      <div className="rounded-md border border-border bg-card">
-        {/* Header */}
-        <div className="border-b border-border px-3 py-2">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              MY TASKS THIS WEEK
-            </h3>
-            <CheckSquare className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-          </div>
-        </div>
-
-        {/* Empty message */}
-        <div className="px-3 py-4">
-          <p className="text-sm text-muted-foreground">No tasks this week</p>
-        </div>
-
-        {/* Footer */}
-        <div className="border-t-2 border-border px-3 py-2">
-          <Link to="/tasks" className="text-sm text-primary hover:underline">
-            View all tasks →
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // Success state with tasks
   return (
     <>
-      <div className="rounded-md border border-border bg-card">
-        {/* Header with count badge */}
-        <div className="border-b border-border px-3 py-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                MY TASKS THIS WEEK
-              </h3>
-              <Badge variant="secondary" className="h-5 px-2 text-xs">
-                {totalTasks}
-              </Badge>
-            </div>
-            <CheckSquare className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+      <DashboardWidget
+        title={
+          <div className="flex items-center gap-2">
+            <CheckSquare className="w-4 h-4" />
+            <span>MY TASKS THIS WEEK</span>
           </div>
-        </div>
+        }
+        className="col-span-full"
+      >
+        {/* Loading state */}
+        {isPending && (
+          <div className="w-full">
+            {/* Loading skeleton rows */}
+            <div className="px-3 py-2 space-y-1">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="h-8 bg-muted animate-pulse rounded" />
+              ))}
+            </div>
+            <div className="text-center py-2 text-xs text-muted-foreground">Loading tasks...</div>
+          </div>
+        )}
 
-        {/* Table rows */}
-        <div className="max-h-[400px] overflow-y-auto">
-          {/* Overdue section */}
-          {groupedTasks.overdue.length > 0 && (
-            <TaskSection
-              title="⚠️ OVERDUE"
-              tasks={groupedTasks.overdue}
-              variant="overdue"
-              onTaskSelect={setSelectedTask}
-              onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
-            />
-          )}
+        {/* Error state */}
+        {!isPending && error && (
+          <div className="px-3 py-4">
+            <p className="text-sm text-destructive">Failed to load tasks</p>
+          </div>
+        )}
 
-          {/* Today section */}
-          {groupedTasks.today.length > 0 && (
-            <TaskSection
-              title="📅 DUE TODAY"
-              tasks={groupedTasks.today}
-              variant="today"
-              onTaskSelect={setSelectedTask}
-              onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
-            />
-          )}
+        {/* Empty state */}
+        {!isPending && !error && totalTasks === 0 && (
+          <div className="w-full">
+            <div className="px-3 py-4">
+              <p className="text-sm text-muted-foreground">No tasks this week</p>
+            </div>
 
-          {/* This week section */}
-          {groupedTasks.thisWeek.length > 0 && (
-            <TaskSection
-              title="📆 THIS WEEK"
-              tasks={groupedTasks.thisWeek}
-              variant="week"
-              onTaskSelect={setSelectedTask}
-              onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
-            />
-          )}
-        </div>
+            {/* Footer */}
+            <div className="border-t-2 border-border px-3 py-2">
+              <Link to="/tasks" className="text-sm text-primary hover:underline">
+                View all tasks →
+              </Link>
+            </div>
+          </div>
+        )}
 
-        {/* Footer with border */}
-        <div className="border-t-2 border-border px-3 py-2">
-          <Link to="/tasks" className="text-sm text-primary hover:underline">
-            View all tasks →
-          </Link>
-        </div>
-      </div>
+        {/* Success state with tasks */}
+        {!isPending && !error && totalTasks > 0 && (
+          <div className="w-full">
+            {/* Header with count badge */}
+            <div className="border-b border-border px-3 py-2">
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="h-5 px-2 text-xs">
+                  {totalTasks}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Table rows */}
+            <div className="max-h-[400px] overflow-y-auto">
+              {/* Overdue section */}
+              {groupedTasks.overdue.length > 0 && (
+                <TaskSection
+                  title="⚠️ OVERDUE"
+                  tasks={groupedTasks.overdue}
+                  variant="overdue"
+                  onTaskSelect={setSelectedTask}
+                  onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
+                />
+              )}
+
+              {/* Today section */}
+              {groupedTasks.today.length > 0 && (
+                <TaskSection
+                  title="📅 DUE TODAY"
+                  tasks={groupedTasks.today}
+                  variant="today"
+                  onTaskSelect={setSelectedTask}
+                  onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
+                />
+              )}
+
+              {/* This week section */}
+              {groupedTasks.thisWeek.length > 0 && (
+                <TaskSection
+                  title="📆 THIS WEEK"
+                  tasks={groupedTasks.thisWeek}
+                  variant="week"
+                  onTaskSelect={setSelectedTask}
+                  onRowClick={(taskId) => navigate(`/tasks/${taskId}`)}
+                />
+              )}
+            </div>
+
+            {/* Footer with border */}
+            <div className="border-t-2 border-border px-3 py-2">
+              <Link to="/tasks" className="text-sm text-primary hover:underline">
+                View all tasks →
+              </Link>
+            </div>
+          </div>
+        )}
+      </DashboardWidget>
 
       {/* Quick Complete Task Modal */}
       {selectedTask && (
@@ -208,7 +178,7 @@ export const MyTasksThisWeek = () => {
           onClose={() => setSelectedTask(null)}
           onComplete={() => {
             setSelectedTask(null);
-            // Note: removed useRefresh() - parent will re-fetch on modal close
+            refresh(); // Explicit refresh after task completion
           }}
         />
       )}
