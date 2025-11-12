@@ -50,7 +50,7 @@ export const MyTasksThisWeek = () => {
     {
       filter: {
         completed: false,
-        due_date_lte: format(endOfWeekDate, "yyyy-MM-dd"),
+        "due_date@lte": format(endOfWeekDate, "yyyy-MM-dd"),
         sales_id: identity?.id,
       },
       sort: { field: "due_date", order: "ASC" },
