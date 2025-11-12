@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /**
  * Desktop-Optimized CSS Utilities
  *
@@ -100,16 +102,35 @@
 }
 
 .desktop-form label {
-  @apply block text-sm font-medium text-text-primary;
+  @apply block text-sm font-medium;
+  color: var(--text-title);
 }
 
 .desktop-form input,
 .desktop-form textarea,
 .desktop-form select {
-  @apply w-full px-3 py-2 border border-border-default rounded-lg;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
-  @apply text-sm text-text-primary placeholder-text-tertiary;
+  @apply w-full px-3 py-2 border rounded-lg;
+  @apply focus:outline-none focus:ring-2 focus:border-transparent;
+  @apply text-sm;
+  border-color: var(--border);
+  color: var(--text-body);
   font-family: inherit;
+  background-color: var(--card);
+}
+
+.desktop-form input::placeholder,
+.desktop-form textarea::placeholder,
+.desktop-form select::placeholder {
+  color: var(--text-subtle);
+}
+
+.desktop-form input:focus,
+.desktop-form textarea:focus,
+.desktop-form select:focus {
+  @apply ring-2;
+  border-color: transparent;
+  outline: none;
+  --tw-ring-color: var(--primary);
 }
 
 .desktop-form textarea {
@@ -119,7 +140,9 @@
 .desktop-form input:disabled,
 .desktop-form textarea:disabled,
 .desktop-form select:disabled {
-  @apply bg-bg-secondary text-text-tertiary cursor-not-allowed;
+  @apply cursor-not-allowed;
+  background-color: var(--neutral-100);
+  color: var(--text-subtle);
 }
 
 /* Form grid layout */
@@ -146,18 +169,26 @@
 }
 
 .desktop-form-section-title {
-  @apply text-lg font-semibold text-text-primary;
+  @apply text-lg font-semibold;
+  color: var(--text-title);
 }
 
 /* Form error states */
 .desktop-form-error input,
 .desktop-form-error textarea,
 .desktop-form-error select {
-  @apply border-destructive focus:ring-destructive;
+  border-color: var(--destructive);
+}
+
+.desktop-form-error input:focus,
+.desktop-form-error textarea:focus,
+.desktop-form-error select:focus {
+  --tw-ring-color: var(--destructive);
 }
 
 .desktop-form-error-message {
-  @apply text-xs text-destructive font-medium mt-1;
+  @apply text-xs font-medium mt-1;
+  color: var(--destructive);
 }
 
 /* ============================================================================
@@ -165,8 +196,10 @@
    ========================================================================== */
 
 .desktop-sidebar {
-  @apply w-64 border-r border-border-subtle bg-bg-primary overflow-y-auto;
+  @apply w-64 border-r overflow-y-auto;
   padding: var(--spacing-section);
+  border-color: var(--border);
+  background-color: var(--card);
 }
 
 .desktop-sidebar-section {
@@ -174,8 +207,9 @@
 }
 
 .desktop-sidebar-heading {
-  @apply text-xs font-semibold text-text-tertiary uppercase tracking-wider;
+  @apply text-xs font-semibold uppercase tracking-wider;
   margin-bottom: var(--spacing-content);
+  color: var(--text-subtle);
 }
 
 .desktop-sidebar-nav {
@@ -183,17 +217,25 @@
 }
 
 .desktop-sidebar-nav-item {
-  @apply block px-3 py-2 rounded-lg text-sm text-text-secondary;
-  @apply hover:bg-bg-secondary hover:text-text-primary transition-colors;
+  @apply block px-3 py-2 rounded-lg text-sm transition-colors;
   padding: var(--spacing-compact) var(--spacing-widget-padding);
+  color: var(--text-body);
+}
+
+.desktop-sidebar-nav-item:hover {
+  background-color: var(--neutral-100);
+  color: var(--text-title);
 }
 
 .desktop-sidebar-nav-item.active {
-  @apply bg-primary/10 text-primary font-medium;
+  font-weight: 500;
+  color: var(--primary);
+  background-color: var(--neutral-50);
 }
 
 .desktop-sidebar-divider {
-  @apply my-4 border-t border-border-subtle;
+  @apply my-4 border-t;
+  border-color: var(--border);
 }
 
 /* ============================================================================
@@ -210,23 +252,31 @@
 
 .inline-action-button {
   @apply inline-flex items-center justify-center p-1.5 rounded-md;
-  @apply text-text-secondary hover:text-text-primary hover:bg-bg-secondary;
   @apply transition-colors cursor-pointer;
   width: var(--action-button-size);
   height: var(--action-button-size);
   padding: var(--hover-zone-padding);
+  color: var(--text-body);
+}
+
+.inline-action-button:hover {
+  color: var(--text-title);
+  background-color: var(--neutral-100);
 }
 
 .inline-action-button:focus {
-  @apply outline-none ring-2 ring-primary ring-offset-1;
+  @apply outline-none ring-2 ring-offset-1;
+  --tw-ring-color: var(--primary);
 }
 
-.inline-action-button.destructive {
-  @apply hover:text-destructive hover:bg-destructive/10;
+.inline-action-button.destructive:hover {
+  color: var(--destructive);
+  background-color: rgba(var(--destructive), 0.1);
 }
 
-.inline-action-button.primary {
-  @apply hover:text-primary hover:bg-primary/10;
+.inline-action-button.primary:hover {
+  color: var(--primary);
+  background-color: rgba(var(--primary), 0.1);
 }
 
 /* ============================================================================
@@ -243,16 +293,19 @@
 }
 
 .desktop-header-title {
-  @apply text-3xl font-bold text-text-primary;
+  @apply text-3xl font-bold;
+  color: var(--text-title);
 }
 
 .desktop-header-subtitle {
-  @apply text-sm text-text-secondary;
+  @apply text-sm;
+  color: var(--text-body);
 }
 
 .desktop-actions-bar {
-  @apply flex items-center justify-between gap-4 mb-6 p-4 rounded-lg bg-bg-secondary;
+  @apply flex items-center justify-between gap-4 mb-6 p-4 rounded-lg;
   padding: var(--spacing-widget-padding);
+  background-color: var(--neutral-100);
 }
 
 .desktop-actions-bar-left {
@@ -268,16 +321,21 @@
    ========================================================================== */
 
 .desktop-card {
-  @apply bg-white border border-border-subtle rounded-lg shadow-sm;
+  @apply border rounded-lg;
   padding: var(--spacing-section);
+  background-color: var(--card);
+  border-color: var(--border);
+  box-shadow: var(--elevation-1);
 }
 
 .desktop-card-header {
-  @apply flex items-center justify-between pb-4 border-b border-border-subtle mb-4;
+  @apply flex items-center justify-between pb-4 border-b mb-4;
+  border-color: var(--border);
 }
 
 .desktop-card-title {
-  @apply text-lg font-semibold text-text-primary;
+  @apply text-lg font-semibold;
+  color: var(--text-title);
 }
 
 .desktop-card-body {
@@ -285,7 +343,8 @@
 }
 
 .desktop-card-footer {
-  @apply flex items-center justify-end gap-2 pt-4 border-t border-border-subtle mt-4;
+  @apply flex items-center justify-end gap-2 pt-4 border-t mt-4;
+  border-color: var(--border);
 }
 
 /* ============================================================================
@@ -301,19 +360,43 @@
 }
 
 .desktop-button-primary {
-  @apply bg-primary text-white hover:bg-primary/90 focus:ring-primary;
+  background-color: var(--primary);
+  color: white;
+  --tw-ring-color: var(--primary);
+}
+
+.desktop-button-primary:hover {
+  background-color: var(--brand-600);
 }
 
 .desktop-button-secondary {
-  @apply bg-bg-secondary text-text-primary hover:bg-bg-tertiary focus:ring-primary;
+  background-color: var(--neutral-100);
+  color: var(--text-title);
+  --tw-ring-color: var(--primary);
+}
+
+.desktop-button-secondary:hover {
+  background-color: var(--neutral-200);
 }
 
 .desktop-button-destructive {
-  @apply bg-destructive text-white hover:bg-destructive/90 focus:ring-destructive;
+  background-color: var(--destructive);
+  color: white;
+  --tw-ring-color: var(--destructive);
+}
+
+.desktop-button-destructive:hover {
+  background-color: var(--error-hover);
 }
 
 .desktop-button-ghost {
-  @apply text-text-secondary hover:bg-bg-secondary focus:ring-primary;
+  color: var(--text-body);
+  --tw-ring-color: var(--primary);
+}
+
+.desktop-button-ghost:hover {
+  background-color: var(--neutral-100);
+  color: var(--text-title);
 }
 
 .desktop-button:disabled {
