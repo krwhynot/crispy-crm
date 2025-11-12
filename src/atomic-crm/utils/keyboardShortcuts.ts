@@ -1,8 +1,69 @@
-interface ShortcutHandler {
+/**
+ * Unified Keyboard Shortcut Manager
+ *
+ * CONSOLIDATION NOTE (2025-11-12):
+ * This implementation replaces previous implementations:
+ * - src/hooks/useKeyboardShortcuts.ts (deprecated)
+ * - src/providers/KeyboardShortcutsProvider.tsx (deprecated)
+ *
+ * Key improvements:
+ * - Single source of truth for shortcuts
+ * - Map-based registry for dynamic registration
+ * - Mac/Windows/Linux compatible
+ * - Comprehensive input field protection
+ *
+ * Migration: Update imports from old paths to this module
+ */
+
+/**
+ * Detect if running on Mac for Cmd vs Ctrl
+ */
+const isMac = (): boolean => {
+  return typeof window !== "undefined" && /Mac|iPhone|iPod|iPad/.test(navigator.platform);
+};
+
+/**
+ * Check if target element should prevent shortcuts
+ * Returns true if shortcuts should be blocked
+ */
+const shouldPreventShortcut = (target: EventTarget | null): boolean => {
+  if (!(target instanceof HTMLElement)) return false;
+
+  const tagName = target.tagName.toLowerCase();
+  const isContentEditable = target.isContentEditable;
+
+  // Block shortcuts in inputs, textareas, selects, and contenteditable elements
+  if (
+    tagName === "input" ||
+    tagName === "textarea" ||
+    tagName === "select" ||
+    isContentEditable
+  ) {
+    return true;
+  }
+
+  // Check if inside a contenteditable parent
+  let element: HTMLElement | null = target;
+  while (element) {
+    if (element.isContentEditable) return true;
+    element = element.parentElement;
+  }
+
+  // Check for ARIA text input roles
+  const role = target.getAttribute("role");
+  if (role === "textbox" || role === "searchbox" || role === "combobox") {
+    return true;
+  }
+
+  return false;
+};
+
+export interface ShortcutHandler {
   key: string;
   ctrl?: boolean;
   alt?: boolean;
   shift?: boolean;
+  meta?: boolean; // Explicitly support Cmd key
   handler: () => void;
   description: string;
 }
