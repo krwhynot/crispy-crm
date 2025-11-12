@@ -5,8 +5,9 @@ import type { RaRecord } from "react-admin";
 interface DashboardPrincipalSummary extends RaRecord {
   id: number;
   principal_name: string;
-  account_manager_id: number;
   opportunity_count: number;
+  weekly_activity_count: number;
+  assigned_reps: string[];
   last_activity_date: string | null;
   last_activity_type: string | null;
   days_since_last_activity: number | null;
