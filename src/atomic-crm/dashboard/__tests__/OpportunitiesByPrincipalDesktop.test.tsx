@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { OpportunitiesByPrincipalDesktop } from '../OpportunitiesByPrincipalDesktop';
-import { TestWrapper } from '@/test-utils';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('OpportunitiesByPrincipalDesktop', () => {
   it('should render principal rows with inline actions', async () => {
@@ -16,9 +16,9 @@ describe('OpportunitiesByPrincipalDesktop', () => {
     ];
 
     render(
-      <TestWrapper>
+      <BrowserRouter>
         <OpportunitiesByPrincipalDesktop data={mockData} />
-      </TestWrapper>
+      </BrowserRouter>
     );
 
     // Check principal name is displayed
