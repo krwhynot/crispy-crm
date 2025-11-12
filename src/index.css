@@ -106,6 +106,13 @@
   --hover-zone-padding: 4px;       /* Hover action zones */
   --action-button-size: 28px;      /* Inline action buttons */
   --context-menu-width: 200px;     /* Right-click menus */
+
+  /* Compact Dashboard Spacing */
+  --spacing-dashboard-header: 32px;
+  --spacing-dashboard-widget-header: 28px;
+  --spacing-dashboard-widget-padding: 12px;
+  --spacing-dashboard-gap: 16px;
+  --spacing-dashboard-row-height: 36px;
 }
 
 /*
