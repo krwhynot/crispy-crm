@@ -73,6 +73,9 @@ export default function CampaignActivityReport() {
   const [staleLeadsThreshold, setStaleLeadsThreshold] = useState<number>(7);
   const [ariaLiveMessage, setAriaLiveMessage] = useState<string>("");
 
+  // Track if initial expansion has happened (prevents re-expansion on re-renders)
+  const hasInitialized = React.useRef(false);
+
   // Fetch all opportunities to get available campaigns
   const { data: allOpportunities = [], isPending: opportunitiesPending } = useGetList<Opportunity>(
     "opportunities",
@@ -272,11 +275,12 @@ export default function CampaignActivityReport() {
 
   // Auto-expand top 3 activity types on load
   React.useEffect(() => {
-    if (activityGroups.length > 0 && expandedTypes.size === 0) {
+    if (activityGroups.length > 0 && !hasInitialized.current) {
       const topThreeTypes = new Set(activityGroups.slice(0, 3).map((g) => g.type));
       setExpandedTypes(topThreeTypes);
+      hasInitialized.current = true;
     }
-  }, [activityGroups, expandedTypes.size]);
+  }, [activityGroups]);
 
   // Announce view changes to screen readers
   React.useEffect(() => {
@@ -517,7 +521,7 @@ export default function CampaignActivityReport() {
         {/* Filter Panel */}
         <Card>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
               {/* Date Range Filter */}
               <div>
                 <h4 className="text-sm font-medium mb-3">Date Range</h4>
@@ -694,7 +698,7 @@ export default function CampaignActivityReport() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
         {isLoadingActivities ? (
           <>
             {[1, 2, 3, 4].map((i) => (
