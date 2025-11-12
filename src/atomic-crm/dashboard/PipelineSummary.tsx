@@ -174,11 +174,67 @@ export const PipelineSummary = () => {
         </div>
       )}
 
-      {/* Success state - to be implemented */}
+      {/* Success state */}
       {!isPending && !error && opportunities && opportunities.length > 0 && (
         <div className="w-full">
-          <div className="px-3 py-4">
-            <p className="text-sm">Pipeline data loaded ({opportunities.length} opportunities)</p>
+          {/* Metrics display */}
+          <div className="px-3 py-4 space-y-4">
+            {(() => {
+              const metrics = calculatePipelineMetrics(opportunities);
+              const health = calculatePipelineHealth(metrics.stuck, metrics.atRisk);
+
+              return (
+                <>
+                  {/* Total Count */}
+                  <div className="flex justify-between items-center pb-2 border-b border-border">
+                    <span className="text-sm font-semibold">Total Opportunities</span>
+                    <span className="text-lg font-bold">{metrics.total}</span>
+                  </div>
+
+                  {/* By Stage */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-muted-foreground mb-2">BY STAGE</h4>
+                    <div className="space-y-1">
+                      {metrics.byStage.map((stage) => (
+                        <StageRow
+                          key={stage.stage}
+                          stage={stage.stage}
+                          count={stage.count}
+                          stuckCount={stage.stuckCount}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* By Status */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-muted-foreground mb-2">BY STATUS</h4>
+                    <div className="space-y-1">
+                      <StatusRow icon="🟢" label="Active" count={metrics.active} />
+                      <StatusRow icon="⚠️" label="Stuck (30+d)" count={metrics.stuck} />
+                      <StatusRow icon="🔴" label="At Risk" count={metrics.atRisk} />
+                    </div>
+                  </div>
+
+                  {/* Pipeline Health */}
+                  <div className="pt-3 border-t border-border">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold">Pipeline Health:</span>
+                      <span className="text-lg">
+                        {health.icon} {health.label}
+                      </span>
+                    </div>
+                    {(metrics.stuck > 0 || metrics.atRisk > 0) && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {metrics.stuck > 0 && `${metrics.stuck} stuck deal${metrics.stuck > 1 ? "s" : ""}`}
+                        {metrics.stuck > 0 && metrics.atRisk > 0 && ", "}
+                        {metrics.atRisk > 0 && `${metrics.atRisk} urgent principal${metrics.atRisk > 1 ? "s" : ""}`}
+                      </p>
+                    )}
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
       )}
