@@ -7,6 +7,7 @@ import { OpportunitiesByPrincipalDesktopContainer } from "./OpportunitiesByPrinc
 import { UpcomingEventsByPrincipal } from "./UpcomingEventsByPrincipal";
 import { MyTasksThisWeek } from "./MyTasksThisWeek";
 import { RecentActivityFeed } from "./RecentActivityFeed";
+import { PipelineSummary } from "./PipelineSummary";
 import QuickLogActivity from "./QuickActionModals/QuickLogActivity";
 import { useKeyboardShortcuts, globalShortcuts } from "@/atomic-crm/utils/keyboardShortcuts";
 import { useContextMenu, ContextMenu, type ContextMenuItem } from "@/atomic-crm/utils/contextMenu";
