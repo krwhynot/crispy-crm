@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { PipelineSummary } from "../PipelineSummary";
+import { PipelineSummary, calculatePipelineMetrics } from "../PipelineSummary";
 import { TestMemoryRouter } from "ra-core";
 import { describe, it, expect, vi } from "vitest";
 
