@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { CompactGridDashboard } from '../CompactGridDashboard';
 
 // Mock the individual widgets since they need real data
-jest.mock('../CompactPrincipalTable', () => ({
+vi.mock('../CompactPrincipalTable', () => ({
   CompactPrincipalTable: () => <div>Principal Table</div>
 }));
-jest.mock('../CompactTasksWidget', () => ({
+vi.mock('../CompactTasksWidget', () => ({
   CompactTasksWidget: () => <div>Tasks Widget</div>
 }));
 
