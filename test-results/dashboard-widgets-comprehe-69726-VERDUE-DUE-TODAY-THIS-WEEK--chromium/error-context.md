@@ -53,14 +53,14 @@
                 - cell "Reps" [ref=e49]
                 - cell "Quick Actions" [ref=e50]
             - rowgroup [ref=e51]:
-              - row "RJC 3 5 A" [ref=e52] [cursor=pointer]:
+              - row "RJC 3 9 A" [ref=e52] [cursor=pointer]:
                 - cell [ref=e53]:
                   - button [ref=e54]:
                     - img
                 - cell "RJC" [ref=e55]
                 - cell "3" [ref=e56]:
                   - generic [ref=e57]: "3"
-                - cell "5" [ref=e58]
+                - cell "9" [ref=e58]
                 - cell "A" [ref=e59]:
                   - generic "Admin User" [ref=e61]: A
                 - cell [ref=e62]:
@@ -113,14 +113,14 @@
                       - img
                     - button:
                       - img
-              - row "Better Balance 1 2 A" [ref=e85] [cursor=pointer]:
+              - row "Better Balance 1 3 A" [ref=e85] [cursor=pointer]:
                 - cell [ref=e86]:
                   - button [ref=e87]:
                     - img
                 - cell "Better Balance" [ref=e88]
                 - cell "1" [ref=e89]:
                   - generic [ref=e90]: "1"
-                - cell "2" [ref=e91]
+                - cell "3" [ref=e91]
                 - cell "A" [ref=e92]:
                   - generic "Admin User" [ref=e94]: A
                 - cell [ref=e95]:
@@ -133,14 +133,14 @@
                       - img
                     - button:
                       - img
-              - row "Frites Street 1 2 A" [ref=e96] [cursor=pointer]:
+              - row "Frites Street 1 3 A" [ref=e96] [cursor=pointer]:
                 - cell [ref=e97]:
                   - button [ref=e98]:
                     - img
                 - cell "Frites Street" [ref=e99]
                 - cell "1" [ref=e100]:
                   - generic [ref=e101]: "1"
-                - cell "2" [ref=e102]
+                - cell "3" [ref=e102]
                 - cell "A" [ref=e103]:
                   - generic "Admin User" [ref=e105]: A
                 - cell [ref=e106]:
@@ -153,14 +153,14 @@
                       - img
                     - button:
                       - img
-              - row "Wicks 2 5 A" [ref=e107] [cursor=pointer]:
+              - row "Wicks 2 6 A" [ref=e107] [cursor=pointer]:
                 - cell [ref=e108]:
                   - button [ref=e109]:
                     - img
                 - cell "Wicks" [ref=e110]
                 - cell "2" [ref=e111]:
                   - generic [ref=e112]: "2"
-                - cell "5" [ref=e113]
+                - cell "6" [ref=e113]
                 - cell "A" [ref=e114]:
                   - generic "Admin User" [ref=e116]: A
                 - cell [ref=e117]:
@@ -220,20 +220,55 @@
                 - img [ref=e145]
                 - generic [ref=e148]: MY TASKS THIS WEEK
             - generic [ref=e150]:
-              - paragraph [ref=e152]: No tasks this week
-              - link "View all tasks →" [ref=e154] [cursor=pointer]:
+              - generic [ref=e153]: "7"
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - generic [ref=e157]: ⚠️ OVERDUE
+                  - 'button "View task: Follow up on RJC pricing proposal" [ref=e158] [cursor=pointer]':
+                    - 'checkbox "Complete task: Follow up on RJC pricing proposal" [ref=e159]'
+                    - generic [ref=e160]: Follow up on RJC pricing proposal
+                    - generic [ref=e161]: Nov 9
+                  - 'button "View task: Send contract to purchasing team" [ref=e162] [cursor=pointer]':
+                    - 'checkbox "Complete task: Send contract to purchasing team" [ref=e163]'
+                    - generic [ref=e164]: Send contract to purchasing team
+                    - generic [ref=e165]: Nov 10
+                - generic [ref=e166]:
+                  - generic [ref=e168]: 📅 DUE TODAY
+                  - 'button "View task: Call customer about spring menu timeline" [ref=e169] [cursor=pointer]':
+                    - 'checkbox "Complete task: Call customer about spring menu timeline" [ref=e170]'
+                    - generic [ref=e171]: Call customer about spring menu timeline
+                    - generic [ref=e172]: Nov 11
+                  - 'button "View task: Prepare sample kit for demo" [ref=e173] [cursor=pointer]':
+                    - 'checkbox "Complete task: Prepare sample kit for demo" [ref=e174]'
+                    - generic [ref=e175]: Prepare sample kit for demo
+                    - generic [ref=e176]: Nov 11
+                - generic [ref=e177]:
+                  - generic [ref=e179]: 📆 THIS WEEK
+                  - 'button "View task: Schedule meeting with owner" [ref=e180] [cursor=pointer]':
+                    - 'checkbox "Complete task: Schedule meeting with owner" [ref=e181]'
+                    - generic [ref=e182]: Schedule meeting with owner
+                    - generic [ref=e183]: Nov 13
+                  - 'button "View task: Send thank you note" [ref=e184] [cursor=pointer]':
+                    - 'checkbox "Complete task: Send thank you note" [ref=e185]'
+                    - generic [ref=e186]: Send thank you note
+                    - generic [ref=e187]: Nov 14
+                  - 'button "View task: Update CRM notes for active opportunities" [ref=e188] [cursor=pointer]':
+                    - 'checkbox "Complete task: Update CRM notes for active opportunities" [ref=e189]'
+                    - generic [ref=e190]: Update CRM notes for active opportunities
+                    - generic [ref=e191]: Nov 15
+              - link "View all tasks →" [ref=e193] [cursor=pointer]:
                 - /url: "#/tasks"
-          - generic [ref=e155]:
-            - heading "RECENT ACTIVITY" [level=3] [ref=e157]:
-              - generic [ref=e158]:
-                - img [ref=e159]
-                - generic [ref=e161]: RECENT ACTIVITY
-            - generic [ref=e170]: Loading activities...
-  - contentinfo [ref=e171]:
-    - generic [ref=e173]:
-      - paragraph [ref=e174]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e175] [cursor=pointer]:
-        - img [ref=e176]
-        - generic [ref=e178]: Keyboard shortcuts
+          - generic [ref=e194]:
+            - heading "RECENT ACTIVITY" [level=3] [ref=e196]:
+              - generic [ref=e197]:
+                - img [ref=e198]
+                - generic [ref=e200]: RECENT ACTIVITY
+            - generic [ref=e209]: Loading activities...
+  - contentinfo [ref=e210]:
+    - generic [ref=e212]:
+      - paragraph [ref=e213]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e214] [cursor=pointer]:
+        - img [ref=e215]
+        - generic [ref=e217]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
