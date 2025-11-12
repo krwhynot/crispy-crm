@@ -53,6 +53,18 @@ export const CompactGridDashboard: React.FC = () => {
     priority: (t.priority || 'normal') as 'high' | 'normal' | 'low'
   }));
 
+  // Show loading state while data is being fetched
+  if (principalsLoading || tasksLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <CompactDashboardHeader />
+        <div className="p-2 md:p-3 lg:p-4 flex items-center justify-center">
+          <div className="text-muted-foreground">Loading dashboard...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <CompactDashboardHeader />
@@ -66,7 +78,9 @@ export const CompactGridDashboard: React.FC = () => {
           {/* Middle Column - Upcoming & Tasks */}
           <div className="space-y-4">
             <div className="bg-white rounded-lg p-3">
-              <div className="h-[140px]">Upcoming Events Placeholder</div>
+              <div className="h-[140px] flex items-center justify-center text-sm text-muted-foreground">
+                Upcoming Events - Coming Soon
+              </div>
             </div>
             <div className="bg-white rounded-lg p-3">
               <CompactTasksWidget tasks={tasks} />
@@ -76,10 +90,14 @@ export const CompactGridDashboard: React.FC = () => {
           {/* Right Column - Activity & Pipeline */}
           <div className="space-y-4">
             <div className="bg-white rounded-lg p-3">
-              <div className="h-[140px]">Recent Activity Placeholder</div>
+              <div className="h-[140px] flex items-center justify-center text-sm text-muted-foreground">
+                Recent Activity - Coming Soon
+              </div>
             </div>
             <div className="bg-white rounded-lg p-3">
-              <div className="h-[180px]">Pipeline Summary Placeholder</div>
+              <div className="h-[180px] flex items-center justify-center text-sm text-muted-foreground">
+                Pipeline Summary - Coming Soon
+              </div>
             </div>
           </div>
         </div>
