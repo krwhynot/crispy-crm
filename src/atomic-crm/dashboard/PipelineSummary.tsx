@@ -3,6 +3,76 @@ import { useGetList, useGetIdentity } from "react-admin";
 import { TrendingUp } from "lucide-react";
 import { DashboardWidget } from "./DashboardWidget";
 import type { Opportunity } from "../types";
+import { OPPORTUNITY_STAGES } from "../opportunities/stageConstants";
+
+interface PipelineMetrics {
+  total: number;
+  byStage: Array<{ stage: string; count: number; stuckCount: number }>;
+  active: number;
+  stuck: number;
+  atRisk: number;
+}
+
+export function calculatePipelineMetrics(opportunities: Opportunity[]): PipelineMetrics {
+  if (!opportunities || opportunities.length === 0) {
+    return {
+      total: 0,
+      byStage: [],
+      active: 0,
+      stuck: 0,
+      atRisk: 0,
+    };
+  }
+
+  // Group by stage
+  const stageGroups = new Map<string, { count: number; stuckCount: number }>();
+
+  OPPORTUNITY_STAGES.forEach((stage) => {
+    stageGroups.set(stage.value, { count: 0, stuckCount: 0 });
+  });
+
+  let stuckCount = 0;
+  let activeCount = 0;
+
+  opportunities.forEach((opp) => {
+    // Count active opportunities
+    if (opp.status === "active") {
+      activeCount++;
+    }
+
+    // Count stuck opportunities (30+ days in stage)
+    const isStuck = opp.days_in_stage && opp.days_in_stage >= 30;
+    if (isStuck) {
+      stuckCount++;
+    }
+
+    // Group by stage
+    const group = stageGroups.get(opp.stage);
+    if (group) {
+      group.count++;
+      if (isStuck) {
+        group.stuckCount++;
+      }
+    }
+  });
+
+  // Convert to array and filter out empty stages
+  const byStage = Array.from(stageGroups.entries())
+    .filter(([_, group]) => group.count > 0)
+    .map(([stage, group]) => ({
+      stage,
+      count: group.count,
+      stuckCount: group.stuckCount,
+    }));
+
+  return {
+    total: opportunities.length,
+    byStage,
+    active: activeCount,
+    stuck: stuckCount,
+    atRisk: 0, // TODO: Calculate based on principal urgency
+  };
+}
 
 /**
  * Pipeline Summary Widget
