@@ -3,8 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GlobalFilterProvider } from './contexts/GlobalFilterContext';
 import { Suspense, lazy } from 'react';
 
-// Lazy load tab components (to be created later)
-const OverviewTab = () => <div>Overview content coming soon</div>;
+const OverviewTab = lazy(() => import('./tabs/OverviewTab'));
 const OpportunitiesTab = lazy(() => import('./tabs/OpportunitiesTab'));
 const WeeklyActivityTab = lazy(() => import('./tabs/WeeklyActivityTab'));
 const CampaignActivityTab = lazy(() => import('./tabs/CampaignActivityTab'));
@@ -39,7 +38,9 @@ export default function ReportsPage() {
           </TabsList>
 
           <TabsContent value="overview">
-            <OverviewTab />
+            <Suspense fallback={<div>Loading...</div>}>
+              <OverviewTab />
+            </Suspense>
           </TabsContent>
 
           <TabsContent value="opportunities">
