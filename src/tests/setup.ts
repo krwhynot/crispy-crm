@@ -8,6 +8,7 @@
 import "@testing-library/jest-dom";
 import { QueryClient } from "@tanstack/react-query";
 import { vi } from "vitest";
+import "../index.css"; // Import CSS to make spacing tokens available in tests
 
 // Global Supabase Mock - Must be set up before any imports
 // This prevents "supabase.from is not a function" errors
