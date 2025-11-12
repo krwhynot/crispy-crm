@@ -14,7 +14,8 @@
  * Note: Matching is case-insensitive and handles leading/trailing whitespace
  */
 
-import { Phone, Mail, Calendar, FileText, LucideIcon } from "lucide-react";
+import { Phone, Mail, Calendar, FileText } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export function getActivityIcon(activityType: string): LucideIcon {
   // Normalize input: trim whitespace and convert to lowercase
