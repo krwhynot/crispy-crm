@@ -72,30 +72,38 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* ========================================
-     SPACING TOKENS
+     SPACING TOKENS - DESKTOP OPTIMIZED
      ======================================== */
 
   /* Grid System */
   --spacing-grid-columns-desktop: 12;
   --spacing-grid-columns-ipad: 8;
-  --spacing-gutter-desktop: 24px;
+  --spacing-gutter-desktop: 12px; /* Reduced from 24px */
   --spacing-gutter-ipad: 20px;
 
-  /* Edge Padding (Screen Borders) */
-  --spacing-edge-desktop: 120px;
+  /* Edge Padding (Screen Borders) - Desktop Optimized */
+  --spacing-edge-desktop: 24px;    /* Reduced from 120px for more content */
   --spacing-edge-ipad: 60px;
   --spacing-edge-mobile: 16px;
 
   /* Vertical Rhythm */
-  --spacing-section: 32px; /* Between major sections */
-  --spacing-widget: 24px; /* Card-to-card, row-to-row spacing */
-  --spacing-content: 16px; /* Within cards, between elements */
-  --spacing-compact: 12px; /* Tight groupings */
+  --spacing-section: 24px;         /* Reduced from 32px */
+  --spacing-widget: 16px;          /* Reduced from 24px */
+  --spacing-content: 12px;         /* Reduced from 16px */
+  --spacing-compact: 8px;          /* Reduced from 12px */
 
-  /* Widget/Card Internals */
-  --spacing-widget-padding: 20px;
-  --spacing-widget-min-height: 280px;
-  --spacing-top-offset: 80px; /* Space below navbar */
+  /* Widget/Card Internals - Desktop Optimized */
+  --spacing-widget-padding: 12px;  /* Reduced from 20px */
+  --spacing-widget-min-height: 240px; /* Reduced from 280px */
+  --spacing-top-offset: 60px;      /* Reduced from 80px */
+
+  /* Desktop Data Density - NEW */
+  --row-height-compact: 32px;      /* Desktop row height */
+  --row-height-comfortable: 40px;  /* Current default */
+  --row-padding-desktop: 6px 12px; /* Vertical, horizontal */
+  --hover-zone-padding: 4px;       /* Hover action zones */
+  --action-button-size: 28px;      /* Inline action buttons */
+  --context-menu-width: 200px;     /* Right-click menus */
 }
 
 /*
