@@ -1,0 +1,366 @@
+/**
+ * Desktop-Optimized CSS Utilities
+ *
+ * Tailwind + semantic utilities for desktop-first UI patterns
+ * Uses semantic spacing tokens from src/index.css
+ * Target: 1440px+ displays with 2-4px touch target minimum
+ */
+
+/* ============================================================================
+   DATA TABLES
+   ========================================================================== */
+
+.desktop-table {
+  @apply w-full border-collapse;
+}
+
+.desktop-table thead {
+  @apply bg-bg-secondary border-b border-border-subtle sticky top-0 z-10;
+}
+
+.desktop-table thead th {
+  @apply px-4 py-3 text-left text-sm font-semibold text-text-primary;
+  padding: var(--spacing-widget-padding);
+  text-align: left;
+}
+
+.desktop-table tbody tr {
+  @apply border-b border-border-subtle hover:bg-bg-hover transition-colors;
+  height: var(--row-height-comfortable);
+}
+
+.desktop-table tbody td {
+  @apply px-4 py-2 text-sm text-text-secondary;
+  padding: var(--row-padding-desktop);
+}
+
+.desktop-table tbody tr:hover td {
+  @apply text-text-primary;
+}
+
+/* Striped rows for better readability */
+.desktop-table tbody tr:nth-child(even) {
+  @apply bg-bg-secondary/50;
+}
+
+/* Frozen first column for horizontal scrolling tables */
+.desktop-table td:first-child,
+.desktop-table th:first-child {
+  @apply sticky left-0 z-5 bg-white;
+}
+
+.desktop-table tbody tr:hover td:first-child,
+.desktop-table tbody tr:nth-child(even) td:first-child {
+  @apply bg-bg-hover;
+}
+
+/* Numeric columns alignment */
+.desktop-table .numeric {
+  @apply text-right font-mono;
+}
+
+/* Status badge in tables */
+.desktop-table .status-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  gap: var(--spacing-compact);
+}
+
+.desktop-table .status-active {
+  @apply bg-success/10 text-success;
+}
+
+.desktop-table .status-inactive {
+  @apply bg-muted/10 text-muted;
+}
+
+.desktop-table .status-warning {
+  @apply bg-warning/10 text-warning;
+}
+
+/* ============================================================================
+   FORMS
+   ========================================================================== */
+
+.desktop-form {
+  @apply space-y-6;
+}
+
+.desktop-form-group {
+  @apply space-y-2;
+}
+
+.desktop-form label {
+  @apply block text-sm font-medium text-text-primary;
+}
+
+.desktop-form input,
+.desktop-form textarea,
+.desktop-form select {
+  @apply w-full px-3 py-2 border border-border-default rounded-lg;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  @apply text-sm text-text-primary placeholder-text-tertiary;
+  font-family: inherit;
+}
+
+.desktop-form textarea {
+  @apply resize-vertical;
+}
+
+.desktop-form input:disabled,
+.desktop-form textarea:disabled,
+.desktop-form select:disabled {
+  @apply bg-bg-secondary text-text-tertiary cursor-not-allowed;
+}
+
+/* Form grid layout */
+.desktop-form-grid {
+  @apply grid gap-6;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.desktop-form-grid-2 {
+  @apply grid grid-cols-2 gap-6;
+}
+
+.desktop-form-grid-3 {
+  @apply grid grid-cols-3 gap-6;
+}
+
+/* Form section headers */
+.desktop-form-section {
+  @apply space-y-4 pb-6 border-b border-border-subtle;
+}
+
+.desktop-form-section:last-child {
+  @apply border-b-0;
+}
+
+.desktop-form-section-title {
+  @apply text-lg font-semibold text-text-primary;
+}
+
+/* Form error states */
+.desktop-form-error input,
+.desktop-form-error textarea,
+.desktop-form-error select {
+  @apply border-destructive focus:ring-destructive;
+}
+
+.desktop-form-error-message {
+  @apply text-xs text-destructive font-medium mt-1;
+}
+
+/* ============================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.desktop-sidebar {
+  @apply w-64 border-r border-border-subtle bg-bg-primary overflow-y-auto;
+  padding: var(--spacing-section);
+}
+
+.desktop-sidebar-section {
+  @apply mb-8 last:mb-0;
+}
+
+.desktop-sidebar-heading {
+  @apply text-xs font-semibold text-text-tertiary uppercase tracking-wider;
+  margin-bottom: var(--spacing-content);
+}
+
+.desktop-sidebar-nav {
+  @apply space-y-1;
+}
+
+.desktop-sidebar-nav-item {
+  @apply block px-3 py-2 rounded-lg text-sm text-text-secondary;
+  @apply hover:bg-bg-secondary hover:text-text-primary transition-colors;
+  padding: var(--spacing-compact) var(--spacing-widget-padding);
+}
+
+.desktop-sidebar-nav-item.active {
+  @apply bg-primary/10 text-primary font-medium;
+}
+
+.desktop-sidebar-divider {
+  @apply my-4 border-t border-border-subtle;
+}
+
+/* ============================================================================
+   INLINE ACTIONS
+   ========================================================================== */
+
+.inline-actions {
+  @apply flex items-center gap-2 opacity-0 transition-opacity;
+}
+
+.inline-actions-container:hover .inline-actions {
+  @apply opacity-100;
+}
+
+.inline-action-button {
+  @apply inline-flex items-center justify-center p-1.5 rounded-md;
+  @apply text-text-secondary hover:text-text-primary hover:bg-bg-secondary;
+  @apply transition-colors cursor-pointer;
+  width: var(--action-button-size);
+  height: var(--action-button-size);
+  padding: var(--hover-zone-padding);
+}
+
+.inline-action-button:focus {
+  @apply outline-none ring-2 ring-primary ring-offset-1;
+}
+
+.inline-action-button.destructive {
+  @apply hover:text-destructive hover:bg-destructive/10;
+}
+
+.inline-action-button.primary {
+  @apply hover:text-primary hover:bg-primary/10;
+}
+
+/* ============================================================================
+   CONTENT AREA
+   ========================================================================== */
+
+.desktop-content {
+  @apply flex-1 overflow-y-auto;
+  padding: var(--spacing-section);
+}
+
+.desktop-header {
+  @apply mb-6 space-y-2;
+}
+
+.desktop-header-title {
+  @apply text-3xl font-bold text-text-primary;
+}
+
+.desktop-header-subtitle {
+  @apply text-sm text-text-secondary;
+}
+
+.desktop-actions-bar {
+  @apply flex items-center justify-between gap-4 mb-6 p-4 rounded-lg bg-bg-secondary;
+  padding: var(--spacing-widget-padding);
+}
+
+.desktop-actions-bar-left {
+  @apply flex items-center gap-2;
+}
+
+.desktop-actions-bar-right {
+  @apply flex items-center gap-2;
+}
+
+/* ============================================================================
+   CARDS & CONTAINERS
+   ========================================================================== */
+
+.desktop-card {
+  @apply bg-white border border-border-subtle rounded-lg shadow-sm;
+  padding: var(--spacing-section);
+}
+
+.desktop-card-header {
+  @apply flex items-center justify-between pb-4 border-b border-border-subtle mb-4;
+}
+
+.desktop-card-title {
+  @apply text-lg font-semibold text-text-primary;
+}
+
+.desktop-card-body {
+  @apply space-y-4;
+}
+
+.desktop-card-footer {
+  @apply flex items-center justify-end gap-2 pt-4 border-t border-border-subtle mt-4;
+}
+
+/* ============================================================================
+   BUTTONS
+   ========================================================================== */
+
+.desktop-button {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium;
+  @apply transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2;
+  gap: var(--spacing-compact);
+  min-height: 40px;
+  padding: var(--spacing-compact) var(--spacing-widget-padding);
+}
+
+.desktop-button-primary {
+  @apply bg-primary text-white hover:bg-primary/90 focus:ring-primary;
+}
+
+.desktop-button-secondary {
+  @apply bg-bg-secondary text-text-primary hover:bg-bg-tertiary focus:ring-primary;
+}
+
+.desktop-button-destructive {
+  @apply bg-destructive text-white hover:bg-destructive/90 focus:ring-destructive;
+}
+
+.desktop-button-ghost {
+  @apply text-text-secondary hover:bg-bg-secondary focus:ring-primary;
+}
+
+.desktop-button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* ============================================================================
+   RESPONSIVE UTILITIES
+   ========================================================================== */
+
+@media (max-width: 1440px) {
+  .desktop-table thead th,
+  .desktop-table tbody td {
+    padding: var(--spacing-content);
+  }
+
+  .desktop-sidebar {
+    width: 56px;
+  }
+
+  .desktop-sidebar-heading,
+  .desktop-sidebar-nav-item {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+.desktop-sr-only {
+  @apply absolute w-px h-px p-0 m-[-1px] overflow-hidden border-0;
+}
+
+.desktop-focus-visible {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .desktop-table tbody tr:hover {
+    @apply bg-primary/5;
+  }
+
+  .desktop-sidebar-nav-item.active {
+    @apply bg-primary text-white;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .desktop-table tbody tr,
+  .inline-action-button,
+  .desktop-button,
+  .desktop-form input,
+  .desktop-form textarea,
+  .desktop-form select {
+    @apply !transition-none;
+  }
+}
