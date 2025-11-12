@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const WeeklyActivitySummary = lazy(
-  () => import('../../WeeklyActivitySummary')
+  () => import('../WeeklyActivitySummary')
 );
 
 export default function WeeklyActivityTab() {
