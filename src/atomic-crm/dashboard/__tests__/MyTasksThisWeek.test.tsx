@@ -9,6 +9,7 @@ import userEvent from "@testing-library/user-event";
 const mockGetList = vi.fn();
 const mockGetIdentity = vi.fn();
 const mockNavigate = vi.fn();
+const mockRefresh = vi.fn();
 
 vi.mock("react-admin", async () => {
   const actual = await vi.importActual("react-admin");
@@ -16,6 +17,7 @@ vi.mock("react-admin", async () => {
     ...actual,
     useGetList: () => mockGetList(),
     useGetIdentity: () => mockGetIdentity(),
+    useRefresh: () => mockRefresh,
   };
 });
 
@@ -29,10 +31,21 @@ vi.mock("react-router-dom", async () => {
 
 // Mock QuickCompleteTaskModal
 vi.mock("../QuickCompleteTaskModal", () => ({
-  QuickCompleteTaskModal: ({ task, onClose }: { task: Task; onClose: () => void }) => (
+  QuickCompleteTaskModal: ({ task, onClose, onComplete }: { task: Task; onClose: () => void; onComplete: () => void }) => (
     <div data-testid="quick-complete-modal">
       <div>Mock Modal for: {task.title}</div>
       <button onClick={onClose}>Close</button>
+      <button onClick={onComplete} data-testid="complete-task-button">Complete Task</button>
+    </div>
+  ),
+}));
+
+// Mock DashboardWidget to pass through children
+vi.mock("../DashboardWidget", () => ({
+  DashboardWidget: ({ children, title }: { children: React.ReactNode; title: React.ReactNode }) => (
+    <div data-testid="dashboard-widget">
+      <div data-testid="widget-title">{title}</div>
+      {children}
     </div>
   ),
 }));
@@ -667,6 +680,58 @@ describe("MyTasksThisWeek", () => {
 
       // Verify useGetList was called (the actual call happens in the component)
       expect(mockGetList).toHaveBeenCalled();
+    });
+  });
+
+  describe("Refresh Mechanism", () => {
+    it("should call refresh after task is completed via modal", async () => {
+      const user = userEvent.setup();
+      const tasks: Task[] = [
+        {
+          id: 1,
+          title: "Task to Complete",
+          due_date: "2025-11-12",
+          completed: false,
+          contact_id: 1,
+          type: "Call",
+          sales_id: mockCurrentUserId,
+        },
+      ];
+
+      mockGetList.mockReturnValue({
+        data: tasks,
+        isPending: false,
+        error: null,
+      });
+
+      render(
+        <TestMemoryRouter>
+          <MyTasksThisWeek />
+        </TestMemoryRouter>
+      );
+
+      // Reset mock to clear any setup calls
+      mockRefresh.mockClear();
+
+      // Open modal by clicking checkbox
+      const checkbox = screen.getByRole("checkbox", {
+        name: /complete task: task to complete/i,
+      });
+      await user.click(checkbox);
+
+      // Verify modal is open
+      await waitFor(() => {
+        expect(screen.getByTestId("quick-complete-modal")).toBeInTheDocument();
+      });
+
+      // Click the complete task button (which triggers onComplete callback)
+      const completeButton = screen.getByTestId("complete-task-button");
+      await user.click(completeButton);
+
+      // Verify refresh was called after completion
+      await waitFor(() => {
+        expect(mockRefresh).toHaveBeenCalled();
+      });
     });
   });
 });
