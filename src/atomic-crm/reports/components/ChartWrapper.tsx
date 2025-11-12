@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface ChartWrapperProps {
   title: string;
