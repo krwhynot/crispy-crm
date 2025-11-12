@@ -3,7 +3,7 @@ import { ForgotPasswordPage } from "@/components/supabase/forgot-password-page";
 import { SetPasswordPage } from "@/components/supabase/set-password-page";
 import type { AuthProvider, DataProvider } from "ra-core";
 import { CustomRoutes, localStorageStore, Resource } from "ra-core";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import organizations from "../organizations";
 import contacts from "../contacts";
@@ -34,6 +34,9 @@ import {
 } from "./defaultConfiguration";
 import { i18nProvider } from "./i18nProvider";
 import { StartPage } from "@/atomic-crm/login/StartPage.tsx";
+
+// Lazy load ReportsPage
+const ReportsPage = React.lazy(() => import("../reports/ReportsPage"));
 
 export interface CRMProps extends Partial<ConfigurationContextValue> {
   dataProvider?: DataProvider;
@@ -139,6 +142,7 @@ export const CRM = ({
 
         <CustomRoutes>
           <Route path={SettingsPage.path} element={<SettingsPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
           <Route path="/reports/weekly-activity" element={<reports.WeeklyActivitySummary />} />
           <Route path="/reports/opportunities-by-principal" element={<reports.OpportunitiesByPrincipalReport />} />
           <Route path="/reports/campaign-activity" element={<reports.CampaignActivityReport />} />
