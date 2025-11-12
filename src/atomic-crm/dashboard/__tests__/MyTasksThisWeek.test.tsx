@@ -40,7 +40,6 @@ vi.mock("../QuickCompleteTaskModal", () => ({
 describe("MyTasksThisWeek", () => {
   const mockCurrentUserId = 1;
   const today = new Date("2025-11-12T10:00:00Z");
-  const endOfWeekDate = new Date("2025-11-16T23:59:59Z"); // Saturday
 
   beforeEach(() => {
     vi.clearAllMocks();
