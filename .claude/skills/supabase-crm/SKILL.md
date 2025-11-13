@@ -192,25 +192,25 @@ CREATE TRIGGER update_<entity>_updated_at
 
 ### Core Patterns
 - [Service Layer Architecture](resources/service-layer.md) - DataProvider abstraction and business logic
-- [Validation Patterns](resources/validation.md) - Zod schemas and RPC validation
-- [Error Handling](resources/error-handling.md) - Consistent error patterns
+- [Validation Patterns](resources/validation-patterns.md) - Zod schemas and CRM-specific validation
+- [Error Handling](resources/error-handling.md) - Custom error hierarchy and Supabase error mapping
 
 ### Supabase-Specific
-- [RLS Policies](resources/rls-policies.md) - Row Level Security patterns
-- [Edge Functions](resources/edge-functions.md) - Serverless functions and business operations
-- [Query Optimization](resources/query-optimization.md) - Performance and indexing
-- [Migrations](resources/migrations.md) - Schema evolution and best practices
+- [RLS Policies](resources/rls-policies.md) - Row Level Security patterns for shared team access
+- [Edge Functions](resources/edge-functions.md) - Deno.serve patterns and service role operations
+- [Query Optimization](resources/query-optimization.md) - Indexing, pagination, and view optimization
 
 ### CRM Business Logic
-- [Organizations](resources/organizations.md) - Hierarchy validation and management
-- [Contacts](resources/contacts.md) - Multi-organization relationships
-- [Opportunities](resources/opportunities.md) - Stage workflows and products
-- [Activities](resources/activities.md) - Interactions and engagements
+- [Organizations](resources/organizations.md) - Hierarchy validation, rollup metrics, and deletion protection
 
-### Advanced Topics
-- [Real-time Subscriptions](resources/realtime.md) - Live data updates
-- [Storage Patterns](resources/storage.md) - File uploads and management
-- [Testing](resources/testing.md) - Service layer and database testing
+### Future Resources (Coming Soon)
+- Contacts - Multi-organization relationships and JSONB arrays
+- Opportunities - Stage workflows and product management
+- Activities - Interaction tracking and reporting
+- Migrations - Schema evolution and best practices
+- Real-time Subscriptions - Live data updates
+- Storage Patterns - File uploads and management
+- Testing - Service layer and database testing
 
 ## Key Conventions
 
