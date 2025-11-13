@@ -95,7 +95,7 @@ export const Dashboard = () => {
 
   return (
     <main role="main" aria-label="Dashboard">
-      <div className="space-y-[var(--spacing-content)]">
+      <div className="space-y-content">
         {/* Dashboard Header with Action Buttons */}
         <div className="flex items-center justify-between">
           <div>
