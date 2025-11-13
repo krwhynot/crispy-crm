@@ -48,7 +48,7 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
     <DashboardWidget
       title={
         <div className="flex items-center gap-2">
-          <Star className="w-4 h-4 text-yellow-500" />
+          <Star className="w-4 h-4 text-warning" />
           <span>Principal Performance Command Center</span>
         </div>
       }

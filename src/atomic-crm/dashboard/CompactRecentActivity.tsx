@@ -97,7 +97,7 @@ export const CompactRecentActivity: React.FC = () => {
       {activities.length >= 4 && (
         <a
           href="/activities"
-          className="text-xs text-blue-600 hover:underline mt-2 block"
+          className="text-xs text-primary hover:underline mt-2 block"
           onClick={(e) => {
             e.preventDefault();
             navigate('/activities');
