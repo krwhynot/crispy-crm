@@ -45,8 +45,8 @@ export const CompactRecentActivity: React.FC = () => {
   if (activities.length === 0) {
     return (
       <div className="h-full">
-        <div className="flex items-center justify-between mb-2 h-7">
-          <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+        <div className="flex items-center justify-between mb-compact h-7">
+          <h2 className="text-sm font-semibold text-foreground flex items-center gap-compact">
             <ActivityIcon className="w-4 h-4" />
             Recent Activity
           </h2>
@@ -60,8 +60,8 @@ export const CompactRecentActivity: React.FC = () => {
 
   return (
     <div className="h-full">
-      <div className="flex items-center justify-between mb-2 h-7">
-        <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+      <div className="flex items-center justify-between mb-compact h-7">
+        <h2 className="text-sm font-semibold text-foreground flex items-center gap-compact">
           <ActivityIcon className="w-4 h-4" />
           Recent Activity
         </h2>
@@ -70,7 +70,7 @@ export const CompactRecentActivity: React.FC = () => {
         </span>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-compact">
         {activities.map((activity) => {
           const Icon = getActivityIcon(activity.type);
 
@@ -78,7 +78,7 @@ export const CompactRecentActivity: React.FC = () => {
             <div
               key={activity.id}
               onClick={() => navigate(`/activities/${activity.id}`)}
-              className="flex items-start gap-2 py-1 px-2 hover:bg-muted rounded cursor-pointer group"
+              className="flex items-start gap-compact py-1 px-2 hover:bg-muted rounded cursor-pointer group"
             >
               <Icon className="w-3 h-3 mt-0.5 flex-shrink-0 text-muted-foreground group-hover:text-foreground" />
               <div className="flex-1 min-w-0">
@@ -97,7 +97,7 @@ export const CompactRecentActivity: React.FC = () => {
       {activities.length >= 4 && (
         <a
           href="/activities"
-          className="text-xs text-primary hover:underline mt-2 block"
+          className="text-xs text-primary hover:underline mt-compact block"
           onClick={(e) => {
             e.preventDefault();
             navigate('/activities');
