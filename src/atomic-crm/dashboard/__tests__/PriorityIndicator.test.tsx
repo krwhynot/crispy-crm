@@ -86,7 +86,7 @@ describe('PriorityIndicator - Component', () => {
   it('should render green indicator for low priority', () => {
     render(<PriorityIndicatorComponent priority="low" />);
     const indicator = screen.getByTestId('priority-indicator');
-    expect(indicator).toHaveClass('bg-green-50');
+    expect(indicator).toHaveClass('bg-success/10');
   });
 
   it('should render icon matching priority', () => {
