@@ -299,6 +299,108 @@ If you find yourself:
 - Form defaults out of sync
 - Technical debt accumulation
 
+## Quick Reference Cards
+
+### Error Handling
+
+| Situation | DO | DON'T |
+|-----------|-----|-------|
+| Database error | Let it throw | Retry logic |
+| Bulk operations | `Promise.allSettled()` | `Promise.all()` |
+| Validation error | Format for React Admin | Silent failure |
+| User notification | Show specific message | Generic "Error" |
+
+### Validation
+
+| Situation | DO | DON'T |
+|-----------|-----|-------|
+| Where to validate | `src/atomic-crm/validation/` | Component/utils |
+| Business defaults | `.default()` in Zod | Hardcode in component |
+| Type inference | `z.infer<typeof schema>` | Manual type definition |
+| Error format | `{ message, errors: {} }` | Throw raw Zod error |
+
+### Form State
+
+| Situation | DO | DON'T |
+|-----------|-----|-------|
+| Form defaults | `schema.partial().parse({})` | Hardcode in component |
+| Array defaults | Sub-schema with `.default()` | `defaultValue` prop |
+| JSONB arrays | `ArrayInput` + `SimpleFormIterator` | Manual array state |
+| Submit transform | `transform` prop on CreateBase | Transform in component |
+
+### Database
+
+| Situation | DO | DON'T |
+|-----------|-----|-------|
+| New table | GRANT + RLS | RLS only |
+| Role check | Helper function (`is_admin()`) | Inline check |
+| Enum values | Add only (can't remove) | Try to remove |
+| Migrations | `npx supabase migration new` | Manual numbering |
+
+## Decision Tree: When This Skill Triggers
+
+```
+Starting implementation task?
+│
+├─ Handling errors?
+│  └─ Use error-handling.md
+│     - Fail fast (no retry)
+│     - Promise.allSettled for bulk
+│     - Structured logging
+│
+├─ Adding validation?
+│  └─ Use validation-patterns.md
+│     - Zod at API boundary only
+│     - Sub-schemas for arrays
+│     - Error formatting
+│
+├─ Creating forms?
+│  └─ Use form-state-management.md
+│     - Defaults from schema
+│     - ArrayInput patterns
+│     - Transform prop
+│
+├─ Database changes?
+│  └─ Use database-patterns.md
+│     - GRANT + RLS
+│     - Helper functions
+│     - Migration format
+│
+├─ Security concerns?
+│  └─ Use security-patterns.md
+│     - CSV validation
+│     - RLS policies
+│     - XSS prevention
+│
+├─ Writing tests?
+│  └─ Use testing-patterns.md
+│     - Unit for logic
+│     - E2E for journeys
+│     - 70% coverage
+│
+└─ Unsure what to do?
+   └─ Use anti-patterns.md
+      - Learn from mistakes
+      - Avoid common errors
+```
+
+## Resource Files
+
+Comprehensive patterns with real code examples from Atomic CRM:
+
+### Core Patterns
+- [error-handling.md](resources/error-handling.md) - Fail-fast patterns, Promise.allSettled, error logging
+- [validation-patterns.md](resources/validation-patterns.md) - Zod schemas, single source of truth, error formatting
+- [form-state-management.md](resources/form-state-management.md) - Schema-driven forms, ArrayInput, defaults
+- [database-patterns.md](resources/database-patterns.md) - GRANT + RLS, migrations, helper functions
+
+### Security & Testing
+- [security-patterns.md](resources/security-patterns.md) - CSV validation, formula injection, RLS policies
+- [testing-patterns.md](resources/testing-patterns.md) - Unit tests, E2E tests, coverage requirements
+
+### Anti-Patterns
+- [anti-patterns.md](resources/anti-patterns.md) - Common mistakes and how to avoid them
+
 ## Constitution Principles Summary
 
 1. **NO OVER-ENGINEERING** - Fail fast, no retry/circuit breakers
@@ -312,3 +414,5 @@ If you find yourself:
 9. **MIGRATIONS** - Timestamp format via Supabase CLI
 
 **Full details:** `docs/claude/engineering-constitution.md`
+
+**Cross-Reference:** See `atomic-crm-ui-design` skill for UI design patterns (colors, spacing, accessibility)
