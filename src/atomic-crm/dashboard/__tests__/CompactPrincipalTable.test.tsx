@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { CompactPrincipalTable } from '../CompactPrincipalTable';
 
 describe('CompactPrincipalTable', () => {
@@ -6,10 +7,16 @@ describe('CompactPrincipalTable', () => {
     const mockData = Array(10).fill(null).map((_, i) => ({
       id: i,
       name: `Principal ${i}`,
-      activity: `${i * 2}/${i * 3}`
+      opportunityCount: i * 2,
+      weeklyActivities: i * 3,
+      assignedReps: []
     }));
 
-    render(<CompactPrincipalTable data={mockData} />);
+    render(
+      <BrowserRouter>
+        <CompactPrincipalTable data={mockData} />
+      </BrowserRouter>
+    );
 
     const rows = screen.getAllByRole('row');
     expect(rows).toHaveLength(6); // 5 data + 1 header
@@ -19,18 +26,34 @@ describe('CompactPrincipalTable', () => {
     const mockData = Array(10).fill(null).map((_, i) => ({
       id: i,
       name: `Principal ${i}`,
-      activity: `${i * 2}/${i * 3}`
+      opportunityCount: i * 2,
+      weeklyActivities: i * 3,
+      assignedReps: []
     }));
 
-    render(<CompactPrincipalTable data={mockData} />);
+    render(
+      <BrowserRouter>
+        <CompactPrincipalTable data={mockData} />
+      </BrowserRouter>
+    );
 
     expect(screen.getByText('Show all 10 principals')).toBeInTheDocument();
   });
 
   it('uses compact row height', () => {
-    const mockData = [{id: 1, name: 'Test', activity: '1/2'}];
+    const mockData = [{
+      id: 1,
+      name: 'Test',
+      opportunityCount: 1,
+      weeklyActivities: 2,
+      assignedReps: []
+    }];
 
-    const { container } = render(<CompactPrincipalTable data={mockData} />);
+    const { container } = render(
+      <BrowserRouter>
+        <CompactPrincipalTable data={mockData} />
+      </BrowserRouter>
+    );
     const row = container.querySelector('tbody tr');
 
     expect(row).toHaveClass('h-9');
