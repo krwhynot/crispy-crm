@@ -45,7 +45,7 @@ interface QuickCompleteTaskModalProps {
 export function QuickCompleteTaskModal({ task, onClose, onComplete }: QuickCompleteTaskModalProps) {
   const [step, setStep] = useState<FlowStep>(FlowStep.LOG_ACTIVITY);
   const [activityData, setActivityData] = useState<ActivityData | null>(null);
-  const [_isSubmitting, _setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dataProvider = useDataProvider();
   const notify = useNotify();
