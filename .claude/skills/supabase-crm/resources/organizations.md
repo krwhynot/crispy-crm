@@ -650,6 +650,6 @@ describe('Organization Hierarchy', () => {
 ## Related Resources
 
 - [Validation Patterns](validation-patterns.md) - Hierarchy validation schemas
-- [Service Layer](service-layer.md) - Hierarchy business logic
-- [Query Optimization](query-optimization.md) - Efficient hierarchy queries
-- [RLS Policies](rls-policies.md) - Hierarchy access control
+- [Service Layer](service-layer.md) - Hierarchy business logic in services
+- [Query Optimization](query-optimization.md) - Recursive queries and rollup metrics
+- [Error Handling](error-handling.md) - Business rule error patterns

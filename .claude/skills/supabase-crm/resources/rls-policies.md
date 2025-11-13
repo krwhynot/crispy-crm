@@ -467,5 +467,5 @@ CREATE INDEX idx_entities_updated_by ON entities(updated_by);
 
 - [Service Layer](service-layer.md) - DataProvider abstraction
 - [Edge Functions](edge-functions.md) - Service role operations
-- [Migrations](migrations.md) - Adding RLS to new tables
-- [Testing](testing.md) - Testing RLS policies
+- [Validation Patterns](validation-patterns.md) - Input validation with Zod
+- [Query Optimization](query-optimization.md) - RLS performance considerations

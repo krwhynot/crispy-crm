@@ -726,4 +726,4 @@ Deno.test("Edge Function - Create User", async () => {
 - [Service Layer](service-layer.md) - Calling Edge Functions from services
 - [Validation Patterns](validation-patterns.md) - Request validation with Zod
 - [Error Handling](error-handling.md) - Error responses in Edge Functions
-- [RLS Policies](rls-policies.md) - Understanding service role bypass
+- [RLS Policies](rls-policies.md) - Service role vs authenticated access
