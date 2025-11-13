@@ -144,6 +144,10 @@ export const UpcomingEventsByPrincipal = () => {
   // Group events by principal
   const eventsByPrincipal = groupEventsByPrincipal(tasks || [], activities || [], principals || []);
 
+  // Check if we have any events at all
+  const totalEvents = (tasks?.length || 0) + (activities?.length || 0);
+  const hasEvents = totalEvents > 0;
+
   if (eventsByPrincipal.length === 0) {
     return (
       <Card>
@@ -151,10 +155,24 @@ export const UpcomingEventsByPrincipal = () => {
           <CardTitle>Upcoming by Principal</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-muted-foreground">No scheduled events this week</p>
-          <p className="text-sm text-muted-foreground">
-            Schedule meetings or set task deadlines to stay connected with your principals.
-          </p>
+          {hasEvents ? (
+            <>
+              <p className="text-muted-foreground">
+                {totalEvents} event{totalEvents !== 1 ? 's' : ''} detected this week
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Principal grouping requires a database view (coming in P2).
+                Events exist but cannot be grouped by principal yet.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-muted-foreground">No scheduled events this week</p>
+              <p className="text-sm text-muted-foreground">
+                Schedule meetings or set task deadlines to stay connected with your principals.
+              </p>
+            </>
+          )}
         </CardContent>
       </Card>
     );
