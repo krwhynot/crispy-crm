@@ -89,31 +89,31 @@ export const CompactGridDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-muted">
       <CompactDashboardHeader />
-      <div className="p-2 md:p-3 lg:p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[40%_30%_30%] gap-4">
+      <div className="p-edge-mobile md:p-edge-ipad lg:p-edge-desktop">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[40%_30%_30%] gap-content">
           {/* Left Column - Principal Table */}
-          <div className="bg-white rounded-lg p-3">
+          <div className="bg-white rounded-lg p-content">
             <CompactPrincipalTable data={principals} />
           </div>
 
           {/* Middle Column - Upcoming & Tasks */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-lg p-3">
+          <div className="space-y-section">
+            <div className="bg-white rounded-lg p-content">
               <div className="h-[140px] flex items-center justify-center text-sm text-muted-foreground">
                 Upcoming Events - Coming Soon
               </div>
             </div>
-            <div className="bg-white rounded-lg p-3">
+            <div className="bg-white rounded-lg p-content">
               <CompactTasksWidget tasks={tasks} />
             </div>
           </div>
 
           {/* Right Column - Activity & Pipeline */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-lg p-3">
+          <div className="space-y-section">
+            <div className="bg-white rounded-lg p-content">
               <CompactRecentActivity />
             </div>
-            <div className="bg-white rounded-lg p-3">
+            <div className="bg-white rounded-lg p-content">
               <div className="h-[180px] flex items-center justify-center text-sm text-muted-foreground">
                 Pipeline Summary - Coming Soon
               </div>
