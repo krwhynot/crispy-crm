@@ -183,7 +183,7 @@ export const UpcomingEventsByPrincipal = () => {
       <CardHeader>
         <CardTitle>Upcoming by Principal</CardTitle>
       </CardHeader>
-      <CardContent className="max-h-[300px] overflow-y-auto space-y-4">
+      <CardContent className="max-h-[300px] overflow-y-auto space-y-section">
         {eventsByPrincipal.map((principal) => (
           <PrincipalEventGroup key={principal.principalId} principal={principal} />
         ))}

@@ -47,7 +47,7 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
   return (
     <DashboardWidget
       title={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-compact">
           <Star className="w-4 h-4 text-warning" />
           <span>Principal Performance Command Center</span>
         </div>
@@ -58,11 +58,11 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
         <table className="w-full border-collapse text-sm">
           <thead className="bg-muted/50 text-xs uppercase tracking-wider sticky top-0 z-10">
             <tr>
-              <th className="text-left px-3 py-2 font-semibold">Principal</th>
-              <th className="text-center px-2 py-2 w-20">Pipeline</th>
-              <th className="text-center px-2 py-2 w-24">This Week</th>
-              <th className="text-center px-2 py-2 w-32">Reps</th>
-              <th className="w-40 px-2 py-2">Quick Actions</th>
+              <th className="text-left px-compact py-compact font-semibold">Principal</th>
+              <th className="text-center px-compact py-compact w-20">Pipeline</th>
+              <th className="text-center px-compact py-compact w-24">This Week</th>
+              <th className="text-center px-compact py-compact w-32">Reps</th>
+              <th className="w-40 px-compact py-compact">Quick Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border [&>tr:nth-child(even)]:bg-muted/30">
@@ -78,7 +78,7 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
               >
                 {/* Principal name */}
                 <td
-                  className="px-3 py-1 font-medium text-sm cursor-pointer"
+                  className="px-compact py-compact font-medium text-sm cursor-pointer"
                   onClick={() => {
                     const filter = JSON.stringify({ principal_organization_id: [row.principalId] });
                     navigate(`/opportunities?filter=${encodeURIComponent(filter)}`);
@@ -88,8 +88,8 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
                 </td>
 
                 {/* Opportunity count */}
-                <td className="text-center px-2">
-                  <span className="inline-flex items-center justify-center min-w-[2rem] px-2 py-0.5 text-xs font-semibold bg-primary/10 text-primary rounded-full">
+                <td className="text-center px-compact">
+                  <span className="inline-flex items-center justify-center min-w-[2rem] px-compact py-0.5 text-xs font-semibold bg-primary/10 text-primary rounded-full">
                     {row.opportunityCount}
                   </span>
                 </td>
@@ -104,7 +104,7 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
                 </td>
 
                 {/* Assigned reps avatars */}
-                <td className="px-2">
+                <td className="px-compact">
                   <div className="flex -space-x-2 justify-center">
                     {row.assignedReps.slice(0, 3).map(rep => (
                       <div
@@ -124,7 +124,7 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
                 </td>
 
                 {/* Inline quick actions (visible on hover) */}
-                <td className="px-2">
+                <td className="px-compact">
                   <div className={`
                     flex gap-1 justify-end transition-opacity
                     ${hoveredRow === row.principalId ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
