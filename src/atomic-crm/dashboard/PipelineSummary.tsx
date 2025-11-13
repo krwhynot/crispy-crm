@@ -92,7 +92,7 @@ export const PipelineSummary = () => {
       {/* Loading state */}
       {isPending && (
         <div className="w-full">
-          <div className="px-3 py-4">
+          <div className="px-content py-widget">
             <p className="text-sm text-muted-foreground">Loading pipeline...</p>
           </div>
         </div>
@@ -101,7 +101,7 @@ export const PipelineSummary = () => {
       {/* Error state */}
       {!isPending && error && (
         <div className="w-full">
-          <div className="px-3 py-4">
+          <div className="px-content py-widget">
             <p className="text-sm text-destructive">Failed to load pipeline data</p>
           </div>
         </div>
@@ -110,7 +110,7 @@ export const PipelineSummary = () => {
       {/* Empty state */}
       {!isPending && !error && (!pipelineData || pipelineData.length === 0) && (
         <div className="w-full">
-          <div className="px-3 py-4">
+          <div className="px-content py-widget">
             <p className="text-sm text-muted-foreground">No active opportunities</p>
           </div>
         </div>
@@ -120,7 +120,7 @@ export const PipelineSummary = () => {
       {!isPending && !error && pipelineData && pipelineData.length > 0 && (
         <div className="w-full">
           {/* Metrics display */}
-          <div className="px-3 py-4 space-y-4">
+          <div className="px-content py-widget space-y-widget">
             {(() => {
               // Get totals from first row (same for all stages of same manager)
               const firstRow = pipelineData[0];
@@ -145,8 +145,8 @@ export const PipelineSummary = () => {
 
                   {/* By Stage */}
                   <div>
-                    <h4 className="text-xs font-semibold text-muted-foreground mb-2">BY STAGE</h4>
-                    <div className="space-y-1">
+                    <h4 className="text-xs font-semibold text-muted-foreground mb-compact">BY STAGE</h4>
+                    <div className="space-y-compact">
                       {byStage.map((stage) => (
                         <StageRow
                           key={stage.stage}
@@ -160,8 +160,8 @@ export const PipelineSummary = () => {
 
                   {/* By Status */}
                   <div>
-                    <h4 className="text-xs font-semibold text-muted-foreground mb-2">BY STATUS</h4>
-                    <div className="space-y-1">
+                    <h4 className="text-xs font-semibold text-muted-foreground mb-compact">BY STATUS</h4>
+                    <div className="space-y-compact">
                       <StatusRow icon="🟢" label="Active" count={total_active} />
                       <StatusRow icon="⚠️" label="Stuck (30+d)" count={total_stuck} />
                       <StatusRow icon="🔴" label="At Risk" count={0} />
@@ -169,15 +169,15 @@ export const PipelineSummary = () => {
                   </div>
 
                   {/* Pipeline Health */}
-                  <div className="pt-3 border-t border-border">
-                    <div className="flex items-center gap-2">
+                  <div className="pt-content border-t border-border">
+                    <div className="flex items-center gap-compact">
                       <span className="text-sm font-semibold">Pipeline Health:</span>
                       <span className="text-lg">
                         {health.icon} {health.label}
                       </span>
                     </div>
                     {(total_stuck > 0) && (
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-muted-foreground mt-compact">
                         {total_stuck} stuck deal{total_stuck > 1 ? "s" : ""}
                       </p>
                     )}
