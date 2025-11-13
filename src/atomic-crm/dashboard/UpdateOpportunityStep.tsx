@@ -137,7 +137,7 @@ export function UpdateOpportunityStep({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-2 pt-2">
+      <div className="flex gap-compact pt-compact">
         <Button variant="outline" onClick={onSkip} disabled={isSubmitting} className="flex-1">
           Skip
         </Button>
