@@ -1,5 +1,56 @@
 TODOS LIST: Reference file:
 /home/krwhynot/projects/crispy-crm/docs/tasks/DASHBOARD_DOCUMENTATION.md
+
+**Last Updated**: November 13, 2025
+**Recent Progress**: TODO comments cleaned up ✅, 2 widgets rebuilt with semantic colors ✅
+
+---
+
+## 📊 Progress Summary
+
+| Priority | Category | Completed | Remaining | Progress |
+|----------|----------|-----------|-----------|----------|
+| P0 | Dead Code & Unused Assets | 0 | 2 | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+| P0 | TODO Comments | 1 | 1 | ████████⬜⬜ 80% |
+| P1 | Semantic Colors | 2 widgets | 7 files | ███⬜⬜⬜⬜⬜⬜⬜ 30% |
+| P1 | Spacing & Elevation | 0 | 2 | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+| P2 | Data & Performance | 0 | 4 | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+| P3 | Widget Consolidation | 0 | 4 | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+| P4 | Accessibility | 0 | 5 | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+| P5 | Documentation | 0 | 2 | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+
+## 🎯 Recommended Next Steps
+
+Based on current state analysis, here's the recommended priority order:
+
+### **Immediate (This Week)**
+1. **Dead Code Cleanup (P0)** - Remove 12 unused component files (~1,300 LOC)
+   - **Impact**: Reduces bundle size by ~30KB, improves maintainability
+   - **Effort**: Low (2-3 hours) - Move to archive/ folder first for safety
+   - **Blocker**: None
+
+2. **Remaining Semantic Color Fixes (P1)** - Fix 7 files with hardcoded colors
+   - **Impact**: Design system compliance, dark mode preparation
+   - **Effort**: Medium (4-6 hours) - Pattern established from recent work
+   - **Blocker**: None
+
+### **Short Term (Next Week)**
+3. **Pipeline Performance (P2)** - Move aggregation to database view
+   - **Impact**: Eliminates 1000-row client-side fetch
+   - **Effort**: Medium (6-8 hours) - Create view + update component
+   - **Blocker**: None
+
+4. **Commented Code Removal (P0)** - Clean UpcomingEventsByPrincipal.tsx
+   - **Impact**: Code clarity
+   - **Effort**: Low (1 hour)
+   - **Blocker**: May need database view first
+
+### **Medium Term (Next Sprint)**
+5. **Widget Consolidation (P3)** - Unify activity feeds and task widgets
+   - **Impact**: Reduces complexity, improves consistency
+   - **Effort**: High (12-16 hours)
+   - **Blocker**: Wait until dead code removed
+
 ---
 
 ## 🧨 P0 / Critical – Pre-Launch Cleanup
@@ -12,7 +63,7 @@ TODOS LIST: Reference file:
   * `QuickAdd.tsx`
   * `MetricsCardGrid.tsx`
   * `HotContacts.tsx`
-  * `LatestNotes.tsx`
+  * `LatestNotes.tsx`Option
   * `MiniPipeline.tsx`
   * `MyOpenOpportunities.tsx`
   * `OverdueTasks.tsx`
@@ -40,24 +91,22 @@ TODOS LIST: Reference file:
 
 ### Semantic Colors Only
 
-* [ ] **Create a small “semantic color migration” plan** (or codemod) for Tailwind classes
-* [ ] **Replace hardcoded grays** in dashboard components with semantic utilities:
+* [x] **MyTasksThisWeek & RecentActivityFeed now 100% compliant** ✅ Completed Nov 13, 2025
+  * Both widgets rebuilt with semantic colors only (no hardcoded hex/grays)
+  * Use `text-destructive`, `bg-destructive/10`, `text-warning`, `bg-warning/10`, `text-muted-foreground`
+* [ ] **Create a small "semantic color migration" plan** (or codemod) for Tailwind classes
+* [ ] **Replace hardcoded colors in remaining 7 files** (detected via grep):
 
-  * `bg-gray-50`, `text-gray-900`, `text-gray-600`, `text-gray-500`, `text-gray-400`, `border-gray-300`, `bg-gray-200`, `hover:bg-gray-50` → `bg-muted`, `bg-muted/50`, `text-foreground`, `text-muted-foreground`, `border-border`, etc.
-* [ ] **Replace hardcoded blues** with semantic “info/primary” tokens:
-
-  * `bg-blue-100 text-blue-800`, `text-blue-600`, `bg-blue-50` → `bg-info/10`, `text-info-default`, `text-primary`, etc.
-* [ ] **Fix status color violations**, especially in:
-
-  * `PriorityIndicator.tsx` (yellow/green BG + borders)
-  * `PrincipalDashboardTable.tsx`
-  * `CompactPrincipalTable.tsx`
+  * `CompactRecentActivity.tsx`
   * `CompactTasksWidget.tsx`
-  * `MetricsCardGrid.tsx`
+  * `PrincipalCardSkeleton.tsx`
+  * `PrincipalDashboard.tsx`
   * `OpportunitiesByPrincipalDesktop.tsx`
-* [ ] **Standardize on semantic Tailwind aliases where possible**
+  * `PrincipalDashboardTable.tsx`
+  * `QuickActionModals/QuickLogActivity.tsx`
 
-  * Use `text-foreground`, `text-muted-foreground`, `bg-muted`, `border-border`, etc., instead of freeform color utilities.
+  **Replace**: `bg-gray-50`, `text-gray-900`, `text-gray-600`, `bg-blue-100`, `text-red-600`, etc.
+  **With**: `bg-muted`, `text-foreground`, `text-muted-foreground`, `bg-info/10`, `text-destructive`, etc.
 
 ### Spacing & Elevation Tokens
 
