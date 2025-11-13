@@ -208,7 +208,7 @@ function StageRow({ stage, count, stuckCount }: StageRowProps) {
   return (
     <div className="flex justify-between items-center text-sm py-1">
       <span className="text-foreground">{stageLabel}:</span>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-compact">
         <span className="font-medium">{count}</span>
         {stuckCount > 0 && (
           <span className="text-xs text-warning">⚠️ {stuckCount} stuck</span>
