@@ -1,15 +1,9 @@
-import React, { useMemo } from 'react';
-import { useGetList, useGetIdentity } from 'ra-core';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DashboardWidget } from './DashboardWidget';
 import { formatRelativeTime } from '@/atomic-crm/utils/formatRelativeTime';
-
-interface Task {
-  id: number | string;
-  title: string;
-  due_date: string;
-  status: string;
-}
+import { useTasksThisWeek, groupTasksByUrgency } from './hooks';
+import type { Task } from '@/atomic-crm/types';
 
 /**
  * MyTasksThisWeek - Desktop-first widget showing incomplete tasks due this week
@@ -24,44 +18,12 @@ interface Task {
  */
 export const MyTasksThisWeek: React.FC = () => {
   const navigate = useNavigate();
-  const { identity } = useGetIdentity();
 
-  const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
+  // Fetch tasks using shared hook
+  const { tasks, isPending, error, todayStr } = useTasksThisWeek();
 
-  const endOfWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-  const endOfWeekStr = endOfWeek.toISOString().split('T')[0];
-
-  const { data: tasks = [], isPending, error } = useGetList('tasks', {
-    filter: {
-      completed: false,
-      due_date_lte: endOfWeekStr,
-      sales_id: identity?.id,
-    },
-    sort: { field: 'due_date', order: 'ASC' },
-    pagination: { page: 1, perPage: 50 },
-  });
-
-  // Group tasks by urgency
-  const groupedTasks = useMemo(() => {
-    const groups: Record<string, Task[]> = {
-      OVERDUE: [],
-      TODAY: [],
-      'THIS WEEK': [],
-    };
-
-    (tasks as Task[]).forEach((task) => {
-      if (task.due_date < todayStr) {
-        groups.OVERDUE.push(task);
-      } else if (task.due_date === todayStr) {
-        groups.TODAY.push(task);
-      } else {
-        groups['THIS WEEK'].push(task);
-      }
-    });
-
-    return groups;
-  }, [tasks, todayStr]);
+  // Group tasks by urgency using shared utility
+  const groupedTasks = groupTasksByUrgency(tasks, todayStr);
 
   if (isPending) {
     return (
