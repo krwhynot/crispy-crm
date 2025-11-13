@@ -134,15 +134,15 @@ export const Dashboard = () => {
         </div>
 
         {/* Grid Layout: 70% main content (left) + 30% sidebar (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-[var(--spacing-section)]">
+        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-section">
           {/* Left Column - Main Focus */}
-          <div className="space-y-[var(--spacing-section)]">
+          <div className="space-y-section">
             <UpcomingEventsByPrincipal />
             <OpportunitiesByPrincipalDesktopContainer />
           </div>
 
           {/* Right Sidebar - Supporting Context */}
-          <aside className="space-y-[var(--spacing-section)]" aria-label="Supporting information">
+          <aside className="space-y-section" aria-label="Supporting information">
             <MyTasksThisWeek />
             <RecentActivityFeed />
             <PipelineSummary />
