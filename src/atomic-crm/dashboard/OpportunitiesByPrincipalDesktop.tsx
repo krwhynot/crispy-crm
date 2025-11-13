@@ -54,9 +54,9 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
       }
       className="col-span-full"
     >
-      <div className="relative overflow-x-auto">
-        <table className="w-full desktop-table">
-          <thead className="bg-muted/50 text-xs uppercase tracking-wider">
+      <div className="relative overflow-x-auto rounded-md border border-border">
+        <table className="w-full border-collapse text-sm">
+          <thead className="bg-muted/50 text-xs uppercase tracking-wider sticky top-0 z-10">
             <tr>
               <th className="text-left px-3 py-2 font-semibold">Principal</th>
               <th className="text-center px-2 py-2 w-20">Pipeline</th>
