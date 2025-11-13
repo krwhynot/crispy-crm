@@ -86,7 +86,7 @@ export const DashboardWidget = ({
         flex flex-col
         min-h-[60px] md:min-h-[70px] lg:min-h-[80px]
         transition-all duration-200
-        ${isClickable ? "cursor-pointer hover:shadow-md active:shadow-sm hover:border-primary/50" : ""}
+        ${isClickable ? "cursor-pointer hover:shadow-elevation-2 active:shadow-elevation-1 hover:border-primary/50" : ""}
         ${className}
       `}
       onClick={isClickable && !isLoading && !error ? onClick : undefined}
@@ -105,7 +105,7 @@ export const DashboardWidget = ({
       aria-label={isClickable ? `View ${title}` : undefined}
     >
       {/* Header: Title + Icon - Ultra compact */}
-      <div className="flex items-center justify-between gap-1 mb-1">
+      <div className="flex items-center justify-between gap-compact mb-compact">
         <h3 className="text-[10px] md:text-xs font-semibold text-muted-foreground tracking-wide uppercase flex-1 min-w-0 truncate">
           {title}
         </h3>
@@ -118,7 +118,7 @@ export const DashboardWidget = ({
       <div className="flex-1 flex items-center justify-center">
         {/* Loading State */}
         {isLoading && (
-          <div className="w-full space-y-[var(--spacing-content)]">
+          <div className="w-full space-y-content">
             <div className="h-12 bg-muted animate-pulse rounded" />
             <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
           </div>
@@ -126,10 +126,10 @@ export const DashboardWidget = ({
 
         {/* Error State */}
         {!isLoading && error && (
-          <div className="flex flex-col items-center justify-center gap-3 text-center py-4">
+          <div className="flex flex-col items-center justify-center gap-content text-center py-widget">
             <AlertCircle className="h-8 w-8 text-destructive" />
             <div>
-              <p className="text-sm font-medium text-destructive mb-1">Unable to load</p>
+              <p className="text-sm font-medium text-destructive mb-compact">Unable to load</p>
               <p className="text-xs text-muted-foreground">{error.message}</p>
             </div>
             {onRetry && (
@@ -140,7 +140,7 @@ export const DashboardWidget = ({
                   e.stopPropagation();
                   onRetry();
                 }}
-                className="mt-2"
+                className="mt-compact"
               >
                 Retry
               </Button>
