@@ -135,13 +135,8 @@ export const CompactGridDashboard: React.FC = () => {
             <CompactPrincipalTable data={principals} />
           </div>
 
-          {/* Middle Column - Upcoming & Tasks */}
+          {/* Middle Column - Tasks Only */}
           <div className="space-y-section">
-            <div className="bg-white rounded-lg p-content">
-              <div className="h-[140px] flex items-center justify-center text-sm text-muted-foreground">
-                Upcoming Events - Coming Soon
-              </div>
-            </div>
             <div className="bg-white rounded-lg p-content">
               <CompactTasksWidget tasks={tasks} />
             </div>
