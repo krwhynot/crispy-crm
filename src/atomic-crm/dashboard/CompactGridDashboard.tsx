@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetList } from 'react-admin';
 import { endOfWeek } from 'date-fns';
 import { CompactDashboardHeader } from './CompactDashboardHeader';
 import { CompactPrincipalTable } from './CompactPrincipalTable';
 import { CompactTasksWidget } from './CompactTasksWidget';
 import { CompactRecentActivity } from './CompactRecentActivity';
+import QuickLogActivity from './QuickActionModals/QuickLogActivity';
 import type { Task } from '../types';
 
 interface Principal {
