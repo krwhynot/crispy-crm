@@ -26,39 +26,38 @@ TODOS LIST: Reference file:
 
 Based on current state analysis, here's the recommended priority order:
 
-### **Immediate (This Week)**
-1. **Dead Code Cleanup (P0)** - Remove 12 unused component files (~1,300 LOC)
-   - **Impact**: Reduces bundle size by ~30KB, improves maintainability
-   - **Effort**: Low (2-3 hours) - Move to archive/ folder first for safety
-   - **Blocker**: None
+### **Completed (Session 3 - Nov 13, 2025)**
+1. ✅ **Dead Code Cleanup (P0)** - Archived 12 unused component files (~1,300 LOC)
+   - **Result**: 78% dead code reduction, git history preserved via `git mv`
+   - **Commits**: e6305819 (desktop.css + dead imports + commented code)
 
-2. **Remaining Semantic Color Fixes (P1)** - Fix 7 files with hardcoded colors
-   - **Impact**: Design system compliance, dark mode preparation
-   - **Effort**: Medium (4-6 hours) - Pattern established from recent work
+2. ✅ **P0 Cleanup Complete** - desktop.css archived, dead imports removed, commented code replaced
+   - **Result**: All P0 tasks complete, zen code review verified quality
+   - **Commits**: e6305819, 2bd09916 (zen fixes: orphaned styling + empty state UX)
+
+### **Immediate (This Week)**
+3. **Spacing & Elevation Tokens (P1)** - Refactor ad-hoc spacing to semantic tokens
+   - **Impact**: Design system consistency, easier responsive adjustments
+   - **Effort**: Medium (4-6 hours) - Replace hardcoded spacing with CSS vars
    - **Blocker**: None
 
 ### **Short Term (Next Week)**
-3. **Pipeline Performance (P2)** - Move aggregation to database view
+4. **Pipeline Performance (P2)** - Move aggregation to database view
    - **Impact**: Eliminates 1000-row client-side fetch
    - **Effort**: Medium (6-8 hours) - Create view + update component
    - **Blocker**: None
-
-4. **Commented Code Removal (P0)** - Clean UpcomingEventsByPrincipal.tsx
-   - **Impact**: Code clarity
-   - **Effort**: Low (1 hour)
-   - **Blocker**: May need database view first
 
 ### **Medium Term (Next Sprint)**
 5. **Widget Consolidation (P3)** - Unify activity feeds and task widgets
    - **Impact**: Reduces complexity, improves consistency
    - **Effort**: High (12-16 hours)
-   - **Blocker**: Wait until dead code removed
+   - **Blocker**: None (dead code removed)
 
 ---
 
 ## 🧨 P0 / Critical – Pre-Launch Cleanup
 
-### Dead Code & Unused Assets
+### Dead Code & Unused Assets ✅ COMPLETE
 
 * [x] **Archive or delete unused dashboard components** (~1,300 LOC) ✅ Completed Nov 13, 2025
 
@@ -77,19 +76,26 @@ Based on current state analysis, here's the recommended priority order:
 
   **Git Commit**: `899b7fc6` | **Impact**: -1,317 LOC | **Result**: 78% dead code reduction
 
-* [ ] **Decide fate of `src/atomic-crm/styles/desktop.css` (460 lines)**
+* [x] **Archive `src/atomic-crm/styles/desktop.css` (460 lines)** ✅ Completed Nov 13, 2025 (Session 3)
 
-  * [ ] If keeping: wire its utilities into active dashboard components
-  * [ ] If not: move to `archive/` or remove from bundle
+  * ✅ Moved to `archive/styles/desktop.css` using `git mv`
+  * ✅ Removed dead imports from Dashboard.tsx and PrincipalDashboard.tsx
+  * ✅ Fixed orphaned `.desktop-table` styling with explicit Tailwind utilities (zen review)
 
-### TODO Comments & Commented Code
+  **Git Commits**: `e6305819` (archive), `2bd09916` (zen fix)
+
+### TODO Comments & Commented Code ✅ COMPLETE
 
 * [x] **Audit and clear remaining TODOs in dashboard files** ✅ Completed Nov 13, 2025
 
   * All TODO comments have been removed from dashboard files
-* [ ] **Remove or replace commented-out grouping logic** in
 
-  * [ ] `UpcomingEventsByPrincipal.tsx` (old task/activity grouping block)
+* [x] **Remove or replace commented-out grouping logic** ✅ Completed Nov 13, 2025 (Session 3)
+
+  * ✅ `UpcomingEventsByPrincipal.tsx` - Replaced 30 lines of commented code with clear architectural NOTE
+  * ✅ Fixed misleading empty state to explain P2 limitation (zen review)
+
+  **Git Commits**: `e6305819` (NOTE), `2bd09916` (zen fix)
 
 ---
 
