@@ -181,36 +181,11 @@ function groupEventsByPrincipal(
 ): PrincipalEvent[] {
   const eventMap = new Map<number, PrincipalEvent>();
 
-  // Add tasks to event map
-  tasks.forEach((task) => {
-    if (!task.opportunity_id) return;
-
-    // Find principal from opportunity (would need to join, for now skip tasks without principal)
-    // This is a simplified version - production would need proper join
-    // const event = {
-    //   id: `task-${task.id}`,
-    //   type: 'task' as const,
-    //   title: task.title,
-    //   date: new Date(task.due_date),
-    //   description: undefined,
-    // };
-
-    // For now, we'll skip tasks without direct principal association
-    // In production, we'd need to join through opportunities table
-  });
-
-  // Add activities to event map (similar logic)
-  activities.forEach((_activity) => {
-    // if (!activity.opportunity_id) return;
-    // const event = {
-    //   id: `activity-${activity.id}`,
-    //   type: 'activity' as const,
-    //   title: activity.type,
-    //   date: new Date(activity.activity_date),
-    //   description: activity.notes,
-    // };
-    // For now, we'll skip activities without direct principal association
-  });
+  // NOTE: Tasks and activities currently don't include principal_organization_id in their schema.
+  // To properly group by principal, we would need to join through:
+  // - Task → Opportunity → Principal
+  // - Activity → Opportunity → Principal
+  // This would require a database view or additional data enrichment in the data layer.
 
   // Convert map to array and sort
   const grouped = Array.from(eventMap.values());
