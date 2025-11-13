@@ -57,3 +57,9 @@
 1763068014:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/CompactGridDashboard.tsx:src
 1763068024:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/CompactGridDashboard.tsx:src
 1763068411:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/hooks/useTasksThisWeek.ts:src
+1763068423:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/utils/groupTasksByUrgency.ts:src
+1763068432:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/hooks/index.ts:src
+1763068458:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/utils/__tests__/groupTasksByUrgency.test.ts:src
+1763068491:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/hooks/__tests__/useTasksThisWeek.test.tsx:src
+1763068524:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/MyTasksThisWeek.tsx:src
+1763068894:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/Dashboard.tsx:src
