@@ -17,6 +17,22 @@ interface Principal {
 }
 
 export const CompactGridDashboard: React.FC = () => {
+  // Modal state
+  const [quickLogOpen, setQuickLogOpen] = useState(false);
+  const [selectedPrincipalId, setSelectedPrincipalId] = useState<string | null>(null);
+
+  // Listen for quick-log-activity custom events
+  useEffect(() => {
+    const handleQuickLogEvent = (event: Event) => {
+      const customEvent = event as CustomEvent<{ principalId: number | null; activityType: string }>;
+      setSelectedPrincipalId(customEvent.detail.principalId?.toString() || null);
+      setQuickLogOpen(true);
+    };
+
+    window.addEventListener('quick-log-activity', handleQuickLogEvent);
+    return () => window.removeEventListener('quick-log-activity', handleQuickLogEvent);
+  }, []);
+
   // Fetch real data from API
   const today = new Date();
   const endOfWeekDate = endOfWeek(today);
@@ -105,6 +121,18 @@ export const CompactGridDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Quick Log Activity Modal */}
+      <QuickLogActivity
+        open={quickLogOpen}
+        onClose={() => setQuickLogOpen(false)}
+        onSubmit={(data) => {
+          console.log('Activity logged:', data);
+          setQuickLogOpen(false);
+          // TODO: Implement actual activity creation
+        }}
+        principalId={selectedPrincipalId || undefined}
+      />
     </div>
   );
 };
