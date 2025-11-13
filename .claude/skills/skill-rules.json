@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "description": "Skill activation triggers for Crispy-CRM",
+  "skills": {
+    "skill-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Meta-skill for creating and managing Claude Code skills",
+      "promptTriggers": {
+        "keywords": [
+          "skill system",
+          "create skill",
+          "add skill",
+          "skill triggers",
+          "skill rules",
+          "skill development"
+        ],
+        "intentPatterns": [
+          "(how do|how does|explain).*?skill",
+          "(create|add|modify|build).*?skill",
+          "skill.*?(work|trigger|activate|system)"
+        ]
+      }
+    },
+    "crispy-design-system": {
+      "type": "guardrail",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Design tokens, Tailwind patterns, OKLCH colors, CRM UI components",
+      "promptTriggers": {
+        "keywords": [
+          "design",
+          "component",
+          "styling",
+          "layout",
+          "tailwind",
+          "color",
+          "typography",
+          "spacing",
+          "elevation",
+          "theme"
+        ],
+        "intentPatterns": [
+          "(create|build|design).*?(component|ui|interface)",
+          "(style|styling|css).*",
+          "how.*?(look|appear|design)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/components/**/*.tsx",
+          "src/pages/**/*.tsx",
+          "src/layouts/**/*.tsx"
+        ],
+        "contentPatterns": [
+          "className=",
+          "tailwind",
+          "bg-\\[oklch",
+          "design-token"
+        ]
+      }
+    },
+    "supabase-crm": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Supabase backend patterns, RLS policies, Edge Functions, query optimization",
+      "promptTriggers": {
+        "keywords": [
+          "supabase",
+          "database",
+          "query",
+          "RLS",
+          "edge function",
+          "backend",
+          "api",
+          "service layer",
+          "migration"
+        ],
+        "intentPatterns": [
+          "(create|build|write).*?(query|function|api)",
+          "(database|backend|supabase).*",
+          "how.*?(query|fetch|insert|update|delete)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/services/**/*.ts",
+          "src/lib/supabase/**/*.ts",
+          "supabase/functions/**/*.ts",
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "import.*supabase",
+          "\\.from\\(",
+          "\\.select\\(",
+          "createClient",
+          "RLS"
+        ]
+      }
+    }
+  }
+}
