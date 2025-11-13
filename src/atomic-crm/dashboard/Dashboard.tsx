@@ -11,7 +11,6 @@ import { PipelineSummary } from "./PipelineSummary";
 import QuickLogActivity from "./QuickActionModals/QuickLogActivity";
 import { useKeyboardShortcuts, globalShortcuts } from "@/atomic-crm/utils/keyboardShortcuts";
 import { useContextMenu, ContextMenu, type ContextMenuItem } from "@/atomic-crm/utils/contextMenu";
-import "../styles/desktop.css";
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
