@@ -15,16 +15,16 @@ export const CompactTasksWidget: React.FC<Props> = ({ tasks }) => {
 
   return (
     <div className="h-full">
-      <div className="flex items-center justify-between mb-2 h-7">
+      <div className="flex items-center justify-between mb-compact h-7">
         <h2 className="text-sm font-semibold text-foreground">My Tasks This Week</h2>
         <span className="bg-info/10 text-info text-xs px-2 py-0.5 rounded-full">
           {tasks.length}
         </span>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-compact">
         {displayTasks.map(task => (
-          <div key={task.id} className="flex items-center gap-2 py-1">
+          <div key={task.id} className="flex items-center gap-compact py-1">
             <input
               type="checkbox"
               className="w-4 h-4 text-primary rounded"
@@ -39,7 +39,7 @@ export const CompactTasksWidget: React.FC<Props> = ({ tasks }) => {
       </div>
 
       {tasks.length > 4 && (
-        <a href="/tasks" className="text-xs text-primary hover:underline mt-2 block">
+        <a href="/tasks" className="text-xs text-primary hover:underline mt-compact block">
           View all tasks →
         </a>
       )}
