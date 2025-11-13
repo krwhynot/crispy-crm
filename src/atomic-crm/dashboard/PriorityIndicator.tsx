@@ -65,14 +65,14 @@ const priorityConfig = {
     label: 'Needs attention'
   },
   medium: {
-    bgColor: 'bg-yellow-50',
-    borderColor: 'border-yellow-300',
+    bgColor: 'bg-warning/10',
+    borderColor: 'border-warning',
     icon: '⚡',
     label: 'Tasks due soon'
   },
   low: {
-    bgColor: 'bg-green-50',
-    borderColor: 'border-green-300',
+    bgColor: 'bg-success/10',
+    borderColor: 'border-success',
     icon: '✅',
     label: 'On track'
   }

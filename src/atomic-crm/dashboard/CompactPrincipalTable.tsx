@@ -52,13 +52,13 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
   return (
     <div className="h-full">
       <div className="flex items-center justify-between mb-2 h-7">
-        <h2 className="text-sm font-semibold text-gray-900">My Principals</h2>
-        <span className="text-xs text-gray-500">{data.length} total</span>
+        <h2 className="text-sm font-semibold text-foreground">My Principals</h2>
+        <span className="text-xs text-muted-foreground">{data.length} total</span>
       </div>
 
       <table className="w-full text-sm">
         <thead>
-          <tr className="text-left text-xs text-gray-600 border-b">
+          <tr className="text-left text-xs text-muted-foreground border-b">
             <th className="pb-1 px-2">Principal</th>
             <th className="pb-1 px-2 text-center w-16">Pipeline</th>
             <th className="pb-1 px-2 text-center w-16">This Week</th>
@@ -70,7 +70,7 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
           {displayData.map(principal => (
             <tr
               key={principal.id}
-              className="h-9 border-b hover:bg-gray-50 cursor-pointer"
+              className="h-9 border-b hover:bg-muted cursor-pointer"
               onMouseEnter={() => setHoveredRow(principal.id)}
               onMouseLeave={() => setHoveredRow(null)}
               onClick={() => handleRowClick(principal.id, principal.name)}
@@ -80,14 +80,14 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
 
               {/* Opportunity count (Pipeline) */}
               <td className="py-1 px-2 text-center">
-                <span className="inline-flex items-center justify-center min-w-[1.5rem] px-1.5 py-0.5 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">
+                <span className="inline-flex items-center justify-center min-w-[1.5rem] px-1.5 py-0.5 text-xs font-semibold bg-primary/20 text-primary-foreground rounded-full">
                   {principal.opportunityCount}
                 </span>
               </td>
 
               {/* Weekly activity count */}
               <td className="py-1 px-2 text-center text-xs">
-                <span className={principal.weeklyActivities && principal.weeklyActivities < 3 ? 'text-red-600 font-semibold' : 'text-gray-600'}>
+                <span className={principal.weeklyActivities && principal.weeklyActivities < 3 ? 'text-destructive font-semibold' : 'text-muted-foreground'}>
                   {principal.weeklyActivities ?? 0}
                 </span>
               </td>
@@ -100,20 +100,20 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
                       {principal.assignedReps.slice(0, 2).map((rep, idx) => (
                         <div
                           key={idx}
-                          className="w-5 h-5 rounded-full bg-gray-200 border border-white flex items-center justify-center text-xs font-medium"
+                          className="w-5 h-5 rounded-full bg-muted border border-white flex items-center justify-center text-xs font-medium"
                           title={rep}
                         >
                           {rep[0]}
                         </div>
                       ))}
                       {principal.assignedReps.length > 2 && (
-                        <div className="w-5 h-5 rounded-full bg-gray-300 border border-white flex items-center justify-center text-xs">
+                        <div className="w-5 h-5 rounded-full bg-muted border border-white flex items-center justify-center text-xs">
                           +{principal.assignedReps.length - 2}
                         </div>
                       )}
                     </>
                   ) : (
-                    <span className="text-xs text-gray-400">-</span>
+                    <span className="text-xs text-muted-foreground">-</span>
                   )}
                 </div>
               </td>
@@ -190,7 +190,7 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
       {hasMore && !expanded && (
         <button
           onClick={() => setExpanded(true)}
-          className="mt-2 text-xs text-blue-600 hover:underline"
+          className="mt-2 text-xs text-primary hover:underline"
         >
           Show all {data.length} principals
         </button>

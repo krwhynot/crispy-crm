@@ -77,7 +77,7 @@ export const CompactGridDashboard: React.FC = () => {
   // Show loading state while data is being fetched
   if (principalsLoading || tasksLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-muted">
         <CompactDashboardHeader />
         <div className="p-2 md:p-3 lg:p-4 flex items-center justify-center">
           <div className="text-muted-foreground">Loading dashboard...</div>
@@ -87,7 +87,7 @@ export const CompactGridDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <CompactDashboardHeader />
       <div className="p-2 md:p-3 lg:p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[40%_30%_30%] gap-4">

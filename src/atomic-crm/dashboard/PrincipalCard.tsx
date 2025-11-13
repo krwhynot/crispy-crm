@@ -59,14 +59,14 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+    <div className="border border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
       {/* Header: Principal name + Priority */}
       <div className="flex items-start justify-between gap-4 mb-4">
         <button
           onClick={handlePrincipalClick}
           className="text-left hover:underline"
         >
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-foreground">
             {principal.name}
           </h2>
         </button>
@@ -76,7 +76,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
       {/* Summary stats */}
       <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
         <div>
-          <span className="text-gray-600">Tasks</span>
+          <span className="text-muted-foreground">Tasks</span>
           <p className="font-semibold">
             {principal.tasks.length} tasks
             {overdueTasks.length > 0 && (
@@ -87,7 +87,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
           </p>
         </div>
         <div>
-          <span className="text-gray-600">Activities This Week</span>
+          <span className="text-muted-foreground">Activities This Week</span>
           <p className="font-semibold">{principal.activities.length} activities</p>
         </div>
       </div>
@@ -95,7 +95,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
       {/* Top opportunity */}
       {principal.topOpportunity && (
         <div className="mb-4 p-3 bg-primary/5 rounded border border-primary/20">
-          <p className="text-xs text-gray-600 mb-1">Top Opportunity</p>
+          <p className="text-xs text-muted-foreground mb-1">Top Opportunity</p>
           <button
             onClick={() =>
               navigate(`/opportunities/${principal.topOpportunity!.id}`)
@@ -104,7 +104,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
           >
             {principal.topOpportunity.name}
           </button>
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {principal.topOpportunity.stage}
             {principal.topOpportunity.estimated_close_date &&
               ` - Close: ${new Date(principal.topOpportunity.estimated_close_date).toLocaleDateString()}`}
@@ -113,7 +113,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
       )}
 
       {/* Action buttons */}
-      <div className="flex gap-2 pt-4 border-t border-gray-200">
+      <div className="flex gap-2 pt-4 border-t border">
         <button
           onClick={handleViewTasks}
           className="flex-1 px-3 py-2 bg-primary text-white rounded font-medium text-sm hover:opacity-90 transition-opacity min-h-[44px]"
@@ -122,7 +122,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
         </button>
         <button
           onClick={handleViewOpportunities}
-          className="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded font-medium text-sm hover:bg-gray-50 transition-colors min-h-[44px]"
+          className="flex-1 px-3 py-2 border border text-foreground rounded font-medium text-sm hover:bg-muted transition-colors min-h-[44px]"
         >
           View Opportunities
         </button>
