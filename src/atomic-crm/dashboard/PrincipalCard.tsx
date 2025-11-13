@@ -59,9 +59,9 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
   };
 
   return (
-    <div className="border border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+    <div className="border border rounded-lg p-widget bg-white shadow-elevation-1 hover:shadow-elevation-2 transition-shadow">
       {/* Header: Principal name + Priority */}
-      <div className="flex items-start justify-between gap-4 mb-4">
+      <div className="flex items-start justify-between gap-content mb-section">
         <button
           onClick={handlePrincipalClick}
           className="text-left hover:underline"
