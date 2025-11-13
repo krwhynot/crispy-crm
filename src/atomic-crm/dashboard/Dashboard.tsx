@@ -1,4 +1,4 @@
-import { useRefresh } from "ra-core";
+import { useRefresh, useDataProvider, useNotify } from "ra-core";
 import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,8 @@ export const Dashboard = () => {
   const [quickLogOpen, setQuickLogOpen] = useState(false);
   const [selectedPrincipalId, setSelectedPrincipalId] = useState<string | null>(null);
   const refresh = useRefresh();
+  const dataProvider = useDataProvider();
+  const notify = useNotify();
   const announce = useAriaAnnounce();
   const { showContextMenu, closeContextMenu, contextMenuComponent } = useContextMenu();
 

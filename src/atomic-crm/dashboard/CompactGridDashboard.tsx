@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useGetList } from 'react-admin';
+import { useGetList, useRefresh, useDataProvider, useNotify } from 'react-admin';
 import { endOfWeek } from 'date-fns';
+import { useAriaAnnounce } from '@/lib/design-system';
 import { CompactDashboardHeader } from './CompactDashboardHeader';
 import { CompactPrincipalTable } from './CompactPrincipalTable';
 import { CompactTasksWidget } from './CompactTasksWidget';
@@ -20,6 +21,12 @@ export const CompactGridDashboard: React.FC = () => {
   // Modal state
   const [quickLogOpen, setQuickLogOpen] = useState(false);
   const [selectedPrincipalId, setSelectedPrincipalId] = useState<string | null>(null);
+
+  // React Admin hooks
+  const refresh = useRefresh();
+  const dataProvider = useDataProvider();
+  const notify = useNotify();
+  const announce = useAriaAnnounce();
 
   // Listen for quick-log-activity custom events
   useEffect(() => {
@@ -74,6 +81,38 @@ export const CompactGridDashboard: React.FC = () => {
     priority: (t.priority || 'normal') as 'high' | 'normal' | 'low'
   }));
 
+  // Handle quick log activity submission
+  const handleQuickLogSubmit = async (data: {
+    type: "call" | "email" | "meeting";
+    notes: string;
+    principalId: string;
+  }) => {
+    try {
+      await dataProvider.create("activities", {
+        data: {
+          activity_type: "interaction", // Required field for activities table
+          type: data.type, // The interaction_type enum
+          subject: `${data.type.charAt(0).toUpperCase() + data.type.slice(1)} with principal`,
+          description: data.notes || "",
+          activity_date: new Date().toISOString(),
+          organization_id: parseInt(data.principalId), // Principal ID is organization ID
+          follow_up_required: false,
+        },
+      });
+
+      announce(
+        `Activity logged: ${data.type} for principal. Notes: ${data.notes || "None"}`
+      );
+      notify("Activity logged successfully", { type: "success" });
+      setQuickLogOpen(false);
+      refresh(); // Refresh dashboard to show new activity
+    } catch (error) {
+      console.error("Error logging activity:", error);
+      notify("Failed to log activity", { type: "error" });
+      announce("Failed to log activity");
+    }
+  };
+
   // Show loading state while data is being fetched
   if (principalsLoading || tasksLoading) {
     return (
@@ -126,11 +165,7 @@ export const CompactGridDashboard: React.FC = () => {
       <QuickLogActivity
         open={quickLogOpen}
         onClose={() => setQuickLogOpen(false)}
-        onSubmit={(data) => {
-          console.log('Activity logged:', data);
-          setQuickLogOpen(false);
-          // TODO: Implement actual activity creation
-        }}
+        onSubmit={handleQuickLogSubmit}
         principalId={selectedPrincipalId || undefined}
       />
     </div>
