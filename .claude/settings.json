@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/skill-activation-prompt.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
@@ -13,10 +24,26 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/checkpoint-trigger.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/post-tool-use-tracker.sh",
+            "timeout": 5
           }
         ]
       }
     ]
   },
-  "description": "Project hooks for file tracking, git checkpoints, and superpowers initialization"
+  "permissions": {
+    "allow": [
+      "Bash(cat .claude/skills/skill-rules.json)",
+      "Bash(ls .claude/skills/*/SKILL.md)",
+      "Bash(cat .claude/skills/*/SKILL.md)",
+      "Bash(for file in .claude/skills/*/resources/*.md)",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "description": "Project hooks for file tracking, git checkpoints, skill auto-activation, and infrastructure"
 }
