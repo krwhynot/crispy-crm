@@ -98,7 +98,69 @@
   --spacing-widget-padding: 20px;  /* Internal padding for widgets */
   --spacing-widget-min-height: 280px; /* Minimum widget height */
   --spacing-top-offset: 80px;      /* Top offset for layouts */
+}
 
+@layer utilities {
+  /* Vertical Spacing Utilities */
+  .space-y-section > * + * {
+    margin-top: var(--spacing-section);
+  }
+  .space-y-widget > * + * {
+    margin-top: var(--spacing-widget);
+  }
+  .space-y-content > * + * {
+    margin-top: var(--spacing-content);
+  }
+  .space-y-compact > * + * {
+    margin-top: var(--spacing-compact);
+  }
+
+  /* Gap Utilities */
+  .gap-section {
+    gap: var(--spacing-section);
+  }
+  .gap-widget {
+    gap: var(--spacing-widget);
+  }
+  .gap-content {
+    gap: var(--spacing-content);
+  }
+  .gap-compact {
+    gap: var(--spacing-compact);
+  }
+
+  /* Padding Utilities */
+  .p-widget {
+    padding: var(--spacing-widget-padding);
+  }
+  .p-content {
+    padding: var(--spacing-content);
+  }
+  .p-compact {
+    padding: var(--spacing-compact);
+  }
+  .px-content {
+    padding-left: var(--spacing-content);
+    padding-right: var(--spacing-content);
+  }
+  .py-content {
+    padding-top: var(--spacing-content);
+    padding-bottom: var(--spacing-content);
+  }
+  .pl-content {
+    padding-left: var(--spacing-content);
+  }
+
+  /* Margin Bottom Utilities */
+  .mb-section {
+    margin-bottom: var(--spacing-section);
+  }
+  .mb-widget {
+    margin-bottom: var(--spacing-widget);
+  }
+}
+
+@theme inline {
   /* Compact Dashboard Spacing */
   --spacing-dashboard-header: 32px;
   --spacing-dashboard-widget-header: 28px;
