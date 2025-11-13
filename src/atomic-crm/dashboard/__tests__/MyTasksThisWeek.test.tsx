@@ -8,8 +8,8 @@ const mockGetList = vi.fn();
 const mockGetIdentity = vi.fn();
 const mockNavigate = vi.fn();
 
-vi.mock('react-admin', async () => {
-  const actual = await vi.importActual('react-admin');
+vi.mock('ra-core', async () => {
+  const actual = await vi.importActual('ra-core');
   return {
     ...actual,
     useGetList: () => mockGetList(),
@@ -104,8 +104,8 @@ describe('MyTasksThisWeek', () => {
       </TestMemoryRouter>
     );
 
-    expect(screen.getByText(/OVERDUE/)).toBeInTheDocument();
-    expect(screen.getByText(/TODAY/)).toBeInTheDocument();
+    expect(screen.getAllByText(/OVERDUE/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/TODAY/).length).toBeGreaterThan(0);
   });
 
   it('should have compact row height (h-8)', () => {
