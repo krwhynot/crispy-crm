@@ -69,7 +69,7 @@ export const RecentActivityFeed: React.FC = () => {
   return (
     <DashboardWidget>
       {/* Header - Compact (h-6) */}
-      <div className="flex items-center justify-between mb-2 h-6">
+      <div className="flex items-center justify-between mb-compact h-6">
         <h2 className="text-xs font-semibold text-foreground uppercase tracking-wider">
           RECENT ACTIVITY
         </h2>
@@ -80,7 +80,7 @@ export const RecentActivityFeed: React.FC = () => {
 
       {/* Empty State */}
       {hasNoActivities && (
-        <div className="text-center py-2">
+        <div className="text-center py-compact">
           <p className="text-xs text-muted-foreground">No recent activity</p>
         </div>
       )}
@@ -98,12 +98,12 @@ export const RecentActivityFeed: React.FC = () => {
                 onClick={() => navigate(`/activities/${activity.id}`)}
               >
                 {/* Icon - Compact 3px */}
-                <div className="flex-shrink-0 w-3 h-3 mr-1.5 text-muted-foreground group-hover:text-foreground transition-colors">
+                <div className="flex-shrink-0 w-3 h-3 mr-compact text-muted-foreground group-hover:text-foreground transition-colors">
                   <IconComponent className="w-full h-full" aria-hidden="true" />
                 </div>
 
                 {/* Principal Name + Timestamp */}
-                <div className="flex-1 min-w-0 flex items-center justify-between gap-1.5">
+                <div className="flex-1 min-w-0 flex items-center justify-between gap-compact">
                   <span className="text-xs font-medium text-foreground truncate">
                     {activity.principal_name || 'Unknown'}
                   </span>
