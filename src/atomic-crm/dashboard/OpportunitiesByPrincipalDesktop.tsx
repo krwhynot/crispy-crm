@@ -65,7 +65,7 @@ export const OpportunitiesByPrincipalDesktop = ({ data = [] }: Props) => {
               <th className="w-40 px-2 py-2">Quick Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border">
+          <tbody className="divide-y divide-border [&>tr:nth-child(even)]:bg-muted/30">
             {data.map(row => (
               <tr
                 key={row.principalId}
