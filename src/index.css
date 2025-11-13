@@ -132,6 +132,11 @@
   --spacing-edge-mobile: var(--spacing-edge-mobile);    /* 16px */
   --spacing-edge-ipad: var(--spacing-edge-ipad);        /* 60px */
   --spacing-edge-desktop: var(--spacing-edge-desktop);  /* 24px */
+
+  /* Elevation system - Warm-tinted shadows */
+  --shadow-elevation-1: var(--elevation-1);
+  --shadow-elevation-2: var(--elevation-2);
+  --shadow-elevation-3: var(--elevation-3);
 }
 
 /*
