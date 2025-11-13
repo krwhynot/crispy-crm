@@ -16,7 +16,7 @@ export const CompactTasksWidget: React.FC<Props> = ({ tasks }) => {
   return (
     <div className="h-full">
       <div className="flex items-center justify-between mb-2 h-7">
-        <h2 className="text-sm font-semibold text-gray-900">My Tasks This Week</h2>
+        <h2 className="text-sm font-semibold text-foreground">My Tasks This Week</h2>
         <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">
           {tasks.length}
         </span>

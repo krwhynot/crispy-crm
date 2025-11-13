@@ -177,8 +177,8 @@ const MetricCard = ({ metric }: MetricCardProps) => {
         <div
           className={`text-xs md:text-sm mt-2 font-medium ${
             metric.trend > 0
-              ? "text-green-600 dark:text-green-400"
-              : "text-red-600 dark:text-red-400"
+              ? "text-success"
+              : "text-destructive"
           }`}
         >
           {metric.trend > 0 ? "↑" : "↓"} {Math.abs(metric.trend)}%{" "}

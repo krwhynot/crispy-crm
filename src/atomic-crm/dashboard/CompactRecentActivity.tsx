@@ -46,7 +46,7 @@ export const CompactRecentActivity: React.FC = () => {
     return (
       <div className="h-full">
         <div className="flex items-center justify-between mb-2 h-7">
-          <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <ActivityIcon className="w-4 h-4" />
             Recent Activity
           </h2>
@@ -61,7 +61,7 @@ export const CompactRecentActivity: React.FC = () => {
   return (
     <div className="h-full">
       <div className="flex items-center justify-between mb-2 h-7">
-        <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+        <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
           <ActivityIcon className="w-4 h-4" />
           Recent Activity
         </h2>
@@ -78,14 +78,14 @@ export const CompactRecentActivity: React.FC = () => {
             <div
               key={activity.id}
               onClick={() => navigate(`/activities/${activity.id}`)}
-              className="flex items-start gap-2 py-1 px-2 hover:bg-gray-50 rounded cursor-pointer group"
+              className="flex items-start gap-2 py-1 px-2 hover:bg-muted rounded cursor-pointer group"
             >
-              <Icon className="w-3 h-3 mt-0.5 flex-shrink-0 text-gray-500 group-hover:text-gray-700" />
+              <Icon className="w-3 h-3 mt-0.5 flex-shrink-0 text-muted-foreground group-hover:text-foreground" />
               <div className="flex-1 min-w-0">
-                <p className="text-xs truncate text-gray-900">
+                <p className="text-xs truncate text-foreground">
                   {activity.notes || `${activity.type} activity`}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   {formatRelativeTime(new Date(activity.activity_date))}
                 </p>
               </div>

@@ -27,13 +27,13 @@ export const CompactDashboardHeader: React.FC = () => {
 
   return (
     <div className="h-8 flex items-center justify-between px-3 bg-white border-b">
-      <h1 className="text-xl font-semibold text-gray-900">
+      <h1 className="text-xl font-semibold text-foreground">
         Principal Dashboard - Week of {currentDate}
       </h1>
       <div className="flex gap-2">
         <button
           onClick={handleRefresh}
-          className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+          className="px-3 py-1 text-sm bg-muted hover:bg-muted/50 rounded transition-colors"
           title="Refresh dashboard data"
         >
           Refresh
