@@ -431,7 +431,7 @@ Expected: FAIL - Component not found
 import React from 'react';
 import { useGetList } from 'react-admin';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ChevronRight } from 'lucide-react';
 import type { PrincipalOpportunity } from '../types';
 
@@ -440,9 +440,6 @@ export const PrincipalOpportunitiesWidget: React.FC = () => {
     pagination: { page: 1, perPage: 100 },
     sort: { field: 'principal_name', order: 'ASC' }
   });
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading opportunities</div>;
 
   // Group opportunities by principal
   const groupedOpps = data?.reduce((acc, opp) => {
@@ -462,40 +459,61 @@ export const PrincipalOpportunitiesWidget: React.FC = () => {
     }
   };
 
+  const getHealthLabel = (status: string) => {
+    switch (status) {
+      case 'active': return 'Active (touched within 7 days)';
+      case 'cooling': return 'Cooling (7-14 days since touch)';
+      case 'at_risk': return 'At risk (over 14 days since touch)';
+      default: return '';
+    }
+  };
+
   return (
     <Card className="h-full">
       <CardHeader>
         <CardTitle>Opportunities by Principal</CardTitle>
       </CardHeader>
       <CardContent className="space-y-section">
-        {Object.entries(groupedOpps).map(([principal, opps]) => (
-          <div key={principal} className="space-y-compact">
-            <div className="font-semibold text-foreground">
-              {principal} ({opps.length})
-            </div>
-            <div className="space-y-compact pl-content">
-              {opps.map((opp) => (
-                <div
-                  key={opp.opportunity_id}
-                  className="flex items-center justify-between min-h-[44px] p-compact hover:bg-muted rounded cursor-pointer"
-                >
-                  <div className="flex items-center gap-compact">
-                    <span>{getHealthIcon(opp.health_status)}</span>
-                    <span className="text-sm">
-                      {opp.customer_name} - {opp.stage} Stage
-                    </span>
-                    {opp.days_since_activity > 14 && (
-                      <span className="text-xs text-muted-foreground">
-                        {Math.floor(opp.days_since_activity)} days
-                      </span>
-                    )}
-                  </div>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                </div>
-              ))}
-            </div>
+        {isLoading ? (
+          <div className="space-y-section">
+            <Skeleton className="h-11 w-full" />
+            <Skeleton className="h-11 w-full" />
+            <Skeleton className="h-11 w-full" />
           </div>
-        ))}
+        ) : error ? (
+          <div className="text-destructive">Error loading opportunities</div>
+        ) : (
+          Object.entries(groupedOpps).map(([principal, opps]) => (
+            <div key={principal} className="space-y-compact">
+              <div className="font-semibold text-foreground">
+                {principal} ({opps.length})
+              </div>
+              <div className="space-y-compact pl-content">
+                {opps.map((opp) => (
+                  <div
+                    key={opp.opportunity_id}
+                    className="flex items-center justify-between min-h-11 p-compact hover:bg-muted rounded cursor-pointer"
+                  >
+                    <div className="flex items-center gap-compact">
+                      <span aria-label={getHealthLabel(opp.health_status)}>
+                        {getHealthIcon(opp.health_status)}
+                      </span>
+                      <span className="text-sm">
+                        {opp.customer_name} - {opp.stage} Stage
+                      </span>
+                      {opp.days_since_activity > 14 && (
+                        <span className="text-xs text-muted-foreground">
+                          {Math.floor(opp.days_since_activity)} days
+                        </span>
+                      )}
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        )}
       </CardContent>
     </Card>
   );
@@ -596,6 +614,7 @@ import React from 'react';
 import { useGetList, useUpdate } from 'react-admin';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { PriorityTask } from '../types';
 
 export const PriorityTasksWidget: React.FC = () => {
@@ -605,9 +624,6 @@ export const PriorityTasksWidget: React.FC = () => {
   });
 
   const [update, { isLoading: isUpdating }] = useUpdate();
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading tasks</div>;
 
   const overdueTasks = data?.filter(t => t.is_overdue) || [];
   const todayTasks = data?.filter(t => !t.is_overdue && !t.completed) || [];
@@ -635,88 +651,103 @@ export const PriorityTasksWidget: React.FC = () => {
         <CardTitle>Today's Tasks</CardTitle>
       </CardHeader>
       <CardContent className="space-y-section">
-        {/* Overdue Section */}
-        {overdueTasks.length > 0 && (
-          <div className="space-y-compact">
-            <div className="font-semibold text-warning">
-              ⚠️ OVERDUE ({overdueTasks.length})
-            </div>
-            {overdueTasks.map((task) => (
-              <div
-                key={task.task_id}
-                className="flex items-start gap-compact min-h-[44px] p-compact"
-              >
-                <Checkbox
-                  checked={task.completed}
-                  onCheckedChange={() => handleTaskToggle(task)}
-                  disabled={isUpdating}
-                  className="mt-1"
-                />
-                <div className="flex-1">
-                  <div className="text-sm">{task.title}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {formatTaskLine(task)}
-                    {task.days_overdue > 0 && (
-                      <span className="text-warning ml-compact">
-                        ({task.days_overdue} days late)
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+        {isLoading ? (
+          <div className="space-y-section">
+            <Skeleton className="h-11 w-full" />
+            <Skeleton className="h-11 w-full" />
+            <Skeleton className="h-11 w-full" />
           </div>
-        )}
+        ) : error ? (
+          <div className="text-destructive">Error loading tasks</div>
+        ) : (
+          <>
+            {/* Overdue Section */}
+            {overdueTasks.length > 0 && (
+              <div className="space-y-compact">
+                <div className="font-semibold text-warning">
+                  <span aria-label="Warning: Overdue tasks">⚠️</span> OVERDUE ({overdueTasks.length})
+                </div>
+                {overdueTasks.map((task) => (
+                  <div
+                    key={task.task_id}
+                    className="flex items-start gap-compact min-h-11 p-compact"
+                  >
+                    <Checkbox
+                      checked={task.completed}
+                      onCheckedChange={() => handleTaskToggle(task)}
+                      disabled={isUpdating}
+                      className="mt-1 h-5 w-5"
+                      aria-label={`Mark "${task.title}" as ${task.completed ? 'incomplete' : 'complete'}`}
+                    />
+                    <div className="flex-1">
+                      <div className="text-sm">{task.title}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {formatTaskLine(task)}
+                        {task.days_overdue > 0 && (
+                          <span className="text-warning ml-compact">
+                            ({task.days_overdue} days late)
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
-        {/* Today Section */}
-        {todayTasks.length > 0 && (
-          <div className="space-y-compact">
-            <div className="font-semibold">TODAY</div>
-            {todayTasks.map((task) => (
-              <div
-                key={task.task_id}
-                className="flex items-start gap-compact min-h-[44px] p-compact"
-              >
-                <Checkbox
-                  checked={task.completed}
-                  onCheckedChange={() => handleTaskToggle(task)}
-                  disabled={isUpdating}
-                  className="mt-1"
-                />
-                <div className="flex-1">
-                  <div className="text-sm">{task.title}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {formatTaskLine(task)}
+            {/* Today Section */}
+            {todayTasks.length > 0 && (
+              <div className="space-y-compact">
+                <div className="font-semibold">TODAY</div>
+                {todayTasks.map((task) => (
+                  <div
+                    key={task.task_id}
+                    className="flex items-start gap-compact min-h-11 p-compact"
+                  >
+                    <Checkbox
+                      checked={task.completed}
+                      onCheckedChange={() => handleTaskToggle(task)}
+                      disabled={isUpdating}
+                      className="mt-1 h-5 w-5"
+                      aria-label={`Mark "${task.title}" as ${task.completed ? 'incomplete' : 'complete'}`}
+                    />
+                    <div className="flex-1">
+                      <div className="text-sm">{task.title}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {formatTaskLine(task)}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
+            )}
 
-        {/* Completed Section */}
-        {completedTasks.length > 0 && (
-          <div className="space-y-compact opacity-60">
-            {completedTasks.map((task) => (
-              <div
-                key={task.task_id}
-                className="flex items-start gap-compact min-h-[44px] p-compact"
-              >
-                <Checkbox
-                  checked={task.completed}
-                  onCheckedChange={() => handleTaskToggle(task)}
-                  disabled={isUpdating}
-                  className="mt-1"
-                />
-                <div className="flex-1 line-through">
-                  <div className="text-sm">{task.title}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {formatTaskLine(task)}
+            {/* Completed Section */}
+            {completedTasks.length > 0 && (
+              <div className="space-y-compact opacity-60">
+                {completedTasks.map((task) => (
+                  <div
+                    key={task.task_id}
+                    className="flex items-start gap-compact min-h-11 p-compact"
+                  >
+                    <Checkbox
+                      checked={task.completed}
+                      onCheckedChange={() => handleTaskToggle(task)}
+                      disabled={isUpdating}
+                      className="mt-1 h-5 w-5"
+                      aria-label={`Mark "${task.title}" as ${task.completed ? 'incomplete' : 'complete'}`}
+                    />
+                    <div className="flex-1 line-through">
+                      <div className="text-sm">{task.title}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {formatTaskLine(task)}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </CardContent>
     </Card>
@@ -870,7 +901,7 @@ export const QuickActivityLogger: React.FC = () => {
 
           <div className="flex gap-compact">
             <Select value={selectedCustomer} onValueChange={setSelectedCustomer}>
-              <SelectTrigger className="flex-1 min-h-[44px]">
+              <SelectTrigger className="flex-1 min-h-11">
                 <SelectValue placeholder="Select Customer" />
               </SelectTrigger>
               <SelectContent>
@@ -883,7 +914,7 @@ export const QuickActivityLogger: React.FC = () => {
             </Select>
 
             <Select value={selectedPrincipal} onValueChange={setSelectedPrincipal}>
-              <SelectTrigger className="flex-1 min-h-[44px]">
+              <SelectTrigger className="flex-1 min-h-11">
                 <SelectValue placeholder="Select Principal" />
               </SelectTrigger>
               <SelectContent>
@@ -900,7 +931,7 @@ export const QuickActivityLogger: React.FC = () => {
             <Button
               onClick={() => handleQuickLog('visit')}
               disabled={isSaving || !selectedCustomer || !selectedPrincipal}
-              className="min-h-[44px]"
+              className="min-h-11"
               variant="secondary"
             >
               ✓ Visited
@@ -908,7 +939,7 @@ export const QuickActivityLogger: React.FC = () => {
             <Button
               onClick={() => handleQuickLog('call')}
               disabled={isSaving || !selectedCustomer || !selectedPrincipal}
-              className="min-h-[44px]"
+              className="min-h-11"
               variant="secondary"
             >
               📞 Called
@@ -916,7 +947,7 @@ export const QuickActivityLogger: React.FC = () => {
             <Button
               onClick={() => handleQuickLog('email')}
               disabled={isSaving || !selectedCustomer || !selectedPrincipal}
-              className="min-h-[44px]"
+              className="min-h-11"
               variant="secondary"
             >
               ✉️ Emailed
@@ -926,22 +957,24 @@ export const QuickActivityLogger: React.FC = () => {
 
             <Button
               onClick={handleFullForm}
-              className="min-h-[44px]"
+              className="min-h-11"
               variant="outline"
             >
               + Full Form
             </Button>
             <Button
-              className="min-h-[44px] min-w-[44px]"
+              className="h-11 w-11 p-0"
               variant="ghost"
               disabled
+              aria-label="Add photo (coming soon)"
             >
               <Camera className="h-5 w-5" />
             </Button>
             <Button
-              className="min-h-[44px] min-w-[44px]"
+              className="h-11 w-11 p-0"
               variant="ghost"
               disabled
+              aria-label="Add voice note (coming soon)"
             >
               <Mic className="h-5 w-5" />
             </Button>
@@ -1008,7 +1041,7 @@ describe('PrincipalDashboard', () => {
     expect(screen.getByText('Quick Log Activity')).toBeInTheDocument();
   });
 
-  it('should have responsive grid layout', () => {
+  it('should have desktop-first responsive grid layout', () => {
     const { container } = render(
       <TestWrapper>
         <PrincipalDashboard />
@@ -1016,7 +1049,7 @@ describe('PrincipalDashboard', () => {
     );
 
     const grid = container.querySelector('.grid');
-    expect(grid).toHaveClass('md:grid-cols-2');
+    expect(grid).toHaveClass('lg:grid-cols-2');
   });
 });
 ```
@@ -1055,13 +1088,13 @@ export const PrincipalDashboard: React.FC = () => {
   });
 
   return (
-    <div className="p-content md:p-widget">
+    <div className="p-content lg:p-widget">
       <Title title="Dashboard" />
 
       {/* Filter Bar */}
       <div className="flex gap-compact mb-section">
         <Select value={principalFilter} onValueChange={setPrincipalFilter}>
-          <SelectTrigger className="w-[180px] min-h-[44px]">
+          <SelectTrigger className="w-[180px] min-h-11">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -1075,7 +1108,7 @@ export const PrincipalDashboard: React.FC = () => {
         </Select>
 
         <Select value={customerTypeFilter} onValueChange={setCustomerTypeFilter}>
-          <SelectTrigger className="w-[180px] min-h-[44px]">
+          <SelectTrigger className="w-[180px] min-h-11">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -1088,13 +1121,18 @@ export const PrincipalDashboard: React.FC = () => {
 
         <div className="flex-1" />
 
-        <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px]">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-11 w-11"
+          aria-label="View activity history"
+        >
           <Clock className="h-5 w-5" />
         </Button>
       </div>
 
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-section mb-[100px]">
+      {/* Main Grid Layout - Desktop: 2 columns, Mobile/Tablet: Stacked */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-section mb-48">
         <PrincipalOpportunitiesWidget />
         <PriorityTasksWidget />
       </div>
@@ -1246,6 +1284,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
 
 interface ActivityHistoryDialogProps {
@@ -1278,16 +1317,27 @@ export const ActivityHistoryDialog: React.FC<ActivityHistoryDialogProps> = ({
         </DialogHeader>
         <ScrollArea className="h-[400px] pr-4">
           {isLoading ? (
-            <div>Loading...</div>
+            <div className="space-y-compact">
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+            </div>
           ) : (
             <div className="space-y-compact">
               {activities?.map((activity: any) => (
                 <div key={activity.id} className="border-b pb-compact">
                   <div className="flex justify-between">
                     <span className="font-medium">
-                      {activity.activity_type === 'visit' && '✓ Visited'}
-                      {activity.activity_type === 'call' && '📞 Called'}
-                      {activity.activity_type === 'email' && '✉️ Emailed'}
+                      {activity.activity_type === 'visit' && (
+                        <span aria-label="Visited">✓ Visited</span>
+                      )}
+                      {activity.activity_type === 'call' && (
+                        <span aria-label="Called">📞 Called</span>
+                      )}
+                      {activity.activity_type === 'email' && (
+                        <span aria-label="Emailed">✉️ Emailed</span>
+                      )}
                     </span>
                     <span className="text-sm text-muted-foreground">
                       {format(new Date(activity.created_at), 'MMM d, h:mm a')}
@@ -1366,37 +1416,53 @@ git commit -m "feat(dashboard): Add ActivityHistoryDialog for one-tap access"
 
 ### Manual Testing Checklist
 
+**CRITICAL:** Test on desktop (1440px+) FIRST, then verify mobile/tablet adaptations.
+
 1. **Database Views**
    - Run `npx supabase db reset` to apply migrations
    - Check Supabase Studio for `principal_opportunities` and `priority_tasks` views
    - Verify data appears correctly
 
-2. **Dashboard Display**
+2. **Desktop Display (1440px+ - PRIMARY)**
    - Navigate to `/dashboard`
+   - Verify 2-column grid layout (opportunities left, tasks right)
+   - Check widgets fill available space
    - Verify opportunities grouped by principal
    - Check overdue tasks appear at top
    - Confirm quick logger is sticky at bottom
+   - Verify all spacing uses semantic tokens (no hardcoded pixels)
 
-3. **Touch Targets (iPad)**
-   - Open browser DevTools → Responsive mode → iPad
-   - Verify all buttons/checkboxes are 44px minimum
-   - Test tap targets work properly
+3. **Touch Targets (All Screen Sizes)**
+   - Open browser DevTools → Responsive mode
+   - Test Desktop (1440px), Tablet (768px), Mobile (375px)
+   - Verify all buttons/checkboxes are 44px minimum (h-11 = 44px)
+   - Icon buttons should be h-11 w-11 (44x44px clickable area)
+   - Test tap targets work properly across all sizes
 
-4. **Quick Logging**
+4. **Responsive Breakpoints**
+   - Desktop (1024px+): 2-column grid, larger padding
+   - Tablet/Mobile (<1024px): Stacked layout, compact padding
+   - Verify layout adapts smoothly at breakpoint
+   - Check no horizontal scroll at any size
+
+5. **Quick Logging**
    - Select customer and principal
    - Tap activity button
    - Verify activity saves (check in Activities list)
    - Confirm selections reset after save
+   - Test on desktop and mobile
 
-5. **Filters**
+6. **Filters**
    - Test principal filter
    - Test customer type filter
    - Verify widgets update accordingly
+   - Check filters are accessible on mobile
 
-6. **Activity History**
+7. **Activity History**
    - Click clock icon
    - Verify recent activities display
    - Check chronological order
+   - Verify Skeleton loading states appear
 
 ### Automated Testing
 
