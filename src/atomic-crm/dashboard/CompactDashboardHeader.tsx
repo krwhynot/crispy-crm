@@ -26,11 +26,11 @@ export const CompactDashboardHeader: React.FC = () => {
   }, [refresh]);
 
   return (
-    <div className="h-8 flex items-center justify-between px-3 bg-white border-b">
+    <div className="h-8 flex items-center justify-between px-compact bg-white border-b">
       <h1 className="text-xl font-semibold text-foreground">
         Principal Dashboard - Week of {currentDate}
       </h1>
-      <div className="flex gap-2">
+      <div className="flex gap-compact">
         <button
           onClick={handleRefresh}
           className="px-3 py-1 text-sm bg-muted hover:bg-muted/50 rounded transition-colors"
