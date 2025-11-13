@@ -128,14 +128,14 @@ const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
       aria-labelledby="quick-log-title"
       onKeyDown={handleModalKeyDown}
     >
-      <div className="bg-white rounded-lg shadow-lg max-w-md w-full mx-4 p-6 space-y-4">
+      <div className="bg-white rounded-lg shadow-elevation-2 max-w-md w-full mx-4 p-widget space-y-section">
         {/* Header */}
         <h2 id="quick-log-title" className="text-lg font-semibold">
           Quick Log Activity
         </h2>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-section">
           {/* Activity Type Selector */}
           <div className="space-y-2">
             <label htmlFor="activity-type" className="block text-sm font-medium">
