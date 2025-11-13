@@ -6,7 +6,7 @@ SELECT
   o.stage,
   o.estimated_close_date,
   o.updated_at as last_activity,
-  o.organization_id,
+  o.customer_organization_id,
   org.name as customer_name,
   p.id as principal_id,
   p.name as principal_name,
@@ -19,11 +19,11 @@ SELECT
     ELSE 'at_risk'
   END as health_status
 FROM opportunities o
-LEFT JOIN organizations org ON o.organization_id = org.id
-LEFT JOIN organizations p ON o.principal_id = p.id
+LEFT JOIN organizations org ON o.customer_organization_id = org.id
+LEFT JOIN organizations p ON o.principal_organization_id = p.id
 WHERE o.deleted_at IS NULL
   AND o.stage != 'Closed Lost'
-  AND p.org_type = 'principal'
+  AND p.organization_type = 'principal'
 ORDER BY p.name, o.stage;
 
 -- Grant access
