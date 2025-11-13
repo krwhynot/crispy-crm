@@ -118,7 +118,7 @@ export const OpportunitiesByPrincipal = () => {
             </button>
           ))}
           {principalCounts.length > 0 && (
-            <div className="pt-2 mt-2 border-t border-border">
+            <div className="pt-compact mt-compact border-t border-border">
               <div className="text-xs text-muted-foreground text-center">
                 {totalCount} total {totalCount === 1 ? "opportunity" : "opportunities"}
               </div>
