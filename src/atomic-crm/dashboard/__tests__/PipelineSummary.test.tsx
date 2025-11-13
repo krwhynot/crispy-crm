@@ -72,71 +72,6 @@ describe("PipelineSummary", () => {
   });
 });
 
-describe("calculatePipelineMetrics", () => {
-  it("calculates total opportunities count", () => {
-    const opportunities = [
-      { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
-      { id: 2, stage: "initial_outreach", status: "active", days_in_stage: 10 },
-    ];
-
-    const metrics = calculatePipelineMetrics(opportunities as any);
-
-    expect(metrics.total).toBe(2);
-  });
-
-  it("groups opportunities by stage", () => {
-    const opportunities = [
-      { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
-      { id: 2, stage: "new_lead", status: "active", days_in_stage: 10 },
-      { id: 3, stage: "initial_outreach", status: "active", days_in_stage: 15 },
-    ];
-
-    const metrics = calculatePipelineMetrics(opportunities as any);
-
-    expect(metrics.byStage).toEqual([
-      { stage: "new_lead", count: 2, stuckCount: 0 },
-      { stage: "initial_outreach", count: 1, stuckCount: 0 },
-    ]);
-  });
-
-  it("identifies stuck opportunities (30+ days in stage)", () => {
-    const opportunities = [
-      { id: 1, stage: "new_lead", status: "active", days_in_stage: 25 },
-      { id: 2, stage: "new_lead", status: "active", days_in_stage: 35 },
-      { id: 3, stage: "initial_outreach", status: "active", days_in_stage: 40 },
-    ];
-
-    const metrics = calculatePipelineMetrics(opportunities as any);
-
-    expect(metrics.stuck).toBe(2);
-    expect(metrics.byStage).toContainEqual({
-      stage: "new_lead",
-      count: 2,
-      stuckCount: 1,
-    });
-  });
-
-  it("counts active opportunities", () => {
-    const opportunities = [
-      { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
-      { id: 2, stage: "initial_outreach", status: "active", days_in_stage: 10 },
-    ];
-
-    const metrics = calculatePipelineMetrics(opportunities as any);
-
-    expect(metrics.active).toBe(2);
-  });
-
-  it("handles empty opportunities array", () => {
-    const metrics = calculatePipelineMetrics([]);
-
-    expect(metrics.total).toBe(0);
-    expect(metrics.byStage).toEqual([]);
-    expect(metrics.stuck).toBe(0);
-    expect(metrics.active).toBe(0);
-  });
-});
-
 describe("calculatePipelineHealth", () => {
   it("returns 'Healthy' when no stuck deals and no urgent principals", () => {
     const health = calculatePipelineHealth(0, 0);
@@ -198,8 +133,8 @@ describe("PipelineSummary with data", () => {
     mockGetIdentity.mockReturnValue({ identity: { id: 1 } });
     mockGetList.mockReturnValue({
       data: [
-        { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
-        { id: 2, stage: "initial_outreach", status: "active", days_in_stage: 10 },
+        { account_manager_id: 1, stage: "new_lead", count: 1, stuck_count: 0, total_active: 2, total_stuck: 0 },
+        { account_manager_id: 1, stage: "initial_outreach", count: 1, stuck_count: 0, total_active: 2, total_stuck: 0 },
       ],
       isPending: false,
       error: null,
@@ -220,7 +155,7 @@ describe("PipelineSummary with data", () => {
     mockGetIdentity.mockReturnValue({ identity: { id: 1 } });
     mockGetList.mockReturnValue({
       data: [
-        { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
+        { account_manager_id: 1, stage: "new_lead", count: 1, stuck_count: 0, total_active: 1, total_stuck: 0 },
       ],
       isPending: false,
       error: null,
@@ -240,8 +175,7 @@ describe("PipelineSummary with data", () => {
     mockGetIdentity.mockReturnValue({ identity: { id: 1 } });
     mockGetList.mockReturnValue({
       data: [
-        { id: 1, stage: "new_lead", status: "active", days_in_stage: 5 },
-        { id: 2, stage: "new_lead", status: "active", days_in_stage: 10 },
+        { account_manager_id: 1, stage: "new_lead", count: 2, stuck_count: 0, total_active: 2, total_stuck: 0 },
       ],
       isPending: false,
       error: null,
@@ -261,8 +195,8 @@ describe("PipelineSummary with data", () => {
     mockGetIdentity.mockReturnValue({ identity: { id: 1 } });
     mockGetList.mockReturnValue({
       data: [
-        { id: 1, stage: "new_lead", status: "active", days_in_stage: 35 },
-        { id: 2, stage: "initial_outreach", status: "active", days_in_stage: 40 },
+        { account_manager_id: 1, stage: "new_lead", count: 1, stuck_count: 1, total_active: 2, total_stuck: 2 },
+        { account_manager_id: 1, stage: "initial_outreach", count: 1, stuck_count: 1, total_active: 2, total_stuck: 2 },
       ],
       isPending: false,
       error: null,
