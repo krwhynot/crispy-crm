@@ -142,15 +142,10 @@ export const CompactGridDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column - Activity & Pipeline */}
+          {/* Right Column - Activity Only */}
           <div className="space-y-section">
             <div className="bg-white rounded-lg p-content">
               <ActivityFeed variant="compact" />
-            </div>
-            <div className="bg-white rounded-lg p-content">
-              <div className="h-[180px] flex items-center justify-center text-sm text-muted-foreground">
-                Pipeline Summary - Coming Soon
-              </div>
             </div>
           </div>
         </div>
