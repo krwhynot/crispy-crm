@@ -267,3 +267,13 @@ Comprehensive design system documentation with real code examples:
 - Poor UX (inconsistent touch targets and spacing)
 - Accessibility failures (small touch targets, poor contrast)
 - Bugs (missing validation, wrong form initialization)
+
+## Cross-Reference
+
+**See also:** `atomic-crm-constitution` skill for:
+- Error handling patterns (fail-fast, Promise.allSettled)
+- Validation patterns (Zod schemas, API boundary validation)
+- Form state management (schema-derived defaults)
+- Database patterns (GRANT + RLS, migrations)
+- Security patterns (CSV validation, RLS policies)
+- Testing patterns (unit tests, E2E tests, coverage)
