@@ -89,7 +89,7 @@ export const MyTasksThisWeek: React.FC = () => {
   return (
     <DashboardWidget>
       {/* Header - Compact (h-6) */}
-      <div className="flex items-center justify-between mb-2 h-6">
+      <div className="flex items-center justify-between mb-compact h-6">
         <h2 className="text-xs font-semibold text-foreground uppercase tracking-wider">
           MY TASKS THIS WEEK
         </h2>
@@ -100,7 +100,7 @@ export const MyTasksThisWeek: React.FC = () => {
 
       {/* Empty State */}
       {hasNoTasks && (
-        <div className="text-center py-2">
+        <div className="text-center py-compact">
           <p className="text-xs text-muted-foreground">No tasks this week</p>
         </div>
       )}
@@ -133,7 +133,7 @@ export const MyTasksThisWeek: React.FC = () => {
                       {/* Checkbox - Hidden until hover */}
                       <input
                         type="checkbox"
-                        className="w-3 h-3 mr-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="w-3 h-3 mr-compact opacity-0 group-hover:opacity-100 transition-opacity"
                         aria-label={`Complete task: ${task.title}`}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -148,7 +148,7 @@ export const MyTasksThisWeek: React.FC = () => {
 
                       {/* Due Date Badge - Semantic colors */}
                       <span
-                        className={`text-xs font-medium px-1.5 py-0.5 rounded whitespace-nowrap ml-1 ${
+                        className={`text-xs font-medium px-compact py-0.5 rounded whitespace-nowrap ml-1 ${
                           isOverdue
                             ? 'bg-destructive/10 text-destructive'
                             : isToday
