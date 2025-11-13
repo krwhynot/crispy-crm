@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 interface HookInput {
     session_id: string;
@@ -41,7 +45,7 @@ async function main() {
         const prompt = data.prompt.toLowerCase();
 
         // Load skill rules
-        const projectDir = process.env.CLAUDE_PROJECT_DIR || '$HOME/project';
+        const projectDir = process.env.CLAUDE_PROJECT_DIR || join(__dirname, '..', '..');
         const rulesPath = join(projectDir, '.claude', 'skills', 'skill-rules.json');
         const rules: SkillRules = JSON.parse(readFileSync(rulesPath, 'utf-8'));
 
