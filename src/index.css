@@ -89,15 +89,15 @@
   --spacing-edge-mobile: 16px;
 
   /* Vertical Rhythm */
-  --spacing-section: 24px;         /* Reduced from 32px */
-  --spacing-widget: 16px;          /* Reduced from 24px */
-  --spacing-content: 12px;         /* Reduced from 16px */
-  --spacing-compact: 8px;          /* Reduced from 12px */
+  --spacing-section: 32px;         /* Between major sections */
+  --spacing-widget: 24px;          /* Between widgets */
+  --spacing-content: 16px;         /* Within content areas */
+  --spacing-compact: 12px;         /* Tight spacing for related items */
 
-  /* Widget/Card Internals - Desktop Optimized */
-  --spacing-widget-padding: 12px;  /* Reduced from 20px */
-  --spacing-widget-min-height: 240px; /* Reduced from 280px */
-  --spacing-top-offset: 60px;      /* Reduced from 80px */
+  /* Widget/Card Internals */
+  --spacing-widget-padding: 20px;  /* Internal padding for widgets */
+  --spacing-widget-min-height: 280px; /* Minimum widget height */
+  --spacing-top-offset: 80px;      /* Top offset for layouts */
 
   /* Compact Dashboard Spacing */
   --spacing-dashboard-header: 32px;
