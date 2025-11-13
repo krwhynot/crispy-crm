@@ -2,7 +2,7 @@ import React from 'react';
 import { OpportunitiesByPrincipalDesktopContainer } from './OpportunitiesByPrincipalDesktopContainer';
 import { UpcomingEventsByPrincipal } from './UpcomingEventsByPrincipal';
 import { MyTasksThisWeek } from './MyTasksThisWeek';
-import { RecentActivityFeed } from './RecentActivityFeed';
+import { ActivityFeed } from './ActivityFeed';
 import { PipelineSummary } from './PipelineSummary';
 
 /**
@@ -43,7 +43,7 @@ export const PrincipalDashboard = () => {
         {/* Right Sidebar - Supporting Context */}
         <aside className="space-y-section" aria-label="Supporting information">
           <MyTasksThisWeek />
-          <RecentActivityFeed />
+          <ActivityFeed variant="sidebar" />
           <PipelineSummary />
         </aside>
       </div>

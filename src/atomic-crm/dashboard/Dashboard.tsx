@@ -144,7 +144,7 @@ export const Dashboard = () => {
           {/* Right Sidebar - Supporting Context */}
           <aside className="space-y-section" aria-label="Supporting information">
             <MyTasksThisWeek />
-            <RecentActivityFeed />
+            <ActivityFeed variant="sidebar" />
             <PipelineSummary />
           </aside>
         </div>
