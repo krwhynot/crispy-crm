@@ -137,7 +137,7 @@ const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-section">
           {/* Activity Type Selector */}
-          <div className="space-y-2">
+          <div className="space-y-compact">
             <label htmlFor="activity-type" className="block text-sm font-medium">
               Activity Type
             </label>
@@ -154,7 +154,7 @@ const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
           </div>
 
           {/* Notes Input */}
-          <div className="space-y-2">
+          <div className="space-y-compact">
             <label htmlFor="activity-notes" className="block text-sm font-medium">
               Notes
             </label>
@@ -174,7 +174,7 @@ const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
           </div>
 
           {/* Buttons - Save first so Tab order is correct */}
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex justify-end gap-compact pt-section">
             <button
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-md transition-colors"

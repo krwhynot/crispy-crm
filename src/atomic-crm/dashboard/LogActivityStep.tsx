@@ -111,9 +111,9 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
   }, [notes, handleSave, onCancel]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-section">
       {/* Activity Type Selector */}
-      <div className="space-y-2">
+      <div className="space-y-compact">
         <Label htmlFor="activity-type">Activity Type</Label>
         <Select value={activityType} onValueChange={setActivityType}>
           <SelectTrigger id="activity-type">
@@ -133,7 +133,7 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
       </div>
 
       {/* Notes Textarea */}
-      <div className="space-y-2">
+      <div className="space-y-compact">
         <Label htmlFor="activity-notes">
           Notes <span className="text-destructive">*</span>
         </Label>
@@ -155,9 +155,9 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
       </div>
 
       {/* Context Display */}
-      <div className="rounded-md bg-muted/50 p-3 text-sm">
+      <div className="rounded-md bg-muted/50 p-content text-sm">
         <p className="font-medium text-foreground">Related to:</p>
-        <ul className="mt-1 space-y-1 text-muted-foreground">
+        <ul className="mt-compact space-y-compact text-muted-foreground">
           <li className="flex items-center gap-2">
             <CheckSquare className="h-4 w-4" />
             <span>Task: {task.title}</span>
@@ -178,7 +178,7 @@ export function LogActivityStep({ task, onSave, onCancel }: LogActivityStepProps
       </div>
 
       {/* Action Buttons */}
-      <div className="pt-2">
+      <div className="pt-compact">
         <Button onClick={handleSave} disabled={!isValid || isSubmitting} className="w-full">
           {isSubmitting ? "Saving..." : "Save & Continue →"}
         </Button>
