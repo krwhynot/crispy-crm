@@ -178,7 +178,7 @@ export const PipelineSummary = () => {
                     </div>
                     {(total_stuck > 0) && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        {total_stuck} stuck deal${total_stuck > 1 ? "s" : ""}
+                        {total_stuck} stuck deal{total_stuck > 1 ? "s" : ""}
                       </p>
                     )}
                   </div>
