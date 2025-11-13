@@ -232,17 +232,38 @@ If you find yourself:
 
 **All of these mean:** Review this skill and CLAUDE.md before proceeding.
 
+## Resource Files
+
+Comprehensive design system documentation with real code examples:
+
+### React Patterns
+- [Component Architecture](resources/component-architecture.md) - Compound components, presentational/container patterns, CVA variants, custom hooks
+- [React Performance](resources/react-performance.md) - Memoization, lazy loading, code splitting, virtual scrolling, GPU acceleration
+- [TypeScript Patterns](resources/typescript-patterns.md) - Interface vs type, Zod schema inference, generics, utility types, discriminated unions
+- [State Management](resources/state-management.md) - Local state, Context, server state with React Admin hooks, URL state, form state
+
+### Design System
+- [Design Tokens](resources/design-tokens.md) - Spacing scale, touch targets, border radius, shadows, grid system
+- [Color System](resources/color-system.md) - OKLCH colors, brand colors (forest green), semantic mappings, status colors, warm-tinted shadows
+- [Typography](resources/typography.md) - Font families, sizing scale, weights, semantic text colors, hierarchy patterns
+- [Elevation](resources/elevation.md) - Three-tier shadow system, stroke patterns, divider system, rounded corners, avatar micro-elevation
+
+### CRM UI Patterns
+- [Data Tables](resources/data-tables.md) - Sortable columns, hover states, sticky headers, pagination, responsive tables
+- [Form Patterns](resources/form-patterns.md) - Zod validation, React Hook Form integration, JSONB arrays, tabbed forms, accessibility
+- [Dashboard Layouts](resources/dashboard-layouts.md) - Grid systems, widget patterns, spacing tokens, responsive breakpoints
+
 ## Real-World Impact
 
 **Following these patterns:**
 - Consistent design system (users recognize Atomic CRM UI)
 - Maintainable code (future devs find patterns quickly)
 - Accessible (meets WCAG AA, works with assistive tech)
-- iPad-optimized (primary sales tool works perfectly)
+- Desktop-optimized (primary business tool works perfectly on all devices)
 - Type-safe (Zod validation catches errors early)
 
 **Violations create:**
 - Visual inconsistency (hex codes bypass design tokens)
-- Poor iPad UX (mobile-first on tablet feels cramped)
+- Poor UX (inconsistent touch targets and spacing)
 - Accessibility failures (small touch targets, poor contrast)
 - Bugs (missing validation, wrong form initialization)
