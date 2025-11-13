@@ -23,7 +23,7 @@ import { PipelineSummary } from './PipelineSummary';
  */
 export const PrincipalDashboard = () => {
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-section p-widget">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-foreground">Principal Dashboard</h1>
@@ -33,15 +33,15 @@ export const PrincipalDashboard = () => {
       </div>
 
       {/* Grid Layout: 70% main content (left) + 30% sidebar (right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-section">
         {/* Left Column - Main Focus */}
-        <div className="space-y-6">
+        <div className="space-y-section">
           <UpcomingEventsByPrincipal />
           <OpportunitiesByPrincipalDesktopContainer />
         </div>
 
         {/* Right Sidebar - Supporting Context */}
-        <aside className="space-y-6" aria-label="Supporting information">
+        <aside className="space-y-section" aria-label="Supporting information">
           <MyTasksThisWeek />
           <RecentActivityFeed />
           <PipelineSummary />
