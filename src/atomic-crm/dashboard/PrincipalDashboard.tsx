@@ -4,7 +4,6 @@ import { UpcomingEventsByPrincipal } from './UpcomingEventsByPrincipal';
 import { MyTasksThisWeek } from './MyTasksThisWeek';
 import { RecentActivityFeed } from './RecentActivityFeed';
 import { PipelineSummary } from './PipelineSummary';
-import '../styles/desktop.css';
 
 /**
  * Principal Dashboard - Main dashboard view for managing principal relationships
