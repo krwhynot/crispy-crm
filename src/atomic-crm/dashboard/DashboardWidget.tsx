@@ -82,7 +82,7 @@ export const DashboardWidget = ({
   return (
     <Card
       className={`
-        rounded-md p-2 md:p-2.5 lg:p-3
+        rounded-md p-[var(--spacing-widget-padding)]
         flex flex-col
         min-h-[60px] md:min-h-[70px] lg:min-h-[80px]
         transition-all duration-200
@@ -118,7 +118,7 @@ export const DashboardWidget = ({
       <div className="flex-1 flex items-center justify-center">
         {/* Loading State */}
         {isLoading && (
-          <div className="w-full space-y-3">
+          <div className="w-full space-y-[var(--spacing-content)]">
             <div className="h-12 bg-muted animate-pulse rounded" />
             <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
           </div>
