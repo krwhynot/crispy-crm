@@ -106,7 +106,7 @@ export const OpportunitiesByPrincipal = () => {
             <button
               key={principal.principalId || "other"}
               onClick={() => handlePrincipalClick(principal.principalId)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-left group"
+              className="w-full flex items-center justify-between px-compact py-compact rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-left group"
               data-testid={`principal-${principal.principalId || "other"}`}
             >
               <span className="font-medium text-sm md:text-base truncate flex-1 min-w-0">
