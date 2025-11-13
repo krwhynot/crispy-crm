@@ -738,4 +738,4 @@ describe('Error Handling', () => {
 - [Service Layer](service-layer.md) - Error handling in services
 - [Validation Patterns](validation-patterns.md) - Validation error creation
 - [Edge Functions](edge-functions.md) - Edge Function error responses
-- [Testing](testing.md) - Testing error scenarios
+- [Query Optimization](query-optimization.md) - Database error handling

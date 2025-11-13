@@ -644,7 +644,7 @@ ORDER BY seq_tup_read DESC;
 
 ## Related Resources
 
-- [RLS Policies](rls-policies.md) - Security and performance
+- [RLS Policies](rls-policies.md) - Security and performance trade-offs
 - [Service Layer](service-layer.md) - Query patterns in services
 - [Edge Functions](edge-functions.md) - Complex query operations
-- [Testing](testing.md) - Performance testing strategies
+- [Organizations](organizations.md) - Hierarchy query optimization

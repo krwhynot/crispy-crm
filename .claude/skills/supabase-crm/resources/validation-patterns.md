@@ -595,6 +595,6 @@ website: z.string().url().nullish()
 ## Related Resources
 
 - [Service Layer](service-layer.md) - Using validation in services
-- [Error Handling](error-handling.md) - Error types and patterns
-- [Edge Functions](edge-functions.md) - RPC validation patterns
+- [Error Handling](error-handling.md) - Validation error handling
+- [Edge Functions](edge-functions.md) - Request validation patterns
 - [Organizations](organizations.md) - Hierarchy validation examples
