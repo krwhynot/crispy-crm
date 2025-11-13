@@ -65,7 +65,7 @@ export const CompactRecentActivity: React.FC = () => {
           <ActivityIcon className="w-4 h-4" />
           Recent Activity
         </h2>
-        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">
+        <span className="bg-info/10 text-info text-xs px-2 py-0.5 rounded-full">
           {activities.length}
         </span>
       </div>
