@@ -4,9 +4,99 @@
 
 **Goal:** Build a principal-focused dashboard with opportunity pipeline, task priorities, and quick activity logging
 
-**Architecture:** Three main widgets using React Admin components, Supabase views for data aggregation, semantic spacing tokens from design system. Optimized for iPad touch targets (44px minimum) with 2-3 tap activity logging.
+**Architecture:** Desktop-optimized (1440px+ primary target) with three main widgets using React Admin components, Supabase views for data aggregation, semantic spacing utilities from design system. Maintains 44px minimum touch targets across all screen sizes. Mobile-first Tailwind syntax (`lg:` breakpoint) with desktop-first design thinking. Quick 2-3 tap activity logging.
 
 **Tech Stack:** React 19, TypeScript, React Admin, Supabase, Tailwind CSS v4, shadcn/ui
+
+---
+
+## Task 0.5: Define Semantic Spacing Utilities
+
+**Files:**
+- Modify: `src/index.css`
+
+**Step 1: Add semantic spacing utilities to Tailwind**
+
+After line 99 (end of spacing CSS variables), add:
+
+```css
+@layer utilities {
+  /* Vertical Spacing Utilities */
+  .space-y-section > * + * {
+    margin-top: var(--spacing-section);
+  }
+  .space-y-widget > * + * {
+    margin-top: var(--spacing-widget);
+  }
+  .space-y-content > * + * {
+    margin-top: var(--spacing-content);
+  }
+  .space-y-compact > * + * {
+    margin-top: var(--spacing-compact);
+  }
+
+  /* Gap Utilities */
+  .gap-section {
+    gap: var(--spacing-section);
+  }
+  .gap-widget {
+    gap: var(--spacing-widget);
+  }
+  .gap-content {
+    gap: var(--spacing-content);
+  }
+  .gap-compact {
+    gap: var(--spacing-compact);
+  }
+
+  /* Padding Utilities */
+  .p-widget {
+    padding: var(--spacing-widget-padding);
+  }
+  .p-content {
+    padding: var(--spacing-content);
+  }
+  .p-compact {
+    padding: var(--spacing-compact);
+  }
+  .px-content {
+    padding-left: var(--spacing-content);
+    padding-right: var(--spacing-content);
+  }
+  .py-content {
+    padding-top: var(--spacing-content);
+    padding-bottom: var(--spacing-content);
+  }
+  .pl-content {
+    padding-left: var(--spacing-content);
+  }
+
+  /* Margin Bottom Utilities */
+  .mb-section {
+    margin-bottom: var(--spacing-section);
+  }
+  .mb-widget {
+    margin-bottom: var(--spacing-widget);
+  }
+}
+```
+
+**Step 2: Verify utilities are available**
+
+```bash
+npm run dev
+```
+Expected: Dev server compiles without errors
+
+**Step 3: Commit**
+
+```bash
+git add src/index.css
+git commit -m "feat(design-system): Add semantic spacing Tailwind utilities"
+```
+
+**Why This Task is Critical:**
+All widget components in Tasks 4-7 reference these utilities (`.space-y-section`, `.gap-compact`, `.p-content`, etc.). Without this task, the code will compile but spacing will be broken. This must be completed BEFORE implementing any widgets.
 
 ---
 
