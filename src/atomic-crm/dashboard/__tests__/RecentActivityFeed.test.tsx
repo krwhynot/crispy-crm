@@ -1,17 +1,25 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { RecentActivityFeed } from '../RecentActivityFeed';
 import { TestMemoryRouter } from 'ra-core';
 
-vi.mock('ra-core', () => ({
-  useGetList: vi.fn(),
-  TestMemoryRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+const mockUseGetList = vi.fn();
+
+vi.mock('ra-core', async () => {
+  const actual = await vi.importActual('ra-core');
+  return {
+    ...actual,
+    useGetList: () => mockUseGetList(),
+  };
+});
+
+vi.mock('react-router-dom', () => ({
+  useNavigate: () => vi.fn(),
 }));
 
 describe('RecentActivityFeed', () => {
   beforeEach(() => {
-    const { useGetList } = require('ra-core');
-    useGetList.mockReturnValue({
+    mockUseGetList.mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
@@ -20,8 +28,7 @@ describe('RecentActivityFeed', () => {
   });
 
   it('should render widget title with count badge', () => {
-    const { useGetList } = require('ra-core');
-    useGetList.mockReturnValue({
+    mockUseGetList.mockReturnValue({
       data: [
         {
           id: 1,
@@ -47,8 +54,7 @@ describe('RecentActivityFeed', () => {
   });
 
   it('should show loading skeleton', () => {
-    const { useGetList } = require('ra-core');
-    useGetList.mockReturnValue({
+    mockUseGetList.mockReturnValue({
       data: [],
       total: 0,
       isPending: true,
@@ -65,10 +71,9 @@ describe('RecentActivityFeed', () => {
   });
 
   it('should display activities with icon and relative timestamp', () => {
-    const { useGetList } = require('ra-core');
     const now = new Date();
 
-    useGetList.mockReturnValue({
+    mockUseGetList.mockReturnValue({
       data: [
         {
           id: 1,
