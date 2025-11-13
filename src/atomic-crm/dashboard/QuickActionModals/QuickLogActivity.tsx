@@ -145,7 +145,7 @@ const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
               id="activity-type"
               value={activityType}
               onChange={(e) => setActivityType(e.target.value as ActivityType)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="call">Call</option>
               <option value="email">Email</option>
@@ -165,11 +165,11 @@ const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
               onChange={(e) => setNotes(e.target.value)}
               onKeyDown={handleTextAreaKeyDown}
               placeholder="Add notes... (Ctrl+Enter to save)"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               rows={4}
             />
-            <p className="text-xs text-gray-500">
-              Tip: Press <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Ctrl+Enter</kbd> to save
+            <p className="text-xs text-muted-foreground">
+              Tip: Press <kbd className="px-2 py-1 bg-muted rounded text-xs">Ctrl+Enter</kbd> to save
             </p>
           </div>
 
@@ -184,7 +184,7 @@ const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
             <button
               type="button"
               onClick={handleCancel}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+              className="px-4 py-2 text-sm font-medium text-foreground bg-muted hover:bg-muted/80 rounded-md transition-colors"
             >
               Cancel
             </button>

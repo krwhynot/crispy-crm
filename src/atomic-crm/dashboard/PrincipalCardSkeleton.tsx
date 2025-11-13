@@ -16,7 +16,7 @@ export const PrincipalCardSkeleton = () => {
       </div>
 
       {/* Opportunity skeleton */}
-      <div className="mb-4 p-3 bg-blue-50 rounded">
+      <div className="mb-4 p-3 bg-info/5 rounded">
         <div className="h-4 bg-muted/50 rounded w-32 mb-2"></div>
         <div className="h-5 bg-muted/50 rounded w-40"></div>
       </div>
