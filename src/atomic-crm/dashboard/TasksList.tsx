@@ -42,9 +42,9 @@ const taskFilters = {
 
 export const TasksList = () => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-compact">
       <div className="flex items-center">
-        <div className="mr-3 flex">
+        <div className="mr-compact flex">
           <CheckSquare className="text-[color:var(--text-subtle)] w-6 h-6" />
         </div>
         <h2 className="text-xl font-semibold text-[color:var(--text-title)] uppercase tracking-tight flex-1">
@@ -53,10 +53,10 @@ export const TasksList = () => {
         <AddTask display="icon" selectContact />
       </div>
       <Card
-        className="rounded-xl p-4 mb-2 cursor-pointer"
+        className="rounded-xl p-content mb-compact cursor-pointer"
         onClick={() => trackDashboardEvent("tasks")}
       >
-        <div className="flex flex-col gap-4 max-h-[320px] overflow-y-auto">
+        <div className="flex flex-col gap-section max-h-[320px] overflow-y-auto">
           <TasksListEmpty />
           <TasksListFilter title="Overdue" filter={taskFilters.overdue} defaultOpen={true} />
           <TasksListFilter title="Today" filter={taskFilters.today} defaultOpen={true} />

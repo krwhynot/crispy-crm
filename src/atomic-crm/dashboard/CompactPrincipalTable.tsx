@@ -51,7 +51,7 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
 
   return (
     <div className="h-full">
-      <div className="flex items-center justify-between mb-2 h-7">
+      <div className="flex items-center justify-between mb-compact h-7">
         <h2 className="text-sm font-semibold text-foreground">My Principals</h2>
         <span className="text-xs text-muted-foreground">{data.length} total</span>
       </div>
@@ -59,11 +59,11 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-xs text-muted-foreground border-b">
-            <th className="pb-1 px-2">Principal</th>
-            <th className="pb-1 px-2 text-center w-16">Pipeline</th>
-            <th className="pb-1 px-2 text-center w-16">This Week</th>
-            <th className="pb-1 px-2 text-center w-20">Reps</th>
-            <th className="pb-1 w-28">Actions</th>
+            <th className="pb-compact px-compact">Principal</th>
+            <th className="pb-compact px-compact text-center w-16">Pipeline</th>
+            <th className="pb-compact px-compact text-center w-16">This Week</th>
+            <th className="pb-compact px-compact text-center w-20">Reps</th>
+            <th className="pb-compact w-28">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -76,24 +76,24 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
               onClick={() => handleRowClick(principal.id, principal.name)}
             >
               {/* Principal name */}
-              <td className="py-1 px-2 font-medium text-sm">{principal.name}</td>
+              <td className="py-compact px-compact font-medium text-sm">{principal.name}</td>
 
               {/* Opportunity count (Pipeline) */}
-              <td className="py-1 px-2 text-center">
-                <span className="inline-flex items-center justify-center min-w-[1.5rem] px-1.5 py-0.5 text-xs font-semibold bg-primary/20 text-primary-foreground rounded-full">
+              <td className="py-compact px-compact text-center">
+                <span className="inline-flex items-center justify-center min-w-[1.5rem] px-compact py-0.5 text-xs font-semibold bg-primary/20 text-primary-foreground rounded-full">
                   {principal.opportunityCount}
                 </span>
               </td>
 
               {/* Weekly activity count */}
-              <td className="py-1 px-2 text-center text-xs">
+              <td className="py-compact px-compact text-center text-xs">
                 <span className={principal.weeklyActivities && principal.weeklyActivities < 3 ? 'text-destructive font-semibold' : 'text-muted-foreground'}>
                   {principal.weeklyActivities ?? 0}
                 </span>
               </td>
 
               {/* Assigned reps */}
-              <td className="py-1 px-2">
+              <td className="py-compact px-compact">
                 <div className="flex -space-x-1.5 justify-center">
                   {principal.assignedReps && principal.assignedReps.length > 0 ? (
                     <>
@@ -119,7 +119,7 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
               </td>
 
               {/* Quick actions */}
-              <td className="py-1">
+              <td className="py-compact">
                 {/* Quick actions (visible on hover) */}
                 <div className={`
                   flex gap-0.5 justify-end transition-opacity
@@ -190,7 +190,7 @@ export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
       {hasMore && !expanded && (
         <button
           onClick={() => setExpanded(true)}
-          className="mt-2 text-xs text-primary hover:underline"
+          className="mt-compact text-xs text-primary hover:underline"
         >
           Show all {data.length} principals
         </button>

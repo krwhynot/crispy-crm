@@ -48,14 +48,14 @@ export const TasksListFilter = ({
   if (isPending || !tasks || !total) return null;
 
   return (
-    <Collapsible defaultOpen={defaultOpen} className="flex flex-col gap-2">
+    <Collapsible defaultOpen={defaultOpen} className="flex flex-col gap-compact">
       <CollapsibleTrigger className="flex items-center justify-between group hover:opacity-80 transition-opacity">
         <p className="text-xs uppercase tracking-wider text-[color:var(--text-subtle)] font-medium">
           {title} ({total})
         </p>
         <ChevronDown className="h-4 w-4 text-[color:var(--text-subtle)] transition-transform duration-200 group-data-[state=open]:rotate-180" />
       </CollapsibleTrigger>
-      <CollapsibleContent className="flex flex-col gap-2">
+      <CollapsibleContent className="flex flex-col gap-compact">
         <ResourceContextProvider value="tasks">
           <ListContextProvider value={listContext}>
             <TasksIterator showContact />

@@ -84,7 +84,7 @@ export const PriorityIndicator = ({ priority }: PriorityIndicatorProps) => {
   return (
     <div
       data-testid="priority-indicator"
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border ${config.bgColor} ${config.borderColor}`}
+      className={`inline-flex items-center gap-compact px-compact py-compact rounded-md border ${config.bgColor} ${config.borderColor}`}
     >
       <span data-testid="priority-icon">{config.icon}</span>
       <span className="text-sm font-medium">{config.label}</span>
