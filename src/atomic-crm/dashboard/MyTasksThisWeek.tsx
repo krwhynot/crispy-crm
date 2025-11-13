@@ -66,7 +66,7 @@ export const MyTasksThisWeek: React.FC = () => {
   if (isPending) {
     return (
       <DashboardWidget>
-        <div className="flex items-center justify-between mb-2 h-6">
+        <div className="flex items-center justify-between mb-compact h-6">
           <h2 className="text-xs font-semibold text-foreground uppercase tracking-wider">
             MY TASKS THIS WEEK
           </h2>
@@ -74,7 +74,7 @@ export const MyTasksThisWeek: React.FC = () => {
             -
           </span>
         </div>
-        <div data-testid="tasks-skeleton" className="space-y-0.5">
+        <div data-testid="tasks-skeleton" className="space-y-compact">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-8 bg-muted/30 rounded animate-pulse" />
           ))}
