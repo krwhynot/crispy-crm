@@ -1,5 +1,5 @@
 import { useGetList, useGetIdentity } from "react-admin";
-import { format, addDays, startOfDay, endOfDay } from "date-fns";
+import { format } from "date-fns";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 /**
@@ -9,29 +9,27 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
  * Helps answer: "What commitments do I have this week per principal?"
  *
  * Data Source:
- * - tasks table: incomplete tasks due within 7 days
- * - activities table: scheduled activities within 7 days
+ * - upcoming_events_by_principal view: Pre-joined tasks + activities with principal info
  *
- * Grouping: By principal_organization_id
+ * Performance: Replaces 3 separate queries (tasks, activities, dashboard_principal_summary)
+ * + client-side joining. View handles all aggregation and joining.
+ *
+ * Grouping: By principal_name, status indicator
  * Sorting: By principal status (urgent → warning → good), then by event date
  *
- * Design: docs/plans/2025-11-07-dashboard-widgets-design.md (Widget 1)
+ * Design: docs/plans/2025-11-05-principal-centric-crm-design.md
  */
 
-interface Task {
-  id: number;
-  title: string;
-  due_date: string;
-  opportunity_id: number;
-  completed: boolean;
-}
-
-interface Activity {
-  id: number;
-  type: string;
-  activity_date: string;
-  opportunity_id: number;
-  notes?: string;
+interface ViewEvent {
+  event_type: "task" | "activity";
+  source_id: number;
+  event_title: string;
+  event_date: string;
+  description?: string;
+  principal_organization_id: number;
+  principal_name: string;
+  created_by: number;
+  principal_status: "good" | "warning" | "urgent";
 }
 
 interface PrincipalEvent {
@@ -61,61 +59,25 @@ const STATUS_PRIORITY = {
 
 export const UpcomingEventsByPrincipal = () => {
   const { identity } = useGetIdentity();
-  const today = new Date();
-  const sevenDaysFromNow = addDays(today, 7);
 
-  // Fetch upcoming incomplete tasks
+  // Query pre-joined upcoming events view (handles tasks, activities, and principal enrichment)
   const {
-    data: tasks,
-    isPending: tasksLoading,
-    error: tasksError,
-  } = useGetList<Task>(
-    "tasks",
+    data: viewEvents,
+    isPending: isLoading,
+    error,
+  } = useGetList<ViewEvent>(
+    "upcoming_events_by_principal",
     {
       filter: {
-        completed: false,
-        "due_date@gte": format(startOfDay(today), "yyyy-MM-dd"),
-        "due_date@lte": format(endOfDay(sevenDaysFromNow), "yyyy-MM-dd"),
+        created_by: identity?.id,
       },
-      sort: { field: "due_date", order: "ASC" },
     },
     {
       enabled: !!identity?.id, // Don't query until identity is available
     }
   );
 
-  // Fetch upcoming scheduled activities
-  const {
-    data: activities,
-    isPending: activitiesLoading,
-    error: activitiesError,
-  } = useGetList<Activity>(
-    "activities",
-    {
-      filter: {
-        created_by: identity?.id, // Note: activities use created_by, not sales_id
-        "activity_date@gte": format(startOfDay(today), "yyyy-MM-dd"),
-        "activity_date@lte": format(endOfDay(sevenDaysFromNow), "yyyy-MM-dd"),
-      },
-      sort: { field: "activity_date", order: "ASC" },
-    },
-    {
-      enabled: !!identity?.id, // Don't query until identity is available
-    }
-  );
-
-  // Fetch principal summary for status indicators
-  const { data: principals } = useGetList(
-    "dashboard_principal_summary",
-    {
-      filter: { account_manager_id: identity?.id },
-    },
-    {
-      enabled: !!identity?.id, // Don't query until identity is available
-    }
-  );
-
-  if (tasksLoading || activitiesLoading) {
+  if (isLoading) {
     return (
       <Card>
         <CardHeader>
@@ -128,7 +90,7 @@ export const UpcomingEventsByPrincipal = () => {
     );
   }
 
-  if (tasksError || activitiesError) {
+  if (error) {
     return (
       <Card>
         <CardHeader>
@@ -141,12 +103,8 @@ export const UpcomingEventsByPrincipal = () => {
     );
   }
 
-  // Group events by principal
-  const eventsByPrincipal = groupEventsByPrincipal(tasks || [], activities || [], principals || []);
-
-  // Check if we have any events at all
-  const totalEvents = (tasks?.length || 0) + (activities?.length || 0);
-  const hasEvents = totalEvents > 0;
+  // Group events by principal from the pre-joined view data
+  const eventsByPrincipal = groupEventsByPrincipal(viewEvents || []);
 
   if (eventsByPrincipal.length === 0) {
     return (
@@ -155,24 +113,10 @@ export const UpcomingEventsByPrincipal = () => {
           <CardTitle>Upcoming by Principal</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {hasEvents ? (
-            <>
-              <p className="text-muted-foreground">
-                {totalEvents} event{totalEvents !== 1 ? 's' : ''} detected this week
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Principal grouping requires a database view (coming in P2).
-                Events exist but cannot be grouped by principal yet.
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="text-muted-foreground">No scheduled events this week</p>
-              <p className="text-sm text-muted-foreground">
-                Schedule meetings or set task deadlines to stay connected with your principals.
-              </p>
-            </>
-          )}
+          <p className="text-muted-foreground">No scheduled events this week</p>
+          <p className="text-sm text-muted-foreground">
+            Schedule meetings or set task deadlines to stay connected with your principals.
+          </p>
         </CardContent>
       </Card>
     );
@@ -192,20 +136,36 @@ export const UpcomingEventsByPrincipal = () => {
   );
 };
 
-function groupEventsByPrincipal(
-  tasks: Task[],
-  activities: Activity[],
-  _principals: any[]
-): PrincipalEvent[] {
+function groupEventsByPrincipal(viewEvents: ViewEvent[]): PrincipalEvent[] {
+  // Group pre-joined events by principal using Map for efficient lookup
   const eventMap = new Map<number, PrincipalEvent>();
 
-  // NOTE: Tasks and activities currently don't include principal_organization_id in their schema.
-  // To properly group by principal, we would need to join through:
-  // - Task → Opportunity → Principal
-  // - Activity → Opportunity → Principal
-  // This would require a database view or additional data enrichment in the data layer.
+  for (const event of viewEvents) {
+    const principalId = event.principal_organization_id;
+    const eventDate = new Date(event.event_date);
 
-  // Convert map to array and sort
+    // Get or create principal group
+    if (!eventMap.has(principalId)) {
+      eventMap.set(principalId, {
+        principalId,
+        principalName: event.principal_name,
+        status: event.principal_status,
+        events: [],
+      });
+    }
+
+    // Add event to principal's events array
+    const principal = eventMap.get(principalId)!;
+    principal.events.push({
+      id: `${event.event_type}-${event.source_id}`,
+      type: event.event_type,
+      title: event.event_title,
+      date: eventDate,
+      description: event.description,
+    });
+  }
+
+  // Convert to array and sort
   const grouped = Array.from(eventMap.values());
 
   // Sort by status priority (urgent first), then by earliest event date
