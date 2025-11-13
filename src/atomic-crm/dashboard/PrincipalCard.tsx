@@ -74,7 +74,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
       </div>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+      <div className="grid grid-cols-2 gap-content mb-section text-sm">
         <div>
           <span className="text-muted-foreground">Tasks</span>
           <p className="font-semibold">
@@ -94,7 +94,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
 
       {/* Top opportunity */}
       {principal.topOpportunity && (
-        <div className="mb-4 p-3 bg-primary/5 rounded border border-primary/20">
+        <div className="mb-section p-content bg-primary/5 rounded border border-primary/20">
           <p className="text-xs text-muted-foreground mb-1">Top Opportunity</p>
           <button
             onClick={() =>
@@ -113,7 +113,7 @@ export const PrincipalCard = ({ principal }: PrincipalCardProps) => {
       )}
 
       {/* Action buttons */}
-      <div className="flex gap-2 pt-4 border-t border">
+      <div className="flex gap-compact pt-section border-t border">
         <button
           onClick={handleViewTasks}
           className="flex-1 px-3 py-2 bg-primary text-white rounded font-medium text-sm hover:opacity-90 transition-opacity min-h-[44px]"
