@@ -71,7 +71,7 @@ export function UpdateOpportunityStep({
   // Error state
   if (error || !opportunity) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-section">
         <p className="text-sm text-destructive">Unable to load opportunity details.</p>
         <Button onClick={onSkip} className="w-full">
           Continue Anyway
@@ -89,17 +89,17 @@ export function UpdateOpportunityStep({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-section">
       {/* Current Opportunity Info */}
-      <div className="rounded-md bg-muted/50 p-3">
+      <div className="rounded-md bg-muted/50 p-content">
         <p className="text-sm font-medium text-foreground">{opportunity.name || "Opportunity"}</p>
-        <p className="mt-1 text-xs text-muted-foreground">
+        <p className="mt-compact text-xs text-muted-foreground">
           Current Stage: <span className="font-medium text-foreground">{currentStageLabel}</span>
         </p>
       </div>
 
       {/* Stage Selector */}
-      <div className="space-y-2">
+      <div className="space-y-compact">
         <Label htmlFor="new-stage">Move to Stage (optional)</Label>
         <Select
           value={selectedStage || undefined}
