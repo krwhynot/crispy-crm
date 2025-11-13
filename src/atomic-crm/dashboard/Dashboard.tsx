@@ -6,7 +6,7 @@ import { useAriaAnnounce } from "@/lib/design-system";
 import { OpportunitiesByPrincipalDesktopContainer } from "./OpportunitiesByPrincipalDesktopContainer";
 import { UpcomingEventsByPrincipal } from "./UpcomingEventsByPrincipal";
 import { MyTasksThisWeek } from "./MyTasksThisWeek";
-import { RecentActivityFeed } from "./RecentActivityFeed";
+import { ActivityFeed } from "./ActivityFeed";
 import { PipelineSummary } from "./PipelineSummary";
 import QuickLogActivity from "./QuickActionModals/QuickLogActivity";
 import { useKeyboardShortcuts, globalShortcuts } from "@/atomic-crm/utils/keyboardShortcuts";
