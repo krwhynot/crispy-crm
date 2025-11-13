@@ -95,7 +95,7 @@ export const Dashboard = () => {
 
   return (
     <main role="main" aria-label="Dashboard">
-      <div className="space-y-4">
+      <div className="space-y-[var(--spacing-content)]">
         {/* Dashboard Header with Action Buttons */}
         <div className="flex items-center justify-between">
           <div>
@@ -134,15 +134,15 @@ export const Dashboard = () => {
         </div>
 
         {/* Grid Layout: 70% main content (left) + 30% sidebar (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-[var(--spacing-section)]">
           {/* Left Column - Main Focus */}
-          <div className="space-y-6">
+          <div className="space-y-[var(--spacing-section)]">
             <UpcomingEventsByPrincipal />
             <OpportunitiesByPrincipalDesktopContainer />
           </div>
 
           {/* Right Sidebar - Supporting Context */}
-          <aside className="space-y-6" aria-label="Supporting information">
+          <aside className="space-y-[var(--spacing-section)]" aria-label="Supporting information">
             <MyTasksThisWeek />
             <RecentActivityFeed />
             <PipelineSummary />
