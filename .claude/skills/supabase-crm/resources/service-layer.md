@@ -642,7 +642,7 @@ describe('OrganizationService', () => {
 
 ## Related Resources
 
-- [Validation Patterns](validation.md) - Zod schemas and type inference
+- [Validation Patterns](validation-patterns.md) - Zod schemas and type inference
 - [Error Handling](error-handling.md) - Error types and patterns
 - [Edge Functions](edge-functions.md) - Complex operations via invoke()
-- [Testing](testing.md) - Service layer testing strategies
+- [Query Optimization](query-optimization.md) - Efficient queries and indexing
