@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useGetList, useUpdate, useNotify } from 'react-admin';
-import { CheckIcon, PlusIcon } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -50,7 +50,7 @@ export function TasksPanel() {
         previousData: { id: taskId },
       });
       notify('Task marked as complete', { type: 'success' });
-    } catch (error) {
+    } catch {
       notify('Failed to complete task', { type: 'error' });
     }
   };
@@ -121,18 +121,6 @@ export function TasksPanel() {
       }));
   }, [data, grouping]);
 
-  const getPriorityBadgeVariant = (priority: string) => {
-    switch (priority) {
-      case 'critical':
-        return 'destructive';
-      case 'high':
-      case 'medium':
-      case 'low':
-      default:
-        return 'secondary';
-    }
-  };
-
   const getPriorityBadgeClass = (priority: string) => {
     switch (priority) {
       case 'critical':
@@ -164,7 +152,7 @@ export function TasksPanel() {
   }
 
   return (
-    <div className="bg-card border border-border rounded-lg shadow-sm flex flex-col h-full">
+    <div className="bg-card border border-border rounded-lg shadow-sm flex flex-col h-full" aria-label="Tasks list">
       <div className="h-11 px-3 border-b border-border flex items-center justify-between gap-3">
         <span className="font-semibold text-sm">Tasks</span>
         <div className="flex items-center gap-2">
@@ -200,7 +188,7 @@ export function TasksPanel() {
             </Button>
           </div>
         ) : (
-          <div className="space-y-0">
+          <div className="space-y-0" role="list">
             {groupedTasks.map((group) => {
               const isLaterGroup = group.isLater;
               const tasksToShow = isLaterGroup
@@ -249,6 +237,7 @@ export function TasksPanel() {
                     <div
                       key={task.task_id}
                       className="h-11 px-3 hover:bg-muted/30 flex items-center gap-3 border-b border-border/50"
+                      role="listitem"
                     >
                       <button
                         onClick={() => handleComplete(task.task_id)}

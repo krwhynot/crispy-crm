@@ -43,7 +43,8 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
   return (
     <aside
       className="w-64 bg-card border-r border-border shadow-sm h-full flex flex-col"
-      aria-label="Filters sidebar"
+      aria-label="Filters"
+      aria-controls="col-opportunities col-tasks"
     >
       <Collapsible open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <div className="border-b border-border">
