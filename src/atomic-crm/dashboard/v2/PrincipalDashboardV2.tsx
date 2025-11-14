@@ -5,52 +5,9 @@ import { FiltersSidebar } from './components/FiltersSidebar';
 import { OpportunitiesHierarchy } from './components/OpportunitiesHierarchy';
 import { TasksPanel } from './components/TasksPanel';
 import { QuickLogger } from './components/QuickLogger';
+import { RightSlideOver } from './components/RightSlideOver';
 import { useResizableColumns } from './hooks/useResizableColumns';
 import type { FilterState } from './types';
-
-/**
- * Right slide-over panel for opportunity details (placeholder for WP 4.5-4.7)
- *
- * FUTURE: Will contain tabs for Details, History, and Files
- */
-interface RightSlideOverProps {
-  isOpen: boolean;
-  onClose: () => void;
-  opportunityId: number | null;
-}
-
-function RightSlideOver({ isOpen, onClose, opportunityId }: RightSlideOverProps) {
-  if (!isOpen) return null;
-
-  return (
-    <div
-      className="fixed inset-y-0 right-0 w-96 bg-card border-l border-border shadow-xl z-50"
-      role="dialog"
-      aria-label="Opportunity details"
-    >
-      <div className="h-full flex flex-col">
-        <div className="h-11 px-4 border-b border-border flex items-center justify-between">
-          <span className="font-semibold text-sm">Opportunity Details</span>
-          <button
-            onClick={onClose}
-            className="h-11 w-11 flex items-center justify-center hover:bg-muted/50 rounded transition-colors"
-            aria-label="Close slide-over"
-          >
-            ✕
-          </button>
-        </div>
-        <div className="flex-1 p-4">
-          <p className="text-muted-foreground text-sm">
-            {opportunityId ? `Opportunity ID: ${opportunityId}` : 'No opportunity selected'}
-          </p>
-          <p className="text-muted-foreground text-sm mt-2">
-            Details, History, and Files tabs coming in WP 4.5-4.7
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /**
  * Principal Dashboard V2 - Main Layout
@@ -85,7 +42,7 @@ export function PrincipalDashboardV2() {
     groupByCustomer: true,
   });
 
-  const { containerRef, widths, onMouseDown, resetWidths } = useResizableColumns();
+  const { containerRef, widths, onMouseDown } = useResizableColumns();
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -168,12 +125,14 @@ export function PrincipalDashboardV2() {
             </div>
 
             {/* Separator 1 */}
-            <div
+            <button
+              type="button"
               className="w-1 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
               onMouseDown={onMouseDown(0)}
               role="separator"
               aria-orientation="vertical"
               aria-label="Resize opportunities column"
+              tabIndex={0}
             />
 
             {/* Column 2: Tasks */}
@@ -186,12 +145,14 @@ export function PrincipalDashboardV2() {
             </div>
 
             {/* Separator 2 */}
-            <div
+            <button
+              type="button"
               className="w-1 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
               onMouseDown={onMouseDown(1)}
               role="separator"
               aria-orientation="vertical"
               aria-label="Resize tasks column"
+              tabIndex={0}
             />
 
             {/* Column 3: Quick Logger */}

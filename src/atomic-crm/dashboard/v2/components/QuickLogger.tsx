@@ -136,7 +136,7 @@ export function QuickLogger() {
         <CardTitle>Quick Logger</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-3" aria-label="Quick activity logger">
           {/* Activity Type Buttons */}
           <div className="space-y-2">
             <Label>Activity Type</Label>
@@ -196,6 +196,7 @@ export function QuickLogger() {
               placeholder="Brief summary..."
               className="h-11"
               required
+              aria-required="true"
             />
           </div>
 
@@ -236,6 +237,7 @@ export function QuickLogger() {
                   placeholder="Follow-up task..."
                   className="h-11"
                   required={createFollowUp}
+                  aria-required={createFollowUp ? 'true' : 'false'}
                 />
               </div>
 
@@ -248,6 +250,7 @@ export function QuickLogger() {
                   onChange={(e) => setFollowUpDueDate(e.target.value)}
                   className="h-11"
                   required={createFollowUp}
+                  aria-required={createFollowUp ? 'true' : 'false'}
                 />
               </div>
 
