@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FilterState } from "../types";
+import type { FilterState } from "../types";
 import { usePrefs } from "../hooks/usePrefs";
 import { OPPORTUNITY_STAGES_LEGACY } from "@/atomic-crm/opportunities/stageConstants";
 

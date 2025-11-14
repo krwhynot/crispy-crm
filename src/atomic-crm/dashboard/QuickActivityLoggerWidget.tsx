@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Phone, Mail, Calendar, FileText } from 'lucide-react';
-import { ActivityType } from './types';
+import type { ActivityType } from './types';
 
 export const QuickActivityLoggerWidget: React.FC = () => {
   const [activityType, setActivityType] = useState<ActivityType>('call');

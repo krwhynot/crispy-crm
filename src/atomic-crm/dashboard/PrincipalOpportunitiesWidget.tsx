@@ -2,7 +2,7 @@ import React from 'react';
 import { useGetList } from 'react-admin';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { PrincipalOpportunity, HealthStatus } from './types';
+import type { PrincipalOpportunity, HealthStatus } from './types';
 
 export const PrincipalOpportunitiesWidget: React.FC = () => {
   const { data, isLoading, error } = useGetList<PrincipalOpportunity>(
