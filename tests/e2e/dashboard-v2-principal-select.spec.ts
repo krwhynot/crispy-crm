@@ -145,8 +145,8 @@ test.describe('Principal Dashboard V2 - Selector Semantics', () => {
 
       await expect(submitButton.first()).toBeDisabled();
 
-      // Assert helper text is visible
-      const helperText = page.getByText(/select a principal/i);
+      // Assert helper text is visible (use testid to avoid strict mode violation)
+      const helperText = page.getByTestId('quick-logger-helper');
       await expect(helperText).toBeVisible();
     });
 
