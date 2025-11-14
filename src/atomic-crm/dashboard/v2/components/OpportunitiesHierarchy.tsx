@@ -34,6 +34,9 @@ export function OpportunitiesHierarchy({ onOpportunityClick }: OpportunitiesHier
         : {},
       sort: { field: 'last_activity', order: 'DESC' },
       pagination: { page: 1, perPage: 500 },
+    },
+    {
+      enabled: !!selectedPrincipalId,
     }
   );
 

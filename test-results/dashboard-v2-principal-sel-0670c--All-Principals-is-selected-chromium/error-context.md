@@ -1,24 +1,187 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e3]:
-  - generic [ref=e4]:
-    - generic [ref=e7]:
-      - img "MFB Master Food Brokers" [ref=e8]
-      - text: MFB Master Food Brokers
-    - generic [ref=e10]:
-      - heading "Sign in" [level=1] [ref=e12]
-      - generic [ref=e13]:
-        - group [ref=e14]:
-          - generic [ref=e16]: Email *
-          - textbox "Email *" [ref=e17]
-          - generic [ref=e18]: Required
-        - group [ref=e19]:
-          - generic [ref=e21]: Password *
-          - textbox "Password *" [ref=e22]
-          - generic [ref=e23]: Required
-        - button "Sign in" [ref=e24] [cursor=pointer]
-      - link "Forgot your password?" [ref=e25] [cursor=pointer]:
-        - /url: "#/forgot-password"
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - generic [ref=e29]:
+        - navigation "Breadcrumb" [ref=e30]:
+          - button "Navigate to home" [ref=e31] [cursor=pointer]: Home
+          - img [ref=e32]
+          - button "Navigate to principals list" [ref=e34] [cursor=pointer]: Principals
+        - generic [ref=e35]:
+          - combobox [active] [ref=e36] [cursor=pointer]:
+            - generic: All Principals
+            - img
+          - searchbox "Global search" [ref=e37]
+          - button "Create new item" [ref=e38] [cursor=pointer]:
+            - img
+            - text: New
+      - generic [ref=e39]:
+        - complementary "Filters" [ref=e40]:
+          - generic [ref=e41]:
+            - button "Filters" [expanded] [ref=e43] [cursor=pointer]:
+              - generic [ref=e44]: Filters
+              - img [ref=e45]
+            - generic [ref=e48]:
+              - generic [ref=e49]:
+                - heading "Health Status" [level=3] [ref=e50]
+                - generic [ref=e51]:
+                  - generic [ref=e52]:
+                    - checkbox "🟢 Active" [ref=e53] [cursor=pointer]
+                    - generic [ref=e54] [cursor=pointer]:
+                      - generic [ref=e55]: 🟢
+                      - text: Active
+                  - generic [ref=e56]:
+                    - checkbox "🟡 Cooling" [ref=e57] [cursor=pointer]
+                    - generic [ref=e58] [cursor=pointer]:
+                      - generic [ref=e59]: 🟡
+                      - text: Cooling
+                  - generic [ref=e60]:
+                    - checkbox "🔴 At Risk" [ref=e61] [cursor=pointer]
+                    - generic [ref=e62] [cursor=pointer]:
+                      - generic [ref=e63]: 🔴
+                      - text: At Risk
+              - generic [ref=e64]:
+                - heading "Stage" [level=3] [ref=e65]
+                - generic [ref=e66]:
+                  - generic [ref=e67]:
+                    - checkbox "New Lead" [ref=e68] [cursor=pointer]
+                    - generic [ref=e69] [cursor=pointer]: New Lead
+                  - generic [ref=e70]:
+                    - checkbox "Initial Outreach" [ref=e71] [cursor=pointer]
+                    - generic [ref=e72] [cursor=pointer]: Initial Outreach
+                  - generic [ref=e73]:
+                    - checkbox "Sample/Visit Offered" [ref=e74] [cursor=pointer]
+                    - generic [ref=e75] [cursor=pointer]: Sample/Visit Offered
+                  - generic [ref=e76]:
+                    - checkbox "Awaiting Response" [ref=e77] [cursor=pointer]
+                    - generic [ref=e78] [cursor=pointer]: Awaiting Response
+                  - generic [ref=e79]:
+                    - checkbox "Feedback Logged" [ref=e80] [cursor=pointer]
+                    - generic [ref=e81] [cursor=pointer]: Feedback Logged
+                  - generic [ref=e82]:
+                    - checkbox "Demo Scheduled" [ref=e83] [cursor=pointer]
+                    - generic [ref=e84] [cursor=pointer]: Demo Scheduled
+                  - generic [ref=e85]:
+                    - checkbox "Closed - Won" [ref=e86] [cursor=pointer]
+                    - generic [ref=e87] [cursor=pointer]: Closed - Won
+                  - generic [ref=e88]:
+                    - checkbox "Closed - Lost" [ref=e89] [cursor=pointer]
+                    - generic [ref=e90] [cursor=pointer]: Closed - Lost
+              - generic [ref=e91]:
+                - heading "Assignee" [level=3] [ref=e92]
+                - radiogroup [ref=e93]:
+                  - generic [ref=e94]:
+                    - radio "Me" [ref=e95] [cursor=pointer]
+                    - generic [ref=e96] [cursor=pointer]: Me
+                  - generic [ref=e97]:
+                    - radio "Team" [ref=e98] [cursor=pointer]
+                    - generic [ref=e99] [cursor=pointer]: Team
+              - generic [ref=e100]:
+                - heading "Last Touch" [level=3] [ref=e101]
+                - combobox [ref=e102] [cursor=pointer]:
+                  - generic: Any
+                  - img
+              - generic [ref=e103]:
+                - heading "Saved Views" [level=3] [ref=e104]
+                - paragraph [ref=e106]: No saved views yet
+              - generic [ref=e107]:
+                - heading "Utilities" [level=3] [ref=e108]
+                - generic [ref=e109]:
+                  - generic [ref=e110]:
+                    - checkbox "Show closed opportunities" [ref=e111] [cursor=pointer]
+                    - generic [ref=e112] [cursor=pointer]: Show closed opportunities
+                  - generic [ref=e113]:
+                    - checkbox "Group opportunities by customer" [checked] [ref=e114] [cursor=pointer]
+                    - generic [ref=e115] [cursor=pointer]: Group opportunities by customer
+        - generic [ref=e116]:
+          - paragraph [ref=e120]: Select a principal to view opportunities
+          - separator "Resize opportunities column" [ref=e121] [cursor=pointer]
+          - generic "Tasks list" [ref=e123]:
+            - generic [ref=e124]:
+              - generic [ref=e125]: Tasks
+              - generic [ref=e126]:
+                - combobox [ref=e127] [cursor=pointer]:
+                  - generic: Due Date
+                  - img
+                - button "Create new task" [ref=e128] [cursor=pointer]:
+                  - img
+                  - text: New
+            - generic [ref=e130]:
+              - paragraph [ref=e131]: No tasks due
+              - button "Create Task" [ref=e132] [cursor=pointer]
+          - separator "Resize tasks column" [ref=e133] [cursor=pointer]
+          - generic [ref=e135]:
+            - generic [ref=e137]: Quick Logger
+            - generic [ref=e138]:
+              - paragraph [ref=e139]: Select a principal to log activity
+              - form "Quick activity logger" [ref=e140]:
+                - generic [ref=e141]:
+                  - generic [ref=e142]: Activity Type
+                  - generic [ref=e143]:
+                    - button "Log call" [disabled]:
+                      - img
+                    - button "Log email" [disabled]:
+                      - img
+                    - button "Log meeting" [disabled]:
+                      - img
+                    - button "Log note" [disabled]:
+                      - img
+                - generic [ref=e144]:
+                  - generic [ref=e145]: Opportunity (Optional)
+                  - combobox "Opportunity (Optional)" [disabled] [ref=e146]:
+                    - generic: Select opportunity
+                    - img
+                  - combobox [disabled] [ref=e147]
+                - generic [ref=e148]:
+                  - generic [ref=e149]: Subject *
+                  - textbox "Subject *" [disabled]:
+                    - /placeholder: Brief summary...
+                - generic [ref=e150]:
+                  - generic [ref=e151]: Description
+                  - textbox "Description" [disabled] [ref=e152]:
+                    - /placeholder: Activity details...
+                - generic [ref=e153]:
+                  - checkbox "Create follow-up task" [disabled] [ref=e154]
+                  - checkbox [disabled]
+                  - generic [ref=e155]: Create follow-up task
+                - button "Log Activity" [disabled]
+  - contentinfo [ref=e156]:
+    - generic [ref=e158]:
+      - paragraph [ref=e159]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e160] [cursor=pointer]:
+        - img [ref=e161]
+        - generic [ref=e163]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```

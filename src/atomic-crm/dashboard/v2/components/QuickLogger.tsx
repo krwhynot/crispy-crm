@@ -43,11 +43,17 @@ export function QuickLogger() {
   const { data: identity } = useGetIdentity();
 
   // Fetch opportunities for selected principal
-  const { data: opportunities } = useGetList('principal_opportunities', {
-    filter: selectedPrincipalId ? { principal_id: selectedPrincipalId } : {},
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: 'opportunity_name', order: 'ASC' },
-  });
+  const { data: opportunities } = useGetList(
+    'principal_opportunities',
+    {
+      filter: selectedPrincipalId ? { principal_id: selectedPrincipalId } : {},
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: 'opportunity_name', order: 'ASC' },
+    },
+    {
+      enabled: !!selectedPrincipalId,
+    }
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,15 +126,7 @@ export function QuickLogger() {
     }
   };
 
-  if (!selectedPrincipalId) {
-    return (
-      <Card className="bg-card border border-border rounded-lg shadow-sm">
-        <CardContent className="p-content">
-          <p className="text-muted-foreground text-sm">Select a principal to log activity</p>
-        </CardContent>
-      </Card>
-    );
-  }
+  const isDisabled = !selectedPrincipalId;
 
   return (
     <Card className="bg-card border border-border rounded-lg shadow-sm" data-testid="quick-logger-card">
@@ -136,6 +134,11 @@ export function QuickLogger() {
         <CardTitle>Quick Logger</CardTitle>
       </CardHeader>
       <CardContent>
+        {isDisabled && (
+          <p data-testid="quick-logger-helper" className="text-sm text-muted-foreground mb-3">
+            Select a principal to log activity
+          </p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-3" aria-label="Quick activity logger" data-testid="quick-logger-form">
           {/* Activity Type Buttons */}
           <div className="space-y-2">
@@ -152,6 +155,7 @@ export function QuickLogger() {
                     onClick={() => setActivityType(value)}
                     aria-label={`Log ${value}`}
                     data-testid={`activity-type-${value}`}
+                    disabled={isDisabled}
                   >
                     <Icon className="size-4" />
                   </Button>
@@ -166,6 +170,7 @@ export function QuickLogger() {
             <Select
               value={opportunityId?.toString() || ''}
               onValueChange={(value) => setOpportunityId(value ? parseInt(value, 10) : null)}
+              disabled={isDisabled}
             >
               <SelectTrigger id="opportunity" className="h-11">
                 <SelectValue
@@ -198,6 +203,7 @@ export function QuickLogger() {
               className="h-11"
               required
               aria-required="true"
+              disabled={isDisabled}
             />
           </div>
 
@@ -210,6 +216,7 @@ export function QuickLogger() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Activity details..."
               className="min-h-[88px]"
+              disabled={isDisabled}
             />
           </div>
 
@@ -220,6 +227,7 @@ export function QuickLogger() {
               checked={createFollowUp}
               onCheckedChange={(checked) => setCreateFollowUp(checked === true)}
               data-testid="create-followup-checkbox"
+              disabled={isDisabled}
             />
             <Label htmlFor="create-followup" className="cursor-pointer">
               Create follow-up task
@@ -274,7 +282,12 @@ export function QuickLogger() {
           )}
 
           {/* Submit Button */}
-          <Button type="submit" className="w-full bg-primary text-primary-foreground h-11">
+          <Button
+            data-testid="quick-logger-submit"
+            type="submit"
+            className="w-full bg-primary text-primary-foreground h-11"
+            disabled={isDisabled || !subject.trim()}
+          >
             Log Activity
           </Button>
         </form>

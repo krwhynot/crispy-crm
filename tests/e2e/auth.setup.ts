@@ -20,9 +20,21 @@ setup("authenticate", async ({ page }) => {
   const loginPage = new LoginPage(page);
   await loginPage.loginAsAdmin();
 
-  console.log("Dashboard loaded, saving auth state...");
+  console.log("Dashboard loaded, waiting for Supabase auth tokens...");
 
-  // Save auth state
+  // Wait for Supabase auth tokens in localStorage
+  await page.waitForFunction(
+    () => {
+      // Check for Supabase auth tokens in localStorage
+      const keys = Object.keys(localStorage);
+      return keys.some((key) => key.includes("supabase.auth.token") || key.includes("sb-") && key.includes("-auth-token"));
+    },
+    { timeout: 10000 }
+  );
+
+  console.log("Supabase auth tokens found, saving auth state...");
+
+  // Save auth state (includes localStorage for Supabase auth)
   await page.context().storageState({ path: authFile });
 
   console.log("Auth state saved successfully!");
