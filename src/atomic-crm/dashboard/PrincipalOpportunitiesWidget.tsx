@@ -41,7 +41,7 @@ export const PrincipalOpportunitiesWidget: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Card className="h-64 lg:h-80">
+      <Card className="min-h-80 flex flex-col">
         <CardHeader>
           <CardTitle>Active Opportunities by Principal</CardTitle>
         </CardHeader>
@@ -56,7 +56,7 @@ export const PrincipalOpportunitiesWidget: React.FC = () => {
 
   if (error) {
     return (
-      <Card className="h-64 lg:h-80">
+      <Card className="min-h-80 flex flex-col">
         <CardHeader>
           <CardTitle>Active Opportunities by Principal</CardTitle>
         </CardHeader>
@@ -68,7 +68,7 @@ export const PrincipalOpportunitiesWidget: React.FC = () => {
   }
 
   return (
-    <Card className="h-64 lg:h-80 flex flex-col">
+    <Card className="min-h-80 flex flex-col">
       <CardHeader>
         <CardTitle>Active Opportunities by Principal</CardTitle>
       </CardHeader>
