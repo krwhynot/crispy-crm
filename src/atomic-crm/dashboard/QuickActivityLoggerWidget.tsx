@@ -86,7 +86,7 @@ export const QuickActivityLoggerWidget: React.FC = () => {
   };
 
   return (
-    <Card className="h-64 lg:h-80 flex flex-col">
+    <Card className="min-h-80 flex flex-col">
       <CardHeader>
         <CardTitle>Quick Log Activity</CardTitle>
       </CardHeader>
