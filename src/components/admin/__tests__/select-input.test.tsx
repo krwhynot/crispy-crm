@@ -37,14 +37,19 @@ const FormWrapper = ({
     mode: "onChange",
   });
 
+  // Reset form when defaultValues change
+  React.useEffect(() => {
+    form.reset(defaultValues);
+  }, [JSON.stringify(defaultValues)]);
+
   return (
     <SaveContextProvider value={saveContext}>
-      <RaForm defaultValues={defaultValues} onSubmit={onSubmit}>
-        <Form {...form}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           {children}
           <button type="submit">Submit</button>
-        </Form>
-      </RaForm>
+        </form>
+      </Form>
     </SaveContextProvider>
   );
 };
