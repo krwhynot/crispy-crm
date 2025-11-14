@@ -1,9 +1,5 @@
-import { ChevronRightIcon } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { ChevronRightIcon, ChevronLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -15,16 +11,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { FilterState } from "../types";
-import { usePrefs } from "../hooks/usePrefs";
 import { OPPORTUNITY_STAGES_LEGACY } from "@/atomic-crm/opportunities/stageConstants";
 
 interface FiltersSidebarProps {
   filters: FilterState;
   onFiltersChange: (filters: FilterState) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps) {
-  const [sidebarOpen, setSidebarOpen] = usePrefs<boolean>("sidebarOpen", true);
+export function FiltersSidebar({ filters, onFiltersChange, open, onOpenChange }: FiltersSidebarProps) {
+  // Early return if not open (parent controls visibility via grid width)
+  if (!open) return null;
 
   const toggleHealth = (value: "active" | "cooling" | "at_risk") => {
     const newHealth = filters.health.includes(value)
@@ -42,178 +40,184 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
 
   return (
     <aside
-      className="w-64 bg-card border-r border-border shadow-sm h-full flex flex-col"
+      className="h-full flex flex-col bg-card border border-border rounded-lg shadow-sm"
       aria-label="Filters"
-      aria-controls="col-opportunities col-tasks"
     >
-      <Collapsible open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <div className="border-b border-border">
-          <CollapsibleTrigger className="flex items-center justify-between w-full h-11 px-4 hover:bg-muted/50 transition-colors">
-            <span className="text-foreground font-semibold text-sm">Filters</span>
-            <ChevronRightIcon
-              className="size-4 text-muted-foreground transition-transform"
-              style={{
-                transform: sidebarOpen ? "rotate(90deg)" : "rotate(0deg)",
-              }}
-            />
-          </CollapsibleTrigger>
-        </div>
+      {/* Sticky header with close button */}
+      <div className="sticky top-0 z-10 bg-card pb-2 px-3 pt-3 border-b border-border flex items-center justify-between">
+        <h3 className="font-semibold text-sm text-foreground">Filters</h3>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onOpenChange(false)}
+          className="h-11 w-11 p-0 hover:bg-muted"
+          aria-label="Close filters sidebar"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+      </div>
 
-        <CollapsibleContent className="flex-1 overflow-y-auto">
-          <div className="p-4 space-y-6">
-            {/* Health Status */}
-            <div className="space-y-3">
-              <h3 className="text-foreground font-semibold text-sm">Health Status</h3>
-              <div className="space-y-2">
-                <div className="flex items-center h-11">
-                  <Checkbox
-                    id="health-active"
-                    checked={filters.health.includes("active")}
-                    onCheckedChange={() => toggleHealth("active")}
-                  />
-                  <Label htmlFor="health-active" className="ml-3 cursor-pointer flex-1">
-                    <span className="mr-2">🟢</span>
-                    Active
-                  </Label>
-                </div>
-                <div className="flex items-center h-11">
-                  <Checkbox
-                    id="health-cooling"
-                    checked={filters.health.includes("cooling")}
-                    onCheckedChange={() => toggleHealth("cooling")}
-                  />
-                  <Label htmlFor="health-cooling" className="ml-3 cursor-pointer flex-1">
-                    <span className="mr-2">🟡</span>
-                    Cooling
-                  </Label>
-                </div>
-                <div className="flex items-center h-11">
-                  <Checkbox
-                    id="health-at-risk"
-                    checked={filters.health.includes("at_risk")}
-                    onCheckedChange={() => toggleHealth("at_risk")}
-                  />
-                  <Label htmlFor="health-at-risk" className="ml-3 cursor-pointer flex-1">
-                    <span className="mr-2">🔴</span>
-                    At Risk
-                  </Label>
-                </div>
-              </div>
+      {/* Filter groups with compact spacing */}
+      <div className="flex-1 overflow-y-auto p-3 space-y-3">
+        {/* Health Status - compact */}
+        <div className="space-y-2">
+          <h3 className="text-foreground font-semibold text-xs">Health Status</h3>
+          <div className="space-y-1">
+            <div className="flex items-center min-h-8">
+              <Checkbox
+                id="health-active"
+                checked={filters.health.includes("active")}
+                onCheckedChange={() => toggleHealth("active")}
+                className="h-4 w-4"
+              />
+              <Label htmlFor="health-active" className="ml-3 cursor-pointer flex-1 text-xs text-success">
+                <span className="mr-2">🟢</span>
+                Active
+              </Label>
             </div>
-
-            {/* Stage */}
-            <div className="space-y-3">
-              <h3 className="text-foreground font-semibold text-sm">Stage</h3>
-              <div className="space-y-2">
-                {OPPORTUNITY_STAGES_LEGACY.map((stage) => (
-                  <div key={stage.value} className="flex items-center h-11">
-                    <Checkbox
-                      id={`stage-${stage.value}`}
-                      checked={filters.stages.includes(stage.value)}
-                      onCheckedChange={() => toggleStage(stage.value)}
-                    />
-                    <Label
-                      htmlFor={`stage-${stage.value}`}
-                      className="ml-3 cursor-pointer flex-1"
-                    >
-                      {stage.label}
-                    </Label>
-                  </div>
-                ))}
-              </div>
+            <div className="flex items-center min-h-8">
+              <Checkbox
+                id="health-cooling"
+                checked={filters.health.includes("cooling")}
+                onCheckedChange={() => toggleHealth("cooling")}
+                className="h-4 w-4"
+              />
+              <Label htmlFor="health-cooling" className="ml-3 cursor-pointer flex-1 text-xs text-warning">
+                <span className="mr-2">🟡</span>
+                Cooling
+              </Label>
             </div>
-
-            {/* Assignee */}
-            <div className="space-y-3">
-              <h3 className="text-foreground font-semibold text-sm">Assignee</h3>
-              <RadioGroup
-                value={filters.assignee || ""}
-                onValueChange={(value) =>
-                  onFiltersChange({
-                    ...filters,
-                    assignee: value === "" ? null : (value as "me" | "team"),
-                  })
-                }
-              >
-                <div className="flex items-center h-11">
-                  <RadioGroupItem value="me" id="assignee-me" />
-                  <Label htmlFor="assignee-me" className="ml-3 cursor-pointer flex-1">
-                    Me
-                  </Label>
-                </div>
-                <div className="flex items-center h-11">
-                  <RadioGroupItem value="team" id="assignee-team" />
-                  <Label htmlFor="assignee-team" className="ml-3 cursor-pointer flex-1">
-                    Team
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-
-            {/* Last Touch */}
-            <div className="space-y-3">
-              <h3 className="text-foreground font-semibold text-sm">Last Touch</h3>
-              <Select
-                value={filters.lastTouch}
-                onValueChange={(value) =>
-                  onFiltersChange({
-                    ...filters,
-                    lastTouch: value as "7d" | "14d" | "any",
-                  })
-                }
-              >
-                <SelectTrigger className="w-full h-11">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="7d">Last 7 days</SelectItem>
-                  <SelectItem value="14d">Last 14 days</SelectItem>
-                  <SelectItem value="any">Any</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Saved Views (Empty State) */}
-            <div className="space-y-3">
-              <h3 className="text-foreground font-semibold text-sm">Saved Views</h3>
-              <div className="rounded-lg border border-border bg-muted/30 p-4 text-center">
-                <p className="text-muted-foreground text-sm">No saved views yet</p>
-              </div>
-            </div>
-
-            {/* Utilities */}
-            <div className="space-y-3">
-              <h3 className="text-foreground font-semibold text-sm">Utilities</h3>
-              <div className="space-y-2">
-                <div className="flex items-center h-11">
-                  <Checkbox
-                    id="show-closed"
-                    checked={filters.showClosed}
-                    onCheckedChange={(checked) =>
-                      onFiltersChange({ ...filters, showClosed: !!checked })
-                    }
-                  />
-                  <Label htmlFor="show-closed" className="ml-3 cursor-pointer flex-1">
-                    Show closed opportunities
-                  </Label>
-                </div>
-                <div className="flex items-center h-11">
-                  <Checkbox
-                    id="group-by-customer"
-                    checked={filters.groupByCustomer}
-                    onCheckedChange={(checked) =>
-                      onFiltersChange({ ...filters, groupByCustomer: !!checked })
-                    }
-                  />
-                  <Label htmlFor="group-by-customer" className="ml-3 cursor-pointer flex-1">
-                    Group opportunities by customer
-                  </Label>
-                </div>
-              </div>
+            <div className="flex items-center min-h-8">
+              <Checkbox
+                id="health-at-risk"
+                checked={filters.health.includes("at_risk")}
+                onCheckedChange={() => toggleHealth("at_risk")}
+                className="h-4 w-4"
+              />
+              <Label htmlFor="health-at-risk" className="ml-3 cursor-pointer flex-1 text-xs text-destructive">
+                <span className="mr-2">🔴</span>
+                At Risk
+              </Label>
             </div>
           </div>
-        </CollapsibleContent>
-      </Collapsible>
+        </div>
+
+        {/* Stage - TWO-COLUMN LAYOUT */}
+        <div className="space-y-2">
+          <h3 className="text-foreground font-semibold text-xs">Stage</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {OPPORTUNITY_STAGES_LEGACY.map((stage) => (
+              <div key={stage.value} className="flex items-center min-h-8">
+                <Checkbox
+                  id={`stage-${stage.value}`}
+                  checked={filters.stages.includes(stage.value)}
+                  onCheckedChange={() => toggleStage(stage.value)}
+                  className="h-4 w-4"
+                />
+                <Label
+                  htmlFor={`stage-${stage.value}`}
+                  className="ml-2 cursor-pointer flex-1 text-xs leading-tight"
+                >
+                  {stage.label}
+                </Label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Assignee - horizontal radio layout */}
+        <div className="space-y-2">
+          <h3 className="text-foreground font-semibold text-xs">Assignee</h3>
+          <RadioGroup
+            value={filters.assignee || ""}
+            onValueChange={(value) =>
+              onFiltersChange({
+                ...filters,
+                assignee: value === "" ? null : (value as "me" | "team"),
+              })
+            }
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex items-center min-h-8">
+                <RadioGroupItem value="me" id="assignee-me" />
+                <Label htmlFor="assignee-me" className="ml-2 cursor-pointer text-xs">
+                  Me
+                </Label>
+              </div>
+              <div className="flex items-center min-h-8">
+                <RadioGroupItem value="team" id="assignee-team" />
+                <Label htmlFor="assignee-team" className="ml-2 cursor-pointer text-xs">
+                  Team
+                </Label>
+              </div>
+            </div>
+          </RadioGroup>
+        </div>
+
+        {/* Last Touch - compact */}
+        <div className="space-y-2">
+          <h3 className="text-foreground font-semibold text-xs">Last Touch</h3>
+          <Select
+            value={filters.lastTouch}
+            onValueChange={(value) =>
+              onFiltersChange({
+                ...filters,
+                lastTouch: value as "7d" | "14d" | "any",
+              })
+            }
+          >
+            <SelectTrigger className="w-full h-9">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="14d">Last 14 days</SelectItem>
+              <SelectItem value="any">Any</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Saved Views (Empty State) - compact */}
+        <div className="space-y-2">
+          <h3 className="text-foreground font-semibold text-xs">Saved Views</h3>
+          <div className="rounded-lg border border-border bg-muted/30 p-3 text-center">
+            <p className="text-muted-foreground text-xs">No saved views yet</p>
+          </div>
+        </div>
+
+        {/* Utilities - compact */}
+        <div className="space-y-2">
+          <h3 className="text-foreground font-semibold text-xs">Utilities</h3>
+          <div className="space-y-1">
+            <div className="flex items-center min-h-8">
+              <Checkbox
+                id="show-closed"
+                checked={filters.showClosed}
+                onCheckedChange={(checked) =>
+                  onFiltersChange({ ...filters, showClosed: !!checked })
+                }
+                className="h-4 w-4"
+              />
+              <Label htmlFor="show-closed" className="ml-2 cursor-pointer flex-1 text-xs">
+                Show closed opportunities
+              </Label>
+            </div>
+            <div className="flex items-center min-h-8">
+              <Checkbox
+                id="group-by-customer"
+                checked={filters.groupByCustomer}
+                onCheckedChange={(checked) =>
+                  onFiltersChange({ ...filters, groupByCustomer: !!checked })
+                }
+                className="h-4 w-4"
+              />
+              <Label htmlFor="group-by-customer" className="ml-2 cursor-pointer flex-1 text-xs">
+                Group opportunities by customer
+              </Label>
+            </div>
+          </div>
+        </div>
+      </div>
     </aside>
   );
 }
