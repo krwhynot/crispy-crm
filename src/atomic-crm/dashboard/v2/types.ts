@@ -169,14 +169,14 @@ export interface UserPreferences {
  *
  * Global listeners (active when not in input/textarea)
  */
-export type KeyboardShortcut = {
+export interface KeyboardShortcut {
   '/': 'focus-search';
   '1': 'scroll-to-opportunities';
   '2': 'scroll-to-tasks';
   '3': 'scroll-to-quick-logger';
   H: 'open-history-tab';
   Escape: 'close-slide-over';
-};
+}
 
 /**
  * Column identifiers for scrollIntoView

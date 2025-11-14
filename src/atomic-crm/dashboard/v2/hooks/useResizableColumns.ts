@@ -1,6 +1,7 @@
 import { useRef, useCallback } from "react";
 import { usePrefs } from "./usePrefs";
-import { ColWidths, COLUMN_WIDTH_CONSTRAINTS } from "../types";
+import type { ColWidths} from "../types";
+import { COLUMN_WIDTH_CONSTRAINTS } from "../types";
 
 /**
  * Hook for managing resizable 3-column layout with mouse drag.

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Phone, Mail, Calendar, FileText } from 'lucide-react';
-import { ActivityType } from './types';
+import type { ActivityType } from './types';
 
 interface ActivityHistoryDialogProps {
   principalId: number;

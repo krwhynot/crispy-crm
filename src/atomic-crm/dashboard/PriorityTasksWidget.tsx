@@ -2,7 +2,7 @@ import React from 'react';
 import { useGetList } from 'react-admin';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { PriorityTask, TaskPriority } from './types';
+import type { PriorityTask, TaskPriority } from './types';
 import { Calendar } from 'lucide-react';
 
 export const PriorityTasksWidget: React.FC = () => {
