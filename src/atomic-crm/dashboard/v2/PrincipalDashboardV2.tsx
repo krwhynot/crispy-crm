@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { PrincipalProvider } from './context/PrincipalContext';
 import { DashboardHeader } from './components/DashboardHeader';
 import { FiltersSidebar } from './components/FiltersSidebar';
@@ -8,7 +7,6 @@ import { TasksPanel } from './components/TasksPanel';
 import { QuickLogger } from './components/QuickLogger';
 import { RightSlideOver } from './components/RightSlideOver';
 import { useResizableColumns } from './hooks/useResizableColumns';
-import { usePrefs } from './hooks/usePrefs';
 import type { FilterState } from './types';
 
 /**
@@ -16,7 +14,7 @@ import type { FilterState } from './types';
  *
  * Features:
  * - Header with principal selector and breadcrumbs
- * - Left sidebar with collapsible filters
+ * - Left sidebar with accordion-style collapsible filter content
  * - 3-column resizable layout (Opportunities | Tasks | Quick Logger)
  * - Right slide-over panel for opportunity details
  * - Global keyboard shortcuts (/, 1, 2, 3, H, Esc)
@@ -28,7 +26,7 @@ import type { FilterState } from './types';
  * ├────────┬────────────────────────────────────────┤
  * │ Filter │ Opportunities │ Tasks │ Quick Logger   │
  * │ Sidebar│ (col 1)       │(col 2)│ (col 3)        │
- * │        │               │       │                │
+ * │ (18rem)│               │       │                │
  * └────────┴────────────────────────────────────────┘
  * ```
  */
@@ -43,9 +41,6 @@ export function PrincipalDashboardV2() {
     showClosed: false,
     groupByCustomer: true,
   });
-
-  // Sidebar state with localStorage persistence
-  const [sidebarOpen, setSidebarOpen] = usePrefs<boolean>('pd.sidebarOpen', true);
 
   const { containerRef, widths, onMouseDown } = useResizableColumns();
 
@@ -115,25 +110,21 @@ export function PrincipalDashboardV2() {
 
         {/* Main Content Area */}
         <div className="flex-1 relative px-[var(--spacing-edge-desktop)] py-6">
-          {/* Grid layout with dynamic sidebar width */}
+          {/* Grid layout with fixed sidebar width */}
           <div
             className="grid h-full"
             style={{
-              gridTemplateColumns: sidebarOpen ? '18rem 1fr' : '0px 1fr',
+              gridTemplateColumns: '18rem 1fr',
               gap: '24px',
             }}
           >
-            {/* Left Sidebar (Filters) - Conditional rendering */}
-            {sidebarOpen && (
-              <div className="overflow-hidden">
-                <FiltersSidebar
-                  filters={filterState}
-                  onFiltersChange={setFilterState}
-                  open={sidebarOpen}
-                  onOpenChange={setSidebarOpen}
-                />
-              </div>
-            )}
+            {/* Left Sidebar (Filters) */}
+            <div className="overflow-hidden">
+              <FiltersSidebar
+                filters={filterState}
+                onFiltersChange={setFilterState}
+              />
+            </div>
 
             {/* 3-Column Layout */}
             <div ref={containerRef} className="flex h-full overflow-hidden">
@@ -151,10 +142,7 @@ export function PrincipalDashboardV2() {
                 type="button"
                 className="w-2 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
                 onMouseDown={onMouseDown(0)}
-                role="separator"
-                aria-orientation="vertical"
                 aria-label="Resize opportunities column"
-                tabIndex={0}
               />
 
               {/* Column 2: Tasks */}
@@ -171,10 +159,7 @@ export function PrincipalDashboardV2() {
                 type="button"
                 className="w-2 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
                 onMouseDown={onMouseDown(1)}
-                role="separator"
-                aria-orientation="vertical"
                 aria-label="Resize tasks column"
-                tabIndex={0}
               />
 
               {/* Column 3: Quick Logger */}
@@ -187,18 +172,6 @@ export function PrincipalDashboardV2() {
               </div>
             </div>
           </div>
-
-          {/* Rail Toggle - appears when sidebar is closed */}
-          {!sidebarOpen && (
-            <button
-              type="button"
-              onClick={() => setSidebarOpen(true)}
-              className="absolute left-0 top-28 h-11 w-6 rounded-r-lg border border-border bg-card shadow-sm flex items-center justify-center hover:bg-muted transition-colors"
-              aria-label="Open filters sidebar"
-            >
-              <ChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-            </button>
-          )}
         </div>
 
         {/* Right Slide-Over */}

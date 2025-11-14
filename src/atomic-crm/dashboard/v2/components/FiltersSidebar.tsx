@@ -45,22 +45,23 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
       className="h-full flex flex-col bg-card border border-border rounded-lg shadow-sm"
       aria-label="Filters"
     >
-      {/* Sticky header with close button */}
-      <div className="sticky top-0 z-10 bg-card pb-2 px-3 pt-3 border-b border-border flex items-center justify-between">
-        <h3 className="font-semibold text-sm text-foreground">Filters</h3>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onOpenChange(false)}
-          className="h-11 w-11 p-0 hover:bg-muted"
-          aria-label="Close filters sidebar"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-      </div>
+      <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+        {/* Collapsible header */}
+        <div className="border-b border-border">
+          <CollapsibleTrigger className="flex items-center justify-between w-full h-11 px-3 hover:bg-muted/50 transition-colors">
+            <h3 className="font-semibold text-sm text-foreground">Filters</h3>
+            <ChevronRightIcon
+              className="h-4 w-4 text-muted-foreground transition-transform"
+              style={{
+                transform: filtersOpen ? "rotate(90deg)" : "rotate(0deg)",
+              }}
+            />
+          </CollapsibleTrigger>
+        </div>
 
-      {/* Filter groups with compact spacing */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3">
+        {/* Collapsible filter content */}
+        <CollapsibleContent className="flex-1 overflow-y-auto">
+          <div className="p-3 space-y-3">
         {/* Health Status - compact */}
         <div className="space-y-2">
           <h3 className="text-foreground font-semibold text-xs">Health Status</h3>
@@ -219,7 +220,9 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
             </div>
           </div>
         </div>
-      </div>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
     </aside>
   );
 }
