@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useSidebar } from "@/components/ui/sidebar.utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { House, List, Shell } from "lucide-react";
+import { House, LayoutDashboard, List, Shell } from "lucide-react";
 
 export function AppSidebar() {
   const hasDashboard = useHasDashboard();
