@@ -1,8 +1,12 @@
-import React from 'react';
-import { Title } from 'react-admin';
+import React, { useState } from 'react';
+import { Title, useGetList } from 'react-admin';
+import { Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PrincipalOpportunitiesWidget } from './PrincipalOpportunitiesWidget';
 import { PriorityTasksWidget } from './PriorityTasksWidget';
 import { QuickActivityLoggerWidget } from './QuickActivityLoggerWidget';
+import { ActivityHistoryDialog } from './ActivityHistoryDialog';
 
 /**
  * Principal Dashboard - MVP dashboard for managing principal relationships
@@ -15,21 +19,69 @@ import { QuickActivityLoggerWidget } from './QuickActivityLoggerWidget';
  * 2. Priority Tasks - Upcoming tasks by principal (middle)
  * 3. Quick Activity Logger - Log activities for principals (right)
  *
+ * Additional Features:
+ * - Activity History Dialog: View complete activity history for selected principal
+ *
  * Data is fetched independently by each widget container using
  * the dashboard_principal_summary database view and related tables.
  */
 export const PrincipalDashboard: React.FC = () => {
+  const [activityHistoryOpen, setActivityHistoryOpen] = useState(false);
+  const [selectedPrincipalId, setSelectedPrincipalId] = useState<string>('');
+
+  // Fetch principals for the selector
+  const { data: principals } = useGetList('organizations', {
+    filter: { organization_type: 'principal' },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: 'name', order: 'ASC' }
+  });
+
+  const selectedPrincipal = principals?.find(p => p.id.toString() === selectedPrincipalId);
+
+  const handleOpenActivityHistory = () => {
+    if (selectedPrincipalId) {
+      setActivityHistoryOpen(true);
+    }
+  };
+
   return (
     <div className="p-content lg:p-widget">
       <Title title="Principal Dashboard" />
 
       <div className="space-y-section">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl lg:text-3xl font-bold">Principal Dashboard</h1>
-          <p className="text-muted-foreground text-sm lg:text-base">
-            Manage your principal relationships and daily activities
-          </p>
+        {/* Header with Activity History Controls */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-compact">
+          <div className="flex-1">
+            <h1 className="text-2xl lg:text-3xl font-bold">Principal Dashboard</h1>
+            <p className="text-muted-foreground text-sm lg:text-base">
+              Manage your principal relationships and daily activities
+            </p>
+          </div>
+
+          {/* Activity History Controls */}
+          <div className="flex items-center gap-compact">
+            <Select value={selectedPrincipalId} onValueChange={setSelectedPrincipalId}>
+              <SelectTrigger className="w-48 h-11">
+                <SelectValue placeholder="Select principal" />
+              </SelectTrigger>
+              <SelectContent>
+                {principals?.map(p => (
+                  <SelectItem key={p.id} value={p.id.toString()}>
+                    {p.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              variant="outline"
+              className="h-11 w-11 p-0"
+              onClick={handleOpenActivityHistory}
+              disabled={!selectedPrincipalId}
+              aria-label="View activity history"
+            >
+              <Clock className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
 
         {/* Dashboard Grid - 3 equal columns on desktop */}
