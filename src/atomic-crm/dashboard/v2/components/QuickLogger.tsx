@@ -286,7 +286,7 @@ export function QuickLogger() {
             data-testid="quick-logger-submit"
             type="submit"
             className="w-full bg-primary text-primary-foreground h-11"
-            disabled={isDisabled || !subject.trim()}
+            disabled={isDisabled}
           >
             Log Activity
           </Button>
