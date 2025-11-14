@@ -281,6 +281,14 @@ const contactSchema = z.object({
 
 **Layout:** 3-column resizable (Opportunities 40% | Tasks 30% | Quick Logger 30%)
 
+**Desktop Optimization (2025-11-14):**
+- Sidebar truly collapses to 0px width via CSS Grid parent control
+- Rail toggle (6px button) for sidebar reopen when closed
+- Moderate density: 25% spacing reduction (16px→12px padding/gaps)
+- Two-column stage filter layout in 18rem sidebar
+- Single "New" entry point (header dropdown), empty state CTAs only
+- Full WCAG AA accessibility maintained (44px touch targets)
+
 **Key Features:**
 - **Opportunities Hierarchy** - ARIA tree with Principal → Customer → Opportunity navigation
 - **Tasks Panel** - 3 grouping modes (Due Date, Priority, Principal) with "Later" pagination
