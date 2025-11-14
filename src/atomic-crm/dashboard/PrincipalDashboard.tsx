@@ -28,6 +28,14 @@ import { useFeatureFlag } from './v2/hooks/useFeatureFlag';
  * the dashboard_principal_summary database view and related tables.
  */
 export const PrincipalDashboard: React.FC = () => {
+  const isV2Enabled = useFeatureFlag();
+
+  // If V2 layout is enabled via feature flag, render V2 dashboard
+  if (isV2Enabled) {
+    return <PrincipalDashboardV2 />;
+  }
+
+  // Otherwise render V1 dashboard
   const [activityHistoryOpen, setActivityHistoryOpen] = useState(false);
   const [selectedPrincipalId, setSelectedPrincipalId] = useState<string>('');
 

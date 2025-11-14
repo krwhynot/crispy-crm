@@ -19,8 +19,8 @@ import { test, expect } from "./support/fixtures/authenticated";
 
 test.describe("Dashboard V2 - Activity Logging", () => {
   test.beforeEach(async ({ authenticatedPage }) => {
-    // Navigate to dashboard V2
-    await authenticatedPage.goto("/?layout=v2");
+    // Navigate to dashboard V2 (via /dashboard route with v2 flag)
+    await authenticatedPage.goto("/#/dashboard?layout=v2");
 
     // Wait for QuickLogger column to be visible
     await expect(authenticatedPage.locator("#col-logger")).toBeVisible({ timeout: 10000 });

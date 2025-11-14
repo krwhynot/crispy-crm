@@ -5,8 +5,11 @@ const Dashboard = React.lazy(() => import("./Dashboard"));
 // Compact Grid Dashboard
 export { CompactGridDashboard } from './CompactGridDashboard';
 
-// Default export for dashboard (using compact layout)
-export { CompactGridDashboard as default } from './CompactGridDashboard';
+// Principal Dashboard V2
+export { PrincipalDashboardV2 } from './v2';
 
-// Legacy export
+// Default export for dashboard (using V2 layout)
+export { PrincipalDashboardV2 as default } from './v2';
+
+// Legacy exports
 export { Dashboard };
