@@ -131,12 +131,12 @@ export function QuickLogger() {
   }
 
   return (
-    <Card className="bg-card border border-border rounded-lg shadow-sm">
+    <Card className="bg-card border border-border rounded-lg shadow-sm" data-testid="quick-logger-card">
       <CardHeader>
         <CardTitle>Quick Logger</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-3" aria-label="Quick activity logger">
+        <form onSubmit={handleSubmit} className="space-y-3" aria-label="Quick activity logger" data-testid="quick-logger-form">
           {/* Activity Type Buttons */}
           <div className="space-y-2">
             <Label>Activity Type</Label>
@@ -151,6 +151,7 @@ export function QuickLogger() {
                     className="h-11 w-11 p-0"
                     onClick={() => setActivityType(value)}
                     aria-label={`Log ${value}`}
+                    data-testid={`activity-type-${value}`}
                   >
                     <Icon className="size-4" />
                   </Button>
@@ -218,6 +219,7 @@ export function QuickLogger() {
               id="create-followup"
               checked={createFollowUp}
               onCheckedChange={(checked) => setCreateFollowUp(checked === true)}
+              data-testid="create-followup-checkbox"
             />
             <Label htmlFor="create-followup" className="cursor-pointer">
               Create follow-up task
