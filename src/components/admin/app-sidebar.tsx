@@ -51,6 +51,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {hasDashboard ? <DashboardMenuItem onClick={handleClick} /> : null}
+              <PrincipalDashboardMenuItem onClick={handleClick} />
               {Object.keys(resources)
                 .filter((name) => resources[name].hasList)
                 .map((name) => (
@@ -77,6 +78,20 @@ export const DashboardMenuItem = ({ onClick }: { onClick?: () => void }) => {
         <Link to="/" onClick={onClick}>
           <House />
           {label}
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+};
+
+export const PrincipalDashboardMenuItem = ({ onClick }: { onClick?: () => void }) => {
+  const match = useMatch({ path: "/dashboard", end: false });
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={!!match}>
+        <Link to="/dashboard" onClick={onClick}>
+          <LayoutDashboard />
+          Principal Dashboard
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
