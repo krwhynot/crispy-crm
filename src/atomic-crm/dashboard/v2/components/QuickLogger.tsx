@@ -130,10 +130,10 @@ export function QuickLogger() {
 
   return (
     <Card className="bg-card border border-border rounded-lg shadow-sm" data-testid="quick-logger-card">
-      <CardHeader>
-        <CardTitle>Quick Logger</CardTitle>
+      <CardHeader className="p-3">
+        <CardTitle className="text-base">Quick Logger</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-3 space-y-3">
         {isDisabled && (
           <p data-testid="quick-logger-helper" className="text-sm text-muted-foreground mb-3">
             Select a principal to log activity
