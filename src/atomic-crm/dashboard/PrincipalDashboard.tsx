@@ -7,6 +7,8 @@ import { PrincipalOpportunitiesWidget } from './PrincipalOpportunitiesWidget';
 import { PriorityTasksWidget } from './PriorityTasksWidget';
 import { QuickActivityLoggerWidget } from './QuickActivityLoggerWidget';
 import { ActivityHistoryDialog } from './ActivityHistoryDialog';
+import { PrincipalDashboardV2 } from './v2/PrincipalDashboardV2';
+import { useFeatureFlag } from './v2/hooks/useFeatureFlag';
 
 /**
  * Principal Dashboard - MVP dashboard for managing principal relationships
