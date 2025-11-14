@@ -59,7 +59,7 @@ export const PriorityTasksWidget: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Card className="h-64 lg:h-80">
+      <Card className="min-h-80 flex flex-col">
         <CardHeader>
           <CardTitle>Priority Tasks</CardTitle>
         </CardHeader>
@@ -74,7 +74,7 @@ export const PriorityTasksWidget: React.FC = () => {
 
   if (error) {
     return (
-      <Card className="h-64 lg:h-80">
+      <Card className="min-h-80 flex flex-col">
         <CardHeader>
           <CardTitle>Priority Tasks</CardTitle>
         </CardHeader>
@@ -86,7 +86,7 @@ export const PriorityTasksWidget: React.FC = () => {
   }
 
   return (
-    <Card className="h-64 lg:h-80 flex flex-col">
+    <Card className="min-h-80 flex flex-col">
       <CardHeader>
         <CardTitle>Priority Tasks</CardTitle>
       </CardHeader>
