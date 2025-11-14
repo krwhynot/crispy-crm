@@ -31,14 +31,20 @@ export function TasksPanel() {
   const [laterPage, setLaterPage] = useState(1);
   const notify = useNotify();
 
-  const { data, isLoading } = useGetList<PriorityTask>('priority_tasks', {
-    filter: {
-      completed: false,
-      ...(selectedPrincipalId && { principal_organization_id: selectedPrincipalId }),
+  const { data, isLoading } = useGetList<PriorityTask>(
+    'priority_tasks',
+    {
+      filter: {
+        completed: false,
+        ...(selectedPrincipalId && { principal_organization_id: selectedPrincipalId }),
+      },
+      sort: { field: 'due_date', order: 'ASC' },
+      pagination: { page: 1, perPage: 500 },
     },
-    sort: { field: 'due_date', order: 'ASC' },
-    pagination: { page: 1, perPage: 500 },
-  });
+    {
+      enabled: !!selectedPrincipalId,
+    }
+  );
 
   const [update] = useUpdate();
 

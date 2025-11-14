@@ -22,7 +22,7 @@ FROM opportunities o
 LEFT JOIN organizations org ON o.customer_organization_id = org.id
 LEFT JOIN organizations p ON o.principal_organization_id = p.id
 WHERE o.deleted_at IS NULL
-  AND o.stage != 'Closed Lost'
+  AND o.stage != 'closed_lost'
   AND p.organization_type = 'principal'
 ORDER BY p.name, o.stage;
 
