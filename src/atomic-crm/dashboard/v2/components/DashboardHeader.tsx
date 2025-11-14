@@ -86,7 +86,7 @@ export function DashboardHeader() {
             onValueChange={handlePrincipalChange}
             disabled={isLoading}
           >
-            <SelectTrigger className="h-11 w-[240px]">
+            <SelectTrigger data-testid="principal-select-trigger" className="h-11 w-[240px]">
               <SelectValue placeholder="Select principal..." />
             </SelectTrigger>
             <SelectContent>
