@@ -102,6 +102,14 @@ export const PrincipalDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Activity History Dialog */}
+      <ActivityHistoryDialog
+        open={activityHistoryOpen}
+        onClose={() => setActivityHistoryOpen(false)}
+        principalId={selectedPrincipalId ? parseInt(selectedPrincipalId) : null}
+        principalName={selectedPrincipal?.name || ''}
+      />
     </div>
   );
 };
