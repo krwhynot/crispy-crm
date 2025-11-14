@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { PrincipalProvider } from './context/PrincipalContext';
 import { DashboardHeader } from './components/DashboardHeader';
 import { FiltersSidebar } from './components/FiltersSidebar';
@@ -7,6 +8,7 @@ import { TasksPanel } from './components/TasksPanel';
 import { QuickLogger } from './components/QuickLogger';
 import { RightSlideOver } from './components/RightSlideOver';
 import { useResizableColumns } from './hooks/useResizableColumns';
+import { usePrefs } from './hooks/usePrefs';
 import type { FilterState } from './types';
 
 /**
@@ -41,6 +43,9 @@ export function PrincipalDashboardV2() {
     showClosed: false,
     groupByCustomer: true,
   });
+
+  // Sidebar state with localStorage persistence
+  const [sidebarOpen, setSidebarOpen] = usePrefs<boolean>('pd.sidebarOpen', true);
 
   const { containerRef, widths, onMouseDown } = useResizableColumns();
 
@@ -109,61 +114,91 @@ export function PrincipalDashboardV2() {
         <DashboardHeader />
 
         {/* Main Content Area */}
-        <div className="flex flex-1 overflow-hidden">
-          {/* Left Sidebar (Filters) */}
-          <FiltersSidebar filters={filterState} onFiltersChange={setFilterState} />
+        <div className="flex-1 relative px-[var(--spacing-edge-desktop)] py-6">
+          {/* Grid layout with dynamic sidebar width */}
+          <div
+            className="grid h-full"
+            style={{
+              gridTemplateColumns: sidebarOpen ? '18rem 1fr' : '0px 1fr',
+              gap: '24px',
+            }}
+          >
+            {/* Left Sidebar (Filters) - Conditional rendering */}
+            {sidebarOpen && (
+              <div className="overflow-hidden">
+                <FiltersSidebar
+                  filters={filterState}
+                  onFiltersChange={setFilterState}
+                  open={sidebarOpen}
+                  onOpenChange={setSidebarOpen}
+                />
+              </div>
+            )}
 
-          {/* 3-Column Layout */}
-          <div ref={containerRef} className="flex flex-1 overflow-hidden">
-            {/* Column 1: Opportunities */}
-            <div
-              id="col-opportunities"
-              className="flex flex-col overflow-y-auto p-4"
-              style={{ width: `${widths[0]}%` }}
-            >
-              <OpportunitiesHierarchy onOpportunityClick={handleOpportunityClick} />
-            </div>
+            {/* 3-Column Layout */}
+            <div ref={containerRef} className="flex h-full overflow-hidden">
+              {/* Column 1: Opportunities */}
+              <div
+                id="col-opportunities"
+                className="flex flex-col overflow-y-auto pr-2"
+                style={{ width: `${widths[0]}%` }}
+              >
+                <OpportunitiesHierarchy onOpportunityClick={handleOpportunityClick} />
+              </div>
 
-            {/* Separator 1 */}
-            <button
-              type="button"
-              className="w-1 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
-              onMouseDown={onMouseDown(0)}
-              role="separator"
-              aria-orientation="vertical"
-              aria-label="Resize opportunities column"
-              tabIndex={0}
-            />
+              {/* Separator 1 */}
+              <button
+                type="button"
+                className="w-2 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
+                onMouseDown={onMouseDown(0)}
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="Resize opportunities column"
+                tabIndex={0}
+              />
 
-            {/* Column 2: Tasks */}
-            <div
-              id="col-tasks"
-              className="flex flex-col overflow-y-auto p-4"
-              style={{ width: `${widths[1]}%` }}
-            >
-              <TasksPanel />
-            </div>
+              {/* Column 2: Tasks */}
+              <div
+                id="col-tasks"
+                className="flex flex-col overflow-y-auto px-2"
+                style={{ width: `${widths[1]}%` }}
+              >
+                <TasksPanel />
+              </div>
 
-            {/* Separator 2 */}
-            <button
-              type="button"
-              className="w-1 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
-              onMouseDown={onMouseDown(1)}
-              role="separator"
-              aria-orientation="vertical"
-              aria-label="Resize tasks column"
-              tabIndex={0}
-            />
+              {/* Separator 2 */}
+              <button
+                type="button"
+                className="w-2 bg-border hover:bg-primary cursor-col-resize shrink-0 transition-colors"
+                onMouseDown={onMouseDown(1)}
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="Resize tasks column"
+                tabIndex={0}
+              />
 
-            {/* Column 3: Quick Logger */}
-            <div
-              id="col-logger"
-              className="flex flex-col overflow-y-auto p-4"
-              style={{ width: `${widths[2]}%` }}
-            >
-              <QuickLogger />
+              {/* Column 3: Quick Logger */}
+              <div
+                id="col-logger"
+                className="flex flex-col overflow-y-auto pl-2"
+                style={{ width: `${widths[2]}%` }}
+              >
+                <QuickLogger />
+              </div>
             </div>
           </div>
+
+          {/* Rail Toggle - appears when sidebar is closed */}
+          {!sidebarOpen && (
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(true)}
+              className="absolute left-0 top-28 h-11 w-6 rounded-r-lg border border-border bg-card shadow-sm flex items-center justify-center hover:bg-muted transition-colors"
+              aria-label="Open filters sidebar"
+            >
+              <ChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            </button>
+          )}
         </div>
 
         {/* Right Slide-Over */}
