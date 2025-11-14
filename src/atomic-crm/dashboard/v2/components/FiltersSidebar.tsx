@@ -1,5 +1,9 @@
-import { ChevronRightIcon, ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronRightIcon } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -12,17 +16,15 @@ import {
 } from "@/components/ui/select";
 import type { FilterState } from "../types";
 import { OPPORTUNITY_STAGES_LEGACY } from "@/atomic-crm/opportunities/stageConstants";
+import { usePrefs } from "../hooks/usePrefs";
 
 interface FiltersSidebarProps {
   filters: FilterState;
   onFiltersChange: (filters: FilterState) => void;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
 }
 
-export function FiltersSidebar({ filters, onFiltersChange, open, onOpenChange }: FiltersSidebarProps) {
-  // Early return if not open (parent controls visibility via grid width)
-  if (!open) return null;
+export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps) {
+  const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("pd.filtersOpen", true);
 
   const toggleHealth = (value: "active" | "cooling" | "at_risk") => {
     const newHealth = filters.health.includes(value)
