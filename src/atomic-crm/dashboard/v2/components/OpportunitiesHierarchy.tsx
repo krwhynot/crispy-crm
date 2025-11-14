@@ -142,7 +142,7 @@ export function OpportunitiesHierarchy({ onOpportunityClick }: OpportunitiesHier
 
   if (isLoading) {
     return (
-      <div className="bg-card border border-border rounded-lg shadow-sm p-4 space-y-2">
+      <div className="bg-card border border-border rounded-lg shadow-sm p-3 space-y-2">
         {[...Array(5)].map((_, i) => (
           <Skeleton key={i} className="h-11 w-full" />
         ))}
@@ -152,7 +152,7 @@ export function OpportunitiesHierarchy({ onOpportunityClick }: OpportunitiesHier
 
   if (error) {
     return (
-      <div className="bg-card border border-border rounded-lg shadow-sm p-4">
+      <div className="bg-card border border-border rounded-lg shadow-sm p-3">
         <Alert variant="destructive">
           <AlertCircle className="size-4" />
           <AlertTitle>Error loading opportunities</AlertTitle>
@@ -174,8 +174,8 @@ export function OpportunitiesHierarchy({ onOpportunityClick }: OpportunitiesHier
 
   if (!opportunities || opportunities.length === 0) {
     return (
-      <div className="bg-card border border-border rounded-lg shadow-sm p-6">
-        <div className="text-center space-y-4">
+      <div className="bg-card border border-border rounded-lg shadow-sm p-3">
+        <div className="text-center space-y-3">
           <p className="text-muted-foreground">
             {selectedPrincipalId
               ? 'No opportunities for this principal'

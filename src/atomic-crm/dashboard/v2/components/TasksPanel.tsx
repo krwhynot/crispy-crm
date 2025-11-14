@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useGetList, useUpdate, useNotify } from 'react-admin';
-import { PlusIcon } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -161,28 +160,16 @@ export function TasksPanel() {
     <div className="bg-card border border-border rounded-lg shadow-sm flex flex-col h-full" aria-label="Tasks list">
       <div className="h-11 px-3 border-b border-border flex items-center justify-between gap-3">
         <span className="font-semibold text-sm">Tasks</span>
-        <div className="flex items-center gap-2">
-          <Select value={grouping} onValueChange={(value) => setGrouping(value as TaskGrouping)}>
-            <SelectTrigger className="h-11 w-[140px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="due">Due Date</SelectItem>
-              <SelectItem value="priority">Priority</SelectItem>
-              <SelectItem value="principal">Principal</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
-            onClick={handleCreateTask}
-            variant="outline"
-            size="sm"
-            className="h-11 gap-2"
-            aria-label="Create new task"
-          >
-            <PlusIcon className="size-4" aria-hidden="true" />
-            New
-          </Button>
-        </div>
+        <Select value={grouping} onValueChange={(value) => setGrouping(value as TaskGrouping)}>
+          <SelectTrigger className="h-11 w-[140px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="due">Due Date</SelectItem>
+            <SelectItem value="priority">Priority</SelectItem>
+            <SelectItem value="principal">Principal</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="flex-1 overflow-y-auto">
