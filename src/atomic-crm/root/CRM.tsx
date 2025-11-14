@@ -8,6 +8,7 @@ import { Route } from "react-router-dom";
 import organizations from "../organizations";
 import contacts from "../contacts";
 import { CompactGridDashboard } from "../dashboard/CompactGridDashboard";
+import { PrincipalDashboard } from "../dashboard/PrincipalDashboard";
 import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
@@ -140,6 +141,7 @@ export const CRM = ({
         </CustomRoutes>
 
         <CustomRoutes>
+          <Route path="/dashboard" element={<PrincipalDashboard />} />
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
         </CustomRoutes>
