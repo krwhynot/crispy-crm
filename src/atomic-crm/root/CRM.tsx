@@ -9,6 +9,7 @@ import organizations from "../organizations";
 import contacts from "../contacts";
 import { CompactGridDashboard } from "../dashboard/CompactGridDashboard";
 import { PrincipalDashboard } from "../dashboard/PrincipalDashboard";
+import { PrincipalDashboardV2 } from "../dashboard/v2";
 import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
@@ -130,7 +131,7 @@ export const CRM = ({
         layout={Layout}
         loginPage={StartPage}
         i18nProvider={i18nProvider}
-        dashboard={CompactGridDashboard}
+        dashboard={PrincipalDashboardV2}
         requireAuth
         disableTelemetry
         {...rest}
