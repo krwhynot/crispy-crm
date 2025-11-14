@@ -36,12 +36,18 @@ const FormWrapper = ({
     mode: "onChange",
   });
 
+  const handleSubmit = form.handleSubmit((data) => {
+    onSubmit(data);
+  });
+
   return (
     <SaveContextProvider value={saveContext}>
       <RaForm defaultValues={defaultValues} onSubmit={onSubmit}>
         <Form {...form}>
-          {children}
-          <button type="submit">Submit</button>
+          <form onSubmit={handleSubmit}>
+            {children}
+            <button type="submit">Submit</button>
+          </form>
         </Form>
       </RaForm>
     </SaveContextProvider>
