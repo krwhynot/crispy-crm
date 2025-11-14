@@ -10,6 +10,7 @@ Atomic CRM - Full-featured, open-source CRM with React, shadcn-admin-kit, and Su
 
 ## Recent Changes (90 days)
 
+- **Principal Dashboard V2 (2025-11-13)**: Complete redesign of dashboard with 3-column resizable layout (Opportunities | Tasks | Quick Logger). New features: Opportunities hierarchy tree (Principal → Customer → Opp), Tasks panel with 3 grouping modes (Due/Priority/Principal), Quick activity logger, Right slide-over (Details/History/Files), Keyboard shortcuts (/, 1-3, H, Esc), Collapsible filters sidebar. Desktop-first (1440px+), WCAG 2.1 AA compliant, 70%+ test coverage. **Now default at root URL**. Guide: `docs/dashboard-v2-migration.md`, Plan: `docs/plans/2025-11-13-principal-dashboard-v2-PLANNING.md`
 - **Cloud-First Development (2025-11-10)**: Migrated from local Docker to Supabase Cloud (aaqnanddcqvfiwhshndl) to eliminate WSL resource constraints. Uses single production project with daily automated backups for safety. RLS policies protect dev data. Dev workflow: `npm run dev` directly (no Docker). Migrations: git-tracked via CI/CD with `--dry-run` validation. Cost-optimized: 0 extra infrastructure. Guide: Below
 - **Port Consolidation (2025-11-10)**: Successfully reduced exposed ports from 28 to 3 (API: 54321, DB: 54322, Studio: 54323). Disabled Inbucket & Analytics in `config.toml`. Internal services communicate via Docker bridge network. VSCode shows 11 Docker ports but only 3 are host-exposed. Note: Docker no longer needed for development (see Cloud-First above). Guide: `docs/development/port-consolidation-guide.md`
 - **Tasks Module + Weekly Activity Report (2025-11-09)**: Complete Tasks CRUD with principal-grouped list view, full test coverage (43 unit tests + 6 E2E tests), filterRegistry integration. Weekly Activity Report groups activities by rep → principal with CSV export. Known issue: Duplicate validation files (`task.ts` current, `tasks.ts` legacy with 28 tests - cleanup pending). Plan: `docs/plans/2025-11-09-tasks-module-weekly-activity-report.md`
@@ -273,6 +274,72 @@ const contactSchema = z.object({
 **Path alias:** `@/*` → `src/*`
 
 [Full architecture](docs/architecture/architecture-essentials.md)
+
+## Dashboard V2
+
+**Default:** Principal Dashboard V2 at `http://127.0.0.1:5173/`
+
+**Layout:** 3-column resizable (Opportunities 40% | Tasks 30% | Quick Logger 30%)
+
+**Key Features:**
+- **Opportunities Hierarchy** - ARIA tree with Principal → Customer → Opportunity navigation
+- **Tasks Panel** - 3 grouping modes (Due Date, Priority, Principal) with "Later" pagination
+- **Quick Logger** - Inline activity logging with optional follow-up task creation
+- **Right Slide-Over** - Details/History/Files tabs (40vw, 480-720px)
+- **Keyboard Shortcuts** - Power user workflows (see below)
+- **Collapsible Filters** - Health/Stage/Assignee/Last Touch filtering
+
+**Keyboard Shortcuts:**
+| Key | Action |
+|-----|--------|
+| `/` | Focus global search |
+| `1` | Scroll to Opportunities |
+| `2` | Scroll to Tasks |
+| `3` | Scroll to Quick Logger |
+| `H` | Open slide-over on History tab (when opportunity selected) |
+| `Esc` | Close slide-over |
+
+**Component Structure:**
+```
+src/atomic-crm/dashboard/v2/
+├── PrincipalDashboardV2.tsx          # Main layout
+├── components/
+│   ├── DashboardHeader.tsx
+│   ├── FiltersSidebar.tsx
+│   ├── OpportunitiesHierarchy.tsx
+│   ├── TasksPanel.tsx
+│   ├── QuickLogger.tsx
+│   └── RightSlideOver.tsx
+├── context/
+│   └── PrincipalContext.tsx
+├── hooks/
+│   ├── useFeatureFlag.ts
+│   ├── usePrefs.ts
+│   └── useResizableColumns.ts
+└── utils/
+    └── taskGrouping.ts
+```
+
+**Database Views:**
+- `principal_opportunities` - Pre-aggregated with customer info + health status
+- `priority_tasks` - Priority-ranked with principal info
+- `activities` - Activity history for opportunity details
+
+**Design System:**
+- ✅ Tailwind v4 semantic utilities only (no inline CSS variables)
+- ✅ WCAG 2.1 AA compliant (Lighthouse ≥95)
+- ✅ 44px minimum touch targets across all interactive elements
+- ✅ Desktop-first responsive (1440px+ primary, graceful degradation)
+
+**Testing:**
+- Unit tests: 30+ (hooks + utilities, 70%+ coverage)
+- E2E tests: 3 suites (activity logging, keyboard nav, accessibility)
+- Accessibility: Axe scan (zero violations)
+
+**References:**
+- Migration guide: `docs/dashboard-v2-migration.md`
+- Implementation plan: `docs/plans/2025-11-13-principal-dashboard-v2.md`
+- Planning doc: `docs/plans/2025-11-13-principal-dashboard-v2-PLANNING.md`
 
 ## Color System
 
