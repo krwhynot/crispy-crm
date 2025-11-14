@@ -65,7 +65,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "high",
-      "description": "Supabase backend patterns, RLS policies, Edge Functions, query optimization",
+      "description": "Supabase backend patterns, RLS policies, Edge Functions, query optimization, and migration best practices",
       "promptTriggers": {
         "keywords": [
           "supabase",
@@ -76,12 +76,29 @@
           "backend",
           "api",
           "service layer",
-          "migration"
+          "migration",
+          "migrate",
+          "schema",
+          "CREATE VIEW",
+          "ALTER TABLE",
+          "GRANT",
+          "RLS policy",
+          "database view",
+          "sql migration",
+          "row level security",
+          "permissions",
+          "postgres",
+          "postgresql"
         ],
         "intentPatterns": [
-          "(create|build|write).*?(query|function|api)",
+          "(create|build|write).*?(query|function|api|migration|schema|view|table|policy)",
           "(database|backend|supabase).*",
-          "how.*?(query|fetch|insert|update|delete)"
+          "how.*?(query|fetch|insert|update|delete)",
+          "(create|write|refactor|update).*?(migration|schema|view|table)",
+          "(add|modify|update|fix).*?(table|view|policy|permission)",
+          "migration.*?(file|pattern|template|best practice)",
+          "(deploy|push|apply).*?(migration|schema)",
+          "(grant|revoke).*?(select|insert|update|delete)"
         ]
       },
       "fileTriggers": {
@@ -96,7 +113,13 @@
           "\\.from\\(",
           "\\.select\\(",
           "createClient",
-          "RLS"
+          "RLS",
+          "CREATE (TABLE|VIEW|FUNCTION|POLICY|INDEX)",
+          "ALTER (TABLE|VIEW)",
+          "GRANT (SELECT|INSERT|UPDATE|DELETE)",
+          "ROW LEVEL SECURITY",
+          "ENABLE ROW LEVEL SECURITY",
+          "-- ====="
         ]
       }
     }
