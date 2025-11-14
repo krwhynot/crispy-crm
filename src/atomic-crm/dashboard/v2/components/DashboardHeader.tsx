@@ -55,7 +55,7 @@ export function DashboardHeader() {
 
   return (
     <header className="bg-background border-b border-border">
-      <div className="flex items-center justify-between gap-4 px-6 py-3">
+      <div className="flex items-center justify-between gap-3 px-[var(--spacing-edge-desktop)] py-2">
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
           <button
             onClick={() => navigate('/')}
