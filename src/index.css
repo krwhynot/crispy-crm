@@ -80,7 +80,7 @@
   /* Grid System */
   --spacing-grid-columns-desktop: 12;
   --spacing-grid-columns-ipad: 8;
-  --spacing-gutter-desktop: 12px; /* Reduced from 24px */
+  --spacing-gutter-desktop: 12px; /* Reduced from 24px for desktop density */
   --spacing-gutter-ipad: 20px;
 
   /* Edge Padding (Screen Borders) - Desktop Optimized */
@@ -88,16 +88,24 @@
   --spacing-edge-ipad: 60px;
   --spacing-edge-mobile: 16px;
 
-  /* Vertical Rhythm */
-  --spacing-section: 32px;         /* Between major sections */
-  --spacing-widget: 24px;          /* Between widgets */
-  --spacing-content: 16px;         /* Within content areas */
-  --spacing-compact: 12px;         /* Tight spacing for related items */
+  /* Vertical Rhythm - Desktop Data Density */
+  --spacing-section: 24px;         /* Reduced from 32px - Between major sections */
+  --spacing-widget: 16px;          /* Reduced from 24px - Between widgets */
+  --spacing-content: 12px;         /* Reduced from 16px - Within content areas */
+  --spacing-compact: 8px;          /* Reduced from 12px - Tight spacing for related items */
 
-  /* Widget/Card Internals */
-  --spacing-widget-padding: 20px;  /* Internal padding for widgets */
-  --spacing-widget-min-height: 280px; /* Minimum widget height */
-  --spacing-top-offset: 80px;      /* Top offset for layouts */
+  /* Widget/Card Internals - Desktop Optimized */
+  --spacing-widget-padding: 12px;  /* Reduced from 20px for desktop density */
+  --spacing-widget-min-height: 240px; /* Reduced from 280px for more rows */
+  --spacing-top-offset: 60px;      /* Reduced from 80px for better space usage */
+
+  /* Desktop Data Density Tokens - NEW */
+  --row-height-compact: 32px;      /* Compact row height for data tables */
+  --row-height-comfortable: 40px;  /* Comfortable row height */
+  --row-padding-desktop: 6px 12px; /* Row padding for desktop density */
+  --hover-zone-padding: 4px;       /* Padding for hover/focus zones */
+  --action-button-size: 28px;      /* Compact action button size */
+  --context-menu-width: 200px;     /* Standard context menu width */
 }
 
 @layer utilities {
