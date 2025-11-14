@@ -81,3 +81,4 @@ supabase/cloud_users.sql
 # Claude Code session files
 .claude/checkpoint-state
 .claude/memory-capture.log
+.env.test
