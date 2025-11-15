@@ -20,11 +20,21 @@ vi.mock('ra-core', () => ({
   useGetList: (...args: any[]) => mockUseGetList(...args),
 }));
 
+// Mock react-admin (re-exports from ra-core)
+vi.mock('react-admin', () => ({
+  useGetList: (...args: any[]) => mockUseGetList(...args),
+}));
+
 // Mock PrincipalContext
 const mockUsePrincipalContext = vi.fn();
 
 vi.mock('../../context/PrincipalContext', () => ({
   usePrincipalContext: () => mockUsePrincipalContext(),
+}));
+
+// Mock opportunity stage helper
+vi.mock('@/atomic-crm/opportunities/stageConstants', () => ({
+  getOpportunityStageLabel: (stage: string) => stage,
 }));
 
 describe('OpportunitiesHierarchy', () => {
@@ -39,6 +49,10 @@ describe('OpportunitiesHierarchy', () => {
       },
     });
     vi.clearAllMocks();
+
+    // Default mock values
+    mockUsePrincipalContext.mockReturnValue({ selectedPrincipalId: 1 });
+    mockUseGetList.mockReturnValue({ data: [], isLoading: false, error: null });
   });
 
   const renderComponent = (filters: FilterState) => {
@@ -53,9 +67,7 @@ describe('OpportunitiesHierarchy', () => {
   };
 
   it('filters opportunities by health status', () => {
-    const { useGetList } = require('react-admin');
-
-    useGetList.mockReturnValue({
+    mockUseGetList.mockReturnValue({
       data: [
         {
           opportunity_id: 1,
@@ -100,9 +112,7 @@ describe('OpportunitiesHierarchy', () => {
   });
 
   it('shows all opportunities when health filter is empty', () => {
-    const { useGetList } = require('react-admin');
-
-    useGetList.mockReturnValue({
+    mockUseGetList.mockReturnValue({
       data: [
         {
           opportunity_id: 1,
@@ -145,9 +155,6 @@ describe('OpportunitiesHierarchy', () => {
   });
 
   it('shows correct empty state messages', () => {
-    const { useGetList } = require('react-admin');
-    const { usePrincipalContext } = require('../../context/PrincipalContext');
-
     const filters: FilterState = {
       health: [],
       stages: [],
@@ -158,16 +165,16 @@ describe('OpportunitiesHierarchy', () => {
     };
 
     // No principal selected
-    usePrincipalContext.mockReturnValue({ selectedPrincipalId: null });
-    useGetList.mockReturnValue({ data: [], isLoading: false, error: null });
+    mockUsePrincipalContext.mockReturnValue({ selectedPrincipalId: null });
+    mockUseGetList.mockReturnValue({ data: [], isLoading: false, error: null });
 
     const { rerender } = renderComponent(filters);
 
     expect(screen.getByText('Select a principal to view opportunities')).toBeInTheDocument();
 
     // Principal selected but no opportunities
-    usePrincipalContext.mockReturnValue({ selectedPrincipalId: 1 });
-    useGetList.mockReturnValue({ data: [], isLoading: false, error: null });
+    mockUsePrincipalContext.mockReturnValue({ selectedPrincipalId: 1 });
+    mockUseGetList.mockReturnValue({ data: [], isLoading: false, error: null });
 
     rerender(
       <QueryClientProvider client={queryClient}>
@@ -181,7 +188,7 @@ describe('OpportunitiesHierarchy', () => {
     expect(screen.getByText('No opportunities for this principal')).toBeInTheDocument();
 
     // Opportunities exist but all filtered out
-    useGetList.mockReturnValue({
+    mockUseGetList.mockReturnValue({
       data: [
         {
           opportunity_id: 1,
