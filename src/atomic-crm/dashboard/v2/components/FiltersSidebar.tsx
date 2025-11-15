@@ -17,6 +17,7 @@ import {
 import type { FilterState } from "../types";
 import { useConfigurationContext } from "@/atomic-crm/root/ConfigurationContext";
 import { usePrefs } from "../hooks/usePrefs";
+import { useGetList } from 'react-admin';
 
 interface FiltersSidebarProps {
   filters: FilterState;  // From shared types
