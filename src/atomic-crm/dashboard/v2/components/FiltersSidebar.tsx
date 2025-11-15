@@ -31,6 +31,7 @@ export function FiltersSidebar({
   onClearFilters,
   activeCount,
 }: FiltersSidebarProps) {
+  const { opportunityStages } = useConfigurationContext();
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("pd.filtersOpen", true);
 
   const toggleHealth = (value: "active" | "cooling" | "at_risk") => {
@@ -131,7 +132,7 @@ export function FiltersSidebar({
         <div className="space-y-2">
           <h3 className="text-foreground font-semibold text-xs">Stage</h3>
           <div className="grid grid-cols-2 gap-2">
-            {OPPORTUNITY_STAGES_LEGACY.map((stage) => (
+            {opportunityStages.map((stage) => (
               <div key={stage.value} className="flex items-center min-h-8">
                 <Checkbox
                   id={`stage-${stage.value}`}
