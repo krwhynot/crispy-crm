@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useGetIdentity } from 'react-admin';
 import { PrincipalProvider } from './context/PrincipalContext';
 import { DashboardHeader } from './components/DashboardHeader';
 import { FiltersSidebar } from './components/FiltersSidebar';
@@ -7,6 +8,7 @@ import { TasksPanel } from './components/TasksPanel';
 import { QuickLogger } from './components/QuickLogger';
 import { RightSlideOver } from './components/RightSlideOver';
 import { useResizableColumns } from './hooks/useResizableColumns';
+import { usePrefs } from './hooks/usePrefs';
 import type { FilterState } from './types';
 
 /**
@@ -33,7 +35,9 @@ import type { FilterState } from './types';
 export function PrincipalDashboardV2() {
   const [slideOverOpen, setSlideOverOpen] = useState(false);
   const [selectedOpportunityId, setSelectedOpportunityId] = useState<number | null>(null);
-  const [filterState, setFilterState] = useState<FilterState>({
+
+  // Filter state - persisted to localStorage
+  const [filterState, setFilterState] = usePrefs<FilterState>('pd.filters', {
     health: [],
     stages: [],
     assignee: null,
@@ -41,6 +45,32 @@ export function PrincipalDashboardV2() {
     showClosed: false,
     groupByCustomer: true,
   });
+
+  // Current user identity (id is ALWAYS string in React Admin)
+  const { data: identity } = useGetIdentity<{ id: string; fullName: string }>();
+
+  // Active filter count calculation
+  const activeFilterCount = useMemo(() => {
+    return (
+      filterState.health.length +
+      filterState.stages.length +
+      (filterState.assignee && filterState.assignee !== 'team' ? 1 : 0) +
+      (filterState.lastTouch !== 'any' ? 1 : 0) +
+      (filterState.showClosed ? 1 : 0)
+    );
+  }, [filterState]);
+
+  // Clear filters handler
+  const handleClearFilters = useCallback(() => {
+    setFilterState({
+      health: [],
+      stages: [],
+      assignee: null,
+      lastTouch: 'any',
+      showClosed: false,
+      groupByCustomer: filterState.groupByCustomer, // Preserve grouping preference
+    });
+  }, [filterState.groupByCustomer, setFilterState]);
 
   const { containerRef, widths, onMouseDown } = useResizableColumns();
 

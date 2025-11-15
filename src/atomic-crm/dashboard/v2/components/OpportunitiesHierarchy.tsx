@@ -7,9 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getOpportunityStageLabel } from '@/atomic-crm/opportunities/stageConstants';
-import type { PrincipalOpportunity, HealthStatus } from '../../types';
+import type { FilterState, PrincipalOpportunity } from '../types';
 
 interface OpportunitiesHierarchyProps {
+  filters: FilterState;           // NEW - from shared types
+  currentUserId?: string;         // NEW - string (React Admin identity.id is always string)
   onOpportunityClick: (oppId: number) => void;
 }
 
@@ -21,7 +23,11 @@ interface CustomerGroup {
   expanded: boolean;
 }
 
-export function OpportunitiesHierarchy({ onOpportunityClick }: OpportunitiesHierarchyProps) {
+export function OpportunitiesHierarchy({
+  filters,
+  currentUserId,
+  onOpportunityClick
+}: OpportunitiesHierarchyProps) {
   const { selectedPrincipalId } = usePrincipalContext();
   const [expandedCustomers, setExpandedCustomers] = useState<Set<number>>(new Set());
   const treeRef = useRef<HTMLDivElement>(null);
@@ -40,13 +46,54 @@ export function OpportunitiesHierarchy({ onOpportunityClick }: OpportunitiesHier
     }
   );
 
+  // Client-side filtering
+  const filteredOpportunities = useMemo(() => {
+    if (!opportunities) return [];
+
+    return opportunities.filter(opp => {
+      // Health filter (empty array = show all)
+      if (filters.health.length > 0 && !filters.health.includes(opp.health_status)) {
+        return false;
+      }
+
+      // Stage filter (empty array = show all)
+      if (filters.stages.length > 0 && !filters.stages.includes(opp.stage)) {
+        return false;
+      }
+
+      // Last touch filter
+      if (filters.lastTouch !== 'any') {
+        const dayThreshold = filters.lastTouch === '7d' ? 7 : 14;
+        if (opp.days_since_activity > dayThreshold) {
+          return false;
+        }
+      }
+
+      // Show closed filter
+      if (!filters.showClosed && ['closed_won', 'closed_lost'].includes(opp.stage)) {
+        return false;
+      }
+
+      // Assignee filter - COMMENTED OUT (requires sales_id in database view)
+      // TODO: Uncomment after migration adds sales_id to principal_opportunities view
+      // if (filters.assignee === 'me' && currentUserId && opp.sales_id !== currentUserId) {
+      //   return false;
+      // }
+      // if (filters.assignee !== null && filters.assignee !== 'me' && filters.assignee !== 'team' && opp.sales_id !== filters.assignee) {
+      //   return false;
+      // }
+
+      return true;
+    });
+  }, [opportunities, filters, currentUserId]);
+
   // Group opportunities by customer and calculate recency
   const customerGroups = useMemo<CustomerGroup[]>(() => {
-    if (!opportunities || opportunities.length === 0) return [];
+    if (!filteredOpportunities || filteredOpportunities.length === 0) return [];
 
     const groups = new Map<number, CustomerGroup>();
 
-    opportunities.forEach((opp) => {
+    filteredOpportunities.forEach((opp) => {
       const customerId = opp.customer_organization_id;
       const customerName = opp.customer_name;
 
@@ -75,7 +122,7 @@ export function OpportunitiesHierarchy({ onOpportunityClick }: OpportunitiesHier
     });
 
     return sortedGroups;
-  }, [opportunities]);
+  }, [filteredOpportunities]);
 
   // Auto-expand top 3 customers on initial render
   useEffect(() => {
