@@ -153,6 +153,8 @@ export function PrincipalDashboardV2() {
               <FiltersSidebar
                 filters={filterState}
                 onFiltersChange={setFilterState}
+                onClearFilters={handleClearFilters}
+                activeCount={activeFilterCount}
               />
             </div>
 
@@ -164,7 +166,11 @@ export function PrincipalDashboardV2() {
                 className="flex flex-col overflow-y-auto pr-2"
                 style={{ width: `${widths[0]}%` }}
               >
-                <OpportunitiesHierarchy onOpportunityClick={handleOpportunityClick} />
+                <OpportunitiesHierarchy
+                  filters={filterState}
+                  currentUserId={identity?.id}
+                  onOpportunityClick={handleOpportunityClick}
+                />
               </div>
 
               {/* Separator 1 */}
@@ -181,7 +187,10 @@ export function PrincipalDashboardV2() {
                 className="flex flex-col overflow-y-auto px-2"
                 style={{ width: `${widths[1]}%` }}
               >
-                <TasksPanel />
+                <TasksPanel
+                  assignee={filterState.assignee}
+                  currentUserId={identity?.id}
+                />
               </div>
 
               {/* Separator 2 */}

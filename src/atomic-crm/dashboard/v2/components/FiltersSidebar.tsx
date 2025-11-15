@@ -19,11 +19,18 @@ import { OPPORTUNITY_STAGES_LEGACY } from "@/atomic-crm/opportunities/stageConst
 import { usePrefs } from "../hooks/usePrefs";
 
 interface FiltersSidebarProps {
-  filters: FilterState;
+  filters: FilterState;  // From shared types
   onFiltersChange: (filters: FilterState) => void;
+  onClearFilters: () => void;
+  activeCount: number;
 }
 
-export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps) {
+export function FiltersSidebar({
+  filters,
+  onFiltersChange,
+  onClearFilters,
+  activeCount,
+}: FiltersSidebarProps) {
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("pd.filtersOpen", true);
 
   const toggleHealth = (value: "active" | "cooling" | "at_risk") => {
@@ -48,7 +55,11 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
       <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
         {/* Collapsible header */}
         <div className="border-b border-border">
-          <CollapsibleTrigger className="flex items-center justify-between w-full h-11 px-3 hover:bg-muted/50 transition-colors">
+          <CollapsibleTrigger
+            className="flex items-center justify-between w-full h-11 px-3 hover:bg-muted/50 transition-colors"
+            aria-controls="filters-content"
+            aria-expanded={filtersOpen}
+          >
             <h3 className="font-semibold text-sm text-foreground">Filters</h3>
             <ChevronRightIcon
               className="h-4 w-4 text-muted-foreground transition-transform"
@@ -60,7 +71,7 @@ export function FiltersSidebar({ filters, onFiltersChange }: FiltersSidebarProps
         </div>
 
         {/* Collapsible filter content */}
-        <CollapsibleContent className="flex-1 overflow-y-auto">
+        <CollapsibleContent id="filters-content" className="flex-1 overflow-y-auto">
           <div className="p-3 space-y-3">
         {/* Health Status - compact */}
         <div className="space-y-2">
