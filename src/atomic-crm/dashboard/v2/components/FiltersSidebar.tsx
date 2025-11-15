@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { FilterState } from "../types";
-import { OPPORTUNITY_STAGES_LEGACY } from "@/atomic-crm/opportunities/stageConstants";
+import { useConfigurationContext } from "@/atomic-crm/root/ConfigurationContext";
 import { usePrefs } from "../hooks/usePrefs";
 
 interface FiltersSidebarProps {
