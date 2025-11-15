@@ -146,26 +146,41 @@ export function PrincipalDashboardV2() {
 
         {/* Main Content Area */}
         <div className="flex-1 relative px-[var(--spacing-edge-desktop)] py-6">
-          {/* Grid layout with fixed sidebar width */}
+          {/* Grid layout with dynamic sidebar collapse */}
           <div
             className="grid h-full"
             style={{
-              gridTemplateColumns: '18rem 1fr',
-              gap: '24px',
+              gridTemplateColumns: sidebarOpen ? '18rem 1fr' : '0px 1fr',
+              gap: sidebarOpen ? 'var(--spacing-content)' : '0',
+              transition: 'grid-template-columns 200ms cubic-bezier(0.4, 0, 0.2, 1), gap 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+              overflow: 'hidden',
             }}
           >
             {/* Left Sidebar (Filters) */}
-            <div className="overflow-hidden">
-              <FiltersSidebar
-                filters={filterState}
-                onFiltersChange={setFilterState}
-                onClearFilters={handleClearFilters}
-                activeCount={activeFilterCount}
-              />
+            <div
+              ref={sidebarRef}
+              role="complementary"
+              aria-label="Filters sidebar"
+              aria-hidden={!sidebarOpen}
+              className="overflow-hidden"
+              style={{
+                width: sidebarOpen ? '18rem' : '0',
+                opacity: sidebarOpen ? 1 : 0,
+                transition: 'width 200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+            >
+              {sidebarOpen && (
+                <FiltersSidebar
+                  filters={filterState}
+                  onFiltersChange={setFilterState}
+                  onClearFilters={handleClearFilters}
+                  activeCount={activeFilterCount}
+                />
+              )}
             </div>
 
             {/* 3-Column Layout */}
-            <div ref={containerRef} className="flex h-full overflow-hidden">
+            <div ref={containerRef} className="flex h-full overflow-hidden" style={{ width: '100%' }}>
               {/* Column 1: Opportunities */}
               <div
                 id="col-opportunities"
