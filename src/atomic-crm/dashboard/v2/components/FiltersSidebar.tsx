@@ -55,19 +55,30 @@ export function FiltersSidebar({
       <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
         {/* Collapsible header */}
         <div className="border-b border-border">
-          <CollapsibleTrigger
-            className="flex items-center justify-between w-full h-11 px-3 hover:bg-muted/50 transition-colors"
-            aria-controls="filters-content"
-            aria-expanded={filtersOpen}
-          >
-            <h3 className="font-semibold text-sm text-foreground">Filters</h3>
-            <ChevronRightIcon
-              className="h-4 w-4 text-muted-foreground transition-transform"
-              style={{
-                transform: filtersOpen ? "rotate(90deg)" : "rotate(0deg)",
-              }}
-            />
-          </CollapsibleTrigger>
+          <div className="flex items-center justify-between h-11 px-3">
+            <CollapsibleTrigger
+              className="flex items-center gap-2 hover:bg-muted/50 transition-colors -ml-3 pl-3 pr-2 h-11"
+              aria-controls="filters-content"
+              aria-expanded={filtersOpen}
+            >
+              <h3 className="font-semibold text-sm text-foreground">Filters</h3>
+              <ChevronRightIcon
+                className="h-4 w-4 text-muted-foreground transition-transform"
+                style={{
+                  transform: filtersOpen ? "rotate(90deg)" : "rotate(0deg)",
+                }}
+              />
+            </CollapsibleTrigger>
+            {activeCount > 0 && (
+              <button
+                onClick={onClearFilters}
+                className="h-11 px-3 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label={`Clear ${activeCount} active filters`}
+              >
+                Clear ({activeCount})
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Collapsible filter content */}
