@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import type { PriorityTask, TaskGrouping, TaskBucket } from '../../types';
+import type { PriorityTask, TaskGrouping, TaskBucket } from '../types';
 import { usePrincipalContext } from '../context/PrincipalContext';
 import { usePrefs } from '../hooks/usePrefs';
 import { getBucket, BUCKET_LABELS, PRIORITY_LABELS } from '../utils/taskGrouping';
@@ -23,12 +23,27 @@ interface TaskGroup {
   isLater?: boolean;
 }
 
-export function TasksPanel() {
+interface TasksPanelProps {
+  // Only props that will actually be used for filtering
+  // Do NOT pass full FilterState to avoid confusion and unnecessary re-renders
+  assignee?: 'me' | 'team' | string | null;  // For future assignee filtering
+  currentUserId?: string;                     // React Admin identity.id (string)
+}
+
+export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
   const { selectedPrincipalId } = usePrincipalContext();
   const [grouping, setGrouping] = usePrefs<TaskGrouping>('taskGrouping', 'due');
   const [laterExpanded, setLaterExpanded] = useState(false);
   const [laterPage, setLaterPage] = useState(1);
   const notify = useNotify();
+
+  // TODO: Add assignee filtering when sales_id is added to priority_tasks view
+  // Example:
+  // const assigneeFilter = assignee === 'me' && currentUserId
+  //   ? { sales_id: currentUserId }
+  //   : assignee && assignee !== 'team'
+  //   ? { sales_id: assignee }
+  //   : {};
 
   const { data, isLoading } = useGetList<PriorityTask>(
     'priority_tasks',

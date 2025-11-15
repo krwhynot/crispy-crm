@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getOpportunityStageLabel } from '@/atomic-crm/opportunities/stageConstants';
-import type { FilterState, PrincipalOpportunity } from '../types';
+import type { FilterState, PrincipalOpportunity, HealthStatus } from '../types';
 
 interface OpportunitiesHierarchyProps {
   filters: FilterState;           // NEW - from shared types
@@ -219,16 +219,24 @@ export function OpportunitiesHierarchy({
     );
   }
 
-  if (!opportunities || opportunities.length === 0) {
+  // Empty state handling with filter awareness
+  if (customerGroups.length === 0) {
     return (
-      <div className="bg-card border border-border rounded-lg shadow-sm p-3">
+      <div
+        id="opportunities-panel"
+        className="bg-card border border-border rounded-lg shadow-sm p-3"
+        role="region"
+        aria-label="Opportunities hierarchy"
+      >
         <div className="text-center space-y-3">
           <p className="text-muted-foreground">
-            {selectedPrincipalId
+            {!selectedPrincipalId
+              ? 'Select a principal to view opportunities'
+              : opportunities?.length === 0
               ? 'No opportunities for this principal'
-              : 'Select a principal to view opportunities'}
+              : 'No opportunities match current filters'}
           </p>
-          {selectedPrincipalId && (
+          {selectedPrincipalId && opportunities?.length === 0 && (
             <Button className="h-11 gap-2">
               <Plus className="size-4" />
               Create Opportunity
@@ -241,9 +249,10 @@ export function OpportunitiesHierarchy({
 
   return (
     <div
+      id="opportunities-panel"
       ref={treeRef}
       className="bg-card border border-border rounded-lg shadow-sm overflow-hidden"
-      role="tree"
+      role="region"
       aria-label="Opportunities hierarchy"
     >
       {customerGroups.map((group) => {
