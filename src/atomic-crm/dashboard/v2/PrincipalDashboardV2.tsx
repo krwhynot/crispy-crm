@@ -46,6 +46,12 @@ export function PrincipalDashboardV2() {
     groupByCustomer: true,
   });
 
+  // Sidebar visibility - persisted to localStorage
+  const [sidebarOpen, setSidebarOpen] = usePrefs('pd.sidebarOpen', true);
+
+  // Sidebar ref for accessibility
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
   // Current user identity (id is ALWAYS string in React Admin)
   const { data: identity } = useGetIdentity<{ id: string; fullName: string }>();
 
