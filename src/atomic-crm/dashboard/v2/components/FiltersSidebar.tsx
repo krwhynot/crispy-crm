@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/collapsible";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -34,6 +33,10 @@ export function FiltersSidebar({
 }: FiltersSidebarProps) {
   const { opportunityStages } = useConfigurationContext();
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("pd.filtersOpen", true);
+  const { data: salesReps } = useGetList('sales', {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: 'name', order: 'ASC' },
+  });
 
   const toggleHealth = (value: "active" | "cooling" | "at_risk") => {
     const newHealth = filters.health.includes(value)
@@ -99,7 +102,7 @@ export function FiltersSidebar({
               />
               <Label htmlFor="health-active" className="ml-3 cursor-pointer flex-1 text-xs text-success">
                 <span className="mr-2">🟢</span>
-                Active
+                Active <span className="sr-only">health status</span>
               </Label>
             </div>
             <div className="flex items-center min-h-8">
@@ -111,7 +114,7 @@ export function FiltersSidebar({
               />
               <Label htmlFor="health-cooling" className="ml-3 cursor-pointer flex-1 text-xs text-warning">
                 <span className="mr-2">🟡</span>
-                Cooling
+                Cooling <span className="sr-only">health status</span>
               </Label>
             </div>
             <div className="flex items-center min-h-8">
@@ -123,7 +126,7 @@ export function FiltersSidebar({
               />
               <Label htmlFor="health-at-risk" className="ml-3 cursor-pointer flex-1 text-xs text-destructive">
                 <span className="mr-2">🔴</span>
-                At Risk
+                At Risk <span className="sr-only">health status</span>
               </Label>
             </div>
           </div>
@@ -152,33 +155,29 @@ export function FiltersSidebar({
           </div>
         </div>
 
-        {/* Assignee - horizontal radio layout */}
+        {/* Assignee - dropdown with dynamic sales reps */}
         <div className="space-y-2">
           <h3 className="text-foreground font-semibold text-xs">Assignee</h3>
-          <RadioGroup
-            value={filters.assignee || ""}
-            onValueChange={(value) =>
-              onFiltersChange({
-                ...filters,
-                assignee: value === "" ? null : (value as "me" | "team"),
-              })
-            }
+          <Select
+            value={filters.assignee?.toString() || 'team'}
+            onValueChange={(value) => {
+              const newAssignee = value === 'team' ? null : value; // Keep as string (React Admin IDs are strings)
+              onFiltersChange({ ...filters, assignee: newAssignee });
+            }}
           >
-            <div className="flex items-center gap-3">
-              <div className="flex items-center min-h-8">
-                <RadioGroupItem value="me" id="assignee-me" />
-                <Label htmlFor="assignee-me" className="ml-2 cursor-pointer text-xs">
-                  Me
-                </Label>
-              </div>
-              <div className="flex items-center min-h-8">
-                <RadioGroupItem value="team" id="assignee-team" />
-                <Label htmlFor="assignee-team" className="ml-2 cursor-pointer text-xs">
-                  Team
-                </Label>
-              </div>
-            </div>
-          </RadioGroup>
+            <SelectTrigger className="w-full h-11">
+              <SelectValue placeholder="All Team" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="team">All Team</SelectItem>
+              <SelectItem value="me">Assigned to Me</SelectItem>
+              {salesReps?.map(rep => (
+                <SelectItem key={rep.id} value={rep.id.toString()}>
+                  {rep.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Last Touch - compact */}

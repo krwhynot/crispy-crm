@@ -297,6 +297,46 @@ const contactSchema = z.object({
 - **Keyboard Shortcuts** - Power user workflows (see below)
 - **Collapsible Filters** - Health/Stage/Assignee/Last Touch filtering
 
+**Filters (Client-Side):**
+- **Health Status:** Active, Cooling, At Risk (multi-select checkboxes)
+- **Stage:** Dynamic from ConfigurationContext (multi-select, 2-column grid)
+- **Assignee:** All Team | Assigned to Me | Specific sales rep (single-select dropdown)
+- **Last Touch:** Any | 7 days | 14 days (single-select dropdown)
+- **Show Closed:** Include/exclude closed_won and closed_lost (toggle)
+
+**Filter Behavior:**
+- **Client-side filtering** - useMemo filters <500 opportunities (acceptable performance)
+- **Empty arrays = show all** - No filters excludes nothing
+- **Persistence** - Filters persist via `usePrefs('pd.filters')`
+- **Active count badge** - Shows number of active filters in sidebar header
+- **Clear button** - Resets all filters to defaults (appears when count > 0)
+- **Shared types** - FilterState exported from `types.ts` (single source of truth)
+
+**Sidebar Collapse:**
+- **Toggle button** - ChevronLeft icon in sidebar header (44px touch target)
+- **Collapsed rail** - 6px rail button on left edge when collapsed
+- **Rail hover** - Expands to 32px and shows ChevronRight icon
+- **Active filter badge** - Badge on rail shows filter count when sidebar collapsed
+- **Persistence** - Sidebar state persists via `usePrefs('pd.sidebarOpen')`
+- **CSS transitions** - Grid: 18rem → 0px (200ms smooth animation)
+- **Focus management** - Focus moves to first input when reopening
+
+**Type Definitions:**
+```typescript
+// src/atomic-crm/dashboard/v2/types.ts (SINGLE SOURCE OF TRUTH)
+interface FilterState {
+  health: ('active' | 'cooling' | 'at_risk')[];
+  stages: string[];
+  assignee: 'me' | 'team' | string | null; // string = sales_id (React Admin IDs are strings)
+  lastTouch: '7d' | '14d' | 'any';
+  showClosed: boolean;
+  groupByCustomer: boolean;
+}
+```
+
+**Known Limitations:**
+- **Assignee filter:** 'me' option always filters to zero because sales records have no user_id column. Requires DB migration to add sales.user_id with proper auth.uid() integration.
+
 **Keyboard Shortcuts:**
 | Key | Action |
 |-----|--------|
