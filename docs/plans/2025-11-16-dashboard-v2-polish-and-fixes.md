@@ -990,21 +990,81 @@ const handleClearFilters = useCallback(() => {
 Run: `npm test -- src/atomic-crm/dashboard/v2/components/__tests__/FiltersSidebar.test.tsx`
 Expected: PASS - Toggle not in document
 
-**Step 8: Run TypeScript check**
+**Step 8: Update test files referencing groupByCustomer**
+
+Update `usePrefs.test.ts` to remove all groupByCustomer references:
+
+```typescript
+// src/atomic-crm/dashboard/v2/__tests__/usePrefs.test.ts
+// Replace ALL FilterState instances (lines 22-29, 45-52, 59-66, 78-85, 90-97, 103-106, 118-125, 142-148, 162-169, 184-191, 206-213, 227-234, 243-250)
+
+// Before:
+const defaultFilters: FilterState = {
+  health: [],
+  stages: [],
+  assignee: 'team',
+  lastTouch: 'any',
+  showClosed: false,
+  groupByCustomer: true,  // REMOVE THIS LINE
+};
+
+// After:
+const defaultFilters: FilterState = {
+  health: [],
+  stages: [],
+  assignee: 'team',
+  lastTouch: 'any',
+  showClosed: false,
+};
+```
+
+Update `OpportunitiesHierarchy.test.tsx` (lines 97-104, 142-149, 158-165, 208-215):
+
+```typescript
+// src/atomic-crm/dashboard/v2/components/__tests__/OpportunitiesHierarchy.test.tsx
+
+// Before:
+const filters: FilterState = {
+  health: ['active'],
+  stages: [],
+  assignee: null,
+  lastTouch: 'any',
+  showClosed: false,
+  groupByCustomer: true,  // REMOVE THIS LINE
+};
+
+// After:
+const filters: FilterState = {
+  health: ['active'],
+  stages: [],
+  assignee: null,
+  lastTouch: 'any',
+  showClosed: false,
+};
+```
+
+**Step 9: Run tests to verify no type errors**
+
+Run: `npm test -- src/atomic-crm/dashboard/v2/`
+Expected: PASS - All tests pass with updated FilterState
+
+**Step 10: Run TypeScript check**
 
 Run: `npm run type-check`
 Expected: PASS - No type errors
 
-**Step 9: Commit**
+**Step 11: Commit**
 
 ```bash
-git add src/atomic-crm/dashboard/v2/types.ts src/atomic-crm/dashboard/v2/components/FiltersSidebar.tsx src/atomic-crm/dashboard/v2/PrincipalDashboardV2.tsx src/atomic-crm/dashboard/v2/components/__tests__/FiltersSidebar.test.tsx
+git add src/atomic-crm/dashboard/v2/types.ts src/atomic-crm/dashboard/v2/components/FiltersSidebar.tsx src/atomic-crm/dashboard/v2/PrincipalDashboardV2.tsx src/atomic-crm/dashboard/v2/components/__tests__/FiltersSidebar.test.tsx src/atomic-crm/dashboard/v2/__tests__/usePrefs.test.ts src/atomic-crm/dashboard/v2/components/__tests__/OpportunitiesHierarchy.test.tsx
 git commit -m "refactor(dashboard-v2): remove unused groupByCustomer filter
 
 - Remove groupByCustomer from FilterState type
 - Remove toggle from FiltersSidebar Utilities section
+- Update all test files referencing groupByCustomer
+- Fix usePrefs.test.ts (10+ occurrences)
+- Fix OpportunitiesHierarchy.test.tsx (4 occurrences)
 - Opportunities always grouped by customer (not a filter)
-- Add test documenting removal
 - Prevents misleading UI control
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
