@@ -35,6 +35,7 @@ export function QuickLogger() {
   const [followUpTitle, setFollowUpTitle] = useState('');
   const [followUpDueDate, setFollowUpDueDate] = useState('');
   const [followUpPriority, setFollowUpPriority] = useState<Priority>('medium');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { create: createActivity } = useCreate();
   const { create: createTask } = useCreate();
@@ -78,6 +79,8 @@ export function QuickLogger() {
         return;
       }
     }
+
+    setIsSubmitting(true);
 
     try {
       const selectedType = ACTIVITY_TYPES.find((t) => t.value === activityType);
@@ -123,10 +126,12 @@ export function QuickLogger() {
     } catch (error) {
       notify('Failed to log activity', { type: 'error' });
       console.error('Activity creation error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const isDisabled = !selectedPrincipalId;
+  const isDisabled = !selectedPrincipalId || isSubmitting;
 
   return (
     <Card className="bg-card border border-border rounded-lg shadow-sm" data-testid="quick-logger-card">
@@ -288,7 +293,7 @@ export function QuickLogger() {
             className="w-full bg-primary text-primary-foreground h-11"
             disabled={isDisabled}
           >
-            Log Activity
+            {isSubmitting ? 'Logging...' : 'Log Activity'}
           </Button>
         </form>
       </CardContent>
