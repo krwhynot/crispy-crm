@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useGetIdentity } from 'react-admin';
+import { ChevronRight } from 'lucide-react';
 import { PrincipalProvider } from './context/PrincipalContext';
 import { DashboardHeader } from './components/DashboardHeader';
 import { FiltersSidebar } from './components/FiltersSidebar';
