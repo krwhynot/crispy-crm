@@ -9,9 +9,12 @@
 -- =====================================================
 -- View: principal_opportunities (updated)
 -- Changes: Added o.id AS id for React Admin compatibility
+-- Note: Must DROP and recreate to change column order
 -- =====================================================
 
-CREATE OR REPLACE VIEW principal_opportunities AS
+DROP VIEW IF EXISTS principal_opportunities;
+
+CREATE VIEW principal_opportunities AS
 SELECT
   -- React Admin required field
   o.id,
@@ -55,9 +58,12 @@ ORDER BY p.name, o.stage;
 -- =====================================================
 -- View: priority_tasks (updated)
 -- Changes: Added t.id AS id for React Admin compatibility
+-- Note: Must DROP and recreate to change column order
 -- =====================================================
 
-CREATE OR REPLACE VIEW priority_tasks AS
+DROP VIEW IF EXISTS priority_tasks;
+
+CREATE VIEW priority_tasks AS
 SELECT
   -- React Admin required field
   t.id,
