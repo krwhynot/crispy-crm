@@ -30,7 +30,8 @@
           - img
         - button "Notifications" [ref=e22] [cursor=pointer]:
           - img
-        - button [ref=e23] [cursor=pointer]
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
   - main [ref=e26]:
     - generic [ref=e27]:
       - generic [ref=e29]:

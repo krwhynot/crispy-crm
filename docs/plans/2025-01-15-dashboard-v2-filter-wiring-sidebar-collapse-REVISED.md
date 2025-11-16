@@ -1586,8 +1586,8 @@ interface FilterState {
 ```
 
 **Known Limitations:**
-- **Assignee filter not functional** - Requires `sales_id` column in database views (future migration)
-- **Tasks don't filter** - Tasks panel doesn't use health/stage filters (only assignee in future)
+- ~~**Assignee filter not functional**~~ - ✅ **FIXED** (Migration 20251116030314 adds `sales_id` to views)
+- **Tasks don't filter by health/stage** - Tasks panel only filters by assignee (by design)
 - **Server-side filtering** - Move to Supabase query when data volume exceeds 1000+ opportunities
 ```
 
@@ -1649,26 +1649,17 @@ npm run build  # Expected: Success
 
 ## Known Limitations & Future Work
 
-**Database Migration Required:**
+**✅ Database Migration Completed (2025-11-16):**
 
-1. **Assignee Filter on Opportunities:**
-   - Requires `sales_id` column in `principal_opportunities` view
-   - Migration: `npx supabase migration new add_sales_id_to_dashboard_views`
-   - SQL:
-   ```sql
-   CREATE OR REPLACE VIEW principal_opportunities AS
-   SELECT
-     -- existing columns
-     o.opportunity_owner_id as sales_id,
-     s.name as sales_name
-   FROM opportunities o
-   LEFT JOIN sales s ON o.opportunity_owner_id = s.id
-   WHERE -- existing WHERE clause
-   ```
+1. ~~**Assignee Filter on Opportunities**~~ - **COMPLETE**
+   - Migration: `20251116030314_add_sales_id_to_dashboard_views.sql`
+   - Adds `o.sales_id` to `principal_opportunities` view
+   - Enables "Assigned to Me" and per-rep filtering
 
-2. **Assignee Filter on Tasks:**
-   - Requires `sales_id` column in `priority_tasks` view
-   - Same migration as above
+2. ~~**Assignee Filter on Tasks**~~ - **COMPLETE**
+   - Migration: `20251116030314_add_sales_id_to_dashboard_views.sql`
+   - Adds `t.sales_id` to `priority_tasks` view
+   - Server-side task filtering by assignee
 
 **Future Enhancements:**
 
@@ -1687,7 +1678,7 @@ npm run build  # Expected: Success
 - ✅ Added useGetIdentity for current user (identity.id is string)
 - ✅ Added clear filters button with active count badge
 - ✅ Integrated dynamic stages from ConfigurationContext
-- ⚠️ Assignee dropdown - Commented out (blocked pending sales_id DB migration)
+- ✅ Assignee dropdown - **ENABLED** (Migration 20251116030314 adds sales_id)
 - ✅ Fixed ARIA controls to match actual CollapsibleContent IDs
 - ✅ Added visually-hidden context to filter labels
 - ✅ Added collapsible sidebar with CSS Grid transitions (18rem → 0px)
