@@ -37,8 +37,7 @@ export function DashboardHeader() {
   const selectedPrincipal = principals?.find((p) => p.id === selectedPrincipalId);
 
   const handlePrincipalChange = (value: string) => {
-    const principalId = value === 'all' ? null : parseInt(value, 10);
-    setSelectedPrincipal(principalId);
+    setSelectedPrincipal(parseInt(value, 10));
   };
 
   const handleNewActivity = () => {
@@ -82,7 +81,7 @@ export function DashboardHeader() {
 
         <div className="flex items-center gap-3">
           <Select
-            value={selectedPrincipalId?.toString() || 'all'}
+            value={selectedPrincipalId?.toString() || ''}
             onValueChange={handlePrincipalChange}
             disabled={isLoading}
           >

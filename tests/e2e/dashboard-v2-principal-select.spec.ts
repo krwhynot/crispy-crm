@@ -6,7 +6,9 @@ import { test, expect, Page, Response } from '@playwright/test';
  * Verifies that the principal selector properly gates data fetching and UI state:
  * - No selection = no data calls, disabled logger, gated UI
  * - Principal selected = data calls fire, logger enabled, content visible
- * - "All Principals" (if present) = returns to gated state
+ *
+ * Note: "All Principals" option removed in favor of principal-centric workflow.
+ * The test for this option will skip if the option is not present.
  */
 
 // ============================================================================
