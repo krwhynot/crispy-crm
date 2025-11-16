@@ -15,7 +15,8 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '.env.test' });
+// Override .env with .env.test values for integration tests
+dotenv.config({ path: '.env.test', override: true });
 
 interface TestUser {
   email: string;
@@ -28,6 +29,7 @@ interface TestUser {
 describe('RLS Policy Integration', () => {
   let adminClient: SupabaseClient;
   let repClient: SupabaseClient;
+  let serviceRoleClient: SupabaseClient;
 
   const adminUser: TestUser = {
     email: 'admin@test.com',
@@ -57,14 +59,23 @@ describe('RLS Policy Integration', () => {
 
   beforeEach(async () => {
     const supabaseUrl = process.env.VITE_SUPABASE_URL!;
-    const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY!;
+    const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY!;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-    if (!supabaseUrl || !supabaseKey) {
+    if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceKey) {
       throw new Error('Missing Supabase credentials in .env.test');
     }
 
+    // Create service role client for user creation (admin operations)
+    serviceRoleClient = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
+
     // Create admin client and authenticate
-    adminClient = createClient(supabaseUrl, supabaseKey);
+    adminClient = createClient(supabaseUrl, supabaseAnonKey);
     const { data: adminAuthData, error: adminAuthError } = await adminClient.auth.signInWithPassword({
       email: adminUser.email,
       password: adminUser.password,
@@ -89,8 +100,8 @@ describe('RLS Policy Integration', () => {
 
     adminUser.salesId = adminSales.id;
 
-    // Create non-admin rep user using admin client (admin has auth.users access)
-    const { data: repAuthData, error: repSignUpError } = await adminClient.auth.admin.createUser({
+    // Create non-admin rep user using service role client
+    const { data: repAuthData, error: repSignUpError } = await serviceRoleClient.auth.admin.createUser({
       email: repUser.email,
       password: repUser.password,
       email_confirm: true,
@@ -104,10 +115,10 @@ describe('RLS Policy Integration', () => {
     testData.userIds.push(repUser.userId);
 
     // Wait for trigger to create sales record
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Get rep's sales record using admin client
-    const { data: repSales, error: repSalesError } = await adminClient
+    // Get rep's sales record using service role client
+    const { data: repSales, error: repSalesError } = await serviceRoleClient
       .from('sales')
       .select('id, is_admin')
       .eq('user_id', repUser.userId)
@@ -121,7 +132,7 @@ describe('RLS Policy Integration', () => {
     testData.salesIds.push(repUser.salesId);
 
     // Update rep's is_admin to false (ensure it's not admin)
-    const { error: updateError } = await adminClient
+    const { error: updateError } = await serviceRoleClient
       .from('sales')
       .update({ is_admin: false })
       .eq('id', repUser.salesId);
@@ -131,7 +142,7 @@ describe('RLS Policy Integration', () => {
     }
 
     // Create rep client and authenticate
-    repClient = createClient(supabaseUrl, supabaseKey);
+    repClient = createClient(supabaseUrl, supabaseAnonKey);
     const { error: repAuthError } = await repClient.auth.signInWithPassword({
       email: repUser.email,
       password: repUser.password,
@@ -143,37 +154,41 @@ describe('RLS Policy Integration', () => {
   });
 
   afterEach(async () => {
-    // Clean up test data in reverse dependency order
+    // Clean up test data in reverse dependency order using service role client
     if (testData.taskIds.length > 0) {
-      await adminClient.from('tasks').delete().in('id', testData.taskIds);
+      await serviceRoleClient.from('tasks').delete().in('id', testData.taskIds);
       testData.taskIds = [];
     }
 
     if (testData.contactIds.length > 0) {
-      await adminClient.from('contacts').delete().in('id', testData.contactIds);
+      await serviceRoleClient.from('contacts').delete().in('id', testData.contactIds);
       testData.contactIds = [];
     }
 
     if (testData.opportunityIds.length > 0) {
-      await adminClient.from('opportunities').delete().in('id', testData.opportunityIds);
+      await serviceRoleClient.from('opportunities').delete().in('id', testData.opportunityIds);
       testData.opportunityIds = [];
     }
 
     if (testData.organizationIds.length > 0) {
-      await adminClient.from('organizations').delete().in('id', testData.organizationIds);
+      await serviceRoleClient.from('organizations').delete().in('id', testData.organizationIds);
       testData.organizationIds = [];
     }
 
     // Clean up test users
     for (const userId of testData.userIds) {
-      await adminClient.auth.admin.deleteUser(userId);
+      await serviceRoleClient.auth.admin.deleteUser(userId);
     }
     testData.userIds = [];
     testData.salesIds = [];
 
-    // Sign out
-    await adminClient.auth.signOut();
-    await repClient.auth.signOut();
+    // Sign out clients
+    if (adminClient) {
+      await adminClient.auth.signOut();
+    }
+    if (repClient) {
+      await repClient.auth.signOut();
+    }
   });
 
   describe('Contacts - Admin-only UPDATE/DELETE', () => {
