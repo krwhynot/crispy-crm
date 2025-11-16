@@ -32,12 +32,19 @@ describe('CSV Import Integration', () => {
     expect(parsed.data).toHaveLength(2);
 
     // Transform to contact format
-    const contacts = (parsed.data as any[]).map((row) => ({
-      first_name: sanitizeCsvValue(row['First Name']),
-      last_name: sanitizeCsvValue(row['Last Name']),
-      email: row['Email'] ? [{ email: sanitizeCsvValue(row['Email']), type: 'Work' }] : [],
-      phone: row['Phone'] ? [{ phone: sanitizeCsvValue(row['Phone']), type: 'Work' }] : [],
-    }));
+    const contacts = (parsed.data as any[]).map((row) => {
+      const first_name = sanitizeCsvValue(row['First Name']);
+      const last_name = sanitizeCsvValue(row['Last Name']);
+      const name = `${first_name} ${last_name}`.trim();
+
+      return {
+        name,
+        first_name,
+        last_name,
+        email: row['Email'] ? [{ email: sanitizeCsvValue(row['Email']), type: 'Work' }] : [],
+        phone: row['Phone'] ? [{ phone: sanitizeCsvValue(row['Phone']), type: 'Work' }] : [],
+      };
+    });
 
     // Import contacts to database
     const { data, error } = await harness.client
@@ -127,11 +134,18 @@ describe('CSV Import Integration', () => {
 
     // Parse and sanitize
     const parsed = Papa.parse(csvContent, { header: true });
-    const contacts = (parsed.data as any[]).map((row) => ({
-      first_name: sanitizeCsvValue(row['First Name']),
-      last_name: sanitizeCsvValue(row['Last Name']),
-      email: row['Email'] ? [{ email: sanitizeCsvValue(row['Email']), type: 'Work' }] : [],
-    }));
+    const contacts = (parsed.data as any[]).map((row) => {
+      const first_name = sanitizeCsvValue(row['First Name']);
+      const last_name = sanitizeCsvValue(row['Last Name']);
+      const name = `${first_name} ${last_name}`.trim();
+
+      return {
+        name,
+        first_name,
+        last_name,
+        email: row['Email'] ? [{ email: sanitizeCsvValue(row['Email']), type: 'Work' }] : [],
+      };
+    });
 
     // Verify sanitization happened
     expect(contacts[0].first_name).toBe("'=cmd|'/c calc'!A0");
