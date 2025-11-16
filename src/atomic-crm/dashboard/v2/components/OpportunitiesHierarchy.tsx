@@ -251,7 +251,7 @@ export function OpportunitiesHierarchy({
       id="opportunities-panel"
       ref={treeRef}
       className="bg-card border border-border rounded-lg shadow-sm overflow-hidden"
-      role="region"
+      role="tree"
       aria-label="Opportunities hierarchy"
     >
       {customerGroups.map((group) => {

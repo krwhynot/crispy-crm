@@ -62,7 +62,7 @@
                   - heading "Health Status" [level=3] [ref=e57]
                   - generic [ref=e58]:
                     - generic [ref=e59]:
-                      - checkbox "🟢 Active health status" [active] [ref=e60] [cursor=pointer]
+                      - checkbox "🟢 Active health status" [ref=e60] [cursor=pointer]
                       - generic [ref=e61] [cursor=pointer]:
                         - generic [ref=e62]: 🟢
                         - text: Active
