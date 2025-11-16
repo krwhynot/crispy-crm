@@ -720,16 +720,27 @@ Add after useConfigurationContext hook call:
 ```typescript
 const { data: salesReps } = useGetList('sales', {
   pagination: { page: 1, perPage: 100 },
-  sort: { field: 'name', order: 'ASC' },
+  sort: { field: 'first_name', order: 'ASC' },  // Note: Sale records have first_name/last_name, not name
 });
 ```
 
-**Step 3: Import Select components**
+**Step 3: Import Select components and Collapsible helpers**
 
 Add imports:
 
 ```typescript
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
+```
+
+**Step 3a: Add Collapsible state**
+
+Add state for collapsible assignee section (add alongside other useState declarations):
+
+```typescript
+const [assigneeOpen, setAssigneeOpen] = useState(true);  // Default open
 ```
 
 **Step 4: Replace Radio group with Select dropdown**
