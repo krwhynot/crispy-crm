@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, ChevronLeft } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -23,6 +23,8 @@ interface FiltersSidebarProps {
   onFiltersChange: (filters: FilterState) => void;
   onClearFilters: () => void;
   activeCount: number;
+  isOpen: boolean;        // NEW
+  onToggle: () => void;   // NEW
 }
 
 export function FiltersSidebar({
@@ -30,6 +32,8 @@ export function FiltersSidebar({
   onFiltersChange,
   onClearFilters,
   activeCount,
+  isOpen,
+  onToggle,
 }: FiltersSidebarProps) {
   const { opportunityStages } = useConfigurationContext();
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("pd.filtersOpen", true);
