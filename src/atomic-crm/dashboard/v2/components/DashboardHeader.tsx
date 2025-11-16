@@ -90,7 +90,6 @@ export function DashboardHeader() {
               <SelectValue placeholder="Select principal..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Principals</SelectItem>
               {principals?.map((principal) => (
                 <SelectItem key={principal.id} value={principal.id.toString()}>
                   {principal.name}
