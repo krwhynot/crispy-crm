@@ -30,7 +30,7 @@ interface TasksPanelProps {
   currentUserId?: string;                     // React Admin identity.id (string)
 }
 
-export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
+export function TasksPanel({ assignee: _assignee, currentUserId: _currentUserId }: TasksPanelProps) {
   const { selectedPrincipalId } = usePrincipalContext();
   const [grouping, setGrouping] = usePrefs<TaskGrouping>('taskGrouping', 'due');
   const [laterExpanded, setLaterExpanded] = useState(false);
