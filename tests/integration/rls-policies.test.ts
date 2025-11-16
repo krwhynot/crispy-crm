@@ -90,7 +90,7 @@ describe('RLS Policy Integration', () => {
     // Get admin's sales record
     const { data: adminSales, error: adminSalesError } = await adminClient
       .from('sales')
-      .select('id, is_admin')
+      .select('id, is_admin, role')
       .eq('user_id', adminUser.userId)
       .single();
 
@@ -99,6 +99,18 @@ describe('RLS Policy Integration', () => {
     }
 
     adminUser.salesId = adminSales.id;
+
+    // Ensure admin user has admin role (using service role client to bypass RLS)
+    if (adminSales.role !== 'admin') {
+      const { error: updateAdminError } = await serviceRoleClient
+        .from('sales')
+        .update({ role: 'admin' })
+        .eq('id', adminSales.id);
+
+      if (updateAdminError) {
+        throw new Error(`Failed to set admin role: ${updateAdminError.message}`);
+      }
+    }
 
     // Delete any existing rep user from previous test runs
     const { data: existingUsers } = await serviceRoleClient.auth.admin.listUsers();
@@ -532,9 +544,9 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          org_id: testOrgId,
-          stage: 'Prospecting',
-          sales_id: adminUser.salesId,
+          customer_organization_id: testOrgId,
+          stage: 'new_lead',
+          account_manager_id: adminUser.salesId,
         })
         .select()
         .single();
@@ -544,13 +556,13 @@ describe('RLS Policy Integration', () => {
 
       const { data: updated, error: updateError } = await adminClient
         .from('opportunities')
-        .update({ stage: 'Qualified' })
+        .update({ stage: 'demo_scheduled' })
         .eq('id', opp!.id)
         .select()
         .single();
 
       expect(updateError).toBeNull();
-      expect(updated!.stage).toBe('Qualified');
+      expect(updated!.stage).toBe('demo_scheduled');
     });
 
     it('prevents non-admin from UPDATE opportunities', async () => {
@@ -558,9 +570,9 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          org_id: testOrgId,
-          stage: 'Prospecting',
-          sales_id: adminUser.salesId,
+          customer_organization_id: testOrgId,
+          stage: 'new_lead',
+          account_manager_id: adminUser.salesId,
         })
         .select()
         .single();
@@ -570,7 +582,7 @@ describe('RLS Policy Integration', () => {
 
       const { data: updated, error: updateError } = await repClient
         .from('opportunities')
-        .update({ stage: 'Closed Won' })
+        .update({ stage: 'closed_won' })
         .eq('id', opp!.id)
         .select();
 
@@ -582,7 +594,7 @@ describe('RLS Policy Integration', () => {
         .eq('id', opp!.id)
         .single();
 
-      expect(verified!.stage).toBe('Prospecting');
+      expect(verified!.stage).toBe('new_lead');
     });
 
     it('allows admin to DELETE opportunities', async () => {
@@ -590,9 +602,9 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          org_id: testOrgId,
-          stage: 'Prospecting',
-          sales_id: adminUser.salesId,
+          customer_organization_id: testOrgId,
+          stage: 'new_lead',
+          account_manager_id: adminUser.salesId,
         })
         .select()
         .single();
@@ -620,9 +632,9 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          org_id: testOrgId,
-          stage: 'Prospecting',
-          sales_id: adminUser.salesId,
+          customer_organization_id: testOrgId,
+          stage: 'new_lead',
+          account_manager_id: adminUser.salesId,
         })
         .select()
         .single();

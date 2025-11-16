@@ -11,10 +11,11 @@
 
 ## Sprint 1 (In Progress)
 
-- **RLS policy coverage**
-  - [ ] Scaffold `tests/integration/rls-policies.test.ts` (using `vitest -c vitest.integration.config.ts`)
-  - [ ] Add admin-only UPDATE/DELETE policy assertions
-  - [ ] Add personal task `sales_id` filter test case
+- **RLS policy coverage** ✅
+  - [x] Scaffold `tests/integration/rls-policies.test.ts` (using `vitest -c vitest.integration.config.ts`)
+  - [x] Add admin-only UPDATE/DELETE policy assertions (19 tests: contacts, organizations, opportunities)
+  - [x] Add personal task `created_by` filter test case (4 tests: SELECT, INSERT, UPDATE, DELETE)
+  - [x] Fix permissive RLS policies (migration `20251116124147_fix_permissive_rls_policies.sql`)
 
 - **Auth flow integration rewrite**
   - [ ] Move legacy mocked tests out of `src/tests/integration/auth-flow.test.ts`
