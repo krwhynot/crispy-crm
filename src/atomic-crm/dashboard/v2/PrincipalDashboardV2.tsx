@@ -160,6 +160,7 @@ export function PrincipalDashboardV2() {
             {/* Left Sidebar (Filters) */}
             <div
               ref={sidebarRef}
+              data-testid="filters-sidebar"
               role="complementary"
               aria-label="Filters sidebar"
               aria-hidden={!sidebarOpen}
