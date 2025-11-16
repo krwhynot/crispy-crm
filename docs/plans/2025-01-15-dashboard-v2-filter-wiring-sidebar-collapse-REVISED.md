@@ -1505,7 +1505,7 @@ test.describe('Dashboard V2 Sidebar Collapse', () => {
 
 **Step 2: Run E2E tests**
 
-Run: `npm run test:e2e tests/e2e/dashboard-v2-filters.spec.ts`
+Run: `npm run test:e2e -- tests/e2e/dashboard-v2-filters.spec.ts`
 Expected: All tests PASS
 
 **Step 3: Commit**
