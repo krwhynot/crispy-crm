@@ -180,7 +180,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
       <div className="h-11 px-3 border-b border-border flex items-center justify-between gap-3">
         <span className="font-semibold text-sm">Tasks</span>
         <Select value={grouping} onValueChange={(value) => setGrouping(value as TaskGrouping)}>
-          <SelectTrigger className="h-11 w-[140px]">
+          <SelectTrigger className="h-9 w-[140px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
