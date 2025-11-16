@@ -1,5 +1,9 @@
 # Testing Guide
 
+> **NEW:** See [Testing Strategy](../testing/strategy.md) for comprehensive guidelines on test coverage, when to add tests, and high-risk areas requiring coverage.
+>
+> **E2E Standards:** All Playwright tests must follow [E2E Testing Standards](../../tests/e2e/README.md) for authentication, selectors, and waiting patterns.
+
 Comprehensive testing strategy for Atomic CRM - practical, fast, and focused on what matters.
 
 ## Testing Philosophy
