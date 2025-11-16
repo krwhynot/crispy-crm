@@ -271,6 +271,43 @@ export const filterableFields: Record<string, string[]> = {
     "created_at",
     "q", // Special: full-text search parameter
   ],
+
+  // Dashboard V2 - Principal Opportunities View
+  // Database view with pre-aggregated opportunities by principal
+  principal_opportunities: [
+    "id",
+    "opportunity_id",
+    "opportunity_name",
+    "stage",
+    "estimated_close_date",
+    "last_activity", // Aliased from updated_at
+    "customer_organization_id",
+    "customer_name",
+    "principal_id",
+    "principal_name",
+    "days_since_activity", // Computed field
+    "health_status", // Computed: active/cooling/at_risk
+  ],
+
+  // Dashboard V2 - Priority Tasks View
+  // Database view with high-priority and near-due tasks by principal
+  priority_tasks: [
+    "id",
+    "task_id",
+    "task_title",
+    "due_date",
+    "priority",
+    "task_type",
+    "completed",
+    "opportunity_id",
+    "opportunity_name",
+    "organization_id", // Aliased from customer_organization_id
+    "customer_name",
+    "principal_organization_id",
+    "principal_name",
+    "contact_id",
+    "contact_name",
+  ],
 };
 
 /**
