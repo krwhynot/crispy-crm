@@ -177,7 +177,7 @@ export function FiltersSidebar({
               onFiltersChange({ ...filters, assignee: newAssignee });
             }}
           >
-            <SelectTrigger className="w-full h-11">
+            <SelectTrigger className="w-full h-11 border-border/50 font-normal">
               <SelectValue placeholder="All Team" />
             </SelectTrigger>
             <SelectContent>
@@ -205,7 +205,7 @@ export function FiltersSidebar({
               })
             }
           >
-            <SelectTrigger className="w-full h-9">
+            <SelectTrigger className="w-full h-11 border-border/50 font-normal">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

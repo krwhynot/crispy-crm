@@ -124,8 +124,8 @@ import type { FilterState } from './types'; // SHARED type - no duplication
 Add after existing context hooks (around line 40):
 
 ```typescript
-// Filter state - persisted to localStorage
-const [filterState, setFilterState] = usePrefs<FilterState>('pd.filters', {
+// Filter state - persisted to localStorage (usePrefs adds 'pd.' prefix automatically)
+const [filterState, setFilterState] = usePrefs<FilterState>('filters', {
   health: [],
   stages: [],
   assignee: null,
