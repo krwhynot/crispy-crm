@@ -700,6 +700,8 @@ git commit -m "feat(dashboard-v2): use dynamic stages from ConfigurationContext
 
 ### Task 3.2: Add Dynamic Assignee Dropdown
 
+⚠️ **STATUS**: This code was implemented but is currently **COMMENTED OUT** in FiltersSidebar.tsx (lines 169-243) because the `principal_opportunities` database view does not expose `sales_id`. Task is blocked pending database migration. See status section at top of document.
+
 **Files:**
 - Modify: `src/atomic-crm/dashboard/v2/components/FiltersSidebar.tsx:130-160`
 
@@ -1674,7 +1676,7 @@ npm run build  # Expected: Success
 - ✅ Added useGetIdentity for current user (identity.id is string)
 - ✅ Added clear filters button with active count badge
 - ✅ Integrated dynamic stages from ConfigurationContext
-- ✅ Added dynamic assignee dropdown with sales reps
+- ⚠️ Assignee dropdown - Commented out (blocked pending sales_id DB migration)
 - ✅ Fixed ARIA controls to match actual CollapsibleContent IDs
 - ✅ Added visually-hidden context to filter labels
 - ✅ Added collapsible sidebar with CSS Grid transitions (18rem → 0px)
