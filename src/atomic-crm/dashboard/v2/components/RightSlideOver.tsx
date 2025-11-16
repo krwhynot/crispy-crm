@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetOne, useGetList, useUpdate, useNotify } from 'react-admin';
+import { useGetOne, useGetList, useUpdate, useNotify, useRefresh } from 'react-admin';
 import { FileIcon, HistoryIcon, InfoIcon } from 'lucide-react';
 import {
   Sheet,
@@ -34,6 +34,7 @@ interface RightSlideOverProps {
 export function RightSlideOver({ isOpen, onClose, opportunityId }: RightSlideOverProps) {
   const [activeTab, setActiveTab] = usePrefs<TabName>('rightTab', 'details');
   const notify = useNotify();
+  const refresh = useRefresh();
   const [update] = useUpdate();
 
   const { data: opportunity, isLoading: isLoadingOpp } = useGetOne<Opportunity>(
@@ -62,6 +63,9 @@ export function RightSlideOver({ isOpen, onClose, opportunityId }: RightSlideOve
         previousData: opportunity,
       });
       notify('Stage updated successfully', { type: 'success' });
+
+      // Refresh to update OpportunitiesHierarchy and slide-over data
+      refresh();
     } catch {
       notify('Failed to update stage', { type: 'error' });
     }
