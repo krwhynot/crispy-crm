@@ -17,6 +17,7 @@ DROP POLICY IF EXISTS update_opportunities ON opportunities;
 
 -- Drop permissive SELECT policy for tasks (will replace with personal filter)
 DROP POLICY IF EXISTS select_tasks ON tasks;
+DROP POLICY IF EXISTS authenticated_select_tasks ON tasks;
 
 -- ============================================================================
 -- ENSURE ADMIN-ONLY POLICIES EXIST
