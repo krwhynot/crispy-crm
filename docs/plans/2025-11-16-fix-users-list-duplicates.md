@@ -184,11 +184,11 @@ COMMIT;
 **Step 3: Verify migration syntax locally**
 
 ```bash
-# Don't apply yet - just verify syntax
-cat supabase/migrations/20251116000000_fix_sales_schema_consistency.sql | npx supabase db reset --dry-run
+# Apply migration to local DB to verify it works
+npm run db:local:reset
 ```
 
-Expected: No syntax errors
+Expected: No errors, migration applies successfully
 
 **Step 4: Commit migration**
 
@@ -385,7 +385,7 @@ export interface Sale extends Pick<RaRecord, "id"> {
 **Step 4: Verify TypeScript compiles**
 
 ```bash
-npm run type-check
+npm run typecheck
 ```
 
 Expected: No type errors (may have errors from other files - we'll fix next)
@@ -468,7 +468,7 @@ export const salesSchema = z.object({
 **Step 3: Verify schema compiles**
 
 ```bash
-npm run type-check
+npm run typecheck
 ```
 
 Expected: May have errors in components - we'll fix next
@@ -504,13 +504,13 @@ cat src/atomic-crm/sales/SalesPermissionsTab.tsx
 **REPLACE ENTIRE FILE WITH:**
 
 ```typescript
-import { useIdentity } from "ra-core";
-import { BooleanInput, SelectInput } from "react-admin";
-import { useRecordContext } from "react-admin";
+import { BooleanInput } from "@/components/admin/boolean-input";
+import { SelectInput } from "@/components/admin/select-input";
+import { useGetIdentity, useRecordContext } from "ra-core";
 import type { Sale } from "../types";
 
 export function SalesPermissionsTab() {
-  const { identity } = useIdentity();
+  const { identity } = useGetIdentity();
   const record = useRecordContext<Sale>();
 
   return (
@@ -540,7 +540,7 @@ export function SalesPermissionsTab() {
 **Step 3: Verify component compiles**
 
 ```bash
-npm run type-check
+npm run typecheck
 ```
 
 Expected: No errors in this file
@@ -606,7 +606,7 @@ Find the tab configuration (around line 14-19):
 **Step 3: Verify compiles**
 
 ```bash
-npm run type-check
+npm run typecheck
 ```
 
 Expected: No errors
@@ -730,7 +730,7 @@ const OptionsField = (_props: { label?: string | boolean }) => {
 **Step 4: Verify compiles and follows design system**
 
 ```bash
-npm run type-check
+npm run typecheck
 npm run lint
 ```
 
@@ -873,7 +873,7 @@ Expected: All tests pass (may need to update tests if they check for `administra
 **Step 2: Run type check**
 
 ```bash
-npm run type-check
+npm run typecheck
 ```
 
 Expected: No TypeScript errors
@@ -1040,7 +1040,7 @@ Create file `docs/deployment/2025-11-16-sales-fix-deployment.md`:
 
 - [ ] Dry-run validation passed: `npm run db:cloud:push:dry-run`
 - [ ] Local testing completed successfully
-- [ ] All tests passing: `npm test && npm run type-check && npm run lint`
+- [ ] All tests passing: `npm test && npm run typecheck && npm run lint`
 - [ ] No TypeScript errors
 - [ ] UI verified locally (no duplicates, no empty rows)
 
@@ -1137,7 +1137,7 @@ Expected: See all commits from Tasks 1-11
 **Step 2: Run full test suite one more time**
 
 ```bash
-npm test && npm run type-check && npm run lint && npm run test:e2e
+npm test && npm run typecheck && npm run lint && npm run test:e2e
 ```
 
 Expected: All pass
