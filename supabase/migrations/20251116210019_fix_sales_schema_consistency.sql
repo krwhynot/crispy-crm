@@ -109,12 +109,12 @@ BEGIN
 
   -- Report results
   IF auth_count = sales_count THEN
-    RAISE NOTICE ' 1:1 mapping verified: % auth.users = % sales records', auth_count, sales_count;
+    RAISE NOTICE '[OK] 1:1 mapping verified: % auth.users = % sales records', auth_count, sales_count;
   ELSE
-    RAISE WARNING '  Mismatch: % auth.users vs % sales records', auth_count, sales_count;
+    RAISE WARNING '[WARNING] Mismatch: % auth.users vs % sales records', auth_count, sales_count;
 
     IF missing_sales > 0 THEN
-      RAISE WARNING '  Found % auth.users without sales records - trigger may have failed', missing_sales;
+      RAISE WARNING '[WARNING] Found % auth.users without sales records - trigger may have failed', missing_sales;
     END IF;
   END IF;
 END $$;
