@@ -35,7 +35,8 @@ export interface SalesFormData {
 export interface Sale extends Pick<RaRecord, "id"> {
   first_name: string;
   last_name: string;
-  administrator: boolean;
+  role: 'admin' | 'manager' | 'rep';  // Primary field (single source of truth)
+  administrator?: boolean;  // Computed column (backward compatibility)
   avatar?: RAFile;
   disabled?: boolean;
   user_id: string;
