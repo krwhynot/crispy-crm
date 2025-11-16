@@ -344,13 +344,13 @@ Find empty state rendering (around line 100). Update to differentiate "no data" 
 **Files:**
 - Modify: `src/atomic-crm/dashboard/v2/components/TasksPanel.tsx:1-40`
 
-**Step 1: Import only needed types**
+**Step 1: Import needed types**
 
-Add at top:
+Add at top (TasksPanel needs these for grouping logic):
 
 ```typescript
-// Only import what we'll use (assignee filtering for future)
-import type { PriorityTask } from '../types';
+// Import types needed for task grouping and props
+import type { PriorityTask, TaskGrouping, TaskBucket } from '../types';
 ```
 
 **Step 2: Update TasksPanelProps interface**
@@ -553,7 +553,7 @@ ATOMIC COMMIT - All changes applied together to prevent compiler errors
 
 CHANGES:
 - Create types.ts with shared FilterState (single source of truth)
-- Add FilterState persistence via usePrefs('pd.filters')
+- Add FilterState persistence via usePrefs('filters') → localStorage key: 'pd.filters'
 - Add useGetIdentity for current user (identity.id is string)
 - Implement client-side filtering in OpportunitiesHierarchy
 - Add currentUserId prop (string type, React Admin default)
@@ -873,7 +873,7 @@ Add after filterState declaration:
 
 ```typescript
 // Sidebar visibility - persisted to localStorage
-const [sidebarOpen, setSidebarOpen] = usePrefs('pd.sidebarOpen', true);
+const [sidebarOpen, setSidebarOpen] = usePrefs('sidebarOpen', true);
 ```
 
 **Step 2: Add sidebar ref**
@@ -1375,9 +1375,12 @@ git commit -m "test(dashboard-v2): add unit tests for opportunity filtering logi
 ### Task 7.2: Write E2E Tests for Filter Persistence
 
 **Files:**
-- Create: `tests/e2e/dashboard-v2-filters.e2e.ts`
+- Verify exists: `tests/e2e/dashboard-v2-filters.spec.ts` (already created in previous work)
 
-**Step 1: Create E2E test file**
+**Step 1: Verify E2E test file exists (or add these tests if missing)**
+
+The file `tests/e2e/dashboard-v2-filters.spec.ts` should already exist from previous work.
+If tests are missing, add the following:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -1502,13 +1505,13 @@ test.describe('Dashboard V2 Sidebar Collapse', () => {
 
 **Step 2: Run E2E tests**
 
-Run: `npm run test:e2e dashboard-v2-filters.e2e.ts`
+Run: `npm run test:e2e tests/e2e/dashboard-v2-filters.spec.ts`
 Expected: All tests PASS
 
 **Step 3: Commit**
 
 ```bash
-git add tests/e2e/dashboard-v2-filters.e2e.ts
+git add tests/e2e/dashboard-v2-filters.spec.ts
 git commit -m "test(dashboard-v2): add E2E tests for filters and sidebar collapse
 
 - Test filter persistence across page refresh
@@ -1542,7 +1545,7 @@ Find Dashboard V2 section (around line 150). Add after **Key Features**:
 **Filter Behavior:**
 - **Client-side filtering** - useMemo filters <500 opportunities (acceptable performance)
 - **Empty arrays = show all** - No filters excludes nothing
-- **Persistence** - Filters persist via `usePrefs('pd.filters')`
+- **Persistence** - Filters persist via `usePrefs('filters')` → localStorage key: `'pd.filters'`
 - **Active count badge** - Shows number of active filters in sidebar header
 - **Clear button** - Resets all filters to defaults (appears when count > 0)
 - **Shared types** - FilterState exported from `types.ts` (single source of truth)
@@ -1552,7 +1555,7 @@ Find Dashboard V2 section (around line 150). Add after **Key Features**:
 - **Collapsed rail** - 6px rail button on left edge when collapsed
 - **Rail hover** - Expands to 32px and shows ChevronRight icon
 - **Active filter badge** - Badge on rail shows filter count when sidebar collapsed
-- **Persistence** - Sidebar state persists via `usePrefs('pd.sidebarOpen')`
+- **Persistence** - Sidebar state persists via `usePrefs('sidebarOpen')` → localStorage key: `'pd.sidebarOpen'`
 - **CSS transitions** - Grid: 18rem → 0px (200ms smooth animation)
 - **Focus management** - Focus moves to first input when reopening
 
@@ -1666,7 +1669,7 @@ npm run build  # Expected: Success
 
 **What Changed:**
 - ✅ Created shared `types.ts` with FilterState (single source of truth)
-- ✅ Added filter persistence via `usePrefs('pd.filters')`
+- ✅ Added filter persistence via `usePrefs('filters')` (stored as 'pd.filters')
 - ✅ Implemented client-side filtering in OpportunitiesHierarchy
 - ✅ Added useGetIdentity for current user (identity.id is string)
 - ✅ Added clear filters button with active count badge
