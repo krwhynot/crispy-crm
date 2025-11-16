@@ -1,4 +1,5 @@
 import { ChevronRightIcon, ChevronLeft } from "lucide-react";
+import { useEffect, useRef } from "react";
 import {
   Collapsible,
   CollapsibleContent,
