@@ -49,6 +49,7 @@ export interface PrincipalOpportunity {
   customer_name: string;
   principal_id: number;
   principal_name: string;
+  sales_id: string;  // Sales rep assigned to opportunity (for assignee filtering)
   days_since_activity: number;
   health_status: HealthStatus;
 }
@@ -62,6 +63,7 @@ export interface PriorityTask {
   priority: TaskPriority;
   task_type: TaskType;
   completed: boolean;
+  sales_id: string;  // Sales rep assigned to task (for assignee filtering)
   opportunity_id: number | null;
   opportunity_name: string | null;
   organization_id: number | null;

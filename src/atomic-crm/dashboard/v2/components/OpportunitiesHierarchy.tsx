@@ -25,7 +25,7 @@ interface CustomerGroup {
 
 export function OpportunitiesHierarchy({
   filters,
-  currentUserId: _currentUserId,
+  currentUserId,
   onOpportunityClick
 }: OpportunitiesHierarchyProps) {
   const { selectedPrincipalId } = usePrincipalContext();
@@ -74,18 +74,17 @@ export function OpportunitiesHierarchy({
         return false;
       }
 
-      // Assignee filter - COMMENTED OUT (requires sales_id in database view)
-      // TODO: Uncomment after migration adds sales_id to principal_opportunities view
-      // if (filters.assignee === 'me' && currentUserId && opp.sales_id !== currentUserId) {
-      //   return false;
-      // }
-      // if (filters.assignee !== null && filters.assignee !== 'me' && filters.assignee !== 'team' && opp.sales_id !== filters.assignee) {
-      //   return false;
-      // }
+      // Assignee filter
+      if (filters.assignee === 'me' && currentUserId && opp.sales_id !== currentUserId) {
+        return false;
+      }
+      if (filters.assignee !== null && filters.assignee !== 'me' && filters.assignee !== 'team' && opp.sales_id !== filters.assignee) {
+        return false;
+      }
 
       return true;
     });
-  }, [opportunities, filters]); // currentUserId unused until assignee filter is enabled
+  }, [opportunities, filters, currentUserId]);
 
   // Group opportunities by customer and calculate recency
   const customerGroups = useMemo<CustomerGroup[]>(() => {

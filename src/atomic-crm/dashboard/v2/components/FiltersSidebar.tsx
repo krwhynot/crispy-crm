@@ -36,8 +36,8 @@ export function FiltersSidebar({
   const { opportunityStages } = useConfigurationContext();
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("filtersOpen", true);
 
-  // Fetch sales reps for assignee dropdown (currently commented out - blocked pending sales_id migration)
-  const { data: _salesReps } = useGetList('sales', {
+  // Fetch sales reps for assignee dropdown
+  const { data: salesReps } = useGetList('sales', {
     pagination: { page: 1, perPage: 100 },
     sort: { field: 'first_name', order: 'ASC' },
   });
@@ -168,8 +168,7 @@ export function FiltersSidebar({
           </div>
         </div>
 
-        {/* ASSIGNEE FILTER - HIDDEN until sales_id is added to principal_opportunities view
-            TODO: Restore this block after the database exposes sales_id so filtering works
+        {/* Assignee Filter */}
         <div className="space-y-2">
           <h3 className="text-foreground font-semibold text-xs">Assignee</h3>
           <Select
@@ -187,13 +186,12 @@ export function FiltersSidebar({
               <SelectItem value="me">Assigned to Me</SelectItem>
               {salesReps?.map(rep => (
                 <SelectItem key={rep.id} value={rep.id.toString()}>
-                  {rep.name}
+                  {rep.first_name} {rep.last_name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-        */}
 
         {/* Last Touch - compact */}
         <div className="space-y-2">
