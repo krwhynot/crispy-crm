@@ -4,52 +4,62 @@
 
 - [x] Phase 1: Immediate cleanup (quarantine legacy tests, fix scripts)
 - [x] Phase 2: Standardize Playwright (auth fixture, consolidated suites)
-- [x] Phase 3: Fix coverage reporting
-- [ ] Phase 4: Rebuild CSV import tests (blocked until Supabase harness specs run end-to-end)
-- [ ] Phase 5: Dashboard V2 filter tests (unit + Playwright coverage still pending)
-- [ ] Phase 6: Documentation (rollout guide will be updated after Sprint 2)
+- [x] Phase 3: Fix coverage reporting (vitest.config.ts now measures src/**/*.{ts,tsx})
+- [x] Phase 4: Rebuild CSV import tests (5 passing integration tests with Supabase harness)
+- [x] Phase 5: Dashboard V2 filter tests (10 unit tests + 3 E2E sidebar collapse tests)
+- [x] Phase 6: Documentation (testing strategy, E2E standards, rollout checklist)
 
 ## Sprint 1 (Next 2 Weeks)
 
-- [ ] Add RLS policy integration tests
-  - Files: create `tests/integration/rls-policies.test.ts` (runs via `vitest -c vitest.integration.config.ts`)
-  - Verify admin-only UPDATE/DELETE policies
-  - Test personal task access (sales_id filtering)
+- **Phase 4 wrap-up**
+  - [ ] Run Supabase-backed CSV import integration suite end-to-end
+  - [ ] Ensure `vitest.integration.config.ts` points at seeded DB + cleans up inserted rows
 
-- [ ] Add auth flow integration tests (replace mocked version)
-  - Files: migrate logic from `src/tests/integration/auth-flow.test.ts` into `tests/integration/auth-flow.test.ts`
-  - Test login, logout, session refresh with real Supabase
-  - Use Supabase test harness (no global mocks)
+- **RLS policy coverage**
+  - [ ] Scaffold `tests/integration/rls-policies.test.ts` (using `vitest -c vitest.integration.config.ts`)
+  - [ ] Add admin-only UPDATE/DELETE policy assertions
+  - [ ] Add personal task `sales_id` filter test case
 
-- [ ] Stabilize Opportunities E2E suite
-  - Files: `tests/e2e/specs/opportunities/crud.spec.ts`
-  - Fix auth redirects (reuse `tests/e2e/support/fixtures/authenticated`)
-  - Ensure seeded data for stable runs
+- **Auth flow integration rewrite**
+  - [ ] Move legacy mocked tests out of `src/tests/integration/auth-flow.test.ts`
+  - [ ] Implement real Supabase login/logout/session refresh cases in `tests/integration/auth-flow.test.ts`
+  - [ ] Cover refresh-token failure + logging path
+
+- **Opportunities E2E stabilization**
+  - [ ] Update `tests/e2e/specs/opportunities/crud.spec.ts` to use `tests/e2e/support/fixtures/authenticated`
+  - [ ] Add deterministic seed/reset helper for opportunity data
+  - [ ] Run suite on CI and capture flake metrics
 
 ## Sprint 2 (Weeks 3-4)
 
-- [ ] Add business workflow E2E tests
-  - Opportunity close → won flow
-  - Activity logging with follow-up task
-  - Principal dashboard filtering → drill-down
+- **Dashboard V2 UI/UX acceptance**
+  - [ ] Add Playwright suite `tests/e2e/dashboard-v2/ui-ux.spec.ts`
+  - [ ] Validate filters (health/stage/assignee/last touch), clear/reset, active badge counts
+  - [ ] Test sidebar collapse/expand, table sorting, quick actions, keyboard nav + focus states
+  - [ ] Capture masked screenshots for desktop/iPad/narrow desktop
 
-- [ ] Improve unit test coverage for:
-  - `src/atomic-crm/dashboard/v2/components/` (40% → 70%)
-  - `src/providers/supabase/unifiedDataProvider.ts` (mocked → real API)
+- **Business workflow automation**
+  - [ ] Script opportunity close → won flow end-to-end
+  - [ ] Script activity logging + follow-up task creation
+  - [ ] Script dashboard filter → drill-down navigation path
+
+- **Unit/integration coverage improvements**
+  - [ ] Raise `src/atomic-crm/dashboard/v2/components/` coverage from 40% → 70%
+  - [ ] Replace mocked provider tests with Supabase-/MSW-backed tests for `src/providers/supabase/unifiedDataProvider.ts`
 
 ## Sprint 3 (Weeks 5-6)
 
-- [ ] Visual regression baseline
-  - Capture snapshots for Dashboard V2, Kanban, Reports
-  - Set up Percy or Chromatic integration
+- **Visual regression baseline**
+  - [ ] Select tooling (Percy vs Chromatic) and integrate auth
+  - [ ] Capture baseline snapshots for Dashboard V2, Kanban, Reports
+  - [ ] Wire snapshot check into CI
 
-- [ ] Performance testing
-  - Lighthouse CI for Dashboard (target: 95+ accessibility)
-  - Load testing for CSV imports (1000+ rows)
+- **Performance / load**
+  - [ ] Add Lighthouse CI step for dashboard (target ≥ 95 accessibility)
+  - [ ] Script CSV import load test (1000+ rows) and record metrics
 
 ## Ongoing
 
-- [ ] Enforce 70% coverage in CI (add to `.github/workflows/ci.yml`)
-  - Add `vitest run --coverage` gate to `ci.yml` → `test` job
+- [ ] Enforce 70% coverage in CI (add `vitest run --coverage` gate to `.github/workflows/ci.yml` → `test` job)
 - [ ] Add coverage delta comments on PRs
 - [ ] Monthly review of flaky tests (retry rate > 5%)
