@@ -20,7 +20,7 @@ test.describe('Dashboard V2 Sidebar Collapse', () => {
 
   test('collapses sidebar and shows rail button', async ({ authenticatedPage }) => {
     await test.step('Verify sidebar is initially visible', async () => {
-      const sidebar = authenticatedPage.getByRole('complementary', { name: /filters/i });
+      const sidebar = authenticatedPage.getByRole('complementary', { name: 'Filters sidebar' });
       await expect(sidebar).toBeVisible();
     });
 
@@ -32,7 +32,7 @@ test.describe('Dashboard V2 Sidebar Collapse', () => {
 
     await test.step('Verify sidebar is hidden and rail button appears', async () => {
       // Sidebar should be hidden (aria-hidden=true, opacity 0)
-      const sidebar = authenticatedPage.getByRole('complementary', { name: /filters/i });
+      const sidebar = authenticatedPage.getByRole('complementary', { name: 'Filters sidebar' });
       await expect(sidebar).toBeHidden();
 
       // Rail button should be visible
@@ -48,7 +48,7 @@ test.describe('Dashboard V2 Sidebar Collapse', () => {
       await authenticatedPage.waitForTimeout(250);
 
       // Sidebar should be visible again
-      const sidebar = authenticatedPage.getByRole('complementary', { name: /filters/i });
+      const sidebar = authenticatedPage.getByRole('complementary', { name: 'Filters sidebar' });
       await expect(sidebar).toBeVisible();
 
       // Rail button should be hidden
@@ -62,7 +62,7 @@ test.describe('Dashboard V2 Sidebar Collapse', () => {
       await collapseBtn.click();
 
       // Verify sidebar is collapsed
-      const sidebar = authenticatedPage.getByRole('complementary', { name: /filters/i });
+      const sidebar = authenticatedPage.getByRole('complementary', { name: 'Filters sidebar' });
       await expect(sidebar).toBeHidden();
     });
 
@@ -73,7 +73,7 @@ test.describe('Dashboard V2 Sidebar Collapse', () => {
 
     await test.step('Verify sidebar remains collapsed after reload', async () => {
       // Sidebar should still be hidden
-      const sidebar = authenticatedPage.getByRole('complementary', { name: /filters/i });
+      const sidebar = authenticatedPage.getByRole('complementary', { name: 'Filters sidebar' });
       await expect(sidebar).toBeHidden();
 
       // Rail button should be visible
