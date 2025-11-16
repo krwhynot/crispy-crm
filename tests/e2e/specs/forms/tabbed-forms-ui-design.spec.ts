@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { login } from "../../helpers/auth";
 
 /**
  * E2E tests for ultra-compact tabbed forms UI design
@@ -7,9 +6,7 @@ import { login } from "../../helpers/auth";
  */
 
 test.describe("Tabbed Forms UI Design - Layout Only", () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-  });
+  test.use({ storageState: 'tests/e2e/.auth/user.json' });
 
   test.describe("Tab Layout Validation", () => {
     test("Organizations form - should have ultra-compact tab styling", async ({ page }) => {
