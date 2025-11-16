@@ -254,7 +254,7 @@ export function OpportunitiesHierarchy({
       role="tree"
       aria-label="Opportunities hierarchy"
     >
-      {customerGroups.map((group) => {
+      {customerGroups.map((group, groupIndex) => {
         const isExpanded = expandedCustomers.has(group.customerId);
 
         return (
@@ -263,6 +263,9 @@ export function OpportunitiesHierarchy({
             <div
               role="treeitem"
               aria-expanded={isExpanded}
+              aria-level={1}
+              aria-setsize={customerGroups.length}
+              aria-posinset={groupIndex + 1}
               aria-selected={false}
               tabIndex={0}
               className="h-11 px-3 flex items-center gap-2 border-b border-border hover:bg-muted/50 cursor-pointer transition-colors"
@@ -286,10 +289,13 @@ export function OpportunitiesHierarchy({
 
             {/* Opportunity Rows (Children) */}
             {isExpanded &&
-              group.opportunities.map((opp) => (
+              group.opportunities.map((opp, oppIndex) => (
                 <div
                   key={opp.opportunity_id}
                   role="treeitem"
+                  aria-level={2}
+                  aria-setsize={group.opportunities.length}
+                  aria-posinset={oppIndex + 1}
                   aria-selected={false}
                   tabIndex={0}
                   className="h-11 px-6 flex items-center gap-3 border-b border-border hover:bg-muted/30 cursor-pointer transition-colors"
