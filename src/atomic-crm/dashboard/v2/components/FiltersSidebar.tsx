@@ -37,7 +37,7 @@ export function FiltersSidebar({
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("filtersOpen", true);
   const { data: salesReps } = useGetList('sales', {
     pagination: { page: 1, perPage: 100 },
-    sort: { field: 'name', order: 'ASC' },
+    sort: { field: 'first_name', order: 'ASC' },
   });
 
   const toggleHealth = (value: "active" | "cooling" | "at_risk") => {
