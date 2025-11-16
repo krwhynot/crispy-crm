@@ -15,7 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { usePrincipalContext } from '../context/PrincipalContext';
 
@@ -96,14 +95,6 @@ export function DashboardHeader() {
               ))}
             </SelectContent>
           </Select>
-
-          <Input
-            id="global-search"
-            type="search"
-            placeholder="Search..."
-            className="h-11 w-[300px]"
-            aria-label="Global search"
-          />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
