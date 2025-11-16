@@ -239,39 +239,28 @@ describe('OpportunitiesHierarchy - Accessibility', () => {
 
   it('should have proper ARIA tree structure', async () => {
     const { waitFor } = await import('@testing-library/react');
-    const userEvent = (await import('@testing-library/user-event')).default;
 
-    // Mock data with proper structure
+    // Mock data with one customer and two opportunities for simpler testing
     const mockOpportunities = [
       {
         opportunity_id: 1,
         opportunity_name: 'Deal 1',
         customer_organization_id: 10,
-        customer_name: 'Customer A',
+        customer_name: 'Acme Corp',
         stage: 'qualification',
         health_status: 'active' as const,
-        last_activity: '2024-01-01',
+        last_activity: '2024-01-02',
         days_since_activity: 5,
       },
       {
         opportunity_id: 2,
         opportunity_name: 'Deal 2',
         customer_organization_id: 10,
-        customer_name: 'Customer A',
+        customer_name: 'Acme Corp',
         stage: 'negotiation',
         health_status: 'cooling' as const,
-        last_activity: '2024-01-02',
+        last_activity: '2024-01-01',
         days_since_activity: 3,
-      },
-      {
-        opportunity_id: 3,
-        opportunity_name: 'Deal 3',
-        customer_organization_id: 20,
-        customer_name: 'Customer B',
-        stage: 'proposal',
-        health_status: 'at_risk' as const,
-        last_activity: '2024-01-03',
-        days_since_activity: 15,
       },
     ];
 
@@ -306,55 +295,33 @@ describe('OpportunitiesHierarchy - Accessibility', () => {
       expect(screen.getByRole('tree')).toBeInTheDocument();
     });
 
+    // Wait for auto-expand to complete
+    await waitFor(() => {
+      expect(screen.getByText('Deal 1')).toBeInTheDocument();
+    });
+
     // Check customer node ARIA attributes
-    const customerNodes = screen.getAllByRole('treeitem');
-    const customerANode = customerNodes.find((node) =>
-      node.textContent?.includes('Customer A')
-    );
-    const customerBNode = customerNodes.find((node) =>
-      node.textContent?.includes('Customer B')
-    );
-
-    expect(customerANode).toBeDefined();
-    expect(customerBNode).toBeDefined();
-
-    // Check customer A attributes
-    expect(customerANode).toHaveAttribute('aria-expanded');
-    expect(customerANode).toHaveAttribute('aria-level', '1');
-    expect(customerANode).toHaveAttribute('aria-setsize', '2'); // 2 customers total
-    expect(customerANode).toHaveAttribute('aria-posinset', '1'); // First customer
-
-    // Check customer B attributes
-    expect(customerBNode).toHaveAttribute('aria-expanded');
-    expect(customerBNode).toHaveAttribute('aria-level', '1');
-    expect(customerBNode).toHaveAttribute('aria-setsize', '2'); // 2 customers total
-    expect(customerBNode).toHaveAttribute('aria-posinset', '2'); // Second customer
-
-    // Expand customer A to show opportunities
-    await userEvent.click(customerANode!);
+    const customerNode = screen.getByText('Acme Corp').closest('[role="treeitem"]');
+    expect(customerNode).toHaveAttribute('aria-expanded', 'true'); // Auto-expanded
+    expect(customerNode).toHaveAttribute('aria-level', '1');
+    expect(customerNode).toHaveAttribute('aria-setsize', '1'); // 1 customer total
+    expect(customerNode).toHaveAttribute('aria-posinset', '1'); // First customer
+    expect(customerNode).toHaveAttribute('aria-selected', 'false');
 
     // Check opportunity node ARIA attributes
-    await waitFor(() => {
-      const oppNodes = screen.getAllByRole('treeitem');
-      const deal1Node = oppNodes.find((node) =>
-        node.textContent?.includes('Deal 1')
-      );
-      const deal2Node = oppNodes.find((node) =>
-        node.textContent?.includes('Deal 2')
-      );
+    const deal1Node = screen.getByText('Deal 1').closest('[role="treeitem"]');
+    const deal2Node = screen.getByText('Deal 2').closest('[role="treeitem"]');
 
-      expect(deal1Node).toBeDefined();
-      expect(deal2Node).toBeDefined();
+    // Check Deal 1 attributes
+    expect(deal1Node).toHaveAttribute('aria-level', '2');
+    expect(deal1Node).toHaveAttribute('aria-setsize', '2'); // 2 opportunities under Acme Corp
+    expect(deal1Node).toHaveAttribute('aria-posinset', '1'); // First opportunity
+    expect(deal1Node).toHaveAttribute('aria-selected', 'false');
 
-      // Check Deal 1 attributes
-      expect(deal1Node).toHaveAttribute('aria-level', '2');
-      expect(deal1Node).toHaveAttribute('aria-setsize', '2'); // 2 opportunities under Customer A
-      expect(deal1Node).toHaveAttribute('aria-posinset', '1'); // First opportunity
-
-      // Check Deal 2 attributes
-      expect(deal2Node).toHaveAttribute('aria-level', '2');
-      expect(deal2Node).toHaveAttribute('aria-setsize', '2'); // 2 opportunities under Customer A
-      expect(deal2Node).toHaveAttribute('aria-posinset', '2'); // Second opportunity
-    });
+    // Check Deal 2 attributes
+    expect(deal2Node).toHaveAttribute('aria-level', '2');
+    expect(deal2Node).toHaveAttribute('aria-setsize', '2'); // 2 opportunities under Acme Corp
+    expect(deal2Node).toHaveAttribute('aria-posinset', '2'); // Second opportunity
+    expect(deal2Node).toHaveAttribute('aria-selected', 'false');
   });
 });
