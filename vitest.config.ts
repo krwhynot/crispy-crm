@@ -18,17 +18,16 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html", "lcov"],
+      include: ["src/**/*.{ts,tsx}"], // Explicit include pattern
       exclude: [
-        "node_modules/",
-        "tests/",
-        "dist/",
-        ".docs/",
-        "src/setupTests.js",
-        "src/main.tsx",
-        "**/*.config.ts",
-        "**/*.test.{ts,tsx}",
-        "**/__tests__/**",
+        "src/**/*.test.{ts,tsx}",
+        "src/**/*.spec.{ts,tsx}",
+        "src/tests/**",
+        "src/**/__tests__/**",
+        "src/**/*.d.ts",
+        "src/vite-env.d.ts",
       ],
+      all: true, // Include all files, even untested ones
       thresholds: {
         lines: 70,
         functions: 70,
@@ -36,7 +35,7 @@ export default defineConfig({
         statements: 70,
       },
     },
-    include: ["src/**/*.test.{ts,tsx}"],
+    include: ["src/**/*.test.{ts,tsx}", "tests/integration/**/*.test.{ts,tsx}"],
     exclude: ["node_modules/", "dist/", ".docs/", "tests/**/*.spec.{ts,tsx}"],
   },
   resolve: {

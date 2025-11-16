@@ -22,6 +22,16 @@ export async function createTestHarness(): Promise<TestHarness> {
 
   const client = createClient(supabaseUrl, supabaseKey);
 
+  // Authenticate with test user (required for RLS policies)
+  const { error: authError } = await client.auth.signInWithPassword({
+    email: 'admin@test.com',
+    password: 'password123',
+  });
+
+  if (authError) {
+    throw new Error(`Authentication failed: ${authError.message}`);
+  }
+
   const seedData = {
     organizationIds: [] as number[],
     contactIds: [] as number[],
