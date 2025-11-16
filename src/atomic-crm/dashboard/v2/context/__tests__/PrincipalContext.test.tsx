@@ -28,8 +28,8 @@ describe('PrincipalContext', () => {
       result.current.setSelectedPrincipal(123);
     });
 
-    // Verify setStore was called with correct key and value
-    expect(mockSetStore).toHaveBeenCalledWith('pd.selectedPrincipalId', 123);
+    // Verify setStore was called with just the value (useStore handles the key internally)
+    expect(mockSetStore).toHaveBeenCalledWith(123);
   });
 
   it('should restore principal from localStorage on mount', () => {

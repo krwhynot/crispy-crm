@@ -328,4 +328,25 @@ test.describe('Principal Dashboard V2 - Selector Semantics', () => {
       await expect(globalSearch).toBeFocused();
     });
   });
+
+  test('should persist selected principal across page refresh', async ({ page }) => {
+    // Select principal (Wicks exists in seed.sql as principal)
+    await page.click('[data-testid="principal-select-trigger"]');
+    await page.click('text="Wicks"');
+
+    // Wait for data to load with proper condition
+    await expect(page.locator('[data-testid="principal-select-trigger"]')).toContainText('Wicks');
+    await page.waitForSelector('[role="tree"]:not(:has-text("Select a principal"))', {
+      timeout: 5000
+    });
+
+    // Reload page
+    await page.reload();
+
+    // Verify principal still selected
+    await expect(page.locator('[data-testid="principal-select-trigger"]')).toContainText('Wicks');
+
+    // Verify data loaded for that principal
+    await expect(page.locator('[role="tree"]')).not.toContainText('Select a principal');
+  });
 });
