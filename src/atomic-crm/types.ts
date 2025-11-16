@@ -28,7 +28,7 @@ export interface SalesFormData {
   password: string;
   first_name: string;
   last_name: string;
-  administrator: boolean;
+  role: 'admin' | 'manager' | 'rep';  // Primary field (from DB enum)
   disabled: boolean;
 }
 
