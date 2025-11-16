@@ -75,7 +75,6 @@ export type TaskBucket = 'overdue' | 'today' | 'tomorrow' | 'this_week' | 'later
  * - assignee: 'me' | 'team' | string (sales rep ID, always string in React Admin) | null
  * - lastTouch: Filter by days since last activity
  * - showClosed: Include closed_lost opportunities
- * - groupByCustomer: Group opportunities by customer in hierarchy
  */
 export interface FilterState {
   health: ('active' | 'cooling' | 'at_risk')[];
@@ -83,7 +82,6 @@ export interface FilterState {
   assignee: 'me' | 'team' | string | null; // string = sales rep ID (React Admin identity.id is always string)
   lastTouch: '7d' | '14d' | 'any';
   showClosed: boolean;
-  groupByCustomer: boolean;
 }
 
 /**

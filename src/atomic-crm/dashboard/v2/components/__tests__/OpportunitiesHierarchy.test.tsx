@@ -100,7 +100,6 @@ describe('OpportunitiesHierarchy', () => {
       assignee: null,
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     renderComponent(filters);
@@ -145,7 +144,6 @@ describe('OpportunitiesHierarchy', () => {
       assignee: null,
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     renderComponent(filters);
@@ -161,7 +159,6 @@ describe('OpportunitiesHierarchy', () => {
       assignee: null,
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     // No principal selected
@@ -211,7 +208,6 @@ describe('OpportunitiesHierarchy', () => {
       assignee: null,
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     rerender(

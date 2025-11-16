@@ -45,7 +45,6 @@ export function PrincipalDashboardV2() {
     assignee: null,
     lastTouch: 'any',
     showClosed: false,
-    groupByCustomer: true,
   });
 
   // Sidebar visibility - persisted to localStorage
@@ -76,9 +75,8 @@ export function PrincipalDashboardV2() {
       assignee: null,
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: filterState.groupByCustomer, // Preserve grouping preference
     });
-  }, [filterState.groupByCustomer, setFilterState]);
+  }, [setFilterState]);
 
   const { containerRef, widths, onMouseDown } = useResizableColumns();
 
