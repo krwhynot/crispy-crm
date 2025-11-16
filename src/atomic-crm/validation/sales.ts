@@ -16,7 +16,12 @@ export const salesSchema = z.object({
   phone: z.string().nullish(),
   avatar_url: z.string().url("Must be a valid URL").optional().nullable(),
   user_id: z.string().uuid("Must be a valid UUID").optional(),
-  is_admin: z.boolean().default(false),
+
+  // Permission fields (role is primary, others are computed/deprecated)
+  role: z.enum(['admin', 'manager', 'rep']).default('rep'),
+  is_admin: z.boolean().optional(),  // Deprecated - synced from role via trigger
+  administrator: z.boolean().optional(),  // Computed column - read-only
+
   disabled: z.boolean().default(false),
 
   // System fields
