@@ -36,7 +36,7 @@ SELECT
   p.name as principal_name,
 
   -- Sales rep assignment (NEW - for assignee filter)
-  o.sales_id,
+  o.opportunity_owner_id as sales_id,
 
   -- Activity metrics
   EXTRACT(EPOCH FROM (NOW() - o.updated_at)) / 86400 as days_since_activity,
