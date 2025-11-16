@@ -30,8 +30,7 @@
           - img
         - button "Notifications" [ref=e22] [cursor=pointer]:
           - img
-        - button "A" [ref=e23] [cursor=pointer]:
-          - generic [ref=e25]: A
+        - button [ref=e23] [cursor=pointer]
   - main [ref=e26]:
     - generic [ref=e27]:
       - generic [ref=e29]:
@@ -107,44 +106,49 @@
                       - checkbox "Closed Lost" [ref=e99] [cursor=pointer]
                       - generic [ref=e100] [cursor=pointer]: Closed Lost
                 - generic [ref=e101]:
-                  - heading "Last Touch" [level=3] [ref=e102]
+                  - heading "Assignee" [level=3] [ref=e102]
                   - combobox [ref=e103] [cursor=pointer]:
-                    - generic: Any
+                    - generic: All Team
                     - img
                 - generic [ref=e104]:
-                  - heading "Saved Views" [level=3] [ref=e105]
-                  - paragraph [ref=e107]: No saved views yet
-                - generic [ref=e108]:
-                  - heading "Utilities" [level=3] [ref=e109]
-                  - generic [ref=e110]:
-                    - generic [ref=e111]:
-                      - checkbox "Show closed opportunities" [ref=e112] [cursor=pointer]
-                      - generic [ref=e113] [cursor=pointer]: Show closed opportunities
+                  - heading "Last Touch" [level=3] [ref=e105]
+                  - combobox [ref=e106] [cursor=pointer]:
+                    - generic: Any
+                    - img
+                - generic [ref=e107]:
+                  - heading "Saved Views" [level=3] [ref=e108]
+                  - paragraph [ref=e110]: No saved views yet
+                - generic [ref=e111]:
+                  - heading "Utilities" [level=3] [ref=e112]
+                  - generic [ref=e113]:
                     - generic [ref=e114]:
-                      - checkbox "Group opportunities by customer" [checked] [ref=e115] [cursor=pointer]
-                      - generic [ref=e116] [cursor=pointer]: Group opportunities by customer
-        - generic [ref=e117]:
-          - region "Opportunities hierarchy" [ref=e119]:
-            - paragraph [ref=e121]: Select a principal to view opportunities
-          - button "Resize opportunities column" [ref=e122] [cursor=pointer]
-          - generic "Tasks list" [ref=e124]:
-            - generic [ref=e125]:
-              - generic [ref=e126]: Tasks
-              - combobox [ref=e127] [cursor=pointer]:
+                      - checkbox "Show closed opportunities" [ref=e115] [cursor=pointer]
+                      - generic [ref=e116] [cursor=pointer]: Show closed opportunities
+                    - generic [ref=e117]:
+                      - checkbox "Group opportunities by customer" [checked] [ref=e118] [cursor=pointer]
+                      - generic [ref=e119] [cursor=pointer]: Group opportunities by customer
+        - generic [ref=e120]:
+          - region "Opportunities hierarchy" [ref=e122]:
+            - paragraph [ref=e124]: Select a principal to view opportunities
+          - button "Resize opportunities column" [ref=e125] [cursor=pointer]
+          - generic "Tasks list" [ref=e127]:
+            - generic [ref=e128]:
+              - generic [ref=e129]: Tasks
+              - combobox [ref=e130] [cursor=pointer]:
                 - generic: Due Date
                 - img
-            - generic [ref=e129]:
-              - paragraph [ref=e130]: No tasks due
-              - button "Create Task" [ref=e131] [cursor=pointer]
-          - button "Resize tasks column" [ref=e132] [cursor=pointer]
-          - generic [ref=e134]:
-            - generic [ref=e136]: Quick Logger
-            - generic [ref=e137]:
-              - paragraph [ref=e138]: Select a principal to log activity
-              - form "Quick activity logger" [ref=e139]:
-                - generic [ref=e140]:
-                  - generic [ref=e141]: Activity Type
-                  - generic [ref=e142]:
+            - generic [ref=e132]:
+              - paragraph [ref=e133]: No tasks due
+              - button "Create Task" [ref=e134] [cursor=pointer]
+          - button "Resize tasks column" [ref=e135] [cursor=pointer]
+          - generic [ref=e137]:
+            - generic [ref=e139]: Quick Logger
+            - generic [ref=e140]:
+              - paragraph [ref=e141]: Select a principal to log activity
+              - form "Quick activity logger" [ref=e142]:
+                - generic [ref=e143]:
+                  - generic [ref=e144]: Activity Type
+                  - generic [ref=e145]:
                     - button "Log call" [disabled]:
                       - img
                     - button "Log email" [disabled]:
@@ -153,30 +157,30 @@
                       - img
                     - button "Log note" [disabled]:
                       - img
-                - generic [ref=e143]:
-                  - generic [ref=e144]: Opportunity (Optional)
-                  - combobox "Opportunity (Optional)" [disabled] [ref=e145]:
+                - generic [ref=e146]:
+                  - generic [ref=e147]: Opportunity (Optional)
+                  - combobox "Opportunity (Optional)" [disabled] [ref=e148]:
                     - generic: Select opportunity
                     - img
-                  - combobox [disabled] [ref=e146]
-                - generic [ref=e147]:
-                  - generic [ref=e148]: Subject *
+                  - combobox [disabled] [ref=e149]
+                - generic [ref=e150]:
+                  - generic [ref=e151]: Subject *
                   - textbox "Subject *" [disabled]:
                     - /placeholder: Brief summary...
-                - generic [ref=e149]:
-                  - generic [ref=e150]: Description
-                  - textbox "Description" [disabled] [ref=e151]:
-                    - /placeholder: Activity details...
                 - generic [ref=e152]:
-                  - checkbox "Create follow-up task" [disabled] [ref=e153]
+                  - generic [ref=e153]: Description
+                  - textbox "Description" [disabled] [ref=e154]:
+                    - /placeholder: Activity details...
+                - generic [ref=e155]:
+                  - checkbox "Create follow-up task" [disabled] [ref=e156]
                   - checkbox [disabled]
-                  - generic [ref=e154]: Create follow-up task
+                  - generic [ref=e157]: Create follow-up task
                 - button "Log Activity" [disabled]
-  - contentinfo [ref=e155]:
-    - generic [ref=e157]:
-      - paragraph [ref=e158]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e159] [cursor=pointer]:
-        - img [ref=e160]
-        - generic [ref=e162]: Keyboard shortcuts
+  - contentinfo [ref=e158]:
+    - generic [ref=e160]:
+      - paragraph [ref=e161]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e162] [cursor=pointer]:
+        - img [ref=e163]
+        - generic [ref=e165]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```

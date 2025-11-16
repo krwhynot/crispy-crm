@@ -13,7 +13,7 @@
 - ✅ **Priority 2**: "All Principals" option removed (principal-centric workflow) - Commit: d6b417c3, [pending]
 - ✅ **Priority 2**: Rail button accessibility (44px touch target) - Already compliant
 - ⚠️ **Priority 3**: Task creation modal - Deferred to future sprint
-- ⚠️ **Priority 4**: Assignee filter - Blocked pending `sales_id` migration (see `docs/plans/2025-01-15-assignee-filter-migration-tracker.md`)
+- ✅ **Priority 4**: Assignee filter - **COMPLETE** (Migration: 20251116030314_add_sales_id_to_dashboard_views.sql)
 
 **Verification:**
 - ✅ Lint: Pass (no errors in modified files)

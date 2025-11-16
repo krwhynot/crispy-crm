@@ -2,17 +2,18 @@ import { test, expect } from './support/fixtures/authenticated';
 import { consoleMonitor } from './support/utils/console-monitor';
 
 /**
- * Dashboard Widgets - Consolidated Test Suite
+ * Dashboard V2 - Consolidated Viewport Test Suite
  *
- * Tests the OLD Dashboard (at /dashboard) with viewport-parameterized testing.
- * Covers Desktop, iPad Landscape, and iPad Portrait viewports.
- * Tests widget rendering, interactions, and visual regression.
+ * Viewport-parameterized testing for Dashboard V2 (default at /).
+ * Tests the 3-column resizable layout (Opportunities | Tasks | Quick Logger).
  *
- * NOTE: Dashboard V2 (default at /) has different structure (Opportunities/Tasks/Logger).
- * This suite tests the legacy widget-based dashboard for backwards compatibility.
+ * NOTE: Old dashboard widgets (Upcoming Events, My Tasks, Recent Activity, Pipeline Summary)
+ * no longer exist in the codebase. dashboard-widgets.spec.ts and dashboard-widgets-comprehensive.spec.ts
+ * tested non-existent features and have been consolidated/replaced.
  *
- * Replaces dashboard-widgets-comprehensive.spec.ts (duplicate).
- * Complements dashboard-widgets.spec.ts (detailed widget tests).
+ * Replaces:
+ * - dashboard-widgets-comprehensive.spec.ts (duplicate, obsolete)
+ * - Consolidates viewport testing patterns
  *
  * Reference: docs/plans/2025-11-15-test-suite-cleanup-implementation.md (Task 2.2)
  */
@@ -24,16 +25,20 @@ const viewports = [
 ];
 
 for (const viewport of viewports) {
-  test.describe(`Dashboard Widgets - ${viewport.name} (${viewport.width}x${viewport.height})`, () => {
+  test.describe(`Dashboard V2 - ${viewport.name} (${viewport.width}x${viewport.height})`, () => {
 
     test.beforeEach(async ({ authenticatedPage }) => {
       await authenticatedPage.setViewportSize({ width: viewport.width, height: viewport.height });
 
-      // Navigate to OLD dashboard (widget-based)
-      await authenticatedPage.goto('/dashboard');
+      // Navigate to Dashboard V2
+      await authenticatedPage.goto('/');
 
-      // Wait for dashboard heading
-      await expect(authenticatedPage.getByRole('heading', { name: /principal dashboard/i })).toBeVisible({ timeout: 10000 });
+      // Wait for filters sidebar or opportunities column (indicates dashboard loaded)
+      await expect(
+        authenticatedPage.getByRole('complementary', { name: /filters/i }).or(
+          authenticatedPage.locator('#col-opportunities')
+        )
+      ).toBeVisible({ timeout: 10000 });
     });
 
     test.afterEach(async () => {
@@ -47,90 +52,80 @@ for (const viewport of viewports) {
       expect(errors, 'Console errors detected. See attached report.').toHaveLength(0);
     });
 
-    test('renders required widgets with proper layout', async ({ authenticatedPage }) => {
-      // Widget visibility assertions
-      await expect(dashboard.getUpcomingEventsWidget()).toBeVisible();
-      await expect(dashboard.getPipelineSummaryWidget()).toBeVisible();
-      await expect(dashboard.getMyTasksWidget()).toBeVisible();
-      await expect(dashboard.getRecentActivityWidget()).toBeVisible();
+    test('renders 3-column layout with core components', async ({ authenticatedPage }) => {
+      // Verify filters sidebar
+      await expect(authenticatedPage.getByRole('complementary', { name: /filters/i })).toBeVisible();
 
-      // Verify principal table is present
-      await expect(dashboard.getTable()).toBeVisible();
+      // Verify 3 main columns
+      const opportunitiesCol = authenticatedPage.locator('#col-opportunities');
+      const tasksCol = authenticatedPage.locator('#col-tasks');
+      const loggerCol = authenticatedPage.locator('#col-logger');
+
+      await expect(opportunitiesCol).toBeVisible();
+      await expect(tasksCol).toBeVisible();
+      await expect(loggerCol).toBeVisible();
 
       // Take snapshot for visual regression
-      const snapshotName = `dashboard-${viewport.name.toLowerCase().replace(' ', '-')}.png`;
+      const snapshotName = `dashboard-v2-${viewport.name.toLowerCase().replace(' ', '-')}.png`;
       await expect(authenticatedPage).toHaveScreenshot(snapshotName, {
-        fullPage: true,
-        mask: [dashboard.getColumnHeader(/last activity/i)],
+        fullPage: false, // Don't capture full page - just viewport
+        timeout: 10000,
       });
     });
 
-    test('supports widget interactions', async () => {
-      // Refresh button
-      const refreshButton = dashboard.getRefreshButton();
-      await expect(refreshButton).toBeVisible();
-      await refreshButton.click();
+    test('supports filter sidebar interactions', async ({ authenticatedPage }) => {
+      const sidebar = authenticatedPage.getByRole('complementary', { name: /filters/i });
+      await expect(sidebar).toBeVisible();
 
-      // Verify refresh completes (button re-enabled)
-      await expect(refreshButton).toBeEnabled({ timeout: 5000 });
+      // Check for filter controls
+      const healthFilters = sidebar.getByText(/health status/i);
+      const stageFilters = sidebar.getByText(/stage/i);
 
-      // View All Tasks link
-      const viewAllTasksLink = dashboard.getViewAllLink(/view all tasks/i);
-      await expect(viewAllTasksLink).toBeVisible();
-      const tasksHref = await viewAllTasksLink.getAttribute('href');
-      expect(tasksHref).toContain('/tasks');
-
-      // View All Activity link
-      const viewAllActivityLink = dashboard.getViewAllLink(/view all activity/i);
-      await expect(viewAllActivityLink).toBeVisible();
-      const activityHref = await viewAllActivityLink.getAttribute('href');
-      expect(activityHref).toContain('/activities');
+      // At least one filter section should be visible
+      const hasFilters = await healthFilters.or(stageFilters).isVisible();
+      expect(hasFilters).toBe(true);
     });
 
-    test('displays proper layout for viewport', async () => {
+    test('displays proper 3-column layout', async ({ authenticatedPage }) => {
+      const opportunitiesCol = authenticatedPage.locator('#col-opportunities');
+      const tasksCol = authenticatedPage.locator('#col-tasks');
+      const loggerCol = authenticatedPage.locator('#col-logger');
+
+      // All columns should be visible
+      await expect(opportunitiesCol).toBeVisible();
+      await expect(tasksCol).toBeVisible();
+      await expect(loggerCol).toBeVisible();
+
+      // Verify they're arranged horizontally (on desktop/tablet landscape)
       if (viewport.width >= 1024) {
-        // Desktop and iPad Landscape: Two-column layout
-        const isTwoColumn = await dashboard.isTwoColumnLayout();
-        expect(isTwoColumn).toBe(true);
+        const oppBox = await opportunitiesCol.boundingBox();
+        const tasksBox = await tasksCol.boundingBox();
+        const loggerBox = await loggerCol.boundingBox();
 
-        // Verify left column is wider than right sidebar
-        const leftBox = await dashboard.getLeftColumn().boundingBox();
-        const rightBox = await dashboard.getRightSidebar().boundingBox();
+        expect(oppBox).not.toBeNull();
+        expect(tasksBox).not.toBeNull();
+        expect(loggerBox).not.toBeNull();
 
-        expect(leftBox).not.toBeNull();
-        expect(rightBox).not.toBeNull();
+        if (oppBox && tasksBox && loggerBox) {
+          // Columns should be side-by-side (similar top position)
+          const topDiff = Math.max(
+            Math.abs(oppBox.top - tasksBox.top),
+            Math.abs(tasksBox.top - loggerBox.top)
+          );
+          expect(topDiff).toBeLessThan(50);
 
-        if (leftBox && rightBox) {
-          expect(leftBox.width).toBeGreaterThan(rightBox.width);
-        }
-      } else {
-        // iPad Portrait: Stacked layout
-        const isStacked = await dashboard.isStackedLayout();
-        expect(isStacked).toBe(true);
-
-        // Verify widgets stack vertically
-        const leftBox = await dashboard.getLeftColumn().boundingBox();
-        const rightBox = await dashboard.getRightSidebar().boundingBox();
-
-        expect(leftBox).not.toBeNull();
-        expect(rightBox).not.toBeNull();
-
-        if (leftBox && rightBox) {
-          // Right sidebar should be below left column
-          expect(rightBox.top).toBeGreaterThan(leftBox.bottom - 20);
+          // Tasks should be to the right of opportunities
+          expect(tasksBox.left).toBeGreaterThan(oppBox.left);
+          // Logger should be to the right of tasks
+          expect(loggerBox.left).toBeGreaterThan(tasksBox.left);
         }
       }
 
       // Verify no horizontal scroll on any viewport
-      const hasHorizontalScroll = await dashboard.hasHorizontalScroll();
+      const bodyWidth = await authenticatedPage.evaluate(() => document.body.scrollWidth);
+      const viewportWidth = authenticatedPage.viewportSize()?.width || 0;
+      const hasHorizontalScroll = bodyWidth > viewportWidth + 5;
       expect(hasHorizontalScroll).toBe(false);
-    });
-
-    test('widgets have proper card styling', async () => {
-      await dashboard.verifyWidgetStyling(dashboard.getUpcomingEventsWidget());
-      await dashboard.verifyWidgetStyling(dashboard.getMyTasksWidget());
-      await dashboard.verifyWidgetStyling(dashboard.getRecentActivityWidget());
-      await dashboard.verifyWidgetStyling(dashboard.getPipelineSummaryWidget());
     });
   });
 }

@@ -30,20 +30,19 @@ interface TasksPanelProps {
   currentUserId?: string;                     // React Admin identity.id (string)
 }
 
-export function TasksPanel({ assignee: _assignee, currentUserId: _currentUserId }: TasksPanelProps) {
+export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
   const { selectedPrincipalId } = usePrincipalContext();
   const [grouping, setGrouping] = usePrefs<TaskGrouping>('taskGrouping', 'due');
   const [laterExpanded, setLaterExpanded] = useState(false);
   const [laterPage, setLaterPage] = useState(1);
   const notify = useNotify();
 
-  // TODO: Add assignee filtering when sales_id is added to priority_tasks view
-  // Example:
-  // const assigneeFilter = assignee === 'me' && currentUserId
-  //   ? { sales_id: currentUserId }
-  //   : assignee && assignee !== 'team'
-  //   ? { sales_id: assignee }
-  //   : {};
+  // Assignee filtering - now enabled with sales_id in priority_tasks view
+  const assigneeFilter = assignee === 'me' && currentUserId
+    ? { sales_id: currentUserId }
+    : assignee && assignee !== 'team' && assignee !== null
+    ? { sales_id: assignee }
+    : {};
 
   const { data, isLoading } = useGetList<PriorityTask>(
     'priority_tasks',
@@ -51,6 +50,7 @@ export function TasksPanel({ assignee: _assignee, currentUserId: _currentUserId 
       filter: {
         completed: false,
         ...(selectedPrincipalId && { principal_organization_id: selectedPrincipalId }),
+        ...assigneeFilter,
       },
       sort: { field: 'due_date', order: 'ASC' },
       pagination: { page: 1, perPage: 500 },
