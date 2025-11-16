@@ -9,11 +9,7 @@
 - [x] Phase 5: Dashboard V2 filter tests (10 unit tests + 3 E2E sidebar collapse tests)
 - [x] Phase 6: Documentation (testing strategy, E2E standards, rollout checklist)
 
-## Sprint 1 (Next 2 Weeks)
-
-- **Phase 4 wrap-up**
-  - [ ] Run Supabase-backed CSV import integration suite end-to-end
-  - [ ] Ensure `vitest.integration.config.ts` points at seeded DB + cleans up inserted rows
+## Sprint 1 (In Progress)
 
 - **RLS policy coverage**
   - [ ] Scaffold `tests/integration/rls-policies.test.ts` (using `vitest -c vitest.integration.config.ts`)
