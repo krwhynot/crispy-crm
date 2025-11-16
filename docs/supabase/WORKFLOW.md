@@ -280,6 +280,49 @@ npx supabase db push --skip-diff
 | RLS policies blocking access | Check `auth.uid()` vs `user_id` references |
 | View has no RLS | Recreate with `WITH (security_invoker = true)` |
 
+### ⚠️ Sales Record Creation (Critical)
+
+**SINGLE SOURCE:** Sales records are ONLY created by database triggers - never manually.
+
+**Trigger Flow:**
+1. User signs up → `auth.users` INSERT
+2. Trigger `on_auth_user_created` fires automatically
+3. Trigger calls `public.handle_new_user()` function
+4. Function creates corresponding `sales` record with default role='rep'
+
+**Seed File Pattern (CORRECT):**
+```sql
+-- 1. Create auth user (trigger auto-creates sales record)
+INSERT INTO auth.users (...) VALUES (...);
+
+-- 2. Update the auto-created sales record if needed
+UPDATE sales SET role = 'admin' WHERE user_id = '<uuid>';
+```
+
+**Common Mistake (CAUSES DUPLICATES):**
+```sql
+-- ❌ WRONG - Creates duplicate because trigger already created it
+INSERT INTO auth.users (...) VALUES (...);
+INSERT INTO sales (...) VALUES (...);  -- Duplicate!
+```
+
+**Why This Matters:**
+- Violates 1:1 mapping between `auth.users` and `sales`
+- Creates duplicate entries in Users List UI
+- Causes orphaned records that can't be deleted
+- Breaks permission system (which user's role is correct?)
+
+**If You Need to Add Test Users:**
+```sql
+-- Let trigger create sales record automatically
+INSERT INTO auth.users (id, email, ...) VALUES (gen_random_uuid(), 'test@example.com', ...);
+
+-- Then update role if needed
+UPDATE sales SET role = 'manager' WHERE email = 'test@example.com';
+```
+
+**Reference:** Migration `20251116000000_fix_sales_schema_consistency.sql` fixed duplicates caused by violating this pattern.
+
 ### Auth Trigger Warning
 
 ⚠️ **Auth schema changes are NOT captured by `db diff`**
