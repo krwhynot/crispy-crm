@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useGetList, useUpdate, useNotify } from 'react-admin';
+import { useGetList, useUpdate, useNotify, useRefresh } from 'react-admin';
 import {
   Select,
   SelectContent,
@@ -36,6 +36,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
   const [laterExpanded, setLaterExpanded] = useState(false);
   const [laterPage, setLaterPage] = useState(1);
   const notify = useNotify();
+  const refresh = useRefresh();
 
   // Assignee filtering - now enabled with sales_id in priority_tasks view
   const assigneeFilter = assignee === 'me' && currentUserId
@@ -73,6 +74,9 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
         previousData: { id: taskId },
       });
       notify('Task marked as complete', { type: 'success' });
+
+      // Immediately refetch priority_tasks to update UI
+      refresh();
     } catch (error) {
       console.error('Task completion failed:', error);
       notify('Failed to complete task', { type: 'error' });
