@@ -27,27 +27,8 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
   test("clicking opportunity row opens slide-over", async ({
     authenticatedPage,
   }) => {
-    await test.step("Expand first customer to reveal opportunities", async () => {
-      // Find first customer row (has aria-expanded attribute)
-      const customerRow = authenticatedPage
-        .locator('[role="treeitem"][aria-expanded]')
-        .first();
-
-      const customerCount = await customerRow.count();
-      if (customerCount === 0) {
-        test.skip();
-      }
-
-      // Check if already expanded
-      const ariaExpanded = await customerRow.getAttribute("aria-expanded");
-      if (ariaExpanded === "false") {
-        await customerRow.click();
-        // Wait for expansion animation
-        await authenticatedPage.waitForTimeout(300);
-      }
-    });
-
     await test.step("Click first opportunity row", async () => {
+      // Top 3 customers are auto-expanded, so opportunities are directly visible
       // Find first opportunity row (treeitem without aria-expanded)
       const opportunityRow = authenticatedPage
         .locator('[role="treeitem"]:not([aria-expanded])')
