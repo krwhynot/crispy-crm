@@ -40,15 +40,25 @@ export function DashboardHeader() {
   };
 
   const handleNewActivity = () => {
-    console.log('TODO: Open new activity modal');
+    // Navigate to activities create page with pre-filled principal
+    if (selectedPrincipalId) {
+      navigate(`/activities/create?organization_id=${selectedPrincipalId}`);
+    } else {
+      navigate('/activities/create');
+    }
   };
 
   const handleNewTask = () => {
-    console.log('TODO: Open new task modal');
+    navigate('/tasks/create');
   };
 
   const handleNewOpportunity = () => {
-    console.log('TODO: Open new opportunity modal');
+    // Navigate to opportunities create page with pre-filled principal
+    if (selectedPrincipalId) {
+      navigate(`/opportunities/create?principal_organization_id=${selectedPrincipalId}`);
+    } else {
+      navigate('/opportunities/create');
+    }
   };
 
   return (
