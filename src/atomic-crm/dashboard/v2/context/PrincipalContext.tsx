@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
+import { useStore } from 'react-admin';
 
 export interface PrincipalContextValue {
   selectedPrincipalId: number | null;
@@ -21,7 +22,11 @@ export interface PrincipalProviderProps {
 }
 
 export function PrincipalProvider({ children }: PrincipalProviderProps) {
-  const [selectedPrincipalId, setSelectedPrincipal] = useState<number | null>(null);
+  // Persist to localStorage via React Admin's useStore
+  const [selectedPrincipalId, setSelectedPrincipal] = useStore<number | null>(
+    'pd.selectedPrincipalId',
+    null
+  );
 
   const value: PrincipalContextValue = {
     selectedPrincipalId,
