@@ -78,15 +78,24 @@ export function FiltersSidebar({
                 }}
               />
             </CollapsibleTrigger>
-            {activeCount > 0 && (
+            <div className="flex items-center gap-2">
+              {activeCount > 0 && (
+                <button
+                  onClick={onClearFilters}
+                  className="h-11 px-3 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors focus-visible:ring-2 focus-visible:ring-primary"
+                  aria-label={`Clear ${activeCount} active filters`}
+                >
+                  Clear ({activeCount})
+                </button>
+              )}
               <button
-                onClick={onClearFilters}
-                className="h-11 px-3 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors focus-visible:ring-2 focus-visible:ring-primary"
-                aria-label={`Clear ${activeCount} active filters`}
+                onClick={onToggle}
+                className="h-11 w-11 rounded-md hover:bg-accent focus-visible:ring-2 focus-visible:ring-primary transition-colors flex items-center justify-center"
+                aria-label="Collapse filters sidebar"
               >
-                Clear ({activeCount})
+                <ChevronLeft className="h-5 w-5 text-muted-foreground" />
               </button>
-            )}
+            </div>
           </div>
         </div>
 
