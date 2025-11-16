@@ -17,14 +17,14 @@ describe('Supabase Test Harness', () => {
     const { data, error } = await harness.client
       .from('organizations')
       .insert({ name: 'Test Org', org_type: 'customer' })
-      .select();
+      .select()
+      .single();
 
     console.log('Insert result:', { data, error });
     expect(error).toBeNull();
     expect(data).toBeTruthy();
-    expect(data?.length).toBeGreaterThan(0);
-    expect(data?.[0]?.id).toBeDefined();
-    harness.seedData.organizationIds.push(data![0].id);
+    expect(data?.id).toBeDefined();
+    harness.seedData.organizationIds.push(data!.id);
 
     // Cleanup should remove it
     await harness.cleanup();
