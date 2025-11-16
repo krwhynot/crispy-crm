@@ -176,6 +176,8 @@ export function PrincipalDashboardV2() {
                   onFiltersChange={setFilterState}
                   onClearFilters={handleClearFilters}
                   activeCount={activeFilterCount}
+                  isOpen={sidebarOpen}
+                  onToggle={() => setSidebarOpen(false)}
                 />
               )}
             </div>
@@ -233,6 +235,32 @@ export function PrincipalDashboardV2() {
               </div>
             </div>
           </div>
+
+          {/* Collapsed Rail Toggle */}
+          {!sidebarOpen && (
+            <div className="fixed left-0 top-32 z-10">
+              <button
+                onClick={() => {
+                  setSidebarOpen(true);
+                  // Focus management: focus sidebar after animation completes
+                  setTimeout(() => {
+                    sidebarRef.current?.querySelector('button, input')?.focus();
+                  }, 250);
+                }}
+                className="relative w-2 h-24 bg-border hover:w-8 hover:bg-accent transition-all duration-200 rounded-r-md group focus-visible:ring-2 focus-visible:ring-primary focus-visible:w-8 flex items-center justify-center"
+                aria-label="Open filters sidebar"
+              >
+                <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity" />
+
+                {/* Active filter badge */}
+                {activeFilterCount > 0 && (
+                  <div className="absolute -top-2 left-1 w-5 h-5 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">
+                    {activeFilterCount}
+                  </div>
+                )}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Right Slide-Over */}
