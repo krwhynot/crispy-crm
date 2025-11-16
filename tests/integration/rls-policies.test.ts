@@ -100,6 +100,15 @@ describe('RLS Policy Integration', () => {
 
     adminUser.salesId = adminSales.id;
 
+    // Delete any existing rep user from previous test runs
+    const { data: existingUsers } = await serviceRoleClient.auth.admin.listUsers();
+    const existingRep = existingUsers?.users.find(u => u.email === repUser.email);
+    if (existingRep) {
+      await serviceRoleClient.auth.admin.deleteUser(existingRep.id);
+      // Wait for deletion to complete
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
     // Create non-admin rep user using service role client
     const { data: repAuthData, error: repSignUpError } = await serviceRoleClient.auth.admin.createUser({
       email: repUser.email,
@@ -131,14 +140,25 @@ describe('RLS Policy Integration', () => {
     repUser.salesId = repSales.id;
     testData.salesIds.push(repUser.salesId);
 
-    // Update rep's is_admin to false (ensure it's not admin)
+    // Update rep's role to 'rep' (not 'admin' or 'manager')
     const { error: updateError } = await serviceRoleClient
       .from('sales')
-      .update({ is_admin: false })
+      .update({ role: 'rep' })
       .eq('id', repUser.salesId);
 
     if (updateError) {
-      throw new Error(`Failed to set rep as non-admin: ${updateError.message}`);
+      throw new Error(`Failed to set rep role: ${updateError.message}`);
+    }
+
+    // Verify rep is not admin
+    const { data: verifyRep } = await serviceRoleClient
+      .from('sales')
+      .select('role, is_admin')
+      .eq('id', repUser.salesId)
+      .single();
+
+    if (verifyRep?.is_admin !== false) {
+      throw new Error(`Rep user is still admin after update: is_admin=${verifyRep?.is_admin}`);
     }
 
     // Create rep client and authenticate
