@@ -66,11 +66,15 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
     try {
       await update('tasks', {
         id: taskId,
-        data: { completed: true },
+        data: {
+          completed: true,
+          completed_at: new Date().toISOString(),
+        },
         previousData: { id: taskId },
       });
       notify('Task marked as complete', { type: 'success' });
-    } catch {
+    } catch (error) {
+      console.error('Task completion failed:', error);
       notify('Failed to complete task', { type: 'error' });
     }
   };
