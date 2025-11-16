@@ -355,7 +355,7 @@ describe('RLS Policy Integration', () => {
       // Rep can insert
       const { data: repOrg, error: repError } = await repClient
         .from('organizations')
-        .insert({ name: 'Rep Organization', type: 'customer' })
+        .insert({ name: 'Rep Organization', organization_type: 'customer' })
         .select()
         .single();
 
@@ -366,7 +366,7 @@ describe('RLS Policy Integration', () => {
       // Admin can insert
       const { data: adminOrg, error: adminError } = await adminClient
         .from('organizations')
-        .insert({ name: 'Admin Organization', type: 'customer' })
+        .insert({ name: 'Admin Organization', organization_type: 'customer' })
         .select()
         .single();
 
@@ -378,7 +378,7 @@ describe('RLS Policy Integration', () => {
     it('allows admin to UPDATE organizations', async () => {
       const { data: org, error: insertError } = await adminClient
         .from('organizations')
-        .insert({ name: 'Test Org', type: 'customer' })
+        .insert({ name: 'Test Org', organization_type: 'customer' })
         .select()
         .single();
 
@@ -399,7 +399,7 @@ describe('RLS Policy Integration', () => {
     it('prevents non-admin from UPDATE organizations', async () => {
       const { data: org, error: insertError } = await adminClient
         .from('organizations')
-        .insert({ name: 'Test Org', type: 'customer' })
+        .insert({ name: 'Test Org', organization_type: 'customer' })
         .select()
         .single();
 
@@ -426,7 +426,7 @@ describe('RLS Policy Integration', () => {
     it('allows admin to DELETE organizations', async () => {
       const { data: org, error: insertError } = await adminClient
         .from('organizations')
-        .insert({ name: 'Test Org', type: 'customer' })
+        .insert({ name: 'Test Org', organization_type: 'customer' })
         .select()
         .single();
 
@@ -451,7 +451,7 @@ describe('RLS Policy Integration', () => {
     it('prevents non-admin from DELETE organizations', async () => {
       const { data: org, error: insertError } = await adminClient
         .from('organizations')
-        .insert({ name: 'Test Org', type: 'customer' })
+        .insert({ name: 'Test Org', organization_type: 'customer' })
         .select()
         .single();
 
@@ -481,7 +481,7 @@ describe('RLS Policy Integration', () => {
       // Create organization for opportunities
       const { data: org, error: orgError } = await adminClient
         .from('organizations')
-        .insert({ name: 'Test Organization', type: 'customer' })
+        .insert({ name: 'Test Organization', organization_type: 'customer' })
         .select()
         .single();
 
@@ -499,9 +499,9 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Rep Opportunity',
-          organization_id: testOrgId,
-          stage: 'Prospecting',
-          sales_id: repUser.salesId,
+          customer_organization_id: testOrgId,
+          stage: 'new_lead',
+          account_manager_id: repUser.salesId,
         })
         .select()
         .single();
@@ -515,9 +515,9 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Admin Opportunity',
-          organization_id: testOrgId,
-          stage: 'Prospecting',
-          sales_id: adminUser.salesId,
+          customer_organization_id: testOrgId,
+          stage: 'new_lead',
+          account_manager_id: adminUser.salesId,
         })
         .select()
         .single();
@@ -532,7 +532,7 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          organization_id: testOrgId,
+          org_id: testOrgId,
           stage: 'Prospecting',
           sales_id: adminUser.salesId,
         })
@@ -558,7 +558,7 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          organization_id: testOrgId,
+          org_id: testOrgId,
           stage: 'Prospecting',
           sales_id: adminUser.salesId,
         })
@@ -590,7 +590,7 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          organization_id: testOrgId,
+          org_id: testOrgId,
           stage: 'Prospecting',
           sales_id: adminUser.salesId,
         })
@@ -620,7 +620,7 @@ describe('RLS Policy Integration', () => {
         .from('opportunities')
         .insert({
           name: 'Test Opportunity',
-          organization_id: testOrgId,
+          org_id: testOrgId,
           stage: 'Prospecting',
           sales_id: adminUser.salesId,
         })
