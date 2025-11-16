@@ -36,6 +36,7 @@ import type { FilterState } from './types';
 export function PrincipalDashboardV2() {
   const [slideOverOpen, setSlideOverOpen] = useState(false);
   const [selectedOpportunityId, setSelectedOpportunityId] = useState<number | null>(null);
+  const [shouldAutoFocus, setShouldAutoFocus] = useState(false);
 
   // Filter state - persisted to localStorage
   const [filterState, setFilterState] = usePrefs<FilterState>('filters', {
@@ -80,6 +81,17 @@ export function PrincipalDashboardV2() {
   }, [filterState.groupByCustomer, setFilterState]);
 
   const { containerRef, widths, onMouseDown } = useResizableColumns();
+
+  // Reset auto-focus flag after sidebar opens and FiltersSidebar has time to focus
+  useEffect(() => {
+    if (sidebarOpen && shouldAutoFocus) {
+      // Delay reset to ensure FiltersSidebar's useEffect has captured the autoFocus prop
+      const timer = setTimeout(() => {
+        setShouldAutoFocus(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [sidebarOpen, shouldAutoFocus]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -178,6 +190,7 @@ export function PrincipalDashboardV2() {
                   onClearFilters={handleClearFilters}
                   activeCount={activeFilterCount}
                   onToggle={() => setSidebarOpen(false)}
+                  autoFocus={shouldAutoFocus}
                 />
               )}
             </div>
@@ -241,17 +254,8 @@ export function PrincipalDashboardV2() {
             <div className="fixed left-0 top-32 z-10">
               <button
                 onClick={() => {
+                  setShouldAutoFocus(true);
                   setSidebarOpen(true);
-                  // Focus management: use requestAnimationFrame for reliable post-render focus
-                  requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                      // Double RAF ensures DOM has painted after state change
-                      const firstInput = sidebarRef.current?.querySelector('input[type="checkbox"], input[type="text"]');
-                      if (firstInput instanceof HTMLElement) {
-                        firstInput.focus();
-                      }
-                    });
-                  });
                 }}
                 className="relative w-11 h-11 bg-border hover:bg-accent transition-colors duration-200 rounded-r-md focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center"
                 aria-label="Open filters sidebar"

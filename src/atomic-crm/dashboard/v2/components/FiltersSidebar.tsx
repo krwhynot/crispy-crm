@@ -25,6 +25,7 @@ interface FiltersSidebarProps {
   onClearFilters: () => void;
   activeCount: number;
   onToggle: () => void;
+  autoFocus?: boolean;  // Focus first input when component mounts
 }
 
 export function FiltersSidebar({
@@ -33,6 +34,7 @@ export function FiltersSidebar({
   onClearFilters,
   activeCount,
   onToggle,
+  autoFocus = false,
 }: FiltersSidebarProps) {
   const { opportunityStages } = useConfigurationContext();
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("filtersOpen", true);
@@ -42,6 +44,18 @@ export function FiltersSidebar({
     pagination: { page: 1, perPage: 100 },
     sort: { field: 'first_name', order: 'ASC' },
   });
+
+  // Ref callback to auto-focus first checkbox when it mounts (if autoFocus is true)
+  const firstCheckboxRef = useCallback((node: HTMLInputElement | null) => {
+    if (node && autoFocus && filtersOpen) {
+      // Use RAF to ensure element is fully rendered and focusable
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          node.focus();
+        });
+      });
+    }
+  }, [autoFocus, filtersOpen]);
 
   const toggleHealth = (value: "active" | "cooling" | "at_risk") => {
     const newHealth = filters.health.includes(value)
@@ -59,6 +73,7 @@ export function FiltersSidebar({
 
   return (
     <aside
+      ref={asideRef}
       className="h-full flex flex-col bg-card border border-border rounded-lg shadow-sm"
       aria-label="Filters"
     >
