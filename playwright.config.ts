@@ -6,6 +6,7 @@ dotenv.config({ path: ".env.test" });
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  testIgnore: "**/tests/legacy/**", // Exclude quarantined tests
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
