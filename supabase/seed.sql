@@ -4018,17 +4018,26 @@ DO $$
 DECLARE
   v_sales_id BIGINT;
 BEGIN
-  -- Get the sales ID for our test user
-  SELECT id INTO v_sales_id
-  FROM sales
-  WHERE user_id = 'd3129876-b1fe-40eb-9980-64f5f73c64d6'
-  LIMIT 1;
+  -- ============================================================================
+  -- Get sales ID for test user
+  -- ============================================================================
+  -- NOTE: The on_auth_user_created trigger already created the sales record
+  --       when we inserted into auth.users above (line 39-86).
+  --       We just need to UPDATE it to set role='admin'.
+  --
+  -- CRITICAL: DO NOT manually INSERT into sales table here!
+  --           Trigger handles creation. We only UPDATE the auto-created record.
+  -- ============================================================================
 
-  -- If no sales record exists, create one
+  -- Update the auto-created sales record to admin role
+  UPDATE sales
+  SET role = 'admin'
+  WHERE user_id = 'd3129876-b1fe-40eb-9980-64f5f73c64d6'
+  RETURNING id INTO v_sales_id;
+
+  -- Verify the update worked
   IF v_sales_id IS NULL THEN
-    INSERT INTO sales (first_name, last_name, email, user_id)
-    VALUES ('Admin', 'User', 'admin@test.com', 'd3129876-b1fe-40eb-9980-64f5f73c64d6')
-    RETURNING id INTO v_sales_id;
+    RAISE EXCEPTION 'Failed to find sales record for admin user - trigger may have failed';
   END IF;
 
   -- Create sample opportunities for each principal
