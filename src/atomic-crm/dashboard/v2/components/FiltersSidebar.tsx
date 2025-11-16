@@ -35,7 +35,9 @@ export function FiltersSidebar({
 }: FiltersSidebarProps) {
   const { opportunityStages } = useConfigurationContext();
   const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("filtersOpen", true);
-  const { data: salesReps } = useGetList('sales', {
+
+  // Fetch sales reps for assignee dropdown (currently commented out - blocked pending sales_id migration)
+  const { data: _salesReps } = useGetList('sales', {
     pagination: { page: 1, perPage: 100 },
     sort: { field: 'first_name', order: 'ASC' },
   });

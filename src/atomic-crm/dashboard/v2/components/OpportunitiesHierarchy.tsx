@@ -25,7 +25,7 @@ interface CustomerGroup {
 
 export function OpportunitiesHierarchy({
   filters,
-  currentUserId,
+  currentUserId: _currentUserId,
   onOpportunityClick
 }: OpportunitiesHierarchyProps) {
   const { selectedPrincipalId } = usePrincipalContext();
@@ -85,7 +85,7 @@ export function OpportunitiesHierarchy({
 
       return true;
     });
-  }, [opportunities, filters, currentUserId]);
+  }, [opportunities, filters]); // currentUserId unused until assignee filter is enabled
 
   // Group opportunities by customer and calculate recency
   const customerGroups = useMemo<CustomerGroup[]>(() => {
