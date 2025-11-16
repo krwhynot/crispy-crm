@@ -1,57 +1,30 @@
-import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../support/poms/LoginPage";
+import { test, expect } from "../../support/fixtures/authenticated";
 import { OpportunitiesListPage } from "../../support/poms/OpportunitiesListPage";
 import { OpportunityShowPage } from "../../support/poms/OpportunityShowPage";
 import { OpportunityFormPage } from "../../support/poms/OpportunityFormPage";
-import { consoleMonitor } from "../../support/utils/console-monitor";
+import { createOpportunitySeedHelper, cleanupTestOpportunities } from "../../support/helpers/opportunity-seed";
 
 /**
  * Opportunities CRUD Test Suite
  * Tests create, read, update, delete operations for opportunities
  *
  * Priority: High (Priority 1 from testing strategy)
- * Coverage: Basic lifecycle operations with test data isolation
+ * Coverage: Basic lifecycle operations with deterministic test data
  *
  * FOLLOWS: playwright-e2e-testing skill requirements
  * - Page Object Models (all interactions via POMs) ✓
  * - Semantic selectors only (getByRole/Label/Text) ✓
  * - Console monitoring for diagnostics ✓
  * - Condition-based waiting (no arbitrary timeouts) ✓
- * - Timestamp-based test data for isolation ✓
+ * - Deterministic seed data for reliability ✓
+ * - Authenticated fixture (no manual login) ✓
  */
 
 test.describe("Opportunities CRUD Operations", () => {
   test.beforeEach(async ({ page }) => {
-    // Attach console monitoring
-    await consoleMonitor.attach(page);
-
-    // Always do explicit login (simpler and more reliable than storage state)
-    const loginPage = new LoginPage(page);
-    await loginPage.goto("/");
-    await page.waitForTimeout(1000); // Let page stabilize
-
-    //Check if we need to login
-    const isLoginFormVisible = await page
-      .getByLabel(/email/i)
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
-
-    if (isLoginFormVisible) {
-      await loginPage.login("admin@test.com", "password123");
-      // Wait for dashboard to load
-      await page.waitForTimeout(2000);
-    }
-
-    // Verify we're authenticated (use first nav element to avoid strict mode violation)
+    // Page is already authenticated via fixture
+    // Verify we're authenticated by waiting for navigation
     await page.getByRole("navigation").first().waitFor({ state: "visible", timeout: 10000 });
-  });
-
-  test.afterEach(async () => {
-    // Report console errors if any
-    if (consoleMonitor.getErrors().length > 0) {
-      console.log(consoleMonitor.getReport());
-    }
-    consoleMonitor.clear();
   });
 
   test("should create opportunity with minimal required fields", async ({ page }) => {
@@ -295,18 +268,17 @@ test.describe("Opportunities CRUD Operations", () => {
     const saveButton = formPage.getSaveButton();
     await saveButton.click();
 
-    // Verify still on create page (no redirect)
-    await page.waitForTimeout(1000);
-    expect(page.url()).toContain("/create");
-
-    // Verify validation errors appear (React Admin typically shows inline errors)
-    // This is a basic check - specific validation UI depends on your form configuration
+    // Verify validation errors appear and form doesn't submit
+    // React Admin typically shows inline errors
     const errorMessages = page
       .locator('[role="alert"]')
       .or(page.locator('.error, [class*="error"]'));
 
-    // Wait for at least one error to appear
+    // Wait for at least one error to appear (proves form didn't submit)
     await expect(errorMessages.first()).toBeVisible({ timeout: 2000 });
+
+    // Verify still on create page (no redirect)
+    expect(page.url()).toContain("/create");
   });
 
   test("should maintain test data isolation with concurrent creates", async ({ page }) => {
@@ -318,16 +290,14 @@ test.describe("Opportunities CRUD Operations", () => {
     await listPage.goto();
 
     // This test verifies that timestamp-based naming prevents conflicts
-    const timestamp1 = Date.now();
+    // Using high-resolution timestamp for uniqueness
+    const timestamp1 = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
     const name1 = `Concurrent Test ${timestamp1}`;
 
-    // Small delay to ensure different timestamp
-    await page.waitForTimeout(10);
-    const timestamp2 = Date.now();
+    const timestamp2 = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
     const name2 = `Concurrent Test ${timestamp2}`;
 
-    // Verify timestamps are different (data isolation works)
-    expect(timestamp1).not.toBe(timestamp2);
+    // Verify names are different (data isolation works)
     expect(name1).not.toBe(name2);
 
     // Create both opportunities
