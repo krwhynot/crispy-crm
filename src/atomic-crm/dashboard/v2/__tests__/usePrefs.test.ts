@@ -25,7 +25,6 @@ describe('usePrefs - Dashboard V2 Filters', () => {
       assignee: 'team',
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     const { result } = renderHook(() => usePrefs<FilterState>('filters', defaultFilters));
@@ -36,7 +35,6 @@ describe('usePrefs - Dashboard V2 Filters', () => {
       assignee: 'team',
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     });
   });
 
@@ -48,7 +46,6 @@ describe('usePrefs - Dashboard V2 Filters', () => {
       assignee: 'team',
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     // First render - returns undefined (not yet stored)
@@ -62,7 +59,6 @@ describe('usePrefs - Dashboard V2 Filters', () => {
       assignee: 'me',
       lastTouch: '7d',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     act(() => {
@@ -81,7 +77,6 @@ describe('usePrefs - Dashboard V2 Filters', () => {
       assignee: 'me',
       lastTouch: '7d',
       showClosed: false,
-      groupByCustomer: true,
     });
   });
 
@@ -93,7 +88,6 @@ describe('usePrefs - Dashboard V2 Filters', () => {
       assignee: 'team',
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     vi.mocked(useStore).mockReturnValue([storedFilters, mockSetValue]);
@@ -121,11 +115,9 @@ describe('FilterState logic', () => {
       assignee: 'me',
       lastTouch: '7d',
       showClosed: true,
-      groupByCustomer: false,
     };
 
     // Active filters: health, stages, assignee, lastTouch, showClosed = 5
-    // (groupByCustomer is display option, not filter)
     const activeCount = [
       filters.health.length > 0,
       filters.stages.length > 0,
@@ -144,7 +136,6 @@ describe('FilterState logic', () => {
       assignee: 'team',
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     const activeCount = [
@@ -165,7 +156,6 @@ describe('FilterState logic', () => {
       assignee: 'team',
       lastTouch: '14d',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     // Active filters: health (2 values), lastTouch = 2
@@ -187,7 +177,6 @@ describe('FilterState logic', () => {
       assignee: '123', // sales_id as string (React Admin pattern)
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     const activeCount = [
@@ -209,7 +198,6 @@ describe('FilterState logic', () => {
       assignee: null,
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     const activeCount = [
@@ -230,7 +218,6 @@ describe('FilterState logic', () => {
       assignee: 'team',
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     // Health filter is active if array has any values
@@ -246,7 +233,6 @@ describe('FilterState logic', () => {
       assignee: 'team',
       lastTouch: 'any',
       showClosed: false,
-      groupByCustomer: true,
     };
 
     const stagesFilterActive = filters.stages.length > 0;

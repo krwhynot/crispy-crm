@@ -257,19 +257,6 @@ export function FiltersSidebar({
                 Show closed opportunities
               </Label>
             </div>
-            <div className="flex items-center min-h-8">
-              <Checkbox
-                id="group-by-customer"
-                checked={filters.groupByCustomer}
-                onCheckedChange={(checked) =>
-                  onFiltersChange({ ...filters, groupByCustomer: !!checked })
-                }
-                className="h-4 w-4"
-              />
-              <Label htmlFor="group-by-customer" className="ml-2 cursor-pointer flex-1 text-xs">
-                Group opportunities by customer
-              </Label>
-            </div>
           </div>
         </div>
           </div>
