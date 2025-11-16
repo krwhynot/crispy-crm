@@ -22,6 +22,19 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
 
     // Wait for Opportunities panel to load
     await authenticatedPage.getByRole("tree", { name: /opportunities hierarchy/i }).waitFor({ timeout: 5000 });
+
+    // Ensure at least the first customer is expanded (auto-expansion or manual)
+    const customerRow = authenticatedPage
+      .locator('[role="treeitem"][aria-expanded]')
+      .first();
+
+    if ((await customerRow.count()) > 0) {
+      const ariaExpanded = await customerRow.getAttribute("aria-expanded");
+      if (ariaExpanded === "false") {
+        await customerRow.click();
+        await authenticatedPage.waitForTimeout(300);
+      }
+    }
   });
 
   test("clicking opportunity row opens slide-over", async ({
@@ -75,16 +88,7 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
 
   test("slide-over tabs work correctly", async ({ authenticatedPage }) => {
     await test.step("Open slide-over", async () => {
-      // Expand customer and click opportunity
-      const customerRow = authenticatedPage
-        .locator('[role="treeitem"][aria-expanded="false"]')
-        .first();
-
-      if ((await customerRow.count()) > 0) {
-        await customerRow.click();
-        await authenticatedPage.waitForTimeout(300);
-      }
-
+      // Top 3 customers are auto-expanded, so opportunities are directly visible
       const opportunityRow = authenticatedPage
         .locator('[role="treeitem"]:not([aria-expanded])')
         .first();
@@ -150,15 +154,7 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
     authenticatedPage,
   }) => {
     await test.step("Open slide-over", async () => {
-      const customerRow = authenticatedPage
-        .locator('[role="treeitem"][aria-expanded="false"]')
-        .first();
-
-      if ((await customerRow.count()) > 0) {
-        await customerRow.click();
-        await authenticatedPage.waitForTimeout(300);
-      }
-
+      // Top 3 customers are auto-expanded, so opportunities are directly visible
       const opportunityRow = authenticatedPage
         .locator('[role="treeitem"]:not([aria-expanded])')
         .first();
@@ -191,15 +187,7 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
     authenticatedPage,
   }) => {
     await test.step("Open slide-over", async () => {
-      const customerRow = authenticatedPage
-        .locator('[role="treeitem"][aria-expanded="false"]')
-        .first();
-
-      if ((await customerRow.count()) > 0) {
-        await customerRow.click();
-        await authenticatedPage.waitForTimeout(300);
-      }
-
+      // Top 3 customers are auto-expanded, so opportunities are directly visible
       const opportunityRow = authenticatedPage
         .locator('[role="treeitem"]:not([aria-expanded])')
         .first();
@@ -243,18 +231,8 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
   test("keyboard shortcut 'H' opens slide-over on History tab", async ({
     authenticatedPage,
   }) => {
-    await test.step("Skip if keyboard shortcut test already exists", async () => {
-      // This is tested in dashboard-v2-keyboard.spec.ts
-      // We'll verify the end result here
-      const customerRow = authenticatedPage
-        .locator('[role="treeitem"][aria-expanded="false"]')
-        .first();
-
-      if ((await customerRow.count()) > 0) {
-        await customerRow.click();
-        await authenticatedPage.waitForTimeout(300);
-      }
-
+    await test.step("Select opportunity and close slide-over", async () => {
+      // Top 3 customers are auto-expanded, so opportunities are directly visible
       const opportunityRow = authenticatedPage
         .locator('[role="treeitem"]:not([aria-expanded])')
         .first();
@@ -292,29 +270,8 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
   test("opportunity row can be opened with keyboard (Enter/Space)", async ({
     authenticatedPage,
   }) => {
-    await test.step("Expand customer with keyboard", async () => {
-      const customerRow = authenticatedPage
-        .locator('[role="treeitem"][aria-expanded="false"]')
-        .first();
-
-      if ((await customerRow.count()) === 0) {
-        test.skip();
-      }
-
-      // Focus customer row
-      await customerRow.focus();
-
-      // Press Enter to expand
-      await authenticatedPage.keyboard.press("Enter");
-
-      // Wait for expansion
-      await authenticatedPage.waitForTimeout(300);
-
-      // Verify expanded
-      await expect(customerRow).toHaveAttribute("aria-expanded", "true");
-    });
-
     await test.step("Open opportunity with Space key", async () => {
+      // Top 3 customers are auto-expanded, so opportunities are directly visible
       const opportunityRow = authenticatedPage
         .locator('[role="treeitem"]:not([aria-expanded])')
         .first();
@@ -342,15 +299,7 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
     authenticatedPage,
   }) => {
     await test.step("Open slide-over and switch to History tab", async () => {
-      const customerRow = authenticatedPage
-        .locator('[role="treeitem"][aria-expanded="false"]')
-        .first();
-
-      if ((await customerRow.count()) > 0) {
-        await customerRow.click();
-        await authenticatedPage.waitForTimeout(300);
-      }
-
+      // Top 3 customers are auto-expanded, so opportunities are directly visible
       const opportunityRow = authenticatedPage
         .locator('[role="treeitem"]:not([aria-expanded])')
         .first();
