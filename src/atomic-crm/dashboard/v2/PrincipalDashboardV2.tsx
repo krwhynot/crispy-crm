@@ -242,13 +242,16 @@ export function PrincipalDashboardV2() {
               <button
                 onClick={() => {
                   setSidebarOpen(true);
-                  // Focus management: focus first filter checkbox after animation completes (350ms accounts for 200ms animation + React render)
-                  setTimeout(() => {
-                    const firstInput = sidebarRef.current?.querySelector('input[type="checkbox"], input[type="text"]');
-                    if (firstInput instanceof HTMLElement) {
-                      firstInput.focus();
-                    }
-                  }, 350);
+                  // Focus management: use requestAnimationFrame for reliable post-render focus
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      // Double RAF ensures DOM has painted after state change
+                      const firstInput = sidebarRef.current?.querySelector('input[type="checkbox"], input[type="text"]');
+                      if (firstInput instanceof HTMLElement) {
+                        firstInput.focus();
+                      }
+                    });
+                  });
                 }}
                 className="relative w-11 h-11 bg-border hover:bg-accent transition-colors duration-200 rounded-r-md focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center"
                 aria-label="Open filters sidebar"
