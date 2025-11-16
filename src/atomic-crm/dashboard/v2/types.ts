@@ -170,7 +170,6 @@ export interface UserPreferences {
  * Global listeners (active when not in input/textarea)
  */
 export interface KeyboardShortcut {
-  '/': 'focus-search';
   '1': 'scroll-to-opportunities';
   '2': 'scroll-to-tasks';
   '3': 'scroll-to-quick-logger';

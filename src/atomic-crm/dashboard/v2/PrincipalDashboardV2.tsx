@@ -106,10 +106,6 @@ export function PrincipalDashboardV2() {
       }
 
       switch (e.key) {
-        case '/':
-          e.preventDefault();
-          document.getElementById('global-search')?.focus();
-          break;
         case '1':
           e.preventDefault();
           document.getElementById('col-opportunities')?.scrollIntoView({ behavior: 'smooth' });
