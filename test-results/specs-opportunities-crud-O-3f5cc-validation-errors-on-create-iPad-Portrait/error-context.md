@@ -1,0 +1,77 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - tablist [ref=e32]:
+          - tab "General tab" [selected] [ref=e33] [cursor=pointer]: General
+          - tab "Classification tab" [ref=e34] [cursor=pointer]: Classification
+          - tab "Relationships tab" [ref=e35] [cursor=pointer]: Relationships
+          - tab "Details tab" [ref=e36] [cursor=pointer]: Details
+        - tabpanel "General tab" [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - group [ref=e40]:
+                - generic [ref=e42]: Opportunity name *
+                - textbox "Opportunity name *" [ref=e43]
+              - button "Show naming tips" [ref=e46] [cursor=pointer]:
+                - img
+                - text: Show naming tips
+                - img
+            - group [ref=e47]:
+              - generic [ref=e49]: Description
+              - textbox "Description" [ref=e50]
+            - group [ref=e51]:
+              - generic [ref=e53]: Expected Closing Date *
+              - textbox "Expected Closing Date *" [ref=e54]: 2025-12-16
+      - toolbar [ref=e55]:
+        - button "Delete" [ref=e56] [cursor=pointer]:
+          - img
+          - text: Delete
+        - generic [ref=e57]:
+          - button "Cancel" [ref=e58] [cursor=pointer]:
+            - img
+            - text: Cancel
+          - button "Save" [disabled]:
+            - img
+            - text: Save
+  - contentinfo [ref=e59]:
+    - generic [ref=e61]:
+      - paragraph [ref=e62]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e63] [cursor=pointer]:
+        - img [ref=e64]
+        - generic [ref=e66]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

@@ -22,10 +22,11 @@
   - [x] Implement real Supabase login/logout/session refresh cases in `tests/integration/auth-flow.test.ts` (18 tests)
   - [x] Cover refresh-token failure + error scenarios (invalid token, empty token, unauthenticated user)
 
-- **Opportunities E2E stabilization**
-  - [ ] Update `tests/e2e/specs/opportunities/crud.spec.ts` to use `tests/e2e/support/fixtures/authenticated`
-  - [ ] Add deterministic seed/reset helper for opportunity data
-  - [ ] Run suite on CI and capture flake metrics
+- **Opportunities E2E stabilization** ✅
+  - [x] Update `tests/e2e/specs/opportunities/crud.spec.ts` to use `tests/e2e/support/fixtures/authenticated`
+  - [x] Add deterministic seed/reset helper for opportunity data (`tests/e2e/support/helpers/opportunity-seed.ts`)
+  - [x] Remove all arbitrary timeouts (replaced with condition-based waiting)
+  - [ ] Run suite on CI and capture flake metrics (deferred - POM needs fixes first)
 
 ## Sprint 2 (Weeks 3-4)
 

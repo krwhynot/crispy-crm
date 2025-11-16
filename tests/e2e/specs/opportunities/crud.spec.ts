@@ -23,7 +23,10 @@ import { createOpportunitySeedHelper, cleanupTestOpportunities } from "../../sup
 test.describe("Opportunities CRUD Operations", () => {
   test.beforeEach(async ({ page }) => {
     // Page is already authenticated via fixture
-    // Verify we're authenticated by waiting for navigation
+    // Navigate to root to load the app
+    await page.goto("/");
+
+    // Wait for navigation to be visible (proves auth worked)
     await page.getByRole("navigation").first().waitFor({ state: "visible", timeout: 10000 });
   });
 
