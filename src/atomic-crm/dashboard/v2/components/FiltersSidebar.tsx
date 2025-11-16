@@ -1,5 +1,5 @@
 import { ChevronRightIcon, ChevronLeft } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useCallback } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -73,7 +73,6 @@ export function FiltersSidebar({
 
   return (
     <aside
-      ref={asideRef}
       className="h-full flex flex-col bg-card border border-border rounded-lg shadow-sm"
       aria-label="Filters"
     >
@@ -124,6 +123,7 @@ export function FiltersSidebar({
           <div className="space-y-1">
             <div className="flex items-center min-h-8">
               <Checkbox
+                ref={firstCheckboxRef}
                 id="health-active"
                 checked={filters.health.includes("active")}
                 onCheckedChange={() => toggleHealth("active")}
