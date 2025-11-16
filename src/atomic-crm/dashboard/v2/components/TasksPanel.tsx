@@ -234,6 +234,8 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
                         ? `${group.label} (${group.tasks.length} tasks) - ${laterExpanded ? 'Collapse' : 'Expand'}`
                         : group.label
                     }
+                    aria-expanded={isLaterGroup ? laterExpanded : undefined}
+                    aria-controls={isLaterGroup ? `later-tasks-${group.key}` : undefined}
                     disabled={!isLaterGroup}
                   >
                     <span className="flex items-center gap-2">
@@ -251,31 +253,37 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
                     </span>
                   </button>
 
-                  {tasksToShow.map((task) => (
-                    <div
-                      key={task.task_id}
-                      className="h-11 px-3 hover:bg-muted/30 flex items-center gap-3 border-b border-border/50"
-                      role="listitem"
-                    >
-                      <button
-                        onClick={() => handleComplete(task.task_id)}
-                        className="shrink-0 h-11 w-11 flex items-center justify-center -ml-1"
-                        aria-label={`Mark "${task.task_title}" as complete`}
+                  <div
+                    id={isLaterGroup ? `later-tasks-${group.key}` : undefined}
+                    role={isLaterGroup ? 'region' : undefined}
+                    aria-hidden={isLaterGroup ? !laterExpanded : undefined}
+                  >
+                    {tasksToShow.map((task) => (
+                      <div
+                        key={task.task_id}
+                        className="h-11 px-3 hover:bg-muted/30 flex items-center gap-3 border-b border-border/50"
+                        role="listitem"
                       >
-                        <Checkbox checked={false} className="h-5 w-5" />
-                      </button>
-
-                      <span className="flex-1 text-sm truncate">{task.task_title}</span>
-
-                      {grouping !== 'priority' && (
-                        <span
-                          className={`px-2 py-0.5 text-xs font-medium rounded ${getPriorityBadgeClass(task.priority)}`}
+                        <button
+                          onClick={() => handleComplete(task.task_id)}
+                          className="shrink-0 h-11 w-11 flex items-center justify-center -ml-1"
+                          aria-label={`Mark "${task.task_title}" as complete`}
                         >
-                          {PRIORITY_LABELS[task.priority]}
-                        </span>
-                      )}
-                    </div>
-                  ))}
+                          <Checkbox checked={false} className="h-5 w-5" />
+                        </button>
+
+                        <span className="flex-1 text-sm truncate">{task.task_title}</span>
+
+                        {grouping !== 'priority' && (
+                          <span
+                            className={`px-2 py-0.5 text-xs font-medium rounded ${getPriorityBadgeClass(task.priority)}`}
+                          >
+                            {PRIORITY_LABELS[task.priority]}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
 
                   {isLaterGroup && laterExpanded && hasMoreTasks && (
                     <div className="h-11 px-3 flex items-center">
