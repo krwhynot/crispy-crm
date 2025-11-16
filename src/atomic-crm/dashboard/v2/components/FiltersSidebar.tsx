@@ -23,8 +23,7 @@ interface FiltersSidebarProps {
   onFiltersChange: (filters: FilterState) => void;
   onClearFilters: () => void;
   activeCount: number;
-  isOpen: boolean;        // NEW
-  onToggle: () => void;   // NEW
+  onToggle: () => void;
 }
 
 export function FiltersSidebar({
@@ -32,11 +31,10 @@ export function FiltersSidebar({
   onFiltersChange,
   onClearFilters,
   activeCount,
-  isOpen,
   onToggle,
 }: FiltersSidebarProps) {
   const { opportunityStages } = useConfigurationContext();
-  const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("pd.filtersOpen", true);
+  const [filtersOpen, setFiltersOpen] = usePrefs<boolean>("filtersOpen", true);
   const { data: salesReps } = useGetList('sales', {
     pagination: { page: 1, perPage: 100 },
     sort: { field: 'name', order: 'ASC' },
@@ -168,7 +166,8 @@ export function FiltersSidebar({
           </div>
         </div>
 
-        {/* Assignee - dropdown with dynamic sales reps */}
+        {/* ASSIGNEE FILTER - HIDDEN until sales_id is added to principal_opportunities view
+            TODO: Restore this block after the database exposes sales_id so filtering works
         <div className="space-y-2">
           <h3 className="text-foreground font-semibold text-xs">Assignee</h3>
           <Select
@@ -192,6 +191,7 @@ export function FiltersSidebar({
             </SelectContent>
           </Select>
         </div>
+        */}
 
         {/* Last Touch - compact */}
         <div className="space-y-2">
