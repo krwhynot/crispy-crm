@@ -38,7 +38,7 @@ export function PrincipalDashboardV2() {
   const [selectedOpportunityId, setSelectedOpportunityId] = useState<number | null>(null);
 
   // Filter state - persisted to localStorage
-  const [filterState, setFilterState] = usePrefs<FilterState>('pd.filters', {
+  const [filterState, setFilterState] = usePrefs<FilterState>('filters', {
     health: [],
     stages: [],
     assignee: null,
@@ -48,7 +48,7 @@ export function PrincipalDashboardV2() {
   });
 
   // Sidebar visibility - persisted to localStorage
-  const [sidebarOpen, setSidebarOpen] = usePrefs('pd.sidebarOpen', true);
+  const [sidebarOpen, setSidebarOpen] = usePrefs('sidebarOpen', true);
 
   // Sidebar ref for accessibility
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -176,7 +176,6 @@ export function PrincipalDashboardV2() {
                   onFiltersChange={setFilterState}
                   onClearFilters={handleClearFilters}
                   activeCount={activeFilterCount}
-                  isOpen={sidebarOpen}
                   onToggle={() => setSidebarOpen(false)}
                 />
               )}
@@ -236,7 +235,7 @@ export function PrincipalDashboardV2() {
             </div>
           </div>
 
-          {/* Collapsed Rail Toggle */}
+          {/* Collapsed Rail Toggle - WCAG 2.1 AA compliant (44px touch target) */}
           {!sidebarOpen && (
             <div className="fixed left-0 top-32 z-10">
               <button
@@ -247,14 +246,14 @@ export function PrincipalDashboardV2() {
                     sidebarRef.current?.querySelector('button, input')?.focus();
                   }, 250);
                 }}
-                className="relative w-2 h-24 bg-border hover:w-8 hover:bg-accent transition-all duration-200 rounded-r-md group focus-visible:ring-2 focus-visible:ring-primary focus-visible:w-8 flex items-center justify-center"
+                className="relative w-11 h-11 bg-border hover:bg-accent transition-colors duration-200 rounded-r-md focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center"
                 aria-label="Open filters sidebar"
               >
-                <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity" />
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
 
                 {/* Active filter badge */}
                 {activeFilterCount > 0 && (
-                  <div className="absolute -top-2 left-1 w-5 h-5 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">
+                  <div className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-semibold">
                     {activeFilterCount}
                   </div>
                 )}
