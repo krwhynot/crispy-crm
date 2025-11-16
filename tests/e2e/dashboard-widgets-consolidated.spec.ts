@@ -1,12 +1,15 @@
 import { test, expect } from './support/fixtures/authenticated';
-import { DashboardPage } from './support/poms/DashboardPage';
 import { consoleMonitor } from './support/utils/console-monitor';
 
 /**
  * Dashboard Widgets - Consolidated Test Suite
  *
- * Viewport-parameterized testing across Desktop, iPad Landscape, and iPad Portrait.
- * Tests widget rendering, interactions, and visual regression using POM pattern.
+ * Tests the OLD Dashboard (at /dashboard) with viewport-parameterized testing.
+ * Covers Desktop, iPad Landscape, and iPad Portrait viewports.
+ * Tests widget rendering, interactions, and visual regression.
+ *
+ * NOTE: Dashboard V2 (default at /) has different structure (Opportunities/Tasks/Logger).
+ * This suite tests the legacy widget-based dashboard for backwards compatibility.
  *
  * Replaces dashboard-widgets-comprehensive.spec.ts (duplicate).
  * Complements dashboard-widgets.spec.ts (detailed widget tests).
@@ -22,12 +25,15 @@ const viewports = [
 
 for (const viewport of viewports) {
   test.describe(`Dashboard Widgets - ${viewport.name} (${viewport.width}x${viewport.height})`, () => {
-    let dashboard: DashboardPage;
 
     test.beforeEach(async ({ authenticatedPage }) => {
       await authenticatedPage.setViewportSize({ width: viewport.width, height: viewport.height });
-      dashboard = new DashboardPage(authenticatedPage);
-      await dashboard.navigate();
+
+      // Navigate to OLD dashboard (widget-based)
+      await authenticatedPage.goto('/dashboard');
+
+      // Wait for dashboard heading
+      await expect(authenticatedPage.getByRole('heading', { name: /principal dashboard/i })).toBeVisible({ timeout: 10000 });
     });
 
     test.afterEach(async () => {
