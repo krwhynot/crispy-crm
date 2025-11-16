@@ -35,7 +35,7 @@
     "validate:pre-migration": "node ./scripts/validation/run-pre-validation.js",
     "validate:pre-migration:dry-run": "node ./scripts/validation/run-pre-validation.js --dry-run",
     "search:reindex:dry-run": "node ./scripts/search-reindex.js --dry-run",
-    "test:performance": "vitest run tests/performance/",
+    "test:performance": "echo 'Performance tests not yet implemented. See tests/e2e/organization-hierarchies-performance.spec.ts for E2E perf tests.'",
     "test:load": "node ./scripts/load-test.js",
     "test:ci": "vitest run --reporter=verbose",
     "test:e2e": "playwright test",
