@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useGetList, useUpdate, useNotify, useRefresh } from 'react-admin';
+import { useNavigate } from 'react-router-dom';
 import {
   Select,
   SelectContent,
@@ -37,6 +38,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
   const [laterPage, setLaterPage] = useState(1);
   const notify = useNotify();
   const refresh = useRefresh();
+  const navigate = useNavigate();
 
   // Assignee filtering - now enabled with sales_id in priority_tasks view
   const assigneeFilter = assignee === 'me' && currentUserId
@@ -84,7 +86,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
   };
 
   const handleCreateTask = () => {
-    console.log('TODO: Open create task modal');
+    navigate('/tasks/create');
   };
 
   const groupedTasks = useMemo<TaskGroup[]>(() => {
