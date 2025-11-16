@@ -177,10 +177,10 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
 
   return (
     <div className="bg-card border border-border rounded-lg shadow-sm flex flex-col h-full" aria-label="Tasks list">
-      <div className="h-11 px-3 border-b border-border flex items-center justify-between gap-3">
+      <div className="h-11 px-3 py-1 border-b border-border flex items-center justify-between gap-3">
         <span className="font-semibold text-sm">Tasks</span>
         <Select value={grouping} onValueChange={(value) => setGrouping(value as TaskGrouping)}>
-          <SelectTrigger className="h-9 w-[140px]">
+          <SelectTrigger className="h-11 w-[140px] border-border/50 font-normal">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
