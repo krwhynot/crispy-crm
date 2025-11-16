@@ -224,7 +224,7 @@ export function OpportunitiesHierarchy({
       <div
         id="opportunities-panel"
         className="bg-card border border-border rounded-lg shadow-sm p-3"
-        role="region"
+        role="tree"
         aria-label="Opportunities hierarchy"
       >
         <div className="text-center space-y-3">
