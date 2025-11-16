@@ -8,7 +8,8 @@ export default defineConfig({
     setupFiles: ["@testing-library/jest-dom", "./src/tests/setup.ts"],
     timeout: 10000,
     env: {
-      // Test environment variables
+      // Test environment variables (for unit tests only)
+      // Integration tests in tests/integration/ use .env.test instead
       VITE_SUPABASE_URL: "https://test.supabase.co",
       VITE_SUPABASE_ANON_KEY: "test-anon-key",
       OPPORTUNITY_DEFAULT_STAGE: "new_lead",
@@ -35,8 +36,14 @@ export default defineConfig({
         statements: 70,
       },
     },
-    include: ["src/**/*.test.{ts,tsx}", "tests/integration/**/*.test.{ts,tsx}"],
-    exclude: ["node_modules/", "dist/", ".docs/", "tests/**/*.spec.{ts,tsx}"],
+    include: ["src/**/*.test.{ts,tsx}"],
+    exclude: [
+      "node_modules/",
+      "dist/",
+      ".docs/",
+      "tests/**/*.spec.{ts,tsx}",
+      "tests/integration/**/*.test.{ts,tsx}", // Integration tests run separately
+    ],
   },
   resolve: {
     alias: {

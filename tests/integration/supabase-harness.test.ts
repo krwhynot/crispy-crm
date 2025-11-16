@@ -16,11 +16,10 @@ describe('Supabase Test Harness', () => {
     // Create test org
     const { data, error } = await harness.client
       .from('organizations')
-      .insert({ name: 'Test Org', org_type: 'customer' })
+      .insert({ name: 'Test Org', organization_type: 'customer' })
       .select()
       .single();
 
-    console.log('Insert result:', { data, error });
     expect(error).toBeNull();
     expect(data).toBeTruthy();
     expect(data?.id).toBeDefined();
