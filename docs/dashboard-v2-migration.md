@@ -90,16 +90,24 @@ Principal Dashboard V2 is a complete redesign of the CRM dashboard experience, o
 - No action required - users will see V2 automatically on next login
 
 **Keyboard Shortcuts (New!):**
-| Key | Action |
-|-----|--------|
-| `/` | Focus global search input |
-| `1` | Scroll to Opportunities column |
-| `2` | Scroll to Tasks column |
-| `3` | Scroll to Quick Logger column |
-| `H` | Open slide-over on History tab (when opportunity selected) |
-| `Esc` | Close slide-over |
 
-**Note:** Shortcuts don't fire when typing in input/textarea/select fields.
+Dashboard V2 includes power-user keyboard shortcuts for efficient navigation:
+
+| Key | Action | Description |
+|-----|--------|-------------|
+| `1` | Scroll to Opportunities | Smooth scroll to opportunities column |
+| `2` | Scroll to Tasks | Smooth scroll to tasks column |
+| `3` | Scroll to Quick Logger | Smooth scroll to logger column |
+| `H` | Open History Tab | Opens slide-over on History tab (when opportunity selected) |
+| `Esc` | Close Slide-Over | Closes the right slide-over panel |
+
+**Notes:**
+- Shortcuts are disabled when typing in input/textarea fields
+- Shortcuts work globally across the dashboard
+- `H` shortcut only works when an opportunity is selected
+
+**Removed in Latest Version:**
+- `/` (global search) - Search feature not yet implemented, shortcut removed to prevent confusion
 
 **User Preferences (Auto-Persisted):**
 - Column widths (drag separators to resize)
