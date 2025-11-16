@@ -129,7 +129,7 @@
                       - checkbox "Group opportunities by customer" [checked] [ref=e118] [cursor=pointer]
                       - generic [ref=e119] [cursor=pointer]: Group opportunities by customer
         - generic [ref=e120]:
-          - region "Opportunities hierarchy" [ref=e122]:
+          - tree "Opportunities hierarchy" [ref=e122]:
             - paragraph [ref=e124]: Select a principal to view opportunities
           - button "Resize opportunities column" [ref=e125] [cursor=pointer]
           - generic "Tasks list" [ref=e127]:
