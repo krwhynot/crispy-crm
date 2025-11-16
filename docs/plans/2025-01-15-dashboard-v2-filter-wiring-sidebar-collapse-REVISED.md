@@ -773,7 +773,7 @@ Find assignee section (around line 131-158). Replace with:
         <SelectItem value="me">Assigned to Me</SelectItem>
         {salesReps?.map(rep => (
           <SelectItem key={rep.id} value={rep.id.toString()}>
-            {rep.name}
+            {rep.first_name} {rep.last_name}
           </SelectItem>
         ))}
       </SelectContent>
