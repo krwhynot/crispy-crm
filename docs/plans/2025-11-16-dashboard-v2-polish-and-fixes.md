@@ -38,10 +38,14 @@ test.describe('Dashboard V2 - Tasks Panel', () => {
     // Navigate to dashboard v2
     await page.goto('/?layout=v2');
 
-    // Select a principal with tasks
+    // Select a principal with tasks (RJC exists in seed.sql)
     await page.click('[data-testid="principal-select-trigger"]');
-    await page.click('text="MFB Family Brands"');
-    await page.waitForTimeout(1000); // Wait for data load
+    await page.click('text="RJC"');
+
+    // Wait for opportunities tree to load (proper wait condition)
+    await page.waitForSelector('[role="tree"]:not(:has-text("Select a principal"))', {
+      timeout: 5000
+    });
   });
 
   test('should remove completed task from list immediately', async ({ page }) => {
@@ -60,6 +64,8 @@ test.describe('Dashboard V2 - Tasks Panel', () => {
   });
 });
 ```
+
+> **Determinism note:** this test relies on the seeded `RJC` principal (see `seed.sql`) and waits for the opportunities tree to render via `waitForSelector`. Do not swap in another org name or fall back to `waitForTimeout`—the selector-based wait keeps the test stable across environments.
 
 **Step 2: Run test to verify it fails**
 
@@ -333,18 +339,21 @@ Expected: PASS - Principal persisted and restored correctly
 ```typescript
 // tests/e2e/dashboard-v2.spec.ts (append)
 test('should persist selected principal across page refresh', async ({ page }) => {
-  // Select principal
+  // Select principal (Wicks exists in seed.sql as principal)
   await page.click('[data-testid="principal-select-trigger"]');
-  await page.click('text="MFB Family Brands"');
+  await page.click('text="Wicks"');
 
-  // Wait for data to load
-  await expect(page.locator('text="MFB Family Brands"')).toBeVisible();
+  // Wait for data to load with proper condition
+  await expect(page.locator('[data-testid="principal-select-trigger"]')).toContainText('Wicks');
+  await page.waitForSelector('[role="tree"]:not(:has-text("Select a principal"))', {
+    timeout: 5000
+  });
 
   // Reload page
   await page.reload();
 
   // Verify principal still selected
-  await expect(page.locator('[data-testid="principal-select-trigger"]')).toContainText('MFB Family Brands');
+  await expect(page.locator('[data-testid="principal-select-trigger"]')).toContainText('Wicks');
 
   // Verify data loaded for that principal
   await expect(page.locator('[role="tree"]')).not.toContainText('Select a principal');
@@ -623,9 +632,14 @@ test.describe('Dashboard V2 - Navigation', () => {
   });
 
   test('should navigate to activity create from New menu', async ({ page }) => {
-    // Select principal
+    // Select principal (Wicks exists in seed.sql)
     await page.click('[data-testid="principal-select-trigger"]');
-    await page.click('text="MFB Family Brands"');
+    await page.click('text="Wicks"');
+
+    // Wait for principal to load
+    await page.waitForSelector('[role="tree"]:not(:has-text("Select a principal"))', {
+      timeout: 5000
+    });
 
     // Open New menu
     await page.click('button:has-text("New")');
@@ -647,9 +661,14 @@ test.describe('Dashboard V2 - Navigation', () => {
   });
 
   test('should navigate to opportunity create from New menu', async ({ page }) => {
-    // Select principal
+    // Select principal (Wicks exists in seed.sql)
     await page.click('[data-testid="principal-select-trigger"]');
-    await page.click('text="MFB Family Brands"');
+    await page.click('text="Wicks"');
+
+    // Wait for principal to load
+    await page.waitForSelector('[role="tree"]:not(:has-text("Select a principal"))', {
+      timeout: 5000
+    });
 
     await page.click('button:has-text("New")');
     await page.click('text="Opportunity"');
@@ -1043,6 +1062,8 @@ const filters: FilterState = {
 };
 ```
 
+> **Tip:** run `rg groupByCustomer src/atomic-crm/dashboard/v2 -n` after these edits to catch any lingering mentions (tests, helpers, docs) so the type change doesn’t break compilation.
+
 **Step 9: Run tests to verify no type errors**
 
 Run: `npm test -- src/atomic-crm/dashboard/v2/`
@@ -1083,8 +1104,10 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 ```typescript
 // src/atomic-crm/dashboard/v2/components/__tests__/OpportunitiesHierarchy.test.tsx (append)
+
 describe('OpportunitiesHierarchy - Accessibility', () => {
   it('should have proper ARIA tree structure', async () => {
+    // Mock data with proper structure
     const mockOpportunities = [
       {
         opportunity_id: 1,
@@ -1098,37 +1121,59 @@ describe('OpportunitiesHierarchy - Accessibility', () => {
       },
     ];
 
-    render(
-      <AdminContext>
-        <PrincipalProvider>
-          <OpportunitiesHierarchy
-            filters={{ health: [], stages: [], assignee: null, lastTouch: 'any', showClosed: false }}
-            onOpportunityClick={vi.fn()}
-          />
-        </PrincipalProvider>
-      </AdminContext>
-    );
-
-    // Wait for data
-    await waitFor(() => {
-      expect(screen.getByRole('tree')).toBeInTheDocument();
+    // Setup mocks (reuse existing pattern from file)
+    mockUsePrincipalContext.mockReturnValue({ selectedPrincipalId: 1 });
+    mockUseGetList.mockReturnValue({
+      data: mockOpportunities,
+      isLoading: false,
+      error: null,
     });
 
-    // Check customer node ARIA
-    const customerNode = screen.getByRole('treeitem', { name: /Customer A/ });
+    // Render with proper infrastructure (QueryClientProvider)
+    const filters: FilterState = {
+      health: [],
+      stages: [],
+      assignee: null,
+      lastTouch: 'any',
+      showClosed: false,
+    };
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <OpportunitiesHierarchy
+          filters={filters}
+          onOpportunityClick={vi.fn()}
+        />
+      </QueryClientProvider>
+    );
+
+    // Wait for tree to render
+  await waitFor(() => {
+    expect(screen.getByRole('tree')).toBeInTheDocument();
+  });
+
+  // Check customer node ARIA attributes
+  const customerNode = screen.getByRole('treeitem', { name: /Customer A/ });
     expect(customerNode).toHaveAttribute('aria-expanded');
     expect(customerNode).toHaveAttribute('aria-level', '1');
     expect(customerNode).toHaveAttribute('aria-setsize');
     expect(customerNode).toHaveAttribute('aria-posinset');
 
-    // Check opportunity node ARIA
-    const oppNode = screen.getByRole('treeitem', { name: /Deal 1/ });
-    expect(oppNode).toHaveAttribute('aria-level', '2');
-    expect(oppNode).toHaveAttribute('aria-setsize');
-    expect(oppNode).toHaveAttribute('aria-posinset');
+    // Expand customer to show opportunity
+    await userEvent.click(customerNode);
+
+    // Check opportunity node ARIA attributes
+    await waitFor(() => {
+      const oppNode = screen.getByRole('treeitem', { name: /Deal 1/ });
+      expect(oppNode).toHaveAttribute('aria-level', '2');
+      expect(oppNode).toHaveAttribute('aria-setsize');
+      expect(oppNode).toHaveAttribute('aria-posinset');
+    });
   });
 });
 ```
+
+> **Setup reminder:** reuse the `vi.mock('react-admin')`, `mockUseGetList`, and `QueryClientProvider` helpers already defined in this test file so the ARIA assertions run against the same mock plumbing as the existing coverage.
 
 **Step 2: Run test to verify it fails**
 
@@ -1244,9 +1289,15 @@ test.describe('Dashboard V2 - Accessibility', () => {
     await page.waitForURL('/');
 
     await page.goto('/?layout=v2');
+
+    // Select principal (Wicks exists in seed.sql)
     await page.click('[data-testid="principal-select-trigger"]');
-    await page.click('text="MFB Family Brands"');
-    await page.waitForTimeout(1000);
+    await page.click('text="Wicks"');
+
+    // Wait for data to load with proper condition
+    await page.waitForSelector('[role="tree"]:not(:has-text("Select a principal"))', {
+      timeout: 5000
+    });
 
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
