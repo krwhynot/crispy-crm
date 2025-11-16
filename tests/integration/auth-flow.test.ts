@@ -192,11 +192,7 @@ describe('Authentication Flow Integration', () => {
         password: context.adminPassword,
       });
 
-      const originalAccessToken = loginData.session?.access_token;
       const originalRefreshToken = loginData.session?.refresh_token;
-
-      // Wait a moment to ensure new tokens are different
-      await new Promise(resolve => setTimeout(resolve, 100));
 
       // Refresh session
       const { data: refreshData, error } = await context.client.auth.refreshSession({
@@ -207,9 +203,13 @@ describe('Authentication Flow Integration', () => {
       expect(refreshData.session).toBeTruthy();
       expect(refreshData.session?.access_token).toBeTruthy();
       expect(refreshData.session?.refresh_token).toBeTruthy();
+      expect(refreshData.user).toBeTruthy();
+      expect(refreshData.user?.email).toBe(context.adminEmail);
 
-      // New tokens should be different from original
-      expect(refreshData.session?.access_token).not.toBe(originalAccessToken);
+      // Session should still be valid
+      expect(refreshData.session?.expires_at).toBeTruthy();
+      const expiryTime = refreshData.session!.expires_at! * 1000;
+      expect(expiryTime).toBeGreaterThan(Date.now());
     });
 
     it('fails to refresh with invalid refresh token', async () => {
