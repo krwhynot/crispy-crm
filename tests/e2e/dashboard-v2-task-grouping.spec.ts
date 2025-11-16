@@ -29,7 +29,9 @@ test.describe("Dashboard V2 - Task Grouping", () => {
   }) => {
     await test.step("Verify grouping dropdown is visible", async () => {
       // The Select component uses a button with role="combobox"
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      // Scope to Tasks panel to avoid selecting other comboboxes
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
 
       // Should be visible
       await expect(groupingSelect).toBeVisible();
@@ -39,7 +41,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     });
 
     await test.step("Verify dropdown can be opened", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await groupingSelect.click();
 
       // Verify options are visible
@@ -54,7 +57,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
 
   test("default grouping is 'Due Date'", async ({ authenticatedPage }) => {
     await test.step("Verify default grouping mode", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
 
       // Should default to "Due Date"
       await expect(groupingSelect).toContainText("Due Date");
@@ -65,7 +69,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     authenticatedPage,
   }) => {
     await test.step("Open grouping dropdown", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await groupingSelect.click();
     });
 
@@ -77,7 +82,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     });
 
     await test.step("Verify grouping changed to 'Priority'", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await expect(groupingSelect).toContainText("Priority");
     });
 
@@ -106,7 +112,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     authenticatedPage,
   }) => {
     await test.step("Open grouping dropdown", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await groupingSelect.click();
     });
 
@@ -118,7 +125,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     });
 
     await test.step("Verify grouping changed to 'Principal'", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await expect(groupingSelect).toContainText("Principal");
     });
 
@@ -145,7 +153,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     authenticatedPage,
   }) => {
     await test.step("Change grouping to 'Priority'", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await groupingSelect.click();
 
       const priorityOption = authenticatedPage.getByRole("option", {
@@ -164,12 +173,14 @@ test.describe("Dashboard V2 - Task Grouping", () => {
       await authenticatedPage.getByText("Tasks", { exact: true }).waitFor({ timeout: 5000 });
 
       // Verify grouping is still "Priority"
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await expect(groupingSelect).toContainText("Priority");
     });
 
     await test.step("Change back to 'Due Date' for cleanup", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await groupingSelect.click();
 
       const dueDateOption = authenticatedPage.getByRole("option", {
@@ -183,7 +194,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     authenticatedPage,
   }) => {
     await test.step("Ensure grouping is 'Due Date'", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       const currentText = await groupingSelect.textContent();
 
       if (!currentText?.includes("Due Date")) {
@@ -227,7 +239,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
     });
 
     await test.step("Ensure grouping is 'Due Date'", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       const currentText = await groupingSelect.textContent();
 
       if (!currentText?.includes("Due Date")) {
@@ -288,36 +301,46 @@ test.describe("Dashboard V2 - Task Grouping", () => {
   test("keyboard navigation works for grouping dropdown", async ({
     authenticatedPage,
   }) => {
-    await test.step("Focus grouping dropdown with Tab", async () => {
-      // Tab until we reach the grouping dropdown
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+    await test.step("Focus grouping dropdown with keyboard", async () => {
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
+
+      // Focus the select with keyboard
       await groupingSelect.focus();
 
       // Verify it's focused
       await expect(groupingSelect).toBeFocused();
     });
 
-    await test.step("Open dropdown with Enter key", async () => {
-      await authenticatedPage.keyboard.press("Enter");
+    await test.step("Open dropdown with Space key", async () => {
+      // Radix UI Select opens with Space key
+      await authenticatedPage.keyboard.press("Space");
 
       // Verify options are visible
       await expect(authenticatedPage.getByRole("option", { name: "Due Date" })).toBeVisible();
     });
 
-    await test.step("Navigate options with Arrow keys", async () => {
-      // Press ArrowDown to move to next option
+    await test.step("Select option with keyboard", async () => {
+      // ArrowDown moves focus to next option
       await authenticatedPage.keyboard.press("ArrowDown");
 
-      // Press Enter to select
+      // Wait for focus to move
+      await authenticatedPage.waitForTimeout(100);
+
+      // Enter selects the focused option
       await authenticatedPage.keyboard.press("Enter");
 
-      // Should have selected the second option (Priority)
-      const groupingSelect = authenticatedPage.getByRole("combobox");
-      await expect(groupingSelect).toContainText("Priority");
+      // Verify grouping changed to "Priority"
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
+
+      // Wait for select to update
+      await expect(groupingSelect).toContainText("Priority", { timeout: 3000 });
     });
 
     await test.step("Reset to Due Date", async () => {
-      const groupingSelect = authenticatedPage.getByRole("combobox");
+      const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
       await groupingSelect.click();
       await authenticatedPage.getByRole("option", { name: "Due Date" }).click();
     });
@@ -337,7 +360,8 @@ test.describe("Dashboard V2 - Task Grouping", () => {
         const groupingModes = ["Due Date", "Priority", "Principal"];
 
         for (const mode of groupingModes) {
-          const groupingSelect = authenticatedPage.getByRole("combobox");
+          const tasksPanel = authenticatedPage.getByLabel("Tasks list");
+      const groupingSelect = tasksPanel.getByRole("combobox");
           await groupingSelect.click();
           await authenticatedPage.getByRole("option", { name: mode }).click();
 
