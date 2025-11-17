@@ -63,7 +63,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
 
   const [update] = useUpdate();
 
-  const handleComplete = async (taskId: number) => {
+  const handleComplete = async (taskId: number, task: PriorityTask) => {
     try {
       await update('tasks', {
         id: taskId,
@@ -71,7 +71,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
           completed: true,
           completed_at: new Date().toISOString(),
         },
-        previousData: {},
+        previousData: task,
       });
       notify('Task marked as complete', { type: 'success' });
 
@@ -267,7 +267,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
                           <input
                             type="checkbox"
                             checked={false}
-                            onChange={() => handleComplete(task.task_id)}
+                            onChange={() => handleComplete(task.task_id, task)}
                             aria-label={`Mark "${task.task_title}" as complete`}
                             className="h-5 w-5 rounded border-input accent-primary cursor-pointer"
                           />
