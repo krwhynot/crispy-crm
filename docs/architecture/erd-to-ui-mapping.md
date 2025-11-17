@@ -2,9 +2,10 @@
 
 **Atomic CRM - Database to Interface Reference**
 
-**Version:** 1.0
-**Date:** 2025-11-16
+**Version:** 1.1
+**Date:** 2025-01-16
 **Status:** Living Document
+**Last Schema Sync:** 2025-01-16 (Cloud Database: aaqnanddcqvfiwhshndl)
 
 ---
 
