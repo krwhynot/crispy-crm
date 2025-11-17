@@ -24,9 +24,15 @@ export const Avatar = (props: {
         ? "w-[25px] h-[25px]"
         : "w-10 h-10";
 
+  const fullName = [record.first_name, record.last_name].filter(Boolean).join(' ');
+  const altText = fullName ? `${fullName} avatar` : 'Contact avatar';
+
   return (
     <ShadcnAvatar className={sizeClass} title={props.title}>
-      <AvatarImage src={record.avatar?.src ?? undefined} />
+      <AvatarImage
+        src={record.avatar?.src ?? undefined}
+        alt={altText}
+      />
       <AvatarFallback className={size && size < 40 ? "text-[10px]" : "text-sm"}>
         {record.first_name?.charAt(0).toUpperCase()}
         {record.last_name?.charAt(0).toUpperCase()}
