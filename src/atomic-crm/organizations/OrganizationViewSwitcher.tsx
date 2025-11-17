@@ -23,7 +23,7 @@ export const OrganizationViewSwitcher = ({ view, onViewChange }: OrganizationVie
             <ToggleGroupItem
               value="grid"
               aria-label="Grid view"
-              className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+            className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
             >
               <LayoutGrid className="h-4 w-4" />
             </ToggleGroupItem>
@@ -37,7 +37,7 @@ export const OrganizationViewSwitcher = ({ view, onViewChange }: OrganizationVie
             <ToggleGroupItem
               value="table"
               aria-label="Table view"
-              className="h-9 w-9 sm:h-10 sm:w-10 touch-manipulation"
+            className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
             >
               <List className="h-4 w-4" />
             </ToggleGroupItem>

@@ -128,17 +128,22 @@ React Admin → Datagrid → Render rows
 
 **Component:** `src/atomic-crm/contacts/ContactShow.tsx`
 
-**Primary Table:** `contacts` (base table)
+**Primary View (Read):** `contacts_summary` - Provides denormalized organization name
+**Write Target:** `contacts` (base table)
 
 **Database Entities Used:**
 
-| Entity | Purpose | Join Type | Fields Used |
-|--------|---------|-----------|-------------|
-| `contacts` | Contact record | Primary | All fields |
+| Entity | Purpose | Source Type | Fields Used |
+|--------|---------|-------------|-------------|
+| `contacts_summary` | Contact record with org name | View (getOne) | All `contacts` fields + **`company_name`** (view-only) |
+| `contacts` | Base contact data | Table (updates) | All fields |
 | `organizations` | Associated orgs | Reference | `id`, `name`, `organization_type` |
 | `contactNotes` | Notes history | 1:N relationship | `id`, `text`, `created_at`, `created_by` |
 | `activities` | Activity timeline | 1:N relationship | `id`, `type`, `subject`, `description`, `activity_date` |
 | `sales` | Created by / assigned to | Reference | `id`, `name` |
+
+**View-Only Fields** (available in UI but not in base `contacts` table):
+- `company_name` - Denormalized organization name from LEFT JOIN
 
 **Tab 1: Details**
 
@@ -176,12 +181,12 @@ React Admin → Datagrid → Render rows
 
 **CRUD Operations:**
 
-| Operation | Method | Table | Notes |
-|-----------|--------|-------|-------|
-| **Read** | `getOne` | `contacts` | Fetches single record |
+| Operation | Method | Source | Notes |
+|-----------|--------|--------|-------|
+| **Read** | `getOne` | `contacts_summary` (view) | Automatically substituted by data provider |
 | **Update** | Navigate | `/contacts/:id/edit` | Opens edit form |
-| **Delete** | `delete` | `contacts` | Soft delete |
-| **Create Note** | `create` | `contactNotes` | Inline creation |
+| **Delete** | `delete` | `contacts` (table) | Soft delete |
+| **Create Note** | `create` | `contactNotes` (table) | Inline creation |
 
 ---
 
@@ -328,18 +333,25 @@ const emailAndTypeSchema = z.object({
 
 **Component:** `src/atomic-crm/organizations/OrganizationShow.tsx`
 
-**Primary Table:** `organizations`
+**Primary View (Read):** `organizations_summary` - Provides contact/opportunity counts
+**Write Target:** `organizations` (base table)
 
 **Database Entities Used:**
 
-| Entity | Purpose | Relationship | Query Pattern |
-|--------|---------|--------------|---------------|
-| `organizations` | Org record | Primary | `getOne` |
+| Entity | Purpose | Source Type | Query Pattern |
+|--------|---------|-------------|---------------|
+| `organizations_summary` | Org record with counts | View (getOne) | `getOne` - includes **`nb_contacts`**, **`nb_opportunities`**, **`last_opportunity_activity`** (view-only fields) |
+| `organizations` | Base org data | Table (updates) | All fields |
 | `organizations` (parent) | Parent org | Reference | `parent_organization_id` |
 | `organizations` (children) | Branch locations | Self-reference | `WHERE parent_organization_id = :id` |
 | `contacts_summary` | Associated contacts | 1:N | `WHERE organization_id = :id` |
 | `opportunities` | Related opportunities | 1:N | `WHERE customer_organization_id = :id OR principal_organization_id = :id` |
 | `activities` | Activity history | 1:N | `WHERE organization_id = :id` |
+
+**View-Only Fields** (available in UI but not in base `organizations` table):
+- `nb_contacts` - COUNT of contacts associated with this organization
+- `nb_opportunities` - COUNT of opportunities (as customer, principal, or distributor)
+- `last_opportunity_activity` - MAX(updated_at) from opportunities
 
 **Header Section:**
 
@@ -385,11 +397,11 @@ const emailAndTypeSchema = z.object({
 
 **CRUD Operations:**
 
-| Operation | Method | Table | Notes |
-|-----------|--------|-------|-------|
-| **Read** | `getOne` | `organizations` | Main record |
-| **Read Children** | `getList` | `organizations` | `filter: { parent_organization_id: id }` |
-| **Create Branch** | `create` | `organizations` | `data: { parent_organization_id: :id }` |
+| Operation | Method | Source | Notes |
+|-----------|--------|--------|-------|
+| **Read** | `getOne` | `organizations_summary` (view) | Automatically substituted - includes count fields |
+| **Read Children** | `getList` | `organizations` (table) | `filter: { parent_organization_id: id }` |
+| **Create Branch** | `create` | `organizations` (table) | `data: { parent_organization_id: :id }` |
 
 ---
 
@@ -556,21 +568,28 @@ Optimistic UI update + refetch
 
 **Component:** `src/atomic-crm/opportunities/OpportunityShow.tsx`
 
-**Primary Table:** `opportunities`
+**Primary View (Read):** `opportunities_summary` - Provides denormalized org names + products JSONB
+**Write Target:** `opportunities` (base table)
 
 **Database Entities Used:**
 
-| Entity | Purpose | Relationship | Query |
-|--------|---------|--------------|-------|
-| `opportunities` | Opp record | Primary | `getOne` |
-| `opportunities_summary` | Products aggregation | View (optional) | `meta: { select: 'products' }` |
+| Entity | Purpose | Source Type | Fields/Query |
+|--------|---------|-------------|--------------|
+| `opportunities_summary` | Opp record with enriched data | View (getOne) | All `opportunities` fields + **view-only**: `customer_organization_name`, `principal_organization_name`, `distributor_organization_name`, `products` (JSONB array) |
+| `opportunities` | Base opportunity data | Table (updates) | All fields |
 | `organizations` (customer) | Customer info | Reference | `customer_organization_id` |
 | `organizations` (principal) | Principal info | Reference | `principal_organization_id` |
 | `organizations` (distributor) | Distributor info | Reference | `distributor_organization_id` |
 | `contacts` | Associated contacts | Array reference | `contact_ids[]` |
-| `opportunity_products` | Products discussed | 1:N | Via `opportunities_summary.products` JSONB |
+| `opportunity_products` | Products discussed (base table) | 1:N | Aggregated into `opportunities_summary.products` JSONB |
 | `opportunityNotes` | Notes history | 1:N | `WHERE opportunity_id = :id` |
 | `activities` | Activity timeline | 1:N | `WHERE opportunity_id = :id` |
+
+**View-Only Fields** (available in UI but not in base `opportunities` table):
+- `customer_organization_name` - Denormalized customer org name from JOIN
+- `principal_organization_name` - Denormalized principal org name from JOIN
+- `distributor_organization_name` - Denormalized distributor org name from JOIN
+- `products` - JSONB array aggregated from `opportunity_products` table (see structure below)
 
 **Tab 1: Details**
 
@@ -621,14 +640,13 @@ Optimistic UI update + refetch
 
 **CRUD Operations:**
 
-| Operation | Method | Table | Notes |
-|-----------|--------|-------|-------|
-| **Read** | `getOne` | `opportunities` | Main record |
-| **Read Products** | View query | `opportunities_summary` | `meta: { select: 'products' }` |
-| **Update** | Navigate | `/opportunities/:id/edit` | - |
-| **Delete** | `delete` | `opportunities` | Soft delete |
-| **Create Activity** | `create` | `activities` | Inline creation |
-| **Create Note** | `create` | `opportunityNotes` | Inline creation |
+| Operation | Method | Source | Notes |
+|-----------|--------|--------|-------|
+| **Read** | `getOne` | `opportunities_summary` (view) | Automatically substituted - includes org names + products JSONB |
+| **Update** | Navigate | `/opportunities/:id/edit` | Opens edit form |
+| **Delete** | `delete` | `opportunities` (table) | Soft delete |
+| **Create Activity** | `create` | `activities` (table) | Inline creation |
+| **Create Note** | `create` | `opportunityNotes` (table) | Inline creation |
 
 ---
 

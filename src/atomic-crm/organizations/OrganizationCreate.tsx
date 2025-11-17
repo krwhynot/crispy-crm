@@ -1,13 +1,36 @@
-import { CreateBase, Form, useGetIdentity } from "ra-core";
+import { CreateBase, Form, useGetIdentity, useGetList } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "@/components/admin/simple-form";
 
 import { OrganizationInputs } from "./OrganizationInputs";
+import type { Database } from "@/types/database.generated";
+
+type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
 const OrganizationCreate = () => {
   const { identity } = useGetIdentity();
+
+  const { data: segments = [] } = useGetList<Segment>(
+    "segments",
+    {
+      filter: { name: "Unknown" },
+      pagination: { page: 1, perPage: 1 },
+      sort: { field: "name", order: "ASC" },
+    },
+    {
+      enabled: true,
+    }
+  );
+
+  const unknownSegmentId = segments?.[0]?.id;
+  const defaultValues = {
+    sales_id: identity?.id,
+    segment_id: unknownSegmentId ?? undefined,
+  };
+  const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
+
   return (
     <CreateBase
       redirect="show"
@@ -21,12 +44,7 @@ const OrganizationCreate = () => {
     >
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">
-          <Form
-            defaultValues={{
-              sales_id: identity?.id,
-              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52", // Default to "Unknown" segment
-            }}
-          >
+          <Form key={formKey} defaultValues={defaultValues}>
             <Card>
               <CardContent>
                 <OrganizationInputs />
