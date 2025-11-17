@@ -43,6 +43,20 @@ export function useSlideOverState(): UseSlideOverStateReturn {
     }
   }, []); // Run once on mount
 
+  // Define closeSlideOver early so it can be used in effects
+  const closeSlideOver = useCallback(() => {
+    setIsOpen(false);
+    setSlideOverId(null);
+    // Remove slide-over params from URL
+    const params = new URLSearchParams(window.location.search);
+    params.delete('view');
+    params.delete('edit');
+    const newUrl = params.toString()
+      ? `${window.location.pathname}?${params}`
+      : window.location.pathname;
+    window.history.pushState(null, '', newUrl);
+  }, []);
+
   // Listen to browser back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
@@ -79,7 +93,7 @@ export function useSlideOverState(): UseSlideOverStateReturn {
 
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [isOpen]);
+  }, [isOpen, closeSlideOver]);
 
   const openSlideOver = (id: number, initialMode: 'view' | 'edit' = 'view') => {
     setSlideOverId(id);
@@ -93,19 +107,6 @@ export function useSlideOverState(): UseSlideOverStateReturn {
     // Set the new param
     params.set(initialMode, String(id));
     window.history.pushState(null, '', `${window.location.pathname}?${params}`);
-  };
-
-  const closeSlideOver = () => {
-    setIsOpen(false);
-    setSlideOverId(null);
-    // Remove slide-over params from URL
-    const params = new URLSearchParams(window.location.search);
-    params.delete('view');
-    params.delete('edit');
-    const newUrl = params.toString()
-      ? `${window.location.pathname}?${params}`
-      : window.location.pathname;
-    window.history.pushState(null, '', newUrl);
   };
 
   const toggleMode = () => {
