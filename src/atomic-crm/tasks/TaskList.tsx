@@ -1,13 +1,13 @@
 import { useUpdate, useNotify, downloadCSV, type Exporter } from 'ra-core';
 import jsonExport from 'jsonexport/dist';
 
+import { FunctionField } from 'react-admin';
 import { List } from '@/components/admin/list';
 import { StandardListLayout } from '@/components/layouts/StandardListLayout';
 import { PremiumDatagrid } from '@/components/admin/PremiumDatagrid';
 import { TextField } from '@/components/admin/text-field';
 import { DateField } from '@/components/admin/date-field';
 import { ReferenceField } from '@/components/admin/reference-field';
-import { FunctionField } from '@/components/admin/function-field';
 import { Badge } from '@/components/ui/badge';
 import { useSlideOverState } from '@/hooks/useSlideOverState';
 import { TaskListFilter } from './TaskListFilter';
@@ -117,15 +117,16 @@ function CompletionCheckbox({ task }: { task: Task }) {
   };
 
   return (
-    <div onClick={(e) => e.stopPropagation()}>
+    <label className="flex items-center justify-center cursor-pointer">
       <input
         type="checkbox"
         checked={task.completed || false}
         onChange={handleToggle}
-        className="h-4 w-4 rounded border-input cursor-pointer"
+        onClick={(e) => e.stopPropagation()}
+        className="h-4 w-4 rounded border-input"
         aria-label={task.completed ? `Mark "${task.title}" as incomplete` : `Mark "${task.title}" as complete`}
       />
-    </div>
+    </label>
   );
 }
 
