@@ -65,7 +65,7 @@ export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps)
   if (isPending) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-[color:var(--text-subtle)]">Loading campaigns...</div>
+        <div className="text-muted-foreground">Loading campaigns...</div>
       </div>
     );
   }
