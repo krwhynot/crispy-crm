@@ -33,8 +33,8 @@ export const SidebarActiveFilters = () => {
             key={`${chip.key}-${chip.value}-${index}`}
             className={cn(
               "flex items-center justify-between gap-2 px-2 py-1.5 rounded-md",
-              "bg-[color:var(--background-subtle)] border border-[color:var(--border)]",
-              "group hover:border-[color:var(--border-hover)] transition-colors"
+              "bg-muted border border-border",
+              "group hover:border-border-hover transition-colors"
             )}
             title={`${chip.category}: ${chip.label}`} // Tooltip for truncated text
           >
