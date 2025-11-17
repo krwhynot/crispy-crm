@@ -7,19 +7,30 @@ import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { SortButton } from "@/components/admin/sort-button";
-import { Card } from "@/components/ui/card";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { TextField } from "@/components/admin/text-field";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { DateField } from "@/components/admin/date-field";
+import { EditButton } from "@/components/admin/edit-button";
+import { FunctionField } from "react-admin";
+import { useSlideOverState } from "@/hooks/useSlideOverState";
 import type { Organization, Contact, Sale, Tag } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactImportButton as _ContactImportButton } from "./ContactImportButton";
 import { ContactExportTemplateButton as _ContactExportTemplateButton } from "./ContactExportTemplateButton";
-import { ContactListContent } from "./ContactListContent";
 import { ContactListFilter } from "./ContactListFilter";
+import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
+import { Avatar } from "./Avatar";
+import { TagsList } from "./TagsList";
+import { Status } from "../misc/Status";
 
 export const ContactList = () => {
   const { identity } = useGetIdentity();
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
 
   // Clean up stale cached filters from localStorage
   // Generic hook validates all filters against filterRegistry.ts
@@ -28,20 +39,29 @@ export const ContactList = () => {
   if (!identity) return null;
 
   return (
-    <List
-      title={false}
-      actions={<ContactListActions />}
-      perPage={25}
-      sort={{ field: "last_seen", order: "DESC" }}
-      exporter={exporter}
-    >
-      <ContactListLayout />
-      <FloatingCreateButton />
-    </List>
+    <>
+      <List
+        title={false}
+        actions={<ContactListActions />}
+        perPage={25}
+        sort={{ field: "last_seen", order: "DESC" }}
+        exporter={exporter}
+      >
+        <ContactListLayout openSlideOver={openSlideOver} />
+        <FloatingCreateButton />
+      </List>
+      <ContactSlideOver
+        recordId={slideOverId}
+        isOpen={isOpen}
+        mode={mode}
+        onClose={closeSlideOver}
+        onModeToggle={toggleMode}
+      />
+    </>
   );
 };
 
-const ContactListLayout = () => {
+const ContactListLayout = ({ openSlideOver }: { openSlideOver: (id: number, mode: 'view' | 'edit') => void }) => {
   const { data, isPending, filterValues } = useListContext();
   const { identity } = useGetIdentity();
 
@@ -52,17 +72,82 @@ const ContactListLayout = () => {
   if (!data?.length && !hasFilters) return <ContactEmpty />;
 
   return (
-    <div className="flex flex-row gap-6">
-      <aside aria-label="Filter contacts">
-        <ContactListFilter />
-      </aside>
-      <main role="main" aria-label="Contacts list" className="flex-1 flex flex-col gap-4">
-        <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
-          <ContactListContent />
-        </Card>
-      </main>
+    <>
+      <StandardListLayout
+        resource="contacts"
+        filterComponent={<ContactListFilter />}
+      >
+        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), 'view')}>
+          {/* Avatar Column - Non-sortable */}
+          <FunctionField
+            label=""
+            sortable={false}
+            render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
+          />
+
+          {/* Name Column - Sortable */}
+          <FunctionField
+            label="Name"
+            sortBy="first_name"
+            render={(record: Contact) => {
+              const firstName = record.first_name?.trim();
+              const lastName = record.last_name?.trim();
+              if (!firstName && !lastName) return "--";
+              if (!firstName) return lastName;
+              if (!lastName) return firstName;
+              return `${firstName} ${lastName}`;
+            }}
+          />
+
+          {/* Title Column - Sortable */}
+          <TextField source="title" label="Title" sortable />
+
+          {/* Department Column - Sortable */}
+          <TextField source="department" label="Department" sortable />
+
+          {/* Organization Column - Sortable */}
+          <ReferenceField
+            source="organization_id"
+            reference="organizations"
+            label="Organization"
+            link={false}
+            sortable
+          >
+            <TextField source="name" />
+          </ReferenceField>
+
+          {/* Tags Column - Non-sortable */}
+          <FunctionField
+            label="Tags"
+            sortable={false}
+            render={() => <TagsList />}
+          />
+
+          {/* Last Activity Column - Sortable */}
+          <DateField
+            source="last_seen"
+            label="Last Activity"
+            sortable
+            showTime={false}
+          />
+
+          {/* Status Column - Non-sortable */}
+          <FunctionField
+            label="Status"
+            sortable={false}
+            render={(record: Contact) => <Status status={record.status} />}
+          />
+
+          {/* Actions Column - Non-sortable */}
+          <FunctionField
+            label="Actions"
+            sortable={false}
+            render={() => <EditButton />}
+          />
+        </PremiumDatagrid>
+      </StandardListLayout>
       <BulkActionsToolbar />
-    </div>
+    </>
   );
 };
 
