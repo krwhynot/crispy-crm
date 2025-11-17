@@ -167,15 +167,16 @@ On the presentation side, the Show page surfaces parent links, branch counts, an
    - **Transform Service:**
      - Verify `TransformService.ts` correctly passes `parent_organization_id` without mapping (field names should match)
 
-2. **RLS Policy Decision** ⚠️ **REQUIRED BEFORE PROCEEDING**
+2. **RLS Policy Decision** ✅ **DECISION MADE: OPTION A**
    - **Current state:** Only admins can update organizations (including parent_organization_id)
-   - **Decision needed:** Should non-admin users be able to set parent relationships?
-   - **Options:**
-     - **A. Keep admin-only** (safest, recommended for P0)
-     - **B. Allow all authenticated users** (update RLS policy to permit parent_organization_id updates)
-     - **C. Create separate policy** (granular control, more complex)
-   - **Action:** Document decision in this plan before implementing
-   - **Default for P0:** Option A (admin-only) - no RLS changes required
+   - **Decision:** **Keep admin-only** (no RLS policy changes required)
+   - **Rationale:**
+     - Consistent with existing security model (orgs/contacts/opps are admin-only UPDATE)
+     - Hierarchy changes are structural (affect roll-ups, reports, navigation)
+     - Reduces risk during initial rollout (cycle protection trigger has limited blast radius)
+     - Sales reps focus on contacts/opportunities, not org structure
+   - **Future consideration:** P1 can revisit if users report friction (add granular policy without code changes)
+   - **Implementation impact:** No migration needed for RLS - existing policies are correct
 
 3. **Add cycle protection**
    - Create migration: `npx supabase migration new add_organization_cycle_protection`

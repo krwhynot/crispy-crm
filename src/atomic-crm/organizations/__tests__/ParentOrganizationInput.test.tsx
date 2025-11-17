@@ -151,7 +151,7 @@ describe("ParentOrganizationInput", () => {
 
     await waitFor(() => {
       const input = screen.getByRole("combobox");
-      expect(input).toHaveAttribute("name", "parent_id");
+      expect(input).toHaveAttribute("name", "parent_organization_id");
     });
   });
 
