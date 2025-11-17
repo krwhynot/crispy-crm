@@ -4,7 +4,7 @@ import { SetPasswordPage } from "@/components/supabase/set-password-page";
 import type { AuthProvider, DataProvider } from "ra-core";
 import { CustomRoutes, localStorageStore, Resource } from "ra-core";
 import React, { useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Navigate, Route, useParams } from "react-router-dom";
 import organizations from "../organizations";
 import contacts from "../contacts";
 import { CompactGridDashboard } from "../dashboard/CompactGridDashboard";
@@ -39,6 +39,12 @@ import { StartPage } from "@/atomic-crm/login/StartPage.tsx";
 
 // Lazy load ReportsPage
 const ReportsPage = React.lazy(() => import("../reports/ReportsPage"));
+
+// Redirect component for legacy /contacts/:id/show URLs
+const ContactShowRedirect = () => {
+  const { id } = useParams();
+  return <Navigate to={`/contacts?view=${id}`} replace />;
+};
 
 export interface CRMProps extends Partial<ConfigurationContextValue> {
   dataProvider?: DataProvider;
@@ -146,6 +152,7 @@ export const CRM = ({
           <Route path="/dashboard" element={<PrincipalDashboard />} />
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
         </CustomRoutes>
         <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />
