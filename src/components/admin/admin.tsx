@@ -6,12 +6,16 @@ import {
   type CoreAdminProps,
   localStorageStore,
 } from "ra-core";
+import { ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material/styles";
 import { i18nProvider as defaultI18nProvider } from "@/lib/i18nProvider";
 import { Layout } from "@/components/admin/layout";
 import { LoginPage } from "@/components/admin/login-page";
 import { Ready } from "@/components/admin/ready";
 import { ThemeProvider } from "@/components/admin/theme-provider";
 import { AuthCallback } from "@/components/admin/authentication";
+
+// Create default MUI theme for React Admin components that use useMediaQuery
+const defaultMuiTheme = createTheme();
 
 const defaultStore = localStorageStore();
 
