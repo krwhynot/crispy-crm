@@ -71,7 +71,7 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
   };
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative" ref={menuRef} data-action-button>
       <button
         type="button"
         aria-label="Actions menu"

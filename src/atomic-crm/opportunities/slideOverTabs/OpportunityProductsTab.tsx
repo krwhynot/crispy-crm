@@ -1,0 +1,191 @@
+import { useState } from 'react';
+import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from 'react-admin';
+import { Link } from 'react-router-dom';
+import { AutocompleteArrayInput } from '@/components/admin/autocomplete-array-input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Package } from 'lucide-react';
+
+interface OpportunityProductsTabProps {
+  record: any;
+  mode: 'view' | 'edit';
+  onModeToggle?: () => void;
+}
+
+export function OpportunityProductsTab({
+  record,
+  mode,
+  onModeToggle,
+}: OpportunityProductsTabProps) {
+  const [update] = useUpdate();
+  const notify = useNotify();
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Fetch junction table data for view mode
+  const { data: junctionRecords, isLoading } = useGetList(
+    'opportunity_products',
+    {
+      filter: { opportunity_id: record.id },
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: 'created_at', order: 'DESC' },
+    },
+    { enabled: mode === 'view' }
+  );
+
+  // Fetch product details for view mode
+  const productIds = junctionRecords?.map((jr: any) => jr.product_id_reference) || [];
+  const { data: products } = useGetList(
+    'products',
+    {
+      filter: { id: productIds },
+      pagination: { page: 1, perPage: 100 },
+    },
+    { enabled: mode === 'view' && productIds.length > 0 }
+  );
+
+  const handleSave = async (data: any) => {
+    setIsSaving(true);
+    try {
+      // Convert product_ids array to products_to_sync format
+      const productsToSync = (data.product_ids || []).map((productId: any) => ({
+        product_id_reference: productId,
+        notes: null,
+      }));
+
+      await update(
+        'opportunities',
+        {
+          id: record.id,
+          data: { products_to_sync: productsToSync },
+          previousData: record,
+        },
+        {
+          onSuccess: () => {
+            notify('Products updated successfully', { type: 'success' });
+            if (onModeToggle) {
+              onModeToggle();
+            }
+          },
+          onError: (error: any) => {
+            notify(error?.message || 'Failed to update products', { type: 'error' });
+          },
+        }
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    if (onModeToggle) {
+      onModeToggle();
+    }
+  };
+
+  if (mode === 'edit') {
+    // Get current product IDs from junction table
+    const currentProductIds = productIds;
+
+    return (
+      <Form
+        defaultValues={{ product_ids: currentProductIds }}
+        onSubmit={handleSave}
+        className="space-y-4"
+      >
+        <ReferenceArrayInput source="product_ids" reference="products">
+          <AutocompleteArrayInput
+            label="Products"
+            optionText="name"
+            filterToQuery={(searchText: string) => ({ q: searchText })}
+            helperText="Search and select products for this opportunity"
+          />
+        </ReferenceArrayInput>
+
+        <div className="flex gap-2 pt-4">
+          <Button type="submit" disabled={isSaving} className="flex-1">
+            {isSaving ? 'Saving...' : 'Save Changes'}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCancel}
+            disabled={isSaving}
+          >
+            Cancel
+          </Button>
+        </div>
+      </Form>
+    );
+  }
+
+  // View mode
+  if (isLoading) {
+    return (
+      <div className="space-y-3">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-16 bg-muted animate-pulse rounded-lg" />
+        ))}
+      </div>
+    );
+  }
+
+  if (!junctionRecords || junctionRecords.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <Package className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+        <p className="text-muted-foreground">No products associated with this opportunity</p>
+      </div>
+    );
+  }
+
+  // Create a map of junction data by product_id
+  const junctionMap = new Map(
+    junctionRecords.map((jr: any) => [jr.product_id_reference, jr])
+  );
+
+  return (
+    <div className="space-y-3">
+      {products?.map((product: any) => {
+        const junctionData = junctionMap.get(product.id);
+
+        return (
+          <div
+            key={product.id}
+            className="border border-border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+          >
+            <div className="flex items-start gap-3">
+              {/* Icon */}
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Package className="w-5 h-5 text-primary" />
+              </div>
+
+              {/* Product info */}
+              <div className="flex-1 min-w-0">
+                <Link
+                  to={`/products?view=${product.id}`}
+                  className="text-base font-medium hover:underline block"
+                >
+                  {product.name}
+                </Link>
+
+                {product.category && (
+                  <div className="mt-2">
+                    <Badge variant="outline" className="text-xs">
+                      {product.category}
+                    </Badge>
+                  </div>
+                )}
+
+                {junctionData?.notes && (
+                  <p className="text-sm text-muted-foreground mt-2 italic">
+                    {junctionData.notes}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

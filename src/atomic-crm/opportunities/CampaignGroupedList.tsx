@@ -26,7 +26,11 @@ import type { Opportunity } from "../types";
  *   "The French Laundry" (1) →
  *     - Cheese Curd opportunity [Kaufholds badge]
  */
-export const CampaignGroupedList = () => {
+interface CampaignGroupedListProps {
+  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+}
+
+export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps) => {
   const { data: opportunities, isPending } = useListContext<Opportunity>();
 
   // Group opportunities by campaign, then by customer organization
@@ -141,15 +145,17 @@ export const CampaignGroupedList = () => {
                             {customerOpportunities.map((opp) => (
                               <div
                                 key={opp.id}
-                                className="flex items-center gap-3 p-2 rounded-md hover:bg-[color:var(--muted)]/50 transition-colors"
+                                className="flex items-center gap-3 p-2 rounded-md hover:bg-[color:var(--muted)]/50 transition-colors cursor-pointer"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  openSlideOver(opp.id as number, 'view');
+                                }}
                               >
-                                <Link
-                                  to={`/opportunities/${opp.id}/show`}
-                                  className="flex-1 text-sm text-[color:var(--primary)] hover:underline flex items-center gap-2"
-                                >
+                                <div className="flex-1 text-sm text-[color:var(--primary)] hover:underline flex items-center gap-2">
                                   {opp.name}
                                   <ExternalLink className="w-3 h-3" />
-                                </Link>
+                                </div>
                                 <div className="flex items-center gap-2">
                                   {opp.principal_organization_name && (
                                     <Badge variant="outline" className="text-xs">

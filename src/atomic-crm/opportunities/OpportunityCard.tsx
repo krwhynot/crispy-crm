@@ -8,6 +8,7 @@ import type { Opportunity } from "../types";
 
 interface OpportunityCardProps {
   index: number;
+  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
 }
 
 const priorityColors = {
@@ -17,13 +18,23 @@ const priorityColors = {
   critical: "bg-destructive text-destructive-foreground",
 } as const;
 
-export function OpportunityCard({ index }: OpportunityCardProps) {
+export function OpportunityCard({ index, openSlideOver }: OpportunityCardProps) {
   const record = useRecordContext<Opportunity>();
   const { primaryContact, isLoading: contactsLoading } = useOpportunityContacts(
     record?.contact_ids || []
   );
 
   if (!record) return null;
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Only open slide-over if not clicking on action buttons
+    if ((e.target as HTMLElement).closest('[data-action-button]')) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    openSlideOver(record.id as number, 'view');
+  };
 
   const closeDate = record.estimated_close_date
     ? format(new Date(record.estimated_close_date), "MMM d, yyyy")
@@ -45,12 +56,14 @@ export function OpportunityCard({ index }: OpportunityCardProps) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          onClick={handleCardClick}
           className={`
             bg-card rounded-lg border border-border
             p-[var(--spacing-widget-padding)]
             mb-[var(--spacing-content)]
             transition-all duration-200
             hover:shadow-md hover:-translate-y-1
+            cursor-pointer
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}
           data-testid="opportunity-card"

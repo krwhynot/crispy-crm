@@ -1,0 +1,198 @@
+import { useState } from 'react';
+import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from 'react-admin';
+import { Link } from 'react-router-dom';
+import { AutocompleteArrayInput } from '@/components/admin/autocomplete-array-input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { UserIcon, Star } from 'lucide-react';
+
+interface OpportunityContactsTabProps {
+  record: any;
+  mode: 'view' | 'edit';
+  onModeToggle?: () => void;
+}
+
+export function OpportunityContactsTab({
+  record,
+  mode,
+  onModeToggle,
+}: OpportunityContactsTabProps) {
+  const [update] = useUpdate();
+  const notify = useNotify();
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Fetch junction table data for view mode
+  const { data: junctionRecords, isLoading } = useGetList(
+    'opportunity_contacts',
+    {
+      filter: { opportunity_id: record.id },
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: 'is_primary', order: 'DESC' },
+    },
+    { enabled: mode === 'view' }
+  );
+
+  // Fetch contact details for view mode
+  const contactIds = junctionRecords?.map((jr: any) => jr.contact_id) || [];
+  const { data: contacts } = useGetList(
+    'contacts',
+    {
+      filter: { id: contactIds },
+      pagination: { page: 1, perPage: 100 },
+    },
+    { enabled: mode === 'view' && contactIds.length > 0 }
+  );
+
+  const handleSave = async (data: any) => {
+    setIsSaving(true);
+    try {
+      await update(
+        'opportunities',
+        {
+          id: record.id,
+          data: { contact_ids: data.contact_ids || [] },
+          previousData: record,
+        },
+        {
+          onSuccess: () => {
+            notify('Contacts updated successfully', { type: 'success' });
+            if (onModeToggle) {
+              onModeToggle();
+            }
+          },
+          onError: (error: any) => {
+            notify(error?.message || 'Failed to update contacts', { type: 'error' });
+          },
+        }
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    if (onModeToggle) {
+      onModeToggle();
+    }
+  };
+
+  if (mode === 'edit') {
+    return (
+      <Form
+        defaultValues={{ contact_ids: record.contact_ids || [] }}
+        onSubmit={handleSave}
+        className="space-y-4"
+      >
+        <ReferenceArrayInput source="contact_ids" reference="contacts">
+          <AutocompleteArrayInput
+            label="Contacts"
+            optionText={(choice: any) =>
+              choice ? `${choice.firstName || ''} ${choice.lastName || ''}`.trim() : ''
+            }
+            filterToQuery={(searchText: string) => ({ q: searchText })}
+            helperText="Search and select contacts associated with this opportunity"
+          />
+        </ReferenceArrayInput>
+
+        <div className="flex gap-2 pt-4">
+          <Button type="submit" disabled={isSaving} className="flex-1">
+            {isSaving ? 'Saving...' : 'Save Changes'}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCancel}
+            disabled={isSaving}
+          >
+            Cancel
+          </Button>
+        </div>
+      </Form>
+    );
+  }
+
+  // View mode
+  if (isLoading) {
+    return (
+      <div className="space-y-3">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-16 bg-muted animate-pulse rounded-lg" />
+        ))}
+      </div>
+    );
+  }
+
+  if (!junctionRecords || junctionRecords.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <UserIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+        <p className="text-muted-foreground">No contacts associated with this opportunity</p>
+      </div>
+    );
+  }
+
+  // Create a map of junction data by contact_id
+  const junctionMap = new Map(
+    junctionRecords.map((jr: any) => [jr.contact_id, jr])
+  );
+
+  return (
+    <div className="space-y-3">
+      {contacts?.map((contact: any) => {
+        const junctionData = junctionMap.get(contact.id);
+
+        return (
+          <div
+            key={contact.id}
+            className="border border-border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-3 flex-1">
+                {/* Avatar */}
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <UserIcon className="w-5 h-5 text-primary" />
+                </div>
+
+                {/* Contact info */}
+                <div className="flex-1 min-w-0">
+                  <Link
+                    to={`/contacts?view=${contact.id}`}
+                    className="text-base font-medium hover:underline"
+                  >
+                    {contact.firstName} {contact.lastName}
+                  </Link>
+
+                  {contact.title && (
+                    <p className="text-sm text-muted-foreground">{contact.title}</p>
+                  )}
+
+                  {junctionData?.role && (
+                    <div className="mt-2">
+                      <Badge variant="outline" className="text-xs">
+                        {junctionData.role}
+                      </Badge>
+                    </div>
+                  )}
+
+                  {junctionData?.notes && (
+                    <p className="text-sm text-muted-foreground mt-2 italic">
+                      {junctionData.notes}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Primary badge */}
+              {junctionData?.is_primary && (
+                <Badge variant="default" className="ml-2">
+                  <Star className="w-3 h-3 mr-1" />
+                  Primary
+                </Badge>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

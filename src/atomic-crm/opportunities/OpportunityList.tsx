@@ -21,6 +21,8 @@ import { FilterChipsPanel } from "../filters/FilterChipsPanel";
 import { FilterPresetsBar } from "./FilterPresetsBar";
 import { useOpportunityFilters } from "../filters/useOpportunityFilters";
 import { saveStagePreferences } from "../filters/opportunityStagePreferences";
+import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { OpportunitySlideOver } from "./OpportunitySlideOver";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -41,6 +43,9 @@ const OpportunityList = () => {
   const opportunityFilters = useOpportunityFilters();
   const [view, setView] = useState<OpportunityView>(getViewPreference);
 
+  // Slide-over state
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
+
   const handleViewChange = (newView: OpportunityView) => {
     setView(newView);
     saveViewPreference(newView);
@@ -49,34 +54,51 @@ const OpportunityList = () => {
   if (!identity) return null;
 
   return (
-    <List
-      perPage={100}
-      filter={{
-        "deleted_at@is": null,
-      }}
-      title={false}
-      sort={{ field: "created_at", order: "DESC" }}
-      filters={opportunityFilters}
-      actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
-      pagination={null}
-    >
-      <Breadcrumb>
-        <BreadcrumbItem>
-          <Link to="/">
-            <Translate i18nKey="ra.page.dashboard">Home</Translate>
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
-      </Breadcrumb>
-      <FilterPresetsBar />
-      <FilterChipsPanel className="mb-4" />
-      <OpportunityLayout view={view} />
-      <FloatingCreateButton />
-    </List>
+    <>
+      <List
+        perPage={100}
+        filter={{
+          "deleted_at@is": null,
+        }}
+        title={false}
+        sort={{ field: "created_at", order: "DESC" }}
+        filters={opportunityFilters}
+        actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
+        pagination={null}
+      >
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/">
+              <Translate i18nKey="ra.page.dashboard">Home</Translate>
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
+        </Breadcrumb>
+        <FilterPresetsBar />
+        <FilterChipsPanel className="mb-4" />
+        <OpportunityLayout view={view} openSlideOver={openSlideOver} />
+        <FloatingCreateButton />
+      </List>
+
+      {/* Slide-over panel */}
+      <OpportunitySlideOver
+        recordId={slideOverId}
+        isOpen={isOpen}
+        onClose={closeSlideOver}
+        mode={mode}
+        onModeToggle={toggleMode}
+      />
+    </>
   );
 };
 
-const OpportunityLayout = ({ view }: { view: OpportunityView }) => {
+const OpportunityLayout = ({
+  view,
+  openSlideOver
+}: {
+  view: OpportunityView;
+  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+}) => {
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
@@ -100,11 +122,11 @@ const OpportunityLayout = ({ view }: { view: OpportunityView }) => {
   return (
     <div className="w-full">
       {view === "kanban" ? (
-        <OpportunityListContent />
+        <OpportunityListContent openSlideOver={openSlideOver} />
       ) : view === "campaign" ? (
-        <CampaignGroupedList />
+        <CampaignGroupedList openSlideOver={openSlideOver} />
       ) : (
-        <OpportunityRowListView />
+        <OpportunityRowListView openSlideOver={openSlideOver} />
       )}
       <OpportunityArchivedList />
     </div>
