@@ -31,7 +31,7 @@ export const OpportunityEmpty = ({ children }: { children?: React.ReactNode }) =
         <>
           <div className="flex flex-col items-center gap-0">
             <h3 className="text-lg font-bold">No opportunities found</h3>
-            <p className="text-sm text-center text-[color:var(--text-subtle)] mb-4">
+            <p className="text-sm text-center text-muted-foreground mb-4">
               It seems your opportunity list is empty.
             </p>
           </div>
@@ -44,7 +44,7 @@ export const OpportunityEmpty = ({ children }: { children?: React.ReactNode }) =
       ) : (
         <div className="flex flex-col items-center gap-0">
           <h3 className="text-lg font-bold">No opportunities found</h3>
-          <p className="text-sm text-center text-[color:var(--text-subtle)] mb-4">
+          <p className="text-sm text-center text-muted-foreground mb-4">
             It seems your contact list is empty.
             <br />
             <Link to="/contacts/create" className="hover:underline">

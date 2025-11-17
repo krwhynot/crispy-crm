@@ -42,15 +42,15 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
       {parentOpportunity && (
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+            <span className="text-xs text-muted-foreground tracking-wide uppercase">
               Parent Opportunity
             </span>
-            <ArrowRight className="w-3 h-3 text-[color:var(--text-subtle)]" />
+            <ArrowRight className="w-3 h-3 text-muted-foreground" />
           </div>
-          <div className="flex items-center gap-3 p-3 rounded-md bg-[color:var(--muted)]/30 hover:bg-[color:var(--muted)]/50 transition-colors">
+          <div className="flex items-center gap-3 p-3 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors">
             <Link
               to={`/opportunities/${parentOpportunity.id}/show`}
-              className="flex-1 font-medium text-sm text-[color:var(--primary)] hover:underline flex items-center gap-2"
+              className="flex-1 font-medium text-sm text-primary hover:underline flex items-center gap-2"
             >
               {parentOpportunity.name}
               <ExternalLink className="w-3 h-3" />
@@ -96,7 +96,7 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
       {childOpportunities && childOpportunities.length > 0 && (
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+            <span className="text-xs text-muted-foreground tracking-wide uppercase">
               Follow-up Opportunities ({childOpportunities.length})
             </span>
           </div>
@@ -104,11 +104,11 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
             {childOpportunities.map((childOpp) => (
               <div
                 key={childOpp.id}
-                className="flex items-center gap-3 p-3 rounded-md bg-[color:var(--muted)]/30 hover:bg-[color:var(--muted)]/50 transition-colors"
+                className="flex items-center gap-3 p-3 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors"
               >
                 <Link
                   to={`/opportunities/${childOpp.id}/show`}
-                  className="flex-1 font-medium text-sm text-[color:var(--primary)] hover:underline flex items-center gap-2"
+                  className="flex-1 font-medium text-sm text-primary hover:underline flex items-center gap-2"
                 >
                   {childOpp.name}
                   <ExternalLink className="w-3 h-3" />

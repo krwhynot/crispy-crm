@@ -125,7 +125,7 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
                     </button>
 
                     {/* Second line: Customer → Principal relationship */}
-                    <div className="text-xs text-[color:var(--text-subtle)] flex items-center gap-1 flex-wrap mt-0.5">
+                    <div className="text-xs text-muted-foreground flex items-center gap-1 flex-wrap mt-0.5">
                       {opportunity.customer_organization_id && (
                         <>
                           <ReferenceField
@@ -145,10 +145,10 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
                           link="show"
                         >
                           <div className="flex items-center gap-1 relative z-10">
-                            <Building2 className="w-3 h-3 text-[color:var(--brand-600)]" />
+                            <Building2 className="w-3 h-3 text-brand-600" />
                             <TextField
                               source="name"
-                              className="font-bold text-[color:var(--brand-700)] hover:underline cursor-pointer"
+                              className="font-bold text-brand-700 hover:underline cursor-pointer"
                             />
                           </div>
                         </ReferenceField>
@@ -212,7 +212,7 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
 
                   {/* Close Date - Hidden on mobile, shown on sm+ */}
                   {opportunity.estimated_close_date && (
-                    <div className="hidden sm:block text-xs text-[color:var(--text-subtle)] relative z-10">
+                    <div className="hidden sm:block text-xs text-muted-foreground relative z-10">
                       <span className="opacity-75">Close:</span>{" "}
                       <span className="font-medium">
                         {format(new Date(opportunity.estimated_close_date), "MMM d, yyyy")}
@@ -222,7 +222,7 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
 
                   {/* Owner - Hidden on mobile, shown on md+ */}
                   {opportunity.opportunity_owner_id && (
-                    <div className="hidden md:block text-xs text-[color:var(--text-subtle)] relative z-10">
+                    <div className="hidden md:block text-xs text-muted-foreground relative z-10">
                       <ReferenceField source="opportunity_owner_id" reference="sales" link={false}>
                         <span>
                           <TextField source="first_name" /> <TextField source="last_name" />
