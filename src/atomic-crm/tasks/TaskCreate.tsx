@@ -35,7 +35,7 @@ export default function TaskCreate() {
 
   return (
     <CreateBase redirect="list">
-      <div className="bg-muted px-[var(--spacing-edge-desktop)] py-6">
+      <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <Form defaultValues={defaultValues}>
             <div className="space-y-6">

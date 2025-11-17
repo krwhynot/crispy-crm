@@ -131,7 +131,7 @@ export const WorkflowManagementSection: React.FC = () => {
                 <Badge
                   key={tag}
                   variant="secondary"
-                  className="cursor-pointer hover:bg-[var(--brand-100)] transition-colors"
+                  className="cursor-pointer hover:bg-brand-100 transition-colors"
                   onClick={() => handleTagClick(tag)}
                 >
                   {tag}
