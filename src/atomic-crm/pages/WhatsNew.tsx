@@ -487,7 +487,7 @@ export const WhatsNew = () => {
                 <CardTitle>Support & Feedback</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-[color:var(--text-subtle)]">
+                <p className="text-muted-foreground">
                   Need help with the new features or have feedback about the migration?
                 </p>
                 <div className="flex gap-3">
