@@ -18,7 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export interface TabConfig {
   key: string;
   label: string;
-  component: React.ComponentType<{ record: any; mode: 'view' | 'edit' }>;
+  component: React.ComponentType<{ record: any; mode: 'view' | 'edit'; onModeToggle?: () => void }>;
   icon?: React.ComponentType<{ className?: string }>;
 }
 
@@ -213,7 +213,7 @@ export function ResourceSlideOver({
                         <Skeleton className="h-11 w-full" />
                       </div>
                     ) : record ? (
-                      <TabComponent record={record} mode={mode} />
+                      <TabComponent record={record} mode={mode} onModeToggle={onModeToggle} />
                     ) : (
                       <p className="text-muted-foreground">Record not found</p>
                     )}

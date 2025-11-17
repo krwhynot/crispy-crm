@@ -36,7 +36,7 @@ interface ContactDetailsTabProps {
  *
  * **Edit Mode**: Renders existing ContactInputs component inline with save/cancel.
  */
-export function ContactDetailsTab({ record, mode }: ContactDetailsTabProps) {
+export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
@@ -51,7 +51,7 @@ export function ContactDetailsTab({ record, mode }: ContactDetailsTabProps) {
         previousData: record,
       });
       notify('Contact updated successfully', { type: 'success' });
-      // Note: Mode toggle is handled by parent component's onModeToggle
+      onModeToggle?.(); // Return to view mode after successful save
     } catch (error) {
       notify('Error updating contact', { type: 'error' });
       console.error('Save error:', error);
@@ -67,7 +67,7 @@ export function ContactDetailsTab({ record, mode }: ContactDetailsTabProps) {
           <div className="space-y-6">
             <ContactInputs />
 
-            {/* Save/Cancel buttons */}
+            {/* Save button - Cancel handled by slide-over header */}
             <div className="flex gap-2 justify-end pt-4 border-t border-border">
               <Button
                 type="submit"
