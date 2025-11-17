@@ -3,13 +3,15 @@
  *
  * Tests rendering with contacts_summary view, sidebar filters,
  * custom exporter functionality, and tag display/filtering.
+ *
+ * Updated for refactored ContactList with PremiumDatagrid and slide-over pattern.
  */
 
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockContact } from "@/tests/utils/mock-providers";
-import { ContactListContent } from "../ContactListContent";
+import { ContactList } from "../ContactList";
 import { ContactListFilter } from "../ContactListFilter";
 
 // Mock dependencies
