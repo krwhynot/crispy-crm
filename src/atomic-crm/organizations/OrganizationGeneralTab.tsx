@@ -46,9 +46,6 @@ export const OrganizationGeneralTab = () => {
         />
       </div>
       <div className="lg:col-span-2">
-        <ParentOrganizationInput />
-      </div>
-      <div className="lg:col-span-2">
         <TextInput source="description" multiline helperText={false} label="Description" />
       </div>
       <ReferenceInput
