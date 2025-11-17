@@ -14,7 +14,7 @@ export const ContactEmpty = () => {
       <img src="./img/empty.svg" alt="No contacts found" />
       <div className="flex flex-col gap-0 items-center">
         <h6 className="text-lg font-bold">No contacts found</h6>
-        <p className="text-sm text-[color:var(--text-subtle)] text-center mb-4">
+        <p className="text-sm text-muted-foreground text-center mb-4">
           It seems your contact list is empty.
         </p>
       </div>
