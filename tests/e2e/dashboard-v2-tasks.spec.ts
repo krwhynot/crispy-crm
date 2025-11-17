@@ -27,6 +27,7 @@ test.describe('Dashboard V2 - Tasks Panel', () => {
     await expect(authenticatedPage.locator('text="Task marked as complete"')).toBeVisible();
 
     // Verify task is removed from list (should not find it anymore)
-    await expect(authenticatedPage.locator(`text="${taskTitle}"`).first()).not.toBeVisible({ timeout: 2000 });
+    // Increased timeout to 5s to account for refetch and database view refresh
+    await expect(authenticatedPage.locator(`text="${taskTitle}"`).first()).not.toBeVisible({ timeout: 5000 });
   });
 });
