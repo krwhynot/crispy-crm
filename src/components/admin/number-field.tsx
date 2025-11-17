@@ -10,6 +10,11 @@ export const NumberField = <RecordType extends Record<string, any> = Record<stri
   transform = defaultTransform,
   locales,
   options,
+  // Filter out React Admin-specific props that shouldn't be passed to DOM elements
+  label,
+  sortable,
+  sortBy,
+  textAlign,
   ...rest
 }: NumberFieldProps<RecordType>) => {
   let value = useFieldValue({ defaultValue, source, record });

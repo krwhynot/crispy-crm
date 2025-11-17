@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Datagrid, DatagridProps } from 'react-admin';
 
 /**
@@ -34,6 +35,9 @@ export interface PremiumDatagridProps extends DatagridProps {
   onRowClick?: (id: number | string) => void;
 }
 
+// Stable function reference for rowClassName (defined outside component to prevent re-creation)
+const getRowClassName = () => "table-row-premium";
+
 /**
  * PremiumDatagrid Component
  *
@@ -41,18 +45,23 @@ export interface PremiumDatagridProps extends DatagridProps {
  * All Datagrid props are passed through, ensuring full feature compatibility.
  */
 export function PremiumDatagrid({ onRowClick, ...props }: PremiumDatagridProps) {
+  // Stable row click handler using useCallback to prevent infinite re-renders
+  const handleRowClick = useCallback(
+    (id: string | number) => {
+      if (onRowClick) {
+        onRowClick(id);
+        return false; // Prevent default navigation
+      }
+      return props.rowClick;
+    },
+    [onRowClick, props.rowClick]
+  );
+
   return (
     <Datagrid
       {...props}
-      rowClassName={() => "table-row-premium"}
-      rowClick={
-        onRowClick
-          ? (id) => {
-              onRowClick(id);
-              return false; // Prevent default navigation
-            }
-          : props.rowClick
-      }
+      rowClassName={getRowClassName}
+      rowClick={onRowClick ? handleRowClick : props.rowClick}
     />
   );
 }
