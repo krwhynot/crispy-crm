@@ -96,7 +96,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
                         setColorError(undefined);
                       }}
                     />
-                    <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-[color:var(--text-subtle)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                       {color}
                     </span>
                   </div>

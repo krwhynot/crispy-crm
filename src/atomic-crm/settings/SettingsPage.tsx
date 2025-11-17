@@ -126,7 +126,7 @@ const SettingsForm = ({
       <Card>
         <CardContent>
           <div className="mb-4 flex flex-row justify-between">
-            <h2 className="text-xl font-semibold text-[color:var(--text-subtle)]">My info</h2>
+            <h2 className="text-xl font-semibold text-muted-foreground">My info</h2>
           </div>
 
           <div className="space-y-4 mb-4">
