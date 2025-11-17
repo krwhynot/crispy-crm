@@ -20,8 +20,24 @@ import type { FieldProps } from "@/lib/field.type";
 export const FileField = <RecordType extends Record<string, any> = Record<string, any>>(
   props: FileFieldProps<RecordType>
 ) => {
-  const { className, empty, title, src, target, download, defaultValue, source, record, ...rest } =
-    props;
+  const {
+    className,
+    empty,
+    title,
+    src,
+    target,
+    download,
+    defaultValue,
+    source,
+    record,
+    // Filter out React Admin-specific props that shouldn't be passed to DOM elements
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    rowClassName,
+    ...rest
+  } = props;
   const sourceValue = useFieldValue({ defaultValue, source, record });
   const titleValue =
     useFieldValue({
