@@ -173,14 +173,14 @@ describe("Organization Validation Schemas", () => {
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
-          parent_id: "parent-123",
+          parent_organization_id: "parent-123",
         })
       ).not.toThrow();
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
-          parent_id: 456,
+          parent_organization_id: 456,
         })
       ).not.toThrow();
     });
@@ -188,7 +188,7 @@ describe("Organization Validation Schemas", () => {
     it("should handle nullable fields", () => {
       const dataWithNulls = {
         ...validOrganization,
-        parent_id: null,
+        parent_organization_id: null,
         logo: null,
         description: null,
         deleted_at: null,
