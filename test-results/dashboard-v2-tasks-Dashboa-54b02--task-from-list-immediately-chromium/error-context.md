@@ -42,7 +42,7 @@
           - img [ref=e35]
           - generic [ref=e37]: RJC
         - generic [ref=e38]:
-          - combobox "Select principal organization" [active] [ref=e39] [cursor=pointer]:
+          - combobox "Select principal organization" [ref=e39] [cursor=pointer]:
             - generic: RJC
             - img
           - button "Create new item" [ref=e40] [cursor=pointer]:
@@ -164,7 +164,7 @@
                 - generic [ref=e159]: This Week
               - list "This Week tasks" [ref=e160]:
                 - listitem [ref=e161]:
-                  - checkbox "Mark \"Send equipment quotes and spec sheets\" as complete" [ref=e163]
+                  - checkbox "Mark \"Send equipment quotes and spec sheets\" as complete" [active] [ref=e163]
                   - generic [ref=e164]: Send equipment quotes and spec sheets
                   - generic [ref=e165]: High
                 - listitem [ref=e166]:
@@ -215,5 +215,11 @@
       - button "View keyboard shortcuts" [ref=e208] [cursor=pointer]:
         - img [ref=e209]
         - generic [ref=e211]: Keyboard shortcuts
-  - region "Notifications alt+T"
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e212]:
+        - button "Close toast" [ref=e213] [cursor=pointer]:
+          - img [ref=e214]
+        - img [ref=e218]
+        - generic [ref=e221]: Task marked as complete
 ```

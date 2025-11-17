@@ -72,7 +72,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
           completed: true,
           completed_at: new Date().toISOString(),
         },
-        previousData: { id: taskId },
+        previousData: { id: taskId, completed: false, completed_at: null },
       });
       notify('Task marked as complete', { type: 'success' });
 
