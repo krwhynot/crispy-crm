@@ -14,7 +14,11 @@ import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
 
-export const OpportunityRowListView = () => {
+interface OpportunityRowListViewProps {
+  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+}
+
+export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListViewProps) => {
   const {
     data: opportunities,
     error,
@@ -106,15 +110,19 @@ export const OpportunityRowListView = () => {
                   />
 
                   <div className="flex-1 min-w-0">
-                    {/* Opportunity name as the semantic link with stretched overlay */}
-                    <Link
-                      to={`/opportunities/${opportunity.id}/show`}
-                      className="font-medium text-sm text-primary hover:underline focus:outline-none block truncate"
+                    {/* Opportunity name as the semantic link - clicks open slide-over */}
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openSlideOver(opportunity.id as number, 'view');
+                      }}
+                      className="font-medium text-sm text-primary hover:underline focus:outline-none block truncate text-left w-full"
                     >
                       {opportunity.name}
                       {/* Stretched link overlay: makes entire card clickable */}
                       <span className="absolute inset-0" aria-hidden="true" />
-                    </Link>
+                    </button>
 
                     {/* Second line: Customer → Principal relationship */}
                     <div className="text-xs text-[color:var(--text-subtle)] flex items-center gap-1 flex-wrap mt-0.5">

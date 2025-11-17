@@ -11,7 +11,11 @@ import { getOpportunitiesByStage } from "./stages";
 import { useColumnPreferences } from "./useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 
-export const OpportunityListContent = () => {
+interface OpportunityListContentProps {
+  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+}
+
+export const OpportunityListContent = ({ openSlideOver }: OpportunityListContentProps) => {
   const allOpportunityStages = OPPORTUNITY_STAGES_LEGACY;
 
   const { data: unorderedOpportunities, isPending, filterValues } = useListContext<Opportunity>();
@@ -151,6 +155,7 @@ export const OpportunityListContent = () => {
               key={stage.value}
               isCollapsed={collapsedStages.includes(stage.value)}
               onToggleCollapse={() => toggleCollapse(stage.value)}
+              openSlideOver={openSlideOver}
             />
           ))}
         </div>

@@ -15,11 +15,13 @@ export const OpportunityColumn = ({
   opportunities,
   isCollapsed = false,
   onToggleCollapse,
+  openSlideOver,
 }: {
   stage: string;
   opportunities: Opportunity[];
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
+  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
 }) => {
   const metrics = useStageMetrics(opportunities);
 
@@ -96,7 +98,7 @@ export const OpportunityColumn = ({
               >
                 {opportunities.map((opportunity, index) => (
                   <RecordContextProvider key={opportunity.id} value={opportunity}>
-                    <OpportunityCard index={index} />
+                    <OpportunityCard index={index} openSlideOver={openSlideOver} />
                   </RecordContextProvider>
                 ))}
                 {provided.placeholder}
