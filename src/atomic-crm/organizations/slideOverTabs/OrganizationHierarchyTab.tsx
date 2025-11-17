@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useUpdate, useNotify, RecordContextProvider, useNavigate } from 'ra-core';
+import { useUpdate, useNotify, RecordContextProvider } from 'ra-core';
 import { Form } from 'react-admin';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,7 +19,6 @@ interface OrganizationHierarchyTabProps {
 export function OrganizationHierarchyTab({ record, mode, onModeToggle }: OrganizationHierarchyTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
-  const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {

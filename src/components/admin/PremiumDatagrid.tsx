@@ -44,7 +44,7 @@ export function PremiumDatagrid({ onRowClick, ...props }: PremiumDatagridProps) 
   return (
     <Datagrid
       {...props}
-      rowClassName="table-row-premium"
+      rowClassName={() => "table-row-premium"}
       rowClick={
         onRowClick
           ? (id) => {
