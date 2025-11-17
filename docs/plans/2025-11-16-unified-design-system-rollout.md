@@ -462,28 +462,28 @@ Location: `src/index.css` in `@layer components`
 - **Before Phase 4**: Full review before polish phase
 - **Final Review**: Complete accessibility and performance audit
 
-**Feature Flags & Rollback Plan**
-```typescript
-// src/config/featureFlags.ts
-export const features = {
-  slideOverView: process.env.REACT_APP_SLIDEOVER === 'true',
-  premiumTables: process.env.REACT_APP_PREMIUM_TABLES === 'true',
-};
+**Direct Migration Approach**
 
-// Usage in components
-if (features.slideOverView) {
-  // New slide-over navigation
-} else {
-  // Legacy full-page navigation
-}
-```
+Per Engineering Constitution: `no-backward-compatibility: Breaking changes allowed`
 
-**Rollback Strategy**
-- Keep old components until migration proven stable (mark as `@deprecated`)
-- Feature flags default to false in production initially
-- Gradual rollout: Enable per resource or per user group
-- URL routing remains backwards compatible
-- Quick disable via environment variable if issues arise
+- **No feature flags** - Direct replacement of components
+- **No legacy fallbacks** - Old patterns removed immediately
+- **Clean switchover** - Each resource migrates completely in one commit
+- **Delete old code** - No `@deprecated` markers, remove unused components
+- **URL changes allowed** - `/contacts/123/show` becomes `/contacts?view=123`
+
+**Migration Process**
+1. Build new component alongside old
+2. Test new component thoroughly
+3. Replace all usages in single commit
+4. Delete old component immediately
+5. No gradual rollout or toggles
+
+**Handling Issues**
+- If problems arise: Fix forward, don't revert
+- Breaking changes communicated clearly in PR
+- Team prepared for immediate adoption
+- No dual-maintenance burden
 
 ### Migration Checklist (Per Resource)
 
