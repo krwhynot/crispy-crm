@@ -47,11 +47,13 @@ export const INTERACTION_TYPE_OPTIONS = [
 // Base schema without refinements - can be extended
 const baseActivitiesSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
-  activity_type: activityTypeSchema,
-  type: interactionTypeSchema,
+  activity_type: activityTypeSchema.default("interaction"), // Default to interaction
+  type: interactionTypeSchema.default("call"), // Default to call
   subject: z.string().min(1, "Subject is required"),
   description: z.string().optional().nullable(),
-  activity_date: z.string().optional(), // Will default to now() in DB
+  activity_date: z
+    .string()
+    .default(() => new Date().toISOString().split("T")[0]), // Default to today's date
   duration_minutes: z.number().int().positive().optional().nullable(),
 
   // Entity relationships
