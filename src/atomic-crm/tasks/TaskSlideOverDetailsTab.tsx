@@ -163,7 +163,7 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
                   type="checkbox"
                   checked={record.completed || false}
                   onChange={(e) => handleCompletionToggle(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300"
+                  className="h-4 w-4 rounded border-input"
                 />
                 <span className="text-sm font-medium">
                   {record.completed ? 'Completed' : 'Mark as complete'}
