@@ -13,68 +13,82 @@ Tables are optimized for **desktop displays first** (1440px+), then adapted for 
 2. **Tablet/iPad** (768-1024px) - Touch-friendly 44px targets, horizontal scroll
 3. **Mobile** (< 768px) - Card layouts replace tables
 
-## Basic Table Structure
+## List Page Shell
 
-### Pattern: Semantic HTML Table
+### Unified Design System Pattern
 
-**From `src/atomic-crm/dashboard/CompactPrincipalTable.tsx`:**
+**ALL list pages must use StandardListLayout** (docs/plans/2025-11-16-unified-design-system-rollout.md:45-104):
 
-```typescript
-export const CompactPrincipalTable: React.FC<Props> = ({ data }) => {
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+```tsx
+// src/atomic-crm/contacts/List.tsx
+import { StandardListLayout } from '@/components/admin/StandardListLayout';
+import { PremiumDatagrid } from '@/components/admin/PremiumDatagrid';
+import { Datagrid, TextField, EmailField, DeleteButton, EditButton } from 'react-admin';
 
+export const ContactList = () => {
   return (
-    <div className="overflow-auto">
-      <table className="w-full text-sm">
-        {/* Header */}
-        <thead>
-          <tr className="text-left text-xs text-gray-600 border-b">
-            <th className="pb-1 px-2">Principal</th>
-            <th className="pb-1 px-2 text-center w-16">Pipeline</th>
-            <th className="pb-1 px-2 text-center w-16">This Week</th>
-            <th className="pb-1 w-28">Actions</th>
-          </tr>
-        </thead>
-
-        {/* Body */}
-        <tbody>
-          {data.map(principal => (
-            <tr
-              key={principal.id}
-              className="h-9 border-b hover:bg-gray-50 cursor-pointer"
-              onMouseEnter={() => setHoveredRow(principal.id)}
-              onMouseLeave={() => setHoveredRow(null)}
-            >
-              <td className="py-1 px-2 font-medium">{principal.name}</td>
-              <td className="py-1 px-2 text-center">
-                <span className="inline-flex items-center px-1.5 py-0.5 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">
-                  {principal.opportunityCount}
-                </span>
-              </td>
-              <td className="py-1 px-2 text-center text-xs">
-                {principal.weeklyActivities ?? 0}
-              </td>
-              <td className="py-1">
-                <div className={hoveredRow === principal.id ? 'opacity-100' : 'opacity-0'}>
-                  <button>Action</button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <StandardListLayout filterComponent={<ContactFilters />}>
+      <PremiumDatagrid rowClassName={() => 'table-row-premium'}>
+        <TextField source="name" label="Name" />
+        <EmailField source="email" label="Email" />
+        <TextField source="organization_name" label="Organization" />
+        <TextField source="title" label="Title" />
+        <EditButton />
+        <DeleteButton />
+      </PremiumDatagrid>
+    </StandardListLayout>
   );
 };
 ```
 
-**Key Elements:**
-- `overflow-auto` - Horizontal scroll on small screens
-- Semantic `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`
-- `text-xs` headers for compact design
-- `text-sm` body text for readability
-- `border-b` on rows for separation
-- `hover:bg-gray-50` for row hover state
+### StandardListLayout Shell
+
+```tsx
+// Wraps all list pages with:
+// - Left sidebar (filter-sidebar) with filters
+// - Main content area (card-container) with table
+// - Floating create button (bottom-right, optional)
+
+<div className="flex flex-row gap-6">
+  <aside className="filter-sidebar sticky top-6">
+    <div className="card-container p-2">
+      {/* Filters go here */}
+    </div>
+  </aside>
+  <main role="main" className="flex-1 min-w-0">
+    <div className="card-container">
+      {/* Datagrid content */}
+    </div>
+  </main>
+</div>
+```
+
+### PremiumDatagrid Wrapper
+
+**Applies `.table-row-premium` styling to all rows:**
+
+```tsx
+<PremiumDatagrid rowClassName={() => 'table-row-premium'}>
+  {/* Datagrid columns */}
+</PremiumDatagrid>
+
+// .table-row-premium includes:
+// - Rounded corners with transparent border
+// - Hover: border reveal + shadow-md lift
+// - Click: Opens slide-over (NOT full page)
+// - Focus: Ring indicator
+```
+
+### Row Click Behavior
+
+**Clicking a row opens ResourceSlideOver, NOT full-page navigation:**
+
+```tsx
+<RowClickBehavior
+  action="open-slide-over"
+  target="?view={id}"  // URL sync
+/>
+```
 
 ## Row Height & Touch Targets
 
@@ -167,10 +181,11 @@ function DataTable({ data }: { data: Item[] }) {
 ### Pattern: Sticky Table Header
 
 ```typescript
+// ✅ CORRECT - Use semantic utilities
 <div className="overflow-auto max-h-[600px]">
   <table className="w-full">
-    <thead className="sticky top-0 bg-card shadow-[var(--shadow-col)] z-10">
-      <tr className="border-b border-[color:var(--divider-strong)]">
+    <thead className="sticky top-0 bg-card shadow-md z-10">
+      <tr className="border-b border-border">
         <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wide py-3 px-4">
           Organization
         </th>
@@ -181,7 +196,7 @@ function DataTable({ data }: { data: Item[] }) {
     </thead>
     <tbody>
       {rows.map(row => (
-        <tr key={row.id} className="border-b border-[color:var(--divider-subtle)] hover:bg-accent/50">
+        <tr key={row.id} className="border-b border-border hover:bg-accent/50">
           <td className="py-3 px-4">{row.name}</td>
           <td className="text-right py-3 px-4">{row.value}</td>
         </tr>
@@ -189,13 +204,18 @@ function DataTable({ data }: { data: Item[] }) {
     </tbody>
   </table>
 </div>
+
+// ❌ WRONG - Never use inline CSS variable syntax
+// shadow-[var(--shadow-col)]
+// border-[color:var(--divider-subtle)]
 ```
 
 **Key Details:**
 - `sticky top-0` keeps header in view while scrolling
-- `shadow-[var(--shadow-col)]` creates depth separation
+- `shadow-md` creates depth separation (use semantic utilities, not inline vars)
 - `z-10` ensures header above table body
 - `bg-card` prevents see-through header
+- `border-border` for subtle borders (not inline CSS variables)
 
 ## Sortable Columns
 
@@ -368,6 +388,23 @@ function ResponsiveList({ data }: { data: Item[] }) {
   );
 }
 ```
+
+## Migration Checklist
+
+**When migrating any resource to unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:488-502):
+
+- [ ] List view uses `StandardListLayout` component
+- [ ] Table wrapped with `PremiumDatagrid` wrapper
+- [ ] All rows apply `.table-row-premium` via rowClassName
+- [ ] Row clicks open slide-over (NOT full page navigation)
+- [ ] Filter sidebar standardized
+- [ ] All semantic colors applied (no hex/inline vars)
+- [ ] Spacing uses CSS variables (`--spacing-*`)
+- [ ] Accessibility audit passed (44px targets, keyboard nav)
+- [ ] E2E tests updated for slide-over navigation
+- [ ] Old components deleted (no legacy code)
+
+**See also:** [Migration Checklist](docs/plans/2025-11-16-unified-design-system-rollout.md:530-543)
 
 ## Best Practices
 

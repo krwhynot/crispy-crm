@@ -74,13 +74,23 @@ Atomic CRM uses three elevation levels to create visual hierarchy. Each tier has
 
 **Example:**
 ```tsx
-<div className="bg-card rounded-xl border border-[color:var(--stroke-card)] shadow-[var(--elevation-1)] p-6">
-  <h3 className="text-sm font-medium text-[color:var(--text-title)]">
+// ✅ CORRECT - Use semantic utilities
+<div className="card-container">
+  <h3 className="text-sm font-medium text-foreground">
     Total Revenue
   </h3>
   <div className="text-2xl font-bold mt-2">$125,000</div>
 </div>
+
+// ❌ WRONG - Never use inline CSS variable syntax
+// shadow-[var(--elevation-1)]
+// border-[color:var(--stroke-card)]
+// text-[color:var(--text-title)]
 ```
+
+**Tailwind Mapping:**
+- `shadow-sm` → Elevation 1 (default cards)
+- `.card-container` → shadow-sm + border + padding preset
 
 ### Elevation 2: Medium (Interactive Content)
 
@@ -171,7 +181,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border border-[color:var(--stroke-card)] shadow-[var(--elevation-1)] transition-shadow duration-150",
+        "card-container transition-shadow duration-150",  // ✅ Uses .card-container utility
         className
       )}
       {...props}
@@ -181,11 +191,25 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
 ```
 
 **Key Details:**
-- `bg-card` - Pure white background (100% lightness)
-- `rounded-xl` - 12px radius for organic feel
-- `border border-[color:var(--stroke-card)]` - Hairline edge definition
-- `shadow-[var(--elevation-1)]` - Low elevation for static cards
-- `transition-shadow duration-150` - Smooth elevation changes
+- `.card-container` - Preset styling (bg-card, border, shadow-sm, p-6, rounded-xl)
+- `transition-shadow duration-150` - Smooth elevation changes on hover
+- **DON'T:** Use `border-[color:var(--stroke-card)]` or `shadow-[var(--elevation-1)]`
+
+### Tokenized Utility Classes
+
+**Per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:346-398):
+
+| Utility | Elevation | Usage |
+|---------|-----------|-------|
+| `.card-container` | shadow-sm | Standard cards, default state |
+| `.create-form-card` | shadow-lg | Create forms (high emphasis) |
+| `.interactive-card` | shadow-md on hover | Hover interactive elements |
+| `.table-row-premium` | shadow-md on hover | Table rows with lift effect |
+
+**Tailwind Direct Mapping:**
+- `shadow-sm` → Elevation 1 (cards, default)
+- `shadow-md` → Elevation 2 (hover, interactive)
+- `shadow-lg` → Elevation 3 (modals, floating)
 
 **Usage:**
 ```tsx

@@ -4,6 +4,59 @@
 
 Document form patterns for Atomic CRM including Zod validation, React Hook Form integration, JSONB array inputs, tabbed forms, error handling, and accessible form design optimized for desktop (primary) and tablet touch input.
 
+## Create Form Layout
+
+**Per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:211-288):
+
+### Pattern: Full-Page Create Form
+
+```tsx
+// Must be FULL-PAGE (NOT slide-over)
+// Breadcrumb + centered card + tabbed sections + sticky footer
+
+export const ContactCreate = () => {
+  return (
+    <div className="bg-muted px-[var(--spacing-edge-desktop)] py-6">
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbItem>Home</BreadcrumbItem>
+        <BreadcrumbItem>Contacts</BreadcrumbItem>
+        <BreadcrumbItem>New Contact</BreadcrumbItem>
+      </Breadcrumb>
+
+      {/* Centered form card */}
+      <form className="create-form-card max-w-4xl mx-auto mt-6">
+        {/* Tabbed sections */}
+        <TabbedFormInputs
+          tabs={[
+            { key: 'identity', label: 'Identity', content: <IdentityTab /> },
+            { key: 'contact', label: 'Contact Info', content: <ContactTab /> },
+            { key: 'account', label: 'Account', content: <AccountTab /> },
+          ]}
+        />
+
+        {/* Sticky footer with actions */}
+        <div className="sticky bottom-0 bg-card border-t border-border p-4 flex justify-between">
+          <Button variant="outline">Cancel</Button>
+          <div className="flex gap-2">
+            <Button type="submit">Save & Close</Button>
+            <Button type="submit" variant="secondary">Save & Add Another</Button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
+```
+
+### Styling Rules
+- Page background: `bg-muted` (light, airy)
+- Form card: `.create-form-card` (max-w-4xl, shadow-lg, centered)
+- Tabbed sections: `TabbedFormInputs` with error badges
+- Sticky footer: `sticky bottom-0` with Cancel | Save & Close | Save & Add
+- Validation: Zod schemas with inline errors
+- Optional autosave: localStorage (key: `crm.draft.{resource}.{userId}`)
+
 ## Core Principle: Schema-Driven Forms
 
 Forms derive validation rules AND default values from **Zod schemas** (single source of truth). This eliminates duplication between validation logic and TypeScript types, ensuring forms stay in sync with business rules.

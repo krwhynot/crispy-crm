@@ -37,6 +37,56 @@ Typography in Atomic CRM uses OKLCH-based warm text colors (hue 92° matching th
 - Warm undertones (hue 92°) prevent harsh black-on-white contrast
 - Automatic dark mode inversion with maintained contrast ratios
 
+## Heading Hierarchy
+
+**Per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:298-308):
+
+### Standard Heading Scale
+
+```tsx
+// ✅ CORRECT - Use semantic utilities + Tailwind sizes
+<h1 className="text-xl font-semibold text-primary">
+  Page Title
+</h1>
+
+<h2 className="text-lg font-semibold text-foreground">
+  Section Heading
+</h2>
+
+<h3 className="text-base font-semibold text-foreground">
+  Subsection
+</h3>
+
+// ❌ WRONG - Never use inline CSS variable syntax
+// text-[color:var(--text-title)] text-xl font-semibold
+```
+
+### Heading Styles by Context
+
+| Context | Size | Weight | Color | Example |
+|---------|------|--------|-------|---------|
+| Page Title (H1) | text-xl | font-semibold | text-primary | Page headers, modal titles |
+| Section Heading (H2) | text-lg | font-semibold | text-foreground | Section dividers in forms |
+| Subsection (H3) | text-base | font-semibold | text-foreground | Card subtitles |
+| Body Text | text-sm | font-normal | text-foreground | Paragraphs, labels |
+| Metadata | text-xs | font-normal | text-muted-foreground | Timestamps, hints |
+
+### Quick Logger vs Slide-Over Headers
+
+**Slide-over headers (ResourceSlideOver):**
+```tsx
+<h1 className="text-xl font-semibold text-primary">
+  Record Title
+</h1>
+```
+
+**Create form headers:**
+```tsx
+<h1 className="text-xl font-semibold text-foreground">
+  New Contact
+</h1>
+```
+
 ## Typography Scale
 
 Tailwind CSS provides a modular scale optimized for UI. Atomic CRM uses this scale consistently.
