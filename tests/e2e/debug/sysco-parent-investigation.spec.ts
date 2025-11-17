@@ -10,15 +10,12 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('Sysco Parent Organization Investigation', () => {
-  test.beforeEach(async ({ page }) => {
-    // Login
-    await page.goto('http://localhost:5173/');
-    await page.getByLabel('Email').fill('admin@test.com');
-    await page.getByLabel('Password').fill('password123');
-    await page.getByRole('button', { name: /sign in/i }).click();
+  test.use({ storageState: 'tests/e2e/.auth/user.json' });
 
-    // Wait for navigation to complete
-    await page.waitForURL(/dashboard|organizations/);
+  test.beforeEach(async ({ page }) => {
+    // Navigate to app (already authenticated via storage state)
+    await page.goto('http://localhost:5174/');
+    await page.waitForLoadState('networkidle');
   });
 
   test('investigate Sysco Corporation parent organization', async ({ page }) => {
