@@ -5,9 +5,9 @@ test.describe('Dashboard V2 - Tasks Panel', () => {
     // Navigate to dashboard v2
     await authenticatedPage.goto('/?layout=v2');
 
-    // Select a principal with tasks (RJC exists in seed.sql)
+    // Select a principal with tasks (Kaufholds has tasks in seed.sql)
     await authenticatedPage.click('[data-testid="principal-select-trigger"]');
-    await authenticatedPage.click('text="RJC"');
+    await authenticatedPage.click('text="Kaufholds"');
 
     // Wait for opportunities tree to load (proper wait condition)
     await authenticatedPage.waitForSelector('[role="tree"]:not(:has-text("Select a principal"))', {
