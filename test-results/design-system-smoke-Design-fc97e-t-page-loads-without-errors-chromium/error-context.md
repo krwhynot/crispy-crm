@@ -1,0 +1,1151 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - generic:
+        - generic [ref=e29]:
+          - group [ref=e30]:
+            - textbox "Search" [ref=e31]
+          - img
+        - generic [ref=e34]:
+          - switch "Only opportunities I manage" [ref=e35] [cursor=pointer]
+          - checkbox
+          - generic [ref=e36]: Only opportunities I manage
+      - generic [ref=e37]:
+        - group [ref=e38]:
+          - radio "Kanban view" [checked] [ref=e39] [cursor=pointer]:
+            - img [ref=e40]
+          - radio "List view" [ref=e45] [cursor=pointer]:
+            - img [ref=e46]
+          - radio "Campaign grouped view" [ref=e47] [cursor=pointer]:
+            - img [ref=e48]
+        - button "Add filter" [ref=e51] [cursor=pointer]:
+          - img
+          - text: Add filter
+        - button "Export" [ref=e52] [cursor=pointer]:
+          - img
+          - text: Export
+        - button "⚡ Quick Add" [ref=e53] [cursor=pointer]
+        - link "New Opportunity" [ref=e54] [cursor=pointer]:
+          - /url: "#/opportunities/create"
+          - img
+          - text: New Opportunity
+    - generic [ref=e55]:
+      - generic [ref=e56]:
+        - generic [ref=e57]: "Quick Filters:"
+        - button "My Opportunities" [ref=e58] [cursor=pointer]:
+          - img
+          - generic [ref=e59]: My Opportunities
+        - button "Closing This Month 100" [ref=e60] [cursor=pointer]:
+          - img
+          - generic [ref=e61]: Closing This Month
+          - generic [ref=e62]: "100"
+        - button "High Priority" [ref=e63] [cursor=pointer]:
+          - img
+          - generic [ref=e64]: High Priority
+        - button "Needs Action" [ref=e65] [cursor=pointer]:
+          - img
+          - generic [ref=e66]: Needs Action
+        - button "Recent Wins" [ref=e67] [cursor=pointer]:
+          - img
+          - generic [ref=e68]: Recent Wins
+      - generic [ref=e69]:
+        - button "Customize columns" [ref=e72] [cursor=pointer]: Customize Columns
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e76]:
+              - button "Collapse column" [ref=e77] [cursor=pointer]: ▼
+              - heading "New Lead" [level=2] [ref=e78]
+              - generic [ref=e79]: (0)
+            - button "+ New Opportunity" [ref=e81] [cursor=pointer]
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - generic [ref=e85]:
+                - button "Collapse column" [ref=e86] [cursor=pointer]: ▼
+                - heading "Initial Outreach" [level=2] [ref=e87]
+                - generic [ref=e88]: (99)
+              - generic "Average days in this stage" [ref=e90]: ~0d
+            - button "+ New Opportunity" [ref=e92] [cursor=pointer]
+            - generic [ref=e93]:
+              - button "Dana D'agostino @ D'AGOSTINO'S RESTAURANT/ NAVAJO LOU Medium Actions menu Dec 10, 2025" [ref=e94] [cursor=pointer]:
+                - generic [ref=e95]:
+                  - heading "Dana D'agostino @ D'AGOSTINO'S RESTAURANT/ NAVAJO LOU" [level=3] [ref=e96]
+                  - generic [ref=e97]:
+                    - generic [ref=e98]: Medium
+                    - button "Actions menu" [ref=e100]:
+                      - img [ref=e101]
+                - generic [ref=e103]:
+                  - img [ref=e104]
+                  - generic [ref=e106]: Dec 10, 2025
+              - button "Fred Romer @ Docks Landing Medium Actions menu Dec 10, 2025" [ref=e107] [cursor=pointer]:
+                - generic [ref=e108]:
+                  - heading "Fred Romer @ Docks Landing" [level=3] [ref=e109]
+                  - generic [ref=e110]:
+                    - generic [ref=e111]: Medium
+                    - button "Actions menu" [ref=e113]:
+                      - img [ref=e114]
+                - generic [ref=e116]:
+                  - img [ref=e117]
+                  - generic [ref=e119]: Dec 10, 2025
+              - button "Tom Crowes-Garey @ Crowes Nest Café Medium Actions menu Dec 10, 2025" [ref=e120] [cursor=pointer]:
+                - generic [ref=e121]:
+                  - heading "Tom Crowes-Garey @ Crowes Nest Café" [level=3] [ref=e122]
+                  - generic [ref=e123]:
+                    - generic [ref=e124]: Medium
+                    - button "Actions menu" [ref=e126]:
+                      - img [ref=e127]
+                - generic [ref=e129]:
+                  - img [ref=e130]
+                  - generic [ref=e132]: Dec 10, 2025
+              - button "Dan Wojhan @ DUNE DOGZ Medium Actions menu Dec 10, 2025" [ref=e133] [cursor=pointer]:
+                - generic [ref=e134]:
+                  - heading "Dan Wojhan @ DUNE DOGZ" [level=3] [ref=e135]
+                  - generic [ref=e136]:
+                    - generic [ref=e137]: Medium
+                    - button "Actions menu" [ref=e139]:
+                      - img [ref=e140]
+                - generic [ref=e142]:
+                  - img [ref=e143]
+                  - generic [ref=e145]: Dec 10, 2025
+              - button "April Vilminot @ DECK DOWN UNDER (THE) Medium Actions menu Dec 10, 2025" [ref=e146] [cursor=pointer]:
+                - generic [ref=e147]:
+                  - heading "April Vilminot @ DECK DOWN UNDER (THE)" [level=3] [ref=e148]
+                  - generic [ref=e149]:
+                    - generic [ref=e150]: Medium
+                    - button "Actions menu" [ref=e152]:
+                      - img [ref=e153]
+                - generic [ref=e155]:
+                  - img [ref=e156]
+                  - generic [ref=e158]: Dec 10, 2025
+              - button "Julia McEntee @ Dinks & Dingers Social Club Medium Actions menu Dec 10, 2025" [ref=e159] [cursor=pointer]:
+                - generic [ref=e160]:
+                  - heading "Julia McEntee @ Dinks & Dingers Social Club" [level=3] [ref=e161]
+                  - generic [ref=e162]:
+                    - generic [ref=e163]: Medium
+                    - button "Actions menu" [ref=e165]:
+                      - img [ref=e166]
+                - generic [ref=e168]:
+                  - img [ref=e169]
+                  - generic [ref=e171]: Dec 10, 2025
+              - button "Michele Stuart @ Cornerstone Univ/Food Service - 355 Medium Actions menu Dec 10, 2025" [ref=e172] [cursor=pointer]:
+                - generic [ref=e173]:
+                  - heading "Michele Stuart @ Cornerstone Univ/Food Service - 355" [level=3] [ref=e174]
+                  - generic [ref=e175]:
+                    - generic [ref=e176]: Medium
+                    - button "Actions menu" [ref=e178]:
+                      - img [ref=e179]
+                - generic [ref=e181]:
+                  - img [ref=e182]
+                  - generic [ref=e184]: Dec 10, 2025
+              - button "Dean Haselton @ NMC - Hawk Owl Cafe Medium Actions menu Dec 10, 2025" [ref=e185] [cursor=pointer]:
+                - generic [ref=e186]:
+                  - heading "Dean Haselton @ NMC - Hawk Owl Cafe" [level=3] [ref=e187]
+                  - generic [ref=e188]:
+                    - generic [ref=e189]: Medium
+                    - button "Actions menu" [ref=e191]:
+                      - img [ref=e192]
+                - generic [ref=e194]:
+                  - img [ref=e195]
+                  - generic [ref=e197]: Dec 10, 2025
+              - button "Ryan Lomonaco @ 10 PIN ICE CREAM Medium Actions menu Dec 10, 2025" [ref=e198] [cursor=pointer]:
+                - generic [ref=e199]:
+                  - heading "Ryan Lomonaco @ 10 PIN ICE CREAM" [level=3] [ref=e200]
+                  - generic [ref=e201]:
+                    - generic [ref=e202]: Medium
+                    - button "Actions menu" [ref=e204]:
+                      - img [ref=e205]
+                - generic [ref=e207]:
+                  - img [ref=e208]
+                  - generic [ref=e210]: Dec 10, 2025
+              - button "Brian Eaton @ 13TH STREET MARKET Medium Actions menu Dec 10, 2025" [ref=e211] [cursor=pointer]:
+                - generic [ref=e212]:
+                  - heading "Brian Eaton @ 13TH STREET MARKET" [level=3] [ref=e213]
+                  - generic [ref=e214]:
+                    - generic [ref=e215]: Medium
+                    - button "Actions menu" [ref=e217]:
+                      - img [ref=e218]
+                - generic [ref=e220]:
+                  - img [ref=e221]
+                  - generic [ref=e223]: Dec 10, 2025
+              - button "Charlie Maidens @ 231 BAR AND GRILL (THE) Medium Actions menu Dec 10, 2025" [ref=e224] [cursor=pointer]:
+                - generic [ref=e225]:
+                  - heading "Charlie Maidens @ 231 BAR AND GRILL (THE)" [level=3] [ref=e226]
+                  - generic [ref=e227]:
+                    - generic [ref=e228]: Medium
+                    - button "Actions menu" [ref=e230]:
+                      - img [ref=e231]
+                - generic [ref=e233]:
+                  - img [ref=e234]
+                  - generic [ref=e236]: Dec 10, 2025
+              - button "Rachel Sund @ 5 Knives Medium Actions menu Dec 10, 2025" [ref=e237] [cursor=pointer]:
+                - generic [ref=e238]:
+                  - heading "Rachel Sund @ 5 Knives" [level=3] [ref=e239]
+                  - generic [ref=e240]:
+                    - generic [ref=e241]: Medium
+                    - button "Actions menu" [ref=e243]:
+                      - img [ref=e244]
+                - generic [ref=e246]:
+                  - img [ref=e247]
+                  - generic [ref=e249]: Dec 10, 2025
+              - button "Steve Schultz @ 7 MONKS TAPROOM - GRAND RAPIDS Medium Actions menu Dec 10, 2025" [ref=e250] [cursor=pointer]:
+                - generic [ref=e251]:
+                  - heading "Steve Schultz @ 7 MONKS TAPROOM - GRAND RAPIDS" [level=3] [ref=e252]
+                  - generic [ref=e253]:
+                    - generic [ref=e254]: Medium
+                    - button "Actions menu" [ref=e256]:
+                      - img [ref=e257]
+                - generic [ref=e259]:
+                  - img [ref=e260]
+                  - generic [ref=e262]: Dec 10, 2025
+              - button "Steve Schultz @ 7 MONKS TAPROOM - GRAND RAPIDS Medium Actions menu Dec 10, 2025" [ref=e263] [cursor=pointer]:
+                - generic [ref=e264]:
+                  - heading "Steve Schultz @ 7 MONKS TAPROOM - GRAND RAPIDS" [level=3] [ref=e265]
+                  - generic [ref=e266]:
+                    - generic [ref=e267]: Medium
+                    - button "Actions menu" [ref=e269]:
+                      - img [ref=e270]
+                - generic [ref=e272]:
+                  - img [ref=e273]
+                  - generic [ref=e275]: Dec 10, 2025
+              - button "Matt Dangremond @ ACCLAIMED CATERING Medium Actions menu Dec 10, 2025" [ref=e276] [cursor=pointer]:
+                - generic [ref=e277]:
+                  - heading "Matt Dangremond @ ACCLAIMED CATERING" [level=3] [ref=e278]
+                  - generic [ref=e279]:
+                    - generic [ref=e280]: Medium
+                    - button "Actions menu" [ref=e282]:
+                      - img [ref=e283]
+                - generic [ref=e285]:
+                  - img [ref=e286]
+                  - generic [ref=e288]: Dec 10, 2025
+              - button "Jeff Brown @ NEDS Medium Actions menu Dec 10, 2025" [ref=e289] [cursor=pointer]:
+                - generic [ref=e290]:
+                  - heading "Jeff Brown @ NEDS" [level=3] [ref=e291]
+                  - generic [ref=e292]:
+                    - generic [ref=e293]: Medium
+                    - button "Actions menu" [ref=e295]:
+                      - img [ref=e296]
+                - generic [ref=e298]:
+                  - img [ref=e299]
+                  - generic [ref=e301]: Dec 10, 2025
+              - button "Ben Longstreet @ The Wooden Shoe Medium Actions menu Dec 10, 2025" [ref=e302] [cursor=pointer]:
+                - generic [ref=e303]:
+                  - heading "Ben Longstreet @ The Wooden Shoe" [level=3] [ref=e304]
+                  - generic [ref=e305]:
+                    - generic [ref=e306]: Medium
+                    - button "Actions menu" [ref=e308]:
+                      - img [ref=e309]
+                - generic [ref=e311]:
+                  - img [ref=e312]
+                  - generic [ref=e314]: Dec 10, 2025
+              - button "Jamie Clark @ Roasted Medium Actions menu Dec 10, 2025" [ref=e315] [cursor=pointer]:
+                - generic [ref=e316]:
+                  - heading "Jamie Clark @ Roasted" [level=3] [ref=e317]
+                  - generic [ref=e318]:
+                    - generic [ref=e319]: Medium
+                    - button "Actions menu" [ref=e321]:
+                      - img [ref=e322]
+                - generic [ref=e324]:
+                  - img [ref=e325]
+                  - generic [ref=e327]: Dec 10, 2025
+              - button "Alex Chavez @ ACCLAIMED CATERING Medium Actions menu Dec 10, 2025" [ref=e328] [cursor=pointer]:
+                - generic [ref=e329]:
+                  - heading "Alex Chavez @ ACCLAIMED CATERING" [level=3] [ref=e330]
+                  - generic [ref=e331]:
+                    - generic [ref=e332]: Medium
+                    - button "Actions menu" [ref=e334]:
+                      - img [ref=e335]
+                - generic [ref=e337]:
+                  - img [ref=e338]
+                  - generic [ref=e340]: Dec 10, 2025
+              - button "Kassie Wellman @ ALPHA CHI OMEGA Medium Actions menu Dec 10, 2025" [ref=e341] [cursor=pointer]:
+                - generic [ref=e342]:
+                  - heading "Kassie Wellman @ ALPHA CHI OMEGA" [level=3] [ref=e343]
+                  - generic [ref=e344]:
+                    - generic [ref=e345]: Medium
+                    - button "Actions menu" [ref=e347]:
+                      - img [ref=e348]
+                - generic [ref=e350]:
+                  - img [ref=e351]
+                  - generic [ref=e353]: Dec 10, 2025
+              - button "Lindasia Kennedy @ AMWAY GRAND PLAZA HOTEL Medium Actions menu Dec 10, 2025" [ref=e354] [cursor=pointer]:
+                - generic [ref=e355]:
+                  - heading "Lindasia Kennedy @ AMWAY GRAND PLAZA HOTEL" [level=3] [ref=e356]
+                  - generic [ref=e357]:
+                    - generic [ref=e358]: Medium
+                    - button "Actions menu" [ref=e360]:
+                      - img [ref=e361]
+                - generic [ref=e363]:
+                  - img [ref=e364]
+                  - generic [ref=e366]: Dec 10, 2025
+              - button "Mia McClure @ AMWAY GRAND PLAZA HOTEL Medium Actions menu Dec 10, 2025" [ref=e367] [cursor=pointer]:
+                - generic [ref=e368]:
+                  - heading "Mia McClure @ AMWAY GRAND PLAZA HOTEL" [level=3] [ref=e369]
+                  - generic [ref=e370]:
+                    - generic [ref=e371]: Medium
+                    - button "Actions menu" [ref=e373]:
+                      - img [ref=e374]
+                - generic [ref=e376]:
+                  - img [ref=e377]
+                  - generic [ref=e379]: Dec 10, 2025
+              - button "Josh Brack @ AMWAY GRAND PLAZA HOTEL Medium Actions menu Dec 10, 2025" [ref=e380] [cursor=pointer]:
+                - generic [ref=e381]:
+                  - heading "Josh Brack @ AMWAY GRAND PLAZA HOTEL" [level=3] [ref=e382]
+                  - generic [ref=e383]:
+                    - generic [ref=e384]: Medium
+                    - button "Actions menu" [ref=e386]:
+                      - img [ref=e387]
+                - generic [ref=e389]:
+                  - img [ref=e390]
+                  - generic [ref=e392]: Dec 10, 2025
+              - button "Alex Ley @ ARTURO'S TACO'S Medium Actions menu Dec 10, 2025" [ref=e393] [cursor=pointer]:
+                - generic [ref=e394]:
+                  - heading "Alex Ley @ ARTURO'S TACO'S" [level=3] [ref=e395]
+                  - generic [ref=e396]:
+                    - generic [ref=e397]: Medium
+                    - button "Actions menu" [ref=e399]:
+                      - img [ref=e400]
+                - generic [ref=e402]:
+                  - img [ref=e403]
+                  - generic [ref=e405]: Dec 10, 2025
+              - button "Todd Linsley @ Ada House The Post Medium Actions menu Dec 10, 2025" [ref=e406] [cursor=pointer]:
+                - generic [ref=e407]:
+                  - heading "Todd Linsley @ Ada House The Post" [level=3] [ref=e408]
+                  - generic [ref=e409]:
+                    - generic [ref=e410]: Medium
+                    - button "Actions menu" [ref=e412]:
+                      - img [ref=e413]
+                - generic [ref=e415]:
+                  - img [ref=e416]
+                  - generic [ref=e418]: Dec 10, 2025
+              - button "Becca Prieur @ Ala Mode Restaurant Medium Actions menu Dec 10, 2025" [ref=e419] [cursor=pointer]:
+                - generic [ref=e420]:
+                  - heading "Becca Prieur @ Ala Mode Restaurant" [level=3] [ref=e421]
+                  - generic [ref=e422]:
+                    - generic [ref=e423]: Medium
+                    - button "Actions menu" [ref=e425]:
+                      - img [ref=e426]
+                - generic [ref=e428]:
+                  - img [ref=e429]
+                  - generic [ref=e431]: Dec 10, 2025
+              - button "Beth Colley @ American House Jenison-Cottonwood M Medium Actions menu Dec 10, 2025" [ref=e432] [cursor=pointer]:
+                - generic [ref=e433]:
+                  - heading "Beth Colley @ American House Jenison-Cottonwood M" [level=3] [ref=e434]
+                  - generic [ref=e435]:
+                    - generic [ref=e436]: Medium
+                    - button "Actions menu" [ref=e438]:
+                      - img [ref=e439]
+                - generic [ref=e441]:
+                  - img [ref=e442]
+                  - generic [ref=e444]: Dec 10, 2025
+              - button "Matthew Krauss @ Applause Catering & Events Medium Actions menu Dec 10, 2025" [ref=e445] [cursor=pointer]:
+                - generic [ref=e446]:
+                  - heading "Matthew Krauss @ Applause Catering & Events" [level=3] [ref=e447]
+                  - generic [ref=e448]:
+                    - generic [ref=e449]: Medium
+                    - button "Actions menu" [ref=e451]:
+                      - img [ref=e452]
+                - generic [ref=e454]:
+                  - img [ref=e455]
+                  - generic [ref=e457]: Dec 10, 2025
+              - button "Matthew Krauss @ Applause Catering & Events Medium Actions menu Dec 10, 2025" [ref=e458] [cursor=pointer]:
+                - generic [ref=e459]:
+                  - heading "Matthew Krauss @ Applause Catering & Events" [level=3] [ref=e460]
+                  - generic [ref=e461]:
+                    - generic [ref=e462]: Medium
+                    - button "Actions menu" [ref=e464]:
+                      - img [ref=e465]
+                - generic [ref=e467]:
+                  - img [ref=e468]
+                  - generic [ref=e470]: Dec 10, 2025
+              - button "Bryan Riley @ Apple Mountain Medium Actions menu Dec 10, 2025" [ref=e471] [cursor=pointer]:
+                - generic [ref=e472]:
+                  - heading "Bryan Riley @ Apple Mountain" [level=3] [ref=e473]
+                  - generic [ref=e474]:
+                    - generic [ref=e475]: Medium
+                    - button "Actions menu" [ref=e477]:
+                      - img [ref=e478]
+                - generic [ref=e480]:
+                  - img [ref=e481]
+                  - generic [ref=e483]: Dec 10, 2025
+              - button "Russ Chanin @ Apple Mountain Medium Actions menu Dec 10, 2025" [ref=e484] [cursor=pointer]:
+                - generic [ref=e485]:
+                  - heading "Russ Chanin @ Apple Mountain" [level=3] [ref=e486]
+                  - generic [ref=e487]:
+                    - generic [ref=e488]: Medium
+                    - button "Actions menu" [ref=e490]:
+                      - img [ref=e491]
+                - generic [ref=e493]:
+                  - img [ref=e494]
+                  - generic [ref=e496]: Dec 10, 2025
+              - button "Mike Riccardi @ Asher Creek Creamery and Deli Medium Actions menu Dec 10, 2025" [ref=e497] [cursor=pointer]:
+                - generic [ref=e498]:
+                  - heading "Mike Riccardi @ Asher Creek Creamery and Deli" [level=3] [ref=e499]
+                  - generic [ref=e500]:
+                    - generic [ref=e501]: Medium
+                    - button "Actions menu" [ref=e503]:
+                      - img [ref=e504]
+                - generic [ref=e506]:
+                  - img [ref=e507]
+                  - generic [ref=e509]: Dec 10, 2025
+              - button "Matthew Gibson @ Autumn House Williamsburg Medium Actions menu Dec 10, 2025" [ref=e510] [cursor=pointer]:
+                - generic [ref=e511]:
+                  - heading "Matthew Gibson @ Autumn House Williamsburg" [level=3] [ref=e512]
+                  - generic [ref=e513]:
+                    - generic [ref=e514]: Medium
+                    - button "Actions menu" [ref=e516]:
+                      - img [ref=e517]
+                - generic [ref=e519]:
+                  - img [ref=e520]
+                  - generic [ref=e522]: Dec 10, 2025
+              - button "Carol Amman @ BACK FORTY (THE) Medium Actions menu Dec 10, 2025" [ref=e523] [cursor=pointer]:
+                - generic [ref=e524]:
+                  - heading "Carol Amman @ BACK FORTY (THE)" [level=3] [ref=e525]
+                  - generic [ref=e526]:
+                    - generic [ref=e527]: Medium
+                    - button "Actions menu" [ref=e529]:
+                      - img [ref=e530]
+                - generic [ref=e532]:
+                  - img [ref=e533]
+                  - generic [ref=e535]: Dec 10, 2025
+              - button "Arn Stiles @ BAIR LAKE BIBLE CAMP Medium Actions menu Dec 10, 2025" [ref=e536] [cursor=pointer]:
+                - generic [ref=e537]:
+                  - heading "Arn Stiles @ BAIR LAKE BIBLE CAMP" [level=3] [ref=e538]
+                  - generic [ref=e539]:
+                    - generic [ref=e540]: Medium
+                    - button "Actions menu" [ref=e542]:
+                      - img [ref=e543]
+                - generic [ref=e545]:
+                  - img [ref=e546]
+                  - generic [ref=e548]: Dec 10, 2025
+              - button "Leona Rairigh @ BARRY CTY COMMISSION ON AGING Medium Actions menu Dec 10, 2025" [ref=e549] [cursor=pointer]:
+                - generic [ref=e550]:
+                  - heading "Leona Rairigh @ BARRY CTY COMMISSION ON AGING" [level=3] [ref=e551]
+                  - generic [ref=e552]:
+                    - generic [ref=e553]: Medium
+                    - button "Actions menu" [ref=e555]:
+                      - img [ref=e556]
+                - generic [ref=e558]:
+                  - img [ref=e559]
+                  - generic [ref=e561]: Dec 10, 2025
+              - button "Holly Bollenbach @ BIG APPLE BAGEL - PORTAGE Medium Actions menu Dec 10, 2025" [ref=e562] [cursor=pointer]:
+                - generic [ref=e563]:
+                  - heading "Holly Bollenbach @ BIG APPLE BAGEL - PORTAGE" [level=3] [ref=e564]
+                  - generic [ref=e565]:
+                    - generic [ref=e566]: Medium
+                    - button "Actions menu" [ref=e568]:
+                      - img [ref=e569]
+                - generic [ref=e571]:
+                  - img [ref=e572]
+                  - generic [ref=e574]: Dec 10, 2025
+              - button "Jason LeBlanc @ BIG APPLE BAGEL - PORTAGE Medium Actions menu Dec 10, 2025" [ref=e575] [cursor=pointer]:
+                - generic [ref=e576]:
+                  - heading "Jason LeBlanc @ BIG APPLE BAGEL - PORTAGE" [level=3] [ref=e577]
+                  - generic [ref=e578]:
+                    - generic [ref=e579]: Medium
+                    - button "Actions menu" [ref=e581]:
+                      - img [ref=e582]
+                - generic [ref=e584]:
+                  - img [ref=e585]
+                  - generic [ref=e587]: Dec 10, 2025
+              - button "Eric Scott @ BAYMONT Medium Actions menu Dec 10, 2025" [ref=e588] [cursor=pointer]:
+                - generic [ref=e589]:
+                  - heading "Eric Scott @ BAYMONT" [level=3] [ref=e590]
+                  - generic [ref=e591]:
+                    - generic [ref=e592]: Medium
+                    - button "Actions menu" [ref=e594]:
+                      - img [ref=e595]
+                - generic [ref=e597]:
+                  - img [ref=e598]
+                  - generic [ref=e600]: Dec 10, 2025
+              - button "Pebbles Malstrom @ BEAMERS RESTAURANT-SPARTAN WEST BC Medium Actions menu Dec 10, 2025" [ref=e601] [cursor=pointer]:
+                - generic [ref=e602]:
+                  - heading "Pebbles Malstrom @ BEAMERS RESTAURANT-SPARTAN WEST BC" [level=3] [ref=e603]
+                  - generic [ref=e604]:
+                    - generic [ref=e605]: Medium
+                    - button "Actions menu" [ref=e607]:
+                      - img [ref=e608]
+                - generic [ref=e610]:
+                  - img [ref=e611]
+                  - generic [ref=e613]: Dec 10, 2025
+              - button "Jason Boussom @ BIG APPLE BAGEL - PORTAGE Medium Actions menu Dec 10, 2025" [ref=e614] [cursor=pointer]:
+                - generic [ref=e615]:
+                  - heading "Jason Boussom @ BIG APPLE BAGEL - PORTAGE" [level=3] [ref=e616]
+                  - generic [ref=e617]:
+                    - generic [ref=e618]: Medium
+                    - button "Actions menu" [ref=e620]:
+                      - img [ref=e621]
+                - generic [ref=e623]:
+                  - img [ref=e624]
+                  - generic [ref=e626]: Dec 10, 2025
+              - button "Andrew Hoffman @ BLIND SQUIRREL TAVERN (THE) Medium Actions menu Dec 10, 2025" [ref=e627] [cursor=pointer]:
+                - generic [ref=e628]:
+                  - heading "Andrew Hoffman @ BLIND SQUIRREL TAVERN (THE)" [level=3] [ref=e629]
+                  - generic [ref=e630]:
+                    - generic [ref=e631]: Medium
+                    - button "Actions menu" [ref=e633]:
+                      - img [ref=e634]
+                - generic [ref=e636]:
+                  - img [ref=e637]
+                  - generic [ref=e639]: Dec 10, 2025
+              - button "Laura Britton @ BRICKS GEORGETOWN Medium Actions menu Dec 10, 2025" [ref=e640] [cursor=pointer]:
+                - generic [ref=e641]:
+                  - heading "Laura Britton @ BRICKS GEORGETOWN" [level=3] [ref=e642]
+                  - generic [ref=e643]:
+                    - generic [ref=e644]: Medium
+                    - button "Actions menu" [ref=e646]:
+                      - img [ref=e647]
+                - generic [ref=e649]:
+                  - img [ref=e650]
+                  - generic [ref=e652]: Dec 10, 2025
+              - button "Marie Borkholder @ BULLSEYE MARKETPLACE Medium Actions menu Dec 10, 2025" [ref=e653] [cursor=pointer]:
+                - generic [ref=e654]:
+                  - heading "Marie Borkholder @ BULLSEYE MARKETPLACE" [level=3] [ref=e655]
+                  - generic [ref=e656]:
+                    - generic [ref=e657]: Medium
+                    - button "Actions menu" [ref=e659]:
+                      - img [ref=e660]
+                - generic [ref=e662]:
+                  - img [ref=e663]
+                  - generic [ref=e665]: Dec 10, 2025
+              - button "jeff farida @ BRIGHTON MARKET Medium Actions menu Dec 10, 2025" [ref=e666] [cursor=pointer]:
+                - generic [ref=e667]:
+                  - heading "jeff farida @ BRIGHTON MARKET" [level=3] [ref=e668]
+                  - generic [ref=e669]:
+                    - generic [ref=e670]: Medium
+                    - button "Actions menu" [ref=e672]:
+                      - img [ref=e673]
+                - generic [ref=e675]:
+                  - img [ref=e676]
+                  - generic [ref=e678]: Dec 10, 2025
+              - button "Chelsea Alsup @ BRONSON COMMONS Medium Actions menu Dec 10, 2025" [ref=e679] [cursor=pointer]:
+                - generic [ref=e680]:
+                  - heading "Chelsea Alsup @ BRONSON COMMONS" [level=3] [ref=e681]
+                  - generic [ref=e682]:
+                    - generic [ref=e683]: Medium
+                    - button "Actions menu" [ref=e685]:
+                      - img [ref=e686]
+                - generic [ref=e688]:
+                  - img [ref=e689]
+                  - generic [ref=e691]: Dec 10, 2025
+              - button "Andrew Wright @ BSA-CAMP ROTARY Medium Actions menu Dec 10, 2025" [ref=e692] [cursor=pointer]:
+                - generic [ref=e693]:
+                  - heading "Andrew Wright @ BSA-CAMP ROTARY" [level=3] [ref=e694]
+                  - generic [ref=e695]:
+                    - generic [ref=e696]: Medium
+                    - button "Actions menu" [ref=e698]:
+                      - img [ref=e699]
+                - generic [ref=e701]:
+                  - img [ref=e702]
+                  - generic [ref=e704]: Dec 10, 2025
+              - button "Randy rowlson @ Back Alley Saloon Medium Actions menu Dec 10, 2025" [ref=e705] [cursor=pointer]:
+                - generic [ref=e706]:
+                  - heading "Randy rowlson @ Back Alley Saloon" [level=3] [ref=e707]
+                  - generic [ref=e708]:
+                    - generic [ref=e709]: Medium
+                    - button "Actions menu" [ref=e711]:
+                      - img [ref=e712]
+                - generic [ref=e714]:
+                  - img [ref=e715]
+                  - generic [ref=e717]: Dec 10, 2025
+              - button "pETE PHARES @ Backroads Tavern Medium Actions menu Dec 10, 2025" [ref=e718] [cursor=pointer]:
+                - generic [ref=e719]:
+                  - heading "pETE PHARES @ Backroads Tavern" [level=3] [ref=e720]
+                  - generic [ref=e721]:
+                    - generic [ref=e722]: Medium
+                    - button "Actions menu" [ref=e724]:
+                      - img [ref=e725]
+                - generic [ref=e727]:
+                  - img [ref=e728]
+                  - generic [ref=e730]: Dec 10, 2025
+              - button "Marie Borkholder @ BULLSEYE MARKETPLACE Medium Actions menu Dec 10, 2025" [ref=e731] [cursor=pointer]:
+                - generic [ref=e732]:
+                  - heading "Marie Borkholder @ BULLSEYE MARKETPLACE" [level=3] [ref=e733]
+                  - generic [ref=e734]:
+                    - generic [ref=e735]: Medium
+                    - button "Actions menu" [ref=e737]:
+                      - img [ref=e738]
+                - generic [ref=e740]:
+                  - img [ref=e741]
+                  - generic [ref=e743]: Dec 10, 2025
+              - button "Becky Coggins @ Barrister Brewing Co Medium Actions menu Dec 10, 2025" [ref=e744] [cursor=pointer]:
+                - generic [ref=e745]:
+                  - heading "Becky Coggins @ Barrister Brewing Co" [level=3] [ref=e746]
+                  - generic [ref=e747]:
+                    - generic [ref=e748]: Medium
+                    - button "Actions menu" [ref=e750]:
+                      - img [ref=e751]
+                - generic [ref=e753]:
+                  - img [ref=e754]
+                  - generic [ref=e756]: Dec 10, 2025
+              - button "Quintin Wenglarz @ Beachside Tavern Medium Actions menu Dec 10, 2025" [ref=e757] [cursor=pointer]:
+                - generic [ref=e758]:
+                  - heading "Quintin Wenglarz @ Beachside Tavern" [level=3] [ref=e759]
+                  - generic [ref=e760]:
+                    - generic [ref=e761]: Medium
+                    - button "Actions menu" [ref=e763]:
+                      - img [ref=e764]
+                - generic [ref=e766]:
+                  - img [ref=e767]
+                  - generic [ref=e769]: Dec 10, 2025
+              - button "William Mathes @ Black Bear Golf Medium Actions menu Dec 10, 2025" [ref=e770] [cursor=pointer]:
+                - generic [ref=e771]:
+                  - heading "William Mathes @ Black Bear Golf" [level=3] [ref=e772]
+                  - generic [ref=e773]:
+                    - generic [ref=e774]: Medium
+                    - button "Actions menu" [ref=e776]:
+                      - img [ref=e777]
+                - generic [ref=e779]:
+                  - img [ref=e780]
+                  - generic [ref=e782]: Dec 10, 2025
+              - button "DJ Clark @ Booher's Market and Diner Medium Actions menu Dec 10, 2025" [ref=e783] [cursor=pointer]:
+                - generic [ref=e784]:
+                  - heading "DJ Clark @ Booher's Market and Diner" [level=3] [ref=e785]
+                  - generic [ref=e786]:
+                    - generic [ref=e787]: Medium
+                    - button "Actions menu" [ref=e789]:
+                      - img [ref=e790]
+                - generic [ref=e792]:
+                  - img [ref=e793]
+                  - generic [ref=e795]: Dec 10, 2025
+              - button "Quintin Wenglarz @ Beachside Tavern Medium Actions menu Dec 10, 2025" [ref=e796] [cursor=pointer]:
+                - generic [ref=e797]:
+                  - heading "Quintin Wenglarz @ Beachside Tavern" [level=3] [ref=e798]
+                  - generic [ref=e799]:
+                    - generic [ref=e800]: Medium
+                    - button "Actions menu" [ref=e802]:
+                      - img [ref=e803]
+                - generic [ref=e805]:
+                  - img [ref=e806]
+                  - generic [ref=e808]: Dec 10, 2025
+              - button "susan mahler @ CAFE MAX Medium Actions menu Dec 10, 2025" [ref=e809] [cursor=pointer]:
+                - generic [ref=e810]:
+                  - heading "susan mahler @ CAFE MAX" [level=3] [ref=e811]
+                  - generic [ref=e812]:
+                    - generic [ref=e813]: Medium
+                    - button "Actions menu" [ref=e815]:
+                      - img [ref=e816]
+                - generic [ref=e818]:
+                  - img [ref=e819]
+                  - generic [ref=e821]: Dec 10, 2025
+              - button "Codey Moore @ Booyahs Bar & Grill Medium Actions menu Dec 10, 2025" [ref=e822] [cursor=pointer]:
+                - generic [ref=e823]:
+                  - heading "Codey Moore @ Booyahs Bar & Grill" [level=3] [ref=e824]
+                  - generic [ref=e825]:
+                    - generic [ref=e826]: Medium
+                    - button "Actions menu" [ref=e828]:
+                      - img [ref=e829]
+                - generic [ref=e831]:
+                  - img [ref=e832]
+                  - generic [ref=e834]: Dec 10, 2025
+              - button "kara spangler @ CASS COUNTY MEDICAL FACILITY Medium Actions menu Dec 10, 2025" [ref=e835] [cursor=pointer]:
+                - generic [ref=e836]:
+                  - heading "kara spangler @ CASS COUNTY MEDICAL FACILITY" [level=3] [ref=e837]
+                  - generic [ref=e838]:
+                    - generic [ref=e839]: Medium
+                    - button "Actions menu" [ref=e841]:
+                      - img [ref=e842]
+                - generic [ref=e844]:
+                  - img [ref=e845]
+                  - generic [ref=e847]: Dec 10, 2025
+              - button "Deni smiljanovski @ Brown Iron Brewhouse - Washington Medium Actions menu Dec 10, 2025" [ref=e848] [cursor=pointer]:
+                - generic [ref=e849]:
+                  - heading "Deni smiljanovski @ Brown Iron Brewhouse - Washington" [level=3] [ref=e850]
+                  - generic [ref=e851]:
+                    - generic [ref=e852]: Medium
+                    - button "Actions menu" [ref=e854]:
+                      - img [ref=e855]
+                - generic [ref=e857]:
+                  - img [ref=e858]
+                  - generic [ref=e860]: Dec 10, 2025
+              - button "Anikah Webster @ Bud n’ Stanley’s Medium Actions menu Dec 10, 2025" [ref=e861] [cursor=pointer]:
+                - generic [ref=e862]:
+                  - heading "Anikah Webster @ Bud n’ Stanley’s" [level=3] [ref=e863]
+                  - generic [ref=e864]:
+                    - generic [ref=e865]: Medium
+                    - button "Actions menu" [ref=e867]:
+                      - img [ref=e868]
+                - generic [ref=e870]:
+                  - img [ref=e871]
+                  - generic [ref=e873]: Dec 10, 2025
+              - button "Kaylee Depew @ Butcher Block Social Medium Actions menu Dec 10, 2025" [ref=e874] [cursor=pointer]:
+                - generic [ref=e875]:
+                  - heading "Kaylee Depew @ Butcher Block Social" [level=3] [ref=e876]
+                  - generic [ref=e877]:
+                    - generic [ref=e878]: Medium
+                    - button "Actions menu" [ref=e880]:
+                      - img [ref=e881]
+                - generic [ref=e883]:
+                  - img [ref=e884]
+                  - generic [ref=e886]: Dec 10, 2025
+              - button "Sharon Weber @ Byron Center Heritage Elementary Medium Actions menu Dec 10, 2025" [ref=e887] [cursor=pointer]:
+                - generic [ref=e888]:
+                  - heading "Sharon Weber @ Byron Center Heritage Elementary" [level=3] [ref=e889]
+                  - generic [ref=e890]:
+                    - generic [ref=e891]: Medium
+                    - button "Actions menu" [ref=e893]:
+                      - img [ref=e894]
+                - generic [ref=e896]:
+                  - img [ref=e897]
+                  - generic [ref=e899]: Dec 10, 2025
+              - button "Naomi Dempsey @ CELEBRATION CINEMA LANSING Medium Actions menu Dec 10, 2025" [ref=e900] [cursor=pointer]:
+                - generic [ref=e901]:
+                  - heading "Naomi Dempsey @ CELEBRATION CINEMA LANSING" [level=3] [ref=e902]
+                  - generic [ref=e903]:
+                    - generic [ref=e904]: Medium
+                    - button "Actions menu" [ref=e906]:
+                      - img [ref=e907]
+                - generic [ref=e909]:
+                  - img [ref=e910]
+                  - generic [ref=e912]: Dec 10, 2025
+              - button "Kelly Beattie @ CAMP BLODGETT Medium Actions menu Dec 10, 2025" [ref=e913] [cursor=pointer]:
+                - generic [ref=e914]:
+                  - heading "Kelly Beattie @ CAMP BLODGETT" [level=3] [ref=e915]
+                  - generic [ref=e916]:
+                    - generic [ref=e917]: Medium
+                    - button "Actions menu" [ref=e919]:
+                      - img [ref=e920]
+                - generic [ref=e922]:
+                  - img [ref=e923]
+                  - generic [ref=e925]: Dec 10, 2025
+              - button "Heather Beaver @ CAMP CROSLEY YMCA Medium Actions menu Dec 10, 2025" [ref=e926] [cursor=pointer]:
+                - generic [ref=e927]:
+                  - heading "Heather Beaver @ CAMP CROSLEY YMCA" [level=3] [ref=e928]
+                  - generic [ref=e929]:
+                    - generic [ref=e930]: Medium
+                    - button "Actions menu" [ref=e932]:
+                      - img [ref=e933]
+                - generic [ref=e935]:
+                  - img [ref=e936]
+                  - generic [ref=e938]: Dec 10, 2025
+              - button "TJ Harris @ CANDIED YAM Medium Actions menu Dec 10, 2025" [ref=e939] [cursor=pointer]:
+                - generic [ref=e940]:
+                  - heading "TJ Harris @ CANDIED YAM" [level=3] [ref=e941]
+                  - generic [ref=e942]:
+                    - generic [ref=e943]: Medium
+                    - button "Actions menu" [ref=e945]:
+                      - img [ref=e946]
+                - generic [ref=e948]:
+                  - img [ref=e949]
+                  - generic [ref=e951]: Dec 10, 2025
+              - button "Gail Hilliker @ CASCADE TRAILS SENIOR LIVING Medium Actions menu Dec 10, 2025" [ref=e952] [cursor=pointer]:
+                - generic [ref=e953]:
+                  - heading "Gail Hilliker @ CASCADE TRAILS SENIOR LIVING" [level=3] [ref=e954]
+                  - generic [ref=e955]:
+                    - generic [ref=e956]: Medium
+                    - button "Actions menu" [ref=e958]:
+                      - img [ref=e959]
+                - generic [ref=e961]:
+                  - img [ref=e962]
+                  - generic [ref=e964]: Dec 10, 2025
+              - button "Ariana Belcher @ CHATEAU AERONAUTIQUE WINERY Medium Actions menu Dec 10, 2025" [ref=e965] [cursor=pointer]:
+                - generic [ref=e966]:
+                  - heading "Ariana Belcher @ CHATEAU AERONAUTIQUE WINERY" [level=3] [ref=e967]
+                  - generic [ref=e968]:
+                    - generic [ref=e969]: Medium
+                    - button "Actions menu" [ref=e971]:
+                      - img [ref=e972]
+                - generic [ref=e974]:
+                  - img [ref=e975]
+                  - generic [ref=e977]: Dec 10, 2025
+              - button "Rachel Fontes @ CATAWBA ISLAND CLUB Medium Actions menu Dec 10, 2025" [ref=e978] [cursor=pointer]:
+                - generic [ref=e979]:
+                  - heading "Rachel Fontes @ CATAWBA ISLAND CLUB" [level=3] [ref=e980]
+                  - generic [ref=e981]:
+                    - generic [ref=e982]: Medium
+                    - button "Actions menu" [ref=e984]:
+                      - img [ref=e985]
+                - generic [ref=e987]:
+                  - img [ref=e988]
+                  - generic [ref=e990]: Dec 10, 2025
+              - button "Brandon Grzegorczyk @ CDS - Kettering University Medium Actions menu Dec 10, 2025" [ref=e991] [cursor=pointer]:
+                - generic [ref=e992]:
+                  - heading "Brandon Grzegorczyk @ CDS - Kettering University" [level=3] [ref=e993]
+                  - generic [ref=e994]:
+                    - generic [ref=e995]: Medium
+                    - button "Actions menu" [ref=e997]:
+                      - img [ref=e998]
+                - generic [ref=e1000]:
+                  - img [ref=e1001]
+                  - generic [ref=e1003]: Dec 10, 2025
+              - button "Joe Bolis @ CDS-SOUTH HAVEN CONFERENCE CTR Medium Actions menu Dec 10, 2025" [ref=e1004] [cursor=pointer]:
+                - generic [ref=e1005]:
+                  - heading "Joe Bolis @ CDS-SOUTH HAVEN CONFERENCE CTR" [level=3] [ref=e1006]
+                  - generic [ref=e1007]:
+                    - generic [ref=e1008]: Medium
+                    - button "Actions menu" [ref=e1010]:
+                      - img [ref=e1011]
+                - generic [ref=e1013]:
+                  - img [ref=e1014]
+                  - generic [ref=e1016]: Dec 10, 2025
+              - button "Jon Ruppert @ CLEMENTINE'S SALOON Medium Actions menu Dec 10, 2025" [ref=e1017] [cursor=pointer]:
+                - generic [ref=e1018]:
+                  - heading "Jon Ruppert @ CLEMENTINE'S SALOON" [level=3] [ref=e1019]
+                  - generic [ref=e1020]:
+                    - generic [ref=e1021]: Medium
+                    - button "Actions menu" [ref=e1023]:
+                      - img [ref=e1024]
+                - generic [ref=e1026]:
+                  - img [ref=e1027]
+                  - generic [ref=e1029]: Dec 10, 2025
+              - button "Lauryn Corkwell @ CENTER LAKE BIBLE CAMP Medium Actions menu Dec 10, 2025" [ref=e1030] [cursor=pointer]:
+                - generic [ref=e1031]:
+                  - heading "Lauryn Corkwell @ CENTER LAKE BIBLE CAMP" [level=3] [ref=e1032]
+                  - generic [ref=e1033]:
+                    - generic [ref=e1034]: Medium
+                    - button "Actions menu" [ref=e1036]:
+                      - img [ref=e1037]
+                - generic [ref=e1039]:
+                  - img [ref=e1040]
+                  - generic [ref=e1042]: Dec 10, 2025
+              - button "Tondalayo Rose @ CORINE'S CAKES & CATERING Medium Actions menu Dec 10, 2025" [ref=e1043] [cursor=pointer]:
+                - generic [ref=e1044]:
+                  - heading "Tondalayo Rose @ CORINE'S CAKES & CATERING" [level=3] [ref=e1045]
+                  - generic [ref=e1046]:
+                    - generic [ref=e1047]: Medium
+                    - button "Actions menu" [ref=e1049]:
+                      - img [ref=e1050]
+                - generic [ref=e1052]:
+                  - img [ref=e1053]
+                  - generic [ref=e1055]: Dec 10, 2025
+              - button "William Baird @ CRAN HILL RANCH Medium Actions menu Dec 10, 2025" [ref=e1056] [cursor=pointer]:
+                - generic [ref=e1057]:
+                  - heading "William Baird @ CRAN HILL RANCH" [level=3] [ref=e1058]
+                  - generic [ref=e1059]:
+                    - generic [ref=e1060]: Medium
+                    - button "Actions menu" [ref=e1062]:
+                      - img [ref=e1063]
+                - generic [ref=e1065]:
+                  - img [ref=e1066]
+                  - generic [ref=e1068]: Dec 10, 2025
+              - button "Melanie Ruppert @ CLEMENTINE'S SALOON Medium Actions menu Dec 10, 2025" [ref=e1069] [cursor=pointer]:
+                - generic [ref=e1070]:
+                  - heading "Melanie Ruppert @ CLEMENTINE'S SALOON" [level=3] [ref=e1071]
+                  - generic [ref=e1072]:
+                    - generic [ref=e1073]: Medium
+                    - button "Actions menu" [ref=e1075]:
+                      - img [ref=e1076]
+                - generic [ref=e1078]:
+                  - img [ref=e1079]
+                  - generic [ref=e1081]: Dec 10, 2025
+              - button "Angi Butler @ COMMUNITY HOSPITAL OF BREMEN-H05464 Medium Actions menu Dec 10, 2025" [ref=e1082] [cursor=pointer]:
+                - generic [ref=e1083]:
+                  - heading "Angi Butler @ COMMUNITY HOSPITAL OF BREMEN-H05464" [level=3] [ref=e1084]
+                  - generic [ref=e1085]:
+                    - generic [ref=e1086]: Medium
+                    - button "Actions menu" [ref=e1088]:
+                      - img [ref=e1089]
+                - generic [ref=e1091]:
+                  - img [ref=e1092]
+                  - generic [ref=e1094]: Dec 10, 2025
+              - button "Kevin Simons @ CULINARY INSTITUTE OF MICHIGAN Medium Actions menu Dec 10, 2025" [ref=e1095] [cursor=pointer]:
+                - generic [ref=e1096]:
+                  - heading "Kevin Simons @ CULINARY INSTITUTE OF MICHIGAN" [level=3] [ref=e1097]
+                  - generic [ref=e1098]:
+                    - generic [ref=e1099]: Medium
+                    - button "Actions menu" [ref=e1101]:
+                      - img [ref=e1102]
+                - generic [ref=e1104]:
+                  - img [ref=e1105]
+                  - generic [ref=e1107]: Dec 10, 2025
+              - button "Sara Jorgensen @ COURTYARD GRAND RAPIDS DOWNTOWN Medium Actions menu Dec 10, 2025" [ref=e1108] [cursor=pointer]:
+                - generic [ref=e1109]:
+                  - heading "Sara Jorgensen @ COURTYARD GRAND RAPIDS DOWNTOWN" [level=3] [ref=e1110]
+                  - generic [ref=e1111]:
+                    - generic [ref=e1112]: Medium
+                    - button "Actions menu" [ref=e1114]:
+                      - img [ref=e1115]
+                - generic [ref=e1117]:
+                  - img [ref=e1118]
+                  - generic [ref=e1120]: Dec 10, 2025
+              - button "TINA NEWSUM @ Caddie Cones Medium Actions menu Dec 10, 2025" [ref=e1121] [cursor=pointer]:
+                - generic [ref=e1122]:
+                  - heading "TINA NEWSUM @ Caddie Cones" [level=3] [ref=e1123]
+                  - generic [ref=e1124]:
+                    - generic [ref=e1125]: Medium
+                    - button "Actions menu" [ref=e1127]:
+                      - img [ref=e1128]
+                - generic [ref=e1130]:
+                  - img [ref=e1131]
+                  - generic [ref=e1133]: Dec 10, 2025
+              - button "Asher Moss @ CRYSTAL VALLEY CATERING Medium Actions menu Dec 10, 2025" [ref=e1134] [cursor=pointer]:
+                - generic [ref=e1135]:
+                  - heading "Asher Moss @ CRYSTAL VALLEY CATERING" [level=3] [ref=e1136]
+                  - generic [ref=e1137]:
+                    - generic [ref=e1138]: Medium
+                    - button "Actions menu" [ref=e1140]:
+                      - img [ref=e1141]
+                - generic [ref=e1143]:
+                  - img [ref=e1144]
+                  - generic [ref=e1146]: Dec 10, 2025
+              - button "Noreen Deephouse @ Canary Inn Bar Grill Medium Actions menu Dec 10, 2025" [ref=e1147] [cursor=pointer]:
+                - generic [ref=e1148]:
+                  - heading "Noreen Deephouse @ Canary Inn Bar Grill" [level=3] [ref=e1149]
+                  - generic [ref=e1150]:
+                    - generic [ref=e1151]: Medium
+                    - button "Actions menu" [ref=e1153]:
+                      - img [ref=e1154]
+                - generic [ref=e1156]:
+                  - img [ref=e1157]
+                  - generic [ref=e1159]: Dec 10, 2025
+              - button "Bri Bautista @ City Limits Medium Actions menu Dec 10, 2025" [ref=e1160] [cursor=pointer]:
+                - generic [ref=e1161]:
+                  - heading "Bri Bautista @ City Limits" [level=3] [ref=e1162]
+                  - generic [ref=e1163]:
+                    - generic [ref=e1164]: Medium
+                    - button "Actions menu" [ref=e1166]:
+                      - img [ref=e1167]
+                - generic [ref=e1169]:
+                  - img [ref=e1170]
+                  - generic [ref=e1172]: Dec 10, 2025
+              - button "James Wilkinson @ Culvers Muskegon MI Independence Dr Medium Actions menu Dec 10, 2025" [ref=e1173] [cursor=pointer]:
+                - generic [ref=e1174]:
+                  - heading "James Wilkinson @ Culvers Muskegon MI Independence Dr" [level=3] [ref=e1175]
+                  - generic [ref=e1176]:
+                    - generic [ref=e1177]: Medium
+                    - button "Actions menu" [ref=e1179]:
+                      - img [ref=e1180]
+                - generic [ref=e1182]:
+                  - img [ref=e1183]
+                  - generic [ref=e1185]: Dec 10, 2025
+              - button "Tyler VanAntwerpen @ Canopy - F&B 152141E Medium Actions menu Dec 10, 2025" [ref=e1186] [cursor=pointer]:
+                - generic [ref=e1187]:
+                  - heading "Tyler VanAntwerpen @ Canopy - F&B 152141E" [level=3] [ref=e1188]
+                  - generic [ref=e1189]:
+                    - generic [ref=e1190]: Medium
+                    - button "Actions menu" [ref=e1192]:
+                      - img [ref=e1193]
+                - generic [ref=e1195]:
+                  - img [ref=e1196]
+                  - generic [ref=e1198]: Dec 10, 2025
+              - button "Brian Mason @ Carerite- Harbor Post Acute Center Medium Actions menu Dec 10, 2025" [ref=e1199] [cursor=pointer]:
+                - generic [ref=e1200]:
+                  - heading "Brian Mason @ Carerite- Harbor Post Acute Center" [level=3] [ref=e1201]
+                  - generic [ref=e1202]:
+                    - generic [ref=e1203]: Medium
+                    - button "Actions menu" [ref=e1205]:
+                      - img [ref=e1206]
+                - generic [ref=e1208]:
+                  - img [ref=e1209]
+                  - generic [ref=e1211]: Dec 10, 2025
+              - button "Dana Franco @ Champs Bar & Grill Medium Actions menu Dec 10, 2025" [ref=e1212] [cursor=pointer]:
+                - generic [ref=e1213]:
+                  - heading "Dana Franco @ Champs Bar & Grill" [level=3] [ref=e1214]
+                  - generic [ref=e1215]:
+                    - generic [ref=e1216]: Medium
+                    - button "Actions menu" [ref=e1218]:
+                      - img [ref=e1219]
+                - generic [ref=e1221]:
+                  - img [ref=e1222]
+                  - generic [ref=e1224]: Dec 10, 2025
+              - button "sam barr @ Cherry Republic- Glen Arbor Public Medium Actions menu Dec 10, 2025" [ref=e1225] [cursor=pointer]:
+                - generic [ref=e1226]:
+                  - heading "sam barr @ Cherry Republic- Glen Arbor Public" [level=3] [ref=e1227]
+                  - generic [ref=e1228]:
+                    - generic [ref=e1229]: Medium
+                    - button "Actions menu" [ref=e1231]:
+                      - img [ref=e1232]
+                - generic [ref=e1234]:
+                  - img [ref=e1235]
+                  - generic [ref=e1237]: Dec 10, 2025
+              - button "Jennifer Sweney @ SULLIVAN'S Medium Actions menu Dec 10, 2025" [ref=e1238] [cursor=pointer]:
+                - generic [ref=e1239]:
+                  - heading "Jennifer Sweney @ SULLIVAN'S" [level=3] [ref=e1240]
+                  - generic [ref=e1241]:
+                    - generic [ref=e1242]: Medium
+                    - button "Actions menu" [ref=e1244]:
+                      - img [ref=e1245]
+                - generic [ref=e1247]:
+                  - img [ref=e1248]
+                  - generic [ref=e1250]: Dec 10, 2025
+              - button "James Fuller @ Choice Services - Camp Grayling - B Medium Actions menu Dec 10, 2025" [ref=e1251] [cursor=pointer]:
+                - generic [ref=e1252]:
+                  - heading "James Fuller @ Choice Services - Camp Grayling - B" [level=3] [ref=e1253]
+                  - generic [ref=e1254]:
+                    - generic [ref=e1255]: Medium
+                    - button "Actions menu" [ref=e1257]:
+                      - img [ref=e1258]
+                - generic [ref=e1260]:
+                  - img [ref=e1261]
+                  - generic [ref=e1263]: Dec 10, 2025
+              - button "James Fuller @ Choice Services - Camp Grayling - B Medium Actions menu Dec 10, 2025" [ref=e1264] [cursor=pointer]:
+                - generic [ref=e1265]:
+                  - heading "James Fuller @ Choice Services - Camp Grayling - B" [level=3] [ref=e1266]
+                  - generic [ref=e1267]:
+                    - generic [ref=e1268]: Medium
+                    - button "Actions menu" [ref=e1270]:
+                      - img [ref=e1271]
+                - generic [ref=e1273]:
+                  - img [ref=e1274]
+                  - generic [ref=e1276]: Dec 10, 2025
+              - button "Berto Mendoza @ Cinco De Mayo Allendale Medium Actions menu Dec 10, 2025" [ref=e1277] [cursor=pointer]:
+                - generic [ref=e1278]:
+                  - heading "Berto Mendoza @ Cinco De Mayo Allendale" [level=3] [ref=e1279]
+                  - generic [ref=e1280]:
+                    - generic [ref=e1281]: Medium
+                    - button "Actions menu" [ref=e1283]:
+                      - img [ref=e1284]
+                - generic [ref=e1286]:
+                  - img [ref=e1287]
+                  - generic [ref=e1289]: Dec 10, 2025
+              - button "JESSICA MCGUIRE @ DORR TRUCK STOP/EXIT 76 CORP Medium Actions menu Dec 10, 2025" [ref=e1290] [cursor=pointer]:
+                - generic [ref=e1291]:
+                  - heading "JESSICA MCGUIRE @ DORR TRUCK STOP/EXIT 76 CORP" [level=3] [ref=e1292]
+                  - generic [ref=e1293]:
+                    - generic [ref=e1294]: Medium
+                    - button "Actions menu" [ref=e1296]:
+                      - img [ref=e1297]
+                - generic [ref=e1299]:
+                  - img [ref=e1300]
+                  - generic [ref=e1302]: Dec 10, 2025
+              - button "Branndan Kanuszewski @ Corewell Health Blodgett Hospital N Medium Actions menu Dec 10, 2025" [ref=e1303] [cursor=pointer]:
+                - generic [ref=e1304]:
+                  - heading "Branndan Kanuszewski @ Corewell Health Blodgett Hospital N" [level=3] [ref=e1305]
+                  - generic [ref=e1306]:
+                    - generic [ref=e1307]: Medium
+                    - button "Actions menu" [ref=e1309]:
+                      - img [ref=e1310]
+                - generic [ref=e1312]:
+                  - img [ref=e1313]
+                  - generic [ref=e1315]: Dec 10, 2025
+              - button "Mick Rickerd @ Corewell Health Butterworth Hospita Medium Actions menu Dec 10, 2025" [ref=e1316] [cursor=pointer]:
+                - generic [ref=e1317]:
+                  - heading "Mick Rickerd @ Corewell Health Butterworth Hospita" [level=3] [ref=e1318]
+                  - generic [ref=e1319]:
+                    - generic [ref=e1320]: Medium
+                    - button "Actions menu" [ref=e1322]:
+                      - img [ref=e1323]
+                - generic [ref=e1325]:
+                  - img [ref=e1326]
+                  - generic [ref=e1328]: Dec 10, 2025
+              - button "teresa emery @ FENNVILLE ELEMENTARY SCHOOL Medium Actions menu Dec 10, 2025" [ref=e1329] [cursor=pointer]:
+                - generic [ref=e1330]:
+                  - heading "teresa emery @ FENNVILLE ELEMENTARY SCHOOL" [level=3] [ref=e1331]
+                  - generic [ref=e1332]:
+                    - generic [ref=e1333]: Medium
+                    - button "Actions menu" [ref=e1335]:
+                      - img [ref=e1336]
+                - generic [ref=e1338]:
+                  - img [ref=e1339]
+                  - generic [ref=e1341]: Dec 10, 2025
+              - button "Cassandra Routley @ Corewell Health Greenville Hosp-Nut Medium Actions menu Dec 10, 2025" [ref=e1342] [cursor=pointer]:
+                - generic [ref=e1343]:
+                  - heading "Cassandra Routley @ Corewell Health Greenville Hosp-Nut" [level=3] [ref=e1344]
+                  - generic [ref=e1345]:
+                    - generic [ref=e1346]: Medium
+                    - button "Actions menu" [ref=e1348]:
+                      - img [ref=e1349]
+                - generic [ref=e1351]:
+                  - img [ref=e1352]
+                  - generic [ref=e1354]: Dec 10, 2025
+              - button "Molly Orrico @ Corewell Health Lakeland Hosp St Jo Medium Actions menu Dec 10, 2025" [ref=e1355] [cursor=pointer]:
+                - generic [ref=e1356]:
+                  - heading "Molly Orrico @ Corewell Health Lakeland Hosp St Jo" [level=3] [ref=e1357]
+                  - generic [ref=e1358]:
+                    - generic [ref=e1359]: Medium
+                    - button "Actions menu" [ref=e1361]:
+                      - img [ref=e1362]
+                - generic [ref=e1364]:
+                  - img [ref=e1365]
+                  - generic [ref=e1367]: Dec 10, 2025
+              - button "Kane Anderson @ Dale's Bar & Grill Medium Actions menu Dec 10, 2025" [ref=e1368] [cursor=pointer]:
+                - generic [ref=e1369]:
+                  - heading "Kane Anderson @ Dale's Bar & Grill" [level=3] [ref=e1370]
+                  - generic [ref=e1371]:
+                    - generic [ref=e1372]: Medium
+                    - button "Actions menu" [ref=e1374]:
+                      - img [ref=e1375]
+                - generic [ref=e1377]:
+                  - img [ref=e1378]
+                  - generic [ref=e1380]: Dec 10, 2025
+          - generic [ref=e1381]:
+            - generic [ref=e1383]:
+              - button "Collapse column" [ref=e1384] [cursor=pointer]: ▼
+              - heading "Sample/Visit Offered" [level=2] [ref=e1385]
+              - generic [ref=e1386]: (0)
+            - button "+ New Opportunity" [ref=e1388] [cursor=pointer]
+          - generic [ref=e1390]:
+            - generic [ref=e1392]:
+              - button "Collapse column" [ref=e1393] [cursor=pointer]: ▼
+              - heading "Awaiting Response" [level=2] [ref=e1394]
+              - generic [ref=e1395]: (0)
+            - button "+ New Opportunity" [ref=e1397] [cursor=pointer]
+          - generic [ref=e1399]:
+            - generic [ref=e1400]:
+              - generic [ref=e1401]:
+                - button "Collapse column" [ref=e1402] [cursor=pointer]: ▼
+                - heading "Feedback Logged" [level=2] [ref=e1403]
+                - generic [ref=e1404]: (1)
+              - generic "Average days in this stage" [ref=e1406]: ~0d
+            - button "+ New Opportunity" [ref=e1408] [cursor=pointer]
+            - button "Michele Smith @ 13TH STREET MARKET Medium Actions menu Dec 10, 2025" [ref=e1410] [cursor=pointer]:
+              - generic [ref=e1411]:
+                - heading "Michele Smith @ 13TH STREET MARKET" [level=3] [ref=e1412]
+                - generic [ref=e1413]:
+                  - generic [ref=e1414]: Medium
+                  - button "Actions menu" [ref=e1416]:
+                    - img [ref=e1417]
+              - generic [ref=e1419]:
+                - img [ref=e1420]
+                - generic [ref=e1422]: Dec 10, 2025
+          - generic [ref=e1423]:
+            - generic [ref=e1425]:
+              - button "Collapse column" [ref=e1426] [cursor=pointer]: ▼
+              - heading "Demo Scheduled" [level=2] [ref=e1427]
+              - generic [ref=e1428]: (0)
+            - button "+ New Opportunity" [ref=e1430] [cursor=pointer]
+          - generic [ref=e1432]:
+            - generic [ref=e1434]:
+              - button "Collapse column" [ref=e1435] [cursor=pointer]: ▼
+              - heading "Closed - Won" [level=2] [ref=e1436]
+              - generic [ref=e1437]: (0)
+            - button "+ New Opportunity" [ref=e1439] [cursor=pointer]
+          - generic [ref=e1441]:
+            - generic [ref=e1443]:
+              - button "Collapse column" [ref=e1444] [cursor=pointer]: ▼
+              - heading "Closed - Lost" [level=2] [ref=e1445]
+              - generic [ref=e1446]: (0)
+            - button "+ New Opportunity" [ref=e1448] [cursor=pointer]
+        - button "View archived opportunities" [ref=e1451] [cursor=pointer]
+      - link "Create new opportunities" [ref=e1452] [cursor=pointer]:
+        - /url: "#/opportunities/create"
+        - img [ref=e1453]
+  - contentinfo [ref=e1454]:
+    - generic [ref=e1456]:
+      - paragraph [ref=e1457]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e1458] [cursor=pointer]:
+        - img [ref=e1459]
+        - generic [ref=e1461]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
