@@ -264,13 +264,14 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
                         className="h-11 px-3 hover:bg-muted/30 flex items-center gap-3 border-b border-border/50"
                         role="listitem"
                       >
-                        <button
-                          onClick={() => handleComplete(task.task_id)}
-                          className="shrink-0 h-11 w-11 flex items-center justify-center -ml-1"
-                          aria-label={`Mark "${task.task_title}" as complete`}
-                        >
-                          <Checkbox checked={false} className="h-5 w-5" />
-                        </button>
+                        <div className="shrink-0 h-11 w-11 flex items-center justify-center -ml-1">
+                          <Checkbox
+                            checked={false}
+                            onClick={() => handleComplete(task.task_id)}
+                            aria-label={`Mark "${task.task_title}" as complete`}
+                            className="h-5 w-5"
+                          />
+                        </div>
 
                         <span className="flex-1 text-sm truncate">{task.task_title}</span>
 
