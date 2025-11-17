@@ -66,7 +66,7 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
             </p>
 
             {isLoading ? (
-              <div className="text-center py-4 text-[color:var(--text-subtle)]">
+              <div className="text-center py-4 text-muted-foreground">
                 Loading products...
               </div>
             ) : productCount > 0 ? (
@@ -77,10 +77,10 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
                       key={product.id}
                       className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
                     >
-                      <Package className="w-4 h-4 mt-0.5 text-[color:var(--text-subtle)]" />
+                      <Package className="w-4 h-4 mt-0.5 text-muted-foreground" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm">{product.name}</p>
-                        <p className="text-xs text-[color:var(--text-subtle)]">
+                        <p className="text-xs text-muted-foreground">
                           SKU: {product.sku}
                         </p>
                       </div>
@@ -89,14 +89,14 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
                 </div>
               </ScrollArea>
             ) : (
-              <div className="text-center py-4 text-[color:var(--text-subtle)]">
+              <div className="text-center py-4 text-muted-foreground">
                 No products found
               </div>
             )}
 
             <div className="bg-amber-500/10 border border-amber-500/20 rounded-md p-3">
               <p className="text-sm font-medium">💡 To change this organization type:</p>
-              <ol className="text-sm text-[color:var(--text-subtle)] mt-2 ml-4 list-decimal space-y-1">
+              <ol className="text-sm text-muted-foreground mt-2 ml-4 list-decimal space-y-1">
                 <li>Go to the Products page</li>
                 <li>Reassign these {productCount} products to a different principal</li>
                 <li>Return here to change the organization type</li>

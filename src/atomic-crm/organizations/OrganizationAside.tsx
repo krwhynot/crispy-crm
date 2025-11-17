@@ -162,7 +162,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
     <AsideSection title="Additional Info">
       {record.description && <p className="text-sm  mb-1">{record.description}</p>}
       {record.parent_organization_id && (
-        <div className="text-sm text-[color:var(--text-subtle)] mb-1">
+        <div className="text-sm text-muted-foreground mb-1">
           Parent organization:{" "}
           <ReferenceField source="parent_organization_id" reference="organizations" record={record}>
             <TextField source="name" />
@@ -188,7 +188,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
         </div>
       )}
       {record.sales_id !== null && (
-        <div className="text-sm text-[color:var(--text-subtle)] mb-1">
+        <div className="text-sm text-muted-foreground mb-1">
           Followed by{" "}
           <ReferenceField source="sales_id" reference="sales" record={record}>
             <SaleName />
@@ -196,7 +196,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
         </div>
       )}
       {record.created_at && (
-        <p className="text-sm text-[color:var(--text-subtle)] mb-1">
+        <p className="text-sm text-muted-foreground mb-1">
           Added on{" "}
           <DateField
             source="created_at"

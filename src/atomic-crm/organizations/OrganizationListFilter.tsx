@@ -72,12 +72,12 @@ export const OrganizationListFilter = () => {
               {organizationTypes.map((type) => {
                 const colorClass =
                   {
-                    customer: "bg-[color:var(--tag-warm-bg)] text-[color:var(--tag-warm-fg)]",
-                    prospect: "bg-[color:var(--tag-sage-bg)] text-[color:var(--tag-sage-fg)]",
-                    principal: "bg-[color:var(--tag-purple-bg)] text-[color:var(--tag-purple-fg)]",
-                    distributor: "bg-[color:var(--tag-teal-bg)] text-[color:var(--tag-teal-fg)]",
-                    unknown: "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]",
-                  }[type.id] || "bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]";
+                    customer: "tag-warm",
+                    prospect: "tag-sage",
+                    principal: "tag-purple",
+                    distributor: "tag-teal",
+                    unknown: "tag-gray",
+                  }[type.id] || "tag-gray";
 
                 return (
                   <ToggleFilterButton

@@ -24,7 +24,7 @@ const organizationTypeColors: Record<OrganizationType, string> = {
 // Follows urgency spectrum: Red (high) → Amber (medium-high) → Gray (medium) → Light gray (low)
 const priorityColors = {
   A: "bg-destructive text-white hover:bg-destructive/90", // High priority: Red
-  B: "border-transparent bg-[var(--warning-default)] text-white hover:bg-[var(--warning-hover)]", // Medium-High: Amber
+  B: "bg-warning text-white hover:bg-warning/90", // Medium-High: Amber
   C: "bg-secondary text-secondary-foreground hover:bg-secondary/90", // Medium: Neutral gray
   D: "bg-muted text-muted-foreground hover:bg-muted/90", // Low: Light gray
 };
