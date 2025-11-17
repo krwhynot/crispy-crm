@@ -124,10 +124,10 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
               )}
               {task.title}
               {task.description && (
-                <span className="text-[color:var(--text-subtle)]"> - {task.description}</span>
+                <span className="text-muted-foreground"> - {task.description}</span>
               )}
             </div>
-            <div className="text-sm text-[color:var(--text-subtle)]">
+            <div className="text-sm text-muted-foreground">
               due&nbsp;
               <DateField source="due_date" record={task} />
               {showContact && (
@@ -136,7 +136,7 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
                   reference="contacts"
                   record={task}
                   link="show"
-                  className="inline text-sm text-[color:var(--text-subtle)]"
+                  className="inline text-sm text-muted-foreground"
                   render={({ referenceRecord }) => {
                     if (!referenceRecord) return null;
                     return (
