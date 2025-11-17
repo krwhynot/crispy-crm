@@ -26,6 +26,12 @@ export const OrganizationInputs = () => {
       fields: ["website", "linkedin_url", "context_links"],
       content: <OrganizationOtherTab />,
     },
+    {
+      key: "hierarchy" as TabKey,
+      label: "Hierarchy",
+      fields: ["parent_organization_id"],
+      content: <OrganizationHierarchyTab />,
+    },
   ];
 
   return <TabbedFormInputs tabs={tabs} defaultTab="general" />;
