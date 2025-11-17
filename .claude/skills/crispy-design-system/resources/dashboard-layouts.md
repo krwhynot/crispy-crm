@@ -4,6 +4,8 @@
 
 Document dashboard layout patterns for Atomic CRM including grid systems, widget layouts, responsive breakpoints, spacing tokens, and page structure optimized for desktop (primary) and tablet displays.
 
+**NOTE:** For resource list pages (Contacts, Organizations, etc.), use `StandardListLayout` instead. This guide is for dashboards and custom grid layouts.
+
 ## Core Principle: Desktop-First Grid Layouts
 
 Dashboards are optimized for **desktop displays first** (1440px+), then adapted for tablet (768-1024px). Desktop uses 12-column grids with comfortable spacing, while tablet uses 8-column grids with tighter gaps. Mobile gets vertical stacking instead of grids.
@@ -15,22 +17,30 @@ Dashboards are optimized for **desktop displays first** (1440px+), then adapted 
 
 ## Grid System
 
-### Desktop Grid (12-column)
+### Semantic Spacing Variables
 
-**From `src/index.css`:**
+**Unified Design System spacing** (docs/plans/2025-11-16-unified-design-system-rollout.md:306-344):
 
 ```css
-@theme inline {
-  /* Grid System */
-  --spacing-grid-columns-desktop: 12;
-  --spacing-grid-columns-ipad: 8;
-  --spacing-gutter-desktop: 12px;
-  --spacing-gutter-ipad: 20px;
+@layer theme {
+  :root {
+    /* Grid System */
+    --spacing-grid-columns-desktop: 12;
+    --spacing-grid-columns-ipad: 8;
+    --spacing-gutter-desktop: 24px;
+    --spacing-gutter-ipad: 16px;
 
-  /* Edge Padding (Screen Borders) */
-  --spacing-edge-desktop: 24px;
-  --spacing-edge-ipad: 60px;
-  --spacing-edge-mobile: 16px;
+    /* Edge Padding (Screen Borders) */
+    --spacing-edge-desktop: 24px;
+    --spacing-edge-ipad: 20px;
+    --spacing-edge-mobile: 16px;
+
+    /* Vertical Rhythm */
+    --spacing-section: 32px;
+    --spacing-widget: 24px;
+    --spacing-content: 16px;
+    --spacing-compact: 12px;
+  }
 }
 ```
 

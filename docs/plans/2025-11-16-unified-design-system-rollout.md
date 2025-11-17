@@ -68,7 +68,10 @@ Every list page follows this standardized pattern:
 **1. Standardized List Shell** (`StandardListLayout.tsx`)
 ```tsx
 <div className="flex flex-row gap-6">
-  <aside aria-label="Filter {resource}" className="filter-sidebar sticky top-6">
+  <aside
+    aria-label="Filter {resource}"
+    className="filter-sidebar sticky top-[var(--spacing-section)] h-fit"
+  >
     <div className="card-container p-2">
       {filterComponent}
     </div>
@@ -107,6 +110,75 @@ Every list page follows this standardized pattern:
 ### Pattern Overview
 
 Clicking any table row or "View" button opens a right slide-over panel (modeled after Dashboard V2's `RightSlideOver.tsx`). This replaces traditional full-page navigation for viewing and editing records.
+
+### Component API (`ResourceSlideOver.tsx`)
+
+**Props Interface:**
+```typescript
+interface ResourceSlideOverProps {
+  resource: string;           // Resource name (e.g., "contacts", "organizations")
+  recordId: number | null;   // ID of record to display
+  isOpen: boolean;           // Slide-over visibility
+  onClose: () => void;       // Close handler
+  mode?: 'view' | 'edit';    // Initial mode (default: 'view')
+  tabs?: TabConfig[];        // Resource-specific tab configuration
+}
+
+interface TabConfig {
+  key: string;
+  label: string;
+  component: React.ComponentType<{ record: any; mode: 'view' | 'edit' }>;
+  icon?: React.ComponentType;
+}
+```
+
+**Hook Usage (`useSlideOverState`):**
+```typescript
+function useSlideOverState() {
+  const [slideOverId, setSlideOverId] = useState<number | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState<'view' | 'edit'>('view');
+
+  const openSlideOver = (id: number, initialMode: 'view' | 'edit' = 'view') => {
+    setSlideOverId(id);
+    setMode(initialMode);
+    setIsOpen(true);
+    // Update URL: window.history.pushState(null, '', `?${initialMode}=${id}`);
+  };
+
+  const closeSlideOver = () => {
+    setIsOpen(false);
+    setSlideOverId(null);
+    // Clear URL: window.history.pushState(null, '', window.location.pathname);
+  };
+
+  return { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, setMode };
+}
+```
+
+**Usage Example:**
+```typescript
+function ContactList() {
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, setMode } = useSlideOverState();
+
+  return (
+    <>
+      <Datagrid rowClick={(id) => openSlideOver(id)}>
+        {/* columns */}
+      </Datagrid>
+
+      <ResourceSlideOver
+        resource="contacts"
+        recordId={slideOverId}
+        isOpen={isOpen}
+        onClose={closeSlideOver}
+        mode={mode}
+        tabs={contactTabs}
+      />
+    </>
+  );
+}
+```
 
 ### Visual Specifications
 
@@ -316,33 +388,34 @@ Some resources offer quick-add modals from list views:
 - Comfortable: `p-4` `gap-4` (16px) - form fields
 - Spacious: `p-6` `gap-6` (24px) - cards, sections
 
-**Semantic Spacing Variables** (defined in `src/index.css`):
+**Semantic Spacing Variables** (already defined in `src/index.css` lines 92-111):
 
 ```css
-@layer theme {
-  :root {
-    /* Grid & Layout */
-    --spacing-grid-columns-desktop: 12;
-    --spacing-grid-columns-ipad: 8;
-    --spacing-gutter-desktop: 24px;
-    --spacing-gutter-ipad: 16px;
+@theme inline {
+  /* Grid System */
+  --spacing-grid-columns-desktop: 12;
+  --spacing-grid-columns-ipad: 8;
+  --spacing-gutter-desktop: 12px;    /* Reduced from 24px for desktop density */
+  --spacing-gutter-ipad: 20px;
 
-    /* Edge Padding (screen borders) */
-    --spacing-edge-desktop: 24px;
-    --spacing-edge-ipad: 20px;
-    --spacing-edge-mobile: 16px;
+  /* Edge Padding (Screen Borders) */
+  --spacing-edge-desktop: 24px;      /* Reduced from 120px for more content */
+  --spacing-edge-ipad: 60px;
+  --spacing-edge-mobile: 16px;
 
-    /* Vertical Rhythm */
-    --spacing-section: 32px;      /* Between major sections */
-    --spacing-widget: 24px;        /* Within widgets */
-    --spacing-content: 16px;       /* Content gaps */
-    --spacing-compact: 12px;       /* Tight spacing */
+  /* Vertical Rhythm - Desktop Data Density */
+  --spacing-section: 24px;           /* Reduced from 32px - Between major sections */
+  --spacing-widget: 16px;            /* Reduced from 24px - Between widgets */
+  --spacing-content: 12px;           /* Reduced from 16px - Within content areas */
+  --spacing-compact: 8px;            /* Reduced from 12px - Tight spacing */
 
-    /* Widget Internals */
-    --spacing-widget-padding: 20px;
-    --spacing-widget-min-height: 280px;
-  }
+  /* Widget/Card Internals */
+  --spacing-widget-padding: 12px;    /* Reduced from 20px for desktop density */
+  --spacing-widget-min-height: 240px;/* Reduced from 280px for more rows */
 }
+
+/* Note: These values reflect the desktop-optimized spacing already
+   implemented in the codebase for improved data density. */
 ```
 
 Use these variables for consistent spacing:
@@ -356,8 +429,9 @@ Location: `src/index.css` in `@layer components`
 
 ```css
 @layer components {
-  /* Premium interactive card/row - base class for all premium hover effects */
-  .interactive-card {
+  /* Premium interactive card/row - shared styles for all premium hover effects */
+  .interactive-card,
+  .table-row-premium {
     @apply rounded-lg border border-transparent bg-card px-3 py-1.5;
     @apply transition-all duration-150;
     @apply hover:border-border hover:shadow-md;
@@ -366,12 +440,8 @@ Location: `src/index.css` in `@layer components`
     @apply focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
   }
 
-  /* Table row premium styling - composes .interactive-card */
-  .table-row-premium {
-    @extend .interactive-card;
-  }
-
-  /* Note: PremiumDatagrid applies .table-row-premium to rows via rowClassName prop.
+  /* Note: Both classes share identical styling (PostCSS doesn't support @extend).
+     PremiumDatagrid applies .table-row-premium to rows via rowClassName prop.
      Use .interactive-card for standalone cards (e.g., contact cards).
      Use .table-row-premium for Datagrid rows to maintain semantic clarity. */
 

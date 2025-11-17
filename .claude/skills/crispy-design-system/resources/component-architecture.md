@@ -4,6 +4,76 @@
 
 Document React component patterns used in Atomic CRM for building maintainable, composable, and type-safe UI components with Tailwind CSS and TypeScript.
 
+## Unified Admin Components
+
+**Per unified design system rollout** (docs/plans/2025-11-16-unified-design-system-rollout.md:422-434):
+
+Three reusable components establish the standardized layout pattern across all resources:
+
+### 1. StandardListLayout
+
+**Usage:** Wraps all resource list pages
+
+```tsx
+import { StandardListLayout } from '@/components/admin/StandardListLayout';
+
+<StandardListLayout filterComponent={<ContactFilters />}>
+  <PremiumDatagrid>
+    {/* Datagrid columns */}
+  </PremiumDatagrid>
+</StandardListLayout>
+```
+
+**Includes:**
+- Left sidebar (filter-sidebar, 256px)
+- Main content area (card-container)
+- Sticky filter positioning
+
+### 2. ResourceSlideOver
+
+**Usage:** Opens on row click or edit button (`?view=123` or `?edit=123`)
+
+```tsx
+<ResourceSlideOver
+  resource="contacts"
+  recordId={123}
+  mode="view"  // or "edit"
+  tabs={[
+    { key: 'details', label: 'Details', component: DetailsTab },
+    { key: 'history', label: 'History', component: HistoryTab },
+  ]}
+/>
+```
+
+**Features:**
+- Width: 40vw (min 480px, max 720px)
+- Animation: 200ms slide-in from right
+- Focus trap & keyboard handling
+- URL sync (query params)
+
+### 3. PremiumDatagrid
+
+**Usage:** Wraps React Admin Datagrid with premium styling
+
+```tsx
+<PremiumDatagrid rowClassName={() => 'table-row-premium'}>
+  <TextField source="name" />
+  <EditButton />
+</PremiumDatagrid>
+```
+
+**Applies:**
+- `.table-row-premium` to all rows
+- Hover effects: border reveal, shadow-md, lift animation
+- Click behavior: opens slide-over (not full page)
+
+### Direct Migration Rule
+
+**NO feature flags, gradual rollout, or legacy fallbacks** (docs/plans/2025-11-16-unified-design-system-rollout.md:436-487):
+- Delete old components immediately
+- Breaking changes are expected
+- Fix forward if issues arise
+
 ## Core Pattern: Compound Components
 
 Compound components provide flexible composition while maintaining component integrity. The Card component exemplifies this pattern.
