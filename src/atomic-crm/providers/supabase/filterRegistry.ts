@@ -83,7 +83,6 @@ export const filterableFields: Record<string, string[]> = {
     "id",
     "name",
     "organization_type",
-    "parent_organization_id",
     "priority",
     "website",
     "city",

@@ -38,26 +38,6 @@ export const OrganizationList = () => {
             render={(record: any) => <PriorityBadge priority={record.priority} />}
           />
 
-          <ReferenceField
-            source="parent_organization_id"
-            reference="organizations"
-            label="Parent"
-            link={false}
-            emptyText="-"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-
-          <FunctionField
-            label="Branches"
-            render={(record: any) => {
-              if (record.child_branch_count && record.child_branch_count > 0) {
-                return `${record.child_branch_count} ${record.child_branch_count === 1 ? 'branch' : 'branches'}`;
-              }
-              return '-';
-            }}
-          />
-
           <FunctionField
             label="Contacts"
             render={(record: any) => record.nb_contacts || 0}

@@ -3,12 +3,14 @@
 
 BEGIN;
 
--- 1. Drop the cycle protection trigger first
+-- 1. Drop ALL triggers that might reference parent_organization_id
 DROP TRIGGER IF EXISTS prevent_organization_cycles ON organizations;
-DROP FUNCTION IF EXISTS check_organization_hierarchy_cycle();
-
--- 2. Drop the deletion protection trigger
+DROP TRIGGER IF EXISTS check_organization_cycle ON organizations;
 DROP TRIGGER IF EXISTS prevent_parent_deletion ON organizations;
+
+-- 2. Drop the associated functions
+DROP FUNCTION IF EXISTS check_organization_hierarchy_cycle();
+DROP FUNCTION IF EXISTS check_organization_cycle();
 DROP FUNCTION IF EXISTS prevent_parent_organization_deletion();
 
 -- 3. Drop any diagnostic/temporary views
@@ -49,7 +51,9 @@ GROUP BY o.id;
 GRANT SELECT ON organizations_summary TO authenticated;
 
 -- 5. Update organizations_with_account_manager view if it exists
-CREATE OR REPLACE VIEW organizations_with_account_manager AS
+DROP VIEW IF EXISTS organizations_with_account_manager;
+
+CREATE VIEW organizations_with_account_manager AS
 SELECT
   o.id,
   o.name,
