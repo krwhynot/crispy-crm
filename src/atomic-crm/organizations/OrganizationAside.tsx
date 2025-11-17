@@ -12,6 +12,7 @@ import { AsideSection } from "../misc/AsideSection";
 import { SaleName } from "../sales/SaleName";
 import type { Company } from "../types";
 import { sizes as _sizes } from "./sizes";
+import { ParentOrganizationSection } from "./ParentOrganizationSection";
 
 interface OrganizationAsideProps {
   link?: string;
@@ -32,6 +33,8 @@ export const OrganizationAside = ({ link = "edit" }: OrganizationAsideProps) => 
       </div>
 
       <OrganizationInfo record={record} />
+
+      <ParentOrganizationSection />
 
       <AddressInfo record={record} />
 
