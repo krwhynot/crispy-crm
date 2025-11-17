@@ -49,7 +49,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
 
   if (!record) return null;
 
-  const dividerClass = rowIndex > 0 ? "border-t border-[color:var(--divider-subtle)]" : "";
+  const dividerClass = rowIndex > 0 ? "border-t border-border" : "";
 
   if (isFunctionLink) {
     return (
@@ -57,7 +57,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
         <button
           onClick={handleClick}
           style={style}
-          className="w-full text-left hover:bg-[var(--surface-interactive-hover)] focus:bg-[var(--surface-interactive-hover)] focus:outline-none transition-colors min-h-[52px] flex items-center"
+          className="w-full text-left hover:bg-muted focus:bg-muted focus:outline-none transition-colors min-h-[52px] flex items-center"
         >
           {children}
         </button>
@@ -71,7 +71,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
         <Link
           to={pathForRecord}
           style={style}
-          className="block w-full hover:bg-[var(--surface-interactive-hover)] focus:bg-[var(--surface-interactive-hover)] focus:outline-none transition-colors min-h-[52px] flex items-center"
+          className="block w-full hover:bg-muted focus:bg-muted focus:outline-none transition-colors min-h-[52px] flex items-center"
         >
           {children}
         </Link>
