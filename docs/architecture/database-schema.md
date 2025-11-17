@@ -92,13 +92,15 @@ CREATE TYPE task_type AS ENUM (
 ```sql
 CREATE TABLE sales (
   id                BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  user_id           UUID NOT NULL UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
+  user_id           UUID UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,  /* Nullable for legacy records */
   email             TEXT NOT NULL UNIQUE,
   first_name        TEXT,
   last_name         TEXT,
   name              TEXT,  /* Computed: first_name || ' ' || last_name */
   avatar_url        TEXT,
-  is_admin          BOOLEAN DEFAULT false NOT NULL,
+  role              user_role DEFAULT 'rep' NOT NULL,  /* admin, manager, rep */
+  is_admin          BOOLEAN DEFAULT false NOT NULL,  /* Deprecated: Use role enum instead */
+  administrator     BOOLEAN GENERATED ALWAYS AS (role = 'admin') STORED,  /* Computed from role */
   created_at        TIMESTAMPTZ DEFAULT now() NOT NULL,
   updated_at        TIMESTAMPTZ DEFAULT now() NOT NULL,
   deleted_at        TIMESTAMPTZ  /* Soft delete */
@@ -106,12 +108,43 @@ CREATE TABLE sales (
 ```
 
 **Key Features:**
-- One-to-one with `auth.users` via `user_id`
-- `is_admin` flag controls admin-only RLS policies
+- **Optional** one-to-one with `auth.users` via `user_id` (nullable for legacy records)
+- `role` enum controls permissions (admin/manager/rep) - **PRIMARY FIELD**
+- `is_admin` boolean **DEPRECATED** - kept for backward compatibility, synced via trigger
+- `administrator` computed column - generated from `role = 'admin'`
 - Automatically created/updated via `handle_new_user()` and `handle_update_user()` triggers
 
+**Role System Migration (2025-11-16):**
+- **Old:** `is_admin` boolean (true/false)
+- **New:** `role` enum ('admin', 'manager', 'rep')
+- **Migration:** `20251116210019_fix_sales_schema_consistency.sql`
+- **Trigger:** `keep_is_admin_synced` maintains backward compatibility
+
+**Nullable user_id Implications:**
+
+⚠️ **Legacy Sales Records Without user_id:**
+- **Authentication:** Cannot use auth.uid() for lookups (affects RLS policies)
+- **Dashboard Filters:** "Assignee: Me" filter won't work for legacy reps
+- **Login:** Cannot log in to the CRM (no auth.users record)
+- **Use Case:** Historical records from data imports or manual creation
+
+**Affected Features:**
+- ❌ Dashboard filter "Assignee: Me" (requires user_id → auth.uid() lookup)
+- ❌ RLS policies using `auth.uid()` comparisons (legacy records bypass these checks)
+- ❌ Login functionality (no auth.users record = cannot authenticate)
+- ✅ Reporting (aggregations by sales_id work regardless)
+- ✅ Assignment (can assign opportunities/contacts to legacy sales records)
+
+**Recommended Actions:**
+1. **Data Audit:** Identify sales records with `user_id IS NULL`
+2. **Migration Options:**
+   - Create auth.users accounts for active legacy sales reps
+   - Mark inactive legacy reps with `deleted_at` timestamp
+   - Document as "historical records only" (no login access)
+3. **Future Enforcement:** Consider making `user_id` NOT NULL after legacy cleanup
+
 **Indexes:**
-- `user_id` (unique)
+- `user_id` (unique, partial: WHERE user_id IS NOT NULL)
 - `email` (unique)
 
 ---

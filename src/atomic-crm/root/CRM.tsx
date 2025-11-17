@@ -14,6 +14,7 @@ import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
 import notifications from "../notifications";
+import activities from "../activities";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
@@ -151,7 +152,7 @@ export const CRM = ({
         <Resource name="organizations" {...organizations} />
         <Resource name="products" {...products} />
         <Resource name="tasks" {...tasks} />
-        <Resource name="activities" />
+        <Resource {...activities} />
         <Resource name="contactNotes" />
         <Resource name="opportunityNotes" />
         <Resource name="sales" {...sales} />
