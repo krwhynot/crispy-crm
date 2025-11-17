@@ -1,12 +1,16 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { CreateBase, Form, useGetIdentity } from "ra-core";
+import { CreateBase, Form, useGetIdentity, useNotify, useRedirect } from "ra-core";
+import { useFormContext, useFormState } from "react-hook-form";
+import { useCallback } from "react";
 
-import { FormToolbar } from "@/components/admin/simple-form";
+import { Button } from "@/components/ui/button";
+import { SaveButton } from "@/components/admin/form";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
 
 const ContactCreate = () => {
   const { identity } = useGetIdentity();
+  const notify = useNotify();
+  const redirect = useRedirect();
 
   const transformData = (data: Contact) => ({
     ...data,
@@ -16,20 +20,72 @@ const ContactCreate = () => {
   });
 
   return (
-    <CreateBase redirect="show" transform={transformData}>
-      <div className="mt-2 flex lg:mr-72">
-        <div className="flex-1">
+    <CreateBase redirect="list" transform={transformData}>
+      <div className="bg-muted px-[var(--spacing-edge-desktop)] py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
           <Form defaultValues={{ sales_id: identity?.id }}>
-            <Card>
-              <CardContent>
-                <ContactInputs />
-                <FormToolbar />
-              </CardContent>
-            </Card>
+            <ContactInputs />
+            <ContactCreateFooter notify={notify} redirect={redirect} />
           </Form>
         </div>
       </div>
     </CreateBase>
+  );
+};
+
+const ContactCreateFooter = ({
+  notify,
+  redirect,
+}: {
+  notify: ReturnType<typeof useNotify>;
+  redirect: ReturnType<typeof useRedirect>;
+}) => {
+  const { reset } = useFormContext();
+  const { isDirty } = useFormState();
+
+  const handleCancel = useCallback(() => {
+    if (isDirty) {
+      const confirmed = window.confirm(
+        "You have unsaved changes. Are you sure you want to leave?"
+      );
+      if (!confirmed) return;
+    }
+    redirect("/contacts");
+  }, [isDirty, redirect]);
+
+  const handleSaveAndAddAnother = useCallback(() => {
+    // SaveButton with mutationOptions will handle the save
+    // We'll reset the form in onSuccess callback
+  }, []);
+
+  return (
+    <div className="sticky bottom-0 bg-card border-t border-border p-4 flex justify-between mt-6">
+      <Button variant="outline" onClick={handleCancel}>
+        Cancel
+      </Button>
+      <div className="flex gap-2">
+        <SaveButton
+          type="button"
+          label="Save & Close"
+          mutationOptions={{
+            onSuccess: () => {
+              notify("Contact created successfully", { type: "success" });
+              redirect("/contacts");
+            },
+          }}
+        />
+        <SaveButton
+          type="button"
+          label="Save & Add Another"
+          mutationOptions={{
+            onSuccess: () => {
+              notify("Contact created successfully", { type: "success" });
+              reset();
+            },
+          }}
+        />
+      </div>
+    </div>
   );
 };
 
