@@ -1,9 +1,9 @@
 import { BuildingIcon, Network, Users, Target } from 'lucide-react';
 import { ResourceSlideOver, TabConfig } from '@/components/layouts/ResourceSlideOver';
-import { OrganizationDetailsTab } from './OrganizationDetailsTab';
-import { OrganizationHierarchyTab } from './OrganizationHierarchyTab';
-import { OrganizationContactsTab } from './OrganizationContactsTab';
-import { OrganizationOpportunitiesTab } from './OrganizationOpportunitiesTab';
+import { OrganizationDetailsTab } from './slideOverTabs/OrganizationDetailsTab';
+import { OrganizationHierarchyTab } from './slideOverTabs/OrganizationHierarchyTab';
+import { OrganizationContactsTab } from './slideOverTabs/OrganizationContactsTab';
+import { OrganizationOpportunitiesTab } from './slideOverTabs/OrganizationOpportunitiesTab';
 
 interface OrganizationSlideOverProps {
   recordId: number | null;

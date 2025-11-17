@@ -1,0 +1,147 @@
+import { useEffect, useState } from 'react';
+import { useDataProvider, RecordContextProvider } from 'ra-core';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AsideSection } from '../../misc/AsideSection';
+import { Users } from 'lucide-react';
+import type { OrganizationWithHierarchy } from '../../types';
+import type { Identifier } from 'ra-core';
+
+interface Contact {
+  id: Identifier;
+  first_name: string;
+  last_name: string;
+  title?: string;
+  email?: any[];
+  avatar?: { src?: string };
+}
+
+interface OrganizationContactsTabProps {
+  record: OrganizationWithHierarchy;
+  mode: 'view' | 'edit';
+  onModeToggle?: () => void;
+}
+
+export function OrganizationContactsTab({ record }: OrganizationContactsTabProps) {
+  const dataProvider = useDataProvider();
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await dataProvider.getList('contacts', {
+          filter: { organization_id: record.id },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: 'last_name', order: 'ASC' },
+        });
+        setContacts(result.data as Contact[]);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load contacts');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchContacts();
+  }, [record.id, dataProvider]);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-11 w-full" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardContent className="p-4">
+          <p className="text-sm text-destructive">{error}</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (contacts.length === 0) {
+    return (
+      <RecordContextProvider value={record}>
+        <AsideSection title="Contacts">
+          <Card>
+            <CardContent className="p-8 text-center">
+              <Users className="size-11 mx-auto text-muted-foreground mb-4" />
+              <p className="text-muted-foreground">No contacts yet.</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Add contacts to this organization from the Contacts module.
+              </p>
+            </CardContent>
+          </Card>
+        </AsideSection>
+      </RecordContextProvider>
+    );
+  }
+
+  return (
+    <RecordContextProvider value={record}>
+      <div className="space-y-6">
+        <AsideSection title={`Contacts (${contacts.length})`}>
+          <Card>
+            <CardContent className="p-4">
+              <div className="space-y-3">
+                {contacts.map((contact) => (
+                  <div
+                    key={contact.id}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/5 transition-colors"
+                  >
+                    {contact.avatar?.src ? (
+                      <img
+                        src={contact.avatar.src}
+                        alt={`${contact.first_name} ${contact.last_name}`}
+                        className="size-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span className="text-sm font-semibold text-primary">
+                          {contact.first_name?.[0]}{contact.last_name?.[0]}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="flex-1 min-w-0">
+                      <a
+                        href={`/contacts?view=${contact.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = `/contacts?view=${contact.id}`;
+                        }}
+                        className="text-sm font-medium text-primary hover:underline block truncate"
+                      >
+                        {contact.first_name} {contact.last_name}
+                      </a>
+                      {contact.title && (
+                        <p className="text-xs text-muted-foreground truncate">
+                          {contact.title}
+                        </p>
+                      )}
+                      {contact.email && Array.isArray(contact.email) && contact.email.length > 0 && (
+                        <p className="text-xs text-muted-foreground truncate">
+                          {contact.email[0].email || contact.email[0]}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </AsideSection>
+      </div>
+    </RecordContextProvider>
+  );
+}

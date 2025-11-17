@@ -58,6 +58,12 @@ const ProductShowRedirect = () => {
   return <Navigate to={`/products?view=${id}`} replace />;
 };
 
+// Redirect component for legacy /organizations/:id/show URLs
+const OrganizationShowRedirect = () => {
+  const { id } = useParams();
+  return <Navigate to={`/organizations?view=${id}`} replace />;
+};
+
 export interface CRMProps extends Partial<ConfigurationContextValue> {
   dataProvider?: DataProvider;
   authProvider?: AuthProvider;
@@ -167,6 +173,7 @@ export const CRM = ({
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
           <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />
           <Route path="/products/:id/show" element={<ProductShowRedirect />} />
+          <Route path="/organizations/:id/show" element={<OrganizationShowRedirect />} />
         </CustomRoutes>
         <Resource name="opportunities" {...opportunities} />
         <Resource name="contacts" {...contacts} />
