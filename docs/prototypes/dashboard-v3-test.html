@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Dashboard V3 - Test Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind with Atomic CRM design tokens
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Semantic colors matching Atomic CRM
+                        'primary': '#84cc16', // lime-500
+                        'success': '#22c55e',
+                        'warning': '#f59e0b',
+                        'destructive': '#ef4444',
+                        'muted': '#f3f4f6',
+                        'muted-foreground': '#6b7280',
+                        'card': '#ffffff',
+                        'border': '#e5e7eb',
+                    },
+                    spacing: {
+                        '11': '44px', // Touch target minimum
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Premium hover effects */
+        .table-row-premium {
+            @apply rounded-lg border border-transparent bg-white px-3 py-1.5;
+            @apply transition-all duration-150;
+            @apply hover:border-gray-200 hover:shadow-md;
+            @apply hover:-translate-y-0.5;
+            @apply active:scale-[0.98];
+        }
+
+        .interactive-card {
+            @apply rounded-lg border border-transparent bg-white px-3 py-2;
+            @apply transition-all duration-150;
+            @apply hover:border-gray-200 hover:shadow-md;
+            @apply hover:-translate-y-0.5;
+            @apply active:scale-[0.98];
+        }
+
+        .card-container {
+            @apply bg-white border border-gray-200 shadow-sm rounded-xl p-6;
+        }
+
+        .btn-premium {
+            @apply transition-all duration-150;
+            @apply hover:shadow-md hover:-translate-y-0.5;
+            @apply active:scale-[0.98];
+        }
+
+        /* Resizable panels simulation */
+        .resize-handle {
+            width: 4px;
+            cursor: col-resize;
+            @apply bg-gray-200 hover:bg-primary/20 transition-colors;
+        }
+
+        .resize-handle:active {
+            @apply bg-primary/40;
+        }
+    </style>
+</head>
+<body class="bg-muted min-h-screen">
+    <div class="h-screen flex">
+        <!-- Panel 1: Pipeline by Principal (40%) -->
+        <div class="bg-white flex-[40] min-w-[30%] max-w-[60%] p-6 overflow-hidden flex flex-col">
+            <div class="card-container h-full flex flex-col">
+                <!-- Header -->
+                <div class="pb-4 border-b border-gray-200">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h2 class="text-lg font-semibold flex items-center gap-2">
+                                <svg class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                                Pipeline by Principal
+                            </h2>
+                            <p class="text-sm text-muted-foreground">
+                                Track opportunity momentum across your customer accounts
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="my-principals" checked class="h-4 w-4">
+                                <label for="my-principals" class="text-sm">My Principals Only</label>
+                            </div>
+                            <button class="btn-premium px-3 py-1 text-sm border border-gray-200 rounded-md flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                                </svg>
+                                Filters
+                            </button>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-xs text-muted-foreground">
+                        Shows all active opportunities grouped by principal with weekly activity trends
+                    </p>
+                </div>
+
+                <!-- Table -->
+                <div class="flex-1 overflow-auto mt-4">
+                    <table class="w-full">
+                        <thead class="sticky top-0 bg-white">
+                            <tr class="border-b">
+                                <th class="text-left pb-2">Principal</th>
+                                <th class="text-right pb-2">Pipeline</th>
+                                <th class="text-center pb-2">This Week</th>
+                                <th class="text-center pb-2">Last Week</th>
+                                <th class="text-left pb-2">Momentum</th>
+                                <th class="text-left pb-2">Next Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="space-y-2">
+                            <tr class="table-row-premium cursor-pointer">
+                                <td class="py-2 font-medium">Acme Corporation</td>
+                                <td class="py-2 text-right">
+                                    <div class="font-semibold">5</div>
+                                    <div class="text-sm text-muted-foreground">$250,000</div>
+                                </td>
+                                <td class="py-2 text-center">
+                                    <span class="bg-success text-white px-2 py-1 rounded text-xs">3</span>
+                                </td>
+                                <td class="py-2 text-center">
+                                    <span class="bg-gray-200 px-2 py-1 rounded text-xs">1</span>
+                                </td>
+                                <td class="py-2">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="h-4 w-4 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                        </svg>
+                                        <span class="text-sm">increasing</span>
+                                    </div>
+                                </td>
+                                <td class="py-2 text-sm">Demo scheduled Friday</td>
+                            </tr>
+                            <tr class="table-row-premium cursor-pointer mt-2">
+                                <td class="py-2 font-medium">TechCo Industries</td>
+                                <td class="py-2 text-right">
+                                    <div class="font-semibold">3</div>
+                                    <div class="text-sm text-muted-foreground">$180,000</div>
+                                </td>
+                                <td class="py-2 text-center">
+                                    <span class="text-muted-foreground">-</span>
+                                </td>
+                                <td class="py-2 text-center">
+                                    <span class="bg-gray-200 px-2 py-1 rounded text-xs">2</span>
+                                </td>
+                                <td class="py-2">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="h-4 w-4 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                                        </svg>
+                                        <span class="text-sm">decreasing</span>
+                                    </div>
+                                </td>
+                                <td class="py-2">
+                                    <button class="text-primary text-sm hover:underline">Schedule follow-up</button>
+                                </td>
+                            </tr>
+                            <tr class="table-row-premium cursor-pointer mt-2">
+                                <td class="py-2 font-medium">Global Solutions Ltd</td>
+                                <td class="py-2 text-right">
+                                    <div class="font-semibold">8</div>
+                                    <div class="text-sm text-muted-foreground">$420,000</div>
+                                </td>
+                                <td class="py-2 text-center">
+                                    <span class="bg-success text-white px-2 py-1 rounded text-xs">5</span>
+                                </td>
+                                <td class="py-2 text-center">
+                                    <span class="bg-gray-200 px-2 py-1 rounded text-xs">5</span>
+                                </td>
+                                <td class="py-2">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                        </svg>
+                                        <span class="text-sm">steady</span>
+                                    </div>
+                                </td>
+                                <td class="py-2 text-sm">Proposal review Monday</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resize Handle -->
+        <div class="resize-handle"></div>
+
+        <!-- Panel 2: My Tasks (35%) -->
+        <div class="bg-white flex-[35] min-w-[25%] max-w-[50%] p-6 overflow-hidden flex flex-col">
+            <div class="card-container h-full flex flex-col">
+                <!-- Header -->
+                <div class="pb-3 border-b border-gray-200">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h2 class="text-lg font-semibold flex items-center gap-2">
+                                <svg class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                My Tasks
+                            </h2>
+                            <p class="text-sm text-muted-foreground">
+                                Today's priorities and upcoming activities
+                            </p>
+                        </div>
+                        <span class="bg-destructive text-white px-2 py-1 rounded text-xs">2 overdue</span>
+                    </div>
+                    <p class="mt-2 text-xs text-muted-foreground">
+                        Overdue items highlighted • Click to complete • Drag to reschedule
+                    </p>
+                </div>
+
+                <!-- Task Groups -->
+                <div class="flex-1 overflow-auto mt-4 space-y-4">
+                    <!-- Overdue -->
+                    <div class="border-l-4 border-destructive pl-4">
+                        <h3 class="font-semibold text-destructive flex items-center gap-2">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Overdue (2)
+                        </h3>
+                        <div class="mt-2 space-y-2">
+                            <div class="interactive-card flex items-center gap-3">
+                                <input type="checkbox" class="h-5 w-5">
+                                <div class="flex-1">
+                                    <div class="font-medium">Follow up on Q4 proposal</div>
+                                    <div class="text-xs text-muted-foreground flex items-center gap-2">
+                                        <span class="bg-warning px-1 rounded">high</span>
+                                        <span>→ Q4 Enterprise Deal</span>
+                                    </div>
+                                </div>
+                                <button class="h-8 w-8 flex items-center justify-center hover:bg-gray-100 rounded">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Today -->
+                    <div class="border-l-4 border-warning pl-4">
+                        <h3 class="font-semibold text-warning flex items-center gap-2">
+                            <svg class="h-4 w-4 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Today (3)
+                        </h3>
+                        <div class="mt-2 space-y-2">
+                            <div class="interactive-card flex items-center gap-3">
+                                <input type="checkbox" class="h-5 w-5">
+                                <div class="flex-1">
+                                    <div class="font-medium">Send contract for review</div>
+                                    <div class="text-xs text-muted-foreground flex items-center gap-2">
+                                        <span class="bg-destructive text-white px-1 rounded">critical</span>
+                                        <span>→ John Smith</span>
+                                    </div>
+                                </div>
+                                <button class="h-8 w-8 flex items-center justify-center hover:bg-gray-100 rounded">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="interactive-card flex items-center gap-3">
+                                <input type="checkbox" class="h-5 w-5">
+                                <div class="flex-1">
+                                    <div class="font-medium">Team sync meeting</div>
+                                    <div class="text-xs text-muted-foreground flex items-center gap-2">
+                                        <span class="bg-gray-200 px-1 rounded">medium</span>
+                                        <span>→ Internal</span>
+                                    </div>
+                                </div>
+                                <button class="h-8 w-8 flex items-center justify-center hover:bg-gray-100 rounded">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tomorrow -->
+                    <div class="border-l-4 border-primary pl-4">
+                        <h3 class="font-semibold text-primary flex items-center gap-2">
+                            <svg class="h-4 w-4 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Tomorrow (1)
+                        </h3>
+                        <div class="mt-2 space-y-2">
+                            <div class="interactive-card flex items-center gap-3">
+                                <input type="checkbox" class="h-5 w-5">
+                                <div class="flex-1">
+                                    <div class="font-medium">Schedule demo meeting</div>
+                                    <div class="text-xs text-muted-foreground flex items-center gap-2">
+                                        <span class="bg-gray-200 px-1 rounded">medium</span>
+                                        <span>→ TechCorp</span>
+                                    </div>
+                                </div>
+                                <button class="h-8 w-8 flex items-center justify-center hover:bg-gray-100 rounded">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resize Handle -->
+        <div class="resize-handle"></div>
+
+        <!-- Panel 3: Quick Logger (25%) -->
+        <div class="bg-white flex-[25] min-w-[20%] max-w-[40%] p-6 overflow-hidden flex flex-col">
+            <div class="card-container h-full flex flex-col">
+                <!-- Header -->
+                <div class="pb-3 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold flex items-center gap-2">
+                        <svg class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                        Log Activity
+                    </h2>
+                    <p class="text-sm text-muted-foreground">
+                        Quick capture for calls, meetings, and notes
+                    </p>
+                    <p class="mt-2 text-xs text-muted-foreground">
+                        Start typing or use voice input • Auto-links to opportunities
+                    </p>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 flex items-center justify-center p-6">
+                    <div id="loggerContent" class="w-full max-w-sm">
+                        <!-- Initial state: New Activity button -->
+                        <div id="newActivityBtn" class="text-center">
+                            <button onclick="showActivityForm()" class="btn-premium w-full h-11 bg-primary text-white rounded-md flex items-center justify-center gap-2 hover:bg-primary/90">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                                New Activity
+                            </button>
+                            <p class="mt-4 text-sm text-muted-foreground">
+                                Or press <kbd class="border px-1 rounded">Ctrl</kbd>+<kbd class="border px-1 rounded">L</kbd> to quick log
+                            </p>
+                        </div>
+
+                        <!-- Form state (hidden initially) -->
+                        <div id="activityForm" class="hidden space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Activity Type</label>
+                                <select class="w-full h-11 px-3 border rounded-md">
+                                    <option>Call</option>
+                                    <option>Email</option>
+                                    <option>Meeting</option>
+                                    <option>Note</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Outcome</label>
+                                <select class="w-full h-11 px-3 border rounded-md">
+                                    <option>Connected</option>
+                                    <option>Left Voicemail</option>
+                                    <option>No Answer</option>
+                                    <option>Completed</option>
+                                    <option>Rescheduled</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Notes</label>
+                                <textarea class="w-full px-3 py-2 border rounded-md" rows="4" placeholder="Summary of the interaction..."></textarea>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-medium">Create follow-up task?</label>
+                                <input type="checkbox" class="h-4 w-4">
+                            </div>
+                            <div class="flex justify-between pt-4">
+                                <button onclick="hideActivityForm()" class="px-4 py-2 border rounded-md hover:bg-gray-50">
+                                    Cancel
+                                </button>
+                                <div class="flex gap-2">
+                                    <button onclick="saveAndClose()" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90">
+                                        Save & Close
+                                    </button>
+                                    <button class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">
+                                        Save & New
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple form toggle for Quick Logger
+        function showActivityForm() {
+            document.getElementById('newActivityBtn').classList.add('hidden');
+            document.getElementById('activityForm').classList.remove('hidden');
+        }
+
+        function hideActivityForm() {
+            document.getElementById('activityForm').classList.add('hidden');
+            document.getElementById('newActivityBtn').classList.remove('hidden');
+        }
+
+        function saveAndClose() {
+            alert('Activity logged successfully!');
+            hideActivityForm();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+L for quick log
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                showActivityForm();
+            }
+
+            // Number keys for panel focus (visual feedback)
+            if (e.key === '1') {
+                document.querySelectorAll('.card-container')[0].style.boxShadow = '0 0 0 2px #84cc16';
+                setTimeout(() => {
+                    document.querySelectorAll('.card-container')[0].style.boxShadow = '';
+                }, 1000);
+            }
+        });
+
+        // Simple resize handle dragging (visual only - not functional)
+        document.querySelectorAll('.resize-handle').forEach(handle => {
+            handle.addEventListener('mouseenter', function() {
+                this.style.cursor = 'col-resize';
+            });
+        });
+
+        // Checkbox interaction
+        document.querySelectorAll('input[type="checkbox"]:not(#my-principals)').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    const card = this.closest('.interactive-card');
+                    card.style.opacity = '0.5';
+                    card.style.textDecoration = 'line-through';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 500);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
