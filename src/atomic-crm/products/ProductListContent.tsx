@@ -23,7 +23,7 @@ export const ProductListContent = () => {
 
   if (!products || products.length === 0) {
     return (
-      <div className="p-8 text-center text-[color:var(--text-subtle)]">
+      <div className="p-8 text-center text-muted-foreground">
         No products found. Create your first product to get started.
       </div>
     );
@@ -35,18 +35,18 @@ export const ProductListContent = () => {
         <RecordContextProvider key={product.id} value={product}>
           <Link
             to={`/products/${product.id}/show`}
-            className="block p-4 hover:bg-[var(--surface-interactive-hover)] transition-colors"
+            className="block p-4 hover:bg-muted transition-colors"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-4">
                   <h3 className="font-semibold text-lg">{product.name || "Untitled Product"}</h3>
-                  <span className="text-sm text-[color:var(--text-subtle)]">
+                  <span className="text-sm text-muted-foreground">
                     SKU: {product.sku || "N/A"}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-6 mt-2 text-sm text-[color:var(--text-subtle)]">
+                <div className="flex items-center gap-6 mt-2 text-sm text-muted-foreground">
                   <span>Brand: {product.brand || "N/A"}</span>
                   <span>Status: {product.status || "Active"}</span>
                 </div>
@@ -55,7 +55,7 @@ export const ProductListContent = () => {
                   <p className="mt-2 text-sm line-clamp-2">{product.description}</p>
                 )}
 
-                <div className="flex items-center gap-4 mt-3 text-xs text-[color:var(--text-subtle)]">
+                <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
                   {product.last_promoted_at && (
                     <span>
                       Last promoted{" "}
