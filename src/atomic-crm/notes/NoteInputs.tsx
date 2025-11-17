@@ -31,11 +31,11 @@ export const NoteInputs = () => {
               setDisplayMore(!displayMore);
               setValue("date", getCurrentDate());
             }}
-            className="text-sm text-[color:var(--text-subtle)] underline hover:no-underline p-0 h-auto cursor-pointer"
+            className="text-sm text-muted-foreground underline hover:no-underline p-0 h-auto cursor-pointer"
           >
             Show options
           </Button>
-          <span className="text-sm text-[color:var(--text-subtle)]">
+          <span className="text-sm text-muted-foreground">
             (change date/time or attach files)
           </span>
         </div>
