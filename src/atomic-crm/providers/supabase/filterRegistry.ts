@@ -113,6 +113,7 @@ export const filterableFields: Record<string, string[]> = {
     "customer_organization_id",
     "principal_organization_id",
     "distributor_organization_id",
+    "related_opportunity_id",
     "founding_interaction_id",
     "stage_manual",
     "status_manual",
@@ -164,6 +165,16 @@ export const filterableFields: Record<string, string[]> = {
     "updated_at",
     "deleted_at", // Soft delete timestamp
     "created_by", // FK to sales (for filtering by creator)
+  ],
+
+  // Audit trail resource (field-level history)
+  audit_trail: [
+    "audit_id",
+    "table_name",
+    "record_id",
+    "field_name",
+    "changed_by",
+    "changed_at",
   ],
 
   // Tags resource

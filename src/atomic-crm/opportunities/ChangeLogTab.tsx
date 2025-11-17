@@ -18,6 +18,7 @@ import type { Opportunity } from "../types";
 
 interface AuditTrailEntry {
   audit_id: number;
+  id?: number;
   table_name: string;
   record_id: number;
   field_name: string;
@@ -70,7 +71,12 @@ export const ChangeLogTab = () => {
           pagination: { page: 1, perPage: 100 }, // Show last 100 changes
         });
 
-        setAuditEntries(result.data as AuditTrailEntry[]);
+        const entries = (result.data as AuditTrailEntry[]).map((entry) => ({
+          ...entry,
+          id: entry.audit_id,
+        }));
+
+        setAuditEntries(entries);
       } catch (error) {
         console.error("Failed to fetch audit trail:", error);
         setAuditEntries([]);
