@@ -4,14 +4,13 @@ import { CheckSquare } from "lucide-react";
 import type { Task } from "../types";
 
 const TaskList = React.lazy(() => import("./TaskList"));
-const TaskShow = React.lazy(() => import("./TaskShow"));
 const TaskEdit = React.lazy(() => import("./TaskEdit"));
 const TaskCreate = React.lazy(() => import("./TaskCreate"));
 
 const resource: ResourceProps = {
   name: "tasks",
   list: TaskList,
-  show: TaskShow,
+  // show: Removed - using slide-over via ?view=:id
   edit: TaskEdit,
   create: TaskCreate,
   icon: CheckSquare,
