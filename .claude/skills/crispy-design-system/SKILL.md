@@ -1,5 +1,5 @@
 ---
-name: atomic-crm-ui-design
+name: crispy-design-system
 description: Use when implementing UI features in Atomic CRM - enforces design system consistency with Tailwind v4 semantic utilities, desktop-first responsive design, JSONB array patterns, and accessibility standards before writing component code
 ---
 
@@ -7,13 +7,20 @@ description: Use when implementing UI features in Atomic CRM - enforces design s
 
 ## Overview
 
-Enforce Atomic CRM's design system when implementing UI components. Prevents common violations: inline CSS variable syntax, mobile-first when desktop-first is required, touch targets below 44px, and wrong JSONB array patterns.
+Enforce Atomic CRM's unified design system when implementing UI components. This skill ensures compliance with three flagship layout patterns from the unified design system rollout (docs/plans/2025-11-16-unified-design-system-rollout.md):
 
-**Core principle:** Follow established patterns from CLAUDE.md and validate against design system before writing code.
+1. **Standardized List Shell** - Filter sidebar + table-based lists with premium hover effects
+2. **Resource Slide-Over** - Right panel for view/edit operations with focus management
+3. **Create Form Patterns** - Full-page forms with tabbed sections and sticky footers
+
+**Core principle:** Follow established patterns from CLAUDE.md and the unified design system rollout plan to maintain visual consistency across all resources.
 
 ## When to Use
 
 Use this skill when:
+- Implementing list pages (must use StandardListLayout + PremiumDatagrid)
+- Creating view/edit functionality (must use ResourceSlideOver pattern)
+- Building create forms (must use full-page pattern with .create-form-card)
 - Starting new UI feature work in Atomic CRM
 - Creating React components with styling
 - Adding form inputs (especially JSONB arrays)
@@ -171,7 +178,34 @@ const websiteTypes = [
 - `ArrayInput` + `SimpleFormIterator` from React Admin
 - Form state: `zodSchema.partial().parse({})` for initialization
 
-### 4. Accessibility Non-Negotiables
+### 4. Visual Styling & Spacing
+
+**Strict semantic colors** (docs/plans/2025-11-16-unified-design-system-rollout.md:295-308):
+- Backgrounds: `bg-muted` (page), `bg-card` (content), `bg-background` (nested)
+- Borders: `border-border` (default), `border-primary` (focus), `border-destructive` (error)
+- Never use hex values or inline CSS variables
+
+**Spacing tokens** (docs/plans/2025-11-16-unified-design-system-rollout.md:306-344):
+```css
+--spacing-edge-desktop: 24px     /* Screen borders */
+--spacing-section: 32px          /* Between sections */
+--spacing-content: 16px          /* Content gaps */
+--spacing-compact: 12px          /* Tight spacing */
+```
+
+**Required utility classes** (docs/plans/2025-11-16-unified-design-system-rollout.md:346-398):
+- `.card-container` - Standard card wrapper
+- `.create-form-card` - Create forms (includes shadow-lg)
+- `.interactive-card` - Premium hover effects
+- `.table-row-premium` - Applied by PremiumDatagrid rowClassName
+- `.filter-sidebar` - Left sidebar filter panel
+- `.btn-premium` - Button hover states
+- `.focus-ring` - Focus indicators
+
+**List rows MUST** use `.table-row-premium` (via PremiumDatagrid)
+**Create forms MUST** use `.create-form-card` for shadow-lg elevation
+
+### 5. Accessibility Non-Negotiables
 
 **Minimum requirements:**
 - Touch targets: **44x44px minimum** (no "acceptable at 40px")
@@ -180,7 +214,44 @@ const websiteTypes = [
 - Labels: All form inputs have labels (visible or sr-only)
 - Keyboard nav: Tab order logical, Enter/Space work
 
+**Slide-over specific** (docs/plans/2025-11-16-unified-design-system-rollout.md:144-205):
+- Focus trap when open (focus stays within)
+- `role="dialog"` and `aria-modal="true"`
+- Initial focus to first interactive element
+- ESC key closes slide-over
+- Tab/Shift+Tab cycles within slide-over only
+- Screen reader announces mode changes (view/edit)
+- Focus returns to trigger element on close
+
 **React Admin provides:** FormField (role="group"), FormLabel (htmlFor), FormError (aria-invalid)
+
+## Layout Requirements
+
+Per unified design system (docs/plans/2025-11-16-unified-design-system-rollout.md:45-288):
+
+### List Views (docs/plans/2025-11-16-unified-design-system-rollout.md:45-104)
+**MUST** wrap content in `StandardListLayout`:
+- `.filter-sidebar` (256px left panel) + `.card-container` (main content)
+- Apply `PremiumDatagrid` wrapper with `.table-row-premium` rowClassName
+- Row clicks open slide-over (NOT full page navigation)
+- Floating create button (bottom-right) or header toolbar
+
+### View/Edit Interactions (docs/plans/2025-11-16-unified-design-system-rollout.md:95-205)
+**MUST** use `ResourceSlideOver` shell:
+- Width: 40vw (min 480px, max 720px)
+- Animation: slide from right (200ms ease-out)
+- Tabs: Resource-specific (Details | History | Files | Notes)
+- Focus trap required (role="dialog", aria-modal="true")
+- URL sync: `?view=123` or `?edit=123` query params
+
+### Create Forms (docs/plans/2025-11-16-unified-design-system-rollout.md:211-288)
+**MUST** stay full-page (no slide-overs):
+- Breadcrumb navigation at top
+- Centered `.create-form-card` (max-w-4xl, shadow-lg)
+- Tabbed sections with error badges
+- Sticky footer with Cancel | Save & Close | Save & Add Another
+- Validation: Zod schemas with inline errors
+- Optional autosave to localStorage (complex forms only)
 
 ## Color System Quick Reference
 
@@ -213,18 +284,36 @@ const websiteTypes = [
 | Research instead of implement | "Create X" means build it, not document existing X. |
 | `md:` as primary breakpoint | Use `lg:` (1024px+) for desktop-first design. |
 
+## Implementation Checklist
+
+Per resource migration (docs/plans/2025-11-16-unified-design-system-rollout.md:488-502):
+
+- [ ] List view uses `StandardListLayout` with filter sidebar
+- [ ] Table styled with `PremiumDatagrid` wrapper
+- [ ] Row clicks open slide-over (NOT full page navigation)
+- [ ] Slide-over component created with view/edit modes
+- [ ] URL routing updated (`?view=123` or `?edit=123`)
+- [ ] Create form uses full-page pattern with `.create-form-card`
+- [ ] All semantic colors applied (no hex/inline vars)
+- [ ] Spacing uses CSS variables (`--spacing-*`)
+- [ ] Old components deleted (no legacy code)
+- [ ] Accessibility audit passed (focus trap, ARIA attributes)
+- [ ] E2E tests updated for new patterns
+
 ## Implementation Workflow
 
 **1. Verify Requirements**
 - Desktop-first design (1440px+ primary)
 - What colors/spacing needed? (use semantic tokens)
 - JSONB arrays involved?
+- Which flagship layout pattern applies? (list/slide-over/create)
 
 **2. Check CLAUDE.md Patterns**
 - Color System section
 - JSONB Array Handling Pattern
 - Validation Layer section
 - Spacing System section
+- Unified Design System Rollout plan
 
 **3. Write Code Following Patterns**
 - Tailwind semantic utilities (no inline CSS variables)
@@ -232,12 +321,18 @@ const websiteTypes = [
 - Zod schemas for validation
 - React Admin components
 - Semantic spacing (`gap-section`, `space-y-compact`)
+- **Direct Migration** (docs/plans/2025-11-16-unified-design-system-rollout.md:436-487):
+  - No feature flags or gradual rollout
+  - Delete old components immediately
+  - Breaking changes are expected and encouraged
+  - Fix forward if issues arise (don't revert)
 
 **4. Verify Before Committing**
 - Touch targets ≥ 44px on ALL screen sizes (desktop, tablet, mobile)
 - No inline CSS variables (`text-[color:var(...)]`)
 - Test responsive: Desktop (1440px) FIRST → Tablet (768px) → Mobile (375px)
 - Accessibility: keyboard nav works, aria-labels present
+- All checklist items above completed
 
 ## Red Flags - STOP and Verify
 

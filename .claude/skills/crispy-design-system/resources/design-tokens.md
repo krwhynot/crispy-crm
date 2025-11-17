@@ -10,43 +10,40 @@ Design tokens live in two places:
 1. **CSS Variables** (`src/index.css`) - For Tailwind and runtime
 2. **TypeScript Constants** (`src/lib/design-system/spacing.ts`) - For validation and logic
 
-**From `src/index.css`:**
+**Unified Design System Semantic Spacing Variables** (docs/plans/2025-11-16-unified-design-system-rollout.md:306-344):
 
 ```css
-@theme inline {
-  /* ========================================
-     SPACING TOKENS - DESKTOP OPTIMIZED
-     ======================================== */
+@layer theme {
+  :root {
+    /* ========================================
+       GRID & LAYOUT
+       ======================================== */
+    --spacing-grid-columns-desktop: 12;
+    --spacing-grid-columns-ipad: 8;
+    --spacing-gutter-desktop: 24px;
+    --spacing-gutter-ipad: 16px;
 
-  /* Grid System */
-  --spacing-grid-columns-desktop: 12;
-  --spacing-grid-columns-ipad: 8;
-  --spacing-gutter-desktop: 12px;
-  --spacing-gutter-ipad: 20px;
+    /* ========================================
+       EDGE PADDING (Screen Borders)
+       ======================================== */
+    --spacing-edge-desktop: 24px;
+    --spacing-edge-ipad: 20px;
+    --spacing-edge-mobile: 16px;
 
-  /* Edge Padding (Screen Borders) - Desktop Optimized */
-  --spacing-edge-desktop: 24px;
-  --spacing-edge-ipad: 60px;
-  --spacing-edge-mobile: 16px;
+    /* ========================================
+       VERTICAL RHYTHM (Content Spacing)
+       ======================================== */
+    --spacing-section: 32px;      /* Between major sections */
+    --spacing-widget: 24px;        /* Within widgets/cards */
+    --spacing-content: 16px;       /* Content gaps */
+    --spacing-compact: 12px;       /* Tight spacing */
 
-  /* Vertical Rhythm */
-  --spacing-section: 24px;
-  --spacing-widget: 16px;
-  --spacing-content: 12px;
-  --spacing-compact: 8px;
-
-  /* Widget/Card Internals - Desktop Optimized */
-  --spacing-widget-padding: 12px;
-  --spacing-widget-min-height: 240px;
-  --spacing-top-offset: 60px;
-
-  /* Desktop Data Density */
-  --row-height-compact: 32px;
-  --row-height-comfortable: 40px;
-  --row-padding-desktop: 6px 12px;
-  --hover-zone-padding: 4px;
-  --action-button-size: 28px;
-  --context-menu-width: 200px;
+    /* ========================================
+       WIDGET INTERNALS
+       ======================================== */
+    --spacing-widget-padding: 20px;
+    --spacing-widget-min-height: 280px;
+  }
 }
 ```
 
