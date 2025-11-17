@@ -38,6 +38,16 @@ export const OrganizationList = () => {
             render={(record: any) => <PriorityBadge priority={record.priority} />}
           />
 
+          <ReferenceField
+            source="parent_organization_id"
+            reference="organizations"
+            label="Parent"
+            link={false}
+            emptyText="-"
+          >
+            <TextField source="name" />
+          </ReferenceField>
+
           <FunctionField
             label="Contacts"
             render={(record: any) => record.nb_contacts || 0}

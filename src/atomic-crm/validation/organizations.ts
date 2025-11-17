@@ -48,6 +48,7 @@ export const organizationSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
   name: z.string().min(1, "Organization name is required"),
   logo: z.any().optional().nullable(), // RAFile type
+  parent_organization_id: z.union([z.string(), z.number()]).optional().nullable(), // Parent organization reference
   // Updated field names to match database schema
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.nullish(),
