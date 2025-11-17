@@ -954,21 +954,25 @@ await supabase.rpc('sync_opportunity_with_products', {
 
 **Component:** `src/atomic-crm/products/ProductShow.tsx`
 
-**Primary Table:** `products`
+**Primary View (Read):** `products_summary` - Provides denormalized principal name
+**Write Target:** `products` (base table)
 
 **Tab Structure:**
 
 | Tab | Content | Source |
 |-----|---------|--------|
-| Overview | Key info, stats | `products` |
-| Details | Specifications, relationships | `products` + `organizations` |
+| Overview | Key info, stats | `products_summary` (includes **`principal_name`** view-only field) |
+| Details | Specifications, relationships | `products_summary` + `organizations` |
 | Activity | Usage stats, opportunities | `opportunity_products` |
+
+**View-Only Fields** (available in UI but not in base `products` table):
+- `principal_name` - Denormalized principal organization name from LEFT JOIN
 
 **CRUD Operations:**
 
-| Operation | Method | Table |
-|-----------|--------|-------|
-| **Read** | `getOne` | `products` |
+| Operation | Method | Source |
+|-----------|--------|--------|
+| **Read** | `getOne` | `products_summary` (view) - automatically substituted |
 
 ---
 
@@ -2503,21 +2507,28 @@ ORDER BY p.name, t.due_date
 
 ### Design Patterns
 
-1. **View-Based Denormalization:** Frequently accessed joins pre-computed in views (`contacts_summary`, `organizations_summary`, `opportunities_summary`)
+1. **🔑 View-Based Reads with Table Writes (CRITICAL):**
+   - **ALL reads** (`getOne`, `getList`) automatically use `_summary` views via data provider substitution
+   - **ALL writes** (`create`, `update`, `delete`) target base tables
+   - Views provide denormalized data (org names, contact counts, products JSONB) not available in base tables
+   - **Implementation:** `src/atomic-crm/providers/supabase/dataProviderUtils.ts:173-195`
+   - **Example:** `OpportunityShow` receives `opportunities_summary` with `customer_organization_name`, `principal_organization_name`, `products` array - all view-only fields
 
-2. **JSONB for Flexible Arrays:** Multi-value fields (email, phone) stored as JSONB arrays with sub-schemas
+2. **View-Based Denormalization:** Frequently accessed joins pre-computed in views (`contacts_summary`, `organizations_summary`, `opportunities_summary`, `products_summary`)
 
-3. **Soft Delete Everywhere:** All core tables use `deleted_at` for recoverability
+3. **JSONB for Flexible Arrays:** Multi-value fields (email, phone) stored as JSONB arrays with sub-schemas
 
-4. **Two-Layer Security:** GRANT + RLS policies prevent "permission denied" errors
+4. **Soft Delete Everywhere:** All core tables use `deleted_at` for recoverability
 
-5. **Atomic Transactions:** RPC functions ensure data integrity for complex operations (opportunity + products)
+5. **Two-Layer Security:** GRANT + RLS policies prevent "permission denied" errors
 
-6. **Client-Side Filtering for Dashboards:** Dashboard V2 uses pre-filtered views + client-side filtering for <500 records (acceptable performance)
+6. **Atomic Transactions:** RPC functions ensure data integrity for complex operations (opportunity + products)
 
-7. **Lazy Loading:** All resource views lazy-loaded via `React.lazy()` for code splitting
+7. **Client-Side Filtering for Dashboards:** Dashboard V2 uses pre-filtered views + client-side filtering for <500 records (acceptable performance)
 
-8. **Tabbed Forms:** Consistent UX via `TabbedFormInputs` component across all resources
+8. **Lazy Loading:** All resource views lazy-loaded via `React.lazy()` for code splitting
+
+9. **Tabbed Forms:** Consistent UX via `TabbedFormInputs` component across all resources
 
 ### Performance Optimizations
 
@@ -2573,6 +2584,12 @@ ORDER BY p.name, t.due_date
    - **dashboard_pipeline_summary** - Pipeline stage metrics per account manager
 
 **Documentation Structure Changes:**
+- **Added Critical Architecture Pattern** - Documented view-based read pattern at document start
+  - All `getOne`/`getList` operations use `_summary` views (automatically substituted by data provider)
+  - Writes still target base tables
+  - Clarified "Primary View (Read)" vs "Write Target" in all detail screen sections
+  - Added "View-Only Fields" sections listing fields not available in base tables
+  - Reference: `src/atomic-crm/providers/supabase/dataProviderUtils.ts:173-195`
 - Reorganized Section 2.2 to include all junction tables
 - Added Section 2.3: Lookup Tables (segments, tags)
 - Renumbered Sections 2.3-2.4 to 2.5-2.6 (Notes Tables, Database Views)
@@ -2580,6 +2597,12 @@ ORDER BY p.name, t.due_date
 **Migration Reference:**
 - Role system: `20251116210019_fix_sales_schema_consistency.sql`
 - See `/supabase/migrations/` for complete migration history
+
+**Key Architecture Clarifications:**
+- **Contact Detail** - Reads from `contacts_summary` (adds `company_name`)
+- **Organization Detail** - Reads from `organizations_summary` (adds `nb_contacts`, `nb_opportunities`, `last_opportunity_activity`)
+- **Opportunity Detail** - Reads from `opportunities_summary` (adds `customer_organization_name`, `principal_organization_name`, `distributor_organization_name`, `products` JSONB array)
+- **Product Detail** - Reads from `products_summary` (adds `principal_name`)
 
 ---
 
