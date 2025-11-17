@@ -154,6 +154,51 @@ Same color definitions work in both modes by adjusting semantic mappings:
 </Button>
 ```
 
+## Atomic CRM Semantic Palette
+
+**Mandatory semantic utilities per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:295-308):
+
+### Page & Container Backgrounds
+- `bg-muted` - Page background (light, airy)
+- `bg-card` - Content containers (white, elevated)
+- `bg-background` - Nested content (warm cream)
+
+### Interactive & Status
+- `bg-primary` - Primary actions (forest green)
+- `bg-secondary` - Secondary actions (neutral)
+- `bg-destructive` - Delete/error actions
+- `bg-success` - Success states
+- `bg-warning` - Warning states
+- `bg-accent` - Emphasis and highlights
+
+### Text Colors
+- `text-foreground` - Primary text (dark, high contrast)
+- `text-muted-foreground` - Secondary text (lower emphasis)
+- `text-primary` - Brand text (forest green)
+- `text-destructive` - Error text
+
+### Borders & Dividers
+- `border-border` - Default borders (subtle)
+- `border-primary` - Focus/active states
+- `border-destructive` - Error states
+
+**NEVER USE:**
+- Hex codes: `#FF6600`, `#FEFEF9`
+- Inline OKLCH: `text-[color:var(--brand-500)]`
+- CSS variable syntax: `bg-[var(--warning)]`
+
+**ALWAYS USE:**
+- Semantic utilities: `bg-card`, `text-muted-foreground`, `border-border`
+
+### Premium Interactive Utilities
+
+Reference `src/index.css` for reusable utilities (docs/plans/2025-11-16-unified-design-system-rollout.md:346-398):
+- `.card-container` - Standard card with shadow-sm
+- `.create-form-card` - Create form elevation (shadow-lg)
+- `.interactive-card` - Hover effects + lift animation
+- `.table-row-premium` - Table rows with premium styling
+- `.focus-ring` - Focus indicators
+
 ## Semantic Color Mappings
 
 ### Foundation Colors
@@ -405,20 +450,24 @@ Same color definitions work in both modes by adjusting semantic mappings:
 **Usage:**
 
 ```tsx
-// Organization type badge
-<Badge className="bg-[var(--tag-green-bg)] text-[var(--tag-green-fg)]">
+// ✅ CORRECT - Use semantic utilities for tags
+// Organization type badge (use success for customer type)
+<Badge className="bg-success/15 text-success">
   Customer
 </Badge>
 
-// Priority badge
-<Badge className="bg-[var(--tag-amber-bg)] text-[var(--tag-amber-fg)]">
+// Priority badge (use warning for medium priority)
+<Badge className="bg-warning/15 text-warning">
   Priority B
 </Badge>
 
-// Generic tag
-<Badge className="bg-[var(--tag-sage-bg)] text-[var(--tag-sage-fg)]">
+// Generic tag (use muted background)
+<Badge className="bg-muted text-muted-foreground">
   Food Service
 </Badge>
+
+// ❌ WRONG - Never use inline CSS variable syntax
+// <Badge className="bg-[var(--tag-green-bg)] text-[var(--tag-green-fg)]">
 ```
 
 ## Chart Colors (Earth-Tone Palette)
@@ -540,25 +589,28 @@ import { BarChart, Bar } from 'recharts';
 **Usage:**
 
 ```tsx
-// Page title
-<h1 className="text-[color:var(--text-title)] text-2xl font-bold">
+// ✅ Page title (use semantic utility)
+<h1 className="text-foreground text-2xl font-bold">
   Organizations
 </h1>
 
-// Metric/number
-<div className="text-[color:var(--text-metric)] text-3xl font-bold">
+// ✅ Metric/number (use semantic utility)
+<div className="text-foreground text-3xl font-bold">
   $1.2M
 </div>
 
-// Body text
-<p className="text-[color:var(--text-body)] text-sm">
+// ✅ Body text (use semantic utility)
+<p className="text-foreground text-sm">
   Regular paragraph content with warm undertone
 </p>
 
-// Metadata
-<span className="text-[color:var(--text-subtle)] text-xs">
+// ✅ Metadata (use semantic utility)
+<span className="text-muted-foreground text-xs">
   Updated 2 hours ago
 </span>
+
+// ❌ WRONG - Never use inline CSS variable syntax
+<p className="text-[color:var(--text-body)]">Bad pattern</p>
 ```
 
 ## Accessibility Considerations
