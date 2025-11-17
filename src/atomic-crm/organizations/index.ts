@@ -4,8 +4,12 @@ const OrganizationList = React.lazy(() => import("./OrganizationList"));
 const OrganizationCreate = React.lazy(() => import("./OrganizationCreate"));
 const OrganizationEdit = React.lazy(() => import("./OrganizationEdit"));
 
-// Export parent input component (branch components removed)
+// Export hierarchy components
 export { ParentOrganizationInput } from "./ParentOrganizationInput";
+export { BranchLocationsSection } from "./BranchLocationsSection";
+export { HierarchyBreadcrumb } from "./HierarchyBreadcrumb";
+export { ParentOrganizationSection } from "./ParentOrganizationSection";
+export { OrganizationHierarchyTab } from "./OrganizationHierarchyTab";
 
 export default {
   list: OrganizationList,
