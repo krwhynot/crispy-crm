@@ -1,55 +1,114 @@
-import { useListContext } from "ra-core";
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
-import { CreateButton } from "@/components/admin/create-button";
-import { ExportButton } from "@/components/admin/export-button";
-import { List } from "@/components/admin/list";
-import { ListPagination } from "@/components/admin/list-pagination";
-import { SortButton } from "@/components/admin/sort-button";
-import { TopToolbar } from "../layout/TopToolbar";
-import { ProductListFilter } from "./ProductListFilter";
-import { ProductGridList } from "./ProductGridList";
-import { ProductEmpty } from "./ProductEmpty";
+import { FunctionField } from 'react-admin';
+import { List } from '@/components/admin/list';
+import { TextField } from '@/components/admin/text-field';
+import { ReferenceField } from '@/components/admin/reference-field';
+import { StandardListLayout } from '@/components/layouts/StandardListLayout';
+import { PremiumDatagrid } from '@/components/admin/PremiumDatagrid';
+import { useSlideOverState } from '@/hooks/useSlideOverState';
+import { Badge } from '@/components/ui/badge';
+import { ProductListFilter } from './ProductListFilter';
+import { ProductSlideOver } from './ProductSlideOver';
 
 export const ProductList = () => {
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
+
   return (
-    <List
-      title={false}
-      perPage={25}
-      sort={{ field: "name", order: "ASC" }}
-      actions={<ProductListActions />}
-      pagination={<ListPagination rowsPerPageOptions={[10, 25, 50, 100]} />}
-    >
-      <ProductListLayout />
+    <List>
+      <StandardListLayout
+        resource="products"
+        filterComponent={<ProductListFilter />}
+      >
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), 'view')}
+        >
+          <TextField source="name" label="Product Name" />
+          <TextField source="sku" label="SKU" />
+
+          <FunctionField
+            label="Category"
+            render={(record: any) => (
+              <Badge variant="outline">
+                {record.category
+                  .split('_')
+                  .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' ')}
+              </Badge>
+            )}
+          />
+
+          <FunctionField
+            label="Status"
+            render={(record: any) => <StatusBadge status={record.status} />}
+          />
+
+          <ReferenceField
+            source="principal_id"
+            reference="organizations"
+            label="Principal"
+            link={false}
+          >
+            <TextField source="name" />
+          </ReferenceField>
+
+          <FunctionField
+            label="Certifications"
+            render={(record: any) => (
+              <div className="flex gap-1 flex-wrap">
+                {record.certifications?.slice(0, 3).map((cert: string, index: number) => (
+                  <Badge key={index} variant="outline" className="text-xs">
+                    {cert}
+                  </Badge>
+                ))}
+                {record.certifications && record.certifications.length > 3 && (
+                  <Badge variant="secondary" className="text-xs">
+                    +{record.certifications.length - 3}
+                  </Badge>
+                )}
+              </div>
+            )}
+          />
+        </PremiumDatagrid>
+      </StandardListLayout>
+
+      <ProductSlideOver
+        recordId={slideOverId}
+        isOpen={isOpen}
+        mode={mode}
+        onClose={closeSlideOver}
+        onModeToggle={toggleMode}
+      />
     </List>
   );
 };
 
-const ProductListLayout = () => {
-  const { data, isPending, filterValues } = useListContext();
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+/**
+ * StatusBadge - Display product status with semantic colors
+ */
+function StatusBadge({ status }: { status: string }) {
+  let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'default';
 
-  if (isPending) return null;
-  if (!data?.length && !hasFilters) return <ProductEmpty />;
+  switch (status) {
+    case 'active':
+      variant = 'default';
+      break;
+    case 'discontinued':
+      variant = 'destructive';
+      break;
+    case 'coming_soon':
+      variant = 'secondary';
+      break;
+    default:
+      variant = 'outline';
+  }
 
   return (
-    <div className="w-full flex flex-row gap-8">
-      <ProductListFilter />
-      <div className="flex flex-col flex-1 gap-4">
-        <ProductGridList />
-      </div>
-      <BulkActionsToolbar />
-    </div>
+    <Badge variant={variant}>
+      {status
+        .split('_')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')}
+    </Badge>
   );
-};
-
-const ProductListActions = () => {
-  return (
-    <TopToolbar>
-      <SortButton fields={["name", "created_at", "sku"]} />
-      <ExportButton />
-      <CreateButton label="New Product" />
-    </TopToolbar>
-  );
-};
+}
 
 export default ProductList;
