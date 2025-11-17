@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGetOne, useUpdate, useNotify, useRefresh } from 'react-admin';
+import { useGetOne } from 'react-admin';
 import { PencilIcon, XIcon } from 'lucide-react';
 import {
   Sheet,
