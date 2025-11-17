@@ -8,9 +8,22 @@ import { getTagColorClass } from "../tags/tag-colors";
 const ColoredBadge = (props: any) => {
   const record = useRecordContext();
   if (!record) return null;
+
+  // Filter out React Admin props before spreading to Badge
+  const {
+    source,
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    rowClassName,
+    resource,
+    ...badgeProps
+  } = props;
+
   return (
     <Badge
-      {...props}
+      {...badgeProps}
       variant="outline"
       className={cn("font-normal border-0", getTagColorClass(record.color), props.className)}
     >
