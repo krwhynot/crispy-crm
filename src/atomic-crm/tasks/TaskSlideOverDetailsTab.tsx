@@ -158,12 +158,13 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
               </div>
 
               {/* Completion status - Interactive checkbox even in view mode */}
-              <div className="flex items-center gap-2 pt-2">
+              <label className="flex items-center gap-2 pt-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={record.completed || false}
                   onChange={(e) => handleCompletionToggle(e.target.checked)}
                   className="h-4 w-4 rounded border-input"
+                  aria-label={record.completed ? 'Mark task as incomplete' : 'Mark task as complete'}
                 />
                 <span className="text-sm font-medium">
                   {record.completed ? 'Completed' : 'Mark as complete'}
