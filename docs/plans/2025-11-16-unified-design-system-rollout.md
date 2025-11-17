@@ -1476,6 +1476,59 @@ Use before/after screenshots captured in Phases 1-3.
   - Percy or Chromatic for detecting style drift
   - Capture before/after screenshots per phase
 
+#### Playwright E2E Plan
+
+**Test Suite Layout** (under `playwright/tests/design-system/`)
+- `list-layout.spec.ts`: Validates the StandardListLayout constraints (lines 45-107) for Contacts, Organizations, Opportunities, Tasks, Sales, Products. Each `describe` block maps to a resource so failures mirror the doc.
+- `slide-over.spec.ts`: Exercises the ResourceSlideOver API + `useSlideOverState` contract (lines 108-415) including deep links, keyboard support, focus management, and tab switching.
+- `create-form.spec.ts`: Covers full-page create flows (lines 417-505) including validation, sticky footer actions, dirty-state confirmation, autosave drafts, and toast messaging.
+- `visual-primitives.spec.ts`: Spot-checks semantic tokens and interactive micro-interactions from Core Design Principles (lines 16-44) and Visual Styling System.
+
+**Cross-Cutting Fixtures**
+- `listPage` fixture encapsulating navigation, filter sidebar selectors (e.g., `data-testid="filter-sidebar"`), and helper assertions such as `expectSidebarWidth(256)` using `boundingBox.width`.
+- `slideOver` fixture exposing helpers for query-param assertions, ESC/backdrop closing, `page.goBack()` verification, and focus-trap traversal.
+- `createForm` fixture for breadcrumb expectations, Zod validation triggers (`blur` events), autosave polling (use `await page.waitForTimeout(31_000)` or fake timers), and draft restore prompts.
+
+**Key Scenarios**
+- **Layout parity**: Hover/click premium rows and assert computed styles (border-color transitions, `transform: matrix(...)` lift) via `locator.evaluate`.
+- **URL sync**: After `rowClick`, expect `?view={id}` appended; toggling edit mode swaps to `?edit={id}`; `page.goBack()` reopens/ closes per diagram; direct navigation to `/resource?edit=123` opens slide-over already in edit mode.
+- **Accessibility**: Use `@axe-core/playwright` inside every spec to confirm `role="dialog"`, `aria-modal`, focus trap loops, ESC handling, and focus return to the invoking table row.
+- **Create flow edge cases**: Dirty form -> Cancel shows confirm modal; Save & Add Another clears fields while keeping page; autosave writes to `localStorage` with key `crm.draft.{resource}.{userId}` and is cleaned up after successful submit.
+- **Semantic tokens**: Snapshot CSS classes for backgrounds (`bg-muted`, `bg-card`), spacing (`p-3`, `gap-3`), typography, and confirm no hard-coded hex values in inline styles by reading `getComputedStyle`.
+
+**Representative Snippet**
+```ts
+test('contacts slide-over obeys URL contract', async ({ slideOver }) => {
+  const contact = await slideOver.openFromRow('contacts', 0); // opens view mode
+  await slideOver.expectQueryParam('view', contact.id);
+  await slideOver.toggleMode('edit');
+  await slideOver.expectQueryParam('edit', contact.id);
+  await slideOver.pressEscapeAndVerifyClosed(); // removes ?edit from URL and restores focus
+});
+```
+
+**Execution**
+@- Smoke run locally: `npx playwright test tests/design-system --headed`
+- CI shard labeled `design-system` runs after every migration PR; artifacts include per-resource screenshots + trace viewer uploads for failures.
+
+**Claude Code Prompt**
+```
+You are Claude, acting as a coding assistant inside the crispy-crm repo. Build out the Playwright test coverage described in the “Playwright E2E Plan” section of docs/plans/2025-11-16-unified-design-system-rollout.md. Deliverables:
+
+1. Create a new folder `playwright/tests/design-system/` containing:
+   - list-layout.spec.ts
+   - slide-over.spec.ts
+   - create-form.spec.ts
+   - visual-primitives.spec.ts
+2. Each spec should implement the resource-specific scenarios called out in the plan (layout parity, URL sync, accessibility, create form flows, semantic tokens). Use helper fixtures so assertions stay DRY (listPage, slideOver, createForm).
+3. Wire the new specs into Playwright config (ensure they run with `npx playwright test tests/design-system`).
+4. Update any existing fixtures/utilities if needed to expose data-testids or seed data so tests are deterministic, but do not change product behavior outside what’s required for testing.
+5. Add inline comments where the plan references specific line ranges so reviewers can trace coverage back to the design doc.
+6. Run `npx playwright test tests/design-system --headed` locally and summarize results.
+
+Follow repo conventions, keep code TypeScript strict, and ensure ESLint/Prettier pass.
+```
+
 **Code Review Checkpoints**
 - **After Phase 1**: Review foundation components for reusability
 - **After Phase 2**: Validate Contacts implementation as template
