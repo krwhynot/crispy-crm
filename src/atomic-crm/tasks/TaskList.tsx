@@ -1,6 +1,5 @@
 import { useUpdate, useNotify, downloadCSV, type Exporter } from 'ra-core';
 import jsonExport from 'jsonexport/dist';
-import { CheckCircle2 } from 'lucide-react';
 
 import { List } from '@/components/admin/list';
 import { StandardListLayout } from '@/components/layouts/StandardListLayout';
@@ -124,7 +123,7 @@ function CompletionCheckbox({ task }: { task: Task }) {
         checked={task.completed || false}
         onChange={handleToggle}
         className="h-4 w-4 rounded border-input cursor-pointer"
-        aria-label={task.completed ? 'Mark task incomplete' : 'Mark task complete'}
+        aria-label={task.completed ? `Mark "${task.title}" as incomplete` : `Mark "${task.title}" as complete`}
       />
     </div>
   );

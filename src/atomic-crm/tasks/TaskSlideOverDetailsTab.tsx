@@ -174,7 +174,7 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
                     on <DateField source="completed_at" options={{ dateStyle: 'short' }} />
                   </span>
                 )}
-              </div>
+              </label>
             </CardContent>
           </Card>
         </AsideSection>
