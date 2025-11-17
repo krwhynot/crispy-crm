@@ -1304,6 +1304,7 @@ export type Database = {
           organization_type:
             | Database["public"]["Enums"]["organization_type"]
             | null
+          parent_organization_id: number | null
           phone: string | null
           postal_code: string | null
           priority: string | null
@@ -1336,6 +1337,7 @@ export type Database = {
           organization_type?:
             | Database["public"]["Enums"]["organization_type"]
             | null
+          parent_organization_id?: number | null
           phone?: string | null
           postal_code?: string | null
           priority?: string | null
@@ -1368,6 +1370,7 @@ export type Database = {
           organization_type?:
             | Database["public"]["Enums"]["organization_type"]
             | null
+          parent_organization_id?: number | null
           phone?: string | null
           postal_code?: string | null
           priority?: string | null
@@ -1394,6 +1397,41 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "segments"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
           },
           {
             foreignKeyName: "organizations_sales_id_fkey"
@@ -2241,6 +2279,8 @@ export type Database = {
           organization_type:
             | Database["public"]["Enums"]["organization_type"]
             | null
+          parent_organization_id: number | null
+          parent_organization_name: string | null
           phone: string | null
           postal_code: string | null
           priority: string | null
@@ -2255,6 +2295,41 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "segments"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
           },
         ]
       }
@@ -2281,6 +2356,7 @@ export type Database = {
           organization_type:
             | Database["public"]["Enums"]["organization_type"]
             | null
+          parent_organization_id: number | null
           phone: string | null
           postal_code: string | null
           priority: string | null
@@ -2307,6 +2383,41 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "segments"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organizations_parent_organization_id_fkey"
+            columns: ["parent_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
           },
           {
             foreignKeyName: "organizations_sales_id_fkey"

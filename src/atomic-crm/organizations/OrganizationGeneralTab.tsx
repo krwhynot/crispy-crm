@@ -3,6 +3,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { useRecordContext } from "ra-core";
 import ImageEditorField from "../misc/ImageEditorField";
+import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import type { Company, Sale } from "../types";
 import { formatName } from "../utils/formatName";
 
@@ -44,6 +45,9 @@ export const OrganizationGeneralTab = () => {
           helperText="Required field"
           emptyText="Select organization type"
         />
+      </div>
+      <div className="lg:col-span-2">
+        <ParentOrganizationInput />
       </div>
       <div className="lg:col-span-2">
         <TextInput source="description" multiline helperText={false} label="Description" />
