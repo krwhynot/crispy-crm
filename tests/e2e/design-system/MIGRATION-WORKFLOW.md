@@ -35,23 +35,25 @@ Tracks which resources have implemented which patterns. Each resource has 4 patt
 
 ### 2. Two-Tier Test Strategy
 
-#### Tier 1: Smoke Tests (Run on EVERY PR)
+#### Tier 1: Smoke Tests (Fail-Fast Basic Checks)
 
 **File:** `tests/e2e/design-system-smoke.spec.ts`
 
-- **Purpose:** Catch regressions in migrated AND unmigrated components
-- **Approach:** Generous fallback selectors with `.or()` chains
+- **Purpose:** Verify key design system elements exist
+- **Approach:** Deterministic selectors only (Engineering Constitution: fail fast)
 - **Speed:** < 2 minutes for all resources
-- **Zero false negatives:** Passes on legacy components
+- **Behavior:** Fails on unmigrated components (expected - use skip flags)
 
 **Example:**
 ```typescript
-// Finds filter sidebar in BOTH design system AND legacy components
-const filterSidebar = page
-  .locator('[data-testid="filter-sidebar"]')        // Design system
-  .or(page.locator('[role="complementary"]'))        // Legacy with ARIA
-  .or(page.locator('aside').first());                 // Legacy fallback
+// Fail fast: Expect design system selectors only
+const filterSidebar = page.locator('[data-testid="filter-sidebar"]');
+await expect(filterSidebar).toBeVisible({ timeout: 5000 });
+
+// No fallbacks - if design system isn't implemented, test fails
 ```
+
+**Philosophy:** Smoke tests check *presence* of elements, contract tests check *behavior*. Both use strict selectors (no `.or()` fallbacks).
 
 #### Tier 2: Contract Tests (Opt-in per resource)
 
