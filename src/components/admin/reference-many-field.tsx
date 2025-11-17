@@ -12,7 +12,21 @@ export const ReferenceManyField = <
 >(
   props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
-  const { children, empty, error, loading, pagination, render, ...rest } = props;
+  const {
+    children,
+    empty,
+    error,
+    loading,
+    pagination,
+    render,
+    // Filter out React Admin-specific props that shouldn't be passed to child components
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    rowClassName,
+    ...rest
+  } = props;
 
   return (
     <ReferenceManyFieldBase {...rest}>
