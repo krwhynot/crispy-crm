@@ -1,177 +1,134 @@
-import { useState } from "react";
-import { useGetIdentity, useListContext } from "ra-core";
-import {
-  Datagrid,
-  TextField,
-  ReferenceField,
-  FunctionField,
-  SearchInput,
-  SelectInput,
-  ReferenceInput,
-  AutocompleteInput,
-  BooleanInput,
-} from "react-admin";
-
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
-import { CreateButton } from "@/components/admin/create-button";
-import { ExportButton } from "@/components/admin/export-button";
-import { List } from "@/components/admin/list";
-import { ListPagination } from "@/components/admin/list-pagination";
-import { SortButton } from "@/components/admin/sort-button";
-import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
-import { TopToolbar } from "../layout/TopToolbar";
-import { OrganizationEmpty } from "./OrganizationEmpty";
-import { OrganizationImportButton as _OrganizationImportButton } from "./OrganizationImportButton";
-import { GridList } from "./GridList";
-import { OrganizationViewSwitcher, type OrganizationView } from "./OrganizationViewSwitcher";
-
-// Helper functions for view preference persistence
-const ORGANIZATION_VIEW_KEY = "organization.view.preference";
-
-const getViewPreference = (): OrganizationView => {
-  const saved = localStorage.getItem(ORGANIZATION_VIEW_KEY);
-  return saved === "grid" || saved === "table" ? saved : "table";
-};
-
-const saveViewPreference = (view: OrganizationView) => {
-  localStorage.setItem(ORGANIZATION_VIEW_KEY, view);
-};
-
-/**
- * Organization list filters with hierarchy support
- */
-const organizationFilters = [
-  <SearchInput key="search" source="q" alwaysOn />,
-
-  <SelectInput
-    key="hierarchy_type"
-    source="hierarchy_type"
-    label="Hierarchy Type"
-    choices={[
-      { id: "all", name: "All Organizations" },
-      { id: "parent", name: "Parent Organizations Only" },
-      { id: "branch", name: "Branch Locations Only" },
-      { id: "standalone", name: "Standalone Only" },
-    ]}
-    alwaysOn
-  />,
-
-  <ReferenceInput
-    key="parent_org"
-    source="parent_organization_id"
-    reference="organizations"
-    label="Parent Organization"
-    filter={{
-      child_branch_count: { $gt: 0 }, // Only parents
-    }}
-  >
-    <AutocompleteInput
-      optionText={(choice: any) =>
-        choice ? `${choice.name} (${choice.child_branch_count} branches)` : ""
-      }
-      filterToQuery={(searchText: string) => ({
-        name: { $ilike: `%${searchText}%` },
-      })}
-    />
-  </ReferenceInput>,
-
-  <BooleanInput
-    key="has_branches"
-    source="has_branches"
-    label="Show only organizations with branches"
-  />,
-];
+import { useGetIdentity } from 'ra-core';
+import { TextField, ReferenceField, FunctionField } from 'react-admin';
+import { List } from '@/components/admin/list';
+import { StandardListLayout } from '@/components/layouts/StandardListLayout';
+import { PremiumDatagrid } from '@/components/admin/PremiumDatagrid';
+import { useSlideOverState } from '@/hooks/useSlideOverState';
+import { OrganizationListFilter } from './OrganizationListFilter';
+import { OrganizationSlideOver } from './OrganizationSlideOver';
+import { Badge } from '@/components/ui/badge';
 
 export const OrganizationList = () => {
   const { identity } = useGetIdentity();
-  const [view, setView] = useState<OrganizationView>(getViewPreference);
-
-  const handleViewChange = (newView: OrganizationView) => {
-    setView(newView);
-    saveViewPreference(newView);
-  };
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
 
   if (!identity) return null;
+
   return (
     <List
       title={false}
       perPage={25}
-      sort={{ field: "name", order: "ASC" }}
-      actions={<OrganizationListActions view={view} onViewChange={handleViewChange} />}
-      pagination={<ListPagination rowsPerPageOptions={[10, 25, 50, 100]} />}
-      filters={organizationFilters}
+      sort={{ field: 'name', order: 'ASC' }}
+      actions={false}
     >
-      <OrganizationListLayout view={view} />
-      <FloatingCreateButton />
-    </List>
-  );
-};
+      <StandardListLayout
+        resource="organizations"
+        filterComponent={<OrganizationListFilter />}
+      >
+        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), 'view')}>
+          <TextField source="name" label="Organization Name" />
 
-const OrganizationListLayout = ({ view }: { view: OrganizationView }) => {
-  const { data, isPending, filterValues } = useListContext();
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+          <FunctionField
+            label="Type"
+            render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
+          />
 
-  if (isPending) return null;
-  if (!data?.length && !hasFilters) return <OrganizationEmpty />;
+          <FunctionField
+            label="Priority"
+            render={(record: any) => <PriorityBadge priority={record.priority} />}
+          />
 
-  return (
-    <div className="w-full space-y-4">
-      {view === "grid" ? (
-        <GridList />
-      ) : (
-        <Datagrid
-          rowClick="show"
-          bulkActionButtons={false}
-          sx={{
-            "& .RaDatagrid-table": {
-              fontVariantNumeric: "tabular-nums",
-            },
-          }}
-        >
-          <TextField source="name" label="Name" />
           <ReferenceField
             source="parent_organization_id"
             reference="organizations"
-            label="Parent Organization"
-            link="show"
+            label="Parent"
+            link={false}
             emptyText="-"
           >
             <TextField source="name" />
           </ReferenceField>
-          <TextField source="organization_type" label="Type" />
-          <TextField source="priority" label="Priority" />
+
           <FunctionField
-            label="# Branches"
-            render={(record: any) =>
-              record.child_branch_count && record.child_branch_count > 0
-                ? record.child_branch_count
-                : "-"
-            }
-            textAlign="right"
+            label="Branches"
+            render={(record: any) => {
+              if (record.child_branch_count && record.child_branch_count > 0) {
+                return `${record.child_branch_count} ${record.child_branch_count === 1 ? 'branch' : 'branches'}`;
+              }
+              return '-';
+            }}
           />
-        </Datagrid>
-      )}
-      <BulkActionsToolbar />
-    </div>
+
+          <FunctionField
+            label="Contacts"
+            render={(record: any) => record.nb_contacts || 0}
+            textAlign="center"
+          />
+
+          <FunctionField
+            label="Opportunities"
+            render={(record: any) => record.nb_opportunities || 0}
+            textAlign="center"
+          />
+        </PremiumDatagrid>
+      </StandardListLayout>
+
+      <OrganizationSlideOver
+        recordId={slideOverId}
+        isOpen={isOpen}
+        mode={mode}
+        onClose={closeSlideOver}
+        onModeToggle={toggleMode}
+      />
+    </List>
   );
 };
 
-const OrganizationListActions = ({
-  view,
-  onViewChange,
-}: {
-  view: OrganizationView;
-  onViewChange: (view: OrganizationView) => void;
-}) => {
+function OrganizationTypeBadge({ type }: { type: string }) {
+  const colorClass = {
+    customer: 'bg-[color:var(--tag-warm-bg)] text-[color:var(--tag-warm-fg)]',
+    prospect: 'bg-[color:var(--tag-sage-bg)] text-[color:var(--tag-sage-fg)]',
+    principal: 'bg-[color:var(--tag-purple-bg)] text-[color:var(--tag-purple-fg)]',
+    distributor: 'bg-[color:var(--tag-teal-bg)] text-[color:var(--tag-teal-fg)]',
+    unknown: 'bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]',
+  }[type] || 'bg-[color:var(--tag-gray-bg)] text-[color:var(--tag-gray-fg)]';
+
   return (
-    <TopToolbar>
-      <OrganizationViewSwitcher view={view} onViewChange={onViewChange} />
-      <SortButton fields={["name", "created_at", "nb_contacts"]} />
-      {/* <OrganizationImportButton /> */}
-      <ExportButton />
-      <CreateButton label="New Organization" />
-    </TopToolbar>
+    <Badge className={`text-xs px-2 py-1 ${colorClass}`}>
+      {type.charAt(0).toUpperCase() + type.slice(1)}
+    </Badge>
   );
-};
+}
+
+function PriorityBadge({ priority }: { priority: string }) {
+  let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'default';
+
+  switch (priority) {
+    case 'A':
+      variant = 'destructive';
+      break;
+    case 'B':
+      variant = 'default';
+      break;
+    case 'C':
+      variant = 'secondary';
+      break;
+    case 'D':
+      variant = 'outline';
+      break;
+  }
+
+  const label = {
+    A: 'A - High',
+    B: 'B - Medium-High',
+    C: 'C - Medium',
+    D: 'D - Low',
+  }[priority] || priority;
+
+  return (
+    <Badge variant={variant} className="text-xs px-2 py-1">
+      {label}
+    </Badge>
+  );
+}
 
 export default OrganizationList;
