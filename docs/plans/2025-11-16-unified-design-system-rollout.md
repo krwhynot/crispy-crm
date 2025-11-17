@@ -1302,10 +1302,154 @@ For each resource (Tasks, Sales, Organizations, Products, Opportunities):
 
 **Goal:** Refinement and performance
 
-1. Accessibility audit (WCAG 2.1 AA)
-2. Performance optimization (code splitting, lazy loading)
-3. Visual consistency pass
-4. Documentation updates
+#### Task 4.1: Accessibility Audit
+
+**Tooling:**
+- **axe DevTools**: Browser extension for automated scanning
+- **Lighthouse**: Run in Chrome DevTools (Accessibility category)
+- **Manual keyboard testing**: Tab, Shift+Tab, Enter, Space, ESC navigation
+
+**Target Scores:**
+- Lighthouse Accessibility: ≥95 (all pages)
+- axe DevTools: 0 violations (critical or serious)
+
+**Pages to Audit:**
+- All 6 list views (Contacts, Organizations, Opportunities, Tasks, Sales, Products)
+- All 6 slide-over dialogs (view + edit modes)
+- All 6 create forms
+- Dashboard (if affected by changes)
+
+**Acceptance Criteria:**
+- [ ] Lighthouse accessibility score ≥95 on all 18 pages above
+- [ ] axe DevTools shows 0 critical/serious violations
+- [ ] Keyboard navigation works: Tab order logical, focus visible, no traps
+- [ ] Screen reader test passed (NVDA or VoiceOver): announcements correct
+- [ ] Color contrast meets WCAG AA (4.5:1 text, 3:1 UI components)
+- [ ] Focus indicators visible (2px ring with offset)
+- [ ] All form inputs have labels (visible or aria-label)
+- [ ] ARIA attributes correct: role, aria-modal, aria-labelledby
+
+#### Task 4.2: Performance Optimization
+
+**Metrics to Track:**
+- **Bundle size**: Total JS shipped to browser
+- **Initial load time**: Time to interactive (TTI)
+- **Route transitions**: Time to render slide-over
+
+**Thresholds:**
+| Metric | Current | Target | Measurement |
+|--------|---------|--------|-------------|
+| Total bundle size | ~800KB gzipped | <850KB | `npm run build` output |
+| Initial load (TTI) | ~2.5s | <3s | Lighthouse Performance |
+| Slide-over open | ~100ms | <150ms | React DevTools Profiler |
+| Table render (500 rows) | ~300ms | <400ms | React DevTools Profiler |
+
+**Optimization Strategies:**
+
+1. **Code Splitting:**
+   ```typescript
+   // Lazy load slide-over components (not visible on initial render)
+   const ContactSlideOver = lazy(() => import('./ContactSlideOver'));
+   const OrganizationSlideOver = lazy(() => import('./OrganizationSlideOver'));
+   // ... repeat for all resources
+   ```
+
+2. **Tab Content Lazy Loading:**
+   ```typescript
+   // Only load tab content when tab is activated
+   {activeTab === 'activities' && <Suspense fallback={<Spinner />}><ActivitiesTab /></Suspense>}
+   ```
+
+3. **Virtual Scrolling** (if tables exceed 500 rows):
+   ```typescript
+   import { useVirtualizer } from '@tanstack/react-virtual';
+   // Apply to PremiumDatagrid for large datasets
+   ```
+
+**Acceptance Criteria:**
+- [ ] Bundle size <850KB gzipped (verified via `npm run build`)
+- [ ] Lighthouse Performance score ≥85
+- [ ] Slide-over components lazy-loaded (check Network tab)
+- [ ] Tab content loads on-demand (check Network tab)
+- [ ] No unnecessary re-renders (React DevTools Profiler shows <5 renders per interaction)
+- [ ] Virtual scrolling implemented if any list exceeds 500 rows
+- [ ] Images lazy-loaded (if applicable)
+
+#### Task 4.3: Visual Consistency Pass
+
+**Comparison Method:**
+Use before/after screenshots captured in Phases 1-3.
+
+**Checklist for Each Resource:**
+- [ ] Filter sidebar: 256px width, same spacing (`gap-4`)
+- [ ] Card containers: Same shadow (`shadow-sm`), border radius (`rounded-xl`)
+- [ ] Table rows: Premium hover effects consistent (border reveal, shadow, lift)
+- [ ] Slide-over: Same width (40vw, 480-720px), same animation (200ms)
+- [ ] Create forms: Same max-width (4xl), same shadow (shadow-lg)
+- [ ] Color usage: All semantic tokens (no hex codes)
+- [ ] Spacing: All using CSS variables (`--spacing-*`)
+- [ ] Typography: Font sizes consistent (text-sm, text-base, text-lg)
+
+**Storage Location for Screenshots:**
+- `docs/screenshots/before-after/`
+  - `contacts-list-before.png`, `contacts-list-after.png`
+  - `contacts-slideover-before.png`, `contacts-slideover-after.png`
+  - ... (repeat for all 6 resources)
+
+**Acceptance Criteria:**
+- [ ] All 6 resources follow exact same layout structure
+- [ ] No visual inconsistencies found in side-by-side comparison
+- [ ] All colors are semantic tokens (verified via DevTools inspection)
+- [ ] All spacing uses CSS variables (verified via computed styles)
+- [ ] No hardcoded pixel values in className props
+- [ ] Screenshots stored in `docs/screenshots/before-after/`
+
+#### Task 4.4: Documentation Updates
+
+**Files to Update:**
+
+1. **CLAUDE.md** (`/home/krwhynot/projects/crispy-crm/CLAUDE.md`)
+   - Add section: "Design System Patterns"
+   - Link to this rollout plan
+   - Update "Architecture" section with StandardListLayout pattern
+   - Update "Essential Commands" if needed
+
+2. **Design System Docs** (`docs/architecture/design-system.md`)
+   - Add StandardListLayout component specification
+   - Add ResourceSlideOver component specification
+   - Add PremiumDatagrid component specification
+   - Update color system (if changes made)
+   - Update spacing system (if changes made)
+
+3. **Component Library** (`docs/architecture/component-library.md`)
+   - Add new components to inventory:
+     - `StandardListLayout`
+     - `ResourceSlideOver`
+     - `PremiumDatagrid`
+     - `useSlideOverState` hook
+
+4. **Skills** (`.claude/skills/crispy-design-system/SKILL.md`)
+   - Update with StandardListLayout usage
+   - Update with ResourceSlideOver pattern
+   - Add acceptance criteria templates for future resources
+
+**Acceptance Criteria:**
+- [ ] CLAUDE.md updated with new patterns
+- [ ] `docs/architecture/design-system.md` updated with component specs
+- [ ] `docs/architecture/component-library.md` inventory updated
+- [ ] `.claude/skills/crispy-design-system/SKILL.md` updated
+- [ ] All links tested (no broken references)
+- [ ] Code examples in docs tested (copy-paste ready)
+
+#### Phase 4 Deliverables Checklist
+
+- [ ] Accessibility audit complete (Lighthouse ≥95, axe 0 violations)
+- [ ] Performance metrics meet thresholds (see table in Task 4.2)
+- [ ] Visual consistency verified (screenshots compared)
+- [ ] All 4 documentation files updated
+- [ ] Before/after screenshots archived in `docs/screenshots/before-after/`
+- [ ] No regressions found (all existing features still work)
+- [ ] Team trained on new patterns (internal presentation or demo)
 
 ### Implementation Guidelines
 
@@ -1362,6 +1506,132 @@ Per Engineering Constitution: `no-backward-compatibility: Breaking changes allow
 - Team prepared for immediate adoption
 - No dual-maintenance burden
 
+**Breaking Change Coordination**
+
+Each PR MUST include:
+
+1. **PR Title Format:**
+   ```
+   [BREAKING] Migrate [Resource] to Unified Design System
+   ```
+
+2. **PR Description Template:**
+   ```markdown
+   ## Breaking Changes
+
+   ### URL Changes
+   - ❌ OLD: `/contacts/123/show` (full page)
+   - ✅ NEW: `/contacts?view=123` (slide-over)
+   - **Impact**: Bookmarked URLs will redirect (if redirect added) or 404
+   - **Action Required**: Update any external documentation/links
+
+   ### Component Removals
+   - `ContactShow.tsx` → Replaced by `ContactSlideOver.tsx`
+   - Grid view toggle → REMOVED (Organizations only)
+   - **Impact**: Import statements will break
+   - **Action Required**: Update imports per migration guide
+
+   ### Behavioral Changes
+   - Row clicks now open slide-over (not full page navigation)
+   - Filters moved to left sidebar (was top toolbar)
+   - **Impact**: User flow changes
+   - **Action Required**: Update training materials/screencasts
+
+   ## Screenshots
+
+   ### Before (Current)
+   ![Contacts List Before](docs/screenshots/before-after/contacts-list-before.png)
+   ![Contacts Show Before](docs/screenshots/before-after/contacts-show-before.png)
+
+   ### After (New)
+   ![Contacts List After](docs/screenshots/before-after/contacts-list-after.png)
+   ![Contacts Slide-Over After](docs/screenshots/before-after/contacts-slideover-after.png)
+
+   ## Testing Performed
+   - [ ] All unit tests pass: `npm test -- contacts`
+   - [ ] All E2E tests pass: `npm run test:e2e -- contacts`
+   - [ ] Accessibility audit passed (Lighthouse ≥95, axe 0 violations)
+   - [ ] Manual testing: List, Slide-over (view + edit), Create form
+   - [ ] Keyboard navigation tested (Tab, ESC, Enter)
+
+   ## Rollout Plan
+   - **Deployment Window**: [Date/Time]
+   - **Rollback Plan**: Git revert (breaking changes mean no graceful fallback)
+   - **Communication**: Team notified via Slack #announcements 24h before merge
+   - **Known Issues**: [List any trade-offs or limitations]
+
+   ## Checklist
+   - [ ] Breaking changes documented above
+   - [ ] Screenshots captured and linked
+   - [ ] All tests passing
+   - [ ] Accessibility audit passed
+   - [ ] Team notified of deployment window
+   - [ ] Known issues documented (if any)
+   ```
+
+3. **Team Communication Timeline:**
+   - **T-24h**: Post PR link in #announcements with breaking changes summary
+   - **T-2h**: Final reminder before merge
+   - **T-0**: Merge + deploy
+   - **T+1h**: Post-deploy verification, announce completion
+
+4. **Screenshot Requirements:**
+
+   **Mandatory Screenshots (Per Resource):**
+   - `{resource}-list-before.png` - Old list view
+   - `{resource}-list-after.png` - New list view with StandardListLayout
+   - `{resource}-show-before.png` - Old full-page show view (if existed)
+   - `{resource}-slideover-after.png` - New slide-over (view mode)
+   - `{resource}-slideover-edit-after.png` - New slide-over (edit mode)
+   - `{resource}-create-before.png` - Old create form
+   - `{resource}-create-after.png` - New create form with styling
+
+   **Storage:** `docs/screenshots/before-after/`
+
+   **Capture Method:**
+   ```bash
+   # Use consistent viewport size
+   # Desktop: 1440x900 (primary target)
+   # Capture entire page with screenshot tool
+   # Save as PNG (lossless)
+   ```
+
+   **Comparison Tool (Optional):**
+   ```bash
+   npm install -g pixelmatch
+   # Generate visual diff for QA review
+   ```
+
+**Rollback Strategy**
+
+If critical issues discovered post-merge:
+
+1. **Immediate (< 1 hour):**
+   ```bash
+   git revert <commit-sha>
+   git push origin main
+   # Redeploy previous version
+   ```
+
+2. **Document Issue:**
+   - Create GitHub issue with "[ROLLBACK]" prefix
+   - Attach error logs, screenshots, reproduction steps
+   - Assign to original PR author
+
+3. **Fix Forward:**
+   - No second rollback - fix the issue in new PR
+   - Apply fix on top of current code
+   - Reference rollback issue in fix PR
+
+**Known Trade-Offs to Document:**
+
+Each migration PR should call out:
+- **Lost Features**: Grid view toggle (Organizations), card grouping (Tasks)
+- **Behavioral Changes**: Click → slide-over vs full page
+- **URL Changes**: Deep links may break for external users
+- **Training Required**: New interaction patterns
+- **Performance**: Bundle size increase (lazy loading mitigates)
+
 ### Migration Checklist (Per Resource)
 
 - [ ] List view migrated to StandardListLayout
@@ -1407,3 +1677,7 @@ Per Engineering Constitution: `no-backward-compatibility: Breaking changes allow
 - Existing tabbed forms: `src/components/admin/tabbed-form/`
 - Engineering Constitution: `.claude/engineering-constitution.md`
 - Design System: `docs/architecture/design-system.md`
+- **Cleanup Strategy:** [2025-11-16-unified-design-system-cleanup-strategy.md](2025-11-16-unified-design-system-cleanup-strategy.md) ⭐ **CRITICAL**
+  - Phase-locked cleanup cadence (cleanup happens WITH each milestone, not after)
+  - Specific search queries and deletion targets for each phase
+  - Verification scripts to confirm zero deprecated code
