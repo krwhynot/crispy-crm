@@ -2,8 +2,9 @@ import { TabbedFormInputs } from "@/components/admin/tabbed-form";
 import { OrganizationGeneralTab } from "./OrganizationGeneralTab";
 import { OrganizationDetailsTab } from "./OrganizationDetailsTab";
 import { OrganizationOtherTab } from "./OrganizationOtherTab";
+import { OrganizationHierarchyTab } from "./OrganizationHierarchyTab";
 
-type TabKey = "general" | "details" | "other";
+type TabKey = "general" | "details" | "other" | "hierarchy";
 
 export const OrganizationInputs = () => {
   const tabs = [
