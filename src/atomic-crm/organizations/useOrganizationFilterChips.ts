@@ -54,6 +54,17 @@ export const useOrganizationFilterChips = () => {
     { enabled: !!salesId }
   );
 
+  // Fetch parent organization name for parent filter
+  const parentOrgId = filterValues?.parent_organization_id;
+  const { data: parentOrgData } = useGetList(
+    "organizations",
+    {
+      pagination: { page: 1, perPage: 1 },
+      filter: parentOrgId ? { id: parentOrgId } : {},
+    },
+    { enabled: !!parentOrgId }
+  );
+
   const getSegmentName = (segmentId: string): string => {
     const segment = segmentsData?.find((s) => String(s.id) === String(segmentId));
     return segment?.name || `Segment #${segmentId}`;
@@ -62,6 +73,11 @@ export const useOrganizationFilterChips = () => {
   const getSalesName = (): string => {
     const sales = salesData?.[0];
     return sales ? formatName(sales.first_name, sales.last_name) : "Unknown";
+  };
+
+  const getParentOrgName = (): string => {
+    const parentOrg = parentOrgData?.[0];
+    return parentOrg?.name || `Org #${parentOrgId}`;
   };
 
   // Build filter chips array
@@ -129,8 +145,18 @@ export const useOrganizationFilterChips = () => {
     chips.push({
       key: "sales_id",
       value: filterValues.sales_id,
-      label: getSalesName(String(filterValues.sales_id)),
+      label: getSalesName(),
       category: "Manager",
+    });
+  }
+
+  // Parent Organization
+  if (filterValues?.parent_organization_id) {
+    chips.push({
+      key: "parent_organization_id",
+      value: filterValues.parent_organization_id,
+      label: getParentOrgName(),
+      category: "Parent",
     });
   }
 
