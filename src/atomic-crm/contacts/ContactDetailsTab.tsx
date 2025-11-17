@@ -1,0 +1,243 @@
+import { Mail, Phone, Linkedin, Building2 } from 'lucide-react';
+import { useUpdate, useNotify, RecordContextProvider } from 'ra-core';
+import { Form } from 'react-admin';
+import { ReferenceField } from '@/components/admin/reference-field';
+import { TextField } from '@/components/admin/text-field';
+import { DateField } from '@/components/admin/date-field';
+import { ArrayField } from '@/components/admin/array-field';
+import { EmailField } from '@/components/admin/email-field';
+import { SingleFieldList } from '@/components/admin/single-field-list';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { AsideSection } from '../misc/AsideSection';
+import { SaleName } from '../sales/SaleName';
+import { ContactInputs } from './ContactInputs';
+import { Avatar } from './Avatar';
+import type { Contact } from '../types';
+import { useState } from 'react';
+
+interface ContactDetailsTabProps {
+  record: Contact;
+  mode: 'view' | 'edit';
+}
+
+/**
+ * Details tab for ContactSlideOver.
+ *
+ * **View Mode**: Displays all contact fields from ContactShow + ContactAside:
+ * - Identity: Avatar, Name, Gender, Title
+ * - Position: Organization (link), Department, Title
+ * - Contact Info: Email array, Phone array, LinkedIn
+ * - Account: Sales rep, First seen, Last seen
+ * - Tags: Tag badges (read-only)
+ * - Notes: Free text notes field
+ *
+ * **Edit Mode**: Renders existing ContactInputs component inline with save/cancel.
+ */
+export function ContactDetailsTab({ record, mode }: ContactDetailsTabProps) {
+  const [update] = useUpdate();
+  const notify = useNotify();
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Handle save in edit mode
+  const handleSave = async (data: Partial<Contact>) => {
+    setIsSaving(true);
+    try {
+      await update('contacts', {
+        id: record.id,
+        data,
+        previousData: record,
+      });
+      notify('Contact updated successfully', { type: 'success' });
+      // Note: Mode toggle is handled by parent component's onModeToggle
+    } catch (error) {
+      notify('Error updating contact', { type: 'error' });
+      console.error('Save error:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (mode === 'edit') {
+    return (
+      <RecordContextProvider value={record}>
+        <Form onSubmit={handleSave} record={record}>
+          <div className="space-y-6">
+            <ContactInputs />
+
+            {/* Save/Cancel buttons */}
+            <div className="flex gap-2 justify-end pt-4 border-t border-border">
+              <Button
+                type="submit"
+                disabled={isSaving}
+                className="h-11 px-4"
+              >
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </div>
+          </div>
+        </Form>
+      </RecordContextProvider>
+    );
+  }
+
+  // View mode - display all contact fields
+  return (
+    <RecordContextProvider value={record}>
+      <div className="space-y-6">
+        {/* Identity Section */}
+        <AsideSection title="Identity">
+          <div className="flex items-center gap-4">
+            <Avatar />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold">
+                {record.first_name} {record.last_name}
+              </h3>
+              {record.gender && (
+                <p className="text-sm text-muted-foreground">{record.gender}</p>
+              )}
+              {record.title && (
+                <p className="text-sm text-muted-foreground">{record.title}</p>
+              )}
+            </div>
+          </div>
+        </AsideSection>
+
+        {/* Position Section */}
+        <AsideSection title="Position">
+          <Card>
+            <CardContent className="p-4 space-y-2">
+              {record.organization_id && (
+                <div className="flex items-center gap-2">
+                  <Building2 className="size-4 text-muted-foreground" />
+                  <ReferenceField source="organization_id" reference="organizations" link="show">
+                    <TextField source="name" className="font-medium" />
+                  </ReferenceField>
+                </div>
+              )}
+              {record.department && (
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Department: </span>
+                  <span className="font-medium">{record.department}</span>
+                </div>
+              )}
+              {record.title && (
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Title: </span>
+                  <span className="font-medium">{record.title}</span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </AsideSection>
+
+        {/* Contact Info Section */}
+        <AsideSection title="Contact Info">
+          <div className="space-y-3">
+            {/* Email */}
+            {record.email && record.email.length > 0 && (
+              <ArrayField source="email">
+                <SingleFieldList className="flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Mail className="size-4 text-muted-foreground" />
+                    <EmailField source="email" />
+                    <TextField source="type" className="text-xs text-muted-foreground" />
+                  </div>
+                </SingleFieldList>
+              </ArrayField>
+            )}
+
+            {/* Phone */}
+            {record.phone && record.phone.length > 0 && (
+              <ArrayField source="phone">
+                <SingleFieldList className="flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Phone className="size-4 text-muted-foreground" />
+                    <TextField source="number" />
+                    <TextField source="type" className="text-xs text-muted-foreground" />
+                  </div>
+                </SingleFieldList>
+              </ArrayField>
+            )}
+
+            {/* LinkedIn */}
+            {record.linkedin_url && (
+              <div className="flex items-center gap-2">
+                <Linkedin className="size-4 text-muted-foreground" />
+                <a
+                  href={record.linkedin_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary hover:underline"
+                >
+                  LinkedIn Profile
+                </a>
+              </div>
+            )}
+          </div>
+        </AsideSection>
+
+        {/* Account Section */}
+        <AsideSection title="Account">
+          <div className="space-y-2">
+            <div className="text-sm">
+              <span className="text-muted-foreground">Added on </span>
+              <DateField
+                source="first_seen"
+                options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+              />
+            </div>
+
+            <div className="text-sm">
+              <span className="text-muted-foreground">Last activity on </span>
+              <DateField
+                source="last_seen"
+                options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+              />
+            </div>
+
+            <div className="text-sm">
+              <span className="text-muted-foreground">Followed by </span>
+              <ReferenceField source="sales_id" reference="sales">
+                <SaleName />
+              </ReferenceField>
+            </div>
+          </div>
+        </AsideSection>
+
+        {/* Tags Section */}
+        {record.tags && record.tags.length > 0 && (
+          <AsideSection title="Tags">
+            <div className="flex flex-wrap gap-2">
+              {record.tags.map((tagId) => (
+                <ReferenceField
+                  key={tagId}
+                  record={{ tag_id: tagId }}
+                  source="tag_id"
+                  reference="tags"
+                  link={false}
+                >
+                  <Badge variant="outline">
+                    <TextField source="name" />
+                  </Badge>
+                </ReferenceField>
+              ))}
+            </div>
+          </AsideSection>
+        )}
+
+        {/* Notes Section */}
+        {record.notes && (
+          <AsideSection title="Notes">
+            <Card>
+              <CardContent className="p-4">
+                <p className="text-sm whitespace-pre-wrap">{record.notes}</p>
+              </CardContent>
+            </Card>
+          </AsideSection>
+        )}
+      </div>
+    </RecordContextProvider>
+  );
+}
