@@ -20,6 +20,7 @@ import { useState } from 'react';
 interface ContactDetailsTabProps {
   record: Contact;
   mode: 'view' | 'edit';
+  onModeToggle?: () => void;
 }
 
 /**
