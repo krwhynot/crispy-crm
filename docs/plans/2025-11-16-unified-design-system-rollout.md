@@ -1496,6 +1496,18 @@ Use before/after screenshots captured in Phases 1-3.
 - **Create flow edge cases**: Dirty form -> Cancel shows confirm modal; Save & Add Another clears fields while keeping page; autosave writes to `localStorage` with key `crm.draft.{resource}.{userId}` and is cleaned up after successful submit.
 - **Semantic tokens**: Snapshot CSS classes for backgrounds (`bg-muted`, `bg-card`), spacing (`p-3`, `gap-3`), typography, and confirm no hard-coded hex values in inline styles by reading `getComputedStyle`.
 
+**Desktop + iPad Coverage**
+- Configure two Playwright projects in `playwright.config.ts`: `desktop-chromium` (1920×1080 viewport, default mouse) and `ipad-chromium` (1024×1366, `hasTouch: true`, `isMobile: true`). Reuse all specs in both projects so assertions run per breakpoint.
+- Desktop assertions focus on the full StandardListLayout diagram (lines 45-107): verify filter sidebar width equals 256px, card containers keep `gap-6`, and pagination + FloatingCreateButton stay visible without wrapping.
+- iPad assertions ensures the same pattern remains usable at tablet width: sticky filter sidebar stays within viewport height, slide-over width respects min 480px and max 720px even on smaller viewports, and create forms still center (`max-w-4xl mx-auto`) without horizontal scroll.
+- Add responsive-specific tests:
+  - `list-layout.spec.ts`: use `await expect.soft(filterSidebar).toBeInViewport()` on iPad after scrolling; ensure table columns retain React Admin checkbox column and horizontal scrollbars appear only when expected.
+  - `slide-over.spec.ts`: measure rendered panel width via `locator.evaluate(el => el.getBoundingClientRect().width)` and assert it equals `Math.min(Math.max(viewportWidth * 0.4, 480), 720)` within 2px tolerance for both device profiles.
+  - `create-form.spec.ts`: confirm sticky footer remains attached at bottom when virtual keyboard is absent/present; simulate portrait vs landscape by resizing viewport mid-test on iPad (`page.setViewportSize({ width: 1366, height: 1024 })`) and ensure buttons remain accessible.
+  - `visual-primitives.spec.ts`: check that hover/touch states degrade gracefully (desktop uses `hover`, iPad relies on focus-visible). Use `await row.hover()` on desktop and `await row.tap()` on iPad, then assert `.table-row-premium` applies the same CSS variables as defined in Visual Styling System.
+- Capture per-device screenshots using `test.info().attach` for regressions: desktop baseline stored under `docs/screenshots/before-after/{resource}-desktop.png`, iPad under `{resource}-ipad.png`.
+- Document any responsive diffs in test titles (`[desktop] contacts list layout matches spec`) so CI artifacts map to device context.
+
 **Representative Snippet**
 ```ts
 test('contacts slide-over obeys URL contract', async ({ slideOver }) => {

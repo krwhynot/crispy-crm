@@ -26,6 +26,11 @@ export const RecordField = <RecordType extends Record<string, any> = Record<stri
     source,
     record: recordProp,
     variant,
+    // Filter out React Admin-specific props that shouldn't be passed to DOM elements
+    sortable,
+    sortBy,
+    textAlign,
+    rowClassName,
     ...rest
   } = props;
   const resource = useResourceContext(props);

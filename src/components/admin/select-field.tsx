@@ -80,6 +80,12 @@ const SelectFieldImpl = <RecordType extends Record<string, any> = Record<string,
     optionValue = "id",
     optionText = "name",
     translateChoice = true,
+    // Filter out React Admin-specific props that shouldn't be passed to DOM elements
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    rowClassName,
     ...rest
   } = props;
   const value = useFieldValue({ defaultValue, source, record });
