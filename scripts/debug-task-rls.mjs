@@ -40,22 +40,26 @@ async function debugTaskRLS() {
   console.log('✅ Sales record:', salesData);
   const currentSalesId = salesData.id;
 
-  // Step 3: Get first incomplete task from Kaufholds
-  console.log('\n📝 Step 3: Fetching first incomplete task...');
+  // Step 3: Get first incomplete task (any principal)
+  console.log('\n📝 Step 3: Fetching first incomplete task (any principal)...');
   const { data: tasks, error: tasksError } = await supabase
-    .from('priority_tasks')
-    .select('task_id, task_title, sales_id, principal_name, completed')
+    .from('tasks')
+    .select('id, title, sales_id, completed, opportunity_id')
     .eq('completed', false)
-    .eq('principal_organization_id', 1796) // Kaufholds
-    .limit(1);
+    .limit(5);
 
   if (tasksError) {
     console.error('❌ Tasks fetch failed:', tasksError.message);
     return;
   }
 
+  console.log(`✅ Found ${tasks?.length || 0} incomplete tasks`);
+  if (tasks && tasks.length > 0) {
+    console.table(tasks);
+  }
+
   if (!tasks || tasks.length === 0) {
-    console.log('⚠️  No incomplete tasks found for Kaufholds');
+    console.log('⚠️  No incomplete tasks found');
     return;
   }
 
@@ -94,7 +98,7 @@ async function debugTaskRLS() {
       completed: true,
       completed_at: new Date().toISOString()
     })
-    .eq('id', task.task_id)
+    .eq('id', task.id)  // Fixed: use task.id instead of task.task_id
     .select();
 
   if (updateError) {
