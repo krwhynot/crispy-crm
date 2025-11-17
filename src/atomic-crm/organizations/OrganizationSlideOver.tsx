@@ -1,7 +1,6 @@
-import { BuildingIcon, Network, Users, Target } from 'lucide-react';
+import { BuildingIcon, Users, Target } from 'lucide-react';
 import { ResourceSlideOver, TabConfig } from '@/components/layouts/ResourceSlideOver';
 import { OrganizationDetailsTab } from './slideOverTabs/OrganizationDetailsTab';
-import { OrganizationHierarchyTab } from './slideOverTabs/OrganizationHierarchyTab';
 import { OrganizationContactsTab } from './slideOverTabs/OrganizationContactsTab';
 import { OrganizationOpportunitiesTab } from './slideOverTabs/OrganizationOpportunitiesTab';
 
@@ -26,12 +25,6 @@ export function OrganizationSlideOver({
       label: 'Details',
       component: OrganizationDetailsTab,
       icon: BuildingIcon,
-    },
-    {
-      key: 'hierarchy',
-      label: 'Hierarchy',
-      component: OrganizationHierarchyTab,
-      icon: Network,
     },
     {
       key: 'contacts',
