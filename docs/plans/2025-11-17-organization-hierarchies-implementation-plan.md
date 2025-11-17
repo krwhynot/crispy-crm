@@ -133,8 +133,14 @@ On the presentation side, the Show page surfaces parent links, branch counts, an
 ### Suggestions
 
 - **Bind** the inputs and validation schema directly to `parent_organization_id`, ensuring create/edit/save use the real column name
-- **Read** `location.state.record` (or `useLocation`) inside `OrganizationCreate` and merge it into `defaultValues` so "Add Branch" opens with the parent locked in
-- **Update** the parent selector filter to PostgREST syntax, add `not.eq` of the current id, and surface validation errors when a user attempts to create a loop
+- **Router state handling:**
+  - **Create scenario:** Read `location.state.record` in `OrganizationCreate` and merge `parent_organization_id` into form defaults (for "Add Branch" button flow)
+  - **Edit scenario:** Use `useRecordContext()` to get current record, pre-fill parent in form (already working via React Admin)
+  - **Both scenarios:** Ensure parent field is disabled/read-only when pre-filled from "Add Branch" to prevent accidental changes
+- **Update** the parent selector filter to PostgREST syntax:
+  - Replace `{ organization_type: { $in: [...] } }` with `{ 'organization_type@in': '(customer,distributor,principal)' }`
+  - Replace `{ parent_organization_id: { $null: true } }` with `{ 'parent_organization_id@is': 'null' }`
+  - Add `{ 'id@neq': currentRecordId }` to exclude current org from dropdown
 - **Move** the hierarchy warnings into a reusable validation hook or custom mutation guard so the slide-over, edit page, and sidebar actions share the same business rules
 - **Align** frontend "required" labels with backend requirements—either make `organization_type` required in Zod or relax the UI copy
 
@@ -145,27 +151,49 @@ On the presentation side, the Show page surfaces parent links, branch counts, an
 ### P0 - Critical (Blocking Feature)
 
 1. **Align field naming**
-   - Rename `parent_id` to `parent_organization_id` across forms, validation, and tests
-   - Update the `TransformService` (or mutation payload) so Supabase receives the correct column
-   - Files to modify:
-     - `src/atomic-crm/organizations/OrganizationInputs.tsx`
-     - `src/atomic-crm/organizations/ParentOrganizationInput.tsx`
-     - `src/atomic-crm/validation/organizations.ts`
-     - `src/atomic-crm/providers/supabase/services/TransformService.ts`
+   - Rename `parent_id` to `parent_organization_id` across ALL occurrences:
+   - **Forms:**
+     - `src/atomic-crm/organizations/OrganizationInputs.tsx:10-26`
+     - `src/atomic-crm/organizations/ParentOrganizationInput.tsx:11-28`
+   - **Validation:**
+     - `src/atomic-crm/validation/organizations.ts` - update schema
+   - **Tests:**
+     - `src/atomic-crm/organizations/__tests__/ParentOrganizationInput.test.tsx`
+     - `src/atomic-crm/validation/__tests__/organizations/validation.test.ts`
+     - `src/atomic-crm/validation/__tests__/organizations/edge-cases.test.ts`
+   - **CSV Import:**
+     - `src/atomic-crm/organizations/organizationImport.logic.ts` - Add `parent_organization_id?: string | number | null` to `OrganizationImportSchema` interface
+     - Update CSV template/docs to include parent_organization_id column
+   - **Transform Service:**
+     - Verify `TransformService.ts` correctly passes `parent_organization_id` without mapping (field names should match)
 
-2. **Add cycle protection**
-   - Create a trigger/RPC (`prevent_organization_cycle`) that rejects self-parenting and ancestor loops
-   - Enforce allowed parent types server-side
-   - Create new migration: `npx supabase migration new add_organization_cycle_protection`
+2. **RLS Policy Decision** ⚠️ **REQUIRED BEFORE PROCEEDING**
+   - **Current state:** Only admins can update organizations (including parent_organization_id)
+   - **Decision needed:** Should non-admin users be able to set parent relationships?
+   - **Options:**
+     - **A. Keep admin-only** (safest, recommended for P0)
+     - **B. Allow all authenticated users** (update RLS policy to permit parent_organization_id updates)
+     - **C. Create separate policy** (granular control, more complex)
+   - **Action:** Document decision in this plan before implementing
+   - **Default for P0:** Option A (admin-only) - no RLS changes required
 
-3. **Fix parent selector filter/mapping**
-   - Use supported PostgREST operators (`organization_type@in`, `parent_organization_id@is`)
-   - Exclude the current record from parent selection
-   - Wire `BranchLocationsSection`'s router state into `OrganizationCreate` defaults
-   - Files to modify:
-     - `src/atomic-crm/organizations/ParentOrganizationInput.tsx`
-     - `src/atomic-crm/organizations/OrganizationCreate.tsx`
-     - `src/atomic-crm/organizations/BranchLocationsSection.tsx`
+3. **Add cycle protection**
+   - Create migration: `npx supabase migration new add_organization_cycle_protection`
+   - Implement trigger function (see Migration Strategy section for complete SQL)
+   - Add trigger tests to verify cycle detection
+   - Ensure error messages are user-friendly (include org ID/name)
+
+4. **Fix parent selector filter/mapping**
+   - **ParentOrganizationInput.tsx:**
+     - Replace MongoDB operators with PostgREST: `organization_type@in`, `parent_organization_id@is`
+     - Add `id@neq` filter to exclude current record from dropdown
+     - Example: `{ 'organization_type@in': '(customer,distributor,principal)', 'parent_organization_id@is': 'null', 'id@neq': record.id }`
+   - **OrganizationCreate.tsx:**
+     - Read `location.state.record.parent_organization_id`
+     - Merge into form `defaultValues`
+     - Disable parent field when pre-filled (prevent accidental changes)
+   - **BranchLocationsSection.tsx:**
+     - Verify "Add Branch" button passes correct state (already does at line 82-93)
 
 ### P1 - High Priority
 
@@ -205,26 +233,85 @@ On the presentation side, the Show page surfaces parent links, branch counts, an
 ### Unit Tests
 
 - [ ] Validation schema tests for `parent_organization_id` field
-- [ ] Cycle detection logic tests
 - [ ] Transform service tests for parent mapping
-- [ ] Filter generation tests for PostgREST operators
+- [ ] Filter generation tests for PostgREST operators (`organization_type@in`, `parent_organization_id@is`, `id@neq`)
+- [ ] CSV import schema tests for parent field
+
+### Database/Trigger Tests
+
+**Cycle Detection (SQL Tests):**
+- [ ] Self-parenting prevention (org A → org A)
+- [ ] Direct cycle (org A → org B → org A)
+- [ ] 3-level cycle (org A → org B → org C → org A)
+- [ ] Max depth guard (10+ levels without cycle)
+- [ ] NULL parent allowed (orphan organizations)
+- [ ] Trigger only fires on parent_organization_id change (not other fields)
+- [ ] Error messages include helpful details (org ID, cycle path)
+
+**Test SQL:**
+```sql
+-- Test self-parenting
+INSERT INTO organizations (id, name, parent_organization_id)
+VALUES (999, 'Test Org', 999); -- Should fail
+
+-- Test direct cycle
+INSERT INTO organizations (id, name, parent_organization_id)
+VALUES (1000, 'Org A', NULL);
+INSERT INTO organizations (id, name, parent_organization_id)
+VALUES (1001, 'Org B', 1000);
+UPDATE organizations SET parent_organization_id = 1001 WHERE id = 1000; -- Should fail
+
+-- Test NULL parent (should succeed)
+INSERT INTO organizations (id, name, parent_organization_id)
+VALUES (1002, 'Orphan Org', NULL); -- Should succeed
+```
 
 ### Integration Tests
 
+**Create/Edit Scenarios:**
 - [ ] Create organization with parent
 - [ ] Edit organization to change parent
-- [ ] Remove parent from organization
-- [ ] Attempt to create self-parent (should fail)
-- [ ] Attempt to create cycle (should fail)
+- [ ] Edit organization to remove parent (set to NULL)
 - [ ] "Add Branch" pre-fills parent correctly
+- [ ] CSV import with parent_organization_id column
+
+**Validation Scenarios:**
+- [ ] Attempt to create self-parent (should fail with clear error)
+- [ ] Attempt to create cycle (should fail with clear error)
+- [ ] Attempt to set invalid parent type (if type restrictions exist)
+- [ ] Non-admin user attempts to update parent (behavior depends on RLS decision)
+
+**Regression Scenarios:**
+- [ ] Delete parent organization with children → children become orphans (parent_organization_id set to NULL)
+- [ ] Soft-delete parent organization → children still reference soft-deleted parent
+- [ ] Update parent organization name → BranchLocationsSection reflects new name
+- [ ] Filter by parent_organization_id in organization list
+- [ ] organizations_summary view correctly shows parent_organization_name and child_branch_count
+
+**Edge Cases:**
+- [ ] Rapidly create/delete parent relationships (race conditions)
+- [ ] Update parent while branches exist → all relationships remain valid
+- [ ] Import 100+ organizations with complex hierarchy via CSV
 
 ### E2E Tests
 
-- [ ] Complete hierarchy creation workflow (parent → branches)
-- [ ] Navigate hierarchy via breadcrumbs
-- [ ] View branch locations table
-- [ ] Edit parent relationship
-- [ ] Verify cycle protection in UI
+**Happy Path:**
+- [ ] Complete hierarchy creation workflow (parent → 3 branches)
+- [ ] Navigate hierarchy via breadcrumbs (branch → parent → sister branches)
+- [ ] View branch locations table with correct counts
+- [ ] Edit parent relationship and verify UI updates
+- [ ] CSV export includes parent_organization_id column
+
+**Error Handling:**
+- [ ] Verify cycle protection error displays in UI (not just console)
+- [ ] Verify self-parent error displays in UI
+- [ ] Verify filter correctly excludes current org from parent dropdown
+- [ ] Verify filter correctly shows only eligible parent types
+
+**Performance:**
+- [ ] Load organization with 50+ branches (< 2s load time)
+- [ ] Filter organizations by parent (< 1s response)
+- [ ] Breadcrumb rendering for 5-level hierarchy (< 500ms)
 
 ---
 
@@ -358,6 +445,65 @@ LIMIT 100;
 - Create one-time notification for admins about parent relationship reset
 - Provide "Orgs Without Parent" report filtered to likely candidates
 - Document in release notes that hierarchies need to be re-established
+
+### Rollback Plan
+
+**Database Rollback:**
+
+If the cycle protection trigger causes issues in production:
+
+```sql
+-- Emergency: Disable trigger without dropping it
+ALTER TABLE organizations DISABLE TRIGGER check_organization_cycle;
+
+-- Later: Re-enable after fixing issues
+ALTER TABLE organizations ENABLE TRIGGER check_organization_cycle;
+
+-- Full rollback: Drop trigger and function
+DROP TRIGGER IF EXISTS check_organization_cycle ON organizations;
+DROP FUNCTION IF EXISTS prevent_organization_cycle();
+
+-- Revert index consolidation (if applied)
+CREATE INDEX idx_companies_parent_company_id ON organizations (parent_organization_id)
+  WHERE parent_organization_id IS NOT NULL;
+```
+
+**Code Rollback:**
+
+```bash
+# Revert forms to use parent_id (NOT RECOMMENDED - data will be lost again)
+git revert <commit-sha-of-parent-id-to-parent-organization-id-change>
+
+# Better: Keep code changes, only disable trigger
+# This allows manual parent relationship edits while fixing trigger bugs
+```
+
+**Mitigation Strategy:**
+
+- **Before deployment:** Test trigger with production-like data volume in staging
+- **During deployment:**
+  1. Deploy code changes first (no functional impact until forms are used)
+  2. Deploy database migration in separate step
+  3. Monitor error logs for trigger failures
+  4. Have rollback SQL ready in separate file
+- **After deployment:**
+  - Monitor Supabase logs for cycle protection errors
+  - Create dashboard alert for repeated trigger failures (> 5/hour)
+  - Keep trigger disabled for 24h if blocking legitimate operations
+
+**Known Risks:**
+
+- **Trigger too strict:** May block legitimate complex hierarchies (adjust max_depth if needed)
+- **Performance impact:** Trigger walks parent chain on every update (acceptable for < 10 levels)
+- **Error messaging:** Database errors may not display user-friendly messages in UI (requires frontend error handling)
+
+**Contingency:**
+
+If trigger cannot be fixed quickly:
+1. Disable trigger to unblock users
+2. Add application-level cycle detection in validation schema (temporary)
+3. Create background job to detect and report cycles weekly
+4. Fix trigger in next release
 
 ### Code Changes Required
 
