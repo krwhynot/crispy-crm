@@ -117,7 +117,7 @@ export const ParentOrganizationSection = () => {
                     e.preventDefault();
                     navigate(`/organizations/${sister.id}/show`);
                   }}
-                  className="text-[color:var(--primary)] hover:underline"
+                  className="text-primary hover:underline"
                 >
                   {sister.name}
                 </a>
@@ -129,7 +129,7 @@ export const ParentOrganizationSection = () => {
           {!showAllSisters && remainingSistersCount > 0 && (
             <button
               onClick={() => setShowAllSisters(true)}
-              className="text-xs text-[color:var(--primary)] hover:underline mt-1"
+              className="text-xs text-primary hover:underline mt-1"
             >
               Show all {remainingSistersCount} more
             </button>
