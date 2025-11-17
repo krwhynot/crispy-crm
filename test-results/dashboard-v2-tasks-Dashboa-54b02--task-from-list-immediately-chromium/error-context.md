@@ -134,92 +134,78 @@
                 - generic [ref=e127]: "2"
               - 'treeitem "Health: active Beverage Program Expansion Awaiting Response Dec 14, 2025" [level=2] [ref=e128] [cursor=pointer]':
                 - 'generic "Health: active" [ref=e129]'
-                - generic: Beverage Program Expansion
-                - generic [ref=e130]: Awaiting Response
-                - generic [ref=e131]: Dec 14, 2025
-              - 'treeitem "Health: active Restaurant Equipment Supply Deal Sample/Visit Offered Nov 24, 2025" [level=2] [ref=e132] [cursor=pointer]':
-                - 'generic "Health: active" [ref=e133]'
-                - generic: Restaurant Equipment Supply Deal
-                - generic [ref=e134]: Sample/Visit Offered
-                - generic [ref=e135]: Nov 24, 2025
-            - generic [ref=e136]:
-              - treeitem "040 KITCHEN INC 1" [expanded] [level=1] [ref=e137] [cursor=pointer]:
-                - img [ref=e138]
-                - generic [ref=e140]: 040 KITCHEN INC
-                - generic [ref=e141]: "1"
-              - 'treeitem "Health: active Test Cascade Opportunity New Lead Jan 26, 2026" [level=2] [ref=e142] [cursor=pointer]':
-                - 'generic "Health: active" [ref=e143]'
-                - generic [ref=e144]: Test Cascade Opportunity
-                - generic [ref=e145]: New Lead
-                - generic [ref=e146]: Jan 26, 2026
-          - button "Resize opportunities column" [ref=e147] [cursor=pointer]
-          - generic "Tasks list" [ref=e149]:
-            - generic [ref=e150]:
-              - generic [ref=e151]: Tasks
-              - combobox "Group tasks by" [ref=e152] [cursor=pointer]:
+                - generic [ref=e130]: Beverage Program Expansion
+                - generic [ref=e131]: Awaiting Response
+                - generic [ref=e132]: Dec 14, 2025
+              - 'treeitem "Health: active Restaurant Equipment Supply Deal Sample/Visit Offered Nov 24, 2025" [level=2] [ref=e133] [cursor=pointer]':
+                - 'generic "Health: active" [ref=e134]'
+                - generic [ref=e135]: Restaurant Equipment Supply Deal
+                - generic [ref=e136]: Sample/Visit Offered
+                - generic [ref=e137]: Nov 24, 2025
+            - generic [ref=e138]:
+              - treeitem "040 KITCHEN INC 1" [expanded] [level=1] [ref=e139] [cursor=pointer]:
+                - img [ref=e140]
+                - generic [ref=e142]: 040 KITCHEN INC
+                - generic [ref=e143]: "1"
+              - 'treeitem "Health: active Test Cascade Opportunity New Lead Jan 26, 2026" [level=2] [ref=e144] [cursor=pointer]':
+                - 'generic "Health: active" [ref=e145]'
+                - generic [ref=e146]: Test Cascade Opportunity
+                - generic [ref=e147]: New Lead
+                - generic [ref=e148]: Jan 26, 2026
+          - button "Resize opportunities column" [ref=e149] [cursor=pointer]
+          - generic "Tasks list" [ref=e151]:
+            - generic [ref=e152]:
+              - generic [ref=e153]: Tasks
+              - combobox "Group tasks by" [ref=e154] [cursor=pointer]:
                 - generic: Due Date
                 - img
-            - generic [ref=e155]:
-              - button "This Week" [disabled] [ref=e156]:
-                - generic [ref=e157]: This Week
-              - list "This Week tasks" [ref=e158]:
-                - listitem [ref=e159]:
-                  - checkbox "Mark \"Send equipment quotes and spec sheets\" as complete" [active] [ref=e161]
-                  - generic [ref=e162]: Send equipment quotes and spec sheets
-                  - generic [ref=e163]: High
-                - listitem [ref=e164]:
-                  - checkbox "Mark \"Follow up on beverage program pricing\" as complete" [ref=e166]
-                  - generic [ref=e167]: Follow up on beverage program pricing
-                  - generic [ref=e168]: Medium
-                - listitem [ref=e169]:
-                  - checkbox "Mark \"Schedule facility visit for equipment demo\" as complete" [ref=e171]
-                  - generic [ref=e172]: Schedule facility visit for equipment demo
-                  - generic [ref=e173]: Medium
-          - button "Resize tasks column" [ref=e174] [cursor=pointer]
-          - generic [ref=e176]:
-            - generic [ref=e178]: Quick Logger
-            - form "Quick activity logger" [ref=e180]:
-              - generic [ref=e181]:
-                - generic [ref=e182]: Activity Type
-                - generic [ref=e183]:
-                  - button "Log call" [ref=e184] [cursor=pointer]:
+            - generic [ref=e157]:
+              - button "This Week" [disabled] [ref=e158]:
+                - generic [ref=e159]: This Week
+              - list "This Week tasks" [ref=e160]:
+                - listitem [ref=e161]:
+                  - checkbox "Mark \"Schedule facility visit for equipment demo\" as complete" [active] [ref=e163]
+                  - generic [ref=e164]: Schedule facility visit for equipment demo
+                  - generic [ref=e165]: Medium
+          - button "Resize tasks column" [ref=e166] [cursor=pointer]
+          - generic [ref=e168]:
+            - generic [ref=e170]: Quick Logger
+            - form "Quick activity logger" [ref=e172]:
+              - generic [ref=e173]:
+                - generic [ref=e174]: Activity Type
+                - generic [ref=e175]:
+                  - button "Log call" [ref=e176] [cursor=pointer]:
                     - img
-                  - button "Log email" [ref=e185] [cursor=pointer]:
+                  - button "Log email" [ref=e177] [cursor=pointer]:
                     - img
-                  - button "Log meeting" [ref=e186] [cursor=pointer]:
+                  - button "Log meeting" [ref=e178] [cursor=pointer]:
                     - img
-                  - button "Log note" [ref=e187] [cursor=pointer]:
+                  - button "Log note" [ref=e179] [cursor=pointer]:
                     - img
-              - generic [ref=e188]:
-                - generic [ref=e189]: Opportunity (Optional)
-                - combobox "Opportunity (Optional)" [ref=e190] [cursor=pointer]:
+              - generic [ref=e180]:
+                - generic [ref=e181]: Opportunity (Optional)
+                - combobox "Opportunity (Optional)" [ref=e182] [cursor=pointer]:
                   - generic: Select opportunity
                   - img
-                - combobox [ref=e191]
-              - generic [ref=e192]:
-                - generic [ref=e193]: Subject *
-                - textbox "Subject *" [ref=e194]:
+                - combobox [ref=e183]
+              - generic [ref=e184]:
+                - generic [ref=e185]: Subject *
+                - textbox "Subject *" [ref=e186]:
                   - /placeholder: Brief summary...
-              - generic [ref=e195]:
-                - generic [ref=e196]: Description
-                - textbox "Description" [ref=e197]:
+              - generic [ref=e187]:
+                - generic [ref=e188]: Description
+                - textbox "Description" [ref=e189]:
                   - /placeholder: Activity details...
-              - generic [ref=e198]:
-                - checkbox "Create follow-up task" [ref=e199] [cursor=pointer]
+              - generic [ref=e190]:
+                - checkbox "Create follow-up task" [ref=e191] [cursor=pointer]
                 - checkbox
-                - generic [ref=e200] [cursor=pointer]: Create follow-up task
-              - button "Log Activity" [ref=e201] [cursor=pointer]
-  - contentinfo [ref=e202]:
-    - generic [ref=e204]:
-      - paragraph [ref=e205]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e206] [cursor=pointer]:
-        - img [ref=e207]
-        - generic [ref=e209]: Keyboard shortcuts
-  - region "Notifications alt+T":
-    - list:
-      - listitem [ref=e210]:
-        - button "Close toast" [ref=e211] [cursor=pointer]:
-          - img [ref=e212]
-        - img [ref=e216]
-        - generic [ref=e219]: Task marked as complete
+                - generic [ref=e192] [cursor=pointer]: Create follow-up task
+              - button "Log Activity" [ref=e193] [cursor=pointer]
+  - contentinfo [ref=e194]:
+    - generic [ref=e196]:
+      - paragraph [ref=e197]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e198] [cursor=pointer]:
+        - img [ref=e199]
+        - generic [ref=e201]: Keyboard shortcuts
+  - region "Notifications alt+T"
 ```

@@ -261,7 +261,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
                       <div
                         key={task.task_id}
                         className="h-11 px-3 hover:bg-muted/30 flex items-center gap-3 border-b border-border/50"
-                        role="listitem"
+                        role={isLaterGroup ? undefined : 'listitem'}
                       >
                         <label className="shrink-0 h-11 w-11 flex items-center justify-center -ml-1 cursor-pointer">
                           <input
