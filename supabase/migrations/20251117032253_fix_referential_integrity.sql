@@ -5,7 +5,24 @@
 -- =====================================================
 
 -- =====================================================
--- PART 1: Add Missing Foreign Key Constraints
+-- PART 1: Clean Up Invalid Data Before Adding Constraints
+-- =====================================================
+
+-- Clean up opportunities with invalid organization references
+UPDATE opportunities SET principal_organization_id = NULL
+WHERE principal_organization_id IS NOT NULL
+  AND principal_organization_id NOT IN (SELECT id FROM organizations);
+
+UPDATE opportunities SET distributor_organization_id = NULL
+WHERE distributor_organization_id IS NOT NULL
+  AND distributor_organization_id NOT IN (SELECT id FROM organizations);
+
+-- Delete opportunities with invalid customer_organization_id (required field)
+DELETE FROM opportunities
+WHERE customer_organization_id NOT IN (SELECT id FROM organizations);
+
+-- =====================================================
+-- PART 2: Add Missing Foreign Key Constraints
 -- =====================================================
 
 -- Add FK constraints for opportunities to organizations
@@ -42,7 +59,7 @@ COMMENT ON CONSTRAINT opportunities_distributor_organization_id_fkey
   ON opportunities IS 'Clears distributor reference if organization deleted. Distributor is optional metadata.';
 
 -- =====================================================
--- PART 2: Fix Activities Foreign Key Cascade Behavior
+-- PART 3: Fix Activities Foreign Key Cascade Behavior
 -- =====================================================
 
 -- Drop existing FK constraints without cascade behavior
@@ -87,7 +104,7 @@ COMMENT ON CONSTRAINT activities_organization_id_fkey
   ON activities IS 'Preserves activity record when organization deleted.';
 
 -- =====================================================
--- PART 3: Remove Duplicate RLS Policies
+-- PART 4: Remove Duplicate RLS Policies
 -- =====================================================
 
 -- Drop old 'authenticated_*' prefixed policies that duplicate newer naming convention
@@ -166,7 +183,7 @@ DROP POLICY IF EXISTS authenticated_select_opportunity_participants ON opportuni
 DROP POLICY IF EXISTS authenticated_update_opportunity_participants ON opportunity_participants;
 
 -- =====================================================
--- PART 4: Fix Contacts Organization FK Behavior
+-- PART 5: Fix Contacts Organization FK Behavior
 -- =====================================================
 
 -- Current behavior: ON DELETE SET NULL (orphans contacts)
@@ -185,7 +202,7 @@ COMMENT ON CONSTRAINT contacts_organization_id_fkey
   ON contacts IS 'Prevents deletion of organizations with contacts. User must reassign contacts to another organization first.';
 
 -- =====================================================
--- PART 5: Add Index for Organization Deletion Check
+-- PART 6: Add Index for Organization Deletion Check
 -- =====================================================
 
 -- Performance optimization: Index for checking if org has contacts before deletion
