@@ -172,7 +172,7 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
       {leftAvatar && <div className="flex-shrink-0">{renderAvatar(record, leftAvatar)}</div>}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <div className="text-sm font-medium truncate text-[color:var(--text-body)]">
+          <div className="text-sm font-medium truncate text-foreground">
             {primaryText
               ? typeof primaryText === "string"
                 ? translate(primaryText, {
@@ -186,7 +186,7 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
           </div>
 
           {!!tertiaryText && (
-            <div className="text-xs text-[color:var(--text-subtle)] ml-2">
+            <div className="text-xs text-muted-foreground ml-2">
               {typeof tertiaryText === "string"
                 ? translate(tertiaryText, {
                     ...record,
@@ -200,7 +200,7 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
         </div>
 
         {!!secondaryText && (
-          <div className="text-sm text-[color:var(--text-subtle)] truncate">
+          <div className="text-sm text-muted-foreground truncate">
             {typeof secondaryText === "string"
               ? translate(secondaryText, {
                   ...record,
