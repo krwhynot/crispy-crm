@@ -5,33 +5,6 @@ import { z } from "zod";
  * Implements validation rules from OrganizationInputs.tsx
  */
 
-// Organization hierarchy constants
-export const PARENT_ELIGIBLE_TYPES = ["distributor", "customer", "principal"] as const;
-export type ParentEligibleType = (typeof PARENT_ELIGIBLE_TYPES)[number];
-
-export function isParentEligibleType(type: string): type is ParentEligibleType {
-  return PARENT_ELIGIBLE_TYPES.includes(type as ParentEligibleType);
-}
-
-export function canBeParent(org: {
-  organization_type: string;
-  parent_organization_id?: number | string | null;
-}): boolean {
-  return isParentEligibleType(org.organization_type) && !org.parent_organization_id;
-}
-
-export function canHaveParent(org: {
-  organization_type: string;
-  parent_organization_id?: number | string | null;
-  child_branch_count?: number;
-}): boolean {
-  return (
-    isParentEligibleType(org.organization_type) &&
-    !org.parent_organization_id &&
-    (org.child_branch_count === 0 || org.child_branch_count === undefined)
-  );
-}
-
 // Organization type enum
 export const organizationTypeSchema = z.enum([
   "customer",
@@ -75,7 +48,6 @@ export const organizationSchema = z.object({
   id: z.union([z.string(), z.number()]).optional(),
   name: z.string().min(1, "Organization name is required"),
   logo: z.any().optional().nullable(), // RAFile type
-  parent_organization_id: z.union([z.string(), z.number()]).optional().nullable(), // Parent organization foreign key
   // Updated field names to match database schema
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.nullish(),
