@@ -176,6 +176,32 @@ Clicking any table row or "View" button opens a right slide-over panel (modeled 
 - **Sales**: Profile | Permissions
 - **Products**: Details | Relationships
 
+### Accessibility Requirements
+
+**Focus Management**
+- Focus trap when open (focus stays within slide-over)
+- Focus moves to first interactive element on open (close button or first tab)
+- Focus returns to triggering element when closed
+- Tab/Shift+Tab cycles through slide-over elements only
+
+**ARIA Attributes**
+- `role="dialog"` on slide-over container
+- `aria-modal="true"` to indicate modal behavior
+- `aria-labelledby` pointing to header title
+- `aria-describedby` for any helper text
+
+**Keyboard Navigation**
+- Tab: Move focus forward
+- Shift+Tab: Move focus backward
+- ESC: Close slide-over
+- Enter/Space: Activate buttons and links
+
+**Screen Reader Support**
+- Announce slide-over opening
+- Read record name and current mode (view/edit)
+- Announce tab changes
+- Read validation errors in edit mode
+
 ## Create Form Patterns
 
 ### Pattern Overview
@@ -232,6 +258,40 @@ Some resources offer quick-add modals from list views:
 - Minimal fields (name + 1-2 key fields)
 - Used for: Tasks, Opportunities, Contacts, Organizations
 
+### Form Behavior
+
+**Validation**
+- Zod schema validation (existing pattern: `src/atomic-crm/validation/`)
+- Real-time validation on blur for critical fields
+- Error display inline below fields with red border
+- Error count badges on tabs (show count when > 0)
+- Prevent submission until all required fields valid
+
+**Save Actions**
+- **Save & Close**: Creates record, redirects to list view with success toast
+- **Save & Add Another**: Creates record, clears form, shows success toast, keeps on create page
+- **Cancel**: Shows confirmation if form dirty ("You have unsaved changes. Discard?"), returns to list
+
+**Dirty State Management**
+- Track form modifications using React Hook Form's `isDirty`
+- Warn on navigation attempts with unsaved changes
+- Browser beforeunload event: "You have unsaved changes that will be lost"
+- Cancel button shows confirmation only when dirty
+
+**Optional Autosave**
+- For complex forms (Opportunities, Organizations)
+- Save draft to localStorage every 30 seconds when dirty
+- Key format: `crm.draft.{resource}.{userId}`
+- On form mount: check for draft, offer to restore ("Restore previous draft?")
+- Clear draft on successful save
+- Draft expiry: 7 days
+
+**Field Defaults**
+- Defaults from Zod schema (`.default()` methods)
+- Form initialization: `zodSchema.partial().parse({})`
+- Never use `defaultValue` prop in form components
+- Date fields default to today for due dates, empty for others
+
 ## Visual Styling System
 
 ### Color Palette
@@ -261,6 +321,16 @@ Location: `src/index.css` in `@layer components`
 @layer components {
   /* Premium interactive card/row */
   .interactive-card {
+    @apply rounded-lg border border-transparent bg-card px-3 py-1.5;
+    @apply transition-all duration-150;
+    @apply hover:border-border hover:shadow-md;
+    @apply motion-safe:hover:-translate-y-0.5;
+    @apply active:scale-[0.98];
+    @apply focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
+  }
+
+  /* Premium table row styling (for Datagrid rows) */
+  .table-row-premium {
     @apply rounded-lg border border-transparent bg-card px-3 py-1.5;
     @apply transition-all duration-150;
     @apply hover:border-border hover:shadow-md;
@@ -360,6 +430,60 @@ Location: `src/index.css` in `@layer components`
 2. Performance optimization (code splitting, lazy loading)
 3. Visual consistency pass
 4. Documentation updates
+
+### Implementation Guidelines
+
+**Boy Scout Rule**
+- Fix inconsistencies when touching files
+- Convert `type` to `interface` per ESLint rule (22 files pending)
+- Update old color usages to semantic tokens
+- Replace hardcoded spacing with semantic variables
+- Clean up deprecated patterns while implementing new ones
+
+**Testing Strategy**
+- **Unit Tests**: 70% coverage minimum for new components
+  - StandardListLayout.tsx
+  - ResourceSlideOver.tsx
+  - PremiumDatagrid.tsx
+  - All utility hooks
+- **E2E Tests**: Critical flows for each resource
+  - List → View → Edit → Save flow
+  - Slide-over open/close with keyboard
+  - URL deep linking and browser navigation
+  - Form validation and submission
+- **Visual Regression** (optional but recommended)
+  - Percy or Chromatic for detecting style drift
+  - Capture before/after screenshots per phase
+
+**Code Review Checkpoints**
+- **After Phase 1**: Review foundation components for reusability
+- **After Phase 2**: Validate Contacts implementation as template
+- **Mid-Phase 3**: Review Tasks & Sales for pattern consistency
+- **Before Phase 4**: Full review before polish phase
+- **Final Review**: Complete accessibility and performance audit
+
+**Feature Flags & Rollback Plan**
+```typescript
+// src/config/featureFlags.ts
+export const features = {
+  slideOverView: process.env.REACT_APP_SLIDEOVER === 'true',
+  premiumTables: process.env.REACT_APP_PREMIUM_TABLES === 'true',
+};
+
+// Usage in components
+if (features.slideOverView) {
+  // New slide-over navigation
+} else {
+  // Legacy full-page navigation
+}
+```
+
+**Rollback Strategy**
+- Keep old components until migration proven stable (mark as `@deprecated`)
+- Feature flags default to false in production initially
+- Gradual rollout: Enable per resource or per user group
+- URL routing remains backwards compatible
+- Quick disable via environment variable if issues arise
 
 ### Migration Checklist (Per Resource)
 
