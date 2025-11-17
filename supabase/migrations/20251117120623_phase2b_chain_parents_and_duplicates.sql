@@ -24,7 +24,7 @@ BEGIN
   -- 1. Create "Dave & Buster's" parent (national chain)
   INSERT INTO organizations (
     name,
-    type,
+    organization_type,
     description,
     created_at,
     updated_at
@@ -49,7 +49,7 @@ BEGIN
   -- 2. Create "University of Notre Dame - Campus Dining" parent
   INSERT INTO organizations (
     name,
-    type,
+    organization_type,
     description,
     created_at,
     updated_at
