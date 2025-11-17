@@ -17,7 +17,7 @@ export const TasksListEmpty = () => {
   if (total) return null;
 
   return (
-    <p className="text-sm text-[color:var(--text-body)]">
+    <p className="text-sm text-foreground">
       Tasks added to your contacts will appear here.
     </p>
   );
