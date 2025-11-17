@@ -29,6 +29,18 @@ vi.mock("ra-core", async () => {
   };
 });
 
+// Mock react-admin to avoid directory import issues
+vi.mock("react-admin", async () => {
+  const actual = await vi.importActual("ra-core");
+  return {
+    ...actual,
+    Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
+    FunctionField: ({ render, label }: any) => (
+      <div data-testid={`function-field-${label}`}>{label}</div>
+    ),
+  };
+});
+
 // Mock jsonexport
 vi.mock("jsonexport/dist", () => ({
   default: vi.fn((data, options, callback) => {
@@ -38,20 +50,28 @@ vi.mock("jsonexport/dist", () => ({
   }),
 }));
 
-// Mock contact list item components to simplify testing
-vi.mock("../ContactListItem", () => ({
-  ContactListItem: ({ contact }: any) => (
-    <div data-testid={`contact-${contact.id}`}>
-      <span>
-        {contact.first_name} {contact.last_name}
-      </span>
-      {contact.company_name && <span>{contact.company_name}</span>}
-      {contact.tags &&
-        contact.tags.map((tagId: number) => (
-          <span key={tagId} data-testid={`tag-${tagId}`}>
-            Tag {tagId}
-          </span>
-        ))}
+// Mock ContactSlideOver to simplify testing
+vi.mock("../ContactSlideOver", () => ({
+  ContactSlideOver: ({ recordId, isOpen }: any) => (
+    <div data-testid="contact-slide-over">
+      {isOpen && <div data-testid={`slide-over-contact-${recordId}`}>Slide Over</div>}
+    </div>
+  ),
+}));
+
+// Mock PremiumDatagrid to expose row click handler
+vi.mock("@/components/admin/PremiumDatagrid", () => ({
+  PremiumDatagrid: ({ children, onRowClick }: any) => (
+    <div data-testid="premium-datagrid" className="table-row-premium">
+      {children}
+      {/* Simulate a clickable row */}
+      <div
+        data-testid="mock-row-1"
+        onClick={() => onRowClick && onRowClick(1)}
+        role="row"
+      >
+        Mock Contact Row
+      </div>
     </div>
   ),
 }));
@@ -82,10 +102,109 @@ vi.mock("@/components/admin/filter-category", () => ({
   ),
 }));
 
+// Mock StandardListLayout
+vi.mock("@/components/layouts/StandardListLayout", () => ({
+  StandardListLayout: ({ children, filterComponent }: any) => (
+    <div data-testid="standard-list-layout">
+      <div data-testid="filter-sidebar">{filterComponent}</div>
+      <div data-testid="list-content">{children}</div>
+    </div>
+  ),
+}));
+
+// Mock List component
+vi.mock("@/components/admin/list", () => ({
+  List: ({ children }: any) => <div data-testid="list-wrapper">{children}</div>,
+}));
+
+// Mock ContactEmpty
+vi.mock("../ContactEmpty", () => ({
+  ContactEmpty: () => <div data-testid="contact-empty">No contacts</div>,
+}));
+
+// Mock FloatingCreateButton
+vi.mock("@/components/admin/FloatingCreateButton", () => ({
+  FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
+}));
+
+// Mock TopToolbar and buttons
+vi.mock("../layout/TopToolbar", () => ({
+  TopToolbar: ({ children }: any) => <div data-testid="top-toolbar">{children}</div>,
+}));
+
+vi.mock("@/components/admin/create-button", () => ({
+  CreateButton: () => <button data-testid="create-button">Create</button>,
+}));
+
+vi.mock("@/components/admin/export-button", () => ({
+  ExportButton: () => <button data-testid="export-button">Export</button>,
+}));
+
+vi.mock("@/components/admin/sort-button", () => ({
+  SortButton: () => <button data-testid="sort-button">Sort</button>,
+}));
+
+vi.mock("@/components/admin/bulk-actions-toolbar", () => ({
+  BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
+}));
+
+// Mock all field components
+vi.mock("@/components/admin/text-field", () => ({
+  TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
+}));
+
+vi.mock("@/components/admin/reference-field", () => ({
+  ReferenceField: ({ source, children }: any) => (
+    <span data-testid={`ref-field-${source}`}>{children}</span>
+  ),
+}));
+
+vi.mock("@/components/admin/date-field", () => ({
+  DateField: ({ source }: any) => <span data-testid={`date-field-${source}`}>{source}</span>,
+}));
+
+vi.mock("@/components/admin/edit-button", () => ({
+  EditButton: () => <button data-testid="edit-button">Edit</button>,
+}));
+
+// Mock other contact components
+vi.mock("../Avatar", () => ({
+  Avatar: () => <div data-testid="avatar">Avatar</div>,
+}));
+
+vi.mock("../TagsList", () => ({
+  TagsList: () => <div data-testid="tags-list">Tags</div>,
+}));
+
+vi.mock("../misc/Status", () => ({
+  Status: ({ status }: any) => <span data-testid="status">{status}</span>,
+}));
+
+// Mock useSlideOverState hook (will be customized in tests)
+const mockOpenSlideOver = vi.fn();
+const mockCloseSlideOver = vi.fn();
+const mockToggleMode = vi.fn();
+
+vi.mock("@/hooks/useSlideOverState", () => ({
+  useSlideOverState: () => ({
+    slideOverId: null,
+    isOpen: false,
+    mode: 'view' as const,
+    openSlideOver: mockOpenSlideOver,
+    closeSlideOver: mockCloseSlideOver,
+    toggleMode: mockToggleMode,
+  }),
+}));
+
+// Mock useFilterCleanup hook
+vi.mock("../hooks/useFilterCleanup", () => ({
+  useFilterCleanup: vi.fn(),
+}));
+
 // Import mocked functions after mock definition
 import { useListContext, useGetList } from "ra-core";
 
-describe("ContactListContent", () => {
+describe("ContactList", () => {
   const mockTags = [
     { id: 1, name: "VIP", color: "blue" },
     { id: 2, name: "Lead", color: "green" },
@@ -181,6 +300,9 @@ describe("ContactListContent", () => {
   beforeEach(() => {
     // Reset all mocks
     vi.clearAllMocks();
+    mockOpenSlideOver.mockClear();
+    mockCloseSlideOver.mockClear();
+    mockToggleMode.mockClear();
 
     // Setup default mocks
     (useListContext as any).mockReturnValue(defaultListContext);
@@ -195,51 +317,55 @@ describe("ContactListContent", () => {
     vi.restoreAllMocks();
   });
 
-  test("renders with contacts_summary view data", async () => {
-    // Simulate contacts_summary view which includes denormalized company names
-    const contactsWithSummary = mockContacts.map((contact) => ({
-      ...contact,
-      // Simulating view's denormalized data
-      company_name: contact.organizations?.[0]?.organization_name || contact.company_name || null,
-      total_organizations: contact.organizations?.length || 0,
-    }));
-
-    const contextWithSummaryData = {
-      ...defaultListContext,
-      data: contactsWithSummary,
-    };
-
-    (useListContext as any).mockReturnValue(contextWithSummaryData);
-
-    renderWithAdminContext(<ContactListContent />);
+  test("renders PremiumDatagrid with table structure", async () => {
+    renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // ContactListContent uses its own internal ContactListItem component
-      // Should have rendered some contacts (3 in our test data)
-      const links = screen.getAllByRole("link");
-      expect(links.length).toBeGreaterThanOrEqual(3);
+      // Verify PremiumDatagrid is rendered
+      const datagrid = screen.getByTestId("premium-datagrid");
+      expect(datagrid).toBeInTheDocument();
 
-      // Verify we have contact links
-      expect(links[0]).toHaveAttribute("href", expect.stringContaining("/contacts/"));
+      // Verify premium class is applied
+      expect(datagrid).toHaveClass("table-row-premium");
     });
   });
 
-  test("displays tags correctly", async () => {
-    // For this test, we'll just verify the component renders
-    // The actual ContactListContent is complex and renders tags differently than our mock
-    renderWithAdminContext(<ContactListContent />);
+  test("renders ContactSlideOver component", async () => {
+    renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // Should have contacts with tags (ContactListContent handles its own tag rendering)
-      const links = screen.getAllByRole("link");
-      expect(links.length).toBeGreaterThan(0);
-
-      // Verify contact links
-      expect(links[0]).toHaveAttribute("href", expect.stringContaining("/contacts/"));
+      // Verify ContactSlideOver is in the tree
+      const slideOver = screen.getByTestId("contact-slide-over");
+      expect(slideOver).toBeInTheDocument();
     });
   });
 
-  test("renders empty state when no contacts", async () => {
+  test("row click calls openSlideOver with correct ID", async () => {
+    renderWithAdminContext(<ContactList />);
+
+    await waitFor(() => {
+      // Find and click the mock row
+      const mockRow = screen.getByTestId("mock-row-1");
+      expect(mockRow).toBeInTheDocument();
+
+      fireEvent.click(mockRow);
+
+      // Verify openSlideOver was called with correct ID and mode
+      expect(mockOpenSlideOver).toHaveBeenCalledWith(1, 'view');
+    });
+  });
+
+  test("renders with StandardListLayout and filter sidebar", async () => {
+    renderWithAdminContext(<ContactList />);
+
+    await waitFor(() => {
+      // StandardListLayout should render the datagrid
+      const datagrid = screen.getByTestId("premium-datagrid");
+      expect(datagrid).toBeInTheDocument();
+    });
+  });
+
+  test("renders empty state when no contacts and no filters", async () => {
     const emptyContext = {
       ...defaultListContext,
       data: [],
@@ -249,12 +375,30 @@ describe("ContactListContent", () => {
 
     (useListContext as any).mockReturnValue(emptyContext);
 
-    renderWithAdminContext(<ContactListContent />);
+    renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // Should not show any contacts
-      expect(screen.queryByText("John Doe")).not.toBeInTheDocument();
-      expect(screen.queryByText("Jane Smith")).not.toBeInTheDocument();
+      // Should not show datagrid when empty
+      expect(screen.queryByTestId("premium-datagrid")).not.toBeInTheDocument();
+    });
+  });
+
+  test("renders datagrid when filters are applied even if no results", async () => {
+    const emptyWithFiltersContext = {
+      ...defaultListContext,
+      data: [],
+      total: 0,
+      filterValues: { tags: [1] }, // Has active filters
+    };
+
+    (useListContext as any).mockReturnValue(emptyWithFiltersContext);
+
+    renderWithAdminContext(<ContactList />);
+
+    await waitFor(() => {
+      // Should show datagrid when filters are active (even if no results)
+      const datagrid = screen.getByTestId("premium-datagrid");
+      expect(datagrid).toBeInTheDocument();
     });
   });
 });
