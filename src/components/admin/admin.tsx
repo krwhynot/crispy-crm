@@ -22,15 +22,17 @@ const defaultStore = localStorageStore();
 const AdminContext = (props: CoreAdminContextProps) => <CoreAdminContext {...props} />;
 
 const AdminUI = (props: CoreAdminUIProps) => (
-  <ThemeProvider>
-    <CoreAdminUI
-      layout={Layout}
-      loginPage={LoginPage}
-      ready={Ready}
-      authCallbackPage={AuthCallback}
-      {...props}
-    />
-  </ThemeProvider>
+  <MuiThemeProvider theme={defaultMuiTheme}>
+    <ThemeProvider>
+      <CoreAdminUI
+        layout={Layout}
+        loginPage={LoginPage}
+        ready={Ready}
+        authCallbackPage={AuthCallback}
+        {...props}
+      />
+    </ThemeProvider>
+  </MuiThemeProvider>
 );
 
 export const Admin = (props: CoreAdminProps) => {
