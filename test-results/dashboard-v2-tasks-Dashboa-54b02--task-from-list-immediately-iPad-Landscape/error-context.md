@@ -33,193 +33,39 @@
         - button "A" [ref=e23] [cursor=pointer]:
           - generic [ref=e25]: A
   - main [ref=e26]:
+    - text: Shadcn Admin
     - generic [ref=e27]:
-      - generic [ref=e29]:
-        - navigation "Breadcrumb" [ref=e30]:
-          - button "Navigate to home" [ref=e31] [cursor=pointer]: Home
-          - img [ref=e32]
-          - button "Navigate to principals list" [ref=e34] [cursor=pointer]: Principals
-          - img [ref=e35]
-          - generic [ref=e37]: RJC
-        - generic [ref=e38]:
-          - combobox "Select principal organization" [ref=e39] [cursor=pointer]:
-            - generic: RJC
-            - img
-          - button "Create new item" [ref=e40] [cursor=pointer]:
-            - img
-            - text: New
-      - generic [ref=e42]:
-        - complementary "Filters sidebar" [ref=e43]:
-          - complementary "Filters" [ref=e44]:
-            - generic [ref=e45]:
-              - generic [ref=e47]:
-                - button "Filters" [expanded] [ref=e48] [cursor=pointer]:
-                  - heading "Filters" [level=3] [ref=e49]
-                  - img [ref=e50]
-                - button "Collapse filters sidebar" [ref=e53] [cursor=pointer]:
-                  - img [ref=e54]
-              - generic [ref=e57]:
-                - generic [ref=e58]:
-                  - heading "Health Status" [level=3] [ref=e59]
-                  - generic [ref=e60]:
-                    - generic [ref=e61]:
-                      - checkbox "🟢 Active health status" [ref=e62] [cursor=pointer]
-                      - generic [ref=e63] [cursor=pointer]:
-                        - generic [ref=e64]: 🟢
-                        - text: Active
-                        - generic [ref=e65]: health status
-                    - generic [ref=e66]:
-                      - checkbox "🟡 Cooling health status" [ref=e67] [cursor=pointer]
-                      - generic [ref=e68] [cursor=pointer]:
-                        - generic [ref=e69]: 🟡
-                        - text: Cooling
-                        - generic [ref=e70]: health status
-                    - generic [ref=e71]:
-                      - checkbox "🔴 At Risk health status" [ref=e72] [cursor=pointer]
-                      - generic [ref=e73] [cursor=pointer]:
-                        - generic [ref=e74]: 🔴
-                        - text: At Risk
-                        - generic [ref=e75]: health status
-                - generic [ref=e76]:
-                  - heading "Stage" [level=3] [ref=e77]
-                  - generic [ref=e78]:
-                    - generic [ref=e79]:
-                      - checkbox "New Lead" [ref=e80] [cursor=pointer]
-                      - generic [ref=e81] [cursor=pointer]: New Lead
-                    - generic [ref=e82]:
-                      - checkbox "Initial Outreach" [ref=e83] [cursor=pointer]
-                      - generic [ref=e84] [cursor=pointer]: Initial Outreach
-                    - generic [ref=e85]:
-                      - checkbox "Sample Visit Offered" [ref=e86] [cursor=pointer]
-                      - generic [ref=e87] [cursor=pointer]: Sample Visit Offered
-                    - generic [ref=e88]:
-                      - checkbox "Awaiting Response" [ref=e89] [cursor=pointer]
-                      - generic [ref=e90] [cursor=pointer]: Awaiting Response
-                    - generic [ref=e91]:
-                      - checkbox "Feedback Logged" [ref=e92] [cursor=pointer]
-                      - generic [ref=e93] [cursor=pointer]: Feedback Logged
-                    - generic [ref=e94]:
-                      - checkbox "Demo Scheduled" [ref=e95] [cursor=pointer]
-                      - generic [ref=e96] [cursor=pointer]: Demo Scheduled
-                    - generic [ref=e97]:
-                      - checkbox "Closed Won" [ref=e98] [cursor=pointer]
-                      - generic [ref=e99] [cursor=pointer]: Closed Won
-                    - generic [ref=e100]:
-                      - checkbox "Closed Lost" [ref=e101] [cursor=pointer]
-                      - generic [ref=e102] [cursor=pointer]: Closed Lost
-                - generic [ref=e103]:
-                  - heading "Assignee" [level=3] [ref=e104]
-                  - combobox "Filter by assignee" [ref=e105] [cursor=pointer]:
-                    - generic: All Team
-                    - img
-                - generic [ref=e106]:
-                  - heading "Last Touch" [level=3] [ref=e107]
-                  - combobox "Filter by last touch date" [ref=e108] [cursor=pointer]:
-                    - generic: Any
-                    - img
-                - generic [ref=e109]:
-                  - heading "Saved Views" [level=3] [ref=e110]
-                  - paragraph [ref=e112]: No saved views yet
-                - generic [ref=e113]:
-                  - heading "Utilities" [level=3] [ref=e114]
-                  - generic [ref=e116]:
-                    - checkbox "Show closed opportunities" [ref=e117] [cursor=pointer]
-                    - generic [ref=e118] [cursor=pointer]: Show closed opportunities
-        - generic [ref=e119]:
-          - tree "Opportunities hierarchy" [ref=e121]:
-            - generic [ref=e122]:
-              - treeitem "8 hospitality group 2" [expanded] [level=1] [ref=e123] [cursor=pointer]:
-                - img [ref=e124]
-                - generic [ref=e126]: 8 hospitality group
-                - generic [ref=e127]: "2"
-              - 'treeitem "Health: active Beverage Program Expansion Awaiting Response Dec 14, 2025" [level=2] [ref=e128] [cursor=pointer]':
-                - 'generic "Health: active" [ref=e129]'
-                - generic: Beverage Program Expansion
-                - generic [ref=e130]: Awaiting Response
-                - generic [ref=e131]: Dec 14, 2025
-              - 'treeitem "Health: active Restaurant Equipment Supply Deal Sample/Visit Offered Nov 24, 2025" [level=2] [ref=e132] [cursor=pointer]':
-                - 'generic "Health: active" [ref=e133]'
-                - generic: Restaurant Equipment Supply Deal
-                - generic [ref=e134]: Sample/Visit Offered
-                - generic [ref=e135]: Nov 24, 2025
-            - generic [ref=e136]:
-              - treeitem "040 KITCHEN INC 1" [expanded] [level=1] [ref=e137] [cursor=pointer]:
-                - img [ref=e138]
-                - generic [ref=e140]: 040 KITCHEN INC
-                - generic [ref=e141]: "1"
-              - 'treeitem "Health: active Test Cascade Opportunity New Lead Jan 26, 2026" [level=2] [ref=e142] [cursor=pointer]':
-                - 'generic "Health: active" [ref=e143]'
-                - generic [ref=e144]: Test Cascade Opportunity
-                - generic [ref=e145]: New Lead
-                - generic [ref=e146]: Jan 26, 2026
-          - button "Resize opportunities column" [ref=e147] [cursor=pointer]
-          - generic "Tasks list" [ref=e149]:
-            - generic [ref=e150]:
-              - generic [ref=e151]: Tasks
-              - combobox "Group tasks by" [ref=e152] [cursor=pointer]:
-                - generic: Due Date
-                - img
-            - generic [ref=e155]:
-              - button "This Week" [disabled] [ref=e156]:
-                - generic [ref=e157]: This Week
-              - list "This Week tasks" [ref=e158]:
-                - listitem [ref=e159]:
-                  - checkbox "Mark \"Send equipment quotes and spec sheets\" as complete" [active] [ref=e161]
-                  - generic [ref=e162]: Send equipment quotes and spec sheets
-                  - generic [ref=e163]: High
-                - listitem [ref=e164]:
-                  - checkbox "Mark \"Follow up on beverage program pricing\" as complete" [ref=e166]
-                  - generic [ref=e167]: Follow up on beverage program pricing
-                  - generic [ref=e168]: Medium
-                - listitem [ref=e169]:
-                  - checkbox "Mark \"Schedule facility visit for equipment demo\" as complete" [ref=e171]
-                  - generic [ref=e172]: Schedule facility visit for equipment demo
-                  - generic [ref=e173]: Medium
-          - button "Resize tasks column" [ref=e174] [cursor=pointer]
-          - generic [ref=e176]:
-            - generic [ref=e178]: Quick Logger
-            - form "Quick activity logger" [ref=e180]:
-              - generic [ref=e181]:
-                - generic [ref=e182]: Activity Type
-                - generic [ref=e183]:
-                  - button "Log call" [ref=e184] [cursor=pointer]:
-                    - img
-                  - button "Log email" [ref=e185] [cursor=pointer]:
-                    - img
-                  - button "Log meeting" [ref=e186] [cursor=pointer]:
-                    - img
-                  - button "Log note" [ref=e187] [cursor=pointer]:
-                    - img
-              - generic [ref=e188]:
-                - generic [ref=e189]: Opportunity (Optional)
-                - combobox "Opportunity (Optional)" [ref=e190] [cursor=pointer]:
-                  - generic: Select opportunity
-                  - img
-                - combobox [ref=e191]
-              - generic [ref=e192]:
-                - generic [ref=e193]: Subject *
-                - textbox "Subject *" [ref=e194]:
-                  - /placeholder: Brief summary...
-              - generic [ref=e195]:
-                - generic [ref=e196]: Description
-                - textbox "Description" [ref=e197]:
-                  - /placeholder: Activity details...
-              - generic [ref=e198]:
-                - checkbox "Create follow-up task" [ref=e199] [cursor=pointer]
-                - checkbox
-                - generic [ref=e200] [cursor=pointer]: Create follow-up task
-              - button "Log Activity" [ref=e201] [cursor=pointer]
-  - contentinfo [ref=e202]:
-    - generic [ref=e204]:
-      - paragraph [ref=e205]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e206] [cursor=pointer]:
-        - img [ref=e207]
-        - generic [ref=e209]: Keyboard shortcuts
-  - region "Notifications alt+T":
-    - list:
-      - listitem [ref=e210]:
-        - button "Close toast" [ref=e211] [cursor=pointer]:
-          - img [ref=e212]
-        - img [ref=e216]
-        - generic [ref=e219]: Task marked as complete
+      - alert [ref=e28]:
+        - img [ref=e29]
+        - text: Something went wrong
+      - generic [ref=e31]: A client error occurred and your request couldn't be completed.
+      - heading "useRefresh is not defined" [level=3] [ref=e34]:
+        - button "useRefresh is not defined" [ref=e35] [cursor=pointer]:
+          - text: useRefresh is not defined
+          - img
+      - paragraph [ref=e36]: "Need help with this error? Try the following:"
+      - list [ref=e38]:
+        - listitem [ref=e39]:
+          - text: Check the
+          - link "shadcn-admin-kit documentation" [ref=e40] [cursor=pointer]:
+            - /url: https://marmelab.com/shadcn-admin-kit/docs
+        - listitem [ref=e41]:
+          - text: Search on
+          - link "StackOverflow" [ref=e42] [cursor=pointer]:
+            - /url: https://stackoverflow.com/questions/tagged/shadcn-admin-kit
+          - text: for community answers
+        - listitem [ref=e43]:
+          - text: Get help from the core team via
+          - link "Shadcn Enterprise Edition" [ref=e44] [cursor=pointer]:
+            - /url: https://marmelab.com/shadcn-admin-kit/
+      - button "Go Back" [ref=e46] [cursor=pointer]:
+        - img
+        - text: Go Back
+  - contentinfo [ref=e47]:
+    - generic [ref=e49]:
+      - paragraph [ref=e50]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e51] [cursor=pointer]:
+        - img [ref=e52]
+        - generic [ref=e54]: Keyboard shortcuts
+  - region "Notifications alt+T"
 ```
