@@ -76,7 +76,10 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
       });
       notify('Task marked as complete', { type: 'success' });
 
-      // Immediately refresh all data to update UI
+      // Small delay to ensure database transaction commits before refresh
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Refresh all data to update UI
       refresh();
     } catch (error) {
       console.error('Task completion failed:', error);
