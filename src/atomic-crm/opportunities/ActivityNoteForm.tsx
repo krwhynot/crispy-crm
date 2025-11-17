@@ -68,7 +68,7 @@ const ContactSelectField = ({
           </Select>
         )}
       />
-      {error && <p className="text-sm text-[color:var(--destructive)]">{error}</p>}
+      {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
   );
 };
@@ -158,7 +158,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
             )}
           />
           {errors.activity_date && (
-            <p className="text-sm text-[color:var(--destructive)]">
+            <p className="text-sm text-destructive">
               {errors.activity_date.message}
             </p>
           )}
@@ -188,7 +188,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
             )}
           />
           {errors.type && (
-            <p className="text-sm text-[color:var(--destructive)]">{errors.type.message}</p>
+            <p className="text-sm text-destructive">{errors.type.message}</p>
           )}
         </div>
 
@@ -228,11 +228,11 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
               </Select>
             )}
           />
-          <p className="text-xs text-[color:var(--text-subtle)]">
+          <p className="text-xs text-muted-foreground">
             Changing stage will update the opportunity immediately
           </p>
           {errors.stage && (
-            <p className="text-sm text-[color:var(--destructive)]">{errors.stage.message}</p>
+            <p className="text-sm text-destructive">{errors.stage.message}</p>
           )}
         </div>
       </div>
@@ -255,7 +255,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
           )}
         />
         {errors.subject && (
-          <p className="text-sm text-[color:var(--destructive)]">{errors.subject.message}</p>
+          <p className="text-sm text-destructive">{errors.subject.message}</p>
         )}
       </div>
 
@@ -265,7 +265,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
           type="button"
           onClick={handleSubmit(onSubmit)}
           disabled={isSubmitting}
-          className="bg-[color:var(--primary)] text-[color:var(--primary-foreground)] hover:bg-[color:var(--primary)]/90"
+          className="bg-primary text-primary-foreground hover:bg-primary/90"
         >
           {isSubmitting ? "Creating..." : "Add Activity"}
         </Button>

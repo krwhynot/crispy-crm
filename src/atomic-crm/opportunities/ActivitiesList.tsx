@@ -9,7 +9,7 @@ export const ActivitiesList = () => {
   if (isPending) return <div>Loading activities...</div>;
   if (!data || data.length === 0) {
     return (
-      <div className="text-center py-8 text-[color:var(--text-subtle)]">
+      <div className="text-center py-8 text-muted-foreground">
         No activities recorded yet
       </div>
     );
@@ -20,7 +20,7 @@ export const ActivitiesList = () => {
       {data.map((activity) => (
         <div
           key={activity.id}
-          className="border border-[color:var(--border)] rounded-lg p-4 space-y-2"
+          className="border border-border rounded-lg p-4 space-y-2"
         >
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
@@ -28,7 +28,7 @@ export const ActivitiesList = () => {
                 {activity.type.replace("_", " ")}
               </Badge>
               {activity.activity_type === "interaction" && (
-                <Badge className="bg-[color:var(--primary)] text-[color:var(--primary-foreground)]">
+                <Badge className="bg-primary text-primary-foreground">
                   Interaction
                 </Badge>
               )}
@@ -47,7 +47,7 @@ export const ActivitiesList = () => {
                 </Badge>
               )}
             </div>
-            <span className="text-sm text-[color:var(--text-subtle)]">
+            <span className="text-sm text-muted-foreground">
               {format(new Date(activity.activity_date), "MMM d, yyyy")}
             </span>
           </div>
@@ -55,11 +55,11 @@ export const ActivitiesList = () => {
           <div className="text-sm font-medium">{activity.subject}</div>
 
           {activity.description && (
-            <div className="text-sm text-[color:var(--text-subtle)]">{activity.description}</div>
+            <div className="text-sm text-muted-foreground">{activity.description}</div>
           )}
 
           {activity.duration_minutes && (
-            <div className="text-xs text-[color:var(--text-subtle)]">
+            <div className="text-xs text-muted-foreground">
               Duration: {activity.duration_minutes} minutes
             </div>
           )}
@@ -70,7 +70,7 @@ export const ActivitiesList = () => {
                 Follow-up Required
               </Badge>
               {activity.follow_up_date && (
-                <span className="text-xs text-[color:var(--text-subtle)]">
+                <span className="text-xs text-muted-foreground">
                   by {format(new Date(activity.follow_up_date), "MMM d, yyyy")}
                 </span>
               )}
