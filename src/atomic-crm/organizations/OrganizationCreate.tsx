@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "@/components/admin/simple-form";
+import { useLocation } from "react-router-dom";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import type { Database } from "@/types/database.generated";
@@ -11,6 +12,7 @@ type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
 const OrganizationCreate = () => {
   const { identity } = useGetIdentity();
+  const location = useLocation();
 
   const { data: segments = [] } = useGetList<Segment>(
     "segments",
@@ -25,9 +27,14 @@ const OrganizationCreate = () => {
   );
 
   const unknownSegmentId = segments?.[0]?.id;
+
+  // Read parent_organization_id from router state (set by "Add Branch" button)
+  const parentOrgId = (location.state as any)?.record?.parent_organization_id;
+
   const defaultValues = {
     sales_id: identity?.id,
     segment_id: unknownSegmentId ?? undefined,
+    ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
   };
   const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
 

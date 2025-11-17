@@ -11,12 +11,12 @@ describe("Organization Business Rules and Edge Cases", () => {
     it("should handle organization hierarchies", () => {
       const childOrganization = {
         name: "Child Organization",
-        parent_id: "parent-123",
+        parent_organization_id: "parent-123",
         type: "customer",
       };
 
       const result = organizationSchema.parse(childOrganization);
-      expect(result.parent_id).toBe("parent-123");
+      expect(result.parent_organization_id).toBe("parent-123");
       expect(result.name).toBe("Child Organization");
     });
 
@@ -101,7 +101,7 @@ describe("Organization Business Rules and Edge Cases", () => {
         linkedin_url: "https://linkedin.com/company/maximal",
         segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
         // annual_revenue, employee_count, founded_year removed - not validated
-        parent_id: "parent-123",
+        parent_organization_id: "parent-123",
         address: "123 Main St",
         city: "Cityville",
         state: "CA",
@@ -118,7 +118,7 @@ describe("Organization Business Rules and Edge Cases", () => {
       const org = {
         id: "org-123",
         name: "Self Reference Test",
-        parent_id: "org-123", // Same as own ID
+        parent_organization_id: "org-123", // Same as own ID
       };
 
       // Schema should accept it, business logic should prevent it
