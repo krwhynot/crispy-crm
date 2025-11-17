@@ -23,7 +23,7 @@ export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="p-4 border border-[color:var(--border)] rounded-lg">
+          <div key={i} className="p-4 border border-border rounded-lg">
             <Skeleton className="h-4 w-32 mb-2" />
             <Skeleton className="h-3 w-full mb-1" />
             <Skeleton className="h-3 w-3/4" />
@@ -35,7 +35,7 @@ export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
 
   if (error) {
     return (
-      <div className="text-center py-8 text-[color:var(--destructive)]">
+      <div className="text-center py-8 text-destructive">
         Failed to load activities
       </div>
     );
@@ -53,7 +53,7 @@ export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
       </div>
 
       {activities.length === 0 ? (
-        <div className="text-center py-8 text-[color:var(--muted-foreground)]">
+        <div className="text-center py-8 text-muted-foreground">
           No activities recorded yet
         </div>
       ) : (
@@ -85,10 +85,10 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
 
   return (
     <RecordContextProvider value={activity}>
-      <div className="flex gap-4 p-4 border border-[color:var(--border)] rounded-lg hover:bg-[color:var(--muted)]/50 transition-colors">
+      <div className="flex gap-4 p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
         {/* Icon */}
         <div className="flex-shrink-0 mt-1">
-          <div className="w-8 h-8 rounded-full bg-[color:var(--primary)]/10 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
             {getActivityIcon(activity.type)}
           </div>
         </div>
@@ -102,12 +102,12 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
                 {activity.type.charAt(0).toUpperCase() + activity.type.slice(1).replace("_", " ")}
               </span>
               {activity.created_by && (
-                <span className="text-sm text-[color:var(--muted-foreground)]">
+                <span className="text-sm text-muted-foreground">
                   by <ReferenceField source="created_by" reference="sales" link={false} />
                 </span>
               )}
             </div>
-            <span className="text-xs text-[color:var(--muted-foreground)] ml-2">
+            <span className="text-xs text-muted-foreground ml-2">
               {format(new Date(activity.activity_date || activity.created_at), "MMM d, yyyy h:mm a")}
             </span>
           </div>
@@ -117,7 +117,7 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
           <div className="text-sm font-medium mb-1">{activity.subject}</div>
         )}
         {activity.description && (
-          <div className="text-sm text-[color:var(--foreground)] whitespace-pre-line">
+          <div className="text-sm text-foreground whitespace-pre-line">
             {activity.description}
           </div>
         )}
@@ -127,7 +127,7 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
           {activity.related_task_id && (
             <RouterLink
               to={`/tasks/${activity.related_task_id}`}
-              className="flex items-center gap-1 text-xs text-[color:var(--primary)] hover:underline"
+              className="flex items-center gap-1 text-xs text-primary hover:underline"
             >
               <Check className="h-3 w-3" />
               Related Task
@@ -136,7 +136,7 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
           {activity.opportunity_id && (
             <RouterLink
               to={`/opportunities/${activity.opportunity_id}/show`}
-              className="flex items-center gap-1 text-xs text-[color:var(--primary)] hover:underline"
+              className="flex items-center gap-1 text-xs text-primary hover:underline"
             >
               <Target className="h-3 w-3" />
               View Opportunity
