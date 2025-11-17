@@ -1,16 +1,17 @@
-import { test, expect } from '@playwright/test';
-import { setupAuthenticatedTest } from '../fixtures/auth';
+import { expect } from '@playwright/test';
+import { test } from '../support/fixtures/authenticated';
 
 test.describe('Parent Organization Display', () => {
-  setupAuthenticatedTest();
 
-  test('should display parent relationships in organization list', async ({ page }) => {
+  test('should display parent relationships in organization list', async ({ authenticatedPage: page }) => {
     // Navigate to organizations list
     await page.goto('http://localhost:5174/#/organizations');
-    await page.waitForSelector('[data-testid="datagrid-body"]', { state: 'visible' });
 
-    // Wait for data to load
-    await page.waitForTimeout(1000);
+    // Wait for table to load - React Admin uses tbody with role="group"
+    await page.waitForSelector('tbody[role="group"]', { state: 'visible', timeout: 10000 });
+
+    // Wait for data rows to load
+    await page.waitForSelector('tr[data-id]', { state: 'visible', timeout: 5000 });
 
     // Check that Parent column header exists
     const parentHeader = await page.locator('th:has-text("Parent")');
@@ -32,10 +33,13 @@ test.describe('Parent Organization Display', () => {
     }
   });
 
-  test('should allow selecting parent organization when editing', async ({ page }) => {
+  test('should allow selecting parent organization when editing', async ({ authenticatedPage: page }) => {
     // Navigate to organizations list
     await page.goto('http://localhost:5174/#/organizations');
-    await page.waitForSelector('[data-testid="datagrid-body"]', { state: 'visible' });
+
+    // Wait for table to load
+    await page.waitForSelector('tbody[role="group"]', { state: 'visible', timeout: 10000 });
+    await page.waitForSelector('tr[data-id]', { state: 'visible', timeout: 5000 });
 
     // Click on first organization without a parent
     await page.locator('tr').first().click();
@@ -68,10 +72,13 @@ test.describe('Parent Organization Display', () => {
     }
   });
 
-  test('should not show branch-related UI elements', async ({ page }) => {
+  test('should not show branch-related UI elements', async ({ authenticatedPage: page }) => {
     // Navigate to organizations list
     await page.goto('http://localhost:5174/#/organizations');
-    await page.waitForSelector('[data-testid="datagrid-body"]', { state: 'visible' });
+
+    // Wait for table to load
+    await page.waitForSelector('tbody[role="group"]', { state: 'visible', timeout: 10000 });
+    await page.waitForSelector('tr[data-id]', { state: 'visible', timeout: 5000 });
 
     // Verify "Branches" column does NOT exist
     const branchesHeader = await page.locator('th:has-text("Branches")');
