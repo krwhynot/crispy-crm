@@ -139,27 +139,109 @@ function useSlideOverState() {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<'view' | 'edit'>('view');
 
+  // Parse URL params on initial load to support deep linking
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const viewId = params.get('view');
+    const editId = params.get('edit');
+
+    if (viewId) {
+      setSlideOverId(Number(viewId));
+      setMode('view');
+      setIsOpen(true);
+    } else if (editId) {
+      setSlideOverId(Number(editId));
+      setMode('edit');
+      setIsOpen(true);
+    }
+  }, []); // Run once on mount
+
+  // Listen to browser back/forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const viewId = params.get('view');
+      const editId = params.get('edit');
+
+      if (viewId) {
+        setSlideOverId(Number(viewId));
+        setMode('view');
+        setIsOpen(true);
+      } else if (editId) {
+        setSlideOverId(Number(editId));
+        setMode('edit');
+        setIsOpen(true);
+      } else {
+        // No params means slide-over should be closed
+        setIsOpen(false);
+        setSlideOverId(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Handle ESC key to close slide-over
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeSlideOver();
+      }
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen]);
+
   const openSlideOver = (id: number, initialMode: 'view' | 'edit' = 'view') => {
     setSlideOverId(id);
     setMode(initialMode);
     setIsOpen(true);
-    // Update URL: window.history.pushState(null, '', `?${initialMode}=${id}`);
+    // Update URL for deep linking and browser history
+    const params = new URLSearchParams(window.location.search);
+    // Clear both view and edit params first
+    params.delete('view');
+    params.delete('edit');
+    // Set the new param
+    params.set(initialMode, String(id));
+    window.history.pushState(null, '', `${window.location.pathname}?${params}`);
   };
 
   const closeSlideOver = () => {
     setIsOpen(false);
     setSlideOverId(null);
-    // Clear URL: window.history.pushState(null, '', window.location.pathname);
+    // Remove slide-over params from URL
+    const params = new URLSearchParams(window.location.search);
+    params.delete('view');
+    params.delete('edit');
+    const newUrl = params.toString()
+      ? `${window.location.pathname}?${params}`
+      : window.location.pathname;
+    window.history.pushState(null, '', newUrl);
   };
 
-  return { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, setMode };
+  const toggleMode = () => {
+    const newMode = mode === 'view' ? 'edit' : 'view';
+    setMode(newMode);
+    // Update URL when mode changes
+    if (slideOverId) {
+      const params = new URLSearchParams(window.location.search);
+      params.delete('view');
+      params.delete('edit');
+      params.set(newMode, String(slideOverId));
+      window.history.replaceState(null, '', `${window.location.pathname}?${params}`);
+    }
+  };
+
+  return { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, setMode, toggleMode };
 }
 ```
 
 **Usage Example:**
 ```typescript
 function ContactList() {
-  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, setMode } = useSlideOverState();
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
 
   return (
     <>
@@ -173,11 +255,19 @@ function ContactList() {
         isOpen={isOpen}
         onClose={closeSlideOver}
         mode={mode}
+        onModeToggle={toggleMode} // Allow switching between view/edit
         tabs={contactTabs}
       />
     </>
   );
 }
+
+// The hook now provides:
+// - Deep linking support: Share URLs like /contacts?view=123
+// - Browser navigation: Back/forward buttons work correctly
+// - ESC key handling: Closes slide-over instantly
+// - Mode persistence: URL updates when toggling view/edit
+// - Clean URLs: Removes params when closing, preserves others
 ```
 
 ### Visual Specifications
@@ -241,6 +331,16 @@ function ContactList() {
 - Slide-over state syncs with URL query params: `?view=123` or `?edit=123`
 - Direct URL navigation works (deep linking)
 - Browser back/forward buttons close/open slide-over
+
+**🔍 IMPLEMENTATION NOTE:**
+All URL sync requirements above are **fully implemented** in the `useSlideOverState` hook (lines 136-238).
+The hook provides:
+- ✅ Initial URL param reading on mount (lines 142-157)
+- ✅ Browser back/forward via `popstate` listener (lines 159-183)
+- ✅ URL updates when opening/closing slide-over (lines 197-222)
+- ✅ URL updates when toggling view/edit mode (lines 224-235)
+
+**No additional code needed** - just use the hook as shown in the usage example (lines 243-263).
 
 ### Resource-Specific Tabs
 
@@ -388,34 +488,43 @@ Some resources offer quick-add modals from list views:
 - Comfortable: `p-4` `gap-4` (16px) - form fields
 - Spacious: `p-6` `gap-6` (24px) - cards, sections
 
-**Semantic Spacing Variables** (already defined in `src/index.css` lines 92-111):
+**Semantic Spacing Variables** (AUTHORITATIVE - already defined in `src/index.css` lines 92-111):
+
+**⚠️ CRITICAL IMPLEMENTATION NOTE:**
+These values are the **AUTHORITATIVE SOURCE OF TRUTH** for spacing in the application.
+They exactly match what's already implemented in `src/index.css` (lines 88-112).
+**DO NOT CHANGE THESE VALUES** - they are desktop-optimized for data density.
+The comments showing "Reduced from X" are historical references only, not targets to restore.
 
 ```css
 @theme inline {
-  /* Grid System */
+  /* Grid System - THESE ARE THE CORRECT VALUES */
   --spacing-grid-columns-desktop: 12;
   --spacing-grid-columns-ipad: 8;
-  --spacing-gutter-desktop: 12px;    /* Reduced from 24px for desktop density */
+  --spacing-gutter-desktop: 12px;    /* KEEP AT 12px (historical: was 24px) */
   --spacing-gutter-ipad: 20px;
 
-  /* Edge Padding (Screen Borders) */
-  --spacing-edge-desktop: 24px;      /* Reduced from 120px for more content */
+  /* Edge Padding (Screen Borders) - THESE ARE THE CORRECT VALUES */
+  --spacing-edge-desktop: 24px;      /* KEEP AT 24px (historical: was 120px) */
   --spacing-edge-ipad: 60px;
   --spacing-edge-mobile: 16px;
 
-  /* Vertical Rhythm - Desktop Data Density */
-  --spacing-section: 24px;           /* Reduced from 32px - Between major sections */
-  --spacing-widget: 16px;            /* Reduced from 24px - Between widgets */
-  --spacing-content: 12px;           /* Reduced from 16px - Within content areas */
-  --spacing-compact: 8px;            /* Reduced from 12px - Tight spacing */
+  /* Vertical Rhythm - THESE ARE THE CORRECT VALUES */
+  --spacing-section: 24px;           /* KEEP AT 24px (historical: was 32px) */
+  --spacing-widget: 16px;            /* KEEP AT 16px (historical: was 24px) */
+  --spacing-content: 12px;           /* KEEP AT 12px (historical: was 16px) */
+  --spacing-compact: 8px;            /* KEEP AT 8px (historical: was 12px) */
 
-  /* Widget/Card Internals */
-  --spacing-widget-padding: 12px;    /* Reduced from 20px for desktop density */
-  --spacing-widget-min-height: 240px;/* Reduced from 280px for more rows */
+  /* Widget/Card Internals - THESE ARE THE CORRECT VALUES */
+  --spacing-widget-padding: 12px;    /* KEEP AT 12px (historical: was 20px) */
+  --spacing-widget-min-height: 240px;/* KEEP AT 240px (historical: was 280px) */
 }
 
-/* Note: These values reflect the desktop-optimized spacing already
-   implemented in the codebase for improved data density. */
+/* IMPLEMENTATION GUIDANCE:
+   1. These values are ALREADY in src/index.css - do not override
+   2. Use these CSS variables via Tailwind's arbitrary value syntax
+   3. The "historical" values in comments are for context only
+   4. Any restoration of larger spacing would break desktop data density */
 ```
 
 Use these variables for consistent spacing:
