@@ -57,6 +57,17 @@ export interface ResourceSlideOverProps {
  * - Focus trap and ARIA attributes for accessibility
  * - Slide-in animation from right
  *
+ * **Edit Mode Responsibility:**
+ * This component only manages the mode state (view/edit) and passes it to tab
+ * components. Tab components are responsible for:
+ * - Rendering edit forms when mode === 'edit'
+ * - Handling their own save/cancel logic
+ * - Managing form state and validation
+ * - Calling onModeToggle() after successful save
+ *
+ * The wrapper does NOT handle save operations - it only provides the UI shell
+ * and mode toggle functionality.
+ *
  * @example
  * ```tsx
  * const contactTabs: TabConfig[] = [
@@ -86,9 +97,6 @@ export function ResourceSlideOver({
   recordRepresentation,
 }: ResourceSlideOverProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || '');
-  const notify = useNotify();
-  const refresh = useRefresh();
-  const [update] = useUpdate();
 
   // Fetch record data
   const { data: record, isLoading } = useGetOne(
@@ -105,28 +113,17 @@ export function ResourceSlideOver({
     return record.name || record.title || `${resource} #${recordId}`;
   };
 
-  // Handle save in edit mode
-  const handleSave = async () => {
-    if (!record) return;
-
-    try {
-      await update(resource, {
-        id: record.id,
-        data: record,
-        previousData: record,
-      });
-      notify('Changes saved successfully', { type: 'success' });
-      refresh();
-      if (onModeToggle) onModeToggle(); // Return to view mode
-    } catch (error) {
-      notify('Failed to save changes', { type: 'error' });
-    }
-  };
-
-  // Handle cancel in edit mode
-  const handleCancel = () => {
-    if (onModeToggle) onModeToggle(); // Return to view mode without saving
-  };
+  /**
+   * NOTE: This wrapper component does NOT handle save operations.
+   * Tab components receive the `mode` prop and are responsible for:
+   * 1. Rendering edit forms when mode === 'edit'
+   * 2. Implementing their own save/cancel handlers
+   * 3. Managing form state and validation
+   * 4. Calling onModeToggle() after successful save to return to view mode
+   *
+   * This separation of concerns keeps the wrapper generic and allows
+   * each tab to implement domain-specific edit logic.
+   */
 
   // Reset active tab when slide-over opens
   React.useEffect(() => {
@@ -225,22 +222,18 @@ export function ResourceSlideOver({
               })}
             </Tabs>
 
-            {/* Footer with Cancel/Save buttons (edit mode only) */}
+            {/* Footer message (edit mode only) */}
             {mode === 'edit' && (
-              <SheetFooter className="border-t border-border p-4 flex flex-row gap-2 justify-end">
+              <SheetFooter className="border-t border-border p-4 flex flex-row gap-2 justify-between items-center">
+                <p className="text-sm text-muted-foreground">
+                  Currently in edit mode. Tab components handle their own save logic.
+                </p>
                 <Button
                   variant="outline"
-                  onClick={handleCancel}
+                  onClick={onModeToggle}
                   className="h-11 px-4"
                 >
                   Cancel
-                </Button>
-                <Button
-                  variant="default"
-                  onClick={handleSave}
-                  className="h-11 px-4"
-                >
-                  Save Changes
                 </Button>
               </SheetFooter>
             )}
