@@ -119,8 +119,8 @@ export class SlideOverFixture {
       await this.page.waitForLoadState('networkidle');
     }
 
-    // Click row
-    const rows = this.page.locator('[role="row"]').filter({ hasNot: this.page.locator('thead') });
+    // Click row (using tbody to properly exclude header rows)
+    const rows = this.page.locator('tbody [role="row"]');
     const row = rows.nth(rowIndex);
     await expect(row).toBeVisible();
     await row.click();
