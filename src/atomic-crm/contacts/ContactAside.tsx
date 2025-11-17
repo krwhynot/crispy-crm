@@ -35,7 +35,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
         <ArrayField source="email">
           <SingleFieldList className="flex-col">
             <PersonalInfoRow
-              icon={<Mail className="w-4 h-4 text-[color:var(--text-subtle)]" />}
+              icon={<Mail className="w-4 h-4 text-muted-foreground" />}
               primary={<EmailField source="email" />}
             />
           </SingleFieldList>
@@ -43,10 +43,10 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
 
         {record.linkedin_url && (
           <PersonalInfoRow
-            icon={<Linkedin className="w-4 h-4 text-[color:var(--text-subtle)]" />}
+            icon={<Linkedin className="w-4 h-4 text-muted-foreground" />}
             primary={
               <a
-                className="underline hover:no-underline text-sm text-[color:var(--text-subtle)]"
+                className="underline hover:no-underline text-sm text-muted-foreground"
                 href={record.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -60,7 +60,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
         <ArrayField source="phone">
           <SingleFieldList className="flex-col">
             <PersonalInfoRow
-              icon={<Phone className="w-4 h-4 text-[color:var(--text-subtle)]" />}
+              icon={<Phone className="w-4 h-4 text-muted-foreground" />}
               primary={<TextField source="number" />}
               showType
             />
@@ -69,22 +69,22 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
       </AsideSection>
 
       <AsideSection title="Position">
-        <div className="flex flex-col gap-2 p-3 rounded-md bg-[color:var(--background-subtle)] border-l-[3px] border-[color:var(--border)]">
+        <div className="flex flex-col gap-2 p-3 rounded-md bg-muted border-l-[3px] border-border">
           {record.organization_id && (
-            <div className="text-lg font-bold text-[color:var(--text)] mb-1">
+            <div className="text-lg font-bold text-foreground mb-1">
               <ReferenceField source="organization_id" reference="organizations">
                 <TextField source="name" />
               </ReferenceField>
             </div>
           )}
           {record.department && (
-            <div className="text-[15px] font-medium text-[color:var(--text)] leading-tight">
-              <span className="text-sm text-[color:var(--text-subtle)]">Dept: </span>
+            <div className="text-[15px] font-medium text-foreground leading-tight">
+              <span className="text-sm text-muted-foreground">Dept: </span>
               {record.department}
             </div>
           )}
           {record.title && (
-            <div className="text-sm text-[color:var(--text-subtle)] leading-tight mt-0.5">
+            <div className="text-sm text-muted-foreground leading-tight mt-0.5">
               <span>Title: </span>
               {record.title}
             </div>
@@ -93,7 +93,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
       </AsideSection>
 
       <AsideSection title="Contact info">
-        <div className="text-[color:var(--text-subtle)]">
+        <div className="text-muted-foreground">
           <span className="text-sm">Added on</span>{" "}
           <DateField
             source="first_seen"
@@ -101,7 +101,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           />
         </div>
 
-        <div className="text-[color:var(--text-subtle)]">
+        <div className="text-muted-foreground">
           <span className="text-sm">Last activity on</span>{" "}
           <DateField
             source="last_seen"
@@ -109,7 +109,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           />
         </div>
 
-        <div className="text-[color:var(--text-subtle)]">
+        <div className="text-muted-foreground">
           Followed by{" "}
           <ReferenceField source="sales_id" reference="sales">
             <SaleName />
@@ -123,7 +123,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
 
       {record.notes && (
         <AsideSection title="Notes">
-          <div className="text-sm text-[color:var(--text)] whitespace-pre-wrap bg-[color:var(--background-subtle)] p-3 rounded-md border-l-[3px] border-[color:var(--border)]">
+          <div className="text-sm text-foreground whitespace-pre-wrap bg-muted p-3 rounded-md border-l-[3px] border-border">
             {record.notes}
           </div>
         </AsideSection>
@@ -160,7 +160,7 @@ const PersonalInfoRow = ({
         <WithRecord
           render={(row) =>
             row.type !== "Other" && (
-              <TextField source="type" className="text-[color:var(--text-subtle)]" />
+              <TextField source="type" className="text-muted-foreground" />
             )
           }
         />
