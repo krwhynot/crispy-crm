@@ -550,54 +550,6 @@ CREATE TABLE tasks (
 
 **Ref:** [Implementation Plan](docs/plans/2025-11-09-tasks-module-weekly-activity-report.md)
 
-## Organization Hierarchies
-
-**Pattern:** Parent-child relationships for multi-branch distributors and restaurant chains.
-
-**Database:**
-- `parent_organization_id` field references self
-- `organizations_summary` view includes rollup metrics
-- Deletion protection trigger prevents removing parents with branches
-
-**Business Rules:**
-- Two-level maximum depth (no grandchildren)
-- Type restrictions: Only distributor/customer/principal can be parents
-- Circular reference prevention
-- Sister branches computed automatically (shared parent)
-
-**UI Components:**
-- `HierarchyBreadcrumb`: Navigation for child orgs (Organizations > Parent > Current)
-- `BranchLocationsSection`: Table of branches for parent orgs with add button
-- `ParentOrganizationSection`: Parent link + sister branches (first 3 + "show all") in sidebar
-- `ParentOrganizationInput`: Form field for selecting parent (filters to eligible types)
-
-**Validation:** `src/atomic-crm/validation/organizations.ts`
-- `PARENT_ELIGIBLE_TYPES` constant (distributor, customer, principal)
-- `canBeParent()`, `canHaveParent()` helper functions
-- Circular reference prevention on save
-
-**Export via index:** `src/atomic-crm/organizations/index.ts`
-```typescript
-export { HierarchyBreadcrumb } from "./HierarchyBreadcrumb";
-export { BranchLocationsSection } from "./BranchLocationsSection";
-export { ParentOrganizationSection } from "./ParentOrganizationSection";
-export { ParentOrganizationInput } from "./ParentOrganizationInput";
-```
-
-**Responsive Design:**
-- iPad-first responsive (768px+) with horizontal scroll for tables
-- 44x44px minimum touch targets on all buttons
-- Filter panel stacks vertically on narrower viewports
-- Breadcrumb wraps appropriately without overflow
-
-**Performance:**
-- Query efficiency with organizations_summary view
-- No N+1 queries for branch fetching
-- Smooth scrolling and immediate interactivity
-- Minimal API calls per navigation
-
-**Reference:** [Organization Hierarchies Design Plan](docs/plans/2025-11-10-organization-hierarchies-design.md)
-
 ## Opportunities Module
 
 **Resource:** `/opportunities` - Full CRUD opportunity management with Kanban board
