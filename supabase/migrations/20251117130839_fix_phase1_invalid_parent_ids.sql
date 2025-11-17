@@ -17,6 +17,7 @@ DECLARE
   v_pfs_parent_id BIGINT;
   v_trinity_parent_id BIGINT;
   v_updated_count INT;
+  rec RECORD;
 BEGIN
   RAISE NOTICE '';
   RAISE NOTICE '========================================';
