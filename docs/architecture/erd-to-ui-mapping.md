@@ -26,6 +26,33 @@ This document provides a comprehensive mapping between the PostgreSQL database s
 
 ---
 
+## 🔑 **Critical Architecture Pattern: View-Based Reads**
+
+**ALL read operations (`getOne`, `getList`) automatically use `_summary` views, while writes target base tables.**
+
+The Unified Data Provider (`src/atomic-crm/providers/supabase/dataProviderUtils.ts:173-195`) transparently substitutes:
+
+| Base Table | Read Source (getOne/getList) | Write Target (create/update/delete) |
+|------------|------------------------------|-------------------------------------|
+| `contacts` | `contacts_summary` | `contacts` |
+| `organizations` | `organizations_summary` | `organizations` |
+| `opportunities` | `opportunities_summary` | `opportunities` |
+| `products` | `products_summary` | `products` |
+
+**Why This Matters:**
+- **Views provide denormalized data** not available in base tables (e.g., `company_name`, `principal_name`, `products` JSONB array)
+- **UI components receive enriched data** automatically without explicit joins
+- **Forms submit to base tables** for normalized storage
+- **Documentation must specify view-only fields** to avoid confusion about available data
+
+**Example:** `OpportunityShow` receives `opportunities_summary` which includes:
+- Base fields: `name`, `stage`, `priority`, etc.
+- **View-only fields:** `customer_organization_name`, `principal_organization_name`, `distributor_organization_name`, `products` (JSONB array from `opportunity_products` join)
+
+When reading this document, **"Primary View"** sections indicate what the UI actually receives, while **"Primary Table"** indicates the write target.
+
+---
+
 ## Section 1: Screens to Entities Mapping
 
 This section maps UI screens to their database dependencies.
@@ -1333,9 +1360,12 @@ This section maps database tables to the UI screens that use them.
 | Field | Screens | Display |
 |-------|---------|---------|
 | `id` | All | Primary key for references |
+| `user_id` | Internal | UUID linking to auth.users (nullable for legacy records) |
 | `first_name`, `last_name` | All | Combined as full name |
 | `email` | Sales List, Edit | Email display/input |
-| `role` | Sales List, Edit | Badge (admin/manager/rep) |
+| `role` | Sales List, Edit | Badge (admin/manager/rep) - **PRIMARY FIELD** |
+| `is_admin` | Deprecated | Boolean - synced from role via trigger, kept for backward compatibility |
+| `administrator` | Read-only | GENERATED ALWAYS column: `(role = 'admin')` |
 | `disabled` | Sales List, Edit | Status badge |
 | `avatar_url` | Sales List | Avatar image |
 
@@ -1372,10 +1402,12 @@ This section maps database tables to the UI screens that use them.
 | `name` | All | Organization name |
 | `organization_type` | All | Type badge, filter |
 | `parent_organization_id` | Org List, Show | Hierarchy navigation |
+| `segment_id` | Org Edit | UUID reference to segments table (market segment classification) |
 | `logo_url` | Org List, Show | Avatar/logo display |
 | `priority` | Org List | Badge (A/B/C/D) |
 | `website` | Org Show | Clickable link |
 | `phone` | Org Show | Contact info |
+| `updated_by` | Internal | Sales rep who last updated this record |
 
 **CRUD Screens:**
 - **Create:** Organization Create (`/organizations/create`)
@@ -1474,6 +1506,9 @@ This section maps database tables to the UI screens that use them.
 | `contact_ids` | Show, Edit | Array of contact IDs |
 | `account_manager_id` | Show, Edit | Sales rep reference |
 | `stage_changed_at` | Kanban | Days in stage calculation |
+| `campaign` | Edit, Reports | Text field for campaign/marketing source tracking |
+| `lead_source` | Edit | Text field for lead origin tracking |
+| `updated_by` | Internal | Sales rep who last updated this record |
 
 **CRUD Screens:**
 - **Create:** Opportunity Create (`/opportunities/create`)
@@ -1511,6 +1546,7 @@ This section maps database tables to the UI screens that use them.
 | `opportunity_id` | Task List, Show, Edit | Opportunity link |
 | `contact_id` | Task Show, Edit | Contact link |
 | `sales_id` | Task List (RLS) | Task ownership |
+| `overdue_notified_at` | Internal | Timestamp when overdue notification was sent (prevents duplicate notifications) |
 
 **CRUD Screens:**
 - **Create:** Task Create (`/tasks/create`), Dashboard V2 Quick Logger
@@ -1657,7 +1693,113 @@ Display: Products table in OpportunityShow
 
 ---
 
-### 2.3 Notes Tables
+#### Table: `opportunity_participants`
+
+**Purpose:** Organizations participating in opportunities (customer, principal, distributor, competitor)
+
+**Used By Screens:**
+
+| Screen | Usage | Access Type |
+|--------|-------|-------------|
+| Opportunity Create/Edit | Organization roles | Write |
+| Opportunity Show | Display organization participants | Read |
+
+**Key Fields:**
+
+| Field | Usage |
+|-------|-------|
+| `opportunity_id` | FK to opportunities |
+| `organization_id` | FK to organizations |
+| `role` | Enum: customer, principal, distributor, competitor |
+| `is_primary` | Primary participant flag |
+| `notes` | Role-specific notes |
+| `created_by` | Sales rep who added this participant |
+| `deleted_at` | Soft delete timestamp |
+
+---
+
+#### Table: `interaction_participants`
+
+**Purpose:** Contacts/organizations involved in activity interactions
+
+**Used By Screens:**
+
+| Screen | Usage | Access Type |
+|--------|-------|-------------|
+| Activity Create/Edit | Multi-participant tracking | Write |
+| Activity Show | Display all participants | Read |
+
+**Key Fields:**
+
+| Field | Usage |
+|-------|-------|
+| `activity_id` | FK to activities |
+| `contact_id` | FK to contacts (nullable) |
+| `organization_id` | FK to organizations (nullable) |
+| `role` | Participant role (default: 'participant') |
+| `notes` | Participant-specific notes |
+| `deleted_at` | Soft delete timestamp |
+
+**Constraint:** Must have either `contact_id` OR `organization_id` (not both null)
+
+---
+
+### 2.3 Lookup Tables
+
+#### Table: `segments`
+
+**Purpose:** Market segment classification for organizations
+
+**Used By Screens:**
+
+| Screen | Usage | Access Type |
+|--------|-------|-------------|
+| Organization Create/Edit | Segment selector | Read, Create (via autocomplete) |
+| Organization filters | Segment filter dropdown | Read |
+
+**Key Fields:**
+
+| Field | Usage |
+|-------|-------|
+| `id` | UUID primary key |
+| `name` | Segment name (unique, case-insensitive) |
+| `created_at` | Timestamp |
+| `created_by` | UUID linking to auth.users |
+| `deleted_at` | Soft delete timestamp |
+
+**RPC Function:** `get_or_create_segment(p_name TEXT)` - Returns segment by name or creates if doesn't exist
+
+---
+
+#### Table: `tags`
+
+**Purpose:** Flexible tagging system for contacts
+
+**Used By Screens:**
+
+| Screen | Usage | Access Type |
+|--------|-------|-------------|
+| Contact List | Filter by tags | Read |
+| Contact Show/Edit | Tag display and selection | Read, Write |
+
+**Key Fields:**
+
+| Field | Usage |
+|-------|-------|
+| `id` | BIGINT primary key |
+| `name` | Tag name (unique) |
+| `color` | Tag color (default: 'blue-500') |
+| `description` | Optional tag description |
+| `usage_count` | Auto-updated count of contacts using this tag |
+| `created_at` | Timestamp |
+| `updated_at` | Timestamp |
+| `deleted_at` | Soft delete timestamp |
+
+**Usage Pattern:** Contact tags stored as BIGINT array in `contacts.tags` field
+
+---
+
+### 2.5 Notes Tables
 
 #### Table: `contactNotes`
 
@@ -1701,7 +1843,7 @@ Display: Products table in OpportunityShow
 
 ---
 
-### 2.4 Database Views
+### 2.6 Database Views
 
 #### View: `contacts_summary`
 
@@ -1912,6 +2054,133 @@ WHERE t.completed = false
 - `won_opportunities`
 - `weekly_activity_count`
 - `assigned_reps`
+
+---
+
+#### View: `campaign_choices`
+
+**Purpose:** Distinct campaign values for filter dropdowns
+
+**SQL:**
+```sql
+SELECT campaign AS id,
+       campaign AS name,
+       COUNT(*) AS opportunity_count
+FROM opportunities
+WHERE campaign IS NOT NULL
+  AND campaign <> ''
+  AND deleted_at IS NULL
+GROUP BY campaign
+ORDER BY campaign
+```
+
+**Used By Screens:**
+
+| Screen | Usage |
+|--------|-------|
+| Opportunity filters | Campaign dropdown options |
+| Reports | Campaign grouping |
+
+**Added Fields:**
+- `id` (campaign name)
+- `name` (campaign name)
+- `opportunity_count` (number of opportunities using this campaign)
+
+**Note:** Returns campaign as both `id` and `name` for React Admin compatibility
+
+---
+
+#### View: `distinct_product_categories`
+
+**Purpose:** Unique product categories with formatted display names
+
+**SQL:**
+```sql
+SELECT DISTINCT category AS id,
+       INITCAP(REPLACE(category, '_', ' ')) AS name
+FROM products
+WHERE category IS NOT NULL
+  AND deleted_at IS NULL
+ORDER BY INITCAP(REPLACE(category, '_', ' '))
+```
+
+**Used By Screens:**
+
+| Screen | Usage |
+|--------|-------|
+| Product filters | Category dropdown |
+| Product Create/Edit | Category autocomplete |
+
+**Added Fields:**
+- `id` (raw category value: e.g., "frozen_foods")
+- `name` (formatted display: e.g., "Frozen Foods")
+
+---
+
+#### View: `contacts_with_account_manager`
+
+**Purpose:** Contacts with denormalized sales rep information
+
+**Used By Screens:**
+
+| Screen | Usage |
+|--------|-------|
+| Contact filters | Account manager filter |
+| Analytics | Contact-to-rep reporting |
+
+**Added Fields:**
+- All `contacts` fields
+- `account_manager_name` (from sales table join)
+
+---
+
+#### View: `organizations_with_account_manager`
+
+**Purpose:** Organizations with denormalized sales rep information
+
+**Used By Screens:**
+
+| Screen | Usage |
+|--------|-------|
+| Organization filters | Account manager filter |
+| Analytics | Organization-to-rep reporting |
+
+**Added Fields:**
+- All `organizations` fields
+- `account_manager_name` (from sales table join)
+
+---
+
+#### View: `dashboard_pipeline_summary`
+
+**Purpose:** Pipeline stage metrics per account manager
+
+**SQL:**
+```sql
+SELECT account_manager_id,
+       stage,
+       COUNT(*) AS count,
+       COUNT(CASE WHEN days_in_stage >= 30 THEN 1 END) AS stuck_count,
+       -- Additional aggregates for total active and stuck opportunities
+FROM opportunities
+WHERE status = 'active'
+GROUP BY account_manager_id, stage
+```
+
+**Used By Screens:**
+
+| Screen | Usage |
+|--------|-------|
+| Dashboard (legacy) | Pipeline velocity widgets |
+| Reports | Stage duration analysis |
+
+**Added Fields:**
+- `account_manager_id`
+- `stage`
+- `count` (opportunities in this stage)
+- `stuck_count` (opportunities in stage >30 days)
+- `total_active` (all active opportunities for manager)
+- `total_stuck` (all stuck opportunities for manager)
 
 ---
 
@@ -2240,6 +2509,59 @@ ORDER BY p.name, t.due_date
 4. **View Caching:** React Query 5-minute stale time for list queries
 5. **Pagination:** 25-100 items per page (Kanban loads all)
 6. **Memoization:** Filter calculations and grouped data structures memoized
+
+---
+
+## Appendix D: Schema Drift Changelog
+
+### Version 1.1 (2025-01-16)
+
+**Schema Sync:** Cloud database `aaqnanddcqvfiwhshndl`
+
+**Major Updates:**
+
+1. **Sales Table - Role System Migration**
+   - PRIMARY FIELD: `role` enum (admin, manager, rep)
+   - ADDED: `administrator` - GENERATED ALWAYS column: `(role = 'admin')`
+   - DEPRECATED: `is_admin` - Boolean kept for backward compatibility, synced from role via trigger
+   - ADDED: `user_id` - UUID linking to auth.users (nullable for legacy records)
+
+2. **New Tables Added**
+   - **segments** - Market segment classification for organizations (UUID primary key)
+     - Fields: id, name, created_at, created_by, deleted_at
+     - RPC: `get_or_create_segment(p_name TEXT)`
+   - **tags** (detailed structure)
+     - Fields: id, name, color, description, usage_count, created_at, updated_at, deleted_at
+     - Usage: Contact tags stored as BIGINT array in contacts.tags
+   - **opportunity_participants** - Organization roles in opportunities
+     - Fields: opportunity_id, organization_id, role (enum), is_primary, notes, created_by, deleted_at
+   - **interaction_participants** - Multi-participant activity tracking
+     - Fields: activity_id, contact_id, organization_id, role, notes, deleted_at
+     - Constraint: Must have contact_id OR organization_id (not both null)
+
+3. **Field Additions**
+   - **organizations.segment_id** - UUID reference to segments table
+   - **organizations.updated_by** - Sales rep who last updated record
+   - **opportunities.campaign** - Text field for campaign/marketing source tracking
+   - **opportunities.lead_source** - Text field for lead origin tracking
+   - **opportunities.updated_by** - Sales rep who last updated record
+   - **tasks.overdue_notified_at** - Timestamp when overdue notification sent (prevents duplicates)
+
+4. **New Database Views**
+   - **campaign_choices** - Distinct campaign values from opportunities for filter dropdowns
+   - **distinct_product_categories** - Unique product categories with formatted display names
+   - **contacts_with_account_manager** - Contacts with denormalized sales rep info
+   - **organizations_with_account_manager** - Organizations with denormalized sales rep info
+   - **dashboard_pipeline_summary** - Pipeline stage metrics per account manager
+
+**Documentation Structure Changes:**
+- Reorganized Section 2.2 to include all junction tables
+- Added Section 2.3: Lookup Tables (segments, tags)
+- Renumbered Sections 2.3-2.4 to 2.5-2.6 (Notes Tables, Database Views)
+
+**Migration Reference:**
+- Role system: `20251116210019_fix_sales_schema_consistency.sql`
+- See `/supabase/migrations/` for complete migration history
 
 ---
 
