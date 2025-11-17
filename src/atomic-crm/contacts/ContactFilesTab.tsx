@@ -13,7 +13,7 @@ interface ContactFilesTabProps {
  * Placeholder component for file attachments feature.
  * Future implementation will support file upload, preview, and management.
  */
-export function ContactFilesTab({ record, mode }: ContactFilesTabProps) {
+export function ContactFilesTab({ record: _record, mode: _mode }: ContactFilesTabProps) {
   return (
     <Card>
       <CardContent className="p-12 flex flex-col items-center justify-center text-center">
