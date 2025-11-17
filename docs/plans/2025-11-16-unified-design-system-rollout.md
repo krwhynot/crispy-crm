@@ -68,8 +68,10 @@ Every list page follows this standardized pattern:
 **1. Standardized List Shell** (`StandardListLayout.tsx`)
 ```tsx
 <div className="flex flex-row gap-6">
-  <aside aria-label="Filter {resource}" className="filter-sidebar sticky top-4">
-    {filterComponent}
+  <aside aria-label="Filter {resource}" className="filter-sidebar sticky top-6">
+    <div className="card-container p-2">
+      {filterComponent}
+    </div>
   </aside>
   <main role="main" aria-label="{Resource} list" className="flex-1 min-w-0">
     <div className="card-container">
@@ -84,6 +86,7 @@ Every list page follows this standardized pattern:
 - Hover effects: border reveal, shadow, lift animation
 - Active state: scale feedback
 - Focus state: ring indicator
+- Applied via `PremiumDatagrid` wrapper's `rowClassName` prop
 
 **3. Filter Sidebar Pattern**
 - Fixed width: `w-64` (256px)
@@ -316,26 +319,30 @@ Some resources offer quick-add modals from list views:
 **Semantic Spacing Variables** (defined in `src/index.css`):
 
 ```css
-/* Grid & Layout */
---spacing-grid-columns-desktop: 12;
---spacing-grid-columns-ipad: 8;
---spacing-gutter-desktop: 24px;
---spacing-gutter-ipad: 16px;
+@layer theme {
+  :root {
+    /* Grid & Layout */
+    --spacing-grid-columns-desktop: 12;
+    --spacing-grid-columns-ipad: 8;
+    --spacing-gutter-desktop: 24px;
+    --spacing-gutter-ipad: 16px;
 
-/* Edge Padding (screen borders) */
---spacing-edge-desktop: 24px;
---spacing-edge-ipad: 20px;
---spacing-edge-mobile: 16px;
+    /* Edge Padding (screen borders) */
+    --spacing-edge-desktop: 24px;
+    --spacing-edge-ipad: 20px;
+    --spacing-edge-mobile: 16px;
 
-/* Vertical Rhythm */
---spacing-section: 32px;      /* Between major sections */
---spacing-widget: 24px;        /* Within widgets */
---spacing-content: 16px;       /* Content gaps */
---spacing-compact: 12px;       /* Tight spacing */
+    /* Vertical Rhythm */
+    --spacing-section: 32px;      /* Between major sections */
+    --spacing-widget: 24px;        /* Within widgets */
+    --spacing-content: 16px;       /* Content gaps */
+    --spacing-compact: 12px;       /* Tight spacing */
 
-/* Widget Internals */
---spacing-widget-padding: 20px;
---spacing-widget-min-height: 280px;
+    /* Widget Internals */
+    --spacing-widget-padding: 20px;
+    --spacing-widget-min-height: 280px;
+  }
+}
 ```
 
 Use these variables for consistent spacing:
@@ -349,7 +356,7 @@ Location: `src/index.css` in `@layer components`
 
 ```css
 @layer components {
-  /* Premium interactive card/row */
+  /* Premium interactive card/row - base class for all premium hover effects */
   .interactive-card {
     @apply rounded-lg border border-transparent bg-card px-3 py-1.5;
     @apply transition-all duration-150;
@@ -359,15 +366,14 @@ Location: `src/index.css` in `@layer components`
     @apply focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
   }
 
-  /* Premium table row styling (for Datagrid rows) */
+  /* Table row premium styling - composes .interactive-card */
   .table-row-premium {
-    @apply rounded-lg border border-transparent bg-card px-3 py-1.5;
-    @apply transition-all duration-150;
-    @apply hover:border-border hover:shadow-md;
-    @apply motion-safe:hover:-translate-y-0.5;
-    @apply active:scale-[0.98];
-    @apply focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
+    @extend .interactive-card;
   }
+
+  /* Note: PremiumDatagrid applies .table-row-premium to rows via rowClassName prop.
+     Use .interactive-card for standalone cards (e.g., contact cards).
+     Use .table-row-premium for Datagrid rows to maintain semantic clarity. */
 
   /* Standard card container */
   .card-container {
@@ -407,7 +413,7 @@ Location: `src/index.css` in `@layer components`
 
 ### Shadows & Borders
 
-- **Shadows**: `shadow-sm` (cards), `shadow-md` (hover), `shadow-lg` (modals)
+- **Shadows**: `shadow-sm` (cards), `shadow-md` (hover), `shadow-lg` (modals, create form cards)
 - **Border Radius**: `rounded-xl` (cards), `rounded-lg` (buttons), `rounded-md` (inputs)
 - **Transitions**: Standard 150ms with ease-out, wrapped in `motion-safe:`
 
