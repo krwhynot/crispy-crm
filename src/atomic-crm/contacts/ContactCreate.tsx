@@ -53,10 +53,12 @@ const ContactCreateFooter = ({
     redirect("/contacts");
   }, [isDirty, redirect]);
 
-  const handleSaveAndAddAnother = useCallback(() => {
-    // SaveButton with mutationOptions will handle the save
-    // We'll reset the form in onSuccess callback
-  }, []);
+  const handleError = useCallback(
+    (error: Error) => {
+      notify(error.message || "Failed to create contact", { type: "error" });
+    },
+    [notify]
+  );
 
   return (
     <div className="sticky bottom-0 bg-card border-t border-border p-4 flex justify-between mt-6">
@@ -72,6 +74,7 @@ const ContactCreateFooter = ({
               notify("Contact created successfully", { type: "success" });
               redirect("/contacts");
             },
+            onError: handleError,
           }}
         />
         <SaveButton
@@ -82,6 +85,7 @@ const ContactCreateFooter = ({
               notify("Contact created successfully", { type: "success" });
               reset();
             },
+            onError: handleError,
           }}
         />
       </div>
