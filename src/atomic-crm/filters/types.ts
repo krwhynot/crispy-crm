@@ -126,6 +126,8 @@ export const FILTER_KEYS = {
   PRIORITY: "priority",
   TAGS: "tags",
   CUSTOMER_ORGANIZATION: "customer_organization_id",
+  PRINCIPAL_ORGANIZATION: "principal_organization_id",
+  CAMPAIGN: "campaign",
   OPPORTUNITY_OWNER: "opportunity_owner_id",
   ONLY_MINE: "only_mine",
   SEARCH: "q",

@@ -23,12 +23,25 @@ interface FilterChipsPanelProps {
 export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
   const { filterValues, removeFilterValue } = useFilterManagement();
 
-  // Extract organization IDs from filter values and convert to strings
-  const organizationIds = filterValues?.customer_organization_id
+  // Extract customer organization IDs from filter values and convert to strings
+  const customerOrgIds = filterValues?.customer_organization_id
     ? Array.isArray(filterValues.customer_organization_id)
       ? filterValues.customer_organization_id.map(String)
       : [String(filterValues.customer_organization_id)]
     : undefined;
+
+  // Extract principal organization IDs from filter values and convert to strings
+  const principalOrgIds = filterValues?.principal_organization_id
+    ? Array.isArray(filterValues.principal_organization_id)
+      ? filterValues.principal_organization_id.map(String)
+      : [String(filterValues.principal_organization_id)]
+    : undefined;
+
+  // Combine all organization IDs for a single fetch
+  const allOrgIds = [
+    ...(customerOrgIds || []),
+    ...(principalOrgIds || []),
+  ];
 
   // Extract sales IDs from filter values and convert to strings
   const salesIds = filterValues?.opportunity_owner_id
@@ -45,7 +58,7 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
     : undefined;
 
   // Use custom hooks for name fetching
-  const { getOrganizationName } = useOrganizationNames(organizationIds);
+  const { getOrganizationName } = useOrganizationNames(allOrgIds.length > 0 ? allOrgIds : undefined);
   const { getSalesName } = useSalesNames(salesIds);
   const { getTagName } = useTagNames(tagIds);
 

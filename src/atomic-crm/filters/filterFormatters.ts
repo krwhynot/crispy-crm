@@ -61,6 +61,13 @@ export const formatFilterLabel = (
     case FILTER_KEYS.CUSTOMER_ORGANIZATION:
       return getOrganizationName ? getOrganizationName(String(value)) : `Organization #${value}`;
 
+    case FILTER_KEYS.PRINCIPAL_ORGANIZATION:
+      return getOrganizationName ? getOrganizationName(String(value)) : `Principal #${value}`;
+
+    case FILTER_KEYS.CAMPAIGN:
+      // Campaign values are stored as text, not IDs - pass through
+      return String(value);
+
     case FILTER_KEYS.OPPORTUNITY_OWNER:
       return getSalesName ? getSalesName(String(value)) : `Sales #${value}`;
 
