@@ -158,8 +158,18 @@ test.describe("Slide-Over - Design System", () => {
 
       await slideOver.expectVisible();
 
-      // Test focus trap
+      // Test forward focus trap
       await slideOver.expectFocusTrap();
+    });
+
+    test("Shift+Tab cycles focus backward within slide-over", async ({ authenticatedPage }) => {
+      const slideOver = createSlideOver(authenticatedPage);
+      await slideOver.openFromRow("contacts", 0);
+
+      await slideOver.expectVisible();
+
+      // Test reverse focus trap
+      await slideOver.expectReverseFocusTrap();
     });
 
     test("close button closes slide-over", async ({ authenticatedPage }) => {
@@ -315,7 +325,7 @@ test.describe("Slide-Over - Design System", () => {
       await slideOver.expectCorrectARIA();
     });
 
-    test("focus returns to trigger element when closed", async ({ authenticatedPage }) => {
+    test("focus returns to trigger element when closed with ESC", async ({ authenticatedPage }) => {
       const listPage = createListPage(authenticatedPage, "contacts");
       await listPage.navigate();
 
@@ -331,17 +341,42 @@ test.describe("Slide-Over - Design System", () => {
       // Close with ESC
       await slideOver.pressEscapeAndVerifyClosed();
 
-      // Focus should return to table area
-      const focusedElement = await authenticatedPage.evaluate(() => {
-        const focused = document.activeElement;
-        return {
-          tagName: focused?.tagName,
-          role: focused?.getAttribute("role"),
-        };
-      });
+      // Focus should return to row 0
+      await slideOver.expectFocusReturnedToRow(0);
+    });
 
-      // Focus should be on a focusable element (not body)
-      expect(focusedElement.tagName).not.toBe("BODY");
+    test("focus returns to trigger element when closed with close button", async ({
+      authenticatedPage,
+    }) => {
+      const listPage = createListPage(authenticatedPage, "contacts");
+      await listPage.navigate();
+
+      const firstRow = listPage.getTableRow(0);
+      await expect(firstRow).toBeVisible();
+      await firstRow.click();
+
+      const slideOver = createSlideOver(authenticatedPage);
+      await slideOver.expectVisible();
+
+      // Close with button
+      await slideOver.clickCloseAndVerify();
+
+      // Focus should return to row 0
+      await slideOver.expectFocusReturnedToRow(0);
+    });
+
+    test("backdrop click closes slide-over", async ({ authenticatedPage }) => {
+      const slideOver = createSlideOver(authenticatedPage);
+      await slideOver.openFromRow("contacts", 0);
+
+      await slideOver.expectVisible();
+
+      // Click backdrop
+      await slideOver.clickBackdrop();
+
+      // Should be closed
+      await slideOver.expectClosed();
+      await slideOver.expectNoQueryParams();
     });
   });
 

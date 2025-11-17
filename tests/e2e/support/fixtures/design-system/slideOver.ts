@@ -179,7 +179,59 @@ export class SlideOverFixture {
   }
 
   /**
-   * Assert focus trap is working
+   * Click backdrop to close slide-over
+   * Per plan: "Click backdrop (optional dimmed overlay)" closes slide-over
+   */
+  async clickBackdrop(): Promise<void> {
+    await this.expectVisible();
+
+    // Click outside the dialog (on the backdrop)
+    // Get dialog bounds
+    const dialog = this.getDialog();
+    const dialogBox = await dialog.boundingBox();
+    expect(dialogBox, 'Dialog not found').not.toBeNull();
+
+    if (dialogBox) {
+      // Click 50px to the left of the dialog (on the backdrop)
+      await this.page.mouse.click(dialogBox.x - 50, dialogBox.y + 100);
+      await this.page.waitForTimeout(300);
+    }
+  }
+
+  /**
+   * Assert focus returned to specific table row after closing
+   * Per plan: "Focus returns to triggering element when closed"
+   *
+   * @param rowIndex - Expected row index that should receive focus
+   */
+  async expectFocusReturnedToRow(rowIndex: number): Promise<void> {
+    // Get the row that should receive focus
+    const expectedRow = this.page.locator('tbody [role="row"]').nth(rowIndex);
+
+    // Get currently focused element
+    const focusedElement = await this.page.evaluate(() => {
+      const el = document.activeElement;
+      return {
+        tagName: el?.tagName,
+        role: el?.getAttribute('role'),
+        // Check if focused element is within or is the row
+        isRow: el?.closest('[role="row"]') !== null || el?.getAttribute('role') === 'row',
+      };
+    });
+
+    // Focus should be on the row or within it
+    expect(focusedElement.isRow, `Focus should return to row ${rowIndex} after closing`).toBe(true);
+
+    // Alternative: Check if the expected row or its descendant has focus
+    const rowOrDescendantHasFocus = await expectedRow.evaluate((el) => {
+      return el === document.activeElement || el.contains(document.activeElement);
+    });
+
+    expect(rowOrDescendantHasFocus, `Row ${rowIndex} or its descendant should have focus`).toBe(true);
+  }
+
+  /**
+   * Assert focus trap is working (forward Tab direction)
    * Per plan line 1491: Tab/Shift+Tab stays within dialog
    */
   async expectFocusTrap(): Promise<void> {
@@ -208,6 +260,38 @@ export class SlideOverFixture {
       });
 
       expect(isFocusInDialog, `Focus should stay within slide-over after ${i} tabs`).toBe(true);
+    }
+  }
+
+  /**
+   * Assert reverse focus trap (Shift+Tab direction)
+   * Per plan: "section also called for Shift+Tab traversal"
+   */
+  async expectReverseFocusTrap(): Promise<void> {
+    await this.expectVisible();
+
+    const dialog = this.getDialog();
+    const focusableElements = dialog.locator(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+
+    const count = await focusableElements.count();
+    expect(count, 'Should have focusable elements in slide-over').toBeGreaterThan(0);
+
+    // Focus last element
+    await focusableElements.last().focus();
+
+    // Shift+Tab backward through all elements and loop back
+    for (let i = 0; i < count + 2; i++) {
+      await this.page.keyboard.press('Shift+Tab');
+      await this.page.waitForTimeout(50);
+
+      // Verify focus is still within dialog
+      const isFocusInDialog = await dialog.evaluate((el) => {
+        return el.contains(document.activeElement);
+      });
+
+      expect(isFocusInDialog, `Focus should stay within slide-over after ${i} Shift+Tabs`).toBe(true);
     }
   }
 

@@ -32,31 +32,47 @@ On the presentation side, the Show page surfaces parent links, branch counts, an
 
 1. **❌ CRITICAL: Forms write to wrong field**
    - Forms and validators write to `parent_id`, but no transform ever maps that to `parent_organization_id`, so hierarchy edits never persist
-   - References:
-     - `src/atomic-crm/organizations/OrganizationInputs.tsx:10-26`
-     - `src/atomic-crm/organizations/ParentOrganizationInput.tsx:11-28`
-     - `src/atomic-crm/providers/supabase/services/TransformService.ts:105-128`
+   - **ALL occurrences of `parent_id`:**
+     - Forms: `src/atomic-crm/organizations/OrganizationInputs.tsx:10-26`, `src/atomic-crm/organizations/ParentOrganizationInput.tsx:11-28`
+     - Tests: `src/atomic-crm/organizations/__tests__/ParentOrganizationInput.test.tsx`, `src/atomic-crm/validation/__tests__/organizations/validation.test.ts`, `src/atomic-crm/validation/__tests__/organizations/edge-cases.test.ts`
+     - CSV Import: `OrganizationImportSchema` does NOT include parent field - currently can't import hierarchies
+     - Transform: `src/atomic-crm/providers/supabase/services/TransformService.ts:105-128` (no mapping exists)
 
 2. **❌ CRITICAL: Broken parent selector filtering**
    - The parent selector sends `{ organization_type: { $in: … }, parent_organization_id: { $null: true } }`, which the PostgREST data provider doesn't understand, so filtering silently fails and the dropdown includes every organization
+   - **Root cause:** MongoDB-style operators instead of PostgREST syntax
+   - **Fix location:** `ParentOrganizationInput.tsx` filter prop - must use PostgREST operators that the data provider understands
+   - **Note:** Filter registry already includes `parent_organization_id` (filterRegistry.ts:86), so no registry changes needed
    - Reference: `src/atomic-crm/organizations/ParentOrganizationInput.tsx:11-25`
 
 3. **❌ CRITICAL: No cycle protection**
    - There is no database- or API-level constraint preventing self-parenting or cycles—only a UI warning—which means a user can set `parent = self` or `parent = descendant` via `ParentOrganizationSection` or direct API calls
+   - **Current state:** Only client-side validation exists (validation/organizations.ts)
+   - **Required:** Database trigger with recursive CTE to detect cycles before INSERT/UPDATE
    - References:
      - `supabase/migrations/20251018152315_cloud_schema_fresh.sql:1315-1347`
      - `src/atomic-crm/validation/organizations.ts:74-105`
      - `src/atomic-crm/organizations/ParentOrganizationSection.tsx:66-84`
 
-4. **⚠️ Artificial depth limitation**
+4. **⚠️ RLS policy consideration**
+   - **CRITICAL:** Organizations UPDATE is admin-only (migration 20251116124147_fix_permissive_rls_policies.sql:52-57)
+   - Non-admin users CANNOT update `parent_organization_id` via API even after field naming fix
+   - **Decision required:** Should non-admin users be able to set parent relationships? If yes, RLS policy must be updated
+   - **Current policy:** `USING ((SELECT is_admin FROM sales WHERE user_id = auth.uid()) = true)`
+   - **Options:**
+     - Keep admin-only (safest - prevents unauthorized hierarchy changes)
+     - Allow specific fields for non-admins (e.g., parent_organization_id only)
+     - Create separate policy for hierarchy updates with additional checks
+
+5. **⚠️ Artificial depth limitation**
    - UI limits parents to organizations without a parent, blocking legitimate multi-level hierarchies (e.g., HQ → region → store) even though the schema could support them
    - Reference: `src/atomic-crm/organizations/ParentOrganizationInput.tsx:14-17`
 
-5. **⚠️ Redundant indexes**
+6. **⚠️ Redundant indexes**
    - Two separate partial indexes on the same column (`idx_companies_parent_company_id` and `idx_organizations_parent_company_id`) create redundant write overhead
    - Reference: `supabase/migrations/20251018152315_cloud_schema_fresh.sql:2287, 2451`
 
-6. **⚠️ Limited roll-up depth**
+7. **⚠️ Limited roll-up depth**
    - The roll-up view only counts direct children; breadcrumbs and reports can never show more than one ancestor, so hierarchy navigation will not scale beyond a single level
    - Reference: `supabase/migrations/20251110142654_add_organization_hierarchy_rollups.sql:17-35`
 
@@ -218,26 +234,65 @@ On the presentation side, the Show page surfaces parent links, branch counts, an
 
 1. **Add cycle protection trigger** (P0)
    ```sql
+   -- Function to detect cycles in organization hierarchy
    CREATE OR REPLACE FUNCTION prevent_organization_cycle()
    RETURNS TRIGGER AS $$
+   DECLARE
+     v_current_parent_id BIGINT;
+     v_depth INTEGER := 0;
+     v_max_depth INTEGER := 10; -- Prevent infinite loops
    BEGIN
-     -- Prevent self-parenting
-     IF NEW.parent_organization_id = NEW.id THEN
-       RAISE EXCEPTION 'Organization cannot be its own parent';
+     -- Skip if parent is not being set
+     IF NEW.parent_organization_id IS NULL THEN
+       RETURN NEW;
      END IF;
 
-     -- Prevent cycles (recursive check)
-     -- TODO: Implement recursive cycle detection
+     -- Prevent self-parenting
+     IF NEW.parent_organization_id = NEW.id THEN
+       RAISE EXCEPTION 'Organization cannot be its own parent (ID: %)', NEW.id;
+     END IF;
+
+     -- Walk up the parent chain to detect cycles
+     v_current_parent_id := NEW.parent_organization_id;
+
+     WHILE v_current_parent_id IS NOT NULL AND v_depth < v_max_depth LOOP
+       -- If we encounter our own ID while walking up, there's a cycle
+       IF v_current_parent_id = NEW.id THEN
+         RAISE EXCEPTION 'Cycle detected: Organization % would create a circular parent relationship', NEW.id;
+       END IF;
+
+       -- Move up to the next parent
+       SELECT parent_organization_id
+       INTO v_current_parent_id
+       FROM organizations
+       WHERE id = v_current_parent_id;
+
+       v_depth := v_depth + 1;
+     END LOOP;
+
+     -- If we hit max depth, the hierarchy is too deep (likely a cycle we didn't catch)
+     IF v_depth >= v_max_depth THEN
+       RAISE EXCEPTION 'Maximum hierarchy depth exceeded (% levels). Possible cycle.', v_max_depth;
+     END IF;
 
      RETURN NEW;
    END;
    $$ LANGUAGE plpgsql;
 
+   -- Trigger to check for cycles before insert or update
    CREATE TRIGGER check_organization_cycle
-     BEFORE INSERT OR UPDATE ON organizations
+     BEFORE INSERT OR UPDATE OF parent_organization_id ON organizations
      FOR EACH ROW
      EXECUTE FUNCTION prevent_organization_cycle();
    ```
+
+   **Algorithm explanation:**
+   - Uses iterative parent-walking instead of recursive CTE for better performance
+   - Prevents self-parenting as first check (fastest rejection)
+   - Walks up parent chain, checking if we encounter the current organization ID
+   - Includes max-depth guard (10 levels) to prevent infinite loops from data corruption
+   - Only fires when `parent_organization_id` is actually changing (performance optimization)
+   - Error messages include organization ID for debugging
 
 2. **Consolidate indexes** (P1)
    ```sql
@@ -265,22 +320,73 @@ On the presentation side, the Show page surfaces parent links, branch counts, an
    SELECT * FROM ancestors;
    ```
 
+### Data Migration & Backfill Strategy
+
+**Problem:** Users may have attempted to set parent relationships before this fix. Those selections were silently lost because forms wrote to `parent_id` instead of `parent_organization_id`.
+
+**Audit Query:**
+```sql
+-- Check if any organizations are missing expected parent relationships
+-- (This would require manual verification against user expectations)
+SELECT id, name, organization_type, parent_organization_id
+FROM organizations
+WHERE parent_organization_id IS NULL
+  AND organization_type IN ('customer', 'distributor', 'principal')
+ORDER BY created_at DESC
+LIMIT 100;
+```
+
+**Backfill Options:**
+
+1. **No automatic backfill** (recommended)
+   - Lost parent selections cannot be recovered without user input
+   - **Action:** Communicate to users that parent relationships must be re-set
+   - **Mitigation:** Create admin report showing orgs without parents that might need review
+
+2. **Manual review + CSV import** (if data exists elsewhere)
+   - Export current orgs to CSV
+   - Users review and add parent_organization_id column
+   - Re-import with updated schema that includes parent field
+   - **Risk:** Requires users to have external source of truth for hierarchies
+
+3. **Audit log analysis** (if audit logging exists)
+   - Check audit_trail table for attempted parent changes
+   - Reconstruct intended relationships from user actions
+   - **Risk:** Complex, may not capture all attempts
+
+**Recommendation:** Option 1 (No automatic backfill) + admin notification
+- Create one-time notification for admins about parent relationship reset
+- Provide "Orgs Without Parent" report filtered to likely candidates
+- Document in release notes that hierarchies need to be re-established
+
 ### Code Changes Required
 
 **Phase 1 - P0 Fixes:**
-1. Field renaming (`parent_id` → `parent_organization_id`)
-2. Transform service updates
-3. Filter syntax fixes
-4. Router state handling for "Add Branch"
+1. Field renaming (`parent_id` → `parent_organization_id`) in:
+   - Forms: `OrganizationInputs.tsx`, `ParentOrganizationInput.tsx`
+   - Validation: `organizations.ts` schema
+   - Tests: `ParentOrganizationInput.test.tsx`, `validation.test.ts`, `edge-cases.test.ts`
+   - CSV Import: Add to `OrganizationImportSchema` interface
+2. Filter syntax fixes:
+   - Replace MongoDB operators with PostgREST in `ParentOrganizationInput.tsx`
+   - Add `id@neq` filter to exclude current record
+3. Router state handling:
+   - Read `location.state` in `OrganizationCreate.tsx`
+   - Merge into form defaults for "Add Branch" flow
+4. Database migration:
+   - Create cycle protection trigger
+   - Add function tests to migration
 
 **Phase 2 - P1 Enhancements:**
 1. Multi-level hierarchy support (if approved)
-2. Enhanced summary views
+2. Enhanced summary views with ancestor paths
 3. Index consolidation
+4. RLS policy decision + implementation (if needed)
 
 **Phase 3 - P2 Polish:**
-1. UX feedback improvements
+1. UX feedback improvements (parent field chip/read-only display)
 2. Replace page reloads with React Admin patterns
+3. Inline error messages for validation failures
 
 ---
 
