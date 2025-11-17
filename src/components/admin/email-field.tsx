@@ -9,7 +9,19 @@ import type { FieldProps } from "@/lib/field.type";
 const EmailFieldImpl = <RecordType extends Record<string, any> = Record<string, any>>(
   inProps: EmailFieldProps<RecordType>
 ) => {
-  const { className, empty, defaultValue, source, record, ...rest } = inProps;
+  const {
+    className,
+    empty,
+    defaultValue,
+    source,
+    record,
+    // Filter out React Admin-specific props that shouldn't be passed to DOM elements
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    ...rest
+  } = inProps;
   const value = useFieldValue({ defaultValue, source, record });
   const translate = useTranslate();
 

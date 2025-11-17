@@ -44,17 +44,19 @@ const getRowClassName = () => "table-row-premium";
  * Wraps React Admin's Datagrid with premium styling and custom row click handling.
  * All Datagrid props are passed through, ensuring full feature compatibility.
  */
-export function PremiumDatagrid({ onRowClick, ...props }: PremiumDatagridProps) {
+export function PremiumDatagrid({
+  onRowClick,
+  rowClassName: _, // Extract and ignore - we always use our own getRowClassName
+  ...props
+}: PremiumDatagridProps) {
   // Stable row click handler using useCallback to prevent infinite re-renders
+  // Only wraps onRowClick - props.rowClick is passed directly when onRowClick is not provided
   const handleRowClick = useCallback(
     (id: string | number) => {
-      if (onRowClick) {
-        onRowClick(id);
-        return false; // Prevent default navigation
-      }
-      return props.rowClick;
+      onRowClick?.(id);
+      return false; // Prevent default navigation
     },
-    [onRowClick, props.rowClick]
+    [onRowClick]
   );
 
   return (

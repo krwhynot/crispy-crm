@@ -9,7 +9,20 @@ import type { FieldProps } from "@/lib/field.type";
 const UrlFieldImpl = <RecordType extends Record<string, any> = Record<string, any>>(
   inProps: UrlFieldProps<RecordType>
 ) => {
-  const { empty, className, defaultValue, source, record, resource: _, ...rest } = inProps;
+  const {
+    empty,
+    className,
+    defaultValue,
+    source,
+    record,
+    resource: _,
+    // Filter out React Admin-specific props that shouldn't be passed to DOM elements
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    ...rest
+  } = inProps;
   const value = useFieldValue({ defaultValue, source, record });
   const translate = useTranslate();
 
