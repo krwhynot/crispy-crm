@@ -427,9 +427,14 @@ Use these variables for consistent spacing:
 
 Location: `src/index.css` in `@layer components`
 
+**CRITICAL: PostCSS/Tailwind Implementation Pattern**
+The project uses plain PostCSS with Tailwind v4, which **does NOT support Sass features like @extend**.
+To share styles between classes, you MUST duplicate the @apply statements:
+
 ```css
 @layer components {
   /* Premium interactive card/row - shared styles for all premium hover effects */
+  /* IMPORTANT: Both classes need identical @apply statements (no @extend in PostCSS!) */
   .interactive-card,
   .table-row-premium {
     @apply rounded-lg border border-transparent bg-card px-3 py-1.5;
@@ -440,10 +445,14 @@ Location: `src/index.css` in `@layer components`
     @apply focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
   }
 
-  /* Note: Both classes share identical styling (PostCSS doesn't support @extend).
-     PremiumDatagrid applies .table-row-premium to rows via rowClassName prop.
-     Use .interactive-card for standalone cards (e.g., contact cards).
-     Use .table-row-premium for Datagrid rows to maintain semantic clarity. */
+  /* Implementation Pattern:
+     - DO: List both classes with comma separation, duplicate all @apply rules
+     - DON'T: Try to use @extend (Sass-only), @mixin (Sass-only), or CSS custom properties for complex rules
+     - WHY: PostCSS processes @apply at build time but doesn't support Sass preprocessing
+
+     Usage:
+     - .interactive-card for standalone clickable cards (e.g., contact cards, dashboard widgets)
+     - .table-row-premium for Datagrid rows via rowClassName prop (maintains semantic clarity) */
 
   /* Standard card container */
   .card-container {
