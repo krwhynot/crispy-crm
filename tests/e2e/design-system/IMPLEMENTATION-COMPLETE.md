@@ -39,7 +39,7 @@ All 7 fixture gaps identified in user feedback have been corrected (see FIXTURE-
 
 ## Test Execution Strategy
 
-### Tier 1: Smoke Tests (Always Run)
+### Tier 1: Smoke Tests (Fail-Fast Basic Checks)
 
 ```bash
 npx playwright test tests/e2e/design-system-smoke.spec.ts
@@ -47,16 +47,17 @@ npx playwright test tests/e2e/design-system-smoke.spec.ts
 
 **Coverage:** 6 resources × 7 scenarios = 42 smoke tests
 **Speed:** < 2 minutes
-**Pass Rate (Current):** 100% ✅
+**Pass Rate (Current):** 0% (expected - components not migrated yet)
 
-Smoke tests use generous fallback selectors to verify basic structure:
-- ✅ Filter sidebars present (design system OR legacy)
-- ✅ Main content areas render
-- ✅ Tables/grids have structure
-- ✅ Forms have save/cancel buttons
+Smoke tests use strict selectors to verify key elements exist:
+- ❌ Filter sidebar with `data-testid="filter-sidebar"`
+- ❌ Slide-overs with `role="dialog"`
+- ❌ Tables with `<tbody>` structure
+- ❌ Forms with "Save & Close" buttons (not just "Save")
 - ✅ Navigation links functional
-- ✅ No horizontal scroll
 - ✅ ARIA landmarks present
+
+**Engineering Constitution Compliance:** Fail fast - no fallback selectors or graceful degradation.
 
 ### Tier 2: Contract Tests (Opt-In)
 
@@ -214,18 +215,19 @@ export function shouldSkipTest(resource: string, pattern: string): boolean {
 
 **Benefit:** Work-in-progress components can be tested without marking them "migrated" in the JSON.
 
-### 2. Fallback Selectors in Smoke Tests
+### 2. Strict Selectors (Engineering Constitution)
 
-Smoke tests use `.or()` chains to gracefully handle both migrated and unmigrated components:
+Both smoke tests and contract tests use deterministic selectors only - no fallbacks:
 
 ```typescript
-const filterSidebar = page
-  .locator('[data-testid="filter-sidebar"]')        // Design system
-  .or(page.locator('[role="complementary"]'))        // Legacy with ARIA
-  .or(page.locator('aside').first());                 // Generic fallback
+// Fail fast: Expect design system patterns only
+const filterSidebar = page.locator('[data-testid="filter-sidebar"]');
+await expect(filterSidebar).toBeVisible({ timeout: 5000 });
+
+// Test fails immediately if design system not implemented
 ```
 
-**Benefit:** Zero false negatives - smoke tests never fail on unmigrated components.
+**Benefit:** Aligns with "fail fast" principle - no graceful degradation or hidden technical debt.
 
 ### 3. Granular Sub-Flags
 

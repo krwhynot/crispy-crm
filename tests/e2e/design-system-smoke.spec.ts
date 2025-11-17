@@ -4,17 +4,22 @@ import { loadMigrationStatus } from "./support/utils/migration-status";
 /**
  * Design System Smoke Tests
  *
- * Lightweight probes that check basic component existence with generous fallbacks.
- * These tests run on EVERY PR to catch regressions in migrated resources without
- * blocking development on unmigrated areas.
+ * Fail-fast basic checks for design system compliance. These tests verify that
+ * critical design system elements are present but don't enforce full contracts.
  *
- * Philosophy:
- * - Use .or() selectors with legacy fallbacks
- * - Check existence, not strict contracts
+ * Philosophy (Engineering Constitution):
+ * - Fail fast - no fallback selectors
+ * - Deterministic selectors only (data-testid, role="dialog", etc.)
+ * - Check basic structure, not full behavior
  * - Fast execution (< 30s total)
- * - Zero false negatives for unmigrated components
+ * - Tests will fail on unmigrated components (expected)
+ *
+ * Difference from Contract Tests:
+ * - Smoke: Checks presence of key elements (sidebar exists, form has buttons)
+ * - Contract: Enforces full behavior (sidebar is 256px, focus trap works)
  *
  * Run: npx playwright test tests/e2e/design-system-smoke.spec.ts
+ * Skip unmigrated: Use migration-status.json flags (future enhancement)
  */
 
 const RESOURCES = ["contacts", "organizations", "opportunities", "tasks", "sales", "products"];
@@ -34,26 +39,17 @@ test.describe("Design System Smoke Tests", () => {
         await authenticatedPage.goto(`/#/${resource}`);
         await authenticatedPage.waitForLoadState("networkidle");
 
-        // Check for filter sidebar (design system OR legacy)
-        const filterSidebar = authenticatedPage
-          .locator('[data-testid="filter-sidebar"]')
-          .or(authenticatedPage.locator('[role="complementary"]'))
-          .or(authenticatedPage.locator('aside').first());
+        // Fail fast: Expect design system selectors only
+        const filterSidebar = authenticatedPage.locator('[data-testid="filter-sidebar"]');
+        await expect(filterSidebar).toBeVisible({ timeout: 5000 });
 
-        await expect(filterSidebar).toBeVisible({ timeout: 10000 });
-
-        // Check for main content area (always present, even if empty)
+        // Main content area must exist
         const mainArea = authenticatedPage.locator('[role="main"]').first();
         await expect(mainArea).toBeVisible();
 
-        // Check for table structure (header at minimum)
-        const hasTableOrGrid = await authenticatedPage
-          .locator('table')
-          .or(authenticatedPage.locator('[data-testid="kanban-board"]'))
-          .or(authenticatedPage.locator('.MuiDataGrid-root'))
-          .count();
-
-        expect(hasTableOrGrid, `${resource} should have table or grid structure`).toBeGreaterThan(0);
+        // Table must have tbody structure (design system requirement)
+        const tbody = authenticatedPage.locator('tbody');
+        await expect(tbody).toBeVisible();
       });
     }
   });
@@ -65,18 +61,15 @@ test.describe("Design System Smoke Tests", () => {
         await authenticatedPage.goto(`/#/${resource}/create`);
         await authenticatedPage.waitForLoadState("networkidle");
 
-        // Check for form element
+        // Fail fast: Form must exist
         const form = authenticatedPage.locator("form").first();
-        await expect(form).toBeVisible({ timeout: 10000 });
+        await expect(form).toBeVisible({ timeout: 5000 });
 
-        // Check for save button (design system OR legacy)
-        const saveButton = authenticatedPage
-          .getByRole("button", { name: /save.*close/i })
-          .or(authenticatedPage.getByRole("button", { name: /save/i }));
-
+        // Design system requires "Save & Close" button (not just "Save")
+        const saveButton = authenticatedPage.getByRole("button", { name: /save.*close/i });
         await expect(saveButton).toBeVisible();
 
-        // Check for cancel button
+        // Cancel button required
         const cancelButton = authenticatedPage.getByRole("button", { name: /cancel/i });
         await expect(cancelButton).toBeVisible();
       });
@@ -89,21 +82,13 @@ test.describe("Design System Smoke Tests", () => {
         await authenticatedPage.goto(`/#/${resource}/1/show`);
         await authenticatedPage.waitForLoadState("networkidle");
 
-        // Check for slide-over OR full-page detail view
-        const detailView = authenticatedPage
-          .locator('[role="dialog"]') // Slide-over (design system)
-          .or(authenticatedPage.locator('[role="main"]')) // Full page (legacy)
-          .or(authenticatedPage.locator(".show-page"));
+        // Fail fast: Design system requires slide-over with role="dialog"
+        const slideOver = authenticatedPage.locator('[role="dialog"]');
+        await expect(slideOver).toBeVisible({ timeout: 5000 });
 
-        await expect(detailView).toBeVisible({ timeout: 10000 });
-
-        // Check for edit button OR edit link
-        const editControl = authenticatedPage
-          .getByRole("button", { name: /edit/i })
-          .or(authenticatedPage.getByRole("link", { name: /edit/i }));
-
-        const hasEdit = await editControl.count();
-        expect(hasEdit, `${resource} show page should have edit control`).toBeGreaterThan(0);
+        // Edit button must exist within slide-over
+        const editButton = slideOver.getByRole("button", { name: /edit/i });
+        await expect(editButton).toBeVisible();
       });
     }
   });
