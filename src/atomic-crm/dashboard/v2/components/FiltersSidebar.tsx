@@ -194,7 +194,7 @@ export function FiltersSidebar({
               onFiltersChange({ ...filters, assignee: newAssignee });
             }}
           >
-            <SelectTrigger className="w-full h-11 border-border/50 font-normal">
+            <SelectTrigger className="w-full h-11 border-border/50 font-normal" aria-label="Filter by assignee">
               <SelectValue placeholder="All Team" />
             </SelectTrigger>
             <SelectContent>
@@ -221,7 +221,7 @@ export function FiltersSidebar({
               })
             }
           >
-            <SelectTrigger className="w-full h-11 border-border/50 font-normal">
+            <SelectTrigger className="w-full h-11 border-border/50 font-normal" aria-label="Filter by last touch date">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

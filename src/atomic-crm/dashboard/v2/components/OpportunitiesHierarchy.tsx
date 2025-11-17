@@ -325,7 +325,7 @@ export function OpportunitiesHierarchy({
 
                   {/* Estimated Close Date */}
                   {opp.estimated_close_date && (
-                    <span className="text-muted-foreground text-sm shrink-0 hidden md:inline">
+                    <span className="text-foreground/70 text-sm shrink-0 hidden md:inline">
                       {formatDate(opp.estimated_close_date)}
                     </span>
                   )}

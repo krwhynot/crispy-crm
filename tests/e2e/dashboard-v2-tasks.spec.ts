@@ -21,7 +21,7 @@ test.describe('Dashboard V2 - Tasks Panel', () => {
     const taskTitle = await firstTask.locator('span.truncate').textContent();
 
     // Click checkbox to complete task
-    await firstTask.locator('button[aria-label*="Mark"]').click();
+    await firstTask.locator('input[type="checkbox"][aria-label*="Mark"]').click();
 
     // Wait for success notification
     await expect(authenticatedPage.locator('text="Task marked as complete"')).toBeVisible();

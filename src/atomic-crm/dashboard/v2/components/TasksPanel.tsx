@@ -9,7 +9,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { PriorityTask, TaskGrouping, TaskBucket } from '../types';
@@ -186,7 +185,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
       <div className="h-11 px-3 py-1 border-b border-border flex items-center justify-between gap-3">
         <span className="font-semibold text-sm">Tasks</span>
         <Select value={grouping} onValueChange={(value) => setGrouping(value as TaskGrouping)}>
-          <SelectTrigger className="h-11 w-[140px] border-border/50 font-normal">
+          <SelectTrigger className="h-11 w-[140px] border-border/50 font-normal" aria-label="Group tasks by">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -206,7 +205,7 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
             </Button>
           </div>
         ) : (
-          <div className="space-y-0" role="list">
+          <div className="space-y-0">
             {groupedTasks.map((group) => {
               const isLaterGroup = group.isLater;
               const tasksToShow = isLaterGroup
@@ -255,8 +254,9 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
 
                   <div
                     id={isLaterGroup ? `later-tasks-${group.key}` : undefined}
-                    role={isLaterGroup ? 'region' : undefined}
+                    role={isLaterGroup ? 'region' : 'list'}
                     aria-hidden={isLaterGroup ? !laterExpanded : undefined}
+                    aria-label={isLaterGroup ? undefined : `${group.label} tasks`}
                   >
                     {tasksToShow.map((task) => (
                       <div
@@ -264,14 +264,15 @@ export function TasksPanel({ assignee, currentUserId }: TasksPanelProps) {
                         className="h-11 px-3 hover:bg-muted/30 flex items-center gap-3 border-b border-border/50"
                         role="listitem"
                       >
-                        <div className="shrink-0 h-11 w-11 flex items-center justify-center -ml-1">
-                          <Checkbox
+                        <label className="shrink-0 h-11 w-11 flex items-center justify-center -ml-1 cursor-pointer">
+                          <input
+                            type="checkbox"
                             checked={false}
-                            onClick={() => handleComplete(task.task_id)}
+                            onChange={() => handleComplete(task.task_id)}
                             aria-label={`Mark "${task.task_title}" as complete`}
-                            className="h-5 w-5"
+                            className="h-5 w-5 rounded border-input accent-primary cursor-pointer"
                           />
-                        </div>
+                        </label>
 
                         <span className="flex-1 text-sm truncate">{task.task_title}</span>
 
