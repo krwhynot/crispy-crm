@@ -73,6 +73,18 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  /* Organization Type Tag Colors (MFB Garden to Table theme) */
+  --color-tag-warm: var(--tag-warm-bg);
+  --color-tag-warm-fg: var(--tag-warm-fg);
+  --color-tag-sage: var(--tag-sage-bg);
+  --color-tag-sage-fg: var(--tag-sage-fg);
+  --color-tag-purple: var(--tag-purple-bg);
+  --color-tag-purple-fg: var(--tag-purple-fg);
+  --color-tag-teal: var(--tag-teal-bg);
+  --color-tag-teal-fg: var(--tag-teal-fg);
+  --color-tag-gray: var(--tag-gray-bg);
+  --color-tag-gray-fg: var(--tag-gray-fg);
+
   /* ========================================
      SPACING TOKENS - DESKTOP OPTIMIZED
      ======================================== */
