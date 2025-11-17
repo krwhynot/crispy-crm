@@ -1,31 +1,280 @@
-import { BooleanInput } from "@/components/admin/boolean-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { useGetIdentity, useRecordContext } from "ra-core";
-import type { Sale } from "../types";
+import { useState } from 'react';
+import { useUpdate, useNotify, useGetIdentity } from 'react-admin';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { validateUpdateSales } from '../validation/sales';
 
-export function SalesPermissionsTab() {
+interface SalesPermissionsTabProps {
+  record: any;
+  mode: 'view' | 'edit';
+  onModeToggle?: () => void;
+}
+
+/**
+ * SalesPermissionsTab - User permissions and role management
+ *
+ * Displays and allows editing of:
+ * - Role (admin, manager, rep)
+ * - Administrator toggle (linked to admin role)
+ * - Disabled status
+ *
+ * View mode: Read-only display with badges
+ * Edit mode: Inline form with dropdowns and switches
+ */
+export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermissionsTabProps) {
+  const [update, { isLoading }] = useUpdate();
+  const notify = useNotify();
   const { identity } = useGetIdentity();
-  const record = useRecordContext<Sale>();
+
+  // Form state
+  const [formData, setFormData] = useState({
+    role: record?.role || 'rep',
+    disabled: record?.disabled || false,
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Prevent editing own account
+  const isSelfEdit = record?.id === identity?.id;
+
+  // Update form field
+  const handleChange = (field: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  // Save changes
+  const handleSave = async () => {
+    try {
+      // Validate form data
+      await validateUpdateSales({ id: record.id, ...formData });
+
+      // Update record
+      await update(
+        'sales',
+        { id: record.id, data: formData },
+        {
+          onSuccess: () => {
+            notify('Permissions updated successfully', { type: 'success' });
+            if (onModeToggle) onModeToggle(); // Switch back to view mode
+          },
+          onError: (error: any) => {
+            notify(error.message || 'Failed to update permissions', { type: 'error' });
+            if (error.errors) {
+              setErrors(error.errors);
+            }
+          },
+        }
+      );
+    } catch (error: any) {
+      if (error.errors) {
+        setErrors(error.errors);
+        notify('Validation failed. Please check the form.', { type: 'warning' });
+      } else {
+        notify('An error occurred', { type: 'error' });
+      }
+    }
+  };
+
+  // Cancel edit
+  const handleCancel = () => {
+    // Reset form data to original values
+    setFormData({
+      role: record?.role || 'rep',
+      disabled: record?.disabled || false,
+    });
+    setErrors({});
+    if (onModeToggle) onModeToggle();
+  };
+
+  // Get role badge styling
+  const getRoleBadge = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return (
+          <Badge variant="outline" className="border-primary text-primary">
+            Admin
+          </Badge>
+        );
+      case 'manager':
+        return (
+          <Badge variant="outline" className="border-success text-success">
+            Manager
+          </Badge>
+        );
+      case 'rep':
+        return (
+          <Badge variant="outline" className="border-muted-foreground text-muted-foreground">
+            Rep
+          </Badge>
+        );
+      default:
+        return null;
+    }
+  };
+
+  if (!record) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-11 w-full" />
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-content">
-      <SelectInput
-        source="role"
-        label="Role"
-        choices={[
-          { id: 'rep', name: 'Rep' },
-          { id: 'manager', name: 'Manager' },
-          { id: 'admin', name: 'Admin' },
-        ]}
-        disabled={record?.id === identity?.id}
-        helperText="Rep: Edit own records. Manager: Edit all records. Admin: Full system access."
-      />
-      <BooleanInput
-        source="disabled"
-        label="Disabled"
-        disabled={record?.id === identity?.id}
-        helperText="Disabled users cannot log in"
-      />
+    <div className="space-y-6">
+      {/* Self-edit warning */}
+      {isSelfEdit && mode === 'edit' && (
+        <div className="p-3 border border-warning bg-warning/10 rounded-md">
+          <p className="text-sm text-warning-foreground">
+            <strong>Note:</strong> You cannot modify your own permissions.
+          </p>
+        </div>
+      )}
+
+      {/* Role field */}
+      <div>
+        <Label htmlFor="role">Role</Label>
+        {mode === 'view' ? (
+          <div className="mt-2">{getRoleBadge(record.role)}</div>
+        ) : (
+          <>
+            <Select
+              value={formData.role}
+              onValueChange={(value) => handleChange('role', value)}
+              disabled={isLoading || isSelfEdit}
+            >
+              <SelectTrigger
+                id="role"
+                className={errors.role ? 'border-destructive' : ''}
+              >
+                <SelectValue placeholder="Select role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="rep">Rep</SelectItem>
+                <SelectItem value="manager">Manager</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.role && (
+              <p className="text-sm text-destructive mt-1">{errors.role}</p>
+            )}
+            <p className="text-sm text-muted-foreground mt-1">
+              Rep: Edit own records. Manager: Edit all records. Admin: Full system access.
+            </p>
+          </>
+        )}
+      </div>
+
+      {/* Administrator toggle (computed from role) */}
+      <div>
+        <Label htmlFor="administrator">Administrator Access</Label>
+        {mode === 'view' ? (
+          <p className="text-sm text-foreground mt-1">
+            {record.administrator || record.role === 'admin' ? 'Yes' : 'No'}
+          </p>
+        ) : (
+          <div className="mt-2">
+            <div className="flex items-center gap-3 p-3 border border-border rounded-md bg-muted/20">
+              <Switch
+                id="administrator"
+                checked={formData.role === 'admin'}
+                onCheckedChange={(checked) => handleChange('role', checked ? 'admin' : 'rep')}
+                disabled={isLoading || isSelfEdit}
+              />
+              <div className="flex-1">
+                <p className="text-sm font-medium">
+                  {formData.role === 'admin' ? 'Enabled' : 'Disabled'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Administrator access is automatically granted to users with Admin role
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Disabled status */}
+      <div>
+        <Label htmlFor="disabled">Account Status</Label>
+        {mode === 'view' ? (
+          <div className="mt-2">
+            {record.disabled ? (
+              <Badge variant="outline" className="border-warning text-warning">
+                Disabled
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="border-success text-success">
+                Active
+              </Badge>
+            )}
+          </div>
+        ) : (
+          <div className="mt-2">
+            <div className="flex items-center gap-3 p-3 border border-border rounded-md bg-muted/20">
+              <Switch
+                id="disabled"
+                checked={formData.disabled}
+                onCheckedChange={(checked) => handleChange('disabled', checked)}
+                disabled={isLoading || isSelfEdit}
+              />
+              <div className="flex-1">
+                <p className="text-sm font-medium">
+                  {formData.disabled ? 'Account Disabled' : 'Account Active'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Disabled accounts cannot log in or access the system
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Warning for disabled accounts */}
+      {mode === 'edit' && formData.disabled && !isSelfEdit && (
+        <div className="p-3 border border-warning bg-warning/10 rounded-md">
+          <p className="text-sm text-warning-foreground">
+            <strong>Warning:</strong> Disabling this account will prevent the user from logging in.
+          </p>
+        </div>
+      )}
+
+      {/* Action buttons (edit mode only) */}
+      {mode === 'edit' && !isSelfEdit && (
+        <div className="flex gap-3 pt-4 border-t border-border">
+          <Button onClick={handleSave} disabled={isLoading} className="flex-1">
+            {isLoading ? 'Saving...' : 'Save Changes'}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleCancel}
+            disabled={isLoading}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
