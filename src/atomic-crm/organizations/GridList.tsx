@@ -37,7 +37,7 @@ const LoadedGridList = () => {
   );
 };
 
-export const ImageList = () => {
+export const GridList = () => {
   const { isPending } = useListContext();
   return isPending ? <LoadingGridList /> : <LoadedGridList />;
 };
