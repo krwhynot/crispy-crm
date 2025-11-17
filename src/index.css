@@ -235,13 +235,6 @@
 }
 
 @theme inline {
-  /* Compact Dashboard Spacing */
-  --spacing-dashboard-header: 32px;
-  --spacing-dashboard-widget-header: 28px;
-  --spacing-dashboard-widget-padding: 12px;
-  --spacing-dashboard-gap: 16px;
-  --spacing-dashboard-row-height: 36px;
-
   /* Desktop Data Density - NEW */
   --row-height-compact: 32px;      /* Desktop row height */
   --row-height-comfortable: 40px;  /* Current default */
@@ -250,19 +243,11 @@
   --action-button-size: 28px;      /* Inline action buttons */
   --context-menu-width: 200px;     /* Right-click menus */
 
-  /* Compact Dashboard Spacing */
-  --spacing-dashboard-header: 32px;
-  --spacing-dashboard-widget-header: 28px;
-  --spacing-dashboard-widget-padding: 12px;
-  --spacing-dashboard-gap: 16px;
-  --spacing-dashboard-row-height: 36px;
-
   /* Semantic Spacing Utilities (Tailwind-accessible) */
   --spacing-widget: var(--spacing-widget-padding);      /* 12px - card/widget padding */
   --spacing-section: var(--spacing-section);            /* 24px - vertical spacing between sections */
   --spacing-content: var(--spacing-content);            /* 12px - spacing within content */
   --spacing-compact: var(--spacing-compact);            /* 8px - tight spacing */
-  --spacing-dashboard-gap: var(--spacing-dashboard-gap); /* 16px - dashboard grid gaps */
 
   /* Responsive Edge Padding (Tailwind-accessible) */
   --spacing-edge-mobile: var(--spacing-edge-mobile);    /* 16px */
