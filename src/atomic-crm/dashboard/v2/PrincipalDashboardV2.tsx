@@ -152,7 +152,7 @@ export function PrincipalDashboardV2() {
         <DashboardHeader />
 
         {/* Main Content Area */}
-        <div className="flex-1 relative px-[var(--spacing-edge-desktop)] py-6">
+        <div className="flex-1 relative px-6 py-6">
           {/* Grid layout with dynamic sidebar collapse */}
           <div
             className="grid h-full"

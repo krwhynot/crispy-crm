@@ -52,9 +52,9 @@ export const ProductListFilter = () => {
   ];
 
   return (
-    <div className="w-52 min-w-52 flex flex-col gap-8">
+    <div className="flex flex-col gap-4">
       <FilterLiveForm>
-        <SearchInput source="q" />
+        <SearchInput source="q" placeholder="Search products..." />
       </FilterLiveForm>
 
       <FilterCategory icon={<Tag className="h-4 w-4" />} label="Product Status">
