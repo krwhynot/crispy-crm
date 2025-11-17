@@ -9,6 +9,14 @@ function Badge({
   className,
   variant,
   asChild = false,
+  // Filter out React Admin-specific props that shouldn't be passed to DOM elements
+  label,
+  sortable,
+  sortBy,
+  textAlign,
+  rowClassName,
+  resource,
+  record,
   ...props
 }: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : "span";
