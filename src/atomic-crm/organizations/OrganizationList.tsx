@@ -59,20 +59,6 @@ export const OrganizationList = () => {
             render={(record: any) => record.nb_opportunities || 0}
             textAlign="center"
           />
-
-          <FunctionField
-            label="Branches"
-            render={(record: any) => {
-              const branchCount = record.child_branch_count || 0;
-              if (branchCount === 0) return '-';
-              return (
-                <Badge variant="secondary" className="text-xs px-2 py-1">
-                  {branchCount} {branchCount === 1 ? 'branch' : 'branches'}
-                </Badge>
-              );
-            }}
-            textAlign="center"
-          />
         </PremiumDatagrid>
       </StandardListLayout>
 
