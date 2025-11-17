@@ -111,7 +111,7 @@ const OpportunityShowContent = () => {
 
               <div className="flex gap-8 mb-4">
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Expected closing date
                   </span>
                   <div className="flex items-center gap-2">
@@ -144,7 +144,7 @@ const OpportunityShowContent = () => {
                 </div>
 
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Stage
                   </span>
                   <span className="text-sm">
@@ -153,7 +153,7 @@ const OpportunityShowContent = () => {
                 </div>
 
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Priority
                   </span>
                   <Badge
@@ -181,7 +181,7 @@ const OpportunityShowContent = () => {
                 <div className="flex gap-8 mb-4">
                   {record.opportunity_owner_id && (
                     <div className="flex flex-col min-w-[150px]">
-                      <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
                         Opportunity Owner
                       </span>
                       <div className="flex items-center gap-2">
@@ -203,7 +203,7 @@ const OpportunityShowContent = () => {
 
                   {record.account_manager_id && (
                     <div className="flex flex-col min-w-[150px]">
-                      <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
                         Account Manager
                       </span>
                       <ReferenceField source="account_manager_id" reference="sales" link={false} />
@@ -212,7 +212,7 @@ const OpportunityShowContent = () => {
 
                   {record.lead_source && (
                     <div className="flex flex-col min-w-[150px]">
-                      <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
                         Lead Source
                       </span>
                       <span className="text-sm">
@@ -228,7 +228,7 @@ const OpportunityShowContent = () => {
               {!!record.contact_ids?.length && (
                 <div className="mb-4">
                   <div className="flex flex-col">
-                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase mb-2">
+                    <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2">
                       Contacts
                     </span>
                     <ReferenceArrayField source="contact_ids" reference="contacts_summary">
@@ -241,7 +241,7 @@ const OpportunityShowContent = () => {
               {/* Created Date and Creator */}
               <div className="flex gap-8 mb-4">
                 <div className="flex flex-col min-w-[150px]">
-                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Created
                   </span>
                   <span className="text-sm">
@@ -249,14 +249,14 @@ const OpportunityShowContent = () => {
                       ? format(new Date(record.created_at), "PPp")
                       : "Unknown"}
                   </span>
-                  <span className="text-xs text-[color:var(--text-subtle)]">
+                  <span className="text-xs text-muted-foreground">
                     {formatDistanceToNow(new Date(record.created_at), { addSuffix: true })}
                   </span>
                 </div>
 
                 {record.created_by && (
                   <div className="flex flex-col min-w-[150px]">
-                    <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase">
+                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
                       Created By
                     </span>
                     <div className="flex items-center gap-2">
@@ -271,7 +271,7 @@ const OpportunityShowContent = () => {
 
               {record.description && (
                 <div className="mb-4 whitespace-pre-line">
-                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase mb-2 block">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2 block">
                     Description
                   </span>
                   <p className="text-sm leading-6">{record.description}</p>
@@ -280,7 +280,7 @@ const OpportunityShowContent = () => {
 
               <div className="mb-4">
                 <div className="flex flex-col">
-                  <span className="text-xs text-[color:var(--text-subtle)] tracking-wide uppercase mb-2">
+                  <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2">
                     Products
                   </span>
                   <ProductsTable products={record.products || []} />
@@ -296,7 +296,7 @@ const OpportunityShowContent = () => {
                   <h3 className="text-lg font-semibold mb-4">Activities</h3>
 
                   {/* Activity Quick Add Form */}
-                  <div className="mb-6 p-4 border border-[color:var(--border)] rounded-lg bg-[color:var(--muted)]/50">
+                  <div className="mb-6 p-4 border border-border rounded-lg bg-muted/50">
                     <h4 className="text-sm font-medium mb-3">Quick Add Activity</h4>
                     <ActivityNoteForm opportunity={record} />
                   </div>

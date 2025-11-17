@@ -194,7 +194,7 @@ export const ChangeLogTab = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-[color:var(--text-subtle)]">Loading change history...</div>
+        <div className="text-muted-foreground">Loading change history...</div>
       </div>
     );
   }
@@ -202,9 +202,9 @@ export const ChangeLogTab = () => {
   if (auditEntries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <History className="w-12 h-12 text-[color:var(--text-subtle)] mb-4" />
+        <History className="w-12 h-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold mb-2">No Changes Yet</h3>
-        <p className="text-sm text-[color:var(--text-subtle)] max-w-md">
+        <p className="text-sm text-muted-foreground max-w-md">
           When you make changes to this opportunity, they'll appear here with full history tracking
           who changed what and when.
         </p>
@@ -228,7 +228,7 @@ export const ChangeLogTab = () => {
       {/* Header with Filter Toggle and Export */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <History className="w-5 h-5 text-[color:var(--text-subtle)]" />
+          <History className="w-5 h-5 text-muted-foreground" />
           <h3 className="text-lg font-semibold">Change History</h3>
           <Badge variant="secondary" className="ml-2">
             {filteredEntries.length} of {auditEntries.length}
@@ -264,7 +264,7 @@ export const ChangeLogTab = () => {
 
       {/* Filter Panel */}
       {showFilters && (
-        <Card className="border-[var(--primary)] bg-[color:var(--muted)]/50">
+        <Card className="border-primary bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-sm font-semibold">Filter Change Log</h4>
@@ -353,9 +353,9 @@ export const ChangeLogTab = () => {
 
       {Object.entries(groupedByDate).map(([date, entries]) => (
         <div key={date} className="space-y-3">
-          <div className="flex items-center gap-2 sticky top-0 bg-[color:var(--background)] py-2 z-10">
-            <Calendar className="w-4 h-4 text-[color:var(--text-subtle)]" />
-            <span className="text-sm font-medium text-[color:var(--text-subtle)]">
+          <div className="flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
+            <Calendar className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">
               {format(new Date(date), "MMMM d, yyyy")}
             </span>
           </div>
@@ -418,24 +418,24 @@ const ChangeLogEntry = ({
             <div className="text-sm space-y-1">
               {!isCreation && (
                 <div className="flex items-start gap-2">
-                  <span className="text-[color:var(--text-subtle)] min-w-[60px]">From:</span>
-                  <span className="text-[color:var(--destructive)] line-through">
+                  <span className="text-muted-foreground min-w-[60px]">From:</span>
+                  <span className="text-destructive line-through">
                     {formatValue(entry.old_value)}
                   </span>
                 </div>
               )}
               <div className="flex items-start gap-2">
-                <span className="text-[color:var(--text-subtle)] min-w-[60px]">
+                <span className="text-muted-foreground min-w-[60px]">
                   {isCreation ? "Value:" : "To:"}
                 </span>
-                <span className="text-[color:var(--success)] font-medium">
+                <span className="text-success font-medium">
                   {formatValue(entry.new_value)}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col items-end text-xs text-[color:var(--text-subtle)] shrink-0">
+          <div className="flex flex-col items-end text-xs text-muted-foreground shrink-0">
             <div className="flex items-center gap-1 mb-1">
               <User className="w-3 h-3" />
               <span>{entry.sales_name || `User #${entry.changed_by}` || "System"}</span>
