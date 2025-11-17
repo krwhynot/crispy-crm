@@ -8,7 +8,7 @@
 -- PART 1: Add Missing Foreign Key Constraints
 -- =====================================================
 
--- Add FK constraints for opportunities ’ organizations
+-- Add FK constraints for opportunities to organizations
 -- These were missing and allowed orphaned opportunity records
 
 -- Customer organization (required field, prevent deletion if opportunities exist)
@@ -205,17 +205,17 @@ COMMENT ON INDEX idx_contacts_organization_id
 -- =====================================================
 
 -- Summary of Changes:
---  Added 3 missing FK constraints (opportunities ’ organizations)
+--  Added 3 missing FK constraints (opportunities to organizations)
 --  Fixed 3 activities FK cascade behaviors (contacts/opportunities/organizations)
---  Removed 48 duplicate RLS policies (12 tables × 4 operations)
+--  Removed 48 duplicate RLS policies (12 tables to 4 operations)
 --  Fixed contacts.organization_id from SET NULL to RESTRICT
 --  Optimized contacts organization index
 
 -- Breaking Changes:
---   Organizations with contacts can no longer be deleted (must reassign first)
---   Organizations with opportunities can no longer be deleted (customer_organization_id)
---   Deleting contacts will cascade delete their activities
---   Deleting opportunities will SET NULL on related activities (preserves history)
+-- to Organizations with contacts can no longer be deleted (must reassign first)
+-- to Organizations with opportunities can no longer be deleted (customer_organization_id)
+-- to Deleting contacts will cascade delete their activities
+-- to Deleting opportunities will SET NULL on related activities (preserves history)
 
 -- Migration Testing:
 -- 1. Verify FK constraints prevent invalid inserts
