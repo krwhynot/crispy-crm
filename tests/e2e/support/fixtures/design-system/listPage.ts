@@ -28,9 +28,10 @@ export class ListPageFixture {
 
   /**
    * Get filter sidebar element
+   * Per plan line 1490: Use data-testid="filter-sidebar" for determinism
    */
   getFilterSidebar(): Locator {
-    return this.page.locator('[aria-label*="Filter"]').first();
+    return this.page.locator('[data-testid="filter-sidebar"]').first();
   }
 
   /**
@@ -41,10 +42,14 @@ export class ListPageFixture {
   }
 
   /**
-   * Get all table rows
+   * Get all table rows (excluding header row)
+   *
+   * CRITICAL: <tr> elements never contain <thead>, so hasNot: thead doesn't work.
+   * Instead, we filter out rows that are descendants of <thead>.
    */
   getTableRows(): Locator {
-    return this.page.locator('[role="row"]').filter({ hasNot: this.page.locator('thead') });
+    // Get all rows, then filter out header rows using getByRole with tbody context
+    return this.page.locator('tbody [role="row"]');
   }
 
   /**
