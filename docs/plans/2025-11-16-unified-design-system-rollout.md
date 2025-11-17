@@ -68,13 +68,13 @@ Every list page follows this standardized pattern:
 **1. Standardized List Shell** (`StandardListLayout.tsx`)
 ```tsx
 <div className="flex flex-row gap-6">
-  <aside aria-label="Filter {resource}" className="w-64 shrink-0">
+  <aside aria-label="Filter {resource}" className="filter-sidebar sticky top-4">
     {filterComponent}
   </aside>
   <main role="main" aria-label="{Resource} list" className="flex-1 min-w-0">
-    <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
+    <div className="card-container">
       {children} {/* Table content */}
-    </Card>
+    </div>
   </main>
 </div>
 ```
@@ -242,8 +242,8 @@ Create operations use full-page forms (not slide-overs) to provide ample space f
 
 **Form Card**
 - Centered: `max-w-4xl mx-auto`
-- Card styling: `bg-card border border-border shadow-lg rounded-xl`
-- Interior padding: `p-6`
+- Card styling: `.create-form-card` utility (includes `shadow-lg` elevation)
+- Interior padding: included in utility class
 
 **Footer Actions**
 - Sticky footer: `sticky bottom-0 bg-card border-t border-border p-4`
@@ -313,6 +313,36 @@ Some resources offer quick-add modals from list views:
 - Comfortable: `p-4` `gap-4` (16px) - form fields
 - Spacious: `p-6` `gap-6` (24px) - cards, sections
 
+**Semantic Spacing Variables** (defined in `src/index.css`):
+
+```css
+/* Grid & Layout */
+--spacing-grid-columns-desktop: 12;
+--spacing-grid-columns-ipad: 8;
+--spacing-gutter-desktop: 24px;
+--spacing-gutter-ipad: 16px;
+
+/* Edge Padding (screen borders) */
+--spacing-edge-desktop: 24px;
+--spacing-edge-ipad: 20px;
+--spacing-edge-mobile: 16px;
+
+/* Vertical Rhythm */
+--spacing-section: 32px;      /* Between major sections */
+--spacing-widget: 24px;        /* Within widgets */
+--spacing-content: 16px;       /* Content gaps */
+--spacing-compact: 12px;       /* Tight spacing */
+
+/* Widget Internals */
+--spacing-widget-padding: 20px;
+--spacing-widget-min-height: 280px;
+```
+
+Use these variables for consistent spacing:
+- Edge padding: `px-[var(--spacing-edge-desktop)]`
+- Content gaps: `gap-[var(--spacing-content)]`
+- Section spacing: `mb-[var(--spacing-section)]`
+
 ### Tokenized Utility Classes
 
 Location: `src/index.css` in `@layer components`
@@ -342,6 +372,11 @@ Location: `src/index.css` in `@layer components`
   /* Standard card container */
   .card-container {
     @apply bg-card border border-border shadow-sm rounded-xl p-6;
+  }
+
+  /* Create form card - higher elevation */
+  .create-form-card {
+    @apply bg-card border border-border shadow-lg rounded-xl p-6;
   }
 
   /* Sidebar filter panel */
@@ -433,12 +468,13 @@ Location: `src/index.css` in `@layer components`
 
 ### Implementation Guidelines
 
-**Boy Scout Rule**
+**Boy Scout Rule & Direct Migration**
 - Fix inconsistencies when touching files
 - Convert `type` to `interface` per ESLint rule (22 files pending)
 - Update old color usages to semantic tokens
 - Replace hardcoded spacing with semantic variables
-- Clean up deprecated patterns while implementing new ones
+- Delete old patterns immediately - no gradual migration
+- Breaking changes are expected and encouraged
 
 **Testing Strategy**
 - **Unit Tests**: 70% coverage minimum for new components
@@ -493,18 +529,20 @@ Per Engineering Constitution: `no-backward-compatibility: Breaking changes allow
 - [ ] Slide-over component created
 - [ ] View mode implemented
 - [ ] Edit mode implemented
-- [ ] URL routing updated
+- [ ] URL routing updated (breaking changes OK)
 - [ ] Create form styling updated
+- [ ] Old components deleted (no legacy code)
 - [ ] E2E tests passing
 - [ ] Accessibility audit passed
 - [ ] Documentation updated
 
 ### Risk Mitigation
 
-- **Slide-over breaking workflows**: Keep URL routes functional, test all navigation paths
+- **Slide-over breaking workflows**: Test all navigation paths thoroughly before migration
 - **Performance degradation**: Use `motion-safe:` prefix, monitor Core Web Vitals
 - **Accessibility regressions**: Automated testing, manual keyboard nav checks
 - **Scope creep**: Strict phase boundaries, no feature additions
+- **Breaking changes**: Clear communication in PRs, team coordination for immediate adoption
 
 ## Success Metrics
 
@@ -526,5 +564,5 @@ Per Engineering Constitution: `no-backward-compatibility: Breaking changes allow
 - Dashboard V2 implementation: `src/atomic-crm/dashboard/v2/`
 - Contact list patterns: `src/atomic-crm/contacts/`
 - Existing tabbed forms: `src/components/admin/tabbed-form/`
-- Engineering Constitution: `docs/claude/engineering-constitution.md`
+- Engineering Constitution: `.claude/engineering-constitution.md`
 - Design System: `docs/architecture/design-system.md`
