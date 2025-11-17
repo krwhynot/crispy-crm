@@ -24,23 +24,23 @@ export const FilterCategory = ({
     <div className="flex flex-col">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex flex-row items-center justify-between w-full text-left py-2 hover:bg-[color:var(--background-subtle)] rounded-md transition-colors group"
+        className="flex flex-row items-center justify-between w-full text-left py-2 hover:bg-muted rounded-md transition-colors group"
         aria-expanded={isExpanded}
       >
         <div className="flex flex-row items-center gap-2">
-          <div className="text-[color:var(--text-subtle)] group-hover:text-[color:var(--text-body)] transition-colors">
+          <div className="text-muted-foreground group-hover:text-foreground transition-colors">
             {icon}
           </div>
-          <h3 className="font-semibold text-sm text-[color:var(--text-body)]">
+          <h3 className="font-semibold text-sm text-foreground">
             <Translate i18nKey={label} />
           </h3>
           {hasActiveFilters && (
-            <div className="h-2 w-2 rounded-full bg-[color:var(--accent-clay-600)]" />
+            <div className="h-2 w-2 rounded-full bg-accent" />
           )}
         </div>
         <ChevronDown
           className={cn(
-            "h-4 w-4 text-[color:var(--text-subtle)] transition-transform duration-200",
+            "h-4 w-4 text-muted-foreground transition-transform duration-200",
             !isExpanded && "-rotate-90"
           )}
         />
