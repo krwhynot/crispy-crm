@@ -50,10 +50,10 @@ export const TasksListFilter = ({
   return (
     <Collapsible defaultOpen={defaultOpen} className="flex flex-col gap-compact">
       <CollapsibleTrigger className="flex items-center justify-between group hover:opacity-80 transition-opacity">
-        <p className="text-xs uppercase tracking-wider text-[color:var(--text-subtle)] font-medium">
+        <p className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
           {title} ({total})
         </p>
-        <ChevronDown className="h-4 w-4 text-[color:var(--text-subtle)] transition-transform duration-200 group-data-[state=open]:rotate-180" />
+        <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
       </CollapsibleTrigger>
       <CollapsibleContent className="flex flex-col gap-compact">
         <ResourceContextProvider value="tasks">

@@ -1,7 +1,6 @@
 import { Truck, Users, Tag, Star } from "lucide-react";
 import type { VariantProps } from "class-variance-authority";
 
-import { Card } from "@/components/ui/card";
 import type { badgeVariants } from "@/components/ui/badge.constants";
 import { Badge } from "@/components/ui/badge";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
@@ -52,83 +51,79 @@ export const OrganizationListFilter = () => {
   };
 
   return (
-    <div className="w-52 min-w-52 order-first">
-      <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
-        <div className="flex flex-col gap-4">
-          {/* Search - Always visible */}
-          <FilterLiveForm>
-            <SearchInput source="q" placeholder="Search organizations..." />
-          </FilterLiveForm>
+    <div className="flex flex-col gap-4">
+      {/* Search - Always visible */}
+      <FilterLiveForm>
+        <SearchInput source="q" placeholder="Search organizations..." />
+      </FilterLiveForm>
 
-          {/* Active Filters - Conditional */}
-          <SidebarActiveFilters />
+      {/* Active Filters - Conditional */}
+      <SidebarActiveFilters />
 
-          {/* Divider */}
-          <div className="border-b border-border" />
+      {/* Divider */}
+      <div className="border-b border-border" />
 
-          {/* Collapsible Filter Sections */}
-          <div className="flex flex-col gap-2">
-            <FilterCategory icon={<Tag className="h-4 w-4" />} label="Organization Type">
-              {organizationTypes.map((type) => {
-                const colorClass =
-                  {
-                    customer: "tag-warm",
-                    prospect: "tag-sage",
-                    principal: "tag-purple",
-                    distributor: "tag-teal",
-                    unknown: "tag-gray",
-                  }[type.id] || "tag-gray";
+      {/* Collapsible Filter Sections */}
+      <div className="flex flex-col gap-2">
+        <FilterCategory icon={<Tag className="h-4 w-4" />} label="Organization Type">
+          {organizationTypes.map((type) => {
+            const colorClass =
+              {
+                customer: "tag-warm",
+                prospect: "tag-sage",
+                principal: "tag-purple",
+                distributor: "tag-teal",
+                unknown: "tag-gray",
+              }[type.id] || "tag-gray";
 
-                return (
-                  <ToggleFilterButton
-                    multiselect
-                    key={type.id}
-                    className="w-full justify-between"
-                    label={<Badge className={`text-xs px-1 py-0 ${colorClass}`}>{type.name}</Badge>}
-                    value={{ organization_type: type.id }}
-                  />
-                );
-              })}
-            </FilterCategory>
-
-            <FilterCategory icon={<Star className="h-4 w-4" />} label="Priority">
-              {priorities.map((priority) => (
-                <ToggleFilterButton
-                  multiselect
-                  key={priority.id}
-                  className="w-full justify-between"
-                  label={
-                    <Badge variant={priorityColors[priority.id]} className="text-xs px-1 py-0">
-                      {priority.name}
-                    </Badge>
-                  }
-                  value={{ priority: priority.id }}
-                />
-              ))}
-            </FilterCategory>
-
-            <FilterCategory icon={<Truck className="h-4 w-4" />} label="Segment">
-              {segments?.map((segment) => (
-                <ToggleFilterButton
-                  multiselect
-                  key={segment.id}
-                  className="w-full justify-between"
-                  label={segment.name}
-                  value={{ segment_id: segment.id }}
-                />
-              ))}
-            </FilterCategory>
-
-            <FilterCategory icon={<Users className="h-4 w-4" />} label="Account Manager">
+            return (
               <ToggleFilterButton
+                multiselect
+                key={type.id}
                 className="w-full justify-between"
-                label={"Me"}
-                value={{ sales_id: identity?.id }}
+                label={<Badge className={`text-xs px-1 py-0 ${colorClass}`}>{type.name}</Badge>}
+                value={{ organization_type: type.id }}
               />
-            </FilterCategory>
-          </div>
-        </div>
-      </Card>
+            );
+          })}
+        </FilterCategory>
+
+        <FilterCategory icon={<Star className="h-4 w-4" />} label="Priority">
+          {priorities.map((priority) => (
+            <ToggleFilterButton
+              multiselect
+              key={priority.id}
+              className="w-full justify-between"
+              label={
+                <Badge variant={priorityColors[priority.id]} className="text-xs px-1 py-0">
+                  {priority.name}
+                </Badge>
+              }
+              value={{ priority: priority.id }}
+            />
+          ))}
+        </FilterCategory>
+
+        <FilterCategory icon={<Truck className="h-4 w-4" />} label="Segment">
+          {segments?.map((segment) => (
+            <ToggleFilterButton
+              multiselect
+              key={segment.id}
+              className="w-full justify-between"
+              label={segment.name}
+              value={{ segment_id: segment.id }}
+            />
+          ))}
+        </FilterCategory>
+
+        <FilterCategory icon={<Users className="h-4 w-4" />} label="Account Manager">
+          <ToggleFilterButton
+            className="w-full justify-between"
+            label={"Me"}
+            value={{ sales_id: identity?.id }}
+          />
+        </FilterCategory>
+      </div>
     </div>
   );
 };
