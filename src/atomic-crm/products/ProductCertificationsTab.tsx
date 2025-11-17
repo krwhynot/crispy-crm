@@ -137,7 +137,7 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
           <AsideSection title="Certifications">
             <div className="flex flex-wrap gap-2">
               {record.certifications.map((cert, index) => (
-                <Badge key={index} variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                <Badge key={index} variant="secondary">
                   {cert}
                 </Badge>
               ))}
@@ -156,7 +156,7 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
           <AsideSection title="Allergens">
             <div className="flex flex-wrap gap-2">
               {record.allergens.map((allergen, index) => (
-                <Badge key={index} variant="outline" className="bg-red-50 text-red-700 border-red-200">
+                <Badge key={index} variant="destructive">
                   {allergen}
                 </Badge>
               ))}
