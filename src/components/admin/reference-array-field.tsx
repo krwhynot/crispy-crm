@@ -79,6 +79,12 @@ export const ReferenceArrayField = <
     source,
     queryOptions,
     render,
+    // Filter out React Admin-specific props that shouldn't be passed to child components
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    rowClassName,
     ...rest
   } = props;
   return (

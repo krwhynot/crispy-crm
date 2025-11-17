@@ -17,7 +17,19 @@ export const ReferenceField = <
 >(
   props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
-  const { loading, error, empty, render, ...rest } = props;
+  const {
+    loading,
+    error,
+    empty,
+    render,
+    // Filter out React Admin-specific props that shouldn't be passed to child components
+    label,
+    sortable,
+    sortBy,
+    textAlign,
+    rowClassName,
+    ...rest
+  } = props;
   const id = useFieldValue<RecordType>(props);
   const translate = useTranslate();
 
