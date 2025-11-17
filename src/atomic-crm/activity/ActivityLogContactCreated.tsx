@@ -19,7 +19,7 @@ export function ActivityLogContactCreated({ activity }: ActivityLogContactCreate
     <div className="p-0">
       <div className="flex flex-row gap-2 items-center w-full">
         <Avatar width={20} height={20} record={contact} />
-        <span className="text-[color:var(--text-subtle)] text-sm flex-grow">
+        <span className="text-muted-foreground text-sm flex-grow">
           <ReferenceField source="sales_id" reference="sales" record={activity}>
             <SaleName />
           </ReferenceField>{" "}
@@ -30,7 +30,7 @@ export function ActivityLogContactCreated({ activity }: ActivityLogContactCreate
           {context !== "company" && <>to organization {activity.customer_organization_id}</>}
         </span>
         {context === "company" && (
-          <span className="text-[color:var(--text-subtle)] text-sm">
+          <span className="text-muted-foreground text-sm">
             <RelativeDate date={activity.date} />
           </span>
         )}

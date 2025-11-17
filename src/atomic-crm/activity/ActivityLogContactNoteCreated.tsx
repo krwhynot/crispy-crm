@@ -29,7 +29,7 @@ export function ActivityLogContactNoteCreated({ activity }: ActivityLogContactNo
           </ReferenceField>
 
           <div className="flex flex-row flex-grow">
-            <div className="text-sm text-[color:var(--text-subtle)] flex-grow">
+            <div className="text-sm text-muted-foreground flex-grow">
               <ReferenceField source="sales_id" reference="sales" record={activity}>
                 <SaleName />
               </ReferenceField>{" "}
@@ -44,7 +44,7 @@ export function ActivityLogContactNoteCreated({ activity }: ActivityLogContactNo
             </div>
 
             {context === "company" && (
-              <span className="text-[color:var(--text-subtle)] text-sm">
+              <span className="text-muted-foreground text-sm">
                 <RelativeDate date={activity.date} />
               </span>
             )}
