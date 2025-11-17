@@ -663,15 +663,19 @@ export const unifiedDataProvider: DataProvider = {
 
       // Constitution: soft-deletes rule - check if resource supports soft delete
       if (supportsSoftDelete(dbResource)) {
-        // Soft delete many: set deleted_at timestamp for each
-        return Promise.all(
-          params.ids.map((id) =>
-            baseDataProvider.update(dbResource, {
-              id,
-              data: { deleted_at: new Date().toISOString() },
-            })
-          )
-        ).then(() => ({ data: params.ids }));
+        // Soft delete many: set deleted_at timestamp with direct Supabase query
+        // Note: DeleteManyParams doesn't include previousData, so we bypass
+        // the provider layer to avoid ra-supabase-core's getChanges() needing it
+        const { error } = await supabase
+          .from(dbResource)
+          .update({ deleted_at: new Date().toISOString() })
+          .in("id", params.ids);
+
+        if (error) {
+          throw error;
+        }
+
+        return { data: params.ids };
       }
 
       // Hard delete (only for resources without soft-delete support)
