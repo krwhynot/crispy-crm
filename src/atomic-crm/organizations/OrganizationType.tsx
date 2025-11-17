@@ -26,7 +26,7 @@ const priorityColors = {
   A: "bg-destructive text-white hover:bg-destructive/90", // High priority: Red
   B: "border-transparent bg-[var(--warning-default)] text-white hover:bg-[var(--warning-hover)]", // Medium-High: Amber
   C: "bg-secondary text-secondary-foreground hover:bg-secondary/90", // Medium: Neutral gray
-  D: "bg-muted text-[color:var(--text-subtle)] hover:bg-muted/90", // Low: Light gray
+  D: "bg-muted text-muted-foreground hover:bg-muted/90", // Low: Light gray
 };
 
 export const OrganizationType = () => {
@@ -47,7 +47,7 @@ export const OrganizationType = () => {
       {/* Priority Badge */}
       {record.priority && (
         <Badge
-          className={priorityColors[record.priority] || "bg-muted text-[color:var(--text-subtle)]"}
+          className={priorityColors[record.priority] || "bg-muted text-muted-foreground"}
           variant="default"
         >
           Priority {record.priority}
@@ -78,7 +78,7 @@ export const OrganizationPriorityChip = () => {
 
   return (
     <Badge
-      className={`${priorityColors[record.priority] || "bg-muted text-[color:var(--text-subtle)]"} text-xs`}
+      className={`${priorityColors[record.priority] || "bg-muted text-muted-foreground"} text-xs`}
       variant="default"
     >
       {record.priority}
