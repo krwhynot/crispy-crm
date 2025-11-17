@@ -31,13 +31,13 @@ export const OrganizationCard = (props: { record?: Company }) => {
     unknown: "Unknown",
   };
 
-  // Organization type colors using MFB Garden to Table theme
-  const organizationTypeColorClasses: Record<string, string> = {
-    customer: "bg-[var(--tag-warm-bg)] text-[var(--tag-warm-fg)]",
-    prospect: "bg-[var(--tag-sage-bg)] text-[var(--tag-sage-fg)]",
-    principal: "bg-[var(--tag-purple-bg)] text-[var(--tag-purple-fg)]",
-    distributor: "bg-[var(--tag-teal-bg)] text-[var(--tag-teal-fg)]",
-    unknown: "bg-[var(--tag-gray-bg)] text-[var(--tag-gray-fg)]",
+  // Organization type badge variants using semantic design system
+  const organizationTypeBadgeVariants: Record<string, BadgeVariant> = {
+    customer: "org-customer",
+    prospect: "org-prospect",
+    principal: "org-principal",
+    distributor: "org-distributor",
+    unknown: "org-unknown",
   };
 
   const priorityColors: Record<string, BadgeVariant> = {
@@ -102,7 +102,8 @@ export const OrganizationCard = (props: { record?: Company }) => {
               <div className="flex gap-1 mt-1 justify-center flex-wrap">
                 {record.organization_type && (
                   <Badge
-                    className={`text-xs px-1 py-0 ${organizationTypeColorClasses[record.organization_type] || organizationTypeColorClasses.unknown}`}
+                    variant={organizationTypeBadgeVariants[record.organization_type] || organizationTypeBadgeVariants.unknown}
+                    className="text-xs px-1 py-0"
                   >
                     <Building2 className="w-3 h-3 mr-0.5" />
                     {organizationTypeLabels[record.organization_type] || record.organization_type}

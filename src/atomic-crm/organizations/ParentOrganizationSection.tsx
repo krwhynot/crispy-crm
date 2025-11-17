@@ -98,7 +98,7 @@ export const ParentOrganizationSection = () => {
             e.preventDefault();
             navigate(`/organizations/${record.parent_organization_id}/show`);
           }}
-          className="text-[color:var(--primary)] hover:underline"
+          className="text-primary hover:underline"
         >
           {record.parent_organization_name || `Organization #${record.parent_organization_id}`}
         </a>
