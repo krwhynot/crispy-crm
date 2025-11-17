@@ -1,0 +1,610 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e28]:
+      - button "Sort by last seen descending" [ref=e29] [cursor=pointer]:
+        - img
+        - generic [ref=e30]: Sort by last seen descending
+        - img
+      - button "Export" [ref=e31] [cursor=pointer]:
+        - img
+        - text: Export
+      - link "Create" [ref=e32] [cursor=pointer]:
+        - /url: "#/contacts/create"
+        - img
+        - text: Create
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - complementary "Filter contacts" [ref=e35]:
+          - generic [ref=e37]:
+            - generic [ref=e39]:
+              - group [ref=e40]:
+                - textbox "Search contacts..." [ref=e41]
+              - img
+            - generic [ref=e43]:
+              - button "Last activity" [ref=e45] [cursor=pointer]:
+                - generic [ref=e46]:
+                  - img [ref=e48]
+                  - heading "Last activity" [level=3] [ref=e51]
+                - img [ref=e52]
+              - button "Tags" [ref=e55] [cursor=pointer]:
+                - generic [ref=e56]:
+                  - img [ref=e58]
+                  - heading "Tags" [level=3] [ref=e61]
+                - img [ref=e62]
+              - button "Account Manager" [ref=e65] [cursor=pointer]:
+                - generic [ref=e66]:
+                  - img [ref=e68]
+                  - heading "Account Manager" [level=3] [ref=e73]
+                - img [ref=e74]
+        - main "contacts list" [ref=e76]:
+          - generic [ref=e78]:
+            - generic:
+              - generic:
+                - generic [ref=e79]:
+                  - button "Unselect" [ref=e80] [cursor=pointer]:
+                    - img [ref=e81]
+                  - paragraph [ref=e83]: 0 items selected
+                - button "Delete" [ref=e85] [cursor=pointer]:
+                  - img [ref=e87]
+                  - text: Delete
+            - table [ref=e90]:
+              - rowgroup [ref=e91]:
+                - row "Select all Sort by name ascending Sort by title ascending Sort by department ascending Sort by organization ascending Tags Sort by last Activity ascending Status Actions" [ref=e92]:
+                  - columnheader "Select all" [ref=e93]:
+                    - generic [ref=e94] [cursor=pointer]:
+                      - checkbox "Select all" [ref=e95]
+                      - img [ref=e96]
+                  - columnheader [ref=e98]
+                  - columnheader "Sort by name ascending" [ref=e99]:
+                    - button "Sort by name ascending" [ref=e100] [cursor=pointer]:
+                      - generic [ref=e101]: Name
+                  - columnheader "Sort by title ascending" [ref=e102]:
+                    - button "Sort by title ascending" [ref=e103] [cursor=pointer]:
+                      - generic [ref=e104]: Title
+                  - columnheader "Sort by department ascending" [ref=e105]:
+                    - button "Sort by department ascending" [ref=e106] [cursor=pointer]:
+                      - generic [ref=e107]: Department
+                  - columnheader "Sort by organization ascending" [ref=e108]:
+                    - button "Sort by organization ascending" [ref=e109] [cursor=pointer]:
+                      - generic [ref=e110]: Organization
+                  - columnheader "Tags" [ref=e111]
+                  - columnheader "Sort by last Activity ascending" [ref=e112]:
+                    - button "Sort by last Activity ascending" [ref=e113] [cursor=pointer]:
+                      - generic [ref=e114]: Last Activity
+                      - img [ref=e115]
+                  - columnheader "Status" [ref=e117]
+                  - columnheader "Actions" [ref=e118]
+              - rowgroup [ref=e119]:
+                - row "Select this row -- ARTURO'S TACO'S 11/11/2025 Edit" [ref=e120] [cursor=pointer]:
+                  - cell "Select this row" [ref=e121]:
+                    - generic "Select this row" [ref=e122]:
+                      - checkbox [ref=e123]
+                      - img [ref=e124]
+                  - cell [ref=e126]
+                  - cell "--" [ref=e127]
+                  - cell [ref=e128]
+                  - cell [ref=e129]
+                  - cell "ARTURO'S TACO'S" [ref=e130]
+                  - cell [ref=e131]
+                  - cell "11/11/2025" [ref=e132]
+                  - cell [ref=e133]
+                  - cell "Edit" [ref=e134]:
+                    - link "Edit" [ref=e136]:
+                      - /url: "#/contacts/2044"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Autumn House Williamsburg 11/11/2025 Edit" [ref=e137] [cursor=pointer]:
+                  - cell "Select this row" [ref=e138]:
+                    - generic "Select this row" [ref=e139]:
+                      - checkbox [ref=e140]
+                      - img [ref=e141]
+                  - cell [ref=e143]
+                  - cell "--" [ref=e144]
+                  - cell [ref=e145]
+                  - cell [ref=e146]
+                  - cell "Autumn House Williamsburg" [ref=e147]
+                  - cell [ref=e148]
+                  - cell "11/11/2025" [ref=e149]
+                  - cell [ref=e150]
+                  - cell "Edit" [ref=e151]:
+                    - link "Edit" [ref=e153]:
+                      - /url: "#/contacts/2053"
+                      - img
+                      - text: Edit
+                - row "Select this row -- 7 MONKS TAPROOM - GRAND RAPIDS 11/11/2025 Edit" [ref=e154] [cursor=pointer]:
+                  - cell "Select this row" [ref=e155]:
+                    - generic "Select this row" [ref=e156]:
+                      - checkbox [ref=e157]
+                      - img [ref=e158]
+                  - cell [ref=e160]
+                  - cell "--" [ref=e161]
+                  - cell [ref=e162]
+                  - cell [ref=e163]
+                  - cell "7 MONKS TAPROOM - GRAND RAPIDS" [ref=e164]
+                  - cell [ref=e165]
+                  - cell "11/11/2025" [ref=e166]
+                  - cell [ref=e167]
+                  - cell "Edit" [ref=e168]:
+                    - link "Edit" [ref=e170]:
+                      - /url: "#/contacts/2036"
+                      - img
+                      - text: Edit
+                - row "Select this row -- AMWAY GRAND PLAZA HOTEL 11/11/2025 Edit" [ref=e171] [cursor=pointer]:
+                  - cell "Select this row" [ref=e172]:
+                    - generic "Select this row" [ref=e173]:
+                      - checkbox [ref=e174]
+                      - img [ref=e175]
+                  - cell [ref=e177]
+                  - cell "--" [ref=e178]
+                  - cell [ref=e179]
+                  - cell [ref=e180]
+                  - cell "AMWAY GRAND PLAZA HOTEL" [ref=e181]
+                  - cell [ref=e182]
+                  - cell "11/11/2025" [ref=e183]
+                  - cell [ref=e184]
+                  - cell "Edit" [ref=e185]:
+                    - link "Edit" [ref=e187]:
+                      - /url: "#/contacts/2043"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Applause Catering & Events 11/11/2025 Edit" [ref=e188] [cursor=pointer]:
+                  - cell "Select this row" [ref=e189]:
+                    - generic "Select this row" [ref=e190]:
+                      - checkbox [ref=e191]
+                      - img [ref=e192]
+                  - cell [ref=e194]
+                  - cell "--" [ref=e195]
+                  - cell [ref=e196]
+                  - cell [ref=e197]
+                  - cell "Applause Catering & Events" [ref=e198]
+                  - cell [ref=e199]
+                  - cell "11/11/2025" [ref=e200]
+                  - cell [ref=e201]
+                  - cell "Edit" [ref=e202]:
+                    - link "Edit" [ref=e204]:
+                      - /url: "#/contacts/2049"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Asher Creek Creamery and Deli 11/11/2025 Edit" [ref=e205] [cursor=pointer]:
+                  - cell "Select this row" [ref=e206]:
+                    - generic "Select this row" [ref=e207]:
+                      - checkbox [ref=e208]
+                      - img [ref=e209]
+                  - cell [ref=e211]
+                  - cell "--" [ref=e212]
+                  - cell [ref=e213]
+                  - cell [ref=e214]
+                  - cell "Asher Creek Creamery and Deli" [ref=e215]
+                  - cell [ref=e216]
+                  - cell "11/11/2025" [ref=e217]
+                  - cell [ref=e218]
+                  - cell "Edit" [ref=e219]:
+                    - link "Edit" [ref=e221]:
+                      - /url: "#/contacts/2052"
+                      - img
+                      - text: Edit
+                - row "Select this row -- 13TH STREET MARKET 11/11/2025 Edit" [ref=e222] [cursor=pointer]:
+                  - cell "Select this row" [ref=e223]:
+                    - generic "Select this row" [ref=e224]:
+                      - checkbox [ref=e225]
+                      - img [ref=e226]
+                  - cell [ref=e228]
+                  - cell "--" [ref=e229]
+                  - cell [ref=e230]
+                  - cell [ref=e231]
+                  - cell "13TH STREET MARKET" [ref=e232]
+                  - cell [ref=e233]
+                  - cell "11/11/2025" [ref=e234]
+                  - cell [ref=e235]
+                  - cell "Edit" [ref=e236]:
+                    - link "Edit" [ref=e238]:
+                      - /url: "#/contacts/2032"
+                      - img
+                      - text: Edit
+                - row "Select this row -- 5 Knives 11/11/2025 Edit" [ref=e239] [cursor=pointer]:
+                  - cell "Select this row" [ref=e240]:
+                    - generic "Select this row" [ref=e241]:
+                      - checkbox [ref=e242]
+                      - img [ref=e243]
+                  - cell [ref=e245]
+                  - cell "--" [ref=e246]
+                  - cell [ref=e247]
+                  - cell [ref=e248]
+                  - cell "5 Knives" [ref=e249]
+                  - cell [ref=e250]
+                  - cell "11/11/2025" [ref=e251]
+                  - cell [ref=e252]
+                  - cell "Edit" [ref=e253]:
+                    - link "Edit" [ref=e255]:
+                      - /url: "#/contacts/2035"
+                      - img
+                      - text: Edit
+                - row "Select this row -- ACCLAIMED CATERING 11/11/2025 Edit" [ref=e256] [cursor=pointer]:
+                  - cell "Select this row" [ref=e257]:
+                    - generic "Select this row" [ref=e258]:
+                      - checkbox [ref=e259]
+                      - img [ref=e260]
+                  - cell [ref=e262]
+                  - cell "--" [ref=e263]
+                  - cell [ref=e264]
+                  - cell [ref=e265]
+                  - cell "ACCLAIMED CATERING" [ref=e266]
+                  - cell [ref=e267]
+                  - cell "11/11/2025" [ref=e268]
+                  - cell [ref=e269]
+                  - cell "Edit" [ref=e270]:
+                    - link "Edit" [ref=e272]:
+                      - /url: "#/contacts/2039"
+                      - img
+                      - text: Edit
+                - row "Select this row -- AMWAY GRAND PLAZA HOTEL 11/11/2025 Edit" [ref=e273] [cursor=pointer]:
+                  - cell "Select this row" [ref=e274]:
+                    - generic "Select this row" [ref=e275]:
+                      - checkbox [ref=e276]
+                      - img [ref=e277]
+                  - cell [ref=e279]
+                  - cell "--" [ref=e280]
+                  - cell [ref=e281]
+                  - cell [ref=e282]
+                  - cell "AMWAY GRAND PLAZA HOTEL" [ref=e283]
+                  - cell [ref=e284]
+                  - cell "11/11/2025" [ref=e285]
+                  - cell [ref=e286]
+                  - cell "Edit" [ref=e287]:
+                    - link "Edit" [ref=e289]:
+                      - /url: "#/contacts/2042"
+                      - img
+                      - text: Edit
+                - row "Select this row -- American House Jenison-Cottonwood M 11/11/2025 Edit" [ref=e290] [cursor=pointer]:
+                  - cell "Select this row" [ref=e291]:
+                    - generic "Select this row" [ref=e292]:
+                      - checkbox [ref=e293]
+                      - img [ref=e294]
+                  - cell [ref=e296]
+                  - cell "--" [ref=e297]
+                  - cell [ref=e298]
+                  - cell [ref=e299]
+                  - cell "American House Jenison-Cottonwood M" [ref=e300]
+                  - cell [ref=e301]
+                  - cell "11/11/2025" [ref=e302]
+                  - cell [ref=e303]
+                  - cell "Edit" [ref=e304]:
+                    - link "Edit" [ref=e306]:
+                      - /url: "#/contacts/2047"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Applause Catering & Events 11/11/2025 Edit" [ref=e307] [cursor=pointer]:
+                  - cell "Select this row" [ref=e308]:
+                    - generic "Select this row" [ref=e309]:
+                      - checkbox [ref=e310]
+                      - img [ref=e311]
+                  - cell [ref=e313]
+                  - cell "--" [ref=e314]
+                  - cell [ref=e315]
+                  - cell [ref=e316]
+                  - cell "Applause Catering & Events" [ref=e317]
+                  - cell [ref=e318]
+                  - cell "11/11/2025" [ref=e319]
+                  - cell [ref=e320]
+                  - cell "Edit" [ref=e321]:
+                    - link "Edit" [ref=e323]:
+                      - /url: "#/contacts/2048"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Apple Mountain 11/11/2025 Edit" [ref=e324] [cursor=pointer]:
+                  - cell "Select this row" [ref=e325]:
+                    - generic "Select this row" [ref=e326]:
+                      - checkbox [ref=e327]
+                      - img [ref=e328]
+                  - cell [ref=e330]
+                  - cell "--" [ref=e331]
+                  - cell [ref=e332]
+                  - cell [ref=e333]
+                  - cell "Apple Mountain" [ref=e334]
+                  - cell [ref=e335]
+                  - cell "11/11/2025" [ref=e336]
+                  - cell [ref=e337]
+                  - cell "Edit" [ref=e338]:
+                    - link "Edit" [ref=e340]:
+                      - /url: "#/contacts/2050"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Apple Mountain 11/11/2025 Edit" [ref=e341] [cursor=pointer]:
+                  - cell "Select this row" [ref=e342]:
+                    - generic "Select this row" [ref=e343]:
+                      - checkbox [ref=e344]
+                      - img [ref=e345]
+                  - cell [ref=e347]
+                  - cell "--" [ref=e348]
+                  - cell [ref=e349]
+                  - cell [ref=e350]
+                  - cell "Apple Mountain" [ref=e351]
+                  - cell [ref=e352]
+                  - cell "11/11/2025" [ref=e353]
+                  - cell [ref=e354]
+                  - cell "Edit" [ref=e355]:
+                    - link "Edit" [ref=e357]:
+                      - /url: "#/contacts/2051"
+                      - img
+                      - text: Edit
+                - row "Select this row -- NMC - Hawk Owl Cafe 11/11/2025 Edit" [ref=e358] [cursor=pointer]:
+                  - cell "Select this row" [ref=e359]:
+                    - generic "Select this row" [ref=e360]:
+                      - checkbox [ref=e361]
+                      - img [ref=e362]
+                  - cell [ref=e364]
+                  - cell "--" [ref=e365]
+                  - cell [ref=e366]
+                  - cell [ref=e367]
+                  - cell "NMC - Hawk Owl Cafe" [ref=e368]
+                  - cell [ref=e369]
+                  - cell "11/11/2025" [ref=e370]
+                  - cell [ref=e371]
+                  - cell "Edit" [ref=e372]:
+                    - link "Edit" [ref=e374]:
+                      - /url: "#/contacts/2030"
+                      - img
+                      - text: Edit
+                - row "Select this row -- 10 PIN ICE CREAM 11/11/2025 Edit" [ref=e375] [cursor=pointer]:
+                  - cell "Select this row" [ref=e376]:
+                    - generic "Select this row" [ref=e377]:
+                      - checkbox [ref=e378]
+                      - img [ref=e379]
+                  - cell [ref=e381]
+                  - cell "--" [ref=e382]
+                  - cell [ref=e383]
+                  - cell [ref=e384]
+                  - cell "10 PIN ICE CREAM" [ref=e385]
+                  - cell [ref=e386]
+                  - cell "11/11/2025" [ref=e387]
+                  - cell [ref=e388]
+                  - cell "Edit" [ref=e389]:
+                    - link "Edit" [ref=e391]:
+                      - /url: "#/contacts/2031"
+                      - img
+                      - text: Edit
+                - row "Select this row -- 13TH STREET MARKET 11/11/2025 Edit" [ref=e392] [cursor=pointer]:
+                  - cell "Select this row" [ref=e393]:
+                    - generic "Select this row" [ref=e394]:
+                      - checkbox [ref=e395]
+                      - img [ref=e396]
+                  - cell [ref=e398]
+                  - cell "--" [ref=e399]
+                  - cell [ref=e400]
+                  - cell [ref=e401]
+                  - cell "13TH STREET MARKET" [ref=e402]
+                  - cell [ref=e403]
+                  - cell "11/11/2025" [ref=e404]
+                  - cell [ref=e405]
+                  - cell "Edit" [ref=e406]:
+                    - link "Edit" [ref=e408]:
+                      - /url: "#/contacts/2033"
+                      - img
+                      - text: Edit
+                - row "Select this row -- 231 BAR AND GRILL (THE) 11/11/2025 Edit" [ref=e409] [cursor=pointer]:
+                  - cell "Select this row" [ref=e410]:
+                    - generic "Select this row" [ref=e411]:
+                      - checkbox [ref=e412]
+                      - img [ref=e413]
+                  - cell [ref=e415]
+                  - cell "--" [ref=e416]
+                  - cell [ref=e417]
+                  - cell [ref=e418]
+                  - cell "231 BAR AND GRILL (THE)" [ref=e419]
+                  - cell [ref=e420]
+                  - cell "11/11/2025" [ref=e421]
+                  - cell [ref=e422]
+                  - cell "Edit" [ref=e423]:
+                    - link "Edit" [ref=e425]:
+                      - /url: "#/contacts/2034"
+                      - img
+                      - text: Edit
+                - row "Select this row -- 7 MONKS TAPROOM - GRAND RAPIDS 11/11/2025 Edit" [ref=e426] [cursor=pointer]:
+                  - cell "Select this row" [ref=e427]:
+                    - generic "Select this row" [ref=e428]:
+                      - checkbox [ref=e429]
+                      - img [ref=e430]
+                  - cell [ref=e432]
+                  - cell "--" [ref=e433]
+                  - cell [ref=e434]
+                  - cell [ref=e435]
+                  - cell "7 MONKS TAPROOM - GRAND RAPIDS" [ref=e436]
+                  - cell [ref=e437]
+                  - cell "11/11/2025" [ref=e438]
+                  - cell [ref=e439]
+                  - cell "Edit" [ref=e440]:
+                    - link "Edit" [ref=e442]:
+                      - /url: "#/contacts/2037"
+                      - img
+                      - text: Edit
+                - row "Select this row -- ACCLAIMED CATERING 11/11/2025 Edit" [ref=e443] [cursor=pointer]:
+                  - cell "Select this row" [ref=e444]:
+                    - generic "Select this row" [ref=e445]:
+                      - checkbox [ref=e446]
+                      - img [ref=e447]
+                  - cell [ref=e449]
+                  - cell "--" [ref=e450]
+                  - cell [ref=e451]
+                  - cell [ref=e452]
+                  - cell "ACCLAIMED CATERING" [ref=e453]
+                  - cell [ref=e454]
+                  - cell "11/11/2025" [ref=e455]
+                  - cell [ref=e456]
+                  - cell "Edit" [ref=e457]:
+                    - link "Edit" [ref=e459]:
+                      - /url: "#/contacts/2038"
+                      - img
+                      - text: Edit
+                - row "Select this row -- ALPHA CHI OMEGA 11/11/2025 Edit" [ref=e460] [cursor=pointer]:
+                  - cell "Select this row" [ref=e461]:
+                    - generic "Select this row" [ref=e462]:
+                      - checkbox [ref=e463]
+                      - img [ref=e464]
+                  - cell [ref=e466]
+                  - cell "--" [ref=e467]
+                  - cell [ref=e468]
+                  - cell [ref=e469]
+                  - cell "ALPHA CHI OMEGA" [ref=e470]
+                  - cell [ref=e471]
+                  - cell "11/11/2025" [ref=e472]
+                  - cell [ref=e473]
+                  - cell "Edit" [ref=e474]:
+                    - link "Edit" [ref=e476]:
+                      - /url: "#/contacts/2040"
+                      - img
+                      - text: Edit
+                - row "Select this row -- AMWAY GRAND PLAZA HOTEL 11/11/2025 Edit" [ref=e477] [cursor=pointer]:
+                  - cell "Select this row" [ref=e478]:
+                    - generic "Select this row" [ref=e479]:
+                      - checkbox [ref=e480]
+                      - img [ref=e481]
+                  - cell [ref=e483]
+                  - cell "--" [ref=e484]
+                  - cell [ref=e485]
+                  - cell [ref=e486]
+                  - cell "AMWAY GRAND PLAZA HOTEL" [ref=e487]
+                  - cell [ref=e488]
+                  - cell "11/11/2025" [ref=e489]
+                  - cell [ref=e490]
+                  - cell "Edit" [ref=e491]:
+                    - link "Edit" [ref=e493]:
+                      - /url: "#/contacts/2041"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Ada House The Post 11/11/2025 Edit" [ref=e494] [cursor=pointer]:
+                  - cell "Select this row" [ref=e495]:
+                    - generic "Select this row" [ref=e496]:
+                      - checkbox [ref=e497]
+                      - img [ref=e498]
+                  - cell [ref=e500]
+                  - cell "--" [ref=e501]
+                  - cell [ref=e502]
+                  - cell [ref=e503]
+                  - cell "Ada House The Post" [ref=e504]
+                  - cell [ref=e505]
+                  - cell "11/11/2025" [ref=e506]
+                  - cell [ref=e507]
+                  - cell "Edit" [ref=e508]:
+                    - link "Edit" [ref=e510]:
+                      - /url: "#/contacts/2045"
+                      - img
+                      - text: Edit
+                - row "Select this row -- Ala Mode Restaurant 11/11/2025 Edit" [ref=e511] [cursor=pointer]:
+                  - cell "Select this row" [ref=e512]:
+                    - generic "Select this row" [ref=e513]:
+                      - checkbox [ref=e514]
+                      - img [ref=e515]
+                  - cell [ref=e517]
+                  - cell "--" [ref=e518]
+                  - cell [ref=e519]
+                  - cell [ref=e520]
+                  - cell "Ala Mode Restaurant" [ref=e521]
+                  - cell [ref=e522]
+                  - cell "11/11/2025" [ref=e523]
+                  - cell [ref=e524]
+                  - cell "Edit" [ref=e525]:
+                    - link "Edit" [ref=e527]:
+                      - /url: "#/contacts/2046"
+                      - img
+                      - text: Edit
+                - row "Select this row -- BACK FORTY (THE) 11/11/2025 Edit" [ref=e528] [cursor=pointer]:
+                  - cell "Select this row" [ref=e529]:
+                    - generic "Select this row" [ref=e530]:
+                      - checkbox [ref=e531]
+                      - img [ref=e532]
+                  - cell [ref=e534]
+                  - cell "--" [ref=e535]
+                  - cell [ref=e536]
+                  - cell [ref=e537]
+                  - cell "BACK FORTY (THE)" [ref=e538]
+                  - cell [ref=e539]
+                  - cell "11/11/2025" [ref=e540]
+                  - cell [ref=e541]
+                  - cell "Edit" [ref=e542]:
+                    - link "Edit" [ref=e544]:
+                      - /url: "#/contacts/2054"
+                      - img
+                      - text: Edit
+      - link "Create new contacts" [ref=e545] [cursor=pointer]:
+        - /url: "#/contacts/create"
+        - img [ref=e546]
+    - generic [ref=e547]:
+      - generic [ref=e548]:
+        - paragraph [ref=e549]: "Rows per page:"
+        - combobox [ref=e550] [cursor=pointer]:
+          - generic: "25"
+          - img
+      - generic [ref=e551]: 1-25 of 2382
+      - navigation "pagination" [ref=e552]:
+        - list [ref=e553]:
+          - listitem [ref=e554]:
+            - link "Go to previous page" [ref=e555] [cursor=pointer]:
+              - /url: "#"
+              - img
+          - listitem [ref=e556]:
+            - link "1" [ref=e557] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e558]:
+            - link "2" [ref=e559] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e560]:
+            - link "3" [ref=e561] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e562]:
+            - link "4" [ref=e563] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e564]:
+            - link "5" [ref=e565] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e566]:
+            - generic [ref=e567]:
+              - img [ref=e568]
+              - generic [ref=e572]: More pages
+          - listitem [ref=e573]:
+            - link "96" [ref=e574] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e575]:
+            - link "Go to next page" [ref=e576] [cursor=pointer]:
+              - /url: "#"
+              - img
+  - contentinfo [ref=e577]:
+    - generic [ref=e579]:
+      - paragraph [ref=e580]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e581] [cursor=pointer]:
+        - img [ref=e582]
+        - generic [ref=e584]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

@@ -1,0 +1,105 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e28]:
+      - link "Create" [ref=e29] [cursor=pointer]:
+        - /url: "#/tasks/create"
+        - img
+        - text: Create
+      - button "Export" [disabled]:
+        - img
+        - text: Export
+    - generic [ref=e31]:
+      - complementary "Filter tasks" [ref=e32]:
+        - generic [ref=e34]:
+          - generic [ref=e36]:
+            - group [ref=e37]:
+              - textbox "Search tasks..." [ref=e38]
+            - img
+          - generic [ref=e40]:
+            - button "Due Date" [ref=e42] [cursor=pointer]:
+              - generic [ref=e43]:
+                - img [ref=e45]
+                - heading "Due Date" [level=3] [ref=e47]
+              - img [ref=e48]
+            - button "Status" [ref=e51] [cursor=pointer]:
+              - generic [ref=e52]:
+                - img [ref=e54]
+                - heading "Status" [level=3] [ref=e57]
+              - img [ref=e58]
+            - button "Priority" [ref=e61] [cursor=pointer]:
+              - generic [ref=e62]:
+                - img [ref=e64]
+                - heading "Priority" [level=3] [ref=e66]
+              - img [ref=e67]
+            - button "Type" [ref=e70] [cursor=pointer]:
+              - generic [ref=e71]:
+                - img [ref=e73]
+                - heading "Type" [level=3] [ref=e76]
+              - img [ref=e77]
+            - button "Assigned To" [ref=e80] [cursor=pointer]:
+              - generic [ref=e81]:
+                - img [ref=e83]
+                - heading "Assigned To" [level=3] [ref=e88]
+              - img [ref=e89]
+      - main "tasks list" [ref=e91]:
+        - paragraph [ref=e94]: No Tasks found
+    - generic [ref=e95]:
+      - generic [ref=e96]:
+        - paragraph [ref=e97]: "Rows per page:"
+        - combobox [ref=e98] [cursor=pointer]:
+          - img
+      - generic [ref=e99]: 1-0 of 0
+      - navigation "pagination" [ref=e100]:
+        - list [ref=e101]:
+          - listitem [ref=e102]:
+            - link "Go to previous page" [ref=e103] [cursor=pointer]:
+              - /url: "#"
+              - img
+          - listitem [ref=e104]:
+            - link "1" [ref=e105] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e106]:
+            - link "Go to next page" [ref=e107] [cursor=pointer]:
+              - /url: "#"
+              - img
+  - contentinfo [ref=e108]:
+    - generic [ref=e110]:
+      - paragraph [ref=e111]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e112] [cursor=pointer]:
+        - img [ref=e113]
+        - generic [ref=e115]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

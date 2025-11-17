@@ -1,0 +1,95 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - tablist [ref=e33]:
+          - tab "General tab" [selected] [ref=e34] [cursor=pointer]: General
+          - tab "Details tab" [ref=e35] [cursor=pointer]: Details
+          - tab "Other tab" [ref=e36] [cursor=pointer]: Other
+        - tabpanel "General tab" [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e40]:
+              - button "Change" [ref=e44] [cursor=pointer]
+              - group [ref=e45]:
+                - generic [ref=e47]: Name *
+                - textbox "Name *" [ref=e48]:
+                  - /placeholder: Organization name
+                - generic [ref=e49]: Required field
+            - group [ref=e51]:
+              - generic [ref=e53]: Organization Type *
+              - generic [ref=e54]:
+                - combobox [ref=e55] [cursor=pointer]:
+                  - generic: Select organization type
+                  - img
+                - combobox [ref=e56]
+              - generic [ref=e57]: Required field
+            - generic [ref=e60]:
+              - generic: Parent Organization (optional)
+              - generic [ref=e61]:
+                - combobox "Parent Organization (optional)" [ref=e62]
+                - button "Open" [ref=e64] [cursor=pointer]:
+                  - img [ref=e65]
+                - group:
+                  - generic: Parent Organization (optional)
+              - paragraph [ref=e67]: Select a corporate HQ or main entity. Only distributor, customer, and principal organizations can be parents.
+            - group [ref=e69]:
+              - generic [ref=e71]: Description
+              - textbox "Description" [ref=e72]
+            - group [ref=e73]:
+              - generic [ref=e75]: Account manager
+              - generic [ref=e76]:
+                - combobox [ref=e77] [cursor=pointer]:
+                  - generic: Admin User
+                  - button [ref=e78]:
+                    - img
+                  - img
+                - combobox [ref=e79]
+      - toolbar [ref=e80]:
+        - generic [ref=e81]:
+          - button "Cancel" [ref=e82] [cursor=pointer]:
+            - img
+            - text: Cancel
+          - button "Create Organization" [disabled]:
+            - img
+            - text: Create Organization
+  - contentinfo [ref=e83]:
+    - generic [ref=e85]:
+      - paragraph [ref=e86]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e87] [cursor=pointer]:
+        - img [ref=e88]
+        - generic [ref=e90]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
