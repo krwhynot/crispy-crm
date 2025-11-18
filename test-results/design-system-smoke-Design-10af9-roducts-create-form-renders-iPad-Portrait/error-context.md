@@ -1,0 +1,73 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - tablist [ref=e33]:
+          - tab "General tab" [selected] [ref=e34] [cursor=pointer]: General
+          - tab "Relationships tab" [ref=e35] [cursor=pointer]: Relationships
+          - tab "Classification tab" [ref=e36] [cursor=pointer]: Classification
+        - tabpanel "General tab" [ref=e37]:
+          - generic [ref=e38]:
+            - group [ref=e39]:
+              - generic [ref=e41]: Product Name *
+              - textbox "Product Name *" [ref=e42]:
+                - /placeholder: Product name
+              - generic [ref=e43]: Required field
+            - group [ref=e44]:
+              - generic [ref=e46]: SKU *
+              - textbox "SKU *" [ref=e47]:
+                - /placeholder: SKU-123
+              - generic [ref=e48]: Required field
+            - group [ref=e49]:
+              - generic [ref=e51]: Description
+              - textbox "Description" [ref=e52]:
+                - /placeholder: Product description...
+      - toolbar [ref=e53]:
+        - generic [ref=e54]:
+          - button "Cancel" [ref=e55] [cursor=pointer]:
+            - img
+            - text: Cancel
+          - button "Create Product" [disabled]:
+            - img
+            - text: Create Product
+  - contentinfo [ref=e56]:
+    - generic [ref=e58]:
+      - paragraph [ref=e59]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e60] [cursor=pointer]:
+        - img [ref=e61]
+        - generic [ref=e63]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

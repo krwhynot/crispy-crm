@@ -1,0 +1,465 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e28]:
+      - complementary "Filter organizations" [ref=e29]:
+        - generic [ref=e31]:
+          - generic [ref=e33]:
+            - group [ref=e34]:
+              - textbox "Search organizations..." [ref=e35]
+            - img
+          - generic [ref=e37]:
+            - button "Organization Type" [ref=e39] [cursor=pointer]:
+              - generic [ref=e40]:
+                - img [ref=e42]
+                - heading "Organization Type" [level=3] [ref=e45]
+              - img [ref=e46]
+            - button "Priority" [ref=e49] [cursor=pointer]:
+              - generic [ref=e50]:
+                - img [ref=e52]
+                - heading "Priority" [level=3] [ref=e54]
+              - img [ref=e55]
+            - button "Segment" [ref=e58] [cursor=pointer]:
+              - generic [ref=e59]:
+                - img [ref=e61]
+                - heading "Segment" [level=3] [ref=e66]
+              - img [ref=e67]
+            - button "Account Manager" [ref=e70] [cursor=pointer]:
+              - generic [ref=e71]:
+                - img [ref=e73]
+                - heading "Account Manager" [level=3] [ref=e78]
+              - img [ref=e79]
+      - main "organizations list" [ref=e81]:
+        - generic [ref=e83]:
+          - generic:
+            - generic:
+              - generic [ref=e84]:
+                - button "Unselect" [ref=e85] [cursor=pointer]:
+                  - img [ref=e86]
+                - paragraph [ref=e88]: 0 items selected
+              - button "Delete" [ref=e90] [cursor=pointer]:
+                - img [ref=e92]
+                - text: Delete
+          - table [ref=e95]:
+            - rowgroup [ref=e96]:
+              - row "Select all Sort by organization Name descending Type Priority Sort by parent ascending Contacts Opportunities" [ref=e97]:
+                - columnheader "Select all" [ref=e98]:
+                  - generic [ref=e99] [cursor=pointer]:
+                    - checkbox "Select all" [ref=e100]
+                    - img [ref=e101]
+                - columnheader "Sort by organization Name descending" [ref=e103]:
+                  - button "Sort by organization Name descending" [ref=e104] [cursor=pointer]:
+                    - generic [ref=e105]: Organization Name
+                    - img [ref=e106]
+                - columnheader "Type" [ref=e108]
+                - columnheader "Priority" [ref=e109]
+                - columnheader "Sort by parent ascending" [ref=e110]:
+                  - button "Sort by parent ascending" [ref=e111] [cursor=pointer]:
+                    - generic [ref=e112]: Parent
+                - columnheader "Contacts" [ref=e113]
+                - columnheader "Opportunities" [ref=e114]
+            - rowgroup [ref=e115]:
+              - row "Select this row 040 KITCHEN INC Unknown B - Medium-High - 0 0" [ref=e116] [cursor=pointer]:
+                - cell "Select this row" [ref=e117]:
+                  - generic "Select this row" [ref=e118]:
+                    - checkbox [ref=e119]
+                    - img [ref=e120]
+                - cell "040 KITCHEN INC" [ref=e122]
+                - cell "Unknown" [ref=e123]:
+                  - generic [ref=e125]: Unknown
+                - cell "B - Medium-High" [ref=e126]:
+                  - generic [ref=e128]: B - Medium-High
+                - cell "-" [ref=e129]
+                - cell "0" [ref=e130]
+                - cell "0" [ref=e131]
+              - row "Select this row 10 PIN ICE CREAM Customer C - Medium - 1 0" [ref=e132] [cursor=pointer]:
+                - cell "Select this row" [ref=e133]:
+                  - generic "Select this row" [ref=e134]:
+                    - checkbox [ref=e135]
+                    - img [ref=e136]
+                - cell "10 PIN ICE CREAM" [ref=e138]
+                - cell "Customer" [ref=e139]:
+                  - generic [ref=e141]: Customer
+                - cell "C - Medium" [ref=e142]:
+                  - generic [ref=e144]: C - Medium
+                - cell "-" [ref=e145]
+                - cell "1" [ref=e146]
+                - cell "0" [ref=e147]
+              - row "Select this row 10Forty Banquets & Catering Unknown C - Medium - 0 0" [ref=e148] [cursor=pointer]:
+                - cell "Select this row" [ref=e149]:
+                  - generic "Select this row" [ref=e150]:
+                    - checkbox [ref=e151]
+                    - img [ref=e152]
+                - cell "10Forty Banquets & Catering" [ref=e154]
+                - cell "Unknown" [ref=e155]:
+                  - generic [ref=e157]: Unknown
+                - cell "C - Medium" [ref=e158]:
+                  - generic [ref=e160]: C - Medium
+                - cell "-" [ref=e161]
+                - cell "0" [ref=e162]
+                - cell "0" [ref=e163]
+              - row "Select this row 13TH STREET MARKET Customer C - Medium - 2 0" [ref=e164] [cursor=pointer]:
+                - cell "Select this row" [ref=e165]:
+                  - generic "Select this row" [ref=e166]:
+                    - checkbox [ref=e167]
+                    - img [ref=e168]
+                - cell "13TH STREET MARKET" [ref=e170]
+                - cell "Customer" [ref=e171]:
+                  - generic [ref=e173]: Customer
+                - cell "C - Medium" [ref=e174]:
+                  - generic [ref=e176]: C - Medium
+                - cell "-" [ref=e177]
+                - cell "2" [ref=e178]
+                - cell "0" [ref=e179]
+              - row "Select this row 219 Taproom Customer B - Medium-High - 1 0" [ref=e180] [cursor=pointer]:
+                - cell "Select this row" [ref=e181]:
+                  - generic "Select this row" [ref=e182]:
+                    - checkbox [ref=e183]
+                    - img [ref=e184]
+                - cell "219 Taproom" [ref=e186]
+                - cell "Customer" [ref=e187]:
+                  - generic [ref=e189]: Customer
+                - cell "B - Medium-High" [ref=e190]:
+                  - generic [ref=e192]: B - Medium-High
+                - cell "-" [ref=e193]
+                - cell "1" [ref=e194]
+                - cell "0" [ref=e195]
+              - row "Select this row 231 BAR AND GRILL (THE) Customer C - Medium - 1 0" [ref=e196] [cursor=pointer]:
+                - cell "Select this row" [ref=e197]:
+                  - generic "Select this row" [ref=e198]:
+                    - checkbox [ref=e199]
+                    - img [ref=e200]
+                - cell "231 BAR AND GRILL (THE)" [ref=e202]
+                - cell "Customer" [ref=e203]:
+                  - generic [ref=e205]: Customer
+                - cell "C - Medium" [ref=e206]:
+                  - generic [ref=e208]: C - Medium
+                - cell "-" [ref=e209]
+                - cell "1" [ref=e210]
+                - cell "0" [ref=e211]
+              - row "Select this row 2d Restaurant Unknown D - Low - 0 0" [ref=e212] [cursor=pointer]:
+                - cell "Select this row" [ref=e213]:
+                  - generic "Select this row" [ref=e214]:
+                    - checkbox [ref=e215]
+                    - img [ref=e216]
+                - cell "2d Restaurant" [ref=e218]
+                - cell "Unknown" [ref=e219]:
+                  - generic [ref=e221]: Unknown
+                - cell "D - Low" [ref=e222]:
+                  - generic [ref=e224]: D - Low
+                - cell "-" [ref=e225]
+                - cell "0" [ref=e226]
+                - cell "0" [ref=e227]
+              - row "Select this row 3 Monkey's Prospect A - High - 0 0" [ref=e228] [cursor=pointer]:
+                - cell "Select this row" [ref=e229]:
+                  - generic "Select this row" [ref=e230]:
+                    - checkbox [ref=e231]
+                    - img [ref=e232]
+                - cell "3 Monkey's" [ref=e234]
+                - cell "Prospect" [ref=e235]:
+                  - generic [ref=e237]: Prospect
+                - cell "A - High" [ref=e238]:
+                  - generic [ref=e240]: A - High
+                - cell "-" [ref=e241]
+                - cell "0" [ref=e242]
+                - cell "0" [ref=e243]
+              - row "Select this row 5 Knives Customer C - Medium - 1 0" [ref=e244] [cursor=pointer]:
+                - cell "Select this row" [ref=e245]:
+                  - generic "Select this row" [ref=e246]:
+                    - checkbox [ref=e247]
+                    - img [ref=e248]
+                - cell "5 Knives" [ref=e250]
+                - cell "Customer" [ref=e251]:
+                  - generic [ref=e253]: Customer
+                - cell "C - Medium" [ref=e254]:
+                  - generic [ref=e256]: C - Medium
+                - cell "-" [ref=e257]
+                - cell "1" [ref=e258]
+                - cell "0" [ref=e259]
+              - row "Select this row 7 K FARMS, INC. Distributor D - Low - 0 0" [ref=e260] [cursor=pointer]:
+                - cell "Select this row" [ref=e261]:
+                  - generic "Select this row" [ref=e262]:
+                    - checkbox [ref=e263]
+                    - img [ref=e264]
+                - cell "7 K FARMS, INC." [ref=e266]
+                - cell "Distributor" [ref=e267]:
+                  - generic [ref=e269]: Distributor
+                - cell "D - Low" [ref=e270]:
+                  - generic [ref=e272]: D - Low
+                - cell "-" [ref=e273]
+                - cell "0" [ref=e274]
+                - cell "0" [ref=e275]
+              - row "Select this row 7 MONKS TAPROOM - GRAND RAPIDS Customer C - Medium - 2 0" [ref=e276] [cursor=pointer]:
+                - cell "Select this row" [ref=e277]:
+                  - generic "Select this row" [ref=e278]:
+                    - checkbox [ref=e279]
+                    - img [ref=e280]
+                - cell "7 MONKS TAPROOM - GRAND RAPIDS" [ref=e282]
+                - cell "Customer" [ref=e283]:
+                  - generic [ref=e285]: Customer
+                - cell "C - Medium" [ref=e286]:
+                  - generic [ref=e288]: C - Medium
+                - cell "-" [ref=e289]
+                - cell "2" [ref=e290]
+                - cell "0" [ref=e291]
+              - row "Select this row 7 Monks Taproom Grand Rapids Unknown B - Medium-High - 0 0" [ref=e292] [cursor=pointer]:
+                - cell "Select this row" [ref=e293]:
+                  - generic "Select this row" [ref=e294]:
+                    - checkbox [ref=e295]
+                    - img [ref=e296]
+                - cell "7 Monks Taproom Grand Rapids" [ref=e298]
+                - cell "Unknown" [ref=e299]:
+                  - generic [ref=e301]: Unknown
+                - cell "B - Medium-High" [ref=e302]:
+                  - generic [ref=e304]: B - Medium-High
+                - cell "-" [ref=e305]
+                - cell "0" [ref=e306]
+                - cell "0" [ref=e307]
+              - row "Select this row 8 hospitality group Customer A - High - 0 0" [ref=e308] [cursor=pointer]:
+                - cell "Select this row" [ref=e309]:
+                  - generic "Select this row" [ref=e310]:
+                    - checkbox [ref=e311]
+                    - img [ref=e312]
+                - cell "8 hospitality group" [ref=e314]
+                - cell "Customer" [ref=e315]:
+                  - generic [ref=e317]: Customer
+                - cell "A - High" [ref=e318]:
+                  - generic [ref=e320]: A - High
+                - cell "-" [ref=e321]
+                - cell "0" [ref=e322]
+                - cell "0" [ref=e323]
+              - row "Select this row 86 FOOD SERVICE Unknown C - Medium - 0 0" [ref=e324] [cursor=pointer]:
+                - cell "Select this row" [ref=e325]:
+                  - generic "Select this row" [ref=e326]:
+                    - checkbox [ref=e327]
+                    - img [ref=e328]
+                - cell "86 FOOD SERVICE" [ref=e330]
+                - cell "Unknown" [ref=e331]:
+                  - generic [ref=e333]: Unknown
+                - cell "C - Medium" [ref=e334]:
+                  - generic [ref=e336]: C - Medium
+                - cell "-" [ref=e337]
+                - cell "0" [ref=e338]
+                - cell "0" [ref=e339]
+              - row "Select this row 90 miles Cuban cafe Unknown C - Medium - 0 0" [ref=e340] [cursor=pointer]:
+                - cell "Select this row" [ref=e341]:
+                  - generic "Select this row" [ref=e342]:
+                    - checkbox [ref=e343]
+                    - img [ref=e344]
+                - cell "90 miles Cuban cafe" [ref=e346]
+                - cell "Unknown" [ref=e347]:
+                  - generic [ref=e349]: Unknown
+                - cell "C - Medium" [ref=e350]:
+                  - generic [ref=e352]: C - Medium
+                - cell "-" [ref=e353]
+                - cell "0" [ref=e354]
+                - cell "0" [ref=e355]
+              - row "Select this row A & G FOODSERVICE Distributor D - Low - 0 0" [ref=e356] [cursor=pointer]:
+                - cell "Select this row" [ref=e357]:
+                  - generic "Select this row" [ref=e358]:
+                    - checkbox [ref=e359]
+                    - img [ref=e360]
+                - cell "A & G FOODSERVICE" [ref=e362]
+                - cell "Distributor" [ref=e363]:
+                  - generic [ref=e365]: Distributor
+                - cell "D - Low" [ref=e366]:
+                  - generic [ref=e368]: D - Low
+                - cell "-" [ref=e369]
+                - cell "0" [ref=e370]
+                - cell "0" [ref=e371]
+              - row "Select this row A Little Taste of Texas Customer C - Medium - 0 0" [ref=e372] [cursor=pointer]:
+                - cell "Select this row" [ref=e373]:
+                  - generic "Select this row" [ref=e374]:
+                    - checkbox [ref=e375]
+                    - img [ref=e376]
+                - cell "A Little Taste of Texas" [ref=e378]
+                - cell "Customer" [ref=e379]:
+                  - generic [ref=e381]: Customer
+                - cell "C - Medium" [ref=e382]:
+                  - generic [ref=e384]: C - Medium
+                - cell "-" [ref=e385]
+                - cell "0" [ref=e386]
+                - cell "0" [ref=e387]
+              - 'row "Select this row A Plus Inc DBA: Noodles Etc Unknown A - High - 0 0" [ref=e388] [cursor=pointer]':
+                - cell "Select this row" [ref=e389]:
+                  - generic "Select this row" [ref=e390]:
+                    - checkbox [ref=e391]
+                    - img [ref=e392]
+                - 'cell "A Plus Inc DBA: Noodles Etc" [ref=e394]'
+                - cell "Unknown" [ref=e395]:
+                  - generic [ref=e397]: Unknown
+                - cell "A - High" [ref=e398]:
+                  - generic [ref=e400]: A - High
+                - cell "-" [ref=e401]
+                - cell "0" [ref=e402]
+                - cell "0" [ref=e403]
+              - row "Select this row A.Fusion Customer D - Low - 0 0" [ref=e404] [cursor=pointer]:
+                - cell "Select this row" [ref=e405]:
+                  - generic "Select this row" [ref=e406]:
+                    - checkbox [ref=e407]
+                    - img [ref=e408]
+                - cell "A.Fusion" [ref=e410]
+                - cell "Customer" [ref=e411]:
+                  - generic [ref=e413]: Customer
+                - cell "D - Low" [ref=e414]:
+                  - generic [ref=e416]: D - Low
+                - cell "-" [ref=e417]
+                - cell "0" [ref=e418]
+                - cell "0" [ref=e419]
+              - row "Select this row A&W Customer B - Medium-High - 0 0" [ref=e420] [cursor=pointer]:
+                - cell "Select this row" [ref=e421]:
+                  - generic "Select this row" [ref=e422]:
+                    - checkbox [ref=e423]
+                    - img [ref=e424]
+                - cell "A&W" [ref=e426]
+                - cell "Customer" [ref=e427]:
+                  - generic [ref=e429]: Customer
+                - cell "B - Medium-High" [ref=e430]:
+                  - generic [ref=e432]: B - Medium-High
+                - cell "-" [ref=e433]
+                - cell "0" [ref=e434]
+                - cell "0" [ref=e435]
+              - row "Select this row ABBOTT AP6D DEPT GE03 Unknown A - High - 2 0" [ref=e436] [cursor=pointer]:
+                - cell "Select this row" [ref=e437]:
+                  - generic "Select this row" [ref=e438]:
+                    - checkbox [ref=e439]
+                    - img [ref=e440]
+                - cell "ABBOTT AP6D DEPT GE03" [ref=e442]
+                - cell "Unknown" [ref=e443]:
+                  - generic [ref=e445]: Unknown
+                - cell "A - High" [ref=e446]:
+                  - generic [ref=e448]: A - High
+                - cell "-" [ref=e449]
+                - cell "2" [ref=e450]
+                - cell "0" [ref=e451]
+              - row "Select this row Abbvie Unknown C - Medium - 0 0" [ref=e452] [cursor=pointer]:
+                - cell "Select this row" [ref=e453]:
+                  - generic "Select this row" [ref=e454]:
+                    - checkbox [ref=e455]
+                    - img [ref=e456]
+                - cell "Abbvie" [ref=e458]
+                - cell "Unknown" [ref=e459]:
+                  - generic [ref=e461]: Unknown
+                - cell "C - Medium" [ref=e462]:
+                  - generic [ref=e464]: C - Medium
+                - cell "-" [ref=e465]
+                - cell "0" [ref=e466]
+                - cell "0" [ref=e467]
+              - row "Select this row ABBVIE AP30 Prospect C - Medium - 1 0" [ref=e468] [cursor=pointer]:
+                - cell "Select this row" [ref=e469]:
+                  - generic "Select this row" [ref=e470]:
+                    - checkbox [ref=e471]
+                    - img [ref=e472]
+                - cell "ABBVIE AP30" [ref=e474]
+                - cell "Prospect" [ref=e475]:
+                  - generic [ref=e477]: Prospect
+                - cell "C - Medium" [ref=e478]:
+                  - generic [ref=e480]: C - Medium
+                - cell "-" [ref=e481]
+                - cell "1" [ref=e482]
+                - cell "0" [ref=e483]
+              - row "Select this row ABBVIE M1 Unknown A - High - 1 0" [ref=e484] [cursor=pointer]:
+                - cell "Select this row" [ref=e485]:
+                  - generic "Select this row" [ref=e486]:
+                    - checkbox [ref=e487]
+                    - img [ref=e488]
+                - cell "ABBVIE M1" [ref=e490]
+                - cell "Unknown" [ref=e491]:
+                  - generic [ref=e493]: Unknown
+                - cell "A - High" [ref=e494]:
+                  - generic [ref=e496]: A - High
+                - cell "-" [ref=e497]
+                - cell "1" [ref=e498]
+                - cell "0" [ref=e499]
+              - row "Select this row Abdale Principal C - Medium - 0 0" [ref=e500] [cursor=pointer]:
+                - cell "Select this row" [ref=e501]:
+                  - generic "Select this row" [ref=e502]:
+                    - checkbox [ref=e503]
+                    - img [ref=e504]
+                - cell "Abdale" [ref=e506]
+                - cell "Principal" [ref=e507]:
+                  - generic [ref=e509]: Principal
+                - cell "C - Medium" [ref=e510]:
+                  - generic [ref=e512]: C - Medium
+                - cell "-" [ref=e513]
+                - cell "0" [ref=e514]
+                - cell "0" [ref=e515]
+    - generic [ref=e516]:
+      - generic [ref=e517]:
+        - paragraph [ref=e518]: "Rows per page:"
+        - combobox [ref=e519] [cursor=pointer]:
+          - generic: "25"
+          - img
+      - generic [ref=e520]: 1-25 of 2149
+      - navigation "pagination" [ref=e521]:
+        - list [ref=e522]:
+          - listitem [ref=e523]:
+            - link "Go to previous page" [ref=e524] [cursor=pointer]:
+              - /url: "#"
+              - img
+          - listitem [ref=e525]:
+            - link "1" [ref=e526] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e527]:
+            - link "2" [ref=e528] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e529]:
+            - link "3" [ref=e530] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e531]:
+            - link "4" [ref=e532] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e533]:
+            - link "5" [ref=e534] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e535]:
+            - generic [ref=e536]:
+              - img [ref=e537]
+              - generic [ref=e541]: More pages
+          - listitem [ref=e542]:
+            - link "86" [ref=e543] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e544]:
+            - link "Go to next page" [ref=e545] [cursor=pointer]:
+              - /url: "#"
+              - img
+  - contentinfo [ref=e546]:
+    - generic [ref=e548]:
+      - paragraph [ref=e549]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e550] [cursor=pointer]:
+        - img [ref=e551]
+        - generic [ref=e553]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

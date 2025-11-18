@@ -1,0 +1,79 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - heading "Principal Dashboard" [level=1] [ref=e30]
+      - generic [ref=e32]:
+        - generic [ref=e35]:
+          - paragraph [ref=e36]: Failed to load pipeline data
+          - paragraph [ref=e37]: ra.notification.data_provider_error
+        - separator [ref=e38]:
+          - img [ref=e40]
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: My Tasks
+              - generic [ref=e53]: Today's priorities and upcoming activities
+            - paragraph [ref=e54]: Overdue items highlighted • Click to complete • Drag to reschedule
+          - generic [ref=e56]:
+            - button "Today (0)" [ref=e58] [cursor=pointer]:
+              - generic [ref=e59]:
+                - img [ref=e60]
+                - heading "Today" [level=3] [ref=e62]
+                - generic [ref=e63]: (0)
+            - button "Tomorrow (0)" [ref=e65] [cursor=pointer]:
+              - generic [ref=e66]:
+                - img [ref=e67]
+                - heading "Tomorrow" [level=3] [ref=e69]
+                - generic [ref=e70]: (0)
+        - separator [ref=e71]:
+          - img [ref=e73]
+        - generic [ref=e81]:
+          - generic [ref=e84]:
+            - generic [ref=e85]: Log Activity
+            - generic [ref=e86]: Quick capture for calls, meetings, and notes
+          - generic [ref=e88]:
+            - paragraph [ref=e89]: Capture your customer interactions as they happen
+            - button "New Activity" [ref=e90] [cursor=pointer]:
+              - img
+              - text: New Activity
+  - contentinfo [ref=e91]:
+    - generic [ref=e93]:
+      - paragraph [ref=e94]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e95] [cursor=pointer]:
+        - img [ref=e96]
+        - generic [ref=e98]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
