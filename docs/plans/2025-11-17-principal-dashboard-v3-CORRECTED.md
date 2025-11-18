@@ -687,6 +687,69 @@ git add src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.
 git commit -m "feat(dashboard-v3): add PrincipalPipelineTable component with mock data"
 ```
 
+**⚠️ IMPORTANT - Test Will Break After Task 6:**
+
+The tests created in this task use mock data and don't require a data provider. However, **Task 6 converts this component to use real data hooks** (`usePrincipalPipeline`). Once Task 6 is complete, these tests will crash with:
+
+```
+Cannot read property 'data' of undefined
+```
+
+**Required Fix (Apply After Task 6):**
+
+Update the test to mock the custom hook:
+
+```typescript
+import { vi } from 'vitest';
+
+// Mock the custom hook
+vi.mock('../hooks/usePrincipalPipeline', () => ({
+  usePrincipalPipeline: () => ({
+    data: [
+      {
+        id: 1,
+        name: 'Acme Corporation',
+        totalPipeline: 5,
+        activeThisWeek: 3,
+        activeLastWeek: 1,
+        momentum: 'increasing',
+        nextAction: 'Demo scheduled Friday',
+      },
+    ],
+    loading: false,
+    error: null,
+    refetch: vi.fn(),
+  }),
+}));
+
+describe('PrincipalPipelineTable', () => {
+  // Tests remain the same...
+});
+```
+
+**Alternative:** Wrap component in `AdminContext` with mock `dataProvider`:
+
+```typescript
+import { AdminContext } from 'react-admin';
+import { createMemoryHistory } from 'history';
+
+const mockDataProvider = {
+  getList: vi.fn().mockResolvedValue({
+    data: [/* mock data */],
+    total: 1,
+  }),
+  // ... other methods
+};
+
+render(
+  <AdminContext dataProvider={mockDataProvider} history={createMemoryHistory()}>
+    <PrincipalPipelineTable />
+  </AdminContext>
+);
+```
+
+**Task 6 Instructions Should Include:** "Update Task 2 tests to mock `usePrincipalPipeline` hook"
+
 ---
 
 ## Task 3: Create Tasks Panel Component
@@ -992,6 +1055,76 @@ git add src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
 git commit -m "feat(dashboard-v3): add TasksPanel with grouped task display"
 ```
 
+**⚠️ IMPORTANT - Test Will Break After Task 6:**
+
+The tests created in this task use mock data and don't require a data provider. However, **Task 6 converts this component to use real data hooks** (`useMyTasks`). Once Task 6 is complete, these tests will crash with:
+
+```
+Cannot read property 'data' of undefined
+```
+
+**Required Fix (Apply After Task 6):**
+
+Update the test to mock the custom hook:
+
+```typescript
+import { vi } from 'vitest';
+
+// Mock the custom hook
+vi.mock('../hooks/useMyTasks', () => ({
+  useMyTasks: () => ({
+    tasks: {
+      overdue: [
+        {
+          id: 1,
+          subject: 'Follow up on Q4 proposal',
+          dueDate: new Date(Date.now() - 86400000),
+          priority: 'high',
+          taskType: 'Call',
+          relatedTo: { type: 'opportunity', name: 'Q4 Enterprise Deal', id: 101 },
+          status: 'overdue',
+        },
+      ],
+      today: [],
+      tomorrow: [],
+      later: [],
+    },
+    loading: false,
+    error: null,
+    refetch: vi.fn(),
+    completeTask: vi.fn(),
+  }),
+}));
+
+describe('TasksPanel', () => {
+  // Tests remain the same...
+});
+```
+
+**Alternative:** Wrap component in `AdminContext` with mock `dataProvider`:
+
+```typescript
+import { AdminContext } from 'react-admin';
+import { createMemoryHistory } from 'history';
+
+const mockDataProvider = {
+  getList: vi.fn().mockResolvedValue({
+    data: [/* mock tasks */],
+    total: 3,
+  }),
+  update: vi.fn().mockResolvedValue({ data: { id: 1, completed: true } }),
+  // ... other methods
+};
+
+render(
+  <AdminContext dataProvider={mockDataProvider} history={createMemoryHistory()}>
+    <TasksPanel />
+  </AdminContext>
+);
+```
+
+**Task 6 Instructions Should Include:** "Update Task 3 tests to mock `useMyTasks` hook"
+
 ---
 
 ## Task 4: Create Quick Logger Component (CORRECTED)
@@ -1222,7 +1355,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     loadEntities();
   }, [dataProvider, notify]);
 
-  const onSubmit = async (data: ActivityLogInput) => {
+  const onSubmit = async (data: ActivityLogInput, closeAfterSave = true) => {
     // Validate salesId exists before attempting to create records
     if (!salesId) {
       notify('Cannot log activity: user session expired. Please refresh and try again.', {
@@ -1270,7 +1403,11 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
 
       notify('Activity logged successfully', { type: 'success' });
       form.reset();
-      onComplete();
+
+      // Only close if Save & Close was clicked
+      if (closeAfterSave) {
+        onComplete();
+      }
 
       // Trigger dashboard data refresh if callback provided
       if (onRefresh) {
@@ -1649,8 +1786,8 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
               className="h-11"
               onClick={() => {
                 form.handleSubmit((data) => {
-                  onSubmit(data);
-                  // Form resets automatically in onSubmit after successful save
+                  onSubmit(data, false);  // ✅ Pass false to keep form open
+                  // Form resets but stays open for next entry
                 })();
               }}
             >
@@ -1666,7 +1803,99 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
 
 Create `src/atomic-crm/dashboard/v3/components/QuickLoggerPanel.tsx`:
 
-*(Same as original - lines 1162-1216)*
+Create `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx`:
+
+```typescript
+import { useState } from 'react';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/components/ui/resizable';
+import { PrincipalPipelineTable } from './components/PrincipalPipelineTable';
+import { TasksPanel } from './components/TasksPanel';
+import { QuickLoggerPanel } from './components/QuickLoggerPanel';
+
+export function PrincipalDashboardV3() {
+  const [sizes, setSizes] = useState([40, 30, 30]);
+
+  return (
+    <div className="flex h-screen flex-col bg-muted">
+      {/* Header */}
+      <header className="border-b border-border bg-card px-6 py-4">
+        <h1 className="text-2xl font-bold">Principal Dashboard</h1>
+        <p className="text-sm text-muted-foreground">
+          Track opportunities, tasks, and activity across your customer accounts
+        </p>
+      </header>
+
+      {/* Resizable 3-column layout */}
+      <ResizablePanelGroup
+        direction="horizontal"
+        onLayout={(sizes) => setSizes(sizes)}
+        className="flex-1"
+      >
+        {/* Panel 1: Pipeline by Principal */}
+        <ResizablePanel
+          defaultSize={sizes[0]}
+          minSize={30}
+          maxSize={60}
+          className="bg-background"
+        >
+          <div className="h-full p-6">
+            <PrincipalPipelineTable />
+          </div>
+        </ResizablePanel>
+
+        <ResizableHandle className="w-1 bg-border hover:bg-primary/20 transition-colors" />
+
+        {/* Panel 2: My Tasks */}
+        <ResizablePanel
+          defaultSize={sizes[1]}
+          minSize={25}
+          maxSize={50}
+          className="bg-background"
+        >
+          <div className="h-full p-6">
+            <TasksPanel />
+          </div>
+        </ResizablePanel>
+
+        <ResizableHandle className="w-1 bg-border hover:bg-primary/20 transition-colors" />
+
+        {/* Panel 3: Quick Logger */}
+        <ResizablePanel
+          defaultSize={sizes[2]}
+          minSize={20}
+          maxSize={40}
+          className="bg-background"
+        >
+          <div className="h-full p-6">
+            <QuickLoggerPanel />
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
+}
+```
+
+Create `src/atomic-crm/dashboard/v3/index.ts`:
+
+```typescript
+export { PrincipalDashboardV3 } from './PrincipalDashboardV3';
+export type {
+  PrincipalPipelineRow,
+  TaskItem,
+  ActivityLog,
+  Momentum,
+  Priority,
+  TaskStatus,
+  TaskType,
+  ActivityType,
+  ActivityOutcome,
+} from './types';
+```
 
 **Step 4: Run test to verify it passes**
 
@@ -1889,7 +2118,7 @@ Create `src/atomic-crm/dashboard/v3/components/__tests__/DashboardErrorBoundary.
 
 ```typescript
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { DashboardErrorBoundary } from '../DashboardErrorBoundary';
 
 // Component that throws an error
@@ -2589,7 +2818,125 @@ git commit -m "feat(dashboard-v3): add route and navigation link
 
 **Step 1: Write E2E test**
 
-*(Same as original - lines 1762-1849)*
+Create `tests/e2e/dashboard-v3.spec.ts`:
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test.describe('Principal Dashboard V3', () => {
+  test.beforeEach(async ({ page }) => {
+    // Login as test user
+    await page.goto('http://localhost:5173/login');
+    await page.fill('[name="username"]', 'admin@test.com');
+    await page.fill('[name="password"]', 'password123');
+    await page.click('button[type="submit"]');
+
+    // Navigate to dashboard
+    await page.goto('http://localhost:5173/dashboard/v3');
+    await page.waitForLoadState('networkidle');
+  });
+
+  test('should render 3-column layout with all panels', async ({ page }) => {
+    // Check header
+    await expect(page.getByRole('heading', { name: /principal dashboard/i })).toBeVisible();
+
+    // Check all three panels are visible
+    await expect(page.getByText('Pipeline by Principal')).toBeVisible();
+    await expect(page.getByText('My Tasks')).toBeVisible();
+    await expect(page.getByText('Log Activity')).toBeVisible();
+  });
+
+  test('should allow logging a new activity', async ({ page }) => {
+    // Click New Activity button
+    await page.getByRole('button', { name: /new activity/i }).click();
+
+    // Fill activity form
+    await page.selectOption('select[name="activityType"]', 'Call');
+    await page.selectOption('select[name="outcome"]', 'Connected');
+    await page.fill('textarea[name="notes"]', 'Discussed Q4 pricing with customer');
+
+    // Submit form
+    await page.getByRole('button', { name: /save & close/i }).click();
+
+    // Verify success notification
+    await expect(page.getByText(/activity logged successfully/i)).toBeVisible();
+
+    // Verify form closed
+    await expect(page.getByRole('button', { name: /new activity/i })).toBeVisible();
+  });
+
+  test('should keep form open with Save & New button', async ({ page }) => {
+    // Click New Activity button
+    await page.getByRole('button', { name: /new activity/i }).click();
+
+    // Fill first activity
+    await page.selectOption('select[name="activityType"]', 'Email');
+    await page.selectOption('select[name="outcome"]', 'Completed');
+    await page.fill('textarea[name="notes"]', 'Sent proposal document');
+
+    // Click Save & New
+    await page.getByRole('button', { name: /save & new/i }).click();
+
+    // Verify success notification
+    await expect(page.getByText(/activity logged successfully/i)).toBeVisible();
+
+    // Verify form is still open (notes field should be empty after reset)
+    await expect(page.getByRole('button', { name: /save & close/i })).toBeVisible();
+    const notesField = page.locator('textarea[name="notes"]');
+    await expect(notesField).toHaveValue('');
+  });
+
+  test('should display tasks grouped by status', async ({ page }) => {
+    // Check task groups are visible
+    await expect(page.getByText('Overdue')).toBeVisible();
+    await expect(page.getByText('Today')).toBeVisible();
+    await expect(page.getByText('Tomorrow')).toBeVisible();
+  });
+
+  test('should have resizable panels', async ({ page }) => {
+    // Get initial panel widths
+    const panel1 = page.locator('[data-panel-id]').first();
+    const initialWidth = await panel1.evaluate(el => el.getBoundingClientRect().width);
+
+    // Find resize handle
+    const resizeHandle = page.locator('[role="separator"]').first();
+
+    // Drag handle to resize
+    const handleBox = await resizeHandle.boundingBox();
+    if (handleBox) {
+      await page.mouse.move(handleBox.x + handleBox.width / 2, handleBox.y + handleBox.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(handleBox.x + 100, handleBox.y + handleBox.height / 2);
+      await page.mouse.up();
+    }
+
+    // Verify panel width changed
+    const newWidth = await panel1.evaluate(el => el.getBoundingClientRect().width);
+    expect(Math.abs(newWidth - initialWidth)).toBeGreaterThan(50);
+  });
+
+  test('should meet accessibility requirements', async ({ page }) => {
+    // Check for ARIA landmarks
+    await expect(page.locator('header')).toBeVisible();
+
+    // Verify all interactive elements have accessible names
+    const buttons = await page.locator('button').all();
+    for (const button of buttons) {
+      const accessibleName = await button.getAttribute('aria-label') ||
+                             await button.textContent();
+      expect(accessibleName).toBeTruthy();
+    }
+
+    // Check minimum touch target sizes (44px)
+    const newActivityBtn = page.getByRole('button', { name: /new activity/i });
+    const box = await newActivityBtn.boundingBox();
+    if (box) {
+      expect(box.height).toBeGreaterThanOrEqual(44);
+      expect(box.width).toBeGreaterThanOrEqual(44);
+    }
+  });
+});
+```
 
 **Step 2: Run E2E test**
 
