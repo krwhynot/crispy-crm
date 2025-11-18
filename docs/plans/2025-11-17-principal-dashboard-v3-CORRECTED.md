@@ -37,6 +37,12 @@
 - ✅ outcome field now persisted in dataProvider.create payload
 - ✅ useCurrentSale handles legacy users with NULL user_id (email fallback)
 
+**Schema Fixes (Database Alignment - Round 3):**
+- ✅ follow_up_required field now persisted in activities payload
+- ✅ follow_up_date field now persisted in activities payload (DATE format)
+- ✅ Removed non-existent nextStep field from Zod schema
+- ✅ Complete follow-up metadata tracking aligned with database schema
+
 **Migration Fixes (PostgreSQL Correctness):**
 - ✅ Removed invalid RLS policy on view (views can't have RLS policies)
 - ✅ Removed invalid security_invoker option (not supported for views)
@@ -428,7 +434,7 @@ export interface TaskItem {
 }
 
 // Activity Logger Types
-export type ActivityType = 'Call' | 'Email' | 'Meeting' | 'Follow-up';
+export type ActivityType = 'Call' | 'Email' | 'Meeting' | 'Follow-up' | 'Note';
 export type ActivityOutcome = 'Connected' | 'Left Voicemail' | 'No Answer' | 'Completed' | 'Rescheduled';
 
 export interface ActivityLog {
@@ -539,7 +545,6 @@ export const activityLogSchema = z
     organizationId: z.number().optional(),
     opportunityId: z.number().optional(),
     notes: z.string().min(1, 'Notes are required'),
-    nextStep: z.string().optional(),
     createFollowUp: z.boolean().default(false),
     followUpDate: z.date().optional(),
   })
