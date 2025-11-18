@@ -1,6 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { PrincipalDashboardV3 } from '../PrincipalDashboardV3';
+
+// Mock QuickLoggerPanel to avoid React Admin dependency in tests
+vi.mock('../components/QuickLoggerPanel', () => ({
+  QuickLoggerPanel: () => (
+    <div>
+      <h2>Log Activity</h2>
+      <p>Quick capture for calls, meetings, and notes</p>
+    </div>
+  ),
+}));
 
 describe('PrincipalDashboardV3', () => {
   it('should render all three panels', () => {
