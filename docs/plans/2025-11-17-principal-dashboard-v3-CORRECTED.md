@@ -37,6 +37,11 @@
 - ✅ outcome field now persisted in dataProvider.create payload
 - ✅ useCurrentSale handles legacy users with NULL user_id (email fallback)
 
+**Migration Fixes (PostgreSQL Correctness):**
+- ✅ Removed invalid RLS policy on view (views can't have RLS policies)
+- ✅ Removed invalid security_invoker option (not supported for views)
+- ✅ View security relies on base table RLS (organizations, opportunities, activities)
+
 **See:** `docs/plans/2025-11-17-dashboard-v3-SCHEMA-FIXES.md` for detailed schema analysis
 
 ---
@@ -691,6 +696,8 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
           contact_id: data.contactId,
           organization_id: data.organizationId,
           opportunity_id: data.opportunityId,
+          follow_up_required: data.createFollowUp || false,  // ✅ Track if follow-up needed
+          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split('T')[0] : null,  // ✅ Store follow-up date (DATE format YYYY-MM-DD)
           created_by: salesId,
         }
       });
