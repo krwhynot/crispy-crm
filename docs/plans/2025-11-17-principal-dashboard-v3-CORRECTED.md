@@ -25,12 +25,17 @@
 - ✅ Date picker fixed for today selection (Issue #19)
 - ✅ Loading states added (Issue #17)
 
-**Schema Fixes (Database Alignment):**
+**Schema Fixes (Database Alignment - Round 1):**
 - ✅ QuickLogForm writes to correct columns (activity_type + type + outcome)
 - ✅ "Note" option restored with enum migration
 - ✅ pipeline_value removed (opportunities have no amount field)
 - ✅ LEFT JOIN fixed (stage filter in JOIN condition, not WHERE)
 - ✅ sales_id aggregation corrected (subquery vs GROUP BY)
+
+**Schema Fixes (Database Alignment - Round 2):**
+- ✅ "Note" activity type fully restored to schema + UI + mapping
+- ✅ outcome field now persisted in dataProvider.create payload
+- ✅ useCurrentSale handles legacy users with NULL user_id (email fallback)
 
 **See:** `docs/plans/2025-11-17-dashboard-v3-SCHEMA-FIXES.md` for detailed schema analysis
 
@@ -173,21 +178,11 @@ WHERE o.organization_type = 'principal'
 -- ✅ Group only by principal fields (sales_id comes from subquery)
 GROUP BY o.id, o.name;
 
--- Enable RLS on the view
-ALTER VIEW principal_pipeline_summary SET (security_invoker = true);
-
--- Grant permissions (Two-Layer Security: GRANT + RLS)
+-- Grant permissions to authenticated users
+-- NOTE: Views inherit RLS from their base tables (organizations, opportunities, activities)
+-- All base tables already have RLS policies requiring authenticated role
+-- No additional RLS policy needed on the view itself (views can't have RLS policies)
 GRANT SELECT ON principal_pipeline_summary TO authenticated;
-
--- Create RLS policy for team-wide access
--- NOTE: View uses security_invoker, so policies apply from base tables
--- This policy allows all authenticated users to see all principals (team-wide access)
--- Client-side filtering handles "My Principals Only" toggle
-CREATE POLICY select_principal_pipeline
-ON principal_pipeline_summary
-FOR SELECT
-TO authenticated
-USING (true);
 
 -- Performance optimization: Index on activity_date for date range queries
 CREATE INDEX IF NOT EXISTS idx_activities_activity_date_not_deleted
@@ -686,8 +681,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
       // Create the activity record
       await dataProvider.create('activities', {
         data: {
-          activity_type: data.opportunityId ? 'interaction' : 'engagement',
+          activity_type: data.activityType === 'Note' ? 'engagement' : 'interaction',
           type: ACTIVITY_TYPE_MAP[data.activityType],
+          outcome: data.outcome,  // ✅ Persist user-selected outcome
           subject: data.notes.substring(0, 100) || `${data.activityType} update`,
           description: data.notes,
           activity_date: data.date.toISOString(),
@@ -768,6 +764,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                     <SelectItem value="Email">Email</SelectItem>
                     <SelectItem value="Meeting">Meeting</SelectItem>
                     <SelectItem value="Follow-up">Follow-up</SelectItem>
+                    <SelectItem value="Note">Note</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -1622,16 +1619,22 @@ export function useCurrentSale() {
 
         // Query sales table using user.id (UUID)
         // This is the ONLY correct way to get sales.id
+        // ✅ Handle legacy users with NULL user_id by falling back to email match
         const { data: sale, error: saleError } = await supabase
           .from('sales')
-          .select('id')
-          .eq('user_id', user.id) // Use user.id, NOT identity.id
+          .select('id, user_id, email')
+          .or(`user_id.eq.${user.id},email.eq.${user.email}`)
           .maybeSingle();
 
         if (saleError) throw saleError;
 
         if (sale?.id) {
           setSalesId(sale.id); // This is a number (bigint from DB)
+
+          // If this is a legacy user without user_id, log a warning
+          if (!sale.user_id) {
+            console.warn(`Sales record ${sale.id} matched by email but has NULL user_id. Consider running migration to populate user_id.`);
+          }
         }
       } catch (err) {
         console.error('Failed to fetch sales ID:', err);
