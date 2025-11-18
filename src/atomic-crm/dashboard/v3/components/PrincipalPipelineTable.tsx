@@ -21,7 +21,7 @@ import type { PrincipalPipelineRow } from '../types';
 import { usePrincipalPipeline } from '../hooks/usePrincipalPipeline';
 
 export function PrincipalPipelineTable() {
-  const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(true);
+  const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(false);
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
   const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
     switch (momentum) {
