@@ -170,13 +170,390 @@ git commit -m "feat(dashboard-v3): add type definitions for principal dashboard"
 
 ## Task 2: Create Principal Pipeline Table Component
 
-Same as original plan (lines 119-389)
+**Files:**
+- Create: `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`
+- Test: `src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx`
+
+**Step 1: Write the failing test**
+
+Create `src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx`:
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { PrincipalPipelineTable } from '../PrincipalPipelineTable';
+
+describe('PrincipalPipelineTable', () => {
+  it('should render table headers correctly', () => {
+    render(<PrincipalPipelineTable />);
+
+    expect(screen.getByText('Pipeline by Principal')).toBeInTheDocument();
+    expect(screen.getByText('Track opportunity momentum across your customer accounts')).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /principal/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /pipeline/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /this week/i })).toBeInTheDocument();
+  });
+
+  it('should apply premium hover effects class', () => {
+    const { container } = render(<PrincipalPipelineTable />);
+    const rows = container.querySelectorAll('.table-row-premium');
+    expect(rows.length).toBeGreaterThan(0);
+  });
+});
+```
+
+**Step 2: Run test to verify it fails**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx
+```
+
+Expected: FAIL with "Cannot find module '../PrincipalPipelineTable'"
+
+**Step 3: Write minimal implementation**
+
+Create `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`:
+
+```typescript
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Switch } from '@/components/ui/switch';
+import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from 'lucide-react';
+import type { PrincipalPipelineRow } from '../types';
+
+// Mock data for testing
+const mockData: PrincipalPipelineRow[] = [
+  {
+    id: 1,
+    name: 'Acme Corporation',
+    totalPipeline: 5,
+    pipelineValue: 250000,
+    activeThisWeek: 3,
+    activeLastWeek: 1,
+    momentum: 'increasing',
+    nextAction: 'Demo scheduled Friday',
+  },
+  {
+    id: 2,
+    name: 'TechCo Industries',
+    totalPipeline: 3,
+    pipelineValue: 180000,
+    activeThisWeek: 0,
+    activeLastWeek: 2,
+    momentum: 'decreasing',
+    nextAction: null,
+  },
+];
+
+export function PrincipalPipelineTable() {
+  const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
+    switch (momentum) {
+      case 'increasing':
+        return <TrendingUp className="h-4 w-4 text-success" />;
+      case 'decreasing':
+        return <TrendingDown className="h-4 w-4 text-warning" />;
+      case 'steady':
+        return <Minus className="h-4 w-4 text-muted-foreground" />;
+      case 'stale':
+        return <AlertCircle className="h-4 w-4 text-destructive" />;
+    }
+  };
+
+  return (
+    <div className="flex h-full flex-col">
+      {/* Header with title and filters */}
+      <div className="border-b border-border pb-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="text-lg font-semibold">Pipeline by Principal</h2>
+            <p className="text-sm text-muted-foreground">
+              Track opportunity momentum across your customer accounts
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <Switch id="my-principals" defaultChecked />
+              <label htmlFor="my-principals" className="text-sm">
+                My Principals Only
+              </label>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Filter className="mr-2 h-4 w-4" />
+                  Filters
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-64">
+                {/* Filter options will be added in next task */}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="flex-1 overflow-auto">
+        <Table>
+          <TableHeader className="sticky top-0 bg-background">
+            <TableRow>
+              <TableHead>Principal</TableHead>
+              <TableHead className="text-right">Pipeline</TableHead>
+              <TableHead className="text-center">This Week</TableHead>
+              <TableHead className="text-center">Last Week</TableHead>
+              <TableHead>Momentum</TableHead>
+              <TableHead>Next Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {mockData.map((row) => (
+              <TableRow key={row.id} className="table-row-premium cursor-pointer">
+                <TableCell className="font-medium">{row.name}</TableCell>
+                <TableCell className="text-right">
+                  <div>
+                    <div className="font-semibold">{row.totalPipeline}</div>
+                    <div className="text-sm text-muted-foreground">
+                      ${row.pipelineValue.toLocaleString()}
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="text-center">
+                  {row.activeThisWeek > 0 ? (
+                    <Badge variant="default" className="bg-success">
+                      {row.activeThisWeek}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell className="text-center">
+                  {row.activeLastWeek > 0 ? (
+                    <Badge variant="secondary">
+                      {row.activeLastWeek}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    {renderMomentumIcon(row.momentum)}
+                    <span className="text-sm capitalize">{row.momentum}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {row.nextAction ? (
+                    <span className="text-sm">{row.nextAction}</span>
+                  ) : (
+                    <Button variant="link" size="sm" className="h-auto p-0 text-primary">
+                      Schedule follow-up
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
+```
+
+**Step 4: Run test to verify it passes**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx
+```
+
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx
+git add src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx
+git commit -m "feat(dashboard-v3): add PrincipalPipelineTable component with mock data"
+```
 
 ---
 
 ## Task 3: Create Tasks Panel Component
 
-Same as original plan (lines 391-650)
+**Files:**
+- Create: `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`
+- Create: `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx`
+- Test: `src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx`
+
+**Step 1: Write the failing test**
+
+Create `src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx`:
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { TasksPanel } from '../TasksPanel';
+
+describe('TasksPanel', () => {
+  it('should render panel headers and helper text', () => {
+    render(<TasksPanel />);
+
+    expect(screen.getByText('My Tasks')).toBeInTheDocument();
+    expect(screen.getByText("Today's priorities and upcoming activities")).toBeInTheDocument();
+  });
+
+  it('should render task groups', () => {
+    render(<TasksPanel />);
+
+    expect(screen.getByText('Overdue')).toBeInTheDocument();
+    expect(screen.getByText('Today')).toBeInTheDocument();
+    expect(screen.getByText('Tomorrow')).toBeInTheDocument();
+  });
+
+  it('should apply interactive-card class to task items', () => {
+    const { container } = render(<TasksPanel />);
+    const cards = container.querySelectorAll('.interactive-card');
+    expect(cards.length).toBeGreaterThan(0);
+  });
+});
+```
+
+**Step 2: Run test to verify it fails**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
+```
+
+Expected: FAIL with "Cannot find module '../TasksPanel'"
+
+**Step 3: Write minimal implementation**
+
+Create `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx`:
+
+```typescript
+import { ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface TaskGroupProps {
+  title: string;
+  variant: 'danger' | 'warning' | 'info' | 'default';
+  count: number;
+  children: React.ReactNode;
+  collapsed?: boolean;
+  onToggle?: () => void;
+}
+
+export function TaskGroup({
+  title,
+  variant,
+  count,
+  children,
+  collapsed = false,
+  onToggle
+}: TaskGroupProps) {
+  const variantStyles = {
+    danger: 'border-l-destructive text-destructive',
+    warning: 'border-l-warning text-warning',
+    info: 'border-l-primary text-primary',
+    default: 'border-l-muted-foreground text-muted-foreground',
+  };
+
+  return (
+    <div className={cn('border-l-4 pl-4', variantStyles[variant])}>
+      <button
+        onClick={onToggle}
+        className="mb-2 flex w-full items-center justify-between text-left"
+      >
+        <div className="flex items-center gap-2">
+          <ChevronRight
+            className={cn(
+              'h-4 w-4 transition-transform',
+              !collapsed && 'rotate-90'
+            )}
+          />
+          <h3 className="font-semibold">{title}</h3>
+          <span className="text-sm text-muted-foreground">({count})</span>
+        </div>
+      </button>
+      {!collapsed && (
+        <div className="space-y-2">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+Create `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`:
+
+```typescript
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Clock,
+  Calendar,
+  AlertCircle,
+  CheckCircle2,
+  Phone,
+  Mail,
+  Users,
+  FileText,
+  MoreHorizontal
+} from 'lucide-react';
+import { TaskGroup } from './TaskGroup';
+import type { TaskItem } from '../types';
+
+// Mock data for testing
+const mockTasks: TaskItem[] = [
+  {
+    id: 1,
+    subject: 'Follow up on Q4 proposal',
+    dueDate: new Date(Date.now() - 86400000), // Yesterday
+    priority: 'high',
+    taskType: 'Call',
+    relatedTo: { type: 'opportunity', name: 'Q4 Enterprise Deal', id: 101 },
+    status: 'overdue',
+  },
+  {
+    id: 2,
+    subject: 'Send contract for review',
+    dueDate: new Date(), // Today
+```
+
+*(Section continues with the same implementation from the original plan.)*
+
+**Step 4: Run test to verify it passes**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
+```
+
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/TasksPanel.tsx
+git add src/atomic-crm/dashboard/v3/components/TaskGroup.tsx
+git add src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
+git commit -m "feat(dashboard-v3): add TasksPanel with grouped task display"
+```
 
 ---
 
@@ -313,6 +690,7 @@ import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { activityLogSchema, type ActivityLogInput } from '../validation/activitySchema';
+import { useCurrentSale } from '../hooks/useCurrentSale';
 
 interface QuickLogFormProps {
   onComplete: () => void;
@@ -321,6 +699,7 @@ interface QuickLogFormProps {
 export function QuickLogForm({ onComplete }: QuickLogFormProps) {
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const { salesId } = useCurrentSale();
   const [contacts, setContacts] = useState<any[]>([]);
   const [organizations, setOrganizations] = useState<any[]>([]);
   const [opportunities, setOpportunities] = useState<any[]>([]);
@@ -349,13 +728,17 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
           dataProvider.getList('opportunities', {
             pagination: { page: 1, perPage: 100 },
             sort: { field: 'name', order: 'ASC' },
-            filter: { stage: ['prospecting', 'qualification', 'proposal'] } // Open opportunities
+            filter: {}
           }),
         ]);
 
         setContacts(contactsRes.data);
         setOrganizations(orgsRes.data);
-        setOpportunities(oppsRes.data);
+        setOpportunities(
+          oppsRes.data.filter(
+            (opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage)
+          )
+        );
       } catch (error) {
         console.error('Failed to load entities:', error);
       } finally {
@@ -368,23 +751,26 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
 
   const onSubmit = async (data: ActivityLogInput) => {
     try {
-      // Create the activity record
+      // Create the activity record with correct field mappings
       await dataProvider.create('activities', {
         data: {
-          type: data.activityType,
-          outcome: data.outcome,
-          date: data.date.toISOString(),
-          duration: data.duration,
+          activity_type: 'interaction',                      // Required enum value
+          type: data.activityType.toLowerCase(),             // Map to lowercase: Call → call
+          subject: data.notes.substring(0, 100),             // Required field - first 100 chars
+          description: data.notes,                           // Full notes in description
+          activity_date: data.date.toISOString(),            // Correct field name
+          duration_minutes: data.duration,                   // Correct field name
           contact_id: data.contactId,
           organization_id: data.organizationId,
           opportunity_id: data.opportunityId,
-          notes: data.notes,
-          next_step: data.nextStep,
+          outcome: data.outcome,
+          follow_up_notes: data.nextStep,                    // Correct field name
+          created_by: salesId,                               // Required for RLS policies
         }
       });
 
-      // Create follow-up task if requested
-      if (data.createFollowUp && data.followUpDate) {
+      // Create follow-up task if requested (removed non-existent fields)
+      if (data.createFollowUp && data.followUpDate && salesId) {
         await dataProvider.create('tasks', {
           data: {
             title: `Follow-up: ${data.notes.substring(0, 50)}`,
@@ -393,6 +779,9 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
             priority: 'medium',
             contact_id: data.contactId,
             opportunity_id: data.opportunityId,
+            sales_id: salesId,
+            // Removed: organization_id (doesn't exist in tasks table)
+            // Removed: created_by (doesn't exist in tasks table)
           }
         });
       }
@@ -1139,64 +1528,94 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
       try {
         setLoading(true);
 
-        // Fetch organizations (principals)
-        const principalFilter: any = {
-          organization_type: 'principal',
-        };
-
-        // Add sales filter if "my principals only" is enabled
-        if (filters?.myPrincipalsOnly && salesId) {
-          principalFilter.account_manager_id = salesId;
-        }
-
-        const { data: principals } = await dataProvider.getList('organizations', {
-          filter: principalFilter,
-          sort: { field: 'name', order: 'ASC' },
-          pagination: { page: 1, perPage: 100 },
-        });
-
-        // Fetch all open opportunities (not using $nin, filter manually)
-        const { data: allOpportunities } = await dataProvider.getList('opportunities', {
+        // Fetch all open opportunities once (filter closed stages manually)
+        const { data: rawOpportunities } = await dataProvider.getList('opportunities', {
           filter: {},
           sort: { field: 'updated_at', order: 'DESC' },
           pagination: { page: 1, perPage: 500 },
         });
-
-        // Filter out closed opportunities manually
-        const opportunities = allOpportunities.filter(
-          (opp: any) => opp.stage !== 'closed_won' && opp.stage !== 'closed_lost'
+        const openOpportunities = rawOpportunities.filter(
+          (opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage)
         );
 
-        // Calculate metrics for each principal
+        // Determine which principals belong to the current rep if "My Principals" is toggled
+        const myPrincipalIds =
+          filters?.myPrincipalsOnly && salesId
+            ? Array.from(
+                new Set(
+                  openOpportunities
+                    .filter((opp: any) => opp.account_manager_id === salesId)
+                    .map((opp: any) => opp.principal_organization_id)
+                    .filter(Boolean)
+                )
+              )
+            : [];
+
+        // Fetch principal orgs, optionally constrained to the IDs above
+        const { data: principals } = await dataProvider.getList('organizations', {
+          filter: {
+            organization_type: 'principal',
+            ...(filters?.myPrincipalsOnly && myPrincipalIds.length > 0
+              ? { id: myPrincipalIds }
+              : {}),
+          },
+          sort: { field: 'name', order: 'ASC' },
+          pagination: { page: 1, perPage: 100 },
+        });
+
+        // Fetch recent + upcoming activities to calculate weekly momentum / next actions
         const now = new Date();
         const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+        const futureHorizon = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+
+        const { data: rawActivities } = await dataProvider.getList('activities', {
+          filter: {
+            activity_date_gte: twoWeeksAgo.toISOString(),
+            activity_date_lte: futureHorizon.toISOString(),
+          },
+          sort: { field: 'activity_date', order: 'DESC' },
+          pagination: { page: 1, perPage: 1000 },
+        });
+
+        const activitiesByOpportunity = rawActivities.reduce<Record<number, any[]>>(
+          (acc, activity: any) => {
+            if (!activity.opportunity_id) {
+              return acc;
+            }
+            if (!acc[activity.opportunity_id]) {
+              acc[activity.opportunity_id] = [];
+            }
+            acc[activity.opportunity_id].push(activity);
+            return acc;
+          },
+          {}
+        );
 
         const pipelineData: PrincipalPipelineRow[] = principals.map((principal: any) => {
-          // Filter opportunities for this principal (using principal_organization_id)
-          const principalOpps = opportunities.filter(
+          const principalOpps = openOpportunities.filter(
             (opp: any) => opp.principal_organization_id === principal.id
           );
 
-          // Calculate activity counts
-          const activeThisWeek = principalOpps.filter(
-            (opp: any) => new Date(opp.updated_at) > weekAgo
+          const activeThisWeek = principalOpps.filter((opp: any) =>
+            (activitiesByOpportunity[opp.id] || []).some((activity) => {
+              const activityDate = new Date(activity.activity_date);
+              return activityDate >= weekAgo && activityDate <= now;
+            })
           ).length;
 
-          const activeLastWeek = principalOpps.filter(
-            (opp: any) => {
-              const updated = new Date(opp.updated_at);
-              return updated > twoWeeksAgo && updated <= weekAgo;
-            }
+          const activeLastWeek = principalOpps.filter((opp: any) =>
+            (activitiesByOpportunity[opp.id] || []).some((activity) => {
+              const activityDate = new Date(activity.activity_date);
+              return activityDate >= twoWeeksAgo && activityDate < weekAgo;
+            })
           ).length;
 
-          // Calculate total pipeline value
           const pipelineValue = principalOpps.reduce(
             (sum: number, opp: any) => sum + (opp.amount || 0),
             0
           );
 
-          // Determine momentum
           let momentum: PrincipalPipelineRow['momentum'];
           if (activeThisWeek > activeLastWeek) {
             momentum = 'increasing';
@@ -1208,9 +1627,19 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
             momentum = 'steady';
           }
 
-          // Get next action (would come from activities in real implementation)
-          const nextAction = principalOpps.length > 0
-            ? `${principalOpps.length} opportunities in pipeline`
+          // Find the soonest upcoming activity for this principal
+          const upcomingActivity = principalOpps
+            .flatMap((opp: any) => activitiesByOpportunity[opp.id] || [])
+            .filter((activity) => new Date(activity.activity_date) > now)
+            .sort(
+              (a, b) =>
+                new Date(a.activity_date).getTime() - new Date(b.activity_date).getTime()
+            )[0];
+
+          const nextAction = upcomingActivity
+            ? `${upcomingActivity.type} on ${new Date(
+                upcomingActivity.activity_date
+              ).toLocaleDateString()}`
             : null;
 
           return {
@@ -1453,6 +1882,7 @@ test.describe('Principal Dashboard V3', () => {
     // Only check primary CTAs, not all buttons
     const primaryButtons = page.locator('button.h-11'); // Buttons with explicit h-11 class
     const count = await primaryButtons.count();
+    expect(count).toBeGreaterThan(0);
 
     for (let i = 0; i < count; i++) {
       const button = primaryButtons.nth(i);

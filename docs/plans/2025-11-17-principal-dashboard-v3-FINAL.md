@@ -1,4 +1,4 @@
-# Principal Dashboard V3 Implementation Plan (FINAL - All Issues Fixed)
+# Principal Dashboard V3 Implementation Plan (REVISED)
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
@@ -8,14 +8,14 @@
 
 **Tech Stack:** React, TypeScript, Tailwind CSS v4, shadcn/ui, React Admin, Supabase, Zod validation
 
-**All Critical Issues Fixed:**
-- ✅ Complete Task 2/3 specifications included (no references to missing sections)
-- ✅ Principal filtering uses `primary_account_manager_id` (correct field)
-- ✅ Follow-up tasks include `sales_id` and `created_by` fields
-- ✅ Opportunity picker excludes only closed_won/closed_lost
-- ✅ Activity metrics query from activities table (not opportunities.updated_at)
-- ✅ Next Action shows actual scheduled activities from tasks
-- ✅ Touch-target test includes robust assertions with fallback
+**Critical Fixes Applied:**
+- ✅ Fixed Supabase filter syntax (no $nin operator)
+- ✅ Fixed principal FK field name (`principal_organization_id`)
+- ✅ Fixed auth identity access (use sale.id directly)
+- ✅ Added missing Quick Logger fields (Contact/Organization/Opportunity)
+- ✅ Added follow-up date picker
+- ✅ Added actual Supabase persistence
+- ✅ Fixed touch target test to only check primary actions
 
 ---
 
@@ -168,7 +168,7 @@ git commit -m "feat(dashboard-v3): add type definitions for principal dashboard"
 
 ---
 
-## Task 2: Create Principal Pipeline Table Component (COMPLETE SPEC)
+## Task 2: Create Principal Pipeline Table Component
 
 **Files:**
 - Create: `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`
@@ -184,23 +184,20 @@ import { describe, it, expect } from 'vitest';
 import { PrincipalPipelineTable } from '../PrincipalPipelineTable';
 
 describe('PrincipalPipelineTable', () => {
-  it('should render table headers', () => {
+  it('should render table headers correctly', () => {
     render(<PrincipalPipelineTable />);
 
     expect(screen.getByText('Pipeline by Principal')).toBeInTheDocument();
-    expect(screen.getByText('Track opportunities and engagement by principal organizations')).toBeInTheDocument();
+    expect(screen.getByText('Track opportunity momentum across your customer accounts')).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /principal/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /pipeline/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /this week/i })).toBeInTheDocument();
   });
 
-  it('should have correct column headers', () => {
-    render(<PrincipalPipelineTable />);
-
-    expect(screen.getByText('Principal')).toBeInTheDocument();
-    expect(screen.getByText('Total Pipeline')).toBeInTheDocument();
-    expect(screen.getByText('Pipeline Value')).toBeInTheDocument();
-    expect(screen.getByText('Active This Week')).toBeInTheDocument();
-    expect(screen.getByText('Active Last Week')).toBeInTheDocument();
-    expect(screen.getByText('Momentum')).toBeInTheDocument();
-    expect(screen.getByText('Next Action')).toBeInTheDocument();
+  it('should apply premium hover effects class', () => {
+    const { container } = render(<PrincipalPipelineTable />);
+    const rows = container.querySelectorAll('.table-row-premium');
+    expect(rows.length).toBeGreaterThan(0);
   });
 });
 ```
@@ -218,11 +215,8 @@ Expected: FAIL with "Cannot find module '../PrincipalPipelineTable'"
 Create `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`:
 
 ```typescript
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -233,217 +227,149 @@ import {
 } from '@/components/ui/table';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  ArrowUpIcon,
-  ArrowDownIcon,
-  MinusIcon,
-  CircleIcon,
-  Settings2,
-  Filter,
-  Search,
-  TrendingUp,
-  TrendingDown,
-  Building2,
-} from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from 'lucide-react';
 import type { PrincipalPipelineRow } from '../types';
 
-// Mock data for initial implementation
+// Mock data for testing
 const mockData: PrincipalPipelineRow[] = [
   {
     id: 1,
-    name: 'Acme Restaurant Group',
-    totalPipeline: 8,
-    pipelineValue: 450000,
-    activeThisWeek: 5,
-    activeLastWeek: 3,
+    name: 'Acme Corporation',
+    totalPipeline: 5,
+    pipelineValue: 250000,
+    activeThisWeek: 3,
+    activeLastWeek: 1,
     momentum: 'increasing',
-    nextAction: 'Meeting scheduled tomorrow',
+    nextAction: 'Demo scheduled Friday',
   },
   {
     id: 2,
-    name: 'Global Foods Inc',
-    totalPipeline: 5,
-    pipelineValue: 280000,
-    activeThisWeek: 2,
-    activeLastWeek: 2,
-    momentum: 'steady',
-    nextAction: 'Follow-up call on Friday',
-  },
-  {
-    id: 3,
-    name: 'Premium Dining Co',
+    name: 'TechCo Industries',
     totalPipeline: 3,
-    pipelineValue: 150000,
+    pipelineValue: 180000,
     activeThisWeek: 0,
-    activeLastWeek: 1,
+    activeLastWeek: 2,
     momentum: 'decreasing',
-    nextAction: null,
-  },
-  {
-    id: 4,
-    name: 'Elite Hospitality',
-    totalPipeline: 2,
-    pipelineValue: 75000,
-    activeThisWeek: 0,
-    activeLastWeek: 0,
-    momentum: 'stale',
     nextAction: null,
   },
 ];
 
 export function PrincipalPipelineTable() {
-  const [data] = useState<PrincipalPipelineRow[]>(mockData);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(false);
-
-  const filteredData = data.filter(row =>
-    row.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
+    switch (momentum) {
+      case 'increasing':
+        return <TrendingUp className="h-4 w-4 text-success" />;
+      case 'decreasing':
+        return <TrendingDown className="h-4 w-4 text-warning" />;
+      case 'steady':
+        return <Minus className="h-4 w-4 text-muted-foreground" />;
+      case 'stale':
+        return <AlertCircle className="h-4 w-4 text-destructive" />;
+    }
+  };
 
   return (
-    <Card className="card-container flex h-full flex-col">
-      <CardHeader className="border-b border-border pb-3">
-        <div className="flex items-center gap-2">
-          <Building2 className="h-5 w-5 text-primary" />
+    <div className="flex h-full flex-col">
+      {/* Header with title and filters */}
+      <div className="border-b border-border pb-4">
+        <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-lg">Pipeline by Principal</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">
-              Track opportunities and engagement by principal organizations
-            </CardDescription>
+            <h2 className="text-lg font-semibold">Pipeline by Principal</h2>
+            <p className="text-sm text-muted-foreground">
+              Track opportunity momentum across your customer accounts
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <Switch id="my-principals" defaultChecked />
+              <label htmlFor="my-principals" className="text-sm">
+                My Principals Only
+              </label>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Filter className="mr-2 h-4 w-4" />
+                  Filters
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-64">
+                {/* Filter options will be added in next task */}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Green momentum = increased activity • Click row to expand details
-        </p>
-      </CardHeader>
-
-      <div className="flex items-center gap-2 border-b border-border px-4 py-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search principals..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="h-9 pl-8"
-          />
-        </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-9">
-              <Filter className="mr-2 h-3 w-3" />
-              Filters
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuCheckboxItem
-              checked={myPrincipalsOnly}
-              onCheckedChange={setMyPrincipalsOnly}
-            >
-              My Principals Only
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <Button variant="outline" size="sm" className="h-9">
-          <Settings2 className="h-3 w-3" />
-        </Button>
       </div>
 
-      <CardContent className="flex-1 overflow-auto p-0">
+      {/* Table */}
+      <div className="flex-1 overflow-auto">
         <Table>
           <TableHeader className="sticky top-0 bg-background">
             <TableRow>
-              <TableHead className="font-medium">Principal</TableHead>
-              <TableHead className="text-center">Total Pipeline</TableHead>
-              <TableHead className="text-right">Pipeline Value</TableHead>
-              <TableHead className="text-center">Active This Week</TableHead>
-              <TableHead className="text-center">Active Last Week</TableHead>
-              <TableHead className="text-center">Momentum</TableHead>
+              <TableHead>Principal</TableHead>
+              <TableHead className="text-right">Pipeline</TableHead>
+              <TableHead className="text-center">This Week</TableHead>
+              <TableHead className="text-center">Last Week</TableHead>
+              <TableHead>Momentum</TableHead>
               <TableHead>Next Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredData.map((row) => (
-              <TableRow
-                key={row.id}
-                className="table-row-premium cursor-pointer hover:bg-muted/50"
-              >
+            {mockData.map((row) => (
+              <TableRow key={row.id} className="table-row-premium cursor-pointer">
                 <TableCell className="font-medium">{row.name}</TableCell>
-                <TableCell className="text-center">
-                  <Badge variant="secondary" className="min-w-[2rem]">
-                    {row.totalPipeline}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right font-mono">
-                  ${row.pipelineValue.toLocaleString()}
+                <TableCell className="text-right">
+                  <div>
+                    <div className="font-semibold">{row.totalPipeline}</div>
+                    <div className="text-sm text-muted-foreground">
+                      ${row.pipelineValue.toLocaleString()}
+                    </div>
+                  </div>
                 </TableCell>
                 <TableCell className="text-center">
                   {row.activeThisWeek > 0 ? (
-                    <span className="font-semibold text-primary">{row.activeThisWeek}</span>
+                    <Badge variant="default" className="bg-success">
+                      {row.activeThisWeek}
+                    </Badge>
                   ) : (
-                    <span className="text-muted-foreground">0</span>
+                    <span className="text-muted-foreground">-</span>
                   )}
                 </TableCell>
-                <TableCell className="text-center text-muted-foreground">
-                  {row.activeLastWeek}
-                </TableCell>
                 <TableCell className="text-center">
-                  <MomentumBadge momentum={row.momentum} />
+                  {row.activeLastWeek > 0 ? (
+                    <Badge variant="secondary">
+                      {row.activeLastWeek}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  {row.nextAction || '—'}
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    {renderMomentumIcon(row.momentum)}
+                    <span className="text-sm capitalize">{row.momentum}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {row.nextAction ? (
+                    <span className="text-sm">{row.nextAction}</span>
+                  ) : (
+                    <Button variant="link" size="sm" className="h-auto p-0 text-primary">
+                      Schedule follow-up
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-
-        {filteredData.length === 0 && (
-          <div className="flex h-32 items-center justify-center text-muted-foreground">
-            No principals found
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
-}
-
-function MomentumBadge({ momentum }: { momentum: PrincipalPipelineRow['momentum'] }) {
-  switch (momentum) {
-    case 'increasing':
-      return (
-        <Badge variant="default" className="bg-success text-success-foreground">
-          <TrendingUp className="mr-1 h-3 w-3" />
-          Up
-        </Badge>
-      );
-    case 'decreasing':
-      return (
-        <Badge variant="secondary" className="text-warning-foreground">
-          <TrendingDown className="mr-1 h-3 w-3" />
-          Down
-        </Badge>
-      );
-    case 'steady':
-      return (
-        <Badge variant="outline">
-          <MinusIcon className="mr-1 h-3 w-3" />
-          Steady
-        </Badge>
-      );
-    case 'stale':
-      return (
-        <Badge variant="secondary" className="text-muted-foreground">
-          <CircleIcon className="mr-1 h-3 w-3" />
-          Stale
-        </Badge>
-      );
-  }
 }
 ```
 
@@ -460,15 +386,16 @@ Expected: PASS
 ```bash
 git add src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx
 git add src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx
-git commit -m "feat(dashboard-v3): add PrincipalPipelineTable component with momentum badges"
+git commit -m "feat(dashboard-v3): add PrincipalPipelineTable component with mock data"
 ```
 
 ---
 
-## Task 3: Create Tasks Panel Component (COMPLETE SPEC)
+## Task 3: Create Tasks Panel Component
 
 **Files:**
 - Create: `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`
+- Create: `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx`
 - Test: `src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx`
 
 **Step 1: Write the failing test**
@@ -476,31 +403,30 @@ git commit -m "feat(dashboard-v3): add PrincipalPipelineTable component with mom
 Create `src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx`:
 
 ```typescript
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { TasksPanel } from '../TasksPanel';
 
 describe('TasksPanel', () => {
-  it('should render panel headers', () => {
+  it('should render panel headers and helper text', () => {
     render(<TasksPanel />);
 
     expect(screen.getByText('My Tasks')).toBeInTheDocument();
-    expect(screen.getByText('Upcoming actions grouped by time')).toBeInTheDocument();
+    expect(screen.getByText("Today's priorities and upcoming activities")).toBeInTheDocument();
   });
 
-  it('should have time-based sections', () => {
+  it('should render task groups', () => {
     render(<TasksPanel />);
 
-    expect(screen.getByText(/Overdue/)).toBeInTheDocument();
-    expect(screen.getByText(/Today/)).toBeInTheDocument();
-    expect(screen.getByText(/Tomorrow/)).toBeInTheDocument();
+    expect(screen.getByText('Overdue')).toBeInTheDocument();
+    expect(screen.getByText('Today')).toBeInTheDocument();
+    expect(screen.getByText('Tomorrow')).toBeInTheDocument();
   });
 
-  it('should mark task checkboxes with correct size', () => {
-    render(<TasksPanel />);
-
-    const checkboxes = screen.getAllByRole('checkbox');
-    expect(checkboxes.length).toBeGreaterThan(0);
+  it('should apply interactive-card class to task items', () => {
+    const { container } = render(<TasksPanel />);
+    const cards = container.querySelectorAll('.interactive-card');
+    expect(cards.length).toBeGreaterThan(0);
   });
 });
 ```
@@ -515,43 +441,85 @@ Expected: FAIL with "Cannot find module '../TasksPanel'"
 
 **Step 3: Write minimal implementation**
 
+Create `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx`:
+
+```typescript
+import { ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface TaskGroupProps {
+  title: string;
+  variant: 'danger' | 'warning' | 'info' | 'default';
+  count: number;
+  children: React.ReactNode;
+  collapsed?: boolean;
+  onToggle?: () => void;
+}
+
+export function TaskGroup({
+  title,
+  variant,
+  count,
+  children,
+  collapsed = false,
+  onToggle
+}: TaskGroupProps) {
+  const variantStyles = {
+    danger: 'border-l-destructive text-destructive',
+    warning: 'border-l-warning text-warning',
+    info: 'border-l-primary text-primary',
+    default: 'border-l-muted-foreground text-muted-foreground',
+  };
+
+  return (
+    <div className={cn('border-l-4 pl-4', variantStyles[variant])}>
+      <button
+        onClick={onToggle}
+        className="mb-2 flex w-full items-center justify-between text-left"
+      >
+        <div className="flex items-center gap-2">
+          <ChevronRight
+            className={cn(
+              'h-4 w-4 transition-transform',
+              !collapsed && 'rotate-90'
+            )}
+          />
+          <h3 className="font-semibold">{title}</h3>
+          <span className="text-sm text-muted-foreground">({count})</span>
+        </div>
+      </button>
+      {!collapsed && (
+        <div className="space-y-2">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
 Create `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`:
 
 ```typescript
-import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 import {
   Clock,
   Calendar,
-  ChevronRight,
-  ChevronDown,
-  MoreHorizontal,
-  CheckSquare,
+  AlertCircle,
+  CheckCircle2,
   Phone,
   Mail,
   Users,
   FileText,
-  AlertCircle,
+  MoreHorizontal
 } from 'lucide-react';
-import type { TaskItem, TaskStatus } from '../types';
-import { format, isToday, isTomorrow } from 'date-fns';
+import { TaskGroup } from './TaskGroup';
+import type { TaskItem } from '../types';
 
-// Mock data for initial implementation
+// Mock data for testing
 const mockTasks: TaskItem[] = [
   {
     id: 1,
@@ -564,257 +532,11 @@ const mockTasks: TaskItem[] = [
   },
   {
     id: 2,
-    subject: 'Send revised contract',
+    subject: 'Send contract for review',
     dueDate: new Date(), // Today
-    priority: 'critical',
-    taskType: 'Email',
-    relatedTo: { type: 'opportunity', name: 'Annual Renewal', id: 102 },
-    status: 'today',
-  },
-  {
-    id: 3,
-    subject: 'Schedule demo with IT team',
-    dueDate: new Date(), // Today
-    priority: 'medium',
-    taskType: 'Meeting',
-    relatedTo: { type: 'contact', name: 'John Smith', id: 201 },
-    status: 'today',
-  },
-  {
-    id: 4,
-    subject: 'Check-in on implementation',
-    dueDate: new Date(Date.now() + 86400000), // Tomorrow
-    priority: 'low',
-    taskType: 'Call',
-    relatedTo: { type: 'opportunity', name: 'Pilot Program', id: 103 },
-    status: 'tomorrow',
-  },
-];
-
-interface TaskGroupProps {
-  title: string;
-  tasks: TaskItem[];
-  defaultOpen: boolean;
-  variant: 'overdue' | 'today' | 'tomorrow' | 'upcoming' | 'later';
-}
-
-export function TasksPanel() {
-  const [tasks, setTasks] = useState<TaskItem[]>(mockTasks);
-  const [completedIds, setCompletedIds] = useState<number[]>([]);
-
-  const groupedTasks = {
-    overdue: tasks.filter(t => t.status === 'overdue'),
-    today: tasks.filter(t => t.status === 'today'),
-    tomorrow: tasks.filter(t => t.status === 'tomorrow'),
-    upcoming: tasks.filter(t => t.status === 'upcoming'),
-    later: tasks.filter(t => t.status === 'later'),
-  };
-
-  const handleComplete = (taskId: number) => {
-    if (completedIds.includes(taskId)) {
-      setCompletedIds(prev => prev.filter(id => id !== taskId));
-    } else {
-      setCompletedIds(prev => [...prev, taskId]);
-    }
-  };
-
-  return (
-    <Card className="card-container flex h-full flex-col">
-      <CardHeader className="border-b border-border pb-3">
-        <div className="flex items-center gap-2">
-          <CheckSquare className="h-5 w-5 text-primary" />
-          <div>
-            <CardTitle className="text-lg">My Tasks</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">
-              Upcoming actions grouped by time
-            </CardDescription>
-          </div>
-        </div>
-        <p className="mt-2 text-xs text-muted-foreground">
-          {groupedTasks.overdue.length + groupedTasks.today.length} tasks need attention •
-          Click to complete
-        </p>
-      </CardHeader>
-
-      <ScrollArea className="flex-1">
-        <div className="space-y-1 p-4">
-          {groupedTasks.overdue.length > 0 && (
-            <TaskGroup
-              title={`Overdue (${groupedTasks.overdue.length})`}
-              tasks={groupedTasks.overdue}
-              defaultOpen={true}
-              variant="overdue"
-            />
-          )}
-
-          {groupedTasks.today.length > 0 && (
-            <TaskGroup
-              title={`Today (${groupedTasks.today.length})`}
-              tasks={groupedTasks.today}
-              defaultOpen={true}
-              variant="today"
-            />
-          )}
-
-          {groupedTasks.tomorrow.length > 0 && (
-            <TaskGroup
-              title={`Tomorrow (${groupedTasks.tomorrow.length})`}
-              tasks={groupedTasks.tomorrow}
-              defaultOpen={true}
-              variant="tomorrow"
-            />
-          )}
-
-          {groupedTasks.upcoming.length > 0 && (
-            <TaskGroup
-              title={`This Week (${groupedTasks.upcoming.length})`}
-              tasks={groupedTasks.upcoming}
-              defaultOpen={false}
-              variant="upcoming"
-            />
-          )}
-
-          {groupedTasks.later.length > 0 && (
-            <TaskGroup
-              title={`Later (${groupedTasks.later.length})`}
-              tasks={groupedTasks.later}
-              defaultOpen={false}
-              variant="later"
-            />
-          )}
-
-          {tasks.length === 0 && (
-            <div className="flex h-32 items-center justify-center text-muted-foreground">
-              No tasks - you're all caught up!
-            </div>
-          )}
-        </div>
-      </ScrollArea>
-    </Card>
-  );
-
-  function TaskGroup({ title, tasks, defaultOpen, variant }: TaskGroupProps) {
-    const [isOpen, setIsOpen] = useState(defaultOpen);
-
-    return (
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted">
-          {isOpen ? (
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-          ) : (
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-          )}
-          <span
-            className={`text-sm font-medium ${
-              variant === 'overdue' ? 'text-destructive' :
-              variant === 'today' ? 'text-primary' :
-              'text-foreground'
-            }`}
-          >
-            {title}
-          </span>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="mt-1 space-y-1">
-          {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              isCompleted={completedIds.includes(task.id)}
-              onComplete={() => handleComplete(task.id)}
-            />
-          ))}
-        </CollapsibleContent>
-      </Collapsible>
-    );
-  }
-}
-
-interface TaskCardProps {
-  task: TaskItem;
-  isCompleted: boolean;
-  onComplete: () => void;
-}
-
-function TaskCard({ task, isCompleted, onComplete }: TaskCardProps) {
-  const getTaskIcon = (type: TaskItem['taskType']) => {
-    switch (type) {
-      case 'Call':
-        return <Phone className="h-3 w-3" />;
-      case 'Email':
-        return <Mail className="h-3 w-3" />;
-      case 'Meeting':
-        return <Users className="h-3 w-3" />;
-      default:
-        return <FileText className="h-3 w-3" />;
-    }
-  };
-
-  const getPriorityColor = (priority: TaskItem['priority']) => {
-    switch (priority) {
-      case 'critical':
-        return 'text-destructive';
-      case 'high':
-        return 'text-warning';
-      case 'medium':
-        return 'text-primary';
-      default:
-        return 'text-muted-foreground';
-    }
-  };
-
-  return (
-    <div className="interactive-card group flex items-start gap-3 rounded-md border border-border p-3 hover:border-primary/50">
-      <Checkbox
-        checked={isCompleted}
-        onCheckedChange={onComplete}
-        className="mt-0.5 h-5 w-5"
-      />
-
-      <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-2">
-          <div className={isCompleted ? 'opacity-50 line-through' : ''}>
-            <p className="text-sm font-medium leading-tight">{task.subject}</p>
-            <div className="mt-1 flex flex-wrap items-center gap-2">
-              <Badge variant="outline" className="h-5 gap-1 px-1.5 text-xs">
-                {getTaskIcon(task.taskType)}
-                {task.taskType}
-              </Badge>
-              <span className="text-xs text-muted-foreground">
-                • {task.relatedTo.name}
-              </span>
-            </div>
-            {task.status === 'overdue' && (
-              <div className="mt-1 flex items-center gap-1">
-                <AlertCircle className="h-3 w-3 text-destructive" />
-                <span className="text-xs text-destructive">
-                  Due {format(task.dueDate, 'MMM d')}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 opacity-0 group-hover:opacity-100"
-              >
-                <MoreHorizontal className="h-3 w-3" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Snooze</DropdownMenuItem>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-    </div>
-  );
-}
 ```
+
+*(Section continues with the same implementation from the original plan.)*
 
 **Step 4: Run test to verify it passes**
 
@@ -828,13 +550,14 @@ Expected: PASS
 
 ```bash
 git add src/atomic-crm/dashboard/v3/components/TasksPanel.tsx
+git add src/atomic-crm/dashboard/v3/components/TaskGroup.tsx
 git add src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
-git commit -m "feat(dashboard-v3): add TasksPanel component with time-based grouping"
+git commit -m "feat(dashboard-v3): add TasksPanel with grouped task display"
 ```
 
 ---
 
-## Task 4: Create Quick Logger Component with ALL Fields (FIXED)
+## Task 4: Create Quick Logger Component with ALL Fields
 
 **Files:**
 - Create: `src/atomic-crm/dashboard/v3/components/QuickLoggerPanel.tsx`
@@ -924,7 +647,7 @@ export type ActivityLogInput = z.input<typeof activityLogSchema>;
 export type ActivityLog = z.output<typeof activityLogSchema>;
 ```
 
-Create `src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx` (with all fixes):
+Create `src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx`:
 
 ```typescript
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -976,7 +699,7 @@ interface QuickLogFormProps {
 export function QuickLogForm({ onComplete }: QuickLogFormProps) {
   const dataProvider = useDataProvider();
   const notify = useNotify();
-  const { salesId } = useCurrentSale(); // Get current sales ID
+  const { salesId } = useCurrentSale();
   const [contacts, setContacts] = useState<any[]>([]);
   const [organizations, setOrganizations] = useState<any[]>([]);
   const [opportunities, setOpportunities] = useState<any[]>([]);
@@ -1005,18 +728,17 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
           dataProvider.getList('opportunities', {
             pagination: { page: 1, perPage: 100 },
             sort: { field: 'name', order: 'ASC' },
-            filter: {} // Will filter manually below
+            filter: {}
           }),
         ]);
 
         setContacts(contactsRes.data);
         setOrganizations(orgsRes.data);
-
-        // Filter opportunities to exclude only closed ones
-        const openOpps = oppsRes.data.filter((opp: any) =>
-          opp.stage !== 'closed_won' && opp.stage !== 'closed_lost'
+        setOpportunities(
+          oppsRes.data.filter(
+            (opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage)
+          )
         );
-        setOpportunities(openOpps);
       } catch (error) {
         console.error('Failed to load entities:', error);
       } finally {
@@ -1041,7 +763,6 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
           opportunity_id: data.opportunityId,
           notes: data.notes,
           next_step: data.nextStep,
-          sales_id: salesId, // Include sales ID for tracking
         }
       });
 
@@ -1055,8 +776,9 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
             priority: 'medium',
             contact_id: data.contactId,
             opportunity_id: data.opportunityId,
-            sales_id: salesId, // Required field for tasks
-            created_by: salesId, // Track who created it
+            organization_id: data.organizationId,
+            sales_id: salesId,
+            created_by: salesId,
           }
         });
       }
@@ -1313,9 +1035,6 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
                               )}
                             />
                             {opp.name}
-                            <span className="ml-2 text-xs text-muted-foreground">
-                              ({opp.stage})
-                            </span>
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -1440,58 +1159,7 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
 }
 ```
 
-Create `src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts`:
-
-```typescript
-import { useGetIdentity } from 'react-admin';
-import { useEffect, useState } from 'react';
-import { supabase } from '@/atomic-crm/providers/supabase/supabase';
-
-export function useCurrentSale() {
-  const { identity } = useGetIdentity();
-  const [salesId, setSalesId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchSaleId = async () => {
-      if (!identity) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // Get the current user's sales record
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          setLoading(false);
-          return;
-        }
-
-        // Fetch sales record by user_id
-        const { data: sale } = await supabase
-          .from('sales')
-          .select('id')
-          .eq('user_id', user.id)
-          .single();
-
-        if (sale) {
-          setSalesId(sale.id);
-        }
-      } catch (error) {
-        console.error('Failed to fetch sales ID:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSaleId();
-  }, [identity]);
-
-  return { salesId, loading };
-}
-```
-
-Create `src/atomic-crm/dashboard/v3/components/QuickLoggerPanel.tsx` (same as before):
+Create `src/atomic-crm/dashboard/v3/components/QuickLoggerPanel.tsx`:
 
 ```typescript
 import { useState } from 'react';
@@ -1561,24 +1229,185 @@ Expected: PASS
 git add src/atomic-crm/dashboard/v3/components/QuickLoggerPanel.tsx
 git add src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx
 git add src/atomic-crm/dashboard/v3/validation/activitySchema.ts
-git add src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts
 git add src/atomic-crm/dashboard/v3/components/__tests__/QuickLoggerPanel.test.tsx
-git commit -m "feat(dashboard-v3): add QuickLoggerPanel with complete activity form and sales_id tracking"
+git commit -m "feat(dashboard-v3): add QuickLoggerPanel with complete activity form"
 ```
 
 ---
 
 ## Task 5: Create Main Dashboard Container (with SSR Guard)
 
-Same as revised plan Task 5 (lines 852-1015).
+**Files:**
+- Create: `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx`
+- Create: `src/atomic-crm/dashboard/v3/index.ts`
+- Test: `src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx`
+
+**Step 1: Write the failing test**
+
+Same as original (lines 1228-1254)
+
+**Step 2: Run test to verify it fails**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx
+```
+
+Expected: FAIL with "Cannot find module '../PrincipalDashboardV3'"
+
+**Step 3: Write minimal implementation (with SSR guard)**
+
+Create `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx`:
+
+```typescript
+import { useState, useEffect } from 'react';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/components/ui/resizable';
+import { PrincipalPipelineTable } from './components/PrincipalPipelineTable';
+import { TasksPanel } from './components/TasksPanel';
+import { QuickLoggerPanel } from './components/QuickLoggerPanel';
+
+const STORAGE_KEY = 'dashboard.v3.panelSizes';
+
+export function PrincipalDashboardV3() {
+  // SSR-safe localStorage access
+  const [sizes, setSizes] = useState<number[]>([40, 35, 25]);
+  const [mounted, setMounted] = useState(false);
+
+  // Load saved panel sizes after mount (client-side only)
+  useEffect(() => {
+    setMounted(true);
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          setSizes(JSON.parse(saved));
+        } catch (e) {
+          console.error('Failed to parse saved panel sizes');
+        }
+      }
+    }
+  }, []);
+
+  // Save panel sizes when they change
+  const handleLayout = (newSizes: number[]) => {
+    setSizes(newSizes);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSizes));
+    }
+  };
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Ctrl+L for quick log
+      if (e.ctrlKey && e.key === 'l') {
+        e.preventDefault();
+        // TODO: Focus quick logger
+      }
+
+      // Number keys for panel navigation
+      if (e.key === '1') {
+        // TODO: Focus pipeline table
+      } else if (e.key === '2') {
+        // TODO: Focus tasks panel
+      } else if (e.key === '3') {
+        // TODO: Focus quick logger
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
+  // Avoid hydration mismatch - render with defaults until mounted
+  if (!mounted) {
+    return <div className="min-h-screen bg-muted" />;
+  }
+
+  return (
+    <div className="min-h-screen bg-muted">
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="h-screen"
+        onLayout={handleLayout}
+      >
+        {/* Panel 1: Pipeline by Principal */}
+        <ResizablePanel
+          defaultSize={sizes[0]}
+          minSize={30}
+          maxSize={60}
+          className="bg-background"
+        >
+          <div className="h-full p-6">
+            <PrincipalPipelineTable />
+          </div>
+        </ResizablePanel>
+
+        <ResizableHandle className="w-1 bg-border hover:bg-primary/20 transition-colors" />
+
+        {/* Panel 2: My Tasks */}
+        <ResizablePanel
+          defaultSize={sizes[1]}
+          minSize={25}
+          maxSize={50}
+          className="bg-background"
+        >
+          <div className="h-full p-6">
+            <TasksPanel />
+          </div>
+        </ResizablePanel>
+
+        <ResizableHandle className="w-1 bg-border hover:bg-primary/20 transition-colors" />
+
+        {/* Panel 3: Quick Logger */}
+        <ResizablePanel
+          defaultSize={sizes[2]}
+          minSize={20}
+          maxSize={40}
+          className="bg-background"
+        >
+          <div className="h-full p-6">
+            <QuickLoggerPanel />
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
+}
+```
+
+Create `src/atomic-crm/dashboard/v3/index.ts`:
+
+Same as original (lines 1289-1299)
+
+**Step 4: Run test to verify it passes**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx
+```
+
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx
+git add src/atomic-crm/dashboard/v3/index.ts
+git add src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx
+git commit -m "feat(dashboard-v3): add main dashboard container with SSR guards"
+```
 
 ---
 
-## Task 6: Hook Up Data from Supabase (ALL FIXES)
+## Task 6: Hook Up Data from Supabase (FIXED)
 
 **Files:**
 - Create: `src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts`
 - Create: `src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts`
+- Create: `src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts`
 - Modify: `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`
 - Modify: `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`
 
@@ -1625,7 +1454,58 @@ Expected: FAIL with "Cannot find module '../usePrincipalPipeline'"
 
 **Step 3: Write minimal implementation**
 
-Create `src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts` (ALL FIXES):
+Create `src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts`:
+
+```typescript
+import { useGetIdentity } from 'react-admin';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/atomic-crm/providers/supabase/supabase';
+
+export function useCurrentSale() {
+  const { identity } = useGetIdentity();
+  const [salesId, setSalesId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSaleId = async () => {
+      if (!identity) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Get the current user's sales record
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          setLoading(false);
+          return;
+        }
+
+        // Fetch sales record by user_id
+        const { data: sale } = await supabase
+          .from('sales')
+          .select('id')
+          .eq('user_id', user.id)
+          .single();
+
+        if (sale) {
+          setSalesId(sale.id);
+        }
+      } catch (error) {
+        console.error('Failed to fetch sales ID:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSaleId();
+  }, [identity]);
+
+  return { salesId, loading };
+}
+```
+
+Create `src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts`:
 
 ```typescript
 import { useState, useEffect } from 'react';
@@ -1645,83 +1525,94 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
       try {
         setLoading(true);
 
-        // Fetch organizations (principals)
-        const principalFilter: any = {
-          organization_type: 'principal',
-        };
-
-        // FIX: Use correct field name primary_account_manager_id
-        if (filters?.myPrincipalsOnly && salesId) {
-          principalFilter.primary_account_manager_id = salesId;
-        }
-
-        const { data: principals } = await dataProvider.getList('organizations', {
-          filter: principalFilter,
-          sort: { field: 'name', order: 'ASC' },
-          pagination: { page: 1, perPage: 100 },
-        });
-
-        // Fetch all opportunities (filter manually since no $nin operator)
-        const { data: allOpportunities } = await dataProvider.getList('opportunities', {
+        // Fetch all open opportunities once (filter closed stages manually)
+        const { data: rawOpportunities } = await dataProvider.getList('opportunities', {
           filter: {},
           sort: { field: 'updated_at', order: 'DESC' },
           pagination: { page: 1, perPage: 500 },
         });
-
-        // FIX: Filter out only closed opportunities
-        const opportunities = allOpportunities.filter(
-          (opp: any) => opp.stage !== 'closed_won' && opp.stage !== 'closed_lost'
+        const openOpportunities = rawOpportunities.filter(
+          (opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage)
         );
 
-        // FIX: Fetch actual activities for accurate weekly metrics
-        const { data: activities } = await dataProvider.getList('activities', {
-          filter: {},
-          sort: { field: 'date', order: 'DESC' },
-          pagination: { page: 1, perPage: 1000 },
+        // Determine which principals belong to the current rep if "My Principals" is toggled
+        const myPrincipalIds =
+          filters?.myPrincipalsOnly && salesId
+            ? Array.from(
+                new Set(
+                  openOpportunities
+                    .filter((opp: any) => opp.account_manager_id === salesId)
+                    .map((opp: any) => opp.principal_organization_id)
+                    .filter(Boolean)
+                )
+              )
+            : [];
+
+        // Fetch principal orgs, optionally constrained to the IDs above
+        const { data: principals } = await dataProvider.getList('organizations', {
+          filter: {
+            organization_type: 'principal',
+            ...(filters?.myPrincipalsOnly && myPrincipalIds.length > 0
+              ? { id: myPrincipalIds }
+              : {}),
+          },
+          sort: { field: 'name', order: 'ASC' },
+          pagination: { page: 1, perPage: 100 },
         });
 
-        // FIX: Fetch tasks to show real next actions
-        const { data: tasks } = await dataProvider.getList('tasks', {
-          filter: { completed: false },
-          sort: { field: 'due_date', order: 'ASC' },
-          pagination: { page: 1, perPage: 500 },
-        });
-
-        // Calculate metrics for each principal
+        // Fetch recent + upcoming activities to calculate weekly momentum / next actions
         const now = new Date();
         const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+        const futureHorizon = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+
+        const { data: rawActivities } = await dataProvider.getList('activities', {
+          filter: {
+            activity_date_gte: twoWeeksAgo.toISOString(),
+            activity_date_lte: futureHorizon.toISOString(),
+          },
+          sort: { field: 'activity_date', order: 'DESC' },
+          pagination: { page: 1, perPage: 1000 },
+        });
+
+        const activitiesByOpportunity = rawActivities.reduce<Record<number, any[]>>(
+          (acc, activity: any) => {
+            if (!activity.opportunity_id) {
+              return acc;
+            }
+            if (!acc[activity.opportunity_id]) {
+              acc[activity.opportunity_id] = [];
+            }
+            acc[activity.opportunity_id].push(activity);
+            return acc;
+          },
+          {}
+        );
 
         const pipelineData: PrincipalPipelineRow[] = principals.map((principal: any) => {
-          // Filter opportunities for this principal using correct FK
-          const principalOpps = opportunities.filter(
+          const principalOpps = openOpportunities.filter(
             (opp: any) => opp.principal_organization_id === principal.id
           );
 
-          // FIX: Calculate activity counts from activities table, not opportunities.updated_at
-          const principalOppIds = principalOpps.map((opp: any) => opp.id);
-          const principalActivities = activities.filter(
-            (act: any) => principalOppIds.includes(act.opportunity_id)
-          );
-
-          const activeThisWeek = principalActivities.filter(
-            (act: any) => new Date(act.date) > weekAgo
+          const activeThisWeek = principalOpps.filter((opp: any) =>
+            (activitiesByOpportunity[opp.id] || []).some((activity) => {
+              const activityDate = new Date(activity.activity_date);
+              return activityDate >= weekAgo && activityDate <= now;
+            })
           ).length;
 
-          const activeLastWeek = principalActivities.filter(
-            (act: any) => {
-              const actDate = new Date(act.date);
-              return actDate > twoWeeksAgo && actDate <= weekAgo;
-            }
+          const activeLastWeek = principalOpps.filter((opp: any) =>
+            (activitiesByOpportunity[opp.id] || []).some((activity) => {
+              const activityDate = new Date(activity.activity_date);
+              return activityDate >= twoWeeksAgo && activityDate < weekAgo;
+            })
           ).length;
 
-          // Calculate total pipeline value
           const pipelineValue = principalOpps.reduce(
             (sum: number, opp: any) => sum + (opp.amount || 0),
             0
           );
 
-          // Determine momentum
           let momentum: PrincipalPipelineRow['momentum'];
           if (activeThisWeek > activeLastWeek) {
             momentum = 'increasing';
@@ -1733,15 +1624,19 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
             momentum = 'steady';
           }
 
-          // FIX: Get next action from actual tasks, not placeholder text
-          const principalTasks = tasks.filter((task: any) => {
-            // Find tasks related to this principal's opportunities
-            return principalOppIds.includes(task.opportunity_id);
-          });
+          // Find the soonest upcoming activity for this principal
+          const upcomingActivity = principalOpps
+            .flatMap((opp: any) => activitiesByOpportunity[opp.id] || [])
+            .filter((activity) => new Date(activity.activity_date) > now)
+            .sort(
+              (a, b) =>
+                new Date(a.activity_date).getTime() - new Date(b.activity_date).getTime()
+            )[0];
 
-          const nextTask = principalTasks[0]; // Already sorted by due_date ASC
-          const nextAction = nextTask
-            ? `${nextTask.type}: ${nextTask.title} (${new Date(nextTask.due_date).toLocaleDateString()})`
+          const nextAction = upcomingActivity
+            ? `${upcomingActivity.type} on ${new Date(
+                upcomingActivity.activity_date
+              ).toLocaleDateString()}`
             : null;
 
           return {
@@ -1779,7 +1674,7 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
 }
 ```
 
-Create `src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts` (same as before but already correct):
+Create `src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts`:
 
 ```typescript
 import { useState, useEffect } from 'react';
@@ -1914,26 +1809,27 @@ export function useMyTasks() {
 
 **Step 4: Update components to use real data**
 
-Same approach as original, but components will now work correctly with all fixes.
+Same approach as original, but components will now work correctly.
 
 **Step 5: Commit**
 
 ```bash
 git add src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts
 git add src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts
+git add src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts
 git add src/atomic-crm/dashboard/v3/hooks/__tests__/usePrincipalPipeline.test.ts
-git commit -m "feat(dashboard-v3): add data hooks with ALL fixes - correct field names, activity queries, next actions"
+git commit -m "feat(dashboard-v3): add data hooks with correct Supabase filters and auth"
 ```
 
 ---
 
 ## Task 7: Add Route and Navigation
 
-Same as original Task 7.
+Same as original (lines 1665-1688)
 
 ---
 
-## Task 8: Final Integration Testing (ROBUST ASSERTIONS)
+## Task 8: Final Integration Testing (FIXED)
 
 **Files:**
 - Create: `tests/e2e/dashboard-v3/dashboard-v3.spec.ts`
@@ -1979,50 +1875,19 @@ test.describe('Principal Dashboard V3', () => {
     await expect(page.getByLabel('Opportunity')).toBeVisible();
   });
 
-  test('should verify primary action buttons have 44px height', async ({ page }) => {
-    // FIX: More robust test with fallback assertion
+  test('should only check primary action buttons for 44px height', async ({ page }) => {
+    // Only check primary CTAs, not all buttons
+    const primaryButtons = page.locator('button.h-11'); // Buttons with explicit h-11 class
+    const count = await primaryButtons.count();
+    expect(count).toBeGreaterThan(0);
 
-    // First, try to find buttons with explicit h-11 class (our primary CTAs)
-    const primaryButtons = page.locator('button.h-11');
-    const primaryCount = await primaryButtons.count();
-
-    if (primaryCount > 0) {
-      // Check explicit h-11 buttons
-      for (let i = 0; i < primaryCount; i++) {
-        const button = primaryButtons.nth(i);
-        const box = await button.boundingBox();
-        if (box) {
-          expect(box.height).toBeGreaterThanOrEqual(44);
-        }
-      }
-    } else {
-      // Fallback: Check specific known primary buttons
-      const newActivityButton = page.getByRole('button', { name: /new activity/i });
-      const saveButtons = page.getByRole('button', { name: /save/i });
-
-      // At least one primary button must exist
-      const newActivityExists = await newActivityButton.isVisible().catch(() => false);
-
-      if (newActivityExists) {
-        const box = await newActivityButton.boundingBox();
-        expect(box?.height).toBeGreaterThanOrEqual(44);
-      }
-
-      // Check save buttons if form is open
-      const saveCount = await saveButtons.count();
-      if (saveCount > 0) {
-        for (let i = 0; i < saveCount; i++) {
-          const button = saveButtons.nth(i);
-          const box = await button.boundingBox();
-          if (box) {
-            expect(box.height).toBeGreaterThanOrEqual(44);
-          }
-        }
+    for (let i = 0; i < count; i++) {
+      const button = primaryButtons.nth(i);
+      const box = await button.boundingBox();
+      if (box) {
+        expect(box.height).toBeGreaterThanOrEqual(44);
       }
     }
-
-    // Assert that at least some primary CTAs were tested
-    expect(primaryCount + await saveButtons.count()).toBeGreaterThan(0);
   });
 
   test('should show follow-up date picker when toggle is enabled', async ({ page }) => {
@@ -2068,7 +1933,7 @@ Expected: PASS
 
 ```bash
 git add tests/e2e/dashboard-v3/dashboard-v3.spec.ts
-git commit -m "test(dashboard-v3): add E2E tests with robust touch-target assertions"
+git commit -m "test(dashboard-v3): add E2E tests with fixed assertions"
 ```
 
 ---
@@ -2080,28 +1945,26 @@ git commit -m "test(dashboard-v3): add E2E tests with robust touch-target assert
 - [ ] E2E tests pass: `npm run test:e2e -- dashboard-v3`
 - [ ] Build succeeds: `npm run build`
 - [ ] No console errors at runtime
-- [ ] Touch-target test includes fallback assertions
+- [ ] Primary action buttons are 44px (not all buttons)
 - [ ] No inline CSS variables (only semantic utilities)
 - [ ] Desktop viewport tested (1440px)
 - [ ] Tablet viewport tested (768px)
 - [ ] Panel resize works and persists
 - [ ] Keyboard shortcuts work (Ctrl+L, 1-3 keys)
-- [ ] Activities save with sales_id
-- [ ] Follow-up tasks include sales_id and created_by
-- [ ] Opportunities exclude only closed_won/closed_lost
-- [ ] Activity metrics come from activities table
-- [ ] Next actions show real scheduled tasks
+- [ ] Activities save to database
+- [ ] Follow-up tasks are created when requested
 
 ---
 
-## All Issues Fixed Summary
+## Critical Fixes Summary
 
-1. **Task 2/3 specs**: Complete specifications included, no missing references
-2. **Principal filtering**: Uses `primary_account_manager_id` (correct field)
-3. **Follow-up tasks**: Include required `sales_id` and `created_by` fields
-4. **Opportunity picker**: Excludes only closed_won/closed_lost (all open stages available)
-5. **Activity metrics**: Query from activities table for accurate weekly counts
-6. **Next Action**: Shows actual scheduled tasks with dates, not placeholder text
-7. **Touch-target test**: Robust assertions with fallback checks for known primary buttons
+1. **Supabase Filtering**: Removed `$nin` operator, filter opportunities manually in JavaScript
+2. **Principal FK**: Use `principal_organization_id` not `organization_id`
+3. **Sales ID**: Created `useCurrentSale` hook to fetch sales ID from auth user
+4. **Quick Logger Fields**: Added Contact/Organization/Opportunity comboboxes
+5. **Follow-up Date**: Added date picker that appears when toggle is enabled
+6. **Data Persistence**: Activities and follow-up tasks save to Supabase
+7. **Touch Targets**: Test only checks primary buttons with `h-11` class
+8. **SSR Safety**: Added mounted state and typeof window checks for localStorage
 
-This plan is now complete, self-contained, and ready for execution with all critical issues resolved.
+These fixes ensure the dashboard will actually work with Atomic CRM's real data models and auth system.
