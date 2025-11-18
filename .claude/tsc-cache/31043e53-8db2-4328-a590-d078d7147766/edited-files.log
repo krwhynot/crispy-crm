@@ -20,3 +20,17 @@
 1763446188:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/index.ts:src
 1763446370:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts:src
 1763446396:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts:src
+1763446416:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts:src
+1763446440:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts:src
+1763446463:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts:src
+1763446493:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx:src
+1763446510:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx:src
+1763446519:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx:src
+1763446540:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/TasksPanel.tsx:src
+1763446552:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/TasksPanel.tsx:src
+1763446564:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/TasksPanel.tsx:src
+1763446572:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/TasksPanel.tsx:src
+1763446580:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/TasksPanel.tsx:src
+1763446619:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx:src
+1763446637:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx:src
+1763446649:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx:src
