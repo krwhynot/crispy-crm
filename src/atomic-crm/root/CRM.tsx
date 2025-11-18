@@ -179,6 +179,7 @@ export const CRM = ({
 
         <CustomRoutes>
           <Route path="/dashboard" element={<PrincipalDashboard />} />
+          <Route path="/dashboard-v2" element={<PrincipalDashboardV2 />} />
           <Route
             path="/dashboard-v3"
             element={
