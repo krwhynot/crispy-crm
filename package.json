@@ -41,6 +41,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
+    "test:e2e:seed:dashboard-v3": "./scripts/seed-e2e-dashboard-v3.sh",
+    "test:e2e:seed:dashboard-v3:cloud": "./scripts/seed-e2e-dashboard-v3.sh --cloud",
     "mcp:test": "npx @playwright/mcp@latest --browser chromium --base-url http://127.0.0.1:5173",
     "mcp:test:ipad": "npx @playwright/mcp@latest --browser chromium --device 'iPad Pro' --viewport-size 768x1024 --base-url http://127.0.0.1:5173",
     "mcp:test:desktop": "npx @playwright/mcp@latest --browser chromium --viewport-size 1440x900 --base-url http://127.0.0.1:5173",
