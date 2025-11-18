@@ -51,7 +51,6 @@ describe('Dashboard V3 Types', () => {
       id: 1,
       name: 'Acme Corp',
       totalPipeline: 5,
-      pipelineValue: 0,
       activeThisWeek: 2,
       activeLastWeek: 3,
       momentum: 'increasing',
@@ -103,7 +102,6 @@ export interface PrincipalPipelineRow {
   id: number;
   name: string;
   totalPipeline: number;
-  pipelineValue: number;
   activeThisWeek: number;
   activeLastWeek: number;
   momentum: Momentum;
@@ -242,7 +240,6 @@ const mockData: PrincipalPipelineRow[] = [
     id: 1,
     name: 'Acme Corporation',
     totalPipeline: 5,
-    pipelineValue: 250000,
     activeThisWeek: 3,
     activeLastWeek: 1,
     momentum: 'increasing',
@@ -252,7 +249,6 @@ const mockData: PrincipalPipelineRow[] = [
     id: 2,
     name: 'TechCo Industries',
     totalPipeline: 3,
-    pipelineValue: 180000,
     activeThisWeek: 0,
     activeLastWeek: 2,
     momentum: 'decreasing',
@@ -325,12 +321,7 @@ export function PrincipalPipelineTable() {
               <TableRow key={row.id} className="table-row-premium cursor-pointer">
                 <TableCell className="font-medium">{row.name}</TableCell>
                 <TableCell className="text-right">
-                  <div>
-                    <div className="font-semibold">{row.totalPipeline}</div>
-                    <div className="text-sm text-muted-foreground">
-                      ${row.pipelineValue.toLocaleString()}
-                    </div>
-                  </div>
+                  <div className="font-semibold">{row.totalPipeline}</div>
                 </TableCell>
                 <TableCell className="text-center">
                   {row.activeThisWeek > 0 ? (
@@ -1638,11 +1629,6 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
             })
           ).length;
 
-          const pipelineValue = principalOpps.reduce(
-            (sum: number, opp: any) => sum + (opp.amount || 0),
-            0
-          );
-
           let momentum: PrincipalPipelineRow['momentum'];
           if (activeThisWeek > activeLastWeek) {
             momentum = 'increasing';
@@ -1673,7 +1659,6 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
             id: principal.id,
             name: principal.name,
             totalPipeline: principalOpps.length,
-            pipelineValue,
             activeThisWeek,
             activeLastWeek,
             momentum,
@@ -1681,12 +1666,12 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
           };
         });
 
-        // Sort by active this week DESC, then pipeline value
+        // Sort by active this week DESC, then total pipeline count
         pipelineData.sort((a, b) => {
           if (a.activeThisWeek !== b.activeThisWeek) {
             return b.activeThisWeek - a.activeThisWeek;
           }
-          return b.pipelineValue - a.pipelineValue;
+          return b.totalPipeline - a.totalPipeline;
         });
 
         setData(pipelineData);
