@@ -8,6 +8,7 @@ ALTER TYPE interaction_type ADD VALUE IF NOT EXISTS 'note';
 -- Create the view
 CREATE OR REPLACE VIEW principal_pipeline_summary AS
 SELECT
+  o.id as id,  -- React Admin requires 'id'
   o.id as principal_id,
   o.name as principal_name,
 
