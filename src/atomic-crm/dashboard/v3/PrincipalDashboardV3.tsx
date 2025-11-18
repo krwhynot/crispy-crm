@@ -1,0 +1,77 @@
+import { useState } from 'react';
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from '@/components/ui/resizable';
+import { PrincipalPipelineTable } from './components/PrincipalPipelineTable';
+import { TasksPanel } from './components/TasksPanel';
+import { QuickLoggerPanel } from './components/QuickLoggerPanel';
+
+const STORAGE_KEY = 'principal-dashboard-v3-layout';
+
+export function PrincipalDashboardV3() {
+  // Client-side-safe localStorage read
+  const [sizes, setSizes] = useState<number[]>(() => {
+    if (typeof window === 'undefined') return [40, 30, 30];
+
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length === 3) {
+          return parsed;
+        }
+      } catch {
+        // Invalid JSON, use defaults
+      }
+    }
+    return [40, 30, 30];
+  });
+
+  const handleLayoutChange = (newSizes: number[]) => {
+    setSizes(newSizes);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSizes));
+    }
+  };
+
+  return (
+    <div className="flex h-screen flex-col">
+      {/* Header */}
+      <header className="border-b border-border bg-card">
+        <div className="flex h-16 items-center px-6">
+          <h1 className="text-xl font-semibold">Principal Dashboard</h1>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-hidden p-4">
+        <ResizablePanelGroup
+          direction="horizontal"
+          onLayout={handleLayoutChange}
+          className="h-full gap-4"
+        >
+          {/* Panel 1: Pipeline by Principal */}
+          <ResizablePanel defaultSize={sizes[0]} minSize={25}>
+            <PrincipalPipelineTable />
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          {/* Panel 2: My Tasks */}
+          <ResizablePanel defaultSize={sizes[1]} minSize={20}>
+            <TasksPanel />
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
+
+          {/* Panel 3: Quick Logger */}
+          <ResizablePanel defaultSize={sizes[2]} minSize={20}>
+            <QuickLoggerPanel />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    </div>
+  );
+}
