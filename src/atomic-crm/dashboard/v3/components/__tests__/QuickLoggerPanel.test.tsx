@@ -1,6 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { QuickLoggerPanel } from '../QuickLoggerPanel';
+
+// Mock QuickLogForm to avoid React Admin dependency in tests
+vi.mock('../QuickLogForm', () => ({
+  QuickLogForm: ({ onComplete }: any) => (
+    <div data-testid="quick-log-form">
+      <label htmlFor="activity-type">Activity Type</label>
+      <select id="activity-type">
+        <option>Call</option>
+      </select>
+      <button onClick={onComplete}>Cancel</button>
+    </div>
+  ),
+}));
 
 describe('QuickLoggerPanel', () => {
   it('should render panel headers', () => {
