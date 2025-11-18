@@ -3,3 +3,11 @@
 1763442844:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx:src
 1763442886:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx:src
 1763444634:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx:src
+1763444654:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/TaskGroup.tsx:src
+1763444681:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/TasksPanel.tsx:src
+1763444760:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/__tests__/QuickLoggerPanel.test.tsx:src
+1763444796:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/validation/activitySchema.ts:src
+1763444808:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts:src
+1763444868:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx:src
+1763444884:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/QuickLoggerPanel.tsx:src
+1763444980:/home/krwhynot/projects/crispy-crm/src/components/ui/form.tsx:src
