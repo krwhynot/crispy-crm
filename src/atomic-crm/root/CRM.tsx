@@ -175,6 +175,14 @@ export const CRM = ({
 
         <CustomRoutes>
           <Route path="/dashboard" element={<PrincipalDashboard />} />
+          <Route
+            path="/dashboard-v3"
+            element={
+              <DashboardErrorBoundary>
+                <PrincipalDashboardV3 />
+              </DashboardErrorBoundary>
+            }
+          />
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
