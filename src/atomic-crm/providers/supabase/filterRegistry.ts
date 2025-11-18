@@ -319,6 +319,19 @@ export const filterableFields: Record<string, string[]> = {
     "contact_id",
     "contact_name",
   ],
+
+  // Dashboard V3 - Principal Pipeline Summary View
+  // Database view with aggregated pipeline metrics and momentum indicators
+  principal_pipeline_summary: [
+    "principal_id",
+    "principal_name",
+    "total_pipeline",
+    "active_this_week",
+    "active_last_week",
+    "momentum", // Enum: increasing/steady/decreasing/stale
+    "next_action_summary",
+    "sales_id",
+  ],
 };
 
 /**
