@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Clock,
   Calendar,
@@ -15,42 +16,14 @@ import {
 } from 'lucide-react';
 import { TaskGroup } from './TaskGroup';
 import type { TaskItem } from '../types';
-
-// Mock data for testing
-const mockTasks: TaskItem[] = [
-  {
-    id: 1,
-    subject: 'Follow up on Q4 proposal',
-    dueDate: new Date(Date.now() - 86400000), // Yesterday
-    priority: 'high',
-    taskType: 'Call',
-    relatedTo: { type: 'opportunity', name: 'Q4 Enterprise Deal', id: 101 },
-    status: 'overdue',
-  },
-  {
-    id: 2,
-    subject: 'Send contract for review',
-    dueDate: new Date(), // Today
-    priority: 'critical',
-    taskType: 'Email',
-    relatedTo: { type: 'contact', name: 'John Smith', id: 202 },
-    status: 'today',
-  },
-  {
-    id: 3,
-    subject: 'Schedule demo meeting',
-    dueDate: new Date(Date.now() + 86400000), // Tomorrow
-    priority: 'medium',
-    taskType: 'Meeting',
-    relatedTo: { type: 'organization', name: 'TechCorp', id: 303 },
-    status: 'tomorrow',
-  },
-];
+import { useMyTasks } from '../hooks/useMyTasks';
 
 export function TasksPanel() {
-  const overdueTasks = mockTasks.filter(t => t.status === 'overdue');
-  const todayTasks = mockTasks.filter(t => t.status === 'today');
-  const tomorrowTasks = mockTasks.filter(t => t.status === 'tomorrow');
+  const { tasks, loading, error, completeTask } = useMyTasks();
+
+  const overdueTasks = tasks.filter(t => t.status === 'overdue');
+  const todayTasks = tasks.filter(t => t.status === 'today');
+  const tomorrowTasks = tasks.filter(t => t.status === 'tomorrow');
 
   const getTaskIcon = (type: TaskItem['taskType']) => {
     switch(type) {
@@ -71,6 +44,40 @@ export function TasksPanel() {
       default: return 'outline';
     }
   };
+
+  if (loading) {
+    return (
+      <Card className="card-container flex h-full flex-col">
+        <CardHeader className="border-b border-border pb-3">
+          <Skeleton className="mb-2 h-6 w-32" />
+          <Skeleton className="h-4 w-64" />
+        </CardHeader>
+        <CardContent className="flex-1 p-4">
+          <div className="space-y-3">
+            {[1, 2, 3].map(i => (
+              <Skeleton key={i} className="h-16 w-full" />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="card-container flex h-full flex-col">
+        <CardHeader>
+          <CardTitle>My Tasks</CardTitle>
+        </CardHeader>
+        <CardContent className="flex h-full items-center justify-center">
+          <div className="text-center">
+            <p className="text-destructive">Failed to load tasks</p>
+            <p className="text-sm text-muted-foreground">{error.message}</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="card-container flex h-full flex-col">
@@ -99,7 +106,7 @@ export function TasksPanel() {
           {overdueTasks.length > 0 && (
             <TaskGroup title="Overdue" variant="danger" count={overdueTasks.length}>
               {overdueTasks.map(task => (
-                <TaskItemComponent key={task.id} task={task} />
+                <TaskItemComponent key={task.id} task={task} onComplete={completeTask} />
               ))}
             </TaskGroup>
           )}
@@ -107,14 +114,14 @@ export function TasksPanel() {
           {/* Today section */}
           <TaskGroup title="Today" variant="warning" count={todayTasks.length}>
             {todayTasks.map(task => (
-              <TaskItemComponent key={task.id} task={task} />
+              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} />
             ))}
           </TaskGroup>
 
           {/* Tomorrow section */}
           <TaskGroup title="Tomorrow" variant="info" count={tomorrowTasks.length}>
             {tomorrowTasks.map(task => (
-              <TaskItemComponent key={task.id} task={task} />
+              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} />
             ))}
           </TaskGroup>
         </div>
@@ -123,7 +130,7 @@ export function TasksPanel() {
   );
 }
 
-function TaskItemComponent({ task }: { task: TaskItem }) {
+function TaskItemComponent({ task, onComplete }: { task: TaskItem; onComplete: (taskId: number) => Promise<void> }) {
   const getTaskIcon = (type: TaskItem['taskType']) => {
     switch(type) {
       case 'Call': return <Phone className="h-4 w-4" />;
@@ -146,7 +153,14 @@ function TaskItemComponent({ task }: { task: TaskItem }) {
 
   return (
     <div className="interactive-card flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2">
-      <Checkbox className="h-5 w-5" />
+      <Checkbox
+        className="h-5 w-5"
+        onCheckedChange={(checked) => {
+          if (checked) {
+            onComplete(task.id);
+          }
+        }}
+      />
 
       <div className="flex-1">
         <div className="flex items-center gap-2">

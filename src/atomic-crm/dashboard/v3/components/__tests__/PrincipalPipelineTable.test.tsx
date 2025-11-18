@@ -1,6 +1,25 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { PrincipalPipelineTable } from '../PrincipalPipelineTable';
+
+// Mock the usePrincipalPipeline hook
+vi.mock('../../hooks/usePrincipalPipeline', () => ({
+  usePrincipalPipeline: () => ({
+    data: [
+      {
+        id: 1,
+        name: 'Acme Corporation',
+        totalPipeline: 5,
+        activeThisWeek: 3,
+        activeLastWeek: 1,
+        momentum: 'increasing',
+        nextAction: 'Demo scheduled Friday',
+      },
+    ],
+    loading: false,
+    error: null,
+  }),
+}));
 
 describe('PrincipalPipelineTable', () => {
   it('should render table headers correctly', () => {
