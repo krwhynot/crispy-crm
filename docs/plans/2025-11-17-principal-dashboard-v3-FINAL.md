@@ -620,19 +620,24 @@ export const activityOutcomeSchema = z.enum([
   'Rescheduled',
 ]);
 
-export const activityLogSchema = z.object({
-  activityType: activityTypeSchema,
-  outcome: activityOutcomeSchema,
-  date: z.date().default(() => new Date()),
-  duration: z.number().min(0).optional(),
-  contactId: z.number().optional(),
-  organizationId: z.number().optional(),
-  opportunityId: z.number().optional(),
-  notes: z.string().min(1, 'Notes are required'),
-  nextStep: z.string().optional(),
-  createFollowUp: z.boolean().default(false),
-  followUpDate: z.date().optional(),
-});
+export const activityLogSchema = z
+  .object({
+    activityType: activityTypeSchema,
+    outcome: activityOutcomeSchema,
+    date: z.date().default(() => new Date()),
+    duration: z.number().min(0).optional(),
+    contactId: z.number().optional(),
+    organizationId: z.number().optional(),
+    opportunityId: z.number().optional(),
+    notes: z.string().min(1, 'Notes are required'),
+    nextStep: z.string().optional(),
+    createFollowUp: z.boolean().default(false),
+    followUpDate: z.date().optional(),
+  })
+  .refine(
+    (data) => data.contactId || data.organizationId,
+    { message: 'Select a contact or organization before logging', path: ['contactId'] }
+  );
 
 export type ActivityLogInput = z.input<typeof activityLogSchema>;
 export type ActivityLog = z.output<typeof activityLogSchema>;
@@ -745,15 +750,18 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
       // Create the activity record
       await dataProvider.create('activities', {
         data: {
-          type: data.activityType,
-          outcome: data.outcome,
-          date: data.date.toISOString(),
-          duration: data.duration,
+          activity_type: data.opportunityId ? 'interaction' : 'engagement',
+          type: data.activityType.toLowerCase(), // Correct column name is 'type'
+          subject: data.notes.substring(0, 100) || `${data.activityType} update`,
+          description: data.notes,
+          activity_date: data.date.toISOString(),
+          duration_minutes: data.duration,
           contact_id: data.contactId,
           organization_id: data.organizationId,
           opportunity_id: data.opportunityId,
-          notes: data.notes,
-          next_step: data.nextStep,
+          created_by: salesId, // Required field for RLS
+          // Note: 'outcome' and 'next_step' fields don't exist in activities table
+          // Store in description or follow_up_notes if needed
         }
       });
 
@@ -1248,6 +1256,7 @@ Expected: FAIL with "Cannot find module '../PrincipalDashboardV3'"
 **Step 3: Write minimal implementation (with SSR guard)**
 
 Create `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx`:
+> **Dependency prerequisite:** run `npx shadcn-ui@latest add resizable` (or install `react-resizable-panels`) so the `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle` components exist before wiring this container.
 
 ```typescript
 import { useState, useEffect } from 'react';
@@ -1465,21 +1474,19 @@ export function useCurrentSale() {
       }
 
       try {
-        // Get the current user's sales record
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
           setLoading(false);
           return;
         }
 
-        // Fetch sales record by user_id
         const { data: sale } = await supabase
           .from('sales')
           .select('id')
-          .eq('user_id', user.id)
-          .single();
+          .or(`user_id.eq.${user.id},id.eq.${identity.id}`)
+          .maybeSingle();
 
-        if (sale) {
+        if (sale?.id) {
           setSalesId(sale.id);
         }
       } catch (error) {
@@ -1495,6 +1502,8 @@ export function useCurrentSale() {
   return { salesId, loading };
 }
 ```
+
+> **Database prerequisite:** Add a view/materialized view (`principal_pipeline_summary`) that returns aggregated metrics per principal (open counts, pipeline value, weekly activity, next action summary, owning sales_id) so the UI only pulls summarized rows.
 
 Create `src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts`:
 
@@ -1516,136 +1525,24 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
       try {
         setLoading(true);
 
-        // Fetch all open opportunities once (filter closed stages manually)
-        const { data: rawOpportunities } = await dataProvider.getList('opportunities', {
-          filter: {},
-          sort: { field: 'updated_at', order: 'DESC' },
-          pagination: { page: 1, perPage: 500 },
-        });
-        const openOpportunities = rawOpportunities.filter(
-          (opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage)
-        );
-
-        // Determine which principals belong to the current rep if "My Principals" is toggled
-        const myPrincipalIds =
-          filters?.myPrincipalsOnly && salesId
-            ? Array.from(
-                new Set(
-                  openOpportunities
-                    .filter((opp: any) => opp.account_manager_id === salesId)
-                    .map((opp: any) => opp.principal_organization_id)
-                    .filter(Boolean)
-                )
-              )
-            : [];
-
-        // Fetch principal orgs, optionally constrained to the IDs above
-        const { data: principals } = await dataProvider.getList('organizations', {
-          filter: {
-            organization_type: 'principal',
-            ...(filters?.myPrincipalsOnly && myPrincipalIds.length > 0
-              ? { id: myPrincipalIds }
-              : {}),
-          },
-          sort: { field: 'name', order: 'ASC' },
+        const { data: summary } = await dataProvider.getList('principal_pipeline_summary', {
+          filter: filters?.myPrincipalsOnly && salesId ? { sales_id: salesId } : {},
+          sort: { field: 'active_this_week', order: 'DESC' },
           pagination: { page: 1, perPage: 100 },
         });
 
-        // Fetch recent + upcoming activities to calculate weekly momentum / next actions
-        const now = new Date();
-        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
-        const futureHorizon = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
-
-        const { data: rawActivities } = await dataProvider.getList('activities', {
-          filter: {
-            activity_date_gte: twoWeeksAgo.toISOString(),
-            activity_date_lte: futureHorizon.toISOString(),
-          },
-          sort: { field: 'activity_date', order: 'DESC' },
-          pagination: { page: 1, perPage: 1000 },
-        });
-
-        const activitiesByOpportunity = rawActivities.reduce<Record<number, any[]>>(
-          (acc, activity: any) => {
-            if (!activity.opportunity_id) {
-              return acc;
-            }
-            if (!acc[activity.opportunity_id]) {
-              acc[activity.opportunity_id] = [];
-            }
-            acc[activity.opportunity_id].push(activity);
-            return acc;
-          },
-          {}
+        setData(
+          summary.map((row: any) => ({
+            id: row.principal_id,
+            name: row.principal_name,
+            totalPipeline: row.total_pipeline,
+            pipelineValue: row.pipeline_value,
+            activeThisWeek: row.active_this_week,
+            activeLastWeek: row.active_last_week,
+            momentum: row.momentum as PrincipalPipelineRow['momentum'],
+            nextAction: row.next_action_summary,
+          }))
         );
-
-        const pipelineData: PrincipalPipelineRow[] = principals.map((principal: any) => {
-          const principalOpps = openOpportunities.filter(
-            (opp: any) => opp.principal_organization_id === principal.id
-          );
-
-          const activeThisWeek = principalOpps.filter((opp: any) =>
-            (activitiesByOpportunity[opp.id] || []).some((activity) => {
-              const activityDate = new Date(activity.activity_date);
-              return activityDate >= weekAgo && activityDate <= now;
-            })
-          ).length;
-
-          const activeLastWeek = principalOpps.filter((opp: any) =>
-            (activitiesByOpportunity[opp.id] || []).some((activity) => {
-              const activityDate = new Date(activity.activity_date);
-              return activityDate >= twoWeeksAgo && activityDate < weekAgo;
-            })
-          ).length;
-
-          let momentum: PrincipalPipelineRow['momentum'];
-          if (activeThisWeek > activeLastWeek) {
-            momentum = 'increasing';
-          } else if (activeThisWeek < activeLastWeek) {
-            momentum = 'decreasing';
-          } else if (activeThisWeek === 0 && activeLastWeek === 0) {
-            momentum = 'stale';
-          } else {
-            momentum = 'steady';
-          }
-
-          // Find the soonest upcoming activity for this principal
-          const upcomingActivity = principalOpps
-            .flatMap((opp: any) => activitiesByOpportunity[opp.id] || [])
-            .filter((activity) => new Date(activity.activity_date) > now)
-            .sort(
-              (a, b) =>
-                new Date(a.activity_date).getTime() - new Date(b.activity_date).getTime()
-            )[0];
-
-          const nextAction = upcomingActivity
-            ? `${upcomingActivity.type} on ${new Date(
-                upcomingActivity.activity_date
-              ).toLocaleDateString()}`
-            : null;
-
-          return {
-            id: principal.id,
-            name: principal.name,
-            totalPipeline: principalOpps.length,
-            pipelineValue,
-            activeThisWeek,
-            activeLastWeek,
-            momentum,
-            nextAction,
-          };
-        });
-
-        // Sort by active this week DESC, then pipeline value
-        pipelineData.sort((a, b) => {
-          if (a.activeThisWeek !== b.activeThisWeek) {
-            return b.activeThisWeek - a.activeThisWeek;
-          }
-          return b.pipelineValue - a.pipelineValue;
-        });
-
-        setData(pipelineData);
       } catch (err) {
         setError(err as Error);
       } finally {
