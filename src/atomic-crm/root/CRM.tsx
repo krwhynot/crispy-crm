@@ -10,6 +10,7 @@ import contacts from "../contacts";
 import { CompactGridDashboard } from "../dashboard/CompactGridDashboard";
 import { PrincipalDashboard } from "../dashboard/PrincipalDashboard";
 import { PrincipalDashboardV2 } from "../dashboard/v2";
+import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard/v3";
 import opportunities from "../opportunities";
 import products from "../products";
 import tasks from "../tasks";
