@@ -611,7 +611,8 @@ Create `src/atomic-crm/dashboard/v3/validation/activitySchema.ts`:
 ```typescript
 import { z } from 'zod';
 
-export const activityTypeSchema = z.enum(['Call', 'Email', 'Meeting', 'Note']);
+export const activityTypeSchema = z.enum(['Call', 'Email', 'Meeting', 'Follow-up']);
+// Maps to database enum: 'call', 'email', 'meeting', 'follow_up'
 export const activityOutcomeSchema = z.enum([
   'Connected',
   'Left Voicemail',
@@ -751,7 +752,7 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
       await dataProvider.create('activities', {
         data: {
           activity_type: data.opportunityId ? 'interaction' : 'engagement',
-          type: data.activityType.toLowerCase(), // Correct column name is 'type'
+          type: data.activityType === 'Follow-up' ? 'follow_up' : data.activityType.toLowerCase(), // Map to correct enum values
           subject: data.notes.substring(0, 100) || `${data.activityType} update`,
           description: data.notes,
           activity_date: data.date.toISOString(),
@@ -817,7 +818,7 @@ export function QuickLogForm({ onComplete }: QuickLogFormProps) {
                     <SelectItem value="Call">Call</SelectItem>
                     <SelectItem value="Email">Email</SelectItem>
                     <SelectItem value="Meeting">Meeting</SelectItem>
-                    <SelectItem value="Note">Note</SelectItem>
+                    <SelectItem value="Follow-up">Follow-up</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -1271,6 +1272,7 @@ import { QuickLoggerPanel } from './components/QuickLoggerPanel';
 
 const STORAGE_KEY = 'dashboard.v3.panelSizes';
 
+// Wrap with error boundary in parent component
 export function PrincipalDashboardV3() {
   // SSR-safe localStorage access
   const [sizes, setSizes] = useState<number[]>([40, 35, 25]);
@@ -1503,7 +1505,49 @@ export function useCurrentSale() {
 }
 ```
 
-> **Database prerequisite:** Add a view/materialized view (`principal_pipeline_summary`) that returns aggregated metrics per principal (open counts, pipeline value, weekly activity, next action summary, owning sales_id) so the UI only pulls summarized rows.
+> **Database prerequisite:** Create this migration first:
+>
+> ```sql
+> -- Migration: 20251117_add_principal_pipeline_summary.sql
+> CREATE OR REPLACE VIEW principal_pipeline_summary AS
+> SELECT
+>   o.id as principal_id,
+>   o.name as principal_name,
+>   COUNT(DISTINCT opp.id) as total_pipeline,
+>   COUNT(DISTINCT CASE
+>     WHEN a.activity_date >= CURRENT_DATE - INTERVAL '7 days'
+>     THEN opp.id
+>   END) as active_this_week,
+>   COUNT(DISTINCT CASE
+>     WHEN a.activity_date >= CURRENT_DATE - INTERVAL '14 days'
+>     AND a.activity_date < CURRENT_DATE - INTERVAL '7 days'
+>     THEN opp.id
+>   END) as active_last_week,
+>   CASE
+>     WHEN COUNT(DISTINCT CASE WHEN a.activity_date >= CURRENT_DATE - INTERVAL '7 days' THEN opp.id END) >
+>          COUNT(DISTINCT CASE WHEN a.activity_date >= CURRENT_DATE - INTERVAL '14 days' AND a.activity_date < CURRENT_DATE - INTERVAL '7 days' THEN opp.id END)
+>     THEN 'increasing'
+>     WHEN COUNT(DISTINCT CASE WHEN a.activity_date >= CURRENT_DATE - INTERVAL '7 days' THEN opp.id END) <
+>          COUNT(DISTINCT CASE WHEN a.activity_date >= CURRENT_DATE - INTERVAL '14 days' AND a.activity_date < CURRENT_DATE - INTERVAL '7 days' THEN opp.id END)
+>     THEN 'decreasing'
+>     WHEN COUNT(DISTINCT opp.id) = 0 THEN 'stale'
+>     ELSE 'steady'
+>   END as momentum,
+>   STRING_AGG(DISTINCT t.title, '; ' ORDER BY t.due_date LIMIT 1) as next_action_summary,
+>   opp.account_manager_id as sales_id
+> FROM organizations o
+> LEFT JOIN opportunities opp ON o.id = opp.principal_organization_id
+> LEFT JOIN activities a ON opp.id = a.opportunity_id
+> LEFT JOIN tasks t ON opp.id = t.opportunity_id AND t.completed = false
+> WHERE o.organization_type = 'principal'
+>   AND o.deleted_at IS NULL
+>   AND (opp.deleted_at IS NULL OR opp.id IS NULL)
+>   AND opp.stage NOT IN ('closed_won', 'closed_lost')
+> GROUP BY o.id, o.name, opp.account_manager_id;
+>
+> -- Grant permissions
+> GRANT SELECT ON principal_pipeline_summary TO authenticated;
+> ```
 
 Create `src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts`:
 
