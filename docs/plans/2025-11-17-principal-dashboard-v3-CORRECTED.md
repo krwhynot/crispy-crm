@@ -447,7 +447,6 @@ export interface ActivityLog {
   organizationId?: number;
   opportunityId?: number;
   notes: string;
-  nextStep?: string;
   createFollowUp?: boolean;
   followUpDate?: Date;
 }
@@ -476,13 +475,522 @@ git commit -m "feat(dashboard-v3): add type definitions with auth pattern docume
 
 ## Task 2: Create Principal Pipeline Table Component
 
-*(Implementation remains the same as original plan - lines 169-382)*
+**Files:**
+- Create: `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`
+- Test: `src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx`
+
+**Step 1: Write the failing test**
+
+Create `src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx`:
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { PrincipalPipelineTable } from '../PrincipalPipelineTable';
+
+describe('PrincipalPipelineTable', () => {
+  it('should render table headers correctly', () => {
+    render(<PrincipalPipelineTable />);
+
+    expect(screen.getByText('Pipeline by Principal')).toBeInTheDocument();
+    expect(screen.getByText('Track opportunity momentum across your customer accounts')).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /principal/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /pipeline/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /this week/i })).toBeInTheDocument();
+  });
+
+  it('should apply premium hover effects class', () => {
+    const { container } = render(<PrincipalPipelineTable />);
+    const rows = container.querySelectorAll('.table-row-premium');
+    expect(rows.length).toBeGreaterThan(0);
+  });
+});
+```
+
+**Step 2: Run test to verify it fails**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx
+```
+
+Expected: FAIL with "Cannot find module '../PrincipalPipelineTable'"
+
+**Step 3: Write minimal implementation**
+
+Create `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`:
+
+```typescript
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Switch } from '@/components/ui/switch';
+import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from 'lucide-react';
+import type { PrincipalPipelineRow } from '../types';
+
+// Mock data for testing
+const mockData: PrincipalPipelineRow[] = [
+  {
+    id: 1,
+    name: 'Acme Corporation',
+    totalPipeline: 5,
+    activeThisWeek: 3,
+    activeLastWeek: 1,
+    momentum: 'increasing',
+    nextAction: 'Demo scheduled Friday',
+  },
+  {
+    id: 2,
+    name: 'TechCo Industries',
+    totalPipeline: 3,
+    activeThisWeek: 0,
+    activeLastWeek: 2,
+    momentum: 'decreasing',
+    nextAction: null,
+  },
+];
+
+export function PrincipalPipelineTable() {
+  const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
+    switch (momentum) {
+      case 'increasing':
+        return <TrendingUp className="h-4 w-4 text-success" />;
+      case 'decreasing':
+        return <TrendingDown className="h-4 w-4 text-warning" />;
+      case 'steady':
+        return <Minus className="h-4 w-4 text-muted-foreground" />;
+      case 'stale':
+        return <AlertCircle className="h-4 w-4 text-destructive" />;
+    }
+  };
+
+  return (
+    <div className="flex h-full flex-col">
+      {/* Header with title and filters */}
+      <div className="border-b border-border pb-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="text-lg font-semibold">Pipeline by Principal</h2>
+            <p className="text-sm text-muted-foreground">
+              Track opportunity momentum across your customer accounts
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <Switch id="my-principals" defaultChecked />
+              <label htmlFor="my-principals" className="text-sm">
+                My Principals Only
+              </label>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Filter className="mr-2 h-4 w-4" />
+                  Filters
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-64">
+                {/* Filter options will be added in next task */}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="flex-1 overflow-auto">
+        <Table>
+          <TableHeader className="sticky top-0 bg-background">
+            <TableRow>
+              <TableHead>Principal</TableHead>
+              <TableHead className="text-right">Pipeline</TableHead>
+              <TableHead className="text-center">This Week</TableHead>
+              <TableHead className="text-center">Last Week</TableHead>
+              <TableHead>Momentum</TableHead>
+              <TableHead>Next Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {mockData.map((row) => (
+              <TableRow key={row.id} className="table-row-premium cursor-pointer">
+                <TableCell className="font-medium">{row.name}</TableCell>
+                <TableCell className="text-right">
+                  <div className="font-semibold">{row.totalPipeline}</div>
+                </TableCell>
+                <TableCell className="text-center">
+                  {row.activeThisWeek > 0 ? (
+                    <Badge variant="default" className="bg-success">
+                      {row.activeThisWeek}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell className="text-center">
+                  {row.activeLastWeek > 0 ? (
+                    <Badge variant="secondary">
+                      {row.activeLastWeek}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1">
+                    {renderMomentumIcon(row.momentum)}
+                    <span className="text-sm capitalize">{row.momentum}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {row.nextAction ? (
+                    <span className="text-sm">{row.nextAction}</span>
+                  ) : (
+                    <Button variant="link" size="sm" className="h-auto p-0 text-primary">
+                      Schedule follow-up
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
+```
+
+**Step 4: Run test to verify it passes**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx
+```
+
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx
+git add src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx
+git commit -m "feat(dashboard-v3): add PrincipalPipelineTable component with mock data"
+```
 
 ---
 
 ## Task 3: Create Tasks Panel Component
 
-*(Implementation remains the same as original plan - lines 383-547)*
+**Files:**
+- Create: `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`
+- Create: `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx`
+- Test: `src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx`
+
+**Step 1: Write the failing test**
+
+Create `src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx`:
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { TasksPanel } from '../TasksPanel';
+
+describe('TasksPanel', () => {
+  it('should render panel headers and helper text', () => {
+    render(<TasksPanel />);
+
+    expect(screen.getByText('My Tasks')).toBeInTheDocument();
+    expect(screen.getByText("Today's priorities and upcoming activities")).toBeInTheDocument();
+  });
+
+  it('should render task groups', () => {
+    render(<TasksPanel />);
+
+    expect(screen.getByText('Overdue')).toBeInTheDocument();
+    expect(screen.getByText('Today')).toBeInTheDocument();
+    expect(screen.getByText('Tomorrow')).toBeInTheDocument();
+  });
+
+  it('should apply interactive-card class to task items', () => {
+    const { container } = render(<TasksPanel />);
+    const cards = container.querySelectorAll('.interactive-card');
+    expect(cards.length).toBeGreaterThan(0);
+  });
+});
+```
+
+**Step 2: Run test to verify it fails**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
+```
+
+Expected: FAIL with "Cannot find module '../TasksPanel'"
+
+**Step 3: Write minimal implementation**
+
+Create `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx`:
+
+```typescript
+import { ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface TaskGroupProps {
+  title: string;
+  variant: 'danger' | 'warning' | 'info' | 'default';
+  count: number;
+  children: React.ReactNode;
+  collapsed?: boolean;
+  onToggle?: () => void;
+}
+
+export function TaskGroup({
+  title,
+  variant,
+  count,
+  children,
+  collapsed = false,
+  onToggle
+}: TaskGroupProps) {
+  const variantStyles = {
+    danger: 'border-l-destructive text-destructive',
+    warning: 'border-l-warning text-warning',
+    info: 'border-l-primary text-primary',
+    default: 'border-l-muted-foreground text-muted-foreground',
+  };
+
+  return (
+    <div className={cn('border-l-4 pl-4', variantStyles[variant])}>
+      <button
+        onClick={onToggle}
+        className="mb-2 flex w-full items-center justify-between text-left"
+      >
+        <div className="flex items-center gap-2">
+          <ChevronRight
+            className={cn(
+              'h-4 w-4 transition-transform',
+              !collapsed && 'rotate-90'
+            )}
+          />
+          <h3 className="font-semibold">{title}</h3>
+          <span className="text-sm text-muted-foreground">({count})</span>
+        </div>
+      </button>
+      {!collapsed && (
+        <div className="space-y-2">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+Create `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`:
+
+```typescript
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Clock,
+  Calendar,
+  AlertCircle,
+  CheckCircle2,
+  Phone,
+  Mail,
+  Users,
+  FileText,
+  MoreHorizontal
+} from 'lucide-react';
+import { TaskGroup } from './TaskGroup';
+import type { TaskItem } from '../types';
+
+// Mock data for testing
+const mockTasks: TaskItem[] = [
+  {
+    id: 1,
+    subject: 'Follow up on Q4 proposal',
+    dueDate: new Date(Date.now() - 86400000), // Yesterday
+    priority: 'high',
+    taskType: 'Call',
+    relatedTo: { type: 'opportunity', name: 'Q4 Enterprise Deal', id: 101 },
+    status: 'overdue',
+  },
+  {
+    id: 2,
+    subject: 'Send contract for review',
+    dueDate: new Date(), // Today
+    priority: 'critical',
+    taskType: 'Email',
+    relatedTo: { type: 'contact', name: 'John Smith', id: 202 },
+    status: 'today',
+  },
+  {
+    id: 3,
+    subject: 'Schedule demo meeting',
+    dueDate: new Date(Date.now() + 86400000), // Tomorrow
+    priority: 'medium',
+    taskType: 'Meeting',
+    relatedTo: { type: 'organization', name: 'TechCorp', id: 303 },
+    status: 'tomorrow',
+  },
+];
+
+export function TasksPanel() {
+  const overdueTasks = mockTasks.filter(t => t.status === 'overdue');
+  const todayTasks = mockTasks.filter(t => t.status === 'today');
+  const tomorrowTasks = mockTasks.filter(t => t.status === 'tomorrow');
+
+  const getTaskIcon = (type: TaskItem['taskType']) => {
+    switch(type) {
+      case 'Call': return <Phone className="h-4 w-4" />;
+      case 'Email': return <Mail className="h-4 w-4" />;
+      case 'Meeting': return <Users className="h-4 w-4" />;
+      case 'Follow-up': return <CheckCircle2 className="h-4 w-4" />;
+      default: return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  const getPriorityColor = (priority: TaskItem['priority']) => {
+    switch(priority) {
+      case 'critical': return 'destructive';
+      case 'high': return 'warning';
+      case 'medium': return 'default';
+      case 'low': return 'secondary';
+      default: return 'outline';
+    }
+  };
+
+  return (
+    <Card className="card-container flex h-full flex-col">
+      <CardHeader className="border-b border-border pb-3">
+        <div className="flex items-start justify-between">
+          <div>
+            <CardTitle className="text-lg font-semibold">My Tasks</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground">
+              Today's priorities and upcoming activities
+            </CardDescription>
+          </div>
+          {overdueTasks.length > 0 && (
+            <Badge variant="destructive" className="text-xs">
+              {overdueTasks.length} overdue
+            </Badge>
+          )}
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Overdue items highlighted • Click to complete • Drag to reschedule
+        </p>
+      </CardHeader>
+
+      <CardContent className="flex-1 overflow-auto p-0">
+        <div className="space-y-4 p-4">
+          {/* Overdue section */}
+          {overdueTasks.length > 0 && (
+            <TaskGroup title="Overdue" variant="danger" count={overdueTasks.length}>
+              {overdueTasks.map(task => (
+                <TaskItem key={task.id} task={task} />
+              ))}
+            </TaskGroup>
+          )}
+
+          {/* Today section */}
+          <TaskGroup title="Today" variant="warning" count={todayTasks.length}>
+            {todayTasks.map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </TaskGroup>
+
+          {/* Tomorrow section */}
+          <TaskGroup title="Tomorrow" variant="info" count={tomorrowTasks.length}>
+            {tomorrowTasks.map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </TaskGroup>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function TaskItem({ task }: { task: TaskItem }) {
+  const getTaskIcon = (type: TaskItem['taskType']) => {
+    switch(type) {
+      case 'Call': return <Phone className="h-4 w-4" />;
+      case 'Email': return <Mail className="h-4 w-4" />;
+      case 'Meeting': return <Users className="h-4 w-4" />;
+      case 'Follow-up': return <CheckCircle2 className="h-4 w-4" />;
+      default: return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  const getPriorityColor = (priority: TaskItem['priority']) => {
+    switch(priority) {
+      case 'critical': return 'destructive';
+      case 'high': return 'warning';
+      case 'medium': return 'default';
+      case 'low': return 'secondary';
+      default: return 'outline';
+    }
+  };
+
+  return (
+    <div className="interactive-card flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2">
+      <Checkbox className="h-5 w-5" />
+
+      <div className="flex-1">
+        <div className="flex items-center gap-2">
+          {getTaskIcon(task.taskType)}
+          <span className="font-medium">{task.subject}</span>
+        </div>
+        <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+          <Badge variant={getPriorityColor(task.priority)} className="text-xs">
+            {task.priority}
+          </Badge>
+          <span>→ {task.relatedTo.name}</span>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-1">
+        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+          <Clock className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
+```
+
+**Step 4: Run test to verify it passes**
+
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
+```
+
+Expected: PASS
+
+**Step 5: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/TasksPanel.tsx
+git add src/atomic-crm/dashboard/v3/components/TaskGroup.tsx
+git add src/atomic-crm/dashboard/v3/components/__tests__/TasksPanel.test.tsx
+git commit -m "feat(dashboard-v3): add TasksPanel with grouped task display"
+```
 
 ---
 
@@ -496,11 +1004,47 @@ git commit -m "feat(dashboard-v3): add type definitions with auth pattern docume
 
 **Step 1: Write the failing test**
 
-*(Same as original - lines 559-597)*
+Create `src/atomic-crm/dashboard/v3/components/__tests__/QuickLoggerPanel.test.tsx`:
+
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { QuickLoggerPanel } from '../QuickLoggerPanel';
+
+describe('QuickLoggerPanel', () => {
+  it('should render panel headers', () => {
+    render(<QuickLoggerPanel />);
+
+    expect(screen.getByText('Log Activity')).toBeInTheDocument();
+    expect(screen.getByText('Quick capture for calls, meetings, and notes')).toBeInTheDocument();
+  });
+
+  it('should show New Activity button when not logging', () => {
+    render(<QuickLoggerPanel />);
+
+    const button = screen.getByRole('button', { name: /new activity/i });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass('h-11'); // 44px touch target
+  });
+
+  it('should show form when New Activity is clicked', () => {
+    render(<QuickLoggerPanel />);
+
+    const button = screen.getByRole('button', { name: /new activity/i });
+    fireEvent.click(button);
+
+    expect(screen.getByLabelText(/activity type/i)).toBeInTheDocument();
+  });
+});
+```
 
 **Step 2: Run test to verify it fails**
 
-*(Same as original)*
+```bash
+npm test -- src/atomic-crm/dashboard/v3/components/__tests__/QuickLoggerPanel.test.tsx
+```
+
+Expected: FAIL with "Cannot find module '../QuickLoggerPanel'"
 
 **Step 3: Write minimal implementation**
 
@@ -713,7 +1257,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
           data: {
             title: `Follow-up: ${data.notes.substring(0, 50)}`,
             due_date: data.followUpDate.toISOString(),
-            type: 'Follow-up',
+            type: 'follow_up',
             priority: 'medium',
             contact_id: data.contactId,
             opportunity_id: data.opportunityId,
@@ -1564,7 +2108,7 @@ describe('useCurrentSale', () => {
 
     mockSupabase.from.mockReturnValue({
       select: vi.fn().mockReturnValue({
-        eq: vi.fn().mockReturnValue({
+        or: vi.fn().mockReturnValue({
           maybeSingle: vi.fn().mockResolvedValue({ data: mockSale }),
         }),
       }),
@@ -1778,7 +2322,7 @@ export function useMyTasks() {
           pagination: { page: 1, perPage: 100 },
           // Request expansion of related entities
           meta: {
-            expand: ['opportunity', 'contact']
+            expand: ['opportunity', 'contact', 'organization']
           }
         });
 
