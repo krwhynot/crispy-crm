@@ -12,6 +12,25 @@ vi.mock('../components/QuickLoggerPanel', () => ({
   ),
 }));
 
+// Mock the hooks
+vi.mock('../hooks/usePrincipalPipeline', () => ({
+  usePrincipalPipeline: () => ({
+    data: [],
+    loading: false,
+    error: null,
+  }),
+}));
+
+vi.mock('../hooks/useMyTasks', () => ({
+  useMyTasks: () => ({
+    tasks: [],
+    loading: false,
+    error: null,
+    completeTask: vi.fn(),
+    snoozeTask: vi.fn(),
+  }),
+}));
+
 describe('PrincipalDashboardV3', () => {
   it('should render all three panels', () => {
     render(<PrincipalDashboardV3 />);

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,32 +15,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Switch } from '@/components/ui/switch';
+import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from 'lucide-react';
 import type { PrincipalPipelineRow } from '../types';
-
-// Mock data for testing
-const mockData: PrincipalPipelineRow[] = [
-  {
-    id: 1,
-    name: 'Acme Corporation',
-    totalPipeline: 5,
-    activeThisWeek: 3,
-    activeLastWeek: 1,
-    momentum: 'increasing',
-    nextAction: 'Demo scheduled Friday',
-  },
-  {
-    id: 2,
-    name: 'TechCo Industries',
-    totalPipeline: 3,
-    activeThisWeek: 0,
-    activeLastWeek: 2,
-    momentum: 'decreasing',
-    nextAction: null,
-  },
-];
+import { usePrincipalPipeline } from '../hooks/usePrincipalPipeline';
 
 export function PrincipalPipelineTable() {
+  const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(true);
+  const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
   const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
     switch (momentum) {
       case 'increasing':
@@ -52,6 +35,33 @@ export function PrincipalPipelineTable() {
         return <AlertCircle className="h-4 w-4 text-destructive" />;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-full flex-col">
+        <div className="border-b border-border pb-4">
+          <Skeleton className="mb-2 h-6 w-48" />
+          <Skeleton className="h-4 w-96" />
+        </div>
+        <div className="flex-1 space-y-2 pt-4">
+          {[1, 2, 3, 4, 5].map(i => (
+            <Skeleton key={i} className="h-12 w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive">Failed to load pipeline data</p>
+          <p className="text-sm text-muted-foreground">{error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full flex-col">
@@ -66,7 +76,11 @@ export function PrincipalPipelineTable() {
           </div>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
-              <Switch id="my-principals" defaultChecked />
+              <Switch
+                id="my-principals"
+                checked={myPrincipalsOnly}
+                onCheckedChange={setMyPrincipalsOnly}
+              />
               <label htmlFor="my-principals" className="text-sm">
                 My Principals Only
               </label>
@@ -100,7 +114,7 @@ export function PrincipalPipelineTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockData.map((row) => (
+            {data.map((row) => (
               <TableRow key={row.id} className="table-row-premium cursor-pointer">
                 <TableCell className="font-medium">{row.name}</TableCell>
                 <TableCell className="text-right">

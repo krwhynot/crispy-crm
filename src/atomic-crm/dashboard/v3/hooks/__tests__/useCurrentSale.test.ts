@@ -2,17 +2,23 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useCurrentSale } from '../useCurrentSale';
 
-// Mock Supabase
-const mockSupabase = {
-  auth: {
-    getUser: vi.fn(),
-  },
-  from: vi.fn(),
-};
+// Mock Supabase - define inside factory to avoid hoisting issues
+vi.mock('@/atomic-crm/providers/supabase/supabase', () => {
+  const mockSupabase = {
+    auth: {
+      getUser: vi.fn(),
+    },
+    from: vi.fn(),
+  };
 
-vi.mock('@/atomic-crm/providers/supabase/supabase', () => ({
-  supabase: mockSupabase,
-}));
+  return {
+    supabase: mockSupabase,
+  };
+});
+
+// Import the mock after vi.mock is set up
+import { supabase } from '@/atomic-crm/providers/supabase/supabase';
+const mockSupabase = supabase as any;
 
 describe('useCurrentSale', () => {
   beforeEach(() => {

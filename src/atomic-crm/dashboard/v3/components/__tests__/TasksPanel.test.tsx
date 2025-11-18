@@ -1,6 +1,45 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { TasksPanel } from '../TasksPanel';
+
+// Mock the useMyTasks hook
+vi.mock('../../hooks/useMyTasks', () => ({
+  useMyTasks: () => ({
+    tasks: [
+      {
+        id: 1,
+        subject: 'Follow up on Q4 proposal',
+        dueDate: new Date(Date.now() - 86400000),
+        priority: 'high',
+        taskType: 'Call',
+        relatedTo: { type: 'opportunity', name: 'Q4 Enterprise Deal', id: 101 },
+        status: 'overdue',
+      },
+      {
+        id: 2,
+        subject: 'Send contract for review',
+        dueDate: new Date(),
+        priority: 'critical',
+        taskType: 'Email',
+        relatedTo: { type: 'contact', name: 'John Smith', id: 202 },
+        status: 'today',
+      },
+      {
+        id: 3,
+        subject: 'Schedule demo meeting',
+        dueDate: new Date(Date.now() + 86400000),
+        priority: 'medium',
+        taskType: 'Meeting',
+        relatedTo: { type: 'organization', name: 'TechCorp', id: 303 },
+        status: 'tomorrow',
+      },
+    ],
+    loading: false,
+    error: null,
+    completeTask: vi.fn(),
+    snoozeTask: vi.fn(),
+  }),
+}));
 
 describe('TasksPanel', () => {
   it('should render panel headers and helper text', () => {
