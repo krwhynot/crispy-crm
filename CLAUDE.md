@@ -276,9 +276,65 @@ const contactSchema = z.object({
 
 [Full architecture](docs/architecture/architecture-essentials.md)
 
+## Dashboard V3 (Default)
+
+**Default:** Principal Dashboard V3 at `http://127.0.0.1:5173/`
+
+**Status:** Production-ready (2025-11-18) - 96.3% code review score, 20/20 tests passing
+
+**Layout:** 3-column resizable (Pipeline 40% | Tasks 30% | Quick Logger 30%)
+
+**Key Features:**
+- **Pipeline by Principal** - Aggregated table with momentum indicators (increasing/decreasing/steady/stale)
+- **My Tasks** - Time-bucketed widget (Overdue → Today → Tomorrow) with checkbox completion
+- **Quick Activity Logger** - Inline logging with optional follow-up task creation
+- **Resizable Panels** - Three-column layout with localStorage persistence (40/30/30 default)
+- **WCAG 2.1 AA Compliant** - 44px minimum touch targets, semantic colors, full keyboard navigation
+
+**Database Layer:**
+- **View:** `principal_pipeline_summary` - Pre-aggregated opportunities with activity-based momentum
+- **Momentum Logic:** Compares 7-day vs 14-day activity counts (increasing/decreasing/steady/stale)
+- **Task Filtering:** Personal tasks only (sales_id = current user)
+
+**Component Structure:**
+```
+src/atomic-crm/dashboard/v3/
+├── PrincipalDashboardV3.tsx          # Main container with ResizablePanelGroup
+├── components/
+│   ├── PrincipalPipelineTable.tsx    # Left panel - pipeline metrics
+│   ├── TasksPanel.tsx                # Center panel - time-bucketed tasks
+│   ├── QuickLoggerPanel.tsx          # Right panel - activity logging
+│   └── QuickLogForm.tsx              # Activity form with Save & New pattern
+├── hooks/
+│   ├── useCurrentSale.ts             # Fetches current user's sales ID
+│   ├── usePrincipalPipeline.ts       # Queries principal_pipeline_summary view
+│   └── useMyTasks.ts                 # Queries tasks with timezone-safe comparisons
+├── validation/
+│   └── activitySchema.ts             # Zod schema with database enum mapping
+└── types.ts                          # TypeScript interfaces for all data
+```
+
+**Technical Highlights:**
+- **Auth Pattern:** Uses `auth.getUser() + user.id` (not React Admin identity)
+- **Timezone Safety:** date-fns for all date comparisons (isBefore, isSameDay, startOfDay)
+- **Save & New UX:** Single onSubmit handler with closeAfterSave boolean parameter
+- **Lazy Loading:** 100KB chunk (30.6KB gzipped) only loads when accessed
+- **Error Boundaries:** DashboardErrorBoundary wraps component for resilience
+
+**Testing:**
+- Unit tests: 20/20 passing (hooks, components, utilities)
+- WCAG compliance: All touch targets ≥44px
+- FilterRegistry: Entry added for principal_pipeline_summary resource
+
+**References:**
+- Implementation plan: `docs/plans/2025-11-17-principal-dashboard-v3-CORRECTED.md`
+- Migration: `supabase/migrations/20251118050755_add_principal_pipeline_summary_view.sql`
+
+---
+
 ## Dashboard V2
 
-**Default:** Principal Dashboard V2 at `http://127.0.0.1:5173/`
+**Status:** Legacy (accessible at `/dashboard-v2`)
 
 **Layout:** 3-column resizable (Opportunities 40% | Tasks 30% | Quick Logger 30%)
 
