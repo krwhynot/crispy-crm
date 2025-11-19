@@ -60,8 +60,32 @@ ContactShow.tsx
 
 In `ContactShow.tsx` (lines 73-130):
 - Add 4th `<TabsTrigger value="opportunities">Opportunities</TabsTrigger>`
-- Add corresponding `<TabsContent value="opportunities"><OpportunitiesTab contactId={record.id} /></TabsContent>`
-- Tab receives contact ID as prop for queries
+- Add corresponding `<TabsContent value="opportunities"><OpportunitiesTab /></TabsContent>`
+- Tab component uses `useShowContext<Contact>()` internally to access full contact record
+
+**Inside OpportunitiesTab.tsx:**
+```typescript
+import { useShowContext } from 'ra-core';
+import type { Contact } from '../types';
+
+export function OpportunitiesTab() {
+  const { record: contact, isPending } = useShowContext<Contact>();
+
+  if (isPending || !contact) return null;
+
+  // Now have access to:
+  // - contact.id (for queries)
+  // - contact.first_name, contact.last_name (for ARIA labels)
+  // - contact.organization_id (for suggested opportunities)
+  // - contact.organization?.name (for empty state copy)
+}
+```
+
+**Why use `useShowContext()`:**
+- Follows React Admin patterns (same as `ActivitiesTab`, `ContactNotesTab`)
+- Automatically re-renders when contact updates
+- No prop drilling needed
+- Access to full contact record for names, organization, etc.
 
 ### File Structure
 
@@ -136,30 +160,48 @@ refetch(); // Refresh table
 
 **Unlink opportunity:**
 ```typescript
+// Use junctionId from merged data (see Primary Query section)
+// Each linkedOpportunity has: { ...opportunityFields, junctionId: junction.id }
 await dataProvider.delete('opportunity_contacts', {
-  id: junctionRecordId
+  id: opportunity.junctionId
 });
 refetch(); // Refresh table
 ```
 
-**Note:** Using refetch after mutations (not optimistic updates) to maintain single source of truth (fail-fast principle).
+**Note:**
+- Using refetch after mutations (not optimistic updates) to maintain single source of truth (fail-fast principle)
+- `junctionId` comes from merged data in Primary Query (step 3) - each opportunity includes the junction record ID needed for deletion
 
 ### Suggested Opportunities Query
 
-For empty state smart suggestions:
+For empty state smart suggestions (client-side filtering):
 
 ```typescript
-const { data: suggestedOpps } = useGetList('opportunities', {
+// Fetch opportunities from contact's primary organization
+const { data: orgOpportunities } = useGetList('opportunities', {
   filter: {
-    customer_id: contact.organization_id,
-    stage_not_in: ['closed_won', 'closed_lost']
+    customer_organization_id: contact.organization_id
   },
-  pagination: { page: 1, perPage: 5 },
+  pagination: { page: 1, perPage: 25 }, // Fetch more, filter client-side
   sort: { field: 'updated_at', order: 'DESC' }
+}, {
+  enabled: !!contact.organization_id && linkedOpportunities.length === 0
 });
+
+// Client-side filter to exclude closed opportunities
+const suggestedOpps = useMemo(() => {
+  if (!orgOpportunities) return [];
+  return orgOpportunities
+    .filter((opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage))
+    .slice(0, 5); // Show max 5 suggestions
+}, [orgOpportunities]);
 ```
 
-Only runs when contact has `organization_id` and tab shows empty state.
+**Why client-side filtering:**
+- PostgREST/filterRegistry doesn't support `stage_not_in` operator
+- Could use array filtering: `stage@in: (active,qualified,proposal,...)` but requires listing all non-closed stages
+- Simpler to fetch all org opportunities (usually < 25) and filter in JavaScript
+- Only runs on empty state (performance acceptable)
 
 ## UI Components
 
@@ -252,6 +294,9 @@ Custom component combining stage text with health-based border color:
 Modal with autocomplete search (deliberate flow prevents accidental links):
 
 ```typescript
+// Derive contactName from useShowContext (see Integration Point section)
+const contactName = `${contact.first_name} ${contact.last_name}`;
+
 <Dialog open={showLinkModal} onOpenChange={setShowLinkModal}>
   <DialogContent className="max-w-2xl">
     <DialogHeader>
@@ -288,6 +333,9 @@ Modal with autocomplete search (deliberate flow prevents accidental links):
 Confirmation dialog with explicit context (prevents accidental removals):
 
 ```typescript
+// contactName derived from useShowContext (see Integration Point section)
+const contactName = `${contact.first_name} ${contact.last_name}`;
+
 <AlertDialog
   open={!!unlinkingOpportunity}
   onOpenChange={() => setUnlinkingOpportunity(null)}
@@ -318,6 +366,7 @@ Confirmation dialog with explicit context (prevents accidental removals):
 ### Smart Suggestions (when contact has primary organization)
 
 ```typescript
+// contact from useShowContext (includes organization if populated)
 {suggestedOpps?.length > 0 ? (
   <div className="text-center py-8 space-y-4">
     <h3 className="text-lg font-semibold">Suggested Opportunities</h3>
@@ -424,6 +473,9 @@ try {
 
 ### ARIA Labels
 ```typescript
+// contactName from useShowContext (see Integration Point section)
+const contactName = `${contact.first_name} ${contact.last_name}`;
+
 <Button
   aria-label={`Link opportunity to ${contactName}`}
   onClick={() => setShowLinkModal(true)}
