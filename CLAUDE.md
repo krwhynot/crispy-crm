@@ -274,7 +274,7 @@ const contactSchema = z.object({
 **Config:** `root/ConfigurationContext.tsx`, customize via `<CRM>` props in `App.tsx`
 **Path alias:** `@/*` → `src/*`
 
-[Full architecture](docs/architecture/architecture-essentials.md)
+[Full architecture](docs/system-architecture.md)
 
 ## Dashboard V3 (Default)
 
