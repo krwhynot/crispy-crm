@@ -6,6 +6,10 @@ import { vi } from 'vitest';
 vi.mock('react-admin', () => ({
   useCreate: () => [vi.fn(), { isLoading: false }],
   useNotify: () => vi.fn(),
+  Form: ({ children, onSubmit }: any) => (
+    <form onSubmit={onSubmit}>{children}</form>
+  ),
+  ReferenceInput: ({ children }: any) => <div>{children}</div>,
 }));
 
 // Mock AutocompleteInput component
