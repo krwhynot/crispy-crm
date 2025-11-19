@@ -11,6 +11,7 @@ import type { Contact } from "../types";
 import { Avatar } from "./Avatar";
 import { ContactAside } from "./ContactAside";
 import { ActivitiesTab } from "./ActivitiesTab";
+import { OpportunitiesTab } from "./OpportunitiesTab";
 
 export const ContactShow = () => (
   <ShowBase>
@@ -71,10 +72,11 @@ const ContactShowContent = () => {
             </div>
 
             <Tabs defaultValue="details" className="mt-4">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="details">Details</TabsTrigger>
                 <TabsTrigger value="notes">Notes</TabsTrigger>
                 <TabsTrigger value="activities">Activities</TabsTrigger>
+                <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
               </TabsList>
 
               <TabsContent value="details" className="pt-2">
@@ -126,6 +128,10 @@ const ContactShowContent = () => {
 
               <TabsContent value="activities" className="pt-2">
                 <ActivitiesTab contactId={record.id} />
+              </TabsContent>
+
+              <TabsContent value="opportunities" className="pt-2">
+                <OpportunitiesTab />
               </TabsContent>
             </Tabs>
           </CardContent>
