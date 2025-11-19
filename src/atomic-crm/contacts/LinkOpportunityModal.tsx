@@ -71,6 +71,9 @@ export function LinkOpportunityModal({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Link Opportunity to {contactName}</DialogTitle>
+          <DialogDescription>
+            Search for an opportunity to associate with this contact.
+          </DialogDescription>
         </DialogHeader>
 
         <Form onSubmit={handleLink} className="space-y-4">
@@ -78,7 +81,7 @@ export function LinkOpportunityModal({
             <AutocompleteInput
               filterToQuery={(searchText: string) => ({ name: searchText })}
               optionText={(opp: any) =>
-                opp ? `${opp.name} - ${opp.customer?.name || ''} (${opp.stage})` : ''
+                opp ? `${opp.name} - ${opp.customer_organization_name || ''} (${opp.stage})` : ''
               }
               label="Search opportunities"
             />
