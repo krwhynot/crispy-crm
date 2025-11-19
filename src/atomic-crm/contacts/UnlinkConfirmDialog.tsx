@@ -65,7 +65,11 @@ export function UnlinkConfirmDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm} disabled={isLoading}>
+          <AlertDialogAction
+            onClick={handleConfirm}
+            disabled={isLoading}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
             {isLoading ? 'Removing...' : 'Remove'}
           </AlertDialogAction>
         </AlertDialogFooter>
