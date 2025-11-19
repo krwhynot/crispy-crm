@@ -74,6 +74,16 @@ vi.mock("../notes", () => ({
   NotesIterator: () => <div data-testid="notes-iterator">Notes List</div>,
 }));
 
+// Mock ActivitiesTab
+vi.mock("../ActivitiesTab", () => ({
+  ActivitiesTab: () => <div data-testid="activities-tab">Activities</div>,
+}));
+
+// Mock OpportunitiesTab
+vi.mock("../OpportunitiesTab", () => ({
+  OpportunitiesTab: () => <div data-testid="opportunities-tab">Opportunities</div>,
+}));
+
 // Import mocked functions
 import { useShowContext } from "ra-core";
 
@@ -367,6 +377,36 @@ describe("ContactShow", () => {
       // Check aside section
       const aside = screen.getByRole("complementary", { name: /contact information/i });
       expect(aside).toBeInTheDocument();
+    });
+  });
+
+  test("renders Opportunities tab", async () => {
+    const mockContact = createMockContact({
+      id: 7,
+      first_name: "Test",
+      last_name: "User",
+    });
+
+    (useShowContext as any).mockReturnValue({
+      record: mockContact,
+      isPending: false,
+      error: null,
+    });
+
+    renderWithAdminContext(
+      <Routes>
+        <Route path="/contacts/:id/show" element={<ContactShow />} />
+      </Routes>,
+      {
+        resource: "contacts",
+        record: mockContact,
+        initialEntries: ["/contacts/1/show"],
+      }
+    );
+
+    await waitFor(() => {
+      // Check that Opportunities tab trigger exists
+      expect(screen.getByRole("tab", { name: /opportunities/i })).toBeInTheDocument();
     });
   });
 });
