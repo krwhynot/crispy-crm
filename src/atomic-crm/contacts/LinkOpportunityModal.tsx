@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useCreate, useNotify, Form, ReferenceInput } from 'react-admin';
 import { AutocompleteInput } from '@/components/admin/autocomplete-input';
 import {
@@ -25,25 +24,24 @@ export function LinkOpportunityModal({
   onClose,
   onSuccess,
 }: LinkOpportunityModalProps) {
-  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
 
-  const handleLink = async () => {
-    if (!selectedOpportunity) return;
+  const handleLink = async (data: any) => {
+    if (!data.opportunity_id) return;
 
     try {
       await create(
         'opportunity_contacts',
         {
           data: {
-            opportunity_id: selectedOpportunity.id,
+            opportunity_id: data.opportunity_id,
             contact_id: contactId,
           },
         },
         {
           onSuccess: () => {
-            notify(`Linked to ${selectedOpportunity.name}`, { type: 'success' });
+            notify('Opportunity linked successfully', { type: 'success' });
             onSuccess();
             onClose();
           },
@@ -64,26 +62,26 @@ export function LinkOpportunityModal({
           <DialogTitle>Link Opportunity to {contactName}</DialogTitle>
         </DialogHeader>
 
-        <AutocompleteInput
-          source="opportunity_id"
-          reference="opportunities"
-          filterToQuery={(searchText: string) => ({ name: searchText })}
-          optionText={(opp: any) =>
-            opp ? `${opp.name} - ${opp.customer?.name || ''} (${opp.stage})` : ''
-          }
-          suggestionLimit={10}
-          label="Search opportunities"
-          onChange={(value: any) => setSelectedOpportunity(value)}
-        />
+        <Form onSubmit={handleLink} className="space-y-4">
+          <ReferenceInput source="opportunity_id" reference="opportunities">
+            <AutocompleteInput
+              filterToQuery={(searchText: string) => ({ name: searchText })}
+              optionText={(opp: any) =>
+                opp ? `${opp.name} - ${opp.customer?.name || ''} (${opp.stage})` : ''
+              }
+              label="Search opportunities"
+            />
+          </ReferenceInput>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleLink} disabled={!selectedOpportunity || isLoading}>
-            {isLoading ? 'Linking...' : 'Link Opportunity'}
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Linking...' : 'Link Opportunity'}
+            </Button>
+          </DialogFooter>
+        </Form>
       </DialogContent>
     </Dialog>
   );

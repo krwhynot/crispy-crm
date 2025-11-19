@@ -47,7 +47,7 @@ export function UnlinkConfirmDialog({
           },
         }
       );
-    } catch (error: any) {
+    } catch {
       notify('Failed to unlink opportunity. Please try again.', { type: 'error' });
     }
   };
