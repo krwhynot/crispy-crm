@@ -127,8 +127,8 @@ const mockContact = {
 
 const mockUseGetList = vi.fn();
 
-vi.mock('react-admin', async () => {
-  const actual = await vi.importActual('react-admin');
+vi.mock('ra-core', async () => {
+  const actual = await vi.importActual('ra-core');
   return {
     ...actual,
     useGetList: () => mockUseGetList(),
