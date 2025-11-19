@@ -1,4 +1,7 @@
 import { useShowContext, useGetList, useGetMany } from 'ra-core';
+import { Datagrid, FunctionField, ReferenceField, TextField, NumberField, ListContextProvider } from 'react-admin';
+import { Link } from 'react-router-dom';
+import { StageBadgeWithHealth } from './StageBadgeWithHealth';
 import type { Contact } from '../types';
 
 export function OpportunitiesTab() {
@@ -43,9 +46,58 @@ export function OpportunitiesTab() {
     return opp ? { ...opp, junctionId: junction.id } : null;
   }).filter(Boolean);
 
+  const listContext = {
+    data: linkedOpportunities,
+    ids: linkedOpportunities.map((opp: any) => opp.id),
+    total: linkedOpportunities.length,
+    isLoading: false,
+    isFetching: false,
+  };
+
   return (
-    <div>
-      <p>Found {linkedOpportunities.length} opportunities</p>
+    <div className="space-y-4">
+      <ListContextProvider value={listContext}>
+        <Datagrid
+          bulkActionButtons={false}
+          rowClick={false}
+          className="border rounded-lg"
+        >
+          <FunctionField
+            label="Opportunity"
+            render={(record: any) => (
+              <Link
+                to={`/opportunities/${record.id}`}
+                className="font-medium text-primary hover:underline"
+              >
+                {record.name}
+              </Link>
+            )}
+          />
+
+          <ReferenceField
+            source="customer_organization_id"
+            reference="organizations"
+            label="Customer"
+          >
+            <TextField source="name" />
+          </ReferenceField>
+
+          <FunctionField
+            label="Stage"
+            render={(record: any) => (
+              <StageBadgeWithHealth
+                stage={record.stage}
+                health={record.health_status}
+              />
+            )}
+          />
+
+          <NumberField
+            source="amount"
+            options={{ style: 'currency', currency: 'USD' }}
+          />
+        </Datagrid>
+      </ListContextProvider>
     </div>
   );
 }

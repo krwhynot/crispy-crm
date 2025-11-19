@@ -13,6 +13,31 @@ const mockContact = {
 const mockUseGetList = vi.fn();
 const mockUseGetMany = vi.fn();
 
+// Mock StageBadgeWithHealth component
+vi.mock('./StageBadgeWithHealth', () => ({
+  StageBadgeWithHealth: ({ stage, health }: any) => (
+    <div data-testid="stage-badge">{stage} - {health}</div>
+  )
+}));
+
+// Mock react-admin components
+vi.mock('react-admin', () => ({
+  Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
+  FunctionField: ({ render, label }: any) => <div data-testid={`field-${label}`}>function-field</div>,
+  ReferenceField: ({ children, label }: any) => <div data-testid={`field-${label}`}>{children}</div>,
+  TextField: ({ source }: any) => <div>text-field</div>,
+  NumberField: ({ source }: any) => <div>number-field</div>,
+  ListContextProvider: ({ children, value }: any) => {
+    // Render the data items for testing
+    return <div data-testid="list-context">
+      {value?.data?.map((item: any) => (
+        <div key={item.id} data-testid="opportunity-item">{item.name}</div>
+      ))}
+      {children}
+    </div>;
+  },
+}));
+
 vi.mock('ra-core', async () => {
   const actual = await vi.importActual('ra-core');
   return {
