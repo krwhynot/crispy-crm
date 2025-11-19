@@ -1,24 +1,28 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { LinkOpportunityModal } from './LinkOpportunityModal';
-import { AdminContext } from 'react-admin';
 import { vi } from 'vitest';
 
-const mockDataProvider = {
-  create: vi.fn(),
-};
+// Mock react-admin hooks
+vi.mock('react-admin', () => ({
+  useCreate: () => [vi.fn(), { isLoading: false }],
+  useNotify: () => vi.fn(),
+}));
+
+// Mock AutocompleteInput component
+vi.mock('@/components/admin/autocomplete-input', () => ({
+  AutocompleteInput: ({ label }: any) => <div data-testid="autocomplete">{label}</div>,
+}));
 
 describe('LinkOpportunityModal', () => {
   it('renders when open', () => {
     render(
-      <AdminContext dataProvider={mockDataProvider}>
-        <LinkOpportunityModal
-          open={true}
-          contactName="Jane Doe"
-          contactId={1}
-          onClose={vi.fn()}
-          onSuccess={vi.fn()}
-        />
-      </AdminContext>
+      <LinkOpportunityModal
+        open={true}
+        contactName="Jane Doe"
+        contactId={1}
+        onClose={vi.fn()}
+        onSuccess={vi.fn()}
+      />
     );
 
     expect(screen.getByText(/Link Opportunity to Jane Doe/i)).toBeInTheDocument();
@@ -26,15 +30,13 @@ describe('LinkOpportunityModal', () => {
 
   it('does not render when closed', () => {
     render(
-      <AdminContext dataProvider={mockDataProvider}>
-        <LinkOpportunityModal
-          open={false}
-          contactName="Jane Doe"
-          contactId={1}
-          onClose={vi.fn()}
-          onSuccess={vi.fn()}
-        />
-      </AdminContext>
+      <LinkOpportunityModal
+        open={false}
+        contactName="Jane Doe"
+        contactId={1}
+        onClose={vi.fn()}
+        onSuccess={vi.fn()}
+      />
     );
 
     expect(screen.queryByText(/Link Opportunity to Jane Doe/i)).not.toBeInTheDocument();
