@@ -1662,6 +1662,7 @@ This section maps database tables to the UI screens that use them.
 |--------|-------|-------------|
 | Opportunity Create/Edit | Contact association | Write (via RPC) |
 | Opportunity Show (Details Tab) | Display associated contacts | Read |
+| **Contact Show (Opportunities Tab)** | **Link/unlink opportunities, display linked opportunities** | **Read/Write** |
 
 **Key Fields:**
 
@@ -1672,6 +1673,13 @@ This section maps database tables to the UI screens that use them.
 | `role` | Contact's role in opportunity |
 | `is_primary` | Primary contact flag |
 | `notes` | Contact-specific notes |
+
+**Contact Opportunities Tab Features:**
+- Two-step data fetching: junction records filtered by `contact_id`, then batch fetch opportunities via `useGetMany`
+- Link opportunities via autocomplete modal with duplicate prevention
+- Unlink opportunities via confirmation dialog (deletes junction record only)
+- Smart empty state with suggested opportunities from contact's organization
+- Health status indicators (active/cooling/at_risk) via `StageBadgeWithHealth` component
 
 **Note:** Also maintained via `opportunities.contact_ids` array for backward compatibility
 
