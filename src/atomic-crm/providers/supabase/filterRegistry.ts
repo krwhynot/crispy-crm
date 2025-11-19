@@ -343,7 +343,6 @@ export const filterableFields: Record<string, string[]> = {
     "is_primary",
     "notes",
     "created_at",
-    "updated_at",
   ],
 };
 
