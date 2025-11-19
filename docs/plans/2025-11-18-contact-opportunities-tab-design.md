@@ -79,21 +79,47 @@ src/atomic-crm/contacts/
 
 ### Primary Query
 
-Use React Admin's `useGetManyReference` to fetch linked opportunities:
+**Two-step pattern:** Query `opportunity_contacts` junction table first, then fetch opportunity details.
 
 ```typescript
-const { data: linkedOpportunities, isLoading, refetch } = useGetManyReference(
-  'opportunities',
+// OpportunitiesTab.tsx
+
+// Step 1: Fetch junction records (includes junction IDs for unlinking)
+const { data: junctionRecords, isLoading: junctionLoading, refetch } = useGetList(
+  'opportunity_contacts',
   {
-    target: 'contact_id',
-    id: contactId,
+    filter: { contact_id: contactId },
     pagination: { page: 1, perPage: 50 },
-    sort: { field: 'updated_at', order: 'DESC' }
+    sort: { field: 'created_at', order: 'DESC' }
   }
 );
+
+// Step 2: Extract opportunity IDs and fetch opportunity details
+const opportunityIds = junctionRecords?.map((jr: any) => jr.opportunity_id) || [];
+
+const { data: opportunities, isLoading: oppsLoading } = useGetList(
+  'opportunities',
+  {
+    filter: { id: opportunityIds },
+    pagination: { page: 1, perPage: 50 }
+  },
+  { enabled: opportunityIds.length > 0 } // Only run if we have IDs
+);
+
+// Step 3: Merge junction metadata with opportunity data
+const linkedOpportunities = junctionRecords?.map((junction: any) => {
+  const opp = opportunities?.find((o: any) => o.id === junction.opportunity_id);
+  return opp ? { ...opp, junctionId: junction.id } : null;
+}).filter(Boolean) || [];
+
+const isLoading = junctionLoading || oppsLoading;
 ```
 
-**How it works:** React Admin queries `opportunity_contacts` where `contact_id = contactId`, then fetches full opportunity records. Returns complete opportunity objects (no need for nested ReferenceFields).
+**Why this pattern:**
+- Junction records include `id` field (needed for unlinking)
+- Matches existing `OpportunityContactsTab` pattern (src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx:25-44)
+- Allows access to junction metadata (role, is_primary) if needed later
+- Works with existing data provider (no custom logic required)
 
 ### Mutations
 
