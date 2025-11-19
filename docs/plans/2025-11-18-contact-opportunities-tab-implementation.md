@@ -183,7 +183,7 @@ Expected: FAIL with "Cannot find module './OpportunitiesTab'"
 
 ```typescript
 // src/atomic-crm/contacts/OpportunitiesTab.tsx
-import { useShowContext, useGetList } from 'ra-core';
+import { useShowContext, useGetList, useGetMany } from 'ra-core';
 import type { Contact } from '../types';
 
 export function OpportunitiesTab() {
@@ -203,13 +203,10 @@ export function OpportunitiesTab() {
   // Step 2: Extract opportunity IDs
   const opportunityIds = junctionRecords?.map((jr: any) => jr.opportunity_id) || [];
 
-  // Step 3: Fetch opportunity details
-  const { data: opportunities, isLoading: oppsLoading } = useGetList(
+  // Step 3: Fetch opportunity details using getMany (batch fetch by IDs)
+  const { data: opportunities, isLoading: oppsLoading } = useGetMany(
     'opportunities',
-    {
-      filter: { id: opportunityIds },
-      pagination: { page: 1, perPage: 50 }
-    },
+    { ids: opportunityIds },
     { enabled: opportunityIds.length > 0 }
   );
 
@@ -305,55 +302,64 @@ Expected: FAIL with "Unable to find element: Deal A"
 
 ```typescript
 // Modify OpportunitiesTab.tsx - replace return statement
-import { Datagrid, FunctionField, ReferenceField, TextField, NumberField } from 'react-admin';
+import { Datagrid, FunctionField, ReferenceField, TextField, NumberField, ListContextProvider } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { StageBadgeWithHealth } from './StageBadgeWithHealth';
 
 // ... inside OpportunitiesTab after linkedOpportunities merge ...
 
+const listContext = {
+  data: linkedOpportunities,
+  ids: linkedOpportunities.map((opp: any) => opp.id),
+  total: linkedOpportunities.length,
+  isLoading: false,
+  isFetching: false,
+};
+
 return (
   <div className="space-y-4">
-    <Datagrid
-      data={linkedOpportunities}
-      bulkActionButtons={false}
-      rowClick={false}
-      className="border rounded-lg"
-    >
-      <FunctionField
-        label="Opportunity"
-        render={(record: any) => (
-          <Link
-            to={`/opportunities/${record.id}`}
-            className="font-medium text-primary hover:underline"
-          >
-            {record.name}
-          </Link>
-        )}
-      />
-
-      <ReferenceField
-        source="customer_organization_id"
-        reference="organizations"
-        label="Customer"
+    <ListContextProvider value={listContext}>
+      <Datagrid
+        bulkActionButtons={false}
+        rowClick={false}
+        className="border rounded-lg"
       >
-        <TextField source="name" />
-      </ReferenceField>
+        <FunctionField
+          label="Opportunity"
+          render={(record: any) => (
+            <Link
+              to={`/opportunities/${record.id}`}
+              className="font-medium text-primary hover:underline"
+            >
+              {record.name}
+            </Link>
+          )}
+        />
 
-      <FunctionField
-        label="Stage"
-        render={(record: any) => (
-          <StageBadgeWithHealth
-            stage={record.stage}
-            health={record.health_status}
-          />
-        )}
-      />
+        <ReferenceField
+          source="customer_organization_id"
+          reference="organizations"
+          label="Customer"
+        >
+          <TextField source="name" />
+        </ReferenceField>
 
-      <NumberField
-        source="amount"
-        options={{ style: 'currency', currency: 'USD' }}
-      />
-    </Datagrid>
+        <FunctionField
+          label="Stage"
+          render={(record: any) => (
+            <StageBadgeWithHealth
+              stage={record.stage}
+              health={record.health_status}
+            />
+          )}
+        />
+
+        <NumberField
+          source="amount"
+          options={{ style: 'currency', currency: 'USD' }}
+        />
+      </Datagrid>
+    </ListContextProvider>
   </div>
 );
 ```
@@ -752,6 +758,7 @@ Expected: FAIL with "Unable to find element: Link Opportunity"
 ```typescript
 // Modify OpportunitiesTab.tsx
 import { useState } from 'react';
+import { ListContextProvider } from 'react-admin';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { LinkOpportunityModal } from './LinkOpportunityModal';
@@ -778,6 +785,14 @@ export function OpportunitiesTab() {
 
   // ... existing loading/empty checks ...
 
+  const listContext = {
+    data: linkedOpportunities,
+    ids: linkedOpportunities.map((opp: any) => opp.id),
+    total: linkedOpportunities.length,
+    isLoading: false,
+    isFetching: false,
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
@@ -786,27 +801,28 @@ export function OpportunitiesTab() {
         </Button>
       </div>
 
-      <Datagrid
-        data={linkedOpportunities}
-        bulkActionButtons={false}
-        rowClick={false}
-        className="border rounded-lg"
-      >
-        {/* ... existing fields ... */}
+      <ListContextProvider value={listContext}>
+        <Datagrid
+          bulkActionButtons={false}
+          rowClick={false}
+          className="border rounded-lg"
+        >
+          {/* ... existing fields ... */}
 
-        <FunctionField
-          label=""
-          render={(record: any) => (
-            <button
-              aria-label={`Unlink ${record.name} from ${contactName}`}
-              className="h-11 w-11 inline-flex items-center justify-center rounded-md hover:bg-muted"
-              onClick={() => setUnlinkingOpportunity(record)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-          )}
-        />
-      </Datagrid>
+          <FunctionField
+            label=""
+            render={(record: any) => (
+              <button
+                aria-label={`Unlink ${record.name} from ${contactName}`}
+                className="h-11 w-11 inline-flex items-center justify-center rounded-md hover:bg-muted"
+                onClick={() => setUnlinkingOpportunity(record)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            )}
+          />
+        </Datagrid>
+      </ListContextProvider>
 
       <LinkOpportunityModal
         open={showLinkModal}
