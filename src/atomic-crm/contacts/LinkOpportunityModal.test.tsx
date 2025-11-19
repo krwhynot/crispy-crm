@@ -1,11 +1,14 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { LinkOpportunityModal } from './LinkOpportunityModal';
 import { vi } from 'vitest';
 
+const mockCreate = vi.fn();
+const mockNotify = vi.fn();
+
 // Mock react-admin hooks
 vi.mock('react-admin', () => ({
-  useCreate: () => [vi.fn(), { isLoading: false }],
-  useNotify: () => vi.fn(),
+  useCreate: () => [mockCreate, { isLoading: false }],
+  useNotify: () => mockNotify,
   Form: ({ children, onSubmit }: any) => (
     <form onSubmit={onSubmit}>{children}</form>
   ),
@@ -18,12 +21,17 @@ vi.mock('@/components/admin/autocomplete-input', () => ({
 }));
 
 describe('LinkOpportunityModal', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('renders when open', () => {
     render(
       <LinkOpportunityModal
         open={true}
         contactName="Jane Doe"
         contactId={1}
+        linkedOpportunityIds={[]}
         onClose={vi.fn()}
         onSuccess={vi.fn()}
       />
@@ -38,11 +46,46 @@ describe('LinkOpportunityModal', () => {
         open={false}
         contactName="Jane Doe"
         contactId={1}
+        linkedOpportunityIds={[]}
         onClose={vi.fn()}
         onSuccess={vi.fn()}
       />
     );
 
     expect(screen.queryByText(/Link Opportunity to Jane Doe/i)).not.toBeInTheDocument();
+  });
+
+  it('prevents linking duplicate opportunities', async () => {
+    const onClose = vi.fn();
+    const onSuccess = vi.fn();
+
+    render(
+      <LinkOpportunityModal
+        open={true}
+        contactName="Jane Doe"
+        contactId={1}
+        linkedOpportunityIds={[10, 11]}
+        onClose={onClose}
+        onSuccess={onSuccess}
+      />
+    );
+
+    // Simulate form submission with opportunity 10 (already linked)
+    const form = screen.getByRole('form');
+    fireEvent.submit(form, {
+      target: {
+        opportunity_id: { value: 10 }
+      }
+    });
+
+    await waitFor(() => {
+      expect(mockNotify).toHaveBeenCalledWith(
+        'This contact is already linked to that opportunity',
+        { type: 'warning' }
+      );
+    });
+
+    expect(mockCreate).not.toHaveBeenCalled();
+    expect(onSuccess).not.toHaveBeenCalled();
   });
 });
