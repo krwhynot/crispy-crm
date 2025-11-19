@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ShowContextProvider } from 'ra-core';
 import { OpportunitiesTab } from './OpportunitiesTab';
 
@@ -12,12 +12,39 @@ const mockContact = {
 
 const mockUseGetList = vi.fn();
 const mockUseGetMany = vi.fn();
+const mockUseRefresh = vi.fn();
 
 // Mock StageBadgeWithHealth component
 vi.mock('./StageBadgeWithHealth', () => ({
   StageBadgeWithHealth: ({ stage, health }: any) => (
     <div data-testid="stage-badge">{stage} - {health}</div>
   )
+}));
+
+// Mock LinkOpportunityModal component
+vi.mock('./LinkOpportunityModal', () => ({
+  LinkOpportunityModal: ({ open, contactName, onClose }: any) => {
+    if (!open) return null;
+    return (
+      <div data-testid="link-modal">
+        Link Opportunity to {contactName}
+        <button onClick={onClose}>Close</button>
+      </div>
+    );
+  }
+}));
+
+// Mock UnlinkConfirmDialog component
+vi.mock('./UnlinkConfirmDialog', () => ({
+  UnlinkConfirmDialog: ({ opportunity, contactName, onClose }: any) => {
+    if (!opportunity) return null;
+    return (
+      <div data-testid="unlink-dialog">
+        Unlink {opportunity.name} from {contactName}
+        <button onClick={onClose}>Close</button>
+      </div>
+    );
+  }
 }));
 
 // Mock react-admin components
@@ -44,6 +71,7 @@ vi.mock('ra-core', async () => {
     ...actual,
     useGetList: () => mockUseGetList(),
     useGetMany: () => mockUseGetMany(),
+    useRefresh: () => mockUseRefresh,
   };
 });
 
@@ -121,6 +149,26 @@ describe('OpportunitiesTab', () => {
     await waitFor(() => {
       expect(screen.getByText('Deal A')).toBeInTheDocument();
       expect(screen.getByText('Deal B')).toBeInTheDocument();
+    });
+  });
+
+  it('opens link modal when clicking Link Opportunity button', async () => {
+    mockUseGetList.mockReturnValue({
+      data: [],
+      isLoading: false,
+    });
+
+    render(
+      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+        <OpportunitiesTab />
+      </ShowContextProvider>
+    );
+
+    const linkButton = screen.getByText(/Link Opportunity/i);
+    fireEvent.click(linkButton);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Link Opportunity to Jane Doe/i)).toBeInTheDocument();
     });
   });
 });

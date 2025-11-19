@@ -1,11 +1,19 @@
-import { useShowContext, useGetList, useGetMany } from 'ra-core';
+import { useState } from 'react';
+import { useShowContext, useGetList, useGetMany, useRefresh } from 'ra-core';
 import { Datagrid, FunctionField, ReferenceField, TextField, NumberField, ListContextProvider } from 'react-admin';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 import { StageBadgeWithHealth } from './StageBadgeWithHealth';
+import { LinkOpportunityModal } from './LinkOpportunityModal';
+import { UnlinkConfirmDialog } from './UnlinkConfirmDialog';
 import type { Contact } from '../types';
 
 export function OpportunitiesTab() {
   const { record: contact, isPending } = useShowContext<Contact>();
+  const [showLinkModal, setShowLinkModal] = useState(false);
+  const [unlinkingOpportunity, setUnlinkingOpportunity] = useState<any>(null);
+  const refresh = useRefresh();
 
   // Step 1: Fetch junction records
   const { data: junctionRecords, isLoading: junctionLoading } = useGetList(
@@ -30,6 +38,18 @@ export function OpportunitiesTab() {
 
   const isLoading = isPending || junctionLoading || oppsLoading;
 
+  const contactName = `${contact?.first_name} ${contact?.last_name}`;
+
+  const handleLinkSuccess = () => {
+    refresh();
+    setShowLinkModal(false);
+  };
+
+  const handleUnlinkSuccess = () => {
+    refresh();
+    setUnlinkingOpportunity(null);
+  };
+
   if (isPending || !contact) return null;
 
   if (isLoading) {
@@ -37,7 +57,24 @@ export function OpportunitiesTab() {
   }
 
   if (!junctionRecords || junctionRecords.length === 0) {
-    return <div>No opportunities linked yet</div>;
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <Button onClick={() => setShowLinkModal(true)}>
+            Link Opportunity
+          </Button>
+        </div>
+        <div>No opportunities linked yet</div>
+
+        <LinkOpportunityModal
+          open={showLinkModal}
+          contactName={contactName}
+          contactId={contact.id}
+          onClose={() => setShowLinkModal(false)}
+          onSuccess={handleLinkSuccess}
+        />
+      </div>
+    );
   }
 
   // Merge junction data with opportunities
@@ -56,6 +93,12 @@ export function OpportunitiesTab() {
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <Button onClick={() => setShowLinkModal(true)}>
+          Link Opportunity
+        </Button>
+      </div>
+
       <ListContextProvider value={listContext}>
         <Datagrid
           bulkActionButtons={false}
@@ -96,8 +139,36 @@ export function OpportunitiesTab() {
             source="amount"
             options={{ style: 'currency', currency: 'USD' }}
           />
+
+          <FunctionField
+            label=""
+            render={(record: any) => (
+              <button
+                aria-label={`Unlink ${record.name} from ${contactName}`}
+                className="h-11 w-11 inline-flex items-center justify-center rounded-md hover:bg-muted"
+                onClick={() => setUnlinkingOpportunity(record)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            )}
+          />
         </Datagrid>
       </ListContextProvider>
+
+      <LinkOpportunityModal
+        open={showLinkModal}
+        contactName={contactName}
+        contactId={contact.id}
+        onClose={() => setShowLinkModal(false)}
+        onSuccess={handleLinkSuccess}
+      />
+
+      <UnlinkConfirmDialog
+        opportunity={unlinkingOpportunity}
+        contactName={contactName}
+        onClose={() => setUnlinkingOpportunity(null)}
+        onSuccess={handleUnlinkSuccess}
+      />
     </div>
   );
 }
