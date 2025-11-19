@@ -10,7 +10,11 @@ vi.mock('react-admin', () => ({
   useCreate: () => [mockCreate, { isLoading: false }],
   useNotify: () => mockNotify,
   Form: ({ children, onSubmit }: any) => (
-    <form onSubmit={onSubmit}>{children}</form>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      // Simulate form data being passed to onSubmit handler
+      onSubmit({ opportunity_id: 10 });
+    }}>{children}</form>
   ),
   ReferenceInput: ({ children }: any) => <div>{children}</div>,
 }));
@@ -71,12 +75,8 @@ describe('LinkOpportunityModal', () => {
     );
 
     // Simulate form submission with opportunity 10 (already linked)
-    const form = screen.getByRole('form');
-    fireEvent.submit(form, {
-      target: {
-        opportunity_id: { value: 10 }
-      }
-    });
+    const submitButton = screen.getByRole('button', { name: /Link Opportunity/i });
+    fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(mockNotify).toHaveBeenCalledWith(
