@@ -11,12 +11,14 @@ const mockContact = {
 };
 
 const mockUseGetList = vi.fn();
+const mockUseGetMany = vi.fn();
 
 vi.mock('ra-core', async () => {
   const actual = await vi.importActual('ra-core');
   return {
     ...actual,
     useGetList: () => mockUseGetList(),
+    useGetMany: () => mockUseGetMany(),
   };
 });
 
@@ -30,6 +32,10 @@ describe('OpportunitiesTab', () => {
       data: undefined,
       isLoading: true,
     });
+    mockUseGetMany.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+    });
 
     render(
       <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
@@ -42,6 +48,10 @@ describe('OpportunitiesTab', () => {
 
   it('shows empty state when no opportunities linked', async () => {
     mockUseGetList.mockReturnValue({
+      data: [],
+      isLoading: false,
+    });
+    mockUseGetMany.mockReturnValue({
       data: [],
       isLoading: false,
     });
