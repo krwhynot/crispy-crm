@@ -172,9 +172,15 @@ export function OpportunitiesTab() {
 
   const linkedOpportunityIds = linkedOpportunities.map((opp: any) => opp.id);
 
+  // Convert array to object keyed by ID for React Admin Datagrid
+  const linkedOpportunitiesData = linkedOpportunities.reduce((acc: any, opp: any) => {
+    acc[opp.id] = opp;
+    return acc;
+  }, {});
+
   const listContext = {
-    data: linkedOpportunities,
-    ids: linkedOpportunities.map((opp: any) => opp.id),
+    data: linkedOpportunitiesData,
+    ids: linkedOpportunityIds,
     total: linkedOpportunities.length,
     isLoading: false,
     isFetching: false,

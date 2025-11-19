@@ -67,9 +67,10 @@ vi.mock('react-admin', () => ({
   TextField: () => <div>text-field</div>,
   NumberField: () => <div>number-field</div>,
   ListContextProvider: ({ children, value }: any) => {
-    // Render the data items for testing
+    // Render the data items for testing (data is object keyed by ID)
+    const items = value?.ids?.map((id: any) => value.data[id]) || [];
     return <div data-testid="list-context">
-      {value?.data?.map((item: any) => (
+      {items.map((item: any) => (
         <div key={item.id} data-testid="opportunity-item">{item.name}</div>
       ))}
       {children}
