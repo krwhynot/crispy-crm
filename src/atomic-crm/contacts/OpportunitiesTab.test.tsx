@@ -50,10 +50,10 @@ vi.mock('./UnlinkConfirmDialog', () => ({
 // Mock react-admin components
 vi.mock('react-admin', () => ({
   Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
-  FunctionField: ({ render, label }: any) => <div data-testid={`field-${label}`}>function-field</div>,
+  FunctionField: ({ label }: any) => <div data-testid={`field-${label}`}>function-field</div>,
   ReferenceField: ({ children, label }: any) => <div data-testid={`field-${label}`}>{children}</div>,
-  TextField: ({ source }: any) => <div>text-field</div>,
-  NumberField: ({ source }: any) => <div>number-field</div>,
+  TextField: () => <div>text-field</div>,
+  NumberField: () => <div>number-field</div>,
   ListContextProvider: ({ children, value }: any) => {
     // Render the data items for testing
     return <div data-testid="list-context">
