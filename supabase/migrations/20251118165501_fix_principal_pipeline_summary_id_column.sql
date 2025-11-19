@@ -1,14 +1,13 @@
--- Migration: Add principal_pipeline_summary view for Dashboard V3
--- Purpose: Aggregate opportunity pipeline data by principal organization
--- CORRECTED: Fixes LEFT JOIN, removes pipeline_value, proper sales_id aggregation
+-- Migration: Fix principal_pipeline_summary view to include 'id' column for React Admin
+-- Purpose: React Admin requires all data records to have an 'id' field
+-- Context: Original migration 20251118050755 created view with 'principal_id' as first column
+--          PostgreSQL doesn't allow renaming view columns with CREATE OR REPLACE
+--          Solution: DROP and CREATE with correct column order
 
--- First, add 'note' to interaction_type enum for simple note logging
-ALTER TYPE interaction_type ADD VALUE IF NOT EXISTS 'note';
-
--- Drop existing view to allow column rename (PostgreSQL limitation)
+-- Drop existing view
 DROP VIEW IF EXISTS principal_pipeline_summary;
 
--- Create the view with 'id' column for React Admin compatibility
+-- Recreate with 'id' column for React Admin compatibility
 CREATE VIEW principal_pipeline_summary AS
 SELECT
   o.id as id,  -- React Admin requires 'id'
@@ -94,7 +93,7 @@ SELECT
 
 FROM organizations o
 
---  LEFT JOIN with deleted_at filter IN the JOIN condition
+-- LEFT JOIN with deleted_at filter IN the JOIN condition
 -- This preserves principals with zero opportunities
 LEFT JOIN opportunities opp
   ON o.id = opp.principal_organization_id
@@ -107,7 +106,7 @@ LEFT JOIN activities a
 WHERE o.organization_type = 'principal'
   AND o.deleted_at IS NULL
 
---  Group only by principal fields (sales_id comes from subquery)
+-- Group only by principal fields (sales_id comes from subquery)
 GROUP BY o.id, o.name;
 
 -- Grant permissions to authenticated users
@@ -115,18 +114,3 @@ GROUP BY o.id, o.name;
 -- All base tables already have RLS policies requiring authenticated role
 -- No additional RLS policy needed on the view itself (views can't have RLS policies)
 GRANT SELECT ON principal_pipeline_summary TO authenticated;
-
--- Performance optimization: Index on activity_date for date range queries
-CREATE INDEX IF NOT EXISTS idx_activities_activity_date_not_deleted
-ON activities(activity_date DESC)
-WHERE deleted_at IS NULL;
-
--- Index on opportunity principal relationship
-CREATE INDEX IF NOT EXISTS idx_opportunities_principal_org_not_deleted
-ON opportunities(principal_organization_id)
-WHERE deleted_at IS NULL;
-
--- Index for account_manager_id subquery (most recent opportunity)
-CREATE INDEX IF NOT EXISTS idx_opportunities_principal_created
-ON opportunities(principal_organization_id, created_at DESC)
-WHERE deleted_at IS NULL AND account_manager_id IS NOT NULL;
