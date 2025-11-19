@@ -13,11 +13,23 @@ const mockContact = {
 const mockUseGetList = vi.fn();
 const mockUseGetMany = vi.fn();
 const mockUseRefresh = vi.fn();
+const mockCreate = vi.fn();
+const mockNotify = vi.fn();
 
 // Mock StageBadgeWithHealth component
 vi.mock('./StageBadgeWithHealth', () => ({
   StageBadgeWithHealth: ({ stage, health }: any) => (
     <div data-testid="stage-badge">{stage} - {health}</div>
+  )
+}));
+
+// Mock SuggestedOpportunityCard component
+vi.mock('./SuggestedOpportunityCard', () => ({
+  SuggestedOpportunityCard: ({ opportunity, onLink }: any) => (
+    <div data-testid="suggested-opportunity-card">
+      {opportunity.name}
+      <button onClick={onLink}>Link</button>
+    </div>
   )
 }));
 
@@ -72,6 +84,8 @@ vi.mock('ra-core', async () => {
     useGetList: () => mockUseGetList(),
     useGetMany: () => mockUseGetMany(),
     useRefresh: () => mockUseRefresh,
+    useCreate: () => [mockCreate],
+    useNotify: () => mockNotify,
   };
 });
 
@@ -170,5 +184,126 @@ describe('OpportunitiesTab', () => {
     await waitFor(() => {
       expect(screen.getByText(/Link Opportunity to Jane Doe/i)).toBeInTheDocument();
     });
+  });
+
+  it('shows suggested opportunities when contact has organization with active deals', async () => {
+    const mockSuggestedOpps = [
+      { id: 20, name: 'Suggested Deal A', customer_organization_id: 100, stage: 'qualified', health_status: 'active', amount: 30000 },
+      { id: 21, name: 'Suggested Deal B', customer_organization_id: 100, stage: 'proposal', health_status: 'cooling', amount: 45000 },
+      { id: 22, name: 'Suggested Deal C', customer_organization_id: 100, stage: 'negotiation', health_status: 'active', amount: 60000 }
+    ];
+
+    // First call returns empty junction records (no linked opportunities)
+    // Second call returns suggested opportunities from the organization
+    let callCount = 0;
+    mockUseGetList.mockImplementation(() => {
+      callCount++;
+      if (callCount === 1) {
+        // Junction records query
+        return { data: [], isLoading: false };
+      } else {
+        // Suggested opportunities query
+        return { data: mockSuggestedOpps, isLoading: false };
+      }
+    });
+
+    mockUseGetMany.mockReturnValue({
+      data: [],
+      isLoading: false,
+    });
+
+    render(
+      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+        <OpportunitiesTab />
+      </ShowContextProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/suggested opportunities/i)).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('Suggested Deal A')).toBeInTheDocument();
+    expect(screen.getByText('Suggested Deal B')).toBeInTheDocument();
+    expect(screen.getByText('Suggested Deal C')).toBeInTheDocument();
+    expect(screen.getByText(/we found 3 active opportunities/i)).toBeInTheDocument();
+  });
+
+  it('filters out closed opportunities from suggestions', async () => {
+    const mockAllOpps = [
+      { id: 20, name: 'Active Deal', customer_organization_id: 100, stage: 'qualified', health_status: 'active', amount: 30000 },
+      { id: 21, name: 'Closed Won', customer_organization_id: 100, stage: 'closed_won', health_status: 'active', amount: 45000 },
+      { id: 22, name: 'Closed Lost', customer_organization_id: 100, stage: 'closed_lost', health_status: 'active', amount: 60000 }
+    ];
+
+    let callCount = 0;
+    mockUseGetList.mockImplementation(() => {
+      callCount++;
+      if (callCount === 1) {
+        return { data: [], isLoading: false };
+      } else {
+        return { data: mockAllOpps, isLoading: false };
+      }
+    });
+
+    mockUseGetMany.mockReturnValue({
+      data: [],
+      isLoading: false,
+    });
+
+    render(
+      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+        <OpportunitiesTab />
+      </ShowContextProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Active Deal')).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText('Closed Won')).not.toBeInTheDocument();
+    expect(screen.queryByText('Closed Lost')).not.toBeInTheDocument();
+  });
+
+  it('limits suggestions to 5 opportunities max', async () => {
+    const mockManyOpps = Array.from({ length: 10 }, (_, i) => ({
+      id: 30 + i,
+      name: `Deal ${i + 1}`,
+      customer_organization_id: 100,
+      stage: 'qualified',
+      health_status: 'active',
+      amount: 10000 * (i + 1)
+    }));
+
+    let callCount = 0;
+    mockUseGetList.mockImplementation(() => {
+      callCount++;
+      if (callCount === 1) {
+        return { data: [], isLoading: false };
+      } else {
+        return { data: mockManyOpps, isLoading: false };
+      }
+    });
+
+    mockUseGetMany.mockReturnValue({
+      data: [],
+      isLoading: false,
+    });
+
+    render(
+      <ShowContextProvider value={{ record: mockContact, isLoading: false }}>
+        <OpportunitiesTab />
+      </ShowContextProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/we found 5 active opportunities/i)).toBeInTheDocument();
+    });
+
+    // Should show first 5
+    expect(screen.getByText('Deal 1')).toBeInTheDocument();
+    expect(screen.getByText('Deal 5')).toBeInTheDocument();
+
+    // Should not show 6th and beyond
+    expect(screen.queryByText('Deal 6')).not.toBeInTheDocument();
   });
 });

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useShowContext, useGetList, useGetMany, useRefresh } from 'ra-core';
+import { useState, useMemo } from 'react';
+import { useShowContext, useGetList, useGetMany, useRefresh, useCreate, useNotify } from 'ra-core';
 import { Datagrid, FunctionField, ReferenceField, TextField, NumberField, ListContextProvider } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,7 @@ import { Trash2 } from 'lucide-react';
 import { StageBadgeWithHealth } from './StageBadgeWithHealth';
 import { LinkOpportunityModal } from './LinkOpportunityModal';
 import { UnlinkConfirmDialog } from './UnlinkConfirmDialog';
+import { SuggestedOpportunityCard } from './SuggestedOpportunityCard';
 import type { Contact } from '../types';
 
 export function OpportunitiesTab() {
@@ -14,6 +15,8 @@ export function OpportunitiesTab() {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [unlinkingOpportunity, setUnlinkingOpportunity] = useState<any>(null);
   const refresh = useRefresh();
+  const [create] = useCreate();
+  const notify = useNotify();
 
   // Step 1: Fetch junction records
   const { data: junctionRecords, isLoading: junctionLoading } = useGetList(
@@ -36,6 +39,26 @@ export function OpportunitiesTab() {
     { enabled: opportunityIds.length > 0 }
   );
 
+  // Step 4: Fetch suggested opportunities from contact's organization
+  const { data: orgOpportunities } = useGetList(
+    'opportunities',
+    {
+      filter: {
+        customer_organization_id: contact?.organization_id,
+      },
+      pagination: { page: 1, perPage: 25 },
+      sort: { field: 'updated_at', order: 'DESC' },
+    },
+    { enabled: !!contact?.organization_id && (!junctionRecords || junctionRecords.length === 0) }
+  );
+
+  const suggestedOpps = useMemo(() => {
+    if (!orgOpportunities) return [];
+    return orgOpportunities
+      .filter((opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage))
+      .slice(0, 5);
+  }, [orgOpportunities]);
+
   const isLoading = isPending || junctionLoading || oppsLoading;
 
   const contactName = `${contact?.first_name} ${contact?.last_name}`;
@@ -50,6 +73,31 @@ export function OpportunitiesTab() {
     setUnlinkingOpportunity(null);
   };
 
+  const handleQuickLink = async (opportunityId: number) => {
+    try {
+      await create(
+        'opportunity_contacts',
+        {
+          data: {
+            opportunity_id: opportunityId,
+            contact_id: contact.id,
+          },
+        },
+        {
+          onSuccess: () => {
+            notify('Opportunity linked', { type: 'success' });
+            refresh();
+          },
+          onError: (error: any) => {
+            notify(error?.message || 'Failed to link opportunity', { type: 'error' });
+          },
+        }
+      );
+    } catch (error) {
+      notify('Failed to link opportunity', { type: 'error' });
+    }
+  };
+
   if (isPending || !contact) return null;
 
   if (isLoading) {
@@ -57,14 +105,51 @@ export function OpportunitiesTab() {
   }
 
   if (!junctionRecords || junctionRecords.length === 0) {
-    return (
-      <div className="space-y-4">
-        <div className="flex justify-end">
-          <Button onClick={() => setShowLinkModal(true)}>
-            Link Opportunity
+    if (suggestedOpps.length > 0) {
+      return (
+        <div className="text-center py-8 space-y-4">
+          <h3 className="text-lg font-semibold">Suggested Opportunities</h3>
+          <p className="text-sm text-muted-foreground">
+            We found {suggestedOpps.length} active opportunities at{' '}
+            {contact.organization?.name}
+          </p>
+
+          <div className="space-y-2 max-w-2xl mx-auto">
+            {suggestedOpps.map((opp: any) => (
+              <SuggestedOpportunityCard
+                key={opp.id}
+                opportunity={opp}
+                onLink={() => handleQuickLink(opp.id)}
+              />
+            ))}
+          </div>
+
+          <Button variant="outline" onClick={() => setShowLinkModal(true)}>
+            Or search all opportunities
           </Button>
+
+          <LinkOpportunityModal
+            open={showLinkModal}
+            contactName={contactName}
+            contactId={contact.id}
+            onClose={() => setShowLinkModal(false)}
+            onSuccess={handleLinkSuccess}
+          />
         </div>
-        <div>No opportunities linked yet</div>
+      );
+    }
+
+    return (
+      <div className="text-center py-12 space-y-4">
+        <div className="text-muted-foreground">
+          <p className="text-lg">No opportunities linked yet</p>
+          <p className="text-sm mt-2 max-w-md mx-auto">
+            Link this contact to deals they're involved in to track their influence on
+            your pipeline.
+          </p>
+        </div>
+
+        <Button onClick={() => setShowLinkModal(true)}>Link Opportunity</Button>
 
         <LinkOpportunityModal
           open={showLinkModal}
