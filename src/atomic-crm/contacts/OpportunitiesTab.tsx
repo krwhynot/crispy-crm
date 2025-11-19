@@ -93,7 +93,7 @@ export function OpportunitiesTab() {
           },
         }
       );
-    } catch (error) {
+    } catch {
       notify('Failed to link opportunity', { type: 'error' });
     }
   };
