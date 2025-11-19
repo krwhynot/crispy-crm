@@ -332,6 +332,19 @@ export const filterableFields: Record<string, string[]> = {
     "next_action_summary",
     "sales_id",
   ],
+
+  // Opportunity Contacts Junction Table
+  // Links opportunities to contacts with role and primary contact designation
+  opportunity_contacts: [
+    "id",
+    "opportunity_id",
+    "contact_id",
+    "role",
+    "is_primary",
+    "notes",
+    "created_at",
+    "updated_at",
+  ],
 };
 
 /**

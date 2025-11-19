@@ -28,22 +28,11 @@ test.describe("Contact Opportunities Tab", () => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
-    // Login using POM
-    const loginPage = new LoginPage(page);
-    await loginPage.goto("/");
+    // Navigate to home page (auth state is automatically loaded from storageState)
+    await page.goto("/");
 
-    // Wait for either login form or dashboard
-    const isLoginFormVisible = await page
-      .getByLabel(/email/i)
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
-
-    if (isLoginFormVisible) {
-      await loginPage.login("admin@test.com", "password123");
-    } else {
-      // Already logged in, wait for dashboard
-      await page.waitForURL(/\/#\//, { timeout: 10000 });
-    }
+    // Wait for dashboard to load (authenticated users land on dashboard)
+    await page.waitForURL(/\/#\//, { timeout: 15000 });
   });
 
   test.afterEach(async () => {
