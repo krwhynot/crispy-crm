@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCreate, useNotify } from 'react-admin';
+import { useCreate, useNotify, Form, ReferenceInput } from 'react-admin';
 import { AutocompleteInput } from '@/components/admin/autocomplete-input';
 import {
   Dialog,
