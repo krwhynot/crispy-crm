@@ -24,6 +24,124 @@ interface PrincipalGroup {
   stageBreakdown: Record<string, number>;
 }
 
+interface FilterValues {
+  principal_organization_id: string | null;
+  stage: string[];
+  opportunity_owner_id: string | null;
+  startDate: string | null;
+  endDate: string | null;
+}
+
+interface FilterToolbarProps {
+  filters: FilterValues;
+  onFiltersChange: (filters: FilterValues) => void;
+}
+
+/**
+ * Filter toolbar with form context for React Admin inputs
+ * Wraps ReferenceInput components in FormProvider to provide required React Hook Form context
+ */
+function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
+  const form = useForm<FilterValues>({
+    defaultValues: filters,
+  });
+
+  // Watch form values and sync to parent state
+  const watchedValues = form.watch();
+
+  useEffect(() => {
+    onFiltersChange(watchedValues);
+  }, [watchedValues, onFiltersChange]);
+
+  const hasActiveFilters =
+    filters.principal_organization_id ||
+    filters.stage.length > 0 ||
+    filters.opportunity_owner_id ||
+    filters.startDate ||
+    filters.endDate;
+
+  const clearFilters = () => {
+    form.reset({
+      principal_organization_id: null,
+      stage: [],
+      opportunity_owner_id: null,
+      startDate: null,
+      endDate: null,
+    });
+  };
+
+  return (
+    <FormProvider {...form}>
+      <form className="flex flex-wrap items-center gap-2">
+        {/* Principal Filter */}
+        <ReferenceInput
+          source="principal_organization_id"
+          reference="organizations"
+          filter={{ type: "principal" }}
+        >
+          <AutocompleteArrayInput
+            label={false}
+            placeholder="Filter by Principal"
+            sx={{ minWidth: 200 }}
+          />
+        </ReferenceInput>
+
+        {/* Stage Filter */}
+        <MultiSelectInput
+          source="stage"
+          emptyText="All Stages"
+          choices={OPPORTUNITY_STAGE_CHOICES}
+          sx={{ minWidth: 150 }}
+        />
+
+        {/* Sales Rep Filter */}
+        <ReferenceInput
+          source="opportunity_owner_id"
+          reference="sales"
+        >
+          <AutocompleteArrayInput
+            label={false}
+            placeholder="Filter by Sales Rep"
+            sx={{ minWidth: 200 }}
+          />
+        </ReferenceInput>
+
+        {/* Date Range */}
+        <div className="flex items-center gap-2">
+          <input
+            type="date"
+            {...form.register("startDate")}
+            className="h-11 px-3 py-2 border border-border rounded text-sm"
+            placeholder="From Date"
+            aria-label="Filter from date"
+          />
+          <span className="text-muted-foreground">to</span>
+          <input
+            type="date"
+            {...form.register("endDate")}
+            className="h-11 px-3 py-2 border border-border rounded text-sm"
+            placeholder="To Date"
+            aria-label="Filter to date"
+          />
+        </div>
+
+        {/* Clear Filters */}
+        {hasActiveFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            type="button"
+            className="h-11"
+          >
+            Clear Filters
+          </Button>
+        )}
+      </form>
+    </FormProvider>
+  );
+}
+
 /**
  * Opportunities by Principal Report
  *
@@ -43,12 +161,12 @@ export default function OpportunitiesByPrincipalReport() {
   const notify = useNotify();
 
   // Filter state
-  const [filters, setFilters] = useState({
-    principal_organization_id: null as string | null,
-    stage: [] as string[],
-    opportunity_owner_id: null as string | null,
-    startDate: null as string | null,
-    endDate: null as string | null,
+  const [filters, setFilters] = useState<FilterValues>({
+    principal_organization_id: null,
+    stage: [],
+    opportunity_owner_id: null,
+    startDate: null,
+    endDate: null,
   });
 
   // Track expanded principals
@@ -221,85 +339,7 @@ export default function OpportunitiesByPrincipalReport() {
     <ReportLayout
       title="Opportunities by Principal"
       onExport={handleExport}
-      actions={
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Principal Filter */}
-          <ReferenceInput
-            source="principal_organization_id"
-            reference="organizations"
-            filter={{ type: "principal" }}
-          >
-            <AutocompleteArrayInput
-              label={false}
-              placeholder="Filter by Principal"
-              value={filters.principal_organization_id}
-              onChange={(value) => setFilters({ ...filters, principal_organization_id: value })}
-              sx={{ minWidth: 200 }}
-            />
-          </ReferenceInput>
-
-          {/* Stage Filter */}
-          <MultiSelectInput
-            source="stage"
-            emptyText="All Stages"
-            choices={OPPORTUNITY_STAGE_CHOICES}
-            value={filters.stage}
-            onChange={(value) => setFilters({ ...filters, stage: value || [] })}
-            sx={{ minWidth: 150 }}
-          />
-
-          {/* Sales Rep Filter */}
-          <ReferenceInput
-            source="opportunity_owner_id"
-            reference="sales"
-          >
-            <AutocompleteArrayInput
-              label={false}
-              placeholder="Filter by Sales Rep"
-              value={filters.opportunity_owner_id}
-              onChange={(value) => setFilters({ ...filters, opportunity_owner_id: value })}
-              sx={{ minWidth: 200 }}
-            />
-          </ReferenceInput>
-
-          {/* Date Range */}
-          <div className="flex items-center gap-2">
-            <input
-              type="date"
-              value={filters.startDate || ""}
-              onChange={(e) => setFilters({ ...filters, startDate: e.target.value || null })}
-              className="px-3 py-2 border rounded text-sm"
-              placeholder="From Date"
-            />
-            <span className="text-muted-foreground">to</span>
-            <input
-              type="date"
-              value={filters.endDate || ""}
-              onChange={(e) => setFilters({ ...filters, endDate: e.target.value || null })}
-              className="px-3 py-2 border rounded text-sm"
-              placeholder="To Date"
-            />
-          </div>
-
-          {/* Clear Filters */}
-          {(filters.principal_organization_id || filters.stage.length > 0 ||
-            filters.opportunity_owner_id || filters.startDate || filters.endDate) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setFilters({
-                principal_organization_id: null,
-                stage: [],
-                opportunity_owner_id: null,
-                startDate: null,
-                endDate: null,
-              })}
-            >
-              Clear Filters
-            </Button>
-          )}
-        </div>
-      }
+      actions={<FilterToolbar filters={filters} onFiltersChange={setFilters} />}
     >
       <div className="space-y-6">
         {/* Summary Stats */}
