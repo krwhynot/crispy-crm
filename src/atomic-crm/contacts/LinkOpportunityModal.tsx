@@ -13,6 +13,7 @@ interface LinkOpportunityModalProps {
   open: boolean;
   contactName: string;
   contactId: number;
+  linkedOpportunityIds: number[];
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -21,6 +22,7 @@ export function LinkOpportunityModal({
   open,
   contactName,
   contactId,
+  linkedOpportunityIds,
   onClose,
   onSuccess,
 }: LinkOpportunityModalProps) {
@@ -29,6 +31,14 @@ export function LinkOpportunityModal({
 
   const handleLink = async (data: any) => {
     if (!data.opportunity_id) return;
+
+    // Check for duplicate
+    if (linkedOpportunityIds.includes(data.opportunity_id)) {
+      notify('This contact is already linked to that opportunity', {
+        type: 'warning',
+      });
+      return;
+    }
 
     try {
       await create(

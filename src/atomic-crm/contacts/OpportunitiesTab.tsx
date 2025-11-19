@@ -132,6 +132,7 @@ export function OpportunitiesTab() {
             open={showLinkModal}
             contactName={contactName}
             contactId={contact.id}
+            linkedOpportunityIds={[]}
             onClose={() => setShowLinkModal(false)}
             onSuccess={handleLinkSuccess}
           />
@@ -155,6 +156,7 @@ export function OpportunitiesTab() {
           open={showLinkModal}
           contactName={contactName}
           contactId={contact.id}
+          linkedOpportunityIds={[]}
           onClose={() => setShowLinkModal(false)}
           onSuccess={handleLinkSuccess}
         />
@@ -167,6 +169,8 @@ export function OpportunitiesTab() {
     const opp = opportunities?.find((o: any) => o.id === junction.opportunity_id);
     return opp ? { ...opp, junctionId: junction.id } : null;
   }).filter(Boolean);
+
+  const linkedOpportunityIds = linkedOpportunities.map((opp: any) => opp.id);
 
   const listContext = {
     data: linkedOpportunities,
@@ -244,6 +248,7 @@ export function OpportunitiesTab() {
         open={showLinkModal}
         contactName={contactName}
         contactId={contact.id}
+        linkedOpportunityIds={linkedOpportunityIds}
         onClose={() => setShowLinkModal(false)}
         onSuccess={handleLinkSuccess}
       />
