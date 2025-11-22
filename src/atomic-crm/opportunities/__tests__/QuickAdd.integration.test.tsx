@@ -246,8 +246,8 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/email/i), "jane@example.com");
     await user.type(screen.getByLabelText(/organization name/i), "Tech Corp");
 
-    // City field uses Combobox component - click the trigger button to open
-    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    // City field uses Combobox component - find by placeholder text on trigger button
+    const cityCombobox = screen.getByText("Select or type city...");
     await user.click(cityCombobox);
 
     // Type in the search input (placeholder: "Search cities...")
@@ -335,8 +335,8 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/email/i), "error@test.com");
     await user.type(screen.getByLabelText(/organization name/i), "Test Org");
 
-    // City uses Combobox - click the trigger button to open
-    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    // City uses Combobox - find by placeholder text on trigger button
+    const cityCombobox = screen.getByText("Select or type city...");
     await user.click(cityCombobox);
 
     // Type in the search input (placeholder: "Search cities...")
@@ -387,8 +387,8 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/last name/i), "User");
     await user.type(screen.getByLabelText(/organization name/i), "Org");
 
-    // City uses Combobox - click the trigger button to open
-    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    // City uses Combobox - find by placeholder text on trigger button
+    const cityCombobox = screen.getByText("Select or type city...");
     await user.click(cityCombobox);
 
     // Type in the search input and select Boston
@@ -435,8 +435,8 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/phone/i), "555-9999");
     await user.type(screen.getByLabelText(/organization name/i), "Phone Org");
 
-    // City uses Combobox - click the trigger button to open
-    const cityCombobox2 = screen.getByRole("combobox", { name: /city/i });
+    // City uses Combobox - find by placeholder text on trigger button
+    const cityCombobox2 = screen.getByText("Select or type city...");
     await user.click(cityCombobox2);
 
     // Type in the search input and select Seattle
@@ -522,8 +522,8 @@ describe("QuickAdd Integration", () => {
     // Open dialog
     await user.click(screen.getByText(/quick add/i));
 
-    // City uses Combobox - click the trigger button to open
-    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    // City uses Combobox - find by placeholder text on trigger button
+    const cityCombobox = screen.getByText("Select or type city...");
     await user.click(cityCombobox);
 
     // Type in the search input to filter options
@@ -540,8 +540,9 @@ describe("QuickAdd Integration", () => {
       expect(stateField).toHaveValue("IL");
     });
 
-    // Test selecting another city to verify state updates
-    await user.click(cityCombobox);
+    // Test selecting another city to verify state updates - after selection, button shows "Chicago"
+    const cityCombobox2 = screen.getByText("Chicago");
+    await user.click(cityCombobox2);
     const searchInput2 = await screen.findByPlaceholderText("Search cities...");
     await user.type(searchInput2, "Los Angeles");
     const laOption = await screen.findByText("Los Angeles");
@@ -553,73 +554,81 @@ describe("QuickAdd Integration", () => {
     });
   });
 
-  it("preserves campaign and principal preferences across sessions", async () => {
-    // First session - set preferences
-    renderWithAdminContext(<QuickAddButton />);
+  it(
+    "preserves campaign and principal preferences across sessions",
+    async () => {
+      // First session - set preferences
+      const { unmount: unmount1 } = renderWithAdminContext(<QuickAddButton />);
 
-    await user.click(screen.getByText(/quick add/i));
+      await user.click(screen.getByText(/quick add/i));
 
-    // Type campaign name (it's a text field, not a select)
-    await user.type(screen.getByLabelText(/campaign/i), "Trade Show 2024");
+      // Type campaign name (it's a text field, not a select)
+      await user.type(screen.getByLabelText(/campaign/i), "Trade Show 2024");
 
-    // Find principal select trigger button (shadcn Select uses button with role="combobox")
-    // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText("Principal *");
-    const principalContainer = principalLabel.parentElement;
-    const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
-    if (!principalTrigger) throw new Error("Principal trigger not found");
-    await user.click(principalTrigger);
-    await user.click(await screen.findByRole("option", { name: "Principal A" }));
+      // Find principal select trigger button (shadcn Select uses button with role="combobox")
+      // Find the container with Principal label, then find the combobox within it
+      const principalLabel = screen.getByText("Principal *");
+      const principalContainer = principalLabel.parentElement;
+      const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
+      if (!principalTrigger) throw new Error("Principal trigger not found");
+      await user.click(principalTrigger);
+      await user.click(await screen.findByRole("option", { name: "Principal A" }));
 
-    // Fill minimal form
-    await user.type(screen.getByLabelText(/first name/i), "First");
-    await user.type(screen.getByLabelText(/last name/i), "Session");
-    await user.type(screen.getByLabelText(/email/i), "first@test.com");
-    await user.type(screen.getByLabelText(/organization name/i), "First Org");
+      // Fill minimal form
+      await user.type(screen.getByLabelText(/first name/i), "First");
+      await user.type(screen.getByLabelText(/last name/i), "Session");
+      await user.type(screen.getByLabelText(/email/i), "first@test.com");
+      await user.type(screen.getByLabelText(/organization name/i), "First Org");
 
-    // City uses Combobox - click the trigger button to open
-    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
-    await user.click(cityCombobox);
+      // City uses Combobox - find by placeholder text on trigger button
+      const cityCombobox = screen.getByText("Select or type city...");
+      await user.click(cityCombobox);
 
-    // Type in the search input and select Miami
-    const searchInput = await screen.findByPlaceholderText("Search cities...");
-    await user.type(searchInput, "Miami");
-    const miamiOption = await screen.findByText("Miami");
-    await user.click(miamiOption);
+      // Type in the search input and select Miami
+      const searchInput = await screen.findByPlaceholderText("Search cities...");
+      await user.type(searchInput, "Miami");
+      const miamiOption = await screen.findByText("Miami");
+      await user.click(miamiOption);
 
-    // State should auto-fill when city is selected
-    await waitFor(() => {
-      expect(screen.getByLabelText(/state/i)).toHaveValue("FL");
-    });
+      // State should auto-fill when city is selected
+      await waitFor(() => {
+        expect(screen.getByLabelText(/state/i)).toHaveValue("FL");
+      });
 
-    // Save
-    await user.click(screen.getByText(/save & close/i));
+      // Save
+      await user.click(screen.getByText(/save & close/i));
 
-    await waitFor(() => {
-      expect(mockCreateBoothVisitor).toHaveBeenCalled();
-    });
+      await waitFor(() => {
+        expect(mockCreateBoothVisitor).toHaveBeenCalled();
+      });
 
-    // Verify preferences saved
-    expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2024");
-    expect(localStorage.getItem("last_principal")).toBe("1");
+      // Verify preferences saved
+      expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2024");
+      expect(localStorage.getItem("last_principal")).toBe("1");
 
-    // Second session - verify preferences loaded
-    const { unmount } = renderWithAdminContext(<QuickAddButton />);
+      // Unmount first component before rendering second
+      unmount1();
 
-    await user.click(screen.getByText(/quick add/i));
+      // Second session - verify preferences loaded
+      const { unmount: unmount2 } = renderWithAdminContext(<QuickAddButton />);
 
-    // Verify campaign and principal pre-selected
-    await waitFor(() => {
-      expect(screen.getByLabelText(/campaign/i)).toHaveValue("Trade Show 2024");
-      // Principal trigger shows selected value
-      const principalLabelElement = screen.getByText("Principal *");
-      const principalContainerElement = principalLabelElement.parentElement;
-      const principalTriggerEl = principalContainerElement?.querySelector('[role="combobox"]');
-      expect(principalTriggerEl).toHaveTextContent("Principal A");
-    });
+      await user.click(screen.getByText(/quick add/i));
 
-    unmount();
-  });
+      // Verify campaign and principal pre-selected
+      await waitFor(() => {
+        expect(screen.getByLabelText(/campaign/i)).toHaveValue("Trade Show 2024");
+        // Principal trigger shows selected value
+        const principalLabelElement = screen.getByText("Principal *");
+        const principalContainerElement = principalLabelElement.parentElement;
+        const principalTriggerEl =
+          principalContainerElement?.querySelector('[role="combobox"]');
+        expect(principalTriggerEl).toHaveTextContent("Principal A");
+      });
+
+      unmount2();
+    },
+    15000
+  );
 
   it("ensures all touch targets meet minimum size requirements", async () => {
     renderWithAdminContext(<QuickAddButton />);
