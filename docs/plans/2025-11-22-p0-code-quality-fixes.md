@@ -1,0 +1,348 @@
+# P0 Code Quality Fixes Implementation Plan
+
+> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+
+**Goal:** Fix the three critical P0 issues identified in the enhanced code quality analysis: E2E test parameter typo, React Hooks violation, and establish useEffect cleanup audit baseline.
+
+**Architecture:** Direct fixes to existing files with no architectural changes. The React Hooks fix restructures component to call hooks unconditionally before any early returns. The E2E fix is a simple parameter rename.
+
+**Tech Stack:** React, TypeScript, Playwright E2E tests
+
+---
+
+## Task 1: Fix E2E Test Parameter Typo
+
+**Files:**
+- Modify: `tests/e2e/specs/opportunities/stage-transitions.spec.ts:298,444`
+
+**Context:** Two tests use `_page` instead of `page` as the destructured parameter, causing Playwright to reject them as unknown parameters. This silently breaks the entire E2E test suite.
+
+**Step 1: Fix first occurrence at line 298**
+
+Change line 298 from:
+```typescript
+test("should prevent invalid stage transitions (if business rules exist)", async ({ _page }) => {
+```
+
+To:
+```typescript
+test("should prevent invalid stage transitions (if business rules exist)", async ({ page }) => {
+```
+
+**Step 2: Fix second occurrence at line 444**
+
+Change line 444 from:
+```typescript
+test("should maintain stage consistency across list and detail views", async ({ _page }) => {
+```
+
+To:
+```typescript
+test("should maintain stage consistency across list and detail views", async ({ page }) => {
+```
+
+**Step 3: Verify E2E tests can now list**
+
+Run: `npm run test:e2e -- --list 2>&1 | grep -E "(Total|Error)"`
+
+Expected: `Total: X tests in Y files` (no errors about unknown parameters)
+
+**Step 4: Commit**
+
+```bash
+git add tests/e2e/specs/opportunities/stage-transitions.spec.ts
+git commit -m "fix(e2e): correct _page to page parameter in stage-transitions tests
+
+The _page parameter was an unknown fixture parameter causing Playwright
+to reject these tests. Changed to standard 'page' fixture.
+
+Fixes: E2E test suite unable to run"
+```
+
+---
+
+## Task 2: Fix React Hooks Conditional Call Violation
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/PrincipalDashboard.tsx`
+
+**Context:** React Hooks (useState, useGetList) are called after an early return, violating the Rules of Hooks. Hooks must be called in the same order on every render.
+
+**Current problematic pattern (lines 31-47):**
+```typescript
+const isV2Enabled = useFeatureFlag();
+
+if (isV2Enabled) {
+  return <PrincipalDashboardV2 />;  // Early return BEFORE hooks
+}
+
+// Hooks called AFTER early return - VIOLATION
+const [activityHistoryOpen, setActivityHistoryOpen] = useState(false);
+const [selectedPrincipalId, setSelectedPrincipalId] = useState<string>('');
+const { data: principals } = useGetList('organizations', {...});
+```
+
+**Step 1: Verify the issue exists**
+
+Run: `npm run lint:check 2>&1 | grep -A2 "PrincipalDashboard"`
+
+Expected: `react-hooks/rules-of-hooks` errors for lines 39, 40, 43
+
+**Step 2: Restructure to call all hooks before conditional return**
+
+Replace the entire component body (lines 30-125) with:
+
+```typescript
+export const PrincipalDashboard: React.FC = () => {
+  // ALL hooks must be called unconditionally at the top
+  const isV2Enabled = useFeatureFlag();
+  const [activityHistoryOpen, setActivityHistoryOpen] = useState(false);
+  const [selectedPrincipalId, setSelectedPrincipalId] = useState<string>('');
+
+  // Fetch principals for the selector (called even if V2 enabled - hooks must be unconditional)
+  const { data: principals } = useGetList('organizations', {
+    filter: { organization_type: 'principal' },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: 'name', order: 'ASC' }
+  });
+
+  // NOW we can do the early return after all hooks are called
+  if (isV2Enabled) {
+    return <PrincipalDashboardV2 />;
+  }
+
+  const selectedPrincipal = principals?.find(p => p.id.toString() === selectedPrincipalId);
+
+  const handleOpenActivityHistory = () => {
+    if (selectedPrincipalId) {
+      setActivityHistoryOpen(true);
+    }
+  };
+
+  return (
+    <div className="p-content lg:p-widget">
+      <Title title="Principal Dashboard" />
+
+      <div className="space-y-section">
+        {/* Header with Activity History Controls */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-compact">
+          <div className="flex-1">
+            <h1 className="text-2xl lg:text-3xl font-bold">Principal Dashboard</h1>
+            <p className="text-muted-foreground text-sm lg:text-base">
+              Manage your principal relationships and daily activities
+            </p>
+          </div>
+
+          {/* Activity History Controls */}
+          <div className="flex items-center gap-compact">
+            <Select value={selectedPrincipalId} onValueChange={setSelectedPrincipalId}>
+              <SelectTrigger className="w-48 h-11">
+                <SelectValue placeholder="Select principal" />
+              </SelectTrigger>
+              <SelectContent>
+                {principals?.map(p => (
+                  <SelectItem key={p.id} value={p.id.toString()}>
+                    {p.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              variant="outline"
+              className="h-11 w-11 p-0"
+              onClick={handleOpenActivityHistory}
+              disabled={!selectedPrincipalId}
+              aria-label="View activity history"
+            >
+              <Clock className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Dashboard Grid - 3 equal columns on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-section">
+          {/* Left Column - Opportunities */}
+          <div className="lg:col-span-1">
+            <PrincipalOpportunitiesWidget />
+          </div>
+
+          {/* Middle Column - Tasks */}
+          <div className="lg:col-span-1">
+            <PriorityTasksWidget />
+          </div>
+
+          {/* Right Column - Quick Logger */}
+          <div className="lg:col-span-1">
+            <QuickActivityLoggerWidget />
+          </div>
+        </div>
+      </div>
+
+      {/* Activity History Dialog */}
+      <ActivityHistoryDialog
+        open={activityHistoryOpen}
+        onClose={() => setActivityHistoryOpen(false)}
+        principalId={selectedPrincipalId ? parseInt(selectedPrincipalId) : null}
+        principalName={selectedPrincipal?.name || ''}
+      />
+    </div>
+  );
+};
+```
+
+**Step 3: Verify lint passes**
+
+Run: `npm run lint:check 2>&1 | grep -E "PrincipalDashboard|rules-of-hooks"`
+
+Expected: No output (no errors for this file)
+
+**Step 4: Verify TypeScript compiles**
+
+Run: `npm run build 2>&1 | grep -E "error|PrincipalDashboard"`
+
+Expected: No errors
+
+**Step 5: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/PrincipalDashboard.tsx
+git commit -m "fix(dashboard): move hooks before conditional return
+
+React Hooks must be called unconditionally and in the same order on every
+render. Previously, useState and useGetList were called after an early
+return for V2 feature flag, violating the Rules of Hooks.
+
+Now all hooks are called at the top of the component, before any conditional
+logic. The useGetList call happens even when V2 is enabled (small overhead
+for correctness).
+
+Fixes: react-hooks/rules-of-hooks ESLint errors"
+```
+
+---
+
+## Task 3: Audit Top 5 useEffect Files for Missing Cleanup
+
+**Files to audit:**
+- `src/atomic-crm/dashboard/Dashboard.tsx`
+- `src/atomic-crm/dashboard/v2/PrincipalDashboardV2.tsx`
+- `src/atomic-crm/opportunities/OpportunityListContent.tsx`
+- `src/components/ui/sidebar.tsx`
+- `src/atomic-crm/root/CRM.tsx`
+
+**Context:** 97% of useEffect hooks (62 of 64) lack cleanup functions. This task audits the 5 most critical files and documents which need cleanup added.
+
+**Step 1: Read Dashboard.tsx and check useEffect**
+
+Run: `grep -n "useEffect" src/atomic-crm/dashboard/Dashboard.tsx`
+
+Document: Does this useEffect subscribe to anything? Add event listeners? Set timers?
+
+**Step 2: Read PrincipalDashboardV2.tsx and check useEffect**
+
+Run: `grep -n "useEffect" src/atomic-crm/dashboard/v2/PrincipalDashboardV2.tsx`
+
+Document: Does this useEffect need cleanup?
+
+**Step 3: Read OpportunityListContent.tsx and check useEffect**
+
+Run: `grep -n "useEffect" src/atomic-crm/opportunities/OpportunityListContent.tsx`
+
+Document: Does this useEffect need cleanup?
+
+**Step 4: Read sidebar.tsx and check useEffect**
+
+Run: `grep -n "useEffect" src/components/ui/sidebar.tsx`
+
+Document: Does this useEffect add keyboard listeners that need removal?
+
+**Step 5: Read CRM.tsx and check useEffect**
+
+Run: `grep -n "useEffect" src/atomic-crm/root/CRM.tsx`
+
+Document: Does this useEffect need cleanup?
+
+**Step 6: Create audit report**
+
+Create file `docs/audits/2025-11-22-useEffect-cleanup-audit.md` with findings:
+
+```markdown
+# useEffect Cleanup Audit - Top 5 Critical Files
+
+## Summary
+- Files audited: 5
+- Needing cleanup: X
+- Already correct: Y
+
+## Findings
+
+### Dashboard.tsx
+- [ ] Needs cleanup: [YES/NO]
+- Reason: [description]
+
+### PrincipalDashboardV2.tsx
+- [ ] Needs cleanup: [YES/NO]
+- Reason: [description]
+
+### OpportunityListContent.tsx
+- [ ] Needs cleanup: [YES/NO]
+- Reason: [description]
+
+### sidebar.tsx
+- [ ] Needs cleanup: [YES/NO]
+- Reason: [description]
+
+### CRM.tsx
+- [ ] Needs cleanup: [YES/NO]
+- Reason: [description]
+
+## Next Steps
+[List files that need cleanup in priority order]
+```
+
+**Step 7: Commit audit report**
+
+```bash
+git add docs/audits/2025-11-22-useEffect-cleanup-audit.md
+git commit -m "docs(audit): add useEffect cleanup audit for top 5 critical files
+
+Audit identifies which useEffect hooks need cleanup functions to prevent
+memory leaks. Part of P0 code quality fixes.
+
+See: docs/plans/2025-11-22-p0-code-quality-fixes.md"
+```
+
+---
+
+## Verification
+
+After completing all tasks:
+
+**1. E2E tests can list:**
+```bash
+npm run test:e2e -- --list 2>&1 | grep "Total"
+```
+Expected: Shows test count, no parameter errors
+
+**2. No React Hooks violations:**
+```bash
+npm run lint:check 2>&1 | grep "rules-of-hooks"
+```
+Expected: No output
+
+**3. Build succeeds:**
+```bash
+npm run build
+```
+Expected: Exit code 0
+
+---
+
+## Estimated Time
+
+| Task | Time |
+|------|------|
+| Task 1: E2E parameter fix | 5 min |
+| Task 2: React Hooks fix | 15 min |
+| Task 3: useEffect audit | 30 min |
+| **Total** | **50 min** |
