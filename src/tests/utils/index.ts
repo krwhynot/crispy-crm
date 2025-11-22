@@ -37,3 +37,15 @@ export {
 
 // Setup utilities
 export { createTestQueryClient } from "../setup";
+
+// Combobox test helpers
+export {
+  selectComboboxOption,
+  changeComboboxOption,
+  typeInCombobox,
+  clearCombobox,
+  findComboboxByLabel,
+  selectComboboxByLabel,
+  selectCityAndVerifyState,
+  type ComboboxTestOptions,
+} from "./combobox";

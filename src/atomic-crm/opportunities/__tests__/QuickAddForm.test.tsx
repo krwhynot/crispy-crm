@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddForm } from "../QuickAddForm";
 import { useQuickAdd } from "../hooks/useQuickAdd";
 import { useGetList } from "ra-core";
+import { selectCityAndVerifyState } from "@/tests/utils/combobox";
 
 // Mock the external dependencies
 vi.mock("../hooks/useQuickAdd");
