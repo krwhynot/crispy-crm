@@ -119,16 +119,13 @@ Get the project running locally and deploy to production.
 
 ### Architecture Deep Dives
 
-- [Architecture Essentials](architecture/architecture-essentials.md) - Core patterns and design principles
 - [Design System](architecture/design-system.md) - Colors, spacing, typography, accessibility
-- [Database Schema (Detailed)](architecture/database-schema.md) - ERD, tables, relationships, migrations
 - [Component Library](architecture/component-library.md) - UI components and patterns
 - [API Design](architecture/api-design.md) - Data provider, validation, error handling
 - [Business Rules](architecture/business-rules.md) - Validation schemas, constraints, workflows
+- [ERD to UI Mapping](architecture/erd-to-ui-mapping.md) - Database tables mapped to UI components
 
 ### Development Guides
-
-- [Development Setup](guides/01-development-setup.md) - Complete local development guide
 - [Testing Guide](guides/02-testing.md) - Testing strategy and workflows
 - [Supabase Workflow](guides/05-supabase-workflow.md) - Database migration workflows
 - [Common Tasks](development/common-tasks.md) - Step-by-step guides for frequent operations

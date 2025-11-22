@@ -575,7 +575,7 @@ When editing any component file:
 
 **Related Documentation:**
 - [Engineering Constitution](../claude/engineering-constitution.md)
-- [Architecture Essentials](../claude/architecture-essentials.md)
+- [System Architecture](../system-architecture.md)
 - [Color Theming Architecture](../internal-docs/color-theming-architecture.docs.md)
 - [Principal-Centric CRM Design](2025-11-05-principal-centric-crm-design.md)
 

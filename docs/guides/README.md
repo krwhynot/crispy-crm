@@ -10,7 +10,7 @@ This directory contains comprehensive guides for both end-users and developers.
 
 ## Developer Setup Guides
 
-- **`01-development-setup.md`** - Initial project setup
+- See **`../setup-and-deployment.md`** for initial project setup
 - **`02-testing.md`** - Testing strategy and execution
 
 ## Getting Started

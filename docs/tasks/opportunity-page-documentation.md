@@ -991,7 +991,7 @@ const OpportunityShow = React.lazy(() => import("./OpportunityShow"));
 ### Related Documentation
 
 - **Engineering Constitution:** `docs/claude/engineering-constitution.md`
-- **Architecture Essentials:** `docs/architecture/architecture-essentials.md`
+- **System Architecture:** `docs/system-architecture.md`
 - **Database Schema:** `docs/architecture/database-schema.md`
 - **Design System:** `docs/architecture/design-system.md`
 - **Supabase Workflow:** `docs/supabase/WORKFLOW.md`
