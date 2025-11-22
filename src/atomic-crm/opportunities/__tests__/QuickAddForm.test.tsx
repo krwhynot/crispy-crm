@@ -119,92 +119,107 @@ describe("QuickAddForm", () => {
     expect(campaignInput.value).toBe("Test Campaign");
   });
 
-  it("validates phone OR email requirement", async () => {
-    const user = userEvent.setup();
+  it(
+    "validates phone OR email requirement",
+    async () => {
+      const user = userEvent.setup({ delay: null }); // Speed up typing
 
-    render(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+      render(
+        <TestWrapper>
+          <QuickAddForm onSuccess={mockOnSuccess} />
+        </TestWrapper>
+      );
 
-    // Clear pre-filled fields
-    const campaignInput = screen.getByLabelText(/campaign/i);
-    await user.clear(campaignInput);
+      // Clear pre-filled fields
+      const campaignInput = screen.getByLabelText(/campaign/i);
+      await user.clear(campaignInput);
 
-    // Fill required fields except phone/email
-    await user.type(campaignInput, "Test Campaign");
-    await user.type(screen.getByLabelText(/first name \*/i), "John");
-    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
-    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
+      // Fill required fields except phone/email
+      await user.type(campaignInput, "Test Campaign");
+      await user.type(screen.getByLabelText(/first name \*/i), "John");
+      await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+      await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
-    // City uses a combobox button, find by placeholder text
-    const cityButton = screen.getByText("Select or type city...");
-    await user.click(cityButton);
+      // City uses a combobox button - select a city
+      const cityButton = screen.getByText("Select or type city...");
+      await user.click(cityButton);
+      const searchInput = await screen.findByPlaceholderText("Search cities...");
+      await user.type(searchInput, "New York");
+      const nyOption = await screen.findByText("New York");
+      await user.click(nyOption);
 
-    await user.type(screen.getByLabelText(/state \*/i), "NY");
+      // State should auto-fill when city is selected
+      await waitFor(() => {
+        expect(screen.getByLabelText(/state \*/i)).toHaveValue("NY");
+      });
 
-    // Try to submit without phone or email
-    await user.click(screen.getByRole("button", { name: /save & close/i }));
+      // Try to submit without phone or email
+      await user.click(screen.getByRole("button", { name: /save & close/i }));
 
-    // Should show validation error
-    await waitFor(() => {
-      expect(screen.getByText(/phone or email required/i)).toBeInTheDocument();
-    });
-  });
+      // Should show validation error
+      await waitFor(() => {
+        expect(screen.getByText(/phone or email required/i)).toBeInTheDocument();
+      });
+    },
+    10000
+  );
 
-  it("handles Save & Add Another correctly", async () => {
-    const user = userEvent.setup();
+  it(
+    "handles Save & Add Another correctly",
+    async () => {
+      const user = userEvent.setup({ delay: null }); // Speed up typing
 
-    mockMutate.mockImplementation((data, options) => {
-      options.onSuccess();
-    });
+      mockMutate.mockImplementation((data, options) => {
+        options.onSuccess();
+      });
 
-    render(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+      render(
+        <TestWrapper>
+          <QuickAddForm onSuccess={mockOnSuccess} />
+        </TestWrapper>
+      );
 
-    // Fill form
-    await user.type(screen.getByLabelText(/first name \*/i), "John");
-    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
-    await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
-    await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
+      // Fill form
+      await user.type(screen.getByLabelText(/first name \*/i), "John");
+      await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+      await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
+      await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
-    // City field uses Combobox - click the trigger button to open
-    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
-    await user.click(cityCombobox);
+      // City field uses Combobox - find by placeholder text on trigger button
+      const cityCombobox = screen.getByText("Select or type city...");
+      await user.click(cityCombobox);
 
-    // Type in the search input and select a city
-    const searchInput = await screen.findByPlaceholderText("Search cities...");
-    await user.type(searchInput, "Los Angeles");
-    const laOption = await screen.findByText("Los Angeles");
-    await user.click(laOption);
+      // Type in the search input and select a city
+      const searchInput = await screen.findByPlaceholderText("Search cities...");
+      await user.type(searchInput, "Los Angeles");
+      const laOption = await screen.findByText("Los Angeles");
+      await user.click(laOption);
 
-    // State should auto-fill when city is selected
-    await waitFor(() => {
-      expect(screen.getByLabelText(/state \*/i)).toHaveValue("CA");
-    });
+      // State should auto-fill when city is selected
+      await waitFor(() => {
+        expect(screen.getByLabelText(/state \*/i)).toHaveValue("CA");
+      });
 
-    // Click Save & Add Another
-    await user.click(screen.getByRole("button", { name: /save & add another/i }));
+      // Click Save & Add Another
+      await user.click(screen.getByRole("button", { name: /save & add another/i }));
 
-    await waitFor(() => {
-      expect(mockMutate).toHaveBeenCalled();
-      expect(mockOnSuccess).not.toHaveBeenCalled(); // Should not close dialog
+      await waitFor(() => {
+        expect(mockMutate).toHaveBeenCalled();
+        expect(mockOnSuccess).not.toHaveBeenCalled(); // Should not close dialog
 
-      // Form should be reset except campaign and principal
-      const firstNameInput = screen.getByLabelText(/first name \*/i) as HTMLInputElement;
-      expect(firstNameInput.value).toBe("");
+        // Form should be reset except campaign and principal
+        const firstNameInput = screen.getByLabelText(/first name \*/i) as HTMLInputElement;
+        expect(firstNameInput.value).toBe("");
 
-      const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
-      expect(campaignInput.value).toBe("Test Campaign"); // Should persist
-    });
-  });
+        const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
+        expect(campaignInput.value).toBe("Test Campaign"); // Should persist
+      });
+    },
+    10000
+  );
 
   it("handles Save & Close correctly", async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null }); // Speed up typing
 
     mockMutate.mockImplementation((data, options) => {
       options.onSuccess();
@@ -222,8 +237,8 @@ describe("QuickAddForm", () => {
     await user.type(screen.getByLabelText(/^phone$/i), "555-1234");
     await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
-    // City field uses Combobox - click the trigger button to open
-    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    // City field uses Combobox - find by placeholder text on trigger button
+    const cityCombobox = screen.getByText("Select or type city...");
     await user.click(cityCombobox);
 
     // Type in the search input and select a city
