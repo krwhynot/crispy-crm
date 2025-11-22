@@ -1,5 +1,6 @@
 import { PackageIcon, Link2Icon, ShieldCheckIcon } from 'lucide-react';
-import { ResourceSlideOver, TabConfig } from '@/components/layouts/ResourceSlideOver';
+import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
+import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
 import { ProductDetailsTab } from './ProductDetailsTab';
 import { ProductRelationshipsTab } from './ProductRelationshipsTab';
 import { ProductCertificationsTab } from './ProductCertificationsTab';

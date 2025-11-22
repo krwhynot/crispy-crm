@@ -12,7 +12,8 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { createClient, SupabaseClient, Session } from '@supabase/supabase-js';
+import type { SupabaseClient, Session } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.test' });

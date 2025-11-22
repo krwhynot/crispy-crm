@@ -3,8 +3,6 @@ import {
   useGetList,
   useCreatePath,
   useRecordContext,
-  useNotify,
-  useRefresh,
   Button,
 } from 'react-admin';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

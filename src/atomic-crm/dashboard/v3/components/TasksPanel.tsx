@@ -5,8 +5,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Clock,
-  Calendar,
-  AlertCircle,
   CheckCircle2,
   Phone,
   Mail,
@@ -24,26 +22,6 @@ export function TasksPanel() {
   const overdueTasks = tasks.filter(t => t.status === 'overdue');
   const todayTasks = tasks.filter(t => t.status === 'today');
   const tomorrowTasks = tasks.filter(t => t.status === 'tomorrow');
-
-  const getTaskIcon = (type: TaskItem['taskType']) => {
-    switch(type) {
-      case 'Call': return <Phone className="h-4 w-4" />;
-      case 'Email': return <Mail className="h-4 w-4" />;
-      case 'Meeting': return <Users className="h-4 w-4" />;
-      case 'Follow-up': return <CheckCircle2 className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
-    }
-  };
-
-  const getPriorityColor = (priority: TaskItem['priority']) => {
-    switch(priority) {
-      case 'critical': return 'destructive';
-      case 'high': return 'warning';
-      case 'medium': return 'default';
-      case 'low': return 'secondary';
-      default: return 'outline';
-    }
-  };
 
   if (loading) {
     return (

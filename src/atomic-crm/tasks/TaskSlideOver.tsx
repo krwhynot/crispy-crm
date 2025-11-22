@@ -1,5 +1,6 @@
 import { CheckSquareIcon, LinkIcon } from 'lucide-react';
-import { ResourceSlideOver, TabConfig } from '@/components/layouts/ResourceSlideOver';
+import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
+import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
 import { TaskSlideOverDetailsTab } from './TaskSlideOverDetailsTab';
 import { TaskRelatedItemsTab } from './TaskRelatedItemsTab';
 import type { Task } from '../types';

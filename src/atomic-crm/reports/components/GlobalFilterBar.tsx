@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { format } from 'date-fns';
 import { Calendar, Download, RotateCcw, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,11 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import { useGlobalFilters } from '../contexts/GlobalFilterContext';
 
 const DATE_PRESETS = [

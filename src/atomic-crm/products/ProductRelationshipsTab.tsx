@@ -4,7 +4,6 @@ import { ReferenceField } from '@/components/admin/reference-field';
 import { TextField } from '@/components/admin/text-field';
 import { DateField } from '@/components/admin/date-field';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { AsideSection } from '../misc/AsideSection';
 
 interface Product {
