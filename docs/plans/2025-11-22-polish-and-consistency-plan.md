@@ -1,9 +1,10 @@
 # Polish and Consistency Plan
 
 **Created:** 2025-11-22
-**Updated:** 2025-11-22 (v2 - comprehensive review)
+**Updated:** 2025-11-22 (v3 - post-review revision)
 **Status:** Planning Complete
-**Estimated Total Effort:** 4-5 days
+**Estimated Total Effort:** 4 days
+**Reviewed By:** Gemini 2.5 Pro (via Zen)
 
 ---
 
@@ -11,34 +12,137 @@
 
 This plan covers work identified during comprehensive codebase review:
 
-1. **Phase B: Dashboard V3 Polish** - Enhance filtering, add snooze and drill-down features
-2. ~~**Phase C: Reports Module**~~ - **ALREADY COMPLETE** (4-tab reports page exists)
-3. **Phase D: Design System Consistency** - Fix Tailwind v4 semantic utility violations
-4. **Phase E: Test Health** - Fix skipped tests and incomplete TODOs
-5. **Phase F: Dashboard Widget Completeness** - Implement remaining TODOs
+1. **Phase A: Test Health** - Fix skipped tests FIRST (stable baseline)
+2. **Phase B: Dashboard V3 Polish** - Enhance filtering, add snooze and drill-down features
+3. ~~**Phase C: Reports Module**~~ - **ALREADY COMPLETE** (4-tab reports page exists)
+4. **Phase D: Design System Consistency** - Fix Tailwind v4 semantic utility violations
+5. **Phase E: Legacy Dashboard Deprecation** - Remove V1/V2 components and related code
+
+**Key Decisions:**
+- ✅ **Legacy dashboards: DEPRECATE** - Remove V1/V2 components entirely (saves ~1 day)
+- ✅ **Test fixes FIRST** - Establishes stable baseline before new development
+- ✅ **Merged E2+F1** - Eliminated redundant phases
 
 **Current State:**
 - All 1,657 tests passing (27 skipped)
 - Dashboard V3 complete and production-ready (96.3% code review score)
-- Reports module complete with 4 tabs (Overview, Opportunities, Weekly Activity, Campaign Activity)
+- Reports module complete with 4 tabs
 - Color contrast validation: 19/19 tests passing (WCAG AA compliant)
-- Design system violations identified in production code
+
+---
+
+## Revised Execution Order
+
+Based on Zen review feedback, tests are fixed FIRST to establish a stable baseline.
+
+| Day | Phase | Tasks |
+|-----|-------|-------|
+| **1** | A (Test Health) | Fix 27 skipped tests, delete legacy dashboard tests |
+| **2** | D (Design System) + B1 | Fix CSS violations, verify filtering, archive cleanup |
+| **3** | B2 + B3 start | Task snooze feature, begin pipeline drill-down |
+| **4** | B3 + E | Complete drill-down, deprecate legacy dashboards |
+
+---
+
+## Phase A: Test Health (FIRST)
+
+**Priority:** CRITICAL
+**Estimated Effort:** 1 day
+**Rationale:** A healthy test suite is a prerequisite for confident refactoring. Fixing tests last means any failures could be from new code OR pre-existing bugs.
+
+### A1. Delete Legacy Dashboard Tests
+
+**Decision:** Legacy dashboards (V1/V2) are deprecated in favor of V3.
+
+**Files to DELETE:**
+- `src/atomic-crm/dashboard/__tests__/PrincipalDashboard.test.tsx` (4 skipped tests)
+
+**Tasks:**
+- [ ] Delete `PrincipalDashboard.test.tsx`
+- [ ] Verify test count decreases appropriately
+- [ ] Run `npm run test:ci` to confirm no regressions
+
+### A2. Fix QuickAdd Tests (9 tests)
+
+**Files:**
+- `src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx` (7 skipped)
+- `src/atomic-crm/opportunities/__tests__/QuickAddForm.test.tsx` (2 skipped)
+
+**Root Cause:** City field changed from Input to Combobox - test helpers need updating
+
+**Tasks:**
+- [ ] Create Combobox test helpers in `src/tests/helpers/combobox.ts`:
+  ```typescript
+  export async function selectComboboxOption(label: string, option: string) { ... }
+  export async function typeInCombobox(label: string, text: string) { ... }
+  export async function clearCombobox(label: string) { ... }
+  ```
+- [ ] Update all 9 QuickAdd tests to use new helpers
+- [ ] Re-enable tests (remove `.skip`)
+- [ ] Verify all pass
+
+### A3. Fix ContactList Filter Tests (4 tests)
+
+**File:** `src/atomic-crm/contacts/__tests__/ContactList.test.tsx`
+**Root Cause:** FilterCategory mock not working
+
+| Line | Test |
+|------|------|
+| 431 | renders tag filters |
+| 441 | renders last activity filters |
+| 451 | renders account manager filter |
+| 457 | renders last activity date filters |
+
+**Tasks:**
+- [ ] Fix FilterCategory mock implementation
+- [ ] Re-enable all 4 filter tests
+- [ ] Verify all pass
+
+### A4. Fix UpdateOpportunityStep Tests (6 tests)
+
+**File:** `src/atomic-crm/dashboard/__tests__/UpdateOpportunityStep.test.tsx`
+
+| Line | Test | Issue |
+|------|------|-------|
+| 84 | shows error state when fetch fails | Async timing |
+| 113 | calls onSkip when "Continue Anyway" clicked | Async timing |
+| 162 | disables current stage in dropdown | Select interaction |
+| 213 | shows stage transition indicator | Select interaction |
+| 269 | calls onUpdate with selected stage | Select interaction |
+| 298 | disables buttons while submitting | Submit state |
+
+**Tasks:**
+- [ ] Add proper `waitFor` wrappers for async operations
+- [ ] Use proper Select component test patterns
+- [ ] Re-enable all 6 tests
+- [ ] Verify all pass
+
+### A5. Fix Remaining Skipped Tests (4 tests)
+
+| File | Test | Fix |
+|------|------|-----|
+| `QuickLogActivity.test.tsx:530` | keyboard navigation | Add proper a11y testing |
+| `QuickCompleteTaskModal.test.tsx:85` | Step 1 skip button | Fix modal flow test |
+| `authProvider.test.ts:56` | valid session access | Fix auth mocking |
+| `authProvider.test.ts:338` | cache sale record | Fix auth mocking |
+
+**Tasks:**
+- [ ] Fix each test individually
+- [ ] Re-enable tests
+- [ ] Verify all pass
+
+**End of Day 1 Target:** 0 skipped tests (down from 27)
 
 ---
 
 ## Phase B: Dashboard V3 Polish
 
 **Priority:** High
-**Estimated Effort:** 2-3 days
+**Estimated Effort:** 2 days
 
 ### B1. Fix "Assigned to Me" Filtering
 
 **Problem:** The `sales.user_id` column exists but filtering returns zero results in production.
-
-**Current State:**
-- `useCurrentSale.ts` already queries using `user_id` with email fallback
-- `sales` table has `user_id UUID` column with FK to `auth.users`
-- Issue: Production data may have NULL `user_id` values (legacy users)
 
 **Files to Modify:**
 - `src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts` - Verify logic
@@ -47,6 +151,7 @@ This plan covers work identified during comprehensive codebase review:
 **Tasks:**
 - [ ] Verify `sales.user_id` is populated for all users in production
 - [ ] Create migration to backfill `user_id` from `auth.users.email` match if needed
+- [ ] **NEW:** Analyze and create resolution plan for sales records where `user_id` cannot be backfilled (edge cases)
 - [ ] Test "Assigned to Me" filtering returns correct results
 - [ ] Add E2E test for filtering behavior
 
@@ -58,17 +163,18 @@ This plan covers work identified during comprehensive codebase review:
 
 **Problem:** Users cannot quickly postpone tasks by 1 day.
 
-**Current State:**
-- Task completion works via checkbox in `TasksPanel.tsx`
-- No snooze functionality exists
-
 **Files to Create/Modify:**
 - `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx` - Add snooze button
 - `src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts` - Add snooze mutation
 
 **Tasks:**
 - [ ] Add snooze button (alarm clock icon) next to each task
-- [ ] Implement `snoozeTask` mutation: `UPDATE tasks SET due_date = due_date + INTERVAL '1 day'`
+- [ ] **UPDATED:** Implement timezone-aware snooze mutation to ensure due date is set to end of following day in user's timezone:
+  ```typescript
+  // Use date-fns for timezone safety
+  import { addDays, endOfDay } from 'date-fns';
+  const newDueDate = endOfDay(addDays(task.due_date, 1));
+  ```
 - [ ] Add optimistic UI update (task moves to appropriate bucket)
 - [ ] Ensure 44px touch target for snooze button (WCAG compliance)
 - [ ] Add unit test for snooze functionality
@@ -81,10 +187,6 @@ This plan covers work identified during comprehensive codebase review:
 ### B3. Pipeline Drill-Down
 
 **Problem:** Clicking a principal row in the pipeline table does nothing - users want to see opportunities.
-
-**Current State:**
-- `PrincipalPipelineTable.tsx` displays rows but no click behavior
-- `principal_pipeline_summary` view has `principal_id` for filtering
 
 **Files to Create/Modify:**
 - `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx` - Add row click handler
@@ -102,7 +204,7 @@ This plan covers work identified during comprehensive codebase review:
 - [ ] Add unit tests for modal
 - [ ] Add E2E test for drill-down workflow
 
-**Estimated Effort:** 1-1.5 days
+**Estimated Effort:** 1 day
 
 ---
 
@@ -117,12 +219,6 @@ The reports module exists at `src/atomic-crm/reports/` with:
 - **tabs/WeeklyActivityTab.tsx** - Weekly Activity Summary
 - **tabs/CampaignActivityTab.tsx** - Campaign Activity report
 
-**Files:**
-- `OpportunitiesByPrincipalReport.tsx` (506 lines)
-- `WeeklyActivitySummary.tsx` (309 lines)
-- `CampaignActivity/CampaignActivityReport.tsx`
-- Full infrastructure: charts/, components/, contexts/, hooks/, utils/
-
 **No action required.**
 
 ---
@@ -130,13 +226,11 @@ The reports module exists at `src/atomic-crm/reports/` with:
 ## Phase D: Design System Consistency
 
 **Priority:** Medium
-**Estimated Effort:** 1 day
+**Estimated Effort:** 0.5 days
 
 ### D1. Fix Inline CSS Variable Violations
 
 **Problem:** Production code uses `text-[color:var(--...)]` instead of semantic utilities.
-
-**Violations Found:**
 
 #### High Priority (Active Features) - 7 files
 
@@ -167,10 +261,6 @@ The reports module exists at `src/atomic-crm/reports/` with:
 | `src/components/admin/search-input.tsx` | 25 | `text-[color:var(--text-subtle)]` | `text-muted-foreground` |
 | `src/components/admin/select-input.tsx` | 239 | `text-[color:var(--text-subtle)]` | `text-muted-foreground` |
 
-#### Low Priority (Story Files - Non-Production)
-
-Story files in `src/components/ui/*.stories.tsx` - fix during component updates.
-
 **Tasks:**
 - [ ] Fix all High Priority files (7 files)
 - [ ] Fix all Medium Priority files (12 files)
@@ -178,15 +268,13 @@ Story files in `src/components/ui/*.stories.tsx` - fix during component updates.
 - [ ] Run `npm run build` to verify no TypeScript errors
 - [ ] Run `npm run test:ci` to verify no test regressions
 
-**Estimated Effort:** 0.5 days
-
 ---
 
 ### D2. Archive Cleanup
 
 **Problem:** `archive/dashboard/` contains old components with violations.
 
-**Files:**
+**Files to DELETE:**
 - `archive/dashboard/HotContacts.tsx`
 - `archive/dashboard/DashboardActivityLog.tsx`
 - `archive/dashboard/LatestNotes.tsx`
@@ -194,146 +282,57 @@ Story files in `src/components/ui/*.stories.tsx` - fix during component updates.
 - `archive/dashboard/MetricsCardGrid.tsx`
 
 **Tasks:**
-- [ ] Review if archive files are needed
-- [ ] Delete archive directory if obsolete
-- [ ] If keeping, add to `.gitignore` to exclude from linting
-
-**Estimated Effort:** 0.5 hours
+- [ ] Delete entire `archive/dashboard/` directory
+- [ ] Verify build still passes
 
 ---
 
-## Phase E: Test Health
+## Phase E: Legacy Dashboard Deprecation
 
 **Priority:** Medium
-**Estimated Effort:** 1-2 days
-
-### E1. Fix Skipped Tests (27 tests)
-
-**Problem:** 27 tests are skipped across the codebase, indicating incomplete functionality or broken test infrastructure.
-
-#### QuickAdd Integration Tests (7 skipped)
-**File:** `src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx`
-**Root Cause:** City field changed from Input to Combobox - test helpers need updating
-
-| Line | Test | Issue |
-|------|------|-------|
-| 155 | completes full atomic creation flow | City Combobox interaction |
-| 241 | handles Save & Add Another flow | City Combobox interaction |
-| 332 | handles errors and preserves form data | City Combobox interaction |
-| 379 | validates phone OR email requirement | City Combobox interaction |
-| 455 | filters products by selected principal | City Combobox interaction |
-| 507 | auto-fills state when city is selected | City Combobox interaction |
-| 552 | preserves campaign preferences | City Combobox interaction |
-
-**Tasks:**
-- [ ] Create Combobox test helpers (select, type, clear)
-- [ ] Update all 7 QuickAdd integration tests
-- [ ] Verify tests pass
-
-#### QuickAddForm Tests (2 skipped)
-**File:** `src/atomic-crm/opportunities/__tests__/QuickAddForm.test.tsx`
-
-| Line | Test | Issue |
-|------|------|-------|
-| 156 | handles Save & Add Another correctly | Combobox helpers |
-| 198 | handles Save & Close correctly | Combobox helpers |
-
-#### ContactList Filter Tests (4 skipped)
-**File:** `src/atomic-crm/contacts/__tests__/ContactList.test.tsx`
-**Root Cause:** FilterCategory mock not working
-
-| Line | Test | Issue |
-|------|------|-------|
-| 431 | renders tag filters | FilterCategory mock |
-| 441 | renders last activity filters | FilterCategory mock |
-| 451 | renders account manager filter | FilterCategory mock |
-| 457 | renders last activity date filters | FilterCategory mock |
-
-**Tasks:**
-- [ ] Fix FilterCategory mock implementation
-- [ ] Re-enable all 4 filter tests
-
-#### UpdateOpportunityStep Tests (7 skipped)
-**File:** `src/atomic-crm/dashboard/__tests__/UpdateOpportunityStep.test.tsx`
-
-| Line | Test | Issue |
-|------|------|-------|
-| 84 | shows error state when fetch fails | Async timing |
-| 113 | calls onSkip when "Continue Anyway" clicked | Async timing |
-| 162 | disables current stage in dropdown | Select interaction |
-| 213 | shows stage transition indicator | Select interaction |
-| 269 | calls onUpdate with selected stage | Select interaction |
-| 298 | disables buttons while submitting | Submit state |
-
-#### Other Skipped Tests (7 skipped)
-
-| File | Test | Issue |
-|------|------|-------|
-| `QuickLogActivity.test.tsx:530` | keyboard navigation | A11y testing |
-| `QuickCompleteTaskModal.test.tsx:85` | Step 1 skip button | Modal flow |
-| `PrincipalDashboard.test.tsx:90` | Entire describe block | Legacy dashboard |
-| `authProvider.test.ts:56` | valid session access | Auth mocking |
-| `authProvider.test.ts:338` | cache sale record | Auth mocking |
-
-**Estimated Effort:** 1-1.5 days
-
----
-
-### E2. Address Code TODOs
-
-**Problem:** Production code contains unfinished TODOs that should be resolved.
-
-#### High Priority TODOs
-
-| File | Line | TODO | Action |
-|------|------|------|--------|
-| `MyTasksThisWeek.tsx` | 102 | Call API to mark task complete | Implement checkbox handler |
-| `CompactGridDashboard.tsx` | 73 | Calculate weeklyActivities | Query activities from last 7 days |
-| `CompactGridDashboard.tsx` | 74 | Get assignedReps | Join with opportunities relationship |
-| `PipelineSummary.tsx` | 129 | Calculate atRisk from principals | Implement pipeline health logic |
-| `OpportunitiesByPrincipalDesktop.tsx` | 40 | Implement actual export | Wire up CSV export |
-
-#### Medium Priority TODOs (Future Features)
-
-| File | Line | TODO | Notes |
-|------|------|------|-------|
-| `avatar.utils.ts` | 97, 117 | LinkedIn image integration | Requires LinkedIn API |
-| `getContactAvatar.ts` | 62 | LinkedIn image for contacts | Requires LinkedIn API |
-| `getOrganizationAvatar.ts` | 8 | LinkedIn image for orgs | Requires LinkedIn API |
-
-**Tasks:**
-- [ ] Implement task completion in MyTasksThisWeek checkbox
-- [ ] Add weeklyActivities calculation to CompactGridDashboard
-- [ ] Add assignedReps lookup to CompactGridDashboard
-- [ ] Implement atRisk calculation in PipelineSummary
-- [ ] Wire up export in OpportunitiesByPrincipalDesktop
-
 **Estimated Effort:** 0.5 days
+**Decision:** DEPRECATE (remove entirely)
 
----
+### E1. Remove Legacy Dashboard Components
 
-## Phase F: Dashboard Widget Completeness
+**Rationale:** Dashboard V3 is now the default and production-ready. Legacy dashboards (V1/V2) add maintenance burden without value.
 
-**Priority:** Low
-**Estimated Effort:** 0.5 days
+**Files to DELETE:**
 
-### F1. Complete Legacy Dashboard Widgets
-
-**Problem:** Some legacy dashboard widgets have incomplete functionality.
-
-**Files:**
-- `src/atomic-crm/dashboard/MyTasksThisWeek.tsx` - Task completion TODO
-- `src/atomic-crm/dashboard/CompactGridDashboard.tsx` - Missing calculations
-- `src/atomic-crm/dashboard/PipelineSummary.tsx` - Missing atRisk calculation
-
-**Note:** These are legacy dashboards (V1/V2). Consider deprecating in favor of Dashboard V3.
+```
+src/atomic-crm/dashboard/
+├── CompactGridDashboard.tsx          # DELETE - V1 legacy
+├── CompactDashboardHeader.tsx        # DELETE - V1 legacy
+├── CompactPrincipalTable.tsx         # DELETE - V1 legacy
+├── CompactTasksWidget.tsx            # DELETE - V1 legacy
+├── ActivityFeed.tsx                  # DELETE - V1 legacy
+├── MyTasksThisWeek.tsx               # DELETE - V1 legacy (has TODO)
+├── PipelineSummary.tsx               # DELETE - V1 legacy (has TODO)
+├── OpportunitiesByPrincipalDesktop.tsx # DELETE - V1 legacy (has TODO)
+├── DashboardWidget.tsx               # KEEP if used by V3, DELETE if not
+├── hooks/                            # REVIEW - keep shared hooks
+└── v2/                               # DELETE entire V2 directory
+    └── ...
+```
 
 **Tasks:**
-- [ ] Decide: Fix legacy dashboards OR mark as deprecated
-- [ ] If fixing: Implement missing functionality
-- [ ] If deprecating: Add deprecation notice, plan removal
+- [ ] Audit which components are used by V3 vs legacy only
+- [ ] Delete all legacy-only components
+- [ ] Remove any routes pointing to legacy dashboards from `CRM.tsx`
+- [ ] Delete associated test files
+- [ ] Remove related TODOs (they become irrelevant)
+- [ ] Run `npm run build` to verify no broken imports
+- [ ] Run `npm run test:ci` to verify no test failures
 
-**Estimated Effort:** 0.5 days (if fixing)
+### E2. Update Routes
+
+**File:** `src/atomic-crm/root/CRM.tsx`
+
+**Tasks:**
+- [ ] Remove `/dashboard` route (V1)
+- [ ] Remove `/dashboard-v2` route
+- [ ] Keep only V3 as default at `/`
+- [ ] Add redirect from `/dashboard` to `/` for backward compatibility (optional)
 
 ---
 
@@ -341,43 +340,21 @@ Story files in `src/components/ui/*.stories.tsx` - fix during component updates.
 
 | Phase | Task | Priority | Effort | Status |
 |-------|------|----------|--------|--------|
+| A1 | Delete Legacy Dashboard Tests | Critical | 0.5 hr | Pending |
+| A2 | Fix QuickAdd Tests (9) | Critical | 0.5 days | Pending |
+| A3 | Fix ContactList Filter Tests (4) | Critical | 2 hrs | Pending |
+| A4 | Fix UpdateOpportunityStep Tests (6) | Critical | 2 hrs | Pending |
+| A5 | Fix Remaining Tests (4) | Critical | 2 hrs | Pending |
 | B1 | Fix Assigned to Me Filtering | High | 0.5 days | Pending |
 | B2 | Task Snooze Feature | High | 0.5 days | Pending |
-| B3 | Pipeline Drill-Down | High | 1.5 days | Pending |
-| ~~C~~ | ~~Reports Module~~ | ~~Medium~~ | ~~N/A~~ | ✅ Complete |
+| B3 | Pipeline Drill-Down | High | 1 day | Pending |
+| ~~C~~ | ~~Reports Module~~ | ~~N/A~~ | ~~N/A~~ | ✅ Complete |
 | D1 | Fix CSS Variable Violations | Medium | 0.5 days | Pending |
-| D2 | Archive Cleanup | Low | 0.5 hours | Pending |
-| E1 | Fix Skipped Tests (27) | Medium | 1.5 days | Pending |
-| E2 | Address Code TODOs | Medium | 0.5 days | Pending |
-| F1 | Legacy Dashboard Widgets | Low | 0.5 days | Pending |
+| D2 | Archive Cleanup | Low | 0.5 hr | Pending |
+| E1 | Remove Legacy Components | Medium | 0.5 days | Pending |
+| E2 | Update Routes | Medium | 0.5 hr | Pending |
 
-**Total Estimated Effort:** 4-5 days
-
----
-
-## Recommended Execution Order
-
-### Day 1: Quick Wins
-- D1: Fix design system violations (high priority files)
-- D2: Archive cleanup
-- B1: Verify/fix filtering
-
-### Day 2: Dashboard Features
-- B2: Task snooze feature
-- E2: Address high-priority TODOs
-
-### Day 3: Pipeline Drill-Down
-- B3: Pipeline drill-down modal (full day)
-
-### Day 4-5: Test Health
-- E1: Fix skipped tests
-  - Create Combobox test helpers
-  - Fix QuickAdd tests
-  - Fix ContactList filter tests
-  - Fix UpdateOpportunityStep tests
-
-### Optional (if time permits)
-- F1: Legacy dashboard widget fixes
+**Total Estimated Effort:** 4 days
 
 ---
 
@@ -386,41 +363,56 @@ Story files in `src/components/ui/*.stories.tsx` - fix during component updates.
 After all phases complete:
 
 - [ ] All tests passing: `npm run test:ci`
-- [ ] No skipped tests (or documented reasons)
+- [ ] **Zero skipped tests**
 - [ ] Build succeeds: `npm run build`
 - [ ] Color validation passes: `npm run validate:colors`
 - [ ] No inline CSS variable usage: `grep -r "text-\[color:var" src/`
 - [ ] Dashboard V3 filtering works
 - [ ] Task snooze works
 - [ ] Pipeline drill-down opens modal
+- [ ] Legacy dashboard routes removed or redirected
+- [ ] No legacy dashboard components in codebase
 
 ---
 
-## Appendix: All TODOs Found
+## Appendix: Files to Delete (Legacy Deprecation)
 
 ```
-src/atomic-crm/dashboard/MyTasksThisWeek.tsx:102:    // TODO: Call API to mark task complete
-src/atomic-crm/dashboard/CompactGridDashboard.tsx:73:    weeklyActivities: 0, // TODO: Calculate from activities
-src/atomic-crm/dashboard/CompactGridDashboard.tsx:74:    assignedReps: [], // TODO: Get from opportunities
-src/atomic-crm/dashboard/PipelineSummary.tsx:129:    atRisk=0 (TODO: calculate from principals)
-src/atomic-crm/dashboard/OpportunitiesByPrincipalDesktop.tsx:40:    // TODO: Implement actual export
-src/atomic-crm/utils/avatar.utils.ts:97:    // TODO: Step 3: Try to get image from LinkedIn.
-src/atomic-crm/utils/avatar.utils.ts:117:  // TODO: Step 1: Try to get image from LinkedIn.
-src/atomic-crm/providers/commons/getContactAvatar.ts:62:    // TODO: Step 3: LinkedIn image
-src/atomic-crm/providers/commons/getOrganizationAvatar.ts:8:  // TODO: Step 1: LinkedIn image
+# Legacy Dashboard Components
+src/atomic-crm/dashboard/CompactGridDashboard.tsx
+src/atomic-crm/dashboard/CompactDashboardHeader.tsx
+src/atomic-crm/dashboard/CompactPrincipalTable.tsx
+src/atomic-crm/dashboard/CompactTasksWidget.tsx
+src/atomic-crm/dashboard/ActivityFeed.tsx
+src/atomic-crm/dashboard/MyTasksThisWeek.tsx
+src/atomic-crm/dashboard/PipelineSummary.tsx
+src/atomic-crm/dashboard/OpportunitiesByPrincipalDesktop.tsx
+src/atomic-crm/dashboard/v2/* (entire directory)
+
+# Legacy Tests
+src/atomic-crm/dashboard/__tests__/PrincipalDashboard.test.tsx
+
+# Archive
+archive/dashboard/* (entire directory)
 ```
 
-## Appendix: All Skipped Tests
+## Appendix: Resolved TODOs (via Deprecation)
+
+These TODOs are resolved by deleting the legacy code:
 
 ```
-src/atomic-crm/contacts/__tests__/ContactList.test.tsx (4 skipped)
-src/atomic-crm/dashboard/__tests__/UpdateOpportunityStep.test.tsx (7 skipped)
-src/atomic-crm/dashboard/__tests__/QuickCompleteTaskModal.test.tsx (1 skipped)
-src/atomic-crm/dashboard/__tests__/PrincipalDashboard.test.tsx (4 skipped - entire describe)
-src/atomic-crm/dashboard/QuickActionModals/__tests__/QuickLogActivity.test.tsx (1 skipped)
-src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx (7 skipped)
-src/atomic-crm/opportunities/__tests__/QuickAddForm.test.tsx (2 skipped)
-src/atomic-crm/providers/supabase/__tests__/authProvider.test.ts (2 skipped)
+src/atomic-crm/dashboard/MyTasksThisWeek.tsx:102       # DELETED
+src/atomic-crm/dashboard/CompactGridDashboard.tsx:73  # DELETED
+src/atomic-crm/dashboard/CompactGridDashboard.tsx:74  # DELETED
+src/atomic-crm/dashboard/PipelineSummary.tsx:129      # DELETED
+src/atomic-crm/dashboard/OpportunitiesByPrincipalDesktop.tsx:40  # DELETED
+```
+
+**Remaining TODOs (Future Features - LinkedIn API):**
+```
+src/atomic-crm/utils/avatar.utils.ts:97, 117
+src/atomic-crm/providers/commons/getContactAvatar.ts:62
+src/atomic-crm/providers/commons/getOrganizationAvatar.ts:8
 ```
 
 ---
@@ -434,6 +426,16 @@ src/atomic-crm/providers/supabase/__tests__/authProvider.test.ts (2 skipped)
 
 ---
 
+## Review History
+
+| Version | Date | Reviewer | Changes |
+|---------|------|----------|---------|
+| v1 | 2025-11-22 | Claude | Initial plan |
+| v2 | 2025-11-22 | Claude | Added test health, TODOs, skipped tests |
+| v3 | 2025-11-22 | Gemini 2.5 Pro | Revised execution order, merged phases, legacy deprecation decision |
+
+---
+
 *Plan Author: Claude Code (AI Agent)*
-*Initial Review: 2025-11-22*
-*Updated: 2025-11-22 (comprehensive codebase review)*
+*External Review: Gemini 2.5 Pro (via Zen MCP)*
+*Final Decision: Deprecate legacy dashboards*
