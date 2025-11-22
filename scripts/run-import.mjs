@@ -33,7 +33,7 @@ async function executeImport() {
     console.log('⏳ Executing SQL (this may take 1-2 minutes)...\n');
 
     // Execute the SQL using Supabase's REST API
-    const { data, error } = await supabase.rpc('exec_sql', {
+    const { error } = await supabase.rpc('exec_sql', {
       sql_query: sqlContent
     });
 

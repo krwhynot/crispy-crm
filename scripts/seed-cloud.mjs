@@ -17,7 +17,7 @@ if (!match) {
   process.exit(1);
 }
 
-const plpgsqlCode = match[1];
+const _plpgsqlCode = match[1];
 
 // Execute each insert individually via the client
 try {

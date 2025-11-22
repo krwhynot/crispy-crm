@@ -35,7 +35,7 @@ vi.mock("react-admin", async () => {
   return {
     ...actual,
     Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
-    FunctionField: ({ render, label }: any) => (
+    FunctionField: ({ label }: any) => (
       <div data-testid={`function-field-${label}`}>{label}</div>
     ),
   };
