@@ -153,10 +153,7 @@ describe("QuickAddForm", () => {
     });
   });
 
-  it.skip("handles Save & Add Another correctly", async () => {
-    // TODO: This test requires proper Combobox test helpers for city field interaction
-    // The city field uses shadcn Combobox which is complex to test with Testing Library
-    // See integration test file for recommended test helper patterns
+  it("handles Save & Add Another correctly", async () => {
     const user = userEvent.setup();
 
     mockMutate.mockImplementation((data, options) => {
@@ -175,9 +172,20 @@ describe("QuickAddForm", () => {
     await user.type(screen.getByLabelText(/^email$/i), "john@example.com");
     await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
-    // City field requires Combobox interaction - complex in tests
-    // State field
-    await user.type(screen.getByLabelText(/state \*/i), "CA");
+    // City field uses Combobox - click the trigger button to open
+    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    await user.click(cityCombobox);
+
+    // Type in the search input and select a city
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput, "Los Angeles");
+    const laOption = await screen.findByText("Los Angeles");
+    await user.click(laOption);
+
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state \*/i)).toHaveValue("CA");
+    });
 
     // Click Save & Add Another
     await user.click(screen.getByRole("button", { name: /save & add another/i }));
@@ -195,10 +203,7 @@ describe("QuickAddForm", () => {
     });
   });
 
-  it.skip("handles Save & Close correctly", async () => {
-    // TODO: This test requires proper Combobox test helpers for city field interaction
-    // The city field uses shadcn Combobox which is complex to test with Testing Library
-    // See integration test file for recommended test helper patterns
+  it("handles Save & Close correctly", async () => {
     const user = userEvent.setup();
 
     mockMutate.mockImplementation((data, options) => {
@@ -217,9 +222,20 @@ describe("QuickAddForm", () => {
     await user.type(screen.getByLabelText(/^phone$/i), "555-1234");
     await user.type(screen.getByLabelText(/organization name \*/i), "Acme Corp");
 
-    // City field requires Combobox interaction - complex in tests
-    // State field
-    await user.type(screen.getByLabelText(/state \*/i), "IL");
+    // City field uses Combobox - click the trigger button to open
+    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    await user.click(cityCombobox);
+
+    // Type in the search input and select a city
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput, "Chicago");
+    const chicagoOption = await screen.findByText("Chicago");
+    await user.click(chicagoOption);
+
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state \*/i)).toHaveValue("IL");
+    });
 
     // Click Save & Close
     await user.click(screen.getByRole("button", { name: /save & close/i }));

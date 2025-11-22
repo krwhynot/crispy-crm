@@ -32,11 +32,11 @@ const renderWithProviders = (ui: React.ReactElement) => {
   });
 };
 
-// Mock opportunity data
+// Mock opportunity data - use valid stage values from stageConstants.ts
 const mockOpportunity = {
   id: 2,
   name: "Restaurant ABC - $5,000",
-  stage: "qualification",
+  stage: "new_lead",
   principal_organization_id: 100,
   customer_organization_id: 200,
 };
@@ -78,31 +78,35 @@ describe("UpdateOpportunityStep", () => {
       });
 
       expect(screen.getByText(/Current Stage:/i)).toBeInTheDocument();
-      expect(screen.getByText(/Qualification/i)).toBeInTheDocument();
+      expect(screen.getByText(/New Lead/i)).toBeInTheDocument();
     });
 
-    it.skip("shows error state when fetch fails", async () => {
+    it("shows error state when fetch fails", async () => {
       // Suppress console.error for this test since we're intentionally testing error state
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      getOneSpy.mockImplementationOnce(() => Promise.reject(new Error("Network error")));
+      // Create a custom data provider that rejects getOne
+      const errorDataProvider = createMockDataProvider({
+        getOne: async () => {
+          throw new Error("Network error");
+        },
+      });
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
-      renderWithProviders(
-        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
+      renderWithAdminContext(
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />,
+        { dataProvider: errorDataProvider }
       );
 
-      // Wait for loading to disappear first
-      await waitFor(() => {
-        expect(screen.queryByText(/Loading opportunity.../i)).not.toBeInTheDocument();
-      });
-
-      // Then check for error message
-      await waitFor(() => {
-        expect(screen.getByText(/Unable to load opportunity details/i)).toBeInTheDocument();
-      });
+      // Wait for error message to appear (React Admin's useGetOne handles the state transition)
+      await waitFor(
+        () => {
+          expect(screen.getByText(/Unable to load opportunity details/i)).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       // Should show "Continue Anyway" button
       expect(screen.getByRole("button", { name: /Continue Anyway/i })).toBeInTheDocument();
@@ -110,30 +114,33 @@ describe("UpdateOpportunityStep", () => {
       consoleErrorSpy.mockRestore();
     });
 
-    it.skip('calls onSkip when "Continue Anyway" is clicked in error state', async () => {
+    it('calls onSkip when "Continue Anyway" is clicked in error state', async () => {
       const user = userEvent.setup();
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      getOneSpy.mockImplementationOnce(() => Promise.reject(new Error("Network error")));
+      // Create a custom data provider that rejects getOne
+      const errorDataProvider = createMockDataProvider({
+        getOne: async () => {
+          throw new Error("Network error");
+        },
+      });
 
       const onUpdate = vi.fn();
       const onSkip = vi.fn();
 
-      renderWithProviders(
-        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />
+      renderWithAdminContext(
+        <UpdateOpportunityStep opportunityId={2} onUpdate={onUpdate} onSkip={onSkip} />,
+        { dataProvider: errorDataProvider }
       );
 
-      // Wait for loading to disappear first
-      await waitFor(() => {
-        expect(screen.queryByText(/Loading opportunity.../i)).not.toBeInTheDocument();
-      });
+      // Wait for error button to appear
+      const continueButton = await screen.findByRole(
+        "button",
+        { name: /Continue Anyway/i },
+        { timeout: 3000 }
+      );
 
-      // Then wait for error button
-      await waitFor(() => {
-        expect(screen.getByRole("button", { name: /Continue Anyway/i })).toBeInTheDocument();
-      });
-
-      await user.click(screen.getByRole("button", { name: /Continue Anyway/i }));
+      await user.click(continueButton);
 
       expect(onSkip).toHaveBeenCalled();
 
@@ -159,10 +166,10 @@ describe("UpdateOpportunityStep", () => {
       });
     });
 
-    it.skip("disables current stage in dropdown", async () => {
+    it("disables current stage in dropdown", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
-        data: { ...mockOpportunity, stage: "qualification" },
+        data: { ...mockOpportunity, stage: "new_lead" },
       });
 
       const onUpdate = vi.fn();
@@ -210,10 +217,10 @@ describe("UpdateOpportunityStep", () => {
       });
     });
 
-    it.skip("shows stage transition indicator when stage is selected", async () => {
+    it("shows stage transition indicator when stage is selected", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
-        data: { ...mockOpportunity, stage: "qualification" },
+        data: { ...mockOpportunity, stage: "new_lead" },
       });
 
       const onUpdate = vi.fn();
@@ -229,14 +236,14 @@ describe("UpdateOpportunityStep", () => {
       // Open the dropdown
       await user.click(stageSelect);
 
-      // Find the option by its role and name, which is more resilient
+      // Find the "Initial Outreach" option (a valid next stage from new_lead)
       // findByRole will wait for it to appear
-      const proposalOption = await screen.findByRole("option", { name: /Proposal/i });
-      await user.click(proposalOption);
+      const outreachOption = await screen.findByRole("option", { name: /Initial Outreach/i });
+      await user.click(outreachOption);
 
-      // Now, assert that the indicator text appears
+      // Now, assert that the indicator text appears showing the transition
       await waitFor(() => {
-        expect(screen.getByText(/Will move from Qualification → Proposal/i)).toBeInTheDocument();
+        expect(screen.getByText(/Will move from New Lead/i)).toBeInTheDocument();
       });
     });
   });
@@ -266,10 +273,10 @@ describe("UpdateOpportunityStep", () => {
       expect(onUpdate).not.toHaveBeenCalled();
     });
 
-    it.skip("calls onUpdate with selected stage", async () => {
+    it("calls onUpdate with selected stage", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
-        data: { ...mockOpportunity, stage: "qualification" },
+        data: { ...mockOpportunity, stage: "new_lead" },
       });
 
       const onUpdate = vi.fn();
@@ -282,23 +289,23 @@ describe("UpdateOpportunityStep", () => {
       // Wait for initial data to load
       const stageSelect = await screen.findByLabelText(/Move to Stage \(optional\)/i);
 
-      // Open dropdown and select Proposal stage
+      // Open dropdown and select Initial Outreach stage
       await user.click(stageSelect);
 
-      const proposalOption = await screen.findByRole("option", { name: /Proposal/i });
-      await user.click(proposalOption);
+      const outreachOption = await screen.findByRole("option", { name: /Initial Outreach/i });
+      await user.click(outreachOption);
 
       // Click Update & Close
       const updateButton = await screen.findByRole("button", { name: /Update & Close/i });
       await user.click(updateButton);
 
-      expect(onUpdate).toHaveBeenCalledWith("proposal");
+      expect(onUpdate).toHaveBeenCalledWith("initial_outreach");
     });
 
-    it.skip("disables buttons while submitting", async () => {
+    it("disables buttons while submitting", async () => {
       const user = userEvent.setup();
       getOneSpy.mockResolvedValueOnce({
-        data: mockOpportunity,
+        data: { ...mockOpportunity, stage: "new_lead" },
       });
 
       // onUpdate that never resolves (simulating pending API call)
@@ -314,8 +321,8 @@ describe("UpdateOpportunityStep", () => {
 
       // Select a stage to trigger update flow (not skip flow)
       await user.click(stageSelect);
-      const proposalOption = await screen.findByRole("option", { name: /Proposal/i });
-      await user.click(proposalOption);
+      const outreachOption = await screen.findByRole("option", { name: /Initial Outreach/i });
+      await user.click(outreachOption);
 
       // Now click the Update button (text should be "Update & Close")
       const updateButton = await screen.findByRole("button", { name: /Update & Close/i });

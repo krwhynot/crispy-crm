@@ -202,6 +202,11 @@ vi.mock("../hooks/useFilterCleanup", () => ({
   useFilterCleanup: vi.fn(),
 }));
 
+// Mock SidebarActiveFilters to avoid useContactFilterChips dependency
+vi.mock("../SidebarActiveFilters", () => ({
+  SidebarActiveFilters: () => <div data-testid="sidebar-active-filters" />,
+}));
+
 // Import mocked functions after mock definition
 import { useListContext, useGetList } from "ra-core";
 
@@ -429,7 +434,7 @@ describe("ContactListFilter", () => {
     });
   });
 
-  test.skip("renders tag filters - TODO: Fix FilterCategory mock", () => {
+  test("renders tag filters", () => {
     // Tags are loaded via useGetList and only render if data exists
     renderWithAdminContext(<ContactListFilter />);
 
@@ -439,7 +444,7 @@ describe("ContactListFilter", () => {
     expect(screen.getByText("Customer")).toBeInTheDocument();
   });
 
-  test.skip("renders last activity filters - TODO: Fix FilterCategory mock", () => {
+  test("renders last activity filters", () => {
     renderWithAdminContext(<ContactListFilter />);
 
     expect(screen.getByText("Today")).toBeInTheDocument();
@@ -449,13 +454,13 @@ describe("ContactListFilter", () => {
     expect(screen.getByText("Before last month")).toBeInTheDocument();
   });
 
-  test.skip("renders account manager filter - TODO: Fix FilterCategory mock", () => {
+  test("renders account manager filter", () => {
     renderWithAdminContext(<ContactListFilter />);
 
     expect(screen.getByText("Me")).toBeInTheDocument();
   });
 
-  test.skip("renders last activity date filters - TODO: Fix FilterCategory mock", () => {
+  test("renders last activity date filters", () => {
     renderWithAdminContext(<ContactListFilter />);
 
     expect(screen.getByText("Today")).toBeInTheDocument();

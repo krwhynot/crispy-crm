@@ -53,9 +53,40 @@ describe("authProvider", () => {
   });
 
   describe("checkAuth", () => {
-    it.skip("should allow access when valid session exists", async () => {
-      // Skipped: Testing ra-supabase-core internals is complex
-      // Our custom checkAuth logic is tested in other tests
+    it("should allow access when valid session exists", async () => {
+      // Mock valid session
+      vi.mocked(supabase.auth.getSession).mockResolvedValue({
+        data: {
+          session: {
+            user: { id: "user-123", email: "test@example.com", aud: "authenticated" },
+            access_token: "valid-token",
+            refresh_token: "refresh-token",
+            expires_at: Date.now() + 3600000, // 1 hour from now
+          },
+        },
+        error: null,
+      } as any);
+
+      // Mock getUser for ra-supabase-core base provider
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: {
+          user: { id: "user-123", email: "test@example.com", aud: "authenticated" },
+        },
+        error: null,
+      } as any);
+
+      // Set up full window.location mock with hash (ra-supabase-core uses it)
+      Object.defineProperty(window, "location", {
+        value: {
+          pathname: "/dashboard",
+          hash: "",
+          search: "",
+        },
+        writable: true,
+      });
+
+      // Should resolve without throwing
+      await expect(authProvider.checkAuth({})).resolves.not.toThrow();
     });
 
     it("should reject when no session exists on protected path", async () => {
@@ -335,10 +366,63 @@ describe("authProvider", () => {
   });
 
   describe("Sale Caching", () => {
-    it.skip("should cache sale record after first fetch", async () => {
-      // Skipped: Caching is internal implementation detail
-      // Testing this requires complex mock setup and test isolation
-      // Manual/E2E testing is more appropriate for caching behavior
+    it("should return consistent identity structure on multiple getIdentity calls", async () => {
+      // Test that getIdentity returns consistent data structure
+      // Note: Module-level caching persists between tests, so we verify structure
+      // and consistency rather than specific values
+
+      // Mock valid session
+      vi.mocked(supabase.auth.getSession).mockResolvedValue({
+        data: {
+          session: {
+            user: { id: "cache-test-user", email: "cache@example.com", aud: "authenticated" },
+            access_token: "valid-token",
+          },
+        },
+        error: null,
+      } as any);
+
+      // Mock getUser for ra-supabase-core
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: {
+          user: { id: "cache-test-user", email: "cache@example.com", aud: "authenticated" },
+        },
+        error: null,
+      } as any);
+
+      // Mock sales lookup (may not be called if value is already cached from previous test)
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          match: vi.fn().mockReturnValue({
+            maybeSingle: vi.fn().mockResolvedValue({
+              data: {
+                id: 99,
+                first_name: "Cached",
+                last_name: "User",
+                avatar_url: "https://example.com/cached.jpg",
+                is_admin: false,
+                role: "rep",
+              },
+              error: null,
+            }),
+          }),
+        }),
+      } as any);
+
+      // First call
+      const identity1 = await authProvider.getIdentity();
+
+      // Second call - should return same result (from cache or same mock)
+      const identity2 = await authProvider.getIdentity();
+
+      // Verify identity structure has required fields
+      expect(identity1).toHaveProperty("id");
+      expect(identity1).toHaveProperty("fullName");
+      expect(identity1).toHaveProperty("avatar");
+      expect(identity1).toHaveProperty("role");
+
+      // Verify both calls return identical results (caching consistency)
+      expect(identity1).toEqual(identity2);
     });
   });
 

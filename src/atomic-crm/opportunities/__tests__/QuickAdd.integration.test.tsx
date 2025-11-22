@@ -152,7 +152,7 @@ describe("QuickAdd Integration", () => {
     vi.restoreAllMocks();
   });
 
-  it.skip("completes full atomic creation flow with Save & Close", async () => {
+  it("completes full atomic creation flow with Save & Close", async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // 1. Open dialog
@@ -170,20 +170,16 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/phone/i), "555-1234");
     await user.type(screen.getByLabelText(/organization name/i), "Acme Corp");
 
-    // City field uses Combobox component - wait for it to be ready, then interact
-    const cityCombobox = await screen.findByRole("combobox", { name: /city/i });
+    // City field uses Combobox component - find by placeholder text on trigger button
+    const cityCombobox = screen.getByText("Select or type city...");
     await user.click(cityCombobox);
 
-    // Wait for the search input to appear before typing
-    const searchInput = await screen.findByPlaceholderText(
-      "Select or type city...",
-      {},
-      { timeout: 3000 }
-    );
+    // Type in the search input (placeholder: "Search cities...")
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
     await user.type(searchInput, "Chicago");
 
-    // Wait for the option to appear after typing
-    const option = await screen.findByRole("option", { name: "Chicago" }, { timeout: 3000 });
+    // Wait for the option to appear after typing - cmdk uses [cmdk-item] not role="option"
+    const option = await screen.findByText("Chicago");
     await user.click(option);
 
     // State should auto-fill when city is selected
@@ -238,7 +234,7 @@ describe("QuickAdd Integration", () => {
     });
   }, 10000);
 
-  it.skip("handles Save & Add Another flow correctly", async () => {
+  it("handles Save & Add Another flow correctly", async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog
@@ -250,20 +246,16 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/email/i), "jane@example.com");
     await user.type(screen.getByLabelText(/organization name/i), "Tech Corp");
 
-    // City field uses Combobox component - wait for it to be ready, then interact
-    const cityCombobox = await screen.findByRole("combobox", { name: /city/i });
+    // City field uses Combobox component - click the trigger button to open
+    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
     await user.click(cityCombobox);
 
-    // Wait for the search input to appear before typing
-    const searchInput = await screen.findByPlaceholderText(
-      "Select or type city...",
-      {},
-      { timeout: 3000 }
-    );
+    // Type in the search input (placeholder: "Search cities...")
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
     await user.type(searchInput, "Los Angeles");
 
-    // Wait for the option to appear after typing
-    const option = await screen.findByRole("option", { name: "Los Angeles" }, { timeout: 3000 });
+    // Wait for the option to appear after typing - cmdk uses [cmdk-item] not role="option"
+    const option = await screen.findByText("Los Angeles");
     await user.click(option);
 
     // State should auto-fill when city is selected
@@ -329,8 +321,7 @@ describe("QuickAdd Integration", () => {
     });
   }, 10000);
 
-  it.skip("handles errors and preserves form data", async () => {
-    // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
+  it("handles errors and preserves form data", async () => {
     // Setup error mock
     mockCreateBoothVisitor.mockRejectedValueOnce(new Error("Database connection failed"));
 
@@ -344,13 +335,22 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/email/i), "error@test.com");
     await user.type(screen.getByLabelText(/organization name/i), "Test Org");
 
-    // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText("Select or type city...");
-    await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText("Search cities..."), "New York");
-    await user.keyboard("{Escape}"); // Close the Combobox dropdown
+    // City uses Combobox - click the trigger button to open
+    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    await user.click(cityCombobox);
 
-    await user.type(screen.getByLabelText(/state/i), "NY");
+    // Type in the search input (placeholder: "Search cities...")
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput, "New York");
+
+    // Select New York from the options
+    const nyOption = await screen.findByText("New York");
+    await user.click(nyOption);
+
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state/i)).toHaveValue("NY");
+    });
 
     // Submit
     await user.click(screen.getByText(/save & close/i));
@@ -376,8 +376,7 @@ describe("QuickAdd Integration", () => {
     expect(mockCreateBoothVisitor).toHaveBeenCalledTimes(1);
   });
 
-  it.skip("validates phone OR email requirement", async () => {
-    // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
+  it("validates phone OR email requirement", async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog
@@ -388,21 +387,28 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/last name/i), "User");
     await user.type(screen.getByLabelText(/organization name/i), "Org");
 
-    // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText("Select or type city...");
-    await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText("Search cities..."), "Boston");
-    await user.keyboard("{Escape}"); // Close the Combobox dropdown
+    // City uses Combobox - click the trigger button to open
+    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    await user.click(cityCombobox);
 
-    await user.type(screen.getByLabelText(/state/i), "MA");
+    // Type in the search input and select Boston
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput, "Boston");
+    const bostonOption = await screen.findByText("Boston");
+    await user.click(bostonOption);
+
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state/i)).toHaveValue("MA");
+    });
 
     // Try to submit - should be blocked
     const saveButton = screen.getByText(/save & close/i);
     await user.click(saveButton);
 
-    // Verify error shown
+    // Verify error shown (check for the actual validation message from form)
     await waitFor(() => {
-      expect(screen.getByText(/at least one of email or phone is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/phone or email required/i)).toBeInTheDocument();
     });
 
     // Verify createBoothVisitor was NOT called
@@ -429,13 +435,20 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/phone/i), "555-9999");
     await user.type(screen.getByLabelText(/organization name/i), "Phone Org");
 
-    // City uses Combobox - find button and click to interact
-    const cityButton2 = screen.getByText("Select or type city...");
-    await user.click(cityButton2);
-    await user.type(screen.getByPlaceholderText("Search cities..."), "Seattle");
-    await user.keyboard("{Escape}"); // Close the Combobox dropdown
+    // City uses Combobox - click the trigger button to open
+    const cityCombobox2 = screen.getByRole("combobox", { name: /city/i });
+    await user.click(cityCombobox2);
 
-    await user.type(screen.getByLabelText(/state/i), "WA");
+    // Type in the search input and select Seattle
+    const searchInput2 = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput2, "Seattle");
+    const seattleOption = await screen.findByText("Seattle");
+    await user.click(seattleOption);
+
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state/i)).toHaveValue("WA");
+    });
 
     // Submit should work
     await user.click(screen.getByText(/save & close/i));
@@ -452,8 +465,7 @@ describe("QuickAdd Integration", () => {
     });
   });
 
-  it.skip("filters products by selected principal", async () => {
-    // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
+  it("filters products by selected principal", async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog
@@ -504,31 +516,19 @@ describe("QuickAdd Integration", () => {
     });
   });
 
-  it.skip("auto-fills state when city is selected from autocomplete", async () => {
-    // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
+  it("auto-fills state when city is selected from autocomplete", async () => {
     renderWithAdminContext(<QuickAddButton />);
 
     // Open dialog
     await user.click(screen.getByText(/quick add/i));
 
-    // Type in city field to trigger autocomplete
-    // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText("Select or type city...");
-    await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText("Search cities..."), "Chi");
-    await user.keyboard("{Escape}"); // Close the Combobox dropdown
+    // City uses Combobox - click the trigger button to open
+    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    await user.click(cityCombobox);
 
-    // Wait for autocomplete to load
-    await waitFor(() => {
-      expect(mockGetList).toHaveBeenCalledWith(
-        "cities",
-        expect.objectContaining({
-          filter: expect.objectContaining({
-            "city@ilike": "Chi",
-          }),
-        })
-      );
-    });
+    // Type in the search input to filter options
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput, "Chi");
 
     // Select Chicago from autocomplete
     const chicagoOption = await screen.findByText("Chicago");
@@ -536,21 +536,24 @@ describe("QuickAdd Integration", () => {
 
     // Verify state auto-filled with IL
     const stateField = screen.getByLabelText(/state/i);
-    expect(stateField).toHaveValue("IL");
+    await waitFor(() => {
+      expect(stateField).toHaveValue("IL");
+    });
 
-    // Clear and test manual entry
-    await user.clear(cityField);
-    await user.clear(stateField);
-    await user.type(cityField, "International City");
-    await user.type(stateField, "XX");
+    // Test selecting another city to verify state updates
+    await user.click(cityCombobox);
+    const searchInput2 = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput2, "Los Angeles");
+    const laOption = await screen.findByText("Los Angeles");
+    await user.click(laOption);
 
-    // Verify manual entry still works
-    expect(cityField).toHaveValue("International City");
-    expect(stateField).toHaveValue("XX");
+    // Verify state updated to CA
+    await waitFor(() => {
+      expect(stateField).toHaveValue("CA");
+    });
   });
 
-  it.skip("preserves campaign and principal preferences across sessions", async () => {
-    // TODO: Fix city Combobox interaction - city field changed from Input to Combobox component
+  it("preserves campaign and principal preferences across sessions", async () => {
     // First session - set preferences
     renderWithAdminContext(<QuickAddButton />);
 
@@ -574,13 +577,20 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/email/i), "first@test.com");
     await user.type(screen.getByLabelText(/organization name/i), "First Org");
 
-    // City uses Combobox - find button and click to interact
-    const cityButton = screen.getByText("Select or type city...");
-    await user.click(cityButton);
-    await user.type(screen.getByPlaceholderText("Search cities..."), "Miami");
-    await user.keyboard("{Escape}"); // Close the Combobox dropdown
+    // City uses Combobox - click the trigger button to open
+    const cityCombobox = screen.getByRole("combobox", { name: /city/i });
+    await user.click(cityCombobox);
 
-    await user.type(screen.getByLabelText(/state/i), "FL");
+    // Type in the search input and select Miami
+    const searchInput = await screen.findByPlaceholderText("Search cities...");
+    await user.type(searchInput, "Miami");
+    const miamiOption = await screen.findByText("Miami");
+    await user.click(miamiOption);
+
+    // State should auto-fill when city is selected
+    await waitFor(() => {
+      expect(screen.getByLabelText(/state/i)).toHaveValue("FL");
+    });
 
     // Save
     await user.click(screen.getByText(/save & close/i));
