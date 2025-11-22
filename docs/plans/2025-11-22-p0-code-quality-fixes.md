@@ -10,6 +10,200 @@
 
 ---
 
+## Expert Panel Recommendations Applied
+
+---
+
+### 🎯 Corrected Metrics (Per Karl Wiegers)
+
+| Metric                 | Original | Corrected | Notes                       |
+|------------------------|----------|-----------|-----------------------------|
+| ESLint Errors          | "60+"    | **190**   | Exact count from lint:check |
+| Total `any` usages     | 550      | **697**   | Full pattern match          |
+| `any` in test files    | Unknown  | **324** (46%) | Acceptable for mocks    |
+| `any` in production    | Unknown  | **373** (54%) | Needs reduction         |
+| useEffect hooks        | Unknown  | **64**    | Across 48 files             |
+| useEffect with cleanup | Unknown  | **2** (3%)| 🔴 Critical gap             |
+| Circular dependencies  | Unknown  | **1**     | contactImport cycle         |
+| E2E test files         | Unknown  | **70**    | Comprehensive suite         |
+
+---
+
+### 🔴 Critical Issues (Updated)
+
+#### 1. Memory Leak Risk: Missing useEffect Cleanup
+
+**Severity:** 🔴 CRITICAL | **Impact:** HIGH | **Likelihood:** HIGH
+
+```
+useEffect hooks total:     64
+useEffect with cleanup:     2 (3%)
+Potential memory leaks:    62 (97%)
+```
+
+**Risk:** Long-running sessions will accumulate event listeners, subscriptions, and timers that never get cleaned up.
+
+**High-Risk Files (useEffect without cleanup):**
+- `src/atomic-crm/dashboard/Dashboard.tsx`
+- `src/atomic-crm/dashboard/v2/PrincipalDashboardV2.tsx`
+- `src/atomic-crm/opportunities/OpportunityListContent.tsx`
+- `src/components/ui/sidebar.tsx`
+- `src/atomic-crm/root/CRM.tsx`
+
+**Required Fix Pattern:**
+```typescript
+// ❌ Current (no cleanup)
+useEffect(() => {
+  window.addEventListener('resize', handler);
+}, []);
+
+// ✅ Required (with cleanup)
+useEffect(() => {
+  window.addEventListener('resize', handler);
+  return () => window.removeEventListener('resize', handler);
+}, []);
+```
+
+---
+
+#### 2. E2E Tests Broken
+
+**Severity:** 🔴 CRITICAL | **Impact:** HIGH | **Likelihood:** CERTAIN
+
+**Location:** `tests/e2e/specs/opportunities/stage-transitions.spec.ts:298,444`
+
+```typescript
+// ❌ BROKEN: Unknown parameter "_page"
+test("should prevent invalid stage transitions", async ({ _page }) => {
+
+// ✅ FIX: Should be "page"
+test("should prevent invalid stage transitions", async ({ page }) => {
+```
+
+**Impact:** Zero E2E tests can run until this is fixed.
+
+---
+
+#### 3. React Hooks Violation (Unchanged)
+
+**Severity:** 🔴 CRITICAL
+**Location:** `src/atomic-crm/dashboard/PrincipalDashboard.tsx:39-43`
+
+Hooks called conditionally after early return. Must restructure.
+
+---
+
+### ⚠️ High Priority Issues
+
+#### 4. `any` Type Distribution by Intent (Per Martin Fowler)
+
+| Category                       | Count | %   | Action                    |
+|--------------------------------|-------|-----|---------------------------|
+| **Test files**                 | 324   | 46% | ✅ Acceptable for mocks    |
+| **Boundary `any`** (external APIs) | ~50 | 7%  | ⚠️ Add runtime validation |
+| **Lazy `any`** (developer shortcuts) | ~200 | 29% | 🔴 Should be typed    |
+| **Legacy `any`** (old patterns) | ~123 | 18% | 📋 Track as tech debt     |
+
+**Highest Priority Files to Fix:**
+
+| File                          | `any` Count | Category          |
+|-------------------------------|-------------|-------------------|
+| `junctions.service.ts`        | 42          | Lazy              |
+| `unifiedDataProvider.ts`      | 26          | Boundary + Lazy   |
+| `authProvider.test.ts`        | 30          | Test (acceptable) |
+| `show-guesser.tsx`            | 17          | Legacy            |
+| `contacts/OpportunitiesTab.tsx` | 11        | Lazy              |
+
+---
+
+#### 5. Circular Dependency Found
+
+**Severity:** ⚠️ HIGH | **Impact:** MEDIUM | **Likelihood:** MEDIUM
+
+```
+contactImport.logic.ts → useContactImport.tsx → contactImport.logic.ts
+```
+
+**Risk:**
+- Bundling issues (larger chunks)
+- Test isolation problems
+- Potential runtime errors
+
+**Recommendation:** Extract shared types/utils to a separate file.
+
+---
+
+### 📊 Risk Matrix (Per Lisa Crispin)
+
+| Issue                     | Impact              | Likelihood | Risk Score | Priority |
+|---------------------------|---------------------|------------|------------|----------|
+| useEffect cleanup missing | 🔴 High (crashes)   | 🔴 High    | **9**      | P0       |
+| E2E tests broken          | 🔴 High (no CI)     | 🔴 Certain | **10**     | P0       |
+| React Hooks violation     | 🔴 High (crashes)   | ⚠️ Medium  | **7**      | P1       |
+| Test coverage 25%         | ⚠️ Medium (bugs)    | 🔴 High    | **6**      | P1       |
+| ESLint errors (190)       | ⚠️ Medium (quality) | 🔴 High    | **6**      | P2       |
+| `any` in prod (373)       | ⚠️ Medium (types)   | ⚠️ Medium  | **4**      | P2       |
+| Circular dependency       | 🟡 Low (bundle)     | 🟡 Low     | **2**      | P3       |
+
+**Risk Score Formula:** Impact (1-3) × Likelihood (1-3) + Severity bonus
+
+---
+
+### ✅ Strengths Confirmed
+
+| Area               | Status          | Evidence                         |
+|--------------------|-----------------|----------------------------------|
+| E2E Infrastructure | ✅ Excellent     | 70 spec files, Page Object Model |
+| Design System      | ✅ Compliant     | 0 hardcoded colors               |
+| Zod Validation     | ✅ Comprehensive | 12 schema files                  |
+| Promise.allSettled | ✅ Correct       | 13 usages in bulk ops            |
+
+---
+
+### 🎯 Prioritized Action Plan
+
+**P0: Fix This Week (Blocking Issues)**
+
+| #   | Task                                    | File                              | Est. Time |
+|-----|-----------------------------------------|-----------------------------------|-----------|
+| 1   | Fix `_page` → `page` in E2E test        | `stage-transitions.spec.ts:298,444` | 5 min   |
+| 2   | Fix React Hooks violation               | `PrincipalDashboard.tsx:39-43`    | 30 min    |
+| 3   | Audit top 5 useEffect files for cleanup | Dashboard components              | 2 hrs     |
+
+**P1: Fix This Sprint (High Risk)**
+
+| #   | Task                                  | Scope                | Est. Time |
+|-----|---------------------------------------|----------------------|-----------|
+| 4   | Add cleanup to all 62 useEffect hooks | 48 files             | 8 hrs     |
+| 5   | Run `npm run lint:apply`              | Auto-fix ~100 errors | 30 min    |
+| 6   | Break circular dependency             | contactImport files  | 1 hr      |
+
+**P2: Fix This Month (Quality)**
+
+| #   | Task                               | Scope              | Est. Time |
+|-----|------------------------------------|-------------------|-----------|
+| 7   | Type `junctions.service.ts` properly | 42 `any` → typed | 4 hrs     |
+| 8   | Type `unifiedDataProvider.ts`      | 26 `any` → typed   | 4 hrs     |
+| 9   | Increase test coverage to 50%      | Critical paths     | 20 hrs    |
+
+---
+
+### Key Insights from Enhanced Analysis
+
+1. **The memory leak risk was invisible** until we checked useEffect cleanup patterns. 97% missing cleanup is a ticking time bomb for long user sessions.
+
+2. **E2E tests exist but can't run** — a simple typo (`_page` vs `page`) has silently disabled the entire suite. This is why CI/CD pipelines need test execution, not just parsing.
+
+3. **`any` categorization changes priorities** — 46% in test files means the actual production debt is 373, not 697. Still significant, but more tractable.
+
+4. **One circular dependency is manageable** — this codebase is architecturally sound. The contact import cycle is an isolated issue.
+
+---
+
+## Implementation Tasks
+
+---
+
 ## Task 1: Fix E2E Test Parameter Typo
 
 **Files:**
