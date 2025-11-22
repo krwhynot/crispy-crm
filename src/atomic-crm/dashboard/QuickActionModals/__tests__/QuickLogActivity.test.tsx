@@ -567,8 +567,7 @@ describe('QuickLogActivity Modal', () => {
 
   describe('Edge Cases', () => {
     it('should handle very long notes', async () => {
-      // Use faster typing with delay: null to avoid timeouts
-      const user = userEvent.setup({ delay: null });
+      const user = userEvent.setup();
       const longNotes = 'a'.repeat(500);
 
       renderWithRouter(
@@ -581,7 +580,8 @@ describe('QuickLogActivity Modal', () => {
       );
 
       const notesInput = screen.getByPlaceholderText(/add notes/i);
-      await user.type(notesInput, longNotes);
+      // Use fireEvent.change instead of user.type for long strings to avoid timeout
+      fireEvent.change(notesInput, { target: { value: longNotes } });
 
       const saveButton = screen.getByRole('button', { name: /save/i });
       await user.click(saveButton);
