@@ -6,18 +6,35 @@
  *
  * The Combobox uses:
  * - A Button with role="combobox" as the trigger
- * - CommandInput for search (placeholder text)
- * - CommandItem for options (uses cmdk's internal selection)
+ * - CommandInput for search (with placeholder text)
+ * - CommandItem for options (uses [data-slot="command-item"])
+ *
+ * IMPORTANT: cmdk filtering in JSDOM can be slow. These helpers use
+ * data attributes and proper waiting patterns for reliability.
  */
 
-import { screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 export interface ComboboxTestOptions {
   /** The user event instance to use for interactions */
   user: ReturnType<typeof userEvent.setup>;
-  /** Timeout for waiting operations in ms (default: 3000) */
+  /** Timeout for waiting operations in ms (default: 5000) */
   timeout?: number;
+}
+
+/**
+ * Finds a cmdk CommandItem by its text content.
+ * CommandItems have [data-slot="command-item"] attribute.
+ */
+function findCommandItem(text: string): HTMLElement | null {
+  const items = document.querySelectorAll('[data-slot="command-item"]');
+  for (const item of items) {
+    if (item.textContent?.includes(text)) {
+      return item as HTMLElement;
+    }
+  }
+  return null;
 }
 
 /**
@@ -42,30 +59,34 @@ export async function selectComboboxOption(
   triggerText: string,
   searchText: string,
   optionText: string,
-  { user, timeout = 3000 }: ComboboxTestOptions
+  { user, timeout = 5000 }: ComboboxTestOptions
 ): Promise<void> {
   // Find and click the combobox trigger button
   const trigger = screen.getByText(triggerText);
   await user.click(trigger);
 
-  // Wait for the popover to open and find the search input
-  const searchInput = await screen.findByRole("combobox", { name: "" });
+  // Wait for the popover to open and find the search input by placeholder
+  const searchInput = await screen.findByPlaceholderText(/search/i, {}, { timeout });
 
   // Type the search text
   await user.type(searchInput, searchText);
 
-  // Wait for and click the option
-  // cmdk uses data-value attribute, but we can find by text content
+  // Wait for the command item to appear and click it
   await waitFor(
     () => {
-      const option = screen.getByText(optionText);
-      expect(option).toBeInTheDocument();
+      const item = findCommandItem(optionText);
+      if (!item) {
+        throw new Error(`CommandItem with text "${optionText}" not found`);
+      }
     },
     { timeout }
   );
 
-  const option = screen.getByText(optionText);
-  await user.click(option);
+  const item = findCommandItem(optionText);
+  if (!item) {
+    throw new Error(`CommandItem with text "${optionText}" not found after wait`);
+  }
+  await user.click(item);
 }
 
 /**
@@ -81,24 +102,29 @@ export async function changeComboboxOption(
   currentValue: string,
   searchText: string,
   optionText: string,
-  { user, timeout = 3000 }: ComboboxTestOptions
+  { user, timeout = 5000 }: ComboboxTestOptions
 ): Promise<void> {
   const trigger = screen.getByText(currentValue);
   await user.click(trigger);
 
-  const searchInput = await screen.findByRole("combobox", { name: "" });
+  const searchInput = await screen.findByPlaceholderText(/search/i, {}, { timeout });
   await user.type(searchInput, searchText);
 
   await waitFor(
     () => {
-      const option = screen.getByText(optionText);
-      expect(option).toBeInTheDocument();
+      const item = findCommandItem(optionText);
+      if (!item) {
+        throw new Error(`CommandItem with text "${optionText}" not found`);
+      }
     },
     { timeout }
   );
 
-  const option = screen.getByText(optionText);
-  await user.click(option);
+  const item = findCommandItem(optionText);
+  if (!item) {
+    throw new Error(`CommandItem with text "${optionText}" not found after wait`);
+  }
+  await user.click(item);
 }
 
 /**
@@ -112,12 +138,12 @@ export async function changeComboboxOption(
 export async function typeInCombobox(
   triggerText: string,
   text: string,
-  { user }: ComboboxTestOptions
+  { user, timeout = 5000 }: ComboboxTestOptions
 ): Promise<void> {
   const trigger = screen.getByText(triggerText);
   await user.click(trigger);
 
-  const searchInput = await screen.findByRole("combobox", { name: "" });
+  const searchInput = await screen.findByPlaceholderText(/search/i, {}, { timeout });
   await user.type(searchInput, text);
 }
 
@@ -130,14 +156,26 @@ export async function typeInCombobox(
  */
 export async function clearCombobox(
   currentValue: string,
-  { user }: ComboboxTestOptions
+  { user, timeout = 5000 }: ComboboxTestOptions
 ): Promise<void> {
   const trigger = screen.getByText(currentValue);
   await user.click(trigger);
 
-  // Find and click the currently selected option to toggle it off
-  const option = await screen.findByText(currentValue);
-  await user.click(option);
+  await waitFor(
+    () => {
+      const item = findCommandItem(currentValue);
+      if (!item) {
+        throw new Error(`CommandItem with text "${currentValue}" not found`);
+      }
+    },
+    { timeout }
+  );
+
+  const item = findCommandItem(currentValue);
+  if (!item) {
+    throw new Error(`CommandItem with text "${currentValue}" not found after wait`);
+  }
+  await user.click(item);
 }
 
 /**
@@ -175,22 +213,75 @@ export async function selectComboboxByLabel(
   labelText: string,
   searchText: string,
   optionText: string,
-  { user, timeout = 3000 }: ComboboxTestOptions
+  { user, timeout = 5000 }: ComboboxTestOptions
 ): Promise<void> {
   const trigger = findComboboxByLabel(labelText);
   await user.click(trigger);
 
-  const searchInput = await screen.findByRole("combobox", { name: "" });
+  const searchInput = await screen.findByPlaceholderText(/search/i, {}, { timeout });
   await user.type(searchInput, searchText);
 
   await waitFor(
     () => {
-      const option = screen.getByText(optionText);
-      expect(option).toBeInTheDocument();
+      const item = findCommandItem(optionText);
+      if (!item) {
+        throw new Error(`CommandItem with text "${optionText}" not found`);
+      }
     },
     { timeout }
   );
 
-  const option = screen.getByText(optionText);
-  await user.click(option);
+  const item = findCommandItem(optionText);
+  if (!item) {
+    throw new Error(`CommandItem with text "${optionText}" not found after wait`);
+  }
+  await user.click(item);
+}
+
+/**
+ * Selects a city from the city combobox and verifies state auto-fill.
+ * This is a specialized helper for the QuickAdd form.
+ *
+ * @param cityName - The city name to select
+ * @param expectedState - The expected state abbreviation after selection
+ * @param options - User event instance and optional timeout
+ */
+export async function selectCityAndVerifyState(
+  cityName: string,
+  expectedState: string,
+  { user, timeout = 5000 }: ComboboxTestOptions
+): Promise<void> {
+  // Find the city combobox trigger (initially shows "Select or type city...")
+  const cityTrigger = screen.getByText("Select or type city...");
+  await user.click(cityTrigger);
+
+  // Wait for and type in the search input
+  const searchInput = await screen.findByPlaceholderText("Search cities...", {}, { timeout });
+  await user.type(searchInput, cityName);
+
+  // Wait for the city option to appear and click it
+  await waitFor(
+    () => {
+      const item = findCommandItem(cityName);
+      if (!item) {
+        throw new Error(`City "${cityName}" not found in options`);
+      }
+    },
+    { timeout }
+  );
+
+  const cityItem = findCommandItem(cityName);
+  if (!cityItem) {
+    throw new Error(`City "${cityName}" not found after wait`);
+  }
+  await user.click(cityItem);
+
+  // Verify state auto-filled
+  await waitFor(
+    () => {
+      const stateInput = screen.getByLabelText(/state/i);
+      expect(stateInput).toHaveValue(expectedState);
+    },
+    { timeout }
+  );
 }
