@@ -18,8 +18,6 @@ import type { Company } from '../types';
 export const BranchLocationsSection = () => {
   const record = useRecordContext<Company>();
   const createPath = useCreatePath();
-  const notify = useNotify();
-  const refresh = useRefresh();
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Fetch branches for this organization
