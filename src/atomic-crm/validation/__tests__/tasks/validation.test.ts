@@ -8,11 +8,9 @@ import {
   taskSchema,
   createTaskSchema,
   updateTaskSchema,
-  taskWithReminderSchema,
   validateCreateTask,
   validateUpdateTask,
-  validateTaskWithReminder,
-} from "../../tasks";
+} from "../../task";
 import { z } from "zod";
 
 describe("Task Validation Schemas", () => {
