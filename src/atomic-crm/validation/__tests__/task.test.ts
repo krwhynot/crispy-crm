@@ -94,9 +94,13 @@ describe("Task Validation Schemas (task.ts)", () => {
     });
 
     it("should accept minimal task with only required fields", () => {
+      // Per Engineering Constitution: tasks must be associated with contact and sales rep
       const minimalTask = {
         title: "Quick task",
         due_date: "2025-01-15",
+        type: "None" as const,
+        contact_id: 1,
+        sales_id: 1,
       };
 
       const result = taskSchema.safeParse(minimalTask);
