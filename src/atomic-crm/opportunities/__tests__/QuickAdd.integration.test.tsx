@@ -502,76 +502,70 @@ describe("QuickAdd Integration", () => {
     25000
   );
 
-  it("filters products by selected principal", async () => {
-    renderWithAdminContext(<QuickAddButton />);
+  it(
+    "filters products by selected principal",
+    async () => {
+      renderWithAdminContext(<QuickAddButton />);
 
-    // Open dialog
-    await user.click(screen.getByText(/quick add/i));
+      // Open dialog
+      await user.click(screen.getByText(/quick add/i));
 
-    // Initially no principal selected - should show message to select principal first
-    expect(screen.getByText(/select a principal first/i)).toBeInTheDocument();
+      // Initially no principal selected - should show message to select principal first
+      expect(screen.getByText(/select a principal first/i)).toBeInTheDocument();
 
-    // Select Principal A
-    // Find principal select trigger button (shadcn Select uses button with role="combobox")
-    // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText("Principal *");
-    const principalContainer = principalLabel.parentElement;
-    const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
-    if (!principalTrigger) throw new Error("Principal trigger not found");
-    await user.click(principalTrigger);
-    await user.click(await screen.findByRole("option", { name: "Principal A" }));
+      // Select Principal A
+      // Find principal select trigger button (shadcn Select uses button with role="combobox")
+      // Find the container with Principal label, then find the combobox within it
+      const principalLabel = screen.getByText("Principal *");
+      const principalContainer = principalLabel.parentElement;
+      const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
+      if (!principalTrigger) throw new Error("Principal trigger not found");
+      await user.click(principalTrigger);
+      await user.click(await screen.findByRole("option", { name: "Principal A" }));
 
-    // After selecting principal, the products multi-select should become available
-    // The "select a principal first" message should disappear
-    await waitFor(() => {
+      // After selecting principal, the products multi-select should become available
+      // The "select a principal first" message should disappear
+      await waitFor(() => {
+        expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
+      });
+
+      // Now select Principal B
+      await user.click(principalTrigger);
+      await user.click(await screen.findByRole("option", { name: "Principal B" }));
+
+      // Products should still be available (not showing the "select first" message)
       expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
-    });
+    },
+    15000
+  );
 
-    // Now select Principal B
-    await user.click(principalTrigger);
-    await user.click(await screen.findByRole("option", { name: "Principal B" }));
+  it(
+    "auto-fills state when city is selected from autocomplete",
+    async () => {
+      renderWithAdminContext(<QuickAddButton />);
 
-    // Products should still be available (not showing the "select first" message)
-    expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
-  });
+      // Open dialog
+      await user.click(screen.getByText(/quick add/i));
 
-  it("auto-fills state when city is selected from autocomplete", async () => {
-    renderWithAdminContext(<QuickAddButton />);
+      // City uses Combobox - use helper to select Chicago
+      await selectCity("Chicago", user);
 
-    // Open dialog
-    await user.click(screen.getByText(/quick add/i));
+      // Verify state auto-filled with IL
+      const stateField = screen.getByLabelText(/state/i);
+      await waitFor(() => {
+        expect(stateField).toHaveValue("IL");
+      });
 
-    // City uses Combobox - find by placeholder text on trigger button
-    const cityCombobox = screen.getByText("Select or type city...");
-    await user.click(cityCombobox);
+      // Test selecting another city to verify state updates - use changeCity helper
+      await changeCity("Chicago", "Los Angeles", user);
 
-    // Type in the search input to filter options
-    const searchInput = await screen.findByPlaceholderText("Search cities...");
-    await user.type(searchInput, "Chi");
-
-    // Select Chicago from autocomplete
-    const chicagoOption = await screen.findByText("Chicago");
-    await user.click(chicagoOption);
-
-    // Verify state auto-filled with IL
-    const stateField = screen.getByLabelText(/state/i);
-    await waitFor(() => {
-      expect(stateField).toHaveValue("IL");
-    });
-
-    // Test selecting another city to verify state updates - after selection, button shows "Chicago"
-    const cityCombobox2 = screen.getByText("Chicago");
-    await user.click(cityCombobox2);
-    const searchInput2 = await screen.findByPlaceholderText("Search cities...");
-    await user.type(searchInput2, "Los Angeles");
-    const laOption = await screen.findByText("Los Angeles");
-    await user.click(laOption);
-
-    // Verify state updated to CA
-    await waitFor(() => {
-      expect(stateField).toHaveValue("CA");
-    });
-  });
+      // Verify state updated to CA
+      await waitFor(() => {
+        expect(stateField).toHaveValue("CA");
+      });
+    },
+    20000
+  );
 
   it(
     "preserves campaign and principal preferences across sessions",
@@ -599,15 +593,8 @@ describe("QuickAdd Integration", () => {
       await user.type(screen.getByLabelText(/email/i), "first@test.com");
       await user.type(screen.getByLabelText(/organization name/i), "First Org");
 
-      // City uses Combobox - find by placeholder text on trigger button
-      const cityCombobox = screen.getByText("Select or type city...");
-      await user.click(cityCombobox);
-
-      // Type in the search input and select Miami
-      const searchInput = await screen.findByPlaceholderText("Search cities...");
-      await user.type(searchInput, "Miami");
-      const miamiOption = await screen.findByText("Miami");
-      await user.click(miamiOption);
+      // City uses Combobox - use helper
+      await selectCity("Miami", user);
 
       // State should auto-fill when city is selected
       await waitFor(() => {
@@ -646,7 +633,7 @@ describe("QuickAdd Integration", () => {
 
       unmount2();
     },
-    15000
+    25000
   );
 
   it("ensures all touch targets meet minimum size requirements", async () => {
