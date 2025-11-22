@@ -7,9 +7,6 @@ import React, { useEffect } from "react";
 import { Navigate, Route, useParams } from "react-router-dom";
 import organizations from "../organizations";
 import contacts from "../contacts";
-import { CompactGridDashboard } from "../dashboard/CompactGridDashboard";
-import { PrincipalDashboard } from "../dashboard/PrincipalDashboard";
-import { PrincipalDashboardV2 } from "../dashboard/v2";
 import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard/v3";
 import opportunities from "../opportunities";
 import products from "../products";
@@ -178,16 +175,6 @@ export const CRM = ({
         </CustomRoutes>
 
         <CustomRoutes>
-          <Route path="/dashboard" element={<PrincipalDashboard />} />
-          <Route path="/dashboard-v2" element={<PrincipalDashboardV2 />} />
-          <Route
-            path="/dashboard-v3"
-            element={
-              <DashboardErrorBoundary>
-                <PrincipalDashboardV3 />
-              </DashboardErrorBoundary>
-            }
-          />
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
