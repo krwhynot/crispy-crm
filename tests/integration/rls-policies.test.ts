@@ -12,7 +12,8 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
 
 // Override .env with .env.test values for integration tests

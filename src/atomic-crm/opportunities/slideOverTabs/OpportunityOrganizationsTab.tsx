@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Form, useUpdate, useNotify, ReferenceInput, ReferenceField, useGetOne } from 'react-admin';
+import { Form, useUpdate, useNotify, ReferenceInput, useGetOne } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { AutocompleteInput } from '@/components/admin/autocomplete-input';
-import { TextField } from '@/components/admin/text-field';
 import { Button } from '@/components/ui/button';
 import { Building2 } from 'lucide-react';
 

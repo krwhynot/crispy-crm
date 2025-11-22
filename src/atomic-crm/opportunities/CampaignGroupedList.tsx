@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
 import { useListContext } from "ra-core";
 import {
   Accordion,

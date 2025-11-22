@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import type { PrincipalPipelineRow, TaskItem, ActivityLog } from '../types';
+import type { PrincipalPipelineRow, TaskItem } from '../types';
 
 describe('Dashboard V3 Types', () => {
   it('should have PrincipalPipelineRow type with required fields', () => {

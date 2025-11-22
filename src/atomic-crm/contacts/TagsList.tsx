@@ -11,13 +11,13 @@ const ColoredBadge = (props: any) => {
 
   // Filter out React Admin props before spreading to Badge
   const {
-    source,
-    label,
-    sortable,
-    sortBy,
-    textAlign,
-    rowClassName,
-    resource,
+    source: _source,
+    label: _label,
+    sortable: _sortable,
+    sortBy: _sortBy,
+    textAlign: _textAlign,
+    rowClassName: _rowClassName,
+    resource: _resource,
     ...badgeProps
   } = props;
 

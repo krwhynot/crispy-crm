@@ -1,5 +1,6 @@
 import { TargetIcon, Users, Building2, Package, Activity } from 'lucide-react';
-import { ResourceSlideOver, TabConfig } from '@/components/layouts/ResourceSlideOver';
+import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
+import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
 import { OpportunitySlideOverDetailsTab } from './slideOverTabs/OpportunitySlideOverDetailsTab';
 import { OpportunityContactsTab } from './slideOverTabs/OpportunityContactsTab';
 import { OpportunityOrganizationsTab } from './slideOverTabs/OpportunityOrganizationsTab';

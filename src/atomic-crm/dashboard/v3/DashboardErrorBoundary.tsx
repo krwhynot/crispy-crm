@@ -1,4 +1,5 @@
-import { Component, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { Component } from 'react';
 import { AlertTriangle, Home, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

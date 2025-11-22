@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { Datagrid, DatagridProps } from 'react-admin';
+import type { DatagridProps } from 'react-admin';
+import { Datagrid } from 'react-admin';
 
 /**
  * PremiumDatagrid - Enhanced Datagrid wrapper with premium hover effects

@@ -1,5 +1,6 @@
 import { UserIcon, ShieldCheckIcon } from 'lucide-react';
-import { ResourceSlideOver, TabConfig } from '@/components/layouts/ResourceSlideOver';
+import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
+import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
 import { SalesProfileTab } from './SalesProfileTab';
 import { SalesPermissionsTab } from './SalesPermissionsTab';
 import type { Sale } from '../types';

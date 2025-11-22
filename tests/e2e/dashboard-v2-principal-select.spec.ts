@@ -1,4 +1,5 @@
-import { test, expect, Page, Response } from '@playwright/test';
+import type { Page} from '@playwright/test';
+import { test, expect, Response } from '@playwright/test';
 
 /**
  * Principal Dashboard V2 - Selector Semantics Test

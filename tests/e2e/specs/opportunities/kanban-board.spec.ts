@@ -106,7 +106,7 @@ test.describe("Opportunities Kanban Board", () => {
     await expect(kanbanBoard).not.toBeVisible();
   });
 
-  test("should display opportunity cards with key information", async ({ _page }) => {
+  test("should display opportunity cards with key information", async ({ page }) => {
     // Create test opportunity to ensure at least one card exists
     const timestamp = Date.now();
     const opportunityName = `Kanban Card Test ${timestamp}`;

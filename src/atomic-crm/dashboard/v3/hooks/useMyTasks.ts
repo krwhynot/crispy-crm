@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDataProvider } from 'react-admin';
-import { isSameDay, isAfter, isBefore, startOfDay, addDays } from 'date-fns';
+import { isSameDay, isBefore, startOfDay, addDays } from 'date-fns';
 import { useCurrentSale } from './useCurrentSale';
 import type { TaskItem } from '../types';
 

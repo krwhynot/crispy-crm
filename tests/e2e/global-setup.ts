@@ -1,4 +1,5 @@
-import { chromium, FullConfig } from '@playwright/test';
+import type { FullConfig } from '@playwright/test';
+import { chromium } from '@playwright/test';
 
 /**
  * Global setup to clear Supabase schema cache before test runs
