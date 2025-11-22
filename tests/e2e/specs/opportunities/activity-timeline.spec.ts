@@ -55,7 +55,7 @@ test.describe("Opportunities Activity Timeline", () => {
     consoleMonitor.clear();
   });
 
-  test("should display activity timeline on opportunity show page", async ({ _page }) => {
+  test("should display activity timeline on opportunity show page", async ({ page }) => {
     // Create opportunity to ensure we have data
     const timestamp = Date.now();
     const opportunityName = `Timeline Display ${timestamp}`;
@@ -169,7 +169,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should track opportunity creation in timeline", async ({ _page }) => {
+  test("should track opportunity creation in timeline", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Creation Track ${timestamp}`;
@@ -244,7 +244,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should display activity with author information", async ({ _page }) => {
+  test("should display activity with author information", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Author Info ${timestamp}`;
@@ -275,7 +275,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should display activity timestamps", async ({ _page }) => {
+  test("should display activity timestamps", async ({ page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Timestamps ${timestamp}`;
@@ -307,7 +307,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should group activities by date or time period", async ({ _page }) => {
+  test("should group activities by date or time period", async ({ page }) => {
     // Create opportunity and add activities over time
     const timestamp = Date.now();
     const opportunityName = `Grouped Activities ${timestamp}`;
@@ -340,7 +340,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should handle empty timeline state", async ({ _page }) => {
+  test("should handle empty timeline state", async ({ page }) => {
     // This test assumes we can create an opportunity without triggering automatic activities
     // In reality, creation itself might be an activity
 

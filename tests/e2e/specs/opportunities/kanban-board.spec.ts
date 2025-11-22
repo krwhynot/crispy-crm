@@ -135,7 +135,7 @@ test.describe("Opportunities Kanban Board", () => {
   });
 
   // Desktop-only test for drag-and-drop (skip on mobile viewports)
-  test("should drag opportunity card to different stage", async ({ _page, isMobile }) => {
+  test("should drag opportunity card to different stage", async ({ page, isMobile }) => {
     test.skip(isMobile, "Drag-and-drop requires mouse events (desktop only)");
 
     // Create test opportunity in initial stage
