@@ -26,7 +26,7 @@ import {
   validateCreateOpportunityNote,
   validateUpdateOpportunityNote,
 } from "../../../validation/notes";
-import { validateTaskForSubmission } from "../../../validation/tasks";
+import { validateTaskForSubmission } from "../../../validation/task";
 import { validateProductForm } from "../../../validation/products";
 import { validateCreateTag, validateUpdateTag } from "../../../validation/tags";
 import { validateSalesForm } from "../../../validation/sales";

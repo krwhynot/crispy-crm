@@ -1,9 +1,18 @@
 import { z } from "zod";
 
 /**
- * Task Type Enum
- * Matches database enum: task_type
+ * Task Validation Schema
+ *
+ * Per Engineering Constitution:
+ * - Single source of truth at API boundary
+ * - Form state derives from schema via .partial().parse({})
+ * - No over-engineering: fail fast, no complex transforms
  */
+
+// ============================================================================
+// Enums (match PostgreSQL enums)
+// ============================================================================
+
 export const taskTypeSchema = z.enum([
   "None",
   "Call",
@@ -15,176 +24,96 @@ export const taskTypeSchema = z.enum([
   "Administrative",
 ]);
 
-export type TaskType = z.infer<typeof taskTypeSchema>;
-
-/**
- * Priority Level Enum
- * Matches database enum: priority_level
- */
 export const priorityLevelSchema = z.enum(["low", "medium", "high", "critical"]);
 
-export type PriorityLevel = z.infer<typeof priorityLevelSchema>;
+// ============================================================================
+// Core Schema
+// ============================================================================
 
-/**
- * Task Schema
- * Validation for task records
- *
- * Per Engineering Constitution: Single source of truth at API boundary
- * Form state derives from this schema via .partial().parse({})
- */
+// ID schema: accepts string or number, coerces to number (React Admin compatibility)
+const idSchema = z.coerce.number().int().positive();
+
 export const taskSchema = z.object({
-  id: z.number().int().positive().optional(),
+  id: idSchema.optional(),
   title: z.string().min(1, "Title is required").max(500, "Title too long"),
   description: z.string().max(2000, "Description too long").nullable().optional(),
-  due_date: z.string().date("Due date must be a valid date"),
-  reminder_date: z.string().date("Reminder date must be a valid date").nullable().optional(),
+  due_date: z.string().min(1, "Due date is required"),
+  reminder_date: z.string().nullable().optional(),
   completed: z.boolean().default(false),
-  completed_at: z.string().datetime().nullable().optional(),
+  completed_at: z.string().nullable().optional(),
   priority: priorityLevelSchema.default("medium"),
-  type: taskTypeSchema.default("None"),
-  contact_id: z.number().int().positive().nullable().optional(),
-  opportunity_id: z.number().int().positive().nullable().optional(),
-  sales_id: z.number().int().positive().nullable().optional(),
-  created_at: z.string().datetime().optional(),
-  updated_at: z.string().datetime().optional(),
+  type: taskTypeSchema,
+  contact_id: idSchema, // Required: task must be associated with a contact
+  opportunity_id: idSchema.nullable().optional(),
+  sales_id: idSchema, // Required: task must be assigned to a sales rep
+  created_at: z.string().optional(),
+  updated_at: z.string().optional(),
 });
 
-export type Task = z.infer<typeof taskSchema>;
+// ============================================================================
+// Derived Schemas
+// ============================================================================
 
-/**
- * Partial update schema - for editing existing tasks
- * Requires ID for validation at API boundary
- */
+/** Schema for creating new tasks */
+export const taskCreateSchema = taskSchema.omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+/** Schema for updating existing tasks (requires id) */
 export const taskUpdateSchema = taskSchema.partial().required({ id: true });
 
-/**
- * Create schema - for new tasks
- * Title and due_date are required for creation
- */
-export const taskCreateSchema = taskSchema.omit({ id: true, created_at: true, updated_at: true });
+// ============================================================================
+// Types
+// ============================================================================
+
+export type Task = z.infer<typeof taskSchema>;
+export type TaskType = z.infer<typeof taskTypeSchema>;
+export type PriorityLevel = z.infer<typeof priorityLevelSchema>;
+export type CreateTaskInput = z.infer<typeof taskCreateSchema>;
+export type UpdateTaskInput = z.infer<typeof taskUpdateSchema>;
+
+// ============================================================================
+// Form Defaults (per Engineering Constitution #5)
+// ============================================================================
 
 /**
- * Default values for new task form
- * Per Engineering Constitution: Form state from schema
+ * Generate default values for task forms
+ * Per Constitution: Form state from schema via .partial().parse({})
  */
 export const getTaskDefaultValues = () =>
   taskSchema.partial().parse({
     completed: false,
     priority: "medium" as const,
     type: "None" as const,
-    due_date: new Date().toISOString().slice(0, 10), // Today's date
+    due_date: new Date().toISOString().slice(0, 10),
   });
 
 // ============================================================================
-// Aliases for backward compatibility with legacy tasks.ts
+// Backward Compatibility Aliases (for legacy code)
 // ============================================================================
 
-/** @deprecated Use taskCreateSchema instead */
+/** @deprecated Use taskCreateSchema */
 export const createTaskSchema = taskCreateSchema;
 
-/** @deprecated Use taskUpdateSchema instead */
+/** @deprecated Use taskUpdateSchema */
 export const updateTaskSchema = taskUpdateSchema;
 
-/** @deprecated Use taskTypeSchema instead */
+/** @deprecated Use taskTypeSchema */
 export const taskTypeEnum = taskTypeSchema;
 
 // ============================================================================
-// Validation with refinements (from legacy tasks.ts)
+// Validation Functions
+// Per Constitution: Simple validation at API boundary, fail fast
 // ============================================================================
 
-/**
- * Schema for task with reminder validation
- * Tasks with reminders must have a future due date
- */
-export const taskWithReminderSchema = taskSchema.refine(
-  (data) => {
-    if (!data.due_date) return true;
-    const dueDate = new Date(data.due_date);
-    return dueDate > new Date();
-  },
-  {
-    message: "Tasks with reminders must have a future due date",
-    path: ["due_date"],
-  }
-);
+/** Validate task creation - throws on invalid data */
+export const validateCreateTask = (data: unknown) => taskCreateSchema.parse(data);
 
-// ============================================================================
-// Inferred types
-// ============================================================================
+/** Validate task update - throws on invalid data */
+export const validateUpdateTask = (data: unknown) => taskUpdateSchema.parse(data);
 
-export type CreateTaskInput = z.infer<typeof taskCreateSchema>;
-export type UpdateTaskInput = z.infer<typeof taskUpdateSchema>;
-
-// ============================================================================
-// Validation helper functions (from legacy tasks.ts)
-// ============================================================================
-
-/**
- * Validate task creation data
- * @param data - Task data to validate
- * @returns Validated task data
- * @throws Zod validation error if data is invalid
- */
-export function validateCreateTask(data: unknown): CreateTaskInput {
-  return taskCreateSchema.parse(data);
-}
-
-/**
- * Validate task update data
- * @param data - Task data to validate
- * @returns Validated task data
- * @throws Zod validation error if data is invalid
- */
-export function validateUpdateTask(data: unknown): UpdateTaskInput {
-  return taskUpdateSchema.parse(data);
-}
-
-/**
- * Validate task with reminder
- * @param data - Task data to validate
- * @returns Validated task data
- * @throws Zod validation error if data is invalid
- */
-export function validateTaskWithReminder(data: unknown): Task {
-  return taskWithReminderSchema.parse(data);
-}
-
-/**
- * Transform date for database storage
- * Ensures date is in ISO format with time set to start of day in UTC
- * @param date - Date string to transform
- * @returns ISO formatted date string
- */
-export function transformTaskDate(date: string): string {
-  const taskDate = new Date(date);
-  taskDate.setUTCHours(0, 0, 0, 0);
-  return taskDate.toISOString();
-}
-
-/**
- * Validate and transform task for submission
- * @param data - Task data to validate and transform
- * @param isUpdate - Whether this is an update operation
- * @returns Transformed task data ready for database
- */
-export function validateTaskForSubmission(
-  data: unknown,
-  isUpdate = false
-): Task | UpdateTaskInput {
-  // Use appropriate schema based on operation
-  const validated = isUpdate
-    ? taskUpdateSchema.parse(data)
-    : taskSchema.parse(data);
-
-  // Transform due date to ISO format
-  if (validated.due_date) {
-    validated.due_date = transformTaskDate(validated.due_date);
-  }
-
-  // Transform completed_at if present
-  if (validated.completed_at) {
-    validated.completed_at = transformTaskDate(validated.completed_at);
-  }
-
-  return validated;
-}
+/** Validate task for submission - throws on invalid data */
+export const validateTaskForSubmission = (data: unknown, isUpdate = false) =>
+  isUpdate ? taskUpdateSchema.parse(data) : taskSchema.parse(data);

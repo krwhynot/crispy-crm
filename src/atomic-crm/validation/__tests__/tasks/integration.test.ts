@@ -9,7 +9,7 @@ import {
   validateCreateTask,
   validateUpdateTask,
   validateTaskForSubmission,
-} from "../../tasks";
+} from "../../task";
 
 describe("Task API Boundary Integration", () => {
   it("should validate at creation boundary", () => {

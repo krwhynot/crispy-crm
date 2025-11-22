@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { taskSchema, createTaskSchema, updateTaskSchema } from "../../tasks";
+import { taskSchema, createTaskSchema, updateTaskSchema } from "../../task";
 import { z } from "zod";
 
 describe("Task Edge Cases and Business Rules", () => {
