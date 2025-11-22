@@ -93,7 +93,8 @@ vi.mock("@/components/admin/search-input", () => ({
 }));
 
 // Mock FilterCategory to always show children (avoid collapsed state in tests)
-vi.mock("@/components/admin/filter-category", () => ({
+// Note: ContactListFilter imports from "@/atomic-crm/filters/FilterCategory"
+vi.mock("@/atomic-crm/filters/FilterCategory", () => ({
   FilterCategory: ({ children, label }: any) => (
     <div data-testid={`filter-category-${label}`}>
       <div>{label}</div>
