@@ -149,12 +149,14 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(result.success).toBe(true);
     });
 
-    it("should reject invalid due_date format", () => {
-      const invalidTask = { ...validTask, due_date: "not-a-date" };
+    it("should reject empty due_date", () => {
+      // Per Engineering Constitution: fail fast, no complex transforms
+      // Schema validates non-empty string only (format validation belongs elsewhere)
+      const invalidTask = { ...validTask, due_date: "" };
       const result = taskSchema.safeParse(invalidTask);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("Due date must be a valid date");
+        expect(result.error.issues[0].message).toContain("Due date is required");
       }
     });
 
@@ -188,17 +190,22 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(result.success).toBe(false);
     });
 
-    it("should apply default values for priority and type", () => {
+    it("should apply default values for priority and completed", () => {
+      // Schema provides defaults for priority and completed
+      // type, contact_id, sales_id are required (no defaults)
       const taskWithoutDefaults = {
         title: "Test",
         due_date: "2025-01-15",
+        type: "Call" as const,
+        contact_id: 1,
+        sales_id: 1,
       };
 
       const result = taskSchema.safeParse(taskWithoutDefaults);
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data.priority).toBe("medium");
-        expect(result.data.type).toBe("None");
+        expect(result.data.completed).toBe(false);
       }
     });
 
@@ -222,14 +229,14 @@ describe("Task Validation Schemas (task.ts)", () => {
     });
 
     it("should accept null for nullable optional fields", () => {
+      // Note: contact_id and sales_id are REQUIRED (not nullable)
+      // Only description, reminder_date, completed_at, opportunity_id are nullable
       const taskWithNulls = {
         ...validTask,
         description: null,
         reminder_date: null,
         completed_at: null,
-        contact_id: null,
         opportunity_id: null,
-        sales_id: null,
       };
 
       const result = taskSchema.safeParse(taskWithNulls);
@@ -238,10 +245,13 @@ describe("Task Validation Schemas (task.ts)", () => {
   });
 
   describe("taskCreateSchema", () => {
-    it("should require title and due_date for creation", () => {
+    it("should require title, due_date, type, contact_id, and sales_id for creation", () => {
       const validCreate = {
         title: "New task",
         due_date: "2025-01-20",
+        type: "Call" as const,
+        contact_id: 1,
+        sales_id: 1,
       };
 
       const result = taskCreateSchema.safeParse(validCreate);
@@ -271,6 +281,9 @@ describe("Task Validation Schemas (task.ts)", () => {
         id: 999,
         title: "New task",
         due_date: "2025-01-20",
+        type: "Call" as const,
+        contact_id: 1,
+        sales_id: 1,
       };
 
       const result = taskCreateSchema.safeParse(dataWithId);
@@ -284,6 +297,9 @@ describe("Task Validation Schemas (task.ts)", () => {
       const dataWithTimestamp = {
         title: "New task",
         due_date: "2025-01-20",
+        type: "Call" as const,
+        contact_id: 1,
+        sales_id: 1,
         created_at: "2025-01-01T00:00:00Z",
       };
 
@@ -298,6 +314,9 @@ describe("Task Validation Schemas (task.ts)", () => {
       const dataWithTimestamp = {
         title: "New task",
         due_date: "2025-01-20",
+        type: "Call" as const,
+        contact_id: 1,
+        sales_id: 1,
         updated_at: "2025-01-01T00:00:00Z",
       };
 
@@ -488,6 +507,7 @@ describe("Task Validation Schemas (task.ts)", () => {
         type: "Call" as const,
         description: "From React Hook Form",
         contact_id: 123,
+        sales_id: 456,  // Required field
       };
 
       const result = taskSchema.safeParse(formData);
