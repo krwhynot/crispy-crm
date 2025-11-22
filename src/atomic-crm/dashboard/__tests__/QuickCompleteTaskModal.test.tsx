@@ -81,9 +81,8 @@ describe("QuickCompleteTaskModal", () => {
     // Complex async flows with multiple steps are better tested end-to-end
   });
 
-  describe("Skip Functionality", () => {
-    it.skip("Step 1 skip button does nothing (activity logging required)", async () => {
-      const user = userEvent.setup();
+  describe("Step 1 Required Behavior", () => {
+    it("Step 1 has no skip button (activity logging is required)", () => {
       const task = createMockTask();
       const onClose = vi.fn();
       const onComplete = vi.fn();
@@ -92,10 +91,14 @@ describe("QuickCompleteTaskModal", () => {
         <QuickCompleteTaskModal task={task} onClose={onClose} onComplete={onComplete} />
       );
 
-      // Click Skip in Step 1
-      await user.click(screen.getByRole("button", { name: /Skip/i }));
+      // Step 1 should NOT have a Skip button - activity logging is required
+      const skipButton = screen.queryByRole("button", { name: /Skip/i });
+      expect(skipButton).not.toBeInTheDocument();
 
-      // Should remain on Step 1 (activity logging is required)
+      // Should only have "Save & Continue" button (activity logging is mandatory)
+      expect(screen.getByRole("button", { name: /Save & Continue/i })).toBeInTheDocument();
+
+      // Verify we are on Step 1
       expect(screen.getByText(/Complete Task: Call about pricing/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Notes/i)).toBeInTheDocument();
     });
