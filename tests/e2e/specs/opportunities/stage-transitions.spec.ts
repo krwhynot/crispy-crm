@@ -55,7 +55,7 @@ test.describe("Opportunities Stage Transitions", () => {
     consoleMonitor.clear();
   });
 
-  test("should display available stage transition buttons", async ({ _page }) => {
+  test("should display available stage transition buttons", async ({ page }) => {
     // Create test opportunity in initial stage
     const timestamp = Date.now();
     const opportunityName = `Workflow Test ${timestamp}`;
