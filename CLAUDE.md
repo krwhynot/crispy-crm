@@ -774,12 +774,13 @@ Plans in `docs/plans/` track design, status, QA readiness. **Phase:** Pre-launch
 
 **Start here:**
 - [Engineering Constitution](docs/claude/engineering-constitution.md) ⭐ Principles
-- [Architecture Essentials](docs/architecture/architecture-essentials.md) - Design
+- [System Architecture](docs/system-architecture.md) ⭐ Tech stack, architectural decisions
+- [Database Schema](docs/database-schema.md) ⭐ Complete data model with ERD
+- [Setup & Deployment](docs/setup-and-deployment.md) ⭐ Get running locally
 - [Common Tasks](docs/development/common-tasks.md) - Guides
 
 **Foundational Architecture (Source of Truth):**
 - [Design System](docs/architecture/design-system.md) ⭐ Colors, spacing, typography, accessibility
-- [Database Schema](docs/architecture/database-schema.md) ⭐ Tables, relationships, RLS, migrations
 - [Component Library](docs/architecture/component-library.md) - All UI components and patterns
 - [API Design](docs/architecture/api-design.md) - Data provider, validation, error handling
 - [Business Rules](docs/architecture/business-rules.md) - Validation schemas, constraints, workflows

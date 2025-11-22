@@ -269,7 +269,7 @@ npm run test:smoke
 4. Restart Supabase: `npm run db:local:stop && npm run db:local:start`
 
 ### "Permission denied" in tests
-This means missing GRANT permissions. See [Two-Layer Security in Development Setup](./01-development-setup.md#two-layer-security-critical).
+This means missing GRANT permissions. See [Two-Layer Security in Setup Guide](../setup-and-deployment.md).
 
 ### RLS policies blocking queries
 ```bash
@@ -352,7 +352,7 @@ If all three pass, you're good to commit.
 
 ## Further Reading
 
-- [Development Setup](./01-development-setup.md)
+- [Setup & Deployment Guide](../setup-and-deployment.md)
 - [Database Migrations](./03-database-migrations.md)
 - [Supabase Workflow](../supabase/WORKFLOW.md)
 - [docs/claude/testing-quick-reference.md](../claude/testing-quick-reference.md)
