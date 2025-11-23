@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
 import { truncateLabel, TooltipContextX, TooltipTitleContext } from "./chartUtils";
@@ -58,6 +59,30 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
           label: (context: TooltipContextX) => {
             return `${context.parsed.x} opportunities`;
           },
+ 
+  const topData = useMemo(() => {
+    // Take top 5 and sort descending
+    return [...data].sort((a, b) => b.count - a.count).slice(0, 5);
+  }, [data]);
+ 
+  const chartData = useMemo(() => {
+    // Color palette using available theme colors
+    const colorPalette = [
+      theme.colors.primary,
+      theme.colors.brand700,
+      theme.colors.success,
+      theme.colors.warning,
+      theme.colors.muted,
+    ];
+ 
+    return {
+      labels: topData.map((d) => truncateLabel(d.name, 20)),
+      datasets: [
+        {
+          label: "Opportunities",
+          data: topData.map((d) => d.count),
+          backgroundColor: topData.map((_, i) => colorPalette[i % colorPalette.length]),
+          borderRadius: 4,
         },
       },
     },
@@ -66,11 +91,33 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
         beginAtZero: true,
         grid: {
           color: "rgba(0, 0, 0, 0.05)",
+      ],
+    };
+  }, [topData, theme]);
+ 
+  const options = useMemo(() => {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y" as const,
+      plugins: {
+        legend: {
+          display: false,
         },
         ticks: {
           font: {
             family: theme.font.family,
             size: theme.font.size,
+        tooltip: {
+          callbacks: {
+            title: (context: TooltipTitleContext[]) => {
+              // Show full name in tooltip
+              const index = context[0].dataIndex;
+              return topData[index]?.name || "";
+            },
+            label: (context: TooltipContextX) => {
+              return `${context.parsed.x} opportunities`;
+            },
           },
           stepSize: 1,
         },
@@ -78,16 +125,40 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
       y: {
         grid: {
           display: false,
+      scales: {
+        x: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+          },
+          ticks: {
+            font: {
+              family: theme.font.family,
+              size: theme.font.size,
+            },
+            stepSize: 1,
+          },
         },
         ticks: {
           font: {
             family: theme.font.family,
             size: theme.font.size,
+        y: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            font: {
+              family: theme.font.family,
+              size: theme.font.size,
+            },
           },
         },
       },
     },
   };
+    };
+  }, [topData, theme]);
 
   if (data.length === 0) {
     return (
