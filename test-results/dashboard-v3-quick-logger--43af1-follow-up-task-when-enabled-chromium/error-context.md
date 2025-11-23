@@ -290,82 +290,110 @@
           - img [ref=e296]
         - generic [ref=e304]:
           - generic [ref=e305]:
-            - generic [ref=e307]:
-              - generic [ref=e308]: My Tasks
-              - generic [ref=e309]: Today's priorities and upcoming activities
-            - paragraph [ref=e310]: Overdue items highlighted • Click to complete • Drag to reschedule
-          - generic [ref=e312]:
-            - button "Today (0)" [ref=e314] [cursor=pointer]:
-              - generic [ref=e315]:
-                - img [ref=e316]
-                - heading "Today" [level=3] [ref=e318]
-                - generic [ref=e319]: (0)
-            - button "Tomorrow (0)" [ref=e321] [cursor=pointer]:
+            - generic [ref=e306]:
+              - generic [ref=e307]:
+                - generic [ref=e308]: My Tasks
+                - generic [ref=e309]: Today's priorities and upcoming activities
+              - generic [ref=e310]: 1 overdue
+            - paragraph [ref=e311]: Overdue items highlighted • Click to complete • Drag to reschedule
+          - generic [ref=e313]:
+            - generic [ref=e314]:
+              - button "Overdue (1)" [ref=e315] [cursor=pointer]:
+                - generic [ref=e316]:
+                  - img [ref=e317]
+                  - heading "Overdue" [level=3] [ref=e319]
+                  - generic [ref=e320]: (1)
               - generic [ref=e322]:
-                - img [ref=e323]
-                - heading "Tomorrow" [level=3] [ref=e325]
-                - generic [ref=e326]: (0)
-        - separator [ref=e327]:
-          - img [ref=e329]
-        - generic [ref=e337]:
-          - generic [ref=e340]:
-            - generic [ref=e341]: Log Activity
-            - generic [ref=e342]: Quick capture for calls, meetings, and notes
-          - generic [ref=e344]:
-            - generic [ref=e345]:
-              - heading "What happened?" [level=3] [ref=e346]
-              - generic [ref=e347]:
-                - generic [ref=e348]: Activity Type
-                - combobox "Activity Type" [ref=e349] [cursor=pointer]:
+                - checkbox [ref=e323] [cursor=pointer]
+                - generic [ref=e324]:
+                  - generic [ref=e325]:
+                    - img [ref=e326]
+                    - generic [ref=e329]: Follow up on RJC pricing proposal
+                  - generic [ref=e330]:
+                    - generic [ref=e331]: high
+                    - generic [ref=e332]: → Unknown
+                - generic [ref=e333]:
+                  - button "Snooze \"Follow up on RJC pricing proposal\" by 1 day" [ref=e334] [cursor=pointer]:
+                    - img
+                  - button [ref=e335] [cursor=pointer]:
+                    - img
+            - button "Today (0)" [ref=e337] [cursor=pointer]:
+              - generic [ref=e338]:
+                - img [ref=e339]
+                - heading "Today" [level=3] [ref=e341]
+                - generic [ref=e342]: (0)
+            - button "Tomorrow (0)" [ref=e344] [cursor=pointer]:
+              - generic [ref=e345]:
+                - img [ref=e346]
+                - heading "Tomorrow" [level=3] [ref=e348]
+                - generic [ref=e349]: (0)
+        - separator [ref=e350]:
+          - img [ref=e352]
+        - generic [ref=e360]:
+          - generic [ref=e363]:
+            - generic [ref=e364]: Log Activity
+            - generic [ref=e365]: Quick capture for calls, meetings, and notes
+          - generic [ref=e367]:
+            - generic [ref=e368]:
+              - heading "What happened?" [level=3] [ref=e369]
+              - generic [ref=e370]:
+                - generic [ref=e371]: Activity Type
+                - combobox "Activity Type" [ref=e372] [cursor=pointer]:
                   - generic: Follow-up
                   - img
-                - combobox [ref=e350]
-              - generic [ref=e351]:
-                - generic [ref=e352]: Outcome
-                - combobox "Outcome" [ref=e353] [cursor=pointer]:
+                - combobox [ref=e373]
+              - generic [ref=e374]:
+                - generic [ref=e375]: Outcome
+                - combobox "Outcome" [ref=e376] [cursor=pointer]:
                   - generic: Completed
                   - img
-                - combobox [ref=e354]
-            - generic [ref=e355]:
-              - heading "Who was involved?" [level=3] [ref=e356]
-              - generic [ref=e357]:
-                - generic [ref=e358]: Contact *
-                - combobox "Contact *" [ref=e359] [cursor=pointer]:
+                - combobox [ref=e377]
+            - generic [ref=e378]:
+              - heading "Who was involved?" [level=3] [ref=e379]
+              - generic [ref=e380]:
+                - generic [ref=e381]: Contact *
+                - combobox "Contact *" [ref=e382] [cursor=pointer]:
                   - text: A Mclovin
                   - img
-                - paragraph [ref=e360]: Select a contact OR organization
-              - generic [ref=e361]:
-                - generic [ref=e362]: Organization *
-                - combobox "Organization *" [ref=e363] [cursor=pointer]:
+                - paragraph [ref=e383]: Select a contact OR organization
+              - generic [ref=e384]:
+                - generic [ref=e385]: Organization *
+                - combobox "Organization *" [ref=e386] [cursor=pointer]:
                   - img
-                - paragraph [ref=e364]: Select a contact OR organization
-              - generic [ref=e365]:
-                - generic [ref=e366]: Opportunity
-                - generic [ref=e367]:
-                  - combobox "Opportunity" [ref=e368] [cursor=pointer]:
+                - paragraph [ref=e387]: Select a contact OR organization
+              - generic [ref=e388]:
+                - generic [ref=e389]: Opportunity
+                - generic [ref=e390]:
+                  - combobox "Opportunity" [ref=e391] [cursor=pointer]:
                     - text: A Mclovin @ Muskegon Country Club
                     - img
-                  - button "Clear opportunity selection" [ref=e369] [cursor=pointer]:
+                  - button "Clear opportunity selection" [ref=e392] [cursor=pointer]:
                     - img
-            - generic [ref=e370]:
-              - generic [ref=e371]: Notes
-              - textbox "Notes" [active] [ref=e372]:
+            - generic [ref=e393]:
+              - generic [ref=e394]: Notes
+              - textbox "Notes" [ref=e395]:
                 - /placeholder: Summary of the interaction...
-                - text: "Follow-up required for contract discussion. Test ID: 1763924730836"
-            - generic [ref=e374]:
-              - generic [ref=e375]: Create follow-up task?
-              - switch "Create follow-up task?" [ref=e376] [cursor=pointer]
-              - checkbox
-            - generic [ref=e377]:
-              - button "Cancel" [ref=e378] [cursor=pointer]
-              - generic [ref=e379]:
-                - button "Save & Close" [ref=e380] [cursor=pointer]
-                - button "Save & New" [ref=e381] [cursor=pointer]
-  - contentinfo [ref=e382]:
-    - generic [ref=e384]:
-      - paragraph [ref=e385]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e386] [cursor=pointer]:
-        - img [ref=e387]
-        - generic [ref=e389]: Keyboard shortcuts
+                - text: "Follow-up required for contract discussion. Test ID: 1763925052210"
+            - generic [ref=e396]:
+              - generic [ref=e397]:
+                - generic [ref=e398]: Create follow-up task?
+                - switch "Create follow-up task?" [checked] [active] [ref=e399] [cursor=pointer]
+                - checkbox [checked]
+              - generic [ref=e400]:
+                - generic [ref=e401]: Follow-up Date
+                - button "Follow-up Date" [ref=e402] [cursor=pointer]:
+                  - img
+                  - generic [ref=e403]: Pick a date
+            - generic [ref=e404]:
+              - button "Cancel" [ref=e405] [cursor=pointer]
+              - generic [ref=e406]:
+                - button "Save & Close" [ref=e407] [cursor=pointer]
+                - button "Save & New" [ref=e408] [cursor=pointer]
+  - contentinfo [ref=e409]:
+    - generic [ref=e411]:
+      - paragraph [ref=e412]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e413] [cursor=pointer]:
+        - img [ref=e414]
+        - generic [ref=e416]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```

@@ -252,7 +252,8 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       }
 
       const orgName = await firstOrg.textContent();
-      await firstOrg.click();
+      // Use JavaScript click to bypass viewport issues (cmdk popover positioning)
+      await firstOrg.evaluate(node => (node as HTMLElement).click());
 
       // Verify org was selected
       await expect(orgTrigger).toContainText(orgName || "");
@@ -385,8 +386,8 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       const notesField = authenticatedPage.getByLabel("Notes").locator("..").getByRole("textbox");
       await notesField.fill(`Follow-up required for contract discussion. Test ID: ${timestamp}`);
 
-      // Enable follow-up task
-      await authenticatedPage.getByRole("switch").click();
+      // Enable follow-up task (target specific switch by accessible name)
+      await authenticatedPage.getByRole("switch", { name: /follow-up task/i }).click();
 
       // Verify follow-up date field appears
       await expect(authenticatedPage.getByText("Follow-up Date")).toBeVisible();
