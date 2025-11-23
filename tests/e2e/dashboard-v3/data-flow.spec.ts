@@ -79,16 +79,18 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await expect(dashboard.getQuickLoggerHeading()).toBeVisible();
     });
 
-    test("unauthenticated access redirects to login", async ({ page }) => {
-      // Clear storage to simulate unauthenticated state
-      await page.context().clearCookies();
-      await page.evaluate(() => localStorage.clear());
+    test("unauthenticated access redirects to login", async ({ browser }) => {
+      // Create a fresh browser context without auth state
+      const context = await browser.newContext();
+      const page = await context.newPage();
 
       // Navigate directly without auth
       await page.goto("/");
 
       // Should redirect to login
       await page.waitForURL("**/login**", { timeout: 10000 });
+
+      await context.close();
     });
 
     test("salesId context is shared across all panels", async ({ authenticatedPage }) => {
