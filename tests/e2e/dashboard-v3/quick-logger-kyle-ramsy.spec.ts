@@ -191,31 +191,20 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Wait for contact options to load
       await expect(authenticatedPage.getByPlaceholder(/search contact/i)).toBeVisible();
 
-      // Type to search - this filters and keeps options in viewport
+      // Type to search - filters and positions options for keyboard navigation
       const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
-      await searchInput.fill("a"); // Type 'a' to filter and reduce list size
+      await searchInput.fill("and"); // Type to filter and reduce list size
 
       // Wait for options to appear after filtering
-      await authenticatedPage.waitForTimeout(500);
-
-      // Select the first available contact (any contact will do)
       const firstContact = authenticatedPage.getByRole("option").first();
-      const contactCount = await firstContact.count();
+      await expect(firstContact).toBeVisible({ timeout: 5000 });
 
-      if (contactCount === 0) {
-        // Clear search and check again
-        await searchInput.clear();
-        await authenticatedPage.waitForTimeout(500);
-        const retryContact = authenticatedPage.getByRole("option").first();
-        if ((await retryContact.count()) === 0) {
-          test.skip("No contacts available in database");
-          return;
-        }
-      }
-
-      // Get the contact name and click using force
+      // Get the contact name before selecting
       const contactName = await firstContact.textContent();
-      await firstContact.click({ force: true });
+
+      // Use keyboard navigation: ArrowDown to ensure first option is selected, then Enter
+      await searchInput.press("ArrowDown");
+      await searchInput.press("Enter");
 
       // Verify contact was selected
       await expect(contactTrigger).toContainText(contactName || "", { timeout: 5000 });
@@ -291,20 +280,23 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Set duration
       await authenticatedPage.getByLabel(/duration/i).fill("15");
 
-      // Select first available contact
+      // Select first available contact using search to keep items in viewport
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
         .getByRole("combobox");
       await contactTrigger.click();
-      await expect(authenticatedPage.getByPlaceholder(/search contact/i)).toBeVisible();
+      const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
+      await expect(searchInput).toBeVisible();
+      await searchInput.fill("a"); // Filter to reduce list
+      await authenticatedPage.waitForTimeout(500);
 
       const firstContact = authenticatedPage.getByRole("option").first();
       if ((await firstContact.count()) === 0) {
         test.skip("No contacts available in database");
         return;
       }
-      await firstContact.click();
+      await firstContact.click({ force: true });
 
       // Fill notes with unique timestamp
       const timestamp = Date.now();
@@ -342,20 +334,23 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Set duration
       await authenticatedPage.getByLabel(/duration/i).fill("30");
 
-      // Select first available contact
+      // Select first available contact using search
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
         .getByRole("combobox");
       await contactTrigger.click();
-      await expect(authenticatedPage.getByPlaceholder(/search contact/i)).toBeVisible();
+      const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
+      await expect(searchInput).toBeVisible();
+      await searchInput.fill("a");
+      await authenticatedPage.waitForTimeout(500);
 
       const firstContact = authenticatedPage.getByRole("option").first();
       if ((await firstContact.count()) === 0) {
         test.skip("No contacts available in database");
         return;
       }
-      await firstContact.click();
+      await firstContact.click({ force: true });
 
       // Fill notes
       const timestamp = Date.now();
@@ -415,20 +410,23 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await outcomeTrigger.click();
       await authenticatedPage.getByRole("option", { name: "Completed" }).click();
 
-      // Select first available contact
+      // Select first available contact using search to keep items in viewport
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
         .getByRole("combobox");
       await contactTrigger.click();
-      await expect(authenticatedPage.getByPlaceholder(/search contact/i)).toBeVisible();
+      const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
+      await expect(searchInput).toBeVisible();
+      await searchInput.fill("a"); // Filter to reduce list
+      await authenticatedPage.waitForTimeout(500);
 
       const firstContact = authenticatedPage.getByRole("option").first();
       if ((await firstContact.count()) === 0) {
         test.skip("No contacts available in database");
         return;
       }
-      await firstContact.click();
+      await firstContact.click({ force: true });
 
       // Fill notes with unique timestamp
       const timestamp = Date.now();
@@ -463,20 +461,23 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await outcomeTrigger.click();
       await authenticatedPage.getByRole("option", { name: "Completed" }).click();
 
-      // Select first available contact
+      // Select first available contact using search to keep items in viewport
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
         .getByRole("combobox");
       await contactTrigger.click();
-      await expect(authenticatedPage.getByPlaceholder(/search contact/i)).toBeVisible();
+      const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
+      await expect(searchInput).toBeVisible();
+      await searchInput.fill("a"); // Filter to reduce list
+      await authenticatedPage.waitForTimeout(500);
 
       const firstContact = authenticatedPage.getByRole("option").first();
       if ((await firstContact.count()) === 0) {
         test.skip("No contacts available in database");
         return;
       }
-      await firstContact.click();
+      await firstContact.click({ force: true });
 
       // Try to submit without notes
       await authenticatedPage.getByRole("button", { name: /save & close/i }).click();
