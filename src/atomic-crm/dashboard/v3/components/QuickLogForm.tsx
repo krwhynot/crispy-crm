@@ -66,24 +66,62 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     defaultValues: activityLogSchema.partial().parse({}),
   });
 
-  // Track selected opportunity to filter contacts
+  // Track selected values for cascading filters
   const selectedOpportunityId = form.watch("opportunityId");
+  const selectedContactId = form.watch("contactId");
+
   const selectedOpportunity = useMemo(
     () => opportunities.find((o) => o.id === selectedOpportunityId),
     [opportunities, selectedOpportunityId]
   );
 
-  // Filter contacts to only show those from the opportunity's customer organization
-  // This prevents the database trigger validation error:
-  // "Contact X does not belong to opportunity customer organization Y"
-  const filteredContacts = useMemo(() => {
-    if (!selectedOpportunity?.customer_organization_id) {
-      return contacts; // No opportunity selected, show all contacts
+  const selectedContact = useMemo(
+    () => contacts.find((c) => c.id === selectedContactId),
+    [contacts, selectedContactId]
+  );
+
+  // Determine the "anchor" organization - from contact or opportunity selection
+  const anchorOrganizationId = useMemo(() => {
+    // Contact takes priority if selected
+    if (selectedContact?.organization_id) {
+      return selectedContact.organization_id;
     }
-    return contacts.filter(
-      (c) => c.organization_id === selectedOpportunity.customer_organization_id
-    );
-  }, [contacts, selectedOpportunity?.customer_organization_id]);
+    // Otherwise use opportunity's customer org
+    if (selectedOpportunity?.customer_organization_id) {
+      return selectedOpportunity.customer_organization_id;
+    }
+    return null;
+  }, [selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
+
+  // Filter contacts by anchor organization (if opportunity selected first)
+  const filteredContacts = useMemo(() => {
+    if (selectedOpportunity?.customer_organization_id && !selectedContact) {
+      return contacts.filter(
+        (c) => c.organization_id === selectedOpportunity.customer_organization_id
+      );
+    }
+    return contacts;
+  }, [contacts, selectedOpportunity?.customer_organization_id, selectedContact]);
+
+  // Filter organizations by selected contact's organization
+  const filteredOrganizations = useMemo(() => {
+    if (selectedContact?.organization_id) {
+      // When contact is selected, only show their organization
+      return organizations.filter((o) => o.id === selectedContact.organization_id);
+    }
+    return organizations;
+  }, [organizations, selectedContact?.organization_id]);
+
+  // Filter opportunities by selected contact's organization
+  const filteredOpportunities = useMemo(() => {
+    if (selectedContact?.organization_id) {
+      // When contact is selected, only show opportunities for their organization
+      return opportunities.filter(
+        (o) => o.customer_organization_id === selectedContact.organization_id
+      );
+    }
+    return opportunities;
+  }, [opportunities, selectedContact?.organization_id]);
 
   // When opportunity changes, auto-fill organization and clear mismatched contact
   useEffect(() => {
@@ -419,9 +457,13 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                       }
                     >
                       <CommandInput placeholder="Search organization..." />
-                      <CommandEmpty>No organization found.</CommandEmpty>
+                      <CommandEmpty>
+                        {selectedContact
+                          ? "No other organizations (contact's org is selected)"
+                          : "No organization found."}
+                      </CommandEmpty>
                       <CommandGroup>
-                        {organizations.map((org) => (
+                        {filteredOrganizations.map((org) => (
                           <CommandItem
                             key={org.id}
                             value={org.name}
@@ -449,62 +491,81 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             )}
           />
 
-          {/* Opportunity Combobox - Controlled popover that closes on selection */}
+          {/* Opportunity Combobox - Controlled popover with clear button */}
           <FormField
             control={form.control}
             name="opportunityId"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Opportunity</FormLabel>
-                <Popover open={oppOpen} onOpenChange={setOppOpen}>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "h-11 w-full justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
+                <div className="flex gap-2">
+                  <Popover open={oppOpen} onOpenChange={setOppOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "h-11 flex-1 justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? opportunities.find((o) => o.id === field.value)?.name
+                            : "Select opportunity (optional)"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command
+                        filter={(value, search) =>
+                          value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
+                        }
                       >
-                        {field.value
-                          ? opportunities.find((o) => o.id === field.value)?.name
-                          : "Select opportunity (optional)"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command
-                      filter={(value, search) =>
-                        value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
-                      }
+                        <CommandInput placeholder="Search opportunity..." />
+                        <CommandEmpty>
+                          {selectedContact
+                            ? "No opportunities for this contact's organization"
+                            : "No opportunity found."}
+                        </CommandEmpty>
+                        <CommandGroup>
+                          {filteredOpportunities.map((opp) => (
+                            <CommandItem
+                              key={opp.id}
+                              value={opp.name}
+                              onSelect={() => {
+                                field.onChange(opp.id);
+                                setOppOpen(false); // Close popover after selection
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  field.value === opp.id ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {opp.name}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  {/* Clear button - only visible when opportunity is selected */}
+                  {field.value && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-11 w-11 shrink-0"
+                      onClick={() => field.onChange(undefined)}
+                      aria-label="Clear opportunity selection"
                     >
-                      <CommandInput placeholder="Search opportunity..." />
-                      <CommandEmpty>No opportunity found.</CommandEmpty>
-                      <CommandGroup>
-                        {opportunities.map((opp) => (
-                          <CommandItem
-                            key={opp.id}
-                            value={opp.name}
-                            onSelect={() => {
-                              field.onChange(opp.id);
-                              setOppOpen(false); // Close popover after selection
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                field.value === opp.id ? "opacity-100" : "opacity-0"
-                              )}
-                            />
-                            {opp.name}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
                 <FormMessage />
               </FormItem>
             )}
