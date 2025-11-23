@@ -61,6 +61,45 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     defaultValues: activityLogSchema.partial().parse({}),
   });
 
+  // Track selected opportunity to filter contacts
+  const selectedOpportunityId = form.watch("opportunityId");
+  const selectedOpportunity = useMemo(
+    () => opportunities.find((o) => o.id === selectedOpportunityId),
+    [opportunities, selectedOpportunityId]
+  );
+
+  // Filter contacts to only show those from the opportunity's customer organization
+  // This prevents the database trigger validation error:
+  // "Contact X does not belong to opportunity customer organization Y"
+  const filteredContacts = useMemo(() => {
+    if (!selectedOpportunity?.customer_organization_id) {
+      return contacts; // No opportunity selected, show all contacts
+    }
+    return contacts.filter(
+      (c) => c.organization_id === selectedOpportunity.customer_organization_id
+    );
+  }, [contacts, selectedOpportunity?.customer_organization_id]);
+
+  // When opportunity changes, auto-fill organization and clear mismatched contact
+  useEffect(() => {
+    if (selectedOpportunity?.customer_organization_id) {
+      // Auto-fill organization from opportunity's customer organization
+      form.setValue("organizationId", selectedOpportunity.customer_organization_id);
+
+      // Clear contact if it doesn't belong to the opportunity's customer org
+      const currentContactId = form.getValues("contactId");
+      if (currentContactId) {
+        const contact = contacts.find((c) => c.id === currentContactId);
+        if (contact && contact.organization_id !== selectedOpportunity.customer_organization_id) {
+          form.setValue("contactId", undefined);
+          notify("Contact cleared: doesn't belong to selected opportunity's organization", {
+            type: "info",
+          });
+        }
+      }
+    }
+  }, [selectedOpportunity?.customer_organization_id, contacts, form, notify]);
+
   // Load related entities
   useEffect(() => {
     const loadEntities = async () => {
@@ -294,9 +333,13 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                   <PopoverContent className="w-full p-0">
                     <Command>
                       <CommandInput placeholder="Search contact..." />
-                      <CommandEmpty>No contact found.</CommandEmpty>
+                      <CommandEmpty>
+                        {selectedOpportunity
+                          ? "No contacts found for this opportunity's organization"
+                          : "No contact found."}
+                      </CommandEmpty>
                       <CommandGroup>
-                        {contacts.map((contact) => (
+                        {filteredContacts.map((contact) => (
                           <CommandItem
                             key={contact.id}
                             value={contact.name}
