@@ -97,8 +97,11 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
     });
 
     test("unauthenticated access shows login form", async ({ browser }) => {
-      // Create a fresh browser context without auth state
-      const context = await browser.newContext();
+      // Create a fresh browser context with explicitly empty storage state
+      // This ensures no auth tokens are inherited from previous sessions
+      const context = await browser.newContext({
+        storageState: { cookies: [], origins: [] },
+      });
       const page = await context.newPage();
 
       // Navigate directly without auth
@@ -547,8 +550,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
     test("selecting opportunity auto-fills organization", async ({ authenticatedPage }) => {
       await dashboard.openActivityForm();
 
-      // Wait for entities to load
-      await authenticatedPage.waitForResponse((resp) => resp.url().includes("opportunities"));
+      // Form entities are loaded during openActivityForm(), wait for the combobox to be enabled
+      await expect(dashboard.getOpportunityCombobox()).toBeEnabled({ timeout: 10000 });
 
       // Click opportunity combobox and select using keyboard
       const oppCombobox = dashboard.getOpportunityCombobox();
@@ -566,8 +569,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
     test("selecting contact auto-fills organization", async ({ authenticatedPage }) => {
       await dashboard.openActivityForm();
 
-      // Wait for entities to load
-      await authenticatedPage.waitForResponse((resp) => resp.url().includes("contacts"));
+      // Form entities are loaded during openActivityForm(), wait for the combobox to be enabled
+      await expect(dashboard.getContactCombobox()).toBeEnabled({ timeout: 10000 });
 
       // Click contact combobox and select using keyboard
       const contactCombobox = dashboard.getContactCombobox();
