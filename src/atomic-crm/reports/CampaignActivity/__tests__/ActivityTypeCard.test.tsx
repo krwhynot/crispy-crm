@@ -18,6 +18,9 @@ describe("ActivityTypeCard", () => {
     ],
     totalCount: 141,
     uniqueOrgs: 119,
+    percentage: 57,
+    mostActiveOrg: "Organization 1",
+    mostActiveCount: 1,
   };
 
   const mockSalesMap = new Map([[1, "John Smith"]]);

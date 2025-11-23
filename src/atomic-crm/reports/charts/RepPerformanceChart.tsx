@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
 import { truncateLabel, TooltipTitleContext } from "./chartUtils";
@@ -14,82 +15,90 @@ interface RepPerformanceChartProps {
  * Helps managers compare team performance at a glance.
  */
 export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
-  const theme = useChartTheme();
+  const { colors, font } = useChartTheme();
 
-  // Sort by total (activities + opportunities) and take top 5
-  const topData = [...data]
-    .sort((a, b) => b.activities + b.opportunities - (a.activities + a.opportunities))
-    .slice(0, 5);
+  // Memoize derived data - sort by total and take top 5
+  const topData = useMemo(() => {
+    return [...data]
+      .sort((a, b) => b.activities + b.opportunities - (a.activities + a.opportunities))
+      .slice(0, 5);
+  }, [data]);
 
-  const chartData = {
-    labels: topData.map((d) => truncateLabel(d.name, 15)),
-    datasets: [
-      {
-        label: "Activities",
-        data: topData.map((d) => d.activities),
-        backgroundColor: theme.colors.primary,
-        borderRadius: 4,
-      },
-      {
-        label: "Opportunities",
-        data: topData.map((d) => d.opportunities),
-        backgroundColor: theme.colors.success,
-        borderRadius: 4,
-      },
-    ],
-  };
+  // Memoize chart data to prevent recalculation on every render
+  const chartData = useMemo(() => {
+    return {
+      labels: topData.map((d) => truncateLabel(d.name, 15)),
+      datasets: [
+        {
+          label: "Activities",
+          data: topData.map((d) => d.activities),
+          backgroundColor: colors.primary,
+          borderRadius: 4,
+        },
+        {
+          label: "Opportunities",
+          data: topData.map((d) => d.opportunities),
+          backgroundColor: colors.success,
+          borderRadius: 4,
+        },
+      ],
+    };
+  }, [topData, colors.primary, colors.success]);
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "top" as const,
-        labels: {
-          font: {
-            family: theme.font.family,
-            size: theme.font.size,
-          },
-          usePointStyle: true,
-          padding: 16,
-        },
-      },
-      tooltip: {
-        callbacks: {
-          title: (context: TooltipTitleContext[]) => {
-            const index = context[0].dataIndex;
-            return topData[index]?.name || "";
+  // Memoize chart options to prevent recalculation on every render
+  const options = useMemo(() => {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "top" as const,
+          labels: {
+            font: {
+              family: font.family,
+              size: font.size,
+            },
+            usePointStyle: true,
+            padding: 16,
           },
         },
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          font: {
-            family: theme.font.family,
-            size: theme.font.size,
+        tooltip: {
+          callbacks: {
+            title: (context: TooltipTitleContext[]) => {
+              const index = context[0].dataIndex;
+              return topData[index]?.name || "";
+            },
           },
         },
       },
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: "rgba(0, 0, 0, 0.05)",
-        },
-        ticks: {
-          font: {
-            family: theme.font.family,
-            size: theme.font.size,
+      scales: {
+        x: {
+          grid: {
+            display: false,
           },
-          stepSize: 1,
+          ticks: {
+            font: {
+              family: font.family,
+              size: font.size,
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+          },
+          ticks: {
+            font: {
+              family: font.family,
+              size: font.size,
+            },
+            stepSize: 1,
+          },
         },
       },
-    },
-  };
+    };
+  }, [topData, font]);
 
   if (data.length === 0) {
     return (

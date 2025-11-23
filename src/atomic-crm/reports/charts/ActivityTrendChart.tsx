@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
 import { TooltipContextY } from "./chartUtils";
@@ -14,66 +15,72 @@ interface ActivityTrendChartProps {
  * Used in the Overview tab to visualize engagement trends.
  */
 export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
-  const theme = useChartTheme();
+  const { colors, font } = useChartTheme();
 
-  const chartData = {
-    labels: data.map((d) => d.date),
-    datasets: [
-      {
-        label: "Activities",
-        data: data.map((d) => d.count),
-        borderColor: theme.colors.primary,
-        backgroundColor: `${theme.colors.primary}20`,
-        fill: true,
-        tension: 0.3,
-        pointRadius: 4,
-        pointHoverRadius: 6,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        callbacks: {
-          label: (context: TooltipContextY) => {
-            return `${context.parsed.y} activities`;
-          },
+  // Memoize chart data to prevent recalculation on every render
+  const chartData = useMemo(() => {
+    return {
+      labels: data.map((d) => d.date),
+      datasets: [
+        {
+          label: "Activities",
+          data: data.map((d) => d.count),
+          borderColor: colors.primary,
+          backgroundColor: `${colors.primary}20`,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
         },
-      },
-    },
-    scales: {
-      x: {
-        grid: {
+      ],
+    };
+  }, [data, colors.primary]);
+
+  // Memoize chart options to prevent recalculation on every render
+  const options = useMemo(() => {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
           display: false,
         },
-        ticks: {
-          font: {
-            family: theme.font.family,
-            size: theme.font.size,
+        tooltip: {
+          callbacks: {
+            label: (context: TooltipContextY) => {
+              return `${context.parsed.y} activities`;
+            },
           },
         },
       },
-      y: {
-        beginAtZero: true,
-        grid: {
-          color: "rgba(0, 0, 0, 0.05)",
-        },
-        ticks: {
-          font: {
-            family: theme.font.family,
-            size: theme.font.size,
+      scales: {
+        x: {
+          grid: {
+            display: false,
           },
-          stepSize: 1,
+          ticks: {
+            font: {
+              family: font.family,
+              size: font.size,
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.05)",
+          },
+          ticks: {
+            font: {
+              family: font.family,
+              size: font.size,
+            },
+            stepSize: 1,
+          },
         },
       },
-    },
-  };
+    };
+  }, [font]);
 
   if (data.length === 0) {
     return (
