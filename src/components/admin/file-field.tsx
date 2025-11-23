@@ -31,11 +31,11 @@ export const FileField = <RecordType extends Record<string, any> = Record<string
     source,
     record,
     // Filter out React Admin-specific props that shouldn't be passed to DOM elements
-    label,
-    sortable,
-    sortBy,
-    textAlign,
-    rowClassName,
+    label: _label,
+    sortable: _sortable,
+    sortBy: _sortBy,
+    textAlign: _textAlign,
+    rowClassName: _rowClassName,
     ...rest
   } = props;
   const sourceValue = useFieldValue({ defaultValue, source, record });

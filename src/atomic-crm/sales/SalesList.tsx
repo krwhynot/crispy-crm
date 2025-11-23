@@ -4,7 +4,7 @@ import { List } from "@/components/admin/list";
 import { SearchInput } from "@/components/admin/search-input";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
 import { Badge } from "@/components/ui/badge";
-import { useRecordContext, TextField, EmailField } from "react-admin";
+import { useRecordContext, EmailField } from "react-admin";
 import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { SalesSlideOver } from "./SalesSlideOver";
