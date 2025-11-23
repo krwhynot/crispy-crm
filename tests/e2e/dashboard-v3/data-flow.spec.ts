@@ -591,8 +591,11 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectActivityType("Call");
       await dashboard.selectOutcome("Connected");
 
-      // Select organization using POM method (handles CMDK popover dismissal)
-      await dashboard.selectFirstOrganization();
+      // Select opportunity first (required for interaction activities like Call)
+      await dashboard.selectFirstOpportunity();
+
+      // Organization will be auto-filled from opportunity selection
+      // await dashboard.selectFirstOrganization(); // Not needed - auto-filled
 
       // Try to submit
       await dashboard.getSaveAndCloseButton().click();
@@ -624,13 +627,16 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
 
       await dashboard.openActivityForm();
 
-      // Fill required fields
-      await dashboard.selectActivityType("Note");
-      await dashboard.selectOutcome("Completed");
+      // Fill required fields - Use "Call" not "Note" (note enum not in cloud DB)
+      await dashboard.selectActivityType("Call");
+      await dashboard.selectOutcome("Connected");
       await dashboard.fillNotes(uniqueNotes);
 
-      // Select organization using POM method (handles CMDK popover dismissal)
-      await dashboard.selectFirstOrganization();
+      // Select opportunity first (required for interaction activities like Call)
+      await dashboard.selectFirstOpportunity();
+
+      // Organization will be auto-filled from opportunity selection
+      // await dashboard.selectFirstOrganization(); // Not needed - auto-filled
 
       await dashboard.getSaveAndCloseButton().click();
 
@@ -693,8 +699,11 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectOutcome("Connected");
       await dashboard.fillNotes(`Test with follow-up ${timestamp}`);
 
-      // Select organization using POM method (handles CMDK popover dismissal)
-      await dashboard.selectFirstOrganization();
+      // Select opportunity first (required for interaction activities like Call)
+      await dashboard.selectFirstOpportunity();
+
+      // Organization will be auto-filled from opportunity selection
+      // await dashboard.selectFirstOrganization(); // Not needed - auto-filled
 
       // Enable follow-up with date
       await dashboard.enableFollowUp();
@@ -732,8 +741,11 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectOutcome("Completed");
       await dashboard.fillNotes("Test Save & New");
 
-      // Select organization using POM method (handles CMDK popover dismissal)
-      await dashboard.selectFirstOrganization();
+      // Select opportunity first (required for interaction activities like Email)
+      await dashboard.selectFirstOpportunity();
+
+      // Organization will be auto-filled from opportunity selection
+      // await dashboard.selectFirstOrganization(); // Not needed - auto-filled
 
       await dashboard.getSaveAndNewButton().click();
 
@@ -829,8 +841,11 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectOutcome("Connected");
       await dashboard.fillNotes(`E2E Cross-panel test ${timestamp}`);
 
-      // Select organization using POM method (handles CMDK popover dismissal)
-      await dashboard.selectFirstOrganization();
+      // Select opportunity first (required for interaction activities like Call)
+      await dashboard.selectFirstOpportunity();
+
+      // Organization will be auto-filled from opportunity selection
+      // await dashboard.selectFirstOrganization(); // Not needed - auto-filled
 
       await dashboard.enableFollowUp();
       const tomorrow = new Date();

@@ -1,375 +1,679 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e2]:
-  - navigation [ref=e3]:
-    - generic [ref=e6]:
-      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
-        - /url: "#/"
-        - generic "MFB Master Food Brokers" [ref=e8]
-      - navigation [ref=e10]:
-        - link "Dashboard" [ref=e11] [cursor=pointer]:
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e6]:
+        - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
           - /url: "#/"
-        - link "Contacts" [ref=e12] [cursor=pointer]:
-          - /url: "#/contacts"
-        - link "Organizations" [ref=e13] [cursor=pointer]:
-          - /url: "#/organizations"
-        - link "Opportunities" [ref=e14] [cursor=pointer]:
-          - /url: "#/opportunities"
-        - link "Products" [ref=e15] [cursor=pointer]:
-          - /url: "#/products"
-        - link "Tasks" [ref=e16] [cursor=pointer]:
-          - /url: "#/tasks"
-        - link "Reports" [ref=e17] [cursor=pointer]:
-          - /url: "#/reports"
-      - generic [ref=e18]:
-        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - generic "MFB Master Food Brokers" [ref=e8]
+        - navigation [ref=e10]:
+          - link "Dashboard" [ref=e11] [cursor=pointer]:
+            - /url: "#/"
+          - link "Contacts" [ref=e12] [cursor=pointer]:
+            - /url: "#/contacts"
+          - link "Organizations" [ref=e13] [cursor=pointer]:
+            - /url: "#/organizations"
+          - link "Opportunities" [ref=e14] [cursor=pointer]:
+            - /url: "#/opportunities"
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: "#/products"
+          - link "Tasks" [ref=e16] [cursor=pointer]:
+            - /url: "#/tasks"
+          - link "Reports" [ref=e17] [cursor=pointer]:
+            - /url: "#/reports"
+        - generic [ref=e18]:
+          - button "Toggle theme" [ref=e19] [cursor=pointer]:
+            - img
+            - generic [ref=e20]: Toggle theme
+          - button [ref=e21] [cursor=pointer]:
+            - img
+          - button "Notifications" [ref=e22] [cursor=pointer]:
+            - img
+          - button "A" [ref=e23] [cursor=pointer]:
+            - generic [ref=e25]: A
+    - main [ref=e26]:
+      - generic [ref=e27]:
+        - heading "Principal Dashboard" [level=1] [ref=e30]
+        - generic [ref=e32]:
+          - generic [ref=e34]:
+            - generic [ref=e36]:
+              - generic [ref=e37]:
+                - heading "Pipeline by Principal" [level=2] [ref=e38]
+                - paragraph [ref=e39]: Track opportunity momentum across your customer accounts
+              - generic [ref=e40]:
+                - generic [ref=e41]:
+                  - switch "My Principals Only" [ref=e42] [cursor=pointer]
+                  - generic [ref=e43]: My Principals Only
+                - button "Filters" [ref=e44] [cursor=pointer]:
+                  - img
+                  - text: Filters
+            - table [ref=e47]:
+              - rowgroup [ref=e48]:
+                - row "Principal Pipeline This Week Last Week Momentum Next Action" [ref=e49]:
+                  - cell "Principal" [ref=e50]
+                  - cell "Pipeline" [ref=e51]
+                  - cell "This Week" [ref=e52]
+                  - cell "Last Week" [ref=e53]
+                  - cell "Momentum" [ref=e54]
+                  - cell "Next Action" [ref=e55]
+              - rowgroup [ref=e56]:
+                - button "View opportunities for Demo Principal Org" [ref=e57] [cursor=pointer]:
+                  - cell "Demo Principal Org" [ref=e58]
+                  - cell "1" [ref=e59]:
+                    - generic [ref=e60]: "1"
+                  - cell "1" [ref=e61]:
+                    - generic [ref=e62]: "1"
+                  - cell "-" [ref=e63]
+                  - cell "increasing" [ref=e64]:
+                    - generic [ref=e65]:
+                      - img [ref=e66]
+                      - generic [ref=e69]: increasing
+                  - cell "Call back" [ref=e70]
+                - button "View opportunities for Wicks" [ref=e71] [cursor=pointer]:
+                  - cell "Wicks" [ref=e72]
+                  - cell "0" [ref=e73]:
+                    - generic [ref=e74]: "0"
+                  - cell "-" [ref=e75]
+                  - cell "-" [ref=e76]
+                  - cell "steady" [ref=e77]:
+                    - generic [ref=e78]:
+                      - img [ref=e79]
+                      - generic [ref=e80]: steady
+                  - cell "Schedule follow-up" [ref=e81]:
+                    - button "Schedule follow-up" [ref=e82]
+                - button "View opportunities for Kaufholds" [ref=e83] [cursor=pointer]:
+                  - cell "Kaufholds" [ref=e84]
+                  - cell "5" [ref=e85]:
+                    - generic [ref=e86]: "5"
+                  - cell "-" [ref=e87]
+                  - cell "5" [ref=e88]:
+                    - generic [ref=e89]: "5"
+                  - cell "decreasing" [ref=e90]:
+                    - generic [ref=e91]:
+                      - img [ref=e92]
+                      - generic [ref=e95]: decreasing
+                  - cell "Deliver coffee samples to tasting room" [ref=e96]
+                - button "View opportunities for Frites Street" [ref=e97] [cursor=pointer]:
+                  - cell "Frites Street" [ref=e98]
+                  - cell "0" [ref=e99]:
+                    - generic [ref=e100]: "0"
+                  - cell "-" [ref=e101]
+                  - cell "-" [ref=e102]
+                  - cell "steady" [ref=e103]:
+                    - generic [ref=e104]:
+                      - img [ref=e105]
+                      - generic [ref=e106]: steady
+                  - cell "Schedule follow-up" [ref=e107]:
+                    - button "Schedule follow-up" [ref=e108]
+                - button "View opportunities for Better Balance" [ref=e109] [cursor=pointer]:
+                  - cell "Better Balance" [ref=e110]
+                  - cell "0" [ref=e111]:
+                    - generic [ref=e112]: "0"
+                  - cell "-" [ref=e113]
+                  - cell "-" [ref=e114]
+                  - cell "steady" [ref=e115]:
+                    - generic [ref=e116]:
+                      - img [ref=e117]
+                      - generic [ref=e118]: steady
+                  - cell "Schedule follow-up" [ref=e119]:
+                    - button "Schedule follow-up" [ref=e120]
+                - button "View opportunities for VAF" [ref=e121] [cursor=pointer]:
+                  - cell "VAF" [ref=e122]
+                  - cell "0" [ref=e123]:
+                    - generic [ref=e124]: "0"
+                  - cell "-" [ref=e125]
+                  - cell "-" [ref=e126]
+                  - cell "steady" [ref=e127]:
+                    - generic [ref=e128]:
+                      - img [ref=e129]
+                      - generic [ref=e130]: steady
+                  - cell "Schedule follow-up" [ref=e131]:
+                    - button "Schedule follow-up" [ref=e132]
+                - button "View opportunities for Ofk" [ref=e133] [cursor=pointer]:
+                  - cell "Ofk" [ref=e134]
+                  - cell "0" [ref=e135]:
+                    - generic [ref=e136]: "0"
+                  - cell "-" [ref=e137]
+                  - cell "-" [ref=e138]
+                  - cell "steady" [ref=e139]:
+                    - generic [ref=e140]:
+                      - img [ref=e141]
+                      - generic [ref=e142]: steady
+                  - cell "Schedule follow-up" [ref=e143]:
+                    - button "Schedule follow-up" [ref=e144]
+                - button "View opportunities for Annasea" [ref=e145] [cursor=pointer]:
+                  - cell "Annasea" [ref=e146]
+                  - cell "0" [ref=e147]:
+                    - generic [ref=e148]: "0"
+                  - cell "-" [ref=e149]
+                  - cell "-" [ref=e150]
+                  - cell "steady" [ref=e151]:
+                    - generic [ref=e152]:
+                      - img [ref=e153]
+                      - generic [ref=e154]: steady
+                  - cell "Schedule follow-up" [ref=e155]:
+                    - button "Schedule follow-up" [ref=e156]
+                - button "View opportunities for Rapid Rasoi" [ref=e157] [cursor=pointer]:
+                  - cell "Rapid Rasoi" [ref=e158]
+                  - cell "73" [ref=e159]:
+                    - generic [ref=e160]: "73"
+                  - cell "-" [ref=e161]
+                  - cell "-" [ref=e162]
+                  - cell "stale" [ref=e163]:
+                    - generic [ref=e164]:
+                      - img [ref=e165]
+                      - generic [ref=e167]: stale
+                  - cell "Schedule follow-up" [ref=e168]:
+                    - button "Schedule follow-up" [ref=e169]
+                - button "View opportunities for RJC" [ref=e170] [cursor=pointer]:
+                  - cell "RJC" [ref=e171]
+                  - cell "3" [ref=e172]:
+                    - generic [ref=e173]: "3"
+                  - cell "-" [ref=e174]
+                  - cell "2" [ref=e175]:
+                    - generic [ref=e176]: "2"
+                  - cell "decreasing" [ref=e177]:
+                    - generic [ref=e178]:
+                      - img [ref=e179]
+                      - generic [ref=e182]: decreasing
+                  - cell "Follow up on RJC pricing proposal" [ref=e183]
+                - button "View opportunities for Never Better" [ref=e184] [cursor=pointer]:
+                  - cell "Never Better" [ref=e185]
+                  - cell "0" [ref=e186]:
+                    - generic [ref=e187]: "0"
+                  - cell "-" [ref=e188]
+                  - cell "-" [ref=e189]
+                  - cell "steady" [ref=e190]:
+                    - generic [ref=e191]:
+                      - img [ref=e192]
+                      - generic [ref=e193]: steady
+                  - cell "Schedule follow-up" [ref=e194]:
+                    - button "Schedule follow-up" [ref=e195]
+                - button "View opportunities for TCFB" [ref=e196] [cursor=pointer]:
+                  - cell "TCFB" [ref=e197]
+                  - cell "0" [ref=e198]:
+                    - generic [ref=e199]: "0"
+                  - cell "-" [ref=e200]
+                  - cell "-" [ref=e201]
+                  - cell "steady" [ref=e202]:
+                    - generic [ref=e203]:
+                      - img [ref=e204]
+                      - generic [ref=e205]: steady
+                  - cell "Schedule follow-up" [ref=e206]:
+                    - button "Schedule follow-up" [ref=e207]
+                - button "View opportunities for Mrs Ressler's" [ref=e208] [cursor=pointer]:
+                  - cell "Mrs Ressler's" [ref=e209]
+                  - cell "0" [ref=e210]:
+                    - generic [ref=e211]: "0"
+                  - cell "-" [ref=e212]
+                  - cell "-" [ref=e213]
+                  - cell "steady" [ref=e214]:
+                    - generic [ref=e215]:
+                      - img [ref=e216]
+                      - generic [ref=e217]: steady
+                  - cell "Schedule follow-up" [ref=e218]:
+                    - button "Schedule follow-up" [ref=e219]
+                - button "View opportunities for Abdale" [ref=e220] [cursor=pointer]:
+                  - cell "Abdale" [ref=e221]
+                  - cell "0" [ref=e222]:
+                    - generic [ref=e223]: "0"
+                  - cell "-" [ref=e224]
+                  - cell "-" [ref=e225]
+                  - cell "steady" [ref=e226]:
+                    - generic [ref=e227]:
+                      - img [ref=e228]
+                      - generic [ref=e229]: steady
+                  - cell "Schedule follow-up" [ref=e230]:
+                    - button "Schedule follow-up" [ref=e231]
+                - button "View opportunities for Mccrum" [ref=e232] [cursor=pointer]:
+                  - cell "Mccrum" [ref=e233]
+                  - cell "0" [ref=e234]:
+                    - generic [ref=e235]: "0"
+                  - cell "-" [ref=e236]
+                  - cell "-" [ref=e237]
+                  - cell "steady" [ref=e238]:
+                    - generic [ref=e239]:
+                      - img [ref=e240]
+                      - generic [ref=e241]: steady
+                  - cell "Schedule follow-up" [ref=e242]:
+                    - button "Schedule follow-up" [ref=e243]
+                - button "View opportunities for Kayco" [ref=e244] [cursor=pointer]:
+                  - cell "Kayco" [ref=e245]
+                  - cell "0" [ref=e246]:
+                    - generic [ref=e247]: "0"
+                  - cell "-" [ref=e248]
+                  - cell "-" [ref=e249]
+                  - cell "steady" [ref=e250]:
+                    - generic [ref=e251]:
+                      - img [ref=e252]
+                      - generic [ref=e253]: steady
+                  - cell "Schedule follow-up" [ref=e254]:
+                    - button "Schedule follow-up" [ref=e255]
+                - button "View opportunities for Kaufholds Kurds Inc" [ref=e256] [cursor=pointer]:
+                  - cell "Kaufholds Kurds Inc" [ref=e257]
+                  - cell "155" [ref=e258]:
+                    - generic [ref=e259]: "155"
+                  - cell "-" [ref=e260]
+                  - cell "-" [ref=e261]
+                  - cell "stale" [ref=e262]:
+                    - generic [ref=e263]:
+                      - img [ref=e264]
+                      - generic [ref=e266]: stale
+                  - cell "Schedule follow-up" [ref=e267]:
+                    - button "Schedule follow-up" [ref=e268]
+                - button "View opportunities for Swap Foods USA" [ref=e269] [cursor=pointer]:
+                  - cell "Swap Foods USA" [ref=e270]
+                  - cell "141" [ref=e271]:
+                    - generic [ref=e272]: "141"
+                  - cell "-" [ref=e273]
+                  - cell "-" [ref=e274]
+                  - cell "stale" [ref=e275]:
+                    - generic [ref=e276]:
+                      - img [ref=e277]
+                      - generic [ref=e279]: stale
+                  - cell "Schedule follow-up" [ref=e280]:
+                    - button "Schedule follow-up" [ref=e281]
+                - button "View opportunities for SWAP" [ref=e282] [cursor=pointer]:
+                  - cell "SWAP" [ref=e283]
+                  - cell "0" [ref=e284]:
+                    - generic [ref=e285]: "0"
+                  - cell "-" [ref=e286]
+                  - cell "-" [ref=e287]
+                  - cell "steady" [ref=e288]:
+                    - generic [ref=e289]:
+                      - img [ref=e290]
+                      - generic [ref=e291]: steady
+                  - cell "Schedule follow-up" [ref=e292]:
+                    - button "Schedule follow-up" [ref=e293]
+          - separator [ref=e294]:
+            - img [ref=e296]
+          - generic [ref=e304]:
+            - generic [ref=e305]:
+              - generic [ref=e307]:
+                - generic [ref=e308]: My Tasks
+                - generic [ref=e309]: Today's priorities and upcoming activities
+              - paragraph [ref=e310]: Overdue items highlighted • Click to complete • Drag to reschedule
+            - generic [ref=e312]:
+              - button "Today (0)" [ref=e314] [cursor=pointer]:
+                - generic [ref=e315]:
+                  - img [ref=e316]
+                  - heading "Today" [level=3] [ref=e318]
+                  - generic [ref=e319]: (0)
+              - button "Tomorrow (0)" [ref=e321] [cursor=pointer]:
+                - generic [ref=e322]:
+                  - img [ref=e323]
+                  - heading "Tomorrow" [level=3] [ref=e325]
+                  - generic [ref=e326]: (0)
+          - separator [ref=e327]:
+            - img [ref=e329]
+          - generic [ref=e337]:
+            - generic [ref=e340]:
+              - generic [ref=e341]: Log Activity
+              - generic [ref=e342]: Quick capture for calls, meetings, and notes
+            - generic [ref=e344]:
+              - generic [ref=e345]:
+                - heading "What happened?" [level=3] [ref=e346]
+                - generic [ref=e347]:
+                  - generic [ref=e348]: Activity Type
+                  - combobox "Activity Type" [ref=e349] [cursor=pointer]:
+                    - generic: Call
+                    - img
+                  - combobox [ref=e350]
+                - generic [ref=e351]:
+                  - generic [ref=e352]: Outcome
+                  - combobox "Outcome" [ref=e353] [cursor=pointer]:
+                    - generic: Connected
+                    - img
+                  - combobox [ref=e354]
+                - generic [ref=e355]:
+                  - generic [ref=e356]: Duration (minutes)
+                  - spinbutton "Duration (minutes)" [ref=e357]
+              - generic [ref=e358]:
+                - heading "Who was involved?" [level=3] [ref=e359]
+                - generic [ref=e360]:
+                  - generic [ref=e361]: Contact *
+                  - combobox "Contact *" [ref=e362] [cursor=pointer]:
+                    - text: Select contact
+                    - img
+                  - paragraph [ref=e363]: Select a contact OR organization
+                - generic [ref=e364]:
+                  - generic [ref=e365]: Organization *
+                  - combobox "Organization *" [ref=e366] [cursor=pointer]:
+                    - text: Select organization
+                    - img
+                  - paragraph [ref=e367]: Select a contact OR organization
+                - generic [ref=e368]:
+                  - generic [ref=e369]: Opportunity
+                  - combobox "Opportunity" [expanded] [ref=e370] [cursor=pointer]:
+                    - text: Select opportunity (optional)
+                    - img
+              - generic [ref=e371]:
+                - generic [ref=e372]: Notes
+                - textbox "Notes" [ref=e373]:
+                  - /placeholder: Summary of the interaction...
+                  - text: E2E Test Activity 1763884656108
+              - generic [ref=e375]:
+                - generic [ref=e376]: Create follow-up task?
+                - switch "Create follow-up task?" [ref=e377] [cursor=pointer]
+                - checkbox
+              - generic [ref=e378]:
+                - button "Cancel" [ref=e379] [cursor=pointer]
+                - generic [ref=e380]:
+                  - button "Save & Close" [ref=e381] [cursor=pointer]
+                  - button "Save & New" [ref=e382] [cursor=pointer]
+    - contentinfo [ref=e383]:
+      - generic [ref=e385]:
+        - paragraph [ref=e386]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e387] [cursor=pointer]:
+          - img [ref=e388]
+          - generic [ref=e390]: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - dialog [ref=e392]:
+    - generic [ref=e393]:
+      - generic [ref=e395]:
+        - img [ref=e396]
+        - combobox [expanded] [active] [ref=e399]
+      - group [ref=e400]:
+        - option "A Mclovin @ Muskegon Country Club" [ref=e401]:
           - img
-          - generic [ref=e20]: Toggle theme
-        - button [ref=e21] [cursor=pointer]:
+          - text: A Mclovin @ Muskegon Country Club
+        - option "Aaron Haight @ TWO HATS RANCH" [ref=e402]:
           - img
-        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - text: Aaron Haight @ TWO HATS RANCH
+        - option "aaron hedger @ TERRY'S WOODBURY CAFE" [ref=e403]:
           - img
-        - button "A" [ref=e23] [cursor=pointer]:
-          - generic [ref=e25]: A
-  - main [ref=e26]:
-    - generic [ref=e27]:
-      - heading "Principal Dashboard" [level=1] [ref=e30]
-      - generic [ref=e32]:
-        - generic [ref=e34]:
-          - generic [ref=e36]:
-            - generic [ref=e37]:
-              - heading "Pipeline by Principal" [level=2] [ref=e38]
-              - paragraph [ref=e39]: Track opportunity momentum across your customer accounts
-            - generic [ref=e40]:
-              - generic [ref=e41]:
-                - switch "My Principals Only" [ref=e42] [cursor=pointer]
-                - generic [ref=e43]: My Principals Only
-              - button "Filters" [ref=e44] [cursor=pointer]:
-                - img
-                - text: Filters
-          - table [ref=e47]:
-            - rowgroup [ref=e48]:
-              - row "Principal Pipeline This Week Last Week Momentum Next Action" [ref=e49]:
-                - cell "Principal" [ref=e50]
-                - cell "Pipeline" [ref=e51]
-                - cell "This Week" [ref=e52]
-                - cell "Last Week" [ref=e53]
-                - cell "Momentum" [ref=e54]
-                - cell "Next Action" [ref=e55]
-            - rowgroup [ref=e56]:
-              - button "View opportunities for Demo Principal Org" [ref=e57] [cursor=pointer]:
-                - cell "Demo Principal Org" [ref=e58]
-                - cell "1" [ref=e59]:
-                  - generic [ref=e60]: "1"
-                - cell "1" [ref=e61]:
-                  - generic [ref=e62]: "1"
-                - cell "-" [ref=e63]
-                - cell "increasing" [ref=e64]:
-                  - generic [ref=e65]:
-                    - img [ref=e66]
-                    - generic [ref=e69]: increasing
-                - cell "Call back" [ref=e70]
-              - button "View opportunities for Wicks" [ref=e71] [cursor=pointer]:
-                - cell "Wicks" [ref=e72]
-                - cell "0" [ref=e73]:
-                  - generic [ref=e74]: "0"
-                - cell "-" [ref=e75]
-                - cell "-" [ref=e76]
-                - cell "steady" [ref=e77]:
-                  - generic [ref=e78]:
-                    - img [ref=e79]
-                    - generic [ref=e80]: steady
-                - cell "Schedule follow-up" [ref=e81]:
-                  - button "Schedule follow-up" [ref=e82]
-              - button "View opportunities for Kaufholds" [ref=e83] [cursor=pointer]:
-                - cell "Kaufholds" [ref=e84]
-                - cell "5" [ref=e85]:
-                  - generic [ref=e86]: "5"
-                - cell "-" [ref=e87]
-                - cell "5" [ref=e88]:
-                  - generic [ref=e89]: "5"
-                - cell "decreasing" [ref=e90]:
-                  - generic [ref=e91]:
-                    - img [ref=e92]
-                    - generic [ref=e95]: decreasing
-                - cell "Deliver coffee samples to tasting room" [ref=e96]
-              - button "View opportunities for Frites Street" [ref=e97] [cursor=pointer]:
-                - cell "Frites Street" [ref=e98]
-                - cell "0" [ref=e99]:
-                  - generic [ref=e100]: "0"
-                - cell "-" [ref=e101]
-                - cell "-" [ref=e102]
-                - cell "steady" [ref=e103]:
-                  - generic [ref=e104]:
-                    - img [ref=e105]
-                    - generic [ref=e106]: steady
-                - cell "Schedule follow-up" [ref=e107]:
-                  - button "Schedule follow-up" [ref=e108]
-              - button "View opportunities for Better Balance" [ref=e109] [cursor=pointer]:
-                - cell "Better Balance" [ref=e110]
-                - cell "0" [ref=e111]:
-                  - generic [ref=e112]: "0"
-                - cell "-" [ref=e113]
-                - cell "-" [ref=e114]
-                - cell "steady" [ref=e115]:
-                  - generic [ref=e116]:
-                    - img [ref=e117]
-                    - generic [ref=e118]: steady
-                - cell "Schedule follow-up" [ref=e119]:
-                  - button "Schedule follow-up" [ref=e120]
-              - button "View opportunities for VAF" [ref=e121] [cursor=pointer]:
-                - cell "VAF" [ref=e122]
-                - cell "0" [ref=e123]:
-                  - generic [ref=e124]: "0"
-                - cell "-" [ref=e125]
-                - cell "-" [ref=e126]
-                - cell "steady" [ref=e127]:
-                  - generic [ref=e128]:
-                    - img [ref=e129]
-                    - generic [ref=e130]: steady
-                - cell "Schedule follow-up" [ref=e131]:
-                  - button "Schedule follow-up" [ref=e132]
-              - button "View opportunities for Ofk" [ref=e133] [cursor=pointer]:
-                - cell "Ofk" [ref=e134]
-                - cell "0" [ref=e135]:
-                  - generic [ref=e136]: "0"
-                - cell "-" [ref=e137]
-                - cell "-" [ref=e138]
-                - cell "steady" [ref=e139]:
-                  - generic [ref=e140]:
-                    - img [ref=e141]
-                    - generic [ref=e142]: steady
-                - cell "Schedule follow-up" [ref=e143]:
-                  - button "Schedule follow-up" [ref=e144]
-              - button "View opportunities for Annasea" [ref=e145] [cursor=pointer]:
-                - cell "Annasea" [ref=e146]
-                - cell "0" [ref=e147]:
-                  - generic [ref=e148]: "0"
-                - cell "-" [ref=e149]
-                - cell "-" [ref=e150]
-                - cell "steady" [ref=e151]:
-                  - generic [ref=e152]:
-                    - img [ref=e153]
-                    - generic [ref=e154]: steady
-                - cell "Schedule follow-up" [ref=e155]:
-                  - button "Schedule follow-up" [ref=e156]
-              - button "View opportunities for Rapid Rasoi" [ref=e157] [cursor=pointer]:
-                - cell "Rapid Rasoi" [ref=e158]
-                - cell "73" [ref=e159]:
-                  - generic [ref=e160]: "73"
-                - cell "-" [ref=e161]
-                - cell "-" [ref=e162]
-                - cell "stale" [ref=e163]:
-                  - generic [ref=e164]:
-                    - img [ref=e165]
-                    - generic [ref=e167]: stale
-                - cell "Schedule follow-up" [ref=e168]:
-                  - button "Schedule follow-up" [ref=e169]
-              - button "View opportunities for RJC" [ref=e170] [cursor=pointer]:
-                - cell "RJC" [ref=e171]
-                - cell "3" [ref=e172]:
-                  - generic [ref=e173]: "3"
-                - cell "-" [ref=e174]
-                - cell "2" [ref=e175]:
-                  - generic [ref=e176]: "2"
-                - cell "decreasing" [ref=e177]:
-                  - generic [ref=e178]:
-                    - img [ref=e179]
-                    - generic [ref=e182]: decreasing
-                - cell "Follow up on RJC pricing proposal" [ref=e183]
-              - button "View opportunities for Never Better" [ref=e184] [cursor=pointer]:
-                - cell "Never Better" [ref=e185]
-                - cell "0" [ref=e186]:
-                  - generic [ref=e187]: "0"
-                - cell "-" [ref=e188]
-                - cell "-" [ref=e189]
-                - cell "steady" [ref=e190]:
-                  - generic [ref=e191]:
-                    - img [ref=e192]
-                    - generic [ref=e193]: steady
-                - cell "Schedule follow-up" [ref=e194]:
-                  - button "Schedule follow-up" [ref=e195]
-              - button "View opportunities for TCFB" [ref=e196] [cursor=pointer]:
-                - cell "TCFB" [ref=e197]
-                - cell "0" [ref=e198]:
-                  - generic [ref=e199]: "0"
-                - cell "-" [ref=e200]
-                - cell "-" [ref=e201]
-                - cell "steady" [ref=e202]:
-                  - generic [ref=e203]:
-                    - img [ref=e204]
-                    - generic [ref=e205]: steady
-                - cell "Schedule follow-up" [ref=e206]:
-                  - button "Schedule follow-up" [ref=e207]
-              - button "View opportunities for Mrs Ressler's" [ref=e208] [cursor=pointer]:
-                - cell "Mrs Ressler's" [ref=e209]
-                - cell "0" [ref=e210]:
-                  - generic [ref=e211]: "0"
-                - cell "-" [ref=e212]
-                - cell "-" [ref=e213]
-                - cell "steady" [ref=e214]:
-                  - generic [ref=e215]:
-                    - img [ref=e216]
-                    - generic [ref=e217]: steady
-                - cell "Schedule follow-up" [ref=e218]:
-                  - button "Schedule follow-up" [ref=e219]
-              - button "View opportunities for Abdale" [ref=e220] [cursor=pointer]:
-                - cell "Abdale" [ref=e221]
-                - cell "0" [ref=e222]:
-                  - generic [ref=e223]: "0"
-                - cell "-" [ref=e224]
-                - cell "-" [ref=e225]
-                - cell "steady" [ref=e226]:
-                  - generic [ref=e227]:
-                    - img [ref=e228]
-                    - generic [ref=e229]: steady
-                - cell "Schedule follow-up" [ref=e230]:
-                  - button "Schedule follow-up" [ref=e231]
-              - button "View opportunities for Mccrum" [ref=e232] [cursor=pointer]:
-                - cell "Mccrum" [ref=e233]
-                - cell "0" [ref=e234]:
-                  - generic [ref=e235]: "0"
-                - cell "-" [ref=e236]
-                - cell "-" [ref=e237]
-                - cell "steady" [ref=e238]:
-                  - generic [ref=e239]:
-                    - img [ref=e240]
-                    - generic [ref=e241]: steady
-                - cell "Schedule follow-up" [ref=e242]:
-                  - button "Schedule follow-up" [ref=e243]
-              - button "View opportunities for Kayco" [ref=e244] [cursor=pointer]:
-                - cell "Kayco" [ref=e245]
-                - cell "0" [ref=e246]:
-                  - generic [ref=e247]: "0"
-                - cell "-" [ref=e248]
-                - cell "-" [ref=e249]
-                - cell "steady" [ref=e250]:
-                  - generic [ref=e251]:
-                    - img [ref=e252]
-                    - generic [ref=e253]: steady
-                - cell "Schedule follow-up" [ref=e254]:
-                  - button "Schedule follow-up" [ref=e255]
-              - button "View opportunities for Kaufholds Kurds Inc" [ref=e256] [cursor=pointer]:
-                - cell "Kaufholds Kurds Inc" [ref=e257]
-                - cell "155" [ref=e258]:
-                  - generic [ref=e259]: "155"
-                - cell "-" [ref=e260]
-                - cell "-" [ref=e261]
-                - cell "stale" [ref=e262]:
-                  - generic [ref=e263]:
-                    - img [ref=e264]
-                    - generic [ref=e266]: stale
-                - cell "Schedule follow-up" [ref=e267]:
-                  - button "Schedule follow-up" [ref=e268]
-              - button "View opportunities for Swap Foods USA" [ref=e269] [cursor=pointer]:
-                - cell "Swap Foods USA" [ref=e270]
-                - cell "141" [ref=e271]:
-                  - generic [ref=e272]: "141"
-                - cell "-" [ref=e273]
-                - cell "-" [ref=e274]
-                - cell "stale" [ref=e275]:
-                  - generic [ref=e276]:
-                    - img [ref=e277]
-                    - generic [ref=e279]: stale
-                - cell "Schedule follow-up" [ref=e280]:
-                  - button "Schedule follow-up" [ref=e281]
-              - button "View opportunities for SWAP" [ref=e282] [cursor=pointer]:
-                - cell "SWAP" [ref=e283]
-                - cell "0" [ref=e284]:
-                  - generic [ref=e285]: "0"
-                - cell "-" [ref=e286]
-                - cell "-" [ref=e287]
-                - cell "steady" [ref=e288]:
-                  - generic [ref=e289]:
-                    - img [ref=e290]
-                    - generic [ref=e291]: steady
-                - cell "Schedule follow-up" [ref=e292]:
-                  - button "Schedule follow-up" [ref=e293]
-        - separator [ref=e294]:
-          - img [ref=e296]
-        - generic [ref=e304]:
-          - generic [ref=e305]:
-            - generic [ref=e307]:
-              - generic [ref=e308]: My Tasks
-              - generic [ref=e309]: Today's priorities and upcoming activities
-            - paragraph [ref=e310]: Overdue items highlighted • Click to complete • Drag to reschedule
-          - generic [ref=e312]:
-            - button "Today (0)" [ref=e314] [cursor=pointer]:
-              - generic [ref=e315]:
-                - img [ref=e316]
-                - heading "Today" [level=3] [ref=e318]
-                - generic [ref=e319]: (0)
-            - button "Tomorrow (0)" [ref=e321] [cursor=pointer]:
-              - generic [ref=e322]:
-                - img [ref=e323]
-                - heading "Tomorrow" [level=3] [ref=e325]
-                - generic [ref=e326]: (0)
-        - separator [ref=e327]:
-          - img [ref=e329]
-        - generic [ref=e337]:
-          - generic [ref=e340]:
-            - generic [ref=e341]: Log Activity
-            - generic [ref=e342]: Quick capture for calls, meetings, and notes
-          - generic [ref=e344]:
-            - generic [ref=e345]:
-              - heading "What happened?" [level=3] [ref=e346]
-              - generic [ref=e347]:
-                - generic [ref=e348]: Activity Type
-                - combobox "Activity Type" [ref=e349] [cursor=pointer]:
-                  - generic: Note
-                  - img
-                - combobox [ref=e350]
-              - generic [ref=e351]:
-                - generic [ref=e352]: Outcome
-                - combobox "Outcome" [ref=e353] [cursor=pointer]:
-                  - generic: Completed
-                  - img
-                - combobox [ref=e354]
-            - generic [ref=e355]:
-              - heading "Who was involved?" [level=3] [ref=e356]
-              - generic [ref=e357]:
-                - generic [ref=e358]: Contact *
-                - combobox "Contact *" [ref=e359] [cursor=pointer]:
-                  - text: Select contact
-                  - img
-                - paragraph [ref=e360]: Select a contact OR organization
-              - generic [ref=e361]:
-                - generic [ref=e362]: Organization *
-                - combobox "Organization *" [ref=e363] [cursor=pointer]:
-                  - text: 040 KITCHEN INC
-                  - img
-                - paragraph [ref=e364]: Select a contact OR organization
-              - generic [ref=e365]:
-                - generic [ref=e366]: Opportunity
-                - combobox "Opportunity" [ref=e367] [cursor=pointer]:
-                  - text: Select opportunity (optional)
-                  - img
-            - generic [ref=e368]:
-              - generic [ref=e369]: Notes
-              - textbox "Notes" [ref=e370]:
-                - /placeholder: Summary of the interaction...
-                - text: E2E Test Activity 1763884022679
-            - generic [ref=e372]:
-              - generic [ref=e373]: Create follow-up task?
-              - switch "Create follow-up task?" [ref=e374] [cursor=pointer]
-              - checkbox
-            - generic [ref=e375]:
-              - button "Cancel" [ref=e376] [cursor=pointer]
-              - generic [ref=e377]:
-                - button "Save & Close" [active] [ref=e378] [cursor=pointer]
-                - button "Save & New" [ref=e379] [cursor=pointer]
-  - contentinfo [ref=e380]:
-    - generic [ref=e382]:
-      - paragraph [ref=e383]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e384] [cursor=pointer]:
-        - img [ref=e385]
-        - generic [ref=e387]: Keyboard shortcuts
-  - region "Notifications alt+T":
-    - list:
-      - listitem [ref=e388]:
-        - button "Close toast" [ref=e389] [cursor=pointer]:
-          - img [ref=e390]
-        - img [ref=e394]
-        - generic [ref=e397]: Failed to log activity
+          - text: aaron hedger @ TERRY'S WOODBURY CAFE
+        - option "Adam Volk @ U OF I- HOUSING FOOD STORES" [ref=e404]:
+          - img
+          - text: Adam Volk @ U OF I- HOUSING FOOD STORES
+        - option "Alana Matyas-Brower @ Pigeon Hill Brewing Company" [ref=e405]:
+          - img
+          - text: Alana Matyas-Brower @ Pigeon Hill Brewing Company
+        - option "Alec Sanders @ Ludington Meat Company" [ref=e406]:
+          - img
+          - text: Alec Sanders @ Ludington Meat Company
+        - option "Alex Chavez @ ACCLAIMED CATERING" [ref=e407]:
+          - img
+          - text: Alex Chavez @ ACCLAIMED CATERING
+        - option "Alex Ley @ ARTURO'S TACO'S" [ref=e408]:
+          - img
+          - text: Alex Ley @ ARTURO'S TACO'S
+        - option "Alex Mantakounis @ Mega Bev GR29 LLC" [ref=e409]:
+          - img
+          - text: Alex Mantakounis @ Mega Bev GR29 LLC
+        - option "Alex Moravec @ Villa Marine Bar and Grill" [ref=e410]:
+          - img
+          - text: Alex Moravec @ Villa Marine Bar and Grill
+        - option "Alexis Farley @ Freds Of Roscommon" [ref=e411]:
+          - img
+          - text: Alexis Farley @ Freds Of Roscommon
+        - option "Alicia Lockerby @ FSU - THE ROCK CAFE" [ref=e412]:
+          - img
+          - text: Alicia Lockerby @ FSU - THE ROCK CAFE
+        - option "Alissa Cox - Chef Allissa @ SPRINGVALE ASSISTED LIVING" [ref=e413]:
+          - img
+          - text: Alissa Cox - Chef Allissa @ SPRINGVALE ASSISTED LIVING
+        - option "Amanada Weaver @ Lake Dale Ale" [ref=e414]:
+          - img
+          - text: Amanada Weaver @ Lake Dale Ale
+        - option "Amanda Joyner @ Trilogy - Harbor Terrace Senior Liv" [ref=e415]:
+          - img
+          - text: Amanda Joyner @ Trilogy - Harbor Terrace Senior Liv
+        - option "AMY SPALSBURY @ LFG BAR" [ref=e416]:
+          - img
+          - text: AMY SPALSBURY @ LFG BAR
+        - option "Andrew Hoffman @ BLIND SQUIRREL TAVERN (THE)" [ref=e417]:
+          - img
+          - text: Andrew Hoffman @ BLIND SQUIRREL TAVERN (THE)
+        - option "Andrew Francisco @ WMU-Student Center" [ref=e418]:
+          - img
+          - text: Andrew Francisco @ WMU-Student Center
+        - option "Andrew Wright @ BSA-CAMP ROTARY" [ref=e419]:
+          - img
+          - text: Andrew Wright @ BSA-CAMP ROTARY
+        - option "Andy Linder @ Mongo General Store" [ref=e420]:
+          - img
+          - text: Andy Linder @ Mongo General Store
+        - option "Angela Franklin @ GREEN ACRES OF LOWELL" [ref=e421]:
+          - img
+          - text: Angela Franklin @ GREEN ACRES OF LOWELL
+        - option "Angi Butler @ COMMUNITY HOSPITAL OF BREMEN-H05464" [ref=e422]:
+          - img
+          - text: Angi Butler @ COMMUNITY HOSPITAL OF BREMEN-H05464
+        - option "Anikah Webster @ Bud n’ Stanley’s" [ref=e423]:
+          - img
+          - text: Anikah Webster @ Bud n’ Stanley’s
+        - option "Antoine Skyes @ THREE BLONDES BREWING" [ref=e424]:
+          - img
+          - text: Antoine Skyes @ THREE BLONDES BREWING
+        - option "April Vilminot @ DECK DOWN UNDER (THE)" [ref=e425]:
+          - img
+          - text: April Vilminot @ DECK DOWN UNDER (THE)
+        - option "Ariana Belcher @ CHATEAU AERONAUTIQUE WINERY" [ref=e426]:
+          - img
+          - text: Ariana Belcher @ CHATEAU AERONAUTIQUE WINERY
+        - option "Aries Roberts @ GRAND OAKS NURSING CENTER" [ref=e427]:
+          - img
+          - text: Aries Roberts @ GRAND OAKS NURSING CENTER
+        - option "Arn Stiles @ BAIR LAKE BIBLE CAMP" [ref=e428]:
+          - img
+          - text: Arn Stiles @ BAIR LAKE BIBLE CAMP
+        - option "Asher Moss @ CRYSTAL VALLEY CATERING" [ref=e429]:
+          - img
+          - text: Asher Moss @ CRYSTAL VALLEY CATERING
+        - option "Atiba Hodges Atiba Hodges @ TRILOGY-BATTLE CREEK-OAKS AT NORTHP" [ref=e430]:
+          - img
+          - text: Atiba Hodges Atiba Hodges @ TRILOGY-BATTLE CREEK-OAKS AT NORTHP
+        - option "Aveon Jones @ Romulus Community Schools" [ref=e431]:
+          - img
+          - text: Aveon Jones @ Romulus Community Schools
+        - option "Becca Prieur @ Ala Mode Restaurant" [ref=e432]:
+          - img
+          - text: Becca Prieur @ Ala Mode Restaurant
+        - option "Becky Coggins @ Barrister Brewing Co" [ref=e433]:
+          - img
+          - text: Becky Coggins @ Barrister Brewing Co
+        - option "Ben Konowitz @ Pin Fusion" [ref=e434]:
+          - img
+          - text: Ben Konowitz @ Pin Fusion
+        - option "Ben Longstreet @ The Wooden Shoe" [ref=e435]:
+          - img
+          - text: Ben Longstreet @ The Wooden Shoe
+        - option "Ben Walker @ BUCKS RUN GOLF CLUB" [ref=e436]:
+          - img
+          - text: Ben Walker @ BUCKS RUN GOLF CLUB
+        - option "Berto Mendoza @ Cinco De Mayo Allendale" [ref=e437]:
+          - img
+          - text: Berto Mendoza @ Cinco De Mayo Allendale
+        - option "Beth Colley @ American House Jenison-Cottonwood M" [ref=e438]:
+          - img
+          - text: Beth Colley @ American House Jenison-Cottonwood M
+        - option "Beverage Program Expansion" [ref=e439]:
+          - img
+          - text: Beverage Program Expansion
+        - option "Big Daddy @ Fife Lake Inn" [ref=e440]:
+          - img
+          - text: Big Daddy @ Fife Lake Inn
+        - option "Bill Gordon @ The curve cafe" [ref=e441]:
+          - img
+          - text: Bill Gordon @ The curve cafe
+        - option "Bob Walsh @ Taste Buds" [ref=e442]:
+          - img
+          - text: Bob Walsh @ Taste Buds
+        - option "Bobby Chanthalangsy @ SLEDERS FAMILY TAVERN" [ref=e443]:
+          - img
+          - text: Bobby Chanthalangsy @ SLEDERS FAMILY TAVERN
+        - option "Brad Schmidt @ Hosel Rockets Golf & Whiskey Lounge" [ref=e444]:
+          - img
+          - text: Brad Schmidt @ Hosel Rockets Golf & Whiskey Lounge
+        - option "Brandon Grzegorczyk @ CDS - Kettering University" [ref=e445]:
+          - img
+          - text: Brandon Grzegorczyk @ CDS - Kettering University
+        - option "Brandon Prater @ Icarus Grilled Chicken" [ref=e446]:
+          - img
+          - text: Brandon Prater @ Icarus Grilled Chicken
+        - option "Branndan Kanuszewski @ Corewell Health Blodgett Hospital N" [ref=e447]:
+          - img
+          - text: Branndan Kanuszewski @ Corewell Health Blodgett Hospital N
+        - option "Bri Bautista @ City Limits" [ref=e448]:
+          - img
+          - text: Bri Bautista @ City Limits
+        - option "Brian Mason @ Carerite- Harbor Post Acute Center" [ref=e449]:
+          - img
+          - text: Brian Mason @ Carerite- Harbor Post Acute Center
+        - option "Brian Eaton @ 13TH STREET MARKET" [ref=e450]:
+          - img
+          - text: Brian Eaton @ 13TH STREET MARKET
+        - option "Brian Lonberg @ Old Mill Brewpub & Grill" [ref=e451]:
+          - img
+          - text: Brian Lonberg @ Old Mill Brewpub & Grill
+        - option "Brock Bush @ STUDIO C - CELEBRATION CINEMA" [ref=e452]:
+          - img
+          - text: Brock Bush @ STUDIO C - CELEBRATION CINEMA
+        - option "Brock Webb @ OMH-BROWNING MASONIC COMMUNITY 6452 (100026751)" [ref=e453]:
+          - img
+          - text: Brock Webb @ OMH-BROWNING MASONIC COMMUNITY 6452 (100026751)
+        - option "Bryan Lewis @ The Village at Pine Valley" [ref=e454]:
+          - img
+          - text: Bryan Lewis @ The Village at Pine Valley
+        - option "Bryan Lewis @ The Village at Pine Valley" [ref=e455]:
+          - img
+          - text: Bryan Lewis @ The Village at Pine Valley
+        - option "Bryan Riley @ Apple Mountain" [ref=e456]:
+          - img
+          - text: Bryan Riley @ Apple Mountain
+        - option "Bryan Whitmore @ MCTI-CULINARY PROGRAM" [ref=e457]:
+          - img
+          - text: Bryan Whitmore @ MCTI-CULINARY PROGRAM
+        - option "Bubba Flores @ Leroys Hot Stuff" [ref=e458]:
+          - img
+          - text: Bubba Flores @ Leroys Hot Stuff
+        - option "CAITLYN SCHER @ Powers Health - St Mary Med Food Se" [ref=e459]:
+          - img
+          - text: CAITLYN SCHER @ Powers Health - St Mary Med Food Se
+        - option "Cameron Baarstad @ MARKET 22" [ref=e460]:
+          - img
+          - text: Cameron Baarstad @ MARKET 22
+        - option "Cameron Gines @ Grace Haven Senior Living" [ref=e461]:
+          - img
+          - text: Cameron Gines @ Grace Haven Senior Living
+        - option "Carey Vanderhoff @ Wander In" [ref=e462]:
+          - img
+          - text: Carey Vanderhoff @ Wander In
+        - option "Carol Amman @ BACK FORTY (THE)" [ref=e463]:
+          - img
+          - text: Carol Amman @ BACK FORTY (THE)
+        - option "carolyn jurecki @ Ravenna Pub" [ref=e464]:
+          - img
+          - text: carolyn jurecki @ Ravenna Pub
+        - option "Casey Mannett @ KJ CATERING COMPANY" [ref=e465]:
+          - img
+          - text: Casey Mannett @ KJ CATERING COMPANY
+        - option "Casie Bartlett @ Miles Market" [ref=e466]:
+          - img
+          - text: Casie Bartlett @ Miles Market
+        - option "Cassandra Routley @ Corewell Health Greenville Hosp-Nut" [ref=e467]:
+          - img
+          - text: Cassandra Routley @ Corewell Health Greenville Hosp-Nut
+        - option "Cassie Demaestri @ State Street Dairy" [ref=e468]:
+          - img
+          - text: Cassie Demaestri @ State Street Dairy
+        - option "Cathy Howell @ WICKED SISTER" [ref=e469]:
+          - img
+          - text: Cathy Howell @ WICKED SISTER
+        - option "Catrina Naranjo @ Pizza Man" [ref=e470]:
+          - img
+          - text: Catrina Naranjo @ Pizza Man
+        - option "Chad Perreault @ Heart & Seoul" [ref=e471]:
+          - img
+          - text: Chad Perreault @ Heart & Seoul
+        - option "Chad Ramenda @ ELKHART GENERAL HOSPITAL-H045769" [ref=e472]:
+          - img
+          - text: Chad Ramenda @ ELKHART GENERAL HOSPITAL-H045769
+        - option "Charlene Jennings @ LAKEVIEW TERRACE ASSISTED LIVING" [ref=e473]:
+          - img
+          - text: Charlene Jennings @ LAKEVIEW TERRACE ASSISTED LIVING
+        - option "Charlie Maidens @ 231 BAR AND GRILL (THE)" [ref=e474]:
+          - img
+          - text: Charlie Maidens @ 231 BAR AND GRILL (THE)
+        - option "Chasity Huntington @ Time Out Campground" [ref=e475]:
+          - img
+          - text: Chasity Huntington @ Time Out Campground
+        - option "Chelsea Alsup @ BRONSON COMMONS" [ref=e476]:
+          - img
+          - text: Chelsea Alsup @ BRONSON COMMONS
+        - option "Cheryl Bauer @ Notre Dame-General Acct" [ref=e477]:
+          - img
+          - text: Cheryl Bauer @ Notre Dame-General Acct
+        - option "CHOLONNI MADISON @ RIVER VALLEY" [ref=e478]:
+          - img
+          - text: CHOLONNI MADISON @ RIVER VALLEY
+        - option "Chris Glisson @ TIM'S TOO" [ref=e479]:
+          - img
+          - text: Chris Glisson @ TIM'S TOO
+        - option "Chris Graebner @ Elk Lake Bar And Grill" [ref=e480]:
+          - img
+          - text: Chris Graebner @ Elk Lake Bar And Grill
+        - option "christina Dalton @ Long Beach Country Club" [ref=e481]:
+          - img
+          - text: christina Dalton @ Long Beach Country Club
+        - option "Christine rudd @ Hoffman Street Grocery" [ref=e482]:
+          - img
+          - text: Christine rudd @ Hoffman Street Grocery
+        - option "Cindy Estes @ MAIL POUCH SALOON- SWANTON" [ref=e483]:
+          - img
+          - text: Cindy Estes @ MAIL POUCH SALOON- SWANTON
+        - option "Codey Moore @ Booyahs Bar & Grill" [ref=e484]:
+          - img
+          - text: Codey Moore @ Booyahs Bar & Grill
+        - option "Cole Schafer @ Railside Golf Club" [ref=e485]:
+          - img
+          - text: Cole Schafer @ Railside Golf Club
+        - option "Colton Bates @ High Caliber Karting And Entertainm" [ref=e486]:
+          - img
+          - text: Colton Bates @ High Caliber Karting And Entertainm
+        - option "Connie Steketee @ Toast N Jams" [ref=e487]:
+          - img
+          - text: Connie Steketee @ Toast N Jams
+        - option "Courtney Beluzar @ Pincrest Bar & Lanes" [ref=e488]:
+          - img
+          - text: Courtney Beluzar @ Pincrest Bar & Lanes
+        - option "Cristal Cook @ Harvest Pointe At Thornapple Manor" [ref=e489]:
+          - img
+          - text: Cristal Cook @ Harvest Pointe At Thornapple Manor
+        - option "Crystal Hallwood @ REAL SERVICES/NUTRITION" [ref=e490]:
+          - img
+          - text: Crystal Hallwood @ REAL SERVICES/NUTRITION
+        - option "Dale Simmons @ HOLY FAMILY CATHOLIC PARISH" [ref=e491]:
+          - img
+          - text: Dale Simmons @ HOLY FAMILY CATHOLIC PARISH
+        - option "Damian Pulchny @ MONKS BAR & GRILL SUN PRAIRIE" [ref=e492]:
+          - img
+          - text: Damian Pulchny @ MONKS BAR & GRILL SUN PRAIRIE
+        - option "Dan Gorman @ Montague High School" [ref=e493]:
+          - img
+          - text: Dan Gorman @ Montague High School
+        - option "Dan Wojhan @ DUNE DOGZ" [ref=e494]:
+          - img
+          - text: Dan Wojhan @ DUNE DOGZ
+        - option "Dana D'agostino @ D'AGOSTINO'S RESTAURANT/ NAVAJO LOU" [ref=e495]:
+          - img
+          - text: Dana D'agostino @ D'AGOSTINO'S RESTAURANT/ NAVAJO LOU
+        - option "Dana Franco @ Champs Bar & Grill" [ref=e496]:
+          - img
+          - text: Dana Franco @ Champs Bar & Grill
+        - option "Dana Wade @ EXPLORERS LEARNING CENTER" [ref=e497]:
+          - img
+          - text: Dana Wade @ EXPLORERS LEARNING CENTER
+        - option "Daniel Howe @ Milwaukee House Scoobys Snack Shac" [ref=e498]:
+          - img
+          - text: Daniel Howe @ Milwaukee House Scoobys Snack Shac
+        - option "Daniell Green @ Yoders Country Market" [ref=e499]:
+          - img
+          - text: Daniell Green @ Yoders Country Market
+        - option "Daniell Green @ Yoders Country Market" [ref=e500]:
+          - img
+          - text: Daniell Green @ Yoders Country Market
 ```

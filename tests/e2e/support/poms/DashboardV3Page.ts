@@ -520,18 +520,20 @@ export class DashboardV3Page extends BasePage {
   }
 
   /**
-   * Select first opportunity from combobox by clicking first option
+   * Select first opportunity from combobox using keyboard navigation
    * Required for interaction activities (Call, Email, Meeting, etc.)
+   * Uses keyboard because CMDK popover items can be outside viewport
    */
   async selectFirstOpportunity(): Promise<void> {
     const combobox = this.getOpportunityCombobox();
     await combobox.click();
     // Wait for options to load
-    await this.page.waitForTimeout(300);
-    // Click the first option - scroll into view first to avoid viewport issues
-    const firstOption = this.page.locator("[cmdk-item]").first();
-    await firstOption.scrollIntoViewIfNeeded();
-    await firstOption.click({ force: true }); // Force click in case of any overlay
+    await this.page.waitForTimeout(500);
+    // Wait for the cmdk list to appear
+    await this.page.locator("[cmdk-item]").first().waitFor({ state: "attached" });
+    // Use keyboard navigation: ArrowDown to highlight first item, then Enter to select
+    // CMDK auto-highlights first item, so just press Enter
+    await this.page.keyboard.press("Enter");
     // Wait for selection to be applied and popover to close
     await this.page.waitForTimeout(300);
     // If popover is still open, dismiss it
