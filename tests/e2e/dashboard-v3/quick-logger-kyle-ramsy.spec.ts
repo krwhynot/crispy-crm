@@ -261,15 +261,15 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
   });
 
   test.describe("Activity Submission", () => {
-    test("logs Check-in activity with contact and organization", async ({ authenticatedPage }) => {
+    test("logs Follow-up activity with contact and organization", async ({ authenticatedPage }) => {
       // Open form
       await authenticatedPage.getByRole("button", { name: /new activity/i }).click();
       await expect(authenticatedPage.getByText("What happened?")).toBeVisible();
 
-      // Select Activity Type: Check-in (may or may not require opportunity)
+      // Select Activity Type: Follow-up (valid UI and backend type)
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
+      await authenticatedPage.getByRole("option", { name: "Follow-up" }).click();
 
       // Select Outcome: Completed
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
@@ -292,6 +292,24 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
 
       // Use JavaScript click to bypass viewport issues (cmdk popover positioning)
       await firstContact.evaluate(node => (node as HTMLElement).click());
+
+      // Select first available opportunity (required for interaction activities)
+      const oppTrigger = authenticatedPage
+        .getByLabel(/opportunity/i)
+        .locator("..")
+        .getByRole("combobox");
+      await oppTrigger.click();
+      const oppSearchInput = authenticatedPage.getByPlaceholder(/search opportunity/i);
+      await expect(oppSearchInput).toBeVisible({ timeout: 5000 });
+
+      const firstOpp = authenticatedPage.getByRole("option").first();
+      const oppCount = await firstOpp.count();
+      if (oppCount === 0) {
+        // Close popover and skip opportunity if none available
+        await authenticatedPage.keyboard.press("Escape");
+      } else {
+        await firstOpp.evaluate(node => (node as HTMLElement).click());
+      }
 
       // Fill notes with unique timestamp
       const timestamp = Date.now();
@@ -316,10 +334,10 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Open form
       await authenticatedPage.getByRole("button", { name: /new activity/i }).click();
 
-      // Select Activity Type: Note (doesn't require opportunity)
+      // Select Activity Type: Follow-up
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
+      await authenticatedPage.getByRole("option", { name: "Follow-up" }).click();
 
       // Select Outcome: Completed
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
@@ -342,6 +360,23 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
 
       // Use JavaScript click to bypass viewport issues (cmdk popover positioning)
       await firstContact.evaluate(node => (node as HTMLElement).click());
+
+      // Select first available opportunity (required for interaction activities)
+      const oppTrigger = authenticatedPage
+        .getByLabel(/opportunity/i)
+        .locator("..")
+        .getByRole("combobox");
+      await oppTrigger.click();
+      const oppSearchInput = authenticatedPage.getByPlaceholder(/search opportunity/i);
+      await expect(oppSearchInput).toBeVisible({ timeout: 5000 });
+
+      const firstOpp = authenticatedPage.getByRole("option").first();
+      const oppCount = await firstOpp.count();
+      if (oppCount === 0) {
+        await authenticatedPage.keyboard.press("Escape");
+      } else {
+        await firstOpp.evaluate(node => (node as HTMLElement).click());
+      }
 
       // Fill notes
       const timestamp = Date.now();
@@ -395,7 +430,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Fill first activity (Note doesn't require opportunity)
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
+      await authenticatedPage.getByRole("option", { name: "Follow-up" }).click();
 
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
       await outcomeTrigger.click();
@@ -417,6 +452,23 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
 
       // Use JavaScript click to bypass viewport issues (cmdk popover positioning)
       await firstContact.evaluate(node => (node as HTMLElement).click());
+
+      // Select first available opportunity (required for interaction activities)
+      const oppTrigger = authenticatedPage
+        .getByLabel(/opportunity/i)
+        .locator("..")
+        .getByRole("combobox");
+      await oppTrigger.click();
+      const oppSearchInput = authenticatedPage.getByPlaceholder(/search opportunity/i);
+      await expect(oppSearchInput).toBeVisible({ timeout: 5000 });
+
+      const firstOpp = authenticatedPage.getByRole("option").first();
+      const oppCount = await firstOpp.count();
+      if (oppCount === 0) {
+        await authenticatedPage.keyboard.press("Escape");
+      } else {
+        await firstOpp.evaluate(node => (node as HTMLElement).click());
+      }
 
       // Fill notes with unique timestamp
       const timestamp = Date.now();
@@ -445,7 +497,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Fill only activity type and outcome (skip notes)
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
+      await authenticatedPage.getByRole("option", { name: "Follow-up" }).click();
 
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
       await outcomeTrigger.click();
@@ -485,7 +537,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Fill activity type, outcome, and notes only
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
+      await authenticatedPage.getByRole("option", { name: "Follow-up" }).click();
 
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
       await outcomeTrigger.click();

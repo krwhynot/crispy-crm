@@ -346,9 +346,9 @@
                   - img
             - generic [ref=e369]:
               - generic [ref=e370]: Notes
-              - textbox "Notes" [active] [ref=e371]:
+              - textbox "Notes" [ref=e371]:
                 - /placeholder: Summary of the interaction...
-                - text: "Follow-up required for contract discussion. Test ID: 1763923731961"
+                - text: "E2E test note - general observation. Test ID: 1763923729143"
             - generic [ref=e373]:
               - generic [ref=e374]: Create follow-up task?
               - switch "Create follow-up task?" [ref=e375] [cursor=pointer]
@@ -356,7 +356,7 @@
             - generic [ref=e376]:
               - button "Cancel" [ref=e377] [cursor=pointer]
               - generic [ref=e378]:
-                - button "Save & Close" [ref=e379] [cursor=pointer]
+                - button "Save & Close" [active] [ref=e379] [cursor=pointer]
                 - button "Save & New" [ref=e380] [cursor=pointer]
   - contentinfo [ref=e381]:
     - generic [ref=e383]:
