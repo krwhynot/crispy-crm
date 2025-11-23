@@ -353,7 +353,7 @@
                 - generic [ref=e372]: Notes
                 - textbox "Notes" [ref=e373]:
                   - /placeholder: Summary of the interaction...
-                  - text: E2E Cross-panel test 1763879308859
+                  - text: E2E Cross-panel test 1763880646140
               - generic [ref=e375]:
                 - generic [ref=e376]: Create follow-up task?
                 - switch "Create follow-up task?" [ref=e377] [cursor=pointer]
