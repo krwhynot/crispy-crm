@@ -11,8 +11,9 @@
  */
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useGetList } from "ra-core";
+import isEqual from "lodash/isEqual";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
