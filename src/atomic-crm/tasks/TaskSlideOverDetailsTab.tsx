@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useUpdate, useNotify, RecordContextProvider } from 'ra-core';
 import { Form } from 'react-admin';
 import { ReferenceField } from '@/components/admin/reference-field';
-import { TextField } from '@/components/admin/text-field';
 import { DateField } from '@/components/admin/date-field';
 import { TextInput } from '@/components/admin/text-input';
 import { SelectInput } from '@/components/admin/select-input';

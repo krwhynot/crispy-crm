@@ -1,10 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import {
-  ExportScheduler,
-  ExportSchedule,
-  ExportFormat,
-  ScheduleFrequency,
-} from '../exportScheduler';
+import { ExportScheduler } from '../exportScheduler';
 
 describe('ExportScheduler', () => {
   let scheduler: ExportScheduler;
@@ -373,7 +368,7 @@ describe('ExportScheduler', () => {
     });
 
     it('should filter active schedules', () => {
-      const s1 = scheduler.createSchedule({
+      scheduler.createSchedule({
         name: 'Active',
         frequency: 'daily',
         format: 'csv',

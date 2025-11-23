@@ -69,7 +69,9 @@ vi.mock("@/components/admin/PremiumDatagrid", () => ({
         data-testid="mock-row-1"
         onClick={() => onRowClick && onRowClick(1)}
         onKeyDown={(e: React.KeyboardEvent) => {
-          if (e.key === 'Enter' || e.key === ' ') onRowClick && onRowClick(1);
+          if (e.key === 'Enter' || e.key === ' ') {
+            if (onRowClick) onRowClick(1);
+          }
         }}
         role="row"
         tabIndex={0}

@@ -10,7 +10,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SelectInput } from "../select-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { SaveContextProvider, Form as RaForm } from "ra-core";
+import { SaveContextProvider } from "ra-core";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { useForm } from "react-hook-form";
 import { Form } from "../form";
@@ -37,9 +37,10 @@ const FormWrapper = ({
     mode: "onChange",
   });
 
-  // Reset form when defaultValues change
+  // Reset form when defaultValues change - using JSON.stringify for deep comparison
   React.useEffect(() => {
     form.reset(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(defaultValues)]);
 
   return (

@@ -10,7 +10,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TextInput } from "../text-input";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { SaveContextProvider, Form as RaForm } from "ra-core";
+import { SaveContextProvider } from "ra-core";
 import { useForm } from "react-hook-form";
 import { Form } from "../form";
 import React from "react";

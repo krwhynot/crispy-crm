@@ -20,7 +20,7 @@ test.describe("Opportunities Activity Timeline", () => {
   let showPage: OpportunityShowPage;
   let formPage: OpportunityFormPage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page: _page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
@@ -55,7 +55,7 @@ test.describe("Opportunities Activity Timeline", () => {
     consoleMonitor.clear();
   });
 
-  test("should display activity timeline on opportunity show page", async ({ page }) => {
+  test("should display activity timeline on opportunity show page", async ({ page: _page }) => {
     // Create opportunity to ensure we have data
     const timestamp = Date.now();
     const opportunityName = `Timeline Display ${timestamp}`;
@@ -83,7 +83,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should add note to opportunity", async ({ page }) => {
+  test("should add note to opportunity", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Add Note ${timestamp}`;
@@ -121,7 +121,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should display activity items in chronological order", async ({ page }) => {
+  test("should display activity items in chronological order", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Chronological ${timestamp}`;
@@ -169,7 +169,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should track opportunity creation in timeline", async ({ page }) => {
+  test("should track opportunity creation in timeline", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Creation Track ${timestamp}`;
@@ -198,7 +198,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should track field updates in timeline", async ({ page }) => {
+  test("should track field updates in timeline", async ({ page: _page }) => {
     // Create opportunity with initial values
     const timestamp = Date.now();
     const opportunityName = `Field Update ${timestamp}`;
@@ -244,7 +244,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should display activity with author information", async ({ page }) => {
+  test("should display activity with author information", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Author Info ${timestamp}`;
@@ -275,7 +275,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should display activity timestamps", async ({ page }) => {
+  test("should display activity timestamps", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Timestamps ${timestamp}`;
@@ -307,7 +307,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should group activities by date or time period", async ({ page }) => {
+  test("should group activities by date or time period", async ({ page: _page }) => {
     // Create opportunity and add activities over time
     const timestamp = Date.now();
     const opportunityName = `Grouped Activities ${timestamp}`;
@@ -340,7 +340,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should handle empty timeline state", async ({ page }) => {
+  test("should handle empty timeline state", async ({ page: _page }) => {
     // This test assumes we can create an opportunity without triggering automatic activities
     // In reality, creation itself might be an activity
 
@@ -376,7 +376,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should display different activity types with icons or badges", async ({ page }) => {
+  test("should display different activity types with icons or badges", async ({ page: _page }) => {
     // Create opportunity and perform different actions
     const timestamp = Date.now();
     const opportunityName = `Activity Types ${timestamp}`;
@@ -420,7 +420,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should allow filtering or searching timeline activities", async ({ page }) => {
+  test("should allow filtering or searching timeline activities", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Filter Timeline ${timestamp}`;
@@ -450,7 +450,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should refresh timeline with real-time updates", async ({ page }) => {
+  test("should refresh timeline with real-time updates", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Real-time ${timestamp}`;
@@ -488,7 +488,7 @@ test.describe("Opportunities Activity Timeline", () => {
     }
   });
 
-  test("should handle long activity text with proper formatting", async ({ page }) => {
+  test("should handle long activity text with proper formatting", async ({ page: _page }) => {
     // Create opportunity
     const timestamp = Date.now();
     const opportunityName = `Long Text ${timestamp}`;

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ContextMenu, useContextMenu } from '../contextMenu';
+import { ContextMenu } from '../contextMenu';
 
 describe('ContextMenu', () => {
   it('should render menu at position', () => {
