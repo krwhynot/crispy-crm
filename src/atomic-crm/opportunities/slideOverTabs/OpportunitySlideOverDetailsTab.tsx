@@ -195,21 +195,21 @@ export function OpportunitySlideOverDetailsTab({
     <div className="space-y-4">
       {/* Name */}
       <div>
-        <label className="text-sm font-medium text-muted-foreground">Name</label>
+        <span className="text-sm font-medium text-muted-foreground">Name</span>
         <p className="text-base mt-1">{record.name || 'N/A'}</p>
       </div>
 
       {/* Description */}
       {record.description && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Description</label>
+          <span className="text-sm font-medium text-muted-foreground">Description</span>
           <p className="text-base mt-1 whitespace-pre-wrap">{record.description}</p>
         </div>
       )}
 
       {/* Stage */}
       <div>
-        <label className="text-sm font-medium text-muted-foreground">Stage</label>
+        <span className="text-sm font-medium text-muted-foreground">Stage</span>
         <div className="mt-1">
           <Badge variant={getStageBadgeVariant(record.stage || '')}>
             {stageName}
@@ -220,7 +220,7 @@ export function OpportunitySlideOverDetailsTab({
       {/* Priority */}
       {record.priority && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Priority</label>
+          <span className="text-sm font-medium text-muted-foreground">Priority</span>
           <div className="mt-1">
             <Badge variant={getPriorityBadgeVariant(record.priority)}>
               {record.priority.charAt(0).toUpperCase() + record.priority.slice(1)}
@@ -232,7 +232,7 @@ export function OpportunitySlideOverDetailsTab({
       {/* Lead Source */}
       {record.lead_source && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Lead Source</label>
+          <span className="text-sm font-medium text-muted-foreground">Lead Source</span>
           <p className="text-base mt-1">
             {record.lead_source.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
           </p>
@@ -241,14 +241,14 @@ export function OpportunitySlideOverDetailsTab({
 
       {/* Estimated Close Date */}
       <div>
-        <label className="text-sm font-medium text-muted-foreground">Estimated Close Date</label>
+        <span className="text-sm font-medium text-muted-foreground">Estimated Close Date</span>
         <p className="text-base mt-1">{formatDate(record.estimated_close_date)}</p>
       </div>
 
       {/* Campaign */}
       {record.campaign && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Campaign</label>
+          <span className="text-sm font-medium text-muted-foreground">Campaign</span>
           <p className="text-base mt-1">{record.campaign}</p>
         </div>
       )}
@@ -256,7 +256,7 @@ export function OpportunitySlideOverDetailsTab({
       {/* Notes */}
       {record.notes && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Notes</label>
+          <span className="text-sm font-medium text-muted-foreground">Notes</span>
           <p className="text-base mt-1 whitespace-pre-wrap">{record.notes}</p>
         </div>
       )}
@@ -264,7 +264,7 @@ export function OpportunitySlideOverDetailsTab({
       {/* Next Action */}
       {record.next_action && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Next Action</label>
+          <span className="text-sm font-medium text-muted-foreground">Next Action</span>
           <p className="text-base mt-1">{record.next_action}</p>
         </div>
       )}
@@ -272,7 +272,7 @@ export function OpportunitySlideOverDetailsTab({
       {/* Next Action Date */}
       {record.next_action_date && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Next Action Date</label>
+          <span className="text-sm font-medium text-muted-foreground">Next Action Date</span>
           <p className="text-base mt-1">{formatDate(record.next_action_date)}</p>
         </div>
       )}
@@ -280,7 +280,7 @@ export function OpportunitySlideOverDetailsTab({
       {/* Decision Criteria */}
       {record.decision_criteria && (
         <div>
-          <label className="text-sm font-medium text-muted-foreground">Decision Criteria</label>
+          <span className="text-sm font-medium text-muted-foreground">Decision Criteria</span>
           <p className="text-base mt-1 whitespace-pre-wrap">{record.decision_criteria}</p>
         </div>
       )}

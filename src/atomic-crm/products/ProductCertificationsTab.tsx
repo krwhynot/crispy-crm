@@ -69,7 +69,7 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
             <div className="space-y-4">
               {/* Certifications Array */}
               <div>
-                <label className="block text-sm font-medium mb-2">Certifications</label>
+                <span className="block text-sm font-medium mb-2">Certifications</span>
                 <ArrayInput source="certifications" label="">
                   <SimpleFormIterator inline disableReordering>
                     <TextInput source="" label="Certification" helperText={false} />
@@ -79,7 +79,7 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
 
               {/* Allergens Array */}
               <div>
-                <label className="block text-sm font-medium mb-2">Allergens</label>
+                <span className="block text-sm font-medium mb-2">Allergens</span>
                 <ArrayInput source="allergens" label="">
                   <SimpleFormIterator inline disableReordering>
                     <TextInput source="" label="Allergen" helperText={false} />
