@@ -11,7 +11,7 @@
  */
 
 import * as React from "react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useMemo } from "react";
 import { useGetList } from "ra-core";
 import isEqual from "lodash/isEqual";
 import { Badge } from "@/components/ui/badge";
@@ -39,10 +39,14 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showStageChangesOnly, setShowStageChangesOnly] = useState(false);
 
+  // Memoize pagination to prevent unnecessary re-fetches
+  const paginationOptions = useMemo(
+    () => ({ pagination: { page: 1, perPage: 100 } }),
+    []
+  );
+
   // Fetch users for filter
-  const { data: users } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
-  });
+  const { data: users } = useGetList<Sale>("sales", paginationOptions);
 
   // Track previous filters to avoid infinite loops from object reference changes
   const previousFiltersRef = useRef<Record<string, any>>({});
