@@ -48,13 +48,13 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({ oppo
 
           {/* Principal Organization ⭐ MOST IMPORTANT */}
           {opportunity.principal_organization_id && (
-            <div className="flex flex-col gap-2 bg-[var(--brand-50)] dark:bg-[var(--brand-950)] p-3 rounded-lg border-2 border-[var(--brand-200)] dark:border-[var(--brand-800)]">
+            <div className="flex flex-col gap-2 bg-primary/5 dark:bg-primary/10 p-3 rounded-lg border-2 border-primary/20 dark:border-primary/30">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
-                      <Star className="w-3.5 h-3.5 text-[var(--brand-600)] fill-[var(--brand-600)]" />
-                      <span className="font-bold text-[var(--brand-700)]">Principal</span>
+                      <Star className="w-3.5 h-3.5 text-primary fill-primary" />
+                      <span className="font-bold text-primary">Principal</span>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -73,10 +73,10 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({ oppo
               >
                 <TextField
                   source="name"
-                  className="text-sm font-bold text-[var(--brand-800)] dark:text-[var(--brand-200)] hover:underline cursor-pointer"
+                  className="text-sm font-bold text-primary dark:text-primary-foreground hover:underline cursor-pointer"
                 />
               </ReferenceField>
-              <span className="text-xs text-[var(--brand-600)] dark:text-[var(--brand-400)] font-medium">
+              <span className="text-xs text-primary/80 dark:text-primary/60 font-medium">
                 Brand/Manufacturer
               </span>
             </div>

@@ -118,23 +118,61 @@ export function useMyTasks() {
     }
   };
 
-  const snoozeTask = async (taskId: number, newDate: Date) => {
+  /**
+   * Calculate task status based on due date relative to today
+   */
+  const calculateStatus = useCallback((dueDate: Date): TaskStatus => {
+    const now = new Date();
+    const today = startOfDay(now);
+    const tomorrow = addDays(today, 1);
+    const nextWeek = addDays(today, 7);
+    const dueDateStart = startOfDay(dueDate);
+
+    if (isBefore(dueDateStart, today)) {
+      return 'overdue';
+    } else if (isSameDay(dueDateStart, today)) {
+      return 'today';
+    } else if (isSameDay(dueDateStart, tomorrow)) {
+      return 'tomorrow';
+    } else if (isBefore(dueDateStart, nextWeek)) {
+      return 'upcoming';
+    } else {
+      return 'later';
+    }
+  }, []);
+
+  /**
+   * Snooze a task by 1 day (to end of following day)
+   * Uses optimistic UI update for immediate feedback
+   */
+  const snoozeTask = useCallback(async (taskId: number) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    // Calculate new due date: end of the following day (timezone-aware)
+    const newDueDate = endOfDay(addDays(task.dueDate, 1));
+    const newStatus = calculateStatus(newDueDate);
+
+    // Optimistic UI update - immediately move task to new bucket
+    setTasks(prev => prev.map(t =>
+      t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t
+    ));
+
     try {
       await dataProvider.update('tasks', {
         id: taskId,
-        data: { due_date: newDate.toISOString() },
-        previousData: tasks.find(t => t.id === taskId) || {}
+        data: { due_date: newDueDate.toISOString() },
+        previousData: task
       });
-
-      // Update local state
-      setTasks(prev => prev.map(t =>
-        t.id === taskId ? { ...t, dueDate: newDate } : t
-      ));
     } catch (err) {
       console.error('Failed to snooze task:', err);
+      // Rollback optimistic update on failure
+      setTasks(prev => prev.map(t =>
+        t.id === taskId ? { ...t, dueDate: task.dueDate, status: task.status } : t
+      ));
       throw err; // Re-throw so UI can handle
     }
-  };
+  }, [tasks, dataProvider, calculateStatus]);
 
   return { tasks, loading, error, completeTask, snoozeTask };
 }
