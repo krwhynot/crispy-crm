@@ -264,6 +264,8 @@ const onSubmit = async (data: ActivityLogInput, closeAfterSave = true) => {
 
 ## Dashboard V2 Organisms (Legacy)
 
+> These components were removed from the active bundle when Dashboard V3 shipped. Copies live under `archive/dashboard/v2/` if you need to review historical patterns.
+
 ### `FiltersSidebar` – src/atomic-crm/dashboard/v2/components/FiltersSidebar.tsx
 
 **What it does:** Collapsible filter sidebar for opportunities with health, stage, assignee, and last-touch filters.
@@ -365,6 +367,4 @@ Standard panel structure:
 - [x] `TasksPanel.tsx`
 - [x] `QuickLogForm.tsx`
 - [x] `QuickLoggerPanel.tsx`
-- [ ] `FiltersSidebar.tsx` (V2)
-- [ ] `OpportunitiesHierarchy.tsx` (V2)
-- [ ] `RightSlideOver.tsx` (V2)
+- [ ] (Optional) Review archived V2 organisms in `archive/dashboard/v2/` for historical context

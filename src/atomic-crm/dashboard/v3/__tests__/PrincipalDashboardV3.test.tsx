@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import { PrincipalDashboardV3 } from '../PrincipalDashboardV3';
 
 // Mock QuickLoggerPanel to avoid React Admin dependency in tests
@@ -31,9 +32,22 @@ vi.mock('../hooks/useMyTasks', () => ({
   }),
 }));
 
+// Mock the usePrincipalOpportunities hook (used by PipelineDrillDownSheet)
+vi.mock('../hooks/usePrincipalOpportunities', () => ({
+  usePrincipalOpportunities: () => ({
+    opportunities: [],
+    loading: false,
+    error: null,
+  }),
+}));
+
 describe('PrincipalDashboardV3', () => {
   it('should render all three panels', () => {
-    render(<PrincipalDashboardV3 />);
+    render(
+      <MemoryRouter>
+        <PrincipalDashboardV3 />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText('Pipeline by Principal')).toBeInTheDocument();
     expect(screen.getByText('My Tasks')).toBeInTheDocument();
@@ -41,14 +55,22 @@ describe('PrincipalDashboardV3', () => {
   });
 
   it('should render resizable panel group', () => {
-    const { container } = render(<PrincipalDashboardV3 />);
+    const { container } = render(
+      <MemoryRouter>
+        <PrincipalDashboardV3 />
+      </MemoryRouter>
+    );
 
     const panelGroup = container.querySelector('[data-panel-group]');
     expect(panelGroup).toBeInTheDocument();
   });
 
   it('should have three panels with correct default sizes', () => {
-    const { container } = render(<PrincipalDashboardV3 />);
+    const { container } = render(
+      <MemoryRouter>
+        <PrincipalDashboardV3 />
+      </MemoryRouter>
+    );
 
     const panels = container.querySelectorAll('[data-panel]');
     expect(panels).toHaveLength(3);
