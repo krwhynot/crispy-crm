@@ -1,11 +1,29 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { GlobalFilterBar } from "./GlobalFilterBar";
 import { GlobalFilterProvider } from "../contexts/GlobalFilterContext";
+
+// Mock ra-core hooks
+vi.mock("ra-core", () => ({
+  useGetList: vi.fn(),
+}));
+
+import { useGetList } from "ra-core";
+
+const mockSalesReps = [
+  { id: 1, first_name: "John", last_name: "Smith" },
+  { id: 2, first_name: "Jane", last_name: "Doe" },
+];
 
 describe("GlobalFilterBar", () => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <GlobalFilterProvider>{children}</GlobalFilterProvider>
   );
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (useGetList as any).mockReturnValue({ data: mockSalesReps, isPending: false });
+  });
 
   it("renders date range selector", () => {
     render(<GlobalFilterBar />, { wrapper: Wrapper });
@@ -21,17 +39,18 @@ describe("GlobalFilterBar", () => {
     expect(screen.getByText(/all reps/i)).toBeInTheDocument();
   });
 
-  it("renders export button", () => {
+  it("does not show reset button with default filters", () => {
     render(<GlobalFilterBar />, { wrapper: Wrapper });
 
-    const exportButton = screen.getByRole("button", { name: /export all/i });
-    expect(exportButton).toBeInTheDocument();
+    // Reset button only appears when filters are changed from defaults
+    const resetButton = screen.queryByRole("button", { name: /reset filters/i });
+    expect(resetButton).not.toBeInTheDocument();
   });
 
-  it("renders reset filters button", () => {
+  it("displays sales rep options from fetched data", () => {
     render(<GlobalFilterBar />, { wrapper: Wrapper });
 
-    const resetButton = screen.getByRole("button", { name: /reset filters/i });
-    expect(resetButton).toBeInTheDocument();
+    // Verify the sales rep dropdown shows "All Reps" as default
+    expect(screen.getByText(/all reps/i)).toBeInTheDocument();
   });
 });

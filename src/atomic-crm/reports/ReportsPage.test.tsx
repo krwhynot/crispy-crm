@@ -1,8 +1,26 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import ReportsPage from "./ReportsPage";
 
+// Mock ra-core hooks (used by GlobalFilterBar)
+vi.mock("ra-core", () => ({
+  useGetList: vi.fn(),
+}));
+
+import { useGetList } from "ra-core";
+
+const mockSalesReps = [
+  { id: 1, first_name: "John", last_name: "Smith" },
+  { id: 2, first_name: "Jane", last_name: "Doe" },
+];
+
 describe("ReportsPage", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (useGetList as any).mockReturnValue({ data: mockSalesReps, isPending: false });
+  });
+
   it("renders page title", () => {
     render(
       <MemoryRouter>
