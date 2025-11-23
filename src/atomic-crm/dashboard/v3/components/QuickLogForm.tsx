@@ -362,71 +362,95 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Contact</FormLabel>
-                <Popover open={contactOpen} onOpenChange={setContactOpen}>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "h-11 w-full justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
+                <div className="flex gap-2">
+                  <Popover open={contactOpen} onOpenChange={setContactOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={contactOpen}
+                          aria-haspopup="listbox"
+                          aria-controls="contact-list"
+                          className={cn(
+                            "h-11 flex-1 justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? contacts.find((c) => c.id === field.value)?.name
+                            : "Select contact"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command
+                        id="contact-list"
+                        filter={(value, search) =>
+                          value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
+                        }
                       >
-                        {field.value
-                          ? contacts.find((c) => c.id === field.value)?.name
-                          : "Select contact"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command
-                      filter={(value, search) =>
-                        value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
-                      }
+                        <CommandInput placeholder="Search contact..." />
+                        <CommandEmpty>
+                          {anchorOrganizationId
+                            ? "No contacts found for this organization"
+                            : "No contact found."}
+                        </CommandEmpty>
+                        <CommandGroup>
+                          {filteredContacts.map((contact) => (
+                            <CommandItem
+                              key={contact.id}
+                              value={`${contact.name} ${contact.company_name || ""}`}
+                              className="h-11"
+                              onSelect={() => {
+                                field.onChange(contact.id);
+                                // Auto-fill organization if contact has one
+                                if (contact.organization_id) {
+                                  form.setValue("organizationId", contact.organization_id);
+                                }
+                                setContactOpen(false); // Close popover after selection
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  field.value === contact.id ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              <span className="flex flex-col">
+                                <span>{contact.name}</span>
+                                {contact.company_name && (
+                                  <span className="text-xs text-muted-foreground">
+                                    {contact.company_name}
+                                  </span>
+                                )}
+                              </span>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  {field.value && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-11 w-11 shrink-0"
+                      onClick={() => {
+                        field.onChange(undefined);
+                        // Clear dependent fields per engineering constitution - fail fast
+                        form.setValue("organizationId", undefined);
+                        form.setValue("opportunityId", undefined);
+                      }}
+                      aria-label="Clear contact selection"
                     >
-                      <CommandInput placeholder="Search contact..." />
-                      <CommandEmpty>
-                        {selectedOpportunity
-                          ? "No contacts found for this opportunity's organization"
-                          : "No contact found."}
-                      </CommandEmpty>
-                      <CommandGroup>
-                        {filteredContacts.map((contact) => (
-                          <CommandItem
-                            key={contact.id}
-                            value={`${contact.name} ${contact.company_name || ""}`}
-                            onSelect={() => {
-                              field.onChange(contact.id);
-                              // Auto-fill organization if contact has one
-                              if (contact.organization_id) {
-                                form.setValue("organizationId", contact.organization_id);
-                              }
-                              setContactOpen(false); // Close popover after selection
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                field.value === contact.id ? "opacity-100" : "opacity-0"
-                              )}
-                            />
-                            <span className="flex flex-col">
-                              <span>{contact.name}</span>
-                              {contact.company_name && (
-                                <span className="text-xs text-muted-foreground">
-                                  {contact.company_name}
-                                </span>
-                              )}
-                            </span>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>Select a contact OR organization</FormDescription>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+                <FormDescription>Select a contact and/or organization (must be from same company)</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -439,56 +463,101 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Organization</FormLabel>
-                <Popover open={orgOpen} onOpenChange={setOrgOpen}>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "h-11 w-full justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
+                <div className="flex gap-2">
+                  <Popover open={orgOpen} onOpenChange={setOrgOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={orgOpen}
+                          aria-haspopup="listbox"
+                          aria-controls="organization-list"
+                          className={cn(
+                            "h-11 flex-1 justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? organizations.find((o) => o.id === field.value)?.name
+                            : "Select organization"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command
+                        id="organization-list"
+                        filter={(value, search) =>
+                          value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
+                        }
                       >
-                        {field.value
-                          ? organizations.find((o) => o.id === field.value)?.name
-                          : "Select organization"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command
-                      filter={(value, search) =>
-                        value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
-                      }
+                        <CommandInput placeholder="Search organization..." />
+                        <CommandEmpty>No organization found.</CommandEmpty>
+                        <CommandGroup>
+                          {filteredOrganizations.map((org) => (
+                            <CommandItem
+                              key={org.id}
+                              value={org.name}
+                              className="h-11"
+                              onSelect={() => {
+                                field.onChange(org.id);
+                                // Clear mismatched contact and opportunity per engineering constitution
+                                const contactId = form.getValues("contactId");
+                                if (contactId) {
+                                  const contact = contacts.find((c) => c.id === contactId);
+                                  if (contact && contact.organization_id !== org.id) {
+                                    form.setValue("contactId", undefined);
+                                    notify("Contact cleared - doesn't belong to selected organization", { type: "info" });
+                                  }
+                                }
+                                const oppId = form.getValues("opportunityId");
+                                if (oppId) {
+                                  const opp = opportunities.find((o) => o.id === oppId);
+                                  if (opp && opp.customer_organization_id !== org.id) {
+                                    form.setValue("opportunityId", undefined);
+                                  }
+                                }
+                                setOrgOpen(false); // Close popover after selection
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  field.value === org.id ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {org.name}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  {field.value && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-11 w-11 shrink-0"
+                      onClick={() => {
+                        field.onChange(undefined);
+                        // Clear dependent opportunity if it belongs to this org
+                        const oppId = form.getValues("opportunityId");
+                        if (oppId) {
+                          const opp = opportunities.find((o) => o.id === oppId);
+                          if (opp && opp.customer_organization_id === field.value) {
+                            form.setValue("opportunityId", undefined);
+                          }
+                        }
+                      }}
+                      aria-label="Clear organization selection"
                     >
-                      <CommandInput placeholder="Search organization..." />
-                      <CommandEmpty>No organization found.</CommandEmpty>
-                      <CommandGroup>
-                        {filteredOrganizations.map((org) => (
-                          <CommandItem
-                            key={org.id}
-                            value={org.name}
-                            onSelect={() => {
-                              field.onChange(org.id);
-                              setOrgOpen(false); // Close popover after selection
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                field.value === org.id ? "opacity-100" : "opacity-0"
-                              )}
-                            />
-                            {org.name}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>Select a contact OR organization</FormDescription>
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+                <FormDescription>Select a contact and/or organization (must be from same company)</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -508,6 +577,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                         <Button
                           variant="outline"
                           role="combobox"
+                          aria-expanded={oppOpen}
+                          aria-haspopup="listbox"
+                          aria-controls="opportunity-list"
                           className={cn(
                             "h-11 flex-1 justify-between",
                             !field.value && "text-muted-foreground"
@@ -522,14 +594,15 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                     </PopoverTrigger>
                     <PopoverContent className="w-full p-0">
                       <Command
+                        id="opportunity-list"
                         filter={(value, search) =>
                           value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
                         }
                       >
                         <CommandInput placeholder="Search opportunity..." />
                         <CommandEmpty>
-                          {selectedContact
-                            ? "No opportunities for this contact's organization"
+                          {anchorOrganizationId
+                            ? "No opportunities for this organization"
                             : "No opportunity found."}
                         </CommandEmpty>
                         <CommandGroup>
@@ -537,6 +610,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                             <CommandItem
                               key={opp.id}
                               value={opp.name}
+                              className="h-11"
                               onSelect={() => {
                                 field.onChange(opp.id);
                                 setOppOpen(false); // Close popover after selection
