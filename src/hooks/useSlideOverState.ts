@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 /**
  * Hook for managing slide-over state with URL synchronization
@@ -14,31 +14,31 @@ import { useState, useEffect, useCallback } from 'react';
 export interface UseSlideOverStateReturn {
   slideOverId: number | null;
   isOpen: boolean;
-  mode: 'view' | 'edit';
-  openSlideOver: (id: number, initialMode?: 'view' | 'edit') => void;
+  mode: "view" | "edit";
+  openSlideOver: (id: number, initialMode?: "view" | "edit") => void;
   closeSlideOver: () => void;
-  setMode: (mode: 'view' | 'edit') => void;
+  setMode: (mode: "view" | "edit") => void;
   toggleMode: () => void;
 }
 
 export function useSlideOverState(): UseSlideOverStateReturn {
   const [slideOverId, setSlideOverId] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const [mode, setMode] = useState<"view" | "edit">("view");
 
   // Parse URL params on initial load to support deep linking
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const viewId = params.get('view');
-    const editId = params.get('edit');
+    const viewId = params.get("view");
+    const editId = params.get("edit");
 
     if (viewId) {
       setSlideOverId(Number(viewId));
-      setMode('view');
+      setMode("view");
       setIsOpen(true);
     } else if (editId) {
       setSlideOverId(Number(editId));
-      setMode('edit');
+      setMode("edit");
       setIsOpen(true);
     }
   }, []); // Run once on mount
@@ -49,28 +49,28 @@ export function useSlideOverState(): UseSlideOverStateReturn {
     setSlideOverId(null);
     // Remove slide-over params from URL
     const params = new URLSearchParams(window.location.search);
-    params.delete('view');
-    params.delete('edit');
+    params.delete("view");
+    params.delete("edit");
     const newUrl = params.toString()
       ? `${window.location.pathname}?${params}`
       : window.location.pathname;
-    window.history.pushState(null, '', newUrl);
+    window.history.pushState(null, "", newUrl);
   }, []);
 
   // Listen to browser back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search);
-      const viewId = params.get('view');
-      const editId = params.get('edit');
+      const viewId = params.get("view");
+      const editId = params.get("edit");
 
       if (viewId) {
         setSlideOverId(Number(viewId));
-        setMode('view');
+        setMode("view");
         setIsOpen(true);
       } else if (editId) {
         setSlideOverId(Number(editId));
-        setMode('edit');
+        setMode("edit");
         setIsOpen(true);
       } else {
         // No params means slide-over should be closed
@@ -79,46 +79,46 @@ export function useSlideOverState(): UseSlideOverStateReturn {
       }
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   // Handle ESC key to close slide-over
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === "Escape" && isOpen) {
         closeSlideOver();
       }
     };
 
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, closeSlideOver]);
 
-  const openSlideOver = (id: number, initialMode: 'view' | 'edit' = 'view') => {
+  const openSlideOver = (id: number, initialMode: "view" | "edit" = "view") => {
     setSlideOverId(id);
     setMode(initialMode);
     setIsOpen(true);
     // Update URL for deep linking and browser history
     const params = new URLSearchParams(window.location.search);
     // Clear both view and edit params first
-    params.delete('view');
-    params.delete('edit');
+    params.delete("view");
+    params.delete("edit");
     // Set the new param
     params.set(initialMode, String(id));
-    window.history.pushState(null, '', `${window.location.pathname}?${params}`);
+    window.history.pushState(null, "", `${window.location.pathname}?${params}`);
   };
 
   const toggleMode = () => {
-    const newMode = mode === 'view' ? 'edit' : 'view';
+    const newMode = mode === "view" ? "edit" : "view";
     setMode(newMode);
     // Update URL when mode changes
     if (slideOverId) {
       const params = new URLSearchParams(window.location.search);
-      params.delete('view');
-      params.delete('edit');
+      params.delete("view");
+      params.delete("edit");
       params.set(newMode, String(slideOverId));
-      window.history.replaceState(null, '', `${window.location.pathname}?${params}`);
+      window.history.replaceState(null, "", `${window.location.pathname}?${params}`);
     }
   };
 

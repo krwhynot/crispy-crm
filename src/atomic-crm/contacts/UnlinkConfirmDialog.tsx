@@ -1,5 +1,5 @@
 // src/atomic-crm/contacts/UnlinkConfirmDialog.tsx
-import { useDelete, useNotify } from 'react-admin';
+import { useDelete, useNotify } from "react-admin";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 
 interface UnlinkConfirmDialogProps {
   opportunity: { id: number; name: string; junctionId: string } | null;
@@ -32,23 +32,23 @@ export function UnlinkConfirmDialog({
 
     try {
       await deleteOne(
-        'opportunity_contacts',
+        "opportunity_contacts",
         { id: opportunity.junctionId },
         {
           onSuccess: () => {
             notify(`Removed ${contactName} from ${opportunity.name}`, {
-              type: 'success',
+              type: "success",
             });
             onSuccess();
             onClose();
           },
           onError: (error: any) => {
-            notify(error?.message || 'Failed to unlink opportunity', { type: 'error' });
+            notify(error?.message || "Failed to unlink opportunity", { type: "error" });
           },
         }
       );
     } catch {
-      notify('Failed to unlink opportunity. Please try again.', { type: 'error' });
+      notify("Failed to unlink opportunity. Please try again.", { type: "error" });
     }
   };
 
@@ -58,9 +58,8 @@ export function UnlinkConfirmDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Remove contact from opportunity?</AlertDialogTitle>
           <AlertDialogDescription>
-            Remove <strong>{contactName}</strong> from{' '}
-            <strong>{opportunity?.name}</strong>? This won't delete either record,
-            just removes the association.
+            Remove <strong>{contactName}</strong> from <strong>{opportunity?.name}</strong>? This
+            won't delete either record, just removes the association.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -70,7 +69,7 @@ export function UnlinkConfirmDialog({
             disabled={isLoading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isLoading ? 'Removing...' : 'Remove'}
+            {isLoading ? "Removing..." : "Remove"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -1,26 +1,22 @@
-import { FunctionField } from 'react-admin';
-import { List } from '@/components/admin/list';
-import { TextField } from '@/components/admin/text-field';
-import { ReferenceField } from '@/components/admin/reference-field';
-import { StandardListLayout } from '@/components/layouts/StandardListLayout';
-import { PremiumDatagrid } from '@/components/admin/PremiumDatagrid';
-import { useSlideOverState } from '@/hooks/useSlideOverState';
-import { Badge } from '@/components/ui/badge';
-import { ProductListFilter } from './ProductListFilter';
-import { ProductSlideOver } from './ProductSlideOver';
+import { FunctionField } from "react-admin";
+import { List } from "@/components/admin/list";
+import { TextField } from "@/components/admin/text-field";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { Badge } from "@/components/ui/badge";
+import { ProductListFilter } from "./ProductListFilter";
+import { ProductSlideOver } from "./ProductSlideOver";
 
 export const ProductList = () => {
-  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
+    useSlideOverState();
 
   return (
     <List>
-      <StandardListLayout
-        resource="products"
-        filterComponent={<ProductListFilter />}
-      >
-        <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), 'view')}
-        >
+      <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
+        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
           <TextField source="name" label="Product Name" />
           <TextField source="sku" label="SKU" />
 
@@ -29,9 +25,9 @@ export const ProductList = () => {
             render={(record: any) => (
               <Badge variant="outline">
                 {record.category
-                  .split('_')
+                  .split("_")
                   .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(' ')}
+                  .join(" ")}
               </Badge>
             )}
           />
@@ -85,28 +81,28 @@ export const ProductList = () => {
  * StatusBadge - Display product status with semantic colors
  */
 function StatusBadge({ status }: { status: string }) {
-  let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'default';
+  let variant: "default" | "secondary" | "destructive" | "outline" = "default";
 
   switch (status) {
-    case 'active':
-      variant = 'default';
+    case "active":
+      variant = "default";
       break;
-    case 'discontinued':
-      variant = 'destructive';
+    case "discontinued":
+      variant = "destructive";
       break;
-    case 'coming_soon':
-      variant = 'secondary';
+    case "coming_soon":
+      variant = "secondary";
       break;
     default:
-      variant = 'outline';
+      variant = "outline";
   }
 
   return (
     <Badge variant={variant}>
       {status
-        .split('_')
+        .split("_")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ')}
+        .join(" ")}
     </Badge>
   );
 }

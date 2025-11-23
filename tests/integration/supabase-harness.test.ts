@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import { createTestHarness } from './supabase-harness';
+import { describe, it, expect, afterEach } from "vitest";
+import { createTestHarness } from "./supabase-harness";
 
-describe('Supabase Test Harness', () => {
+describe("Supabase Test Harness", () => {
   let harness: Awaited<ReturnType<typeof createTestHarness>>;
 
   afterEach(async () => {
@@ -10,13 +10,13 @@ describe('Supabase Test Harness', () => {
     }
   });
 
-  it('creates and cleans up test organizations', async () => {
+  it("creates and cleans up test organizations", async () => {
     harness = await createTestHarness();
 
     // Create test org
     const { data, error } = await harness.client
-      .from('organizations')
-      .insert({ name: 'Test Org', organization_type: 'customer' })
+      .from("organizations")
+      .insert({ name: "Test Org", organization_type: "customer" })
       .select()
       .single();
 
@@ -29,9 +29,9 @@ describe('Supabase Test Harness', () => {
     await harness.cleanup();
 
     const { data: check } = await harness.client
-      .from('organizations')
-      .select('id')
-      .eq('id', data!.id)
+      .from("organizations")
+      .select("id")
+      .eq("id", data!.id)
       .maybeSingle();
 
     expect(check).toBeNull();

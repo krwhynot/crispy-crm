@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useDataProvider } from 'react-admin';
+import { useState, useEffect } from "react";
+import { useDataProvider } from "react-admin";
 
 /**
  * Opportunity summary for drill-down display
@@ -25,7 +25,10 @@ interface UsePrincipalOpportunitiesOptions {
  * Used by the Pipeline Drill-Down feature to show opportunities
  * when clicking on a principal row in the pipeline table.
  */
-export function usePrincipalOpportunities({ principalId, enabled = true }: UsePrincipalOpportunitiesOptions) {
+export function usePrincipalOpportunities({
+  principalId,
+  enabled = true,
+}: UsePrincipalOpportunitiesOptions) {
   const dataProvider = useDataProvider();
   const [opportunities, setOpportunities] = useState<OpportunitySummary[]>([]);
   const [loading, setLoading] = useState(false);
@@ -44,19 +47,19 @@ export function usePrincipalOpportunities({ principalId, enabled = true }: UsePr
         setError(null);
 
         // Fetch opportunities filtered by organization (principal)
-        const { data } = await dataProvider.getList('opportunities', {
+        const { data } = await dataProvider.getList("opportunities", {
           filter: {
             organization_id: principalId,
           },
-          sort: { field: 'expected_close_date', order: 'ASC' },
+          sort: { field: "expected_close_date", order: "ASC" },
           pagination: { page: 1, perPage: 50 },
         });
 
         // Map to summary format
         const mapped: OpportunitySummary[] = data.map((opp: any) => ({
           id: opp.id,
-          name: opp.name || 'Unnamed Opportunity',
-          stage: opp.stage || 'Unknown',
+          name: opp.name || "Unnamed Opportunity",
+          stage: opp.stage || "Unknown",
           amount: opp.amount || 0,
           probability: opp.probability || 0,
           lastActivityDate: opp.last_activity_date ? new Date(opp.last_activity_date) : null,
@@ -65,7 +68,7 @@ export function usePrincipalOpportunities({ principalId, enabled = true }: UsePr
 
         setOpportunities(mapped);
       } catch (err) {
-        console.error('Failed to fetch principal opportunities:', err);
+        console.error("Failed to fetch principal opportunities:", err);
         setError(err as Error);
       } finally {
         setLoading(false);

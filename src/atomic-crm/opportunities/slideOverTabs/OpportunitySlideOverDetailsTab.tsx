@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { Form, useUpdate, useNotify } from 'react-admin';
-import { format } from 'date-fns';
-import { TextInput } from '@/components/admin/text-input';
-import { SelectInput } from '@/components/admin/select-input';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { OPPORTUNITY_STAGE_CHOICES } from '../stageConstants';
-import { LeadSourceInput } from '../LeadSourceInput';
+import { useState } from "react";
+import { Form, useUpdate, useNotify } from "react-admin";
+import { format } from "date-fns";
+import { TextInput } from "@/components/admin/text-input";
+import { SelectInput } from "@/components/admin/select-input";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { OPPORTUNITY_STAGE_CHOICES } from "../stageConstants";
+import { LeadSourceInput } from "../LeadSourceInput";
 
 interface OpportunitySlideOverDetailsTabProps {
   record: any;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -27,7 +27,7 @@ export function OpportunitySlideOverDetailsTab({
     setIsSaving(true);
     try {
       await update(
-        'opportunities',
+        "opportunities",
         {
           id: record.id,
           data,
@@ -35,13 +35,13 @@ export function OpportunitySlideOverDetailsTab({
         },
         {
           onSuccess: () => {
-            notify('Opportunity updated successfully', { type: 'success' });
+            notify("Opportunity updated successfully", { type: "success" });
             if (onModeToggle) {
               onModeToggle(); // Switch back to view mode
             }
           },
           onError: (error: any) => {
-            notify(error?.message || 'Failed to update opportunity', { type: 'error' });
+            notify(error?.message || "Failed to update opportunity", { type: "error" });
           },
         }
       );
@@ -56,19 +56,10 @@ export function OpportunitySlideOverDetailsTab({
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     return (
-      <Form
-        defaultValues={record}
-        onSubmit={handleSave}
-        className="space-y-4"
-      >
-        <TextInput
-          source="name"
-          label="Opportunity Name"
-          helperText={false}
-          fullWidth
-        />
+      <Form defaultValues={record} onSubmit={handleSave} className="space-y-4">
+        <TextInput source="name" label="Opportunity Name" helperText={false} fullWidth />
         <TextInput
           source="description"
           label="Description"
@@ -88,10 +79,10 @@ export function OpportunitySlideOverDetailsTab({
           source="priority"
           label="Priority"
           choices={[
-            { id: 'low', name: 'Low' },
-            { id: 'medium', name: 'Medium' },
-            { id: 'high', name: 'High' },
-            { id: 'critical', name: 'Critical' },
+            { id: "low", name: "Low" },
+            { id: "medium", name: "Medium" },
+            { id: "high", name: "High" },
+            { id: "critical", name: "Critical" },
           ]}
           helperText={false}
           fullWidth
@@ -106,26 +97,9 @@ export function OpportunitySlideOverDetailsTab({
         />
 
         {/* Campaign and workflow fields */}
-        <TextInput
-          source="campaign"
-          label="Campaign"
-          helperText={false}
-          fullWidth
-        />
-        <TextInput
-          source="notes"
-          label="Notes"
-          multiline
-          rows={2}
-          helperText={false}
-          fullWidth
-        />
-        <TextInput
-          source="next_action"
-          label="Next Action"
-          helperText={false}
-          fullWidth
-        />
+        <TextInput source="campaign" label="Campaign" helperText={false} fullWidth />
+        <TextInput source="notes" label="Notes" multiline rows={2} helperText={false} fullWidth />
+        <TextInput source="next_action" label="Next Action" helperText={false} fullWidth />
         <TextInput
           source="next_action_date"
           label="Next Action Date"
@@ -144,19 +118,10 @@ export function OpportunitySlideOverDetailsTab({
 
         {/* Action buttons */}
         <div className="flex gap-2 pt-4">
-          <Button
-            type="submit"
-            disabled={isSaving}
-            className="flex-1"
-          >
-            {isSaving ? 'Saving...' : 'Save Changes'}
+          <Button type="submit" disabled={isSaving} className="flex-1">
+            {isSaving ? "Saving..." : "Save Changes"}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isSaving}
-          >
+          <Button type="button" variant="outline" onClick={handleCancel} disabled={isSaving}>
             Cancel
           </Button>
         </div>
@@ -166,37 +131,36 @@ export function OpportunitySlideOverDetailsTab({
 
   // View mode
   const formatDate = (date: string | null | undefined) => {
-    if (!date) return 'Not set';
+    if (!date) return "Not set";
     try {
-      return format(new Date(date), 'MMM d, yyyy');
+      return format(new Date(date), "MMM d, yyyy");
     } catch {
-      return 'Invalid date';
+      return "Invalid date";
     }
   };
 
   const getStageBadgeVariant = (stage: string) => {
-    if (stage === 'closed_won') return 'default';
-    if (stage === 'closed_lost') return 'destructive';
-    return 'secondary';
+    if (stage === "closed_won") return "default";
+    if (stage === "closed_lost") return "destructive";
+    return "secondary";
   };
 
   const getPriorityBadgeVariant = (priority: string) => {
-    if (priority === 'critical') return 'destructive';
-    if (priority === 'high') return 'default';
-    if (priority === 'medium') return 'secondary';
-    return 'outline';
+    if (priority === "critical") return "destructive";
+    if (priority === "high") return "default";
+    if (priority === "medium") return "secondary";
+    return "outline";
   };
 
-  const stageName = OPPORTUNITY_STAGE_CHOICES.find(
-    (choice) => choice.id === record.stage
-  )?.name || record.stage;
+  const stageName =
+    OPPORTUNITY_STAGE_CHOICES.find((choice) => choice.id === record.stage)?.name || record.stage;
 
   return (
     <div className="space-y-4">
       {/* Name */}
       <div>
         <span className="text-sm font-medium text-muted-foreground">Name</span>
-        <p className="text-base mt-1">{record.name || 'N/A'}</p>
+        <p className="text-base mt-1">{record.name || "N/A"}</p>
       </div>
 
       {/* Description */}
@@ -211,9 +175,7 @@ export function OpportunitySlideOverDetailsTab({
       <div>
         <span className="text-sm font-medium text-muted-foreground">Stage</span>
         <div className="mt-1">
-          <Badge variant={getStageBadgeVariant(record.stage || '')}>
-            {stageName}
-          </Badge>
+          <Badge variant={getStageBadgeVariant(record.stage || "")}>{stageName}</Badge>
         </div>
       </div>
 
@@ -234,7 +196,7 @@ export function OpportunitySlideOverDetailsTab({
         <div>
           <span className="text-sm font-medium text-muted-foreground">Lead Source</span>
           <p className="text-base mt-1">
-            {record.lead_source.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+            {record.lead_source.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
           </p>
         </div>
       )}

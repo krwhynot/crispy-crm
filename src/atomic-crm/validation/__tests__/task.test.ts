@@ -507,7 +507,7 @@ describe("Task Validation Schemas (task.ts)", () => {
         type: "Call" as const,
         description: "From React Hook Form",
         contact_id: 123,
-        sales_id: 456,  // Required field
+        sales_id: 456, // Required field
       };
 
       const result = taskSchema.safeParse(formData);

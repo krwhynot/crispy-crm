@@ -13,7 +13,7 @@ export function SalesInputs() {
     {
       key: "permissions",
       label: "Permissions",
-      fields: ["role", "disabled"],  // Changed from administrator to role
+      fields: ["role", "disabled"], // Changed from administrator to role
       content: <SalesPermissionsTab />,
     },
   ];

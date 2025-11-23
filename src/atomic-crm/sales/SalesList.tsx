@@ -27,21 +27,21 @@ const RoleBadgeField = () => {
 
   let badge = null;
   switch (record.role) {
-    case 'admin':
+    case "admin":
       badge = (
         <Badge variant="outline" className="border-primary text-primary">
           Admin
         </Badge>
       );
       break;
-    case 'manager':
+    case "manager":
       badge = (
         <Badge variant="outline" className="border-success text-success">
           Manager
         </Badge>
       );
       break;
-    case 'rep':
+    case "rep":
       badge = (
         <Badge variant="outline" className="border-muted-foreground text-muted-foreground">
           Rep
@@ -88,10 +88,7 @@ export function SalesList() {
       >
         {/* Sales has no filters, so no StandardListLayout wrapper needed - just inline search */}
         <div className="card-container">
-          <PremiumDatagrid
-            onRowClick={(id) => openSlideOver(Number(id))}
-            bulkActionButtons={false}
-          >
+          <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id))} bulkActionButtons={false}>
             <TextField source="first_name" label="First Name" />
             <TextField source="last_name" label="Last Name" />
             <EmailField source="email" label="Email" />

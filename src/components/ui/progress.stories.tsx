@@ -152,9 +152,7 @@ export const LoopAnimation: Story = {
       return (
         <div className="w-[300px] space-y-2">
           <Progress value={progress} />
-          <p className="text-sm text-muted-foreground text-center">
-            Loading... {progress}%
-          </p>
+          <p className="text-sm text-muted-foreground text-center">Loading... {progress}%</p>
         </div>
       );
     };
@@ -378,10 +376,7 @@ export const StepsProgress: Story = {
       <div className="w-[400px] space-y-4">
         <div className="flex justify-between text-sm">
           {steps.map((step, index) => (
-            <span
-              key={index}
-              className={step.complete ? "text-primary" : "text-muted-foreground"}
-            >
+            <span key={index} className={step.complete ? "text-primary" : "text-muted-foreground"}>
               {step.name}
             </span>
           ))}

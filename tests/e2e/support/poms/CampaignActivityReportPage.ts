@@ -196,7 +196,7 @@ export class CampaignActivityReportPage extends BasePage {
    */
   async expectActivityTypeCardsVisible(count: number = 1): Promise<void> {
     // Check that at least 'count' activity type cards exist
-    const cards = this.page.locator('[data-activity-type]');
+    const cards = this.page.locator("[data-activity-type]");
     await expect(cards.first()).toBeVisible({ timeout: 5000 });
     const actualCount = await cards.count();
     expect(actualCount).toBeGreaterThanOrEqual(count);
@@ -215,7 +215,9 @@ export class CampaignActivityReportPage extends BasePage {
   async expectStaleLeadsViewVisible(): Promise<void> {
     await expect(this.page.getByText(/stale leads/i)).toBeVisible();
     // Either table or "no stale leads" message should be visible
-    const hasTable = await this.getStaleLeadsTable().isVisible().catch(() => false);
+    const hasTable = await this.getStaleLeadsTable()
+      .isVisible()
+      .catch(() => false);
     const hasNoDataMessage = await this.page
       .getByText(/no stale leads/i)
       .isVisible()
@@ -234,7 +236,7 @@ export class CampaignActivityReportPage extends BasePage {
    * Get the count of activity type cards displayed
    */
   async getActivityTypeCardCount(): Promise<number> {
-    const cards = this.page.locator('[data-activity-type]');
+    const cards = this.page.locator("[data-activity-type]");
     return await cards.count();
   }
 
@@ -244,7 +246,7 @@ export class CampaignActivityReportPage extends BasePage {
   async expectActivityDataPresent(): Promise<void> {
     // Should either have activity cards or a "no activities" message
     const hasCards = await this.page
-      .locator('[data-activity-type]')
+      .locator("[data-activity-type]")
       .first()
       .isVisible()
       .catch(() => false);

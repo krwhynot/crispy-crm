@@ -429,14 +429,11 @@ export class JunctionsService {
     opportunityId: Identifier
   ): Promise<{ data: OpportunityContactWithDetails[] }> {
     try {
-      const response = await this.dataProvider.getList<OpportunityContact>(
-        "opportunity_contacts",
-        {
-          filter: { opportunity_id: opportunityId },
-          pagination: { page: 1, perPage: 100 },
-          sort: { field: "is_primary", order: "DESC" },
-        }
-      );
+      const response = await this.dataProvider.getList<OpportunityContact>("opportunity_contacts", {
+        filter: { opportunity_id: opportunityId },
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: "is_primary", order: "DESC" },
+      });
 
       // Optimize: Use getMany instead of N+1 queries
       const contactIds = response.data
@@ -672,7 +669,9 @@ export class JunctionsService {
         junctionId,
         error,
       });
-      throw new Error(`Remove opportunity contact via junction ID failed: ${getErrorMessage(error)}`);
+      throw new Error(
+        `Remove opportunity contact via junction ID failed: ${getErrorMessage(error)}`
+      );
     }
   }
 

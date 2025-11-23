@@ -122,9 +122,7 @@ const TaskCreateFooter = ({
 
   const handleCancel = useCallback(() => {
     if (isDirty) {
-      const confirmed = window.confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
-      );
+      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
       if (!confirmed) return;
     }
     redirect("/tasks");

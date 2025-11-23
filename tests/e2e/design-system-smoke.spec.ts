@@ -28,9 +28,15 @@ test.describe("Design System Smoke Tests", () => {
   test.beforeAll(() => {
     const status = loadMigrationStatus();
     console.log(`\n📊 Migration Status (${status.lastUpdated}):`);
-    console.log(`  List Layout: ${status.patterns.listLayout.migrated}/${status.patterns.listLayout.totalResources} migrated`);
-    console.log(`  Slide-Over: ${status.patterns.slideOver.migrated}/${status.patterns.slideOver.totalResources} migrated`);
-    console.log(`  Create Form: ${status.patterns.createForm.migrated}/${status.patterns.createForm.totalResources} migrated\n`);
+    console.log(
+      `  List Layout: ${status.patterns.listLayout.migrated}/${status.patterns.listLayout.totalResources} migrated`
+    );
+    console.log(
+      `  Slide-Over: ${status.patterns.slideOver.migrated}/${status.patterns.slideOver.totalResources} migrated`
+    );
+    console.log(
+      `  Create Form: ${status.patterns.createForm.migrated}/${status.patterns.createForm.totalResources} migrated\n`
+    );
   });
 
   test.describe("List Pages - Component Existence", () => {
@@ -48,14 +54,14 @@ test.describe("Design System Smoke Tests", () => {
         await expect(mainArea).toBeVisible();
 
         // Table must have tbody structure (design system requirement)
-        const tbody = authenticatedPage.locator('tbody');
+        const tbody = authenticatedPage.locator("tbody");
         await expect(tbody).toBeVisible();
       });
     }
   });
 
   test.describe("Create Forms - Basic Structure", () => {
-    for (const resource of RESOURCES.filter(r => r !== "sales")) {
+    for (const resource of RESOURCES.filter((r) => r !== "sales")) {
       // Sales doesn't have public create
       test(`${resource} create form renders`, async ({ authenticatedPage }) => {
         await authenticatedPage.goto(`/#/${resource}/create`);
@@ -202,7 +208,9 @@ test.describe("Design System Smoke Tests", () => {
       await authenticatedPage.goto("/#/");
       await authenticatedPage.waitForLoadState("networkidle");
 
-      const nav = authenticatedPage.locator("nav").or(authenticatedPage.locator('[role="navigation"]'));
+      const nav = authenticatedPage
+        .locator("nav")
+        .or(authenticatedPage.locator('[role="navigation"]'));
       await expect(nav).toBeVisible();
     });
 
@@ -211,7 +219,7 @@ test.describe("Design System Smoke Tests", () => {
       await authenticatedPage.waitForLoadState("networkidle");
 
       // Check for labeled inputs
-      const labeledInputs = authenticatedPage.locator('input[aria-label], input[id]');
+      const labeledInputs = authenticatedPage.locator("input[aria-label], input[id]");
       const count = await labeledInputs.count();
 
       expect(count, "Create form should have labeled inputs").toBeGreaterThan(0);

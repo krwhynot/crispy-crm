@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useDataProvider } from 'react-admin';
-import { useCurrentSale } from './useCurrentSale';
-import type { PrincipalPipelineRow } from '../types';
+import { useState, useEffect } from "react";
+import { useDataProvider } from "react-admin";
+import { useCurrentSale } from "./useCurrentSale";
+import type { PrincipalPipelineRow } from "../types";
 
 export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
   const dataProvider = useDataProvider();
@@ -36,19 +36,19 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
 
           // Debug logging for B1 filtering investigation
           if (import.meta.env.DEV) {
-            console.log('[usePrincipalPipeline] Filtering by sales_id:', salesId);
+            console.log("[usePrincipalPipeline] Filtering by sales_id:", salesId);
           }
         }
 
-        const { data: summary } = await dataProvider.getList('principal_pipeline_summary', {
+        const { data: summary } = await dataProvider.getList("principal_pipeline_summary", {
           filter: queryFilter,
-          sort: { field: 'active_this_week', order: 'DESC' },
+          sort: { field: "active_this_week", order: "DESC" },
           pagination: { page: 1, perPage: 100 },
         });
 
         // Debug logging for B1 filtering investigation
         if (import.meta.env.DEV && filters?.myPrincipalsOnly) {
-          console.log('[usePrincipalPipeline] Filter results:', {
+          console.log("[usePrincipalPipeline] Filter results:", {
             salesId,
             resultCount: summary.length,
             firstFewSalesIds: summary.slice(0, 5).map((r: any) => r.sales_id),
@@ -62,12 +62,12 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
             totalPipeline: row.total_pipeline,
             activeThisWeek: row.active_this_week,
             activeLastWeek: row.active_last_week,
-            momentum: row.momentum as PrincipalPipelineRow['momentum'],
+            momentum: row.momentum as PrincipalPipelineRow["momentum"],
             nextAction: row.next_action_summary,
           }))
         );
       } catch (err) {
-        console.error('Failed to fetch principal pipeline:', err);
+        console.error("Failed to fetch principal pipeline:", err);
         setError(err as Error);
       } finally {
         setLoading(false);

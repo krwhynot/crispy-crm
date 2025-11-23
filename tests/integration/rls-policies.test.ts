@@ -11,13 +11,13 @@
  * Reference: CLAUDE.md lines 104-109
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { createClient } from '@supabase/supabase-js';
-import * as dotenv from 'dotenv';
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
+import * as dotenv from "dotenv";
 
 // Override .env with .env.test values for integration tests
-dotenv.config({ path: '.env.test', override: true });
+dotenv.config({ path: ".env.test", override: true });
 
 interface TestUser {
   email: string;
@@ -27,23 +27,23 @@ interface TestUser {
   isAdmin: boolean;
 }
 
-describe('RLS Policy Integration', () => {
+describe("RLS Policy Integration", () => {
   let adminClient: SupabaseClient;
   let repClient: SupabaseClient;
   let serviceRoleClient: SupabaseClient;
 
   const adminUser: TestUser = {
-    email: 'admin@test.com',
-    password: 'password123',
-    userId: '',
+    email: "admin@test.com",
+    password: "password123",
+    userId: "",
     salesId: null,
     isAdmin: true,
   };
 
   const repUser: TestUser = {
-    email: 'rep@test.com',
-    password: 'password123',
-    userId: '',
+    email: "rep@test.com",
+    password: "password123",
+    userId: "",
     salesId: null,
     isAdmin: false,
   };
@@ -64,7 +64,7 @@ describe('RLS Policy Integration', () => {
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
     if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceKey) {
-      throw new Error('Missing Supabase credentials in .env.test');
+      throw new Error("Missing Supabase credentials in .env.test");
     }
 
     // Create service role client for user creation (admin operations)
@@ -77,10 +77,11 @@ describe('RLS Policy Integration', () => {
 
     // Create admin client and authenticate
     adminClient = createClient(supabaseUrl, supabaseAnonKey);
-    const { data: adminAuthData, error: adminAuthError } = await adminClient.auth.signInWithPassword({
-      email: adminUser.email,
-      password: adminUser.password,
-    });
+    const { data: adminAuthData, error: adminAuthError } =
+      await adminClient.auth.signInWithPassword({
+        email: adminUser.email,
+        password: adminUser.password,
+      });
 
     if (adminAuthError) {
       throw new Error(`Admin authentication failed: ${adminAuthError.message}`);
@@ -90,9 +91,9 @@ describe('RLS Policy Integration', () => {
 
     // Get admin's sales record
     const { data: adminSales, error: adminSalesError } = await adminClient
-      .from('sales')
-      .select('id, is_admin, role')
-      .eq('user_id', adminUser.userId)
+      .from("sales")
+      .select("id, is_admin, role")
+      .eq("user_id", adminUser.userId)
       .single();
 
     if (adminSalesError || !adminSales) {
@@ -102,11 +103,11 @@ describe('RLS Policy Integration', () => {
     adminUser.salesId = adminSales.id;
 
     // Ensure admin user has admin role (using service role client to bypass RLS)
-    if (adminSales.role !== 'admin') {
+    if (adminSales.role !== "admin") {
       const { error: updateAdminError } = await serviceRoleClient
-        .from('sales')
-        .update({ role: 'admin' })
-        .eq('id', adminSales.id);
+        .from("sales")
+        .update({ role: "admin" })
+        .eq("id", adminSales.id);
 
       if (updateAdminError) {
         throw new Error(`Failed to set admin role: ${updateAdminError.message}`);
@@ -115,19 +116,20 @@ describe('RLS Policy Integration', () => {
 
     // Delete any existing rep user from previous test runs
     const { data: existingUsers } = await serviceRoleClient.auth.admin.listUsers();
-    const existingRep = existingUsers?.users.find(u => u.email === repUser.email);
+    const existingRep = existingUsers?.users.find((u) => u.email === repUser.email);
     if (existingRep) {
       await serviceRoleClient.auth.admin.deleteUser(existingRep.id);
       // Wait for deletion to complete
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
 
     // Create non-admin rep user using service role client
-    const { data: repAuthData, error: repSignUpError } = await serviceRoleClient.auth.admin.createUser({
-      email: repUser.email,
-      password: repUser.password,
-      email_confirm: true,
-    });
+    const { data: repAuthData, error: repSignUpError } =
+      await serviceRoleClient.auth.admin.createUser({
+        email: repUser.email,
+        password: repUser.password,
+        email_confirm: true,
+      });
 
     if (repSignUpError || !repAuthData.user) {
       throw new Error(`Rep user creation failed: ${repSignUpError?.message}`);
@@ -137,13 +139,13 @@ describe('RLS Policy Integration', () => {
     testData.userIds.push(repUser.userId);
 
     // Wait for trigger to create sales record
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Get rep's sales record using service role client
     const { data: repSales, error: repSalesError } = await serviceRoleClient
-      .from('sales')
-      .select('id, is_admin')
-      .eq('user_id', repUser.userId)
+      .from("sales")
+      .select("id, is_admin")
+      .eq("user_id", repUser.userId)
       .single();
 
     if (repSalesError || !repSales) {
@@ -155,9 +157,9 @@ describe('RLS Policy Integration', () => {
 
     // Update rep's role to 'rep' (not 'admin' or 'manager')
     const { error: updateError } = await serviceRoleClient
-      .from('sales')
-      .update({ role: 'rep' })
-      .eq('id', repUser.salesId);
+      .from("sales")
+      .update({ role: "rep" })
+      .eq("id", repUser.salesId);
 
     if (updateError) {
       throw new Error(`Failed to set rep role: ${updateError.message}`);
@@ -165,9 +167,9 @@ describe('RLS Policy Integration', () => {
 
     // Verify rep is not admin
     const { data: verifyRep } = await serviceRoleClient
-      .from('sales')
-      .select('role, is_admin')
-      .eq('id', repUser.salesId)
+      .from("sales")
+      .select("role, is_admin")
+      .eq("id", repUser.salesId)
       .single();
 
     if (verifyRep?.is_admin !== false) {
@@ -189,22 +191,22 @@ describe('RLS Policy Integration', () => {
   afterEach(async () => {
     // Clean up test data in reverse dependency order using service role client
     if (testData.taskIds.length > 0) {
-      await serviceRoleClient.from('tasks').delete().in('id', testData.taskIds);
+      await serviceRoleClient.from("tasks").delete().in("id", testData.taskIds);
       testData.taskIds = [];
     }
 
     if (testData.contactIds.length > 0) {
-      await serviceRoleClient.from('contacts').delete().in('id', testData.contactIds);
+      await serviceRoleClient.from("contacts").delete().in("id", testData.contactIds);
       testData.contactIds = [];
     }
 
     if (testData.opportunityIds.length > 0) {
-      await serviceRoleClient.from('opportunities').delete().in('id', testData.opportunityIds);
+      await serviceRoleClient.from("opportunities").delete().in("id", testData.opportunityIds);
       testData.opportunityIds = [];
     }
 
     if (testData.organizationIds.length > 0) {
-      await serviceRoleClient.from('organizations').delete().in('id', testData.organizationIds);
+      await serviceRoleClient.from("organizations").delete().in("id", testData.organizationIds);
       testData.organizationIds = [];
     }
 
@@ -224,38 +226,38 @@ describe('RLS Policy Integration', () => {
     }
   });
 
-  describe('Contacts - Admin-only UPDATE/DELETE', () => {
-    it('allows all authenticated users to INSERT contacts', async () => {
+  describe("Contacts - Admin-only UPDATE/DELETE", () => {
+    it("allows all authenticated users to INSERT contacts", async () => {
       // Rep can insert
       const { data: repContact, error: repError } = await repClient
-        .from('contacts')
-        .insert({ name: 'Rep Contact', first_name: 'Rep', last_name: 'Contact' })
+        .from("contacts")
+        .insert({ name: "Rep Contact", first_name: "Rep", last_name: "Contact" })
         .select()
         .single();
 
       expect(repError).toBeNull();
       expect(repContact).toBeDefined();
-      expect(repContact!.name).toBe('Rep Contact');
+      expect(repContact!.name).toBe("Rep Contact");
       testData.contactIds.push(repContact!.id);
 
       // Admin can insert
       const { data: adminContact, error: adminError } = await adminClient
-        .from('contacts')
-        .insert({ name: 'Admin Contact', first_name: 'Admin', last_name: 'Contact' })
+        .from("contacts")
+        .insert({ name: "Admin Contact", first_name: "Admin", last_name: "Contact" })
         .select()
         .single();
 
       expect(adminError).toBeNull();
       expect(adminContact).toBeDefined();
-      expect(adminContact!.name).toBe('Admin Contact');
+      expect(adminContact!.name).toBe("Admin Contact");
       testData.contactIds.push(adminContact!.id);
     });
 
-    it('allows admin to UPDATE contacts', async () => {
+    it("allows admin to UPDATE contacts", async () => {
       // Create contact as admin
       const { data: contact, error: insertError } = await adminClient
-        .from('contacts')
-        .insert({ name: 'Test Contact', first_name: 'Test', last_name: 'Contact' })
+        .from("contacts")
+        .insert({ name: "Test Contact", first_name: "Test", last_name: "Contact" })
         .select()
         .single();
 
@@ -264,21 +266,21 @@ describe('RLS Policy Integration', () => {
 
       // Admin can update
       const { data: updated, error: updateError } = await adminClient
-        .from('contacts')
-        .update({ name: 'Updated Contact' })
-        .eq('id', contact!.id)
+        .from("contacts")
+        .update({ name: "Updated Contact" })
+        .eq("id", contact!.id)
         .select()
         .single();
 
       expect(updateError).toBeNull();
-      expect(updated!.name).toBe('Updated Contact');
+      expect(updated!.name).toBe("Updated Contact");
     });
 
-    it('prevents non-admin from UPDATE contacts', async () => {
+    it("prevents non-admin from UPDATE contacts", async () => {
       // Create contact as admin
       const { data: contact, error: insertError } = await adminClient
-        .from('contacts')
-        .insert({ name: 'Test Contact', first_name: 'Test', last_name: 'Contact' })
+        .from("contacts")
+        .insert({ name: "Test Contact", first_name: "Test", last_name: "Contact" })
         .select()
         .single();
 
@@ -287,9 +289,9 @@ describe('RLS Policy Integration', () => {
 
       // Rep cannot update
       const { data: updated, error: _updateError } = await repClient
-        .from('contacts')
-        .update({ name: 'Hacked Contact' })
-        .eq('id', contact!.id)
+        .from("contacts")
+        .update({ name: "Hacked Contact" })
+        .eq("id", contact!.id)
         .select();
 
       // Should return empty array (no rows updated) due to RLS policy
@@ -297,19 +299,19 @@ describe('RLS Policy Integration', () => {
 
       // Verify contact was not updated
       const { data: verified } = await adminClient
-        .from('contacts')
-        .select('name')
-        .eq('id', contact!.id)
+        .from("contacts")
+        .select("name")
+        .eq("id", contact!.id)
         .single();
 
-      expect(verified!.name).toBe('Test Contact');
+      expect(verified!.name).toBe("Test Contact");
     });
 
-    it('allows admin to DELETE contacts', async () => {
+    it("allows admin to DELETE contacts", async () => {
       // Create contact as admin
       const { data: contact, error: insertError } = await adminClient
-        .from('contacts')
-        .insert({ name: 'Test Contact', first_name: 'Test', last_name: 'Contact' })
+        .from("contacts")
+        .insert({ name: "Test Contact", first_name: "Test", last_name: "Contact" })
         .select()
         .single();
 
@@ -318,26 +320,23 @@ describe('RLS Policy Integration', () => {
 
       // Admin can delete
       const { error: deleteError } = await adminClient
-        .from('contacts')
+        .from("contacts")
         .delete()
-        .eq('id', contactId);
+        .eq("id", contactId);
 
       expect(deleteError).toBeNull();
 
       // Verify deletion
-      const { data: verified } = await adminClient
-        .from('contacts')
-        .select()
-        .eq('id', contactId);
+      const { data: verified } = await adminClient.from("contacts").select().eq("id", contactId);
 
       expect(verified).toEqual([]);
     });
 
-    it('prevents non-admin from DELETE contacts', async () => {
+    it("prevents non-admin from DELETE contacts", async () => {
       // Create contact as admin
       const { data: contact, error: insertError } = await adminClient
-        .from('contacts')
-        .insert({ name: 'Test Contact', first_name: 'Test', last_name: 'Contact' })
+        .from("contacts")
+        .insert({ name: "Test Contact", first_name: "Test", last_name: "Contact" })
         .select()
         .single();
 
@@ -346,29 +345,26 @@ describe('RLS Policy Integration', () => {
 
       // Rep cannot delete
       const { error: deleteError } = await repClient
-        .from('contacts')
+        .from("contacts")
         .delete()
-        .eq('id', contact!.id);
+        .eq("id", contact!.id);
 
       // No error, but nothing deleted due to RLS policy
       expect(deleteError).toBeNull();
 
       // Verify contact still exists
-      const { data: verified } = await adminClient
-        .from('contacts')
-        .select()
-        .eq('id', contact!.id);
+      const { data: verified } = await adminClient.from("contacts").select().eq("id", contact!.id);
 
       expect(verified).toHaveLength(1);
     });
   });
 
-  describe('Organizations - Admin-only UPDATE/DELETE', () => {
-    it('allows all authenticated users to INSERT organizations', async () => {
+  describe("Organizations - Admin-only UPDATE/DELETE", () => {
+    it("allows all authenticated users to INSERT organizations", async () => {
       // Rep can insert
       const { data: repOrg, error: repError } = await repClient
-        .from('organizations')
-        .insert({ name: 'Rep Organization', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Rep Organization", organization_type: "customer" })
         .select()
         .single();
 
@@ -378,8 +374,8 @@ describe('RLS Policy Integration', () => {
 
       // Admin can insert
       const { data: adminOrg, error: adminError } = await adminClient
-        .from('organizations')
-        .insert({ name: 'Admin Organization', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Admin Organization", organization_type: "customer" })
         .select()
         .single();
 
@@ -388,10 +384,10 @@ describe('RLS Policy Integration', () => {
       testData.organizationIds.push(adminOrg!.id);
     });
 
-    it('allows admin to UPDATE organizations', async () => {
+    it("allows admin to UPDATE organizations", async () => {
       const { data: org, error: insertError } = await adminClient
-        .from('organizations')
-        .insert({ name: 'Test Org', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Test Org", organization_type: "customer" })
         .select()
         .single();
 
@@ -399,20 +395,20 @@ describe('RLS Policy Integration', () => {
       testData.organizationIds.push(org!.id);
 
       const { data: updated, error: updateError } = await adminClient
-        .from('organizations')
-        .update({ name: 'Updated Org' })
-        .eq('id', org!.id)
+        .from("organizations")
+        .update({ name: "Updated Org" })
+        .eq("id", org!.id)
         .select()
         .single();
 
       expect(updateError).toBeNull();
-      expect(updated!.name).toBe('Updated Org');
+      expect(updated!.name).toBe("Updated Org");
     });
 
-    it('prevents non-admin from UPDATE organizations', async () => {
+    it("prevents non-admin from UPDATE organizations", async () => {
       const { data: org, error: insertError } = await adminClient
-        .from('organizations')
-        .insert({ name: 'Test Org', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Test Org", organization_type: "customer" })
         .select()
         .single();
 
@@ -420,26 +416,26 @@ describe('RLS Policy Integration', () => {
       testData.organizationIds.push(org!.id);
 
       const { data: updated, error: _updateError } = await repClient
-        .from('organizations')
-        .update({ name: 'Hacked Org' })
-        .eq('id', org!.id)
+        .from("organizations")
+        .update({ name: "Hacked Org" })
+        .eq("id", org!.id)
         .select();
 
       expect(updated).toEqual([]);
 
       const { data: verified } = await adminClient
-        .from('organizations')
-        .select('name')
-        .eq('id', org!.id)
+        .from("organizations")
+        .select("name")
+        .eq("id", org!.id)
         .single();
 
-      expect(verified!.name).toBe('Test Org');
+      expect(verified!.name).toBe("Test Org");
     });
 
-    it('allows admin to DELETE organizations', async () => {
+    it("allows admin to DELETE organizations", async () => {
       const { data: org, error: insertError } = await adminClient
-        .from('organizations')
-        .insert({ name: 'Test Org', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Test Org", organization_type: "customer" })
         .select()
         .single();
 
@@ -447,24 +443,21 @@ describe('RLS Policy Integration', () => {
       const orgId = org!.id;
 
       const { error: deleteError } = await adminClient
-        .from('organizations')
+        .from("organizations")
         .delete()
-        .eq('id', orgId);
+        .eq("id", orgId);
 
       expect(deleteError).toBeNull();
 
-      const { data: verified } = await adminClient
-        .from('organizations')
-        .select()
-        .eq('id', orgId);
+      const { data: verified } = await adminClient.from("organizations").select().eq("id", orgId);
 
       expect(verified).toEqual([]);
     });
 
-    it('prevents non-admin from DELETE organizations', async () => {
+    it("prevents non-admin from DELETE organizations", async () => {
       const { data: org, error: insertError } = await adminClient
-        .from('organizations')
-        .insert({ name: 'Test Org', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Test Org", organization_type: "customer" })
         .select()
         .single();
 
@@ -472,29 +465,26 @@ describe('RLS Policy Integration', () => {
       testData.organizationIds.push(org!.id);
 
       const { error: deleteError } = await repClient
-        .from('organizations')
+        .from("organizations")
         .delete()
-        .eq('id', org!.id);
+        .eq("id", org!.id);
 
       expect(deleteError).toBeNull();
 
-      const { data: verified } = await adminClient
-        .from('organizations')
-        .select()
-        .eq('id', org!.id);
+      const { data: verified } = await adminClient.from("organizations").select().eq("id", org!.id);
 
       expect(verified).toHaveLength(1);
     });
   });
 
-  describe('Opportunities - Admin-only UPDATE/DELETE', () => {
+  describe("Opportunities - Admin-only UPDATE/DELETE", () => {
     let testOrgId: number;
 
     beforeEach(async () => {
       // Create organization for opportunities
       const { data: org, error: orgError } = await adminClient
-        .from('organizations')
-        .insert({ name: 'Test Organization', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Test Organization", organization_type: "customer" })
         .select()
         .single();
 
@@ -506,14 +496,14 @@ describe('RLS Policy Integration', () => {
       testData.organizationIds.push(testOrgId);
     });
 
-    it('allows all authenticated users to INSERT opportunities', async () => {
+    it("allows all authenticated users to INSERT opportunities", async () => {
       // Rep can insert
       const { data: repOpp, error: repError } = await repClient
-        .from('opportunities')
+        .from("opportunities")
         .insert({
-          name: 'Rep Opportunity',
+          name: "Rep Opportunity",
           customer_organization_id: testOrgId,
-          stage: 'new_lead',
+          stage: "new_lead",
           account_manager_id: repUser.salesId,
         })
         .select()
@@ -525,11 +515,11 @@ describe('RLS Policy Integration', () => {
 
       // Admin can insert
       const { data: adminOpp, error: adminError } = await adminClient
-        .from('opportunities')
+        .from("opportunities")
         .insert({
-          name: 'Admin Opportunity',
+          name: "Admin Opportunity",
           customer_organization_id: testOrgId,
-          stage: 'new_lead',
+          stage: "new_lead",
           account_manager_id: adminUser.salesId,
         })
         .select()
@@ -540,13 +530,13 @@ describe('RLS Policy Integration', () => {
       testData.opportunityIds.push(adminOpp!.id);
     });
 
-    it('allows admin to UPDATE opportunities', async () => {
+    it("allows admin to UPDATE opportunities", async () => {
       const { data: opp, error: insertError } = await adminClient
-        .from('opportunities')
+        .from("opportunities")
         .insert({
-          name: 'Test Opportunity',
+          name: "Test Opportunity",
           customer_organization_id: testOrgId,
-          stage: 'new_lead',
+          stage: "new_lead",
           account_manager_id: adminUser.salesId,
         })
         .select()
@@ -556,23 +546,23 @@ describe('RLS Policy Integration', () => {
       testData.opportunityIds.push(opp!.id);
 
       const { data: updated, error: updateError } = await adminClient
-        .from('opportunities')
-        .update({ stage: 'demo_scheduled' })
-        .eq('id', opp!.id)
+        .from("opportunities")
+        .update({ stage: "demo_scheduled" })
+        .eq("id", opp!.id)
         .select()
         .single();
 
       expect(updateError).toBeNull();
-      expect(updated!.stage).toBe('demo_scheduled');
+      expect(updated!.stage).toBe("demo_scheduled");
     });
 
-    it('prevents non-admin from UPDATE opportunities', async () => {
+    it("prevents non-admin from UPDATE opportunities", async () => {
       const { data: opp, error: insertError } = await adminClient
-        .from('opportunities')
+        .from("opportunities")
         .insert({
-          name: 'Test Opportunity',
+          name: "Test Opportunity",
           customer_organization_id: testOrgId,
-          stage: 'new_lead',
+          stage: "new_lead",
           account_manager_id: adminUser.salesId,
         })
         .select()
@@ -582,29 +572,29 @@ describe('RLS Policy Integration', () => {
       testData.opportunityIds.push(opp!.id);
 
       const { data: updated, error: _updateError } = await repClient
-        .from('opportunities')
-        .update({ stage: 'closed_won' })
-        .eq('id', opp!.id)
+        .from("opportunities")
+        .update({ stage: "closed_won" })
+        .eq("id", opp!.id)
         .select();
 
       expect(updated).toEqual([]);
 
       const { data: verified } = await adminClient
-        .from('opportunities')
-        .select('stage')
-        .eq('id', opp!.id)
+        .from("opportunities")
+        .select("stage")
+        .eq("id", opp!.id)
         .single();
 
-      expect(verified!.stage).toBe('new_lead');
+      expect(verified!.stage).toBe("new_lead");
     });
 
-    it('allows admin to DELETE opportunities', async () => {
+    it("allows admin to DELETE opportunities", async () => {
       const { data: opp, error: insertError } = await adminClient
-        .from('opportunities')
+        .from("opportunities")
         .insert({
-          name: 'Test Opportunity',
+          name: "Test Opportunity",
           customer_organization_id: testOrgId,
-          stage: 'new_lead',
+          stage: "new_lead",
           account_manager_id: adminUser.salesId,
         })
         .select()
@@ -614,27 +604,24 @@ describe('RLS Policy Integration', () => {
       const oppId = opp!.id;
 
       const { error: deleteError } = await adminClient
-        .from('opportunities')
+        .from("opportunities")
         .delete()
-        .eq('id', oppId);
+        .eq("id", oppId);
 
       expect(deleteError).toBeNull();
 
-      const { data: verified } = await adminClient
-        .from('opportunities')
-        .select()
-        .eq('id', oppId);
+      const { data: verified } = await adminClient.from("opportunities").select().eq("id", oppId);
 
       expect(verified).toEqual([]);
     });
 
-    it('prevents non-admin from DELETE opportunities', async () => {
+    it("prevents non-admin from DELETE opportunities", async () => {
       const { data: opp, error: insertError } = await adminClient
-        .from('opportunities')
+        .from("opportunities")
         .insert({
-          name: 'Test Opportunity',
+          name: "Test Opportunity",
           customer_organization_id: testOrgId,
-          stage: 'new_lead',
+          stage: "new_lead",
           account_manager_id: adminUser.salesId,
         })
         .select()
@@ -644,28 +631,25 @@ describe('RLS Policy Integration', () => {
       testData.opportunityIds.push(opp!.id);
 
       const { error: deleteError } = await repClient
-        .from('opportunities')
+        .from("opportunities")
         .delete()
-        .eq('id', opp!.id);
+        .eq("id", opp!.id);
 
       expect(deleteError).toBeNull();
 
-      const { data: verified } = await adminClient
-        .from('opportunities')
-        .select()
-        .eq('id', opp!.id);
+      const { data: verified } = await adminClient.from("opportunities").select().eq("id", opp!.id);
 
       expect(verified).toHaveLength(1);
     });
   });
 
-  describe('Tasks - Personal Filtering (created_by)', () => {
-    it('users can only SELECT their own tasks', async () => {
+  describe("Tasks - Personal Filtering (created_by)", () => {
+    it("users can only SELECT their own tasks", async () => {
       // Admin creates a task
       const { data: adminTask, error: adminError } = await adminClient
-        .from('tasks')
+        .from("tasks")
         .insert({
-          title: 'Admin Task',
+          title: "Admin Task",
           created_by: adminUser.salesId,
         })
         .select()
@@ -676,9 +660,9 @@ describe('RLS Policy Integration', () => {
 
       // Rep creates a task
       const { data: repTask, error: repError } = await repClient
-        .from('tasks')
+        .from("tasks")
         .insert({
-          title: 'Rep Task',
+          title: "Rep Task",
           created_by: repUser.salesId,
         })
         .select()
@@ -688,46 +672,40 @@ describe('RLS Policy Integration', () => {
       testData.taskIds.push(repTask!.id);
 
       // Admin can see their own task
-      const { data: adminTasks } = await adminClient
-        .from('tasks')
-        .select()
-        .eq('id', adminTask!.id);
+      const { data: adminTasks } = await adminClient.from("tasks").select().eq("id", adminTask!.id);
 
       expect(adminTasks).toHaveLength(1);
-      expect(adminTasks![0].title).toBe('Admin Task');
+      expect(adminTasks![0].title).toBe("Admin Task");
 
       // Admin cannot see rep's task
       const { data: adminCannotSeeRep } = await adminClient
-        .from('tasks')
+        .from("tasks")
         .select()
-        .eq('id', repTask!.id);
+        .eq("id", repTask!.id);
 
       expect(adminCannotSeeRep).toEqual([]);
 
       // Rep can see their own task
-      const { data: repTasks } = await repClient
-        .from('tasks')
-        .select()
-        .eq('id', repTask!.id);
+      const { data: repTasks } = await repClient.from("tasks").select().eq("id", repTask!.id);
 
       expect(repTasks).toHaveLength(1);
-      expect(repTasks![0].title).toBe('Rep Task');
+      expect(repTasks![0].title).toBe("Rep Task");
 
       // Rep cannot see admin's task
       const { data: repCannotSeeAdmin } = await repClient
-        .from('tasks')
+        .from("tasks")
         .select()
-        .eq('id', adminTask!.id);
+        .eq("id", adminTask!.id);
 
       expect(repCannotSeeAdmin).toEqual([]);
     });
 
-    it('users can only INSERT tasks for themselves', async () => {
+    it("users can only INSERT tasks for themselves", async () => {
       // Rep tries to create task for admin (should fail or auto-correct to rep's sales_id)
       const { data: task, error } = await repClient
-        .from('tasks')
+        .from("tasks")
         .insert({
-          title: 'Rep Task',
+          title: "Rep Task",
           created_by: repUser.salesId, // Should match current user
         })
         .select()
@@ -738,12 +716,12 @@ describe('RLS Policy Integration', () => {
       testData.taskIds.push(task!.id);
     });
 
-    it('users can only UPDATE their own tasks', async () => {
+    it("users can only UPDATE their own tasks", async () => {
       // Create task as rep
       const { data: task, error: insertError } = await repClient
-        .from('tasks')
+        .from("tasks")
         .insert({
-          title: 'Rep Task',
+          title: "Rep Task",
           created_by: repUser.salesId,
         })
         .select()
@@ -754,40 +732,40 @@ describe('RLS Policy Integration', () => {
 
       // Rep can update their own task
       const { data: updated, error: updateError } = await repClient
-        .from('tasks')
-        .update({ title: 'Updated Rep Task' })
-        .eq('id', task!.id)
+        .from("tasks")
+        .update({ title: "Updated Rep Task" })
+        .eq("id", task!.id)
         .select()
         .single();
 
       expect(updateError).toBeNull();
-      expect(updated!.title).toBe('Updated Rep Task');
+      expect(updated!.title).toBe("Updated Rep Task");
 
       // Admin cannot update rep's task
       const { data: adminUpdate, error: _adminUpdateError } = await adminClient
-        .from('tasks')
-        .update({ title: 'Hacked Task' })
-        .eq('id', task!.id)
+        .from("tasks")
+        .update({ title: "Hacked Task" })
+        .eq("id", task!.id)
         .select();
 
       expect(adminUpdate).toEqual([]);
 
       // Verify task was not updated by admin
       const { data: verified } = await repClient
-        .from('tasks')
-        .select('title')
-        .eq('id', task!.id)
+        .from("tasks")
+        .select("title")
+        .eq("id", task!.id)
         .single();
 
-      expect(verified!.title).toBe('Updated Rep Task');
+      expect(verified!.title).toBe("Updated Rep Task");
     });
 
-    it('users can only DELETE their own tasks', async () => {
+    it("users can only DELETE their own tasks", async () => {
       // Create task as rep
       const { data: task, error: insertError } = await repClient
-        .from('tasks')
+        .from("tasks")
         .insert({
-          title: 'Rep Task',
+          title: "Rep Task",
           created_by: repUser.salesId,
         })
         .select()
@@ -797,34 +775,22 @@ describe('RLS Policy Integration', () => {
       const taskId = task!.id;
 
       // Admin cannot delete rep's task
-      const { error: adminDeleteError } = await adminClient
-        .from('tasks')
-        .delete()
-        .eq('id', taskId);
+      const { error: adminDeleteError } = await adminClient.from("tasks").delete().eq("id", taskId);
 
       expect(adminDeleteError).toBeNull();
 
       // Verify task still exists
-      const { data: stillExists } = await repClient
-        .from('tasks')
-        .select()
-        .eq('id', taskId);
+      const { data: stillExists } = await repClient.from("tasks").select().eq("id", taskId);
 
       expect(stillExists).toHaveLength(1);
 
       // Rep can delete their own task
-      const { error: repDeleteError } = await repClient
-        .from('tasks')
-        .delete()
-        .eq('id', taskId);
+      const { error: repDeleteError } = await repClient.from("tasks").delete().eq("id", taskId);
 
       expect(repDeleteError).toBeNull();
 
       // Verify task is deleted
-      const { data: deleted } = await repClient
-        .from('tasks')
-        .select()
-        .eq('id', taskId);
+      const { data: deleted } = await repClient.from("tasks").select().eq("id", taskId);
 
       expect(deleted).toEqual([]);
     });

@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { Form, useUpdate, useNotify, ReferenceInput, useGetOne } from 'react-admin';
-import { Link } from 'react-router-dom';
-import { AutocompleteInput } from '@/components/admin/autocomplete-input';
-import { Button } from '@/components/ui/button';
-import { Building2 } from 'lucide-react';
+import { useState } from "react";
+import { Form, useUpdate, useNotify, ReferenceInput, useGetOne } from "react-admin";
+import { Link } from "react-router-dom";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { Button } from "@/components/ui/button";
+import { Building2 } from "lucide-react";
 
 interface OpportunityOrganizationsTabProps {
   record: any;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -24,7 +24,7 @@ export function OpportunityOrganizationsTab({
     setIsSaving(true);
     try {
       await update(
-        'opportunities',
+        "opportunities",
         {
           id: record.id,
           data: {
@@ -36,13 +36,13 @@ export function OpportunityOrganizationsTab({
         },
         {
           onSuccess: () => {
-            notify('Organizations updated successfully', { type: 'success' });
+            notify("Organizations updated successfully", { type: "success" });
             if (onModeToggle) {
               onModeToggle();
             }
           },
           onError: (error: any) => {
-            notify(error?.message || 'Failed to update organizations', { type: 'error' });
+            notify(error?.message || "Failed to update organizations", { type: "error" });
           },
         }
       );
@@ -57,7 +57,7 @@ export function OpportunityOrganizationsTab({
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     return (
       <Form
         defaultValues={{
@@ -100,14 +100,9 @@ export function OpportunityOrganizationsTab({
 
         <div className="flex gap-2 pt-4">
           <Button type="submit" disabled={isSaving} className="flex-1">
-            {isSaving ? 'Saving...' : 'Save Changes'}
+            {isSaving ? "Saving..." : "Save Changes"}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isSaving}
-          >
+          <Button type="button" variant="outline" onClick={handleCancel} disabled={isSaving}>
             Cancel
           </Button>
         </div>
@@ -126,7 +121,7 @@ export function OpportunityOrganizationsTab({
     required?: boolean;
   }) => {
     const { data: org, isLoading } = useGetOne(
-      'organizations',
+      "organizations",
       { id: organizationId! },
       { enabled: !!organizationId }
     );
@@ -138,9 +133,7 @@ export function OpportunityOrganizationsTab({
     if (isLoading) {
       return (
         <div className="border border-border rounded-lg p-4">
-          <label className="text-sm font-medium text-muted-foreground block mb-2">
-            {label}
-          </label>
+          <label className="text-sm font-medium text-muted-foreground block mb-2">{label}</label>
           <div className="h-6 bg-muted animate-pulse rounded" />
         </div>
       );
@@ -149,9 +142,7 @@ export function OpportunityOrganizationsTab({
     if (!org) {
       return (
         <div className="border border-border rounded-lg p-4">
-          <label className="text-sm font-medium text-muted-foreground block mb-2">
-            {label}
-          </label>
+          <label className="text-sm font-medium text-muted-foreground block mb-2">{label}</label>
           <p className="text-muted-foreground">Not set</p>
         </div>
       );
@@ -159,9 +150,7 @@ export function OpportunityOrganizationsTab({
 
     return (
       <div className="border border-border rounded-lg p-4 hover:bg-muted/50 transition-colors">
-        <label className="text-sm font-medium text-muted-foreground block mb-2">
-          {label}
-        </label>
+        <label className="text-sm font-medium text-muted-foreground block mb-2">{label}</label>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
             <Building2 className="w-5 h-5 text-primary" />
@@ -175,7 +164,7 @@ export function OpportunityOrganizationsTab({
             </Link>
             {org.type && (
               <p className="text-sm text-muted-foreground capitalize">
-                {org.type.replace(/_/g, ' ')}
+                {org.type.replace(/_/g, " ")}
               </p>
             )}
           </div>

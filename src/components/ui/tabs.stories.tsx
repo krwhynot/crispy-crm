@@ -401,9 +401,7 @@ export const SettingsPage: Story = {
             <div className="space-y-4">
               <div>
                 <Label>Color Scheme</Label>
-                <p className="text-sm text-muted-foreground">
-                  Choose between light and dark mode
-                </p>
+                <p className="text-sm text-muted-foreground">Choose between light and dark mode</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline">Light</Button>

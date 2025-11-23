@@ -1,15 +1,15 @@
-import { UserIcon, ActivityIcon, FileTextIcon, FileIcon } from 'lucide-react';
-import { ResourceSlideOver, type TabConfig } from '@/components/layouts/ResourceSlideOver';
-import { ContactDetailsTab } from './ContactDetailsTab';
-import { ContactNotesTab } from './ContactNotesTab';
-import { ContactFilesTab } from './ContactFilesTab';
-import { ActivitiesTab } from './ActivitiesTab';
-import type { Contact } from '../types';
+import { UserIcon, ActivityIcon, FileTextIcon, FileIcon } from "lucide-react";
+import { ResourceSlideOver, type TabConfig } from "@/components/layouts/ResourceSlideOver";
+import { ContactDetailsTab } from "./ContactDetailsTab";
+import { ContactNotesTab } from "./ContactNotesTab";
+import { ContactFilesTab } from "./ContactFilesTab";
+import { ActivitiesTab } from "./ActivitiesTab";
+import type { Contact } from "../types";
 
 interface ContactSlideOverProps {
   recordId: number | null;
   isOpen: boolean;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onClose: () => void;
   onModeToggle: () => void;
 }
@@ -35,26 +35,26 @@ export function ContactSlideOver({
   // Tab configuration
   const contactTabs: TabConfig[] = [
     {
-      key: 'details',
-      label: 'Details',
+      key: "details",
+      label: "Details",
       component: ContactDetailsTab,
       icon: UserIcon,
     },
     {
-      key: 'activities',
-      label: 'Activities',
+      key: "activities",
+      label: "Activities",
       component: ({ record }) => <ActivitiesTab contactId={record.id} />,
       icon: ActivityIcon,
     },
     {
-      key: 'notes',
-      label: 'Notes',
+      key: "notes",
+      label: "Notes",
       component: ContactNotesTab,
       icon: FileTextIcon,
     },
     {
-      key: 'files',
-      label: 'Files',
+      key: "files",
+      label: "Files",
       component: ContactFilesTab,
       icon: FileIcon,
     },

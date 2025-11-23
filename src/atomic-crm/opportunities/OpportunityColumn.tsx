@@ -21,7 +21,7 @@ export const OpportunityColumn = ({
   opportunities: Opportunity[];
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
-  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+  openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }) => {
   const metrics = useStageMetrics(opportunities);
 

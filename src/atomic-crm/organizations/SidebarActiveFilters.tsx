@@ -15,9 +15,7 @@ export const SidebarActiveFilters = () => {
     <div className="flex flex-col gap-2">
       {/* Header with count and Clear All */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-foreground">
-          Active Filters ({chips.length})
-        </h3>
+        <h3 className="text-sm font-semibold text-foreground">Active Filters ({chips.length})</h3>
         <button
           onClick={clearAllFilters}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors"

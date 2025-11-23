@@ -54,11 +54,7 @@ const inferActivityTypeFromTitle = (title: string): string => {
   return "check_in"; // Default fallback
 };
 
-export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
-  open,
-  onClose,
-  task,
-}) => {
+export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClose, task }) => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
 
@@ -128,19 +124,13 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Log Activity Details</DialogTitle>
-          <DialogDescription>
-            What happened with this task? (optional)
-          </DialogDescription>
+          <DialogDescription>What happened with this task? (optional)</DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="activity-type">Activity Type</Label>
-            <Select
-              value={activityType}
-              onValueChange={setActivityType}
-              disabled={isSubmitting}
-            >
+            <Select value={activityType} onValueChange={setActivityType} disabled={isSubmitting}>
               <SelectTrigger id="activity-type">
                 <SelectValue />
               </SelectTrigger>
@@ -172,19 +162,10 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({
         </div>
 
         <DialogFooter className="gap-2 sm:gap-0">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleSkip}
-            disabled={isSubmitting}
-          >
+          <Button type="button" variant="outline" onClick={handleSkip} disabled={isSubmitting}>
             Skip
           </Button>
-          <Button
-            type="button"
-            onClick={handleSave}
-            disabled={isSubmitting}
-          >
+          <Button type="button" onClick={handleSave} disabled={isSubmitting}>
             {isSubmitting ? "Saving..." : "Save Activity"}
           </Button>
         </DialogFooter>

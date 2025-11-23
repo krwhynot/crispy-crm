@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useUpdate, useNotify, RecordContextProvider } from 'ra-core';
-import { Form, ArrayInput, SimpleFormIterator } from 'react-admin';
-import { TextInput } from '@/components/admin/text-input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { AsideSection } from '../misc/AsideSection';
+import { useState } from "react";
+import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { Form, ArrayInput, SimpleFormIterator } from "react-admin";
+import { TextInput } from "@/components/admin/text-input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AsideSection } from "../misc/AsideSection";
 
 interface Product {
   id: number;
@@ -19,7 +19,7 @@ interface Product {
 
 interface ProductCertificationsTabProps {
   record: Product;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -37,7 +37,11 @@ interface ProductCertificationsTabProps {
  *
  * Note: Products use TEXT[] for certifications and allergens (not JSONB arrays)
  */
-export function ProductCertificationsTab({ record, mode, onModeToggle }: ProductCertificationsTabProps) {
+export function ProductCertificationsTab({
+  record,
+  mode,
+  onModeToggle,
+}: ProductCertificationsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
@@ -46,22 +50,22 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
   const handleSave = async (data: Partial<Product>) => {
     setIsSaving(true);
     try {
-      await update('products', {
+      await update("products", {
         id: record.id,
         data,
         previousData: record,
       });
-      notify('Product updated successfully', { type: 'success' });
+      notify("Product updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error) {
-      notify('Error updating product', { type: 'error' });
-      console.error('Save error:', error);
+      notify("Error updating product", { type: "error" });
+      console.error("Save error:", error);
     } finally {
       setIsSaving(false);
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
         <Form onSubmit={handleSave} record={record}>
@@ -108,18 +112,16 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
               {/* Nutritional Info - simplified text input for now */}
               <div className="text-sm text-muted-foreground">
                 <p className="font-medium mb-1">Nutritional Info (JSONB)</p>
-                <p>Edit nutritional information in the main product form for advanced JSONB editing.</p>
+                <p>
+                  Edit nutritional information in the main product form for advanced JSONB editing.
+                </p>
               </div>
             </div>
 
             {/* Save button - Cancel handled by slide-over header */}
             <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button
-                type="submit"
-                disabled={isSaving}
-                className="h-11 px-4"
-              >
-                {isSaving ? 'Saving...' : 'Save Changes'}
+              <Button type="submit" disabled={isSaving} className="h-11 px-4">
+                {isSaving ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </div>
@@ -145,11 +147,12 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
           </AsideSection>
         )}
 
-        {!record.certifications || record.certifications.length === 0 && (
-          <AsideSection title="Certifications">
-            <div className="text-sm text-muted-foreground">No certifications listed.</div>
-          </AsideSection>
-        )}
+        {!record.certifications ||
+          (record.certifications.length === 0 && (
+            <AsideSection title="Certifications">
+              <div className="text-sm text-muted-foreground">No certifications listed.</div>
+            </AsideSection>
+          ))}
 
         {/* Allergens Section */}
         {record.allergens && record.allergens.length > 0 && (
@@ -164,11 +167,12 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
           </AsideSection>
         )}
 
-        {!record.allergens || record.allergens.length === 0 && (
-          <AsideSection title="Allergens">
-            <div className="text-sm text-muted-foreground">No allergens listed.</div>
-          </AsideSection>
-        )}
+        {!record.allergens ||
+          (record.allergens.length === 0 && (
+            <AsideSection title="Allergens">
+              <div className="text-sm text-muted-foreground">No allergens listed.</div>
+            </AsideSection>
+          ))}
 
         {/* Ingredients Section */}
         {record.ingredients && (
@@ -201,7 +205,7 @@ export function ProductCertificationsTab({ record, mode, onModeToggle }: Product
                   {Object.entries(record.nutritional_info).map(([key, value]) => (
                     <div key={key} className="flex justify-between text-sm">
                       <span className="text-muted-foreground capitalize">
-                        {key.replace(/_/g, ' ')}:
+                        {key.replace(/_/g, " ")}:
                       </span>
                       <span className="font-medium">{String(value)}</span>
                     </div>

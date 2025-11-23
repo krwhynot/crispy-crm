@@ -38,11 +38,11 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
   return (
     <div>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold">
-          Stale Leads Report: {campaignName}
-        </h3>
+        <h3 className="text-lg font-semibold">Stale Leads Report: {campaignName}</h3>
         <p className="text-sm text-muted-foreground">
-          Showing {staleOpportunities.length} {staleOpportunities.length === 1 ? 'opportunity' : 'opportunities'} with no activity in the last {threshold} days
+          Showing {staleOpportunities.length}{" "}
+          {staleOpportunities.length === 1 ? "opportunity" : "opportunities"} with no activity in
+          the last {threshold} days
         </p>
       </div>
 
@@ -50,7 +50,8 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
         <Card>
           <CardContent className="py-8 text-center">
             <p className="text-muted-foreground">
-              No stale leads found! All opportunities have been contacted within the last {threshold} days.
+              No stale leads found! All opportunities have been contacted within the last{" "}
+              {threshold} days.
             </p>
           </CardContent>
         </Card>
@@ -64,11 +65,24 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th scope="col" className="text-left py-3 px-3 font-semibold sticky left-0 bg-card">Opportunity</th>
-                    <th scope="col" className="text-left py-3 px-3 font-semibold">Organization</th>
-                    <th scope="col" className="text-left py-3 px-3 font-semibold">Last Activity</th>
-                    <th scope="col" className="text-left py-3 px-3 font-semibold">Days Inactive</th>
-                    <th scope="col" className="text-center py-3 px-3 font-semibold">Action</th>
+                    <th
+                      scope="col"
+                      className="text-left py-3 px-3 font-semibold sticky left-0 bg-card"
+                    >
+                      Opportunity
+                    </th>
+                    <th scope="col" className="text-left py-3 px-3 font-semibold">
+                      Organization
+                    </th>
+                    <th scope="col" className="text-left py-3 px-3 font-semibold">
+                      Last Activity
+                    </th>
+                    <th scope="col" className="text-left py-3 px-3 font-semibold">
+                      Days Inactive
+                    </th>
+                    <th scope="col" className="text-center py-3 px-3 font-semibold">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -89,8 +103,8 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
                             opp.daysInactive >= 999999
                               ? "text-destructive font-semibold"
                               : opp.daysInactive >= threshold * 2
-                              ? "text-warning font-semibold"
-                              : "text-muted-foreground"
+                                ? "text-warning font-semibold"
+                                : "text-muted-foreground"
                           }
                         >
                           {getDaysInactiveDisplay(opp.daysInactive)}

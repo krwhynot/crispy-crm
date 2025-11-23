@@ -1,16 +1,16 @@
-import { RecordContextProvider } from 'ra-core';
-import { ReferenceField } from '@/components/admin/reference-field';
-import { TextField } from '@/components/admin/text-field';
-import { Card, CardContent } from '@/components/ui/card';
-import { AsideSection } from '../misc/AsideSection';
-import { SaleName } from '../sales/SaleName';
-import { Building2, UserCircle, Target } from 'lucide-react';
-import type { Task } from '../types';
-import { contactOptionText } from '../misc/ContactOption';
+import { RecordContextProvider } from "ra-core";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
+import { Card, CardContent } from "@/components/ui/card";
+import { AsideSection } from "../misc/AsideSection";
+import { SaleName } from "../sales/SaleName";
+import { Building2, UserCircle, Target } from "lucide-react";
+import type { Task } from "../types";
+import { contactOptionText } from "../misc/ContactOption";
 
 interface TaskRelatedItemsTabProps {
   record: Task;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
 }
 
 /**

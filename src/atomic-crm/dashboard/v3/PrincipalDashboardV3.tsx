@@ -1,19 +1,15 @@
-import { useState } from 'react';
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from '@/components/ui/resizable';
-import { PrincipalPipelineTable } from './components/PrincipalPipelineTable';
-import { TasksPanel } from './components/TasksPanel';
-import { QuickLoggerPanel } from './components/QuickLoggerPanel';
+import { useState } from "react";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
+import { TasksPanel } from "./components/TasksPanel";
+import { QuickLoggerPanel } from "./components/QuickLoggerPanel";
 
-const STORAGE_KEY = 'principal-dashboard-v3-layout';
+const STORAGE_KEY = "principal-dashboard-v3-layout";
 
 export function PrincipalDashboardV3() {
   // Client-side-safe localStorage read
   const [sizes, setSizes] = useState<number[]>(() => {
-    if (typeof window === 'undefined') return [40, 30, 30];
+    if (typeof window === "undefined") return [40, 30, 30];
 
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -31,7 +27,7 @@ export function PrincipalDashboardV3() {
 
   const handleLayoutChange = (newSizes: number[]) => {
     setSizes(newSizes);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newSizes));
     }
   };

@@ -1,20 +1,20 @@
-import { useUpdate, useNotify, downloadCSV, type Exporter } from 'ra-core';
-import jsonExport from 'jsonexport/dist';
+import { useUpdate, useNotify, downloadCSV, type Exporter } from "ra-core";
+import jsonExport from "jsonexport/dist";
 
-import { FunctionField } from 'react-admin';
-import { List } from '@/components/admin/list';
-import { StandardListLayout } from '@/components/layouts/StandardListLayout';
-import { PremiumDatagrid } from '@/components/admin/PremiumDatagrid';
-import { TextField } from '@/components/admin/text-field';
-import { DateField } from '@/components/admin/date-field';
-import { ReferenceField } from '@/components/admin/reference-field';
-import { Badge } from '@/components/ui/badge';
-import { useSlideOverState } from '@/hooks/useSlideOverState';
-import { TaskListFilter } from './TaskListFilter';
-import { TaskSlideOver } from './TaskSlideOver';
-import { SaleName } from '../sales/SaleName';
-import { contactOptionText } from '../misc/ContactOption';
-import type { Task, Opportunity, Organization } from '../types';
+import { FunctionField } from "react-admin";
+import { List } from "@/components/admin/list";
+import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { TextField } from "@/components/admin/text-field";
+import { DateField } from "@/components/admin/date-field";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { Badge } from "@/components/ui/badge";
+import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { TaskListFilter } from "./TaskListFilter";
+import { TaskSlideOver } from "./TaskSlideOver";
+import { SaleName } from "../sales/SaleName";
+import { contactOptionText } from "../misc/ContactOption";
+import type { Task, Opportunity, Organization } from "../types";
 
 /**
  * TaskList Component
@@ -31,23 +31,22 @@ import type { Task, Opportunity, Organization } from '../types';
  * Design Pattern: Unified design system (StandardListLayout + PremiumDatagrid)
  */
 export default function TaskList() {
-  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
+    useSlideOverState();
 
   return (
     <List
       title="Tasks"
       perPage={100}
-      sort={{ field: 'due_date', order: 'ASC' }}
+      sort={{ field: "due_date", order: "ASC" }}
       exporter={exporter}
     >
       <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), 'view')}>
+        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
           {/* Inline completion checkbox - CRITICAL: prevent row click */}
           <FunctionField
             label="Done"
-            render={(record: Task) => (
-              <CompletionCheckbox task={record} />
-            )}
+            render={(record: Task) => <CompletionCheckbox task={record} />}
           />
 
           <TextField source="title" label="Title" />
@@ -56,7 +55,9 @@ export default function TaskList() {
 
           <FunctionField
             label="Priority"
-            render={(record: Task) => record.priority && <PriorityBadge priority={record.priority} />}
+            render={(record: Task) =>
+              record.priority && <PriorityBadge priority={record.priority} />
+            }
           />
 
           <FunctionField
@@ -68,11 +69,21 @@ export default function TaskList() {
             <SaleName />
           </ReferenceField>
 
-          <ReferenceField source="contact_id" reference="contacts_summary" label="Contact" link={false}>
+          <ReferenceField
+            source="contact_id"
+            reference="contacts_summary"
+            label="Contact"
+            link={false}
+          >
             <TextField source={contactOptionText} />
           </ReferenceField>
 
-          <ReferenceField source="opportunity_id" reference="opportunities" label="Opportunity" link={false}>
+          <ReferenceField
+            source="opportunity_id"
+            reference="opportunities"
+            label="Opportunity"
+            link={false}
+          >
             <TextField source="title" />
           </ReferenceField>
         </PremiumDatagrid>
@@ -101,7 +112,7 @@ function CompletionCheckbox({ task }: { task: Task }) {
     const checked = e.target.checked;
 
     try {
-      await update('tasks', {
+      await update("tasks", {
         id: task.id,
         data: {
           completed: checked,
@@ -109,10 +120,10 @@ function CompletionCheckbox({ task }: { task: Task }) {
         },
         previousData: task,
       });
-      notify(checked ? 'Task completed' : 'Task reopened', { type: 'success' });
+      notify(checked ? "Task completed" : "Task reopened", { type: "success" });
     } catch (error) {
-      notify('Error updating task', { type: 'error' });
-      console.error('Completion toggle error:', error);
+      notify("Error updating task", { type: "error" });
+      console.error("Completion toggle error:", error);
     }
   };
 
@@ -124,7 +135,9 @@ function CompletionCheckbox({ task }: { task: Task }) {
         onChange={handleToggle}
         onClick={(e) => e.stopPropagation()}
         className="h-4 w-4 rounded border-input"
-        aria-label={task.completed ? `Mark "${task.title}" as incomplete` : `Mark "${task.title}" as complete`}
+        aria-label={
+          task.completed ? `Mark "${task.title}" as incomplete` : `Mark "${task.title}" as complete`
+        }
       />
     </label>
   );
@@ -132,15 +145,15 @@ function CompletionCheckbox({ task }: { task: Task }) {
 
 // Priority badge component with semantic colors
 function PriorityBadge({ priority }: { priority: string }) {
-  const variants: Record<string, 'outline' | 'secondary' | 'default' | 'destructive'> = {
-    low: 'outline',
-    medium: 'secondary',
-    high: 'default',
-    critical: 'destructive',
+  const variants: Record<string, "outline" | "secondary" | "default" | "destructive"> = {
+    low: "outline",
+    medium: "secondary",
+    high: "default",
+    critical: "destructive",
   };
 
   return (
-    <Badge variant={variants[priority] || 'outline'}>
+    <Badge variant={variants[priority] || "outline"}>
       {priority.charAt(0).toUpperCase() + priority.slice(1)}
     </Badge>
   );
@@ -150,8 +163,8 @@ function PriorityBadge({ priority }: { priority: string }) {
 const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
   const opportunities = await fetchRelatedRecords<Opportunity>(
     records,
-    'opportunity_id',
-    'opportunities'
+    "opportunity_id",
+    "opportunities"
   );
 
   const organizationIds = Array.from(
@@ -164,8 +177,8 @@ const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
     organizationIds.length > 0
       ? await fetchRelatedRecords<Organization>(
           organizationIds.map((id) => ({ id, organization_id: id })),
-          'organization_id',
-          'organizations'
+          "organization_id",
+          "organizations"
         )
       : [];
 
@@ -183,11 +196,11 @@ const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
       type: task.type,
       priority: task.priority,
       due_date: task.due_date,
-      completed: task.completed ? 'Yes' : 'No',
-      completed_at: task.completed_at || '',
-      principal: org?.name || '',
-      opportunity_id: task.opportunity_id || '',
-      contact_id: task.contact_id || '',
+      completed: task.completed ? "Yes" : "No",
+      completed_at: task.completed_at || "",
+      principal: org?.name || "",
+      opportunity_id: task.opportunity_id || "",
+      contact_id: task.contact_id || "",
       created_at: task.created_at,
     };
   });
@@ -196,26 +209,26 @@ const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
     dataForExport,
     {
       headers: [
-        'id',
-        'title',
-        'description',
-        'type',
-        'priority',
-        'due_date',
-        'completed',
-        'completed_at',
-        'principal',
-        'opportunity_id',
-        'contact_id',
-        'created_at',
+        "id",
+        "title",
+        "description",
+        "type",
+        "priority",
+        "due_date",
+        "completed",
+        "completed_at",
+        "principal",
+        "opportunity_id",
+        "contact_id",
+        "created_at",
       ],
     },
     (err, csv) => {
       if (err) {
-        console.error('Export error:', err);
+        console.error("Export error:", err);
         return;
       }
-      downloadCSV(csv, 'tasks');
+      downloadCSV(csv, "tasks");
     }
   );
 };

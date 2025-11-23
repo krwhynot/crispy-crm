@@ -66,9 +66,7 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
             </p>
 
             {isLoading ? (
-              <div className="text-center py-4 text-muted-foreground">
-                Loading products...
-              </div>
+              <div className="text-center py-4 text-muted-foreground">Loading products...</div>
             ) : productCount > 0 ? (
               <ScrollArea className="h-[300px] rounded-md border p-4">
                 <div className="space-y-2">
@@ -80,18 +78,14 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
                       <Package className="w-4 h-4 mt-0.5 text-muted-foreground" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm">{product.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          SKU: {product.sku}
-                        </p>
+                        <p className="text-xs text-muted-foreground">SKU: {product.sku}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </ScrollArea>
             ) : (
-              <div className="text-center py-4 text-muted-foreground">
-                No products found
-              </div>
+              <div className="text-center py-4 text-muted-foreground">No products found</div>
             )}
 
             <div className="bg-amber-500/10 border border-amber-500/20 rounded-md p-3">

@@ -16,7 +16,9 @@ vi.mock("ra-core", () => ({
   useNotify: () => mockNotify,
   useGetOne: (resource: string, params: any, options: any) => {
     // Always return an object with data property, even if undefined
-    return mockGetOne(resource, params, options) || { data: undefined, isLoading: false, error: null };
+    return (
+      mockGetOne(resource, params, options) || { data: undefined, isLoading: false, error: null }
+    );
   },
 }));
 
@@ -45,27 +47,17 @@ describe("QuickLogActivity", () => {
   });
 
   it("should render the dialog with task information", () => {
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={vi.fn()}
-        task={mockTask}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={vi.fn()} task={mockTask} />);
 
     expect(screen.getByText("Log Activity Details")).toBeInTheDocument();
     expect(screen.getByText("What happened with this task? (optional)")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("Completed task: Call customer about order")).toBeInTheDocument();
+    expect(
+      screen.getByDisplayValue("Completed task: Call customer about order")
+    ).toBeInTheDocument();
   });
 
   it("should infer activity type from task type", () => {
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={vi.fn()}
-        task={mockTask}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={vi.fn()} task={mockTask} />);
 
     // The select should show "Call" as it maps from the task type
     const select = screen.getByRole("combobox");
@@ -75,27 +67,17 @@ describe("QuickLogActivity", () => {
   it("should infer activity type from task title when type is None", () => {
     const taskWithNoType = { ...mockTask, type: "None", title: "Email vendor about pricing" };
 
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={vi.fn()}
-        task={taskWithNoType}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={vi.fn()} task={taskWithNoType} />);
 
-    expect(screen.getByDisplayValue("Completed task: Email vendor about pricing")).toBeInTheDocument();
+    expect(
+      screen.getByDisplayValue("Completed task: Email vendor about pricing")
+    ).toBeInTheDocument();
   });
 
   it("should call onClose when Skip button is clicked", () => {
     const onClose = vi.fn();
 
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={onClose}
-        task={mockTask}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={onClose} task={mockTask} />);
 
     fireEvent.click(screen.getByText("Skip"));
     expect(onClose).toHaveBeenCalled();
@@ -105,13 +87,7 @@ describe("QuickLogActivity", () => {
     const onClose = vi.fn();
     mockDataProvider.create.mockResolvedValue({ data: { id: 100 } });
 
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={onClose}
-        task={mockTask}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={onClose} task={mockTask} />);
 
     // Change notes
     const textarea = screen.getByPlaceholderText("What was discussed or accomplished?");
@@ -151,32 +127,16 @@ describe("QuickLogActivity", () => {
       error: null,
     });
 
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={vi.fn()}
-        task={mockTask}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={vi.fn()} task={mockTask} />);
 
-    expect(mockGetOne).toHaveBeenCalledWith(
-      "opportunities",
-      { id: 20 },
-      { enabled: true }
-    );
+    expect(mockGetOne).toHaveBeenCalledWith("opportunities", { id: 20 }, { enabled: true });
   });
 
   it("should handle save errors gracefully", async () => {
     const onClose = vi.fn();
     mockDataProvider.create.mockRejectedValue(new Error("Network error"));
 
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={onClose}
-        task={mockTask}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={onClose} task={mockTask} />);
 
     fireEvent.click(screen.getByText("Save Activity"));
 
@@ -188,16 +148,10 @@ describe("QuickLogActivity", () => {
 
   it("should disable inputs while submitting", async () => {
     mockDataProvider.create.mockImplementation(
-      () => new Promise(resolve => setTimeout(resolve, 100))
+      () => new Promise((resolve) => setTimeout(resolve, 100))
     );
 
-    render(
-      <QuickLogActivity
-        open={true}
-        onClose={vi.fn()}
-        task={mockTask}
-      />
-    );
+    render(<QuickLogActivity open={true} onClose={vi.fn()} task={mockTask} />);
 
     fireEvent.click(screen.getByText("Save Activity"));
 

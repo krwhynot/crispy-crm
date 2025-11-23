@@ -1,9 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { useDataProvider, useNotify } from 'react-admin';
-import { useState, useEffect } from 'react';
-import { startOfDay } from 'date-fns';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useDataProvider, useNotify } from "react-admin";
+import { useState, useEffect } from "react";
+import { startOfDay } from "date-fns";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,39 +12,35 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { Input } from '@/components/ui/input';
-import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import {
   activityLogSchema,
   type ActivityLogInput,
-  ACTIVITY_TYPE_MAP
-} from '../validation/activitySchema';
-import { useCurrentSale } from '../hooks/useCurrentSale';
+  ACTIVITY_TYPE_MAP,
+} from "../validation/activitySchema";
+import { useCurrentSale } from "../hooks/useCurrentSale";
 
 interface QuickLogFormProps {
   onComplete: () => void;
@@ -71,33 +67,31 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
       try {
         setLoading(true);
         const [contactsRes, orgsRes, oppsRes] = await Promise.all([
-          dataProvider.getList('contacts', {
+          dataProvider.getList("contacts", {
             pagination: { page: 1, perPage: 100 },
-            sort: { field: 'name', order: 'ASC' },
-            filter: {}
+            sort: { field: "name", order: "ASC" },
+            filter: {},
           }),
-          dataProvider.getList('organizations', {
+          dataProvider.getList("organizations", {
             pagination: { page: 1, perPage: 100 },
-            sort: { field: 'name', order: 'ASC' },
-            filter: {}
+            sort: { field: "name", order: "ASC" },
+            filter: {},
           }),
-          dataProvider.getList('opportunities', {
+          dataProvider.getList("opportunities", {
             pagination: { page: 1, perPage: 100 },
-            sort: { field: 'name', order: 'ASC' },
-            filter: {}
+            sort: { field: "name", order: "ASC" },
+            filter: {},
           }),
         ]);
 
         setContacts(contactsRes.data);
         setOrganizations(orgsRes.data);
         setOpportunities(
-          oppsRes.data.filter(
-            (opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage)
-          )
+          oppsRes.data.filter((opp: any) => !["closed_won", "closed_lost"].includes(opp.stage))
         );
       } catch (error) {
-        console.error('Failed to load entities:', error);
-        notify('Failed to load data', { type: 'error' });
+        console.error("Failed to load entities:", error);
+        notify("Failed to load data", { type: "error" });
       } finally {
         setLoading(false);
       }
@@ -109,19 +103,19 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   const onSubmit = async (data: ActivityLogInput, closeAfterSave = true) => {
     // Validate salesId exists before attempting to create records
     if (!salesId) {
-      notify('Cannot log activity: user session expired. Please refresh and try again.', {
-        type: 'error'
+      notify("Cannot log activity: user session expired. Please refresh and try again.", {
+        type: "error",
       });
       return;
     }
 
     try {
       // Create the activity record
-      await dataProvider.create('activities', {
+      await dataProvider.create("activities", {
         data: {
-          activity_type: data.activityType === 'Note' ? 'engagement' : 'interaction',
+          activity_type: data.activityType === "Note" ? "engagement" : "interaction",
           type: ACTIVITY_TYPE_MAP[data.activityType],
-          outcome: data.outcome,  // ✅ Persist user-selected outcome
+          outcome: data.outcome, // ✅ Persist user-selected outcome
           subject: data.notes.substring(0, 100) || `${data.activityType} update`,
           description: data.notes,
           activity_date: data.date.toISOString(),
@@ -129,30 +123,30 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
           contact_id: data.contactId,
           organization_id: data.organizationId,
           opportunity_id: data.opportunityId,
-          follow_up_required: data.createFollowUp || false,  // ✅ Track if follow-up needed
-          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split('T')[0] : null,  // ✅ Store follow-up date (DATE format YYYY-MM-DD)
+          follow_up_required: data.createFollowUp || false, // ✅ Track if follow-up needed
+          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null, // ✅ Store follow-up date (DATE format YYYY-MM-DD)
           created_by: salesId,
-        }
+        },
       });
 
       // Create follow-up task if requested
       if (data.createFollowUp && data.followUpDate) {
-        await dataProvider.create('tasks', {
+        await dataProvider.create("tasks", {
           data: {
             title: `Follow-up: ${data.notes.substring(0, 50)}`,
             due_date: data.followUpDate.toISOString(),
-            type: 'follow_up',
-            priority: 'medium',
+            type: "follow_up",
+            priority: "medium",
             contact_id: data.contactId,
             opportunity_id: data.opportunityId,
             organization_id: data.organizationId,
             sales_id: salesId,
             created_by: salesId,
-          }
+          },
         });
       }
 
-      notify('Activity logged successfully', { type: 'success' });
+      notify("Activity logged successfully", { type: "success" });
       form.reset();
 
       // Only close if Save & Close was clicked
@@ -165,13 +159,14 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
         onRefresh();
       }
     } catch (error) {
-      notify('Failed to log activity', { type: 'error' });
-      console.error('Activity log error:', error);
+      notify("Failed to log activity", { type: "error" });
+      console.error("Activity log error:", error);
     }
   };
 
-  const showDuration = form.watch('activityType') === 'Call' || form.watch('activityType') === 'Meeting';
-  const showFollowUpDate = form.watch('createFollowUp');
+  const showDuration =
+    form.watch("activityType") === "Call" || form.watch("activityType") === "Meeting";
+  const showFollowUpDate = form.watch("createFollowUp");
 
   // Show loading state while entities or salesId are loading
   if (loading || salesIdLoading) {
@@ -254,8 +249,10 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                       placeholder="30"
                       className="h-11"
                       {...field}
-                      onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
-                      value={field.value || ''}
+                      onChange={(e) =>
+                        field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                      }
+                      value={field.value || ""}
                     />
                   </FormControl>
                   <FormMessage />
@@ -307,7 +304,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                               field.onChange(contact.id);
                               // Auto-fill organization if contact has one
                               if (contact.organization_id) {
-                                form.setValue('organizationId', contact.organization_id);
+                                form.setValue("organizationId", contact.organization_id);
                               }
                             }}
                           >
@@ -466,14 +463,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             name="createFollowUp"
             render={({ field }) => (
               <FormItem className="flex items-center justify-between space-y-0">
-                <FormLabel className="text-sm font-medium">
-                  Create follow-up task?
-                </FormLabel>
+                <FormLabel className="text-sm font-medium">Create follow-up task?</FormLabel>
                 <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
               </FormItem>
             )}
@@ -520,11 +512,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
 
         {/* Action buttons */}
         <div className="flex justify-between pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onComplete}
-          >
+          <Button type="button" variant="outline" onClick={onComplete}>
             Cancel
           </Button>
           <div className="flex gap-2">
@@ -537,7 +525,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
               className="h-11"
               onClick={() => {
                 form.handleSubmit((data) => {
-                  onSubmit(data, false);  // ✅ Pass false to keep form open
+                  onSubmit(data, false); // ✅ Pass false to keep form open
                   // Form resets but stays open for next entry
                 })();
               }}

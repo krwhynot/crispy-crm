@@ -445,7 +445,6 @@ export const unifiedDataProvider: DataProvider = {
         );
       }
 
-
       // Apply search parameters (now uses cleaned filters)
       const searchParams = applySearchParams(resource, processedParams);
 
@@ -699,7 +698,11 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getResourceName(resource);
 
       // Validate data for updates
-      const processedData = await processForDatabase(resource, params.data as Record<string, unknown>, "update");
+      const processedData = await processForDatabase(
+        resource,
+        params.data as Record<string, unknown>,
+        "update"
+      );
 
       const result = await baseDataProvider.updateMany(dbResource, {
         ...params,
@@ -821,7 +824,9 @@ export const unifiedDataProvider: DataProvider = {
   },
 
   // Opportunity participants
-  async getOpportunityParticipants(opportunityId: Identifier): Promise<{ data: OpportunityParticipant[] }> {
+  async getOpportunityParticipants(
+    opportunityId: Identifier
+  ): Promise<{ data: OpportunityParticipant[] }> {
     return junctionsService.getOpportunityParticipants(opportunityId);
   },
 
@@ -861,7 +866,9 @@ export const unifiedDataProvider: DataProvider = {
   },
 
   // Opportunity contacts via junction table
-  async getOpportunityContactsViaJunction(opportunityId: Identifier): Promise<{ data: OpportunityContact[] }> {
+  async getOpportunityContactsViaJunction(
+    opportunityId: Identifier
+  ): Promise<{ data: OpportunityContact[] }> {
     return junctionsService.getOpportunityContacts(opportunityId);
   },
 

@@ -3,13 +3,13 @@
  * Desktop-optimized: compact format suitable for table displays
  */
 export function formatRelativeTime(date: Date | string | null | undefined): string {
-  if (!date) return 'unknown';
+  if (!date) return "unknown";
 
   try {
-    const targetDate = typeof date === 'string' ? new Date(date) : date;
+    const targetDate = typeof date === "string" ? new Date(date) : date;
 
     if (isNaN(targetDate.getTime())) {
-      return 'unknown';
+      return "unknown";
     }
 
     const now = new Date();
@@ -21,7 +21,7 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
 
     // Within 1 minute (inclusive)
     if (diffSec <= 60) {
-      return 'now';
+      return "now";
     }
 
     // Within 1 hour: show minutes
@@ -35,14 +35,14 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
     }
 
     if (diffDay <= 7) {
-      return diffDay === 1 ? '1d ago' : `${diffDay}d ago`;
+      return diffDay === 1 ? "1d ago" : `${diffDay}d ago`;
     }
 
     // Older than 7 days: show abbreviated date (e.g., "Nov 13")
-    const month = targetDate.toLocaleDateString('en-US', { month: 'short' });
+    const month = targetDate.toLocaleDateString("en-US", { month: "short" });
     const day = targetDate.getDate();
     return `${month} ${day}`;
   } catch {
-    return 'unknown';
+    return "unknown";
   }
 }

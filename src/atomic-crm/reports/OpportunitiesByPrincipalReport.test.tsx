@@ -23,9 +23,7 @@ vi.mock("react-router-dom", async () => {
 vi.mock("jsonexport/dist", () => ({
   default: vi.fn((data, callback) => {
     // Simple CSV conversion for testing
-    const csv = data
-      .map((row: any) => Object.values(row).join(","))
-      .join("\n");
+    const csv = data.map((row: any) => Object.values(row).join(",")).join("\n");
     callback(null, csv);
   }),
 }));

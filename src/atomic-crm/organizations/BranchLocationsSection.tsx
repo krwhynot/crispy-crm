@@ -1,15 +1,10 @@
-import { useState } from 'react';
-import {
-  useGetList,
-  useCreatePath,
-  useRecordContext,
-  Button,
-} from 'react-admin';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Plus, Store, MapPin, Phone, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import type { Company } from '../types';
+import { useState } from "react";
+import { useGetList, useCreatePath, useRecordContext, Button } from "react-admin";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Store, MapPin, Phone, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
+import type { Company } from "../types";
 
 /**
  * Component displaying branch locations for a parent organization
@@ -21,9 +16,9 @@ export const BranchLocationsSection = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Fetch branches for this organization
-  const { data: branches, isLoading } = useGetList('organizations', {
+  const { data: branches, isLoading } = useGetList("organizations", {
     filter: { parent_organization_id: record?.id },
-    sort: { field: 'name', order: 'ASC' },
+    sort: { field: "name", order: "ASC" },
     pagination: { page: 1, perPage: 100 },
   });
 
@@ -48,7 +43,7 @@ export const BranchLocationsSection = () => {
           <Store className="h-5 w-5 text-muted-foreground" />
           <CardTitle>Branch Locations</CardTitle>
           <Badge variant="secondary" className="ml-2">
-            {branchCount} {branchCount === 1 ? 'Branch' : 'Branches'}
+            {branchCount} {branchCount === 1 ? "Branch" : "Branches"}
           </Badge>
         </div>
         <Button
@@ -56,8 +51,8 @@ export const BranchLocationsSection = () => {
           variant="outline"
           onClick={() => {
             const createUrl = createPath({
-              resource: 'organizations',
-              type: 'create',
+              resource: "organizations",
+              type: "create",
             });
             // Navigate with parent_organization_id pre-filled
             window.location.href = `${createUrl}?source=${JSON.stringify({
@@ -81,8 +76,8 @@ export const BranchLocationsSection = () => {
                 <div className="flex items-center gap-2">
                   <Link
                     to={createPath({
-                      resource: 'organizations',
-                      type: 'edit',
+                      resource: "organizations",
+                      type: "edit",
                       id: branch.id,
                     })}
                     className="font-medium text-primary hover:underline"
@@ -98,11 +93,7 @@ export const BranchLocationsSection = () => {
                   {(branch.city || branch.state) && (
                     <div className="flex items-center gap-1">
                       <MapPin className="h-3 w-3" />
-                      <span>
-                        {[branch.city, branch.state]
-                          .filter(Boolean)
-                          .join(', ')}
-                      </span>
+                      <span>{[branch.city, branch.state].filter(Boolean).join(", ")}</span>
                     </div>
                   )}
 
@@ -131,12 +122,13 @@ export const BranchLocationsSection = () => {
                   <div className="flex gap-3 mt-2 text-sm">
                     {branch.nb_contacts > 0 && (
                       <span className="text-muted-foreground">
-                        {branch.nb_contacts} contact{branch.nb_contacts !== 1 && 's'}
+                        {branch.nb_contacts} contact{branch.nb_contacts !== 1 && "s"}
                       </span>
                     )}
                     {branch.nb_opportunities > 0 && (
                       <span className="text-muted-foreground">
-                        {branch.nb_opportunities} opportunit{branch.nb_opportunities === 1 ? 'y' : 'ies'}
+                        {branch.nb_opportunities} opportunit
+                        {branch.nb_opportunities === 1 ? "y" : "ies"}
                       </span>
                     )}
                   </div>

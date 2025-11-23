@@ -35,9 +35,7 @@ vi.mock("react-admin", async () => {
   return {
     ...actual,
     Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
-    FunctionField: ({ label }: any) => (
-      <div data-testid={`function-field-${label}`}>{label}</div>
-    ),
+    FunctionField: ({ label }: any) => <div data-testid={`function-field-${label}`}>{label}</div>,
   };
 });
 
@@ -69,7 +67,7 @@ vi.mock("@/components/admin/PremiumDatagrid", () => ({
         data-testid="mock-row-1"
         onClick={() => onRowClick && onRowClick(1)}
         onKeyDown={(e: React.KeyboardEvent) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             if (onRowClick) onRowClick(1);
           }
         }}
@@ -196,7 +194,7 @@ vi.mock("@/hooks/useSlideOverState", () => ({
   useSlideOverState: () => ({
     slideOverId: null,
     isOpen: false,
-    mode: 'view' as const,
+    mode: "view" as const,
     openSlideOver: mockOpenSlideOver,
     closeSlideOver: mockCloseSlideOver,
     toggleMode: mockToggleMode,
@@ -363,7 +361,7 @@ describe("ContactList", () => {
       fireEvent.click(mockRow);
 
       // Verify openSlideOver was called with correct ID and mode
-      expect(mockOpenSlideOver).toHaveBeenCalledWith(1, 'view');
+      expect(mockOpenSlideOver).toHaveBeenCalledWith(1, "view");
     });
   });
 

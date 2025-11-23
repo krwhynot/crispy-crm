@@ -288,9 +288,7 @@ const CommandInteractiveFilter = () => {
 
   return (
     <div>
-      <p className="mb-4 text-sm text-muted-foreground">
-        Selected: {selectedItem || "None"}
-      </p>
+      <p className="mb-4 text-sm text-muted-foreground">Selected: {selectedItem || "None"}</p>
       <Command className="rounded-lg border shadow-md">
         <CommandInput placeholder="Start typing to filter..." />
         <CommandList>

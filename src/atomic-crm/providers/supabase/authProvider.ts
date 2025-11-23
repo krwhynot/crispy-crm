@@ -15,7 +15,7 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
       id: sale.id,
       fullName: `${sale.first_name} ${sale.last_name}`,
       avatar: sale.avatar_url,
-      role: sale.role || 'rep', // Default to 'rep' if not set
+      role: sale.role || "rep", // Default to 'rep' if not set
     };
   },
 });

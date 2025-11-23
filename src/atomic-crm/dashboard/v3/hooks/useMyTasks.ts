@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useDataProvider } from 'react-admin';
-import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from 'date-fns';
-import { useCurrentSale } from './useCurrentSale';
-import type { TaskItem, TaskStatus } from '../types';
+import { useState, useEffect, useCallback } from "react";
+import { useDataProvider } from "react-admin";
+import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
+import { useCurrentSale } from "./useCurrentSale";
+import type { TaskItem, TaskStatus } from "../types";
 
 export function useMyTasks() {
   const dataProvider = useDataProvider();
@@ -29,17 +29,17 @@ export function useMyTasks() {
         setLoading(true);
 
         // Fetch tasks with related entities expanded
-        const { data: tasksData } = await dataProvider.getList('tasks', {
+        const { data: tasksData } = await dataProvider.getList("tasks", {
           filter: {
             sales_id: salesId,
             completed: false,
           },
-          sort: { field: 'due_date', order: 'ASC' },
+          sort: { field: "due_date", order: "ASC" },
           pagination: { page: 1, perPage: 100 },
           // Request expansion of related entities
           meta: {
-            expand: ['opportunity', 'contact', 'organization']
-          }
+            expand: ["opportunity", "contact", "organization"],
+          },
         });
 
         // Map to TaskItem format with proper timezone handling
@@ -53,36 +53,44 @@ export function useMyTasks() {
           const dueDateStart = startOfDay(dueDate);
 
           // Determine status using date-fns for proper timezone handling
-          let status: TaskItem['status'];
+          let status: TaskItem["status"];
           if (isBefore(dueDateStart, today)) {
-            status = 'overdue';
+            status = "overdue";
           } else if (isSameDay(dueDateStart, today)) {
-            status = 'today';
+            status = "today";
           } else if (isSameDay(dueDateStart, tomorrow)) {
-            status = 'tomorrow';
+            status = "tomorrow";
           } else if (isBefore(dueDateStart, nextWeek)) {
-            status = 'upcoming';
+            status = "upcoming";
           } else {
-            status = 'later';
+            status = "later";
           }
 
           // Map task type with proper handling
-          const taskTypeMap: Record<string, TaskItem['taskType']> = {
-            'call': 'Call',
-            'email': 'Email',
-            'meeting': 'Meeting',
-            'follow_up': 'Follow-up',
+          const taskTypeMap: Record<string, TaskItem["taskType"]> = {
+            call: "Call",
+            email: "Email",
+            meeting: "Meeting",
+            follow_up: "Follow-up",
           };
 
           return {
             id: task.id,
-            subject: task.title || 'Untitled Task',
+            subject: task.title || "Untitled Task",
             dueDate,
-            priority: (task.priority || 'medium') as TaskItem['priority'],
-            taskType: taskTypeMap[task.type?.toLowerCase()] || 'Other',
+            priority: (task.priority || "medium") as TaskItem["priority"],
+            taskType: taskTypeMap[task.type?.toLowerCase()] || "Other",
             relatedTo: {
-              type: task.opportunity_id ? 'opportunity' : task.contact_id ? 'contact' : 'organization',
-              name: task.opportunity?.name || task.contact?.name || task.organization?.name || 'Unknown',
+              type: task.opportunity_id
+                ? "opportunity"
+                : task.contact_id
+                  ? "contact"
+                  : "organization",
+              name:
+                task.opportunity?.name ||
+                task.contact?.name ||
+                task.organization?.name ||
+                "Unknown",
               id: task.opportunity_id || task.contact_id || task.organization_id || 0,
             },
             status,
@@ -92,7 +100,7 @@ export function useMyTasks() {
 
         setTasks(mappedTasks);
       } catch (err) {
-        console.error('Failed to fetch tasks:', err);
+        console.error("Failed to fetch tasks:", err);
         setError(err as Error);
       } finally {
         setLoading(false);
@@ -104,16 +112,16 @@ export function useMyTasks() {
 
   const completeTask = async (taskId: number) => {
     try {
-      await dataProvider.update('tasks', {
+      await dataProvider.update("tasks", {
         id: taskId,
         data: { completed: true, completed_at: new Date().toISOString() },
-        previousData: tasks.find(t => t.id === taskId) || {}
+        previousData: tasks.find((t) => t.id === taskId) || {},
       });
 
       // Remove from local state
-      setTasks(prev => prev.filter(t => t.id !== taskId));
+      setTasks((prev) => prev.filter((t) => t.id !== taskId));
     } catch (err) {
-      console.error('Failed to complete task:', err);
+      console.error("Failed to complete task:", err);
       throw err; // Re-throw so UI can handle
     }
   };
@@ -129,15 +137,15 @@ export function useMyTasks() {
     const dueDateStart = startOfDay(dueDate);
 
     if (isBefore(dueDateStart, today)) {
-      return 'overdue';
+      return "overdue";
     } else if (isSameDay(dueDateStart, today)) {
-      return 'today';
+      return "today";
     } else if (isSameDay(dueDateStart, tomorrow)) {
-      return 'tomorrow';
+      return "tomorrow";
     } else if (isBefore(dueDateStart, nextWeek)) {
-      return 'upcoming';
+      return "upcoming";
     } else {
-      return 'later';
+      return "later";
     }
   }, []);
 
@@ -145,34 +153,39 @@ export function useMyTasks() {
    * Snooze a task by 1 day (to end of following day)
    * Uses optimistic UI update for immediate feedback
    */
-  const snoozeTask = useCallback(async (taskId: number) => {
-    const task = tasks.find(t => t.id === taskId);
-    if (!task) return;
+  const snoozeTask = useCallback(
+    async (taskId: number) => {
+      const task = tasks.find((t) => t.id === taskId);
+      if (!task) return;
 
-    // Calculate new due date: end of the following day (timezone-aware)
-    const newDueDate = endOfDay(addDays(task.dueDate, 1));
-    const newStatus = calculateStatus(newDueDate);
+      // Calculate new due date: end of the following day (timezone-aware)
+      const newDueDate = endOfDay(addDays(task.dueDate, 1));
+      const newStatus = calculateStatus(newDueDate);
 
-    // Optimistic UI update - immediately move task to new bucket
-    setTasks(prev => prev.map(t =>
-      t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t
-    ));
+      // Optimistic UI update - immediately move task to new bucket
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t))
+      );
 
-    try {
-      await dataProvider.update('tasks', {
-        id: taskId,
-        data: { due_date: newDueDate.toISOString() },
-        previousData: task
-      });
-    } catch (err) {
-      console.error('Failed to snooze task:', err);
-      // Rollback optimistic update on failure
-      setTasks(prev => prev.map(t =>
-        t.id === taskId ? { ...t, dueDate: task.dueDate, status: task.status } : t
-      ));
-      throw err; // Re-throw so UI can handle
-    }
-  }, [tasks, dataProvider, calculateStatus]);
+      try {
+        await dataProvider.update("tasks", {
+          id: taskId,
+          data: { due_date: newDueDate.toISOString() },
+          previousData: task,
+        });
+      } catch (err) {
+        console.error("Failed to snooze task:", err);
+        // Rollback optimistic update on failure
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === taskId ? { ...t, dueDate: task.dueDate, status: task.status } : t
+          )
+        );
+        throw err; // Re-throw so UI can handle
+      }
+    },
+    [tasks, dataProvider, calculateStatus]
+  );
 
   return { tasks, loading, error, completeTask, snoozeTask };
 }

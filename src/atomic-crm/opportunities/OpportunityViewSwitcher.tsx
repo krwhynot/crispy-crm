@@ -23,7 +23,7 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: OpportunityViewS
             <ToggleGroupItem
               value="kanban"
               aria-label="Kanban view"
-            className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
+              className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
             >
               <LayoutGrid className="h-4 w-4" />
             </ToggleGroupItem>
@@ -37,7 +37,7 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: OpportunityViewS
             <ToggleGroupItem
               value="list"
               aria-label="List view"
-            className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
+              className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
             >
               <List className="h-4 w-4" />
             </ToggleGroupItem>
@@ -51,7 +51,7 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: OpportunityViewS
             <ToggleGroupItem
               value="campaign"
               aria-label="Campaign grouped view"
-            className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
+              className="h-11 w-11 sm:h-11 sm:w-11 touch-manipulation"
             >
               <FolderOpen className="h-4 w-4" />
             </ToggleGroupItem>

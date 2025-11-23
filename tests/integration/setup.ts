@@ -5,7 +5,7 @@
  * Unlike unit tests, we don't mock Supabase here.
  */
 
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Unmock Supabase for integration tests - we need real database connections
-vi.unmock('@supabase/supabase-js');
+vi.unmock("@supabase/supabase-js");

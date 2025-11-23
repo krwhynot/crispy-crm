@@ -35,9 +35,7 @@ export const NoteInputs = () => {
           >
             Show options
           </Button>
-          <span className="text-sm text-muted-foreground">
-            (change date/time or attach files)
-          </span>
+          <span className="text-sm text-muted-foreground">(change date/time or attach files)</span>
         </div>
       )}
 

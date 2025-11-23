@@ -6,7 +6,7 @@ import { test, expect } from "@playwright/test";
  */
 
 test.describe("Tabbed Forms UI Design - Layout Only", () => {
-  test.use({ storageState: 'tests/e2e/.auth/user.json' });
+  test.use({ storageState: "tests/e2e/.auth/user.json" });
 
   test.describe("Tab Layout Validation", () => {
     test("Organizations form - should have ultra-compact tab styling", async ({ page }) => {

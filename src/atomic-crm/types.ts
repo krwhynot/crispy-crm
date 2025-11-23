@@ -28,15 +28,15 @@ export interface SalesFormData {
   password: string;
   first_name: string;
   last_name: string;
-  role: 'admin' | 'manager' | 'rep';  // Primary field (from DB enum)
+  role: "admin" | "manager" | "rep"; // Primary field (from DB enum)
   disabled: boolean;
 }
 
 export interface Sale extends Pick<RaRecord, "id"> {
   first_name: string;
   last_name: string;
-  role: 'admin' | 'manager' | 'rep';  // Primary field (single source of truth)
-  administrator?: boolean;  // Computed column (backward compatibility)
+  role: "admin" | "manager" | "rep"; // Primary field (single source of truth)
+  administrator?: boolean; // Computed column (backward compatibility)
   avatar?: RAFile;
   disabled?: boolean;
   user_id: string;

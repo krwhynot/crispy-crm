@@ -377,9 +377,7 @@ export const SemanticColors: Story = {
         <div className="space-y-4 py-4">
           <div className="rounded-lg border border-border bg-background p-3">
             <p className="text-sm font-medium">Default Border & Background</p>
-            <p className="text-xs text-muted-foreground">
-              Using --border and --background
-            </p>
+            <p className="text-xs text-muted-foreground">Using --border and --background</p>
           </div>
 
           <div className="rounded-lg border border-primary bg-primary/10 p-3">
@@ -389,9 +387,7 @@ export const SemanticColors: Story = {
 
           <div className="rounded-lg border border-destructive bg-destructive/10 p-3">
             <p className="text-sm font-medium text-destructive">Destructive State</p>
-            <p className="text-xs text-muted-foreground">
-              Using --destructive for warnings
-            </p>
+            <p className="text-xs text-muted-foreground">Using --destructive for warnings</p>
           </div>
 
           <div className="rounded-lg border border-secondary bg-secondary p-3">

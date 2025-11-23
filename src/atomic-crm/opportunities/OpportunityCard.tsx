@@ -8,7 +8,7 @@ import type { Opportunity } from "../types";
 
 interface OpportunityCardProps {
   index: number;
-  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+  openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }
 
 const priorityColors = {
@@ -28,12 +28,12 @@ export function OpportunityCard({ index, openSlideOver }: OpportunityCardProps) 
 
   const handleCardClick = (e: React.MouseEvent) => {
     // Only open slide-over if not clicking on action buttons
-    if ((e.target as HTMLElement).closest('[data-action-button]')) {
+    if ((e.target as HTMLElement).closest("[data-action-button]")) {
       return;
     }
     e.preventDefault();
     e.stopPropagation();
-    openSlideOver(record.id as number, 'view');
+    openSlideOver(record.id as number, "view");
   };
 
   const closeDate = record.estimated_close_date
@@ -60,7 +60,7 @@ export function OpportunityCard({ index, openSlideOver }: OpportunityCardProps) 
           tabIndex={0}
           onClick={handleCardClick}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               handleCardClick(e as unknown as React.MouseEvent);
             }

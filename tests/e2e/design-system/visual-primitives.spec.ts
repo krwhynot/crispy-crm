@@ -45,11 +45,7 @@ test.describe("Visual Primitives - Design System", () => {
         const all = Array.from(document.querySelectorAll("*"));
         const withInlineColor = all.filter((el) => {
           const style = (el as HTMLElement).style;
-          return (
-            style.color !== "" ||
-            style.backgroundColor !== "" ||
-            style.borderColor !== ""
-          );
+          return style.color !== "" || style.backgroundColor !== "" || style.borderColor !== "";
         });
 
         const hexValues: string[] = [];
@@ -190,10 +186,9 @@ test.describe("Visual Primitives - Design System", () => {
       const validSizes = ["14px", "16px", "18px", "20px", "24px", "30px", "36px", "48px", "60px"];
 
       [...fontSizes.headings, ...fontSizes.paragraphs, ...fontSizes.labels].forEach((size) => {
-        expect(
-          validSizes.includes(size),
-          `Font size ${size} should be from Tailwind scale`
-        ).toBe(true);
+        expect(validSizes.includes(size), `Font size ${size} should be from Tailwind scale`).toBe(
+          true
+        );
       });
     });
 

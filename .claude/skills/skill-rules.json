@@ -48,17 +48,8 @@
         ]
       },
       "fileTriggers": {
-        "pathPatterns": [
-          "src/components/**/*.tsx",
-          "src/pages/**/*.tsx",
-          "src/layouts/**/*.tsx"
-        ],
-        "contentPatterns": [
-          "className=",
-          "tailwind",
-          "bg-\\[oklch",
-          "design-token"
-        ]
+        "pathPatterns": ["src/components/**/*.tsx", "src/pages/**/*.tsx", "src/layouts/**/*.tsx"],
+        "contentPatterns": ["className=", "tailwind", "bg-\\[oklch", "design-token"]
       }
     },
     "supabase-crm": {

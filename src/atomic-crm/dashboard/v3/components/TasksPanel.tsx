@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Skeleton } from '@/components/ui/skeleton';
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   AlarmClock,
   CheckCircle2,
@@ -12,18 +12,18 @@ import {
   Users,
   FileText,
   MoreHorizontal,
-  Loader2
-} from 'lucide-react';
-import { TaskGroup } from './TaskGroup';
-import type { TaskItem } from '../types';
-import { useMyTasks } from '../hooks/useMyTasks';
+  Loader2,
+} from "lucide-react";
+import { TaskGroup } from "./TaskGroup";
+import type { TaskItem } from "../types";
+import { useMyTasks } from "../hooks/useMyTasks";
 
 export function TasksPanel() {
   const { tasks, loading, error, completeTask, snoozeTask } = useMyTasks();
 
-  const overdueTasks = tasks.filter(t => t.status === 'overdue');
-  const todayTasks = tasks.filter(t => t.status === 'today');
-  const tomorrowTasks = tasks.filter(t => t.status === 'tomorrow');
+  const overdueTasks = tasks.filter((t) => t.status === "overdue");
+  const todayTasks = tasks.filter((t) => t.status === "today");
+  const tomorrowTasks = tasks.filter((t) => t.status === "tomorrow");
 
   if (loading) {
     return (
@@ -34,7 +34,7 @@ export function TasksPanel() {
         </CardHeader>
         <CardContent className="flex-1 p-4">
           <div className="space-y-3">
-            {[1, 2, 3].map(i => (
+            {[1, 2, 3].map((i) => (
               <Skeleton key={i} className="h-16 w-full" />
             ))}
           </div>
@@ -85,23 +85,38 @@ export function TasksPanel() {
           {/* Overdue section */}
           {overdueTasks.length > 0 && (
             <TaskGroup title="Overdue" variant="danger" count={overdueTasks.length}>
-              {overdueTasks.map(task => (
-                <TaskItemComponent key={task.id} task={task} onComplete={completeTask} onSnooze={snoozeTask} />
+              {overdueTasks.map((task) => (
+                <TaskItemComponent
+                  key={task.id}
+                  task={task}
+                  onComplete={completeTask}
+                  onSnooze={snoozeTask}
+                />
               ))}
             </TaskGroup>
           )}
 
           {/* Today section */}
           <TaskGroup title="Today" variant="warning" count={todayTasks.length}>
-            {todayTasks.map(task => (
-              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} onSnooze={snoozeTask} />
+            {todayTasks.map((task) => (
+              <TaskItemComponent
+                key={task.id}
+                task={task}
+                onComplete={completeTask}
+                onSnooze={snoozeTask}
+              />
             ))}
           </TaskGroup>
 
           {/* Tomorrow section */}
           <TaskGroup title="Tomorrow" variant="info" count={tomorrowTasks.length}>
-            {tomorrowTasks.map(task => (
-              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} onSnooze={snoozeTask} />
+            {tomorrowTasks.map((task) => (
+              <TaskItemComponent
+                key={task.id}
+                task={task}
+                onComplete={completeTask}
+                onSnooze={snoozeTask}
+              />
             ))}
           </TaskGroup>
         </div>
@@ -130,23 +145,33 @@ function TaskItemComponent({ task, onComplete, onSnooze }: TaskItemProps) {
     }
   };
 
-  const getTaskIcon = (type: TaskItem['taskType']) => {
-    switch(type) {
-      case 'Call': return <Phone className="h-4 w-4" />;
-      case 'Email': return <Mail className="h-4 w-4" />;
-      case 'Meeting': return <Users className="h-4 w-4" />;
-      case 'Follow-up': return <CheckCircle2 className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
+  const getTaskIcon = (type: TaskItem["taskType"]) => {
+    switch (type) {
+      case "Call":
+        return <Phone className="h-4 w-4" />;
+      case "Email":
+        return <Mail className="h-4 w-4" />;
+      case "Meeting":
+        return <Users className="h-4 w-4" />;
+      case "Follow-up":
+        return <CheckCircle2 className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
     }
   };
 
-  const getPriorityColor = (priority: TaskItem['priority']) => {
-    switch(priority) {
-      case 'critical': return 'destructive';
-      case 'high': return 'warning';
-      case 'medium': return 'default';
-      case 'low': return 'secondary';
-      default: return 'outline';
+  const getPriorityColor = (priority: TaskItem["priority"]) => {
+    switch (priority) {
+      case "critical":
+        return "destructive";
+      case "high":
+        return "warning";
+      case "medium":
+        return "default";
+      case "low":
+        return "secondary";
+      default:
+        return "outline";
     }
   };
 

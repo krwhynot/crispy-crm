@@ -12,7 +12,7 @@ import { useColumnPreferences } from "./useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 
 interface OpportunityListContentProps {
-  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+  openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }
 
 export const OpportunityListContent = ({ openSlideOver }: OpportunityListContentProps) => {

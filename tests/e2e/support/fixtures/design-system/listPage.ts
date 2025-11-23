@@ -174,7 +174,7 @@ export class ListPageFixture {
    * Per plan lines 654-657: bg-card, border, shadow-sm, rounded-xl
    */
   async expectCardContainer(): Promise<void> {
-    const cardContainer = this.page.locator('.card-container').first();
+    const cardContainer = this.page.locator(".card-container").first();
     await expect(cardContainer).toBeVisible();
 
     const styles = await cardContainer.evaluate((el) => {
@@ -213,7 +213,7 @@ export class ListPageFixture {
    */
   async expectNoHorizontalScroll(): Promise<void> {
     const bodyWidth = await this.page.evaluate(() => document.body.scrollWidth);
-    const viewportWidth = await this.page.viewportSize()?.width || 0;
+    const viewportWidth = (await this.page.viewportSize()?.width) || 0;
 
     // Allow 5px tolerance for browser rounding
     expect(bodyWidth).toBeLessThanOrEqual(viewportWidth + 5);

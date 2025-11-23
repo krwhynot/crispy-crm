@@ -82,9 +82,7 @@ export const Basic: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Hover Card</div>
-                  <p className="text-sm text-muted-foreground">
-                    Preview content on hover
-                  </p>
+                  <p className="text-sm text-muted-foreground">Preview content on hover</p>
                 </NavigationMenuLink>
               </li>
               <li>
@@ -220,15 +218,11 @@ export const WithFeaturedContent: Story = {
                 </NavigationMenuLink>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Case Studies</div>
-                  <p className="text-sm text-muted-foreground">
-                    Customer success stories
-                  </p>
+                  <p className="text-sm text-muted-foreground">Customer success stories</p>
                 </NavigationMenuLink>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">API Reference</div>
-                  <p className="text-sm text-muted-foreground">
-                    Complete API documentation
-                  </p>
+                  <p className="text-sm text-muted-foreground">Complete API documentation</p>
                 </NavigationMenuLink>
               </div>
             </div>
@@ -309,9 +303,7 @@ export const ComplexNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">About Us</div>
-                  <p className="text-sm text-muted-foreground">
-                    Learn about our mission and team
-                  </p>
+                  <p className="text-sm text-muted-foreground">Learn about our mission and team</p>
                 </NavigationMenuLink>
               </li>
               <li>
@@ -432,9 +424,7 @@ export const MixedNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Tutorials</div>
-                  <p className="text-sm text-muted-foreground">
-                    Step-by-step learning resources
-                  </p>
+                  <p className="text-sm text-muted-foreground">Step-by-step learning resources</p>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -461,9 +451,7 @@ const AnimationStatesComponent = () => {
     <div className="space-y-4">
       <div className="rounded-lg border bg-secondary/10 p-3">
         <p className="text-sm font-medium">Active Item: {activeItem || "None"}</p>
-        <p className="text-xs text-muted-foreground">
-          Click triggers to see animation states
-        </p>
+        <p className="text-xs text-muted-foreground">Click triggers to see animation states</p>
       </div>
 
       <NavigationMenu>
@@ -694,9 +682,7 @@ const WithActiveStatesComponent = () => {
                     data-active={activePath === "/products/analytics"}
                   >
                     <div className="text-sm font-medium">Analytics</div>
-                    <p className="text-sm text-muted-foreground">
-                      Data insights and reporting
-                    </p>
+                    <p className="text-sm text-muted-foreground">Data insights and reporting</p>
                   </NavigationMenuLink>
                 </li>
                 <li>

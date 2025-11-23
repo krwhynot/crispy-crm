@@ -360,8 +360,14 @@ test.describe("Contact Slide-Over", () => {
         // Should show validation error (exact message depends on implementation)
         // Check for common validation indicators
         const hasError =
-          (await slideOver.getByText(/required/i).isVisible().catch(() => false)) ||
-          (await slideOver.getByText(/invalid/i).isVisible().catch(() => false)) ||
+          (await slideOver
+            .getByText(/required/i)
+            .isVisible()
+            .catch(() => false)) ||
+          (await slideOver
+            .getByText(/invalid/i)
+            .isVisible()
+            .catch(() => false)) ||
           (await slideOver.locator('[aria-invalid="true"]').count()) > 0;
 
         // If validation worked, we should still be in edit mode or see error

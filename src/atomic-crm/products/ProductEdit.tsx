@@ -48,9 +48,7 @@ const ProductEditForm = () => {
         <CardContent>
           <div className="mb-6">
             <h2 className="text-2xl font-semibold">Edit {record.name}</h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              Update product information
-            </p>
+            <p className="text-sm text-muted-foreground mt-1">Update product information</p>
           </div>
 
           <ProductInputs />

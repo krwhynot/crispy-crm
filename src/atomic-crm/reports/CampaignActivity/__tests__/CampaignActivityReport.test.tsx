@@ -19,9 +19,7 @@ vi.mock("ra-core", async () => {
 // Mock jsonexport
 vi.mock("jsonexport/dist", () => ({
   default: vi.fn((data, callback) => {
-    const csv = data
-      .map((row: any) => Object.values(row).join(","))
-      .join("\n");
+    const csv = data.map((row: any) => Object.values(row).join(",")).join("\n");
     callback(null, csv);
   }),
 }));
@@ -796,9 +794,7 @@ describe("CampaignActivityReport", () => {
         },
       ];
 
-      const mockSalesReps = [
-        { id: 1, first_name: "Jane", last_name: "Smith" },
-      ];
+      const mockSalesReps = [{ id: 1, first_name: "Jane", last_name: "Smith" }];
 
       vi.mocked(useGetList).mockImplementation((resource: string) => {
         if (resource === "activities") {
@@ -890,7 +886,9 @@ describe("CampaignActivityReport", () => {
 
       await waitFor(() => {
         expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
-        expect(screen.getByText("Activities will appear here once your team starts engaging with leads")).toBeInTheDocument();
+        expect(
+          screen.getByText("Activities will appear here once your team starts engaging with leads")
+        ).toBeInTheDocument();
       });
     });
 

@@ -1,7 +1,7 @@
-import { useGetOne, useRecordContext, useCreatePath } from 'react-admin';
-import { ChevronRight, Building2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import type { Company } from '../types';
+import { useGetOne, useRecordContext, useCreatePath } from "react-admin";
+import { ChevronRight, Building2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import type { Company } from "../types";
 
 /**
  * Component displaying organization hierarchy breadcrumb
@@ -14,7 +14,7 @@ export const HierarchyBreadcrumb = () => {
 
   // Fetch parent organization if it exists
   const { data: parent, isLoading } = useGetOne<Company>(
-    'organizations',
+    "organizations",
     { id: record?.parent_organization_id },
     { enabled: !!record?.parent_organization_id }
   );
@@ -34,8 +34,8 @@ export const HierarchyBreadcrumb = () => {
 
       <Link
         to={createPath({
-          resource: 'organizations',
-          type: 'list',
+          resource: "organizations",
+          type: "list",
         })}
         className="hover:text-primary transition-colors"
       >
@@ -46,8 +46,8 @@ export const HierarchyBreadcrumb = () => {
 
       <Link
         to={createPath({
-          resource: 'organizations',
-          type: 'edit',
+          resource: "organizations",
+          type: "edit",
           id: parent.id,
         })}
         className="hover:text-primary transition-colors"
@@ -57,9 +57,7 @@ export const HierarchyBreadcrumb = () => {
 
       <ChevronRight className="h-4 w-4" />
 
-      <span className="text-foreground font-medium">
-        {record.name}
-      </span>
+      <span className="text-foreground font-medium">{record.name}</span>
     </div>
   );
 };

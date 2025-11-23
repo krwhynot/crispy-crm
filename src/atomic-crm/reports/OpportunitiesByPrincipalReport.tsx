@@ -95,10 +95,7 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
         />
 
         {/* Sales Rep Filter */}
-        <ReferenceInput
-          source="opportunity_owner_id"
-          reference="sales"
-        >
+        <ReferenceInput source="opportunity_owner_id" reference="sales">
           <AutocompleteArrayInput
             label={false}
             placeholder="Filter by Sales Rep"
@@ -127,13 +124,7 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
 
         {/* Clear Filters */}
         {hasActiveFilters && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={clearFilters}
-            type="button"
-            className="h-11"
-          >
+          <Button variant="ghost" size="sm" onClick={clearFilters} type="button" className="h-11">
             Clear Filters
           </Button>
         )}
@@ -214,7 +205,8 @@ export default function OpportunitiesByPrincipalReport() {
 
   // Fetch sales reps for filter and display
   const ownerIds = useMemo(
-    () => Array.from(new Set((opportunities || []).map((o) => o.opportunity_owner_id).filter(Boolean))),
+    () =>
+      Array.from(new Set((opportunities || []).map((o) => o.opportunity_owner_id).filter(Boolean))),
     [opportunities]
   );
 
@@ -263,7 +255,7 @@ export default function OpportunitiesByPrincipalReport() {
 
     // Auto-expand first 3 principals
     if (expandedPrincipals.size === 0 && groups.length > 0) {
-      const initialExpanded = new Set(groups.slice(0, 3).map(g => g.principalId || "null"));
+      const initialExpanded = new Set(groups.slice(0, 3).map((g) => g.principalId || "null"));
       setExpandedPrincipals(initialExpanded);
     }
 
@@ -293,7 +285,9 @@ export default function OpportunitiesByPrincipalReport() {
           opportunity: sanitizeCsvValue(opp.name),
           organization: sanitizeCsvValue(opp.customer_organization_name || ""),
           stage: sanitizeCsvValue(opp.stage),
-          close_date: opp.estimated_close_date ? format(new Date(opp.estimated_close_date), "yyyy-MM-dd") : "",
+          close_date: opp.estimated_close_date
+            ? format(new Date(opp.estimated_close_date), "yyyy-MM-dd")
+            : "",
           sales_rep: sanitizeCsvValue(salesMap.get(opp.opportunity_owner_id!) || "Unassigned"),
           priority: sanitizeCsvValue(opp.priority || "medium"),
           status: sanitizeCsvValue(opp.status),
@@ -403,7 +397,7 @@ function PrincipalGroupCard({
   isExpanded,
   onToggle,
   onOpportunityClick,
-  salesMap
+  salesMap,
 }: PrincipalGroupCardProps) {
   // Get stage summary
   const stageSummary = Object.entries(group.stageBreakdown)
@@ -420,7 +414,11 @@ function PrincipalGroupCard({
       >
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {isExpanded ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+            {isExpanded ? (
+              <ChevronDown className="w-5 h-5" />
+            ) : (
+              <ChevronRight className="w-5 h-5" />
+            )}
             <span>{group.principalName}</span>
           </div>
           <div className="flex items-center gap-2">
@@ -457,10 +455,14 @@ function PrincipalGroupCard({
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{opp.name}</span>
                         {opp.priority === "high" && (
-                          <Badge variant="outline" className="text-xs bg-warning-light">High</Badge>
+                          <Badge variant="outline" className="text-xs bg-warning-light">
+                            High
+                          </Badge>
                         )}
                         {opp.priority === "critical" && (
-                          <Badge variant="outline" className="text-xs bg-destructive-light">Critical</Badge>
+                          <Badge variant="outline" className="text-xs bg-destructive-light">
+                            Critical
+                          </Badge>
                         )}
                         {opp.days_in_stage && opp.days_in_stage > 14 && (
                           <Badge variant="outline" className="text-xs">
@@ -469,9 +471,7 @@ function PrincipalGroupCard({
                         )}
                       </div>
                     </td>
-                    <td className="py-2 px-2">
-                      {opp.customer_organization_name || "-"}
-                    </td>
+                    <td className="py-2 px-2">{opp.customer_organization_name || "-"}</td>
                     <td className="py-2 px-2">
                       <Badge variant="outline">{opp.stage}</Badge>
                     </td>
