@@ -155,7 +155,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             filter: {},
           }),
           dataProvider.getList("organizations", {
-            pagination: { page: 1, perPage: 100 },
+            pagination: { page: 1, perPage: 5000 },
             sort: { field: "name", order: "ASC" },
             filter: {},
           }),

@@ -69,20 +69,18 @@ export function useSlideOverState(): UseSlideOverStateReturn {
   const closeSlideOver = useCallback(() => {
     setIsOpen(false);
     setSlideOverId(null);
-    // Remove slide-over params from URL
-    const params = new URLSearchParams(window.location.search);
+    // Remove slide-over params from URL (hash-based routing)
+    const params = getHashParams();
     params.delete("view");
     params.delete("edit");
-    const newUrl = params.toString()
-      ? `${window.location.pathname}?${params}`
-      : window.location.pathname;
-    window.history.pushState(null, "", newUrl);
+    const newHash = setHashParams(params);
+    window.history.pushState(null, "", newHash);
   }, []);
 
-  // Listen to browser back/forward navigation
+  // Listen to browser back/forward navigation and hash changes
   useEffect(() => {
-    const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search);
+    const handleHashChange = () => {
+      const params = getHashParams();
       const viewId = params.get("view");
       const editId = params.get("edit");
 
@@ -101,8 +99,12 @@ export function useSlideOverState(): UseSlideOverStateReturn {
       }
     };
 
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
+    window.addEventListener("popstate", handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("popstate", handleHashChange);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
   }, []);
 
   // Handle ESC key to close slide-over
@@ -121,26 +123,28 @@ export function useSlideOverState(): UseSlideOverStateReturn {
     setSlideOverId(id);
     setMode(initialMode);
     setIsOpen(true);
-    // Update URL for deep linking and browser history
-    const params = new URLSearchParams(window.location.search);
+    // Update URL for deep linking and browser history (hash-based routing)
+    const params = getHashParams();
     // Clear both view and edit params first
     params.delete("view");
     params.delete("edit");
     // Set the new param
     params.set(initialMode, String(id));
-    window.history.pushState(null, "", `${window.location.pathname}?${params}`);
+    const newHash = setHashParams(params);
+    window.history.pushState(null, "", newHash);
   };
 
   const toggleMode = () => {
     const newMode = mode === "view" ? "edit" : "view";
     setMode(newMode);
-    // Update URL when mode changes
+    // Update URL when mode changes (hash-based routing)
     if (slideOverId) {
-      const params = new URLSearchParams(window.location.search);
+      const params = getHashParams();
       params.delete("view");
       params.delete("edit");
       params.set(newMode, String(slideOverId));
-      window.history.replaceState(null, "", `${window.location.pathname}?${params}`);
+      const newHash = setHashParams(params);
+      window.history.replaceState(null, "", newHash);
     }
   };
 
