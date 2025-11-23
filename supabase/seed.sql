@@ -585,7 +585,7 @@ INSERT INTO organizations (id, name, organization_type, priority, segment_id, ph
   (451, 'Golf VX', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (452, 'Good To Go Food', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (453, 'Goosefoot', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (454, 'Gordon Food Service', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Includes culinary and sales key contacts as well as HQ team'),
+  (454, 'Gordon Food Service (Legacy)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Includes culinary and sales key contacts as well as HQ team'),
   (455, 'GORDON FS/50TH STREET', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
   (456, 'GORDON FS/50TH STREET(FRO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
   (457, 'GORDON FS/BRIGHTON', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
@@ -1192,7 +1192,7 @@ Chicago, IL 60641
   (1054, 'Sweet Berry Cafe', 'prospect', 'C', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, '720 N McLean Blvd', 'South Elgin', 'IL', NULL, ''),
   (1055, 'Syds Fine Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1056, 'SYRACUSE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1057, 'Sysco', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1057, 'Sysco (Legacy)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1058, 'Sysco Chicago', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1059, 'Sysco GR', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'grand rapids', NULL, NULL, 'Sent emil on TCFB Holiday Blitz'),
   (1060, 'Sysco(BG/Nashville)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Nashville', 'TN', NULL, 'planning ride alongs with BG Sales rep Bo Ghee'),
@@ -1360,7 +1360,7 @@ Chicago, IL 60641
   (1222, 'yourstruly', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos'),
   (1223, 'ZALACK''S FLINT PROVISIONS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
   (1224, 'Zels Great Roast Beef', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1225, 'Zels Great Roast Beef', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1225, 'Zels Great Roast Beef (2)', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1226, 'Ziggys', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Amherst', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS'),
   (1227, 'ZOGALO FOODS', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1228, 'Finish Line Sports Bar', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'samples Kaufholds'),
@@ -1685,7 +1685,7 @@ Chicago, IL 60641
   (1547, 'GFS Sprongfield', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1548, 'SYSCO Cincy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1549, 'Butts Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1550, 'Chefs Kitchen', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1550, 'Chefs Kitchen (2)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1551, 'Fare Foods Corp.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1552, 'Kern Food Distributing, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1553, 'Loffredo Fresh Produce', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
@@ -1921,7 +1921,7 @@ Chicago, IL 60641
   (1783, 'UIC Catering & Conferences 49852003', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1784, 'VILLAGE GRNS OF WOODRIDGE GOLFCRSE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1785, 'Wanaki Golf Course', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1786, 'West Carroll Middle School', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1786, 'West Carroll Middle School (2)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1787, 'WEST HARVEY SCHOOL DIST 147', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1788, 'White Deer Golf Course', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
   (1789, 'WurstBar Brady St', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Vernon Hills', NULL, NULL, ''),
