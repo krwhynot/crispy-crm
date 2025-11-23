@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TasksPanel } from "../TasksPanel";
 import * as reactAdmin from "react-admin";
@@ -136,21 +137,43 @@ describe("TasksPanel", () => {
     );
   });
 
+  describe("New Task button", () => {
+    it("should render New Task button in header", () => {
+      mockUseMyTasks.mockReturnValue({
+        tasks: [],
+        loading: false,
+        error: null,
+        completeTask: vi.fn(),
+        snoozeTask: vi.fn(),
+        deleteTask: vi.fn(),
+        viewTask: vi.fn(),
+      });
+
+      render(<TasksPanel />);
+
+      // Should show New Task button
+      expect(screen.getByRole("button", { name: /new task/i })).toBeInTheDocument();
+    });
+  });
+
   describe("More menu", () => {
     it("should open dropdown menu when More button is clicked", async () => {
+      const user = userEvent.setup();
       mockUseMyTasks.mockReturnValue({
         tasks: [mockTaskData[1]], // Today task
         loading: false,
         error: null,
         completeTask: vi.fn(),
         snoozeTask: vi.fn(),
+        deleteTask: vi.fn(),
+        viewTask: vi.fn(),
       });
 
       render(<TasksPanel />);
 
-      // Find and click the More button
+      // Find and click the More button using userEvent for proper Radix interaction
       const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
-      fireEvent.click(moreButton);
+      await user.click(moreButton);
 
       // Menu should appear with View, Edit, Delete options
       await waitFor(() => {
@@ -161,6 +184,7 @@ describe("TasksPanel", () => {
     });
 
     it("should call onView when View is clicked", async () => {
+      const user = userEvent.setup();
       const mockViewTask = vi.fn();
       mockUseMyTasks.mockReturnValue({
         tasks: [mockTaskData[1]],
@@ -168,6 +192,7 @@ describe("TasksPanel", () => {
         error: null,
         completeTask: vi.fn(),
         snoozeTask: vi.fn(),
+        deleteTask: vi.fn(),
         viewTask: mockViewTask,
       });
 
@@ -175,18 +200,17 @@ describe("TasksPanel", () => {
 
       // Open menu
       const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
-      fireEvent.click(moreButton);
+      await user.click(moreButton);
 
       // Click View
-      await waitFor(() => {
-        const viewItem = screen.getByRole("menuitem", { name: /view/i });
-        fireEvent.click(viewItem);
-      });
+      const viewItem = await screen.findByRole("menuitem", { name: /view/i });
+      await user.click(viewItem);
 
       expect(mockViewTask).toHaveBeenCalledWith(2);
     });
 
     it("should call onDelete when Delete is clicked", async () => {
+      const user = userEvent.setup();
       const mockDeleteTask = vi.fn().mockResolvedValue(undefined);
       mockUseMyTasks.mockReturnValue({
         tasks: [mockTaskData[1]],
@@ -195,24 +219,24 @@ describe("TasksPanel", () => {
         completeTask: vi.fn(),
         snoozeTask: vi.fn(),
         deleteTask: mockDeleteTask,
+        viewTask: vi.fn(),
       });
 
       render(<TasksPanel />);
 
       // Open menu
       const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
-      fireEvent.click(moreButton);
+      await user.click(moreButton);
 
       // Click Delete
-      await waitFor(() => {
-        const deleteItem = screen.getByRole("menuitem", { name: /delete/i });
-        fireEvent.click(deleteItem);
-      });
+      const deleteItem = await screen.findByRole("menuitem", { name: /delete/i });
+      await user.click(deleteItem);
 
       expect(mockDeleteTask).toHaveBeenCalledWith(2);
     });
 
     it("should show success toast when task is deleted", async () => {
+      const user = userEvent.setup();
       const mockDeleteTask = vi.fn().mockResolvedValue(undefined);
       mockUseMyTasks.mockReturnValue({
         tasks: [mockTaskData[1]],
@@ -221,18 +245,17 @@ describe("TasksPanel", () => {
         completeTask: vi.fn(),
         snoozeTask: vi.fn(),
         deleteTask: mockDeleteTask,
+        viewTask: vi.fn(),
       });
 
       render(<TasksPanel />);
 
       // Open menu and click Delete
       const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
-      fireEvent.click(moreButton);
+      await user.click(moreButton);
 
-      await waitFor(() => {
-        const deleteItem = screen.getByRole("menuitem", { name: /delete/i });
-        fireEvent.click(deleteItem);
-      });
+      const deleteItem = await screen.findByRole("menuitem", { name: /delete/i });
+      await user.click(deleteItem);
 
       await waitFor(() => {
         expect(mockNotify).toHaveBeenCalledWith(

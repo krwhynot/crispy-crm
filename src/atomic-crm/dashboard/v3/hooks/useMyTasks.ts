@@ -199,5 +199,42 @@ export function useMyTasks() {
     [tasks, dataProvider, calculateStatus]
   );
 
-  return { tasks, loading, error, completeTask, snoozeTask };
+  /**
+   * Delete a task
+   * Uses optimistic UI update for immediate feedback
+   */
+  const deleteTask = useCallback(
+    async (taskId: number) => {
+      const task = tasks.find((t) => t.id === taskId);
+      if (!task) return;
+
+      // Optimistic UI update - immediately remove task
+      setTasks((prev) => prev.filter((t) => t.id !== taskId));
+
+      try {
+        await dataProvider.delete("tasks", {
+          id: taskId,
+          previousData: task,
+        });
+      } catch (err) {
+        console.error("Failed to delete task:", err);
+        // Rollback optimistic update on failure
+        setTasks((prev) => [...prev, task].sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime()));
+        throw err; // Re-throw so UI can handle
+      }
+    },
+    [tasks, dataProvider]
+  );
+
+  /**
+   * View task - navigates to task details
+   * This is a callback that panels can use to open task details
+   */
+  const viewTask = useCallback((taskId: number) => {
+    // Navigate to task show page (or could trigger a slide-over)
+    // For now, this is a placeholder that panels can override
+    window.location.href = `/#/tasks/${taskId}/show`;
+  }, []);
+
+  return { tasks, loading, error, completeTask, snoozeTask, deleteTask, viewTask };
 }

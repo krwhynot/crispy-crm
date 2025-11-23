@@ -14,13 +14,24 @@ import {
   FileText,
   MoreHorizontal,
   Loader2,
+  Eye,
+  Pencil,
+  Trash2,
+  Plus,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { TaskGroup } from "./TaskGroup";
 import type { TaskItem } from "../types";
 import { useMyTasks } from "../hooks/useMyTasks";
 
 export function TasksPanel() {
-  const { tasks, loading, error, completeTask, snoozeTask } = useMyTasks();
+  const { tasks, loading, error, completeTask, snoozeTask, deleteTask, viewTask } = useMyTasks();
 
   const overdueTasks = tasks.filter((t) => t.status === "overdue");
   const todayTasks = tasks.filter((t) => t.status === "today");
@@ -70,11 +81,24 @@ export function TasksPanel() {
               Today's priorities and upcoming activities
             </CardDescription>
           </div>
-          {overdueTasks.length > 0 && (
-            <Badge variant="destructive" className="text-xs">
-              {overdueTasks.length} overdue
-            </Badge>
-          )}
+          <div className="flex items-center gap-2">
+            {overdueTasks.length > 0 && (
+              <Badge variant="destructive" className="text-xs">
+                {overdueTasks.length} overdue
+              </Badge>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-9 gap-1"
+              onClick={() => {
+                window.location.href = "/#/tasks/create";
+              }}
+            >
+              <Plus className="h-4 w-4" />
+              New Task
+            </Button>
+          </div>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
           Overdue items highlighted • Click to complete
@@ -92,6 +116,8 @@ export function TasksPanel() {
                   task={task}
                   onComplete={completeTask}
                   onSnooze={snoozeTask}
+                  onDelete={deleteTask}
+                  onView={viewTask}
                 />
               ))}
             </TaskGroup>
@@ -106,6 +132,8 @@ export function TasksPanel() {
                   task={task}
                   onComplete={completeTask}
                   onSnooze={snoozeTask}
+                  onDelete={deleteTask}
+                  onView={viewTask}
                 />
               ))}
             </TaskGroup>
@@ -120,6 +148,8 @@ export function TasksPanel() {
                   task={task}
                   onComplete={completeTask}
                   onSnooze={snoozeTask}
+                  onDelete={deleteTask}
+                  onView={viewTask}
                 />
               ))}
             </TaskGroup>
@@ -134,10 +164,13 @@ interface TaskItemProps {
   task: TaskItem;
   onComplete: (taskId: number) => Promise<void>;
   onSnooze: (taskId: number) => Promise<void>;
+  onDelete: (taskId: number) => Promise<void>;
+  onView: (taskId: number) => void;
 }
 
-function TaskItemComponent({ task, onComplete, onSnooze }: TaskItemProps) {
+function TaskItemComponent({ task, onComplete, onSnooze, onDelete, onView }: TaskItemProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const notify = useNotify();
 
   const handleSnooze = async () => {
@@ -150,6 +183,27 @@ function TaskItemComponent({ task, onComplete, onSnooze }: TaskItemProps) {
     } finally {
       setIsSnoozing(false);
     }
+  };
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await onDelete(task.id);
+      notify("Task deleted", { type: "success" });
+    } catch {
+      // Error already logged in hook, just reset state
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleView = () => {
+    onView(task.id);
+  };
+
+  const handleEdit = () => {
+    // Navigate to edit page
+    window.location.href = `/#/tasks/${task.id}`;
   };
 
   const getTaskIcon = (type: TaskItem["taskType"]) => {
@@ -222,9 +276,38 @@ function TaskItemComponent({ task, onComplete, onSnooze }: TaskItemProps) {
             <AlarmClock className="h-4 w-4" />
           )}
         </Button>
-        <Button variant="ghost" size="sm" className="h-11 w-11 p-0">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-11 w-11 p-0"
+              aria-label={`More actions for "${task.subject}"`}
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <MoreHorizontal className="h-4 w-4" />
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleView}>
+              <Eye className="mr-2 h-4 w-4" />
+              View
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleEdit}>
+              <Pencil className="mr-2 h-4 w-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDelete} variant="destructive">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
