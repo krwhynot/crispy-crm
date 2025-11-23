@@ -135,4 +135,111 @@ describe("TasksPanel", () => {
       expect.objectContaining({ type: "success" })
     );
   });
+
+  describe("More menu", () => {
+    it("should open dropdown menu when More button is clicked", async () => {
+      mockUseMyTasks.mockReturnValue({
+        tasks: [mockTaskData[1]], // Today task
+        loading: false,
+        error: null,
+        completeTask: vi.fn(),
+        snoozeTask: vi.fn(),
+      });
+
+      render(<TasksPanel />);
+
+      // Find and click the More button
+      const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
+      fireEvent.click(moreButton);
+
+      // Menu should appear with View, Edit, Delete options
+      await waitFor(() => {
+        expect(screen.getByRole("menuitem", { name: /view/i })).toBeInTheDocument();
+        expect(screen.getByRole("menuitem", { name: /edit/i })).toBeInTheDocument();
+        expect(screen.getByRole("menuitem", { name: /delete/i })).toBeInTheDocument();
+      });
+    });
+
+    it("should call onView when View is clicked", async () => {
+      const mockViewTask = vi.fn();
+      mockUseMyTasks.mockReturnValue({
+        tasks: [mockTaskData[1]],
+        loading: false,
+        error: null,
+        completeTask: vi.fn(),
+        snoozeTask: vi.fn(),
+        viewTask: mockViewTask,
+      });
+
+      render(<TasksPanel />);
+
+      // Open menu
+      const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
+      fireEvent.click(moreButton);
+
+      // Click View
+      await waitFor(() => {
+        const viewItem = screen.getByRole("menuitem", { name: /view/i });
+        fireEvent.click(viewItem);
+      });
+
+      expect(mockViewTask).toHaveBeenCalledWith(2);
+    });
+
+    it("should call onDelete when Delete is clicked", async () => {
+      const mockDeleteTask = vi.fn().mockResolvedValue(undefined);
+      mockUseMyTasks.mockReturnValue({
+        tasks: [mockTaskData[1]],
+        loading: false,
+        error: null,
+        completeTask: vi.fn(),
+        snoozeTask: vi.fn(),
+        deleteTask: mockDeleteTask,
+      });
+
+      render(<TasksPanel />);
+
+      // Open menu
+      const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
+      fireEvent.click(moreButton);
+
+      // Click Delete
+      await waitFor(() => {
+        const deleteItem = screen.getByRole("menuitem", { name: /delete/i });
+        fireEvent.click(deleteItem);
+      });
+
+      expect(mockDeleteTask).toHaveBeenCalledWith(2);
+    });
+
+    it("should show success toast when task is deleted", async () => {
+      const mockDeleteTask = vi.fn().mockResolvedValue(undefined);
+      mockUseMyTasks.mockReturnValue({
+        tasks: [mockTaskData[1]],
+        loading: false,
+        error: null,
+        completeTask: vi.fn(),
+        snoozeTask: vi.fn(),
+        deleteTask: mockDeleteTask,
+      });
+
+      render(<TasksPanel />);
+
+      // Open menu and click Delete
+      const moreButton = screen.getByLabelText(/More actions for "Send contract for review"/);
+      fireEvent.click(moreButton);
+
+      await waitFor(() => {
+        const deleteItem = screen.getByRole("menuitem", { name: /delete/i });
+        fireEvent.click(deleteItem);
+      });
+
+      await waitFor(() => {
+        expect(mockNotify).toHaveBeenCalledWith(
+          "Task deleted",
+          expect.objectContaining({ type: "success" })
+        );
+      });
+    });
+  });
 });

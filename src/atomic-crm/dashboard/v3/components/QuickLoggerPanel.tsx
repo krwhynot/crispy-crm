@@ -38,10 +38,7 @@ export function QuickLoggerPanel({ onRefresh }: QuickLoggerPanelProps) {
         ) : (
           <QuickLogForm
             onComplete={() => setIsLogging(false)}
-            onRefresh={() => {
-              // Dashboard data refresh callback
-              // Will be implemented in Task 6 when hooking up Supabase
-            }}
+            onRefresh={onRefresh}
           />
         )}
       </CardContent>
