@@ -150,7 +150,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
         setLoading(true);
         const [contactsRes, orgsRes, oppsRes] = await Promise.all([
           dataProvider.getList("contacts", {
-            pagination: { page: 1, perPage: 100 },
+            pagination: { page: 1, perPage: 5000 },
             sort: { field: "name", order: "ASC" },
             filter: {},
           }),
@@ -456,7 +456,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                     >
                       <CommandInput placeholder="Search organization..." />
                       <CommandEmpty>
-                        {selectedContact
+                        {selectedContact?.organization_id
                           ? "No other organizations (contact's org is selected)"
                           : "No organization found."}
                       </CommandEmpty>
