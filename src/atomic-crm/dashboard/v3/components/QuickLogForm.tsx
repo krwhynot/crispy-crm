@@ -363,7 +363,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             name="contactId"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Contact *</FormLabel>
+                <FormLabel>Contact</FormLabel>
                 <Popover open={contactOpen} onOpenChange={setContactOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -398,7 +398,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                         {filteredContacts.map((contact) => (
                           <CommandItem
                             key={contact.id}
-                            value={contact.name}
+                            value={`${contact.name} ${contact.company_name || ""}`}
                             onSelect={() => {
                               field.onChange(contact.id);
                               // Auto-fill organization if contact has one
@@ -414,7 +414,14 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                                 field.value === contact.id ? "opacity-100" : "opacity-0"
                               )}
                             />
-                            {contact.name}
+                            <span className="flex flex-col">
+                              <span>{contact.name}</span>
+                              {contact.company_name && (
+                                <span className="text-xs text-muted-foreground">
+                                  {contact.company_name}
+                                </span>
+                              )}
+                            </span>
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -433,7 +440,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             name="organizationId"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Organization *</FormLabel>
+                <FormLabel>Organization</FormLabel>
                 <Popover open={orgOpen} onOpenChange={setOrgOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -459,11 +466,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                       }
                     >
                       <CommandInput placeholder="Search organization..." />
-                      <CommandEmpty>
-                        {selectedContact?.organization_id
-                          ? "No other organizations (contact's org is selected)"
-                          : "No organization found."}
-                      </CommandEmpty>
+                      <CommandEmpty>No organization found.</CommandEmpty>
                       <CommandGroup>
                         {filteredOrganizations.map((org) => (
                           <CommandItem
