@@ -179,7 +179,7 @@ export const WithDelay: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <p className="text-sm text-[color:var(--text-subtle)] mb-2">No delay (instant)</p>
+        <p className="text-sm text-muted-foreground mb-2">No delay (instant)</p>
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -193,7 +193,7 @@ export const WithDelay: Story = {
       </div>
 
       <div>
-        <p className="text-sm text-[color:var(--text-subtle)] mb-2">200ms delay</p>
+        <p className="text-sm text-muted-foreground mb-2">200ms delay</p>
         <TooltipProvider delayDuration={200}>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -207,7 +207,7 @@ export const WithDelay: Story = {
       </div>
 
       <div>
-        <p className="text-sm text-[color:var(--text-subtle)] mb-2">500ms delay</p>
+        <p className="text-sm text-muted-foreground mb-2">500ms delay</p>
         <TooltipProvider delayDuration={500}>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -221,7 +221,7 @@ export const WithDelay: Story = {
       </div>
 
       <div>
-        <p className="text-sm text-[color:var(--text-subtle)] mb-2">1000ms delay</p>
+        <p className="text-sm text-muted-foreground mb-2">1000ms delay</p>
         <TooltipProvider delayDuration={1000}>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -312,7 +312,7 @@ export const OnDisabledElements: Story = {
         </TooltipContent>
       </Tooltip>
 
-      <p className="text-sm text-[color:var(--text-subtle)]">
+      <p className="text-sm text-muted-foreground">
         Note: Disabled elements don't trigger events, so we wrap them in a span
       </p>
     </div>
@@ -357,7 +357,7 @@ export const MultipleTooltips: Story = {
           </TooltipContent>
         </Tooltip>
       </div>
-      <p className="text-sm text-[color:var(--text-subtle)]">
+      <p className="text-sm text-muted-foreground">
         Each button has its own tooltip that shows on hover
       </p>
     </div>
@@ -446,7 +446,7 @@ export const StatusIndicators: Story = {
 export const KeyboardFocus: Story = {
   render: () => (
     <div className="space-y-4">
-      <p className="text-sm text-[color:var(--text-subtle)]">
+      <p className="text-sm text-muted-foreground">
         Tab through elements to see tooltips on focus (keyboard navigation)
       </p>
       <div className="flex gap-2">

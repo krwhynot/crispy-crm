@@ -38,7 +38,7 @@ describe("TabPanel", () => {
       </Tabs>
     );
     const content = container.querySelector('[role="tabpanel"]');
-    expect(content?.className).toContain("border-[color:var(--border-subtle)]");
+    expect(content?.className).toContain("border-border");
     expect(content?.className).toContain("bg-background");
   });
 

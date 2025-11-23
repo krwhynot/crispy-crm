@@ -41,7 +41,7 @@ export const Default: Story = {
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Dimensions</h4>
-            <p className="text-sm text-[color:var(--text-subtle)]">
+            <p className="text-sm text-muted-foreground">
               Set the dimensions for the layer.
             </p>
           </div>
@@ -82,7 +82,7 @@ export const IconTrigger: Story = {
       <PopoverContent>
         <div className="space-y-2">
           <h4 className="font-medium">Information</h4>
-          <p className="text-sm text-[color:var(--text-subtle)]">
+          <p className="text-sm text-muted-foreground">
             This popover is triggered by an icon button. It's useful for providing additional
             context without cluttering the interface.
           </p>
@@ -188,7 +188,7 @@ const ControlledPopover = () => {
         <PopoverContent>
           <div className="space-y-2">
             <h4 className="font-medium">Controlled Popover</h4>
-            <p className="text-sm text-[color:var(--text-subtle)]">
+            <p className="text-sm text-muted-foreground">
               This popover's open state is controlled programmatically.
             </p>
             <Button onClick={() => setOpen(false)} size="sm">
@@ -219,7 +219,7 @@ export const ComplexContent: Story = {
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Settings</h4>
-            <p className="text-sm text-[color:var(--text-subtle)]">
+            <p className="text-sm text-muted-foreground">
               Manage your application preferences.
             </p>
           </div>
@@ -269,7 +269,7 @@ export const UserProfile: Story = {
             </div>
             <div>
               <p className="text-sm font-medium">John Doe</p>
-              <p className="text-xs text-[color:var(--text-subtle)]">john@example.com</p>
+              <p className="text-xs text-muted-foreground">john@example.com</p>
             </div>
           </div>
           <div className="border-t pt-2">
@@ -302,7 +302,7 @@ export const HelpPopover: Story = {
         <div className="space-y-3">
           <div>
             <h4 className="font-medium mb-1">Need help?</h4>
-            <p className="text-sm text-[color:var(--text-subtle)]">
+            <p className="text-sm text-muted-foreground">
               Here are some resources to get you started.
             </p>
           </div>
@@ -344,7 +344,7 @@ const DatePickerPopover = () => {
             </div>
             <div className="grid grid-cols-7 gap-1 text-center text-xs">
               {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
-                <div key={day} className="font-medium text-[color:var(--text-subtle)]">
+                <div key={day} className="font-medium text-muted-foreground">
                   {day}
                 </div>
               ))}
@@ -410,7 +410,7 @@ const KeyboardNavigationPopover = () => {
 
   return (
     <div>
-      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+      <p className="mb-4 text-sm text-muted-foreground">
         Tab to focus trigger, Space/Enter to open, Escape to close
       </p>
       <Popover>
@@ -421,7 +421,7 @@ const KeyboardNavigationPopover = () => {
           <div className="space-y-4">
             <div>
               <h4 className="font-medium mb-2">Keyboard Test</h4>
-              <p className="text-sm text-[color:var(--text-subtle)]">
+              <p className="text-sm text-muted-foreground">
                 Tab through the form fields below. Press Escape to close.
               </p>
             </div>
@@ -440,7 +440,7 @@ const KeyboardNavigationPopover = () => {
               </div>
               <Button className="w-full">Submit (Tab here, then Escape)</Button>
             </div>
-            {value && <p className="text-sm text-[color:var(--text-subtle)]">You typed: {value}</p>}
+            {value && <p className="text-sm text-muted-foreground">You typed: {value}</p>}
           </div>
         </PopoverContent>
       </Popover>

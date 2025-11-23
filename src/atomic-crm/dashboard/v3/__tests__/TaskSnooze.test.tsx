@@ -20,7 +20,6 @@ vi.mock('../hooks/useCurrentSale', () => ({
 }));
 
 // Import after mocks
-import { TasksPanel } from '../components/TasksPanel';
 import type { TaskItem } from '../types';
 
 // Create a mock task factory
@@ -131,7 +130,7 @@ describe('Task Snooze Feature', () => {
   describe('Status Recalculation After Snooze', () => {
     it('should recalculate status to "tomorrow" when snoozed from today', () => {
       const today = startOfDay(new Date());
-      const tomorrow = startOfDay(addDays(today, 1));
+      const _tomorrow = startOfDay(addDays(today, 1));
 
       // Helper function matching the hook logic
       const calculateStatus = (dueDate: Date) => {
@@ -155,7 +154,7 @@ describe('Task Snooze Feature', () => {
 
     it('should recalculate status to "today" when overdue task snoozed', () => {
       const yesterday = subDays(startOfDay(new Date()), 1);
-      const today = startOfDay(new Date());
+      const _today = startOfDay(new Date());
 
       const calculateStatus = (dueDate: Date) => {
         const dueDateStart = startOfDay(dueDate);

@@ -42,7 +42,7 @@ export const Basic: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Introduction</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Learn the basics and get up and running quickly
                   </p>
                 </NavigationMenuLink>
@@ -50,7 +50,7 @@ export const Basic: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Installation</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Step-by-step guide to install and configure
                   </p>
                 </NavigationMenuLink>
@@ -58,7 +58,7 @@ export const Basic: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Examples</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Browse example projects and templates
                   </p>
                 </NavigationMenuLink>
@@ -74,7 +74,7 @@ export const Basic: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Alert Dialog</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Modal dialog for important messages
                   </p>
                 </NavigationMenuLink>
@@ -82,7 +82,7 @@ export const Basic: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Hover Card</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Preview content on hover
                   </p>
                 </NavigationMenuLink>
@@ -90,7 +90,7 @@ export const Basic: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Progress</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Display progress and loading states
                   </p>
                 </NavigationMenuLink>
@@ -121,7 +121,7 @@ export const TwoColumnLayout: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Analytics</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Real-time data insights and reporting
                   </p>
                 </NavigationMenuLink>
@@ -129,7 +129,7 @@ export const TwoColumnLayout: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Marketing</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Campaign management and automation
                   </p>
                 </NavigationMenuLink>
@@ -137,7 +137,7 @@ export const TwoColumnLayout: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Commerce</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Online store and payment processing
                   </p>
                 </NavigationMenuLink>
@@ -145,7 +145,7 @@ export const TwoColumnLayout: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Support</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Customer service and helpdesk tools
                   </p>
                 </NavigationMenuLink>
@@ -161,7 +161,7 @@ export const TwoColumnLayout: Story = {
               <li className="col-span-2">
                 <NavigationMenuLink>
                   <div className="mb-1 text-sm font-medium">Enterprise</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Comprehensive solution for large organizations with advanced security and
                     compliance features
                   </p>
@@ -170,7 +170,7 @@ export const TwoColumnLayout: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Startups</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Affordable plans for growing businesses
                   </p>
                 </NavigationMenuLink>
@@ -178,7 +178,7 @@ export const TwoColumnLayout: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Agencies</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Tools for managing multiple clients
                   </p>
                 </NavigationMenuLink>
@@ -202,7 +202,7 @@ export const WithFeaturedContent: Story = {
             <div className="grid w-[700px] grid-cols-[1fr_2fr] gap-6 p-6">
               <div className="rounded-lg bg-gradient-to-b from-primary/10 to-primary/5 p-6">
                 <h3 className="mb-2 text-lg font-semibold">Featured</h3>
-                <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+                <p className="mb-4 text-sm text-muted-foreground">
                   Check out our latest guide on building scalable applications
                 </p>
                 <NavigationMenuLink className="text-sm font-medium text-primary hover:underline">
@@ -212,21 +212,21 @@ export const WithFeaturedContent: Story = {
               <div className="grid grid-cols-2 gap-3">
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Blog</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">Latest news and updates</p>
+                  <p className="text-sm text-muted-foreground">Latest news and updates</p>
                 </NavigationMenuLink>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Guides</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">In-depth tutorials</p>
+                  <p className="text-sm text-muted-foreground">In-depth tutorials</p>
                 </NavigationMenuLink>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Case Studies</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Customer success stories
                   </p>
                 </NavigationMenuLink>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">API Reference</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Complete API documentation
                   </p>
                 </NavigationMenuLink>
@@ -250,7 +250,7 @@ export const ComplexNavigation: Story = {
             <div className="w-[800px] p-6">
               <div className="mb-4">
                 <h3 className="mb-1 text-lg font-semibold">Build anything</h3>
-                <p className="text-sm text-[color:var(--text-subtle)]">
+                <p className="text-sm text-muted-foreground">
                   Everything you need to build modern web applications
                 </p>
               </div>
@@ -309,7 +309,7 @@ export const ComplexNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">About Us</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Learn about our mission and team
                   </p>
                 </NavigationMenuLink>
@@ -317,13 +317,13 @@ export const ComplexNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Careers</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">Join our growing team</p>
+                  <p className="text-sm text-muted-foreground">Join our growing team</p>
                 </NavigationMenuLink>
               </li>
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Contact</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">Get in touch with us</p>
+                  <p className="text-sm text-muted-foreground">Get in touch with us</p>
                 </NavigationMenuLink>
               </li>
             </ul>
@@ -400,7 +400,7 @@ export const MixedNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Core Features</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Essential functionality for all users
                   </p>
                 </NavigationMenuLink>
@@ -408,7 +408,7 @@ export const MixedNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Advanced Features</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Premium capabilities for power users
                   </p>
                 </NavigationMenuLink>
@@ -424,7 +424,7 @@ export const MixedNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Documentation</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Comprehensive guides and API reference
                   </p>
                 </NavigationMenuLink>
@@ -432,7 +432,7 @@ export const MixedNavigation: Story = {
               <li>
                 <NavigationMenuLink>
                   <div className="text-sm font-medium">Tutorials</div>
-                  <p className="text-sm text-[color:var(--text-subtle)]">
+                  <p className="text-sm text-muted-foreground">
                     Step-by-step learning resources
                   </p>
                 </NavigationMenuLink>
@@ -461,7 +461,7 @@ const AnimationStatesComponent = () => {
     <div className="space-y-4">
       <div className="rounded-lg border bg-secondary/10 p-3">
         <p className="text-sm font-medium">Active Item: {activeItem || "None"}</p>
-        <p className="text-xs text-[color:var(--text-subtle)]">
+        <p className="text-xs text-muted-foreground">
           Click triggers to see animation states
         </p>
       </div>
@@ -515,7 +515,7 @@ export const AnimationStates: Story = {
 export const ResponsiveMenu: Story = {
   render: () => (
     <div className="w-full">
-      <p className="mb-4 text-center text-sm text-[color:var(--text-subtle)]">
+      <p className="mb-4 text-center text-sm text-muted-foreground">
         This navigation menu adapts to viewport width
       </p>
       <NavigationMenu className="mx-auto">
@@ -525,17 +525,17 @@ export const ResponsiveMenu: Story = {
             <NavigationMenuContent>
               <div className="w-full p-6 md:w-[500px]">
                 <h3 className="mb-2 text-sm font-semibold">Responsive Design</h3>
-                <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+                <p className="mb-4 text-sm text-muted-foreground">
                   The navigation menu adapts to different screen sizes.
                 </p>
                 <div className="grid gap-2 sm:grid-cols-2">
                   <div className="rounded border p-2">
                     <p className="text-xs font-medium">Mobile</p>
-                    <p className="text-xs text-[color:var(--text-subtle)]">Full width dropdowns</p>
+                    <p className="text-xs text-muted-foreground">Full width dropdowns</p>
                   </div>
                   <div className="rounded border p-2">
                     <p className="text-xs font-medium">Desktop</p>
-                    <p className="text-xs text-[color:var(--text-subtle)]">Fixed width dropdowns</p>
+                    <p className="text-xs text-muted-foreground">Fixed width dropdowns</p>
                   </div>
                 </div>
               </div>
@@ -635,13 +635,13 @@ export const SemanticColors: Story = {
                 <div className="w-[400px] space-y-3 p-6">
                   <NavigationMenuLink className="hover:bg-primary/10">
                     <div className="text-sm font-medium text-primary">Primary Action</div>
-                    <p className="text-sm text-[color:var(--text-subtle)]">
+                    <p className="text-sm text-muted-foreground">
                       Using primary color for emphasis
                     </p>
                   </NavigationMenuLink>
                   <NavigationMenuLink className="hover:bg-secondary/50">
                     <div className="text-sm font-medium">Secondary Action</div>
-                    <p className="text-sm text-[color:var(--text-subtle)]">
+                    <p className="text-sm text-muted-foreground">
                       Using secondary color for alternatives
                     </p>
                   </NavigationMenuLink>
@@ -661,7 +661,7 @@ const WithActiveStatesComponent = () => {
 
   return (
     <div className="space-y-4">
-      <div className="text-center text-sm text-[color:var(--text-subtle)]">
+      <div className="text-center text-sm text-muted-foreground">
         Current path: <code className="font-mono">{activePath}</code>
       </div>
       <NavigationMenu>
@@ -694,7 +694,7 @@ const WithActiveStatesComponent = () => {
                     data-active={activePath === "/products/analytics"}
                   >
                     <div className="text-sm font-medium">Analytics</div>
-                    <p className="text-sm text-[color:var(--text-subtle)]">
+                    <p className="text-sm text-muted-foreground">
                       Data insights and reporting
                     </p>
                   </NavigationMenuLink>
@@ -705,7 +705,7 @@ const WithActiveStatesComponent = () => {
                     data-active={activePath === "/products/commerce"}
                   >
                     <div className="text-sm font-medium">Commerce</div>
-                    <p className="text-sm text-[color:var(--text-subtle)]">E-commerce solutions</p>
+                    <p className="text-sm text-muted-foreground">E-commerce solutions</p>
                   </NavigationMenuLink>
                 </li>
               </ul>

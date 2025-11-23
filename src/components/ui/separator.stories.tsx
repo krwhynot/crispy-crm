@@ -38,7 +38,7 @@ export const Horizontal: Story = {
     <div className="w-[400px]">
       <div className="space-y-1">
         <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           An open-source UI component library.
         </p>
       </div>
@@ -63,12 +63,12 @@ export const Vertical: Story = {
     <div className="flex h-[200px] items-center">
       <div className="flex flex-col items-center">
         <span className="text-lg font-semibold">Section A</span>
-        <span className="text-sm text-[color:var(--text-subtle)]">First section</span>
+        <span className="text-sm text-muted-foreground">First section</span>
       </div>
       <Separator {...args} className="mx-4" />
       <div className="flex flex-col items-center">
         <span className="text-lg font-semibold">Section B</span>
-        <span className="text-sm text-[color:var(--text-subtle)]">Second section</span>
+        <span className="text-sm text-muted-foreground">Second section</span>
       </div>
     </div>
   ),
@@ -80,28 +80,28 @@ export const MultipleHorizontal: Story = {
     <div className="w-[400px] space-y-4">
       <div>
         <h3 className="mb-2 text-lg font-semibold">Account Settings</h3>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           Manage your account preferences and security settings.
         </p>
       </div>
       <Separator />
       <div>
         <h4 className="mb-1 text-sm font-medium">Email Preferences</h4>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           Configure how you receive email notifications.
         </p>
       </div>
       <Separator />
       <div>
         <h4 className="mb-1 text-sm font-medium">Privacy Settings</h4>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           Control who can see your profile information.
         </p>
       </div>
       <Separator />
       <div>
         <h4 className="mb-1 text-sm font-medium">Data Management</h4>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           Export or delete your personal data.
         </p>
       </div>
@@ -148,7 +148,7 @@ export const SidebarLayout: Story = {
       <main className="flex-1 p-4">
         <h2 className="mb-2 text-lg font-semibold">Main Content</h2>
         <Separator className="mb-4" />
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           This layout demonstrates the use of both horizontal and vertical separators to divide
           content areas.
         </p>
@@ -162,32 +162,32 @@ export const CustomStyles: Story = {
   render: () => (
     <div className="w-[400px] space-y-6">
       <div>
-        <p className="mb-2 text-sm text-[color:var(--text-subtle)]">Default separator</p>
+        <p className="mb-2 text-sm text-muted-foreground">Default separator</p>
         <Separator />
       </div>
 
       <div>
-        <p className="mb-2 text-sm text-[color:var(--text-subtle)]">Thick separator</p>
+        <p className="mb-2 text-sm text-muted-foreground">Thick separator</p>
         <Separator className="h-[2px]" />
       </div>
 
       <div>
-        <p className="mb-2 text-sm text-[color:var(--text-subtle)]">Dotted separator</p>
+        <p className="mb-2 text-sm text-muted-foreground">Dotted separator</p>
         <Separator className="border-t-2 border-dotted" />
       </div>
 
       <div>
-        <p className="mb-2 text-sm text-[color:var(--text-subtle)]">Dashed separator</p>
+        <p className="mb-2 text-sm text-muted-foreground">Dashed separator</p>
         <Separator className="border-t-2 border-dashed" />
       </div>
 
       <div>
-        <p className="mb-2 text-sm text-[color:var(--text-subtle)]">Primary colored</p>
+        <p className="mb-2 text-sm text-muted-foreground">Primary colored</p>
         <Separator className="bg-primary" />
       </div>
 
       <div>
-        <p className="mb-2 text-sm text-[color:var(--text-subtle)]">Destructive colored</p>
+        <p className="mb-2 text-sm text-muted-foreground">Destructive colored</p>
         <Separator className="bg-destructive" />
       </div>
     </div>
@@ -202,17 +202,17 @@ export const InCard: Story = {
         <div className="size-12 rounded-full bg-primary/10" />
         <div className="flex-1 space-y-1">
           <h3 className="font-semibold">John Doe</h3>
-          <p className="text-sm text-[color:var(--text-subtle)]">Software Engineer</p>
+          <p className="text-sm text-muted-foreground">Software Engineer</p>
         </div>
       </div>
       <Separator className="my-4" />
       <div className="space-y-2">
         <div className="flex justify-between">
-          <span className="text-sm text-[color:var(--text-subtle)]">Email</span>
+          <span className="text-sm text-muted-foreground">Email</span>
           <span className="text-sm">john@example.com</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-sm text-[color:var(--text-subtle)]">Phone</span>
+          <span className="text-sm text-muted-foreground">Phone</span>
           <span className="text-sm">+1 234 567 890</span>
         </div>
       </div>
@@ -229,7 +229,7 @@ export const InCard: Story = {
 export const Responsive: Story = {
   render: () => (
     <div className="w-full max-w-[600px] space-y-4">
-      <p className="text-sm text-[color:var(--text-subtle)]">
+      <p className="text-sm text-muted-foreground">
         These separators adapt to their container width
       </p>
 
@@ -237,7 +237,7 @@ export const Responsive: Story = {
         <div className="rounded-lg border p-4">
           <h4 className="mb-2 font-medium">Full Width Container</h4>
           <Separator />
-          <p className="mt-2 text-sm text-[color:var(--text-subtle)]">
+          <p className="mt-2 text-sm text-muted-foreground">
             Separator spans the full width of its container
           </p>
         </div>
@@ -246,12 +246,12 @@ export const Responsive: Story = {
           <div className="rounded-lg border p-4">
             <h4 className="mb-2 font-medium">Column 1</h4>
             <Separator />
-            <p className="mt-2 text-sm text-[color:var(--text-subtle)]">Content</p>
+            <p className="mt-2 text-sm text-muted-foreground">Content</p>
           </div>
           <div className="rounded-lg border p-4">
             <h4 className="mb-2 font-medium">Column 2</h4>
             <Separator />
-            <p className="mt-2 text-sm text-[color:var(--text-subtle)]">Content</p>
+            <p className="mt-2 text-sm text-muted-foreground">Content</p>
           </div>
         </div>
       </div>
@@ -269,7 +269,7 @@ export const SemanticColors: Story = {
           <p className="text-sm font-medium">Default (--border)</p>
         </div>
         <Separator />
-        <p className="mt-2 text-xs text-[color:var(--text-subtle)]">
+        <p className="mt-2 text-xs text-muted-foreground">
           Uses the semantic border color variable
         </p>
       </div>
@@ -280,7 +280,7 @@ export const SemanticColors: Story = {
           <p className="text-sm font-medium">Primary emphasis</p>
         </div>
         <Separator className="bg-primary/50" />
-        <p className="mt-2 text-xs text-[color:var(--text-subtle)]">
+        <p className="mt-2 text-xs text-muted-foreground">
           Primary color at 50% opacity for subtle emphasis
         </p>
       </div>
@@ -291,7 +291,7 @@ export const SemanticColors: Story = {
           <p className="text-sm font-medium">Secondary style</p>
         </div>
         <Separator className="bg-secondary" />
-        <p className="mt-2 text-xs text-[color:var(--text-subtle)]">
+        <p className="mt-2 text-xs text-muted-foreground">
           Secondary color for alternative styling
         </p>
       </div>
@@ -299,7 +299,7 @@ export const SemanticColors: Story = {
       <div className="rounded-lg border bg-card p-4">
         <h4 className="mb-2 font-medium">In context</h4>
         <Separator />
-        <p className="mt-2 text-sm text-[color:var(--text-subtle)]">
+        <p className="mt-2 text-sm text-muted-foreground">
           The separator automatically adapts to the card's color scheme
         </p>
       </div>
@@ -321,7 +321,7 @@ export const DecorativeVsSemantic: Story = {
     <div className="w-[400px] space-y-6">
       <div>
         <h3 className="mb-2 font-semibold">Decorative Separator</h3>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           Used for visual separation only (decorative=true)
         </p>
         <Separator decorative={true} className="my-3" />
@@ -332,7 +332,7 @@ export const DecorativeVsSemantic: Story = {
 
       <div>
         <h3 className="mb-2 font-semibold">Semantic Separator</h3>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           Used to separate distinct sections (decorative=false)
         </p>
         <Separator decorative={false} className="my-3" />

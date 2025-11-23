@@ -44,9 +44,26 @@ export function useCurrentSale() {
         if (sale?.id) {
           setSalesId(sale.id); // This is a number (bigint from DB)
 
+          // Debug logging for B1 filtering investigation
+          if (import.meta.env.DEV) {
+            console.log('[useCurrentSale] Found sales record:', {
+              salesId: sale.id,
+              hasUserId: !!sale.user_id,
+              email: sale.email,
+            });
+          }
+
           // If this is a legacy user without user_id, log a warning
           if (!sale.user_id) {
             console.warn(`Sales record ${sale.id} matched by email but has NULL user_id. Consider running migration to populate user_id.`);
+          }
+        } else {
+          // Debug logging when no sales record found
+          if (import.meta.env.DEV) {
+            console.log('[useCurrentSale] No sales record found for user:', {
+              userId: user.id,
+              email: user.email,
+            });
           }
         }
       } catch (err) {

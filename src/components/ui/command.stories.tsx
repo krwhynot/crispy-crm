@@ -121,9 +121,9 @@ const CommandDialogExample = () => {
   return (
     <>
       <div className="text-center">
-        <p className="text-sm text-[color:var(--text-subtle)] mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Press{" "}
-          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-[color:var(--text-subtle)] opacity-100">
+          <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
             <span className="text-xs">⌘</span>K
           </kbd>{" "}
           to open command palette
@@ -288,7 +288,7 @@ const CommandInteractiveFilter = () => {
 
   return (
     <div>
-      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+      <p className="mb-4 text-sm text-muted-foreground">
         Selected: {selectedItem || "None"}
       </p>
       <Command className="rounded-lg border shadow-md">
@@ -343,7 +343,7 @@ const CommandKeyboardNavigation = () => {
 
   return (
     <div>
-      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+      <p className="mb-4 text-sm text-muted-foreground">
         Use ↑↓ arrows to navigate, Enter to select, Esc to clear focus
       </p>
       <p className="mb-4 text-sm">Selected: {selected || "None"}</p>

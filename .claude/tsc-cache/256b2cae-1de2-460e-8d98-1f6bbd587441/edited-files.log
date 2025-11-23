@@ -24,3 +24,6 @@
 1763860136:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx:src
 1763860176:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx:src
 1763860185:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx:src
+1763861148:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts:src
+1763861202:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts:src
+1763861316:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/__tests__/PrincipalPipelineFiltering.test.tsx:src

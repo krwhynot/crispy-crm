@@ -1,6 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { addDays, endOfDay } from 'date-fns';
 
 // Unit tests for drill-down logic (no React components)
 describe('Pipeline Drill-Down Feature', () => {

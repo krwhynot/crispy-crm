@@ -33,6 +33,11 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
         // Apply sales_id filter if "my principals only" is enabled
         if (filters?.myPrincipalsOnly && salesId) {
           queryFilter.sales_id = salesId;
+
+          // Debug logging for B1 filtering investigation
+          if (import.meta.env.DEV) {
+            console.log('[usePrincipalPipeline] Filtering by sales_id:', salesId);
+          }
         }
 
         const { data: summary } = await dataProvider.getList('principal_pipeline_summary', {
@@ -40,6 +45,15 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
           sort: { field: 'active_this_week', order: 'DESC' },
           pagination: { page: 1, perPage: 100 },
         });
+
+        // Debug logging for B1 filtering investigation
+        if (import.meta.env.DEV && filters?.myPrincipalsOnly) {
+          console.log('[usePrincipalPipeline] Filter results:', {
+            salesId,
+            resultCount: summary.length,
+            firstFewSalesIds: summary.slice(0, 5).map((r: any) => r.sales_id),
+          });
+        }
 
         setData(
           summary.map((row: any) => ({

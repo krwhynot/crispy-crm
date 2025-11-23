@@ -119,8 +119,8 @@ export const Confirmation: Story = {
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
-          <p className="text-sm text-[color:var(--text-subtle)]">This will:</p>
-          <ul className="mt-2 space-y-1 text-sm text-[color:var(--text-subtle)]">
+          <p className="text-sm text-muted-foreground">This will:</p>
+          <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
             <li>• Delete all your data</li>
             <li>• Cancel your subscription</li>
             <li>• Remove your profile</li>
@@ -152,7 +152,7 @@ export const ScrollableContent: Story = {
           <div className="space-y-4 text-sm">
             <div>
               <h3 className="font-semibold mb-2">1. Acceptance of Terms</h3>
-              <p className="text-[color:var(--text-subtle)]">
+              <p className="text-muted-foreground">
                 By accessing and using this service, you accept and agree to be bound by the terms
                 and provision of this agreement. If you do not agree to abide by the above, please
                 do not use this service.
@@ -160,7 +160,7 @@ export const ScrollableContent: Story = {
             </div>
             <div>
               <h3 className="font-semibold mb-2">2. Use License</h3>
-              <p className="text-[color:var(--text-subtle)]">
+              <p className="text-muted-foreground">
                 Permission is granted to temporarily download one copy of the materials (information
                 or software) on our service for personal, non-commercial transitory viewing only.
                 This is the grant of a license, not a transfer of title.
@@ -168,7 +168,7 @@ export const ScrollableContent: Story = {
             </div>
             <div>
               <h3 className="font-semibold mb-2">3. Disclaimer</h3>
-              <p className="text-[color:var(--text-subtle)]">
+              <p className="text-muted-foreground">
                 The materials on our service are provided on an 'as is' basis. We make no
                 warranties, expressed or implied, and hereby disclaim and negate all other
                 warranties including, without limitation, implied warranties or conditions of
@@ -178,7 +178,7 @@ export const ScrollableContent: Story = {
             </div>
             <div>
               <h3 className="font-semibold mb-2">4. Limitations</h3>
-              <p className="text-[color:var(--text-subtle)]">
+              <p className="text-muted-foreground">
                 In no event shall our company or its suppliers be liable for any damages (including,
                 without limitation, damages for loss of data or profit, or due to business
                 interruption) arising out of the use or inability to use the materials on our
@@ -188,7 +188,7 @@ export const ScrollableContent: Story = {
             </div>
             <div>
               <h3 className="font-semibold mb-2">5. Privacy Policy</h3>
-              <p className="text-[color:var(--text-subtle)]">
+              <p className="text-muted-foreground">
                 Your privacy is important to us. Our privacy policy explains how we collect, use,
                 and protect your information when you use our service. By using our service, you
                 agree to the collection and use of information in accordance with our privacy
@@ -197,7 +197,7 @@ export const ScrollableContent: Story = {
             </div>
             <div>
               <h3 className="font-semibold mb-2">6. Modifications</h3>
-              <p className="text-[color:var(--text-subtle)]">
+              <p className="text-muted-foreground">
                 We may revise these terms of service at any time without notice. By using this
                 service, you are agreeing to be bound by the then current version of these terms of
                 service.
@@ -269,7 +269,7 @@ export const CustomTrigger: Story = {
       <DialogTrigger asChild>
         <div className="cursor-pointer p-4 border rounded-lg hover:bg-accent">
           <h3 className="font-semibold">Click this card</h3>
-          <p className="text-sm text-[color:var(--text-subtle)]">Opens a dialog when clicked</p>
+          <p className="text-sm text-muted-foreground">Opens a dialog when clicked</p>
         </div>
       </DialogTrigger>
       <DialogContent>

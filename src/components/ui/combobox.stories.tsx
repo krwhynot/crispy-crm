@@ -74,7 +74,7 @@ const DefaultComboboxComponent = () => {
         onValueChange={setValue}
         placeholder="Select framework..."
       />
-      <p className="mt-4 text-sm text-[color:var(--text-subtle)]">Selected: {value || "None"}</p>
+      <p className="mt-4 text-sm text-muted-foreground">Selected: {value || "None"}</p>
     </div>
   );
 };
@@ -176,7 +176,7 @@ const MultiSelectComponent = () => {
         onValueChange={setValues}
         placeholder="Select languages..."
       />
-      <p className="mt-4 text-sm text-[color:var(--text-subtle)]">
+      <p className="mt-4 text-sm text-muted-foreground">
         Selected: {values.length > 0 ? values.join(", ") : "None"}
       </p>
     </div>
@@ -221,7 +221,7 @@ const InteractiveSearchComponent = () => {
 
   return (
     <div>
-      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+      <p className="mb-4 text-sm text-muted-foreground">
         Search count: {searchCount} | Selected: {value || "None"}
       </p>
       <Combobox
@@ -257,7 +257,7 @@ const KeyboardNavigationComponent = () => {
 
   return (
     <div>
-      <p className="mb-4 text-sm text-[color:var(--text-subtle)]">
+      <p className="mb-4 text-sm text-muted-foreground">
         Use Tab to focus, Space/Enter to open, arrows to navigate, Enter to select
       </p>
       <Combobox
@@ -271,7 +271,7 @@ const KeyboardNavigationComponent = () => {
           <p className="text-sm font-medium">Selection History:</p>
           <ul className="mt-2 space-y-1">
             {history.map((item, index) => (
-              <li key={index} className="text-sm text-[color:var(--text-subtle)]">
+              <li key={index} className="text-sm text-muted-foreground">
                 {index + 1}. {frameworks.find((f) => f.value === item)?.label}
               </li>
             ))}

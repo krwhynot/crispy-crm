@@ -53,10 +53,10 @@ export const LowElevation: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
           Low Elevation (Default)
         </h3>
-        <p className="text-xs text-[color:var(--text-subtle)] mb-4">
+        <p className="text-xs text-muted-foreground mb-4">
           Hover to see shadow increase and subtle lift. Used for list items.
         </p>
       </div>
@@ -72,12 +72,12 @@ export const LowElevation: Story = {
               John Doe
               <span className="absolute inset-0" aria-hidden="true" />
             </button>
-            <p className="text-xs text-[color:var(--text-subtle)] truncate">
+            <p className="text-xs text-muted-foreground truncate">
               Product Manager at Acme Corp
             </p>
           </div>
         </div>
-        <span className="text-xs text-[color:var(--text-subtle)] shrink-0 relative z-10">
+        <span className="text-xs text-muted-foreground shrink-0 relative z-10">
           2 days ago
         </span>
       </div>
@@ -93,12 +93,12 @@ export const LowElevation: Story = {
               Sarah Kim
               <span className="absolute inset-0" aria-hidden="true" />
             </button>
-            <p className="text-xs text-[color:var(--text-subtle)] truncate">
+            <p className="text-xs text-muted-foreground truncate">
               Senior Engineer at TechStart Inc
             </p>
           </div>
         </div>
-        <span className="text-xs text-[color:var(--text-subtle)] shrink-0 relative z-10">
+        <span className="text-xs text-muted-foreground shrink-0 relative z-10">
           5 hours ago
         </span>
       </div>
@@ -116,8 +116,8 @@ export const StaticCard: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">Static Card</h3>
-        <p className="text-xs text-[color:var(--text-subtle)] mb-4">
+        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">Static Card</h3>
+        <p className="text-xs text-muted-foreground mb-4">
           No hover effects. Used for non-interactive containers like filter sidebars.
         </p>
       </div>
@@ -165,10 +165,10 @@ export const ElevationComparison: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
           Elevation System Comparison
         </h3>
-        <p className="text-xs text-[color:var(--text-subtle)] mb-4">
+        <p className="text-xs text-muted-foreground mb-4">
           Hover over each card to see the different elevation responses.
         </p>
       </div>
@@ -176,12 +176,12 @@ export const ElevationComparison: Story = {
       <div className="grid gap-6">
         {/* Low Elevation */}
         <div>
-          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">
+          <div className="text-xs font-semibold text-muted-foreground mb-2">
             LOW (shadow-sm → shadow-md)
           </div>
           <div className="rounded-lg border border-transparent bg-card px-4 py-3 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 cursor-pointer">
             <p className="text-sm font-medium">Contact List Item</p>
-            <p className="text-xs text-[color:var(--text-subtle)]">
+            <p className="text-xs text-muted-foreground">
               Subtle elevation for dense lists
             </p>
           </div>
@@ -189,12 +189,12 @@ export const ElevationComparison: Story = {
 
         {/* Medium Elevation (documented but not yet implemented in Storybook) */}
         <div>
-          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">
+          <div className="text-xs font-semibold text-muted-foreground mb-2">
             MEDIUM (--shadow-card-2)
           </div>
           <div className="rounded-lg border border-transparent bg-card px-4 py-3 transition-all duration-150 hover:border-primary shadow-[0_4px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.15)] motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01] cursor-pointer">
             <p className="text-sm font-medium">Opportunity Card</p>
-            <p className="text-xs text-[color:var(--text-subtle)]">
+            <p className="text-xs text-muted-foreground">
               Enhanced elevation with border color change
             </p>
           </div>
@@ -202,12 +202,12 @@ export const ElevationComparison: Story = {
 
         {/* Static (no elevation) */}
         <div>
-          <div className="text-xs font-semibold text-[color:var(--text-subtle)] mb-2">
+          <div className="text-xs font-semibold text-muted-foreground mb-2">
             STATIC (no hover)
           </div>
           <div className="rounded-lg border border-border bg-card px-4 py-3 shadow-sm">
             <p className="text-sm font-medium">Filter Sidebar</p>
-            <p className="text-xs text-[color:var(--text-subtle)]">No interactive states needed</p>
+            <p className="text-xs text-muted-foreground">No interactive states needed</p>
           </div>
         </div>
       </div>
@@ -224,10 +224,10 @@ export const AccessibilityFeatures: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
           Accessibility Features
         </h3>
-        <p className="text-xs text-[color:var(--text-subtle)] mb-4">
+        <p className="text-xs text-muted-foreground mb-4">
           Tab through these cards to see focus indicators. All patterns include WCAG 2.1 AA
           compliant focus states.
         </p>
@@ -261,7 +261,7 @@ export const AccessibilityFeatures: Story = {
 
       <div className="mt-6 p-4 bg-muted/30 rounded-lg border border-border">
         <h4 className="text-xs font-semibold mb-2">Accessibility Checklist</h4>
-        <ul className="text-xs text-[color:var(--text-subtle)] space-y-1">
+        <ul className="text-xs text-muted-foreground space-y-1">
           <li>✅ Focus-visible indicators (focus-within:ring-2)</li>
           <li>✅ Reduced motion support (motion-safe: prefix)</li>
           <li>✅ Touch feedback (active:scale-[0.98])</li>
@@ -283,15 +283,15 @@ export const EmptyState: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">Empty State</h3>
-        <p className="text-xs text-[color:var(--text-subtle)] mb-4">
+        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">Empty State</h3>
+        <p className="text-xs text-muted-foreground mb-4">
           Used when filtered results return no data.
         </p>
       </div>
 
       <div className="p-8 text-center bg-muted/30 border border-border rounded-xl shadow-sm">
-        <p className="text-sm text-[color:var(--text-subtle)]">No contacts found</p>
-        <p className="text-xs text-[color:var(--text-subtle)] mt-1">Try adjusting your filters</p>
+        <p className="text-sm text-muted-foreground">No contacts found</p>
+        <p className="text-xs text-muted-foreground mt-1">Try adjusting your filters</p>
       </div>
     </div>
   ),
@@ -307,10 +307,10 @@ export const Phase2ComponentPreview: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-[color:var(--text-subtle)]">
+        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
           Phase 2: Component Extraction
         </h3>
-        <p className="text-xs text-[color:var(--text-subtle)] mb-4">
+        <p className="text-xs text-muted-foreground mb-4">
           When Organizations module triggers the "Rule of Three", this pattern will be extracted
           into a reusable <code className="text-xs bg-muted px-1 rounded">InteractiveCard</code>{" "}
           component.
@@ -328,7 +328,7 @@ export const Phase2ComponentPreview: Story = {
         </pre>
       </div>
 
-      <div className="text-xs text-[color:var(--text-subtle)] space-y-2">
+      <div className="text-xs text-muted-foreground space-y-2">
         <p>
           <strong>Benefits:</strong>
         </p>
@@ -340,7 +340,7 @@ export const Phase2ComponentPreview: Story = {
         </ul>
       </div>
 
-      <div className="text-xs text-[color:var(--text-subtle)] space-y-2 mt-4">
+      <div className="text-xs text-muted-foreground space-y-2 mt-4">
         <p>
           <strong>Extraction Trigger:</strong>
         </p>
