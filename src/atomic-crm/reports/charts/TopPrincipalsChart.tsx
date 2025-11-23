@@ -15,66 +15,25 @@ interface TopPrincipalsChartProps {
  * Limited to top 5 principals for readability.
  */
 export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
-  const theme = useChartTheme();
+  const { colors, font } = useChartTheme();
 
-  // Color palette using available theme colors
-  const colorPalette = [
-    theme.colors.primary,
-    theme.colors.brand700,
-    theme.colors.success,
-    theme.colors.warning,
-    theme.colors.muted,
-  ];
-
-  // Take top 5 and sort descending
-  const topData = [...data].sort((a, b) => b.count - a.count).slice(0, 5);
-
-  const chartData = {
-    labels: topData.map((d) => truncateLabel(d.name, 20)),
-    datasets: [
-      {
-        label: "Opportunities",
-        data: topData.map((d) => d.count),
-        backgroundColor: topData.map((_, i) => colorPalette[i % colorPalette.length]),
-        borderRadius: 4,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    indexAxis: "y" as const,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        callbacks: {
-          title: (context: TooltipTitleContext[]) => {
-            // Show full name in tooltip
-            const index = context[0].dataIndex;
-            return topData[index]?.name || "";
-          },
-          label: (context: TooltipContextX) => {
-            return `${context.parsed.x} opportunities`;
-          },
- 
+  // Memoize derived data to prevent unnecessary recalculations
   const topData = useMemo(() => {
     // Take top 5 and sort descending
     return [...data].sort((a, b) => b.count - a.count).slice(0, 5);
   }, [data]);
- 
+
+  // Memoize chart data to prevent recalculation on every render
   const chartData = useMemo(() => {
     // Color palette using available theme colors
     const colorPalette = [
-      theme.colors.primary,
-      theme.colors.brand700,
-      theme.colors.success,
-      theme.colors.warning,
-      theme.colors.muted,
+      colors.primary,
+      colors.brand700,
+      colors.success,
+      colors.warning,
+      colors.muted,
     ];
- 
+
     return {
       labels: topData.map((d) => truncateLabel(d.name, 20)),
       datasets: [
@@ -84,17 +43,11 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
           backgroundColor: topData.map((_, i) => colorPalette[i % colorPalette.length]),
           borderRadius: 4,
         },
-      },
-    },
-    scales: {
-      x: {
-        beginAtZero: true,
-        grid: {
-          color: "rgba(0, 0, 0, 0.05)",
       ],
     };
-  }, [topData, theme]);
- 
+  }, [topData, colors]);
+
+  // Memoize chart options to prevent recalculation on every render
   const options = useMemo(() => {
     return {
       responsive: true,
@@ -104,10 +57,6 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
         legend: {
           display: false,
         },
-        ticks: {
-          font: {
-            family: theme.font.family,
-            size: theme.font.size,
         tooltip: {
           callbacks: {
             title: (context: TooltipTitleContext[]) => {
@@ -119,12 +68,8 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
               return `${context.parsed.x} opportunities`;
             },
           },
-          stepSize: 1,
         },
       },
-      y: {
-        grid: {
-          display: false,
       scales: {
         x: {
           beginAtZero: true,
@@ -133,32 +78,26 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
           },
           ticks: {
             font: {
-              family: theme.font.family,
-              size: theme.font.size,
+              family: font.family,
+              size: font.size,
             },
             stepSize: 1,
           },
         },
-        ticks: {
-          font: {
-            family: theme.font.family,
-            size: theme.font.size,
         y: {
           grid: {
             display: false,
           },
           ticks: {
             font: {
-              family: theme.font.family,
-              size: theme.font.size,
+              family: font.family,
+              size: font.size,
             },
           },
         },
       },
-    },
-  };
     };
-  }, [topData, theme]);
+  }, [topData, font]);
 
   if (data.length === 0) {
     return (

@@ -18,12 +18,7 @@ import {
   endOfMonth,
   subMonths,
 } from "date-fns";
-
-interface Sale {
-  id: number;
-  first_name: string;
-  last_name: string;
-}
+import type { Sale } from "../types";
 
 const DATE_PRESETS = [
   { value: "today", label: "Today" },

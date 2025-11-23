@@ -19,27 +19,15 @@ import { StaleLeadsView } from "./StaleLeadsView";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { format, subDays, startOfMonth } from "date-fns";
+import type { Sale, Activity as BaseActivity, ActivityGroup } from "../types";
 
-interface Activity {
-  id: number;
-  type: string;
-  subject: string;
-  created_at: string;
-  created_by: number;
-  organization_id: number;
-  contact_id: number | null;
-  opportunity_id: number | null;
-  organization_name: string;
-  contact_name?: string;
+/** Extended activity with required organization_name for campaign reporting */
+interface CampaignActivity extends Omit<BaseActivity, "organization_name"> {
+  organization_name: string; // Required for campaign reports
 }
 
-interface Sale {
-  id: number;
-  first_name: string;
-  last_name: string;
-}
-
-interface Opportunity {
+/** Campaign-specific opportunity data */
+interface CampaignOpportunity {
   id: number;
   name: string;
   campaign: string | null;
@@ -47,11 +35,9 @@ interface Opportunity {
   stage?: string;
 }
 
-interface ActivityGroup {
-  type: string;
-  activities: Activity[];
-  totalCount: number;
-  uniqueOrgs: number;
+/** Extended ActivityGroup with required percentage for campaign reports */
+interface CampaignActivityGroup extends Omit<ActivityGroup, "percentage" | "mostActiveOrg" | "mostActiveCount" | "activities"> {
+  activities: CampaignActivity[];
   percentage: number;
   mostActiveOrg: string;
   mostActiveCount: number;
@@ -77,7 +63,7 @@ export default function CampaignActivityReport() {
   const hasInitialized = React.useRef(false);
 
   // Fetch all opportunities to get available campaigns
-  const { data: allOpportunities = [], isPending: opportunitiesPending } = useGetList<Opportunity>(
+  const { data: allOpportunities = [], isPending: opportunitiesPending } = useGetList<CampaignOpportunity>(
     "opportunities",
     {
       pagination: { page: 1, perPage: 10000 },
@@ -104,7 +90,7 @@ export default function CampaignActivityReport() {
 
   // Fetch ALL activities for the selected campaign (unfiltered, for counts)
   const { data: allCampaignActivities = [], isPending: allActivitiesPending } =
-    useGetList<Activity>("activities", {
+    useGetList<CampaignActivity>("activities", {
       pagination: { page: 1, perPage: 10000 },
       filter: {
         "opportunities.campaign": selectedCampaign,
@@ -114,7 +100,7 @@ export default function CampaignActivityReport() {
     });
 
   // Fetch activities for the selected campaign (with filters applied)
-  const { data: activities = [], isPending: activitiesPending } = useGetList<Activity>(
+  const { data: activities = [], isPending: activitiesPending } = useGetList<CampaignActivity>(
     "activities",
     {
       pagination: { page: 1, perPage: 10000 },
@@ -178,7 +164,7 @@ export default function CampaignActivityReport() {
   const activityGroups = useMemo(() => {
     if (!activities || activities.length === 0) return [];
 
-    const grouped = new Map<string, ActivityGroup>();
+    const grouped = new Map<string, CampaignActivityGroup>();
     const totalActivities = activities.length;
 
     activities.forEach((activity) => {
@@ -233,7 +219,7 @@ export default function CampaignActivityReport() {
   }, [activities]);
 
   // Helper function: Get last activity date for an opportunity
-  const getLastActivityForOpportunity = (oppId: number, activities: Activity[]): string | null => {
+  const getLastActivityForOpportunity = (oppId: number, activities: CampaignActivity[]): string | null => {
     const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
     if (oppActivities.length === 0) return null;
 

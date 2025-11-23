@@ -1,21 +1,47 @@
 import { useEffect, useState } from "react";
 
-export function useChartTheme() {
-  const [theme, setTheme] = useState({
-    colors: {
-      primary: "#000",
-      brand700: "#1a1a1a",
-      brand600: "#2a2a2a",
-      success: "#10b981",
-      warning: "#f59e0b",
-      destructive: "#ef4444",
-      muted: "#6b7280",
-    },
-    font: {
-      family: "system-ui",
-      size: 12,
-    },
-  });
+/** Chart color palette derived from CSS custom properties */
+interface ChartColors {
+  primary: string;
+  brand700: string;
+  brand600: string;
+  success: string;
+  warning: string;
+  destructive: string;
+  muted: string;
+}
+
+/** Chart font configuration */
+interface ChartFont {
+  family: string;
+  size: number;
+}
+
+/** Complete chart theme configuration */
+export interface ChartTheme {
+  colors: ChartColors;
+  font: ChartFont;
+}
+
+/** Default fallback values when CSS vars aren't available (e.g., SSR) */
+const DEFAULT_THEME: ChartTheme = {
+  colors: {
+    primary: "#000",
+    brand700: "#1a1a1a",
+    brand600: "#2a2a2a",
+    success: "#10b981",
+    warning: "#f59e0b",
+    destructive: "#ef4444",
+    muted: "#6b7280",
+  },
+  font: {
+    family: "system-ui",
+    size: 12,
+  },
+};
+
+export function useChartTheme(): ChartTheme {
+  const [theme, setTheme] = useState<ChartTheme>(DEFAULT_THEME);
 
   useEffect(() => {
     const root = document.documentElement;
