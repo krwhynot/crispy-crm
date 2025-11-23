@@ -1,29 +1,41 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
 import type { TaskItem, TaskStatus } from "../types";
 
+// Stable empty array to avoid new reference creation on each render
+const EMPTY_TASKS: TaskItem[] = [];
+
 export function useMyTasks() {
   const dataProvider = useDataProvider();
   const { salesId, loading: salesLoading } = useCurrentSale();
-  const [tasks, setTasks] = useState<TaskItem[]>([]);
+  const [tasks, setTasks] = useState<TaskItem[]>(EMPTY_TASKS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
+  // Track previous salesId to avoid unnecessary state updates
+  const prevSalesIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
       // Manage loading state properly to avoid race conditions
       if (salesLoading) {
-        setLoading(true); // Show loading while waiting for salesId
+        setLoading((prev) => prev ? prev : true); // Only update if not already loading
         return;
       }
 
       if (!salesId) {
-        setTasks([]); // Clear tasks if no salesId
+        // Only clear tasks if we previously had a salesId
+        if (prevSalesIdRef.current !== null) {
+          setTasks(EMPTY_TASKS);
+          prevSalesIdRef.current = null;
+        }
         setLoading(false);
         return;
       }
+
+      prevSalesIdRef.current = salesId;
 
       try {
         setLoading(true);
