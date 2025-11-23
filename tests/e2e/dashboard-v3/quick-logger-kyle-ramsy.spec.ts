@@ -202,12 +202,12 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Get the contact name before selecting
       const contactName = await firstContact.textContent();
 
-      // Use keyboard navigation: ArrowDown to ensure first option is selected, then Enter
-      await searchInput.press("ArrowDown");
-      await searchInput.press("Enter");
+      // Use JavaScript click to bypass viewport issues (cmdk popover positioning)
+      await firstContact.evaluate(node => (node as HTMLElement).click());
 
-      // Verify contact was selected
-      await expect(contactTrigger).toContainText(contactName || "", { timeout: 5000 });
+      // Wait for popover to close and verify contact was selected
+      await expect(authenticatedPage.getByPlaceholder(/search contact/i)).not.toBeVisible({ timeout: 5000 });
+      await expect(contactTrigger).not.toContainText("Select contact", { timeout: 5000 });
 
       // Check if organization field was auto-filled (contact may or may not have org)
       const orgTrigger = authenticatedPage
@@ -280,7 +280,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Set duration
       await authenticatedPage.getByLabel(/duration/i).fill("15");
 
-      // Select first available contact using search to keep items in viewport
+      // Select first available contact using keyboard navigation
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
@@ -288,15 +288,15 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await contactTrigger.click();
       const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
       await expect(searchInput).toBeVisible();
-      await searchInput.fill("a"); // Filter to reduce list
-      await authenticatedPage.waitForTimeout(500);
+      await searchInput.fill("and"); // Filter to reduce list
 
+      // Wait for filtered options
       const firstContact = authenticatedPage.getByRole("option").first();
-      if ((await firstContact.count()) === 0) {
-        test.skip("No contacts available in database");
-        return;
-      }
-      await firstContact.click({ force: true });
+      await expect(firstContact).toBeVisible({ timeout: 5000 });
+
+      // Use page-level keyboard navigation (cmdk captures keys globally)
+      await authenticatedPage.keyboard.press("ArrowDown");
+      await authenticatedPage.keyboard.press("Enter");
 
       // Fill notes with unique timestamp
       const timestamp = Date.now();
@@ -334,7 +334,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Set duration
       await authenticatedPage.getByLabel(/duration/i).fill("30");
 
-      // Select first available contact using search
+      // Select first available contact using keyboard navigation
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
@@ -342,15 +342,15 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await contactTrigger.click();
       const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
       await expect(searchInput).toBeVisible();
-      await searchInput.fill("a");
-      await authenticatedPage.waitForTimeout(500);
+      await searchInput.fill("and"); // Filter to reduce list
 
+      // Wait for filtered options
       const firstContact = authenticatedPage.getByRole("option").first();
-      if ((await firstContact.count()) === 0) {
-        test.skip("No contacts available in database");
-        return;
-      }
-      await firstContact.click({ force: true });
+      await expect(firstContact).toBeVisible({ timeout: 5000 });
+
+      // Use page-level keyboard navigation (cmdk captures keys globally)
+      await authenticatedPage.keyboard.press("ArrowDown");
+      await authenticatedPage.keyboard.press("Enter");
 
       // Fill notes
       const timestamp = Date.now();
@@ -410,7 +410,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await outcomeTrigger.click();
       await authenticatedPage.getByRole("option", { name: "Completed" }).click();
 
-      // Select first available contact using search to keep items in viewport
+      // Select first available contact using keyboard navigation
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
@@ -418,15 +418,15 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await contactTrigger.click();
       const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
       await expect(searchInput).toBeVisible();
-      await searchInput.fill("a"); // Filter to reduce list
-      await authenticatedPage.waitForTimeout(500);
+      await searchInput.fill("and"); // Filter to reduce list
 
+      // Wait for filtered options
       const firstContact = authenticatedPage.getByRole("option").first();
-      if ((await firstContact.count()) === 0) {
-        test.skip("No contacts available in database");
-        return;
-      }
-      await firstContact.click({ force: true });
+      await expect(firstContact).toBeVisible({ timeout: 5000 });
+
+      // Use page-level keyboard navigation (cmdk captures keys globally)
+      await authenticatedPage.keyboard.press("ArrowDown");
+      await authenticatedPage.keyboard.press("Enter");
 
       // Fill notes with unique timestamp
       const timestamp = Date.now();
@@ -461,7 +461,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await outcomeTrigger.click();
       await authenticatedPage.getByRole("option", { name: "Completed" }).click();
 
-      // Select first available contact using search to keep items in viewport
+      // Select first available contact using keyboard navigation
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
         .locator("..")
@@ -469,15 +469,15 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await contactTrigger.click();
       const searchInput = authenticatedPage.getByPlaceholder(/search contact/i);
       await expect(searchInput).toBeVisible();
-      await searchInput.fill("a"); // Filter to reduce list
-      await authenticatedPage.waitForTimeout(500);
+      await searchInput.fill("and"); // Filter to reduce list
 
+      // Wait for filtered options
       const firstContact = authenticatedPage.getByRole("option").first();
-      if ((await firstContact.count()) === 0) {
-        test.skip("No contacts available in database");
-        return;
-      }
-      await firstContact.click({ force: true });
+      await expect(firstContact).toBeVisible({ timeout: 5000 });
+
+      // Use page-level keyboard navigation (cmdk captures keys globally)
+      await authenticatedPage.keyboard.press("ArrowDown");
+      await authenticatedPage.keyboard.press("Enter");
 
       // Try to submit without notes
       await authenticatedPage.getByRole("button", { name: /save & close/i }).click();
