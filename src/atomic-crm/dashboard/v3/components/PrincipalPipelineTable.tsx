@@ -18,6 +18,8 @@ import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter, ArrowUpDown, ArrowUp, ArrowDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import type { PrincipalPipelineRow } from "../types";
 import { usePrincipalPipeline } from "../hooks/usePrincipalPipeline";
 import { PipelineDrillDownSheet } from "./PipelineDrillDownSheet";
@@ -33,7 +35,21 @@ export function PrincipalPipelineTable() {
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
   const [searchQuery, setSearchQuery] = useState("");
+  const [momentumFilters, setMomentumFilters] = useState<Set<PrincipalPipelineRow["momentum"]>>(new Set());
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
+
+  // Handle momentum filter toggle
+  const toggleMomentumFilter = useCallback((momentum: PrincipalPipelineRow["momentum"]) => {
+    setMomentumFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(momentum)) {
+        next.delete(momentum);
+      } else {
+        next.add(momentum);
+      }
+      return next;
+    });
+  }, []);
 
   // Handle column header click for sorting
   const handleSort = useCallback((field: SortField) => {
@@ -85,7 +101,7 @@ export function PrincipalPipelineTable() {
 
       return sortDirection === "descending" ? -comparison : comparison;
     });
-  }, [data, sortField, sortDirection]);
+  }, [filteredData, sortField, sortDirection]);
 
   // Get aria-sort value for a column
   const getAriaSortValue = (field: SortField): "ascending" | "descending" | "none" => {

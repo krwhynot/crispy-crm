@@ -266,4 +266,63 @@ describe("PrincipalPipelineTable", () => {
       });
     });
   });
+
+  describe("Filter dropdown", () => {
+    it("should show momentum filter options when Filters button is clicked", async () => {
+      const user = userEvent.setup();
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      // Click Filters button
+      const filtersButton = screen.getByRole("button", { name: /filters/i });
+      await user.click(filtersButton);
+
+      // Should show momentum filter options
+      await waitFor(() => {
+        expect(screen.getByText(/momentum/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/increasing/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/steady/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/decreasing/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/stale/i)).toBeInTheDocument();
+      });
+    });
+
+    it("should filter by momentum when checkbox is selected", async () => {
+      const user = userEvent.setup();
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      // Click Filters button and select "increasing" momentum
+      const filtersButton = screen.getByRole("button", { name: /filters/i });
+      await user.click(filtersButton);
+
+      const increasingCheckbox = await screen.findByLabelText(/increasing/i);
+      await user.click(increasingCheckbox);
+
+      // Should only show rows with increasing momentum (Acme Corporation)
+      await waitFor(() => {
+        expect(screen.getByText("Acme Corporation")).toBeInTheDocument();
+        expect(screen.queryByText("Beta Industries")).not.toBeInTheDocument();
+        expect(screen.queryByText("Gamma Tech")).not.toBeInTheDocument();
+      });
+    });
+  });
 });
