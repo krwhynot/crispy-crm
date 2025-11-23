@@ -44,7 +44,7 @@ npm run db:local:reset             # Reset local only (safe)
 See [Engineering Constitution](docs/claude/engineering-constitution.md) for complete details.
 
 1. **NO OVER-ENGINEERING**: Fail fast, no circuit breakers
-2. **SINGLE SOURCE OF TRUTH**: Supabase + Zod at API boundary
+2. **SINGLE COMPOSABLE ENTRY POINT**: Unified facade delegating to resource-specific modules
 3. **BOY SCOUT RULE**: Fix inconsistencies when editing files
    - Convert `type Foo = {...}` to `interface Foo {...}` when touching files
 4. **FORM STATE FROM SCHEMA**: `zodSchema.partial().parse({})` for defaults

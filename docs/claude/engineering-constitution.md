@@ -293,7 +293,7 @@ npx supabase migration new add_contact_tags
 These principles are **non-negotiable** to maintain codebase health:
 
 1. **KISS principle:** Simple solutions over clever ones
-2. **Centralization:** One source of truth for data and validation
+2. **Composable access:** Single entry point delegating to resource-specific modules
 3. **Progressive improvement:** Leave code better than you found it
 4. **Boundary validation:** Validate once at entry points
 5. **Schema-driven forms:** Derive UI state from validation schemas
@@ -302,4 +302,4 @@ These principles are **non-negotiable** to maintain codebase health:
 8. **Semantic colors:** CSS variables, never raw values
 9. **Migration ordering:** Timestamp-based naming
 
-**When in doubt:** Favor simplicity, consistency, and single sources of truth.
+**When in doubt:** Favor simplicity, consistency, and composable access through unified entry points.

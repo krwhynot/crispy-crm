@@ -36,7 +36,7 @@ This skill provides Supabase-specific backend patterns for the Crispy-CRM projec
 This skill follows Crispy-CRM's Engineering Constitution:
 
 1. **Validation at API boundaries** - Use Zod schemas for RPC validation
-2. **Single source of truth** - DataProvider abstraction for all data access
+2. **Single composable entry point** - DataProvider abstraction delegating to resource modules
 3. **Service layer orchestration** - Business logic in service classes, not components
 4. **TypeScript type safety** - Types inferred from Zod schemas
 5. **Fail-fast validation** - Validate inputs before database operations
@@ -57,7 +57,7 @@ export class OrganizationService {
     // 2. Apply business rules
     await this.validateHierarchy(validated);
     
-    // 3. Use DataProvider (single source of truth)
+    // 3. Use DataProvider (composable entry point)
     const { data } = await this.dataProvider.create('organizations', {
       data: validated
     });
@@ -226,7 +226,7 @@ CREATE TRIGGER update_<entity>_updated_at
 // ✅ GOOD
 const { data } = await this.dataProvider.create('organizations', { data });
 
-// ❌ BAD - bypasses single source of truth
+// ❌ BAD - bypasses composable entry point
 const { data } = await supabase.from('organizations').insert(data);
 ```
 
