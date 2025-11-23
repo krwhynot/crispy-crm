@@ -132,1805 +132,3564 @@ ON CONFLICT (id) DO UPDATE SET
 -- ============================================================================
 
 INSERT INTO organizations (id, name, organization_type, priority, segment_id, phone, linkedin_url, address, city, state, postal_code, notes) VALUES
-  (1, '040 KITCHEN INC', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (2, '2d Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (3, '7 K FARMS, INC.', 'distributor', 'D', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (4, 'U. S. FOODSERVICE--CINCINNATI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (5, '7 Monks Taproom Grand Rapids', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1, '040 KITCHEN INC', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (2, '2d Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (3, '7 K FARMS, INC.', 'distributor', 'D', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (4, 'U. S. FOODSERVICE--CINCINNATI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (5, '7 Monks Taproom Grand Rapids', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (6, '8 hospitality group', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, 'Hubbard Inn, MASQ joy, district parlay joy, parlay, LINKIN PARK, HVAC, pub, LIQR taco pub Cardoza''s pub Caf Banda never have I ever'),
-  (7, '86 FOOD SERVICE', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (8, '90 miles Cuban cafe', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (9, 'A & G FOODSERVICE', 'distributor', 'D', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (10, 'A Little Taste of Texas', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, 'email about samples cheese curds'),
-  (11, 'A Plus Inc DBA: Noodles Etc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (12, 'A&W', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (13, 'A.Fusion', 'customer', 'D', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, '4601 lincoln Highway', 'Matteson', 'IL', NULL, 'Garlic & Sriracha interest. End up purchasing original &jalapeo from PFG'),
-  (14, 'Abbvie', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (15, 'Acaibowl.LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (16, 'ACME STEAK & SEAFOOD', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (17, 'AJ''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (18, 'AKRON', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (19, 'AL BAWADI GRILL', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FS call.samples dropped.advance to buyer Brian. Send email.'),
-  (20, 'AL PEAKE & SONS INC.', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (21, 'Al Peake amd Sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'toledo', 'OH', NULL, 'Jack Gilbertson buyer- hispanic focus broadliner[wonderjuice and curds'),
-  (22, 'Albanos Pasta', 'customer', 'B', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, 'Valparaiso', 'IN', NULL, ''),
-  (23, 'Ale Emporium', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (24, 'Alice & Friends2', 'unknown', 'D', NULL, NULL, NULL, '2201 S. Michigan Ave., Chicago, IL 60616', 'Chicago', NULL, NULL, ''),
-  (25, 'Alice & Friends-Ashland', 'unknown', 'D', NULL, NULL, NULL, '1723 N Halsted St, Chicago,', 'Chicago', NULL, NULL, ''),
-  (26, 'ALINEA', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 867-0110', NULL, '1723 N Halsted St, Chicago,', 'Chicago', 'IL', '60614', ''),
-  (27, 'All Ways Catering', 'customer', 'D', '5cb20587-c143-540d-b242-c761fb4bd731', '+1 (312) 363-2431', NULL, '110 Turner ave', 'Elk Grove Village', 'IL', NULL, ''),
-  (28, 'Allen County Schools Food Service', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (29, 'AMARU', 'unknown', 'C', NULL, '(312) 955-0306', NULL, NULL, NULL, NULL, NULL, ''),
-  (30, 'Amg', 'unknown', 'B', NULL, '(312) 337-6070', NULL, NULL, NULL, NULL, NULL, ''),
-  (31, 'Anchored Consulting', 'unknown', 'D', NULL, '+1 (773) 327-4900', NULL, NULL, NULL, NULL, NULL, ''),
-  (32, 'Andre''s Avery''s', 'unknown', 'C', NULL, '+1 (708) 205-5341', NULL, NULL, NULL, NULL, NULL, ''),
-  (33, 'Anelya', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (34, 'Angie''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (35, 'Angie''s Sports Bar & Pizzeria', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (36, 'ANMAR FOODS', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (37, 'ANTHONY MARANO COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (38, 'Apis Hotel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (39, 'APOLLO FOODS', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (40, 'Apolonia', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 363-2431', NULL, '2201 S. Michigan Ave., Chicago, IL 60616', 'Chicago', 'IL', '60616', ''),
-  (41, 'aramark', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (42, 'Arami', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (43, 'Arch City Tavern', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (44, 'Arlington Tap House', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (224) 735-2450', NULL, '1204 W Rand Rd', 'Arlington Heights', 'IL', '60004', ''),
-  (45, 'Aromatix Catering', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (46, 'Around The Clock', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (47, 'Arthur Treachers', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (48, 'ARTISAN SPECIALTY FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (49, 'ARUNS THAI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (50, 'Asador Bastian', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (51, 'Ashland University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'OH', NULL, 'Nathan Schegerikmis NH Rep Nick Forester is GFS rep'),
-  (52, 'Astor Club', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '24 E. Goethe St', 'Chicago', 'IL', '60610', 'Testa Kristen lead for VAF; Chef Trevor/Adam Butler'),
-  (53, 'At the Office Bar& Grill', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '4901 cal sag rd', 'Crestwood', 'IL', '60445', 'Sue or Tim are the owner'),
-  (54, 'Atelier', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (55, 'ATLANTIC FOOD DIST.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (56, 'Atlantic Food Distributors', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (57, 'ATLANTIC FOODS CORP.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (58, 'ATLAS WHOLESALE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (59, 'Au Cheval', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '800 W Randolph St', 'Chicago', 'IL', NULL, ''),
-  (60, 'Austin''s Wood Fire Grille', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (61, 'AVANTI FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'WALNUT', 'IL', NULL, ''),
-  (62, 'AVEC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (63, 'Avgo (Theo''s RG)', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (64, 'Avli', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Chicago''', NULL, NULL, 'Follow up on VAH and Frties'),
-  (65, 'Avli Restaurants', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (66, 'Azul Marisol''s 7 Muelle', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (67, 'B & B PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'LOCKPORT', 'IL', NULL, ''),
-  (68, 'B AND B FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (69, 'B N B CREATIONS', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (70, 'B.E.S INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (71, 'Back Yard Burgers', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (72, 'BADGER MURPHY F.S.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (73, 'Bailey''s bar and Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (74, 'Baker Street', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, ''),
-  (75, 'Baldwin Wallace', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (76, 'Baldwin Wallace University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'cleveland', NULL, NULL, ''),
-  (77, 'Ball State U', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (7, '86 FOOD SERVICE', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (8, '90 miles Cuban cafe', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (9, 'A & G FOODSERVICE', 'distributor', 'D', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (10, 'A Little Taste of Texas', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, 'email about samples cheese curds
+'),
+  (11, 'A Plus Inc DBA: Noodles Etc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (12, 'A&W', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (13, 'A.Fusion', 'customer', 'D', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, '4601 lincoln Highway', 'Matteson', 'IL', NULL, 'Garlic & Sriracha interest. End up purchasing original &jalapeo from PFG
+'),
+  (14, 'Abbvie', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (15, 'Acaibowl.LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (16, 'ACME STEAK & SEAFOOD', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (17, 'AJ''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (18, 'AKRON', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (19, 'AL BAWADI GRILL', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FS call.samples dropped.advance to buyer Brian. Send email.
+'),
+  (20, 'AL PEAKE & SONS INC.', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (21, 'Al Peake amd Sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'toledo', 'OH', NULL, 'Jack Gilbertson buyer- hispanic focus broadliner[wonderjuice and curds
+'),
+  (22, 'Albanos Pasta', 'customer', 'B', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, 'Valparaiso', 'IN', NULL, '
+'),
+  (23, 'Ale Emporium', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (24, 'Alice & Friends2', 'unknown', 'D', NULL, NULL, NULL, '2201 S. Michigan Ave., Chicago, IL 60616', 'Chicago', NULL, NULL, '
+'),
+  (25, 'Alice & Friends-Ashland', 'unknown', 'D', NULL, NULL, NULL, '1723 N Halsted St, Chicago,', 'Chicago', NULL, NULL, '
+'),
+  (26, 'ALINEA', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 867-0110', NULL, '1723 N Halsted St, Chicago,', 'Chicago', 'IL', '60614', '
+'),
+  (27, 'All Ways Catering', 'customer', 'D', '5cb20587-c143-540d-b242-c761fb4bd731', '+1 (312) 363-2431', NULL, '110 Turner ave', 'Elk Grove Village', 'IL', NULL, '
+'),
+  (28, 'Allen County Schools Food Service', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (29, 'AMARU', 'unknown', 'C', NULL, '(312) 955-0306', NULL, NULL, NULL, NULL, NULL, '
+'),
+  (30, 'Amg', 'unknown', 'B', NULL, '(312) 337-6070', NULL, NULL, NULL, NULL, NULL, '
+'),
+  (31, 'Anchored Consulting', 'unknown', 'D', NULL, '+1 (773) 327-4900', NULL, NULL, NULL, NULL, NULL, '
+'),
+  (32, 'Andre''s Avery''s', 'unknown', 'C', NULL, '+1 (708) 205-5341', NULL, NULL, NULL, NULL, NULL, '
+'),
+  (33, 'Anelya', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (34, 'Angie''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (35, 'Angie''s Sports Bar & Pizzeria', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (36, 'ANMAR FOODS', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (37, 'ANTHONY MARANO COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (38, 'Apis Hotel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (39, 'APOLLO FOODS', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (40, 'Apolonia', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 363-2431', NULL, '2201 S. Michigan Ave., Chicago, IL 60616', 'Chicago', 'IL', '60616', '
+'),
+  (41, 'aramark', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (42, 'Arami', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (43, 'Arch City Tavern', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (44, 'Arlington Tap House', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (224) 735-2450', NULL, '1204 W Rand Rd', 'Arlington Heights', 'IL', '60004', '
+'),
+  (45, 'Aromatix Catering', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (46, 'Around The Clock', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (47, 'Arthur Treachers', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (48, 'ARTISAN SPECIALTY FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (49, 'ARUNS THAI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (50, 'Asador Bastian', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (51, 'Ashland University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'OH', NULL, 'Nathan Schegerikmis NH Rep Nick Forester is GFS rep
+'),
+  (52, 'Astor Club', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '24 E. Goethe St', 'Chicago', 'IL', '60610', 'Testa Kristen lead for VAF; Chef Trevor/Adam Butler
+'),
+  (53, 'At the Office Bar& Grill', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '4901 cal sag rd', 'Crestwood', 'IL', '60445', 'Sue or Tim are the owner
+'),
+  (54, 'Atelier', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (55, 'ATLANTIC FOOD DIST.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (56, 'Atlantic Food Distributors', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (57, 'ATLANTIC FOODS CORP.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (58, 'ATLAS WHOLESALE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (59, 'Au Cheval', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '800 W Randolph St', 'Chicago', 'IL', NULL, '
+'),
+  (60, 'Austin''s Wood Fire Grille', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (61, 'AVANTI FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'WALNUT', 'IL', NULL, '
+'),
+  (62, 'AVEC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (63, 'Avgo (Theo''s RG)', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (64, 'Avli', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Chicago''', NULL, NULL, 'Follow up on VAH and Frties
+'),
+  (65, 'Avli Restaurants', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (66, 'Azul Marisol''s 7 Muelle', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (67, 'B & B PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'LOCKPORT', 'IL', NULL, '
+'),
+  (68, 'B AND B FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (69, 'B N B CREATIONS', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (70, 'B.E.S INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (71, 'Back Yard Burgers', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (72, 'BADGER MURPHY F.S.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (73, 'Bailey''s bar and Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (74, 'Baker Street', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, '
+'),
+  (75, 'Baldwin Wallace', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (76, 'Baldwin Wallace University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'cleveland', NULL, NULL, '
+'),
+  (77, 'Ball State U', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (78, 'Ballyhoo Hospitality', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', '312-577-4004', NULL, '908 North Halsted St.', 'Chicago', 'IL', '60642', 'Gemini, coda Del Velte, old Pueblo, Sophia, Pomeroy, pizza by Sal, Buck Russells, Danucci''s, Gemini, petite Pomeroy'),
-  (79, 'Bally''s Casino and Hotel', 'unknown', 'C', NULL, '888 822-2559', NULL, '600 N. Wabash Ave.', 'Chicago', 'IL', '60611', 'They want to support diverse vendors. Sue to set up a meeting.'),
-  (80, 'Bally''s Casino and Hotel TAP HOUSE RESTAURANT AND BAR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'DOES NOT LIKT THE OVERBREADING OGF THE SYSCO IMPERIAL BRAND CHEESE CURD LOOKING TO SWITCH'),
-  (81, 'Ballys Casino Cavanugh''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (82, 'Ballys Casino Evansville', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (83, 'Bangers and Lace', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '1670 W Division St', 'Chicago', 'IL', '60622', ''),
-  (84, 'Banyan Ko', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (85, 'BAR MAR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (86, 'Bare bones', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (87, 'Barefoot Republic Camp', 'customer', 'C', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Fountain Run', 'KY', NULL, 'intro'),
-  (88, 'Barleys Brewing Company Ale House #1', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (89, 'Barrio', 'customer', 'A', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, '65 W Kinzie St', 'Chicago', 'IL', '60654', 'Vegetarian/ Vegan options'),
-  (90, 'Bastion', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (91, 'Bastista''s Pizza', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (92, 'BATTAGLIA DIST. CORP. INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (93, 'Batter & Berries', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (79, 'Bally''s Casino and Hotel', 'unknown', 'C', NULL, '888 822-2559', NULL, '600 N. Wabash Ave.', 'Chicago', 'IL', '60611', 'They want to support diverse vendors. Sue to set up a meeting.
+'),
+  (80, 'Bally''s Casino and Hotel TAP HOUSE RESTAURANT AND BAR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'DOES NOT LIKT THE OVERBREADING OGF THE SYSCO IMPERIAL BRAND CHEESE CURD LOOKING TO SWITCH
+'),
+  (81, 'Ballys Casino Cavanugh''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (82, 'Ballys Casino Evansville', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (83, 'Bangers and Lace', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '1670 W Division St', 'Chicago', 'IL', '60622', '
+'),
+  (84, 'Banyan Ko', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (85, 'BAR MAR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (86, 'Bare bones', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (87, 'Barefoot Republic Camp', 'customer', 'C', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Fountain Run', 'KY', NULL, 'intro
+'),
+  (88, 'Barleys Brewing Company Ale House #1', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (89, 'Barrio', 'customer', 'A', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, '65 W Kinzie St', 'Chicago', 'IL', '60654', 'Vegetarian/ Vegan options
+'),
+  (90, 'Bastion', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (91, 'Bastista''s Pizza', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (92, 'BATTAGLIA DIST. CORP. INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (93, 'Batter & Berries', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (94, 'Bavarian Inn/cheese trap', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'frankenmuth', 'MI', NULL, 'monica claimed cudtown customer. I cisited in Feb -left sample kit,/monica sent dill sample.'),
-  (95, 'Bavette''s Bar and Steakhouse', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '+1 (312) 624-8154', NULL, '218 W Kinzie St', 'Chicago', 'IL', '60654', 'Actually advertises steak frites! A vegas spot too!'),
-  (96, 'Baxter''s North America', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (97, 'BAZAAR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (98, 'Bear and the Butcher', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 955-0306', NULL, '2721 N Halsted St', 'Chicago', 'IL', NULL, ''),
-  (99, 'Beard and Belly', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (100, 'Beatnik on the River', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (101, 'BEAVER WHOLESALE MEATS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (102, 'beer exchange', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (103, 'Beggars Pizza', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (104, 'Bella''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs'),
-  (105, 'Bellen Container Corp. dba Packaging By Design', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (106, 'benny dicartas', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (107, 'Best Intentions', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (108, 'Lucrezia', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'chesterton', 'IN', NULL, 'VAF ANNASEA'),
-  (109, 'INDUSTRIAL REVOLUTION', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'VALPRAISO', 'IN', NULL, 'VAF ANNASEA'),
-  (110, 'Beverly CC', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Chicago', 'IL', '60652', 'GFS ROSEMONT F/U 87th street'),
-  (111, 'Bian', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (112, 'BIBIBOP Asian grill', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Columbus', 'OH', NULL, 'Lead from bb. Brent and I will research'),
-  (113, 'Big Boy', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (114, 'Big City Tap', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (115, 'Big Eds BBQ', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (116, 'Big Ed''s BBQ', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '8474735333', NULL, '651 Lakehurst Rd', 'Waukegan', 'IL', '60085', ''),
-  (117, 'Big jones', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (118, 'Big Red Oven', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (119, 'Big Woods', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (120, 'BINK''S WINES & BEVERAGES', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (121, 'Bistro Coco', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '250n Warren St', 'Dayton', 'OH', '45402', 'Shipped Chef Zac a sample box of Annasea Tuna and salmon'),
-  (122, 'windy cuty grill', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'crown point', 'IN', NULL, 'steve Coppolillos -Rosebud-Windy City'),
-  (123, 'Bizarre meat by Jose Andres', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '120 N. Wacker Drive, Chicago, Illinois', 'Chicago', 'IL', '60606', ''),
-  (124, 'Bl Development Group', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (125, 'Blackwing Organic Meats', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (126, 'blondies', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'Flint', 'MI', NULL, 'meeting-awaiting assigned sales rep names'),
-  (127, 'Bloom & Associates', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (128, 'Bloom plant based', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (129, 'Blue Chip Casino', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (130, 'Blue Oyster', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Valparaiso', 'IN', NULL, 'Chef Edddie'),
-  (131, 'Blue Ridge Hotel partners', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (132, 'Bluebeard', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (133, 'Bluegrass Hospitality Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (134, 'Bob Chinn''s  Crabhouse', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (135, 'Bob Chinn''s Crabhouse', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '(847) 520-3633', NULL, '393 S Milwaukee Ave', 'Wheeling', 'IL', '60090', ''),
-  (136, 'Bobcat Bonnie', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (137, 'Bobcat Bonnie''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (138, 'Boelter', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (139, 'Boeufhaus', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (140, 'Boka', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '(312) 337-6070', NULL, '1729 N. Halsted Street', 'Chicago', 'IL', NULL, 'Please call on me ..several locations and catering. Tentori doesn''t work there. New lead: Tentori works at GT Prime Steakhouse.'),
-  (141, 'Boka Restaurant Group/Momotaro', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '820 West Lake St.', 'Chicago', 'IL', NULL, 'Please call on me ..several locations and catering. Tentori doesn''t work there. New lead: Tentori works at GT Prime Steakhouse.'),
-  (142, 'Bolingbrook golf club & banquet', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (143, 'Bon Appetit', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (144, 'BON Manger Catering and Events', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (145, 'Boodell & Domanskis, LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (146, 'Boonies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (147, 'BOSCO FOOD SERVICE, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (148, 'BOWLING GREEN STATE', 'customer', 'B', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (149, 'Brass elk', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (150, 'Brassica', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (151, 'BRGBELLY', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '5739 w. Irving park road', NULL, NULL, NULL, ''),
-  (152, 'Briar Ridge', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (153, 'brick and brine', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (154, 'BRINDILLE', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (155, 'Brio Tuscan', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (156, 'Broken Barrel bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '2548 n southport ave', 'Chicago', 'IL', '60614', 'Took Frites Street Fries to the chef and loves the fries. Fries too espensive for them.'),
-  (157, 'Bronzeville WINERY', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (158, 'Brooklyn and The Butcher', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sister account to The Exchange.'),
-  (159, 'BROWN FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (160, 'BuB Cafe', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (161, 'Bub City', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '43rd N. Clark Street', 'Chicago', 'IL', '60654', ''),
-  (162, 'Bubba''s 33 (Texas roadhouse little sister)', 'customer', 'D', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (163, 'Buckee', 'prospect', 'B', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (164, 'Bugsy''s', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (165, 'Bullpen', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Sampled curds; purchased Original.'),
-  (166, 'Buragtory', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '7 units; original'),
-  (167, 'BurgerUp', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Cool Springs', 'TN', NULL, ''),
-  (168, 'Butcher & The burger', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1021 w. Armitage Ave', 'Chicago', 'IL', NULL, ''),
-  (169, 'Butcher and the bear', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (708) 205-5341', NULL, NULL, NULL, NULL, NULL, ''),
-  (170, 'Cafe 53', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (171, 'Cafe Olympic', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (172, 'Calling a Chef LLC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (95, 'Bavette''s Bar and Steakhouse', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '+1 (312) 624-8154', NULL, '218 W Kinzie St', 'Chicago', 'IL', '60654', 'Actually advertises steak frites! A vegas spot too!
+'),
+  (96, 'Baxter''s North America', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (97, 'BAZAAR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (98, 'Bear and the Butcher', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 955-0306', NULL, '2721 N Halsted St', 'Chicago', 'IL', NULL, '
+'),
+  (99, 'Beard and Belly', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (100, 'Beatnik on the River', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (101, 'BEAVER WHOLESALE MEATS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (102, 'beer exchange', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (103, 'Beggars Pizza', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (104, 'Bella''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs
+'),
+  (105, 'Bellen Container Corp. dba Packaging By Design', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (106, 'benny dicartas', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (107, 'Best Intentions', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (108, 'Lucrezia', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'chesterton', 'IN', NULL, 'VAF ANNASEA
+'),
+  (109, 'INDUSTRIAL REVOLUTION', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'VALPRAISO', 'IN', NULL, 'VAF ANNASEA
+'),
+  (110, 'Beverly CC', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Chicago', 'IL', '60652', 'GFS ROSEMONT F/U 87th street
+'),
+  (111, 'Bian', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (112, 'BIBIBOP Asian grill', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Columbus', 'OH', NULL, 'Lead from bb. Brent and I will research
+'),
+  (113, 'Big Boy', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (114, 'Big City Tap', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (115, 'Big Eds BBQ', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (116, 'Big Ed''s BBQ', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '8474735333', NULL, '651 Lakehurst Rd', 'Waukegan', 'IL', '60085', '
+'),
+  (117, 'Big jones', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (118, 'Big Red Oven', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (119, 'Big Woods', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (120, 'BINK''S WINES & BEVERAGES', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (121, 'Bistro Coco', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '250n Warren St', 'Dayton', 'OH', '45402', 'Shipped Chef Zac a sample box of Annasea Tuna and salmon
+'),
+  (122, 'windy cuty grill', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'crown point', 'IN', NULL, 'steve Coppolillos -Rosebud-Windy City
+'),
+  (123, 'Bizarre meat by Jose Andres', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '120 N. Wacker Drive, Chicago, Illinois', 'Chicago', 'IL', '60606', '
+'),
+  (124, 'Bl Development Group', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (125, 'Blackwing Organic Meats', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (126, 'blondies', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'Flint', 'MI', NULL, 'meeting-awaiting assigned sales rep names
+'),
+  (127, 'Bloom & Associates', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (128, 'Bloom plant based', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (129, 'Blue Chip Casino', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (130, 'Blue Oyster', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Valparaiso', 'IN', NULL, 'Chef Edddie
+'),
+  (131, 'Blue Ridge Hotel partners', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (132, 'Bluebeard', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (133, 'Bluegrass Hospitality Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (134, 'Bob Chinn''s  Crabhouse', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (135, 'Bob Chinn''s Crabhouse', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '(847) 520-3633', NULL, '393 S Milwaukee Ave', 'Wheeling', 'IL', '60090', '
+'),
+  (136, 'Bobcat Bonnie', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (137, 'Bobcat Bonnie''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (138, 'Boelter', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (139, 'Boeufhaus', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (140, 'Boka', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '(312) 337-6070', NULL, '1729 N. Halsted Street', 'Chicago', 'IL', NULL, 'Please call on me ..several locations and catering. Tentori doesn''t work there. New lead: Tentori works at GT Prime Steakhouse.
+'),
+  (141, 'Boka Restaurant Group/Momotaro', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '820 West Lake St.', 'Chicago', 'IL', NULL, 'Please call on me ..several locations and catering. Tentori doesn''t work there. New lead: Tentori works at GT Prime Steakhouse.
+'),
+  (142, 'Bolingbrook golf club & banquet', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (143, 'Bon Appetit', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (144, 'BON Manger Catering and Events', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (145, 'Boodell & Domanskis, LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (146, 'Boonies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (147, 'BOSCO FOOD SERVICE, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (148, 'BOWLING GREEN STATE', 'customer', 'B', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (149, 'Brass elk', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (150, 'Brassica', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (151, 'BRGBELLY', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '5739 w. Irving park road', NULL, NULL, NULL, '
+'),
+  (152, 'Briar Ridge', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (153, 'brick and brine', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (154, 'BRINDILLE', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (155, 'Brio Tuscan', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (156, 'Broken Barrel bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '2548 n southport ave', 'Chicago', 'IL', '60614', 'Took Frites Street Fries to the chef and loves the fries. Fries too espensive for them.
+'),
+  (157, 'Bronzeville WINERY', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (158, 'Brooklyn and The Butcher', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sister account to The Exchange.
+'),
+  (159, 'BROWN FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (160, 'BuB Cafe', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (161, 'Bub City', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '43rd N. Clark Street', 'Chicago', 'IL', '60654', '
+'),
+  (162, 'Bubba''s 33 (Texas roadhouse little sister)', 'customer', 'D', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (163, 'Buckee', 'prospect', 'B', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (164, 'Bugsy''s', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (165, 'Bullpen', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Sampled curds; purchased Original.
+'),
+  (166, 'Buragtory', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '7 units; original
+'),
+  (167, 'BurgerUp', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Cool Springs', 'TN', NULL, '
+'),
+  (168, 'Butcher & The burger', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1021 w. Armitage Ave', 'Chicago', 'IL', NULL, '
+'),
+  (169, 'Butcher and the bear', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (708) 205-5341', NULL, NULL, NULL, NULL, NULL, '
+'),
+  (170, 'Cafe 53', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (171, 'Cafe Olympic', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (172, 'Calling a Chef LLC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (173, 'Calo Restaurant', 'prospect', 'A', '96fcde9e-03cd-5e6b-8090-f75a3f00a35b', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'Presented CCF; Frank ( Chef) like Cafe Classic Pumpkin, Carmel Apple Crunch and Salted Chocolate CC.'),
   (174, 'Cameron Mitchell', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Columbus', 'OH', NULL, 'Drop off samples from Annasea, Kaufhold and Frites Street'),
-  (175, 'Cameron Mitchell restaurant group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (176, 'Cant believe its not meat', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (177, 'Can''t Belive It;s Not Meat', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (178, 'CANTON HOTEL & RESTSUPCO.', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (179, 'Caplinger', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (180, 'CARAMAGNO FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (181, 'Caring', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (182, 'Carlisle', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (183, 'Carlos & Lupitas Restaurants', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (184, 'Carlos Pancake House', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (185, 'Carl''s jr', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (186, 'CARMELA FOODS DISTRIBUTIN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (187, 'CARSONS RIBS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '465 E Illinois St', 'Chicago', 'IL', '60611', ''),
-  (188, 'Castle Hospitality', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '11 East Hubbard St.', 'Chicago', 'IL', NULL, ''),
-  (189, 'CATANESE CLASSIC SEAFOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (190, 'CATCH 35', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (191, 'Catering Out The Box', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (192, 'CBK', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (193, 'Cellar Bar', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (194, 'Cellar door', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (195, 'Center Plate Development Co.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (196, 'Central Kitchen + Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (197, 'CENTRAL MARKET', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (198, 'Century', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'columbus', NULL, NULL, ''),
-  (199, 'Chaney''s Dairy Farm', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (200, 'Chapel Street Cafe', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (201, 'Charlie Baggs Culinary Innovations', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (202, 'Charlies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'REP will bring the kit to the chef on their next meeting.'),
-  (203, 'Char? ''d Brourbon Kitchen +Bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'louisville', 'KY', NULL, 'pass along a Kaufholds Sample kit Chef'),
-  (204, 'Chasers', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'left wamples with bartender Lee; gave brief presentation'),
-  (205, 'Cheer''s Food & Drink', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (206, 'cheers in chestertown', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'IN', NULL, 'GFS ROSEMONT F/U'),
-  (207, 'Chef Dave Madison', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (208, 'Chef Jose Solis', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '(773) 289-4274', NULL, '2714 N Milwaukee Ave', 'Chicago', 'IL', '60647', 'Have visited wtice. They have bought TCFB.'),
-  (209, 'CHEF SOURCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (210, 'Chefs special cocktail', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (211, 'Chefs Warehouse', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', '331-213-3364', NULL, NULL, NULL, NULL, NULL, 'meeting set for 3/26'),
-  (212, 'Chef''s Warehouse - Chicago', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (213, 'CHEFS'' WAREHOUSE MIDWEST,', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (214, 'chelsea retirement', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (215, 'Cherry Creek Golf Course', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (216, 'Chicago chophouse', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '60 W. Ontario Street, Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (217, 'Sand Creek CC', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Chesterton', 'IN', NULL, 'now Concert management Co. in FL'),
-  (218, '219 Taproom', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chesterton', 'IN', NULL, 'JOE OWNER-INSUFFICIENT DEMND FOR VAF'),
-  (219, 'Chicago Club', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed Steve Testa'),
-  (220, 'Chicago Club Makers LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (221, 'Chicago Cut', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (175, 'Cameron Mitchell restaurant group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (176, 'Cant believe its not meat', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (177, 'Can''t Belive It;s Not Meat', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (178, 'CANTON HOTEL & RESTSUPCO.', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (179, 'Caplinger', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (180, 'CARAMAGNO FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (181, 'Caring', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (182, 'Carlisle', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (183, 'Carlos & Lupitas Restaurants', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (184, 'Carlos Pancake House', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (185, 'Carl''s jr', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (186, 'CARMELA FOODS DISTRIBUTIN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (187, 'CARSONS RIBS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '465 E Illinois St', 'Chicago', 'IL', '60611', '
+'),
+  (188, 'Castle Hospitality', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '11 East Hubbard St.', 'Chicago', 'IL', NULL, '
+'),
+  (189, 'CATANESE CLASSIC SEAFOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (190, 'CATCH 35', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (191, 'Catering Out The Box', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (192, 'CBK', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (193, 'Cellar Bar', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (194, 'Cellar door', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (195, 'Center Plate Development Co.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (196, 'Central Kitchen + Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (197, 'CENTRAL MARKET', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (198, 'Century', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'columbus', NULL, NULL, '
+'),
+  (199, 'Chaney''s Dairy Farm', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (200, 'Chapel Street Cafe', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (201, 'Charlie Baggs Culinary Innovations', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (202, 'Charlies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'REP will bring the kit to the chef on their next meeting.
+'),
+  (203, 'Char? ''d Brourbon Kitchen +Bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'louisville', 'KY', NULL, 'pass along a Kaufholds Sample kit Chef
+'),
+  (204, 'Chasers', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'left wamples with bartender Lee; gave brief presentation
+'),
+  (205, 'Cheer''s Food & Drink', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (206, 'cheers in chestertown', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'IN', NULL, 'GFS ROSEMONT F/U
+'),
+  (207, 'Chef Dave Madison', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (208, 'Chef Jose Solis', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '(773) 289-4274', NULL, '2714 N Milwaukee Ave', 'Chicago', 'IL', '60647', 'Have visited wtice. They have bought TCFB.
+'),
+  (209, 'CHEF SOURCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (210, 'Chefs special cocktail', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (211, 'Chefs Warehouse', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', '331-213-3364', NULL, NULL, NULL, NULL, NULL, 'meeting set for 3/26
+'),
+  (212, 'Chef''s Warehouse - Chicago', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (213, 'CHEFS'' WAREHOUSE MIDWEST,', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (214, 'chelsea retirement', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (215, 'Cherry Creek Golf Course', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (216, 'Chicago chophouse', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '60 W. Ontario Street, Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (217, 'Sand Creek CC', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Chesterton', 'IN', NULL, 'now Concert management Co. in FL
+'),
+  (218, '219 Taproom', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chesterton', 'IN', NULL, 'JOE OWNER-INSUFFICIENT DEMND FOR VAF
+'),
+  (219, 'Chicago Club', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed Steve Testa
+'),
+  (220, 'Chicago Club Makers LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (221, 'Chicago Cut', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (222, 'Chicago cut steakhouse', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '300 N. La Salle Dr', 'Chicago', 'IL', NULL, 'Dessert of the day, must ask server. skin on fries.'),
-  (223, 'Chicago Diner', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, '2333 N Milwaukee Ave', 'Chicago', 'IL', '60647', 'Will visit with a vegan kit.'),
-  (224, 'Chicago Q', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (225, 'Chicago Vegan Foods', 'prospect', 'D', '44c27513-d90e-5504-9789-7e89a06857a9', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (226, 'Chicago winery', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (227, 'Chicken Salad Chick', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (228, 'Chilean balsam', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (229, 'Chocolate Shoppe Ice Cream Co', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (230, 'CHRIST PANOS EGV', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (231, 'CHRIST PANOS FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (232, 'Cira/Boca Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (233, 'Citizen M', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (234, 'Clairebook CC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (235, 'CLARK RESTAURANT SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (236, 'ClarkLindsey', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (237, 'Classic Cafe', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, 'fort wayne', 'IN', NULL, 'presented RR sauces Tandoori amd Butter chicken on drums and in cubess; left Kurd kit;presented BB hot dogs and land lovers filet'),
-  (238, 'Clean Eatz', 'prospect', 'C', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', NULL, NULL, '7776 B S Randall Rd', 'Algonquin', 'IL', NULL, ''),
-  (239, 'CLEMS REFRIGERATED FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (240, 'Club 18 at Mister B''s(Evansville and Owensboro', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', '812-492-0075', NULL, NULL, NULL, NULL, NULL, 'Drop samples to GMs of all locations except BG and Owensboro.  Need to follow up with jared@misterbspizza.com'),
-  (241, 'Club Hawthrone Crestwood', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', '605-595-1636', NULL, '13148 rivercrest dr', 'Crestwood', 'IL', NULL, 'Met with Rebecca. Loves the Garlic & Jalapeo. Has cheese curds but might replace them bc of flavor(s). 11-12-24'),
-  (242, 'Cocina Costera Tulum', 'unknown', 'D', NULL, NULL, NULL, '850 w Fulton Market', 'Chicago', 'IL', NULL, ''),
-  (243, 'COCO PAZZO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (244, 'Cod di Volpe', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (245, 'Colasanti''s / Milford Markets', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (246, 'Coles public house', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (247, 'Community Hospitality', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Nashville', NULL, NULL, ''),
-  (248, 'Concept Development Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (249, 'Concordia College Dining Services', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (250, 'Continental Canteen - Sterling Heights, MI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (251, 'Coopershawk', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (252, 'Copper Fox', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (253, 'Coppolillo''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'crown point', 'IN', NULL, ''),
-  (254, 'CORFU FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (255, 'corleones', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos'),
-  (256, 'CORNELL NYC', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
+  (223, 'Chicago Diner', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, '2333 N Milwaukee Ave', 'Chicago', 'IL', '60647', 'Will visit with a vegan kit.
+'),
+  (224, 'Chicago Q', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (225, 'Chicago Vegan Foods', 'prospect', 'D', '44c27513-d90e-5504-9789-7e89a06857a9', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (226, 'Chicago winery', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (227, 'Chicken Salad Chick', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (228, 'Chilean balsam', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (229, 'Chocolate Shoppe Ice Cream Co', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (230, 'CHRIST PANOS EGV', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (231, 'CHRIST PANOS FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (232, 'Cira/Boca Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (233, 'Citizen M', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (234, 'Clairebook CC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (235, 'CLARK RESTAURANT SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (236, 'ClarkLindsey', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (237, 'Classic Cafe', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, 'fort wayne', 'IN', NULL, 'presented RR sauces Tandoori amd Butter chicken on drums and in cubess; left Kurd kit;presented BB hot dogs and land lovers filet
+'),
+  (238, 'Clean Eatz', 'prospect', 'C', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', NULL, NULL, '7776 B S Randall Rd', 'Algonquin', 'IL', NULL, '
+'),
+  (239, 'CLEMS REFRIGERATED FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (240, 'Club 18 at Mister B''s(Evansville and Owensboro', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', '812-492-0075', NULL, NULL, NULL, NULL, NULL, 'Drop samples to GMs of all locations except BG and Owensboro.  Need to follow up with jared@misterbspizza.com
+'),
+  (241, 'Club Hawthrone Crestwood', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', '605-595-1636', NULL, '13148 rivercrest dr', 'Crestwood', 'IL', NULL, 'Met with Rebecca. Loves the Garlic & Jalapeo. Has cheese curds but might replace them bc of flavor(s). 11-12-24
+'),
+  (242, 'Cocina Costera Tulum', 'unknown', 'D', NULL, NULL, NULL, '850 w Fulton Market', 'Chicago', 'IL', NULL, '
+'),
+  (243, 'COCO PAZZO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (244, 'Cod di Volpe', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (245, 'Colasanti''s / Milford Markets', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (246, 'Coles public house', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (247, 'Community Hospitality', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Nashville', NULL, NULL, '
+'),
+  (248, 'Concept Development Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (249, 'Concordia College Dining Services', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (250, 'Continental Canteen - Sterling Heights, MI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (251, 'Coopershawk', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (252, 'Copper Fox', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (253, 'Coppolillo''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'crown point', 'IN', NULL, '
+'),
+  (254, 'CORFU FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (255, 'corleones', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos
+'),
+  (256, 'CORNELL NYC', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
   (257, 'Cornerstone Restaurant Group', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, 'Urban Belly, The Table at Crate, Sol Toro, MJ23 Sports Bar Michael Jordan''s Steakhouse, Hi-Fi Chicken and Beer, Brassierie 1783'),
-  (258, 'COSGROVE DISTRIBUTORS,INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (259, 'Cousin''s Pizza Pub', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '630-980-8181', NULL, '966 w lake st', 'Roselle', 'IL', NULL, ''),
-  (260, 'Cracker Barrel', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (261, 'Craft & Crew Hospitality', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (262, 'Craft Burger', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, ''),
-  (263, 'Craft''d', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (264, 'CREATION GARDENS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (265, 'Creekside Restaurant & Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (266, 'Crescent Hill Craft House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (267, 'CRG DINING', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Indianapolis', 'IN', NULL, ''),
-  (268, 'CRISTINA FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (269, 'CRITCHFIELD MEATS WHSL.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (270, 'Crown Republic Gastropub', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (271, 'Crown restaurant group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (272, 'CRS One Source', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Paducah', 'KY', NULL, 'Edgar is Director of Sales'),
-  (273, 'Crumb Crusher', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (274, 'Crushed pizzeria', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (275, 'Crust Brewing', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (276, 'Culinary Misfits', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'crown point', 'IN', NULL, 'Chef Erin'),
-  (277, 'Cumin bowl', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (258, 'COSGROVE DISTRIBUTORS,INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (259, 'Cousin''s Pizza Pub', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '630-980-8181', NULL, '966 w lake st', 'Roselle', 'IL', NULL, '
+'),
+  (260, 'Cracker Barrel', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (261, 'Craft & Crew Hospitality', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (262, 'Craft Burger', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, '
+'),
+  (263, 'Craft''d', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (264, 'CREATION GARDENS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (265, 'Creekside Restaurant & Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (266, 'Crescent Hill Craft House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (267, 'CRG DINING', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Indianapolis', 'IN', NULL, '
+'),
+  (268, 'CRISTINA FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (269, 'CRITCHFIELD MEATS WHSL.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (270, 'Crown Republic Gastropub', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (271, 'Crown restaurant group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (272, 'CRS One Source', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Paducah', 'KY', NULL, 'Edgar is Director of Sales
+'),
+  (273, 'Crumb Crusher', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (274, 'Crushed pizzeria', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (275, 'Crust Brewing', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (276, 'Culinary Misfits', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'crown point', 'IN', NULL, 'Chef Erin
+'),
+  (277, 'Cumin bowl', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (278, 'Curts Cafe', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '(847) 748-8086', NULL, '766 2nd St', 'Higland Park', 'IL', '60035', 'Two locations, Highland Park and Evanston'),
-  (279, 'Cynergy Bakes', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (280, 'dabney and company', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (281, 'Daisies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (282, 'Daisies poorboy and Tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (283, 'DALMARES PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (284, 'Danny''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (285, 'Dar Baklava, LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (286, 'D''Asti Deli', 'unknown', 'D', NULL, NULL, NULL, '1410 irving park rd', 'bensenville', 'IL', NULL, 'Left samples with Manager Meme; garlic prefered'),
-  (287, 'Dave & Buster''s Rosemont', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '7739871128', NULL, '9870 Berwyn Ave. Des Plaines, Il', NULL, 'IL', NULL, ''),
-  (288, 'Dave & Buster''s Schaumburg', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '8503450276', NULL, '601 N Martingales Rd Schaumburg, IL', NULL, 'IL', NULL, ''),
-  (289, 'Dawg House', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'elyria', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS'),
-  (290, 'Dear Margaret', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (291, 'DEARLY BELOVED', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (292, 'DELCO FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (293, 'Delmonico', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Independence', 'OH', NULL, ''),
-  (294, 'Delwood', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (295, 'Demera', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (296, 'DENIRO CHEESE CO.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (297, 'DePaul University', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (298, 'DeRosa Corporation', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (299, 'Diageo Beer Company', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (300, 'DILGARD FOODS COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
+  (279, 'Cynergy Bakes', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (280, 'dabney and company', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (281, 'Daisies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (282, 'Daisies poorboy and Tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (283, 'DALMARES PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (284, 'Danny''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (285, 'Dar Baklava, LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (286, 'D''Asti Deli', 'unknown', 'D', NULL, NULL, NULL, '1410 irving park rd', 'bensenville', 'IL', NULL, 'Left samples with Manager Meme; garlic prefered
+'),
+  (287, 'Dave & Buster''s Rosemont', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '7739871128', NULL, '9870 Berwyn Ave. Des Plaines, Il', NULL, 'IL', NULL, '
+'),
+  (288, 'Dave & Buster''s Schaumburg', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '8503450276', NULL, '601 N Martingales Rd Schaumburg, IL', NULL, 'IL', NULL, '
+'),
+  (289, 'Dawg House', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'elyria', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS
+'),
+  (290, 'Dear Margaret', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (291, 'DEARLY BELOVED', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (292, 'DELCO FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (293, 'Delmonico', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Independence', 'OH', NULL, '
+'),
+  (294, 'Delwood', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (295, 'Demera', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (296, 'DENIRO CHEESE CO.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (297, 'DePaul University', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (298, 'DeRosa Corporation', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (299, 'Diageo Beer Company', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (300, 'DILGARD FOODS COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
   (301, 'DINEAMIC HOSPITALITY', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, 'Bar La Rue, La Sierra Prime and Provisions, Lyra, Violi, Sienna Tavern, Bandit, Barrio, Blanks Bar, Builders Building, Dineamic Catering'),
-  (302, 'Direct Food Service', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', '630-350-2171', NULL, '204 North Edgewood Dr.', 'Woodale', 'IL', '60191', 'Positive response of Annasea. Use as ingredient or as finished pupu'),
-  (303, 'Direct Food Services', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (304, 'dirty franks', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (305, 'DISCOUNT PIZZA SUPPLY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (306, 'District 6 Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (307, 'DIXON FISHERIES, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (308, 'DMK Burger Bar', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1410 S. special Olympics Drive', NULL, NULL, NULL, ''),
-  (309, 'Dog House', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Brunswick', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS'),
-  (310, 'Dog n Suds Drive In', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (311, 'Donato''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (312, 'Dorthy Lane Market', 'prospect', 'C', 'db21b569-5553-5aa8-8cca-9f3b204bb8a6', NULL, NULL, NULL, 'Dayton', 'OH', NULL, 'talkd about poke they get bulk seafood and poke mix from NOH'),
-  (313, 'DosBros', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (314, 'DOT', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (315, 'Dots Platform', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (316, 'DOUBLE B DISTRIBUTORS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (317, 'Dovetail', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (318, 'DP Dough', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (319, 'Drake', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Samples left. Champion is Brian. HQ call. Gfs supplied. Brent to pursue.'),
-  (320, 'Drake Oakbrook', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (321, 'Drury Lane', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '100 Drury Lane Oakbrook Terrace, IL', NULL, NULL, NULL, 'Emailed on Proper Stock CATMAN identification-on 8/19 identified Catman who is Lauren Vanryn. Our timing is excellent as this category is up for review in a month or so and they will likely request samples and a presentation.'),
-  (322, 'Drury Lane Theatre, banquet hall', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, 'Countryside', NULL, NULL, NULL, ''),
-  (323, 'DTM Distributors', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'email Virginia to see if we can show samples'),
-  (324, 'DUANE S. RAHE INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (325, 'Dublin Hall Irish', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (326, 'Ducky''s', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, ''),
-  (327, 'Dukes Alehouse', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'They use our SWAP chicken.'),
-  (328, 'Dusty', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (329, 'DUTCH VALLEY SCHLABACH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (330, 'E & S SALES, LLC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (331, 'E.T.C.', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (332, 'Earl G. Dumplins', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (302, 'Direct Food Service', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', '630-350-2171', NULL, '204 North Edgewood Dr.', 'Woodale', 'IL', '60191', 'Positive response of Annasea. Use as ingredient or as finished pupu
+'),
+  (303, 'Direct Food Services', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (304, 'dirty franks', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (305, 'DISCOUNT PIZZA SUPPLY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (306, 'District 6 Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (307, 'DIXON FISHERIES, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (308, 'DMK Burger Bar', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1410 S. special Olympics Drive', NULL, NULL, NULL, '
+'),
+  (309, 'Dog House', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Brunswick', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS
+'),
+  (310, 'Dog n Suds Drive In', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (311, 'Donato''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (312, 'Dorthy Lane Market', 'prospect', 'C', 'db21b569-5553-5aa8-8cca-9f3b204bb8a6', NULL, NULL, NULL, 'Dayton', 'OH', NULL, 'talkd about poke they get bulk seafood and poke mix from NOH
+'),
+  (313, 'DosBros', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (314, 'DOT', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (315, 'Dots Platform', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (316, 'DOUBLE B DISTRIBUTORS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (317, 'Dovetail', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (318, 'DP Dough', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (319, 'Drake', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Samples left. Champion is Brian. HQ call. Gfs supplied. Brent to pursue.
+'),
+  (320, 'Drake Oakbrook', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (321, 'Drury Lane', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '100 Drury Lane Oakbrook Terrace, IL', NULL, NULL, NULL, 'Emailed on Proper Stock CATMAN identification-on 8/19 identified Catman who is Lauren Vanryn. Our timing is excellent as this category is up for review in a month or so and they will likely request samples and a presentation.
+'),
+  (322, 'Drury Lane Theatre, banquet hall', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, 'Countryside', NULL, NULL, NULL, '
+'),
+  (323, 'DTM Distributors', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'email Virginia to see if we can show samples
+'),
+  (324, 'DUANE S. RAHE INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (325, 'Dublin Hall Irish', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (326, 'Ducky''s', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, '
+'),
+  (327, 'Dukes Alehouse', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'They use our SWAP chicken.
+'),
+  (328, 'Dusty', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (329, 'DUTCH VALLEY SCHLABACH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (330, 'E & S SALES, LLC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (331, 'E.T.C.', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (332, 'Earl G. Dumplins', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (333, 'East Bank Club', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '500 N Kingsbury St', 'Chicago', 'IL', '60654', '1/31/25 Tessa is no longer the rep here, she has been promoted to a corporate role. Will try to find the new rep.'),
-  (334, 'East End tap', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (335, 'Eating To Live LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (336, 'El Ideas', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (337, 'El Salto', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (338, 'ELEGANTE CUISINE', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (339, 'Eleven City', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (340, 'Elohi Strategic Advisors', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (341, 'Elsie', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (342, 'Empire Burger', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (343, 'Entourage', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (344, 'ENzo''s Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (345, 'Epic', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (346, 'ERB MEAT COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (347, 'ERNST HOTEL SUPPLY CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (348, 'Esme', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '2200 N Clark St Suite B', 'Chicago', 'IL', NULL, ''),
-  (349, 'Especially', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (350, 'Essential Kitchen & Essential Kitchen Cafe', 'prospect', 'C', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', NULL, NULL, '1405 Hunt Club Rd', 'Gurnee', 'IL', NULL, ''),
-  (351, 'e-tailer, inc', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (352, 'ETC', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '404 S Wells St', 'Chicago', 'IL', NULL, 'Opens Dec. 5th'),
-  (353, 'Euclid', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (354, 'Eurest', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (355, 'Eurest Dining', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (356, 'EURO USA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (357, 'European Imports', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (358, 'EuroUSA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (359, 'Even Odds', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (360, 'EVER', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (361, 'Evil Chech (brewery& Public house?)', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '3703 N  Main St', 'Mishawaka', 'IN', NULL, ''),
+  (334, 'East End tap', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (335, 'Eating To Live LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (336, 'El Ideas', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (337, 'El Salto', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (338, 'ELEGANTE CUISINE', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (339, 'Eleven City', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (340, 'Elohi Strategic Advisors', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (341, 'Elsie', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (342, 'Empire Burger', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (343, 'Entourage', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (344, 'ENzo''s Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (345, 'Epic', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (346, 'ERB MEAT COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (347, 'ERNST HOTEL SUPPLY CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (348, 'Esme', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '2200 N Clark St Suite B', 'Chicago', 'IL', NULL, '
+'),
+  (349, 'Especially', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (350, 'Essential Kitchen & Essential Kitchen Cafe', 'prospect', 'C', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', NULL, NULL, '1405 Hunt Club Rd', 'Gurnee', 'IL', NULL, '
+'),
+  (351, 'e-tailer, inc', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (352, 'ETC', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '404 S Wells St', 'Chicago', 'IL', NULL, 'Opens Dec. 5th
+'),
+  (353, 'Euclid', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (354, 'Eurest', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (355, 'Eurest Dining', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (356, 'EURO USA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (357, 'European Imports', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (358, 'EuroUSA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (359, 'Even Odds', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (360, 'EVER', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (361, 'Evil Chech (brewery& Public house?)', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '3703 N  Main St', 'Mishawaka', 'IN', NULL, '
+'),
   (362, 'Factor75', 'prospect', 'A', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', NULL, NULL, NULL, 'Burr Ridge', 'IL', NULL, 'Chris is Manager at Burr Ridge location. Chris referred me to Director of Procurment, Kate HealyMeal prep chef Pete balodimas buyer Matt Horgan. Chef Kyle VerVynck'),
-  (363, 'Fairmont Chicago', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '200 North Columbus Dr', 'Chicago', 'IL', '60601', 'Testa Kristen lead for VAF; Chef Elton'),
-  (364, 'Falco''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '630-654-4644', NULL, '561 s fontage rd', 'Burr Ridge', 'IL', '60527', 'Gave a kaufhold''s sample kit to the manager and tried one of the flavors. Need to follow up'),
-  (365, 'Family Express', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (366, 'FAMILY PRODUCE FOOD SERVI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (367, 'Farmhouse Academy', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (368, 'Fat Angelo''s of Bridgeport', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (369, 'FatKats Pizzaeria and Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (370, 'Fatmans', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (371, 'Fazoli''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, 'So many in Indiana', NULL, 'IN', NULL, ''),
-  (372, 'Ferrara Candy Company', 'prospect', 'D', '06ee08c4-8332-51a4-bfbe-60fc9192088c', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (373, 'FERRIS COFFEE AND NUT CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (374, 'Fine Arts Bistro', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, 'emailed about samples interest'),
-  (375, 'Fira', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (376, 'Fire Bar+Grill', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (377, 'FireKeepers Casino Hotel', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed on 8/19.Executive Chef Brandon Lester; sous chef Everett morris and buye Megan mead'),
-  (378, 'Fireside Grille', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'GFS'),
-  (379, 'Flik Hospitality', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (380, 'FOOD & PAPER SUPPLY CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (381, 'FOOD DISTRIBUTORS INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (382, 'Food Export - Midwest', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (383, 'Food Technology Magazine, Institute of Food Technologists', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (384, 'FoodMix', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (385, 'Foodservice Database Co', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (386, 'FOP Restaurant', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (387, 'Forage Public house', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (388, 'Forbidden root', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (389, 'Ford Center Arena Evsnsville', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (390, 'Ford Center Executive Chef', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (391, 'FORTUNE FISH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (392, 'Fortune Fish & Gourmet', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (393, 'Foundry kitchen and bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (394, 'Four Pegs', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (395, 'Four Seasons Hotel Chicago', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (396, 'FOUR STAR FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (397, 'FOX SUPPLY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (398, 'FOX VALLEY FARMS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (399, 'Franciscan Hospital', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (400, 'Frank and Mary''s Tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (401, 'Franklin Room', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (312) 445-4686', NULL, '675 NFranklinst.', 'Chicago', 'IL', NULL, 'Delivered FS samples per Flip''a request'),
-  (402, 'Freedom Brothers Pizzeria & Alehouse', 'customer', 'D', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (403, 'Freelance', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (404, 'FreezPak', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (405, 'FRESH CREATIONS LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (406, 'Frisch Big Boy', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (407, 'Froelichs', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FS-bought Cottage'),
-  (408, 'Front Street social', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (409, 'Frontera', 'customer', 'A', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (410, 'Fuego Tacos', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (411, 'Fuel Nutrition', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', '270-799-7784', NULL, '3278 Nashville Rd', 'Bowling Green', 'KY', '42104', ''),
-  (412, 'Fujiyama Steakhouse of Japan', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (413, 'FULTON TROIKA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (414, 'Gabby Goat American Pub and Grill', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (415, 'Gaelic Park', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (363, 'Fairmont Chicago', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '200 North Columbus Dr', 'Chicago', 'IL', '60601', 'Testa Kristen lead for VAF; Chef Elton
+'),
+  (364, 'Falco''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '630-654-4644', NULL, '561 s fontage rd', 'Burr Ridge', 'IL', '60527', 'Gave a kaufhold''s sample kit to the manager and tried one of the flavors. Need to follow up
+'),
+  (365, 'Family Express', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (366, 'FAMILY PRODUCE FOOD SERVI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (367, 'Farmhouse Academy', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (368, 'Fat Angelo''s of Bridgeport', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (369, 'FatKats Pizzaeria and Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (370, 'Fatmans', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (371, 'Fazoli''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, 'So many in Indiana', NULL, 'IN', NULL, '
+'),
+  (372, 'Ferrara Candy Company', 'prospect', 'D', '06ee08c4-8332-51a4-bfbe-60fc9192088c', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (373, 'FERRIS COFFEE AND NUT CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (374, 'Fine Arts Bistro', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, 'emailed about samples interest
+'),
+  (375, 'Fira', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (376, 'Fire Bar+Grill', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (377, 'FireKeepers Casino Hotel', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed on 8/19.Executive Chef Brandon Lester; sous chef Everett morris and buye Megan mead
+'),
+  (378, 'Fireside Grille', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'GFS
+'),
+  (379, 'Flik Hospitality', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (380, 'FOOD & PAPER SUPPLY CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (381, 'FOOD DISTRIBUTORS INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (382, 'Food Export - Midwest', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (383, 'Food Technology Magazine, Institute of Food Technologists', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (384, 'FoodMix', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (385, 'Foodservice Database Co', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (386, 'FOP Restaurant', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (387, 'Forage Public house', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (388, 'Forbidden root', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (389, 'Ford Center Arena Evsnsville', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (390, 'Ford Center Executive Chef', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (391, 'FORTUNE FISH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (392, 'Fortune Fish & Gourmet', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (393, 'Foundry kitchen and bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (394, 'Four Pegs', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (395, 'Four Seasons Hotel Chicago', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (396, 'FOUR STAR FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (397, 'FOX SUPPLY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (398, 'FOX VALLEY FARMS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (399, 'Franciscan Hospital', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (400, 'Frank and Mary''s Tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (401, 'Franklin Room', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (312) 445-4686', NULL, '675 NFranklinst.', 'Chicago', 'IL', NULL, 'Delivered FS samples per Flip''a request
+'),
+  (402, 'Freedom Brothers Pizzeria & Alehouse', 'customer', 'D', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (403, 'Freelance', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (404, 'FreezPak', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (405, 'FRESH CREATIONS LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (406, 'Frisch Big Boy', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (407, 'Froelichs', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FS-bought Cottage
+'),
+  (408, 'Front Street social', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (409, 'Frontera', 'customer', 'A', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (410, 'Fuego Tacos', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (411, 'Fuel Nutrition', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', '270-799-7784', NULL, '3278 Nashville Rd', 'Bowling Green', 'KY', '42104', '
+'),
+  (412, 'Fujiyama Steakhouse of Japan', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (413, 'FULTON TROIKA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (414, 'Gabby Goat American Pub and Grill', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (415, 'Gaelic Park', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (416, 'Gage Hospitality Group', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', '312-372-4001', NULL, '18 S. Michigan Avenue Ste 1100', 'Chicago', 'IL', NULL, 'ACANTO, Coda di volpe, dawson, The Gage'),
-  (417, 'Gag''s Chicken', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (418, 'GALANT FOOD COMPANY', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (419, 'Galena Associates Inc.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (420, 'Galit', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (421, 'Garda''s', 'prospect', 'C', '96fcde9e-03cd-5e6b-8090-f75a3f00a35b', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (422, 'Gather', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (423, 'GELARDI PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (424, 'Gelsosomo''s Pizzeria', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (425, 'Gemato''s Wood Pit BBQ', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '708-361-4200', NULL, '6701 w 11th st', 'Worth', 'IL', NULL, 'Met Jose (owner) and dropped off samples. Wants table tents. 11-12-24'),
-  (426, 'GEORGIA STATE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (427, 'Gerolissimo', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (428, 'GET FRESH PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (429, 'GFS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (430, 'GFS-D', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (431, 'GFS-m', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (432, 'GFS-q', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (433, 'Ghost Writer', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '49 1/2 S Main St', 'Johnstown', 'OH', '43031', 'Shipped Chef Bradley Baluch a Annasea sample pack'),
-  (434, 'Gianni''s Cafe', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (435, 'Giant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (417, 'Gag''s Chicken', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (418, 'GALANT FOOD COMPANY', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (419, 'Galena Associates Inc.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (420, 'Galit', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (421, 'Garda''s', 'prospect', 'C', '96fcde9e-03cd-5e6b-8090-f75a3f00a35b', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (422, 'Gather', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (423, 'GELARDI PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (424, 'Gelsosomo''s Pizzeria', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (425, 'Gemato''s Wood Pit BBQ', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '708-361-4200', NULL, '6701 w 11th st', 'Worth', 'IL', NULL, 'Met Jose (owner) and dropped off samples. Wants table tents. 11-12-24
+'),
+  (426, 'GEORGIA STATE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (427, 'Gerolissimo', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (428, 'GET FRESH PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (429, 'GFS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (430, 'GFS-D', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (431, 'GFS-m', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (432, 'GFS-q', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (433, 'Ghost Writer', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '49 1/2 S Main St', 'Johnstown', 'OH', '43031', 'Shipped Chef Bradley Baluch a Annasea sample pack
+'),
+  (434, 'Gianni''s Cafe', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (435, 'Giant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (436, 'Gibson''s Rosemont', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '5464 n river road, Rosemont, IL', NULL, NULL, NULL, '14 locations in four states Gibson''s bar and steakhouse Hugos, frog bar and Fish House, Lux bar, Cortino restaurant and wine bar Gibson''s Italia. The boathouse also manages RL restaurant the polo bar in New York on behalf of Ralph Lauren, RL restaurant, Chi socks, bar, and grill and Hugos, frog bar and chophouse in rivers Casino and sugarhouse casino.'),
-  (437, 'gilt bar', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (438, 'Gino''s East', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (439, 'Gino''s Prime - Dyer', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (440, 'Giordano''s', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (441, 'Girl in the goat', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '809 W Randolph St, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (442, 'Girl in the goat1', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(773) 360-8755', NULL, '1340 W Fulton St, Chicago, IL 60607', 'Chicago', 'IL', NULL, ''),
-  (443, 'Girl in the goat2', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 492-6262', NULL, '2429 N Lincoln Ave, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (444, 'GLASS CITY FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Toledo', 'OH', NULL, ''),
-  (445, 'Gnome Town', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, ''),
-  (446, 'Go Grocers', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (447, 'goblin and grocer', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U'),
-  (448, 'Godess and Grocer', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (449, 'Gold Star', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (450, 'Golden Boy BBQ', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '551 S York St', 'Elmhurst', 'IL', '60126', ''),
-  (451, 'Golf VX', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (452, 'Good To Go Food', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (453, 'Goosefoot', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (454, 'Gordon Food Service (Legacy)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Includes culinary and sales key contacts as well as HQ team'),
-  (455, 'GORDON FS/50TH STREET', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (456, 'GORDON FS/50TH STREET(FRO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (457, 'GORDON FS/BRIGHTON', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (458, 'GORDON FS/CLAY AVE.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (459, 'GORDON FS/DOCK #7', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (460, 'GORDON FS/EPO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (461, 'GORDON FS/EPO REFRIG/FROZ', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (462, 'GORDON FS/FED EX ONLY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (463, 'GORDON FS/GREEN OAK DC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (464, 'GORDON FS/SHEPHERDSVILLE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (465, 'GORDON FS/SPRINGFIELD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, ''),
-  (466, 'Goshen brewing', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (467, 'gottleib memorial', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U'),
-  (468, 'Gourmet Gorilla', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (469, 'Grand Valley State University', 'customer', 'B', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (470, 'Great Harvest', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'crown point', 'IN', NULL, 'gluten free opportunity. sent lead to Carol.Await their reply'),
-  (471, 'Greco', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (472, 'Greco PA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (473, 'Green Street Smoked Meats (Hogsalt)', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (474, 'Greenbush', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'FS sampled thru PFG-awaiting'),
-  (475, 'Greenleaf Foods', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (476, 'greenntop tavern', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (477, 'Greenwood Associates', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (478, 'Greystone Tavern', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Chef wants gluten free cheese curds. Ours aren''t.'),
-  (479, 'Grindstone taphouse', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (480, 'Guckenheimer', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (481, 'GUEST SUPPLY/CHICAGO SYSC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (482, 'GVSU', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (483, 'Gyros and More', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Lorain', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS'),
-  (484, 'Hacienda Calavera', 'customer', 'A', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, '5503 W Cermak Rd', 'Cicero', 'IL', '60804', ''),
-  (485, 'Half acre', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (486, 'Halls Chophouse', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '1600 West End Ave #101', 'Nashville', 'TN', '37203', 'Shipped Chef Josh a box of Annasea tuna and salmon'),
-  (487, 'Hammerheads', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (488, 'Harbor Shores', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, 'FS sampled. Like 3/8-GFS'),
-  (489, 'Harold''s', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (490, 'Harrison Lake Country Club', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '3128280966', NULL, NULL, NULL, NULL, NULL, ''),
-  (491, 'Harry Carey (8) Lombard Rosemont River north navy pier mag mile', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (492, 'Harvest Bar and Kitchen', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (493, 'harveys', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'saginaw', 'MI', NULL, 'meeting-awaiting assigned sales rep names'),
-  (494, 'harveys on the mall', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (495, 'Hayah Treats', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'FS reviewed and sampled. GFS'),
-  (496, 'Haymarket Brewery', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '312-374-3013', 'https://www.heislerhospitality.com', '2001 w. Grand Ave', 'Chicago', 'IL', '60612', ''),
-  (497, 'Heisler Hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (498, 'Hello Fresh', 'prospect', 'A', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', NULL, NULL, NULL, 'Aurora', 'IL', NULL, 'Initial email to Kate Healy on 1/27'),
-  (499, 'Heritage', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (500, 'Hermosa', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (501, 'high dive', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (502, 'High Horizon(KY Horse Park)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (503, 'Hillcrest CC', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (504, 'HILLCREST FOODSERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, ''),
-  (505, 'Hilton Oakbrook', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (506, 'Hiraya Hospitality Collective', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (507, 'HIS hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (437, 'gilt bar', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (438, 'Gino''s East', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (439, 'Gino''s Prime - Dyer', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (440, 'Giordano''s', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (441, 'Girl in the goat', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '809 W Randolph St, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (442, 'Girl in the goat1', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(773) 360-8755', NULL, '1340 W Fulton St, Chicago, IL 60607', 'Chicago', 'IL', NULL, '
+'),
+  (443, 'Girl in the goat2', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 492-6262', NULL, '2429 N Lincoln Ave, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (444, 'GLASS CITY FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Toledo', 'OH', NULL, '
+'),
+  (445, 'Gnome Town', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, '
+'),
+  (446, 'Go Grocers', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (447, 'goblin and grocer', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U
+'),
+  (448, 'Godess and Grocer', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (449, 'Gold Star', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (450, 'Golden Boy BBQ', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '551 S York St', 'Elmhurst', 'IL', '60126', '
+'),
+  (451, 'Golf VX', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (452, 'Good To Go Food', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (453, 'Goosefoot', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (454, 'Gordon Food Service (Legacy)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Includes culinary and sales key contacts as well as HQ team
+'),
+  (455, 'GORDON FS/50TH STREET', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (456, 'GORDON FS/50TH STREET(FRO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (457, 'GORDON FS/BRIGHTON', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (458, 'GORDON FS/CLAY AVE.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (459, 'GORDON FS/DOCK #7', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (460, 'GORDON FS/EPO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (461, 'GORDON FS/EPO REFRIG/FROZ', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (462, 'GORDON FS/FED EX ONLY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (463, 'GORDON FS/GREEN OAK DC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (464, 'GORDON FS/SHEPHERDSVILLE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (465, 'GORDON FS/SPRINGFIELD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, '
+'),
+  (466, 'Goshen brewing', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (467, 'gottleib memorial', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U
+'),
+  (468, 'Gourmet Gorilla', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (469, 'Grand Valley State University', 'customer', 'B', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (470, 'Great Harvest', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'crown point', 'IN', NULL, 'gluten free opportunity. sent lead to Carol.Await their reply
+'),
+  (471, 'Greco', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (472, 'Greco PA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (473, 'Green Street Smoked Meats (Hogsalt)', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (474, 'Greenbush', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'FS sampled thru PFG-awaiting
+'),
+  (475, 'Greenleaf Foods', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (476, 'greenntop tavern', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (477, 'Greenwood Associates', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (478, 'Greystone Tavern', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Chef wants gluten free cheese curds. Ours aren''t.
+'),
+  (479, 'Grindstone taphouse', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (480, 'Guckenheimer', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (481, 'GUEST SUPPLY/CHICAGO SYSC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (482, 'GVSU', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (483, 'Gyros and More', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Lorain', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS
+'),
+  (484, 'Hacienda Calavera', 'customer', 'A', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, '5503 W Cermak Rd', 'Cicero', 'IL', '60804', '
+'),
+  (485, 'Half acre', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (486, 'Halls Chophouse', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '1600 West End Ave #101', 'Nashville', 'TN', '37203', 'Shipped Chef Josh a box of Annasea tuna and salmon
+'),
+  (487, 'Hammerheads', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (488, 'Harbor Shores', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, 'FS sampled. Like 3/8-GFS
+'),
+  (489, 'Harold''s', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (490, 'Harrison Lake Country Club', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '3128280966', NULL, NULL, NULL, NULL, NULL, '
+'),
+  (491, 'Harry Carey (8) Lombard Rosemont River north navy pier mag mile', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (492, 'Harvest Bar and Kitchen', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (493, 'harveys', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'saginaw', 'MI', NULL, 'meeting-awaiting assigned sales rep names
+'),
+  (494, 'harveys on the mall', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (495, 'Hayah Treats', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'FS reviewed and sampled. GFS
+'),
+  (496, 'Haymarket Brewery', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '312-374-3013', 'https://www.heislerhospitality.com', '2001 w. Grand Ave', 'Chicago', 'IL', '60612', '
+'),
+  (497, 'Heisler Hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (498, 'Hello Fresh', 'prospect', 'A', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', NULL, NULL, NULL, 'Aurora', 'IL', NULL, 'Initial email to Kate Healy on 1/27
+'),
+  (499, 'Heritage', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (500, 'Hermosa', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (501, 'high dive', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (502, 'High Horizon(KY Horse Park)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (503, 'Hillcrest CC', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (504, 'HILLCREST FOODSERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, '
+'),
+  (505, 'Hilton Oakbrook', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (506, 'Hiraya Hospitality Collective', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (507, 'HIS hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (508, 'HK Banjum Glenview Inc', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, 'https://www.hogsalt.com', NULL, NULL, NULL, NULL, 'Owns 20 restaurants in four cities with over 1000 employees Chicago location and headquartered, Armitage ale House Astor Hall are Chevelle the steakhouse Sachiko meal doughnut vault guilt bar green Street smoked meats high five Ramen, la Ren lobster bar monkey bar, Sada coffee small Cheval tivolimyavern SYSCO CONTRACT'),
-  (509, 'Hog Wild', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (510, 'Hogsalt Hospitality Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (511, 'Holy Grale', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (512, 'Honey 1 BBQ', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (513, 'Honey Berry', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (514, 'Honey Jam Cafe', 'prospect', 'A', '189fa12f-28bb-53fd-a185-60df9b6778f9', '(708)-354-4880', NULL, '181 Countryside Plaza,', 'Countryside', 'IL', '60525', 'As of 1/31/25 we are 7 locations with the Kaufhold''s cheese curds.'),
-  (515, 'hook fish and chicken', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (516, 'Hookup LLC', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (517, 'hopcat', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (518, 'Hopleaf', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (519, 'Horseshoe Casino', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '773-687-8667', NULL, '10 West Hubbard St./3651 w. Fullerton', 'Chicago', 'IL', NULL, ''),
-  (520, 'HOSPITALITY SERVICE GROUP', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (521, 'HR Clark General Store', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, '1001 A Dutch Creek Rd', 'Westmoreland', 'TN', NULL, 'Have bought 9 Cases of Dill Pickle Cheese Curds already thru Abdale looking to get the Thru DOT next'),
-  (522, 'HT Hackney Indy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Indianapolis', 'IN', NULL, 'email to introduce MFB and lines we carry'),
-  (523, 'HT Hackney GR', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Grnd Rapids', 'MI', NULL, 'email to introduce MFB and lines we carry'),
-  (524, 'HT Hackney(Paducah)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Paducah', 'KY', NULL, 'email to introduce MFB and lines we carry'),
-  (525, 'Wild Egg', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'louisville', 'KY', NULL, '20 stores'),
-  (526, 'Hugo Fog bar', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (527, 'Hungry Howies', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Email chef and will drop off sample box of fries'),
-  (528, 'Hurtbourne Country Club (Louisville)', 'prospect', 'B', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (529, 'Hyatt Lodge in Oakbrook', 'customer', 'C', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (530, 'Hyatt Regency McCormick Place', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (531, 'Hyles-Anderson College', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, '8400 Burr Street', 'Crown point', 'IN', '46307', ''),
-  (532, 'I took', 'unknown', 'B', NULL, NULL, NULL, '180 N. Field Boulevard, Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (533, 'ILLINI INST. FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (534, 'Illinois State University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (535, 'In the Game Hollywood Park', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '501 Cal Sag Road', 'Crestwood', 'IL', NULL, 'Desserts & Curds'),
-  (536, 'Ina Mae', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Chef David directs us thru Piazza and Harry Greene.'),
-  (537, 'INDIANA CONCESSIONS SUPPL', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (538, 'Indianhead Food Distributor', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Eau Claire', 'WI', NULL, ''),
-  (539, 'Indienne', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (540, 'Informa Markets/SupplySide/Food & Beverage Insider', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (541, 'Inner City Entertainment', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sampling chips-Sysco Chgo'),
-  (542, 'Innsbrook', 'prospect', 'D', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (543, 'Innsbrook CC', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (544, 'Inspiration Kitchens', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (545, 'Instantwhip Foods Inc.', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (546, 'INTERNATIONAL MEAT CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (547, 'IRBN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (548, 'Italia Gardens', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (549, 'J. Alexander', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (550, 'J. Mark Enterprises, LLC', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '41 E. superior', 'Chicago', 'IL', NULL, ''),
-  (551, 'Jake Melnicks Corner Tap', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (552, 'Jay Mark Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (553, 'JB Bailey Investments', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (554, 'Jesse Oaks', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Gages Lake', 'IL', NULL, 'Lead came in from USF Rep Lori Taylor.'),
-  (555, 'Jodi''s Italian Ice Factory', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (556, 'Joe Daniel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (557, 'Joe Daniels', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '708-765-2155', NULL, '12218 s harlem ave', 'Palos Heights', 'IL', NULL, 'Met chef Angel and tried the samples. Likes the Garlic then jalapeno 11-12-24'),
-  (558, 'JOE FRONTERA & SONS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (559, 'Joe seafood', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '60 E. grand Avenue Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (560, 'Joe''s Seafood Prime Steak and Stone Crab', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (561, 'JOHNNIES BEEF', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (562, 'johnnys', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos'),
-  (563, 'John''s food and wine', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (564, 'Josephine', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (565, 'Joy Yee', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (566, 'Joy Yee Noodle', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (567, 'Joys Pizza', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Brunswick', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS'),
-  (568, 'Joyworldmburger', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (569, 'JP Graziano', 'prospect', 'A', '96fcde9e-03cd-5e6b-8090-f75a3f00a35b', NULL, NULL, '901 w randolph st', 'Chicago', 'IL', '60607', ''),
-  (570, 'JQM WHOLESALE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (571, 'JTM Food Group', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (572, 'Juno', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (509, 'Hog Wild', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (510, 'Hogsalt Hospitality Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (511, 'Holy Grale', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (512, 'Honey 1 BBQ', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (513, 'Honey Berry', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (514, 'Honey Jam Cafe', 'prospect', 'A', '189fa12f-28bb-53fd-a185-60df9b6778f9', '(708)-354-4880', NULL, '181 Countryside Plaza,', 'Countryside', 'IL', '60525', 'As of 1/31/25 we are 7 locations with the Kaufhold''s cheese curds.
+'),
+  (515, 'hook fish and chicken', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (516, 'Hookup LLC', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (517, 'hopcat', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (518, 'Hopleaf', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (519, 'Horseshoe Casino', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '773-687-8667', NULL, '10 West Hubbard St./3651 w. Fullerton', 'Chicago', 'IL', NULL, '
+'),
+  (520, 'HOSPITALITY SERVICE GROUP', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (521, 'HR Clark General Store', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, '1001 A Dutch Creek Rd', 'Westmoreland', 'TN', NULL, 'Have bought 9 Cases of Dill Pickle Cheese Curds already thru Abdale looking to get the Thru DOT next
+'),
+  (522, 'HT Hackney Indy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Indianapolis', 'IN', NULL, 'email to introduce MFB and lines we carry
+'),
+  (523, 'HT Hackney GR', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Grnd Rapids', 'MI', NULL, 'email to introduce MFB and lines we carry
+'),
+  (524, 'HT Hackney(Paducah)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Paducah', 'KY', NULL, 'email to introduce MFB and lines we carry
+'),
+  (525, 'Wild Egg', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'louisville', 'KY', NULL, '20 stores
+'),
+  (526, 'Hugo Fog bar', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (527, 'Hungry Howies', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Email chef and will drop off sample box of fries
+'),
+  (528, 'Hurtbourne Country Club (Louisville)', 'prospect', 'B', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (529, 'Hyatt Lodge in Oakbrook', 'customer', 'C', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (530, 'Hyatt Regency McCormick Place', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (531, 'Hyles-Anderson College', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, '8400 Burr Street', 'Crown point', 'IN', '46307', '
+'),
+  (532, 'I took', 'unknown', 'B', NULL, NULL, NULL, '180 N. Field Boulevard, Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (533, 'ILLINI INST. FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (534, 'Illinois State University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (535, 'In the Game Hollywood Park', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '501 Cal Sag Road', 'Crestwood', 'IL', NULL, 'Desserts & Curds
+'),
+  (536, 'Ina Mae', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Chef David directs us thru Piazza and Harry Greene.
+'),
+  (537, 'INDIANA CONCESSIONS SUPPL', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (538, 'Indianhead Food Distributor', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Eau Claire', 'WI', NULL, '
+'),
+  (539, 'Indienne', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (540, 'Informa Markets/SupplySide/Food & Beverage Insider', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (541, 'Inner City Entertainment', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Sampling chips-Sysco Chgo
+'),
+  (542, 'Innsbrook', 'prospect', 'D', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (543, 'Innsbrook CC', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (544, 'Inspiration Kitchens', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (545, 'Instantwhip Foods Inc.', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (546, 'INTERNATIONAL MEAT CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (547, 'IRBN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (548, 'Italia Gardens', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (549, 'J. Alexander', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (550, 'J. Mark Enterprises, LLC', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '41 E. superior', 'Chicago', 'IL', NULL, '
+'),
+  (551, 'Jake Melnicks Corner Tap', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (552, 'Jay Mark Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (553, 'JB Bailey Investments', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (554, 'Jesse Oaks', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Gages Lake', 'IL', NULL, 'Lead came in from USF Rep Lori Taylor.
+'),
+  (555, 'Jodi''s Italian Ice Factory', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (556, 'Joe Daniel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (557, 'Joe Daniels', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '708-765-2155', NULL, '12218 s harlem ave', 'Palos Heights', 'IL', NULL, 'Met chef Angel and tried the samples. Likes the Garlic then jalapeno 11-12-24
+'),
+  (558, 'JOE FRONTERA & SONS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (559, 'Joe seafood', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '60 E. grand Avenue Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (560, 'Joe''s Seafood Prime Steak and Stone Crab', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (561, 'JOHNNIES BEEF', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (562, 'johnnys', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos
+'),
+  (563, 'John''s food and wine', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (564, 'Josephine', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (565, 'Joy Yee', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (566, 'Joy Yee Noodle', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (567, 'Joys Pizza', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Brunswick', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS
+'),
+  (568, 'Joyworldmburger', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (569, 'JP Graziano', 'prospect', 'A', '96fcde9e-03cd-5e6b-8090-f75a3f00a35b', NULL, NULL, '901 w randolph st', 'Chicago', 'IL', '60607', '
+'),
+  (570, 'JQM WHOLESALE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (571, 'JTM Food Group', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (572, 'Juno', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (573, 'Just a dash catering', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, '9722 parkway Drive', 'highland', 'IN', '46322', 'angel perry, tiana johnson, nicole ward'),
-  (574, 'K. LEFKOFSKY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (575, 'Kansas State University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (576, 'Kasama', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (577, 'Kasia', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (578, 'Kathryns place', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (579, 'Kelber Caterin', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (580, 'Kelber Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (581, 'Kelley''s Pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (582, 'Kelly''s pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (583, 'Kettering Health', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (584, 'Key Food Services Co.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (585, 'KIMS UNCLE PIZZA', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (586, 'KING KOLD, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'ENGLEWOOD', 'OH', NULL, ''),
-  (587, 'Kings Dining & Entertainment', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (588, 'Kings Fish & Chicken - Mattesson', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '400 N. Wells Street, Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (589, 'Kings Pizza of Rosebud', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (590, 'Kinzie Chophouse', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (591, 'Kit Kat Lounge', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (592, 'KL Trading', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (593, 'Kraft Heinz Company', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '773-604-8769/312-666-9090', NULL, '2423 N. Milwaukee', 'Chicago', 'IL', NULL, 'Sent email to Nick asking for path to present'),
-  (594, 'Kuma''s Korner', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '2900 w belmont ave', 'Chicago', 'IL', NULL, ''),
-  (595, 'KUNA MEAT/E. PEORIA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (596, 'Kwiktrip', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (597, 'La cafe', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'Flint', 'MI', NULL, 'meeting-awaiting assigned sales rep names'),
-  (598, 'La Carreta', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (599, 'La Casa de Isaac & Moishe', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Highland Park', 'IL', NULL, 'Lead from Lauren Scatena.'),
-  (600, 'La Catedral', 'prospect', 'C', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, '2500 S Christiana Ave', 'Chicago', 'IL', '60623', ''),
-  (601, 'La Otra Radio Chicago', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (602, 'La Rabida Childerns Hospital', 'prospect', 'B', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (603, 'LaCoCo''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (604, 'Lady Gregory''s', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (605, 'Laine Too', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (606, 'LANNINGS FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MOUNT VERNON', 'OH', NULL, ''),
-  (607, 'Lardon', 'customer', 'B', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (608, 'Lark Restaurant & Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (609, 'LaRosa', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (610, 'Lassen''s Tap', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (611, 'LCacao', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 314-477-9085', NULL, NULL, NULL, NULL, NULL, ''),
-  (612, 'LE BOUCHON', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (613, 'Le Colonial', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (614, 'Leeds public', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '(773) 825-2400', NULL, NULL, NULL, NULL, NULL, 'SYSCO CONTRACT'),
-  (615, 'Legacy Hospitality', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (616, 'Leonas Pizzeria', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (617, 'Lesaffre', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '7738787340', 'jMatuszewski@lettuce.com', '5419 n Sheridan', 'Chicago', 'IL', '60647', ''),
-  (618, 'Lesa''s Dairy Dip', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'emailed about samples interest'),
-  (619, 'LeTOUR', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Evanston', NULL, NULL, ''),
-  (620, 'Lettuce Entertain you', 'unknown', 'A', NULL, NULL, NULL, '417 N. Ashland Avenue', 'Chicago', 'IL', NULL, ''),
-  (621, 'lfg', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (622, 'Lillie''s Q', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (623, 'Lipari', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'detroit', NULL, NULL, ''),
-  (624, 'LLCC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (625, 'Local West', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (626, 'Lockeepers', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos'),
-  (627, 'Logan''s Roadhouse', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (628, 'Lola''s Tacos & Tequila', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', '8478558741', NULL, '170 W Grand Ave #337', 'Gurnee', 'IL', '60031', ''),
-  (629, 'Long John Silvers', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', '773-276-7110', NULL, '2657 n kedzie ave, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (630, 'Longman &Eagle', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (631, 'LOST LARSON', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Has cheese curds on the menu already. Hoping to switch them to Kaufhold''s. .'),
-  (632, 'Lost Never Found', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (633, 'Lot', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (634, 'Lou Malnati', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (635, 'Lowe''s O''Hare', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (636, 'Lowlands Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (637, 'Loyola Hospital', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (638, 'Lucchese Italian Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (639, 'Lucellas', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (640, 'Lucky/s', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'east Lamsing', 'MI', NULL, 'chain of 8 restaurantsts-fine steakhouse'),
-  (641, 'LUDWIG FISH AND PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (642, 'LULA CAFE', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (643, 'Macroman Meals', 'prospect', 'C', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', '502-289-6464', NULL, '1812 W Muhammad Ali Blvd', 'Louisville', 'KY', '40203', ''),
-  (644, 'Madame Zusus', 'prospect', 'D', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', '(847) 926-7359', NULL, '1876 1st St', 'Highland Park', 'IL', '60035', ''),
-  (645, 'Madison Pub', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (630) 455-5520', NULL, '7611 S. Madison St., Burr Ridge, IL', NULL, NULL, NULL, ''),
-  (646, 'Madison Pub & Grill', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (647, 'Madison''s pub and grill', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (648, 'Madison''s Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (649, 'Main Street Cafe', 'unknown', 'B', NULL, '(312) 988-0687', NULL, '731 W Lake St, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (650, 'Maki Sushi and Teriyaki', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (651, 'Mako', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (652, 'mali', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs'),
-  (653, 'MALONEY CUNNINGHAM', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (654, 'Mama Delia', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 944-8888', NULL, '8 w maple st, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (655, 'MANCUSO CHEESE COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (656, 'Pavlou Restaurant Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (657, 'Pappas Restaurant Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (658, 'Maple and Ash', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (659, 'Maple lake assisted living', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (660, 'Maple Tree Inn', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (661, 'Maplewood', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (662, 'Marcus Hotels and Resorts', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (663, 'Mark Burkhalter', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (664, 'MARK VEND COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (665, 'Mark''s Tavern', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '2121 s prairie ave, Chicago, IL', 'Chicago', 'IL', NULL, 'Sampled FS frites. Paneling 3/8'),
-  (666, 'Marriott Marquis Chicago', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (667, 'Marshall''s Landing', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 610-8050', NULL, '222 W Merchandise Mart Plaza', 'Chicago', 'IL', '60654', 'Left samples of Frites Street with the GM Mario for Chef Lupe Gonzalez.'),
-  (668, 'MARTIN PRODUCE, INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (669, 'Marz', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (670, 'MATAJER AL ARABIAH TRADING CO.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (671, 'Matc College', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (672, 'Mather', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (673, 'Matrix Club Naperville', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (674, 'Matt and Tonys Columbus', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '614-914-8484', NULL, '340 E Gay St', 'Columbus', 'OH', '43215', 'Message  Chef Javier Alvarez on how to get him and his team samples'),
-  (675, 'Max and Erma''s', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (676, 'Maxwell is trading', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (677, 'MAXWELLS TRADING', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (678, 'MB Restaurant Group LLC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (679, 'MCCORMICK FOOD & BEVERAGE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (680, 'McNulty''s Bier Markt', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (681, 'MEATS BY LINZ, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (682, 'Medinah CC', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (683, 'Meijer', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Will visit this week. Will bring fries.'),
-  (684, 'MELCO DISTRIBUTING', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (685, 'MERCADITO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (686, 'Mercado', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, ''),
-  (687, 'mercy medical', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U'),
-  (688, 'MERKLEY & SONS PACKING CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (689, 'MERRY MILK MAID', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'URBANCREST', 'OH', NULL, ''),
-  (690, 'Mesh Systems', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (574, 'K. LEFKOFSKY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (575, 'Kansas State University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (576, 'Kasama', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (577, 'Kasia', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (578, 'Kathryns place', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (579, 'Kelber Caterin', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (580, 'Kelber Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (581, 'Kelley''s Pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (582, 'Kelly''s pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (583, 'Kettering Health', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (584, 'Key Food Services Co.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (585, 'KIMS UNCLE PIZZA', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (586, 'KING KOLD, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'ENGLEWOOD', 'OH', NULL, '
+'),
+  (587, 'Kings Dining & Entertainment', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (588, 'Kings Fish & Chicken - Mattesson', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '400 N. Wells Street, Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (589, 'Kings Pizza of Rosebud', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (590, 'Kinzie Chophouse', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (591, 'Kit Kat Lounge', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (592, 'KL Trading', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (593, 'Kraft Heinz Company', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '773-604-8769/312-666-9090', NULL, '2423 N. Milwaukee', 'Chicago', 'IL', NULL, 'Sent email to Nick asking for path to present
+'),
+  (594, 'Kuma''s Korner', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '2900 w belmont ave', 'Chicago', 'IL', NULL, '
+'),
+  (595, 'KUNA MEAT/E. PEORIA', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (596, 'Kwiktrip', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (597, 'La cafe', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'Flint', 'MI', NULL, 'meeting-awaiting assigned sales rep names
+'),
+  (598, 'La Carreta', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (599, 'La Casa de Isaac & Moishe', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Highland Park', 'IL', NULL, 'Lead from Lauren Scatena.
+'),
+  (600, 'La Catedral', 'prospect', 'C', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, '2500 S Christiana Ave', 'Chicago', 'IL', '60623', '
+'),
+  (601, 'La Otra Radio Chicago', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (602, 'La Rabida Childerns Hospital', 'prospect', 'B', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (603, 'LaCoCo''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (604, 'Lady Gregory''s', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (605, 'Laine Too', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (606, 'LANNINGS FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MOUNT VERNON', 'OH', NULL, '
+'),
+  (607, 'Lardon', 'customer', 'B', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (608, 'Lark Restaurant & Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (609, 'LaRosa', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (610, 'Lassen''s Tap', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (611, 'LCacao', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 314-477-9085', NULL, NULL, NULL, NULL, NULL, '
+'),
+  (612, 'LE BOUCHON', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (613, 'Le Colonial', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (614, 'Leeds public', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '(773) 825-2400', NULL, NULL, NULL, NULL, NULL, 'SYSCO CONTRACT
+'),
+  (615, 'Legacy Hospitality', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (616, 'Leonas Pizzeria', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (617, 'Lesaffre', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '7738787340', 'jMatuszewski@lettuce.com', '5419 n Sheridan', 'Chicago', 'IL', '60647', '
+'),
+  (618, 'Lesa''s Dairy Dip', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'emailed about samples interest
+'),
+  (619, 'LeTOUR', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Evanston', NULL, NULL, '
+'),
+  (620, 'Lettuce Entertain you', 'unknown', 'A', NULL, NULL, NULL, '417 N. Ashland Avenue', 'Chicago', 'IL', NULL, '
+'),
+  (621, 'lfg', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (622, 'Lillie''s Q', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (623, 'Lipari', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'detroit', NULL, NULL, '
+'),
+  (624, 'LLCC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (625, 'Local West', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (626, 'Lockeepers', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos
+'),
+  (627, 'Logan''s Roadhouse', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (628, 'Lola''s Tacos & Tequila', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', '8478558741', NULL, '170 W Grand Ave #337', 'Gurnee', 'IL', '60031', '
+'),
+  (629, 'Long John Silvers', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', '773-276-7110', NULL, '2657 n kedzie ave, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (630, 'Longman &Eagle', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (631, 'LOST LARSON', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Has cheese curds on the menu already. Hoping to switch them to Kaufhold''s. .
+'),
+  (632, 'Lost Never Found', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (633, 'Lot', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (634, 'Lou Malnati', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (635, 'Lowe''s O''Hare', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (636, 'Lowlands Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (637, 'Loyola Hospital', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (638, 'Lucchese Italian Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (639, 'Lucellas', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (640, 'Lucky/s', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'east Lamsing', 'MI', NULL, 'chain of 8 restaurantsts-fine steakhouse
+'),
+  (641, 'LUDWIG FISH AND PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (642, 'LULA CAFE', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (643, 'Macroman Meals', 'prospect', 'C', 'a336d0ec-f44a-5b00-bb1b-6a852c11802c', '502-289-6464', NULL, '1812 W Muhammad Ali Blvd', 'Louisville', 'KY', '40203', '
+'),
+  (644, 'Madame Zusus', 'prospect', 'D', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', '(847) 926-7359', NULL, '1876 1st St', 'Highland Park', 'IL', '60035', '
+'),
+  (645, 'Madison Pub', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (630) 455-5520', NULL, '7611 S. Madison St., Burr Ridge, IL', NULL, NULL, NULL, '
+'),
+  (646, 'Madison Pub & Grill', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (647, 'Madison''s pub and grill', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (648, 'Madison''s Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (649, 'Main Street Cafe', 'unknown', 'B', NULL, '(312) 988-0687', NULL, '731 W Lake St, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (650, 'Maki Sushi and Teriyaki', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (651, 'Mako', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (652, 'mali', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs
+'),
+  (653, 'MALONEY CUNNINGHAM', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (654, 'Mama Delia', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 944-8888', NULL, '8 w maple st, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (655, 'MANCUSO CHEESE COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (656, 'Pavlou Restaurant Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (657, 'Pappas Restaurant Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (658, 'Maple and Ash', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (659, 'Maple lake assisted living', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (660, 'Maple Tree Inn', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (661, 'Maplewood', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (662, 'Marcus Hotels and Resorts', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (663, 'Mark Burkhalter', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (664, 'MARK VEND COMPANY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (665, 'Mark''s Tavern', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '2121 s prairie ave, Chicago, IL', 'Chicago', 'IL', NULL, 'Sampled FS frites. Paneling 3/8
+'),
+  (666, 'Marriott Marquis Chicago', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (667, 'Marshall''s Landing', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 610-8050', NULL, '222 W Merchandise Mart Plaza', 'Chicago', 'IL', '60654', 'Left samples of Frites Street with the GM Mario for Chef Lupe Gonzalez.
+'),
+  (668, 'MARTIN PRODUCE, INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (669, 'Marz', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (670, 'MATAJER AL ARABIAH TRADING CO.', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (671, 'Matc College', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (672, 'Mather', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (673, 'Matrix Club Naperville', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (674, 'Matt and Tonys Columbus', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '614-914-8484', NULL, '340 E Gay St', 'Columbus', 'OH', '43215', 'Message  Chef Javier Alvarez on how to get him and his team samples
+'),
+  (675, 'Max and Erma''s', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (676, 'Maxwell is trading', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (677, 'MAXWELLS TRADING', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (678, 'MB Restaurant Group LLC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (679, 'MCCORMICK FOOD & BEVERAGE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (680, 'McNulty''s Bier Markt', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (681, 'MEATS BY LINZ, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (682, 'Medinah CC', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (683, 'Meijer', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Will visit this week. Will bring fries.
+'),
+  (684, 'MELCO DISTRIBUTING', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (685, 'MERCADITO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (686, 'Mercado', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, '
+'),
+  (687, 'mercy medical', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U
+'),
+  (688, 'MERKLEY & SONS PACKING CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (689, 'MERRY MILK MAID', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'URBANCREST', 'OH', NULL, '
+'),
+  (690, 'Mesh Systems', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (691, 'Mesker Park Zoo', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Chef Amy; sysco, usf, gfs, greco; 2 other locations - City & Uptown...same owner; samplesd and Dill was a favorite'),
-  (692, 'MESSIAH', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (693, 'Metro Grill & Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (694, 'Mexo GR', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (695, 'Meyer''s Castle', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (696, 'MFB', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (697, 'MI TOCAYA', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '505 N. Michigan Avenue', 'Chicago', 'IL', '60601', ''),
+  (692, 'MESSIAH', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (693, 'Metro Grill & Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (694, 'Mexo GR', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (695, 'Meyer''s Castle', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (696, 'MFB', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (697, 'MI TOCAYA', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '505 N. Michigan Avenue', 'Chicago', 'IL', '60601', '
+'),
   (698, 'Michael Jordans', 'customer', 'D', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, 'Dropped off a kaufholds kit with the chef, will try with owner.'),
-  (699, 'MICHAEL''S FINER MEAT''S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'COLUMBUS', 'OH', NULL, ''),
-  (700, 'Michael''s Pizza', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (701, 'Michigan State University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (702, 'MID TOWN DISTRIBUTORS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (703, 'Schulers', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (699, 'MICHAEL''S FINER MEAT''S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'COLUMBUS', 'OH', NULL, '
+'),
+  (700, 'Michael''s Pizza', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (701, 'Michigan State University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (702, 'MID TOWN DISTRIBUTORS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (703, 'Schulers', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (704, 'Midtown Athletic Club', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', '(773) 796-6523', NULL, '2444 N Elston Ave', 'Chicago', 'IL', '60647', 'Lizet Lopez was the rep here, we are unaware of who the rep is now. I would like to show them Frites Street, Verticle Acres and possibly some of our vegan brands.'),
-  (705, 'Midway Restaurant Dev', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Met Joe Fitzgerald @ Franklin Room. Expressed alot of interest in kennebec high-end fry. Will follow up by email'),
-  (706, 'Midwest Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (707, 'Midwest Training & Ice Center', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (708, 'Milano''s Pizza,Subs and Taps', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (709, 'millenium', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (710, 'Millenium Restaurant Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, 'Sent emil on TCFB Holiday Blitz'),
-  (711, 'Milwaukee Area Technical College', 'customer', 'D', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (712, 'Minneapolis Public Schools', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (713, 'Mino''s Italian', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Winnetka', NULL, NULL, ''),
-  (714, 'Miss mamies seafood and steaks', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (715, 'Mister B''s Pizza and Wings Bowling Green KY', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (716, 'Mister B''s Pizza and Wings Murray KY', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (717, 'MiTocaya', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (718, 'MMD', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (719, 'Modern Interiors', 'customer', 'B', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (720, 'MOFFETT FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (721, 'Monicals Pizza', 'customer', 'B', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (722, 'MONTEVERDE', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (723, 'Moody Bible Institute', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', '800) 356-6639', NULL, '820 N La Salle Dr', 'Chicago', 'IL', '60610', 'They are GFS supplied and HPS contracted. Executive chef is Fabian.garcia@moody.edu.'),
-  (724, 'Moody tongue', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (725, 'Motor City Soul Food Express', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (726, 'Mott st', 'unknown', 'B', NULL, NULL, NULL, '1401 N. Ashland Avenue', 'Chicago', 'IL', NULL, ''),
-  (727, 'Mott Street', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (728, 'MSI FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (729, 'Mugsy''s Hideout Murray', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (730, 'Munchies', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (731, 'Munro Pizzaria', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (732, 'Mush Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (733, 'Muze', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (734, 'My Big Fat Shawarma', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (735, 'Naf Naf Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (736, 'Nanobrew', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (737, 'National Restaurant Association', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (738, 'Nationwide Arena', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '200 W Nationwide Blvd', 'Columbus', 'OH', '43215', 'Shipped Chef Sean Barger a box of Annasea Ahi Tuna and Salmon'),
+  (705, 'Midway Restaurant Dev', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Met Joe Fitzgerald @ Franklin Room. Expressed alot of interest in kennebec high-end fry. Will follow up by email
+'),
+  (706, 'Midwest Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (707, 'Midwest Training & Ice Center', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (708, 'Milano''s Pizza,Subs and Taps', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (709, 'millenium', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (710, 'Millenium Restaurant Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, 'Sent emil on TCFB Holiday Blitz
+'),
+  (711, 'Milwaukee Area Technical College', 'customer', 'D', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (712, 'Minneapolis Public Schools', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (713, 'Mino''s Italian', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Winnetka', NULL, NULL, '
+'),
+  (714, 'Miss mamies seafood and steaks', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (715, 'Mister B''s Pizza and Wings Bowling Green KY', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (716, 'Mister B''s Pizza and Wings Murray KY', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (717, 'MiTocaya', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (718, 'MMD', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (719, 'Modern Interiors', 'customer', 'B', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (720, 'MOFFETT FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (721, 'Monicals Pizza', 'customer', 'B', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (722, 'MONTEVERDE', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (723, 'Moody Bible Institute', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', '800) 356-6639', NULL, '820 N La Salle Dr', 'Chicago', 'IL', '60610', 'They are GFS supplied and HPS contracted. Executive chef is Fabian.garcia@moody.edu.
+'),
+  (724, 'Moody tongue', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (725, 'Motor City Soul Food Express', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (726, 'Mott st', 'unknown', 'B', NULL, NULL, NULL, '1401 N. Ashland Avenue', 'Chicago', 'IL', NULL, '
+'),
+  (727, 'Mott Street', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (728, 'MSI FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (729, 'Mugsy''s Hideout Murray', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (730, 'Munchies', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (731, 'Munro Pizzaria', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (732, 'Mush Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (733, 'Muze', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (734, 'My Big Fat Shawarma', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (735, 'Naf Naf Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (736, 'Nanobrew', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (737, 'National Restaurant Association', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (738, 'Nationwide Arena', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '200 W Nationwide Blvd', 'Columbus', 'OH', '43215', 'Shipped Chef Sean Barger a box of Annasea Ahi Tuna and Salmon
+'),
   (739, 'Native Foods', 'prospect', 'B', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'Chicago', 'IL', NULL, 'Dame - Owner; On Ja Lee, wife. Interest in PB cheesecake for VDay'),
-  (740, 'NATURAL DIRECT', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (741, 'Naty''s Pizza', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '3849 w 26th st', 'Chicago', 'IL', NULL, ''),
-  (742, 'Nehemiah''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (743, 'Nellies', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (744, 'New Beginnings Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (745, 'Newport Cafe & Go Grocer', 'prospect', 'C', 'db21b569-5553-5aa8-8cca-9f3b204bb8a6', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (746, 'Next', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (747, 'Nick''s Pizza', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (748, 'Nicky''s Gyro''s', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, NULL, NULL, 'Received free samples of curds for 30th anniversy. Follow up on samples of frites week of 2-17'),
-  (749, 'NO Vacancy', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (750, 'Noble DQ', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (751, 'Noble Romans', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (752, 'Noco Provisions', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (753, 'North Point', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Lake Zurich', 'IL', NULL, 'Lead came in from USF Rep Lori Taylor.'),
-  (754, 'North pond', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (755, 'North Star (Brassica parent?)', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (756, 'NorthAmerican Concessions', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (757, 'Northern Hasserot', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'cleveland', NULL, NULL, ''),
-  (758, 'Northern IL U', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', '+1 (312) 500-6666', NULL, '509 N. wells Street Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (759, 'The Patio', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Chicago', NULL, NULL, '800k annual 3/8 Simplot 251019 buyer thru Greco'),
-  (760, 'Northside Yacht Club', 'customer', 'D', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (761, 'NORTHWESTERN', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (762, 'Noshville Delicatessen', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Nashville', 'TN', NULL, ''),
-  (763, 'Not Just Cookies', 'unknown', 'A', NULL, NULL, NULL, NULL, 'Chicago', 'IL', '60651', 'Wholesale Bakery at 1340 N Homan in Chicago. ordered Wicks'),
-  (764, 'Notre Dame', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'south bend', NULL, NULL, ''),
-  (765, 'Nu Bistro', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (766, 'NU WAVE', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (767, 'OBC kitchens', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (768, 'Obi Cai Restaurant Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, ''),
-  (769, 'OCharley', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (773) 916-6421', NULL, '4419 W. Montrose Ave., Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (770, 'Ohio University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (771, 'Old Irving brewing Company', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (772, 'Old National  Executive Chef', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (773, 'Old National Catering Operations Manager', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (774, 'Old National Concession and Bar Manager', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (775, 'Old National Director of F&B', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (776, 'Old National Events Plaza Evansville', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (777, 'old River tap and social', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (778, 'Olde Stone Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'intro'),
-  (779, 'Olga''s Kitchens', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (780, 'Olivers Bar & Grill', 'prospect', 'D', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, 'Sampling chips-Sysco Chgo'),
-  (781, 'Oliver''s Bar& Grill', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '6150 w 159th st', 'Oak Forest', 'IL', '60452', 'George or Tim is the manager'),
-  (782, 'Olympia Fields', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (783, 'Omakase Yume', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (784, 'O''MARA FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (785, 'One Hope United', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '312-496-0012', NULL, '622 W. Randolph street UnitC-101', 'Chicago', 'IL', NULL, 'Avac  big star-dubs not Sysco luncheonette  Publican  quality meats  the publican  the violet hour'),
-  (786, 'One of a Kind Hospitality', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (787, 'ONE OFF HOSPITALITY', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, 'Cooking and topping with cheese to show product and leaving him Samples'),
-  (788, 'ONLY FRIES FOOD TRUCK BG', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (789, 'Open Kitchens', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (790, 'Original Bagel & Bialy', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '3128775339', NULL, '661 W. Walnut Street, Chicago', 'Chicago', 'IL', NULL, ''),
-  (791, 'ORIOLE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (792, 'ORLANDO GRECO & SON IMPOR', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (793, 'Osteria lang he', 'customer', 'D', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (794, 'P & L FOODSERVICE CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (795, 'Pancho Food Distibutors', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Tinley Park', 'IL', NULL, 'Met with Ken Stieger 1/24'),
-  (796, 'PANCHO FOOD PRODUCTS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (797, 'Panchos Taqueria & Catering', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (798, 'Papi''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, ''),
-  (799, 'Pappas', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '2501 w. 16th street', 'Chicago', 'IL', NULL, 'The Hampton social Nisos prime bass mint Costa the Hampton social'),
+  (740, 'NATURAL DIRECT', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (741, 'Naty''s Pizza', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '3849 w 26th st', 'Chicago', 'IL', NULL, '
+'),
+  (742, 'Nehemiah''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (743, 'Nellies', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (744, 'New Beginnings Restaurant', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (745, 'Newport Cafe & Go Grocer', 'prospect', 'C', 'db21b569-5553-5aa8-8cca-9f3b204bb8a6', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (746, 'Next', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (747, 'Nick''s Pizza', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (748, 'Nicky''s Gyro''s', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, NULL, NULL, 'Received free samples of curds for 30th anniversy. Follow up on samples of frites week of 2-17
+'),
+  (749, 'NO Vacancy', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (750, 'Noble DQ', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (751, 'Noble Romans', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (752, 'Noco Provisions', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (753, 'North Point', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Lake Zurich', 'IL', NULL, 'Lead came in from USF Rep Lori Taylor.
+'),
+  (754, 'North pond', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (755, 'North Star (Brassica parent?)', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (756, 'NorthAmerican Concessions', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (757, 'Northern Hasserot', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'cleveland', NULL, NULL, '
+'),
+  (758, 'Northern IL U', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', '+1 (312) 500-6666', NULL, '509 N. wells Street Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (759, 'The Patio', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Chicago', NULL, NULL, '800k annual 3/8 Simplot 251019 buyer thru Greco
+'),
+  (760, 'Northside Yacht Club', 'customer', 'D', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (761, 'NORTHWESTERN', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (762, 'Noshville Delicatessen', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Nashville', 'TN', NULL, '
+'),
+  (763, 'Not Just Cookies', 'unknown', 'A', NULL, NULL, NULL, NULL, 'Chicago', 'IL', '60651', 'Wholesale Bakery at 1340 N Homan in Chicago. ordered Wicks
+'),
+  (764, 'Notre Dame', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'south bend', NULL, NULL, '
+'),
+  (765, 'Nu Bistro', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (766, 'NU WAVE', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (767, 'OBC kitchens', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (768, 'Obi Cai Restaurant Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, '
+'),
+  (769, 'OCharley', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (773) 916-6421', NULL, '4419 W. Montrose Ave., Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (770, 'Ohio University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (771, 'Old Irving brewing Company', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (772, 'Old National  Executive Chef', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (773, 'Old National Catering Operations Manager', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (774, 'Old National Concession and Bar Manager', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (775, 'Old National Director of F&B', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (776, 'Old National Events Plaza Evansville', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (777, 'old River tap and social', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (778, 'Olde Stone Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'intro
+'),
+  (779, 'Olga''s Kitchens', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (780, 'Olivers Bar & Grill', 'prospect', 'D', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, 'Sampling chips-Sysco Chgo
+'),
+  (781, 'Oliver''s Bar& Grill', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '6150 w 159th st', 'Oak Forest', 'IL', '60452', 'George or Tim is the manager
+'),
+  (782, 'Olympia Fields', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (783, 'Omakase Yume', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (784, 'O''MARA FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (785, 'One Hope United', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '312-496-0012', NULL, '622 W. Randolph street UnitC-101', 'Chicago', 'IL', NULL, 'Avac  big star-dubs not Sysco luncheonette  Publican  quality meats  the publican  the violet hour
+'),
+  (786, 'One of a Kind Hospitality', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (787, 'ONE OFF HOSPITALITY', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, 'Cooking and topping with cheese to show product and leaving him Samples
+'),
+  (788, 'ONLY FRIES FOOD TRUCK BG', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (789, 'Open Kitchens', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (790, 'Original Bagel & Bialy', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '3128775339', NULL, '661 W. Walnut Street, Chicago', 'Chicago', 'IL', NULL, '
+'),
+  (791, 'ORIOLE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (792, 'ORLANDO GRECO & SON IMPOR', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (793, 'Osteria lang he', 'customer', 'D', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (794, 'P & L FOODSERVICE CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (795, 'Pancho Food Distibutors', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Tinley Park', 'IL', NULL, 'Met with Ken Stieger 1/24
+'),
+  (796, 'PANCHO FOOD PRODUCTS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (797, 'Panchos Taqueria & Catering', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (798, 'Papi''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, '
+'),
+  (799, 'Pappas', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '2501 w. 16th street', 'Chicago', 'IL', NULL, 'The Hampton social Nisos prime bass mint Costa the Hampton social
+'),
   (800, 'Parker restaurant Group', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, '+1 (312) 846-6158 1017 N Halsted St
 Chicago, IL  60642
 United States'),
-  (801, 'Parker''s', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Downers Grove', NULL, NULL, ''),
-  (802, 'Parkhurst Dining', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Pittsburgh', 'PA', NULL, 'W/w sustainability and sourcing director for over 400 MW accounts served'),
-  (803, 'Parlay Bar and Kitchen', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '1100 Dennison Ave', 'Columbus', 'OH', '43201', 'Shipped Director of Operations Joe Flynn(Peerless Managment Group) a Annasea sample Pack'),
-  (804, 'Parts Town', 'customer', 'D', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (805, 'Pat''s Pizza and Ristorante', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (806, 'Paulie Gees', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (801, 'Parker''s', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Downers Grove', NULL, NULL, '
+'),
+  (802, 'Parkhurst Dining', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Pittsburgh', 'PA', NULL, 'W/w sustainability and sourcing director for over 400 MW accounts served
+'),
+  (803, 'Parlay Bar and Kitchen', 'customer', 'B', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, '1100 Dennison Ave', 'Columbus', 'OH', '43201', 'Shipped Director of Operations Joe Flynn(Peerless Managment Group) a Annasea sample Pack
+'),
+  (804, 'Parts Town', 'customer', 'D', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (805, 'Pat''s Pizza and Ristorante', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (806, 'Paulie Gees', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (807, 'Pavlou Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Valparaiso', 'IN', NULL, 'Chris Pavlou owns Radius, Maple and Bacon, TommyB''s, Sandwich City and two more CP locations. Ched Edward at Maple and Chef Louis at Radius'),
-  (808, 'Ohio State', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'OH', NULL, 'Sent TCFB Holiday promo'),
-  (809, 'Peaches'' Cafe/UofC', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (810, 'Pear Chef', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (811, 'PECK DISTRIBUTING', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MAPLE HEIGHTS', 'OH', NULL, ''),
-  (812, 'PENN STATE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
+  (808, 'Ohio State', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'OH', NULL, 'Sent TCFB Holiday promo
+'),
+  (809, 'Peaches'' Cafe/UofC', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (810, 'Pear Chef', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (811, 'PECK DISTRIBUTING', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MAPLE HEIGHTS', 'OH', NULL, '
+'),
+  (812, 'PENN STATE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
   (813, 'Penn Station', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Buying USF Dill, low usage caused special order status'),
-  (814, 'Pepino''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (815, 'PepsiCo', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '773-327-1512', NULL, '2207 n clybourn ave', 'Chicago', 'IL', NULL, ''),
-  (816, 'Pequod''s Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '847-470-9161', NULL, '8520 fernald ave', 'Morton Grove', 'IL', NULL, ''),
-  (817, 'PERF FS/BOWLING GREEN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (818, 'PERF FS/CINCINNATI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CINCINNATI', 'OH', NULL, ''),
-  (819, 'Pescadon', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (820, 'PFG', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (821, 'PFG Louisville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'brea', 'OH', NULL, 'will buy Bb dogs from gfs and katie swindrl'),
-  (822, 'PFG Reinhart BG House', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, ''),
-  (823, 'PFG Somerset KY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (824, 'PFG=Jordan Gottlieb', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (825, 'PFS/CHICAGO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (826, 'PFS/CHICAGO E&S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (827, 'PFS/ELLENBEE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'FAIRFIELD', 'OH', NULL, ''),
-  (828, 'PFS/OHIO, OH PIZZA PROD.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MONROE', 'OH', NULL, ''),
-  (829, 'PFS/SOMERSET', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (830, 'Piazza', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Sent emil on TCFB Holiday Blitz'),
-  (831, 'Picnic Digital Food Court', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (832, 'PICS PRODUCE INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CINCINNATI', 'OH', NULL, ''),
-  (833, 'Pier 48 Indy, LLC', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (834, 'Pilot project', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (835, 'Pine Rest', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, 'Grand Rapids', 'MI', NULL, 'Sam Butler dropped BB and LL samples off 1/28'),
-  (836, 'Pinewood Social', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (814, 'Pepino''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (815, 'PepsiCo', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '773-327-1512', NULL, '2207 n clybourn ave', 'Chicago', 'IL', NULL, '
+'),
+  (816, 'Pequod''s Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '847-470-9161', NULL, '8520 fernald ave', 'Morton Grove', 'IL', NULL, '
+'),
+  (817, 'PERF FS/BOWLING GREEN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (818, 'PERF FS/CINCINNATI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CINCINNATI', 'OH', NULL, '
+'),
+  (819, 'Pescadon', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (820, 'PFG', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (821, 'PFG Louisville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'brea', 'OH', NULL, 'will buy Bb dogs from gfs and katie swindrl
+'),
+  (822, 'PFG Reinhart BG House', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, '
+'),
+  (823, 'PFG Somerset KY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (824, 'PFG=Jordan Gottlieb', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (825, 'PFS/CHICAGO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (826, 'PFS/CHICAGO E&S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (827, 'PFS/ELLENBEE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'FAIRFIELD', 'OH', NULL, '
+'),
+  (828, 'PFS/OHIO, OH PIZZA PROD.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MONROE', 'OH', NULL, '
+'),
+  (829, 'PFS/SOMERSET', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (830, 'Piazza', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Sent emil on TCFB Holiday Blitz
+'),
+  (831, 'Picnic Digital Food Court', 'prospect', 'B', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (832, 'PICS PRODUCE INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CINCINNATI', 'OH', NULL, '
+'),
+  (833, 'Pier 48 Indy, LLC', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (834, 'Pilot project', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (835, 'Pine Rest', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, 'Grand Rapids', 'MI', NULL, 'Sam Butler dropped BB and LL samples off 1/28
+'),
+  (836, 'Pinewood Social', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (837, 'Gibsons', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, 'IL', NULL, 'RL, Hugo,Quartino, Lux Bar, Bazaar MLL, Bar Mar, Boathouse'),
-  (838, 'Pinstripes', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (839, 'Pita Inn', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (840, 'Pizza Express', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, '1224 Old Gallatin Rd', 'Scottsville', 'KY', '42164', 'Reba and Jim owners tried the Bakeable curds looking to get them thru DOT Foods'),
-  (841, 'Pizza Friendly Pizza -- 16 On Center', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Sampled thrunPFG rep-twice the cost-15k #!annually/2) flip sends Brady connect with investor Mike Schatzman'),
-  (842, 'Planeterians', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (843, 'Planks Tavern on the Water', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (844, 'Plantastic Indy', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (845, 'Planteneers', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '17735237437', NULL, '2119 s halsted st, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (846, 'Pleasant House Pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (847, 'Plymouth Place', 'unknown', 'C', NULL, NULL, NULL, '820 N La Salle Dr', NULL, NULL, NULL, ''),
-  (848, 'POINTE DAIRY SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (849, 'POLLAK DIST CO INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'EUCLID', 'OH', NULL, ''),
-  (850, 'Pompette', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (851, 'POOLE FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (852, 'Porkys BBQ & Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (853, 'Porky''s BBQ & Grill', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (854, 'Port Drive In', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '2501 w. 16th street', 'Chicago', 'IL', NULL, 'Likes product. Cutting. Craig will follow up. 8/19'),
-  (855, 'Portillo''s', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '1000 W. Fulton market, Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (856, 'Portillo''s Hot Dogs', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (857, 'Porto', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (858, 'Postboy', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '1509 Chapel Drive', 'Chicago', 'IL', NULL, ''),
-  (859, 'Potbelly', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Spoke on FS. Will connect us will potential customers'),
-  (860, 'PREMIER PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, ''),
-  (861, 'PREMIER PRODUCE/COLUMBUS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'COLUMBUS', 'OH', NULL, ''),
-  (862, 'US FOODS-Wixom', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, 'emailed Rick-phoned left vm.'),
-  (863, 'US FOODS-Detroit', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (864, 'US FOODS-Cincinnatti', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (865, 'US FOODS-Nashville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'TN', NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (866, 'US FOODS-Chicago Corp', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (867, 'US FOODS-Chicago Chicago', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (868, 'US FOODS-Chicago Bensenville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (869, 'US FOODS-Chicago Aurora', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (870, 'US FOODS-Milwaukee', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (871, 'US FOODS-Baraboo', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (872, 'Prepared Foods Magazine', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 726-7777', NULL, '222 n lasalle blvd, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (873, 'Prima', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (874, 'Prime and provisions', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (875, 'Prime Steak', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Dropped off sample kit with bartender of behalf of rep. Very busy when I visited.'),
-  (876, 'Principal', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (877, 'Progress Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (878, 'Prosperity Social Club', 'customer', 'D', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (879, 'Provecho', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '312-404-0440', NULL, '332 East Illinois St.', 'Chicago', 'IL', '60611', ''),
-  (880, 'Proximo', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, ''),
-  (881, 'Psquare Hospitality', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'Ashley passes on VA'),
-  (882, 'Public Bar', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (883, 'Pui Tak Center', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (884, 'Purdue', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (885, 'PURDUE UNIVERSITY NORTHWEST', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (886, 'Purple Carrot', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (887, 'Quartino Ristorante', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (838, 'Pinstripes', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (839, 'Pita Inn', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (840, 'Pizza Express', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, '1224 Old Gallatin Rd', 'Scottsville', 'KY', '42164', 'Reba and Jim owners tried the Bakeable curds looking to get them thru DOT Foods
+'),
+  (841, 'Pizza Friendly Pizza -- 16 On Center', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Sampled thrunPFG rep-twice the cost-15k #!annually/2) flip sends Brady connect with investor Mike Schatzman
+'),
+  (842, 'Planeterians', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (843, 'Planks Tavern on the Water', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (844, 'Plantastic Indy', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (845, 'Planteneers', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '17735237437', NULL, '2119 s halsted st, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (846, 'Pleasant House Pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (847, 'Plymouth Place', 'unknown', 'C', NULL, NULL, NULL, '820 N La Salle Dr', NULL, NULL, NULL, '
+'),
+  (848, 'POINTE DAIRY SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (849, 'POLLAK DIST CO INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'EUCLID', 'OH', NULL, '
+'),
+  (850, 'Pompette', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (851, 'POOLE FOODS, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (852, 'Porkys BBQ & Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (853, 'Porky''s BBQ & Grill', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (854, 'Port Drive In', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '2501 w. 16th street', 'Chicago', 'IL', NULL, 'Likes product. Cutting. Craig will follow up. 8/19
+'),
+  (855, 'Portillo''s', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '1000 W. Fulton market, Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (856, 'Portillo''s Hot Dogs', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (857, 'Porto', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (858, 'Postboy', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '1509 Chapel Drive', 'Chicago', 'IL', NULL, '
+'),
+  (859, 'Potbelly', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Spoke on FS. Will connect us will potential customers
+'),
+  (860, 'PREMIER PRODUCE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, '
+'),
+  (861, 'PREMIER PRODUCE/COLUMBUS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'COLUMBUS', 'OH', NULL, '
+'),
+  (862, 'US FOODS-Wixom', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, 'emailed Rick-phoned left vm.
+'),
+  (863, 'US FOODS-Detroit', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (864, 'US FOODS-Cincinnatti', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'OH', NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (865, 'US FOODS-Nashville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'TN', NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (866, 'US FOODS-Chicago Corp', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (867, 'US FOODS-Chicago Chicago', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (868, 'US FOODS-Chicago Bensenville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (869, 'US FOODS-Chicago Aurora', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (870, 'US FOODS-Milwaukee', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (871, 'US FOODS-Baraboo', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (872, 'Prepared Foods Magazine', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '+1 (312) 726-7777', NULL, '222 n lasalle blvd, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (873, 'Prima', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (874, 'Prime and provisions', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (875, 'Prime Steak', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Dropped off sample kit with bartender of behalf of rep. Very busy when I visited.
+'),
+  (876, 'Principal', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (877, 'Progress Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (878, 'Prosperity Social Club', 'customer', 'D', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (879, 'Provecho', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '312-404-0440', NULL, '332 East Illinois St.', 'Chicago', 'IL', '60611', '
+'),
+  (880, 'Proximo', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, '
+'),
+  (881, 'Psquare Hospitality', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'Ashley passes on VA
+'),
+  (882, 'Public Bar', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (883, 'Pui Tak Center', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (884, 'Purdue', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (885, 'PURDUE UNIVERSITY NORTHWEST', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (886, 'Purple Carrot', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (887, 'Quartino Ristorante', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (888, 'Quest', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '806) 773-8087', NULL, '2500 South Highland Avenue', 'Lombard', 'IL', '60148', 'Chef Juan Zuniga is no longer at Quest, he had been our previous MFB champion at Quest. I will now pursue Shelly Robinson, VP of procurement.'),
-  (889, 'Quest (Wright State University)', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, 'Dayton', 'OH', NULL, 'email Jason Roller to see what the next steps were to sampling some products'),
-  (890, 'Quest Food Management Services', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', '410) 764-0539', NULL, '400 Red Brook Blvd #120', 'Elk `grove', 'IL', '21117', 'As of 1/31/25 Sue and I found that Chef Juan Zuniga is no longer at Quest. This would mean our communication now has to go thru sheryll.'),
-  (891, 'R.D.P. FOODSERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'HILLARD', 'OH', NULL, ''),
-  (892, 'R.D.P. FOODSERVICE FROZEN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'COLUMBUS', 'OH', NULL, ''),
-  (893, 'Rail House Bar', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Round Lake', 'IL', NULL, 'Lead came in from USF Rep Lori Taylor.'),
-  (894, 'RAISU', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (895, 'Ralston''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (896, 'RATIONAL USA', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (897, 'Ravisloe', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (898, 'rawley inn', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos'),
-  (899, 'Raydia', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'south bend', NULL, NULL, ''),
-  (900, 'RDV Corp', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (901, 'Recess', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Greg Youra USF rep positioning Waffle fry'),
+  (889, 'Quest (Wright State University)', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, 'Dayton', 'OH', NULL, 'email Jason Roller to see what the next steps were to sampling some products
+'),
+  (890, 'Quest Food Management Services', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', '410) 764-0539', NULL, '400 Red Brook Blvd #120', 'Elk `grove', 'IL', '21117', 'As of 1/31/25 Sue and I found that Chef Juan Zuniga is no longer at Quest. This would mean our communication now has to go thru sheryll.
+'),
+  (891, 'R.D.P. FOODSERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'HILLARD', 'OH', NULL, '
+'),
+  (892, 'R.D.P. FOODSERVICE FROZEN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'COLUMBUS', 'OH', NULL, '
+'),
+  (893, 'Rail House Bar', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Round Lake', 'IL', NULL, 'Lead came in from USF Rep Lori Taylor.
+'),
+  (894, 'RAISU', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (895, 'Ralston''s', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (896, 'RATIONAL USA', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (897, 'Ravisloe', 'prospect', 'B', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (898, 'rawley inn', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos
+'),
+  (899, 'Raydia', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'south bend', NULL, NULL, '
+'),
+  (900, 'RDV Corp', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (901, 'Recess', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Greg Youra USF rep positioning Waffle fry
+'),
   (902, 'Redamak', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '2698573501/6165507847', 'Kobrien@redwaterrestaurants.com', NULL, NULL, NULL, NULL, 'Wrote to KIM OBRIEN GM ; MET CHEF ANDREW,'),
-  (903, 'redwater', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (904, 'Redwater restaurant GROUP', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (905, 'Renaissance Schaumburg', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (906, 'Republica', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (907, 'Rewards Network', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (908, 'RHF', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (909, 'RHODE ISLAND SCHOOL', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (910, 'RICHWAY', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (911, 'ridge cc', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U'),
-  (912, 'Ridge Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (913, 'Ridgemoore Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (914, 'RIGHTWAY FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'LIMA', 'OH', NULL, ''),
-  (915, 'RITCHIE''S FOOD DIST., INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'PIKETON', 'OH', NULL, ''),
+  (903, 'redwater', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (904, 'Redwater restaurant GROUP', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (905, 'Renaissance Schaumburg', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (906, 'Republica', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (907, 'Rewards Network', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (908, 'RHF', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (909, 'RHODE ISLAND SCHOOL', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (910, 'RICHWAY', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (911, 'ridge cc', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, 'IL', NULL, 'GFS ROSEMONT F/U
+'),
+  (912, 'Ridge Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (913, 'Ridgemoore Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (914, 'RIGHTWAY FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'LIMA', 'OH', NULL, '
+'),
+  (915, 'RITCHIE''S FOOD DIST., INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'PIKETON', 'OH', NULL, '
+'),
   (916, 'River City Drafthouse', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Left Sample kit, I imformed Greco Jim, follow up next week'),
-  (917, 'RIVER FINN LLC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (918, 'RJC', 'principal', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (919, 'Robinson `ribs', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (920, 'Rob''s Meat', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (921, 'Roc City Bar and Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (922, 'Rockmill Tavern', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (923, 'Rockmill Tavern/bandits', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (924, 'Rogers Park Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (925, 'ROINS PRODUCE INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (926, 'Rolf and Daughters', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (927, 'Roman Village', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (928, 'Romeo pizza', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (929, 'Roots & Vine Produce And Cafe', 'unknown', 'B', NULL, NULL, NULL, '954 California Ave', 'Chicago', 'IL', NULL, ''),
-  (930, 'Roots Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '(773) 645-4949', NULL, '1924 W Chicago Ave', 'Chicago', 'IL', '60622', 'Paul Spinale requested we bring his brands here. This will be a cold lead.'),
-  (931, 'Rootstock Wine and `beer Bar', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (932, 'Rosati''s', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (933, 'Rose Mary', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Left FS and VAF with Chef Brian; follow-up needed'),
-  (934, 'Rosebud steakhouse (Munster, IN)', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (935, 'ROSELLI WHSL FOODS INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (936, 'Route 66', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (937, 'Rowley Inn', 'unknown', 'B', NULL, 'Chef John-585.356.8752', NULL, '71 E Wacker Dr', 'Chicago', 'IL', NULL, ''),
-  (938, 'Royal Sonesta Downtown/River North', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '66 W. Kinsey Street, Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (939, 'RPM STEAK', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (940, 'Ruby Tuesday', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (941, 'Rumi Grill Inc', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (942, 'Rush Medical Center', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (943, 'Russ', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'holland', 'MI', NULL, 'Connected with Gm amd GFs rep'),
-  (944, 'Rusty Bucket', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '6146211105', NULL, '390 W Nationwide Blvd', 'Columbus', 'OH', '43215', 'Shipped Chef Anthony MacAdam of Cameron Mitchell (Rusty Bucket)'),
-  (945, 'Rusty''s Lakeside Pub', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (946, 'Ruth Lake Country Club', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (947, 'Ryan''s Creekhouse', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (948, 'S2 City Grill & Daiquiri Bar', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (949, 'S2 Express Grill', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', '630-530-4649', NULL, '701 w north ave', 'Villa Park', 'IL', NULL, ''),
-  (950, 'Safari Land', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (951, 'Salt and Vinegar Lexington KY', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (952, 'salt of the earth', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs'),
-  (953, 'SALT.', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (954, 'Salvatores', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, '8nstore chain'),
-  (955, 'SANTISI WHOLESALE FOOD CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'YOUNGSTOWN', 'OH', NULL, ''),
-  (956, 'saugataco', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs'),
-  (957, 'Saz''s Hospitality Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Follow-up w/Don 8/19'),
-  (958, 'Schoops', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (959, 'Schwa', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Met with owner Patrick . Loved the garlic and dill. Wants a garlic curd burger.'),
-  (960, 'Scratch Kitchen', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (961, 'SEAFOOD MERCHANTS LTD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (962, 'SEASONS FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (963, 'Senate', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (964, 'Seoul Bites', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 441-1920', NULL, '123 N Jefferson St, Chicago, IL 60661', 'Chicago', 'IL', NULL, ''),
-  (965, 'Sepia', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (966, 'SFG', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (967, 'SFS DIST - SKOUFIS FOOD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (968, 'shakespears', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (969, 'Shakou', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (970, 'Shallot''s Bistro', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Skokie', 'IL', NULL, 'Lead from Lauren Scatena.'),
-  (971, 'Shamrocks (Patchen)', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (972, 'Shamrocks(Brannon Crodding)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (973, 'SHANGHAI TERRACE', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (974, 'Shaw''s crabhouse', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (975, 'Shedd Aquarium', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (976, 'Sheraton Grand', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (977, 'SHERWOOD FOODS-CLEVELAND', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MAPLE HEIGHTS', 'OH', NULL, ''),
-  (978, 'SHERWOOD FOODS-DETROIT', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (979, 'Shoreline Brewery', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (980, 'shulers', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (981, 'SIDARI''S ITALIAN FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, ''),
-  (982, 'Side Door', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Will visit with cheese curds.'),
-  (983, 'Side Lot Brewing', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (312) 595-1322', NULL, '51 w kinzie st, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (984, 'Siena Tavern', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '773-572-1622', NULL, '1312 S. Wabash Ave., Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (985, 'Signature bar and restaurant', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (986, 'Silver Harbor Brewery', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (987, 'Silver Spring House', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Cincinnati', 'OH', NULL, ''),
-  (988, 'SIRNA & SONS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'RAVENNA', 'OH', NULL, ''),
-  (989, 'Ski Daddy''s', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '270-904-2995', NULL, '160 Rivern Pl Ave', 'Bowling Green', 'KY', '42101', ''),
-  (990, 'Skoogs', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (991, 'SKY', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (992, 'SKY CLUB', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (993, 'Slyce', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (994, 'Slymans Deli', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Independence', 'OH', NULL, ''),
-  (995, 'Smack Dab Chicago', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '192 E. Walton Street, Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (996, 'Small Cheval', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (997, 'SMITH FAMILY FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'TIFFIN', 'OH', NULL, ''),
-  (998, 'SMITHHISLER MEATS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MOUNT VERNON', 'OH', NULL, ''),
-  (999, 'Smoke Daddy', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '3800 N. Pulaski Road', 'Chicago', 'IL', NULL, ''),
+  (917, 'RIVER FINN LLC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (918, 'RJC', 'principal', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (919, 'Robinson `ribs', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (920, 'Rob''s Meat', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (921, 'Roc City Bar and Grill', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (922, 'Rockmill Tavern', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (923, 'Rockmill Tavern/bandits', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (924, 'Rogers Park Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (925, 'ROINS PRODUCE INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (926, 'Rolf and Daughters', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (927, 'Roman Village', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (928, 'Romeo pizza', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (929, 'Roots & Vine Produce And Cafe', 'unknown', 'B', NULL, NULL, NULL, '954 California Ave', 'Chicago', 'IL', NULL, '
+'),
+  (930, 'Roots Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', '(773) 645-4949', NULL, '1924 W Chicago Ave', 'Chicago', 'IL', '60622', 'Paul Spinale requested we bring his brands here. This will be a cold lead.
+'),
+  (931, 'Rootstock Wine and `beer Bar', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (932, 'Rosati''s', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (933, 'Rose Mary', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Left FS and VAF with Chef Brian; follow-up needed
+'),
+  (934, 'Rosebud steakhouse (Munster, IN)', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (935, 'ROSELLI WHSL FOODS INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (936, 'Route 66', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (937, 'Rowley Inn', 'unknown', 'B', NULL, 'Chef John-585.356.8752', NULL, '71 E Wacker Dr', 'Chicago', 'IL', NULL, '
+'),
+  (938, 'Royal Sonesta Downtown/River North', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '66 W. Kinsey Street, Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (939, 'RPM STEAK', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (940, 'Ruby Tuesday', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (941, 'Rumi Grill Inc', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (942, 'Rush Medical Center', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (943, 'Russ', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'holland', 'MI', NULL, 'Connected with Gm amd GFs rep
+'),
+  (944, 'Rusty Bucket', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '6146211105', NULL, '390 W Nationwide Blvd', 'Columbus', 'OH', '43215', 'Shipped Chef Anthony MacAdam of Cameron Mitchell (Rusty Bucket)
+'),
+  (945, 'Rusty''s Lakeside Pub', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (946, 'Ruth Lake Country Club', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (947, 'Ryan''s Creekhouse', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (948, 'S2 City Grill & Daiquiri Bar', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (949, 'S2 Express Grill', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', '630-530-4649', NULL, '701 w north ave', 'Villa Park', 'IL', NULL, '
+'),
+  (950, 'Safari Land', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (951, 'Salt and Vinegar Lexington KY', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (952, 'salt of the earth (Seed Data)', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs
+'),
+  (953, 'SALT.', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (954, 'Salvatores', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, '8nstore chain
+'),
+  (955, 'SANTISI WHOLESALE FOOD CO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'YOUNGSTOWN', 'OH', NULL, '
+'),
+  (956, 'saugataco', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs
+'),
+  (957, 'Saz''s Hospitality Group', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Follow-up w/Don 8/19
+'),
+  (958, 'Schoops', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (959, 'Schwa', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Met with owner Patrick . Loved the garlic and dill. Wants a garlic curd burger.
+'),
+  (960, 'Scratch Kitchen', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (961, 'SEAFOOD MERCHANTS LTD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (962, 'SEASONS FOOD SERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (963, 'Senate', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (964, 'Seoul Bites', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '(312) 441-1920', NULL, '123 N Jefferson St, Chicago, IL 60661', 'Chicago', 'IL', NULL, '
+'),
+  (965, 'Sepia', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (966, 'SFG', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (967, 'SFS DIST - SKOUFIS FOOD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (968, 'shakespears', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (969, 'Shakou', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (970, 'Shallot''s Bistro', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Skokie', 'IL', NULL, 'Lead from Lauren Scatena.
+'),
+  (971, 'Shamrocks (Patchen)', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (972, 'Shamrocks(Brannon Crodding)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (973, 'SHANGHAI TERRACE', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (974, 'Shaw''s crabhouse', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (975, 'Shedd Aquarium', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (976, 'Sheraton Grand', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (977, 'SHERWOOD FOODS-CLEVELAND', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MAPLE HEIGHTS', 'OH', NULL, '
+'),
+  (978, 'SHERWOOD FOODS-DETROIT', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (979, 'Shoreline Brewery', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (980, 'shulers', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (981, 'SIDARI''S ITALIAN FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, '
+'),
+  (982, 'Side Door', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Will visit with cheese curds.
+'),
+  (983, 'Side Lot Brewing', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', '+1 (312) 595-1322', NULL, '51 w kinzie st, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (984, 'Siena Tavern', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', '773-572-1622', NULL, '1312 S. Wabash Ave., Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (985, 'Signature bar and restaurant', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (986, 'Silver Harbor Brewery', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (987, 'Silver Spring House', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Cincinnati', 'OH', NULL, '
+'),
+  (988, 'SIRNA & SONS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'RAVENNA', 'OH', NULL, '
+'),
+  (989, 'Ski Daddy''s', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', '270-904-2995', NULL, '160 Rivern Pl Ave', 'Bowling Green', 'KY', '42101', '
+'),
+  (990, 'Skoogs', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (991, 'SKY', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (992, 'SKY CLUB', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (993, 'Slyce', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (994, 'Slymans Deli', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Independence', 'OH', NULL, '
+'),
+  (995, 'Smack Dab Chicago', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '192 E. Walton Street, Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (996, 'Small Cheval', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (997, 'SMITH FAMILY FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'TIFFIN', 'OH', NULL, '
+'),
+  (998, 'SMITHHISLER MEATS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'MOUNT VERNON', 'OH', NULL, '
+'),
+  (999, 'Smoke Daddy', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, '3800 N. Pulaski Road', 'Chicago', 'IL', NULL, '
+'),
   (1000, 'Smoque', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '3800 N. Pulaski
 Chicago, IL 60641
 773-545-7427'),
-  (1001, 'Smyth', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1002, 'Sochi', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Presented garlic curds. They ordered on the spot'),
+  (1001, 'Smyth', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1002, 'Sochi', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Presented garlic curds. They ordered on the spot
+'),
   (1003, 'Social 219', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, 'Cut and won vs Lamb Stealth fry; initially price and avialbility an Issue, now just price. Still working woth Martin and Carlota on this account.'),
   (1004, 'Sociale', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Cut and won vs Lamb Stealth fry; initially price and avialbility an Issue, now just price. Still working woth Martin and Carlota on this account.'),
-  (1005, 'Sociale1', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1006, 'SOFO FOODS OF OHIO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'TOLEDO', 'OH', NULL, ''),
-  (1007, 'Sofo Foods OH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1008, 'SoJu BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1009, 'Sol de Mexico', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1010, 'Soul and smoke', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1011, 'Soul Veg City', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1012, 'Soul Vibez', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1013, 'Sould VIbez', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1014, 'Soupicurean', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1015, 'SOUTH CHICAGO FISH COMPAN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (1016, 'SOUTH HOLLAND PAPER', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (1017, 'Spencers Coffee', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'KY', NULL, 'WonderJuice'),
-  (1018, 'SPICELAND INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1019, 'Spillway Bar and Grill', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1020, 'Spillway BG', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', '270-842-9397', NULL, '2195 River St', 'Bowling Green', 'KY', '42101', ''),
-  (1021, 'Spirit Elephant', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, 'n Bay Rd', 'Wilmette', 'IL', NULL, 'Apart of a restaurant group with three other concepts.'),
-  (1022, 'Spoke +Ivy', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, ''),
-  (1023, 'Springhill Suites by Marriott Springfield Southwest', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1024, 'Square', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1025, 'Square Roots', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1026, 'Squire Ale House', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1027, 'Squire On The Square', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1028, 'St John''s Universtiy', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1029, 'ST LAWRENCE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1030, 'St. Joseph Brewery', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1031, 'St. Mary''s Hospital', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1032, 'Stables Steakhouse', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed on Proper Stock CATMAN identification-on 8/19 identified Catman who is Lauren Vanryn. Our timing is excellent as this category is up for review in a month or so and they will likely request samples and a presentation.'),
+  (1005, 'Sociale1', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1006, 'SOFO FOODS OF OHIO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'TOLEDO', 'OH', NULL, '
+'),
+  (1007, 'Sofo Foods OH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1008, 'SoJu BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1009, 'Sol de Mexico', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1010, 'Soul and smoke', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1011, 'Soul Veg City', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1012, 'Soul Vibez', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1013, 'Sould VIbez', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1014, 'Soupicurean', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1015, 'SOUTH CHICAGO FISH COMPAN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (1016, 'SOUTH HOLLAND PAPER', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (1017, 'Spencers Coffee', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'KY', NULL, 'WonderJuice
+'),
+  (1018, 'SPICELAND INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1019, 'Spillway Bar and Grill', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1020, 'Spillway BG', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', '270-842-9397', NULL, '2195 River St', 'Bowling Green', 'KY', '42101', '
+'),
+  (1021, 'Spirit Elephant', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, 'n Bay Rd', 'Wilmette', 'IL', NULL, 'Apart of a restaurant group with three other concepts.
+'),
+  (1022, 'Spoke +Ivy', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Fort Wayne', 'IN', NULL, '
+'),
+  (1023, 'Springhill Suites by Marriott Springfield Southwest', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1024, 'Square', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1025, 'Square Roots', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1026, 'Squire Ale House', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1027, 'Squire On The Square', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1028, 'St John''s Universtiy', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1029, 'ST LAWRENCE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1030, 'St. Joseph Brewery', 'customer', 'D', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1031, 'St. Mary''s Hospital', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1032, 'Stables Steakhouse', 'customer', 'D', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed on Proper Stock CATMAN identification-on 8/19 identified Catman who is Lauren Vanryn. Our timing is excellent as this category is up for review in a month or so and they will likely request samples and a presentation.
+'),
   (1033, 'STACKED Pancake House', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '3/8" & Cubed'),
-  (1034, 'STAPLETON''S, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1035, 'State Line Pizza', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1036, 'Station 21', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1037, 'steady eddie', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'Flint', 'MI', NULL, 'meeting-awaiting assigned sales rep names'),
-  (1038, 'Steak and Shake', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1039, 'STEAK AND VINE', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1040, 'Steel Plow Burger Co', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1041, 'STOKER''S TENDEREX FARMS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (1042, 'studio grille', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1043, 'SUN VALLEY FOODS CO.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1044, 'Sunda New Asian', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Sous Chef recieved; need to follow up'),
-  (1045, 'SUNY BUFFALO', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1046, 'Superdawg Drive-In', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1047, 'SuperDawg.', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1048, 'Superior', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1049, 'SUPERIOR FOODS CO.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1050, 'Superkhana', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1051, 'SUPREME LOBSTER AND SEAFO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Villa Park', 'IL', '60181', 'Mike Sakshaug is the Retail Store Manager 05/22/2025'),
-  (1052, 'Surfs Up Franchising Corporation', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1053, 'Sweeney Girl Sweets', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1054, 'Sweet Berry Cafe', 'prospect', 'C', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, '720 N McLean Blvd', 'South Elgin', 'IL', NULL, ''),
-  (1055, 'Syds Fine Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1056, 'SYRACUSE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1057, 'Sysco (Legacy)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1058, 'Sysco Chicago', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1059, 'Sysco GR', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'grand rapids', NULL, NULL, 'Sent emil on TCFB Holiday Blitz'),
-  (1060, 'Sysco(BG/Nashville)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Nashville', 'TN', NULL, 'planning ride alongs with BG Sales rep Bo Ghee'),
-  (1061, 'SYSCO/CENTRAL IL -VIRTUAL', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1062, 'SYSCO/CENTRAL ILLINOIS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1063, 'SYSCO/CHICAGO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1064, 'SYSCO/CHICAGO - VIRTUAL', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1065, 'SYSCO/CINCINNATI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CINCINNATI', 'OH', NULL, ''),
-  (1066, 'SYSCO/CLEVELAND', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, ''),
-  (1067, 'SYSCO/DETROIT', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1068, 'SYSCO/GRAND RAPIDS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1069, 'SYSCO/INDIANAPOLIS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (1070, 'SYSCO/LOUISVILLE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, ''),
-  (1071, 'Tabor Hills Healthcare Facility', 'prospect', 'C', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1072, 'Tavern on Main', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1073, 'Tavvas LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1074, 'Teibel''s', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '2234 N. Western Avenue', 'Chicago', 'IL', NULL, ''),
-  (1075, 'Test 12/2', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1076, 'Testa Produce', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1077, 'texas corner meats', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1078, 'Texas corner Specialty Meats', 'customer', 'C', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1079, 'Texas Corral Restaurants', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1080, 'The 30 Bird', 'prospect', 'C', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, NULL, 'KY', NULL, 'Plant based'),
-  (1081, 'The Barge', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1082, 'The Blackwell Inn', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Columbus', 'OH', NULL, 'intro'),
-  (1083, 'The BUTLER', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1084, 'The Caterist', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '3517 N. Spaulding Ave', 'Chicago', 'IL', '60618', 'Testa Kristen Lead for VAF; Contact - Rachel & Josh Owens'),
-  (1085, 'The Cliff Dwellers', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1086, 'The Country of the North', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, '1 Club N Dr', 'Xenia', 'OH', '45385', 'Shipped Chef Chelsea Fisher box of Annasea tuna and salmon'),
-  (1087, 'The Dearborn', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1088, 'The Draft House', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1089, 'The Duplex', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '3137 W Logan Blvd', 'Chicago', 'IL', '60647', 'Offers vegan/vegetarian options.'),
-  (1090, 'The Emily Hotel Chicago', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1091, 'The Entrance Restaurant', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, '15101 Dixie Hwy', 'Harvey', 'IL', '60426', 'Javier is the Chef and Joe is the owner'),
-  (1092, 'The Farmacy', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1093, 'The Food Institute', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1094, 'The Harvest Room', 'prospect', 'B', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1095, 'The Hoppy Gnome', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, ''),
-  (1096, 'the hub', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1097, 'The Lighthouse', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1098, 'The Ohio State University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1099, 'The Paperwork Chef', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1034, 'STAPLETON''S, INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1035, 'State Line Pizza', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1036, 'Station 21', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1037, 'steady eddie', 'prospect', 'A', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, 'Flint', 'MI', NULL, 'meeting-awaiting assigned sales rep names
+'),
+  (1038, 'Steak and Shake', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1039, 'STEAK AND VINE', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1040, 'Steel Plow Burger Co', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1041, 'STOKER''S TENDEREX FARMS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (1042, 'studio grille', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1043, 'SUN VALLEY FOODS CO.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1044, 'Sunda New Asian', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, 'Sous Chef recieved; need to follow up
+'),
+  (1045, 'SUNY BUFFALO', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1046, 'Superdawg Drive-In', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1047, 'SuperDawg.', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1048, 'Superior', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1049, 'SUPERIOR FOODS CO.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1050, 'Superkhana', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1051, 'SUPREME LOBSTER AND SEAFO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Villa Park', 'IL', '60181', 'Mike Sakshaug is the Retail Store Manager 05/22/2025
+'),
+  (1052, 'Surfs Up Franchising Corporation', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1053, 'Sweeney Girl Sweets', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1054, 'Sweet Berry Cafe', 'prospect', 'C', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, '720 N McLean Blvd', 'South Elgin', 'IL', NULL, '
+'),
+  (1055, 'Syds Fine Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1056, 'SYRACUSE', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1057, 'Sysco (Legacy)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1058, 'Sysco Chicago', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1059, 'Sysco GR', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'grand rapids', NULL, NULL, 'Sent emil on TCFB Holiday Blitz
+'),
+  (1060, 'Sysco(BG/Nashville)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Nashville', 'TN', NULL, 'planning ride alongs with BG Sales rep Bo Ghee
+'),
+  (1061, 'SYSCO/CENTRAL IL -VIRTUAL', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1062, 'SYSCO/CENTRAL ILLINOIS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1063, 'SYSCO/CHICAGO', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1064, 'SYSCO/CHICAGO - VIRTUAL', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1065, 'SYSCO/CINCINNATI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CINCINNATI', 'OH', NULL, '
+'),
+  (1066, 'SYSCO/CLEVELAND', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CLEVELAND', 'OH', NULL, '
+'),
+  (1067, 'SYSCO/DETROIT', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1068, 'SYSCO/GRAND RAPIDS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1069, 'SYSCO/INDIANAPOLIS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (1070, 'SYSCO/LOUISVILLE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'KY', NULL, '
+'),
+  (1071, 'Tabor Hills Healthcare Facility', 'prospect', 'C', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1072, 'Tavern on Main', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1073, 'Tavvas LLC', 'unknown', 'D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1074, 'Teibel''s', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '2234 N. Western Avenue', 'Chicago', 'IL', NULL, '
+'),
+  (1075, 'Test 12/2', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1076, 'Testa Produce', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1077, 'texas corner meats', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1078, 'Texas corner Specialty Meats', 'customer', 'C', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1079, 'Texas Corral Restaurants', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1080, 'The 30 Bird', 'prospect', 'C', '16611749-4a0c-51d7-92b2-ee4ab35e7dfc', NULL, NULL, NULL, NULL, 'KY', NULL, 'Plant based
+'),
+  (1081, 'The Barge', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1082, 'The Blackwell Inn', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Columbus', 'OH', NULL, 'intro
+'),
+  (1083, 'The BUTLER', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1084, 'The Caterist', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, '3517 N. Spaulding Ave', 'Chicago', 'IL', '60618', 'Testa Kristen Lead for VAF; Contact - Rachel & Josh Owens
+'),
+  (1085, 'The Cliff Dwellers', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1086, 'The Country of the North', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, '1 Club N Dr', 'Xenia', 'OH', '45385', 'Shipped Chef Chelsea Fisher box of Annasea tuna and salmon
+'),
+  (1087, 'The Dearborn', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1088, 'The Draft House', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1089, 'The Duplex', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, '3137 W Logan Blvd', 'Chicago', 'IL', '60647', 'Offers vegan/vegetarian options.
+'),
+  (1090, 'The Emily Hotel Chicago', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1091, 'The Entrance Restaurant', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, '15101 Dixie Hwy', 'Harvey', 'IL', '60426', 'Javier is the Chef and Joe is the owner
+'),
+  (1092, 'The Farmacy', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1093, 'The Food Institute', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1094, 'The Harvest Room', 'prospect', 'B', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1095, 'The Hoppy Gnome', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Fort wayne', 'IN', NULL, '
+'),
+  (1096, 'the hub', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1097, 'The Lighthouse', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1098, 'The Ohio State University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1099, 'The Paperwork Chef', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (1100, 'The paramount group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '773-880-8044', 'https://theparamountgroupchicago.com', NULL, NULL, NULL, NULL, 'Eden, fuel good, cultivate, SYCSCO CONTRACT'),
-  (1101, 'The Pizzeria', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1102, 'The Point Sports Bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '12713 cal sag rd', 'Crestwood', 'IL', '60445', 'Emily is the owner'),
-  (1103, 'The Rackhouse Tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1104, 'The Ramen District', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1105, 'The Rose Hotel', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1106, 'The Royal Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1107, 'The Scrambled', 'unknown', 'B', NULL, NULL, NULL, '1448 N. wells', 'Chicago', 'IL', NULL, ''),
-  (1108, 'The Second City', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1109, 'The Table at Crate', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1110, 'The Vault Downtown', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1111, 'The Vig', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Part of Vegacy Hoapitality Group'),
-  (1112, 'The Wealshire', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1101, 'The Pizzeria', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1102, 'The Point Sports Bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '12713 cal sag rd', 'Crestwood', 'IL', '60445', 'Emily is the owner
+'),
+  (1103, 'The Rackhouse Tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1104, 'The Ramen District', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1105, 'The Rose Hotel', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1106, 'The Royal Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1107, 'The Scrambled', 'unknown', 'B', NULL, NULL, NULL, '1448 N. wells', 'Chicago', 'IL', NULL, '
+'),
+  (1108, 'The Second City', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1109, 'The Table at Crate', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1110, 'The Vault Downtown', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1111, 'The Vig', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, 'Part of Vegacy Hoapitality Group
+'),
+  (1112, 'The Wealshire', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (1113, 'Third coasting', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '773-349-8899', 'https://www.thirdcoasthg.com', NULL, NULL, NULL, NULL, 'Treehouse, Chicago, Moses, Cantina, old Crow, smokehouse, tunnel, Chicago, La Luna'),
-  (1114, 'Three Tarts Bakery and Cafe', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1115, 'Tiger Lily Cafe', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1016 Church Street, Evanston Illinois', NULL, NULL, NULL, ''),
-  (1116, 'Tiger Lily Caf (buys from GFS)', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1117, 'Tillys Tea Room', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1118, 'Timothy''s', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'union', 'MI', NULL, 'Would like to try FS as LTO and Poke'),
+  (1114, 'Three Tarts Bakery and Cafe', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1115, 'Tiger Lily Cafe', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1016 Church Street, Evanston Illinois', NULL, NULL, NULL, '
+'),
+  (1116, 'Tiger Lily Caf (buys from GFS)', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1117, 'Tillys Tea Room', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1118, 'Timothy''s', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'union', 'MI', NULL, 'Would like to try FS as LTO and Poke
+'),
   (1119, 'Tin Caps Milb Team Fort Wayne', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, 'Ft Wayne', 'IN', NULL, 'Drop off samples from Annasea, Kaufhold and Frites Street'),
-  (1120, 'Toast & Jam', 'prospect', 'B', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1121, 'Toeless Joel''s', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1122, 'Tonys Tacos', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1123, 'Top Dog Pizza Pub', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1124, 'Top Shooters', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1125, 'Town Club', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1126, 'Towne & Oak', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Winnetka', NULL, NULL, ''),
-  (1127, 'Townee Square Restaurant', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1128, 'Transitions', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1129, 'Trinis Tasty Pastries', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1130, 'trinity health', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1131, 'TROYER FOODS-NORTH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (1132, 'Tujax tavern', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1133, 'Tulane University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1134, 'Turano Baking Co.', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1135, 'U OF RICHMOND', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1136, 'U. LYNCHBURG', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1137, 'UChicago Dining', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1138, 'UHC', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1139, 'Umeteagroup Inc', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1140, 'Uncle Charlie''s Meats', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', '800-688-1967', NULL, '406 N Estill Ave', 'Richmond', 'KY', '40476', ''),
-  (1141, 'Union Ale House', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1142, 'Union Club', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1143, 'Union sushi and bbq bar', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1144, 'University Club of Chicago', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1145, 'University of Alabama', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1146, 'University of Cincinnati', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Cinccinnati', 'OH', NULL, 'Met the GFS rep who has account'),
-  (1147, 'University of Dayton', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1148, 'University of Georgia', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1149, 'University of Illinois', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1150, 'UM', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1151, 'University of Michigan', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1152, 'University of Minnesota', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1153, 'University of Notre Dame', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1154, 'University of Wisconsin Madison', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1155, 'Upper crust', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', '573-874-3033', NULL, '2011 corona road suite 203', 'Columbia', 'MO', '65203', 'Director of procurement -services fraternities and sororities and camps'),
-  (1156, 'Upstairs Pub', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1157, 'urban transformation', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1158, 'US Foods-Fishers', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Fishers', 'IN', NULL, '2 emails unanswered. Will phone week pf 6-16'),
-  (1159, 'US Foods-Indy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Fishers', 'IN', NULL, '2 emails unanswered. Will phone week pf 6-16'),
-  (1160, 'US Foods-Bensenville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (1161, 'US Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (1162, 'US Foods Direct', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (1163, 'USF', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, '45691', NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation'),
-  (1164, 'UW-Madison', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1165, 'UW-Stout Dinning Service', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1166, 'Valhalla', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1167, 'VALLEY WHOLESALE FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'PORTSMOUTH', 'OH', NULL, ''),
-  (1168, 'Valparaiso University', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1169, 'VAN EERDEN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1170, 'VAN EERDEN DROP SHIP/E&S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1171, 'VAN TREESE & ASSOCIATES', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (1172, 'Vanderbilt University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1173, 'Vaughan hospitality', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '(312) 867-7717', 'https://vaughanhospitality.com', '2744 West Roscoe St.', 'Chicago', 'IL', NULL, 'No longer Sysco'),
-  (1174, 'Vegan Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1175, 'Vegan Street', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1176, 'VegNews and VeganStreet.com', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1177, 'Versailles Food Mart', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1178, 'Vette City Catering(BG Hot Rods Milb)', 'customer', 'C', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, 'Bowlingn Green', 'KY', NULL, 'emailed about samples interest'),
-  (1179, 'Villa Ballanca', 'prospect', 'C', '96fcde9e-03cd-5e6b-8090-f75a3f00a35b', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1180, 'Village of Wheeling', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1181, 'Village Squire', 'unknown', 'B', NULL, NULL, NULL, '323 E. Wacker Drive, Chicago, Illinois', 'Chicago', 'IL', NULL, ''),
-  (1182, 'Vinegar Solutions', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1183, 'VIRGINIA TECH', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA'),
-  (1184, 'VIRTUE', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1120, 'Toast & Jam', 'prospect', 'B', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1121, 'Toeless Joel''s', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1122, 'Tonys Tacos', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1123, 'Top Dog Pizza Pub', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1124, 'Top Shooters', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1125, 'Town Club', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1126, 'Towne & Oak', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Winnetka', NULL, NULL, '
+'),
+  (1127, 'Townee Square Restaurant', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1128, 'Transitions', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1129, 'Trinis Tasty Pastries', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1130, 'trinity health', 'prospect', 'A', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1131, 'TROYER FOODS-NORTH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (1132, 'Tujax tavern', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1133, 'Tulane University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1134, 'Turano Baking Co.', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1135, 'U OF RICHMOND', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1136, 'U. LYNCHBURG', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1137, 'UChicago Dining', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1138, 'UHC', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1139, 'Umeteagroup Inc', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1140, 'Uncle Charlie''s Meats', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', '800-688-1967', NULL, '406 N Estill Ave', 'Richmond', 'KY', '40476', '
+'),
+  (1141, 'Union Ale House', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1142, 'Union Club', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1143, 'Union sushi and bbq bar', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1144, 'University Club of Chicago', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1145, 'University of Alabama', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1146, 'University of Cincinnati', 'customer', 'C', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Cinccinnati', 'OH', NULL, 'Met the GFS rep who has account
+'),
+  (1147, 'University of Dayton', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1148, 'University of Georgia', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1149, 'University of Illinois', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1150, 'UM', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1151, 'University of Michigan', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1152, 'University of Minnesota', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1153, 'University of Notre Dame', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1154, 'University of Wisconsin Madison', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1155, 'Upper crust', 'customer', 'A', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', '573-874-3033', NULL, '2011 corona road suite 203', 'Columbia', 'MO', '65203', 'Director of procurement -services fraternities and sororities and camps
+'),
+  (1156, 'Upstairs Pub', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1157, 'urban transformation', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1158, 'US Foods-Fishers', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Fishers', 'IN', NULL, '2 emails unanswered. Will phone week pf 6-16
+'),
+  (1159, 'US Foods-Indy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Fishers', 'IN', NULL, '2 emails unanswered. Will phone week pf 6-16
+'),
+  (1160, 'US Foods-Bensenville', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (1161, 'US Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (1162, 'US Foods Direct', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (1163, 'USF', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, '45691', NULL, NULL, 'Emailed announcing TCFB Holiday and McCrum representation
+'),
+  (1164, 'UW-Madison', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1165, 'UW-Stout Dinning Service', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1166, 'Valhalla', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1167, 'VALLEY WHOLESALE FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'PORTSMOUTH', 'OH', NULL, '
+'),
+  (1168, 'Valparaiso University', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1169, 'VAN EERDEN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1170, 'VAN EERDEN DROP SHIP/E&S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1171, 'VAN TREESE & ASSOCIATES', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (1172, 'Vanderbilt University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1173, 'Vaughan hospitality', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', '(312) 867-7717', 'https://vaughanhospitality.com', '2744 West Roscoe St.', 'Chicago', 'IL', NULL, 'No longer Sysco
+'),
+  (1174, 'Vegan Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1175, 'Vegan Street', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1176, 'VegNews and VeganStreet.com', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1177, 'Versailles Food Mart', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1178, 'Vette City Catering(BG Hot Rods Milb)', 'customer', 'C', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, 'Bowlingn Green', 'KY', NULL, 'emailed about samples interest
+'),
+  (1179, 'Villa Ballanca', 'prospect', 'C', '96fcde9e-03cd-5e6b-8090-f75a3f00a35b', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1180, 'Village of Wheeling', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1181, 'Village Squire', 'unknown', 'B', NULL, NULL, NULL, '323 E. Wacker Drive, Chicago, Illinois', 'Chicago', 'IL', NULL, '
+'),
+  (1182, 'Vinegar Solutions', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1183, 'VIRGINIA TECH', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'NACUFS SHOWCASE EAST AND SOUTH USA
+'),
+  (1184, 'VIRTUE', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (1185, 'Vistro Vegan Fare', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'KY', NULL, 'Drop of all plant based samples with owner Melinda (Landlovers, Swap,better balnce,never better) also wonder juice'),
-  (1186, 'Vito''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1187, 'W.R. HACKET INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'SPRINGFIELD', 'OH', NULL, ''),
-  (1188, 'WABASH FOODSERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (1189, 'WABASH FOODSERVICE/E&S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (1190, 'WABASH SEAFOOD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, ''),
-  (1191, 'Gino''s Steakhouse', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'merrillville', 'IA', NULL, 'Chef Mario and Jimmy Owner'),
-  (1192, 'Walker Bros', 'prospect', 'A', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, '153 Green Bay Rd', 'winnetka', 'IL', NULL, ''),
-  (1193, 'WALLACE FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CANTON', 'OH', NULL, ''),
-  (1194, 'WALTER & SONS INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'WAPAKONETA', 'OH', NULL, ''),
-  (1195, 'Warlord', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1196, 'Washington State University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1197, 'Weather Mark Tavern', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1503 s michigan ave', 'Chicago', 'IL', NULL, 'Gave a PFG kurd kit'),
-  (1198, 'Weather Tech', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1199, 'West Suburban Community Pantry', 'unknown', 'B', NULL, NULL, NULL, NULL, 'South Bend', 'IN', NULL, 'cheryl Bauer emails to intro BB after LL acceptance'),
-  (1200, 'western michigan', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1201, 'Western Michigan University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'Gordon'),
-  (1202, 'Westin Lombard', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1203, 'WGN', 'customer', 'B', '5cb20587-c143-540d-b242-c761fb4bd731', '+1 (312) 733-9555', NULL, '837 w Fulton market, Chicago, IL', 'Chicago', 'IL', NULL, ''),
-  (1204, 'What Chefs Want', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, '2055 Nelson Miller Parkway', 'Louisville', 'KY', '40223', ''),
-  (1205, 'WHITE FEATHER FARMS OF OH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'PATASKALA', 'OH', NULL, ''),
-  (1206, 'White Rhino', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1207, 'Whole Foods', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1208, 'Wicks', 'principal', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs'),
-  (1209, 'Wild Goose', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1210, 'Wild Thing Restaurants', 'customer', 'B', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1211, 'Willow Oaks Golf Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, 'contacted about samples'),
-  (1212, 'Wind Creek Casino', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1213, 'Windy City Media Group', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1214, 'Wings Etc.', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'fort wayne', 'IN', NULL, 'presented RR sauces Tandoori amd Butter chicken on drums and in cubess; left Kurd kit;presented BB hot dogs and land lovers filet'),
-  (1215, 'wl social house', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1216, 'WMU', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1217, 'WOW Pizzeria', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1218, 'Yancey''s Gastropub and Brewery', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1219, 'YARDBIRD GROUP', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1220, 'Yogi''s Bar', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Dublin', 'OH', NULL, 'Mike dropping off Curdtown samples Monday'),
-  (1221, 'YOUNGSTOWN WLSE GROCERY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1222, 'yourstruly', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos'),
-  (1223, 'ZALACK''S FLINT PROVISIONS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1224, 'Zels Great Roast Beef', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1225, 'Zels Great Roast Beef (2)', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1226, 'Ziggys', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Amherst', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS'),
-  (1227, 'ZOGALO FOODS', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1228, 'Finish Line Sports Bar', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'samples Kaufholds'),
-  (1229, 'Dougs Motor City', 'prospect', 'A', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'samples Kaufholds'),
-  (1230, 'Novo Dolce', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Bowling Green', NULL, NULL, ''),
+  (1186, 'Vito''s Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1187, 'W.R. HACKET INC', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'SPRINGFIELD', 'OH', NULL, '
+'),
+  (1188, 'WABASH FOODSERVICE', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (1189, 'WABASH FOODSERVICE/E&S', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (1190, 'WABASH SEAFOOD', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CHICAGO', 'IL', NULL, '
+'),
+  (1191, 'Gino''s Steakhouse', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'merrillville', 'IA', NULL, 'Chef Mario and Jimmy Owner
+'),
+  (1192, 'Walker Bros', 'prospect', 'A', '189fa12f-28bb-53fd-a185-60df9b6778f9', NULL, NULL, '153 Green Bay Rd', 'winnetka', 'IL', NULL, '
+'),
+  (1193, 'WALLACE FOODS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'CANTON', 'OH', NULL, '
+'),
+  (1194, 'WALTER & SONS INC.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'WAPAKONETA', 'OH', NULL, '
+'),
+  (1195, 'Warlord', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1196, 'Washington State University', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1197, 'Weather Mark Tavern', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, '1503 s michigan ave', 'Chicago', 'IL', NULL, 'Gave a PFG kurd kit
+'),
+  (1198, 'Weather Tech', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1199, 'West Suburban Community Pantry', 'unknown', 'B', NULL, NULL, NULL, NULL, 'South Bend', 'IN', NULL, 'cheryl Bauer emails to intro BB after LL acceptance
+'),
+  (1200, 'western michigan', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1201, 'Western Michigan University', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, NULL, NULL, 'Gordon
+'),
+  (1202, 'Westin Lombard', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1203, 'WGN', 'customer', 'B', '5cb20587-c143-540d-b242-c761fb4bd731', '+1 (312) 733-9555', NULL, '837 w Fulton market, Chicago, IL', 'Chicago', 'IL', NULL, '
+'),
+  (1204, 'What Chefs Want', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, '2055 Nelson Miller Parkway', 'Louisville', 'KY', '40223', '
+'),
+  (1205, 'WHITE FEATHER FARMS OF OH', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'PATASKALA', 'OH', NULL, '
+'),
+  (1206, 'White Rhino', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1207, 'Whole Foods', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1208, 'Wicks', 'principal', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Saugatuck', 'MI', NULL, 'erun rogers plant based leads gfs
+'),
+  (1209, 'Wild Goose', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1210, 'Wild Thing Restaurants', 'customer', 'B', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1211, 'Willow Oaks Golf Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, 'contacted about samples
+'),
+  (1212, 'Wind Creek Casino', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1213, 'Windy City Media Group', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1214, 'Wings Etc.', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'fort wayne', 'IN', NULL, 'presented RR sauces Tandoori amd Butter chicken on drums and in cubess; left Kurd kit;presented BB hot dogs and land lovers filet
+'),
+  (1215, 'wl social house', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1216, 'WMU', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1217, 'WOW Pizzeria', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1218, 'Yancey''s Gastropub and Brewery', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1219, 'YARDBIRD GROUP', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1220, 'Yogi''s Bar', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Dublin', 'OH', NULL, 'Mike dropping off Curdtown samples Monday
+'),
+  (1221, 'YOUNGSTOWN WLSE GROCERY', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1222, 'yourstruly', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Independence', 'OH', NULL, 'Lead from Delmonicos
+'),
+  (1223, 'ZALACK''S FLINT PROVISIONS', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1224, 'Zels Great Roast Beef', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1225, 'Zels Great Roast Beef (2)', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1226, 'Ziggys', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Amherst', 'OH', NULL, 'W/w Atalntic Distributor Rep JOSH CHAMBERS
+'),
+  (1227, 'ZOGALO FOODS', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1228, 'Finish Line Sports Bar', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'samples Kaufholds
+'),
+  (1229, 'Dougs Motor City', 'prospect', 'A', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, 'samples Kaufholds
+'),
+  (1230, 'Novo Dolce', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Bowling Green', NULL, NULL, '
+'),
   (1231, 'Uncommon Ground', 'customer', 'B', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'FS; all plant-based, local lines'),
-  (1232, 'Perilla Steakhouse', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Chicago', 'IL', '60601', ''),
-  (1233, 'Tamburrino''s Pizza', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Bowling green', 'KY', '42164', 'Tried the Kaufhold sample pack plus Ranch and Beer Battered'),
-  (1234, 'Clover''s Bar & Grill', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Oak Forrest', NULL, NULL, 'TCFB lead. Contact is Dottie. Rep is Chris P.'),
-  (1235, 'Olympic Star', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Tinley Park', NULL, NULL, 'TCFB lead. Contact is Eva Garvis. Chris P is rep'),
-  (1236, 'Diamond Pancake House', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Oak Brook', NULL, NULL, 'TCFB lead. Contact is Jose Carillo. Rep is Chris P'),
-  (1237, 'Ball Park', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'TCFB lead. Contact is Rich. Rep is Jim'),
-  (1238, 'Brooklyn Pizza', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'TCFB lead. Contact is Tony. Rep is Jim'),
-  (1239, 'Krave', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'oak Lawn', NULL, NULL, 'TCFB lead. Contact is Moe. Rep is Jim.'),
-  (1240, 'Triano''s', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'TCFB lead. Contact is Moe. Rep is Jim.'),
-  (1241, 'Donatos Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Columbus', 'OH', NULL, 'Message Cynthia Ottavio Director of R&D'),
-  (1242, 'Market Fresh Restaurant Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Chef Oscar at Evil Czech dropped Mcrim for Stanz'),
-  (1243, 'Evil Czech', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil'),
-  (1244, 'Corndance', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil'),
-  (1245, 'Jesus Latin Grill', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil'),
-  (1246, 'Landon''s', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1247, 'Carnegie', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil'),
-  (1248, 'Bourbon and Butcher', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil'),
-  (1249, '3 Monkey''s', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Crown Point', 'IN', NULL, 'Mike Hemiger'),
-  (1250, 'CASCADE HILLS COUNTRY CLUB 18682E', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1251, 'GARLAND LODGE FOOD AND BEVERAGE', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1252, 'Treetops - Top Of Hill', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1253, 'Mise En Place Culinary Consulting', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1254, 'BROWN JUG', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1255, 'Mad Anthony - Taylor - 371788E', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1256, 'MONROE ST DINER', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1257, 'Double Down Desserts', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1258, 'Crowes Nest Caf', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1259, 'NEW HUDSON INN 371779E', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1260, 'Plant Based Coney''s', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1261, 'Troy Escape', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1262, 'THE PITA POST', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1263, 'CHURCHILL''S FOOD & SPIRITS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1264, 'RED BARON (THE)', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1265, 'THE SAWMILL GOLF CLUB', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1266, 'SAGINAW CLUB', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1267, 'RIVERWALK GRILL', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1268, 'The Laundry', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1269, 'LOUHELEN BAHA''I SCHOOL', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1270, 'MATADOR''S PIZZA & TAKE OUT', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1271, 'BAY CLIFF HEALTH CAMP', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1272, 'MARIA HEALTH CARE CENTER', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1273, 'FLAT ROCK CARE CENTER', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1274, 'LINCOLN LAKE BAPTIST YOUTH CAMP', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1275, 'Bronson Behavioral Hospital', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1276, 'The Heartlands', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1277, 'HENRY FORD COLLEGE', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1278, 'Telluride Association', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1279, 'COMMUNITY PROGRAMS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1280, 'Memorial Healthcare - Cafe', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1281, 'MICHIGAN STATE POLICE TRAINING DIVI', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1282, 'MICH MED- UNIV HOSPITAL-DOCK 5- 202', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1283, 'MDINING- TEST KITCHEN 689175', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1284, 'ST PETER LUTHERAN SCHOOL ACCOUNT', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1285, 'MASON COUNTY CENTRAL SCHOOLS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1286, 'MICHINDOH CONFERENCE CENTER', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1287, 'WASHINGTON TWP SCHOOLS WAREHOUSE', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1288, 'Northville Public Schools', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1289, 'SPECTRUM JUVENILE JUSTICE SERVICES', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads'),
-  (1290, 'Tara Mcmurty', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Scottsville', 'KY', '42164', 'Going to Cater 400 people at a Barbra O''Neil Seminar'),
-  (1291, 'Pizza Wholesale of Lexington', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Paris', 'KY', '40361', 'going to contact about bakeable cheese curds'),
-  (1292, 'The Swing Club', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Scottsville', 'KY', NULL, 'Runs a Top Golf style driving range just opened'),
-  (1293, 'Azzip Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Evansville', 'IN', NULL, '10 unit pizza place in IN and KY'),
-  (1294, 'Powers Health', 'prospect', 'C', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, '4 unit hospital'),
-  (1295, 'Rafeal''s Sports Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, ''),
-  (1296, 'Ralphie''s Fun Center', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, ''),
-  (1297, 'Independence Village of Ames', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1298, 'ABBVIE AP30', 'prospect', 'C', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1299, 'ACARATH MONTESSORI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1300, 'Ami-Gos Tacos', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1301, 'Angry Octopus', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1302, 'APOSTOLIC CHURCH OF GOD', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1303, 'ASSEMBLY AMERICAN BAR & CAFE (THE)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1304, 'Beverly Country Club', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1305, 'Countrytime Kettle Korn McHenry', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1306, 'CREME OF THE CROP', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1307, 'DR JOHN WARNER HOSPITAL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1308, 'EPIC BURGER-PEARSON ST', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1309, 'ESPERANZA SCHOOL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1310, 'GAME ON BAR & GRILL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1311, 'Hampshire Township Park District', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1312, 'KIRBY MEDICAL CENTER', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1313, 'KIRK''S BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1314, 'KNIGHTS OF COLUMBUS #1282', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1315, 'LA RABIDA CHILDRENS HOSPITAL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1316, 'Louies Waffle House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1317, 'MARY''S PLACE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1318, 'NIVRAM BALMORAL NURSING', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1319, 'North Island Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1320, 'PARAMOUNT THEATRE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1321, 'PEACE MEAL CENTRAL OFFICE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1322, 'POST 18 AMERICAN LEGION', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1323, 'Queen of Peace Retirement', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1324, 'RUSH U MED-GEN KITCHEN PO589563', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1325, 'Sassy Mac Boys', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1326, 'Storypoint Of Bolingbrook', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1327, 'The Ice Cream Shop', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1328, 'The Matrix Room', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1329, 'The Pointe at Morris', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1330, 'The Shores of Fairmont', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1331, 'THS-GOTTLIEB MEMORIAL DIETARY-H0182', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1332, 'U OF I- HOUSING FOOD STORES', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1333, 'Washington Grade School District 52', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1334, '10Forty Banquets & Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1335, 'Area Career Center', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1336, 'GOBLIN AND THE GROCER', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1337, 'MERRILLVILLE REGIONAL MENTAL HEALTH', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1338, 'Notre Dame-110 South Dining Hall', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1339, 'State Park Little League', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1340, 'Taco Depot Crown Point', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1341, 'CLEMENTINE''S SALOON', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1342, 'Daydreamer Domes', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1343, 'Ludington Pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1344, 'WUSKOWHAN PLAYERS CLUB', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1345, 'AGING AND DISABILITY RESOURCE CENTE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1346, 'BJ''S RESTAURANT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1347, 'Faklandia Brewing', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1348, 'FORT ATKINSON FAMILY RESTAURANT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1349, 'HSL West Allis Assisted', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1350, 'L G YOUTH CAMP-GATE 2', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1351, 'MACS', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1352, 'Moxie Coffee Caf Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1353, 'Timber-Lee Ministries', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1354, 'Independence Village of Avon', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1355, 'Independence Village of Waukee', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1356, 'Jelka Leedle', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1357, 'JULIE WENDORF', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1358, 'Kelly', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1359, 'Kimberly Woods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1360, 'King-Bruwaert House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1361, 'Maija''s Families Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1362, 'Paulies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1363, 'the woods of Caledonia', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead'),
-  (1364, 'West Carroll Middle School', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1365, 'The Big Dipper', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Owensboro', 'KY', NULL, 'SherryAshby is the GM'),
-  (1366, 'It''s J''s Good Grub', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Owensboro', 'KY', NULL, 'Jay and Antoinette Johnson'),
-  (1367, 'Michigan State Police Acadamy', 'prospect', 'A', 'bd94b0d6-4c45-5c71-b19a-451e854486bb', NULL, NULL, NULL, 'Lansing', 'MI', NULL, 'Angella Jirovec'),
-  (1368, 'Great Lakes CHR Homes', 'prospect', 'B', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, 'lansing', 'MI', NULL, 'Angella Jirovec'),
-  (1369, 'Culver''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Chef Woody Bates key ally'),
-  (1370, 'ANDERSON FOODS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1371, 'Battle Alley Brewing Company', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1372, 'Belva', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1373, 'BENS SUPERCENTER', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1374, 'Bluebird', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1375, 'BOARDWALK (THE)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1376, 'Boyne River Inn', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1377, 'BSA-COLE CANOE', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1378, 'C K O S - Catered Events', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1379, 'Cardinal Pizza', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1380, 'CDS - Miracle Camp and Retreat Cent', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1381, 'Chart Room', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1382, 'Chico''s Bar and Grill', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1383, 'COMM ACTION - HEAD START', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1384, 'COUNTRY VIEW BULK FOODS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1385, 'Cut River Grille', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1386, 'Daybreak Cafe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1387, 'DELTON MEMORIAL VFW #422', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1388, 'DETROIT PIZZA FACTORY', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1389, 'Dockside Torch Lake', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1390, 'DUCK LAKE COUNTRY CLUB 40461E', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1391, 'Eighteen87', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1392, 'EMBASSY BAR & GRILL', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1393, 'FEED BAG CAFE (THE)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1394, 'GAYLORD BOWLING CENTER', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1395, 'GILLIES CONEY ISLAND/MT MORRIS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1396, 'HACIENDA MEXICAN REST H-1', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1397, 'HAMLIN PUB - ROCHESTER HILLS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1398, 'HENRY''S RESTAURANT- OTTAWA', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1399, 'HOG''S BACK FOOD CO-OP\ CAROLYN PERU', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1400, 'Jayell Smoke House', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1401, 'KEYS (THE)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1402, 'MORRISON LAKE GOLF CLUB', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1403, 'Mrs. Cs Grilled Cheese', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1404, 'POTTERVILLE INN', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1405, 'PRINCIPLE BUSINESS ENTERPRISES', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1406, 'Put In Bay Resort', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1407, 'RIVER ROCK BAR & GRILL', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1408, 'RIVERFRONT GRILLE', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1409, 'ROYAL OAK AMERICAN LEGION', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1410, 'Shafer''s Smoked Meats', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1411, 'shawnee country club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1412, 'SMALL BATCH AT THE CUPOLA ROOM', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1413, 'Smokin'' Pigs by Bigs', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1414, 'SUNRISE WAREHOUSE', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1415, 'The Cortland Northview', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1416, 'The Little Store', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1417, 'The Mayfield Tavern', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1418, 'The Pepper Mill', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1419, 'Towneplace Suites Ann Arbor', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1420, 'Trackside Eatery & Pub', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1421, 'TRAILS END PUB', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1422, 'Turnaround Bar And Grille', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1423, 'Village Place- Greek', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1424, 'Zachariah''s Chocolates', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1425, 'Zefs Lighthouse Tavern', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1426, 'SLOW''S TO GO 002', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1427, 'All Nite Mobile Cafe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1428, 'BRIGHTMOOR CHRISTIAN CHURCH', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1429, 'CAMP BLODGETT', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1430, 'CAMP CO-BE-AC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1431, 'Carmella''s Italian Ice', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1432, 'Sparrow Eaton', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1433, 'The New Tubbs Lake Resort', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25'),
-  (1434, 'Merry Go Around', 'unknown', 'C', NULL, NULL, NULL, NULL, 'evansville', 'IN', NULL, 'left Kaufhold Sample pack'),
-  (1435, 'Burger and Bowl', 'unknown', 'A', NULL, NULL, NULL, NULL, 'bowling green', 'KY', NULL, 'Talked with chef Alfredo with Sasha group'),
-  (1436, 'Giovanni''s Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'ashland', 'KY', NULL, '40 locations!'),
-  (1437, 'The Drake - Oakbrook', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Oakbrook', 'IL', NULL, ''),
-  (1438, 'Hyatt Lodge', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Oakbrook', 'IL', NULL, 'Chef loved the samples; follow-up when SPIFF begins'),
-  (1439, 'Mariott Naperville', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Naperville', 'IL', NULL, 'Chef loved the samples; follow-up when SPIFF begins'),
-  (1440, 'Allegory', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Naperville', 'IL', NULL, 'Chef likely to buy are 4 skus'),
-  (1441, 'SixtyFour', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Naperville', 'IL', NULL, 'Loved the product'),
-  (1442, 'TAR &Feather Concessions', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Westmoreland', 'TN', NULL, 'sells bagels was looking for interest on plant base cream cheese'),
-  (1443, 'White Hawk CC', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Crown Point', 'IN', NULL, 'May be worth looking into. 100+ units. Sysco account. Churros on menu. Tenn based'),
-  (1444, 'Hot Chicken Takeover', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', 'OH', 'Columbus', NULL, 'Columbus', 'OH', NULL, '11 locations'),
-  (1445, 'Charleys Steakery', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Columbus', 'OH', NULL, '600 locatios!'),
-  (1446, 'The Peach Cobbler', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1447, 'I', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1448, 'Indian Hills Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, ''),
-  (1449, 'Finish Line', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, ''),
-  (1450, 'Bowling Green Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, ''),
-  (1451, 'Southern Lanes Bowling and arcade', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Bowling in Bowling Greenb', 'KY', NULL, 'Kaufholds sample pack'),
-  (1452, 'Wings Station BG', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'bowling Green', 'KY', NULL, 'talked to owner if it had calm down for grand opening enough to revisist curds'),
-  (1453, 'Jacobs Pub', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Evansville', 'KY', NULL, 'has cheese curds on menu but are they the best Kaufholds'),
-  (1454, 'Four Winds Casino', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'South Bend', 'IN', NULL, ''),
-  (1455, 'Stevens Point', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Stevens Point', 'WI', NULL, 'Sampled at NACUFS'),
-  (1456, 'Wisconsin Union', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Madisom', 'WI', NULL, 'Sampled at NACUFS'),
-  (1457, 'University of Minnestota - Duluth', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Duluth', 'MN', NULL, 'Sampled at NACUFS'),
-  (1458, 'University of Missouri', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Columbia', 'MO', NULL, 'Sampled at NACUFS'),
-  (1459, 'ACF Sound Bend', 'prospect', 'A', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, 'South Bend', 'IN', NULL, ''),
-  (1460, 'Three Embers Restaurant @ Marriott Lincolnshire Resort', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1461, 'Hyatt Centric Rosemont', 'prospect', 'A', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1462, 'Foodstuff''s Evanston', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1463, 'Zelda''s Catering', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1464, 'Abigail''s', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1465, 'Summer House (Halsted Street Kitchen)', 'unknown', 'A', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, 'Testa VAF BLITZ Limcoln Park'),
-  (1466, 'Kingling Cookout & Cocktails', 'unknown', 'A', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, 'Testa VAF BLITZ 202 Franklin St-Chicago'),
-  (1467, 'Lago Lake Zurich', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1468, 'Ema Chicago', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1469, 'Prasino', 'unknown', 'A', NULL, NULL, NULL, NULL, 'la Grange', 'IL', NULL, 'Testa VAF BLITZ Lagrange rd La Grange'),
-  (1470, 'Talbot Hotel', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1471, 'Bungalow', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1472, 'Hyatt Mag Mile', 'prospect', 'A', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1473, 'Atta Girl', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ'),
-  (1474, 'ACF Northwest Indiana', 'prospect', 'A', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, NULL, 'IN', NULL, ''),
-  (1475, 'ACF Chicago', 'prospect', 'A', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1476, 'Wing Snob', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '80+ units. Focus is Tandoori Marination Base'),
-  (1477, 'Barren Rivewr Lake Resort', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Lucas', 'KY', NULL, ''),
-  (1478, 'Asparagus', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Merrillville', 'IN', NULL, 'Poke'),
-  (1479, 'St Elmos', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1480, 'Aurelios', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1481, 'caplingers', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1482, 'Hilton Double Tree Aslip', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Alsip', NULL, NULL, 'Loves Poke. Uses Sysco & Wabash Seafood. Would buy from Abdale if stocked. Asked Carol to send a New Vendor Form'),
-  (1483, 'Hartsfield', 'prospect', 'B', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, 'Munster', NULL, NULL, ''),
-  (1484, 'Tomato Bar', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1485, 'O''Bryan''s Bar and Grill', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Owensboro', 'KY', NULL, ''),
-  (1486, 'PFG Fairfeild', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1487, 'US Foods Cleveland', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Cleveland', 'OH', NULL, 'emailed Rick-phoned left vm.'),
-  (1488, 'Dj''s Casual Cafe', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Wellman', 'IA', NULL, ''),
-  (1489, 'Hotel Blackwood', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, 'Davenport', 'IA', NULL, ''),
-  (1490, 'Main Street Meat Co.', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Davenport', 'IA', NULL, ''),
-  (1491, 'Peanut Butter and Deli', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Morrison', 'IL', NULL, ''),
-  (1492, 'Lubben Vineyards & Wines', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Anamosa', 'IA', NULL, ''),
-  (1493, 'Petro Travel Center', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, 'Rochelle', 'IL', NULL, ''),
-  (1494, 'Hotel Julien Debuque', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, 'Dubuque', 'IA', NULL, ''),
-  (1495, 'Thristy Camel Supper Club', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Conesville', 'IA', NULL, ''),
-  (1496, 'Hailstorm Brewing', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Tinley Park', 'IL', NULL, ''),
-  (1497, 'Sip Self Serve Wine Bar', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1498, 'El Jefe', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, 'Aurora', 'IL', '60014', ''),
-  (1499, 'Bust Outs', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (1500, 'Rabbits Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, ''),
-  (1501, 'Harry Caray''s Navy Pier', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1502, 'Pizzeria Portofino', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1503, 'Harry Caray''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1504, 'Fortune', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1505, 'Grecian Delight', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1506, 'Food and Paper', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1507, 'Badger', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1508, 'Kohls', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1509, 'Kuna', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1510, 'Battaglia', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1511, 'Badger Murphy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1512, 'Chefs Kitchen', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1513, 'Fare Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1514, 'S&L Produce', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1515, 'Supreme Lobster', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1516, 'Total Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1517, 'RDP', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1518, 'PFG-all', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1519, 'Pancho', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1520, 'Wilkens', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1521, 'Testa', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, ''),
-  (1522, 'Get Fresh', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1523, 'All in IN/OH/KY/MI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1524, 'GFS-all', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1525, 'Delco', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1526, 'Northern Haserot', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1527, 'Atlantic', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1528, 'PFG KY/TN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1529, 'RAYDIA (B&B, Stanz, Troyers)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1530, 'SUPERIOR Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1531, 'Stapleton Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1532, 'P+L food', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1533, 'Al Peake & Sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1534, 'Lannings Newark', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1535, 'PFG Cincinnati (formerly Reinhart)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1536, 'Premier Produce 1', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1537, 'RDP Columbus', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1538, 'Ritchies Food Service', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1539, 'Sofo', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1540, 'TPC Food Service Tiffin', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1541, 'White Feather Farms', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1542, 'Dutch Creek Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1543, 'Euclid Fish Company', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1544, 'Rightway', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1545, 'Thompson and Sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1546, 'USF Cincy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1547, 'GFS Sprongfield', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1548, 'SYSCO Cincy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1549, 'Butts Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1550, 'Chefs Kitchen (2)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1551, 'Fare Foods Corp.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1552, 'Kern Food Distributing, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1553, 'Loffredo Fresh Produce', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1554, 'P&L Food Wholesalers, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1555, 'Premier ProduceOne', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1556, 'S & L Produce, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1557, 'Stapletons, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1558, 'Thompson and Sons Bakery Supply', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1559, 'Total Foods Inc.', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'MI', NULL, 'New Clearwater Belgian frites approved from Frotes Street'),
-  (1560, 'HT Hackney', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1561, 'PFG-BG', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, '800 E Ogden Ave, Westmont, IL 60559', 'IL', NULL, ''),
+  (1232, 'Perilla Steakhouse', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Chicago', 'IL', '60601', '
+'),
+  (1233, 'Tamburrino''s Pizza', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Bowling green', 'KY', '42164', 'Tried the Kaufhold sample pack plus Ranch and Beer Battered
+'),
+  (1234, 'Clover''s Bar & Grill', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Oak Forrest', NULL, NULL, 'TCFB lead. Contact is Dottie. Rep is Chris P.
+'),
+  (1235, 'Olympic Star', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Tinley Park', NULL, NULL, 'TCFB lead. Contact is Eva Garvis. Chris P is rep
+'),
+  (1236, 'Diamond Pancake House', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Oak Brook', NULL, NULL, 'TCFB lead. Contact is Jose Carillo. Rep is Chris P
+'),
+  (1237, 'Ball Park', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'TCFB lead. Contact is Rich. Rep is Jim
+'),
+  (1238, 'Brooklyn Pizza', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'TCFB lead. Contact is Tony. Rep is Jim
+'),
+  (1239, 'Krave', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'oak Lawn', NULL, NULL, 'TCFB lead. Contact is Moe. Rep is Jim.
+'),
+  (1240, 'Triano''s', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Chicago', NULL, NULL, 'TCFB lead. Contact is Moe. Rep is Jim.
+'),
+  (1241, 'Donatos Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Columbus', 'OH', NULL, 'Message Cynthia Ottavio Director of R&D
+'),
+  (1242, 'Market Fresh Restaurant Group', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Chef Oscar at Evil Czech dropped Mcrim for Stanz
+'),
+  (1243, 'Evil Czech', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil
+'),
+  (1244, 'Corndance', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil
+'),
+  (1245, 'Jesus Latin Grill', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil
+'),
+  (1246, 'Landon''s', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1247, 'Carnegie', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil
+'),
+  (1248, 'Bourbon and Butcher', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Mishawaka', 'IN', NULL, 'Sierra Valdez Director of Ops for Group and Dustin Barret is GM of Evil
+'),
+  (1249, '3 Monkey''s', 'prospect', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Crown Point', 'IN', NULL, 'Mike Hemiger
+'),
+  (1250, 'CASCADE HILLS COUNTRY CLUB 18682E', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1251, 'GARLAND LODGE FOOD AND BEVERAGE', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1252, 'Treetops - Top Of Hill', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1253, 'Mise En Place Culinary Consulting', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1254, 'BROWN JUG', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1255, 'Mad Anthony - Taylor - 371788E', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1256, 'MONROE ST DINER', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1257, 'Double Down Desserts', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1258, 'Crowes Nest Caf', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1259, 'NEW HUDSON INN 371779E', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1260, 'Plant Based Coney''s', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1261, 'Troy Escape', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1262, 'THE PITA POST', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1263, 'CHURCHILL''S FOOD & SPIRITS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1264, 'RED BARON (THE)', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1265, 'THE SAWMILL GOLF CLUB', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1266, 'SAGINAW CLUB', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1267, 'RIVERWALK GRILL', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1268, 'The Laundry', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1269, 'LOUHELEN BAHA''I SCHOOL', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1270, 'MATADOR''S PIZZA & TAKE OUT', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1271, 'BAY CLIFF HEALTH CAMP', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1272, 'MARIA HEALTH CARE CENTER', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1273, 'FLAT ROCK CARE CENTER', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1274, 'LINCOLN LAKE BAPTIST YOUTH CAMP', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1275, 'Bronson Behavioral Hospital', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1276, 'The Heartlands', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1277, 'HENRY FORD COLLEGE', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1278, 'Telluride Association', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1279, 'COMMUNITY PROGRAMS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1280, 'Memorial Healthcare - Cafe', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1281, 'MICHIGAN STATE POLICE TRAINING DIVI', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1282, 'MICH MED- UNIV HOSPITAL-DOCK 5- 202', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1283, 'MDINING- TEST KITCHEN 689175', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1284, 'ST PETER LUTHERAN SCHOOL ACCOUNT', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1285, 'MASON COUNTY CENTRAL SCHOOLS', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1286, 'MICHINDOH CONFERENCE CENTER (Seed Data)', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1287, 'WASHINGTON TWP SCHOOLS WAREHOUSE', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1288, 'Northville Public Schools', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1289, 'SPECTRUM JUVENILE JUSTICE SERVICES', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI show leads
+'),
+  (1290, 'Tara Mcmurty', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Scottsville', 'KY', '42164', 'Going to Cater 400 people at a Barbra O''Neil Seminar
+'),
+  (1291, 'Pizza Wholesale of Lexington', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Paris', 'KY', '40361', 'going to contact about bakeable cheese curds
+'),
+  (1292, 'The Swing Club', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Scottsville', 'KY', NULL, 'Runs a Top Golf style driving range just opened
+'),
+  (1293, 'Azzip Pizza', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'Evansville', 'IN', NULL, '10 unit pizza place in IN and KY
+'),
+  (1294, 'Powers Health', 'prospect', 'C', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, NULL, NULL, NULL, '4 unit hospital
+'),
+  (1295, 'Rafeal''s Sports Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, '
+'),
+  (1296, 'Ralphie''s Fun Center', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Glasgow', 'KY', NULL, '
+'),
+  (1297, 'Independence Village of Ames', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1298, 'ABBVIE AP30', 'prospect', 'C', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1299, 'ACARATH MONTESSORI', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1300, 'Ami-Gos Tacos', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1301, 'Angry Octopus', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1302, 'APOSTOLIC CHURCH OF GOD', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1303, 'ASSEMBLY AMERICAN BAR & CAFE (THE)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1304, 'Beverly Country Club', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1305, 'Countrytime Kettle Korn McHenry', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1306, 'CREME OF THE CROP', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1307, 'DR JOHN WARNER HOSPITAL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1308, 'EPIC BURGER-PEARSON ST', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1309, 'ESPERANZA SCHOOL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1310, 'GAME ON BAR & GRILL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1311, 'Hampshire Township Park District', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1312, 'KIRBY MEDICAL CENTER', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1313, 'KIRK''S BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1314, 'KNIGHTS OF COLUMBUS #1282', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1315, 'LA RABIDA CHILDRENS HOSPITAL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1316, 'Louies Waffle House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1317, 'MARY''S PLACE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1318, 'NIVRAM BALMORAL NURSING', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1319, 'North Island Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1320, 'PARAMOUNT THEATRE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1321, 'PEACE MEAL CENTRAL OFFICE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1322, 'POST 18 AMERICAN LEGION', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1323, 'Queen of Peace Retirement', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1324, 'RUSH U MED-GEN KITCHEN PO589563', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1325, 'Sassy Mac Boys', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1326, 'Storypoint Of Bolingbrook', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1327, 'The Ice Cream Shop', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1328, 'The Matrix Room', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1329, 'The Pointe at Morris', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1330, 'The Shores of Fairmont', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1331, 'THS-GOTTLIEB MEMORIAL DIETARY-H0182', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1332, 'U OF I- HOUSING FOOD STORES (Seed Data)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1333, 'Washington Grade School District 52', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1334, '10Forty Banquets & Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1335, 'Area Career Center', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1336, 'GOBLIN AND THE GROCER', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1337, 'MERRILLVILLE REGIONAL MENTAL HEALTH', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1338, 'Notre Dame-110 South Dining Hall (Seed Data)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1339, 'State Park Little League', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1340, 'Taco Depot Crown Point', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1341, 'CLEMENTINE''S SALOON (Seed Data)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1342, 'Daydreamer Domes (Seed Data)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1343, 'Ludington Pub', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1344, 'WUSKOWHAN PLAYERS CLUB', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1345, 'AGING AND DISABILITY RESOURCE CENTE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1346, 'BJ''S RESTAURANT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1347, 'Faklandia Brewing', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1348, 'FORT ATKINSON FAMILY RESTAURANT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1349, 'HSL West Allis Assisted', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1350, 'L G YOUTH CAMP-GATE 2', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1351, 'MACS', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1352, 'Moxie Coffee Caf Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1353, 'Timber-Lee Ministries', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1354, 'Independence Village of Avon', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1355, 'Independence Village of Waukee', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1356, 'Jelka Leedle', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1357, 'JULIE WENDORF', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1358, 'Kelly', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1359, 'Kimberly Woods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1360, 'King-Bruwaert House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1361, 'Maija''s Families Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1362, 'Paulies', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1363, 'the woods of Caledonia', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs rosemont 2025 lead
+'),
+  (1364, 'West Carroll Middle School', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1365, 'The Big Dipper', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Owensboro', 'KY', NULL, 'SherryAshby is the GM
+'),
+  (1366, 'It''s J''s Good Grub', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Owensboro', 'KY', NULL, 'Jay and Antoinette Johnson
+'),
+  (1367, 'Michigan State Police Acadamy', 'prospect', 'A', 'bd94b0d6-4c45-5c71-b19a-451e854486bb', NULL, NULL, NULL, 'Lansing', 'MI', NULL, 'Angella Jirovec
+'),
+  (1368, 'Great Lakes CHR Homes', 'prospect', 'B', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, 'lansing', 'MI', NULL, 'Angella Jirovec
+'),
+  (1369, 'Culver''s', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, 'Chef Woody Bates key ally
+'),
+  (1370, 'ANDERSON FOODS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1371, 'Battle Alley Brewing Company', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1372, 'Belva', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1373, 'BENS SUPERCENTER', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1374, 'Bluebird', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1375, 'BOARDWALK (THE)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1376, 'Boyne River Inn', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1377, 'BSA-COLE CANOE', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1378, 'C K O S - Catered Events', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1379, 'Cardinal Pizza', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1380, 'CDS - Miracle Camp and Retreat Cent', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1381, 'Chart Room', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1382, 'Chico''s Bar and Grill', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1383, 'COMM ACTION - HEAD START', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1384, 'COUNTRY VIEW BULK FOODS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1385, 'Cut River Grille', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1386, 'Daybreak Cafe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1387, 'DELTON MEMORIAL VFW #422', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1388, 'DETROIT PIZZA FACTORY', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1389, 'Dockside Torch Lake', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1390, 'DUCK LAKE COUNTRY CLUB 40461E', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1391, 'Eighteen87', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1392, 'EMBASSY BAR & GRILL', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1393, 'FEED BAG CAFE (THE)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1394, 'GAYLORD BOWLING CENTER', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1395, 'GILLIES CONEY ISLAND/MT MORRIS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1396, 'HACIENDA MEXICAN REST H-1', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1397, 'HAMLIN PUB - ROCHESTER HILLS', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1398, 'HENRY''S RESTAURANT- OTTAWA', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1399, 'HOG''S BACK FOOD CO-OP\ CAROLYN PERU', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1400, 'Jayell Smoke House', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1401, 'KEYS (THE)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1402, 'MORRISON LAKE GOLF CLUB (Seed Data)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1403, 'Mrs. Cs Grilled Cheese', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1404, 'POTTERVILLE INN', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1405, 'PRINCIPLE BUSINESS ENTERPRISES', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1406, 'Put In Bay Resort', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1407, 'RIVER ROCK BAR & GRILL', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1408, 'RIVERFRONT GRILLE', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1409, 'ROYAL OAK AMERICAN LEGION', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1410, 'Shafer''s Smoked Meats', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1411, 'shawnee country club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1412, 'SMALL BATCH AT THE CUPOLA ROOM', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1413, 'Smokin'' Pigs by Bigs', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1414, 'SUNRISE WAREHOUSE', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1415, 'The Cortland Northview', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1416, 'The Little Store', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1417, 'The Mayfield Tavern', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1418, 'The Pepper Mill', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1419, 'Towneplace Suites Ann Arbor', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1420, 'Trackside Eatery & Pub', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1421, 'TRAILS END PUB', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1422, 'Turnaround Bar And Grille', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1423, 'Village Place- Greek', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1424, 'Zachariah''s Chocolates', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1425, 'Zefs Lighthouse Tavern', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1426, 'SLOW''S TO GO 002', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1427, 'All Nite Mobile Cafe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1428, 'BRIGHTMOOR CHRISTIAN CHURCH', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1429, 'CAMP BLODGETT (Seed Data)', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1430, 'CAMP CO-BE-AC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1431, 'Carmella''s Italian Ice', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1432, 'Sparrow Eaton', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1433, 'The New Tubbs Lake Resort', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Gfs novi show lead 4/25
+'),
+  (1434, 'Merry Go Around', 'unknown', 'C', NULL, NULL, NULL, NULL, 'evansville', 'IN', NULL, 'left Kaufhold Sample pack
+'),
+  (1435, 'Burger and Bowl', 'unknown', 'A', NULL, NULL, NULL, NULL, 'bowling green', 'KY', NULL, 'Talked with chef Alfredo with Sasha group
+'),
+  (1436, 'Giovanni''s Pizza', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, 'ashland', 'KY', NULL, '40 locations!
+'),
+  (1437, 'The Drake - Oakbrook', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Oakbrook', 'IL', NULL, '
+'),
+  (1438, 'Hyatt Lodge', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Oakbrook', 'IL', NULL, 'Chef loved the samples; follow-up when SPIFF begins
+'),
+  (1439, 'Mariott Naperville', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Naperville', 'IL', NULL, 'Chef loved the samples; follow-up when SPIFF begins
+'),
+  (1440, 'Allegory', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Naperville', 'IL', NULL, 'Chef likely to buy are 4 skus
+'),
+  (1441, 'SixtyFour', 'customer', 'B', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Naperville', 'IL', NULL, 'Loved the product
+'),
+  (1442, 'TAR &Feather Concessions', 'prospect', 'C', '6dca7cfa-092c-5539-ac12-a55acec8bbd2', NULL, NULL, NULL, 'Westmoreland', 'TN', NULL, 'sells bagels was looking for interest on plant base cream cheese
+'),
+  (1443, 'White Hawk CC', 'prospect', 'A', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Crown Point', 'IN', NULL, 'May be worth looking into. 100+ units. Sysco account. Churros on menu. Tenn based
+'),
+  (1444, 'Hot Chicken Takeover', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', 'OH', 'Columbus', NULL, 'Columbus', 'OH', NULL, '11 locations
+'),
+  (1445, 'Charleys Steakery', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Columbus', 'OH', NULL, '600 locatios!
+'),
+  (1446, 'The Peach Cobbler', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1447, 'I', 'unknown', 'B', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1448, 'Indian Hills Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, '
+'),
+  (1449, 'Finish Line', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, '
+'),
+  (1450, 'Bowling Green Country Club', 'prospect', 'C', 'e56a409e-abae-5366-b4ea-321cd33c946d', NULL, NULL, NULL, 'Bowling Green', 'KY', NULL, '
+'),
+  (1451, 'Southern Lanes Bowling and arcade', 'customer', 'C', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Bowling in Bowling Greenb', 'KY', NULL, 'Kaufholds sample pack
+'),
+  (1452, 'Wings Station BG', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'bowling Green', 'KY', NULL, 'talked to owner if it had calm down for grand opening enough to revisist curds
+'),
+  (1453, 'Jacobs Pub', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Evansville', 'KY', NULL, 'has cheese curds on menu but are they the best Kaufholds
+'),
+  (1454, 'Four Winds Casino', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'South Bend', 'IN', NULL, '
+'),
+  (1455, 'Stevens Point', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Stevens Point', 'WI', NULL, 'Sampled at NACUFS
+'),
+  (1456, 'Wisconsin Union', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Madisom', 'WI', NULL, 'Sampled at NACUFS
+'),
+  (1457, 'University of Minnestota - Duluth', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Duluth', 'MN', NULL, 'Sampled at NACUFS
+'),
+  (1458, 'University of Missouri', 'customer', 'A', '86682bb5-521a-5e5a-a0cc-fdae6a3628f3', NULL, NULL, NULL, 'Columbia', 'MO', NULL, 'Sampled at NACUFS
+'),
+  (1459, 'ACF Sound Bend', 'prospect', 'A', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, 'South Bend', 'IN', NULL, '
+'),
+  (1460, 'Three Embers Restaurant @ Marriott Lincolnshire Resort', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1461, 'Hyatt Centric Rosemont', 'prospect', 'A', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1462, 'Foodstuff''s Evanston', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1463, 'Zelda''s Catering', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1464, 'Abigail''s', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1465, 'Summer House (Halsted Street Kitchen)', 'unknown', 'A', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, 'Testa VAF BLITZ Limcoln Park
+'),
+  (1466, 'Kingling Cookout & Cocktails', 'unknown', 'A', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, 'Testa VAF BLITZ 202 Franklin St-Chicago
+'),
+  (1467, 'Lago Lake Zurich', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1468, 'Ema Chicago', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1469, 'Prasino', 'unknown', 'A', NULL, NULL, NULL, NULL, 'la Grange', 'IL', NULL, 'Testa VAF BLITZ Lagrange rd La Grange
+'),
+  (1470, 'Talbot Hotel', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1471, 'Bungalow', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1472, 'Hyatt Mag Mile', 'prospect', 'A', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1473, 'Atta Girl', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'Testa VAF BLITZ
+'),
+  (1474, 'ACF Northwest Indiana', 'prospect', 'A', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, NULL, 'IN', NULL, '
+'),
+  (1475, 'ACF Chicago', 'prospect', 'A', 'a6f2f8de-53ef-5173-8757-414beb8bfb79', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1476, 'Wing Snob', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '80+ units. Focus is Tandoori Marination Base
+'),
+  (1477, 'Barren Rivewr Lake Resort', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Lucas', 'KY', NULL, '
+'),
+  (1478, 'Asparagus', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Merrillville', 'IN', NULL, 'Poke
+'),
+  (1479, 'St Elmos', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1480, 'Aurelios', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1481, 'caplingers', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1482, 'Hilton Double Tree Aslip', 'customer', 'A', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, 'Alsip', NULL, NULL, 'Loves Poke. Uses Sysco & Wabash Seafood. Would buy from Abdale if stocked. Asked Carol to send a New Vendor Form
+'),
+  (1483, 'Hartsfield', 'prospect', 'B', 'ce54d460-e2bd-5205-9286-a8d4f0e5fcc2', NULL, NULL, NULL, 'Munster', NULL, NULL, '
+'),
+  (1484, 'Tomato Bar', 'customer', 'B', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1485, 'O''Bryan''s Bar and Grill', 'prospect', 'C', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'Owensboro', 'KY', NULL, '
+'),
+  (1486, 'PFG Fairfeild', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1487, 'US Foods Cleveland', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Cleveland', 'OH', NULL, 'emailed Rick-phoned left vm.
+'),
+  (1488, 'Dj''s Casual Cafe', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Wellman', 'IA', NULL, '
+'),
+  (1489, 'Hotel Blackwood', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, 'Davenport', 'IA', NULL, '
+'),
+  (1490, 'Main Street Meat Co.', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Davenport', 'IA', NULL, '
+'),
+  (1491, 'Peanut Butter and Deli', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Morrison', 'IL', NULL, '
+'),
+  (1492, 'Lubben Vineyards & Wines', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Anamosa', 'IA', NULL, '
+'),
+  (1493, 'Petro Travel Center', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, 'Rochelle', 'IL', NULL, '
+'),
+  (1494, 'Hotel Julien Debuque', 'prospect', 'C', '34baa226-0c60-50fc-84ad-70a9e3b36bae', NULL, NULL, NULL, 'Dubuque', 'IA', NULL, '
+'),
+  (1495, 'Thristy Camel Supper Club', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Conesville', 'IA', NULL, '
+'),
+  (1496, 'Hailstorm Brewing', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Tinley Park', 'IL', NULL, '
+'),
+  (1497, 'Sip Self Serve Wine Bar', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1498, 'El Jefe', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, 'Aurora', 'IL', '60014', '
+'),
+  (1499, 'Bust Outs', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (1500, 'Rabbits Bar', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Chicago', NULL, NULL, '
+'),
+  (1501, 'Harry Caray''s Navy Pier', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1502, 'Pizzeria Portofino', 'customer', 'C', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1503, 'Harry Caray''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1504, 'Fortune', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1505, 'Grecian Delight', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1506, 'Food and Paper', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1507, 'Badger', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1508, 'Kohls', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1509, 'Kuna', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1510, 'Battaglia', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1511, 'Badger Murphy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1512, 'Chefs Kitchen', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1513, 'Fare Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1514, 'S&L Produce', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1515, 'Supreme Lobster', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1516, 'Total Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1517, 'RDP', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1518, 'PFG-all', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1519, 'Pancho', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1520, 'Wilkens', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1521, 'Testa', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IL', NULL, '
+'),
+  (1522, 'Get Fresh', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1523, 'All in IN/OH/KY/MI', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1524, 'GFS-all', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1525, 'Delco', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1526, 'Northern Haserot', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1527, 'Atlantic', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1528, 'PFG KY/TN', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1529, 'RAYDIA (B&B, Stanz, Troyers)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1530, 'SUPERIOR Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1531, 'Stapleton Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1532, 'P+L food', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1533, 'Al Peake & Sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1534, 'Lannings Newark', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1535, 'PFG Cincinnati (formerly Reinhart)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1536, 'Premier Produce 1', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1537, 'RDP Columbus', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1538, 'Ritchies Food Service', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1539, 'Sofo', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1540, 'TPC Food Service Tiffin', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1541, 'White Feather Farms', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1542, 'Dutch Creek Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1543, 'Euclid Fish Company', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1544, 'Rightway', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1545, 'Thompson and Sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1546, 'USF Cincy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1547, 'GFS Sprongfield', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1548, 'SYSCO Cincy', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1549, 'Butts Foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1550, 'Chefs Kitchen (2)', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1551, 'Fare Foods Corp.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1552, 'Kern Food Distributing, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1553, 'Loffredo Fresh Produce', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1554, 'P&L Food Wholesalers, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1555, 'Premier ProduceOne', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1556, 'S & L Produce, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1557, 'Stapletons, Inc.', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1558, 'Thompson and Sons Bakery Supply', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1559, 'Total Foods Inc.', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, NULL, 'MI', NULL, 'New Clearwater Belgian frites approved from Frotes Street
+'),
+  (1560, 'HT Hackney', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1561, 'PFG-BG', 'customer', 'A', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, '800 E Ogden Ave, Westmont, IL 60559', 'IL', NULL, '
+'),
   (1562, 'Coppolillos', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'Crown Point', 'IN', NULL, 'dale will pirsue for VAF, Frites ANNASEA'),
-  (1563, 'PFG-Nashville', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, '607 N Main St', 'IN', NULL, 'dropped off kaufholds sample box he was looking to upgrade from Anchor ones'),
-  (1564, 'Timothy O''Tool', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Gurnee', 'IL', NULL, ''),
-  (1565, 'Cajun Grill', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Gurnee', 'IL', NULL, ''),
-  (1566, 'Riverside Cafe', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Gurnee', 'IL', NULL, ''),
-  (1567, 'Puff Shack BBQ', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'St. Charles', 'IL', NULL, ''),
-  (1568, 'El Puente', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, 'st. Charles', NULL, NULL, ''),
-  (1569, 'Marz Brewery', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (1570, 'Logan 11 Bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (1571, 'Federales', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (1572, 'Mano a Mano', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chicago', 'IL', NULL, ''),
-  (1573, 'University Center MSU', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Lansing', 'MI', NULL, ''),
-  (1574, 'joes on jolly', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Lansing', 'MI', NULL, ''),
-  (1575, 'S. Abraham and sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Grand Rapids', 'MI', NULL, ''),
-  (1576, 'Gun Lake Casino', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1577, 'HORROCKS', 'prospect', 'A', 'db21b569-5553-5aa8-8cca-9f3b204bb8a6', NULL, NULL, NULL, 'lansing', 'MI', NULL, ''),
-  (1578, 'Bavarian Inn', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Frankenmuth', 'MI', NULL, ''),
-  (1579, 'Bagger Daves', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'grand Rapids', 'MI', NULL, ''),
-  (1580, 'One North', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1581, 'Main Street Romeo', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'romeo', 'MI', NULL, ''),
-  (1582, 'Jayell BBq', 'prospect', 'B', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'romeo', 'MI', NULL, ''),
-  (1583, 'GFS Saginaw', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'saginaw', 'MI', NULL, ''),
-  (1584, 'Crown Plaza Lansing', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Lansing', 'MI', NULL, ''),
-  (1585, 'Shelby''s Trio', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, ''),
-  (1586, 'Pbody''s', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, ''),
-  (1587, 'Mr. Billy''s', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, ''),
-  (1588, 'Clarksville''s 3rd Base', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, ''),
-  (1589, 'Olga''s kitchen', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1590, 'Buddys Pizza', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1591, 'Baggers Dave', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1592, 'Fishbones Detroit', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1593, 'Zo''s Good Burger', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1594, 'Halo Burger', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1595, 'sweetwater tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1596, 'leos coney island', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1597, 'big john steak and onion', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1598, 'jolly pumpkin', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1599, 'national coney island', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1600, 'bobcat bonnies', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1601, 'ram''s horn', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1602, 'the dirty shake', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1603, 'bobs big boy', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1604, 'nepantia cafe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1605, 'atlas foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1606, 'g&l wholesale', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1607, 'arena food service', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1608, 'sysco detroit', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, ''),
-  (1609, 'Shogun Bistro BG', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'KY', NULL, 'Will meet owner Ronny with Sales Rep to show Cheesecake Holiday wheel for 6 locations'),
-  (1610, 'The Army and Navy Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1611, 'The Park at Fourteenth', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1612, 'American Culinary Federation', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1613, 'American Frozen Food Institute', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1614, 'Biscottis', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1615, 'blackpearl hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1616, 'Driftwood Hospitality Management', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1617, 'Elior NA', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1618, 'Mena Catering', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1619, 'The Melting Pot', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1620, 'Troon - Esplanade Golf & Country Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1621, 'tryst lounge', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1622, 'Aramark Services, Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1623, 'ARCO Design/Build', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1624, 'gekko kitchen commissary inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1625, 'Landings Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1626, 'RaceTrac', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1627, 'Tandoori Pizza & Wing Co.', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1628, 'Army MWR', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1629, 'Bagel Miller', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1630, 'Eddie Merlots', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1631, 'Exmoor Country Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1632, 'Fireplace Inns, Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1633, 'Flavorista', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1634, 'R Whittingham Meat Corp', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1635, 'Ready Set Gourmet', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1636, 'Sakamoto Restaurant Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1637, 'School District U-46', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1638, 'Scooby Drew''s (Soon to Be) World Famous Pickles', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1639, 'SNAIL CAVIAR', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1640, 'The Metropolitan Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1641, 'Compass Community Living', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1642, 'Purdue Northwest', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1643, 'Tea Plus Poke', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1644, 'Texas Roadhouse', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1645, 'North Coast Seafoods', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1646, 'Sysco Foods', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1647, 'La Chow', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1648, 'Saval Foodservice', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1649, 'Beyond Juicery & Eatery', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1650, 'Coldbreak', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1651, 'Crowne Plaza Lansing', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1652, 'K&K Catering', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1653, 'Morrison Living', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1654, 'Stark Provisions', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1655, 'The Corner Social', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1656, 'Ts Food LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1657, 'Mocha Point Coffee Co.', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1658, 'Compass Group: Morrison Health', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1659, 'Levy Restaurants', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1660, 'los Tres Magueyes', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1661, 'UNC Rex Healthcare', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1662, 'NEARNG', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1663, 'Marriott Hanover', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1664, 'Fineline Settings', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1665, 'Lifeworks', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1666, 'Rochester Institute of Technology', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1667, 'Volcora', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1668, 'ARTISAN PIZZA CAFe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1669, 'Audrey''s Avenue Kitchen & Bar', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1670, 'Boscoes', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1671, 'CuriosiTea Emporium LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1672, 'Station Square', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1673, 'Taste the World in Cincy LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1674, 'Hal Smith Restaurants', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1675, 'Coughlin''s Law', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1676, 'Fleet Landing', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1677, 'Real Food Restaurants Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1678, 'Springdale Hall Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1679, 'Chowbus', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1680, 'Elior North America - Dining and Events', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1681, 'Embassy Suites San Antonio Riverwalk', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1682, 'Ka sushi', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1683, 'Legends / Dallas Cowboys', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1684, 'Agile Hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1685, 'JOINT EXPEDITIONARY BASE LITTLE CREEK', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1686, 'Macados', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1687, 'MACADO''S INC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1688, 'Pig & Sam Restaurant Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1689, 'AJ''s Riverside', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1690, 'Fox Hollow Golf Course', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1691, 'Magpies / Fat Cat''s / Creekside Jack''s', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1692, 'Moran''s Pub', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1693, 'UPPER CRUST PIZZERIA & PUB', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS'),
-  (1694, 'I Dream of Falafel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1695, 'Country House Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1696, 'FROSTY DOGS', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1697, 'Village of Hoffman Estates', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1698, 'Silver Lake Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1699, 'Matajini mvp llc', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1700, 'N.Kotake,Inc', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1701, 'KT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1702, 'sip Wine Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1703, 'Imperial Surveillance', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1704, 'OCallaghan''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1705, 'Hailstorm Brewing Company', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1706, 'Trails Edge Brewing Co', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1707, 'Porky''s BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1708, 'Pine Valley Country Club', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1709, 'JOE''S GROUP', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1710, 'Carol''s Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1711, 'Chef Jamie''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1712, 'Big Daddy''s BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1713, 'The River Merchant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1714, 'Georgios Restaurants', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1715, 'HVYC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1716, 'Captian D''s', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS'),
-  (1717, 'Hyatt Regency Salt Lake City', 'customer', 'C', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1718, 'Panos', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, 'NRA KAUFHOLDS'),
-  (1719, 'Baraga County Memorial Hospital', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IN', NULL, 'NRA KAUFHOLDS'),
-  (1720, 'Gogebic Community College', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IN', NULL, 'NRA KAUFHOLDS'),
-  (1721, 'Michigan Technological University', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'KY', NULL, 'NRA KAUFHOLDS'),
-  (1722, 'Helen Newberry Joy Hospital', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS'),
-  (1723, 'USF-CHICAGO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS'),
-  (1724, 'USF-STREATOR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS'),
-  (1725, 'USF-C&U', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS'),
-  (1726, 'Adams Memorial Hospital', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1727, 'Premier Arts Academy', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1728, 'PFG-Western Suburbs', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1729, 'Gordon Foodservice', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1730, 'ABBOTT AP6D DEPT GE03', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1731, 'ABBVIE M1', 'unknown', 'A', NULL, NULL, NULL, NULL, 'North Chicago', NULL, NULL, ''),
-  (1732, 'AMERICAN ACCORD FOOD CORPORATION', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1733, 'Barnstormer''s Pizza', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Hoffman estates', NULL, NULL, ''),
-  (1734, 'Burlington Tap and Smokehouse', 'unknown', 'C', NULL, NULL, NULL, NULL, 'SPRINGFIELD', NULL, NULL, ''),
-  (1735, 'Cheers In Chesterton', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Burlington', NULL, NULL, ''),
-  (1736, 'Chicago Health Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1737, 'Community Hospital Food Service', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1738, 'CORNER PUB & GRILL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1739, 'CRYSTAL VALLEY CATERING', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Kankakee', NULL, NULL, ''),
-  (1740, 'Dabney & Co', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1741, 'DREAM PALACE BANQUET HALL', 'unknown', 'C', NULL, NULL, NULL, NULL, 'CLINTON', NULL, NULL, ''),
-  (1742, 'Driftless Social', 'unknown', 'C', NULL, NULL, NULL, NULL, 'CHICAGO', NULL, NULL, ''),
-  (1743, 'E I U- FOOD COURT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1744, 'Elkhorn Area High School Culinary A', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Charleston', NULL, NULL, ''),
-  (1745, 'Elston Ave Food Co. 392959E', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1746, 'FM - Village at Mercy Creek', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1747, 'GEJA''S CAFE', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Peptone', NULL, NULL, ''),
-  (1748, 'HAIRY COW BREWING COMPANY', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Arlington Heights', NULL, NULL, ''),
-  (1749, 'HEARTLAND HUMAN CARE-SRV GILES CCR', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Hampshire', NULL, NULL, ''),
-  (1750, 'HSL Eau Claire', 'unknown', 'C', NULL, NULL, NULL, NULL, 'CHICAGO', NULL, NULL, ''),
-  (1751, 'HSL Muskego', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1752, 'IVY TECH-E CHICAGO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1753, 'Kiddie Academy Of Oak Park', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1754, 'Lemuel Marcial', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1755, 'Lutherdale', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Ludington', NULL, NULL, ''),
-  (1756, 'MARK III RESTAURANT (THE)', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Homewood', NULL, NULL, ''),
-  (1757, 'Marrufo''s Tacos', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1758, 'MILWAUKEE BRAT HOUSE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1759, 'NIIPC- PRAIRIE KNOLLS MIDDLE SCHOOL', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Plymouth', NULL, NULL, ''),
-  (1760, 'NIIPC-JOSEPH E HILL ADMIN CENTER', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1761, 'OAKCREST DEKALB AREA RET CTR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1762, 'Organic Life - Peoria High School', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1763, 'Palace Ent - Adventureland', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1764, 'Port of Peri Peri Villa Park IL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1765, 'Quality Inn Bradley 367910E', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1766, 'Quindts Towne Lounge', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1767, 'RADER FAMILY FARM', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1768, 'Rockford Rivets', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1769, 'Rupley Elementary School', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1770, 'SAUSAGE KITCHEN', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1771, 'Science Of Spirituality', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1772, 'Something Special by Sherri', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Lisle', NULL, NULL, ''),
-  (1773, 'SPRING BROOK RESORT 69445E', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1774, 'Stussy''s Diner', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1775, 'Sure Stay Plus Hotel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1776, 'Tandoor Char House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1777, 'Taquero Mucho', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', NULL, NULL, ''),
-  (1778, 'The Cellar Door', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', NULL, NULL, ''),
-  (1779, 'The Village Of South Holland', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1780, 'THS-Gottlieb Memorial Dietary', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Racine', NULL, NULL, ''),
-  (1781, 'THS-MERCY MEDICAL CTR-DUBUQUE-H0050', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1782, 'Tinys Coffee Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, 'East Troy', NULL, NULL, ''),
-  (1783, 'UIC Catering & Conferences 49852003', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1784, 'VILLAGE GRNS OF WOODRIDGE GOLFCRSE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1785, 'Wanaki Golf Course', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1786, 'West Carroll Middle School (2)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1787, 'WEST HARVEY SCHOOL DIST 147', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1788, 'White Deer Golf Course', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1789, 'WurstBar Brady St', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Vernon Hills', NULL, NULL, ''),
-  (1790, 'Brett Anthony Foods', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1791, 'pavlou', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1792, 'Frank''s Pizza & Pub', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, ''),
-  (1793, 'Mr. Scribs', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, 'MI', NULL, 'lead from Kaufholds John Schneider ler Anthony oversite. Leftnkits'),
-  (1794, 'Avi Foodsystems', 'customer', 'C', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, 'Warren', 'OH', NULL, 'Mccrum and Sysco connect with Mike''s help.'),
-  (1795, 'TAR & Feather Concessions', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
+  (1563, 'PFG-Nashville', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, '607 N Main St', 'IN', NULL, 'dropped off kaufholds sample box he was looking to upgrade from Anchor ones
+'),
+  (1564, 'Timothy O''Tool', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Gurnee', 'IL', NULL, '
+'),
+  (1565, 'Cajun Grill', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, 'Gurnee', 'IL', NULL, '
+'),
+  (1566, 'Riverside Cafe', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'Gurnee', 'IL', NULL, '
+'),
+  (1567, 'Puff Shack BBQ', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, 'St. Charles', 'IL', NULL, '
+'),
+  (1568, 'El Puente', 'customer', 'C', 'dd94125f-f297-550c-9fc5-1ab4f156e1cb', NULL, NULL, NULL, 'st. Charles', NULL, NULL, '
+'),
+  (1569, 'Marz Brewery', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (1570, 'Logan 11 Bar', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (1571, 'Federales', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (1572, 'Mano a Mano', 'customer', 'C', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Chicago', 'IL', NULL, '
+'),
+  (1573, 'University Center MSU', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Lansing', 'MI', NULL, '
+'),
+  (1574, 'joes on jolly', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Lansing', 'MI', NULL, '
+'),
+  (1575, 'S. Abraham and sons', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, 'Grand Rapids', 'MI', NULL, '
+'),
+  (1576, 'Gun Lake Casino (Seed Data)', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1577, 'HORROCKS', 'prospect', 'A', 'db21b569-5553-5aa8-8cca-9f3b204bb8a6', NULL, NULL, NULL, 'lansing', 'MI', NULL, '
+'),
+  (1578, 'Bavarian Inn', 'customer', 'A', '54a274d9-ab46-5a59-b0d9-31a3999b9687', NULL, NULL, NULL, 'Frankenmuth', 'MI', NULL, '
+'),
+  (1579, 'Bagger Daves', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'grand Rapids', 'MI', NULL, '
+'),
+  (1580, 'One North', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1581, 'Main Street Romeo', 'customer', 'B', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'romeo', 'MI', NULL, '
+'),
+  (1582, 'Jayell BBq', 'prospect', 'B', 'f05b4ec6-3e1e-5483-9abc-ca7938d56acb', NULL, NULL, NULL, 'romeo', 'MI', NULL, '
+'),
+  (1583, 'GFS Saginaw', 'customer', 'A', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, 'saginaw', 'MI', NULL, '
+'),
+  (1584, 'Crown Plaza Lansing', 'customer', 'A', '4e25acfd-530e-59a3-b68c-d4e3ec9e2fd4', NULL, NULL, NULL, 'Lansing', 'MI', NULL, '
+'),
+  (1585, 'Shelby''s Trio', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, '
+'),
+  (1586, 'Pbody''s', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, '
+'),
+  (1587, 'Mr. Billy''s', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, '
+'),
+  (1588, 'Clarksville''s 3rd Base', 'customer', 'A', 'd257be96-640d-5204-a69b-d1101f6a8ea1', NULL, NULL, NULL, 'Clarksville', 'TN', NULL, '
+'),
+  (1589, 'Olga''s kitchen', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1590, 'Buddys Pizza', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1591, 'Baggers Dave', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1592, 'Fishbones Detroit', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1593, 'Zo''s Good Burger', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1594, 'Halo Burger', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1595, 'sweetwater tavern', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1596, 'leos coney island', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1597, 'big john steak and onion', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1598, 'jolly pumpkin', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1599, 'national coney island', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1600, 'bobcat bonnies', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1601, 'ram''s horn', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1602, 'the dirty shake', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1603, 'bobs big boy', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1604, 'nepantia cafe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1605, 'atlas foods', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1606, 'g&l wholesale', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1607, 'arena food service', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1608, 'sysco detroit', 'distributor', 'A', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'MI', NULL, '
+'),
+  (1609, 'Shogun Bistro BG', 'customer', 'C', '87dbea65-b127-5ef5-b451-87757411c1c4', NULL, NULL, NULL, NULL, 'KY', NULL, 'Will meet owner Ronny with Sales Rep to show Cheesecake Holiday wheel for 6 locations
+'),
+  (1610, 'The Army and Navy Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1611, 'The Park at Fourteenth', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1612, 'American Culinary Federation', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1613, 'American Frozen Food Institute', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1614, 'Biscottis', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1615, 'blackpearl hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1616, 'Driftwood Hospitality Management', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1617, 'Elior NA', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1618, 'Mena Catering', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1619, 'The Melting Pot', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1620, 'Troon - Esplanade Golf & Country Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1621, 'tryst lounge', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1622, 'Aramark Services, Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1623, 'ARCO Design/Build', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1624, 'gekko kitchen commissary inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1625, 'Landings Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1626, 'RaceTrac', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1627, 'Tandoori Pizza & Wing Co.', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1628, 'Army MWR', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1629, 'Bagel Miller', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1630, 'Eddie Merlots', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1631, 'Exmoor Country Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1632, 'Fireplace Inns, Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1633, 'Flavorista', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1634, 'R Whittingham Meat Corp', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1635, 'Ready Set Gourmet', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1636, 'Sakamoto Restaurant Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1637, 'School District U-46', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1638, 'Scooby Drew''s (Soon to Be) World Famous Pickles', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1639, 'SNAIL CAVIAR', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1640, 'The Metropolitan Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1641, 'Compass Community Living', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1642, 'Purdue Northwest', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1643, 'Tea Plus Poke', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1644, 'Texas Roadhouse', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1645, 'North Coast Seafoods', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1646, 'Sysco Foods', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1647, 'La Chow', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1648, 'Saval Foodservice', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1649, 'Beyond Juicery & Eatery', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1650, 'Coldbreak', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1651, 'Crowne Plaza Lansing', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1652, 'K&K Catering', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1653, 'Morrison Living', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1654, 'Stark Provisions', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1655, 'The Corner Social', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1656, 'Ts Food LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1657, 'Mocha Point Coffee Co.', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1658, 'Compass Group: Morrison Health', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1659, 'Levy Restaurants', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1660, 'los Tres Magueyes', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1661, 'UNC Rex Healthcare', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1662, 'NEARNG', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1663, 'Marriott Hanover', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1664, 'Fineline Settings', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1665, 'Lifeworks', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1666, 'Rochester Institute of Technology', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1667, 'Volcora', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1668, 'ARTISAN PIZZA CAFe', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1669, 'Audrey''s Avenue Kitchen & Bar', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1670, 'Boscoes', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1671, 'CuriosiTea Emporium LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1672, 'Station Square', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1673, 'Taste the World in Cincy LLC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1674, 'Hal Smith Restaurants', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1675, 'Coughlin''s Law', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1676, 'Fleet Landing', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1677, 'Real Food Restaurants Inc', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1678, 'Springdale Hall Club', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1679, 'Chowbus', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1680, 'Elior North America - Dining and Events', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1681, 'Embassy Suites San Antonio Riverwalk', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1682, 'Ka sushi', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1683, 'Legends / Dallas Cowboys', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1684, 'Agile Hospitality', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1685, 'JOINT EXPEDITIONARY BASE LITTLE CREEK', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1686, 'Macados', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1687, 'MACADO''S INC', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1688, 'Pig & Sam Restaurant Group', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1689, 'AJ''s Riverside', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1690, 'Fox Hollow Golf Course', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1691, 'Magpies / Fat Cat''s / Creekside Jack''s', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1692, 'Moran''s Pub', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1693, 'UPPER CRUST PIZZERIA & PUB', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NRA ANNASEA LEADS
+'),
+  (1694, 'I Dream of Falafel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1695, 'Country House Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1696, 'FROSTY DOGS', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1697, 'Village of Hoffman Estates', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1698, 'Silver Lake Restaurant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1699, 'Matajini mvp llc', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1700, 'N.Kotake,Inc', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1701, 'KT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1702, 'sip Wine Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1703, 'Imperial Surveillance', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1704, 'OCallaghan''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1705, 'Hailstorm Brewing Company', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1706, 'Trails Edge Brewing Co', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1707, 'Porky''s BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1708, 'Pine Valley Country Club', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1709, 'JOE''S GROUP', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1710, 'Carol''s Catering', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1711, 'Chef Jamie''s', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1712, 'Big Daddy''s BBQ', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1713, 'The River Merchant', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1714, 'Georgios Restaurants', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1715, 'HVYC', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1716, 'Captian D''s', 'prospect', 'C', '40f9cec9-9873-5753-a739-28ec534424bc', NULL, NULL, NULL, NULL, 'IL', NULL, 'NRA KAUFHOLDS
+'),
+  (1717, 'Hyatt Regency Salt Lake City', 'customer', 'C', '205d4566-2414-5e8d-9a10-c3c67d2fab00', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1718, 'Panos', 'distributor', 'C', '489a3a5c-282e-5665-a28b-b0d51d1a3398', NULL, NULL, NULL, NULL, 'IN', NULL, 'NRA KAUFHOLDS
+'),
+  (1719, 'Baraga County Memorial Hospital', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IN', NULL, 'NRA KAUFHOLDS
+'),
+  (1720, 'Gogebic Community College', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'IN', NULL, 'NRA KAUFHOLDS
+'),
+  (1721, 'Michigan Technological University', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'KY', NULL, 'NRA KAUFHOLDS
+'),
+  (1722, 'Helen Newberry Joy Hospital', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS
+'),
+  (1723, 'USF-CHICAGO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS
+'),
+  (1724, 'USF-STREATOR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS
+'),
+  (1725, 'USF-C&U', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, 'OH', NULL, 'NRA KAUFHOLDS
+'),
+  (1726, 'Adams Memorial Hospital', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1727, 'Premier Arts Academy', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1728, 'PFG-Western Suburbs', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1729, 'Gordon Foodservice', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1730, 'ABBOTT AP6D DEPT GE03', 'unknown', 'A', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1731, 'ABBVIE M1', 'unknown', 'A', NULL, NULL, NULL, NULL, 'North Chicago', NULL, NULL, '
+'),
+  (1732, 'AMERICAN ACCORD FOOD CORPORATION', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1733, 'Barnstormer''s Pizza', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Hoffman estates', NULL, NULL, '
+'),
+  (1734, 'Burlington Tap and Smokehouse', 'unknown', 'C', NULL, NULL, NULL, NULL, 'SPRINGFIELD', NULL, NULL, '
+'),
+  (1735, 'Cheers In Chesterton', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Burlington', NULL, NULL, '
+'),
+  (1736, 'Chicago Health Foods', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1737, 'Community Hospital Food Service', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1738, 'CORNER PUB & GRILL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1739, 'CRYSTAL VALLEY CATERING (Seed Data)', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Kankakee', NULL, NULL, '
+'),
+  (1740, 'Dabney & Co', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1741, 'DREAM PALACE BANQUET HALL', 'unknown', 'C', NULL, NULL, NULL, NULL, 'CLINTON', NULL, NULL, '
+'),
+  (1742, 'Driftless Social', 'unknown', 'C', NULL, NULL, NULL, NULL, 'CHICAGO', NULL, NULL, '
+'),
+  (1743, 'E I U- FOOD COURT', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1744, 'Elkhorn Area High School Culinary A', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Charleston', NULL, NULL, '
+'),
+  (1745, 'Elston Ave Food Co. 392959E', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1746, 'FM - Village at Mercy Creek', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1747, 'GEJA''S CAFE', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Peptone', NULL, NULL, '
+'),
+  (1748, 'HAIRY COW BREWING COMPANY', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Arlington Heights', NULL, NULL, '
+'),
+  (1749, 'HEARTLAND HUMAN CARE-SRV GILES CCR', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Hampshire', NULL, NULL, '
+'),
+  (1750, 'HSL Eau Claire', 'unknown', 'C', NULL, NULL, NULL, NULL, 'CHICAGO', NULL, NULL, '
+'),
+  (1751, 'HSL Muskego', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1752, 'IVY TECH-E CHICAGO', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1753, 'Kiddie Academy Of Oak Park', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1754, 'Lemuel Marcial', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1755, 'Lutherdale', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Ludington', NULL, NULL, '
+'),
+  (1756, 'MARK III RESTAURANT (THE)', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Homewood', NULL, NULL, '
+'),
+  (1757, 'Marrufo''s Tacos', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1758, 'MILWAUKEE BRAT HOUSE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1759, 'NIIPC- PRAIRIE KNOLLS MIDDLE SCHOOL', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Plymouth', NULL, NULL, '
+'),
+  (1760, 'NIIPC-JOSEPH E HILL ADMIN CENTER', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1761, 'OAKCREST DEKALB AREA RET CTR', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1762, 'Organic Life - Peoria High School', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1763, 'Palace Ent - Adventureland', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1764, 'Port of Peri Peri Villa Park IL', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1765, 'Quality Inn Bradley 367910E', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1766, 'Quindts Towne Lounge', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1767, 'RADER FAMILY FARM', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1768, 'Rockford Rivets', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1769, 'Rupley Elementary School', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1770, 'SAUSAGE KITCHEN', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1771, 'Science Of Spirituality', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1772, 'Something Special by Sherri', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Lisle', NULL, NULL, '
+'),
+  (1773, 'SPRING BROOK RESORT 69445E', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1774, 'Stussy''s Diner', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1775, 'Sure Stay Plus Hotel', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1776, 'Tandoor Char House', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1777, 'Taquero Mucho', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', NULL, NULL, '
+'),
+  (1778, 'The Cellar Door', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Chicago', NULL, NULL, '
+'),
+  (1779, 'The Village Of South Holland', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1780, 'THS-Gottlieb Memorial Dietary', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Racine', NULL, NULL, '
+'),
+  (1781, 'THS-MERCY MEDICAL CTR-DUBUQUE-H0050', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1782, 'Tinys Coffee Bar', 'unknown', 'C', NULL, NULL, NULL, NULL, 'East Troy', NULL, NULL, '
+'),
+  (1783, 'UIC Catering & Conferences 49852003', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1784, 'VILLAGE GRNS OF WOODRIDGE GOLFCRSE', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1785, 'Wanaki Golf Course', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1786, 'West Carroll Middle School (2)', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1787, 'WEST HARVEY SCHOOL DIST 147', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1788, 'White Deer Golf Course', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1789, 'WurstBar Brady St', 'unknown', 'C', NULL, NULL, NULL, NULL, 'Vernon Hills', NULL, NULL, '
+'),
+  (1790, 'Brett Anthony Foods', 'customer', 'A', '5cb20587-c143-540d-b242-c761fb4bd731', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1791, 'pavlou', 'customer', 'C', 'a2c94cf2-feac-5238-9102-28a65a3f1581', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1792, 'Frank''s Pizza & Pub', 'customer', 'C', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
+  (1793, 'Mr. Scribs', 'customer', 'A', '741cbb52-ed59-58a1-a8af-e9e89b9b0921', NULL, NULL, NULL, NULL, 'MI', NULL, 'lead from Kaufholds John Schneider ler Anthony oversite. Leftnkits
+'),
+  (1794, 'Avi Foodsystems', 'customer', 'C', 'ef5cdee6-2e42-5d1b-9d09-392e06a53b12', NULL, NULL, NULL, 'Warren', 'OH', NULL, 'Mccrum and Sysco connect with Mike''s help.
+'),
+  (1795, 'TAR & Feather Concessions', 'unknown', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '
+'),
   (1796, 'Kaufholds', 'principal', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1797, 'Frites Street', 'principal', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1798, 'Better Balance', 'principal', 'C', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
