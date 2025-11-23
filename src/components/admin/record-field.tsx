@@ -48,7 +48,7 @@ export const RecordField = <RecordType extends Record<string, any> = Record<stri
         <div
           className={cn(
             variant === "inline" ? "block min-w-50" : "text-xs",
-            "text-[color:var(--text-subtle)]"
+            "text-muted-foreground"
           )}
         >
           <FieldTitle label={label} source={source} resource={resource} isRequired={false} />

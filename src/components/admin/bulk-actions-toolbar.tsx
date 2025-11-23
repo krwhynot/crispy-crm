@@ -34,7 +34,7 @@ export const BulkActionsToolbar = ({
         <Button variant="ghost" className="has-[>svg]:px-0" onClick={handleUnselectAll}>
           <X />
         </Button>
-        <span className="text-sm text-[color:var(--text-subtle)]">
+        <span className="text-sm text-muted-foreground">
           <Translate i18nKey="ra.action.bulk_actions" options={{ smart_count: selectedIds.length }}>
             {selectedIds.length} rows selected
           </Translate>

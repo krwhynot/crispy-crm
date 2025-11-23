@@ -155,7 +155,7 @@ export const AutocompleteArrayInput = (
                 onBlur={() => setOpen(false)}
                 onFocus={() => setOpen(true)}
                 placeholder={placeholder}
-                className="ml-2 flex-1 bg-transparent outline-none placeholder:text-[color:var(--text-subtle)]"
+                className="ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
               />
             </div>
           </div>
