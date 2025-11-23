@@ -337,43 +337,47 @@
                   - text: Select contact
                   - img
                 - paragraph [ref=e363]: Select a contact OR organization
-                - paragraph [ref=e364]: Select a contact or organization before logging
-              - generic [ref=e365]:
-                - generic [ref=e366]: Organization *
-                - combobox "Organization *" [ref=e367] [cursor=pointer]:
-                  - text: Select organization
+              - generic [ref=e364]:
+                - generic [ref=e365]: Organization *
+                - combobox "Organization *" [ref=e366] [cursor=pointer]:
                   - img
-                - paragraph [ref=e368]: Select a contact OR organization
-              - generic [ref=e369]:
-                - generic [ref=e370]: Opportunity
-                - combobox "Opportunity" [ref=e371] [cursor=pointer]:
-                  - text: Select opportunity (optional)
+                - paragraph [ref=e367]: Select a contact OR organization
+              - generic [ref=e368]:
+                - generic [ref=e369]: Opportunity
+                - combobox "Opportunity" [ref=e370] [cursor=pointer]:
+                  - text: A Mclovin @ Muskegon Country Club
                   - img
-            - generic [ref=e372]:
-              - generic [ref=e373]: Notes
-              - textbox "Notes" [ref=e374]:
+            - generic [ref=e371]:
+              - generic [ref=e372]: Notes
+              - textbox "Notes" [ref=e373]:
                 - /placeholder: Summary of the interaction...
-                - text: E2E Cross-panel test 1763884905737
-            - generic [ref=e375]:
-              - generic [ref=e376]:
-                - generic [ref=e377]: Create follow-up task?
-                - switch "Create follow-up task?" [checked] [ref=e378] [cursor=pointer]
+                - text: E2E Cross-panel test 1763885671034
+            - generic [ref=e374]:
+              - generic [ref=e375]:
+                - generic [ref=e376]: Create follow-up task?
+                - switch "Create follow-up task?" [checked] [ref=e377] [cursor=pointer]
                 - checkbox [checked]
-              - generic [ref=e379]:
-                - generic [ref=e380]: Follow-up Date
-                - button "Follow-up Date" [ref=e381] [cursor=pointer]:
+              - generic [ref=e378]:
+                - generic [ref=e379]: Follow-up Date
+                - button "Follow-up Date" [ref=e380] [cursor=pointer]:
                   - img
                   - text: November 24th, 2025
-            - generic [ref=e382]:
-              - button "Cancel" [ref=e383] [cursor=pointer]
-              - generic [ref=e384]:
-                - button "Save & Close" [active] [ref=e385] [cursor=pointer]
-                - button "Save & New" [ref=e386] [cursor=pointer]
-  - contentinfo [ref=e387]:
-    - generic [ref=e389]:
-      - paragraph [ref=e390]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e391] [cursor=pointer]:
-        - img [ref=e392]
-        - generic [ref=e394]: Keyboard shortcuts
-  - region "Notifications alt+T"
+            - generic [ref=e381]:
+              - button "Cancel" [ref=e382] [cursor=pointer]
+              - generic [ref=e383]:
+                - button "Save & Close" [active] [ref=e384] [cursor=pointer]
+                - button "Save & New" [ref=e385] [cursor=pointer]
+  - contentinfo [ref=e386]:
+    - generic [ref=e388]:
+      - paragraph [ref=e389]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e390] [cursor=pointer]:
+        - img [ref=e391]
+        - generic [ref=e393]: Keyboard shortcuts
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e394]:
+        - button "Close toast" [ref=e395] [cursor=pointer]:
+          - img [ref=e396]
+        - img [ref=e400]
+        - generic [ref=e403]: Failed to log activity
 ```
