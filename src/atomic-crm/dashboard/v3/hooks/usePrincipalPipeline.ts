@@ -1,29 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { useCurrentSale } from "./useCurrentSale";
 import type { PrincipalPipelineRow } from "../types";
 
+// Stable empty array to avoid new reference creation on each render
+const EMPTY_PIPELINE: PrincipalPipelineRow[] = [];
+
 export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
   const dataProvider = useDataProvider();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
-  const [data, setData] = useState<PrincipalPipelineRow[]>([]);
+  const [data, setData] = useState<PrincipalPipelineRow[]>(EMPTY_PIPELINE);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
+  // Track previous filter state to avoid unnecessary resets
+  const prevFilterStateRef = useRef<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       // Wait for salesId to load if "my principals only" filter is active
       if (filters?.myPrincipalsOnly && salesIdLoading) {
-        setLoading(true);
+        setLoading((prev) => prev ? prev : true);
         return;
       }
 
       // If "my principals only" but no salesId, show empty
-      if (filters?.myPrincipalsOnly && !salesId) {
-        setData([]);
+      const currentFilterState = filters?.myPrincipalsOnly && !salesId ? "empty" : null;
+      if (currentFilterState === "empty") {
+        // Only update if filter state changed
+        if (prevFilterStateRef.current !== "empty") {
+          setData(EMPTY_PIPELINE);
+          prevFilterStateRef.current = "empty";
+        }
         setLoading(false);
         return;
       }
+      prevFilterStateRef.current = null;
 
       try {
         setLoading(true);
