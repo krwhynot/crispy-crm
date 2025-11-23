@@ -68,25 +68,23 @@ jobs:
           cache: npm
 
       - name: 📥 Install dependencies
-        run: npm ci
+        run: npm ci # Use 'ci' for faster, more reliable builds in CI
 
       - name: 🔒 Run npm audit
         run: |
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "🔒 NPM Security Audit"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          npm audit --audit-level=high --production
-          audit_exit=$?
-
-          if [ $audit_exit -eq 0 ]; then
+          
+          # Run audit and capture output, but don't exit on failure immediately
+          if npm_audit_output=$(npm audit --audit-level=high --production --json); then
             echo "✅ No high or critical vulnerabilities found"
           else
             echo "❌ High or critical vulnerabilities detected"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "📋 Full audit report:"
-            npm audit --production --json > npm-audit-report.json
-            npm audit --production
-            exit $audit_exit
+            echo "$npm_audit_output" > npm-audit-report.json
+            npm audit --audit-level=high --production # Print human-readable report to logs
+            exit 1
           fi
 
       - name: 📊 Upload npm audit results
