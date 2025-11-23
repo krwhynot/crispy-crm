@@ -596,7 +596,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Wait for popover to close
+      // Tab away from combobox to trigger blur and close the CMDK popover
+      await authenticatedPage.keyboard.press("Tab");
       await authenticatedPage.waitForTimeout(300);
 
       // Try to submit
@@ -639,8 +640,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
-      await dashboard.getNotesTextarea().click();
+      // Tab away from combobox to trigger blur and close the CMDK popover
+      await authenticatedPage.keyboard.press("Tab");
       await authenticatedPage.waitForTimeout(300);
 
       await dashboard.getSaveAndCloseButton().click();
@@ -709,8 +710,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
-      await dashboard.getNotesTextarea().click();
+      // Tab away from combobox to trigger blur and close the CMDK popover
+      await authenticatedPage.keyboard.press("Tab");
       await authenticatedPage.waitForTimeout(300);
 
       // Enable follow-up with date
@@ -754,8 +755,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
-      await dashboard.getNotesTextarea().click();
+      // Tab away from combobox to trigger blur and close the CMDK popover
+      await authenticatedPage.keyboard.press("Tab");
       await authenticatedPage.waitForTimeout(300);
 
       await dashboard.getSaveAndNewButton().click();
@@ -857,8 +858,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
-      await dashboard.getNotesTextarea().click();
+      // Tab away from combobox to trigger blur and close the CMDK popover
+      await authenticatedPage.keyboard.press("Tab");
       await authenticatedPage.waitForTimeout(300);
 
       await dashboard.enableFollowUp();

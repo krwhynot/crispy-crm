@@ -491,10 +491,40 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Select organization from combobox
+   * Uses keyboard navigation to reliably close the CMDK popover
    */
   async selectOrganization(orgName: string): Promise<void> {
     await this.getOrganizationCombobox().click();
     await this.page.getByRole("option", { name: orgName }).click();
+    // CMDK popovers don't auto-close on selection, blur the input to close
+    await this.dismissComboboxPopover();
+  }
+
+  /**
+   * Select first organization from combobox using keyboard
+   * Uses ArrowDown + Enter for reliable selection
+   */
+  async selectFirstOrganization(): Promise<void> {
+    await this.getOrganizationCombobox().click();
+    await this.page.keyboard.press("ArrowDown");
+    await this.page.keyboard.press("Enter");
+    // CMDK popovers don't auto-close on selection, blur the input to close
+    await this.dismissComboboxPopover();
+  }
+
+  /**
+   * Dismiss any open CMDK combobox popover by blurring the active element
+   * This is necessary because CMDK doesn't auto-close on Enter selection
+   */
+  async dismissComboboxPopover(): Promise<void> {
+    // Use JavaScript to blur the active element which will close the popover
+    await this.page.evaluate(() => {
+      const activeElement = document.activeElement as HTMLElement;
+      if (activeElement) {
+        activeElement.blur();
+      }
+    });
+    await this.page.waitForTimeout(200);
   }
 
   /**
