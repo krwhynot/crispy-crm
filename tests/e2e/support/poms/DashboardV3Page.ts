@@ -505,25 +505,23 @@ export class DashboardV3Page extends BasePage {
    * Uses ArrowDown + Enter for reliable selection
    */
   async selectFirstOrganization(): Promise<void> {
-    await this.getOrganizationCombobox().click();
+    const combobox = this.getOrganizationCombobox();
+    await combobox.click();
     await this.page.keyboard.press("ArrowDown");
     await this.page.keyboard.press("Enter");
-    // CMDK popovers don't auto-close on selection, blur the input to close
+    // Wait for the combobox to show a selected value (not placeholder)
+    await this.page.waitForTimeout(300);
+    // CMDK popovers don't auto-close on selection, click on dashboard header to close
     await this.dismissComboboxPopover();
   }
 
   /**
-   * Dismiss any open CMDK combobox popover by blurring the active element
-   * This is necessary because CMDK doesn't auto-close on Enter selection
+   * Dismiss any open CMDK combobox popover by pressing Escape
+   * This is the most reliable way to close CMDK/Radix popovers
    */
   async dismissComboboxPopover(): Promise<void> {
-    // Use JavaScript to blur the active element which will close the popover
-    await this.page.evaluate(() => {
-      const activeElement = document.activeElement as HTMLElement;
-      if (activeElement) {
-        activeElement.blur();
-      }
-    });
+    // Escape is the standard way to close Radix popovers
+    await this.page.keyboard.press("Escape");
     await this.page.waitForTimeout(200);
   }
 

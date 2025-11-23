@@ -591,14 +591,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectActivityType("Call");
       await dashboard.selectOutcome("Connected");
 
-      // Select organization using keyboard navigation (avoids viewport scroll issues)
-      const orgCombobox = dashboard.getOrganizationCombobox();
-      await orgCombobox.click();
-      await authenticatedPage.keyboard.press("ArrowDown");
-      await authenticatedPage.keyboard.press("Enter");
-      // Tab away from combobox to trigger blur and close the CMDK popover
-      await authenticatedPage.keyboard.press("Tab");
-      await authenticatedPage.waitForTimeout(300);
+      // Select organization using POM method (handles CMDK popover dismissal)
+      await dashboard.selectFirstOrganization();
 
       // Try to submit
       await dashboard.getSaveAndCloseButton().click();
@@ -635,14 +629,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectOutcome("Completed");
       await dashboard.fillNotes(uniqueNotes);
 
-      // Select organization using keyboard navigation
-      const orgCombobox = dashboard.getOrganizationCombobox();
-      await orgCombobox.click();
-      await authenticatedPage.keyboard.press("ArrowDown");
-      await authenticatedPage.keyboard.press("Enter");
-      // Tab away from combobox to trigger blur and close the CMDK popover
-      await authenticatedPage.keyboard.press("Tab");
-      await authenticatedPage.waitForTimeout(300);
+      // Select organization using POM method (handles CMDK popover dismissal)
+      await dashboard.selectFirstOrganization();
 
       await dashboard.getSaveAndCloseButton().click();
 
@@ -705,14 +693,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectOutcome("Connected");
       await dashboard.fillNotes(`Test with follow-up ${timestamp}`);
 
-      // Select organization using keyboard navigation
-      const orgCombobox = dashboard.getOrganizationCombobox();
-      await orgCombobox.click();
-      await authenticatedPage.keyboard.press("ArrowDown");
-      await authenticatedPage.keyboard.press("Enter");
-      // Tab away from combobox to trigger blur and close the CMDK popover
-      await authenticatedPage.keyboard.press("Tab");
-      await authenticatedPage.waitForTimeout(300);
+      // Select organization using POM method (handles CMDK popover dismissal)
+      await dashboard.selectFirstOrganization();
 
       // Enable follow-up with date
       await dashboard.enableFollowUp();
@@ -750,14 +732,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectOutcome("Completed");
       await dashboard.fillNotes("Test Save & New");
 
-      // Select organization using keyboard navigation
-      const orgCombobox = dashboard.getOrganizationCombobox();
-      await orgCombobox.click();
-      await authenticatedPage.keyboard.press("ArrowDown");
-      await authenticatedPage.keyboard.press("Enter");
-      // Tab away from combobox to trigger blur and close the CMDK popover
-      await authenticatedPage.keyboard.press("Tab");
-      await authenticatedPage.waitForTimeout(300);
+      // Select organization using POM method (handles CMDK popover dismissal)
+      await dashboard.selectFirstOrganization();
 
       await dashboard.getSaveAndNewButton().click();
 
@@ -853,14 +829,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.selectOutcome("Connected");
       await dashboard.fillNotes(`E2E Cross-panel test ${timestamp}`);
 
-      // Select organization using keyboard navigation
-      const orgCombobox = dashboard.getOrganizationCombobox();
-      await orgCombobox.click();
-      await authenticatedPage.keyboard.press("ArrowDown");
-      await authenticatedPage.keyboard.press("Enter");
-      // Tab away from combobox to trigger blur and close the CMDK popover
-      await authenticatedPage.keyboard.press("Tab");
-      await authenticatedPage.waitForTimeout(300);
+      // Select organization using POM method (handles CMDK popover dismissal)
+      await dashboard.selectFirstOrganization();
 
       await dashboard.enableFollowUp();
       const tomorrow = new Date();
