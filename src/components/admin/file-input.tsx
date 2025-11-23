@@ -184,7 +184,7 @@ export const FileInput = (props: FileInputProps) => {
             "hover:border-sidebar-ring focus:outline-none",
             disabled || readOnly
               ? "bg-muted cursor-not-allowed"
-              : "bg-muted text-[color:var(--text-subtle)] cursor-pointer"
+              : "bg-muted text-muted-foreground cursor-pointer"
           ),
         })}
       >

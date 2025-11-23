@@ -54,8 +54,9 @@ export function PipelineDrillDownSheet({
 
   const getStageColor = (stage: string): 'default' | 'secondary' | 'destructive' | 'outline' => {
     const stageLower = stage.toLowerCase();
-    if (stageLower.includes('won') || stageLower.includes('closed')) return 'default';
+    // Check for "lost" first since "Closed Lost" contains both "closed" and "lost"
     if (stageLower.includes('lost')) return 'destructive';
+    if (stageLower.includes('won') || stageLower.includes('closed')) return 'default';
     if (stageLower.includes('negotiat') || stageLower.includes('proposal')) return 'secondary';
     return 'outline';
   };
