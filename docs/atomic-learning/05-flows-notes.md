@@ -141,18 +141,27 @@ getIdentity: async () => {
 
 ```typescript
 // activitySchema.ts
-export const activityLogSchema = z.object({
-  activityType: z.enum(['Call', 'Email', 'Meeting', 'Follow-up', 'Note']),
-  outcome: z.enum(['Connected', 'Left Voicemail', 'No Answer', 'Completed', 'Rescheduled']),
-  duration: z.number().optional(),
-  contactId: z.number().optional(),
-  organizationId: z.number().optional(),
-  opportunityId: z.number().optional(),
-  notes: z.string().default(''),
-  date: z.date().default(() => new Date()),
-  createFollowUp: z.boolean().default(false),
-  followUpDate: z.date().optional(),
-});
+export const activityLogSchema = z
+  .object({
+    activityType: z.enum(['Call', 'Email', 'Meeting', 'Follow-up', 'Note']),
+    outcome: z.enum(['Connected', 'Left Voicemail', 'No Answer', 'Completed', 'Rescheduled']),
+    date: z.date().default(() => new Date()),
+    duration: z.number().min(0).optional(),
+    contactId: z.number().optional(),
+    organizationId: z.number().optional(),
+    opportunityId: z.number().optional(),
+    notes: z.string().min(1, 'Notes are required'),
+    createFollowUp: z.boolean().default(false),
+    followUpDate: z.date().optional(),
+  })
+  .refine((data) => data.contactId || data.organizationId, {
+    message: 'Select a contact or organization before logging',
+    path: ['contactId'],
+  })
+  .refine((data) => !data.createFollowUp || data.followUpDate, {
+    message: 'Follow-up date is required when creating a follow-up task',
+    path: ['followUpDate'],
+  });
 
 // Form setup
 const form = useForm<ActivityLogInput>({
@@ -177,7 +186,7 @@ INSERT INTO activities (
   organization_id,
   opportunity_id,
   follow_up_required,
-  follow_up_date,
+  follow_up_date,      -- stored as YYYY-MM-DD string
   created_by          -- sales_id of current user
 )
 ```
@@ -199,7 +208,8 @@ INSERT INTO tasks (
 
 ### What I Learned
 
-- `schema.partial().parse({})` generates default values from Zod schema
+- Zod refinements enforce "contact OR organization" and require notes > 0 chars
+- `schema.partial().parse({})` still seeds default values for the form
 - The "Save & New" pattern passes `closeAfterSave = false` to keep form open
 - Activity logging creates two records when follow-up is enabled
 - Contact selection auto-fills organization (smart UX)
@@ -297,17 +307,9 @@ const withStatus = tasks.map(task => {
    └── This week vs last week activity
    └── Momentum indicator (increasing/decreasing/steady/stale)
 
-3. User clicks table row
-   └── TableRow className="cursor-pointer"
-   └── onClick → navigate to opportunity list filtered by principal
-
-4. Opportunity list displays
-   └── OpportunityList (Kanban board)
-   └── Filtered by principal_id
-
-5. User clicks opportunity card
-   └── Navigate to /opportunities/:id (Edit page)
-   └── Or opens detail slide-over
+3. (Future enhancement) User clicks table row
+   └── UI already uses `cursor-pointer`, but no handler is wired up yet
+   └── Planned behavior: navigate to OpportunityList filtered by that principal
 ```
 
 ### Key Files Involved
@@ -317,7 +319,7 @@ const withStatus = tasks.map(task => {
 | Organism | `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx` | Table display |
 | Hook | `src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts` | Data fetching |
 | Database | `principal_pipeline_summary` view | Pre-aggregated metrics |
-| Page | `src/atomic-crm/opportunities/List.tsx` | Kanban board |
+| (Future) Page | `src/atomic-crm/opportunities/OpportunityList.tsx` | Target for row navigation |
 
 ### Database View
 
@@ -346,7 +348,7 @@ GROUP BY p.id;
 
 - Database views pre-aggregate complex metrics (faster than N+1 queries)
 - Momentum is calculated by comparing 7-day windows
-- Table rows can be clickable with `cursor-pointer` + `onClick`
+- Row navigation still needs wiring despite the clickable styling
 - Principal → Customer → Opportunity is the key hierarchy in this CRM
 
 ---

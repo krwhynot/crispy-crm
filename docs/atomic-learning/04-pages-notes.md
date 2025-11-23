@@ -6,7 +6,7 @@ Pages assemble organisms, molecules, and atoms into full screens. They:
 - Handle routing and navigation
 - Manage page-level state (if any)
 
-> **Key insight:** This project uses **React Admin** which provides automatic CRUD pages for resources. Custom pages are in `src/atomic-crm/dashboard/`.
+> **Key insight:** This project uses **React Admin** which provides automatic CRUD pages for resources. Custom pages now live exclusively under `src/atomic-crm/dashboard/v3/`, with the root shell in `src/atomic-crm/root/`.
 
 ---
 
@@ -27,7 +27,7 @@ Pages assemble organisms, molecules, and atoms into full screens. They:
   layout={Layout}                  // App shell (sidebar, header)
   loginPage={StartPage}            // Login entry point
   i18nProvider={i18nProvider}      // Internationalization
-  dashboard={() => <PrincipalDashboardV3 />}  // Default dashboard
+  dashboard={() => <PrincipalDashboardV3 />}  // Default (and only) dashboard
   requireAuth
 />
 ```
@@ -42,11 +42,14 @@ Pages assemble organisms, molecules, and atoms into full screens. They:
 
 <CustomRoutes>
   {/* Authenticated routes with layout */}
-  <Route path="/dashboard" element={<PrincipalDashboard />} />
-  <Route path="/dashboard-v2" element={<PrincipalDashboardV2 />} />
-  <Route path="/dashboard-v3" element={<PrincipalDashboardV3 />} />
   <Route path="/settings" element={<SettingsPage />} />
   <Route path="/reports" element={<ReportsPage />} />
+  {/* Legacy /:id/show routes now redirect to ?view=:id to open slide-overs */}
+  <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
+  <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />
+  <Route path="/products/:id/show" element={<ProductShowRedirect />} />
+  <Route path="/organizations/:id/show" element={<OrganizationShowRedirect />} />
+  <Route path="/opportunities/:id/show" element={<OpportunityShowRedirect />} />
 </CustomRoutes>
 ```
 
@@ -162,42 +165,20 @@ const handleLayoutChange = (newSizes: number[]) => {
 
 ---
 
-### `PrincipalDashboardV2` (Legacy) – src/atomic-crm/dashboard/v2/PrincipalDashboardV2.tsx
-
-**Route:** `/dashboard-v2`
-
-**Layout:** Sidebar + 3-column resizable
-
-**Organisms composed:**
-- `FiltersSidebar` – Collapsible left sidebar
-- `OpportunitiesHierarchy` – Tree view of opportunities
-- `TasksPanel` – Task list with grouping modes
-- `QuickLogger` – Activity logging
-- `RightSlideOver` – Detail panel (40vw)
-
-**Special features:**
-- Keyboard shortcuts (/, 1-3, H, Esc)
-- CSS Grid with sidebar collapse animation
-- Filter state persistence via `usePrefs`
-
----
-
 ## Resource Pages (React Admin Generated)
 
 React Admin automatically generates CRUD pages for each `<Resource>`. The resource modules export:
 
 ```typescript
 // src/atomic-crm/contacts/index.ts
-const List = React.lazy(() => import("./List"));
-const Show = React.lazy(() => import("./Show"));
-const Edit = React.lazy(() => import("./Edit"));
-const Create = React.lazy(() => import("./Create"));
+const ContactList = React.lazy(() => import("./ContactList"));
+const ContactEdit = React.lazy(() => import("./ContactEdit"));
+const ContactCreate = React.lazy(() => import("./ContactCreate"));
 
 export default {
-  list: List,
-  show: Show,
-  edit: Edit,
-  create: Create,
+  list: ContactList,
+  edit: ContactEdit,
+  create: ContactCreate,
   recordRepresentation: (record) => record.name,
 };
 ```
@@ -206,8 +187,8 @@ export default {
 
 | Page | Route | Purpose |
 |------|-------|---------|
-| List | `/contacts` | Searchable table with filters |
-| Show | `/contacts/:id/show` | Read-only detail view |
+| List | `/contacts` | Searchable table with filters + slide-over detail (`?view=:id`) |
+| Detail slide-over | `/contacts?view=:id` | Inline read-only view controlled by query param |
 | Edit | `/contacts/:id` | Form to update record |
 | Create | `/contacts/create` | Form to create new record |
 
@@ -320,48 +301,32 @@ const { opportunityStages, taskTypes } = useConfiguration();
 
 ## Routing Architecture
 
-### Route Hierarchy
+### Route Hierarchy (Current)
 
 ```
 /                      → PrincipalDashboardV3 (default)
-/dashboard             → PrincipalDashboard (legacy)
-/dashboard-v2          → PrincipalDashboardV2 (legacy)
-/dashboard-v3          → PrincipalDashboardV3
-/contacts              → ContactList
+/contacts              → ContactList (+ ?view=:id slide-over)
 /contacts/create       → ContactCreate
 /contacts/:id          → ContactEdit
-/contacts/:id/show     → Redirect to /contacts?view=:id
-/opportunities         → OpportunityList (Kanban)
+/opportunities         → OpportunityList
 /tasks                 → TaskList
 /reports               → ReportsPage
 /settings              → SettingsPage
 /login                 → StartPage
 /forgot-password       → ForgotPasswordPage
 /set-password          → SetPasswordPage
+/:resource/:id/show    → Redirect → /:resource?view=:id
 ```
-
-### Route Groups
-
-| Group | Layout | Auth Required |
-|-------|--------|---------------|
-| Dashboard | Full layout | Yes |
-| Resources | Full layout | Yes |
-| Auth | No layout | No |
 
 ---
 
 ## Key Learnings
 
-1. **React Admin handles resource pages** – You define List/Show/Edit/Create, it generates routes
-
+1. **React Admin handles resource pages** – Lists/Edit/Create plus query-param-driven slide-overs replace the old Show components
 2. **Custom pages use CustomRoutes** – Two variants: with layout (`<CustomRoutes>`) and without (`<CustomRoutes noLayout>`)
-
 3. **Dashboard is composable** – Just a container that arranges organisms
-
-4. **Layout persistence** – Use localStorage for user preferences (panel sizes, sidebar state)
-
+4. **Layout persistence** – Use localStorage for user preferences (panel sizes)
 5. **Lazy loading** – Use `React.lazy()` for code splitting
-
 6. **Error boundaries** – Wrap complex components to prevent full-page crashes
 
 ---
@@ -372,6 +337,5 @@ const { opportunityStages, taskTypes } = useConfiguration();
 - [x] `PrincipalDashboardV3.tsx`
 - [x] React Admin resource page pattern
 - [x] `StartPage.tsx`
-- [ ] `PrincipalDashboardV2.tsx`
 - [ ] `SettingsPage.tsx`
 - [ ] `ReportsPage.tsx`
