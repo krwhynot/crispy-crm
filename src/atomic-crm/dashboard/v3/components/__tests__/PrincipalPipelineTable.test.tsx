@@ -22,9 +22,22 @@ vi.mock('../../hooks/usePrincipalPipeline', () => ({
   }),
 }));
 
+// Mock the usePrincipalOpportunities hook (used by PipelineDrillDownSheet)
+vi.mock('../../hooks/usePrincipalOpportunities', () => ({
+  usePrincipalOpportunities: () => ({
+    opportunities: [],
+    loading: false,
+    error: null,
+  }),
+}));
+
 describe('PrincipalPipelineTable', () => {
   it('should render table headers correctly', () => {
-    render(<PrincipalPipelineTable />);
+    render(
+      <MemoryRouter>
+        <PrincipalPipelineTable />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText('Pipeline by Principal')).toBeInTheDocument();
     expect(screen.getByText('Track opportunity momentum across your customer accounts')).toBeInTheDocument();
@@ -34,7 +47,11 @@ describe('PrincipalPipelineTable', () => {
   });
 
   it('should apply premium hover effects class', () => {
-    const { container } = render(<PrincipalPipelineTable />);
+    const { container } = render(
+      <MemoryRouter>
+        <PrincipalPipelineTable />
+      </MemoryRouter>
+    );
     const rows = container.querySelectorAll('.table-row-premium');
     expect(rows.length).toBeGreaterThan(0);
   });

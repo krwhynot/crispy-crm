@@ -2,7 +2,7 @@
 
 Molecules combine 2-5 atoms into reusable patterns. They have a single purpose but are more complex than atoms.
 
-> **Key insight:** In this project, molecules often live inside organism files as internal components, or in dedicated files under `src/atomic-crm/dashboard/`.
+> **Key insight:** In this project, molecules often live inside organism files as internal components, or in dedicated files under `src/atomic-crm/dashboard/v3/components/`.
 
 ---
 
@@ -115,51 +115,6 @@ TaskItem data → Icon selection → Badge variant → Checkbox handler
 ```
 
 **Key technique:** Uses `flex-1` on middle section to push action buttons to the right.
-
----
-
-### `PriorityIndicator` – src/atomic-crm/dashboard/PriorityIndicator.tsx
-
-**What it does:** Visual indicator showing attention level (high/medium/low) based on task and activity data.
-
-**Atoms used:**
-- Styled `<div>` with dynamic classes
-- Emoji icons for quick visual recognition
-
-**Business logic (pure function):**
-```typescript
-function calculatePriority(principal: PrincipalData): Priority {
-  // HIGH: Overdue tasks OR low activity this week (< 3)
-  // MEDIUM: Tasks due in next 48 hours
-  // LOW: Everything on track
-}
-```
-
-**Configuration object pattern:**
-```typescript
-const priorityConfig = {
-  high: {
-    bgColor: 'bg-destructive/10',
-    borderColor: 'border-destructive/30',
-    icon: '⚠️',
-    label: 'Needs attention'
-  },
-  medium: {
-    bgColor: 'bg-warning/10',
-    borderColor: 'border-warning',
-    icon: '⚡',
-    label: 'Tasks due soon'
-  },
-  low: {
-    bgColor: 'bg-success/10',
-    borderColor: 'border-success',
-    icon: '✅',
-    label: 'On track'
-  }
-};
-```
-
-**Key technique:** Separates calculation logic from presentation. The `calculatePriority` function is a pure function that can be unit tested independently.
 
 ---
 
@@ -314,15 +269,14 @@ const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
 
 5. **Separation of concerns** – Container (manages state) vs. Presenter (displays data)
 
+> Legacy molecules such as `PriorityIndicator`, `DashboardWidget`, and `PrincipalCardSkeleton` now live in `archive/dashboard` and are no longer part of the active V3 dashboard. Reference them only if you are studying the historical implementations.
+
 ---
 
 ## Study Checklist
 
 - [x] `TaskGroup.tsx`
 - [x] `TaskItemComponent` (in TasksPanel.tsx)
-- [x] `PriorityIndicator.tsx`
 - [x] `QuickLoggerPanel.tsx`
 - [x] Loading state pattern
 - [x] Error state pattern
-- [ ] `DashboardWidget.tsx`
-- [ ] `PrincipalCardSkeleton.tsx`
