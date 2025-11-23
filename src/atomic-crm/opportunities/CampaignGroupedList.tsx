@@ -192,7 +192,7 @@ export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps)
                                       }
                                       className={
                                         opp.priority === "high"
-                                          ? "border-transparent bg-[var(--warning-default)] text-white"
+                                          ? "border-transparent bg-warning text-warning-foreground"
                                           : "text-xs"
                                       }
                                     >

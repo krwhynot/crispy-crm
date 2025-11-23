@@ -40,7 +40,7 @@ const Header = () => {
             <Link to="/" className="flex items-center gap-2 text-secondary-foreground no-underline">
               <img className="[.light_&]:hidden h-8" src={darkModeLogo} alt={title} />
               <div
-                className="[.dark_&]:hidden h-8 w-32 bg-[var(--brand-700)]"
+                className="[.dark_&]:hidden h-8 w-32 bg-primary"
                 style={{
                   WebkitMaskImage: `url(${lightModeLogo})`,
                   maskImage: `url(${lightModeLogo})`,

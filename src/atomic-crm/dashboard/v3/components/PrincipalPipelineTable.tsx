@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,10 +19,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from 'lucide-react';
 import type { PrincipalPipelineRow } from '../types';
 import { usePrincipalPipeline } from '../hooks/usePrincipalPipeline';
+import { PipelineDrillDownSheet } from './PipelineDrillDownSheet';
 
 export function PrincipalPipelineTable() {
   const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(false);
+  const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(null);
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
+
+  const handleRowClick = useCallback((row: PrincipalPipelineRow) => {
+    setSelectedPrincipal({ id: row.id, name: row.name });
+  }, []);
+
+  const handleCloseSheet = useCallback(() => {
+    setSelectedPrincipal(null);
+  }, []);
+
   const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
     switch (momentum) {
       case 'increasing':
@@ -115,7 +126,20 @@ export function PrincipalPipelineTable() {
           </TableHeader>
           <TableBody>
             {data.map((row) => (
-              <TableRow key={row.id} className="table-row-premium cursor-pointer">
+              <TableRow
+                key={row.id}
+                className="table-row-premium cursor-pointer"
+                onClick={() => handleRowClick(row)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleRowClick(row);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`View opportunities for ${row.name}`}
+              >
                 <TableCell className="font-medium">{row.name}</TableCell>
                 <TableCell className="text-right">
                   <div className="font-semibold">{row.totalPipeline}</div>
@@ -158,6 +182,14 @@ export function PrincipalPipelineTable() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Drill-Down Sheet */}
+      <PipelineDrillDownSheet
+        principalId={selectedPrincipal?.id ?? null}
+        principalName={selectedPrincipal?.name ?? ''}
+        isOpen={selectedPrincipal !== null}
+        onClose={handleCloseSheet}
+      />
     </div>
   );
 }
