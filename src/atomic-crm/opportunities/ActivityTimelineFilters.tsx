@@ -44,7 +44,11 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
     pagination: { page: 1, perPage: 100 },
   });
 
+  // Track previous filters to avoid infinite loops from object reference changes
+  const previousFiltersRef = useRef<Record<string, any>>({});
+
   // Build filter object whenever state changes
+  // Only call onFiltersChange when filters actually change (deep comparison)
   React.useEffect(() => {
     const filters: Record<string, any> = {};
 
@@ -75,7 +79,11 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
       filters.is_stage_change = true;
     }
 
-    onFiltersChange(filters);
+    // Only update parent if filters actually changed (prevents infinite loop)
+    if (!isEqual(filters, previousFiltersRef.current)) {
+      previousFiltersRef.current = filters;
+      onFiltersChange(filters);
+    }
   }, [selectedTypes, dateFrom, dateTo, selectedUsers, showStageChangesOnly, onFiltersChange]);
 
   const handleTypeToggle = (type: string) => {
