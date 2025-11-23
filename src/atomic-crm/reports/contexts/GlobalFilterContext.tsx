@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { subDays } from 'date-fns';
+import type { ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { subDays } from "date-fns";
 
 export interface GlobalFilters {
   dateRange: {
@@ -26,7 +26,7 @@ const defaultFilters: GlobalFilters = {
 
 const GlobalFilterContext = createContext<GlobalFilterContextValue | undefined>(undefined);
 
-const STORAGE_KEY = 'reports.globalFilters';
+const STORAGE_KEY = "reports.globalFilters";
 
 export function GlobalFilterProvider({ children }: { children: ReactNode }) {
   const [filters, setFiltersState] = useState<GlobalFilters>(() => {
@@ -71,7 +71,7 @@ export function GlobalFilterProvider({ children }: { children: ReactNode }) {
 export function useGlobalFilters() {
   const context = useContext(GlobalFilterContext);
   if (!context) {
-    throw new Error('useGlobalFilters must be used within GlobalFilterProvider');
+    throw new Error("useGlobalFilters must be used within GlobalFilterProvider");
   }
   return context;
 }

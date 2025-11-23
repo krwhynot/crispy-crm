@@ -1,17 +1,17 @@
-import { TargetIcon, Users, Building2, Package, Activity } from 'lucide-react';
-import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
-import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
-import { OpportunitySlideOverDetailsTab } from './slideOverTabs/OpportunitySlideOverDetailsTab';
-import { OpportunityContactsTab } from './slideOverTabs/OpportunityContactsTab';
-import { OpportunityOrganizationsTab } from './slideOverTabs/OpportunityOrganizationsTab';
-import { OpportunityProductsTab } from './slideOverTabs/OpportunityProductsTab';
-import { OpportunityActivitiesTab } from './slideOverTabs/OpportunityActivitiesTab';
+import { TargetIcon, Users, Building2, Package, Activity } from "lucide-react";
+import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
+import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
+import { OpportunitySlideOverDetailsTab } from "./slideOverTabs/OpportunitySlideOverDetailsTab";
+import { OpportunityContactsTab } from "./slideOverTabs/OpportunityContactsTab";
+import { OpportunityOrganizationsTab } from "./slideOverTabs/OpportunityOrganizationsTab";
+import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
+import { OpportunityActivitiesTab } from "./slideOverTabs/OpportunityActivitiesTab";
 
 interface OpportunitySlideOverProps {
   recordId: number | null;
   isOpen: boolean;
   onClose: () => void;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle: () => void;
 }
 
@@ -24,32 +24,32 @@ export function OpportunitySlideOver({
 }: OpportunitySlideOverProps) {
   const tabs: TabConfig[] = [
     {
-      key: 'details',
-      label: 'Details',
+      key: "details",
+      label: "Details",
       component: OpportunitySlideOverDetailsTab,
       icon: TargetIcon,
     },
     {
-      key: 'contacts',
-      label: 'Contacts',
+      key: "contacts",
+      label: "Contacts",
       component: OpportunityContactsTab,
       icon: Users,
     },
     {
-      key: 'organizations',
-      label: 'Organizations',
+      key: "organizations",
+      label: "Organizations",
       component: OpportunityOrganizationsTab,
       icon: Building2,
     },
     {
-      key: 'products',
-      label: 'Products',
+      key: "products",
+      label: "Products",
       component: OpportunityProductsTab,
       icon: Package,
     },
     {
-      key: 'activities',
-      label: 'Activities',
+      key: "activities",
+      label: "Activities",
       component: OpportunityActivitiesTab,
       icon: Activity,
     },

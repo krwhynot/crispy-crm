@@ -109,7 +109,7 @@ test.describe("List Layout - Design System", () => {
 
       // URL should have query param, not /show route
       const url = authenticatedPage.url();
-      expect(url).not.toContain('/show');
+      expect(url).not.toContain("/show");
       expect(url).toMatch(/\?view=\d+/);
     });
   });
@@ -327,7 +327,9 @@ test.describe("List Layout - Design System", () => {
       await listPage.navigate();
 
       // Check filter buttons
-      const filterButtons = authenticatedPage.getByRole('button').filter({ hasText: /filter|clear|apply/i });
+      const filterButtons = authenticatedPage
+        .getByRole("button")
+        .filter({ hasText: /filter|clear|apply/i });
       const buttonCount = await filterButtons.count();
 
       for (let i = 0; i < Math.min(buttonCount, 3); i++) {

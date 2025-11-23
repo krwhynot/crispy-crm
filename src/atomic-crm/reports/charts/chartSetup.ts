@@ -9,7 +9,7 @@ import {
   LineElement,
   BarElement,
   Title,
-} from 'chart.js';
+} from "chart.js";
 
 ChartJS.register(
   ArcElement,

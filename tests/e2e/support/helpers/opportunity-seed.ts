@@ -1,8 +1,8 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { createClient } from '@supabase/supabase-js';
-import * as dotenv from 'dotenv';
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
+import * as dotenv from "dotenv";
 
-dotenv.config({ path: '.env.test' });
+dotenv.config({ path: ".env.test" });
 
 export interface OpportunitySeedData {
   opportunityIds: number[];
@@ -34,15 +34,15 @@ export async function createOpportunitySeedHelper(): Promise<OpportunitySeedHelp
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY!;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Missing Supabase credentials in .env.test');
+    throw new Error("Missing Supabase credentials in .env.test");
   }
 
   const client = createClient(supabaseUrl, supabaseKey);
 
   // Authenticate with test user (required for RLS policies)
   const { error: authError } = await client.auth.signInWithPassword({
-    email: 'admin@test.com',
-    password: 'password123',
+    email: "admin@test.com",
+    password: "password123",
   });
 
   if (authError) {
@@ -51,13 +51,13 @@ export async function createOpportunitySeedHelper(): Promise<OpportunitySeedHelp
 
   // Get sales rep ID for admin@test.com (from seed.sql, id: 1)
   const { data: salesData, error: salesError } = await client
-    .from('sales')
-    .select('id')
-    .eq('email', 'admin@test.com')
+    .from("sales")
+    .select("id")
+    .eq("email", "admin@test.com")
     .single();
 
   if (salesError || !salesData) {
-    throw new Error('Failed to get sales rep ID for test user');
+    throw new Error("Failed to get sales rep ID for test user");
   }
 
   const salesId = salesData.id;
@@ -68,25 +68,25 @@ export async function createOpportunitySeedHelper(): Promise<OpportunitySeedHelp
   // Create deterministic test opportunities
   const opportunities = [
     {
-      name: 'Test Opportunity Alpha',
+      name: "Test Opportunity Alpha",
       organization_id: organizationId,
-      stage: 'Qualification',
+      stage: "Qualification",
       sales_id: salesId,
       value: 10000,
       probability: 25,
     },
     {
-      name: 'Test Opportunity Beta',
+      name: "Test Opportunity Beta",
       organization_id: organizationId,
-      stage: 'Proposal',
+      stage: "Proposal",
       sales_id: salesId,
       value: 25000,
       probability: 50,
     },
     {
-      name: 'Test Opportunity Gamma',
+      name: "Test Opportunity Gamma",
       organization_id: organizationId,
-      stage: 'Negotiation',
+      stage: "Negotiation",
       sales_id: salesId,
       value: 50000,
       probability: 75,
@@ -95,31 +95,31 @@ export async function createOpportunitySeedHelper(): Promise<OpportunitySeedHelp
 
   // First cleanup any existing test opportunities with these names
   await client
-    .from('opportunities')
+    .from("opportunities")
     .delete()
-    .in('name', opportunities.map(o => o.name));
+    .in(
+      "name",
+      opportunities.map((o) => o.name)
+    );
 
   // Insert test opportunities
   const { data: insertedData, error: insertError } = await client
-    .from('opportunities')
+    .from("opportunities")
     .insert(opportunities)
-    .select('id, name, organization_id, stage');
+    .select("id, name, organization_id, stage");
 
   if (insertError || !insertedData) {
     throw new Error(`Failed to create test opportunities: ${insertError?.message}`);
   }
 
   const seedData: OpportunitySeedData = {
-    opportunityIds: insertedData.map(o => o.id),
+    opportunityIds: insertedData.map((o) => o.id),
     opportunities: insertedData,
   };
 
   const cleanup = async () => {
     if (seedData.opportunityIds.length > 0) {
-      await client
-        .from('opportunities')
-        .delete()
-        .in('id', seedData.opportunityIds);
+      await client.from("opportunities").delete().in("id", seedData.opportunityIds);
     }
   };
 
@@ -132,14 +132,13 @@ export async function createOpportunitySeedHelper(): Promise<OpportunitySeedHelp
  */
 export async function cleanupTestOpportunities(client: SupabaseClient): Promise<void> {
   // Delete any opportunities starting with "Test Opportunity"
-  await client
-    .from('opportunities')
-    .delete()
-    .like('name', 'Test Opportunity%');
+  await client.from("opportunities").delete().like("name", "Test Opportunity%");
 
   // Also cleanup timestamp-based test data
   await client
-    .from('opportunities')
+    .from("opportunities")
     .delete()
-    .or('name.like.%Test %,name.like.Complete Opportunity%,name.like.Read Test%,name.like.Update Test%,name.like.Delete Test%,name.like.Concurrent Test%');
+    .or(
+      "name.like.%Test %,name.like.Complete Opportunity%,name.like.Read Test%,name.like.Update Test%,name.like.Delete Test%,name.like.Concurrent Test%"
+    );
 }

@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { useUpdate, useNotify } from 'react-admin';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
-import { validateUpdateSales } from '../validation/sales';
+import { useState } from "react";
+import { useUpdate, useNotify } from "react-admin";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { validateUpdateSales } from "../validation/sales";
 
 interface SalesProfileTabProps {
   record: any;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -31,11 +31,11 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
 
   // Form state (only used in edit mode)
   const [formData, setFormData] = useState({
-    first_name: record?.first_name || '',
-    last_name: record?.last_name || '',
-    email: record?.email || '',
-    phone: record?.phone || '',
-    avatar_url: record?.avatar_url || '',
+    first_name: record?.first_name || "",
+    last_name: record?.last_name || "",
+    email: record?.email || "",
+    phone: record?.phone || "",
+    avatar_url: record?.avatar_url || "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -61,15 +61,15 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
 
       // Update record
       await update(
-        'sales',
+        "sales",
         { id: record.id, data: formData },
         {
           onSuccess: () => {
-            notify('Profile updated successfully', { type: 'success' });
+            notify("Profile updated successfully", { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode
           },
           onError: (error: any) => {
-            notify(error.message || 'Failed to update profile', { type: 'error' });
+            notify(error.message || "Failed to update profile", { type: "error" });
             if (error.errors) {
               setErrors(error.errors);
             }
@@ -79,9 +79,9 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
     } catch (error: any) {
       if (error.errors) {
         setErrors(error.errors);
-        notify('Validation failed. Please check the form.', { type: 'warning' });
+        notify("Validation failed. Please check the form.", { type: "warning" });
       } else {
-        notify('An error occurred', { type: 'error' });
+        notify("An error occurred", { type: "error" });
       }
     }
   };
@@ -90,11 +90,11 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
   const handleCancel = () => {
     // Reset form data to original values
     setFormData({
-      first_name: record?.first_name || '',
-      last_name: record?.last_name || '',
-      email: record?.email || '',
-      phone: record?.phone || '',
-      avatar_url: record?.avatar_url || '',
+      first_name: record?.first_name || "",
+      last_name: record?.last_name || "",
+      email: record?.email || "",
+      phone: record?.phone || "",
+      avatar_url: record?.avatar_url || "",
     });
     setErrors({});
     if (onModeToggle) onModeToggle();
@@ -102,9 +102,9 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
 
   // Get initials for avatar fallback
   const getInitials = () => {
-    const firstName = mode === 'edit' ? formData.first_name : record?.first_name;
-    const lastName = mode === 'edit' ? formData.last_name : record?.last_name;
-    return `${firstName?.[0] || ''}${lastName?.[0] || ''}`.toUpperCase();
+    const firstName = mode === "edit" ? formData.first_name : record?.first_name;
+    const lastName = mode === "edit" ? formData.last_name : record?.last_name;
+    return `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
   };
 
   if (!record) {
@@ -123,21 +123,21 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
       <div className="flex flex-col items-center gap-4">
         <Avatar className="size-20">
           <AvatarImage
-            src={mode === 'edit' ? formData.avatar_url : record.avatar_url}
+            src={mode === "edit" ? formData.avatar_url : record.avatar_url}
             alt={`${record.first_name} ${record.last_name}`}
           />
           <AvatarFallback>{getInitials()}</AvatarFallback>
         </Avatar>
-        {mode === 'edit' && (
+        {mode === "edit" && (
           <div className="w-full">
             <Label htmlFor="avatar_url">Avatar URL</Label>
             <Input
               id="avatar_url"
               type="url"
               value={formData.avatar_url}
-              onChange={(e) => handleChange('avatar_url', e.target.value)}
+              onChange={(e) => handleChange("avatar_url", e.target.value)}
               placeholder="https://example.com/avatar.jpg"
-              className={errors.avatar_url ? 'border-destructive' : ''}
+              className={errors.avatar_url ? "border-destructive" : ""}
             />
             {errors.avatar_url && (
               <p className="text-sm text-destructive mt-1">{errors.avatar_url}</p>
@@ -150,15 +150,15 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="first_name">First Name</Label>
-          {mode === 'view' ? (
+          {mode === "view" ? (
             <p className="text-sm text-foreground mt-1">{record.first_name}</p>
           ) : (
             <>
               <Input
                 id="first_name"
                 value={formData.first_name}
-                onChange={(e) => handleChange('first_name', e.target.value)}
-                className={errors.first_name ? 'border-destructive' : ''}
+                onChange={(e) => handleChange("first_name", e.target.value)}
+                className={errors.first_name ? "border-destructive" : ""}
                 disabled={isLoading}
               />
               {errors.first_name && (
@@ -169,15 +169,15 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
         </div>
         <div>
           <Label htmlFor="last_name">Last Name</Label>
-          {mode === 'view' ? (
+          {mode === "view" ? (
             <p className="text-sm text-foreground mt-1">{record.last_name}</p>
           ) : (
             <>
               <Input
                 id="last_name"
                 value={formData.last_name}
-                onChange={(e) => handleChange('last_name', e.target.value)}
-                className={errors.last_name ? 'border-destructive' : ''}
+                onChange={(e) => handleChange("last_name", e.target.value)}
+                className={errors.last_name ? "border-destructive" : ""}
                 disabled={isLoading}
               />
               {errors.last_name && (
@@ -191,7 +191,7 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
       {/* Email */}
       <div>
         <Label htmlFor="email">Email</Label>
-        {mode === 'view' ? (
+        {mode === "view" ? (
           <p className="text-sm text-foreground mt-1">{record.email}</p>
         ) : (
           <>
@@ -199,13 +199,11 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
               id="email"
               type="email"
               value={formData.email}
-              onChange={(e) => handleChange('email', e.target.value)}
-              className={errors.email ? 'border-destructive' : ''}
+              onChange={(e) => handleChange("email", e.target.value)}
+              className={errors.email ? "border-destructive" : ""}
               disabled={isLoading}
             />
-            {errors.email && (
-              <p className="text-sm text-destructive mt-1">{errors.email}</p>
-            )}
+            {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
           </>
         )}
       </div>
@@ -213,38 +211,31 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
       {/* Phone */}
       <div>
         <Label htmlFor="phone">Phone</Label>
-        {mode === 'view' ? (
-          <p className="text-sm text-foreground mt-1">{record.phone || 'Not provided'}</p>
+        {mode === "view" ? (
+          <p className="text-sm text-foreground mt-1">{record.phone || "Not provided"}</p>
         ) : (
           <>
             <Input
               id="phone"
               type="tel"
               value={formData.phone}
-              onChange={(e) => handleChange('phone', e.target.value)}
-              className={errors.phone ? 'border-destructive' : ''}
+              onChange={(e) => handleChange("phone", e.target.value)}
+              className={errors.phone ? "border-destructive" : ""}
               disabled={isLoading}
               placeholder="Optional"
             />
-            {errors.phone && (
-              <p className="text-sm text-destructive mt-1">{errors.phone}</p>
-            )}
+            {errors.phone && <p className="text-sm text-destructive mt-1">{errors.phone}</p>}
           </>
         )}
       </div>
 
       {/* Action buttons (edit mode only) */}
-      {mode === 'edit' && (
+      {mode === "edit" && (
         <div className="flex gap-3 pt-4 border-t border-border">
           <Button onClick={handleSave} disabled={isLoading} className="flex-1">
-            {isLoading ? 'Saving...' : 'Save Changes'}
+            {isLoading ? "Saving..." : "Save Changes"}
           </Button>
-          <Button
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isLoading}
-            className="flex-1"
-          >
+          <Button variant="outline" onClick={handleCancel} disabled={isLoading} className="flex-1">
             Cancel
           </Button>
         </div>

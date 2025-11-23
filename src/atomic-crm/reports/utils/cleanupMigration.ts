@@ -4,20 +4,20 @@
  */
 export function cleanupOldReportKeys() {
   const oldKeys = [
-    'reports.opportunities.filters',
-    'reports.weekly.filters',
-    'reports.campaign.filters',
-    'report-view-preference',
+    "reports.opportunities.filters",
+    "reports.weekly.filters",
+    "reports.campaign.filters",
+    "report-view-preference",
   ];
 
-  oldKeys.forEach(key => {
+  oldKeys.forEach((key) => {
     localStorage.removeItem(key);
   });
 
   // Mark migration as complete
-  localStorage.setItem('reports.migration.completed', 'true');
+  localStorage.setItem("reports.migration.completed", "true");
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[Reports Migration] Cleaned up old localStorage keys');
+  if (process.env.NODE_ENV === "development") {
+    console.log("[Reports Migration] Cleaned up old localStorage keys");
   }
 }

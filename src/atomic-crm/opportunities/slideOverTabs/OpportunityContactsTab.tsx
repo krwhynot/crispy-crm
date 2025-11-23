@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from 'react-admin';
-import { Link } from 'react-router-dom';
-import { AutocompleteArrayInput } from '@/components/admin/autocomplete-array-input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { UserIcon, Star } from 'lucide-react';
+import { useState } from "react";
+import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from "react-admin";
+import { Link } from "react-router-dom";
+import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { UserIcon, Star } from "lucide-react";
 
 interface OpportunityContactsTabProps {
   record: any;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -23,31 +23,31 @@ export function OpportunityContactsTab({
 
   // Fetch junction table data for view mode
   const { data: junctionRecords, isLoading } = useGetList(
-    'opportunity_contacts',
+    "opportunity_contacts",
     {
       filter: { opportunity_id: record.id },
       pagination: { page: 1, perPage: 100 },
-      sort: { field: 'is_primary', order: 'DESC' },
+      sort: { field: "is_primary", order: "DESC" },
     },
-    { enabled: mode === 'view' }
+    { enabled: mode === "view" }
   );
 
   // Fetch contact details for view mode
   const contactIds = junctionRecords?.map((jr: any) => jr.contact_id) || [];
   const { data: contacts } = useGetList(
-    'contacts',
+    "contacts",
     {
       filter: { id: contactIds },
       pagination: { page: 1, perPage: 100 },
     },
-    { enabled: mode === 'view' && contactIds.length > 0 }
+    { enabled: mode === "view" && contactIds.length > 0 }
   );
 
   const handleSave = async (data: any) => {
     setIsSaving(true);
     try {
       await update(
-        'opportunities',
+        "opportunities",
         {
           id: record.id,
           data: { contact_ids: data.contact_ids || [] },
@@ -55,13 +55,13 @@ export function OpportunityContactsTab({
         },
         {
           onSuccess: () => {
-            notify('Contacts updated successfully', { type: 'success' });
+            notify("Contacts updated successfully", { type: "success" });
             if (onModeToggle) {
               onModeToggle();
             }
           },
           onError: (error: any) => {
-            notify(error?.message || 'Failed to update contacts', { type: 'error' });
+            notify(error?.message || "Failed to update contacts", { type: "error" });
           },
         }
       );
@@ -76,7 +76,7 @@ export function OpportunityContactsTab({
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     return (
       <Form
         defaultValues={{ contact_ids: record.contact_ids || [] }}
@@ -87,7 +87,7 @@ export function OpportunityContactsTab({
           <AutocompleteArrayInput
             label="Contacts"
             optionText={(choice: any) =>
-              choice ? `${choice.firstName || ''} ${choice.lastName || ''}`.trim() : ''
+              choice ? `${choice.firstName || ""} ${choice.lastName || ""}`.trim() : ""
             }
             filterToQuery={(searchText: string) => ({ q: searchText })}
             helperText="Search and select contacts associated with this opportunity"
@@ -96,14 +96,9 @@ export function OpportunityContactsTab({
 
         <div className="flex gap-2 pt-4">
           <Button type="submit" disabled={isSaving} className="flex-1">
-            {isSaving ? 'Saving...' : 'Save Changes'}
+            {isSaving ? "Saving..." : "Save Changes"}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isSaving}
-          >
+          <Button type="button" variant="outline" onClick={handleCancel} disabled={isSaving}>
             Cancel
           </Button>
         </div>
@@ -132,9 +127,7 @@ export function OpportunityContactsTab({
   }
 
   // Create a map of junction data by contact_id
-  const junctionMap = new Map(
-    junctionRecords.map((jr: any) => [jr.contact_id, jr])
-  );
+  const junctionMap = new Map(junctionRecords.map((jr: any) => [jr.contact_id, jr]));
 
   return (
     <div className="space-y-3">

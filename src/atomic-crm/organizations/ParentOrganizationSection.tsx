@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useGetOne, useGetList, useRecordContext, useCreatePath } from 'react-admin';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Building2, ChevronRight, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import type { Company } from '../types';
+import { useState } from "react";
+import { useGetOne, useGetList, useRecordContext, useCreatePath } from "react-admin";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Building2, ChevronRight, Users } from "lucide-react";
+import { Link } from "react-router-dom";
+import type { Company } from "../types";
 
 /**
  * Component displaying parent organization and sister branches
@@ -18,20 +18,20 @@ export const ParentOrganizationSection = () => {
 
   // Fetch parent organization if it exists
   const { data: parent, isLoading: parentLoading } = useGetOne<Company>(
-    'organizations',
+    "organizations",
     { id: record?.parent_organization_id },
     { enabled: !!record?.parent_organization_id }
   );
 
   // Fetch sister branches (other children of the same parent)
   const { data: sisters, isLoading: sistersLoading } = useGetList<Company>(
-    'organizations',
+    "organizations",
     {
       filter: {
         parent_organization_id: record?.parent_organization_id,
-        'id@neq': record?.id, // Exclude current organization
+        "id@neq": record?.id, // Exclude current organization
       },
-      sort: { field: 'name', order: 'ASC' },
+      sort: { field: "name", order: "ASC" },
       pagination: { page: 1, perPage: 100 },
     },
     {
@@ -65,8 +65,8 @@ export const ParentOrganizationSection = () => {
           <div className="text-sm text-muted-foreground mb-2">Parent Organization</div>
           <Link
             to={createPath({
-              resource: 'organizations',
-              type: 'edit',
+              resource: "organizations",
+              type: "edit",
               id: parent.id,
             })}
             className="flex items-center justify-between p-2 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
@@ -93,8 +93,8 @@ export const ParentOrganizationSection = () => {
                 <Link
                   key={sister.id}
                   to={createPath({
-                    resource: 'organizations',
-                    type: 'edit',
+                    resource: "organizations",
+                    type: "edit",
                     id: sister.id,
                   })}
                   className="flex items-center justify-between p-2 rounded-lg border bg-card hover:bg-accent/50 transition-colors"

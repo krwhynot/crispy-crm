@@ -59,7 +59,7 @@ test.describe("Campaign Activity Report", () => {
     // 7. Verify page updated (wait for data to stabilize)
     await page.waitForFunction(
       () => {
-        const hasCards = document.querySelector('[data-activity-type]') !== null;
+        const hasCards = document.querySelector("[data-activity-type]") !== null;
         const hasNoDataMsg = document.body.textContent?.includes("No activities found");
         return hasCards || hasNoDataMsg;
       },
@@ -186,7 +186,7 @@ test.describe("Campaign Activity Report", () => {
     // 9. Verify we're back to activity cards view
     await page.waitForFunction(
       () => {
-        const hasCards = document.querySelector('[data-activity-type]') !== null;
+        const hasCards = document.querySelector("[data-activity-type]") !== null;
         const hasNoDataMsg = document.body.textContent?.includes("No activities found");
         return hasCards || hasNoDataMsg;
       },
@@ -378,7 +378,7 @@ test.describe("Campaign Activity Report", () => {
 
     // Check if activity cards are visible
     const hasCards = await page
-      .locator('[data-activity-type]')
+      .locator("[data-activity-type]")
       .first()
       .isVisible()
       .catch(() => false);
@@ -388,8 +388,8 @@ test.describe("Campaign Activity Report", () => {
       await reportPage.expectActivityTypeCardsVisible(1);
 
       // Get the first card type
-      const firstCard = page.locator('[data-activity-type]').first();
-      const activityType = await firstCard.getAttribute('data-activity-type');
+      const firstCard = page.locator("[data-activity-type]").first();
+      const activityType = await firstCard.getAttribute("data-activity-type");
 
       if (activityType) {
         // Click to expand/collapse

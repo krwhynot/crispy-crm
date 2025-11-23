@@ -159,9 +159,7 @@ const PersonalInfoRow = ({
       {showType ? (
         <WithRecord
           render={(row) =>
-            row.type !== "Other" && (
-              <TextField source="type" className="text-muted-foreground" />
-            )
+            row.type !== "Other" && <TextField source="type" className="text-muted-foreground" />
           }
         />
       ) : null}

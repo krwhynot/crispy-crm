@@ -1,25 +1,25 @@
-import { useState } from 'react';
-import { useUpdate, useNotify, RecordContextProvider } from 'ra-core';
-import { Form } from 'react-admin';
-import { ReferenceField } from '@/components/admin/reference-field';
-import { DateField } from '@/components/admin/date-field';
-import { TextInput } from '@/components/admin/text-input';
-import { SelectInput } from '@/components/admin/select-input';
-import { ReferenceInput } from '@/components/admin/reference-input';
-import { AutocompleteInput } from '@/components/admin/autocomplete-input';
-import { BooleanInput } from '@/components/admin/boolean-input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { AsideSection } from '../misc/AsideSection';
-import { SaleName } from '../sales/SaleName';
-import { useConfigurationContext } from '../root/ConfigurationContext';
-import { contactOptionText } from '../misc/ContactOption';
-import type { Task } from '../types';
+import { useState } from "react";
+import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { Form } from "react-admin";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { DateField } from "@/components/admin/date-field";
+import { TextInput } from "@/components/admin/text-input";
+import { SelectInput } from "@/components/admin/select-input";
+import { ReferenceInput } from "@/components/admin/reference-input";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { BooleanInput } from "@/components/admin/boolean-input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AsideSection } from "../misc/AsideSection";
+import { SaleName } from "../sales/SaleName";
+import { useConfigurationContext } from "../root/ConfigurationContext";
+import { contactOptionText } from "../misc/ContactOption";
+import type { Task } from "../types";
 
 interface TaskSlideOverDetailsTabProps {
   record: Task;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -37,7 +37,11 @@ interface TaskSlideOverDetailsTabProps {
  *
  * **Edit Mode**: Full form with save/cancel buttons
  */
-export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlideOverDetailsTabProps) {
+export function TaskSlideOverDetailsTab({
+  record,
+  mode,
+  onModeToggle,
+}: TaskSlideOverDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
@@ -47,16 +51,16 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
   const handleSave = async (data: Partial<Task>) => {
     setIsSaving(true);
     try {
-      await update('tasks', {
+      await update("tasks", {
         id: record.id,
         data,
         previousData: record,
       });
-      notify('Task updated successfully', { type: 'success' });
+      notify("Task updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error) {
-      notify('Error updating task', { type: 'error' });
-      console.error('Save error:', error);
+      notify("Error updating task", { type: "error" });
+      console.error("Save error:", error);
     } finally {
       setIsSaving(false);
     }
@@ -65,7 +69,7 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
   // Handle inline completion toggle in view mode
   const handleCompletionToggle = async (checked: boolean) => {
     try {
-      await update('tasks', {
+      await update("tasks", {
         id: record.id,
         data: {
           completed: checked,
@@ -73,14 +77,14 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
         },
         previousData: record,
       });
-      notify(checked ? 'Task marked complete' : 'Task marked incomplete', { type: 'success' });
+      notify(checked ? "Task marked complete" : "Task marked incomplete", { type: "success" });
     } catch (error) {
-      notify('Error updating task', { type: 'error' });
-      console.error('Completion toggle error:', error);
+      notify("Error updating task", { type: "error" });
+      console.error("Completion toggle error:", error);
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
         <Form onSubmit={handleSave} record={record}>
@@ -95,10 +99,10 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
                 source="priority"
                 label="Priority"
                 choices={[
-                  { id: 'low', name: 'Low' },
-                  { id: 'medium', name: 'Medium' },
-                  { id: 'high', name: 'High' },
-                  { id: 'critical', name: 'Critical' },
+                  { id: "low", name: "Low" },
+                  { id: "medium", name: "Medium" },
+                  { id: "high", name: "High" },
+                  { id: "critical", name: "Critical" },
                 ]}
               />
 
@@ -125,12 +129,8 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
 
             {/* Save button - Cancel handled by slide-over header */}
             <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button
-                type="submit"
-                disabled={isSaving}
-                className="h-11 px-4"
-              >
-                {isSaving ? 'Saving...' : 'Save Changes'}
+              <Button type="submit" disabled={isSaving} className="h-11 px-4">
+                {isSaving ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </div>
@@ -163,14 +163,16 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
                   checked={record.completed || false}
                   onChange={(e) => handleCompletionToggle(e.target.checked)}
                   className="h-4 w-4 rounded border-input"
-                  aria-label={record.completed ? 'Mark task as incomplete' : 'Mark task as complete'}
+                  aria-label={
+                    record.completed ? "Mark task as incomplete" : "Mark task as complete"
+                  }
                 />
                 <span className="text-sm font-medium">
-                  {record.completed ? 'Completed' : 'Mark as complete'}
+                  {record.completed ? "Completed" : "Mark as complete"}
                 </span>
                 {record.completed_at && (
                   <span className="text-xs text-muted-foreground">
-                    on <DateField source="completed_at" options={{ dateStyle: 'short' }} />
+                    on <DateField source="completed_at" options={{ dateStyle: "short" }} />
                   </span>
                 )}
               </label>
@@ -185,7 +187,7 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
               <span className="text-muted-foreground">Due: </span>
               <DateField
                 source="due_date"
-                options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+                options={{ year: "numeric", month: "long", day: "numeric" }}
                 className="font-medium"
               />
             </div>
@@ -194,7 +196,7 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
                 <span className="text-muted-foreground">Reminder: </span>
                 <DateField
                   source="reminder_date"
-                  options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+                  options={{ year: "numeric", month: "long", day: "numeric" }}
                   className="font-medium"
                 />
               </div>
@@ -237,7 +239,7 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
                 <span className="text-muted-foreground">Created: </span>
                 <DateField
                   source="created_at"
-                  options={{ year: 'numeric', month: 'short', day: 'numeric' }}
+                  options={{ year: "numeric", month: "short", day: "numeric" }}
                 />
               </div>
             )}
@@ -246,7 +248,7 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
                 <span className="text-muted-foreground">Updated: </span>
                 <DateField
                   source="updated_at"
-                  options={{ year: 'numeric', month: 'short', day: 'numeric' }}
+                  options={{ year: "numeric", month: "short", day: "numeric" }}
                 />
               </div>
             )}
@@ -259,15 +261,15 @@ export function TaskSlideOverDetailsTab({ record, mode, onModeToggle }: TaskSlid
 
 // Priority badge component with semantic colors
 function PriorityBadge({ priority }: { priority: string }) {
-  const variants: Record<string, 'outline' | 'secondary' | 'default' | 'destructive'> = {
-    low: 'outline',
-    medium: 'secondary',
-    high: 'default',
-    critical: 'destructive',
+  const variants: Record<string, "outline" | "secondary" | "default" | "destructive"> = {
+    low: "outline",
+    medium: "secondary",
+    high: "default",
+    critical: "destructive",
   };
 
   return (
-    <Badge variant={variants[priority] || 'outline'}>
+    <Badge variant={variants[priority] || "outline"}>
       {priority.charAt(0).toUpperCase() + priority.slice(1)}
     </Badge>
   );

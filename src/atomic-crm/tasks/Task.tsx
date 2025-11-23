@@ -74,22 +74,26 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
   };
 
   const handleCheck = (checked: boolean) => {
-    update("tasks", {
-      id: task.id,
-      data: {
-        id: task.id, // Include ID to trigger partial update validation
-        completed: checked,
-        completed_at: checked ? new Date().toISOString() : null,
+    update(
+      "tasks",
+      {
+        id: task.id,
+        data: {
+          id: task.id, // Include ID to trigger partial update validation
+          completed: checked,
+          completed_at: checked ? new Date().toISOString() : null,
+        },
+        previousData: task,
       },
-      previousData: task,
-    }, {
-      onSuccess: () => {
-        // Only open activity dialog when task is being completed (not uncompleted)
-        if (checked) {
-          setOpenActivityDialog(true);
-        }
-      },
-    });
+      {
+        onSuccess: () => {
+          // Only open activity dialog when task is being completed (not uncompleted)
+          if (checked) {
+            setOpenActivityDialog(true);
+          }
+        },
+      }
+    );
   };
 
   useEffect(() => {

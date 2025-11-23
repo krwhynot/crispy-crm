@@ -158,9 +158,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
             )}
           />
           {errors.activity_date && (
-            <p className="text-sm text-destructive">
-              {errors.activity_date.message}
-            </p>
+            <p className="text-sm text-destructive">{errors.activity_date.message}</p>
           )}
         </div>
 
@@ -187,9 +185,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
               </Select>
             )}
           />
-          {errors.type && (
-            <p className="text-sm text-destructive">{errors.type.message}</p>
-          )}
+          {errors.type && <p className="text-sm text-destructive">{errors.type.message}</p>}
         </div>
 
         {/* Contact Select */}
@@ -231,9 +227,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
           <p className="text-xs text-muted-foreground">
             Changing stage will update the opportunity immediately
           </p>
-          {errors.stage && (
-            <p className="text-sm text-destructive">{errors.stage.message}</p>
-          )}
+          {errors.stage && <p className="text-sm text-destructive">{errors.stage.message}</p>}
         </div>
       </div>
 
@@ -254,9 +248,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
             />
           )}
         />
-        {errors.subject && (
-          <p className="text-sm text-destructive">{errors.subject.message}</p>
-        )}
+        {errors.subject && <p className="text-sm text-destructive">{errors.subject.message}</p>}
       </div>
 
       {/* Submit Button */}

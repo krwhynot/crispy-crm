@@ -1,5 +1,5 @@
-import { useCreate, useNotify, Form, ReferenceInput } from 'react-admin';
-import { AutocompleteInput } from '@/components/admin/autocomplete-input';
+import { useCreate, useNotify, Form, ReferenceInput } from "react-admin";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import {
   Dialog,
   DialogContent,
@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface LinkOpportunityModalProps {
   open: boolean;
@@ -35,15 +35,15 @@ export function LinkOpportunityModal({
 
     // Check for duplicate
     if (linkedOpportunityIds.includes(data.opportunity_id)) {
-      notify('This contact is already linked to that opportunity', {
-        type: 'warning',
+      notify("This contact is already linked to that opportunity", {
+        type: "warning",
       });
       return;
     }
 
     try {
       await create(
-        'opportunity_contacts',
+        "opportunity_contacts",
         {
           data: {
             opportunity_id: data.opportunity_id,
@@ -52,17 +52,17 @@ export function LinkOpportunityModal({
         },
         {
           onSuccess: () => {
-            notify('Opportunity linked successfully', { type: 'success' });
+            notify("Opportunity linked successfully", { type: "success" });
             onSuccess();
             onClose();
           },
           onError: (error: any) => {
-            notify(error?.message || 'Failed to link opportunity', { type: 'error' });
+            notify(error?.message || "Failed to link opportunity", { type: "error" });
           },
         }
       );
     } catch {
-      notify('Failed to link opportunity. Please try again.', { type: 'error' });
+      notify("Failed to link opportunity. Please try again.", { type: "error" });
     }
   };
 
@@ -81,7 +81,7 @@ export function LinkOpportunityModal({
             <AutocompleteInput
               filterToQuery={(searchText: string) => ({ name: searchText })}
               optionText={(opp: any) =>
-                opp ? `${opp.name} - ${opp.customer_organization_name || ''} (${opp.stage})` : ''
+                opp ? `${opp.name} - ${opp.customer_organization_name || ""} (${opp.stage})` : ""
               }
               label="Search opportunities"
             />
@@ -92,7 +92,7 @@ export function LinkOpportunityModal({
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Linking...' : 'Link Opportunity'}
+              {isLoading ? "Linking..." : "Link Opportunity"}
             </Button>
           </DialogFooter>
         </Form>

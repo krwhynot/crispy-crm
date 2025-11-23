@@ -8,29 +8,20 @@ export const ActivitiesList = () => {
 
   if (isPending) return <div>Loading activities...</div>;
   if (!data || data.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        No activities recorded yet
-      </div>
-    );
+    return <div className="text-center py-8 text-muted-foreground">No activities recorded yet</div>;
   }
 
   return (
     <div className="space-y-4">
       {data.map((activity) => (
-        <div
-          key={activity.id}
-          className="border border-border rounded-lg p-4 space-y-2"
-        >
+        <div key={activity.id} className="border border-border rounded-lg p-4 space-y-2">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <Badge variant="outline" className="capitalize">
                 {activity.type.replace("_", " ")}
               </Badge>
               {activity.activity_type === "interaction" && (
-                <Badge className="bg-primary text-primary-foreground">
-                  Interaction
-                </Badge>
+                <Badge className="bg-primary text-primary-foreground">Interaction</Badge>
               )}
               {activity.sentiment && (
                 <Badge

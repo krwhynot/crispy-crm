@@ -1,11 +1,11 @@
-import { RecordContextProvider } from 'ra-core';
-import { ReferenceManyField } from '@/components/admin/reference-many-field';
-import { NoteCreate, NotesIterator } from '../notes';
-import type { Contact } from '../types';
+import { RecordContextProvider } from "ra-core";
+import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { NoteCreate, NotesIterator } from "../notes";
+import type { Contact } from "../types";
 
 interface ContactNotesTabProps {
   record: Contact;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
 }
 
 /**
@@ -27,16 +27,16 @@ export function ContactNotesTab({ record, mode }: ContactNotesTabProps) {
         <ReferenceManyField
           target="contact_id"
           reference="contactNotes"
-          sort={{ field: 'created_at', order: 'DESC' }}
+          sort={{ field: "created_at", order: "DESC" }}
         >
           <NotesIterator reference="contacts" />
         </ReferenceManyField>
 
         {/* Helper text for empty state */}
         <div className="text-sm text-muted-foreground text-center py-4">
-          {mode === 'view'
-            ? 'Notes are visible to all team members'
-            : 'Add notes to track important information about this contact'}
+          {mode === "view"
+            ? "Notes are visible to all team members"
+            : "Add notes to track important information about this contact"}
         </div>
       </div>
     </RecordContextProvider>

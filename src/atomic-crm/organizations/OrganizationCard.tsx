@@ -102,7 +102,10 @@ export const OrganizationCard = (props: { record?: Company }) => {
               <div className="flex gap-1 mt-1 justify-center flex-wrap">
                 {record.organization_type && (
                   <Badge
-                    variant={organizationTypeBadgeVariants[record.organization_type] || organizationTypeBadgeVariants.unknown}
+                    variant={
+                      organizationTypeBadgeVariants[record.organization_type] ||
+                      organizationTypeBadgeVariants.unknown
+                    }
                     className="text-xs px-1 py-0"
                   >
                     <Building2 className="w-3 h-3 mr-0.5" />

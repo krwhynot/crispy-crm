@@ -1,24 +1,28 @@
-import { useState } from 'react';
-import { useUpdate, useNotify, RecordContextProvider } from 'ra-core';
-import { Form } from 'react-admin';
-import { TextInput } from '@/components/admin/text-input';
-import { SelectInput } from '@/components/admin/select-input';
-import { ReferenceArrayInput } from '@/components/admin/reference-array-input';
-import { AutocompleteArrayInput } from '@/components/admin/autocomplete-array-input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { AsideSection } from '../../misc/AsideSection';
-import { ArrayInput, SimpleFormIterator } from 'react-admin';
-import type { OrganizationWithHierarchy } from '../../types';
+import { useState } from "react";
+import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { Form } from "react-admin";
+import { TextInput } from "@/components/admin/text-input";
+import { SelectInput } from "@/components/admin/select-input";
+import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
+import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AsideSection } from "../../misc/AsideSection";
+import { ArrayInput, SimpleFormIterator } from "react-admin";
+import type { OrganizationWithHierarchy } from "../../types";
 
 interface OrganizationDetailsTabProps {
   record: OrganizationWithHierarchy;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
-export function OrganizationDetailsTab({ record, mode, onModeToggle }: OrganizationDetailsTabProps) {
+export function OrganizationDetailsTab({
+  record,
+  mode,
+  onModeToggle,
+}: OrganizationDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
@@ -26,35 +30,35 @@ export function OrganizationDetailsTab({ record, mode, onModeToggle }: Organizat
   const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {
     setIsSaving(true);
     try {
-      await update('organizations', {
+      await update("organizations", {
         id: record.id,
         data,
         previousData: record,
       });
-      notify('Organization updated successfully', { type: 'success' });
+      notify("Organization updated successfully", { type: "success" });
       onModeToggle?.();
     } catch (error) {
-      notify('Error updating organization', { type: 'error' });
-      console.error('Save error:', error);
+      notify("Error updating organization", { type: "error" });
+      console.error("Save error:", error);
     } finally {
       setIsSaving(false);
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     const organizationTypes = [
-      { id: 'customer', name: 'Customer' },
-      { id: 'prospect', name: 'Prospect' },
-      { id: 'principal', name: 'Principal' },
-      { id: 'distributor', name: 'Distributor' },
-      { id: 'unknown', name: 'Unknown' },
+      { id: "customer", name: "Customer" },
+      { id: "prospect", name: "Prospect" },
+      { id: "principal", name: "Principal" },
+      { id: "distributor", name: "Distributor" },
+      { id: "unknown", name: "Unknown" },
     ];
 
     const priorities = [
-      { id: 'A', name: 'A - High' },
-      { id: 'B', name: 'B - Medium-High' },
-      { id: 'C', name: 'C - Medium' },
-      { id: 'D', name: 'D - Low' },
+      { id: "A", name: "A - High" },
+      { id: "B", name: "B - Medium-High" },
+      { id: "C", name: "C - Medium" },
+      { id: "D", name: "D - Low" },
     ];
 
     return (
@@ -64,23 +68,11 @@ export function OrganizationDetailsTab({ record, mode, onModeToggle }: Organizat
             <div className="space-y-4">
               <TextInput source="name" label="Organization Name" />
 
-              <SelectInput
-                source="organization_type"
-                label="Type"
-                choices={organizationTypes}
-              />
+              <SelectInput source="organization_type" label="Type" choices={organizationTypes} />
 
-              <SelectInput
-                source="priority"
-                label="Priority"
-                choices={priorities}
-              />
+              <SelectInput source="priority" label="Priority" choices={priorities} />
 
-              <ReferenceArrayInput
-                source="tags"
-                reference="tags"
-                label="Tags"
-              >
+              <ReferenceArrayInput source="tags" reference="tags" label="Tags">
                 <AutocompleteArrayInput optionText="name" />
               </ReferenceArrayInput>
 
@@ -93,12 +85,8 @@ export function OrganizationDetailsTab({ record, mode, onModeToggle }: Organizat
             </div>
 
             <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button
-                type="submit"
-                disabled={isSaving}
-                className="h-11 px-4"
-              >
-                {isSaving ? 'Saving...' : 'Save Changes'}
+              <Button type="submit" disabled={isSaving} className="h-11 px-4">
+                {isSaving ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </div>
@@ -140,25 +128,27 @@ export function OrganizationDetailsTab({ record, mode, onModeToggle }: Organizat
                 </div>
               )}
 
-              {record.context_links && Array.isArray(record.context_links) && record.context_links.length > 0 && (
-                <div>
-                  <span className="text-sm text-muted-foreground block mb-2">Context Links:</span>
-                  <div className="space-y-1">
-                    {record.context_links.map((link: any, index: number) => (
-                      <div key={index}>
-                        <a
-                          href={link.url || link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-primary hover:underline"
-                        >
-                          {link.name || link.url || link}
-                        </a>
-                      </div>
-                    ))}
+              {record.context_links &&
+                Array.isArray(record.context_links) &&
+                record.context_links.length > 0 && (
+                  <div>
+                    <span className="text-sm text-muted-foreground block mb-2">Context Links:</span>
+                    <div className="space-y-1">
+                      {record.context_links.map((link: any, index: number) => (
+                        <div key={index}>
+                          <a
+                            href={link.url || link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary hover:underline"
+                          >
+                            {link.name || link.url || link}
+                          </a>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {record.created_at && (
                 <div className="pt-2 border-t border-border">
@@ -184,13 +174,14 @@ export function OrganizationDetailsTab({ record, mode, onModeToggle }: Organizat
 }
 
 function OrganizationTypeBadge({ type }: { type: string }) {
-  const colorClass = {
-    customer: 'tag-warm',
-    prospect: 'tag-sage',
-    principal: 'tag-purple',
-    distributor: 'tag-teal',
-    unknown: 'tag-gray',
-  }[type] || 'tag-gray';
+  const colorClass =
+    {
+      customer: "tag-warm",
+      prospect: "tag-sage",
+      principal: "tag-purple",
+      distributor: "tag-teal",
+      unknown: "tag-gray",
+    }[type] || "tag-gray";
 
   return (
     <Badge className={`text-xs px-2 py-1 ${colorClass}`}>
@@ -200,29 +191,30 @@ function OrganizationTypeBadge({ type }: { type: string }) {
 }
 
 function PriorityBadge({ priority }: { priority: string }) {
-  let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'default';
+  let variant: "default" | "secondary" | "destructive" | "outline" = "default";
 
   switch (priority) {
-    case 'A':
-      variant = 'destructive';
+    case "A":
+      variant = "destructive";
       break;
-    case 'B':
-      variant = 'default';
+    case "B":
+      variant = "default";
       break;
-    case 'C':
-      variant = 'secondary';
+    case "C":
+      variant = "secondary";
       break;
-    case 'D':
-      variant = 'outline';
+    case "D":
+      variant = "outline";
       break;
   }
 
-  const label = {
-    A: 'A - High',
-    B: 'B - Medium-High',
-    C: 'C - Medium',
-    D: 'D - Low',
-  }[priority] || priority;
+  const label =
+    {
+      A: "A - High",
+      B: "B - Medium-High",
+      C: "C - Medium",
+      D: "D - Low",
+    }[priority] || priority;
 
   return (
     <Badge variant={variant} className="text-xs px-2 py-1">

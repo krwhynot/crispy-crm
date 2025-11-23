@@ -24,7 +24,7 @@ export class CreateFormFixture {
    */
   async navigate(): Promise<void> {
     await this.page.goto(`/#/${this.resource}/create`);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
   }
 
   /**
@@ -38,28 +38,28 @@ export class CreateFormFixture {
    * Get form card container
    */
   getFormCard(): Locator {
-    return this.page.locator('.create-form-card').first();
+    return this.page.locator(".create-form-card").first();
   }
 
   /**
    * Get cancel button
    */
   getCancelButton(): Locator {
-    return this.page.getByRole('button', { name: /cancel/i });
+    return this.page.getByRole("button", { name: /cancel/i });
   }
 
   /**
    * Get save & close button
    */
   getSaveAndCloseButton(): Locator {
-    return this.page.getByRole('button', { name: /save.*close/i });
+    return this.page.getByRole("button", { name: /save.*close/i });
   }
 
   /**
    * Get save & add another button
    */
   getSaveAndAddButton(): Locator {
-    return this.page.getByRole('button', { name: /save.*add/i });
+    return this.page.getByRole("button", { name: /save.*add/i });
   }
 
   /**
@@ -73,14 +73,14 @@ export class CreateFormFixture {
    * Get tab by name
    */
   getTab(name: string): Locator {
-    return this.page.getByRole('tab', { name: new RegExp(name, 'i') });
+    return this.page.getByRole("tab", { name: new RegExp(name, "i") });
   }
 
   /**
    * Get all tabs
    */
   getTabs(): Locator {
-    return this.page.getByRole('tab');
+    return this.page.getByRole("tab");
   }
 
   /**
@@ -114,14 +114,14 @@ export class CreateFormFixture {
     });
 
     // Should have max-width (4xl = 896px)
-    expect(styles.maxWidth).not.toBe('none');
+    expect(styles.maxWidth).not.toBe("none");
 
     // Should have shadow-lg
-    expect(styles.boxShadow).not.toBe('none');
+    expect(styles.boxShadow).not.toBe("none");
     expect(styles.boxShadow.length).toBeGreaterThan(0);
 
     // Should have border radius
-    expect(styles.borderRadius).not.toBe('0px');
+    expect(styles.borderRadius).not.toBe("0px");
   }
 
   /**
@@ -136,7 +136,7 @@ export class CreateFormFixture {
     const position = await footer.evaluate((el) => {
       return window.getComputedStyle(el).position;
     });
-    expect(position).toBe('sticky');
+    expect(position).toBe("sticky");
 
     // Should contain action buttons
     await expect(this.getCancelButton()).toBeVisible();
@@ -148,7 +148,7 @@ export class CreateFormFixture {
    * Per plan line 1490: blur events
    */
   async triggerValidationError(fieldLabel: string): Promise<void> {
-    const field = this.page.getByLabel(new RegExp(fieldLabel, 'i'));
+    const field = this.page.getByLabel(new RegExp(fieldLabel, "i"));
     await expect(field).toBeVisible();
 
     // Clear the field
@@ -173,16 +173,16 @@ export class CreateFormFixture {
 
     // Check for aria-invalid attribute
     const invalidField = fieldLabel
-      ? this.page.getByLabel(new RegExp(fieldLabel, 'i'))
+      ? this.page.getByLabel(new RegExp(fieldLabel, "i"))
       : this.page.locator('[aria-invalid="true"]').first();
 
     const hasInvalidAttr = await invalidField
-      .getAttribute('aria-invalid')
-      .then((val) => val === 'true')
+      .getAttribute("aria-invalid")
+      .then((val) => val === "true")
       .catch(() => false);
 
     // At least one validation indicator should be present
-    expect(hasErrorMessage || hasInvalidAttr, 'Expected validation error to be displayed').toBe(
+    expect(hasErrorMessage || hasInvalidAttr, "Expected validation error to be displayed").toBe(
       true
     );
   }
@@ -194,7 +194,7 @@ export class CreateFormFixture {
   async expectDirtyStateConfirmation(): Promise<void> {
     // Make form dirty
     const firstInput = this.page.locator('input[type="text"]').first();
-    await firstInput.fill('Test dirty state');
+    await firstInput.fill("Test dirty state");
 
     // Click cancel
     const cancelBtn = this.getCancelButton();
@@ -204,13 +204,13 @@ export class CreateFormFixture {
     await this.page.waitForTimeout(300);
 
     // Look for confirmation dialog or prompt
-    const confirmDialog = this.page.getByRole('alertdialog').or(
-      this.page.getByText(/unsaved changes|discard/i)
-    );
+    const confirmDialog = this.page
+      .getByRole("alertdialog")
+      .or(this.page.getByText(/unsaved changes|discard/i));
 
     // If browser native confirm, we can't test it in Playwright
     // But we can verify the form hasn't navigated away yet
-    const isStillOnCreate = await this.page.url().then((url) => url.includes('/create'));
+    const isStillOnCreate = await this.page.url().then((url) => url.includes("/create"));
     expect(isStillOnCreate || (await confirmDialog.isVisible().catch(() => false))).toBe(true);
   }
 
@@ -227,7 +227,7 @@ export class CreateFormFixture {
 
     // Should navigate away from create page
     const url = this.page.url();
-    expect(url).not.toContain('/create');
+    expect(url).not.toContain("/create");
   }
 
   /**
@@ -243,7 +243,7 @@ export class CreateFormFixture {
 
     // Should stay on create page
     const url = this.page.url();
-    expect(url).toContain('/create');
+    expect(url).toContain("/create");
   }
 
   /**
@@ -300,7 +300,7 @@ export class CreateFormFixture {
 
     // Fast-forward time by 31 seconds
     await this.page.evaluate(() => {
-      const event = new Event('autosave-trigger');
+      const event = new Event("autosave-trigger");
       window.dispatchEvent(event);
     });
 
@@ -330,9 +330,9 @@ export class CreateFormFixture {
    */
   async expectDraftRestorePrompt(): Promise<void> {
     // Look for restore prompt
-    const restorePrompt = this.page.getByText(/restore.*draft/i).or(
-      this.page.getByRole('button', { name: /restore/i })
-    );
+    const restorePrompt = this.page
+      .getByText(/restore.*draft/i)
+      .or(this.page.getByRole("button", { name: /restore/i }));
 
     await expect(restorePrompt).toBeVisible({ timeout: 2000 });
   }
@@ -356,9 +356,7 @@ export class CreateFormFixture {
     await expect(tab).toBeVisible();
 
     // Look for badge or error count indicator
-    const badge = tab.locator('[class*="badge"]').or(
-      tab.locator('[aria-label*="error"]')
-    );
+    const badge = tab.locator('[class*="badge"]').or(tab.locator('[aria-label*="error"]'));
 
     await expect(badge).toBeVisible();
 
@@ -378,7 +376,7 @@ export class CreateFormFixture {
     });
 
     // Should not be pure white
-    expect(bgColor).not.toBe('rgb(255, 255, 255)');
+    expect(bgColor).not.toBe("rgb(255, 255, 255)");
   }
 
   /**
@@ -393,7 +391,7 @@ export class CreateFormFixture {
       const uniqueValue = `${prefix}-${timestamp}`;
       testData[label] = uniqueValue;
 
-      const field = this.page.getByLabel(new RegExp(label, 'i'));
+      const field = this.page.getByLabel(new RegExp(label, "i"));
       if (await field.isVisible().catch(() => false)) {
         await field.fill(uniqueValue);
       }

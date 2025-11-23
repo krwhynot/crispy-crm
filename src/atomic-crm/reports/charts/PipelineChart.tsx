@@ -1,6 +1,6 @@
-import { Doughnut } from 'react-chartjs-2';
-import { useChartTheme } from '../hooks/useChartTheme';
-import './chartSetup';
+import { Doughnut } from "react-chartjs-2";
+import { useChartTheme } from "../hooks/useChartTheme";
+import "./chartSetup";
 
 interface PipelineChartProps {
   data: Array<{ stage: string; count: number }>;
@@ -10,10 +10,10 @@ export function PipelineChart({ data }: PipelineChartProps) {
   const theme = useChartTheme();
 
   const chartData = {
-    labels: data.map(d => d.stage),
+    labels: data.map((d) => d.stage),
     datasets: [
       {
-        data: data.map(d => d.count),
+        data: data.map((d) => d.count),
         backgroundColor: [
           theme.colors.primary,
           theme.colors.brand700,
@@ -32,7 +32,7 @@ export function PipelineChart({ data }: PipelineChartProps) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right' as const,
+        position: "right" as const,
         labels: {
           font: {
             family: theme.font.family,

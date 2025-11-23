@@ -24,8 +24,8 @@
  * scheduler.addRecipient(schedule.id, 'manager@company.com');
  */
 
-export type ExportFormat = 'csv' | 'excel' | 'pdf';
-export type ScheduleFrequency = 'daily' | 'weekly' | 'monthly';
+export type ExportFormat = "csv" | "excel" | "pdf";
+export type ScheduleFrequency = "daily" | "weekly" | "monthly";
 
 export interface ExportSchedule {
   id: string;
@@ -38,10 +38,10 @@ export interface ExportSchedule {
   updatedAt: Date;
 
   // Timing properties (optional based on frequency)
-  hour?: number;           // 0-23 (required for all)
-  dayOfWeek?: number;      // 0-6 (required for weekly)
-  dayOfMonth?: number;     // 1-31 (required for monthly)
-  minute?: number;         // 0-59 (optional, defaults to 0)
+  hour?: number; // 0-23 (required for all)
+  dayOfWeek?: number; // 0-6 (required for weekly)
+  dayOfMonth?: number; // 1-31 (required for monthly)
+  minute?: number; // 0-59 (optional, defaults to 0)
 }
 
 export interface CreateScheduleInput {
@@ -71,7 +71,7 @@ export interface UpdateScheduleInput {
  */
 export class ExportScheduler {
   private schedules: Map<string, ExportSchedule>;
-  private readonly storageKey = 'exportSchedules';
+  private readonly storageKey = "exportSchedules";
 
   constructor() {
     this.schedules = new Map();
@@ -217,7 +217,7 @@ export class ExportScheduler {
     }
 
     const initialLength = schedule.recipients.length;
-    schedule.recipients = schedule.recipients.filter(r => r !== email);
+    schedule.recipients = schedule.recipients.filter((r) => r !== email);
 
     if (schedule.recipients.length < initialLength) {
       schedule.updatedAt = new Date();
@@ -243,7 +243,7 @@ export class ExportScheduler {
     const nextRun = new Date();
 
     switch (schedule.frequency) {
-      case 'daily':
+      case "daily":
         // Set to next occurrence of specified hour
         nextRun.setHours(schedule.hour ?? 0, schedule.minute ?? 0, 0, 0);
         if (nextRun <= now) {
@@ -251,7 +251,7 @@ export class ExportScheduler {
         }
         break;
 
-      case 'weekly': {
+      case "weekly": {
         // Set to next occurrence of specified day/hour
         const targetDay = schedule.dayOfWeek ?? 0;
         const daysUntilTarget = (targetDay - now.getDay() + 7) % 7;
@@ -264,7 +264,7 @@ export class ExportScheduler {
         break;
       }
 
-      case 'monthly':
+      case "monthly":
         // Set to next occurrence of specified day/hour
         nextRun.setDate(schedule.dayOfMonth ?? 1);
         nextRun.setHours(schedule.hour ?? 0, schedule.minute ?? 0, 0, 0);
@@ -286,14 +286,14 @@ export class ExportScheduler {
 
   private saveToStorage(): void {
     try {
-      const data = Array.from(this.schedules.values()).map(schedule => ({
+      const data = Array.from(this.schedules.values()).map((schedule) => ({
         ...schedule,
         createdAt: schedule.createdAt.toISOString(),
         updatedAt: schedule.updatedAt.toISOString(),
       }));
       localStorage.setItem(this.storageKey, JSON.stringify(data));
     } catch (error) {
-      console.error('Failed to save export schedules to localStorage:', error);
+      console.error("Failed to save export schedules to localStorage:", error);
     }
   }
 
@@ -318,7 +318,7 @@ export class ExportScheduler {
         });
       });
     } catch (error) {
-      console.error('Failed to load export schedules from localStorage:', error);
+      console.error("Failed to load export schedules from localStorage:", error);
       this.schedules.clear();
     }
   }

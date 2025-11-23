@@ -1,8 +1,8 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { createClient } from '@supabase/supabase-js';
-import * as dotenv from 'dotenv';
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
+import * as dotenv from "dotenv";
 
-dotenv.config({ path: '.env.test' });
+dotenv.config({ path: ".env.test" });
 
 export interface TestHarness {
   client: SupabaseClient;
@@ -18,15 +18,15 @@ export async function createTestHarness(): Promise<TestHarness> {
   const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY!;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Missing Supabase credentials in .env.test');
+    throw new Error("Missing Supabase credentials in .env.test");
   }
 
   const client = createClient(supabaseUrl, supabaseKey);
 
   // Authenticate with test user (required for RLS policies)
   const { error: authError } = await client.auth.signInWithPassword({
-    email: 'admin@test.com',
-    password: 'password123',
+    email: "admin@test.com",
+    password: "password123",
   });
 
   if (authError) {
@@ -41,10 +41,10 @@ export async function createTestHarness(): Promise<TestHarness> {
   const cleanup = async () => {
     // Delete test data in reverse dependency order
     if (seedData.contactIds.length > 0) {
-      await client.from('contacts').delete().in('id', seedData.contactIds);
+      await client.from("contacts").delete().in("id", seedData.contactIds);
     }
     if (seedData.organizationIds.length > 0) {
-      await client.from('organizations').delete().in('id', seedData.organizationIds);
+      await client.from("organizations").delete().in("id", seedData.organizationIds);
     }
   };
 

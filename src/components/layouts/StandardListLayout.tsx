@@ -47,14 +47,10 @@ export function StandardListLayout({
         aria-label={`Filter ${resource}`}
         className="filter-sidebar sticky top-[var(--spacing-section)] h-fit"
       >
-        <div className="card-container p-2">
-          {filterComponent}
-        </div>
+        <div className="card-container p-2">{filterComponent}</div>
       </aside>
       <main role="main" aria-label={`${resource} list`} className="flex-1 min-w-0">
-        <div className="card-container">
-          {children}
-        </div>
+        <div className="card-container">{children}</div>
       </main>
     </div>
   );

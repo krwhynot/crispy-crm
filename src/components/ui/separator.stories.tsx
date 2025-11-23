@@ -38,9 +38,7 @@ export const Horizontal: Story = {
     <div className="w-[400px]">
       <div className="space-y-1">
         <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
-        <p className="text-sm text-muted-foreground">
-          An open-source UI component library.
-        </p>
+        <p className="text-sm text-muted-foreground">An open-source UI component library.</p>
       </div>
       <Separator {...args} className="my-4" />
       <div className="flex h-5 items-center space-x-4 text-sm">
@@ -101,9 +99,7 @@ export const MultipleHorizontal: Story = {
       <Separator />
       <div>
         <h4 className="mb-1 text-sm font-medium">Data Management</h4>
-        <p className="text-sm text-muted-foreground">
-          Export or delete your personal data.
-        </p>
+        <p className="text-sm text-muted-foreground">Export or delete your personal data.</p>
       </div>
     </div>
   ),

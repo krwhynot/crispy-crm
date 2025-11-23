@@ -72,14 +72,10 @@ export const LowElevation: Story = {
               John Doe
               <span className="absolute inset-0" aria-hidden="true" />
             </button>
-            <p className="text-xs text-muted-foreground truncate">
-              Product Manager at Acme Corp
-            </p>
+            <p className="text-xs text-muted-foreground truncate">Product Manager at Acme Corp</p>
           </div>
         </div>
-        <span className="text-xs text-muted-foreground shrink-0 relative z-10">
-          2 days ago
-        </span>
+        <span className="text-xs text-muted-foreground shrink-0 relative z-10">2 days ago</span>
       </div>
 
       <div className="group relative flex items-center justify-between gap-3 rounded-lg border border-transparent bg-card px-3 py-2 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
@@ -98,9 +94,7 @@ export const LowElevation: Story = {
             </p>
           </div>
         </div>
-        <span className="text-xs text-muted-foreground shrink-0 relative z-10">
-          5 hours ago
-        </span>
+        <span className="text-xs text-muted-foreground shrink-0 relative z-10">5 hours ago</span>
       </div>
     </div>
   ),
@@ -181,9 +175,7 @@ export const ElevationComparison: Story = {
           </div>
           <div className="rounded-lg border border-transparent bg-card px-4 py-3 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 cursor-pointer">
             <p className="text-sm font-medium">Contact List Item</p>
-            <p className="text-xs text-muted-foreground">
-              Subtle elevation for dense lists
-            </p>
+            <p className="text-xs text-muted-foreground">Subtle elevation for dense lists</p>
           </div>
         </div>
 
@@ -202,9 +194,7 @@ export const ElevationComparison: Story = {
 
         {/* Static (no elevation) */}
         <div>
-          <div className="text-xs font-semibold text-muted-foreground mb-2">
-            STATIC (no hover)
-          </div>
+          <div className="text-xs font-semibold text-muted-foreground mb-2">STATIC (no hover)</div>
           <div className="rounded-lg border border-border bg-card px-4 py-3 shadow-sm">
             <p className="text-sm font-medium">Filter Sidebar</p>
             <p className="text-xs text-muted-foreground">No interactive states needed</p>
@@ -224,9 +214,7 @@ export const AccessibilityFeatures: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
-          Accessibility Features
-        </h3>
+        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">Accessibility Features</h3>
         <p className="text-xs text-muted-foreground mb-4">
           Tab through these cards to see focus indicators. All patterns include WCAG 2.1 AA
           compliant focus states.

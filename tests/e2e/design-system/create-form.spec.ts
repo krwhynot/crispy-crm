@@ -52,9 +52,7 @@ test.describe("Create Form - Design System", () => {
       await formPage.expectBreadcrumb(["Organizations", "Create"]);
     });
 
-    test("form card has correct styling (max-w-4xl, shadow-lg)", async ({
-      authenticatedPage,
-    }) => {
+    test("form card has correct styling (max-w-4xl, shadow-lg)", async ({ authenticatedPage }) => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
@@ -335,9 +333,7 @@ test.describe("Create Form - Design System", () => {
   });
 
   test.describe("Field Defaults", () => {
-    test("defaults come from Zod schema, not defaultValue props", async ({
-      authenticatedPage,
-    }) => {
+    test("defaults come from Zod schema, not defaultValue props", async ({ authenticatedPage }) => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 

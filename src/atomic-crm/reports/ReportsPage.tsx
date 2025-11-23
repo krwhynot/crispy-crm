@@ -1,17 +1,17 @@
-import { useSearchParams } from 'react-router-dom';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { GlobalFilterProvider } from './contexts/GlobalFilterContext';
-import { Suspense, lazy, useEffect } from 'react';
-import { cleanupOldReportKeys } from './utils/cleanupMigration';
+import { useSearchParams } from "react-router-dom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { GlobalFilterProvider } from "./contexts/GlobalFilterContext";
+import { Suspense, lazy, useEffect } from "react";
+import { cleanupOldReportKeys } from "./utils/cleanupMigration";
 
-const OverviewTab = lazy(() => import('./tabs/OverviewTab'));
-const OpportunitiesTab = lazy(() => import('./tabs/OpportunitiesTab'));
-const WeeklyActivityTab = lazy(() => import('./tabs/WeeklyActivityTab'));
-const CampaignActivityTab = lazy(() => import('./tabs/CampaignActivityTab'));
+const OverviewTab = lazy(() => import("./tabs/OverviewTab"));
+const OpportunitiesTab = lazy(() => import("./tabs/OpportunitiesTab"));
+const WeeklyActivityTab = lazy(() => import("./tabs/WeeklyActivityTab"));
+const CampaignActivityTab = lazy(() => import("./tabs/CampaignActivityTab"));
 
 export default function ReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get('tab') || 'overview';
+  const activeTab = searchParams.get("tab") || "overview";
 
   useEffect(() => {
     // Clean up old localStorage keys on first mount
@@ -29,16 +29,25 @@ export default function ReportsPage() {
 
         <Tabs value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview" data-state={activeTab === 'overview' ? 'active' : 'inactive'}>
+            <TabsTrigger
+              value="overview"
+              data-state={activeTab === "overview" ? "active" : "inactive"}
+            >
               Overview
             </TabsTrigger>
-            <TabsTrigger value="opportunities" data-state={activeTab === 'opportunities' ? 'active' : 'inactive'}>
+            <TabsTrigger
+              value="opportunities"
+              data-state={activeTab === "opportunities" ? "active" : "inactive"}
+            >
               Opportunities by Principal
             </TabsTrigger>
-            <TabsTrigger value="weekly" data-state={activeTab === 'weekly' ? 'active' : 'inactive'}>
+            <TabsTrigger value="weekly" data-state={activeTab === "weekly" ? "active" : "inactive"}>
               Weekly Activity
             </TabsTrigger>
-            <TabsTrigger value="campaign" data-state={activeTab === 'campaign' ? 'active' : 'inactive'}>
+            <TabsTrigger
+              value="campaign"
+              data-state={activeTab === "campaign" ? "active" : "inactive"}
+            >
               Campaign Activity
             </TabsTrigger>
           </TabsList>

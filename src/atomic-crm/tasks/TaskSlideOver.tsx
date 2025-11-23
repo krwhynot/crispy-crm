@@ -1,15 +1,15 @@
-import { CheckSquareIcon, LinkIcon } from 'lucide-react';
-import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
-import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
-import { TaskSlideOverDetailsTab } from './TaskSlideOverDetailsTab';
-import { TaskRelatedItemsTab } from './TaskRelatedItemsTab';
-import type { Task } from '../types';
+import { CheckSquareIcon, LinkIcon } from "lucide-react";
+import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
+import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
+import { TaskSlideOverDetailsTab } from "./TaskSlideOverDetailsTab";
+import { TaskRelatedItemsTab } from "./TaskRelatedItemsTab";
+import type { Task } from "../types";
 
 interface TaskSlideOverProps {
   recordId: number | null;
   isOpen: boolean;
   onClose: () => void;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle: () => void;
 }
 
@@ -38,14 +38,14 @@ export function TaskSlideOver({
   // Tab configuration
   const tabs: TabConfig[] = [
     {
-      key: 'details',
-      label: 'Details',
+      key: "details",
+      label: "Details",
       component: TaskSlideOverDetailsTab,
       icon: CheckSquareIcon,
     },
     {
-      key: 'related',
-      label: 'Related Items',
+      key: "related",
+      label: "Related Items",
       component: TaskRelatedItemsTab,
       icon: LinkIcon,
     },

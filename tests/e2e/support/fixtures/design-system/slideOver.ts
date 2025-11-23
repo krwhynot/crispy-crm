@@ -27,42 +27,42 @@ export class SlideOverFixture {
    * Get close button (X)
    */
   getCloseButton(): Locator {
-    return this.getDialog().getByRole('button', { name: /close/i });
+    return this.getDialog().getByRole("button", { name: /close/i });
   }
 
   /**
    * Get edit button
    */
   getEditButton(): Locator {
-    return this.getDialog().getByRole('button', { name: /edit/i });
+    return this.getDialog().getByRole("button", { name: /edit/i });
   }
 
   /**
    * Get cancel button (visible in edit mode)
    */
   getCancelButton(): Locator {
-    return this.getDialog().getByRole('button', { name: /cancel/i });
+    return this.getDialog().getByRole("button", { name: /cancel/i });
   }
 
   /**
    * Get save button (visible in edit mode)
    */
   getSaveButton(): Locator {
-    return this.getDialog().getByRole('button', { name: /save/i });
+    return this.getDialog().getByRole("button", { name: /save/i });
   }
 
   /**
    * Get tab by name
    */
   getTab(name: string): Locator {
-    return this.getDialog().getByRole('tab', { name: new RegExp(name, 'i') });
+    return this.getDialog().getByRole("tab", { name: new RegExp(name, "i") });
   }
 
   /**
    * Get all tabs
    */
   getTabs(): Locator {
-    return this.getDialog().getByRole('tab');
+    return this.getDialog().getByRole("tab");
   }
 
   /**
@@ -90,7 +90,7 @@ export class SlideOverFixture {
    * Assert URL contains expected query param
    * Per plan line 1494: ?view={id} or ?edit={id}
    */
-  async expectQueryParam(param: 'view' | 'edit', value: string | number): Promise<void> {
+  async expectQueryParam(param: "view" | "edit", value: string | number): Promise<void> {
     const url = this.page.url();
     const urlObj = new URL(url);
     const actualValue = urlObj.searchParams.get(param);
@@ -105,8 +105,8 @@ export class SlideOverFixture {
     const url = this.page.url();
     const urlObj = new URL(url);
 
-    expect(urlObj.searchParams.has('view')).toBe(false);
-    expect(urlObj.searchParams.has('edit')).toBe(false);
+    expect(urlObj.searchParams.has("view")).toBe(false);
+    expect(urlObj.searchParams.has("edit")).toBe(false);
   }
 
   /**
@@ -116,7 +116,7 @@ export class SlideOverFixture {
     // Navigate to resource if not already there
     if (!this.page.url().includes(`/#/${resource}`)) {
       await this.page.goto(`/#/${resource}`);
-      await this.page.waitForLoadState('networkidle');
+      await this.page.waitForLoadState("networkidle");
     }
 
     // Click row (using tbody to properly exclude header rows)
@@ -134,7 +134,7 @@ export class SlideOverFixture {
     // Extract ID from URL
     const url = this.page.url();
     const urlObj = new URL(url);
-    const id = urlObj.searchParams.get('view') || urlObj.searchParams.get('edit') || '0';
+    const id = urlObj.searchParams.get("view") || urlObj.searchParams.get("edit") || "0";
 
     return { id };
   }
@@ -142,8 +142,8 @@ export class SlideOverFixture {
   /**
    * Toggle to edit mode
    */
-  async toggleMode(targetMode: 'view' | 'edit'): Promise<void> {
-    if (targetMode === 'edit') {
+  async toggleMode(targetMode: "view" | "edit"): Promise<void> {
+    if (targetMode === "edit") {
       const editButton = this.getEditButton();
       await expect(editButton).toBeVisible();
       await editButton.click();
@@ -161,7 +161,7 @@ export class SlideOverFixture {
    * Press ESC key and verify slide-over closes
    */
   async pressEscapeAndVerifyClosed(): Promise<void> {
-    await this.page.keyboard.press('Escape');
+    await this.page.keyboard.press("Escape");
     await this.page.waitForTimeout(300); // Animation delay
     await this.expectClosed();
     await this.expectNoQueryParams();
@@ -189,7 +189,7 @@ export class SlideOverFixture {
     // Get dialog bounds
     const dialog = this.getDialog();
     const dialogBox = await dialog.boundingBox();
-    expect(dialogBox, 'Dialog not found').not.toBeNull();
+    expect(dialogBox, "Dialog not found").not.toBeNull();
 
     if (dialogBox) {
       // Click 50px to the left of the dialog (on the backdrop)
@@ -213,9 +213,9 @@ export class SlideOverFixture {
       const el = document.activeElement;
       return {
         tagName: el?.tagName,
-        role: el?.getAttribute('role'),
+        role: el?.getAttribute("role"),
         // Check if focused element is within or is the row
-        isRow: el?.closest('[role="row"]') !== null || el?.getAttribute('role') === 'row',
+        isRow: el?.closest('[role="row"]') !== null || el?.getAttribute("role") === "row",
       };
     });
 
@@ -227,7 +227,9 @@ export class SlideOverFixture {
       return el === document.activeElement || el.contains(document.activeElement);
     });
 
-    expect(rowOrDescendantHasFocus, `Row ${rowIndex} or its descendant should have focus`).toBe(true);
+    expect(rowOrDescendantHasFocus, `Row ${rowIndex} or its descendant should have focus`).toBe(
+      true
+    );
   }
 
   /**
@@ -244,14 +246,14 @@ export class SlideOverFixture {
     );
 
     const count = await focusableElements.count();
-    expect(count, 'Should have focusable elements in slide-over').toBeGreaterThan(0);
+    expect(count, "Should have focusable elements in slide-over").toBeGreaterThan(0);
 
     // Focus first element
     await focusableElements.first().focus();
 
     // Tab through all elements and loop back
     for (let i = 0; i < count + 2; i++) {
-      await this.page.keyboard.press('Tab');
+      await this.page.keyboard.press("Tab");
       await this.page.waitForTimeout(50);
 
       // Verify focus is still within dialog
@@ -276,14 +278,14 @@ export class SlideOverFixture {
     );
 
     const count = await focusableElements.count();
-    expect(count, 'Should have focusable elements in slide-over').toBeGreaterThan(0);
+    expect(count, "Should have focusable elements in slide-over").toBeGreaterThan(0);
 
     // Focus last element
     await focusableElements.last().focus();
 
     // Shift+Tab backward through all elements and loop back
     for (let i = 0; i < count + 2; i++) {
-      await this.page.keyboard.press('Shift+Tab');
+      await this.page.keyboard.press("Shift+Tab");
       await this.page.waitForTimeout(50);
 
       // Verify focus is still within dialog
@@ -291,7 +293,9 @@ export class SlideOverFixture {
         return el.contains(document.activeElement);
       });
 
-      expect(isFocusInDialog, `Focus should stay within slide-over after ${i} Shift+Tabs`).toBe(true);
+      expect(isFocusInDialog, `Focus should stay within slide-over after ${i} Shift+Tabs`).toBe(
+        true
+      );
     }
   }
 
@@ -304,7 +308,7 @@ export class SlideOverFixture {
     await this.expectVisible();
 
     const box = await dialog.boundingBox();
-    expect(box, 'Slide-over bounding box not found').not.toBeNull();
+    expect(box, "Slide-over bounding box not found").not.toBeNull();
 
     if (box) {
       const viewport = this.page.viewportSize();
@@ -333,13 +337,10 @@ export class SlideOverFixture {
     // Check for transform or animation styles
     const hasAnimation = await dialog.evaluate((el) => {
       const styles = window.getComputedStyle(el);
-      return (
-        styles.transition.includes('transform') ||
-        styles.transform !== 'none'
-      );
+      return styles.transition.includes("transform") || styles.transform !== "none";
     });
 
-    expect(hasAnimation, 'Slide-over should have slide animation').toBe(true);
+    expect(hasAnimation, "Slide-over should have slide animation").toBe(true);
   }
 
   /**
@@ -385,18 +386,18 @@ export class SlideOverFixture {
     await this.expectVisible();
 
     // Should have role="dialog"
-    const role = await dialog.getAttribute('role');
-    expect(role).toBe('dialog');
+    const role = await dialog.getAttribute("role");
+    expect(role).toBe("dialog");
 
     // Should have aria-modal="true"
-    const ariaModal = await dialog.getAttribute('aria-modal');
-    expect(ariaModal).toBe('true');
+    const ariaModal = await dialog.getAttribute("aria-modal");
+    expect(ariaModal).toBe("true");
 
     // Should have aria-labelledby or aria-label
     const hasLabel = await dialog.evaluate((el) => {
-      return el.hasAttribute('aria-labelledby') || el.hasAttribute('aria-label');
+      return el.hasAttribute("aria-labelledby") || el.hasAttribute("aria-label");
     });
-    expect(hasLabel, 'Slide-over should have aria-labelledby or aria-label').toBe(true);
+    expect(hasLabel, "Slide-over should have aria-labelledby or aria-label").toBe(true);
   }
 }
 

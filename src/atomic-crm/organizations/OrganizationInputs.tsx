@@ -11,7 +11,14 @@ export const OrganizationInputs = () => {
     {
       key: "general" as TabKey,
       label: "General",
-      fields: ["name", "logo", "organization_type", "parent_organization_id", "description", "sales_id"],
+      fields: [
+        "name",
+        "logo",
+        "organization_type",
+        "parent_organization_id",
+        "description",
+        "sales_id",
+      ],
       content: <OrganizationGeneralTab />,
     },
     {

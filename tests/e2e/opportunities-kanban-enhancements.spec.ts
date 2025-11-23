@@ -130,7 +130,9 @@ test.describe("Opportunities Kanban Enhancements", () => {
   });
 
   test.describe("Quick-Add Functionality", () => {
-    test("creates opportunity in specific stage via quick-add", async ({ authenticatedPage: _authenticatedPage }) => {
+    test("creates opportunity in specific stage via quick-add", async ({
+      authenticatedPage: _authenticatedPage,
+    }) => {
       const testOpportunityName = `Test Quick-Add ${Date.now()}`;
       const targetStage = "Initial Outreach";
 
@@ -142,7 +144,9 @@ test.describe("Opportunities Kanban Enhancements", () => {
       await expect(targetColumn.getByText(testOpportunityName)).toBeVisible();
     });
 
-    test("quick-add button is present in each column", async ({ authenticatedPage: _authenticatedPage }) => {
+    test("quick-add button is present in each column", async ({
+      authenticatedPage: _authenticatedPage,
+    }) => {
       // Check first few columns have quick-add buttons
       const stages = ["New Lead", "Initial Outreach", "Sample Visit Offered"];
 

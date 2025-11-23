@@ -1,22 +1,22 @@
 // src/atomic-crm/contacts/UnlinkConfirmDialog.test.tsx
-import { render, screen } from '@testing-library/react';
-import { UnlinkConfirmDialog } from './UnlinkConfirmDialog';
-import { vi } from 'vitest';
+import { render, screen } from "@testing-library/react";
+import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
+import { vi } from "vitest";
 
 // Mock react-admin hooks
-vi.mock('react-admin', () => ({
+vi.mock("react-admin", () => ({
   useDelete: () => [vi.fn(), { isLoading: false }],
   useNotify: () => vi.fn(),
 }));
 
-describe('UnlinkConfirmDialog', () => {
+describe("UnlinkConfirmDialog", () => {
   const mockOpportunity = {
     id: 10,
-    name: 'Deal A',
-    junctionId: 'j1',
+    name: "Deal A",
+    junctionId: "j1",
   };
 
-  it('renders when opportunity is set', () => {
+  it("renders when opportunity is set", () => {
     render(
       <UnlinkConfirmDialog
         opportunity={mockOpportunity}
@@ -31,7 +31,7 @@ describe('UnlinkConfirmDialog', () => {
     expect(screen.getByText(/Deal A/)).toBeInTheDocument();
   });
 
-  it('does not render when opportunity is null', () => {
+  it("does not render when opportunity is null", () => {
     render(
       <UnlinkConfirmDialog
         opportunity={null}

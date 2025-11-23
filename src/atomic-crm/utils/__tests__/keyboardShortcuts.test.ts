@@ -1,27 +1,27 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { KeyboardShortcutManager, getModifierKeyName, getIsMac } from '../keyboardShortcuts';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { KeyboardShortcutManager, getModifierKeyName, getIsMac } from "../keyboardShortcuts";
 
-describe('KeyboardShortcutManager', () => {
+describe("KeyboardShortcutManager", () => {
   let manager: KeyboardShortcutManager;
 
   beforeEach(() => {
     manager = new KeyboardShortcutManager();
   });
 
-  it('should register and execute shortcuts', () => {
+  it("should register and execute shortcuts", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'n',
+      key: "n",
       ctrl: true,
       handler,
-      description: 'New item'
+      description: "New item",
     });
 
     // Simulate Ctrl+N
-    const event = new KeyboardEvent('keydown', {
-      key: 'n',
-      ctrlKey: true
+    const event = new KeyboardEvent("keydown", {
+      key: "n",
+      ctrlKey: true,
     });
 
     manager.handleKeyPress(event);
@@ -29,180 +29,180 @@ describe('KeyboardShortcutManager', () => {
     expect(handler).toHaveBeenCalled();
   });
 
-  it('should prevent default when shortcut matches', () => {
+  it("should prevent default when shortcut matches", () => {
     const preventDefault = vi.fn();
 
     manager.register({
-      key: 'e',
+      key: "e",
       ctrl: true,
       handler: () => {},
-      description: 'Export'
+      description: "Export",
     });
 
-    const event = new KeyboardEvent('keydown', {
-      key: 'e',
-      ctrlKey: true
+    const event = new KeyboardEvent("keydown", {
+      key: "e",
+      ctrlKey: true,
     });
-    Object.defineProperty(event, 'preventDefault', { value: preventDefault });
+    Object.defineProperty(event, "preventDefault", { value: preventDefault });
 
     manager.handleKeyPress(event);
 
     expect(preventDefault).toHaveBeenCalled();
   });
 
-  it('should block shortcuts in input fields without modifiers', () => {
+  it("should block shortcuts in input fields without modifiers", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'a',
+      key: "a",
       handler,
-      description: 'Action'
+      description: "Action",
     });
 
-    const input = document.createElement('input');
-    const event = new KeyboardEvent('keydown', {
-      key: 'a',
-      bubbles: true
+    const input = document.createElement("input");
+    const event = new KeyboardEvent("keydown", {
+      key: "a",
+      bubbles: true,
     });
-    Object.defineProperty(event, 'target', { value: input, configurable: true });
+    Object.defineProperty(event, "target", { value: input, configurable: true });
 
     manager.handleKeyPress(event);
 
     expect(handler).not.toHaveBeenCalled();
   });
 
-  it('should allow shortcuts with modifiers in input fields', () => {
+  it("should allow shortcuts with modifiers in input fields", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 's',
+      key: "s",
       ctrl: true,
       handler,
-      description: 'Save'
+      description: "Save",
     });
 
-    const input = document.createElement('input');
-    const event = new KeyboardEvent('keydown', {
-      key: 's',
+    const input = document.createElement("input");
+    const event = new KeyboardEvent("keydown", {
+      key: "s",
       ctrlKey: true,
-      bubbles: true
+      bubbles: true,
     });
-    Object.defineProperty(event, 'target', { value: input, configurable: true });
+    Object.defineProperty(event, "target", { value: input, configurable: true });
 
     manager.handleKeyPress(event);
 
     expect(handler).toHaveBeenCalled();
   });
 
-  it('should block shortcuts in textarea fields', () => {
+  it("should block shortcuts in textarea fields", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'x',
+      key: "x",
       handler,
-      description: 'Cut'
+      description: "Cut",
     });
 
-    const textarea = document.createElement('textarea');
-    const event = new KeyboardEvent('keydown', {
-      key: 'x',
-      bubbles: true
+    const textarea = document.createElement("textarea");
+    const event = new KeyboardEvent("keydown", {
+      key: "x",
+      bubbles: true,
     });
-    Object.defineProperty(event, 'target', { value: textarea, configurable: true });
+    Object.defineProperty(event, "target", { value: textarea, configurable: true });
 
     manager.handleKeyPress(event);
 
     expect(handler).not.toHaveBeenCalled();
   });
 
-  it('should block shortcuts in select elements', () => {
+  it("should block shortcuts in select elements", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'ArrowDown',
+      key: "ArrowDown",
       handler,
-      description: 'Navigate'
+      description: "Navigate",
     });
 
-    const select = document.createElement('select');
-    const event = new KeyboardEvent('keydown', {
-      key: 'ArrowDown',
-      bubbles: true
+    const select = document.createElement("select");
+    const event = new KeyboardEvent("keydown", {
+      key: "ArrowDown",
+      bubbles: true,
     });
-    Object.defineProperty(event, 'target', { value: select, configurable: true });
+    Object.defineProperty(event, "target", { value: select, configurable: true });
 
     manager.handleKeyPress(event);
 
     expect(handler).not.toHaveBeenCalled();
   });
 
-  it('should block shortcuts in contenteditable elements', () => {
+  it("should block shortcuts in contenteditable elements", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'b',
+      key: "b",
       handler,
-      description: 'Bold'
+      description: "Bold",
     });
 
-    const div = document.createElement('div');
-    div.contentEditable = 'true';
+    const div = document.createElement("div");
+    div.contentEditable = "true";
 
     // Mock isContentEditable property for JSDOM
-    Object.defineProperty(div, 'isContentEditable', {
+    Object.defineProperty(div, "isContentEditable", {
       get: () => true,
-      configurable: true
+      configurable: true,
     });
 
-    const event = new KeyboardEvent('keydown', {
-      key: 'b',
-      bubbles: true
+    const event = new KeyboardEvent("keydown", {
+      key: "b",
+      bubbles: true,
     });
-    Object.defineProperty(event, 'target', { value: div, configurable: true });
+    Object.defineProperty(event, "target", { value: div, configurable: true });
 
     manager.handleKeyPress(event);
 
     expect(handler).not.toHaveBeenCalled();
   });
 
-  it('should block shortcuts in elements with ARIA textbox role', () => {
+  it("should block shortcuts in elements with ARIA textbox role", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'Delete',
+      key: "Delete",
       handler,
-      description: 'Delete'
+      description: "Delete",
     });
 
-    const div = document.createElement('div');
-    div.setAttribute('role', 'textbox');
-    const event = new KeyboardEvent('keydown', {
-      key: 'Delete',
-      bubbles: true
+    const div = document.createElement("div");
+    div.setAttribute("role", "textbox");
+    const event = new KeyboardEvent("keydown", {
+      key: "Delete",
+      bubbles: true,
     });
-    Object.defineProperty(event, 'target', { value: div, configurable: true });
+    Object.defineProperty(event, "target", { value: div, configurable: true });
 
     manager.handleKeyPress(event);
 
     expect(handler).not.toHaveBeenCalled();
   });
 
-  it('should enable and disable shortcuts', () => {
+  it("should enable and disable shortcuts", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 't',
+      key: "t",
       ctrl: true,
       handler,
-      description: 'Test'
+      description: "Test",
     });
 
     // Disable shortcuts
     manager.disable();
 
-    const event = new KeyboardEvent('keydown', {
-      key: 't',
-      ctrlKey: true
+    const event = new KeyboardEvent("keydown", {
+      key: "t",
+      ctrlKey: true,
     });
 
     manager.handleKeyPress(event);
@@ -215,22 +215,22 @@ describe('KeyboardShortcutManager', () => {
     expect(handler).toHaveBeenCalled();
   });
 
-  it('should unregister shortcuts', () => {
+  it("should unregister shortcuts", () => {
     const handler = vi.fn();
 
     const shortcut = {
-      key: 'r',
+      key: "r",
       ctrl: true,
       handler,
-      description: 'Refresh'
+      description: "Refresh",
     };
 
     manager.register(shortcut);
     manager.unregister(shortcut);
 
-    const event = new KeyboardEvent('keydown', {
-      key: 'r',
-      ctrlKey: true
+    const event = new KeyboardEvent("keydown", {
+      key: "r",
+      ctrlKey: true,
     });
 
     manager.handleKeyPress(event);
@@ -238,21 +238,21 @@ describe('KeyboardShortcutManager', () => {
     expect(handler).not.toHaveBeenCalled();
   });
 
-  it('should handle multiple modifier keys', () => {
+  it("should handle multiple modifier keys", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'z',
+      key: "z",
       ctrl: true,
       shift: true,
       handler,
-      description: 'Redo'
+      description: "Redo",
     });
 
-    const event = new KeyboardEvent('keydown', {
-      key: 'z',
+    const event = new KeyboardEvent("keydown", {
+      key: "z",
       ctrlKey: true,
-      shiftKey: true
+      shiftKey: true,
     });
 
     manager.handleKeyPress(event);
@@ -260,28 +260,28 @@ describe('KeyboardShortcutManager', () => {
     expect(handler).toHaveBeenCalled();
   });
 
-  it('should handle Meta key separately from Ctrl', () => {
+  it("should handle Meta key separately from Ctrl", () => {
     const ctrlHandler = vi.fn();
     const metaHandler = vi.fn();
 
     manager.register({
-      key: 's',
+      key: "s",
       ctrl: true,
       handler: ctrlHandler,
-      description: 'Save with Ctrl'
+      description: "Save with Ctrl",
     });
 
     manager.register({
-      key: 's',
+      key: "s",
       meta: true,
       handler: metaHandler,
-      description: 'Save with Meta'
+      description: "Save with Meta",
     });
 
     // Test Ctrl+S
-    const ctrlEvent = new KeyboardEvent('keydown', {
-      key: 's',
-      ctrlKey: true
+    const ctrlEvent = new KeyboardEvent("keydown", {
+      key: "s",
+      ctrlKey: true,
     });
     manager.handleKeyPress(ctrlEvent);
     expect(ctrlHandler).toHaveBeenCalled();
@@ -291,29 +291,29 @@ describe('KeyboardShortcutManager', () => {
     metaHandler.mockClear();
 
     // Test Meta+S (Cmd+S on Mac)
-    const metaEvent = new KeyboardEvent('keydown', {
-      key: 's',
-      metaKey: true
+    const metaEvent = new KeyboardEvent("keydown", {
+      key: "s",
+      metaKey: true,
     });
     manager.handleKeyPress(metaEvent);
     expect(metaHandler).toHaveBeenCalled();
     expect(ctrlHandler).not.toHaveBeenCalled();
   });
 
-  it('should be case insensitive', () => {
+  it("should be case insensitive", () => {
     const handler = vi.fn();
 
     manager.register({
-      key: 'p',
+      key: "p",
       ctrl: true,
       handler,
-      description: 'Print'
+      description: "Print",
     });
 
     // Test with uppercase P
-    const event = new KeyboardEvent('keydown', {
-      key: 'P',
-      ctrlKey: true
+    const event = new KeyboardEvent("keydown", {
+      key: "P",
+      ctrlKey: true,
     });
 
     manager.handleKeyPress(event);
@@ -321,37 +321,37 @@ describe('KeyboardShortcutManager', () => {
     expect(handler).toHaveBeenCalled();
   });
 
-  it('should return list of registered shortcuts', () => {
+  it("should return list of registered shortcuts", () => {
     manager.register({
-      key: 'a',
+      key: "a",
       ctrl: true,
       handler: () => {},
-      description: 'Action A'
+      description: "Action A",
     });
 
     manager.register({
-      key: 'b',
+      key: "b",
       ctrl: true,
       handler: () => {},
-      description: 'Action B'
+      description: "Action B",
     });
 
     const shortcuts = manager.getShortcuts();
 
     expect(shortcuts).toHaveLength(2);
-    expect(shortcuts[0].description).toBe('Action A');
-    expect(shortcuts[1].description).toBe('Action B');
+    expect(shortcuts[0].description).toBe("Action A");
+    expect(shortcuts[1].description).toBe("Action B");
   });
 });
 
-describe('Utility functions', () => {
-  it('should return correct modifier key name', () => {
+describe("Utility functions", () => {
+  it("should return correct modifier key name", () => {
     const modifierKey = getModifierKeyName();
-    expect(['⌘', 'Ctrl']).toContain(modifierKey);
+    expect(["⌘", "Ctrl"]).toContain(modifierKey);
   });
 
-  it('should detect platform', () => {
+  it("should detect platform", () => {
     const isMac = getIsMac();
-    expect(typeof isMac).toBe('boolean');
+    expect(typeof isMac).toBe("boolean");
   });
 });

@@ -347,9 +347,7 @@ export const WithIcons: Story = {
             </svg>
             <Label htmlFor="public">Public</Label>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Anyone on the internet can see this
-          </p>
+          <p className="text-sm text-muted-foreground">Anyone on the internet can see this</p>
         </div>
       </div>
       <div className="flex items-start space-x-2">

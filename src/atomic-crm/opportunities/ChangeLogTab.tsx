@@ -397,7 +397,7 @@ const ChangeLogEntry = ({
   const isDeletion = entry.old_value && !entry.new_value;
 
   return (
-    <Card className="border-l-4 border-l-[var(--primary)]">
+    <Card className="border-l-4 border-l-primary">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
@@ -428,9 +428,7 @@ const ChangeLogEntry = ({
                 <span className="text-muted-foreground min-w-[60px]">
                   {isCreation ? "Value:" : "To:"}
                 </span>
-                <span className="text-success font-medium">
-                  {formatValue(entry.new_value)}
-                </span>
+                <span className="text-success font-medium">{formatValue(entry.new_value)}</span>
               </div>
             </div>
           </div>

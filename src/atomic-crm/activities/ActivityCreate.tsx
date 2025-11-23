@@ -28,10 +28,7 @@ const HiddenActivityTypeField = () => {
 
 export default function ActivityCreate() {
   // Get defaults from Zod schema (single source of truth per Engineering Constitution #4)
-  const defaultValues = useMemo(
-    () => activitiesSchema.partial().parse({}),
-    []
-  );
+  const defaultValues = useMemo(() => activitiesSchema.partial().parse({}), []);
 
   return (
     <CreateBase redirect="list">
@@ -48,7 +45,13 @@ export default function ActivityCreate() {
                     {
                       key: "details",
                       label: "Details",
-                      fields: ["type", "subject", "activity_date", "duration_minutes", "description"],
+                      fields: [
+                        "type",
+                        "subject",
+                        "activity_date",
+                        "duration_minutes",
+                        "description",
+                      ],
                       content: (
                         <div className="space-y-6">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { StageBadgeWithHealth } from './StageBadgeWithHealth';
+import { Button } from "@/components/ui/button";
+import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 
 interface SuggestedOpportunityCardProps {
   opportunity: {
@@ -12,10 +12,7 @@ interface SuggestedOpportunityCardProps {
   onLink: () => void;
 }
 
-export function SuggestedOpportunityCard({
-  opportunity,
-  onLink,
-}: SuggestedOpportunityCardProps) {
+export function SuggestedOpportunityCard({ opportunity, onLink }: SuggestedOpportunityCardProps) {
   return (
     <div className="border rounded-lg p-4 flex items-center justify-between hover:bg-muted/50 transition-colors">
       <div className="flex-1">
@@ -27,9 +24,9 @@ export function SuggestedOpportunityCard({
           />
           {opportunity.amount && (
             <span className="text-sm text-muted-foreground">
-              {new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
               }).format(opportunity.amount)}
             </span>
           )}

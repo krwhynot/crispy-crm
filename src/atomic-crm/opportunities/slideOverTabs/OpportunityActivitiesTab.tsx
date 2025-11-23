@@ -1,22 +1,19 @@
-import { useGetList } from 'react-admin';
-import { formatDistanceToNow } from 'date-fns';
-import { Activity, FileText } from 'lucide-react';
+import { useGetList } from "react-admin";
+import { formatDistanceToNow } from "date-fns";
+import { Activity, FileText } from "lucide-react";
 
 interface OpportunityActivitiesTabProps {
   record: any;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
 }
 
 export function OpportunityActivitiesTab({ record }: OpportunityActivitiesTabProps) {
   // Fetch opportunity notes (activities) from opportunityNotes table
-  const { data: notes, isLoading } = useGetList(
-    'opportunityNotes',
-    {
-      filter: { opportunity_id: record.id },
-      pagination: { page: 1, perPage: 100 },
-      sort: { field: 'created_at', order: 'DESC' },
-    }
-  );
+  const { data: notes, isLoading } = useGetList("opportunityNotes", {
+    filter: { opportunity_id: record.id },
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: "created_at", order: "DESC" },
+  });
 
   if (isLoading) {
     return (
@@ -67,16 +64,16 @@ export function OpportunityActivitiesTab({ record }: OpportunityActivitiesTabPro
 
               {/* Note text */}
               {note.text && (
-                <p className="text-sm text-foreground whitespace-pre-wrap">
-                  {note.text}
-                </p>
+                <p className="text-sm text-foreground whitespace-pre-wrap">{note.text}</p>
               )}
 
               {/* Activity type badge if available */}
               {note.activity_type && (
                 <div className="mt-2">
                   <span className="inline-flex items-center px-2 py-1 rounded-md bg-muted text-xs font-medium">
-                    {note.activity_type.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                    {note.activity_type
+                      .replace(/_/g, " ")
+                      .replace(/\b\w/g, (l: string) => l.toUpperCase())}
                   </span>
                 </div>
               )}

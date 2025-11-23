@@ -45,7 +45,11 @@ vi.mock("ra-core", async () => {
 // Mock Sheet component
 vi.mock("@/components/ui/sheet", () => ({
   Sheet: ({ children, open }: any) => (open ? <div data-testid="sheet">{children}</div> : null),
-  SheetContent: ({ children }: any) => <div role="dialog" aria-modal="true">{children}</div>,
+  SheetContent: ({ children }: any) => (
+    <div role="dialog" aria-modal="true">
+      {children}
+    </div>
+  ),
   SheetHeader: ({ children }: any) => <div data-testid="sheet-header">{children}</div>,
   SheetTitle: ({ children }: any) => <h2 id="slide-over-title">{children}</h2>,
   SheetFooter: ({ children }: any) => <div data-testid="sheet-footer">{children}</div>,
@@ -87,7 +91,16 @@ vi.mock("@/components/ui/skeleton", () => ({
 
 // Mock ResourceSlideOver (the wrapper)
 vi.mock("@/components/layouts/ResourceSlideOver", () => ({
-  ResourceSlideOver: ({ resource, recordId, isOpen, onClose, mode, onModeToggle, tabs, recordRepresentation }: any) => {
+  ResourceSlideOver: ({
+    resource,
+    recordId,
+    isOpen,
+    onClose,
+    mode,
+    onModeToggle,
+    tabs,
+    recordRepresentation,
+  }: any) => {
     const mockRecord = {
       id: recordId,
       first_name: "John",
@@ -99,11 +112,15 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
     return (
       <div role="dialog" data-testid="resource-slide-over">
         <div data-testid="slide-over-header">
-          <h2>{recordRepresentation ? recordRepresentation(mockRecord) : `${resource} #${recordId}`}</h2>
+          <h2>
+            {recordRepresentation ? recordRepresentation(mockRecord) : `${resource} #${recordId}`}
+          </h2>
           <button onClick={onModeToggle} data-testid="mode-toggle">
-            {mode === 'view' ? 'Edit' : 'Cancel'}
+            {mode === "view" ? "Edit" : "Cancel"}
           </button>
-          <button onClick={onClose} data-testid="close-button">Close</button>
+          <button onClick={onClose} data-testid="close-button">
+            Close
+          </button>
         </div>
 
         <div role="tablist" data-testid="tab-list">
@@ -133,7 +150,9 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
 vi.mock("./ContactDetailsTab", () => ({
   ContactDetailsTab: ({ record, mode }: any) => (
     <div data-testid="contact-details-tab">
-      <p>Details for {record.first_name} {record.last_name}</p>
+      <p>
+        Details for {record.first_name} {record.last_name}
+      </p>
       <p>Mode: {mode}</p>
     </div>
   ),

@@ -44,7 +44,8 @@ const OpportunityList = () => {
   const [view, setView] = useState<OpportunityView>(getViewPreference);
 
   // Slide-over state
-  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
+    useSlideOverState();
 
   const handleViewChange = (newView: OpportunityView) => {
     setView(newView);
@@ -94,10 +95,10 @@ const OpportunityList = () => {
 
 const OpportunityLayout = ({
   view,
-  openSlideOver
+  openSlideOver,
 }: {
   view: OpportunityView;
-  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+  openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }) => {
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;

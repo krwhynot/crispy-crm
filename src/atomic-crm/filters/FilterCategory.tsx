@@ -34,9 +34,7 @@ export const FilterCategory = ({
           <h3 className="font-semibold text-sm text-foreground">
             <Translate i18nKey={label} />
           </h3>
-          {hasActiveFilters && (
-            <div className="h-2 w-2 rounded-full bg-accent" />
-          )}
+          {hasActiveFilters && <div className="h-2 w-2 rounded-full bg-accent" />}
         </div>
         <ChevronDown
           className={cn(

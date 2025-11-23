@@ -9,7 +9,7 @@
  */
 
 // Principal Pipeline Types
-export type Momentum = 'increasing' | 'steady' | 'decreasing' | 'stale';
+export type Momentum = "increasing" | "steady" | "decreasing" | "stale";
 
 export interface PrincipalPipelineRow {
   id: number;
@@ -22,12 +22,12 @@ export interface PrincipalPipelineRow {
 }
 
 // Task Types
-export type Priority = 'critical' | 'high' | 'medium' | 'low';
-export type TaskStatus = 'overdue' | 'today' | 'tomorrow' | 'upcoming' | 'later';
-export type TaskType = 'Call' | 'Email' | 'Meeting' | 'Follow-up' | 'Other';
+export type Priority = "critical" | "high" | "medium" | "low";
+export type TaskStatus = "overdue" | "today" | "tomorrow" | "upcoming" | "later";
+export type TaskType = "Call" | "Email" | "Meeting" | "Follow-up" | "Other";
 
 export interface RelatedEntity {
-  type: 'opportunity' | 'contact' | 'organization';
+  type: "opportunity" | "contact" | "organization";
   name: string;
   id: number;
 }
@@ -45,8 +45,13 @@ export interface TaskItem {
 }
 
 // Activity Logger Types
-export type ActivityType = 'Call' | 'Email' | 'Meeting' | 'Follow-up' | 'Note';
-export type ActivityOutcome = 'Connected' | 'Left Voicemail' | 'No Answer' | 'Completed' | 'Rescheduled';
+export type ActivityType = "Call" | "Email" | "Meeting" | "Follow-up" | "Note";
+export type ActivityOutcome =
+  | "Connected"
+  | "Left Voicemail"
+  | "No Answer"
+  | "Completed"
+  | "Rescheduled";
 
 export interface ActivityLog {
   id?: number;

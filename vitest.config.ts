@@ -58,10 +58,7 @@ export default defineConfig({
       // See: https://github.com/marmelab/react-admin/blob/master/docs/Vite.md
       "react-admin": path.resolve(__dirname, "./node_modules/react-admin/src"),
       "ra-core": path.resolve(__dirname, "./node_modules/ra-core/src"),
-      "ra-ui-materialui": path.resolve(
-        __dirname,
-        "./node_modules/ra-ui-materialui/src"
-      ),
+      "ra-ui-materialui": path.resolve(__dirname, "./node_modules/ra-ui-materialui/src"),
     },
   },
 });

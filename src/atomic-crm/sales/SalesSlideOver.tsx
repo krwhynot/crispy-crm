@@ -1,15 +1,15 @@
-import { UserIcon, ShieldCheckIcon } from 'lucide-react';
-import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
-import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
-import { SalesProfileTab } from './SalesProfileTab';
-import { SalesPermissionsTab } from './SalesPermissionsTab';
-import type { Sale } from '../types';
+import { UserIcon, ShieldCheckIcon } from "lucide-react";
+import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
+import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
+import { SalesProfileTab } from "./SalesProfileTab";
+import { SalesPermissionsTab } from "./SalesPermissionsTab";
+import type { Sale } from "../types";
 
 interface SalesSlideOverProps {
   recordId: number | null;
   isOpen: boolean;
   onClose: () => void;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle: () => void;
 }
 
@@ -38,14 +38,14 @@ export function SalesSlideOver({
   // Tab configuration
   const tabs: TabConfig[] = [
     {
-      key: 'profile',
-      label: 'Profile',
+      key: "profile",
+      label: "Profile",
       component: SalesProfileTab,
       icon: UserIcon,
     },
     {
-      key: 'permissions',
-      label: 'Permissions',
+      key: "permissions",
+      label: "Permissions",
       component: SalesPermissionsTab,
       icon: ShieldCheckIcon,
     },

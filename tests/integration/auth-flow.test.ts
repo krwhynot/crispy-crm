@@ -11,12 +11,12 @@
  * Test user: admin@test.com / password123
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import type { SupabaseClient, Session } from '@supabase/supabase-js';
-import { createClient } from '@supabase/supabase-js';
-import * as dotenv from 'dotenv';
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import type { SupabaseClient, Session } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
+import * as dotenv from "dotenv";
 
-dotenv.config({ path: '.env.test' });
+dotenv.config({ path: ".env.test" });
 
 interface AuthTestContext {
   client: SupabaseClient;
@@ -25,7 +25,7 @@ interface AuthTestContext {
   session: Session | null;
 }
 
-describe('Authentication Flow Integration', () => {
+describe("Authentication Flow Integration", () => {
   let context: AuthTestContext;
 
   beforeEach(async () => {
@@ -33,13 +33,13 @@ describe('Authentication Flow Integration', () => {
     const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY!;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase credentials in .env.test');
+      throw new Error("Missing Supabase credentials in .env.test");
     }
 
     context = {
       client: createClient(supabaseUrl, supabaseKey),
-      adminEmail: 'admin@test.com',
-      adminPassword: 'password123',
+      adminEmail: "admin@test.com",
+      adminPassword: "password123",
       session: null,
     };
 
@@ -54,8 +54,8 @@ describe('Authentication Flow Integration', () => {
     }
   });
 
-  describe('Login', () => {
-    it('successfully logs in with valid credentials', async () => {
+  describe("Login", () => {
+    it("successfully logs in with valid credentials", async () => {
       const { data, error } = await context.client.auth.signInWithPassword({
         email: context.adminEmail,
         password: context.adminPassword,
@@ -71,34 +71,34 @@ describe('Authentication Flow Integration', () => {
       context.session = data.session;
     });
 
-    it('fails login with invalid email', async () => {
+    it("fails login with invalid email", async () => {
       const { data, error } = await context.client.auth.signInWithPassword({
-        email: 'nonexistent@test.com',
+        email: "nonexistent@test.com",
         password: context.adminPassword,
       });
 
       expect(error).toBeTruthy();
-      expect(error?.message).toContain('Invalid');
+      expect(error?.message).toContain("Invalid");
       expect(data.session).toBeNull();
       expect(data.user).toBeNull();
     });
 
-    it('fails login with invalid password', async () => {
+    it("fails login with invalid password", async () => {
       const { data, error } = await context.client.auth.signInWithPassword({
         email: context.adminEmail,
-        password: 'wrongpassword',
+        password: "wrongpassword",
       });
 
       expect(error).toBeTruthy();
-      expect(error?.message).toContain('Invalid');
+      expect(error?.message).toContain("Invalid");
       expect(data.session).toBeNull();
       expect(data.user).toBeNull();
     });
 
-    it('fails login with missing credentials', async () => {
+    it("fails login with missing credentials", async () => {
       const { data, error } = await context.client.auth.signInWithPassword({
-        email: '',
-        password: '',
+        email: "",
+        password: "",
       });
 
       expect(error).toBeTruthy();
@@ -106,8 +106,8 @@ describe('Authentication Flow Integration', () => {
     });
   });
 
-  describe('Logout', () => {
-    it('successfully logs out authenticated user', async () => {
+  describe("Logout", () => {
+    it("successfully logs out authenticated user", async () => {
       // First login
       await context.client.auth.signInWithPassword({
         email: context.adminEmail,
@@ -127,7 +127,7 @@ describe('Authentication Flow Integration', () => {
       expect(sessionAfter.session).toBeNull();
     });
 
-    it('handles logout when already logged out', async () => {
+    it("handles logout when already logged out", async () => {
       // Ensure we're logged out
       await context.client.auth.signOut();
 
@@ -139,8 +139,8 @@ describe('Authentication Flow Integration', () => {
     });
   });
 
-  describe('Session Management', () => {
-    it('retrieves current session after login', async () => {
+  describe("Session Management", () => {
+    it("retrieves current session after login", async () => {
       // Login
       const { data: loginData } = await context.client.auth.signInWithPassword({
         email: context.adminEmail,
@@ -156,7 +156,7 @@ describe('Authentication Flow Integration', () => {
       expect(sessionData.session?.access_token).toBe(loginData.session?.access_token);
     });
 
-    it('returns null session when not logged in', async () => {
+    it("returns null session when not logged in", async () => {
       await context.client.auth.signOut();
 
       const { data, error } = await context.client.auth.getSession();
@@ -165,7 +165,7 @@ describe('Authentication Flow Integration', () => {
       expect(data.session).toBeNull();
     });
 
-    it('session contains valid tokens and expiry', async () => {
+    it("session contains valid tokens and expiry", async () => {
       const { data } = await context.client.auth.signInWithPassword({
         email: context.adminEmail,
         password: context.adminPassword,
@@ -185,8 +185,8 @@ describe('Authentication Flow Integration', () => {
     });
   });
 
-  describe('Session Refresh', () => {
-    it('refreshes session with valid refresh token', async () => {
+  describe("Session Refresh", () => {
+    it("refreshes session with valid refresh token", async () => {
       // Login to get initial session
       const { data: loginData } = await context.client.auth.signInWithPassword({
         email: context.adminEmail,
@@ -213,9 +213,9 @@ describe('Authentication Flow Integration', () => {
       expect(expiryTime).toBeGreaterThan(Date.now());
     });
 
-    it('fails to refresh with invalid refresh token', async () => {
+    it("fails to refresh with invalid refresh token", async () => {
       const { data, error } = await context.client.auth.refreshSession({
-        refresh_token: 'invalid_refresh_token',
+        refresh_token: "invalid_refresh_token",
       });
 
       expect(error).toBeTruthy();
@@ -223,16 +223,16 @@ describe('Authentication Flow Integration', () => {
       expect(data.session).toBeNull();
     });
 
-    it('fails to refresh with empty refresh token', async () => {
+    it("fails to refresh with empty refresh token", async () => {
       const { data, error } = await context.client.auth.refreshSession({
-        refresh_token: '',
+        refresh_token: "",
       });
 
       expect(error).toBeTruthy();
       expect(data.session).toBeNull();
     });
 
-    it('refreshes session automatically when calling getSession', async () => {
+    it("refreshes session automatically when calling getSession", async () => {
       // Login
       await context.client.auth.signInWithPassword({
         email: context.adminEmail,
@@ -248,8 +248,8 @@ describe('Authentication Flow Integration', () => {
     });
   });
 
-  describe('User Data', () => {
-    it('retrieves user data after login', async () => {
+  describe("User Data", () => {
+    it("retrieves user data after login", async () => {
       await context.client.auth.signInWithPassword({
         email: context.adminEmail,
         password: context.adminPassword,
@@ -264,7 +264,7 @@ describe('Authentication Flow Integration', () => {
       expect(data.user.email_confirmed_at).toBeTruthy();
     });
 
-    it('fails to retrieve user when not logged in', async () => {
+    it("fails to retrieve user when not logged in", async () => {
       await context.client.auth.signOut();
 
       const { data, error } = await context.client.auth.getUser();
@@ -274,8 +274,8 @@ describe('Authentication Flow Integration', () => {
     });
   });
 
-  describe('RLS Integration', () => {
-    it('authenticated user can query database', async () => {
+  describe("RLS Integration", () => {
+    it("authenticated user can query database", async () => {
       // Login
       await context.client.auth.signInWithPassword({
         email: context.adminEmail,
@@ -284,8 +284,8 @@ describe('Authentication Flow Integration', () => {
 
       // Query organizations (should work with RLS)
       const { data, error } = await context.client
-        .from('organizations')
-        .select('id, name')
+        .from("organizations")
+        .select("id, name")
         .limit(5);
 
       expect(error).toBeNull();
@@ -293,14 +293,14 @@ describe('Authentication Flow Integration', () => {
       expect(Array.isArray(data)).toBe(true);
     });
 
-    it('unauthenticated user cannot insert into protected tables', async () => {
+    it("unauthenticated user cannot insert into protected tables", async () => {
       // Ensure logged out
       await context.client.auth.signOut();
 
       // Try to insert (should fail RLS)
       const { data, error } = await context.client
-        .from('organizations')
-        .insert({ name: 'Unauthorized Org', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Unauthorized Org", organization_type: "customer" })
         .select()
         .single();
 
@@ -308,7 +308,7 @@ describe('Authentication Flow Integration', () => {
       expect(data).toBeNull();
     });
 
-    it('authenticated user can insert into allowed tables', async () => {
+    it("authenticated user can insert into allowed tables", async () => {
       // Login
       await context.client.auth.signInWithPassword({
         email: context.adminEmail,
@@ -317,18 +317,18 @@ describe('Authentication Flow Integration', () => {
 
       // Insert organization (should work with RLS for admin)
       const { data, error } = await context.client
-        .from('organizations')
-        .insert({ name: 'Test Auth Org', organization_type: 'customer' })
+        .from("organizations")
+        .insert({ name: "Test Auth Org", organization_type: "customer" })
         .select()
         .single();
 
       expect(error).toBeNull();
       expect(data).toBeTruthy();
-      expect(data.name).toBe('Test Auth Org');
+      expect(data.name).toBe("Test Auth Org");
 
       // Cleanup
       if (data?.id) {
-        await context.client.from('organizations').delete().eq('id', data.id);
+        await context.client.from("organizations").delete().eq("id", data.id);
       }
     });
   });

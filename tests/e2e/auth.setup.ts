@@ -27,7 +27,11 @@ setup("authenticate", async ({ page }) => {
     () => {
       // Check for Supabase auth tokens in localStorage
       const keys = Object.keys(localStorage);
-      return keys.some((key) => key.includes("supabase.auth.token") || key.includes("sb-") && key.includes("-auth-token"));
+      return keys.some(
+        (key) =>
+          key.includes("supabase.auth.token") ||
+          (key.includes("sb-") && key.includes("-auth-token"))
+      );
     },
     { timeout: 10000 }
   );

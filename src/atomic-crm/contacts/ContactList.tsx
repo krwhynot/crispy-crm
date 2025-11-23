@@ -30,7 +30,8 @@ import { Status } from "../misc/Status";
 
 export const ContactList = () => {
   const { identity } = useGetIdentity();
-  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } = useSlideOverState();
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
+    useSlideOverState();
 
   // Clean up stale cached filters from localStorage
   // Generic hook validates all filters against filterRegistry.ts
@@ -61,7 +62,11 @@ export const ContactList = () => {
   );
 };
 
-const ContactListLayout = ({ openSlideOver }: { openSlideOver: (id: number, mode: 'view' | 'edit') => void }) => {
+const ContactListLayout = ({
+  openSlideOver,
+}: {
+  openSlideOver: (id: number, mode: "view" | "edit") => void;
+}) => {
   const { data, isPending, filterValues } = useListContext();
   const { identity } = useGetIdentity();
 
@@ -73,11 +78,8 @@ const ContactListLayout = ({ openSlideOver }: { openSlideOver: (id: number, mode
 
   return (
     <>
-      <StandardListLayout
-        resource="contacts"
-        filterComponent={<ContactListFilter />}
-      >
-        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), 'view')}>
+      <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
+        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
           {/* Avatar Column - Non-sortable */}
           <FunctionField
             label=""
@@ -117,19 +119,10 @@ const ContactListLayout = ({ openSlideOver }: { openSlideOver: (id: number, mode
           </ReferenceField>
 
           {/* Tags Column - Non-sortable */}
-          <FunctionField
-            label="Tags"
-            sortable={false}
-            render={() => <TagsList />}
-          />
+          <FunctionField label="Tags" sortable={false} render={() => <TagsList />} />
 
           {/* Last Activity Column - Sortable */}
-          <DateField
-            source="last_seen"
-            label="Last Activity"
-            sortable
-            showTime={false}
-          />
+          <DateField source="last_seen" label="Last Activity" sortable showTime={false} />
 
           {/* Status Column - Non-sortable */}
           <FunctionField
@@ -139,11 +132,7 @@ const ContactListLayout = ({ openSlideOver }: { openSlideOver: (id: number, mode
           />
 
           {/* Actions Column - Non-sortable */}
-          <FunctionField
-            label="Actions"
-            sortable={false}
-            render={() => <EditButton />}
-          />
+          <FunctionField label="Actions" sortable={false} render={() => <EditButton />} />
         </PremiumDatagrid>
       </StandardListLayout>
       <BulkActionsToolbar />

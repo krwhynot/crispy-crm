@@ -283,7 +283,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
             {principalStats.map((stats, idx) => (
               <tr
                 key={stats.org.id || idx}
-                className={`border-b ${stats.total < 3 ? 'bg-warning/10' : ''}`}
+                className={`border-b ${stats.total < 3 ? "bg-warning/10" : ""}`}
               >
                 <td className="py-2 flex items-center gap-2">
                   {stats.org.name}

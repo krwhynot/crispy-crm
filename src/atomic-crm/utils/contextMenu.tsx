@@ -1,6 +1,6 @@
-import { createPortal } from 'react-dom';
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { createPortal } from "react-dom";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { ChevronRight } from "lucide-react";
 
 export interface ContextMenuItem {
   label: string;
@@ -19,12 +19,7 @@ interface ContextMenuProps {
   onClose: () => void;
 }
 
-export const ContextMenu: React.FC<ContextMenuProps> = ({
-  x,
-  y,
-  items,
-  onClose
-}) => {
+export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, items, onClose }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x, y });
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
@@ -56,7 +51,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   // Close on escape or click outside
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         e.preventDefault();
         onClose();
       }
@@ -68,12 +63,12 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
@@ -94,7 +89,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
             key={index}
             className={`
               relative px-3 py-1.5 flex items-center justify-between text-sm
-              ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent cursor-pointer'}
+              ${item.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-accent cursor-pointer"}
             `}
             tabIndex={item.disabled ? -1 : 0}
             onClick={() => {
@@ -104,7 +99,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
               }
             }}
             onKeyDown={(e) => {
-              if ((e.key === 'Enter' || e.key === ' ') && !item.disabled && item.action) {
+              if ((e.key === "Enter" || e.key === " ") && !item.disabled && item.action) {
                 e.preventDefault();
                 item.action();
                 onClose();
@@ -121,9 +116,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
 
             <div className="flex items-center gap-2">
               {item.shortcut && (
-                <span className="text-xs text-muted-foreground">
-                  {item.shortcut}
-                </span>
+                <span className="text-xs text-muted-foreground">{item.shortcut}</span>
               )}
               {item.submenu && <ChevronRight className="w-3 h-3" />}
             </div>
@@ -139,7 +132,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                     key={subIndex}
                     className={`
                       px-3 py-1.5 text-sm
-                      ${subItem.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent cursor-pointer'}
+                      ${subItem.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-accent cursor-pointer"}
                     `}
                     tabIndex={subItem.disabled ? -1 : 0}
                     onClick={(e) => {
@@ -150,7 +143,11 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                       }
                     }}
                     onKeyDown={(e) => {
-                      if ((e.key === 'Enter' || e.key === ' ') && !subItem.disabled && subItem.action) {
+                      if (
+                        (e.key === "Enter" || e.key === " ") &&
+                        !subItem.disabled &&
+                        subItem.action
+                      ) {
                         e.preventDefault();
                         e.stopPropagation();
                         subItem.action();
@@ -180,10 +177,7 @@ export const useContextMenu = () => {
     items: ContextMenuItem[];
   } | null>(null);
 
-  const showContextMenu = useCallback((
-    e: React.MouseEvent,
-    items: ContextMenuItem[]
-  ) => {
+  const showContextMenu = useCallback((e: React.MouseEvent, items: ContextMenuItem[]) => {
     e.preventDefault();
     e.stopPropagation();
     setMenuState({ x: e.clientX, y: e.clientY, items });
@@ -205,6 +199,6 @@ export const useContextMenu = () => {
   return {
     showContextMenu,
     closeContextMenu,
-    contextMenuComponent
+    contextMenuComponent,
   };
 };

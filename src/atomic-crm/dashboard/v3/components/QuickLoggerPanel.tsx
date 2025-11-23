@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { QuickLogForm } from './QuickLogForm';
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { QuickLogForm } from "./QuickLogForm";
 
 export function QuickLoggerPanel() {
   const [isLogging, setIsLogging] = useState(false);
@@ -26,10 +26,7 @@ export function QuickLoggerPanel() {
             <p className="mb-4 text-center text-sm text-muted-foreground">
               Capture your customer interactions as they happen
             </p>
-            <Button
-              onClick={() => setIsLogging(true)}
-              className="h-11 gap-2"
-            >
+            <Button onClick={() => setIsLogging(true)} className="h-11 gap-2">
               <Plus className="h-4 w-4" />
               New Activity
             </Button>

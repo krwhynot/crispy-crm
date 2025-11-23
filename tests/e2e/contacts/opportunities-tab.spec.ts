@@ -83,12 +83,8 @@ test.describe("Contact Opportunities Tab", () => {
     // - Empty state with "Link Opportunity" button
     // - Suggested opportunities from organization
     const hasTable = await page.getByRole("grid").count();
-    const hasEmptyState = await page
-      .getByText(/no opportunities linked/i)
-      .count();
-    const hasSuggestions = await page
-      .getByText(/suggested opportunities/i)
-      .count();
+    const hasEmptyState = await page.getByText(/no opportunities linked/i).count();
+    const hasSuggestions = await page.getByText(/suggested opportunities/i).count();
 
     expect(hasTable + hasEmptyState + hasSuggestions).toBeGreaterThan(0);
 
@@ -211,9 +207,7 @@ test.describe("Contact Opportunities Tab", () => {
 
       // Assert no console errors
       expect(consoleMonitor.hasRLSErrors(), "RLS errors detected").toBe(false);
-      expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(
-        false
-      );
+      expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(false);
     } else {
       // Skip test if no linked opportunities exist
       test.skip();
@@ -258,9 +252,7 @@ test.describe("Contact Opportunities Tab", () => {
     expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(false);
   });
 
-  test("displays empty state when no opportunities linked", async ({
-    page,
-  }) => {
+  test("displays empty state when no opportunities linked", async ({ page }) => {
     const listPage = new ContactsListPage(page);
 
     // Navigate to contacts list and click first contact

@@ -1,13 +1,13 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { ShowContextProvider } from 'ra-core';
-import { OpportunitiesTab } from './OpportunitiesTab';
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { ShowContextProvider } from "ra-core";
+import { OpportunitiesTab } from "./OpportunitiesTab";
 
 const mockContact = {
   id: 1,
-  first_name: 'Jane',
-  last_name: 'Doe',
+  first_name: "Jane",
+  last_name: "Doe",
   organization_id: 100,
-  organization: { name: 'Acme Corp' }
+  organization: { name: "Acme Corp" },
 };
 
 const mockUseGetList = vi.fn();
@@ -17,24 +17,26 @@ const mockCreate = vi.fn();
 const mockNotify = vi.fn();
 
 // Mock StageBadgeWithHealth component
-vi.mock('./StageBadgeWithHealth', () => ({
+vi.mock("./StageBadgeWithHealth", () => ({
   StageBadgeWithHealth: ({ stage, health }: any) => (
-    <div data-testid="stage-badge">{stage} - {health}</div>
-  )
+    <div data-testid="stage-badge">
+      {stage} - {health}
+    </div>
+  ),
 }));
 
 // Mock SuggestedOpportunityCard component
-vi.mock('./SuggestedOpportunityCard', () => ({
+vi.mock("./SuggestedOpportunityCard", () => ({
   SuggestedOpportunityCard: ({ opportunity, onLink }: any) => (
     <div data-testid="suggested-opportunity-card">
       {opportunity.name}
       <button onClick={onLink}>Link</button>
     </div>
-  )
+  ),
 }));
 
 // Mock LinkOpportunityModal component
-vi.mock('./LinkOpportunityModal', () => ({
+vi.mock("./LinkOpportunityModal", () => ({
   LinkOpportunityModal: ({ open, contactName, onClose }: any) => {
     if (!open) return null;
     return (
@@ -43,11 +45,11 @@ vi.mock('./LinkOpportunityModal', () => ({
         <button onClick={onClose}>Close</button>
       </div>
     );
-  }
+  },
 }));
 
 // Mock UnlinkConfirmDialog component
-vi.mock('./UnlinkConfirmDialog', () => ({
+vi.mock("./UnlinkConfirmDialog", () => ({
   UnlinkConfirmDialog: ({ opportunity, contactName, onClose }: any) => {
     if (!opportunity) return null;
     return (
@@ -56,30 +58,36 @@ vi.mock('./UnlinkConfirmDialog', () => ({
         <button onClick={onClose}>Close</button>
       </div>
     );
-  }
+  },
 }));
 
 // Mock react-admin components
-vi.mock('react-admin', () => ({
+vi.mock("react-admin", () => ({
   Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
   FunctionField: ({ label }: any) => <div data-testid={`field-${label}`}>function-field</div>,
-  ReferenceField: ({ children, label }: any) => <div data-testid={`field-${label}`}>{children}</div>,
+  ReferenceField: ({ children, label }: any) => (
+    <div data-testid={`field-${label}`}>{children}</div>
+  ),
   TextField: () => <div>text-field</div>,
   NumberField: () => <div>number-field</div>,
   ListContextProvider: ({ children, value }: any) => {
     // Render the data items for testing (data is object keyed by ID)
     const items = value?.ids?.map((id: any) => value.data[id]) || [];
-    return <div data-testid="list-context">
-      {items.map((item: any) => (
-        <div key={item.id} data-testid="opportunity-item">{item.name}</div>
-      ))}
-      {children}
-    </div>;
+    return (
+      <div data-testid="list-context">
+        {items.map((item: any) => (
+          <div key={item.id} data-testid="opportunity-item">
+            {item.name}
+          </div>
+        ))}
+        {children}
+      </div>
+    );
   },
 }));
 
-vi.mock('ra-core', async () => {
-  const actual = await vi.importActual('ra-core');
+vi.mock("ra-core", async () => {
+  const actual = await vi.importActual("ra-core");
   return {
     ...actual,
     useGetList: () => mockUseGetList(),
@@ -90,12 +98,12 @@ vi.mock('ra-core', async () => {
   };
 });
 
-describe('OpportunitiesTab', () => {
+describe("OpportunitiesTab", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('shows loading state while fetching', () => {
+  it("shows loading state while fetching", () => {
     mockUseGetList.mockReturnValue({
       data: undefined,
       isLoading: true,
@@ -114,7 +122,7 @@ describe('OpportunitiesTab', () => {
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it('shows empty state when no opportunities linked', async () => {
+  it("shows empty state when no opportunities linked", async () => {
     mockUseGetList.mockReturnValue({
       data: [],
       isLoading: false,
@@ -135,15 +143,29 @@ describe('OpportunitiesTab', () => {
     });
   });
 
-  it('renders opportunities table with linked opportunities', async () => {
+  it("renders opportunities table with linked opportunities", async () => {
     const mockJunctionRecords = [
-      { id: 'j1', contact_id: 1, opportunity_id: 10, created_at: '2025-01-01' },
-      { id: 'j2', contact_id: 1, opportunity_id: 11, created_at: '2025-01-02' }
+      { id: "j1", contact_id: 1, opportunity_id: 10, created_at: "2025-01-01" },
+      { id: "j2", contact_id: 1, opportunity_id: 11, created_at: "2025-01-02" },
     ];
 
     const mockOpportunities = [
-      { id: 10, name: 'Deal A', customer_organization_id: 100, stage: 'qualified', health_status: 'active', amount: 50000 },
-      { id: 11, name: 'Deal B', customer_organization_id: 100, stage: 'proposal', health_status: 'cooling', amount: 75000 }
+      {
+        id: 10,
+        name: "Deal A",
+        customer_organization_id: 100,
+        stage: "qualified",
+        health_status: "active",
+        amount: 50000,
+      },
+      {
+        id: 11,
+        name: "Deal B",
+        customer_organization_id: 100,
+        stage: "proposal",
+        health_status: "cooling",
+        amount: 75000,
+      },
     ];
 
     mockUseGetList.mockReturnValue({
@@ -162,12 +184,12 @@ describe('OpportunitiesTab', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Deal A')).toBeInTheDocument();
-      expect(screen.getByText('Deal B')).toBeInTheDocument();
+      expect(screen.getByText("Deal A")).toBeInTheDocument();
+      expect(screen.getByText("Deal B")).toBeInTheDocument();
     });
   });
 
-  it('opens link modal when clicking Link Opportunity button', async () => {
+  it("opens link modal when clicking Link Opportunity button", async () => {
     mockUseGetList.mockReturnValue({
       data: [],
       isLoading: false,
@@ -187,11 +209,32 @@ describe('OpportunitiesTab', () => {
     });
   });
 
-  it('shows suggested opportunities when contact has organization with active deals', async () => {
+  it("shows suggested opportunities when contact has organization with active deals", async () => {
     const mockSuggestedOpps = [
-      { id: 20, name: 'Suggested Deal A', customer_organization_id: 100, stage: 'qualified', health_status: 'active', amount: 30000 },
-      { id: 21, name: 'Suggested Deal B', customer_organization_id: 100, stage: 'proposal', health_status: 'cooling', amount: 45000 },
-      { id: 22, name: 'Suggested Deal C', customer_organization_id: 100, stage: 'negotiation', health_status: 'active', amount: 60000 }
+      {
+        id: 20,
+        name: "Suggested Deal A",
+        customer_organization_id: 100,
+        stage: "qualified",
+        health_status: "active",
+        amount: 30000,
+      },
+      {
+        id: 21,
+        name: "Suggested Deal B",
+        customer_organization_id: 100,
+        stage: "proposal",
+        health_status: "cooling",
+        amount: 45000,
+      },
+      {
+        id: 22,
+        name: "Suggested Deal C",
+        customer_organization_id: 100,
+        stage: "negotiation",
+        health_status: "active",
+        amount: 60000,
+      },
     ];
 
     // First call returns empty junction records (no linked opportunities)
@@ -223,17 +266,38 @@ describe('OpportunitiesTab', () => {
       expect(screen.getByText(/suggested opportunities/i)).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Suggested Deal A')).toBeInTheDocument();
-    expect(screen.getByText('Suggested Deal B')).toBeInTheDocument();
-    expect(screen.getByText('Suggested Deal C')).toBeInTheDocument();
+    expect(screen.getByText("Suggested Deal A")).toBeInTheDocument();
+    expect(screen.getByText("Suggested Deal B")).toBeInTheDocument();
+    expect(screen.getByText("Suggested Deal C")).toBeInTheDocument();
     expect(screen.getByText(/we found 3 active opportunities/i)).toBeInTheDocument();
   });
 
-  it('filters out closed opportunities from suggestions', async () => {
+  it("filters out closed opportunities from suggestions", async () => {
     const mockAllOpps = [
-      { id: 20, name: 'Active Deal', customer_organization_id: 100, stage: 'qualified', health_status: 'active', amount: 30000 },
-      { id: 21, name: 'Closed Won', customer_organization_id: 100, stage: 'closed_won', health_status: 'active', amount: 45000 },
-      { id: 22, name: 'Closed Lost', customer_organization_id: 100, stage: 'closed_lost', health_status: 'active', amount: 60000 }
+      {
+        id: 20,
+        name: "Active Deal",
+        customer_organization_id: 100,
+        stage: "qualified",
+        health_status: "active",
+        amount: 30000,
+      },
+      {
+        id: 21,
+        name: "Closed Won",
+        customer_organization_id: 100,
+        stage: "closed_won",
+        health_status: "active",
+        amount: 45000,
+      },
+      {
+        id: 22,
+        name: "Closed Lost",
+        customer_organization_id: 100,
+        stage: "closed_lost",
+        health_status: "active",
+        amount: 60000,
+      },
     ];
 
     let callCount = 0;
@@ -258,21 +322,21 @@ describe('OpportunitiesTab', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Active Deal')).toBeInTheDocument();
+      expect(screen.getByText("Active Deal")).toBeInTheDocument();
     });
 
-    expect(screen.queryByText('Closed Won')).not.toBeInTheDocument();
-    expect(screen.queryByText('Closed Lost')).not.toBeInTheDocument();
+    expect(screen.queryByText("Closed Won")).not.toBeInTheDocument();
+    expect(screen.queryByText("Closed Lost")).not.toBeInTheDocument();
   });
 
-  it('limits suggestions to 5 opportunities max', async () => {
+  it("limits suggestions to 5 opportunities max", async () => {
     const mockManyOpps = Array.from({ length: 10 }, (_, i) => ({
       id: 30 + i,
       name: `Deal ${i + 1}`,
       customer_organization_id: 100,
-      stage: 'qualified',
-      health_status: 'active',
-      amount: 10000 * (i + 1)
+      stage: "qualified",
+      health_status: "active",
+      amount: 10000 * (i + 1),
     }));
 
     let callCount = 0;
@@ -301,10 +365,10 @@ describe('OpportunitiesTab', () => {
     });
 
     // Should show first 5
-    expect(screen.getByText('Deal 1')).toBeInTheDocument();
-    expect(screen.getByText('Deal 5')).toBeInTheDocument();
+    expect(screen.getByText("Deal 1")).toBeInTheDocument();
+    expect(screen.getByText("Deal 5")).toBeInTheDocument();
 
     // Should not show 6th and beyond
-    expect(screen.queryByText('Deal 6')).not.toBeInTheDocument();
+    expect(screen.queryByText("Deal 6")).not.toBeInTheDocument();
   });
 });

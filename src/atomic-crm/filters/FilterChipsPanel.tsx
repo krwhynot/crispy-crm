@@ -38,10 +38,7 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
     : undefined;
 
   // Combine all organization IDs for a single fetch
-  const allOrgIds = [
-    ...(customerOrgIds || []),
-    ...(principalOrgIds || []),
-  ];
+  const allOrgIds = [...(customerOrgIds || []), ...(principalOrgIds || [])];
 
   // Extract sales IDs from filter values and convert to strings
   const salesIds = filterValues?.opportunity_owner_id
@@ -58,7 +55,9 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
     : undefined;
 
   // Use custom hooks for name fetching
-  const { getOrganizationName } = useOrganizationNames(allOrgIds.length > 0 ? allOrgIds : undefined);
+  const { getOrganizationName } = useOrganizationNames(
+    allOrgIds.length > 0 ? allOrgIds : undefined
+  );
   const { getSalesName } = useSalesNames(salesIds);
   const { getTagName } = useTagNames(tagIds);
 

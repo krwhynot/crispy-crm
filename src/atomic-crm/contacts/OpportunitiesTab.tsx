@@ -1,14 +1,21 @@
-import { useState, useMemo } from 'react';
-import { useShowContext, useGetList, useGetMany, useRefresh, useCreate, useNotify } from 'ra-core';
-import { Datagrid, FunctionField, ReferenceField, TextField, NumberField, ListContextProvider } from 'react-admin';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
-import { StageBadgeWithHealth } from './StageBadgeWithHealth';
-import { LinkOpportunityModal } from './LinkOpportunityModal';
-import { UnlinkConfirmDialog } from './UnlinkConfirmDialog';
-import { SuggestedOpportunityCard } from './SuggestedOpportunityCard';
-import type { Contact } from '../types';
+import { useState, useMemo } from "react";
+import { useShowContext, useGetList, useGetMany, useRefresh, useCreate, useNotify } from "ra-core";
+import {
+  Datagrid,
+  FunctionField,
+  ReferenceField,
+  TextField,
+  NumberField,
+  ListContextProvider,
+} from "react-admin";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
+import { LinkOpportunityModal } from "./LinkOpportunityModal";
+import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
+import { SuggestedOpportunityCard } from "./SuggestedOpportunityCard";
+import type { Contact } from "../types";
 
 export function OpportunitiesTab() {
   const { record: contact, isPending } = useShowContext<Contact>();
@@ -20,11 +27,11 @@ export function OpportunitiesTab() {
 
   // Step 1: Fetch junction records
   const { data: junctionRecords, isLoading: junctionLoading } = useGetList(
-    'opportunity_contacts',
+    "opportunity_contacts",
     {
       filter: { contact_id: contact?.id },
       pagination: { page: 1, perPage: 50 },
-      sort: { field: 'created_at', order: 'DESC' }
+      sort: { field: "created_at", order: "DESC" },
     },
     { enabled: !!contact?.id }
   );
@@ -34,20 +41,20 @@ export function OpportunitiesTab() {
 
   // Step 3: Fetch opportunity details using getMany (batch fetch by IDs)
   const { data: opportunities, isLoading: oppsLoading } = useGetMany(
-    'opportunities',
+    "opportunities",
     { ids: opportunityIds },
     { enabled: opportunityIds.length > 0 }
   );
 
   // Step 4: Fetch suggested opportunities from contact's organization
   const { data: orgOpportunities } = useGetList(
-    'opportunities',
+    "opportunities",
     {
       filter: {
         customer_organization_id: contact?.organization_id,
       },
       pagination: { page: 1, perPage: 25 },
-      sort: { field: 'updated_at', order: 'DESC' },
+      sort: { field: "updated_at", order: "DESC" },
     },
     { enabled: !!contact?.organization_id && (!junctionRecords || junctionRecords.length === 0) }
   );
@@ -55,7 +62,7 @@ export function OpportunitiesTab() {
   const suggestedOpps = useMemo(() => {
     if (!orgOpportunities) return [];
     return orgOpportunities
-      .filter((opp: any) => !['closed_won', 'closed_lost'].includes(opp.stage))
+      .filter((opp: any) => !["closed_won", "closed_lost"].includes(opp.stage))
       .slice(0, 5);
   }, [orgOpportunities]);
 
@@ -76,7 +83,7 @@ export function OpportunitiesTab() {
   const handleQuickLink = async (opportunityId: number) => {
     try {
       await create(
-        'opportunity_contacts',
+        "opportunity_contacts",
         {
           data: {
             opportunity_id: opportunityId,
@@ -85,16 +92,16 @@ export function OpportunitiesTab() {
         },
         {
           onSuccess: () => {
-            notify('Opportunity linked', { type: 'success' });
+            notify("Opportunity linked", { type: "success" });
             refresh();
           },
           onError: (error: any) => {
-            notify(error?.message || 'Failed to link opportunity', { type: 'error' });
+            notify(error?.message || "Failed to link opportunity", { type: "error" });
           },
         }
       );
     } catch {
-      notify('Failed to link opportunity', { type: 'error' });
+      notify("Failed to link opportunity", { type: "error" });
     }
   };
 
@@ -110,8 +117,7 @@ export function OpportunitiesTab() {
         <div className="text-center py-8 space-y-4">
           <h3 className="text-lg font-semibold">Suggested Opportunities</h3>
           <p className="text-sm text-muted-foreground">
-            We found {suggestedOpps.length} active opportunities at{' '}
-            {contact.organization?.name}
+            We found {suggestedOpps.length} active opportunities at {contact.organization?.name}
           </p>
 
           <div className="space-y-2 max-w-2xl mx-auto">
@@ -145,8 +151,8 @@ export function OpportunitiesTab() {
         <div className="text-muted-foreground">
           <p className="text-lg">No opportunities linked yet</p>
           <p className="text-sm mt-2 max-w-md mx-auto">
-            Link this contact to deals they're involved in to track their influence on
-            your pipeline.
+            Link this contact to deals they're involved in to track their influence on your
+            pipeline.
           </p>
         </div>
 
@@ -165,10 +171,12 @@ export function OpportunitiesTab() {
   }
 
   // Merge junction data with opportunities
-  const linkedOpportunities = junctionRecords.map((junction: any) => {
-    const opp = opportunities?.find((o: any) => o.id === junction.opportunity_id);
-    return opp ? { ...opp, junctionId: junction.id } : null;
-  }).filter(Boolean);
+  const linkedOpportunities = junctionRecords
+    .map((junction: any) => {
+      const opp = opportunities?.find((o: any) => o.id === junction.opportunity_id);
+      return opp ? { ...opp, junctionId: junction.id } : null;
+    })
+    .filter(Boolean);
 
   const linkedOpportunityIds = linkedOpportunities.map((opp: any) => opp.id);
 
@@ -189,17 +197,11 @@ export function OpportunitiesTab() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <Button onClick={() => setShowLinkModal(true)}>
-          Link Opportunity
-        </Button>
+        <Button onClick={() => setShowLinkModal(true)}>Link Opportunity</Button>
       </div>
 
       <ListContextProvider value={listContext}>
-        <Datagrid
-          bulkActionButtons={false}
-          rowClick={false}
-          className="border rounded-lg"
-        >
+        <Datagrid bulkActionButtons={false} rowClick={false} className="border rounded-lg">
           <FunctionField
             label="Opportunity"
             render={(record: any) => (
@@ -223,17 +225,11 @@ export function OpportunitiesTab() {
           <FunctionField
             label="Stage"
             render={(record: any) => (
-              <StageBadgeWithHealth
-                stage={record.stage}
-                health={record.health_status}
-              />
+              <StageBadgeWithHealth stage={record.stage} health={record.health_status} />
             )}
           />
 
-          <NumberField
-            source="amount"
-            options={{ style: 'currency', currency: 'USD' }}
-          />
+          <NumberField source="amount" options={{ style: "currency", currency: "USD" }} />
 
           <FunctionField
             label=""

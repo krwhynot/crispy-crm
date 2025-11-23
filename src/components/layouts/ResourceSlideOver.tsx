@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
-import { useGetOne } from 'react-admin';
-import { PencilIcon, XIcon } from 'lucide-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-} from '@/components/ui/sheet';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import React, { useState } from "react";
+import { useGetOne } from "react-admin";
+import { PencilIcon, XIcon } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 /**
  * Configuration for a single tab in the slide-over
@@ -18,7 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export interface TabConfig {
   key: string;
   label: string;
-  component: React.ComponentType<{ record: any; mode: 'view' | 'edit'; onModeToggle?: () => void }>;
+  component: React.ComponentType<{ record: any; mode: "view" | "edit"; onModeToggle?: () => void }>;
   icon?: React.ComponentType<{ className?: string }>;
 }
 
@@ -35,7 +29,7 @@ export interface ResourceSlideOverProps {
   /** Close handler */
   onClose: () => void;
   /** Current mode (default: 'view') */
-  mode?: 'view' | 'edit';
+  mode?: "view" | "edit";
   /** Mode toggle handler */
   onModeToggle?: () => void;
   /** Resource-specific tab configuration */
@@ -91,12 +85,12 @@ export function ResourceSlideOver({
   recordId,
   isOpen,
   onClose,
-  mode = 'view',
+  mode = "view",
   onModeToggle,
   tabs,
   recordRepresentation,
 }: ResourceSlideOverProps) {
-  const [activeTab, setActiveTab] = useState(tabs[0]?.key || '');
+  const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
 
   // Fetch record data
   const { data: record, isLoading } = useGetOne(
@@ -107,8 +101,8 @@ export function ResourceSlideOver({
 
   // Get record title
   const getRecordTitle = () => {
-    if (isLoading) return 'Loading...';
-    if (!record) return 'Record Details';
+    if (isLoading) return "Loading...";
+    if (!record) return "Record Details";
     if (recordRepresentation) return recordRepresentation(record);
     return record.name || record.title || `${resource} #${recordId}`;
   };
@@ -160,9 +154,9 @@ export function ResourceSlideOver({
                   size="sm"
                   onClick={onModeToggle}
                   className="h-8 px-2 text-sm"
-                  aria-label={mode === 'view' ? 'Switch to edit mode' : 'Switch to view mode'}
+                  aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
                 >
-                  {mode === 'view' ? (
+                  {mode === "view" ? (
                     <>
                       <PencilIcon className="size-4 mr-1" />
                       Edit
@@ -223,16 +217,12 @@ export function ResourceSlideOver({
             </Tabs>
 
             {/* Footer message (edit mode only) */}
-            {mode === 'edit' && (
+            {mode === "edit" && (
               <SheetFooter className="border-t border-border p-4 flex flex-row gap-2 justify-between items-center">
                 <p className="text-sm text-muted-foreground">
                   Currently in edit mode. Tab components handle their own save logic.
                 </p>
-                <Button
-                  variant="outline"
-                  onClick={onModeToggle}
-                  className="h-11 px-4"
-                >
+                <Button variant="outline" onClick={onModeToggle} className="h-11 px-4">
                   Cancel
                 </Button>
               </SheetFooter>

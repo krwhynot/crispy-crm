@@ -65,7 +65,7 @@ export default function CampaignActivityReport() {
   // Filter state
   const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
   const [selectedActivityTypes, setSelectedActivityTypes] = useState<string[]>(
-    INTERACTION_TYPE_OPTIONS.map(opt => opt.value)
+    INTERACTION_TYPE_OPTIONS.map((opt) => opt.value)
   );
   const [datePreset, setDatePreset] = useState<string>("allTime");
   const [selectedSalesRep, setSelectedSalesRep] = useState<number | null>(null);
@@ -103,17 +103,15 @@ export default function CampaignActivityReport() {
   }, [allOpportunities]);
 
   // Fetch ALL activities for the selected campaign (unfiltered, for counts)
-  const { data: allCampaignActivities = [], isPending: allActivitiesPending } = useGetList<Activity>(
-    "activities",
-    {
+  const { data: allCampaignActivities = [], isPending: allActivitiesPending } =
+    useGetList<Activity>("activities", {
       pagination: { page: 1, perPage: 10000 },
       filter: {
         "opportunities.campaign": selectedCampaign,
         "opportunities.deleted_at@is": null,
       },
       sort: { field: "created_at", order: "DESC" },
-    }
-  );
+    });
 
   // Fetch activities for the selected campaign (with filters applied)
   const { data: activities = [], isPending: activitiesPending } = useGetList<Activity>(
@@ -126,8 +124,9 @@ export default function CampaignActivityReport() {
         ...(dateRange?.start && { "created_at@gte": dateRange.start }),
         ...(dateRange?.end && { "created_at@lte": dateRange.end }),
         ...(selectedActivityTypes.length > 0 &&
-            selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length &&
-            { type: selectedActivityTypes }),
+          selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length && {
+            type: selectedActivityTypes,
+          }),
         ...(selectedSalesRep !== null && { created_by: selectedSalesRep }),
       },
       sort: { field: "created_at", order: "DESC" },
@@ -136,14 +135,7 @@ export default function CampaignActivityReport() {
 
   // Get sales rep names for created_by lookup
   const ownerIds = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          (activities || [])
-            .map((a) => a.created_by)
-            .filter(Boolean)
-        )
-      ),
+    () => Array.from(new Set((activities || []).map((a) => a.created_by).filter(Boolean))),
     [activities]
   );
 
@@ -216,7 +208,10 @@ export default function CampaignActivityReport() {
       group.activities.forEach((activity) => {
         const orgId = activity.organization_id;
         if (!orgCounts.has(orgId)) {
-          orgCounts.set(orgId, { name: activity.organization_name || `Organization ${orgId}`, count: 0 });
+          orgCounts.set(orgId, {
+            name: activity.organization_name || `Organization ${orgId}`,
+            count: 0,
+          });
         }
         orgCounts.get(orgId)!.count += 1;
       });
@@ -253,14 +248,18 @@ export default function CampaignActivityReport() {
   const staleOpportunities = useMemo(() => {
     if (!showStaleLeads || !allOpportunities) return [];
 
-    const opportunitiesForCampaign = allOpportunities.filter((o) => o.campaign === selectedCampaign);
+    const opportunitiesForCampaign = allOpportunities.filter(
+      (o) => o.campaign === selectedCampaign
+    );
     const now = new Date();
 
     return opportunitiesForCampaign
       .map((opp) => {
         const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
         const daysInactive = lastActivityDate
-          ? Math.floor((now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24))
+          ? Math.floor(
+              (now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24)
+            )
           : 999999; // Never had activity - sort to end
 
         return {
@@ -271,7 +270,13 @@ export default function CampaignActivityReport() {
       })
       .filter((opp) => opp.daysInactive >= staleLeadsThreshold)
       .sort((a, b) => b.daysInactive - a.daysInactive);
-  }, [showStaleLeads, staleLeadsThreshold, allOpportunities, selectedCampaign, allCampaignActivities]);
+  }, [
+    showStaleLeads,
+    staleLeadsThreshold,
+    allOpportunities,
+    selectedCampaign,
+    allCampaignActivities,
+  ]);
 
   // Auto-expand top 3 activity types on load
   React.useEffect(() => {
@@ -285,9 +290,13 @@ export default function CampaignActivityReport() {
   // Announce view changes to screen readers
   React.useEffect(() => {
     if (showStaleLeads) {
-      setAriaLiveMessage(`Switched to stale leads view. Showing ${staleOpportunities.length} opportunities with no activity in the last ${staleLeadsThreshold} days.`);
+      setAriaLiveMessage(
+        `Switched to stale leads view. Showing ${staleOpportunities.length} opportunities with no activity in the last ${staleLeadsThreshold} days.`
+      );
     } else {
-      setAriaLiveMessage(`Switched to activity breakdown view. Showing ${activityGroups.length} activity types.`);
+      setAriaLiveMessage(
+        `Switched to activity breakdown view. Showing ${activityGroups.length} activity types.`
+      );
     }
     // Clear message after announcement
     const timer = setTimeout(() => setAriaLiveMessage(""), 1000);
@@ -299,8 +308,10 @@ export default function CampaignActivityReport() {
   const uniqueOrgs = new Set(activities.map((a) => a.organization_id)).size;
   const totalOpportunities =
     allOpportunities.filter((opp) => opp.campaign === selectedCampaign).length || 1;
-  const coverageRate = totalOpportunities > 0 ? Math.round((uniqueOrgs / totalOpportunities) * 100) : 0;
-  const avgActivitiesPerLead = totalOpportunities > 0 ? (totalActivities / totalOpportunities).toFixed(1) : "0.0";
+  const coverageRate =
+    totalOpportunities > 0 ? Math.round((uniqueOrgs / totalOpportunities) * 100) : 0;
+  const avgActivitiesPerLead =
+    totalOpportunities > 0 ? (totalActivities / totalOpportunities).toFixed(1) : "0.0";
 
   const handleToggle = (type: string) => {
     const newExpanded = new Set(expandedTypes);
@@ -347,7 +358,7 @@ export default function CampaignActivityReport() {
     if (selectedActivityTypes.includes(type)) {
       // Don't allow deselecting if it's the last one
       if (selectedActivityTypes.length > 1) {
-        setSelectedActivityTypes(selectedActivityTypes.filter(t => t !== type));
+        setSelectedActivityTypes(selectedActivityTypes.filter((t) => t !== type));
       }
     } else {
       setSelectedActivityTypes([...selectedActivityTypes, type]);
@@ -359,14 +370,14 @@ export default function CampaignActivityReport() {
     if (selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length) {
       setSelectedActivityTypes([]);
     } else {
-      setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map(opt => opt.value));
+      setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map((opt) => opt.value));
     }
   };
 
   // Clear all filters (keeps campaign selected)
   const clearFilters = () => {
     setDateRange(null);
-    setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map(opt => opt.value));
+    setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map((opt) => opt.value));
     setDatePreset("allTime");
     setSelectedSalesRep(null);
     setShowStaleLeads(false);
@@ -374,7 +385,8 @@ export default function CampaignActivityReport() {
   };
 
   // Check if any filters are active
-  const hasActiveFilters = dateRange !== null ||
+  const hasActiveFilters =
+    dateRange !== null ||
     selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length ||
     selectedSalesRep !== null ||
     showStaleLeads;
@@ -406,7 +418,9 @@ export default function CampaignActivityReport() {
         campaign: sanitizeCsvValue(selectedCampaign),
         opportunity_name: sanitizeCsvValue(opp.name),
         organization: sanitizeCsvValue(opp.customer_organization_name || ""),
-        last_activity_date: opp.lastActivityDate ? format(new Date(opp.lastActivityDate), "yyyy-MM-dd") : "Never",
+        last_activity_date: opp.lastActivityDate
+          ? format(new Date(opp.lastActivityDate), "yyyy-MM-dd")
+          : "Never",
         days_inactive: opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
         notes: "", // Not available in current data structure
       }));
@@ -423,7 +437,9 @@ export default function CampaignActivityReport() {
           .replace(/[^\w-]/g, "");
         const dateStr = format(new Date(), "yyyy-MM-dd");
         downloadCSV(csv, `campaign-stale-leads-${campaignSlug}-${dateStr}`);
-        notify(`${staleOpportunities.length} stale leads exported successfully`, { type: "success" });
+        notify(`${staleOpportunities.length} stale leads exported successfully`, {
+          type: "success",
+        });
       });
     } else {
       // Export activities
@@ -434,7 +450,9 @@ export default function CampaignActivityReport() {
 
       const exportData = activityGroups.flatMap((group) =>
         group.activities.map((activity) => {
-          const opportunity = activity.opportunity_id ? opportunityMap.get(activity.opportunity_id) : null;
+          const opportunity = activity.opportunity_id
+            ? opportunityMap.get(activity.opportunity_id)
+            : null;
           const daysSinceActivity = Math.floor(
             (Date.now() - new Date(activity.created_at).getTime()) / (1000 * 60 * 60 * 24)
           );
@@ -483,9 +501,15 @@ export default function CampaignActivityReport() {
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-4">
           <div className="flex-1 sm:max-w-xs">
-            <Label htmlFor="campaign-select" className="block text-sm font-medium mb-2">Select Campaign</Label>
+            <Label htmlFor="campaign-select" className="block text-sm font-medium mb-2">
+              Select Campaign
+            </Label>
             {isLoadingCampaigns ? (
-              <div className="h-10 bg-muted animate-pulse rounded-md" role="status" aria-label="Loading campaigns" />
+              <div
+                className="h-10 bg-muted animate-pulse rounded-md"
+                role="status"
+                aria-label="Loading campaigns"
+              />
             ) : (
               <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
                 <SelectTrigger id="campaign-select">
@@ -510,7 +534,10 @@ export default function CampaignActivityReport() {
             <Button
               variant="default"
               onClick={handleExport}
-              disabled={isLoadingActivities || (showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0)}
+              disabled={
+                isLoadingActivities ||
+                (showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0)
+              }
               className="w-full sm:w-auto"
             >
               Export to CSV
@@ -558,7 +585,9 @@ export default function CampaignActivityReport() {
                   </div>
                   <div className="flex gap-2 items-center">
                     <div className="flex-1">
-                      <Label htmlFor="start-date" className="text-xs">Start Date</Label>
+                      <Label htmlFor="start-date" className="text-xs">
+                        Start Date
+                      </Label>
                       <input
                         id="start-date"
                         type="date"
@@ -576,7 +605,9 @@ export default function CampaignActivityReport() {
                       />
                     </div>
                     <div className="flex-1">
-                      <Label htmlFor="end-date" className="text-xs">End Date</Label>
+                      <Label htmlFor="end-date" className="text-xs">
+                        End Date
+                      </Label>
                       <input
                         id="end-date"
                         type="date"
@@ -607,7 +638,9 @@ export default function CampaignActivityReport() {
                     onClick={toggleAllActivityTypes}
                     className="h-auto p-0 text-xs"
                   >
-                    {selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length ? "Deselect All" : "Select All"}
+                    {selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length
+                      ? "Deselect All"
+                      : "Select All"}
                   </Button>
                 </div>
                 <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
@@ -637,7 +670,9 @@ export default function CampaignActivityReport() {
                 <h4 className="text-sm font-medium mb-3">Sales Rep</h4>
                 <Select
                   value={selectedSalesRep?.toString() || "all"}
-                  onValueChange={(value) => setSelectedSalesRep(value === "all" ? null : parseInt(value, 10))}
+                  onValueChange={(value) =>
+                    setSelectedSalesRep(value === "all" ? null : parseInt(value, 10))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="All Reps" />
@@ -663,7 +698,10 @@ export default function CampaignActivityReport() {
                       checked={showStaleLeads}
                       onCheckedChange={(checked) => setShowStaleLeads(checked === true)}
                     />
-                    <Label htmlFor="show-stale-leads" className="text-sm font-normal cursor-pointer">
+                    <Label
+                      htmlFor="show-stale-leads"
+                      className="text-sm font-normal cursor-pointer"
+                    >
                       Show only leads with no activity
                     </Label>
                   </div>
@@ -687,7 +725,8 @@ export default function CampaignActivityReport() {
                   </div>
                   {showStaleLeads && staleOpportunities.length > 0 && (
                     <div className="text-xs font-medium text-warning bg-warning/10 px-2 py-1 rounded">
-                      ⚠️ {staleOpportunities.length} {staleOpportunities.length === 1 ? 'lead needs' : 'leads need'} follow-up
+                      ⚠️ {staleOpportunities.length}{" "}
+                      {staleOpportunities.length === 1 ? "lead needs" : "leads need"} follow-up
                     </div>
                   )}
                 </div>
@@ -818,12 +857,13 @@ export default function CampaignActivityReport() {
                   )}
                   {selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length && (
                     <Badge variant="secondary">
-                      {selectedActivityTypes.length} Activity {selectedActivityTypes.length === 1 ? 'Type' : 'Types'} Selected
+                      {selectedActivityTypes.length} Activity{" "}
+                      {selectedActivityTypes.length === 1 ? "Type" : "Types"} Selected
                     </Badge>
                   )}
                   {selectedSalesRep && (
                     <Badge variant="secondary">
-                      Sales Rep: {salesMap.get(selectedSalesRep) || 'Unknown'}
+                      Sales Rep: {salesMap.get(selectedSalesRep) || "Unknown"}
                     </Badge>
                   )}
                 </div>

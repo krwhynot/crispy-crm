@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { lazy } from "react";
 
 /**
  * Principal Dashboard V3
@@ -17,19 +17,19 @@ import { lazy } from 'react';
 
 // Lazy-load the dashboard component for code splitting
 const PrincipalDashboardV3Lazy = lazy(() =>
-  import('./PrincipalDashboardV3').then((module) => ({
+  import("./PrincipalDashboardV3").then((module) => ({
     default: module.PrincipalDashboardV3,
   }))
 );
 
 // Export with error boundary wrapper
 export { PrincipalDashboardV3Lazy as PrincipalDashboardV3 };
-export { DashboardErrorBoundary } from './DashboardErrorBoundary';
+export { DashboardErrorBoundary } from "./DashboardErrorBoundary";
 
 // Export child components for direct use if needed
-export { PrincipalPipelineTable } from './components/PrincipalPipelineTable';
-export { TasksPanel } from './components/TasksPanel';
-export { QuickLoggerPanel } from './components/QuickLoggerPanel';
+export { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
+export { TasksPanel } from "./components/TasksPanel";
+export { QuickLoggerPanel } from "./components/QuickLoggerPanel";
 
 // Export types
 export type {
@@ -41,4 +41,4 @@ export type {
   Momentum,
   ActivityType,
   ActivityOutcome,
-} from './types';
+} from "./types";

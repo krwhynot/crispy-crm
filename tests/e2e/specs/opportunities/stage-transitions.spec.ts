@@ -295,7 +295,9 @@ test.describe("Opportunities Stage Transitions", () => {
     }
   });
 
-  test("should prevent invalid stage transitions (if business rules exist)", async ({ page: _page }) => {
+  test("should prevent invalid stage transitions (if business rules exist)", async ({
+    page: _page,
+  }) => {
     // This test validates business rules like:
     // - Can't go from Prospecting directly to Closed Won
     // - Must complete required fields before advancing
@@ -441,7 +443,9 @@ test.describe("Opportunities Stage Transitions", () => {
     }
   });
 
-  test("should maintain stage consistency across list and detail views", async ({ page: _page }) => {
+  test("should maintain stage consistency across list and detail views", async ({
+    page: _page,
+  }) => {
     // Create opportunity with specific stage
     const timestamp = Date.now();
     const opportunityName = `Consistency ${timestamp}`;

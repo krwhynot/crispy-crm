@@ -76,15 +76,10 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
     // Fallback calculation for backwards compatibility
     const orgCounts = new Map<number, number>();
     group.activities.forEach((activity) => {
-      orgCounts.set(
-        activity.organization_id,
-        (orgCounts.get(activity.organization_id) || 0) + 1
-      );
+      orgCounts.set(activity.organization_id, (orgCounts.get(activity.organization_id) || 0) + 1);
     });
 
-    const sortedOrgCounts = Array.from(orgCounts.entries()).sort(
-      (a, b) => b[1] - a[1]
-    );
+    const sortedOrgCounts = Array.from(orgCounts.entries()).sort((a, b) => b[1] - a[1]);
     const mostActiveOrgId = sortedOrgCounts[0]?.[0];
     mostActiveOrgCount = orgCounts.get(mostActiveOrgId || 0) || 0;
     mostActiveOrgDisplay = `Organization ${mostActiveOrgId}`;
@@ -97,11 +92,13 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
           onClick={onToggle}
           className="w-full text-left cursor-pointer hover:opacity-80 transition-opacity"
           aria-expanded={isExpanded}
-          aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${label} section with ${group.totalCount} activities`}
+          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${label} section with ${group.totalCount} activities`}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-2xl" aria-hidden="true">{icon}</span>
+              <span className="text-2xl" aria-hidden="true">
+                {icon}
+              </span>
               <div>
                 <h3 className="font-semibold text-base">{label}</h3>
                 <p className="text-sm text-muted-foreground">
@@ -136,12 +133,27 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th scope="col" className="text-left py-2 px-3 font-semibold sticky left-0 bg-card">Organization</th>
-                  <th scope="col" className="text-left py-2 px-3 font-semibold">Contact</th>
-                  <th scope="col" className="text-left py-2 px-3 font-semibold">Date</th>
-                  <th scope="col" className="text-left py-2 px-3 font-semibold">Rep</th>
-                  <th scope="col" className="text-left py-2 px-3 font-semibold">Subject</th>
-                  <th scope="col" className="text-center py-2 px-3 font-semibold">Action</th>
+                  <th
+                    scope="col"
+                    className="text-left py-2 px-3 font-semibold sticky left-0 bg-card"
+                  >
+                    Organization
+                  </th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">
+                    Contact
+                  </th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">
+                    Date
+                  </th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">
+                    Rep
+                  </th>
+                  <th scope="col" className="text-left py-2 px-3 font-semibold">
+                    Subject
+                  </th>
+                  <th scope="col" className="text-center py-2 px-3 font-semibold">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -161,7 +173,9 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
                     </td>
                     <td className="py-2 px-3 truncate max-w-xs">{activity.subject}</td>
                     <td className="py-2 px-3 text-center">
-                      <button className="text-primary hover:underline min-w-[44px] min-h-[44px] inline-flex items-center justify-center">View</button>
+                      <button className="text-primary hover:underline min-w-[44px] min-h-[44px] inline-flex items-center justify-center">
+                        View
+                      </button>
                     </td>
                   </tr>
                 ))}

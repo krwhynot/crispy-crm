@@ -1,18 +1,21 @@
-import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
+import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from '@/components/ui/sheet';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { ExternalLink, TrendingUp, Calendar, DollarSign } from 'lucide-react';
-import { usePrincipalOpportunities, type OpportunitySummary } from '../hooks/usePrincipalOpportunities';
+} from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ExternalLink, TrendingUp, Calendar, DollarSign } from "lucide-react";
+import {
+  usePrincipalOpportunities,
+  type OpportunitySummary,
+} from "../hooks/usePrincipalOpportunities";
 
 interface PipelineDrillDownSheetProps {
   /** Principal (organization) ID to show opportunities for */
@@ -52,19 +55,19 @@ export function PipelineDrillDownSheet({
     onClose();
   };
 
-  const getStageColor = (stage: string): 'default' | 'secondary' | 'destructive' | 'outline' => {
+  const getStageColor = (stage: string): "default" | "secondary" | "destructive" | "outline" => {
     const stageLower = stage.toLowerCase();
     // Check for "lost" first since "Closed Lost" contains both "closed" and "lost"
-    if (stageLower.includes('lost')) return 'destructive';
-    if (stageLower.includes('won') || stageLower.includes('closed')) return 'default';
-    if (stageLower.includes('negotiat') || stageLower.includes('proposal')) return 'secondary';
-    return 'outline';
+    if (stageLower.includes("lost")) return "destructive";
+    if (stageLower.includes("won") || stageLower.includes("closed")) return "default";
+    if (stageLower.includes("negotiat") || stageLower.includes("proposal")) return "secondary";
+    return "outline";
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
@@ -91,11 +94,9 @@ export function PipelineDrillDownSheet({
             {principalName}
           </SheetTitle>
           <SheetDescription>
-            {loading ? (
-              'Loading opportunities...'
-            ) : (
-              `${opportunities.length} ${opportunities.length === 1 ? 'opportunity' : 'opportunities'}`
-            )}
+            {loading
+              ? "Loading opportunities..."
+              : `${opportunities.length} ${opportunities.length === 1 ? "opportunity" : "opportunities"}`}
           </SheetDescription>
         </SheetHeader>
 
@@ -172,7 +173,7 @@ function OpportunityCard({
 }: {
   opportunity: OpportunitySummary;
   onView: () => void;
-  getStageColor: (stage: string) => 'default' | 'secondary' | 'destructive' | 'outline';
+  getStageColor: (stage: string) => "default" | "secondary" | "destructive" | "outline";
   formatCurrency: (amount: number) => string;
 }) {
   return (
@@ -180,7 +181,7 @@ function OpportunityCard({
       className="p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer group"
       onClick={onView}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onView();
         }
@@ -199,12 +200,8 @@ function OpportunityCard({
 
       {/* Amount and Probability */}
       <div className="mt-2 flex items-center gap-4 text-sm">
-        <span className="font-semibold text-foreground">
-          {formatCurrency(opportunity.amount)}
-        </span>
-        <span className="text-muted-foreground">
-          {opportunity.probability}% probability
-        </span>
+        <span className="font-semibold text-foreground">{formatCurrency(opportunity.amount)}</span>
+        <span className="text-muted-foreground">{opportunity.probability}% probability</span>
       </div>
 
       {/* Dates */}
@@ -212,12 +209,12 @@ function OpportunityCard({
         {opportunity.expectedCloseDate && (
           <div className="flex items-center gap-1">
             <Calendar className="h-3 w-3" />
-            <span>Close: {format(opportunity.expectedCloseDate, 'MMM d, yyyy')}</span>
+            <span>Close: {format(opportunity.expectedCloseDate, "MMM d, yyyy")}</span>
           </div>
         )}
         {opportunity.lastActivityDate && (
           <div className="flex items-center gap-1">
-            <span>Last activity: {format(opportunity.lastActivityDate, 'MMM d')}</span>
+            <span>Last activity: {format(opportunity.lastActivityDate, "MMM d")}</span>
           </div>
         )}
       </div>

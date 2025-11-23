@@ -168,14 +168,7 @@ export const filterableFields: Record<string, string[]> = {
   ],
 
   // Audit trail resource (field-level history)
-  audit_trail: [
-    "audit_id",
-    "table_name",
-    "record_id",
-    "field_name",
-    "changed_by",
-    "changed_at",
-  ],
+  audit_trail: ["audit_id", "table_name", "record_id", "field_name", "changed_by", "changed_at"],
 
   // Tags resource
   tags: ["id", "name", "color", "usage_count", "created_at", "updated_at"],

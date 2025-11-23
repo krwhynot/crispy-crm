@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import type { ReactNode } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { ReactNode } from "react";
 
 interface ChartWrapperProps {
   title: string;
@@ -13,7 +13,7 @@ export function ChartWrapper({
   title,
   children,
   isLoading = false,
-  height = '300px'
+  height = "300px",
 }: ChartWrapperProps) {
   return (
     <Card>
@@ -22,11 +22,7 @@ export function ChartWrapper({
       </CardHeader>
       <CardContent>
         <div style={{ height }}>
-          {isLoading ? (
-            <Skeleton className="w-full h-full" />
-          ) : (
-            children
-          )}
+          {isLoading ? <Skeleton className="w-full h-full" /> : children}
         </div>
       </CardContent>
     </Card>

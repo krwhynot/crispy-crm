@@ -26,7 +26,7 @@ import type { Opportunity } from "../types";
  *     - Cheese Curd opportunity [Kaufholds badge]
  */
 interface CampaignGroupedListProps {
-  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+  openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }
 
 export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps) => {
@@ -150,12 +150,12 @@ export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps)
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
-                                  openSlideOver(opp.id as number, 'view');
+                                  openSlideOver(opp.id as number, "view");
                                 }}
                                 onKeyDown={(e) => {
-                                  if (e.key === 'Enter' || e.key === ' ') {
+                                  if (e.key === "Enter" || e.key === " ") {
                                     e.preventDefault();
-                                    openSlideOver(opp.id as number, 'view');
+                                    openSlideOver(opp.id as number, "view");
                                   }
                                 }}
                               >

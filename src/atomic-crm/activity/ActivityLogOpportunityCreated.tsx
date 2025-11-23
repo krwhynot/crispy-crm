@@ -17,11 +17,8 @@ export function ActivityLogOpportunityCreated({ activity }: ActivityLogOpportuni
       <div className="flex flex-row space-x-1 items-center w-full">
         <div className="w-5 h-5 bg-loading-pulse rounded-full" />
         <div className="text-sm text-muted-foreground flex-grow">
-          <span className="text-muted-foreground text-sm">
-            Sales ID: {activity.sales_id}
-          </span>{" "}
-          added opportunity{" "}
-          <Link to={`/opportunities/${opportunity.id}/show`}>{opportunity.name}</Link>{" "}
+          <span className="text-muted-foreground text-sm">Sales ID: {activity.sales_id}</span> added
+          opportunity <Link to={`/opportunities/${opportunity.id}/show`}>{opportunity.name}</Link>{" "}
           {context !== "company" && (
             <>
               to organization {activity.customer_organization_id}{" "}

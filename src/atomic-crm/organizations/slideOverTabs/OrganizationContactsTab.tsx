@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useDataProvider, RecordContextProvider } from 'ra-core';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AsideSection } from '../../misc/AsideSection';
-import { Users } from 'lucide-react';
-import type { OrganizationWithHierarchy } from '../../types';
-import type { Identifier } from 'ra-core';
+import { useEffect, useState } from "react";
+import { useDataProvider, RecordContextProvider } from "ra-core";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AsideSection } from "../../misc/AsideSection";
+import { Users } from "lucide-react";
+import type { OrganizationWithHierarchy } from "../../types";
+import type { Identifier } from "ra-core";
 
 interface Contact {
   id: Identifier;
@@ -18,7 +18,7 @@ interface Contact {
 
 interface OrganizationContactsTabProps {
   record: OrganizationWithHierarchy;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -33,14 +33,14 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
       setIsLoading(true);
       setError(null);
       try {
-        const result = await dataProvider.getList('contacts', {
+        const result = await dataProvider.getList("contacts", {
           filter: { organization_id: record.id },
           pagination: { page: 1, perPage: 100 },
-          sort: { field: 'last_name', order: 'ASC' },
+          sort: { field: "last_name", order: "ASC" },
         });
         setContacts(result.data as Contact[]);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load contacts');
+        setError(err instanceof Error ? err.message : "Failed to load contacts");
       } finally {
         setIsLoading(false);
       }
@@ -108,7 +108,8 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
                     ) : (
                       <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
                         <span className="text-sm font-semibold text-primary">
-                          {contact.first_name?.[0]}{contact.last_name?.[0]}
+                          {contact.first_name?.[0]}
+                          {contact.last_name?.[0]}
                         </span>
                       </div>
                     )}
@@ -125,15 +126,15 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
                         {contact.first_name} {contact.last_name}
                       </a>
                       {contact.title && (
-                        <p className="text-xs text-muted-foreground truncate">
-                          {contact.title}
-                        </p>
+                        <p className="text-xs text-muted-foreground truncate">{contact.title}</p>
                       )}
-                      {contact.email && Array.isArray(contact.email) && contact.email.length > 0 && (
-                        <p className="text-xs text-muted-foreground truncate">
-                          {contact.email[0].email || contact.email[0]}
-                        </p>
-                      )}
+                      {contact.email &&
+                        Array.isArray(contact.email) &&
+                        contact.email.length > 0 && (
+                          <p className="text-xs text-muted-foreground truncate">
+                            {contact.email[0].email || contact.email[0]}
+                          </p>
+                        )}
                     </div>
                   </div>
                 ))}

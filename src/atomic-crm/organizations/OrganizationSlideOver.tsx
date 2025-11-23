@@ -1,15 +1,15 @@
-import { BuildingIcon, Users, Target } from 'lucide-react';
-import type { TabConfig } from '@/components/layouts/ResourceSlideOver';
-import { ResourceSlideOver } from '@/components/layouts/ResourceSlideOver';
-import { OrganizationDetailsTab } from './slideOverTabs/OrganizationDetailsTab';
-import { OrganizationContactsTab } from './slideOverTabs/OrganizationContactsTab';
-import { OrganizationOpportunitiesTab } from './slideOverTabs/OrganizationOpportunitiesTab';
+import { BuildingIcon, Users, Target } from "lucide-react";
+import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
+import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
+import { OrganizationDetailsTab } from "./slideOverTabs/OrganizationDetailsTab";
+import { OrganizationContactsTab } from "./slideOverTabs/OrganizationContactsTab";
+import { OrganizationOpportunitiesTab } from "./slideOverTabs/OrganizationOpportunitiesTab";
 
 interface OrganizationSlideOverProps {
   recordId: number | null;
   isOpen: boolean;
   onClose: () => void;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle: () => void;
 }
 
@@ -22,20 +22,20 @@ export function OrganizationSlideOver({
 }: OrganizationSlideOverProps) {
   const tabs: TabConfig[] = [
     {
-      key: 'details',
-      label: 'Details',
+      key: "details",
+      label: "Details",
       component: OrganizationDetailsTab,
       icon: BuildingIcon,
     },
     {
-      key: 'contacts',
-      label: 'Contacts',
+      key: "contacts",
+      label: "Contacts",
       component: OrganizationContactsTab,
       icon: Users,
     },
     {
-      key: 'opportunities',
-      label: 'Opportunities',
+      key: "opportunities",
+      label: "Opportunities",
       component: OrganizationOpportunitiesTab,
       icon: Target,
     },

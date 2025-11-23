@@ -18,9 +18,9 @@ export const salesSchema = z.object({
   user_id: z.string().uuid("Must be a valid UUID").optional(),
 
   // Permission fields (role is primary, others are computed/deprecated)
-  role: z.enum(['admin', 'manager', 'rep']).default('rep'),
-  is_admin: z.boolean().optional(),  // Deprecated - synced from role via trigger
-  administrator: z.boolean().optional(),  // Computed column - read-only
+  role: z.enum(["admin", "manager", "rep"]).default("rep"),
+  is_admin: z.boolean().optional(), // Deprecated - synced from role via trigger
+  administrator: z.boolean().optional(), // Computed column - read-only
 
   disabled: z.boolean().default(false),
 

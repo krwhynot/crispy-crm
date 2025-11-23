@@ -34,11 +34,7 @@ export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
   }
 
   if (error) {
-    return (
-      <div className="text-center py-8 text-destructive">
-        Failed to load activities
-      </div>
-    );
+    return <div className="text-center py-8 text-destructive">Failed to load activities</div>;
   }
 
   const activities = data || [];
@@ -53,9 +49,7 @@ export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
       </div>
 
       {activities.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          No activities recorded yet
-        </div>
+        <div className="text-center py-8 text-muted-foreground">No activities recorded yet</div>
       ) : (
         <div className="space-y-3">
           {activities.map((activity) => (
@@ -108,77 +102,78 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
               )}
             </div>
             <span className="text-xs text-muted-foreground ml-2">
-              {format(new Date(activity.activity_date || activity.created_at), "MMM d, yyyy h:mm a")}
+              {format(
+                new Date(activity.activity_date || activity.created_at),
+                "MMM d, yyyy h:mm a"
+              )}
             </span>
           </div>
 
-        {/* Subject/Description */}
-        {activity.subject && (
-          <div className="text-sm font-medium mb-1">{activity.subject}</div>
-        )}
-        {activity.description && (
-          <div className="text-sm text-foreground whitespace-pre-line">
-            {activity.description}
-          </div>
-        )}
+          {/* Subject/Description */}
+          {activity.subject && <div className="text-sm font-medium mb-1">{activity.subject}</div>}
+          {activity.description && (
+            <div className="text-sm text-foreground whitespace-pre-line">
+              {activity.description}
+            </div>
+          )}
 
-        {/* Related Links */}
-        <div className="flex items-center gap-4 mt-2">
-          {activity.related_task_id && (
-            <RouterLink
-              to={`/tasks/${activity.related_task_id}`}
-              className="flex items-center gap-1 text-xs text-primary hover:underline"
-            >
-              <Check className="h-3 w-3" />
-              Related Task
-            </RouterLink>
-          )}
-          {activity.opportunity_id && (
-            <RouterLink
-              to={`/opportunities/${activity.opportunity_id}/show`}
-              className="flex items-center gap-1 text-xs text-primary hover:underline"
-            >
-              <Target className="h-3 w-3" />
-              View Opportunity
-            </RouterLink>
-          )}
-          {activity.organization_id && (
-            <RouterLink
-              to={`/organizations/${activity.organization_id}/show`}
-              className="flex items-center gap-1 text-xs text-primary hover:underline"
-            >
-              <FileText className="h-3 w-3" />
-              View Organization
-            </RouterLink>
+          {/* Related Links */}
+          <div className="flex items-center gap-4 mt-2">
+            {activity.related_task_id && (
+              <RouterLink
+                to={`/tasks/${activity.related_task_id}`}
+                className="flex items-center gap-1 text-xs text-primary hover:underline"
+              >
+                <Check className="h-3 w-3" />
+                Related Task
+              </RouterLink>
+            )}
+            {activity.opportunity_id && (
+              <RouterLink
+                to={`/opportunities/${activity.opportunity_id}/show`}
+                className="flex items-center gap-1 text-xs text-primary hover:underline"
+              >
+                <Target className="h-3 w-3" />
+                View Opportunity
+              </RouterLink>
+            )}
+            {activity.organization_id && (
+              <RouterLink
+                to={`/organizations/${activity.organization_id}/show`}
+                className="flex items-center gap-1 text-xs text-primary hover:underline"
+              >
+                <FileText className="h-3 w-3" />
+                View Organization
+              </RouterLink>
+            )}
+          </div>
+
+          {/* Tags */}
+          {(activity.sentiment || activity.follow_up_required) && (
+            <div className="flex items-center gap-2 mt-2">
+              {activity.sentiment && (
+                <Badge
+                  variant="outline"
+                  className={
+                    activity.sentiment === "positive"
+                      ? "border-green-500 text-green-700"
+                      : activity.sentiment === "negative"
+                        ? "border-red-500 text-red-700"
+                        : ""
+                  }
+                >
+                  {activity.sentiment}
+                </Badge>
+              )}
+              {activity.follow_up_required && (
+                <Badge variant="outline" className="border-orange-500 text-orange-700">
+                  Follow-up Required
+                </Badge>
+              )}
+            </div>
           )}
         </div>
-
-        {/* Tags */}
-        {(activity.sentiment || activity.follow_up_required) && (
-          <div className="flex items-center gap-2 mt-2">
-            {activity.sentiment && (
-              <Badge
-                variant="outline"
-                className={
-                  activity.sentiment === "positive"
-                    ? "border-green-500 text-green-700"
-                    : activity.sentiment === "negative"
-                      ? "border-red-500 text-red-700"
-                      : ""
-                }
-              >
-                {activity.sentiment}
-              </Badge>
-            )}
-            {activity.follow_up_required && (
-              <Badge variant="outline" className="border-orange-500 text-orange-700">
-                Follow-up Required
-              </Badge>
-            )}
-          </div>
-        )}
       </div>
-    </div>
     </RecordContextProvider>
   );
 };

@@ -14,7 +14,7 @@ import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConst
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
 
 interface OpportunityRowListViewProps {
-  openSlideOver: (id: number, mode?: 'view' | 'edit') => void;
+  openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }
 
 export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListViewProps) => {
@@ -114,7 +114,7 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        openSlideOver(opportunity.id as number, 'view');
+                        openSlideOver(opportunity.id as number, "view");
                       }}
                       className="font-medium text-sm text-primary hover:underline focus:outline-none block truncate text-left w-full"
                     >

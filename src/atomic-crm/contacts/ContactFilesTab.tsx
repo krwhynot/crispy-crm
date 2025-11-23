@@ -1,10 +1,10 @@
-import { FileIcon } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import type { Contact } from '../types';
+import { FileIcon } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import type { Contact } from "../types";
 
 interface ContactFilesTabProps {
   record: Contact;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
 }
 
 /**

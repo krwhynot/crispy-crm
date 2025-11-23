@@ -51,9 +51,7 @@ const baseActivitiesSchema = z.object({
   type: interactionTypeSchema.default("call"), // Default to call
   subject: z.string().min(1, "Subject is required"),
   description: z.string().optional().nullable(),
-  activity_date: z
-    .string()
-    .default(() => new Date().toISOString().split("T")[0]), // Default to today's date
+  activity_date: z.string().default(() => new Date().toISOString().split("T")[0]), // Default to today's date
   duration_minutes: z.number().int().positive().optional().nullable(),
 
   // Entity relationships

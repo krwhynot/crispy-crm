@@ -33,12 +33,7 @@ const shouldPreventShortcut = (target: EventTarget | null): boolean => {
   const isContentEditable = target.isContentEditable;
 
   // Block shortcuts in inputs, textareas, selects, and contenteditable elements
-  if (
-    tagName === "input" ||
-    tagName === "textarea" ||
-    tagName === "select" ||
-    isContentEditable
-  ) {
+  if (tagName === "input" || tagName === "textarea" || tagName === "select" || isContentEditable) {
     return true;
   }
 
@@ -84,12 +79,12 @@ export class KeyboardShortcutManager {
 
   private buildKey(shortcut: ShortcutHandler): string {
     const parts = [];
-    if (shortcut.ctrl) parts.push('ctrl');
-    if (shortcut.meta) parts.push('meta');
-    if (shortcut.alt) parts.push('alt');
-    if (shortcut.shift) parts.push('shift');
+    if (shortcut.ctrl) parts.push("ctrl");
+    if (shortcut.meta) parts.push("meta");
+    if (shortcut.alt) parts.push("alt");
+    if (shortcut.shift) parts.push("shift");
     parts.push(shortcut.key.toLowerCase());
-    return parts.join('+');
+    return parts.join("+");
   }
 
   handleKeyPress = (e: KeyboardEvent) => {
@@ -103,13 +98,13 @@ export class KeyboardShortcutManager {
 
     const parts = [];
     // Keep Ctrl and Meta separate (don't normalize Cmd to Ctrl)
-    if (e.ctrlKey) parts.push('ctrl');
-    if (e.metaKey) parts.push('meta');
-    if (e.altKey) parts.push('alt');
-    if (e.shiftKey) parts.push('shift');
+    if (e.ctrlKey) parts.push("ctrl");
+    if (e.metaKey) parts.push("meta");
+    if (e.altKey) parts.push("alt");
+    if (e.shiftKey) parts.push("shift");
     parts.push(e.key.toLowerCase());
 
-    const key = parts.join('+');
+    const key = parts.join("+");
     const handler = this.shortcuts.get(key);
 
     if (handler) {
@@ -133,11 +128,13 @@ export class KeyboardShortcutManager {
 
   showHelp() {
     const shortcuts = this.getShortcuts();
-    if (process.env.NODE_ENV !== 'production') {
-      console.table(shortcuts.map(s => ({
-        shortcut: this.buildKey(s),
-        description: s.description
-      })));
+    if (process.env.NODE_ENV !== "production") {
+      console.table(
+        shortcuts.map((s) => ({
+          shortcut: this.buildKey(s),
+          description: s.description,
+        }))
+      );
     }
   }
 }
@@ -146,7 +143,7 @@ export class KeyboardShortcutManager {
 export const globalShortcuts = new KeyboardShortcutManager();
 
 // Hook for React components
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 /**
  * React hook for registering keyboard shortcuts
@@ -167,14 +164,14 @@ import { useEffect } from 'react';
  */
 export const useKeyboardShortcuts = (shortcuts: ShortcutHandler[]) => {
   useEffect(() => {
-    shortcuts.forEach(s => globalShortcuts.register(s));
+    shortcuts.forEach((s) => globalShortcuts.register(s));
 
     const handleKeyPress = globalShortcuts.handleKeyPress;
-    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener("keydown", handleKeyPress);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyPress);
-      shortcuts.forEach(s => globalShortcuts.unregister(s));
+      document.removeEventListener("keydown", handleKeyPress);
+      shortcuts.forEach((s) => globalShortcuts.unregister(s));
     };
   }, [shortcuts]);
 };

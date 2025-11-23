@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import { useUpdate, useNotify, useGetIdentity } from 'react-admin';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
+import { useState } from "react";
+import { useUpdate, useNotify, useGetIdentity } from "react-admin";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { validateUpdateSales } from '../validation/sales';
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { validateUpdateSales } from "../validation/sales";
 
 interface SalesPermissionsTabProps {
   record: any;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -38,7 +38,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
 
   // Form state
   const [formData, setFormData] = useState({
-    role: record?.role || 'rep',
+    role: record?.role || "rep",
     disabled: record?.disabled || false,
   });
 
@@ -67,15 +67,15 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
 
       // Update record
       await update(
-        'sales',
+        "sales",
         { id: record.id, data: formData },
         {
           onSuccess: () => {
-            notify('Permissions updated successfully', { type: 'success' });
+            notify("Permissions updated successfully", { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode
           },
           onError: (error: any) => {
-            notify(error.message || 'Failed to update permissions', { type: 'error' });
+            notify(error.message || "Failed to update permissions", { type: "error" });
             if (error.errors) {
               setErrors(error.errors);
             }
@@ -85,9 +85,9 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
     } catch (error: any) {
       if (error.errors) {
         setErrors(error.errors);
-        notify('Validation failed. Please check the form.', { type: 'warning' });
+        notify("Validation failed. Please check the form.", { type: "warning" });
       } else {
-        notify('An error occurred', { type: 'error' });
+        notify("An error occurred", { type: "error" });
       }
     }
   };
@@ -96,7 +96,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   const handleCancel = () => {
     // Reset form data to original values
     setFormData({
-      role: record?.role || 'rep',
+      role: record?.role || "rep",
       disabled: record?.disabled || false,
     });
     setErrors({});
@@ -106,19 +106,19 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   // Get role badge styling
   const getRoleBadge = (role: string) => {
     switch (role) {
-      case 'admin':
+      case "admin":
         return (
           <Badge variant="outline" className="border-primary text-primary">
             Admin
           </Badge>
         );
-      case 'manager':
+      case "manager":
         return (
           <Badge variant="outline" className="border-success text-success">
             Manager
           </Badge>
         );
-      case 'rep':
+      case "rep":
         return (
           <Badge variant="outline" className="border-muted-foreground text-muted-foreground">
             Rep
@@ -142,7 +142,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   return (
     <div className="space-y-6">
       {/* Self-edit warning */}
-      {isSelfEdit && mode === 'edit' && (
+      {isSelfEdit && mode === "edit" && (
         <div className="p-3 border border-warning bg-warning/10 rounded-md">
           <p className="text-sm text-warning-foreground">
             <strong>Note:</strong> You cannot modify your own permissions.
@@ -153,19 +153,16 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
       {/* Role field */}
       <div>
         <Label htmlFor="role">Role</Label>
-        {mode === 'view' ? (
+        {mode === "view" ? (
           <div className="mt-2">{getRoleBadge(record.role)}</div>
         ) : (
           <>
             <Select
               value={formData.role}
-              onValueChange={(value) => handleChange('role', value)}
+              onValueChange={(value) => handleChange("role", value)}
               disabled={isLoading || isSelfEdit}
             >
-              <SelectTrigger
-                id="role"
-                className={errors.role ? 'border-destructive' : ''}
-              >
+              <SelectTrigger id="role" className={errors.role ? "border-destructive" : ""}>
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
@@ -174,9 +171,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
                 <SelectItem value="admin">Admin</SelectItem>
               </SelectContent>
             </Select>
-            {errors.role && (
-              <p className="text-sm text-destructive mt-1">{errors.role}</p>
-            )}
+            {errors.role && <p className="text-sm text-destructive mt-1">{errors.role}</p>}
             <p className="text-sm text-muted-foreground mt-1">
               Rep: Edit own records. Manager: Edit all records. Admin: Full system access.
             </p>
@@ -187,22 +182,22 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
       {/* Administrator toggle (computed from role) */}
       <div>
         <Label htmlFor="administrator">Administrator Access</Label>
-        {mode === 'view' ? (
+        {mode === "view" ? (
           <p className="text-sm text-foreground mt-1">
-            {record.administrator || record.role === 'admin' ? 'Yes' : 'No'}
+            {record.administrator || record.role === "admin" ? "Yes" : "No"}
           </p>
         ) : (
           <div className="mt-2">
             <div className="flex items-center gap-3 p-3 border border-border rounded-md bg-muted/20">
               <Switch
                 id="administrator"
-                checked={formData.role === 'admin'}
-                onCheckedChange={(checked) => handleChange('role', checked ? 'admin' : 'rep')}
+                checked={formData.role === "admin"}
+                onCheckedChange={(checked) => handleChange("role", checked ? "admin" : "rep")}
                 disabled={isLoading || isSelfEdit}
               />
               <div className="flex-1">
                 <p className="text-sm font-medium">
-                  {formData.role === 'admin' ? 'Enabled' : 'Disabled'}
+                  {formData.role === "admin" ? "Enabled" : "Disabled"}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Administrator access is automatically granted to users with Admin role
@@ -216,7 +211,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
       {/* Disabled status */}
       <div>
         <Label htmlFor="disabled">Account Status</Label>
-        {mode === 'view' ? (
+        {mode === "view" ? (
           <div className="mt-2">
             {record.disabled ? (
               <Badge variant="outline" className="border-warning text-warning">
@@ -234,12 +229,12 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
               <Switch
                 id="disabled"
                 checked={formData.disabled}
-                onCheckedChange={(checked) => handleChange('disabled', checked)}
+                onCheckedChange={(checked) => handleChange("disabled", checked)}
                 disabled={isLoading || isSelfEdit}
               />
               <div className="flex-1">
                 <p className="text-sm font-medium">
-                  {formData.disabled ? 'Account Disabled' : 'Account Active'}
+                  {formData.disabled ? "Account Disabled" : "Account Active"}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Disabled accounts cannot log in or access the system
@@ -251,7 +246,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
       </div>
 
       {/* Warning for disabled accounts */}
-      {mode === 'edit' && formData.disabled && !isSelfEdit && (
+      {mode === "edit" && formData.disabled && !isSelfEdit && (
         <div className="p-3 border border-warning bg-warning/10 rounded-md">
           <p className="text-sm text-warning-foreground">
             <strong>Warning:</strong> Disabling this account will prevent the user from logging in.
@@ -260,17 +255,12 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
       )}
 
       {/* Action buttons (edit mode only) */}
-      {mode === 'edit' && !isSelfEdit && (
+      {mode === "edit" && !isSelfEdit && (
         <div className="flex gap-3 pt-4 border-t border-border">
           <Button onClick={handleSave} disabled={isLoading} className="flex-1">
-            {isLoading ? 'Saving...' : 'Save Changes'}
+            {isLoading ? "Saving..." : "Save Changes"}
           </Button>
-          <Button
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isLoading}
-            className="flex-1"
-          >
+          <Button variant="outline" onClick={handleCancel} disabled={isLoading} className="flex-1">
             Cancel
           </Button>
         </div>

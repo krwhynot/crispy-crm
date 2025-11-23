@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@/atomic-crm/providers/supabase/supabase';
+import { useEffect, useState } from "react";
+import { supabase } from "@/atomic-crm/providers/supabase/supabase";
 
 /**
  * Hook to get current user's sales ID
@@ -22,7 +22,10 @@ export function useCurrentSale() {
         setLoading(true);
 
         // Get current user from Supabase auth
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
         if (userError) throw userError;
         if (!user) {
@@ -34,8 +37,8 @@ export function useCurrentSale() {
         // This is the ONLY correct way to get sales.id
         // ✅ Handle legacy users with NULL user_id by falling back to email match
         const { data: sale, error: saleError } = await supabase
-          .from('sales')
-          .select('id, user_id, email')
+          .from("sales")
+          .select("id, user_id, email")
           .or(`user_id.eq.${user.id},email.eq.${user.email}`)
           .maybeSingle();
 
@@ -46,7 +49,7 @@ export function useCurrentSale() {
 
           // Debug logging for B1 filtering investigation
           if (import.meta.env.DEV) {
-            console.log('[useCurrentSale] Found sales record:', {
+            console.log("[useCurrentSale] Found sales record:", {
               salesId: sale.id,
               hasUserId: !!sale.user_id,
               email: sale.email,
@@ -55,19 +58,21 @@ export function useCurrentSale() {
 
           // If this is a legacy user without user_id, log a warning
           if (!sale.user_id) {
-            console.warn(`Sales record ${sale.id} matched by email but has NULL user_id. Consider running migration to populate user_id.`);
+            console.warn(
+              `Sales record ${sale.id} matched by email but has NULL user_id. Consider running migration to populate user_id.`
+            );
           }
         } else {
           // Debug logging when no sales record found
           if (import.meta.env.DEV) {
-            console.log('[useCurrentSale] No sales record found for user:', {
+            console.log("[useCurrentSale] No sales record found for user:", {
               userId: user.id,
               email: user.email,
             });
           }
         }
       } catch (err) {
-        console.error('Failed to fetch sales ID:', err);
+        console.error("Failed to fetch sales ID:", err);
         setError(err as Error);
       } finally {
         setLoading(false);

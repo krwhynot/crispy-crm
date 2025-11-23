@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { useState, useCallback } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,22 +8,24 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Switch } from '@/components/ui/switch';
-import { Skeleton } from '@/components/ui/skeleton';
-import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from 'lucide-react';
-import type { PrincipalPipelineRow } from '../types';
-import { usePrincipalPipeline } from '../hooks/usePrincipalPipeline';
-import { PipelineDrillDownSheet } from './PipelineDrillDownSheet';
+} from "@/components/ui/dropdown-menu";
+import { Switch } from "@/components/ui/switch";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from "lucide-react";
+import type { PrincipalPipelineRow } from "../types";
+import { usePrincipalPipeline } from "../hooks/usePrincipalPipeline";
+import { PipelineDrillDownSheet } from "./PipelineDrillDownSheet";
 
 export function PrincipalPipelineTable() {
   const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(false);
-  const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(null);
+  const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(
+    null
+  );
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
 
   const handleRowClick = useCallback((row: PrincipalPipelineRow) => {
@@ -34,15 +36,15 @@ export function PrincipalPipelineTable() {
     setSelectedPrincipal(null);
   }, []);
 
-  const renderMomentumIcon = (momentum: PrincipalPipelineRow['momentum']) => {
+  const renderMomentumIcon = (momentum: PrincipalPipelineRow["momentum"]) => {
     switch (momentum) {
-      case 'increasing':
+      case "increasing":
         return <TrendingUp className="h-4 w-4 text-success" />;
-      case 'decreasing':
+      case "decreasing":
         return <TrendingDown className="h-4 w-4 text-warning" />;
-      case 'steady':
+      case "steady":
         return <Minus className="h-4 w-4 text-muted-foreground" />;
-      case 'stale':
+      case "stale":
         return <AlertCircle className="h-4 w-4 text-destructive" />;
     }
   };
@@ -55,7 +57,7 @@ export function PrincipalPipelineTable() {
           <Skeleton className="h-4 w-96" />
         </div>
         <div className="flex-1 space-y-2 pt-4">
-          {[1, 2, 3, 4, 5].map(i => (
+          {[1, 2, 3, 4, 5].map((i) => (
             <Skeleton key={i} className="h-12 w-full" />
           ))}
         </div>
@@ -131,7 +133,7 @@ export function PrincipalPipelineTable() {
                 className="table-row-premium cursor-pointer"
                 onClick={() => handleRowClick(row)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     handleRowClick(row);
                   }
@@ -155,9 +157,7 @@ export function PrincipalPipelineTable() {
                 </TableCell>
                 <TableCell className="text-center">
                   {row.activeLastWeek > 0 ? (
-                    <Badge variant="secondary">
-                      {row.activeLastWeek}
-                    </Badge>
+                    <Badge variant="secondary">{row.activeLastWeek}</Badge>
                   ) : (
                     <span className="text-muted-foreground">-</span>
                   )}
@@ -186,7 +186,7 @@ export function PrincipalPipelineTable() {
       {/* Drill-Down Sheet */}
       <PipelineDrillDownSheet
         principalId={selectedPrincipal?.id ?? null}
-        principalName={selectedPrincipal?.name ?? ''}
+        principalName={selectedPrincipal?.name ?? ""}
         isOpen={selectedPrincipal !== null}
         onClose={handleCloseSheet}
       />

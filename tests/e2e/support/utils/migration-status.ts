@@ -1,6 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
+import * as fs from "fs";
+import * as path from "path";
+import { fileURLToPath } from "url";
 
 /**
  * Migration Status Utilities
@@ -51,8 +51,8 @@ export function loadMigrationStatus(): MigrationStatus {
     return cachedStatus;
   }
 
-  const statusPath = path.join(__dirname, '../../design-system/migration-status.json');
-  const statusJson = fs.readFileSync(statusPath, 'utf-8');
+  const statusPath = path.join(__dirname, "../../design-system/migration-status.json");
+  const statusJson = fs.readFileSync(statusPath, "utf-8");
   cachedStatus = JSON.parse(statusJson);
   return cachedStatus;
 }
@@ -76,16 +76,14 @@ export function isPatternMigrated(resource: string, pattern: keyof ResourceStatu
  */
 export function getMigratedResources(pattern: keyof ResourceStatus): string[] {
   const status = loadMigrationStatus();
-  return Object.keys(status.resources).filter(resource =>
-    isPatternMigrated(resource, pattern)
-  );
+  return Object.keys(status.resources).filter((resource) => isPatternMigrated(resource, pattern));
 }
 
 /**
  * Check if resource is in UNIFIED_DS_RESOURCES env var
  */
 export function isResourceEnabled(resource: string): boolean {
-  const enabledResources = process.env.UNIFIED_DS_RESOURCES?.split(',').map(r => r.trim()) ?? [];
+  const enabledResources = process.env.UNIFIED_DS_RESOURCES?.split(",").map((r) => r.trim()) ?? [];
 
   // If env var not set, check migration status
   if (enabledResources.length === 0) {
@@ -129,10 +127,10 @@ export function getSkipReason(resource: string, pattern: keyof ResourceStatus): 
   }
 
   if (patternStatus.migrated) {
-    return ''; // Not skipped
+    return ""; // Not skipped
   }
 
-  const notes = patternStatus.notes || 'Component not yet migrated';
+  const notes = patternStatus.notes || "Component not yet migrated";
   return `${resource} ${pattern} not migrated: ${notes}. Set UNIFIED_DS_RESOURCES=${resource} to test work-in-progress.`;
 }
 
@@ -143,22 +141,24 @@ export function getMigrationProgress(): string {
   const status = loadMigrationStatus();
   const patterns = status.patterns;
 
-  const lines = [
-    'Unified Design System Migration Progress:',
-    '',
-  ];
+  const lines = ["Unified Design System Migration Progress:", ""];
 
   for (const [patternName, patternStatus] of Object.entries(patterns)) {
     const percentage = patternStatus.percentage;
-    const bar = '█'.repeat(Math.floor(percentage / 5)) + '░'.repeat(20 - Math.floor(percentage / 5));
-    lines.push(`  ${patternName.padEnd(20)} [${bar}] ${percentage}% (${patternStatus.migrated}/${patternStatus.totalResources})`);
+    const bar =
+      "█".repeat(Math.floor(percentage / 5)) + "░".repeat(20 - Math.floor(percentage / 5));
+    lines.push(
+      `  ${patternName.padEnd(20)} [${bar}] ${percentage}% (${patternStatus.migrated}/${patternStatus.totalResources})`
+    );
   }
 
-  lines.push('');
-  lines.push('To enable tests for work-in-progress:');
-  lines.push('  UNIFIED_DS_RESOURCES=contacts,organizations npx playwright test tests/e2e/design-system/');
+  lines.push("");
+  lines.push("To enable tests for work-in-progress:");
+  lines.push(
+    "  UNIFIED_DS_RESOURCES=contacts,organizations npx playwright test tests/e2e/design-system/"
+  );
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /**
@@ -170,18 +170,18 @@ export function validateMigrationStatus(): string[] {
 
   // Check version
   if (!status.version) {
-    errors.push('Missing version field');
+    errors.push("Missing version field");
   }
 
   // Check resources
   if (!status.resources || Object.keys(status.resources).length === 0) {
-    errors.push('No resources defined');
+    errors.push("No resources defined");
   }
 
   // Validate pattern counts
   for (const [patternName, patternStatus] of Object.entries(status.patterns)) {
     const actualMigrated = Object.values(status.resources).filter(
-      r => r[patternName as keyof ResourceStatus]?.migrated
+      (r) => r[patternName as keyof ResourceStatus]?.migrated
     ).length;
 
     if (actualMigrated !== patternStatus.migrated) {

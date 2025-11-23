@@ -1,10 +1,10 @@
-import { Building2 } from 'lucide-react';
-import { RecordContextProvider, useGetList } from 'ra-core';
-import { ReferenceField } from '@/components/admin/reference-field';
-import { TextField } from '@/components/admin/text-field';
-import { DateField } from '@/components/admin/date-field';
-import { Card, CardContent } from '@/components/ui/card';
-import { AsideSection } from '../misc/AsideSection';
+import { Building2 } from "lucide-react";
+import { RecordContextProvider, useGetList } from "ra-core";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
+import { DateField } from "@/components/admin/date-field";
+import { Card, CardContent } from "@/components/ui/card";
+import { AsideSection } from "../misc/AsideSection";
 
 interface Product {
   id: number;
@@ -17,7 +17,7 @@ interface Product {
 
 interface ProductRelationshipsTabProps {
   record: Product;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
 }
 
 /**
@@ -34,11 +34,11 @@ interface ProductRelationshipsTabProps {
 export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps) {
   // Fetch opportunities that include this product
   const { data: opportunityProducts, isLoading: isLoadingOpportunities } = useGetList(
-    'opportunity_products',
+    "opportunity_products",
     {
       filter: { product_id_reference: record.id },
       pagination: { page: 1, perPage: 100 },
-      sort: { field: 'created_at', order: 'DESC' },
+      sort: { field: "created_at", order: "DESC" },
     }
   );
 
@@ -85,18 +85,26 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
                 <div className="text-sm text-muted-foreground">Loading opportunities...</div>
               )}
 
-              {!isLoadingOpportunities && (!opportunityProducts || opportunityProducts.length === 0) && (
-                <div className="text-sm text-muted-foreground">
-                  No opportunities using this product yet.
-                </div>
-              )}
+              {!isLoadingOpportunities &&
+                (!opportunityProducts || opportunityProducts.length === 0) && (
+                  <div className="text-sm text-muted-foreground">
+                    No opportunities using this product yet.
+                  </div>
+                )}
 
               {!isLoadingOpportunities && opportunityProducts && opportunityProducts.length > 0 && (
                 <div className="space-y-2">
                   {opportunityProducts.map((oppProduct: any) => (
-                    <div key={oppProduct.id} className="border-b border-border pb-2 last:border-0 last:pb-0">
+                    <div
+                      key={oppProduct.id}
+                      className="border-b border-border pb-2 last:border-0 last:pb-0"
+                    >
                       <RecordContextProvider value={oppProduct}>
-                        <ReferenceField source="opportunity_id" reference="opportunities" link="show">
+                        <ReferenceField
+                          source="opportunity_id"
+                          reference="opportunities"
+                          link="show"
+                        >
                           <TextField source="title" className="text-sm font-medium" />
                         </ReferenceField>
                         {oppProduct.notes && (
@@ -107,7 +115,8 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
                   ))}
                   {opportunityProducts.length > 5 && (
                     <div className="text-xs text-muted-foreground pt-2">
-                      Showing {opportunityProducts.length} opportunit{opportunityProducts.length === 1 ? 'y' : 'ies'}
+                      Showing {opportunityProducts.length} opportunit
+                      {opportunityProducts.length === 1 ? "y" : "ies"}
                     </div>
                   )}
                 </div>
@@ -124,7 +133,7 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
                 <span className="text-muted-foreground">Created on </span>
                 <DateField
                   source="created_at"
-                  options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+                  options={{ year: "numeric", month: "long", day: "numeric" }}
                 />
               </div>
             )}
@@ -134,7 +143,7 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
                 <span className="text-muted-foreground">Last updated on </span>
                 <DateField
                   source="updated_at"
-                  options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+                  options={{ year: "numeric", month: "long", day: "numeric" }}
                 />
               </div>
             )}

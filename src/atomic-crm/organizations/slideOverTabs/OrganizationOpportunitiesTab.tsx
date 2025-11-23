@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useDataProvider, RecordContextProvider } from 'ra-core';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import { AsideSection } from '../../misc/AsideSection';
-import { Target } from 'lucide-react';
-import type { OrganizationWithHierarchy } from '../../types';
-import type { Identifier } from 'ra-core';
+import { useEffect, useState } from "react";
+import { useDataProvider, RecordContextProvider } from "ra-core";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { AsideSection } from "../../misc/AsideSection";
+import { Target } from "lucide-react";
+import type { OrganizationWithHierarchy } from "../../types";
+import type { Identifier } from "ra-core";
 
 interface Opportunity {
   id: Identifier;
@@ -19,7 +19,7 @@ interface Opportunity {
 
 interface OrganizationOpportunitiesTabProps {
   record: OrganizationWithHierarchy;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -34,7 +34,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
       setIsLoading(true);
       setError(null);
       try {
-        const result = await dataProvider.getList('opportunities', {
+        const result = await dataProvider.getList("opportunities", {
           filter: {
             $or: [
               { customer_organization_id: record.id },
@@ -43,11 +43,11 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
             ],
           },
           pagination: { page: 1, perPage: 100 },
-          sort: { field: 'created_at', order: 'DESC' },
+          sort: { field: "created_at", order: "DESC" },
         });
         setOpportunities(result.data as Opportunity[]);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load opportunities');
+        setError(err instanceof Error ? err.message : "Failed to load opportunities");
       } finally {
         setIsLoading(false);
       }
@@ -122,9 +122,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
 
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       {opportunity.estimated_value && (
-                        <span>
-                          ${opportunity.estimated_value.toLocaleString()}
-                        </span>
+                        <span>${opportunity.estimated_value.toLocaleString()}</span>
                       )}
                       {opportunity.estimated_close_date && (
                         <span>
@@ -149,20 +147,23 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
 }
 
 function StageBadge({ stage }: { stage: string }) {
-  const stageColors: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
-    lead: 'outline',
-    qualified: 'secondary',
-    proposal: 'default',
-    negotiation: 'default',
-    closed_won: 'default',
-    closed_lost: 'destructive',
+  const stageColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+    lead: "outline",
+    qualified: "secondary",
+    proposal: "default",
+    negotiation: "default",
+    closed_won: "default",
+    closed_lost: "destructive",
   };
 
-  const variant = stageColors[stage] || 'outline';
+  const variant = stageColors[stage] || "outline";
 
   return (
     <Badge variant={variant} className="text-xs">
-      {stage.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+      {stage
+        .split("_")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")}
     </Badge>
   );
 }

@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
-import { Component } from 'react';
-import { AlertTriangle, Home, RotateCcw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import type { ReactNode } from "react";
+import { Component } from "react";
+import { AlertTriangle, Home, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Props {
   children: ReactNode;
@@ -24,7 +24,7 @@ export class DashboardErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Dashboard error:', error, errorInfo);
+    console.error("Dashboard error:", error, errorInfo);
   }
 
   handleReload = () => {
@@ -32,7 +32,7 @@ export class DashboardErrorBoundary extends Component<Props, State> {
   };
 
   handleGoHome = () => {
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   render() {
@@ -46,23 +46,17 @@ export class DashboardErrorBoundary extends Component<Props, State> {
               </div>
               <CardTitle>Something went wrong</CardTitle>
               <CardDescription>
-                The dashboard encountered an unexpected error. You can try reloading the page or return home.
+                The dashboard encountered an unexpected error. You can try reloading the page or
+                return home.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex gap-2">
-                <Button
-                  onClick={this.handleReload}
-                  variant="outline"
-                  className="flex-1 gap-2"
-                >
+                <Button onClick={this.handleReload} variant="outline" className="flex-1 gap-2">
                   <RotateCcw className="h-4 w-4" />
                   Reload Dashboard
                 </Button>
-                <Button
-                  onClick={this.handleGoHome}
-                  className="flex-1 gap-2"
-                >
+                <Button onClick={this.handleGoHome} className="flex-1 gap-2">
                   <Home className="h-4 w-4" />
                   Go Home
                 </Button>

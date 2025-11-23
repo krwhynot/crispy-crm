@@ -1,25 +1,25 @@
-import { Mail, Phone, Linkedin, Building2 } from 'lucide-react';
-import { useUpdate, useNotify, RecordContextProvider } from 'ra-core';
-import { Form } from 'react-admin';
-import { ReferenceField } from '@/components/admin/reference-field';
-import { TextField } from '@/components/admin/text-field';
-import { DateField } from '@/components/admin/date-field';
-import { ArrayField } from '@/components/admin/array-field';
-import { EmailField } from '@/components/admin/email-field';
-import { SingleFieldList } from '@/components/admin/single-field-list';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { AsideSection } from '../misc/AsideSection';
-import { SaleName } from '../sales/SaleName';
-import { ContactInputs } from './ContactInputs';
-import { Avatar } from './Avatar';
-import type { Contact } from '../types';
-import { useState } from 'react';
+import { Mail, Phone, Linkedin, Building2 } from "lucide-react";
+import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
+import { Form } from "react-admin";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
+import { DateField } from "@/components/admin/date-field";
+import { ArrayField } from "@/components/admin/array-field";
+import { EmailField } from "@/components/admin/email-field";
+import { SingleFieldList } from "@/components/admin/single-field-list";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AsideSection } from "../misc/AsideSection";
+import { SaleName } from "../sales/SaleName";
+import { ContactInputs } from "./ContactInputs";
+import { Avatar } from "./Avatar";
+import type { Contact } from "../types";
+import { useState } from "react";
 
 interface ContactDetailsTabProps {
   record: Contact;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -45,22 +45,22 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
   const handleSave = async (data: Partial<Contact>) => {
     setIsSaving(true);
     try {
-      await update('contacts', {
+      await update("contacts", {
         id: record.id,
         data,
         previousData: record,
       });
-      notify('Contact updated successfully', { type: 'success' });
+      notify("Contact updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error) {
-      notify('Error updating contact', { type: 'error' });
-      console.error('Save error:', error);
+      notify("Error updating contact", { type: "error" });
+      console.error("Save error:", error);
     } finally {
       setIsSaving(false);
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
         <Form onSubmit={handleSave} record={record}>
@@ -69,12 +69,8 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
 
             {/* Save button - Cancel handled by slide-over header */}
             <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button
-                type="submit"
-                disabled={isSaving}
-                className="h-11 px-4"
-              >
-                {isSaving ? 'Saving...' : 'Save Changes'}
+              <Button type="submit" disabled={isSaving} className="h-11 px-4">
+                {isSaving ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </div>
@@ -95,12 +91,8 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
               <h3 className="text-lg font-semibold">
                 {record.first_name} {record.last_name}
               </h3>
-              {record.gender && (
-                <p className="text-sm text-muted-foreground">{record.gender}</p>
-              )}
-              {record.title && (
-                <p className="text-sm text-muted-foreground">{record.title}</p>
-              )}
+              {record.gender && <p className="text-sm text-muted-foreground">{record.gender}</p>}
+              {record.title && <p className="text-sm text-muted-foreground">{record.title}</p>}
             </div>
           </div>
         </AsideSection>
@@ -186,7 +178,7 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
               <span className="text-muted-foreground">Added on </span>
               <DateField
                 source="first_seen"
-                options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+                options={{ year: "numeric", month: "long", day: "numeric" }}
               />
             </div>
 
@@ -194,7 +186,7 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
               <span className="text-muted-foreground">Last activity on </span>
               <DateField
                 source="last_seen"
-                options={{ year: 'numeric', month: 'long', day: 'numeric' }}
+                options={{ year: "numeric", month: "long", day: "numeric" }}
               />
             </div>
 

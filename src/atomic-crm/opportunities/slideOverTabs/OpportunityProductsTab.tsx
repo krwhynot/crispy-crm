@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from 'react-admin';
-import { Link } from 'react-router-dom';
-import { AutocompleteArrayInput } from '@/components/admin/autocomplete-array-input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Package } from 'lucide-react';
+import { useState } from "react";
+import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from "react-admin";
+import { Link } from "react-router-dom";
+import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Package } from "lucide-react";
 
 interface OpportunityProductsTabProps {
   record: any;
-  mode: 'view' | 'edit';
+  mode: "view" | "edit";
   onModeToggle?: () => void;
 }
 
@@ -23,24 +23,24 @@ export function OpportunityProductsTab({
 
   // Fetch junction table data for view mode
   const { data: junctionRecords, isLoading } = useGetList(
-    'opportunity_products',
+    "opportunity_products",
     {
       filter: { opportunity_id: record.id },
       pagination: { page: 1, perPage: 100 },
-      sort: { field: 'created_at', order: 'DESC' },
+      sort: { field: "created_at", order: "DESC" },
     },
-    { enabled: mode === 'view' }
+    { enabled: mode === "view" }
   );
 
   // Fetch product details for view mode
   const productIds = junctionRecords?.map((jr: any) => jr.product_id_reference) || [];
   const { data: products } = useGetList(
-    'products',
+    "products",
     {
       filter: { id: productIds },
       pagination: { page: 1, perPage: 100 },
     },
-    { enabled: mode === 'view' && productIds.length > 0 }
+    { enabled: mode === "view" && productIds.length > 0 }
   );
 
   const handleSave = async (data: any) => {
@@ -53,7 +53,7 @@ export function OpportunityProductsTab({
       }));
 
       await update(
-        'opportunities',
+        "opportunities",
         {
           id: record.id,
           data: { products_to_sync: productsToSync },
@@ -61,13 +61,13 @@ export function OpportunityProductsTab({
         },
         {
           onSuccess: () => {
-            notify('Products updated successfully', { type: 'success' });
+            notify("Products updated successfully", { type: "success" });
             if (onModeToggle) {
               onModeToggle();
             }
           },
           onError: (error: any) => {
-            notify(error?.message || 'Failed to update products', { type: 'error' });
+            notify(error?.message || "Failed to update products", { type: "error" });
           },
         }
       );
@@ -82,7 +82,7 @@ export function OpportunityProductsTab({
     }
   };
 
-  if (mode === 'edit') {
+  if (mode === "edit") {
     // Get current product IDs from junction table
     const currentProductIds = productIds;
 
@@ -103,14 +103,9 @@ export function OpportunityProductsTab({
 
         <div className="flex gap-2 pt-4">
           <Button type="submit" disabled={isSaving} className="flex-1">
-            {isSaving ? 'Saving...' : 'Save Changes'}
+            {isSaving ? "Saving..." : "Save Changes"}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleCancel}
-            disabled={isSaving}
-          >
+          <Button type="button" variant="outline" onClick={handleCancel} disabled={isSaving}>
             Cancel
           </Button>
         </div>
@@ -139,9 +134,7 @@ export function OpportunityProductsTab({
   }
 
   // Create a map of junction data by product_id
-  const junctionMap = new Map(
-    junctionRecords.map((jr: any) => [jr.product_id_reference, jr])
-  );
+  const junctionMap = new Map(junctionRecords.map((jr: any) => [jr.product_id_reference, jr]));
 
   return (
     <div className="space-y-3">
@@ -177,9 +170,7 @@ export function OpportunityProductsTab({
                 )}
 
                 {junctionData?.notes && (
-                  <p className="text-sm text-muted-foreground mt-2 italic">
-                    {junctionData.notes}
-                  </p>
+                  <p className="text-sm text-muted-foreground mt-2 italic">{junctionData.notes}</p>
                 )}
               </div>
             </div>
