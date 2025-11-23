@@ -331,12 +331,13 @@
               - generic [ref=e357]:
                 - generic [ref=e358]: Contact *
                 - combobox "Contact *" [ref=e359] [cursor=pointer]:
-                  - text: . Bryant Anderson
+                  - text: Select contact
                   - img
                 - paragraph [ref=e360]: Select a contact OR organization
               - generic [ref=e361]:
                 - generic [ref=e362]: Organization *
                 - combobox "Organization *" [ref=e363] [cursor=pointer]:
+                  - text: Select organization
                   - img
                 - paragraph [ref=e364]: Select a contact OR organization
               - generic [ref=e365]:
@@ -348,7 +349,7 @@
               - generic [ref=e370]: Notes
               - textbox "Notes" [ref=e371]:
                 - /placeholder: Summary of the interaction...
-                - text: "E2E test email - bulk pricing discussion. Test ID: 1763924006132"
+                - text: "E2E test email - bulk pricing discussion. Test ID: 1763924734384"
             - generic [ref=e373]:
               - generic [ref=e374]: Create follow-up task?
               - switch "Create follow-up task?" [ref=e375] [cursor=pointer]
