@@ -3,18 +3,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const WeeklyActivitySummary = lazy(() => import("../WeeklyActivitySummary"));
 
+/**
+ * Weekly Activity Tab
+ *
+ * Wrapper for the WeeklyActivitySummary report.
+ * The WeeklyActivitySummary component has its own date range picker
+ * built into its toolbar, so no additional filters are needed here.
+ */
 export default function WeeklyActivityTab() {
   return (
     <div className="space-y-4">
-      {/* Tab-specific filters placeholder */}
-      <div className="bg-secondary/30 p-4 rounded-lg">
-        <h3 className="text-sm font-medium mb-2">Report Filters</h3>
-        <div className="flex gap-4">
-          <div className="text-sm text-muted-foreground">Tab-specific filters coming soon</div>
-        </div>
-      </div>
-
-      {/* Render existing report */}
+      {/* WeeklyActivitySummary has built-in date range filters in its toolbar */}
       <Suspense fallback={<Skeleton className="h-[600px]" />}>
         <WeeklyActivitySummary />
       </Suspense>
