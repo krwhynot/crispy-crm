@@ -857,7 +857,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Ensure popover closes before interacting with other elements
+      // Press Escape to ensure combobox popover closes completely
+      await authenticatedPage.keyboard.press("Escape");
       await authenticatedPage.waitForTimeout(300);
 
       await dashboard.enableFollowUp();

@@ -532,6 +532,9 @@ export class DashboardV3Page extends BasePage {
     // Click the day in the calendar
     const dayNumber = date.getDate().toString();
     await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    // Press Escape to close the date picker popover
+    await this.page.keyboard.press("Escape");
+    await this.page.waitForTimeout(200);
   }
 
   /**
