@@ -59,6 +59,7 @@ export function usePrincipalOpportunities({
         });
 
         // Map to summary format
+        // Note: Database field is estimated_close_date (not expected_close_date)
         const mapped: OpportunitySummary[] = data.map((opp: any) => ({
           id: opp.id,
           name: opp.name || "Unnamed Opportunity",
@@ -66,7 +67,7 @@ export function usePrincipalOpportunities({
           amount: opp.amount || 0,
           probability: opp.probability || 0,
           lastActivityDate: opp.last_activity_date ? new Date(opp.last_activity_date) : null,
-          expectedCloseDate: opp.expected_close_date ? new Date(opp.expected_close_date) : null,
+          expectedCloseDate: opp.estimated_close_date ? new Date(opp.estimated_close_date) : null,
         }));
 
         setOpportunities(mapped);
