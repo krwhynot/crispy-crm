@@ -43,7 +43,7 @@ export const taskSchema = z.object({
   completed_at: z.string().nullable().optional(),
   priority: priorityLevelSchema.default("medium"),
   type: taskTypeSchema,
-  contact_id: idSchema, // Required: task must be associated with a contact
+  contact_id: idSchema.nullable().optional(), // Optional: task can be associated with contact, opportunity, or organization
   opportunity_id: idSchema.nullable().optional(),
   sales_id: idSchema, // Required: task must be assigned to a sales rep
   created_at: z.string().optional(),

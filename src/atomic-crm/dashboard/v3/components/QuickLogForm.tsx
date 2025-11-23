@@ -175,20 +175,26 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
 
       // Create follow-up task if requested
       if (data.createFollowUp && data.followUpDate) {
-        await dataProvider.create("tasks", {
-          data: {
-            title: `Follow-up: ${data.notes.substring(0, 50)}`,
-            due_date: data.followUpDate.toISOString(),
-            type: "Follow-up", // Match schema enum (title-case with hyphen)
-            priority: "medium",
-            // Only include IDs that are valid numbers (not NaN/undefined)
-            ...(data.contactId && !isNaN(data.contactId) && { contact_id: data.contactId }),
-            ...(data.opportunityId && !isNaN(data.opportunityId) && { opportunity_id: data.opportunityId }),
-            ...(data.organizationId && !isNaN(data.organizationId) && { organization_id: data.organizationId }),
-            sales_id: salesId,
-            created_by: salesId,
-          },
-        });
+        // Build task data with only valid IDs (use ternary to ensure we spread objects, not NaN)
+        const taskData = {
+          title: `Follow-up: ${data.notes.substring(0, 50)}`,
+          due_date: data.followUpDate.toISOString(),
+          type: "Follow-up", // Match schema enum (title-case with hyphen)
+          priority: "medium",
+          sales_id: salesId,
+          created_by: salesId,
+        };
+        // Only add IDs if they're valid numbers (not NaN/undefined/null)
+        if (typeof data.contactId === "number" && !isNaN(data.contactId)) {
+          Object.assign(taskData, { contact_id: data.contactId });
+        }
+        if (typeof data.opportunityId === "number" && !isNaN(data.opportunityId)) {
+          Object.assign(taskData, { opportunity_id: data.opportunityId });
+        }
+        if (typeof data.organizationId === "number" && !isNaN(data.organizationId)) {
+          Object.assign(taskData, { organization_id: data.organizationId });
+        }
+        await dataProvider.create("tasks", { data: taskData });
       }
 
       notify("Activity logged successfully", { type: "success" });

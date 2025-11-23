@@ -719,7 +719,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await authenticatedPage.waitForTimeout(2000);
 
       expect(taskCreated).toBe(true);
-      expect(taskData).toHaveProperty("type", "follow_up");
+      expect(taskData).toHaveProperty("type", "Follow-up");
     });
 
     test("Save & New keeps form open and resets", async ({ authenticatedPage }) => {
@@ -800,7 +800,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await authenticatedPage.route("**/rest/v1/tasks*", async (route) => {
         if (route.request().method() === "POST") {
           const data = route.request().postDataJSON();
-          if (data.type === "follow_up") {
+          if (data.type === "Follow-up") {
             createdTaskId = timestamp;
             await route.fulfill({
               status: 201,
@@ -808,7 +808,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
               body: JSON.stringify({
                 id: createdTaskId,
                 title: followUpTitle,
-                type: "follow_up",
+                type: "Follow-up",
                 due_date: new Date(Date.now() + 86400000).toISOString(),
                 completed: false,
               }),
