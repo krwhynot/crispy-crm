@@ -20,15 +20,14 @@ export function ContactNotesTab({ record, mode }: ContactNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
       <div className="space-y-4">
-        {/* Note creation form at top */}
-        <NoteCreate reference="contacts" />
-
-        {/* Notes list */}
+        {/* Notes list with create form - NoteCreate must be inside ReferenceManyField for ListContext */}
         <ReferenceManyField
           target="contact_id"
           reference="contactNotes"
           sort={{ field: "created_at", order: "DESC" }}
         >
+          {/* Note creation form at top */}
+          <NoteCreate reference="contacts" />
           <NotesIterator reference="contacts" />
         </ReferenceManyField>
 
