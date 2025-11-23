@@ -310,14 +310,14 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
         <div className="space-y-3">
           <h3 className="text-sm font-medium">Who was involved?</h3>
 
-          {/* Contact Combobox */}
+          {/* Contact Combobox - Controlled popover that closes on selection */}
           <FormField
             control={form.control}
             name="contactId"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Contact *</FormLabel>
-                <Popover>
+                <Popover open={contactOpen} onOpenChange={setContactOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -358,6 +358,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                               if (contact.organization_id) {
                                 form.setValue("organizationId", contact.organization_id);
                               }
+                              setContactOpen(false); // Close popover after selection
                             }}
                           >
                             <Check
@@ -379,14 +380,14 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             )}
           />
 
-          {/* Organization Combobox */}
+          {/* Organization Combobox - Controlled popover that closes on selection */}
           <FormField
             control={form.control}
             name="organizationId"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Organization *</FormLabel>
-                <Popover>
+                <Popover open={orgOpen} onOpenChange={setOrgOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -417,7 +418,10 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           <CommandItem
                             key={org.id}
                             value={org.name}
-                            onSelect={() => field.onChange(org.id)}
+                            onSelect={() => {
+                              field.onChange(org.id);
+                              setOrgOpen(false); // Close popover after selection
+                            }}
                           >
                             <Check
                               className={cn(
@@ -438,14 +442,14 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             )}
           />
 
-          {/* Opportunity Combobox */}
+          {/* Opportunity Combobox - Controlled popover that closes on selection */}
           <FormField
             control={form.control}
             name="opportunityId"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Opportunity</FormLabel>
-                <Popover>
+                <Popover open={oppOpen} onOpenChange={setOppOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -476,7 +480,10 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           <CommandItem
                             key={opp.id}
                             value={opp.name}
-                            onSelect={() => field.onChange(opp.id)}
+                            onSelect={() => {
+                              field.onChange(opp.id);
+                              setOppOpen(false); // Close popover after selection
+                            }}
                           >
                             <Check
                               className={cn(

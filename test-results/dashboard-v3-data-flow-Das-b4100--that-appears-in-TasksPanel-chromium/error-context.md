@@ -317,59 +317,68 @@
               - generic [ref=e347]:
                 - generic [ref=e348]: Activity Type
                 - combobox "Activity Type" [ref=e349] [cursor=pointer]:
-                  - generic: Note
+                  - generic: Call
                   - img
                 - combobox [ref=e350]
               - generic [ref=e351]:
                 - generic [ref=e352]: Outcome
                 - combobox "Outcome" [ref=e353] [cursor=pointer]:
-                  - generic: Completed
+                  - generic: Connected
                   - img
                 - combobox [ref=e354]
-            - generic [ref=e355]:
-              - heading "Who was involved?" [level=3] [ref=e356]
-              - generic [ref=e357]:
-                - generic [ref=e358]: Contact *
-                - combobox "Contact *" [ref=e359] [cursor=pointer]:
+              - generic [ref=e355]:
+                - generic [ref=e356]: Duration (minutes)
+                - spinbutton "Duration (minutes)" [ref=e357]
+            - generic [ref=e358]:
+              - heading "Who was involved?" [level=3] [ref=e359]
+              - generic [ref=e360]:
+                - generic [ref=e361]: Contact *
+                - combobox "Contact *" [ref=e362] [cursor=pointer]:
                   - text: Select contact
                   - img
-                - paragraph [ref=e360]: Select a contact OR organization
-              - generic [ref=e361]:
-                - generic [ref=e362]: Organization *
-                - combobox "Organization *" [ref=e363] [cursor=pointer]:
+                - paragraph [ref=e363]: Select a contact OR organization
+              - generic [ref=e364]:
+                - generic [ref=e365]: Organization *
+                - combobox "Organization *" [ref=e366] [cursor=pointer]:
                   - text: 040 KITCHEN INC
                   - img
-                - paragraph [ref=e364]: Select a contact OR organization
-              - generic [ref=e365]:
-                - generic [ref=e366]: Opportunity
-                - combobox "Opportunity" [ref=e367] [cursor=pointer]:
+                - paragraph [ref=e367]: Select a contact OR organization
+              - generic [ref=e368]:
+                - generic [ref=e369]: Opportunity
+                - combobox "Opportunity" [ref=e370] [cursor=pointer]:
                   - text: Select opportunity (optional)
                   - img
-            - generic [ref=e368]:
-              - generic [ref=e369]: Notes
-              - textbox "Notes" [ref=e370]:
+            - generic [ref=e371]:
+              - generic [ref=e372]: Notes
+              - textbox "Notes" [ref=e373]:
                 - /placeholder: Summary of the interaction...
-                - text: E2E Test Activity 1763884022679
-            - generic [ref=e372]:
-              - generic [ref=e373]: Create follow-up task?
-              - switch "Create follow-up task?" [ref=e374] [cursor=pointer]
-              - checkbox
-            - generic [ref=e375]:
-              - button "Cancel" [ref=e376] [cursor=pointer]
-              - generic [ref=e377]:
-                - button "Save & Close" [active] [ref=e378] [cursor=pointer]
-                - button "Save & New" [ref=e379] [cursor=pointer]
-  - contentinfo [ref=e380]:
-    - generic [ref=e382]:
-      - paragraph [ref=e383]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e384] [cursor=pointer]:
-        - img [ref=e385]
-        - generic [ref=e387]: Keyboard shortcuts
+                - text: E2E Cross-panel test 1763884047126
+            - generic [ref=e374]:
+              - generic [ref=e375]:
+                - generic [ref=e376]: Create follow-up task?
+                - switch "Create follow-up task?" [checked] [ref=e377] [cursor=pointer]
+                - checkbox [checked]
+              - generic [ref=e378]:
+                - generic [ref=e379]: Follow-up Date
+                - button "Follow-up Date" [ref=e380] [cursor=pointer]:
+                  - img
+                  - text: November 24th, 2025
+            - generic [ref=e381]:
+              - button "Cancel" [ref=e382] [cursor=pointer]
+              - generic [ref=e383]:
+                - button "Save & Close" [active] [ref=e384] [cursor=pointer]
+                - button "Save & New" [ref=e385] [cursor=pointer]
+  - contentinfo [ref=e386]:
+    - generic [ref=e388]:
+      - paragraph [ref=e389]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e390] [cursor=pointer]:
+        - img [ref=e391]
+        - generic [ref=e393]: Keyboard shortcuts
   - region "Notifications alt+T":
     - list:
-      - listitem [ref=e388]:
-        - button "Close toast" [ref=e389] [cursor=pointer]:
-          - img [ref=e390]
-        - img [ref=e394]
-        - generic [ref=e397]: Failed to log activity
+      - listitem [ref=e394]:
+        - button "Close toast" [ref=e395] [cursor=pointer]:
+          - img [ref=e396]
+        - img [ref=e400]
+        - generic [ref=e403]: Failed to log activity
 ```
