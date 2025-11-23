@@ -5,8 +5,8 @@ import { useState, useEffect, useCallback } from "react";
  *
  * Manages:
  * - State: slideOverId, isOpen, mode ('view' | 'edit')
- * - URL sync: Read/write ?view=123 or ?edit=123 query params
- * - Browser navigation: Handle back/forward buttons (popstate listener)
+ * - URL sync: Read/write ?view=123 or ?edit=123 query params (hash-based routing)
+ * - Browser navigation: Handle back/forward buttons (popstate/hashchange listener)
  * - ESC key: Close slide-over on ESC press
  *
  * @returns Object with state and control functions
@@ -21,14 +21,36 @@ export interface UseSlideOverStateReturn {
   toggleMode: () => void;
 }
 
+/**
+ * Helper to extract query params from hash-based URL
+ * For URLs like: #/contacts?view=123 or #/contacts?filter={}&view=123
+ */
+function getHashParams(): URLSearchParams {
+  const hash = window.location.hash;
+  const queryIndex = hash.indexOf("?");
+  if (queryIndex === -1) return new URLSearchParams();
+  return new URLSearchParams(hash.slice(queryIndex + 1));
+}
+
+/**
+ * Helper to update query params in hash-based URL
+ */
+function setHashParams(params: URLSearchParams): string {
+  const hash = window.location.hash;
+  const queryIndex = hash.indexOf("?");
+  const basePath = queryIndex === -1 ? hash : hash.slice(0, queryIndex);
+  const paramString = params.toString();
+  return paramString ? `${basePath}?${paramString}` : basePath;
+}
+
 export function useSlideOverState(): UseSlideOverStateReturn {
   const [slideOverId, setSlideOverId] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<"view" | "edit">("view");
 
-  // Parse URL params on initial load to support deep linking
+  // Parse URL params on initial load to support deep linking (hash-based routing)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = getHashParams();
     const viewId = params.get("view");
     const editId = params.get("edit");
 
