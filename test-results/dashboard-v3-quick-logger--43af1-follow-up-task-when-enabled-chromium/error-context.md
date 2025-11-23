@@ -348,7 +348,7 @@
               - generic [ref=e370]: Notes
               - textbox "Notes" [active] [ref=e371]:
                 - /placeholder: Summary of the interaction...
-                - text: "Follow-up required for contract discussion. Test ID: 1763923731961"
+                - text: "Follow-up required for contract discussion. Test ID: 1763924004289"
             - generic [ref=e373]:
               - generic [ref=e374]: Create follow-up task?
               - switch "Create follow-up task?" [ref=e375] [cursor=pointer]
