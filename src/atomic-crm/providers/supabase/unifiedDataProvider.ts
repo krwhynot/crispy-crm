@@ -691,23 +691,29 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async updateMany(resource: string, params: UpdateManyParams): Promise<any> {
+  async updateMany<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: UpdateManyParams<RecordType>
+  ): Promise<UpdateManyResult<RecordType>> {
     return wrapMethod("updateMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
       // Validate data for updates
-      const processedData = await processForDatabase(resource, params.data, "update");
+      const processedData = await processForDatabase(resource, params.data as Record<string, unknown>, "update");
 
       const result = await baseDataProvider.updateMany(dbResource, {
         ...params,
-        data: processedData as any,
+        data: processedData as Partial<RecordType>,
       });
 
       return result;
     });
   },
 
-  async delete(resource: string, params: DeleteParams): Promise<any> {
+  async delete<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: DeleteParams<RecordType>
+  ): Promise<DeleteResult<RecordType>> {
     return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -726,7 +732,10 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async deleteMany(resource: string, params: DeleteManyParams): Promise<any> {
+  async deleteMany<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: DeleteManyParams<RecordType>
+  ): Promise<DeleteManyResult<RecordType>> {
     return wrapMethod("deleteMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -769,31 +778,31 @@ export const unifiedDataProvider: DataProvider = {
   },
 
   // Custom opportunities methods - delegated to OpportunitiesService
-  async archiveOpportunity(opportunity: Opportunity): Promise<any[]> {
+  async archiveOpportunity(opportunity: Opportunity): Promise<Opportunity[]> {
     return opportunitiesService.archiveOpportunity(opportunity);
   },
 
-  async unarchiveOpportunity(opportunity: Opportunity): Promise<any[]> {
+  async unarchiveOpportunity(opportunity: Opportunity): Promise<Opportunity[]> {
     return opportunitiesService.unarchiveOpportunity(opportunity);
   },
 
   // Custom activities methods - delegated to ActivitiesService
-  async getActivityLog(companyId?: Identifier, salesId?: Identifier): Promise<any[]> {
+  async getActivityLog(companyId?: Identifier, salesId?: Identifier): Promise<Activity[]> {
     return activitiesService.getActivityLog(companyId, salesId);
   },
 
   // Junction table methods - delegated to JunctionsService
 
   // Contact-Organization relationships
-  async getContactOrganizations(contactId: Identifier): Promise<{ data: any[] }> {
+  async getContactOrganizations(contactId: Identifier): Promise<{ data: ContactOrganization[] }> {
     return junctionsService.getContactOrganizations(contactId);
   },
 
   async addContactToOrganization(
     contactId: Identifier,
     organizationId: Identifier,
-    params: any = {}
-  ): Promise<{ data: any }> {
+    params: JunctionParams = {}
+  ): Promise<{ data: ContactOrganization }> {
     return junctionsService.addContactToOrganization(contactId, organizationId, params);
   },
 
@@ -812,7 +821,7 @@ export const unifiedDataProvider: DataProvider = {
   },
 
   // Opportunity participants
-  async getOpportunityParticipants(opportunityId: Identifier): Promise<{ data: any[] }> {
+  async getOpportunityParticipants(opportunityId: Identifier): Promise<{ data: OpportunityParticipant[] }> {
     return junctionsService.getOpportunityParticipants(opportunityId);
   },
 
@@ -820,7 +829,7 @@ export const unifiedDataProvider: DataProvider = {
     opportunityId: Identifier,
     organizationId: Identifier,
     params: Partial<OpportunityParticipant> = {}
-  ): Promise<{ data: any }> {
+  ): Promise<{ data: OpportunityParticipant }> {
     return junctionsService.addOpportunityParticipant(opportunityId, organizationId, params);
   },
 
@@ -832,15 +841,15 @@ export const unifiedDataProvider: DataProvider = {
   },
 
   // Opportunity contacts
-  async getOpportunityContacts(opportunityId: Identifier): Promise<{ data: any[] }> {
+  async getOpportunityContacts(opportunityId: Identifier): Promise<{ data: OpportunityContact[] }> {
     return junctionsService.getOpportunityContacts(opportunityId);
   },
 
   async addOpportunityContact(
     opportunityId: Identifier,
     contactId: Identifier,
-    params: any = {}
-  ): Promise<{ data: any }> {
+    params: JunctionParams = {}
+  ): Promise<{ data: OpportunityContact }> {
     return junctionsService.addOpportunityContact(opportunityId, contactId, params);
   },
 
@@ -852,7 +861,7 @@ export const unifiedDataProvider: DataProvider = {
   },
 
   // Opportunity contacts via junction table
-  async getOpportunityContactsViaJunction(opportunityId: Identifier): Promise<{ data: any[] }> {
+  async getOpportunityContactsViaJunction(opportunityId: Identifier): Promise<{ data: OpportunityContact[] }> {
     return junctionsService.getOpportunityContacts(opportunityId);
   },
 
@@ -860,7 +869,7 @@ export const unifiedDataProvider: DataProvider = {
     opportunityId: Identifier,
     contactId: Identifier,
     metadata?: { role?: string; is_primary?: boolean; notes?: string }
-  ): Promise<{ data: any }> {
+  ): Promise<{ data: OpportunityContact }> {
     return junctionsService.addOpportunityContact(opportunityId, contactId, metadata);
   },
 
@@ -870,12 +879,13 @@ export const unifiedDataProvider: DataProvider = {
     try {
       await this.delete("opportunity_contacts", { id: junctionId });
       return { data: { id: String(junctionId) } };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       console.error(`[DataProvider] Failed to remove opportunity contact via junction`, {
         junctionId,
         error,
       });
-      throw new Error(`Remove opportunity contact failed: ${error.message}`);
+      throw new Error(`Remove opportunity contact failed: ${errorMessage}`);
     }
   },
 
@@ -889,7 +899,8 @@ export const unifiedDataProvider: DataProvider = {
    * @param params Parameters to pass to the RPC function
    * @returns The data returned by the RPC function
    */
-  async rpc(functionName: string, params: any = {}): Promise<any> {
+  async rpc<T = unknown>(functionName: string, params: Record<string, unknown> = {}): Promise<T> {
+    let validatedParams = params;
     try {
       // Log the operation for debugging
       console.log(`[DataProvider RPC] Calling ${functionName}`, params);
@@ -906,20 +917,20 @@ export const unifiedDataProvider: DataProvider = {
         }
 
         // Use validated params
-        params = validationResult.data;
+        validatedParams = validationResult.data as Record<string, unknown>;
       }
 
-      const { data, error } = await supabase.rpc(functionName, params);
+      const { data, error } = await supabase.rpc(functionName, validatedParams);
 
       if (error) {
-        logError("rpc", functionName, params, error);
+        logError("rpc", functionName, { data: validatedParams }, error);
         throw new Error(`RPC ${functionName} failed: ${error.message}`);
       }
 
       console.log(`[DataProvider RPC] ${functionName} succeeded`, data);
-      return data;
+      return data as T;
     } catch (error) {
-      logError("rpc", functionName, params, error);
+      logError("rpc", functionName, { data: validatedParams }, error);
       throw error;
     }
   },
@@ -1007,21 +1018,21 @@ export const unifiedDataProvider: DataProvider = {
      * @param path Optional path prefix to filter files
      * @returns Array of file metadata
      */
-    async list(bucket: string, path?: string): Promise<any[]> {
+    async list(bucket: string, path?: string): Promise<FileObject[]> {
       try {
         console.log(`[DataProvider Storage] Listing ${bucket}/${path || ""}`);
 
         const { data, error } = await supabase.storage.from(bucket).list(path);
 
         if (error) {
-          logError("storage.list", bucket, { path }, error);
+          logError("storage.list", bucket, { data: { path } }, error);
           throw new Error(`List failed: ${error.message}`);
         }
 
         console.log(`[DataProvider Storage] Listed ${data?.length || 0} files`);
-        return data || [];
+        return (data as FileObject[]) || [];
       } catch (error) {
-        logError("storage.list", bucket, { path }, error);
+        logError("storage.list", bucket, { data: { path } }, error);
         throw error;
       }
     },
@@ -1034,21 +1045,22 @@ export const unifiedDataProvider: DataProvider = {
    * @param options Options including method and body
    * @returns The data returned by the edge function
    */
-  async invoke<T = any>(
+  async invoke<T = unknown>(
     functionName: string,
     options: {
       method?: "GET" | "POST" | "PUT" | "DELETE";
-      body?: any;
+      body?: Record<string, unknown>;
       headers?: Record<string, string>;
     } = {}
   ): Promise<T> {
+    const processedOptions = { ...options };
     try {
       console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
 
       // Validate body params if schema exists for this Edge Function
-      if (functionName in edgeFunctionSchemas && options.body) {
+      if (functionName in edgeFunctionSchemas && processedOptions.body) {
         const schema = edgeFunctionSchemas[functionName as EdgeFunctionName];
-        const validationResult = schema.safeParse(options.body);
+        const validationResult = schema.safeParse(processedOptions.body);
 
         if (!validationResult.success) {
           throw new Error(
@@ -1057,17 +1069,17 @@ export const unifiedDataProvider: DataProvider = {
         }
 
         // Use validated params
-        options.body = validationResult.data;
+        processedOptions.body = validationResult.data as Record<string, unknown>;
       }
 
       const { data, error } = await supabase.functions.invoke<T>(functionName, {
-        method: options.method || "POST",
-        body: options.body,
-        headers: options.headers,
+        method: processedOptions.method || "POST",
+        body: processedOptions.body,
+        headers: processedOptions.headers,
       });
 
       if (error) {
-        logError("invoke", functionName, options, error);
+        logError("invoke", functionName, { data: processedOptions }, error);
         throw new Error(`Edge function ${functionName} failed: ${error.message}`);
       }
 
@@ -1078,7 +1090,7 @@ export const unifiedDataProvider: DataProvider = {
       console.log(`[DataProvider Edge] ${functionName} succeeded`, data);
       return data;
     } catch (error) {
-      logError("invoke", functionName, options, error);
+      logError("invoke", functionName, { data: processedOptions }, error);
       throw error;
     }
   },
@@ -1090,7 +1102,7 @@ export const unifiedDataProvider: DataProvider = {
    * @param data QuickAddInput data from the form
    * @returns Result containing created record IDs
    */
-  async createBoothVisitor(data: QuickAddInput): Promise<{ data: any }> {
+  async createBoothVisitor(data: QuickAddInput): Promise<{ data: BoothVisitorResult }> {
     try {
       console.log("[DataProvider] Creating booth visitor", data);
 
@@ -1099,14 +1111,14 @@ export const unifiedDataProvider: DataProvider = {
       });
 
       if (error) {
-        logError("createBoothVisitor", "booth_visitor", data, error);
+        logError("createBoothVisitor", "booth_visitor", { data }, error);
         throw new Error(`Create booth visitor failed: ${error.message}`);
       }
 
       console.log("[DataProvider] Booth visitor created successfully", result);
-      return { data: result };
+      return { data: result as BoothVisitorResult };
     } catch (error) {
-      logError("createBoothVisitor", "booth_visitor", data, error);
+      logError("createBoothVisitor", "booth_visitor", { data }, error);
       throw error;
     }
   },
