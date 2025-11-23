@@ -353,7 +353,7 @@
                 - generic [ref=e372]: Notes
                 - textbox "Notes" [ref=e373]:
                   - /placeholder: Summary of the interaction...
-                  - text: E2E Cross-panel test 1763882234405
+                  - text: E2E Cross-panel test 1763882732410
               - generic [ref=e375]:
                 - generic [ref=e376]: Create follow-up task?
                 - switch "Create follow-up task?" [ref=e377] [cursor=pointer]
@@ -412,7 +412,7 @@
         - option "7 Monks Taproom Grand Rapids" [ref=e412]:
           - img
           - text: 7 Monks Taproom Grand Rapids
-        - option "8 hospitality group" [ref=e413]:
+        - option "8 hospitality group" [selected] [ref=e413]:
           - img
           - text: 8 hospitality group
         - option "86 FOOD SERVICE" [ref=e414]:
