@@ -20,6 +20,8 @@ const EmailFieldImpl = <RecordType extends Record<string, any> = Record<string, 
     sortable: _sortable,
     sortBy: _sortBy,
     textAlign: _textAlign,
+    rowClassName: _rowClassName,
+    resource: _resource,
     ...rest
   } = inProps;
   const value = useFieldValue({ defaultValue, source, record });

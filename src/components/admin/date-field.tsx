@@ -46,6 +46,8 @@ const DateFieldImpl = <RecordType extends Record<string, any> = Record<string, a
     sortable: _sortable,
     sortBy: _sortBy,
     textAlign: _textAlign,
+    rowClassName: _rowClassName,
+    resource: _resource,
     ...rest
   } = inProps;
   const translate = useTranslate();

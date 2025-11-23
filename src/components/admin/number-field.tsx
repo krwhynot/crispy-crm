@@ -15,6 +15,8 @@ export const NumberField = <RecordType extends Record<string, any> = Record<stri
   sortable: _sortable,
   sortBy: _sortBy,
   textAlign: _textAlign,
+  rowClassName: _rowClassName,
+  resource: _resource,
   ...rest
 }: NumberFieldProps<RecordType>) => {
   let value = useFieldValue({ defaultValue, source, record });

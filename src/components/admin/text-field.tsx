@@ -12,6 +12,8 @@ export const TextField = <RecordType extends Record<string, any> = Record<string
   sortable: _sortable,
   sortBy: _sortBy,
   textAlign: _textAlign,
+  rowClassName: _rowClassName,
+  resource: _resource,
   ...rest
 }: TextFieldProps<RecordType>) => {
   const value = useFieldValue({ defaultValue, source, record });

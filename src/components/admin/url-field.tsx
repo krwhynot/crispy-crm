@@ -15,12 +15,13 @@ const UrlFieldImpl = <RecordType extends Record<string, any> = Record<string, an
     defaultValue,
     source,
     record,
-    resource: _,
     // Filter out React Admin-specific props that shouldn't be passed to DOM elements
     label: _label,
     sortable: _sortable,
     sortBy: _sortBy,
     textAlign: _textAlign,
+    rowClassName: _rowClassName,
+    resource: _resource,
     ...rest
   } = inProps;
   const value = useFieldValue({ defaultValue, source, record });
