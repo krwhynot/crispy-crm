@@ -261,15 +261,15 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
   });
 
   test.describe("Activity Submission", () => {
-    test("logs Note activity with contact and organization", async ({ authenticatedPage }) => {
+    test("logs Check-in activity with contact and organization", async ({ authenticatedPage }) => {
       // Open form
       await authenticatedPage.getByRole("button", { name: /new activity/i }).click();
       await expect(authenticatedPage.getByText("What happened?")).toBeVisible();
 
-      // Select Activity Type: Note (doesn't require opportunity)
+      // Select Activity Type: Check-in (may or may not require opportunity)
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Note" }).click();
+      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
 
       // Select Outcome: Completed
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
@@ -319,7 +319,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Select Activity Type: Note (doesn't require opportunity)
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Note" }).click();
+      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
 
       // Select Outcome: Completed
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
@@ -392,10 +392,10 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Open form
       await authenticatedPage.getByRole("button", { name: /new activity/i }).click();
 
-      // Fill first activity
+      // Fill first activity (Note doesn't require opportunity)
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Email" }).click();
+      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
 
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
       await outcomeTrigger.click();
@@ -445,7 +445,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Fill only activity type and outcome (skip notes)
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Note" }).click();
+      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
 
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
       await outcomeTrigger.click();
@@ -485,7 +485,7 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       // Fill activity type, outcome, and notes only
       const activityTrigger = authenticatedPage.getByLabel("Activity Type").locator("..").getByRole("combobox");
       await activityTrigger.click();
-      await authenticatedPage.getByRole("option", { name: "Note" }).click();
+      await authenticatedPage.getByRole("option", { name: "Check-in" }).click();
 
       const outcomeTrigger = authenticatedPage.getByLabel("Outcome").locator("..").getByRole("combobox");
       await outcomeTrigger.click();
