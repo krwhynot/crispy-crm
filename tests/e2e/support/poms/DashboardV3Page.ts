@@ -75,7 +75,7 @@ export class DashboardV3Page extends BasePage {
    */
   async getPanelSizesFromStorage(): Promise<number[] | null> {
     const sizes = await this.page.evaluate(() => {
-      return localStorage.getItem("dashboard-v3-layout");
+      return localStorage.getItem("principal-dashboard-v3-layout");
     });
     return sizes ? JSON.parse(sizes) : null;
   }
@@ -85,7 +85,7 @@ export class DashboardV3Page extends BasePage {
    */
   async setPanelSizesInStorage(sizes: number[]): Promise<void> {
     await this.page.evaluate((s) => {
-      localStorage.setItem("dashboard-v3-layout", JSON.stringify(s));
+      localStorage.setItem("principal-dashboard-v3-layout", JSON.stringify(s));
     }, sizes);
   }
 
