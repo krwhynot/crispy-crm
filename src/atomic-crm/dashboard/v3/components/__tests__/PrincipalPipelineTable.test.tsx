@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
@@ -215,7 +215,6 @@ describe("PrincipalPipelineTable", () => {
     });
 
     it("should filter table rows based on search input", async () => {
-      const user = userEvent.setup();
       mockUsePrincipalPipeline.mockReturnValue({
         data: mockMultiplePipelineData,
         loading: false,
@@ -233,9 +232,9 @@ describe("PrincipalPipelineTable", () => {
       expect(screen.getByText("Beta Industries")).toBeInTheDocument();
       expect(screen.getByText("Gamma Tech")).toBeInTheDocument();
 
-      // Type in search box
+      // Type in search box using fireEvent for controlled input
       const searchInput = screen.getByPlaceholderText(/search principals/i);
-      await user.type(searchInput, "Beta");
+      fireEvent.change(searchInput, { target: { value: "Beta" } });
 
       // Should only show matching row
       await waitFor(() => {
@@ -246,7 +245,6 @@ describe("PrincipalPipelineTable", () => {
     });
 
     it("should be case-insensitive when filtering", async () => {
-      const user = userEvent.setup();
       mockUsePrincipalPipeline.mockReturnValue({
         data: mockMultiplePipelineData,
         loading: false,
@@ -260,7 +258,7 @@ describe("PrincipalPipelineTable", () => {
       );
 
       const searchInput = screen.getByPlaceholderText(/search principals/i);
-      await user.type(searchInput, "beta");
+      fireEvent.change(searchInput, { target: { value: "beta" } }); // lowercase
 
       await waitFor(() => {
         expect(screen.getByText("Beta Industries")).toBeInTheDocument();
