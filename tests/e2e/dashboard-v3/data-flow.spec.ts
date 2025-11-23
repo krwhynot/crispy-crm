@@ -639,8 +639,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Press Escape to ensure combobox popover closes completely
-      await authenticatedPage.keyboard.press("Escape");
+      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
+      await dashboard.getNotesTextarea().click();
       await authenticatedPage.waitForTimeout(300);
 
       await dashboard.getSaveAndCloseButton().click();
@@ -709,8 +709,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Press Escape to ensure combobox popover closes completely
-      await authenticatedPage.keyboard.press("Escape");
+      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
+      await dashboard.getNotesTextarea().click();
       await authenticatedPage.waitForTimeout(300);
 
       // Enable follow-up with date
@@ -754,8 +754,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Press Escape to ensure combobox popover closes completely
-      await authenticatedPage.keyboard.press("Escape");
+      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
+      await dashboard.getNotesTextarea().click();
       await authenticatedPage.waitForTimeout(300);
 
       await dashboard.getSaveAndNewButton().click();
@@ -857,8 +857,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-      // Press Escape to ensure combobox popover closes completely
-      await authenticatedPage.keyboard.press("Escape");
+      // Click notes textarea to dismiss the combobox popover (CMDK doesn't auto-close)
+      await dashboard.getNotesTextarea().click();
       await authenticatedPage.waitForTimeout(300);
 
       await dashboard.enableFollowUp();

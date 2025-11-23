@@ -340,7 +340,7 @@
                   - paragraph [ref=e363]: Select a contact OR organization
                 - generic [ref=e364]:
                   - generic [ref=e365]: Organization *
-                  - combobox "Organization *" [ref=e366] [cursor=pointer]:
+                  - combobox "Organization *" [expanded] [ref=e366] [cursor=pointer]:
                     - text: Select organization
                     - img
                   - paragraph [ref=e367]: Select a contact OR organization
@@ -353,137 +353,327 @@
                 - generic [ref=e372]: Notes
                 - textbox "Notes" [ref=e373]:
                   - /placeholder: Summary of the interaction...
-                  - text: Test with follow-up 1763881811162
-              - generic [ref=e374]:
-                - generic [ref=e375]:
-                  - generic [ref=e376]: Create follow-up task?
-                  - switch "Create follow-up task?" [checked] [ref=e377] [cursor=pointer]
-                  - checkbox [checked]
-                - generic [ref=e378]:
-                  - generic [ref=e379]: Follow-up Date
-                  - button "Follow-up Date" [expanded] [ref=e380] [cursor=pointer]:
-                    - img
-                    - text: November 24th, 2025
-              - generic [ref=e381]:
-                - button "Cancel" [ref=e382] [cursor=pointer]
-                - generic [ref=e383]:
-                  - button "Save & Close" [ref=e384] [cursor=pointer]
-                  - button "Save & New" [ref=e385] [cursor=pointer]
-    - contentinfo [ref=e386]:
-      - generic [ref=e388]:
-        - paragraph [ref=e389]: © 2025 MFB Master Food Brokers. All rights reserved.
-        - button "View keyboard shortcuts" [ref=e390] [cursor=pointer]:
-          - img [ref=e391]
-          - generic [ref=e393]: Keyboard shortcuts
+                  - text: Test with follow-up 1763882228112
+              - generic [ref=e375]:
+                - generic [ref=e376]: Create follow-up task?
+                - switch "Create follow-up task?" [ref=e377] [cursor=pointer]
+                - checkbox
+              - generic [ref=e378]:
+                - button "Cancel" [ref=e379] [cursor=pointer]
+                - generic [ref=e380]:
+                  - button "Save & Close" [ref=e381] [cursor=pointer]
+                  - button "Save & New" [ref=e382] [cursor=pointer]
+    - contentinfo [ref=e383]:
+      - generic [ref=e385]:
+        - paragraph [ref=e386]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e387] [cursor=pointer]:
+          - img [ref=e388]
+          - generic [ref=e390]: Keyboard shortcuts
     - region "Notifications alt+T"
-  - dialog [ref=e395]:
-    - generic [ref=e397]:
-      - navigation [ref=e398]:
-        - button "Go to the Previous Month" [ref=e399] [cursor=pointer]:
+  - dialog [ref=e392]:
+    - generic [ref=e393]:
+      - generic [ref=e395]:
+        - img [ref=e396]
+        - combobox [expanded] [active] [ref=e399]
+      - group [ref=e400]:
+        - option "040 KITCHEN INC" [ref=e401]:
           - img
-        - button "Go to the Next Month" [ref=e400] [cursor=pointer]:
+          - text: 040 KITCHEN INC
+        - option "10 PIN ICE CREAM" [ref=e402]:
           - img
-      - generic [ref=e401]:
-        - status [ref=e403]: November 2025
-        - grid "November 2025" [ref=e404]:
-          - rowgroup [ref=e405]:
-            - row [ref=e406]:
-              - columnheader [ref=e407]: Su
-              - columnheader [ref=e408]: Mo
-              - columnheader [ref=e409]: Tu
-              - columnheader [ref=e410]: We
-              - columnheader [ref=e411]: Th
-              - columnheader [ref=e412]: Fr
-              - columnheader [ref=e413]: Sa
-          - rowgroup [ref=e414]:
-            - row "Sunday, October 26th, 2025 Monday, October 27th, 2025 Tuesday, October 28th, 2025 Wednesday, October 29th, 2025 Thursday, October 30th, 2025 Friday, October 31st, 2025 Saturday, November 1st, 2025" [ref=e415]:
-              - gridcell "Sunday, October 26th, 2025" [ref=e416]:
-                - button "Sunday, October 26th, 2025" [disabled]: "26"
-              - gridcell "Monday, October 27th, 2025" [ref=e417]:
-                - button "Monday, October 27th, 2025" [disabled]: "27"
-              - gridcell "Tuesday, October 28th, 2025" [ref=e418]:
-                - button "Tuesday, October 28th, 2025" [disabled]: "28"
-              - gridcell "Wednesday, October 29th, 2025" [ref=e419]:
-                - button "Wednesday, October 29th, 2025" [disabled]: "29"
-              - gridcell "Thursday, October 30th, 2025" [ref=e420]:
-                - button "Thursday, October 30th, 2025" [disabled]: "30"
-              - gridcell "Friday, October 31st, 2025" [ref=e421]:
-                - button "Friday, October 31st, 2025" [disabled]: "31"
-              - gridcell "Saturday, November 1st, 2025" [ref=e422]:
-                - button "Saturday, November 1st, 2025" [disabled]: "1"
-            - row "Sunday, November 2nd, 2025 Monday, November 3rd, 2025 Tuesday, November 4th, 2025 Wednesday, November 5th, 2025 Thursday, November 6th, 2025 Friday, November 7th, 2025 Saturday, November 8th, 2025" [ref=e423]:
-              - gridcell "Sunday, November 2nd, 2025" [ref=e424]:
-                - button "Sunday, November 2nd, 2025" [disabled]: "2"
-              - gridcell "Monday, November 3rd, 2025" [ref=e425]:
-                - button "Monday, November 3rd, 2025" [disabled]: "3"
-              - gridcell "Tuesday, November 4th, 2025" [ref=e426]:
-                - button "Tuesday, November 4th, 2025" [disabled]: "4"
-              - gridcell "Wednesday, November 5th, 2025" [ref=e427]:
-                - button "Wednesday, November 5th, 2025" [disabled]: "5"
-              - gridcell "Thursday, November 6th, 2025" [ref=e428]:
-                - button "Thursday, November 6th, 2025" [disabled]: "6"
-              - gridcell "Friday, November 7th, 2025" [ref=e429]:
-                - button "Friday, November 7th, 2025" [disabled]: "7"
-              - gridcell "Saturday, November 8th, 2025" [ref=e430]:
-                - button "Saturday, November 8th, 2025" [disabled]: "8"
-            - row "Sunday, November 9th, 2025 Monday, November 10th, 2025 Tuesday, November 11th, 2025 Wednesday, November 12th, 2025 Thursday, November 13th, 2025 Friday, November 14th, 2025 Saturday, November 15th, 2025" [ref=e431]:
-              - gridcell "Sunday, November 9th, 2025" [ref=e432]:
-                - button "Sunday, November 9th, 2025" [disabled]: "9"
-              - gridcell "Monday, November 10th, 2025" [ref=e433]:
-                - button "Monday, November 10th, 2025" [disabled]: "10"
-              - gridcell "Tuesday, November 11th, 2025" [ref=e434]:
-                - button "Tuesday, November 11th, 2025" [disabled]: "11"
-              - gridcell "Wednesday, November 12th, 2025" [ref=e435]:
-                - button "Wednesday, November 12th, 2025" [disabled]: "12"
-              - gridcell "Thursday, November 13th, 2025" [ref=e436]:
-                - button "Thursday, November 13th, 2025" [disabled]: "13"
-              - gridcell "Friday, November 14th, 2025" [ref=e437]:
-                - button "Friday, November 14th, 2025" [disabled]: "14"
-              - gridcell "Saturday, November 15th, 2025" [ref=e438]:
-                - button "Saturday, November 15th, 2025" [disabled]: "15"
-            - row "Sunday, November 16th, 2025 Monday, November 17th, 2025 Tuesday, November 18th, 2025 Wednesday, November 19th, 2025 Thursday, November 20th, 2025 Friday, November 21st, 2025 Saturday, November 22nd, 2025" [ref=e439]:
-              - gridcell "Sunday, November 16th, 2025" [ref=e440]:
-                - button "Sunday, November 16th, 2025" [disabled]: "16"
-              - gridcell "Monday, November 17th, 2025" [ref=e441]:
-                - button "Monday, November 17th, 2025" [disabled]: "17"
-              - gridcell "Tuesday, November 18th, 2025" [ref=e442]:
-                - button "Tuesday, November 18th, 2025" [disabled]: "18"
-              - gridcell "Wednesday, November 19th, 2025" [ref=e443]:
-                - button "Wednesday, November 19th, 2025" [disabled]: "19"
-              - gridcell "Thursday, November 20th, 2025" [ref=e444]:
-                - button "Thursday, November 20th, 2025" [disabled]: "20"
-              - gridcell "Friday, November 21st, 2025" [ref=e445]:
-                - button "Friday, November 21st, 2025" [disabled]: "21"
-              - gridcell "Saturday, November 22nd, 2025" [ref=e446]:
-                - button "Saturday, November 22nd, 2025" [disabled]: "22"
-            - row "Today, Sunday, November 23rd, 2025 Monday, November 24th, 2025, selected Tuesday, November 25th, 2025 Wednesday, November 26th, 2025 Thursday, November 27th, 2025 Friday, November 28th, 2025 Saturday, November 29th, 2025" [ref=e447]:
-              - gridcell "Today, Sunday, November 23rd, 2025" [ref=e448]:
-                - button "Today, Sunday, November 23rd, 2025" [ref=e449] [cursor=pointer]: "23"
-              - gridcell "Monday, November 24th, 2025, selected" [selected] [ref=e450]:
-                - button "Monday, November 24th, 2025, selected" [active] [ref=e451] [cursor=pointer]: "24"
-              - gridcell "Tuesday, November 25th, 2025" [ref=e452]:
-                - button "Tuesday, November 25th, 2025" [ref=e453] [cursor=pointer]: "25"
-              - gridcell "Wednesday, November 26th, 2025" [ref=e454]:
-                - button "Wednesday, November 26th, 2025" [ref=e455] [cursor=pointer]: "26"
-              - gridcell "Thursday, November 27th, 2025" [ref=e456]:
-                - button "Thursday, November 27th, 2025" [ref=e457] [cursor=pointer]: "27"
-              - gridcell "Friday, November 28th, 2025" [ref=e458]:
-                - button "Friday, November 28th, 2025" [ref=e459] [cursor=pointer]: "28"
-              - gridcell "Saturday, November 29th, 2025" [ref=e460]:
-                - button "Saturday, November 29th, 2025" [ref=e461] [cursor=pointer]: "29"
-            - row "Sunday, November 30th, 2025 Monday, December 1st, 2025 Tuesday, December 2nd, 2025 Wednesday, December 3rd, 2025 Thursday, December 4th, 2025 Friday, December 5th, 2025 Saturday, December 6th, 2025" [ref=e462]:
-              - gridcell "Sunday, November 30th, 2025" [ref=e463]:
-                - button "Sunday, November 30th, 2025" [ref=e464] [cursor=pointer]: "30"
-              - gridcell "Monday, December 1st, 2025" [ref=e465]:
-                - button "Monday, December 1st, 2025" [ref=e466] [cursor=pointer]: "1"
-              - gridcell "Tuesday, December 2nd, 2025" [ref=e467]:
-                - button "Tuesday, December 2nd, 2025" [ref=e468] [cursor=pointer]: "2"
-              - gridcell "Wednesday, December 3rd, 2025" [ref=e469]:
-                - button "Wednesday, December 3rd, 2025" [ref=e470] [cursor=pointer]: "3"
-              - gridcell "Thursday, December 4th, 2025" [ref=e471]:
-                - button "Thursday, December 4th, 2025" [ref=e472] [cursor=pointer]: "4"
-              - gridcell "Friday, December 5th, 2025" [ref=e473]:
-                - button "Friday, December 5th, 2025" [ref=e474] [cursor=pointer]: "5"
-              - gridcell "Saturday, December 6th, 2025" [ref=e475]:
-                - button "Saturday, December 6th, 2025" [ref=e476] [cursor=pointer]: "6"
+          - text: 10 PIN ICE CREAM
+        - option "10Forty Banquets & Catering" [ref=e403]:
+          - img
+          - text: 10Forty Banquets & Catering
+        - option "13TH STREET MARKET" [ref=e404]:
+          - img
+          - text: 13TH STREET MARKET
+        - option "219 Taproom" [ref=e405]:
+          - img
+          - text: 219 Taproom
+        - option "231 BAR AND GRILL (THE)" [ref=e406]:
+          - img
+          - text: 231 BAR AND GRILL (THE)
+        - option "2d Restaurant" [ref=e407]:
+          - img
+          - text: 2d Restaurant
+        - option "3 Monkey's" [ref=e408]:
+          - img
+          - text: 3 Monkey's
+        - option "5 Knives" [ref=e409]:
+          - img
+          - text: 5 Knives
+        - option "7 K FARMS, INC." [ref=e410]:
+          - img
+          - text: 7 K FARMS, INC.
+        - option "7 MONKS TAPROOM - GRAND RAPIDS" [ref=e411]:
+          - img
+          - text: 7 MONKS TAPROOM - GRAND RAPIDS
+        - option "7 Monks Taproom Grand Rapids" [ref=e412]:
+          - img
+          - text: 7 Monks Taproom Grand Rapids
+        - option "8 hospitality group" [ref=e413]:
+          - img
+          - text: 8 hospitality group
+        - option "86 FOOD SERVICE" [ref=e414]:
+          - img
+          - text: 86 FOOD SERVICE
+        - option "90 miles Cuban cafe" [ref=e415]:
+          - img
+          - text: 90 miles Cuban cafe
+        - option "A & G FOODSERVICE" [ref=e416]:
+          - img
+          - text: A & G FOODSERVICE
+        - option "A Little Taste of Texas" [ref=e417]:
+          - img
+          - text: A Little Taste of Texas
+        - 'option "A Plus Inc DBA: Noodles Etc" [ref=e418]':
+          - img
+          - text: "A Plus Inc DBA: Noodles Etc"
+        - option "A.Fusion" [ref=e419]:
+          - img
+          - text: A.Fusion
+        - option "A&W" [ref=e420]:
+          - img
+          - text: A&W
+        - option "ABBOTT AP6D DEPT GE03" [ref=e421]:
+          - img
+          - text: ABBOTT AP6D DEPT GE03
+        - option "Abbvie" [ref=e422]:
+          - img
+          - text: Abbvie
+        - option "ABBVIE AP30" [ref=e423]:
+          - img
+          - text: ABBVIE AP30
+        - option "ABBVIE M1" [ref=e424]:
+          - img
+          - text: ABBVIE M1
+        - option "Abdale" [ref=e425]:
+          - img
+          - text: Abdale
+        - option "Abigail's" [ref=e426]:
+          - img
+          - text: Abigail's
+        - option "Acaibowl.LLC" [ref=e427]:
+          - img
+          - text: Acaibowl.LLC
+        - option "ACARATH MONTESSORI" [ref=e428]:
+          - img
+          - text: ACARATH MONTESSORI
+        - option "ACCLAIMED CATERING" [ref=e429]:
+          - img
+          - text: ACCLAIMED CATERING
+        - option "ACF Chicago" [ref=e430]:
+          - img
+          - text: ACF Chicago
+        - option "ACF Northwest Indiana" [ref=e431]:
+          - img
+          - text: ACF Northwest Indiana
+        - option "ACF Sound Bend" [ref=e432]:
+          - img
+          - text: ACF Sound Bend
+        - option "ACME STEAK & SEAFOOD" [ref=e433]:
+          - img
+          - text: ACME STEAK & SEAFOOD
+        - option "Ada House The Post" [ref=e434]:
+          - img
+          - text: Ada House The Post
+        - option "Adams Memorial Hospital" [ref=e435]:
+          - img
+          - text: Adams Memorial Hospital
+        - option "Agile Hospitality" [ref=e436]:
+          - img
+          - text: Agile Hospitality
+        - option "AGING AND DISABILITY RESOURCE CENTE" [ref=e437]:
+          - img
+          - text: AGING AND DISABILITY RESOURCE CENTE
+        - option "AJ's Pizza" [ref=e438]:
+          - img
+          - text: AJ's Pizza
+        - option "AJ's Riverside" [ref=e439]:
+          - img
+          - text: AJ's Riverside
+        - option "AKRON" [ref=e440]:
+          - img
+          - text: AKRON
+        - option "AL BAWADI GRILL" [ref=e441]:
+          - img
+          - text: AL BAWADI GRILL
+        - option "Al Peake & Sons & Daughter Too Foodservice" [ref=e442]:
+          - img
+          - text: Al Peake & Sons & Daughter Too Foodservice
+        - option "Ala Mode Restaurant" [ref=e443]:
+          - img
+          - text: Ala Mode Restaurant
+        - option "Albanos Pasta" [ref=e444]:
+          - img
+          - text: Albanos Pasta
+        - option "Ale Emporium" [ref=e445]:
+          - img
+          - text: Ale Emporium
+        - option "Alice & Friends-Ashland" [ref=e446]:
+          - img
+          - text: Alice & Friends-Ashland
+        - option "Alice & Friends2" [ref=e447]:
+          - img
+          - text: Alice & Friends2
+        - option "ALINEA" [ref=e448]:
+          - img
+          - text: ALINEA
+        - option "All in IN/OH/KY/MI" [ref=e449]:
+          - img
+          - text: All in IN/OH/KY/MI
+        - option "All Nite Mobile Cafe" [ref=e450]:
+          - img
+          - text: All Nite Mobile Cafe
+        - option "All Ways Catering" [ref=e451]:
+          - img
+          - text: All Ways Catering
+        - option "Allegory" [ref=e452]:
+          - img
+          - text: Allegory
+        - option "Allen County Schools Food Service" [ref=e453]:
+          - img
+          - text: Allen County Schools Food Service
+        - option "ALPHA CHI OMEGA" [ref=e454]:
+          - img
+          - text: ALPHA CHI OMEGA
+        - option "AMARU" [ref=e455]:
+          - img
+          - text: AMARU
+        - option "AMERICAN ACCORD FOOD CORPORATION" [ref=e456]:
+          - img
+          - text: AMERICAN ACCORD FOOD CORPORATION
+        - option "American Culinary Federation" [ref=e457]:
+          - img
+          - text: American Culinary Federation
+        - option "American Frozen Food Institute" [ref=e458]:
+          - img
+          - text: American Frozen Food Institute
+        - option "American House Jenison-Cottonwood M" [ref=e459]:
+          - img
+          - text: American House Jenison-Cottonwood M
+        - option "Amg" [ref=e460]:
+          - img
+          - text: Amg
+        - option "Ami-Gos Tacos" [ref=e461]:
+          - img
+          - text: Ami-Gos Tacos
+        - option "AMWAY GRAND PLAZA HOTEL" [ref=e462]:
+          - img
+          - text: AMWAY GRAND PLAZA HOTEL
+        - option "Anchored Consulting" [ref=e463]:
+          - img
+          - text: Anchored Consulting
+        - option "ANDERSON FOODS" [ref=e464]:
+          - img
+          - text: ANDERSON FOODS
+        - option "Andre's Avery's" [ref=e465]:
+          - img
+          - text: Andre's Avery's
+        - option "Anelya" [ref=e466]:
+          - img
+          - text: Anelya
+        - option "Angie's" [ref=e467]:
+          - img
+          - text: Angie's
+        - option "Angie's Sports Bar & Pizzeria" [ref=e468]:
+          - img
+          - text: Angie's Sports Bar & Pizzeria
+        - option "Angry Octopus" [ref=e469]:
+          - img
+          - text: Angry Octopus
+        - option "ANMAR FOODS" [ref=e470]:
+          - img
+          - text: ANMAR FOODS
+        - option "Annasea" [ref=e471]:
+          - img
+          - text: Annasea
+        - option "ANTHONY MARANO COMPANY" [ref=e472]:
+          - img
+          - text: ANTHONY MARANO COMPANY
+        - option "Apis Hotel" [ref=e473]:
+          - img
+          - text: Apis Hotel
+        - option "APOLLO FOODS" [ref=e474]:
+          - img
+          - text: APOLLO FOODS
+        - option "Apolonia" [ref=e475]:
+          - img
+          - text: Apolonia
+        - option "APOSTOLIC CHURCH OF GOD" [ref=e476]:
+          - img
+          - text: APOSTOLIC CHURCH OF GOD
+        - option "Applause Catering & Events" [ref=e477]:
+          - img
+          - text: Applause Catering & Events
+        - option "Apple Mountain" [ref=e478]:
+          - img
+          - text: Apple Mountain
+        - option "aramark" [ref=e479]:
+          - img
+          - text: aramark
+        - option "Aramark Services, Inc" [ref=e480]:
+          - img
+          - text: Aramark Services, Inc
+        - option "Arami" [ref=e481]:
+          - img
+          - text: Arami
+        - option "Arch City Tavern" [ref=e482]:
+          - img
+          - text: Arch City Tavern
+        - option "ARCO Design/Build" [ref=e483]:
+          - img
+          - text: ARCO Design/Build
+        - option "Area Career Center" [ref=e484]:
+          - img
+          - text: Area Career Center
+        - option "arena food service" [ref=e485]:
+          - img
+          - text: arena food service
+        - option "Arlington Tap House" [ref=e486]:
+          - img
+          - text: Arlington Tap House
+        - option "Army MWR" [ref=e487]:
+          - img
+          - text: Army MWR
+        - option "Aromatix Catering" [ref=e488]:
+          - img
+          - text: Aromatix Catering
+        - option "Around The Clock" [ref=e489]:
+          - img
+          - text: Around The Clock
+        - option "Arthur Treachers" [ref=e490]:
+          - img
+          - text: Arthur Treachers
+        - option "ARTISAN PIZZA CAFe" [ref=e491]:
+          - img
+          - text: ARTISAN PIZZA CAFe
+        - option "ARTISAN SPECIALTY FOODS" [ref=e492]:
+          - img
+          - text: ARTISAN SPECIALTY FOODS
+        - option "ARTURO'S TACO'S" [ref=e493]:
+          - img
+          - text: ARTURO'S TACO'S
+        - option "ARUNS THAI" [ref=e494]:
+          - img
+          - text: ARUNS THAI
+        - option "Asador Bastian" [ref=e495]:
+          - img
+          - text: Asador Bastian
+        - option "Asher Creek Creamery and Deli" [ref=e496]:
+          - img
+          - text: Asher Creek Creamery and Deli
+        - option "Ashland University" [ref=e497]:
+          - img
+          - text: Ashland University
+        - option "Asparagus" [ref=e498]:
+          - img
+          - text: Asparagus
+        - option "ASSEMBLY AMERICAN BAR & CAFE (THE)" [ref=e499]:
+          - img
+          - text: ASSEMBLY AMERICAN BAR & CAFE (THE)
+        - option "Astor Club" [ref=e500]:
+          - img
+          - text: Astor Club
 ```
