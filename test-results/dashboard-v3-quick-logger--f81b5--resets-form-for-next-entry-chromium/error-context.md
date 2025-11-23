@@ -348,7 +348,7 @@
               - generic [ref=e370]: Notes
               - textbox "Notes" [ref=e371]:
                 - /placeholder: Summary of the interaction...
-                - text: "E2E test email - bulk pricing discussion. Test ID: 1763923734918"
+                - text: "E2E test email - bulk pricing discussion. Test ID: 1763924006132"
             - generic [ref=e373]:
               - generic [ref=e374]: Create follow-up task?
               - switch "Create follow-up task?" [ref=e375] [cursor=pointer]
