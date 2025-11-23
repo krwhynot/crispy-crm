@@ -17,6 +17,36 @@ const mockPipelineData = [
   },
 ];
 
+const mockMultiplePipelineData = [
+  {
+    id: 1,
+    name: "Acme Corporation",
+    totalPipeline: 5,
+    activeThisWeek: 3,
+    activeLastWeek: 1,
+    momentum: "increasing" as const,
+    nextAction: "Demo scheduled Friday",
+  },
+  {
+    id: 2,
+    name: "Beta Industries",
+    totalPipeline: 10,
+    activeThisWeek: 1,
+    activeLastWeek: 4,
+    momentum: "decreasing" as const,
+    nextAction: null,
+  },
+  {
+    id: 3,
+    name: "Gamma Tech",
+    totalPipeline: 3,
+    activeThisWeek: 2,
+    activeLastWeek: 2,
+    momentum: "steady" as const,
+    nextAction: "Call tomorrow",
+  },
+];
+
 // Mock the usePrincipalPipeline hook with vi.fn() for per-test control
 const mockUsePrincipalPipeline = vi.fn();
 vi.mock("../../hooks/usePrincipalPipeline", () => ({
@@ -86,5 +116,156 @@ describe("PrincipalPipelineTable", () => {
     expect(screen.getByText(/no principals found/i)).toBeInTheDocument();
     // Should NOT show the table body with data rows
     expect(screen.queryByRole("button", { name: /view opportunities/i })).not.toBeInTheDocument();
+  });
+
+  describe("Column sorting", () => {
+    it("should show sort indicators on sortable column headers", () => {
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      // Column headers should have aria-sort attribute
+      const principalHeader = screen.getByRole("columnheader", { name: /principal/i });
+      const pipelineHeader = screen.getByRole("columnheader", { name: /pipeline/i });
+
+      expect(principalHeader).toHaveAttribute("aria-sort");
+      expect(pipelineHeader).toHaveAttribute("aria-sort");
+    });
+
+    it("should sort by Pipeline column when clicked", async () => {
+      const user = userEvent.setup();
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      // Get the Pipeline column header and click it
+      const pipelineHeader = screen.getByRole("columnheader", { name: /pipeline/i });
+      await user.click(pipelineHeader);
+
+      // After clicking, should sort descending (highest first)
+      await waitFor(() => {
+        expect(pipelineHeader).toHaveAttribute("aria-sort", "descending");
+      });
+    });
+
+    it("should toggle sort direction on repeated clicks", async () => {
+      const user = userEvent.setup();
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      const principalHeader = screen.getByRole("columnheader", { name: /principal/i });
+
+      // Principal starts sorted ascending by default
+      expect(principalHeader).toHaveAttribute("aria-sort", "ascending");
+
+      // First click: toggle to descending
+      await user.click(principalHeader);
+      await waitFor(() => {
+        expect(principalHeader).toHaveAttribute("aria-sort", "descending");
+      });
+
+      // Second click: toggle back to ascending
+      await user.click(principalHeader);
+      await waitFor(() => {
+        expect(principalHeader).toHaveAttribute("aria-sort", "ascending");
+      });
+    });
+  });
+
+  describe("Search filter", () => {
+    it("should render search input", () => {
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      expect(screen.getByPlaceholderText(/search principals/i)).toBeInTheDocument();
+    });
+
+    it("should filter table rows based on search input", async () => {
+      const user = userEvent.setup();
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      // Initially shows all 3 rows
+      expect(screen.getByText("Acme Corporation")).toBeInTheDocument();
+      expect(screen.getByText("Beta Industries")).toBeInTheDocument();
+      expect(screen.getByText("Gamma Tech")).toBeInTheDocument();
+
+      // Type in search box
+      const searchInput = screen.getByPlaceholderText(/search principals/i);
+      await user.type(searchInput, "Beta");
+
+      // Should only show matching row
+      await waitFor(() => {
+        expect(screen.queryByText("Acme Corporation")).not.toBeInTheDocument();
+        expect(screen.getByText("Beta Industries")).toBeInTheDocument();
+        expect(screen.queryByText("Gamma Tech")).not.toBeInTheDocument();
+      });
+    });
+
+    it("should be case-insensitive when filtering", async () => {
+      const user = userEvent.setup();
+      mockUsePrincipalPipeline.mockReturnValue({
+        data: mockMultiplePipelineData,
+        loading: false,
+        error: null,
+      });
+
+      render(
+        <MemoryRouter>
+          <PrincipalPipelineTable />
+        </MemoryRouter>
+      );
+
+      const searchInput = screen.getByPlaceholderText(/search principals/i);
+      await user.type(searchInput, "beta");
+
+      await waitFor(() => {
+        expect(screen.getByText("Beta Industries")).toBeInTheDocument();
+        expect(screen.queryByText("Acme Corporation")).not.toBeInTheDocument();
+      });
+    });
   });
 });
