@@ -6,13 +6,40 @@ import { ChartWrapper } from "../components/ChartWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGlobalFilters } from "../contexts/GlobalFilterContext";
 import { PipelineChart } from "../charts/PipelineChart";
+import { ActivityTrendChart } from "../charts/ActivityTrendChart";
+import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
+import { RepPerformanceChart } from "../charts/RepPerformanceChart";
 import { OPPORTUNITY_STAGE_CHOICES } from "../../opportunities/stageConstants";
+import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
 import "../charts/chartSetup";
+
+interface Opportunity {
+  id: number;
+  stage: string;
+  opportunity_owner_id: number;
+  principal_organization_id: number | null;
+  principal_organization_name?: string;
+  last_activity_at?: string;
+  deleted_at?: string;
+}
+
+interface ActivityRecord {
+  id: number;
+  created_at: string;
+  created_by: number;
+}
+
+interface Sale {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
 
 export default function OverviewTab() {
   const { filters } = useGlobalFilters();
 
-  const { data: opportunities = [], isPending: opportunitiesPending } = useGetList(
+  // Fetch opportunities
+  const { data: opportunities = [], isPending: opportunitiesPending } = useGetList<Opportunity>(
     "opportunities",
     {
       pagination: { page: 1, perPage: 10000 },
@@ -23,34 +50,109 @@ export default function OverviewTab() {
     }
   );
 
-  const { data: activities = [], isPending: activitiesPending } = useGetList("activities", {
-    pagination: { page: 1, perPage: 10000 },
-    filter: {
-      "created_at@gte": filters.dateRange.start.toISOString(),
-      "created_at@lte": filters.dateRange.end.toISOString(),
-      ...(filters.salesRepId && { created_by: filters.salesRepId }),
-    },
+  // Fetch activities for the date range (last 30 days for trends)
+  const thirtyDaysAgo = useMemo(() => subDays(new Date(), 30).toISOString(), []);
+  const sixtyDaysAgo = useMemo(() => subDays(new Date(), 60).toISOString(), []);
+
+  const { data: activities = [], isPending: activitiesPending } = useGetList<ActivityRecord>(
+    "activities",
+    {
+      pagination: { page: 1, perPage: 10000 },
+      filter: {
+        "created_at@gte": sixtyDaysAgo, // Get 60 days for comparison
+        "created_at@lte": new Date().toISOString(),
+        ...(filters.salesRepId && { created_by: filters.salesRepId }),
+      },
+    }
+  );
+
+  // Fetch sales reps for rep performance
+  const { data: salesReps = [] } = useGetList<Sale>("sales", {
+    pagination: { page: 1, perPage: 100 },
   });
 
+  const salesMap = useMemo(
+    () => new Map(salesReps.map((s) => [s.id, `${s.first_name} ${s.last_name}`])),
+    [salesReps]
+  );
+
+  // Calculate KPIs with real trend percentages
   const kpis = useMemo(() => {
-    const totalOpportunities = opportunities.length;
-    const weekActivities = activities.filter((a) => {
+    const now = new Date();
+    const weekAgo = subDays(now, 7);
+    const twoWeeksAgo = subDays(now, 14);
+    const thirtyDaysAgoDate = subDays(now, 30);
+    const sixtyDaysAgoDate = subDays(now, 60);
+
+    // Current week activities
+    const currentWeekActivities = activities.filter((a) => {
       const date = new Date(a.created_at);
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
       return date >= weekAgo;
     }).length;
+
+    // Previous week activities (for comparison)
+    const previousWeekActivities = activities.filter((a) => {
+      const date = new Date(a.created_at);
+      return date >= twoWeeksAgo && date < weekAgo;
+    }).length;
+
+    // Calculate activity trend
+    let activityTrend: "up" | "down" | "neutral" = "neutral";
+    let activityChange = 0;
+    if (previousWeekActivities > 0) {
+      activityChange = Math.round(
+        ((currentWeekActivities - previousWeekActivities) / previousWeekActivities) * 100
+      );
+      activityTrend = activityChange > 0 ? "up" : activityChange < 0 ? "down" : "neutral";
+    } else if (currentWeekActivities > 0) {
+      activityChange = 100;
+      activityTrend = "up";
+    }
+
+    // Current period opportunities (last 30 days)
+    const currentOpportunities = opportunities.length;
+
+    // Calculate opportunity trend (compare to nothing since we can't see historical counts)
+    // For now, we'll base trend on activity in last 30 days
+    const recentActiveOpps = opportunities.filter((opp) => {
+      if (!opp.last_activity_at) return false;
+      const activityDate = new Date(opp.last_activity_at);
+      return activityDate >= thirtyDaysAgoDate;
+    }).length;
+
+    const olderActiveOpps = opportunities.filter((opp) => {
+      if (!opp.last_activity_at) return false;
+      const activityDate = new Date(opp.last_activity_at);
+      return activityDate >= sixtyDaysAgoDate && activityDate < thirtyDaysAgoDate;
+    }).length;
+
+    let opportunityTrend: "up" | "down" | "neutral" = "neutral";
+    let opportunityChange = 0;
+    if (olderActiveOpps > 0) {
+      opportunityChange = Math.round(((recentActiveOpps - olderActiveOpps) / olderActiveOpps) * 100);
+      opportunityTrend = opportunityChange > 0 ? "up" : opportunityChange < 0 ? "down" : "neutral";
+    }
+
+    // Stale leads (Lead stage with no recent activity)
     const staleLeads = opportunities.filter((opp) => {
-      return opp.stage === "Lead" && !opp.last_activity_at;
+      const isLead = opp.stage === "Lead" || opp.stage === "new_lead";
+      const hasNoRecentActivity =
+        !opp.last_activity_at || new Date(opp.last_activity_at) < weekAgo;
+      return isLead && hasNoRecentActivity;
     }).length;
 
     return {
-      totalOpportunities,
-      weekActivities,
+      totalOpportunities: currentOpportunities,
+      weekActivities: currentWeekActivities,
       staleLeads,
+      activityChange: Math.abs(activityChange),
+      activityTrend,
+      opportunityChange: Math.abs(opportunityChange),
+      opportunityTrend,
     };
   }, [opportunities, activities]);
 
+  // Prepare pipeline data for chart
   const pipelineData = useMemo(() => {
     const stageCounts = OPPORTUNITY_STAGE_CHOICES.map((stage) => ({
       stage: stage.name,
@@ -58,6 +160,80 @@ export default function OverviewTab() {
     }));
     return stageCounts.filter((s) => s.count > 0);
   }, [opportunities]);
+
+  // Prepare activity trend data (last 14 days)
+  const activityTrendData = useMemo(() => {
+    const now = new Date();
+    const fourteenDaysAgo = subDays(now, 13); // 14 days including today
+
+    const days = eachDayOfInterval({ start: startOfDay(fourteenDaysAgo), end: startOfDay(now) });
+
+    return days.map((day) => {
+      const dayStr = format(day, "yyyy-MM-dd");
+      const count = activities.filter((a) => {
+        const activityDate = format(new Date(a.created_at), "yyyy-MM-dd");
+        return activityDate === dayStr;
+      }).length;
+
+      return {
+        date: format(day, "MMM d"),
+        count,
+      };
+    });
+  }, [activities]);
+
+  // Prepare top principals data
+  const topPrincipalsData = useMemo(() => {
+    const principalCounts = new Map<string, { name: string; count: number }>();
+
+    opportunities.forEach((opp) => {
+      const principalName = opp.principal_organization_name || "No Principal";
+      const key = opp.principal_organization_id?.toString() || "none";
+
+      if (!principalCounts.has(key)) {
+        principalCounts.set(key, { name: principalName, count: 0 });
+      }
+      principalCounts.get(key)!.count += 1;
+    });
+
+    return Array.from(principalCounts.values()).filter((p) => p.name !== "No Principal");
+  }, [opportunities]);
+
+  // Prepare rep performance data
+  const repPerformanceData = useMemo(() => {
+    const repStats = new Map<
+      number,
+      { name: string; activities: number; opportunities: number }
+    >();
+
+    // Count activities per rep
+    activities.forEach((activity) => {
+      if (!activity.created_by) return;
+      if (!repStats.has(activity.created_by)) {
+        repStats.set(activity.created_by, {
+          name: salesMap.get(activity.created_by) || `Rep ${activity.created_by}`,
+          activities: 0,
+          opportunities: 0,
+        });
+      }
+      repStats.get(activity.created_by)!.activities += 1;
+    });
+
+    // Count opportunities per rep
+    opportunities.forEach((opp) => {
+      if (!opp.opportunity_owner_id) return;
+      if (!repStats.has(opp.opportunity_owner_id)) {
+        repStats.set(opp.opportunity_owner_id, {
+          name: salesMap.get(opp.opportunity_owner_id) || `Rep ${opp.opportunity_owner_id}`,
+          activities: 0,
+          opportunities: 0,
+        });
+      }
+      repStats.get(opp.opportunity_owner_id)!.opportunities += 1;
+    });
+
+    return Array.from(repStats.values());
+  }, [activities, opportunities, salesMap]);
 
   const isLoading = opportunitiesPending || activitiesPending;
 
@@ -74,18 +250,18 @@ export default function OverviewTab() {
           <KPICard
             title="Total Opportunities"
             value={kpis.totalOpportunities}
-            change={12}
-            trend="up"
+            change={kpis.opportunityChange}
+            trend={kpis.opportunityTrend}
             icon={TrendingUp}
-            subtitle="Opportunities in pipeline"
+            subtitle="Active opportunities in pipeline"
           />
           <KPICard
             title="Activities This Week"
             value={kpis.weekActivities}
-            change={-5}
-            trend="down"
+            change={kpis.activityChange}
+            trend={kpis.activityTrend}
             icon={Activity}
-            subtitle="Most: Emails"
+            subtitle="Calls, emails, meetings logged"
           />
           <KPICard
             title="Stale Leads"
@@ -93,7 +269,7 @@ export default function OverviewTab() {
             change={0}
             trend="neutral"
             icon={AlertCircle}
-            subtitle="> 7 days inactive"
+            subtitle="Leads with no activity in 7+ days"
           />
         </div>
       )}
@@ -103,22 +279,16 @@ export default function OverviewTab() {
           <PipelineChart data={pipelineData} />
         </ChartWrapper>
 
-        <ChartWrapper title="Activity Trend" isLoading={isLoading}>
-          <div className="flex items-center justify-center h-full text-muted-foreground">
-            Chart implementation coming soon
-          </div>
+        <ChartWrapper title="Activity Trend (14 Days)" isLoading={isLoading}>
+          <ActivityTrendChart data={activityTrendData} />
         </ChartWrapper>
 
-        <ChartWrapper title="Top Principals" isLoading={isLoading}>
-          <div className="flex items-center justify-center h-full text-muted-foreground">
-            Chart implementation coming soon
-          </div>
+        <ChartWrapper title="Top Principals by Opportunities" isLoading={isLoading}>
+          <TopPrincipalsChart data={topPrincipalsData} />
         </ChartWrapper>
 
         <ChartWrapper title="Rep Performance" isLoading={isLoading}>
-          <div className="flex items-center justify-center h-full text-muted-foreground">
-            Chart implementation coming soon
-          </div>
+          <RepPerformanceChart data={repPerformanceData} />
         </ChartWrapper>
       </div>
     </div>

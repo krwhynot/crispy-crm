@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GlobalFilterProvider } from "./contexts/GlobalFilterContext";
+import { GlobalFilterBar } from "./components/GlobalFilterBar";
 import { Suspense, lazy, useEffect } from "react";
 import { cleanupOldReportKeys } from "./utils/cleanupMigration";
 
@@ -26,6 +27,9 @@ export default function ReportsPage() {
     <GlobalFilterProvider>
       <div className="p-6 space-y-4">
         <h1 className="text-3xl font-bold">Reports & Analytics</h1>
+
+        {/* Global filters apply to Overview tab */}
+        <GlobalFilterBar />
 
         <Tabs value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="grid w-full grid-cols-4">

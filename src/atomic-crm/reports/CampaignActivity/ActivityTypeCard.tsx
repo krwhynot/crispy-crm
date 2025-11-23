@@ -62,8 +62,8 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
   const icon = ACTIVITY_ICONS[group.type.toLowerCase()] || "📌";
   const label = getActivityTypeLabel(group.type);
 
-  // Use percentage from parent if available, otherwise calculate for backwards compatibility
-  const percentage = group.percentage ?? Math.round((group.totalCount / 247) * 100);
+  // Use percentage from parent - parent always provides this value
+  const percentage = group.percentage ?? 0;
 
   // Use provided most active org data if available, otherwise calculate
   let mostActiveOrgDisplay: string;

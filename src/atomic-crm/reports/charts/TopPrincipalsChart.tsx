@@ -1,0 +1,102 @@
+import { Bar } from "react-chartjs-2";
+import { useChartTheme } from "../hooks/useChartTheme";
+import "./chartSetup";
+
+interface TopPrincipalsChartProps {
+  data: Array<{ name: string; count: number }>;
+}
+
+/**
+ * Top Principals Chart
+ *
+ * Horizontal bar chart showing principals with most opportunities.
+ * Limited to top 5 principals for readability.
+ */
+export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
+  const theme = useChartTheme();
+
+  // Take top 5 and sort descending
+  const topData = [...data].sort((a, b) => b.count - a.count).slice(0, 5);
+
+  const chartData = {
+    labels: topData.map((d) => truncateLabel(d.name, 20)),
+    datasets: [
+      {
+        label: "Opportunities",
+        data: topData.map((d) => d.count),
+        backgroundColor: [
+          theme.colors.primary,
+          theme.colors.brand700,
+          theme.colors.success,
+          theme.colors.warning,
+          theme.colors.muted,
+        ],
+        borderRadius: 4,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: "y" as const,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          title: (context: any) => {
+            // Show full name in tooltip
+            const index = context[0].dataIndex;
+            return topData[index]?.name || "";
+          },
+          label: (context: any) => {
+            return `${context.parsed.x} opportunities`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(0, 0, 0, 0.05)",
+        },
+        ticks: {
+          font: {
+            family: theme.font.family,
+            size: theme.font.size,
+          },
+          stepSize: 1,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          font: {
+            family: theme.font.family,
+            size: theme.font.size,
+          },
+        },
+      },
+    },
+  };
+
+  if (data.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-muted-foreground">
+        No principal data available
+      </div>
+    );
+  }
+
+  return <Bar data={chartData} options={options} />;
+}
+
+function truncateLabel(label: string, maxLength: number): string {
+  if (label.length <= maxLength) return label;
+  return label.substring(0, maxLength - 3) + "...";
+}
