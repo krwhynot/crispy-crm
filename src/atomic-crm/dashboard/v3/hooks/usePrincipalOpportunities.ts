@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 
 /**
@@ -25,22 +25,35 @@ interface UsePrincipalOpportunitiesOptions {
  * Used by the Pipeline Drill-Down feature to show opportunities
  * when clicking on a principal row in the pipeline table.
  */
+// Stable empty array to avoid new reference creation
+const EMPTY_OPPORTUNITIES: OpportunitySummary[] = [];
+
 export function usePrincipalOpportunities({
   principalId,
   enabled = true,
 }: UsePrincipalOpportunitiesOptions) {
   const dataProvider = useDataProvider();
-  const [opportunities, setOpportunities] = useState<OpportunitySummary[]>([]);
+  const [opportunities, setOpportunities] = useState<OpportunitySummary[]>(EMPTY_OPPORTUNITIES);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  // Track previous principalId to avoid unnecessary resets
+  const prevPrincipalIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const fetchOpportunities = async () => {
       if (!enabled || !principalId) {
-        setOpportunities([]);
-        setLoading(false);
+        // Only reset if we previously had data (principalId changed to null)
+        if (prevPrincipalIdRef.current !== null) {
+          setOpportunities(EMPTY_OPPORTUNITIES);
+          prevPrincipalIdRef.current = null;
+        }
+        // Only set loading to false if it's currently true
+        setLoading((prev) => prev ? false : prev);
         return;
       }
+
+      prevPrincipalIdRef.current = principalId;
 
       try {
         setLoading(true);

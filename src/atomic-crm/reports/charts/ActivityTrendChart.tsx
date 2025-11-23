@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
-import { TooltipContextY } from "./chartUtils";
+import type { TooltipContextY } from "./chartUtils";
 import "./chartSetup";
 
 interface ActivityTrendChartProps {

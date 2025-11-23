@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
-import { truncateLabel, TooltipContextX, TooltipTitleContext } from "./chartUtils";
+import type { TooltipContextX, TooltipTitleContext } from "./chartUtils";
+import { truncateLabel } from "./chartUtils";
 import "./chartSetup";
 
 interface TopPrincipalsChartProps {

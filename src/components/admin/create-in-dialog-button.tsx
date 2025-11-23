@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CreateBase, Form, useNotify, useDataProvider, useRefresh } from "ra-core";
+import { CreateBase, Form, useNotify, useRefresh } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import {
@@ -43,32 +43,23 @@ export const CreateInDialogButton = ({
 }: CreateInDialogButtonProps) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const dataProvider = useDataProvider();
   const refresh = useRefresh();
 
-  const handleSave = async (data: any) => {
-    try {
-      // Apply transform if provided
-      const transformedData = transform ? transform(data) : data;
+  // Handle successful creation - CreateBase already called dataProvider.create(),
+  // so this callback receives the newly created record with its ID
+  const handleSuccess = (createdRecord: any) => {
+    // Close dialog
+    setOpen(false);
 
-      // Create the record
-      const response = await dataProvider.create(resource, { data: transformedData });
+    // Notify success
+    notify(`${resource} created successfully`, { type: "success" });
 
-      // Close dialog
-      setOpen(false);
+    // Refresh the list/form to get new options
+    refresh();
 
-      // Notify success
-      notify(`${resource} created successfully`, { type: "success" });
-
-      // Refresh the list/form to get new options
-      refresh();
-
-      // Call onSave callback if provided (for auto-selecting the new record)
-      if (onSave && response.data) {
-        onSave(response.data);
-      }
-    } catch {
-      notify(`Error creating ${resource}`, { type: "error" });
+    // Call onSave callback if provided (for auto-selecting the new record)
+    if (onSave && createdRecord) {
+      onSave(createdRecord);
     }
   };
 
@@ -88,9 +79,11 @@ export const CreateInDialogButton = ({
         <CreateBase
           resource={resource}
           redirect={false}
+          transform={transform}
           mutationOptions={{
-            onSuccess: (data: any) => {
-              handleSave(data);
+            onSuccess: handleSuccess,
+            onError: () => {
+              notify(`Error creating ${resource}`, { type: "error" });
             },
           }}
         >
