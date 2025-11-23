@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { SearchInput } from "@/components/admin/search-input";
 import { MultiSelectInput } from "@/components/admin/multi-select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
@@ -10,7 +11,7 @@ import { getInitialStageFilter } from "./opportunityStagePreferences";
  * Centralized filter configuration for opportunities resource
  * Shared between List and future Kanban views for consistent filter state
  *
- * @returns Array of React Admin filter input components
+ * @returns Memoized array of React Admin filter input components
  *
  * @example
  * ```tsx
@@ -19,7 +20,9 @@ import { getInitialStageFilter } from "./opportunityStagePreferences";
  * ```
  */
 export const useOpportunityFilters = () => {
-  return [
+  // Memoize the filter array to prevent unnecessary re-renders
+  // Note: getInitialStageFilter() reads from localStorage and should be stable
+  return useMemo(() => [
     <SearchInput source="q" alwaysOn />,
     // ⭐ Principal filter at TOP position (most important filter per PRD)
     <ReferenceInput source="principal_organization_id" reference="organizations">
@@ -48,5 +51,5 @@ export const useOpportunityFilters = () => {
       defaultValue={getInitialStageFilter()}
     />,
     <OnlyMineInput source="opportunity_owner_id" alwaysOn />,
-  ];
+  ], []); // Empty dependency array - filters are static configuration
 };
