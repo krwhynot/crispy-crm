@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { QuickLogForm } from "./QuickLogForm";
 
-export function QuickLoggerPanel() {
+interface QuickLoggerPanelProps {
+  onRefresh?: () => void;
+}
+
+export function QuickLoggerPanel({ onRefresh }: QuickLoggerPanelProps) {
   const [isLogging, setIsLogging] = useState(false);
 
   return (

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNotify } from "react-admin";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -76,7 +77,7 @@ export function TasksPanel() {
           )}
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          Overdue items highlighted • Click to complete • Drag to reschedule
+          Overdue items highlighted • Click to complete
         </p>
       </CardHeader>
 
@@ -96,29 +97,33 @@ export function TasksPanel() {
             </TaskGroup>
           )}
 
-          {/* Today section */}
-          <TaskGroup title="Today" variant="warning" count={todayTasks.length}>
-            {todayTasks.map((task) => (
-              <TaskItemComponent
-                key={task.id}
-                task={task}
-                onComplete={completeTask}
-                onSnooze={snoozeTask}
-              />
-            ))}
-          </TaskGroup>
+          {/* Today section - only show if has tasks */}
+          {todayTasks.length > 0 && (
+            <TaskGroup title="Today" variant="warning" count={todayTasks.length}>
+              {todayTasks.map((task) => (
+                <TaskItemComponent
+                  key={task.id}
+                  task={task}
+                  onComplete={completeTask}
+                  onSnooze={snoozeTask}
+                />
+              ))}
+            </TaskGroup>
+          )}
 
-          {/* Tomorrow section */}
-          <TaskGroup title="Tomorrow" variant="info" count={tomorrowTasks.length}>
-            {tomorrowTasks.map((task) => (
-              <TaskItemComponent
-                key={task.id}
-                task={task}
-                onComplete={completeTask}
-                onSnooze={snoozeTask}
-              />
-            ))}
-          </TaskGroup>
+          {/* Tomorrow section - only show if has tasks */}
+          {tomorrowTasks.length > 0 && (
+            <TaskGroup title="Tomorrow" variant="info" count={tomorrowTasks.length}>
+              {tomorrowTasks.map((task) => (
+                <TaskItemComponent
+                  key={task.id}
+                  task={task}
+                  onComplete={completeTask}
+                  onSnooze={snoozeTask}
+                />
+              ))}
+            </TaskGroup>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -133,11 +138,13 @@ interface TaskItemProps {
 
 function TaskItemComponent({ task, onComplete, onSnooze }: TaskItemProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
+  const notify = useNotify();
 
   const handleSnooze = async () => {
     setIsSnoozing(true);
     try {
       await onSnooze(task.id);
+      notify("Task snoozed for tomorrow", { type: "success" });
     } catch {
       // Error already logged in hook, just reset state
     } finally {
