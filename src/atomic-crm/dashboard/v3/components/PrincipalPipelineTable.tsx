@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,17 +16,89 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, AlertCircle, Filter, ArrowUpDown, ArrowUp, ArrowDown, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import type { PrincipalPipelineRow } from "../types";
 import { usePrincipalPipeline } from "../hooks/usePrincipalPipeline";
 import { PipelineDrillDownSheet } from "./PipelineDrillDownSheet";
+
+type SortField = "name" | "totalPipeline" | "activeThisWeek" | "activeLastWeek" | "momentum";
+type SortDirection = "ascending" | "descending" | "none";
 
 export function PrincipalPipelineTable() {
   const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(false);
   const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(
     null
   );
+  const [sortField, setSortField] = useState<SortField>("name");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
+  const [searchQuery, setSearchQuery] = useState("");
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
+
+  // Handle column header click for sorting
+  const handleSort = useCallback((field: SortField) => {
+    if (sortField === field) {
+      // Toggle direction: ascending -> descending -> ascending
+      setSortDirection((prev) => (prev === "ascending" ? "descending" : "ascending"));
+    } else {
+      // New field: start with ascending for name, descending for numeric fields
+      setSortField(field);
+      setSortDirection(field === "name" ? "ascending" : "descending");
+    }
+  }, [sortField]);
+
+  // Filter data based on search query
+  const filteredData = useMemo(() => {
+    if (!data || data.length === 0) return data;
+    if (!searchQuery.trim()) return data;
+
+    const query = searchQuery.toLowerCase().trim();
+    return data.filter((row) => row.name.toLowerCase().includes(query));
+  }, [data, searchQuery]);
+
+  // Sort data based on current sort state
+  const sortedData = useMemo(() => {
+    if (!filteredData || filteredData.length === 0) return filteredData;
+
+    return [...filteredData].sort((a, b) => {
+      let comparison = 0;
+
+      switch (sortField) {
+        case "name":
+          comparison = a.name.localeCompare(b.name);
+          break;
+        case "totalPipeline":
+          comparison = a.totalPipeline - b.totalPipeline;
+          break;
+        case "activeThisWeek":
+          comparison = a.activeThisWeek - b.activeThisWeek;
+          break;
+        case "activeLastWeek":
+          comparison = a.activeLastWeek - b.activeLastWeek;
+          break;
+        case "momentum": {
+          const momentumOrder = { increasing: 3, steady: 2, decreasing: 1, stale: 0 };
+          comparison = momentumOrder[a.momentum] - momentumOrder[b.momentum];
+          break;
+        }
+      }
+
+      return sortDirection === "descending" ? -comparison : comparison;
+    });
+  }, [data, sortField, sortDirection]);
+
+  // Get aria-sort value for a column
+  const getAriaSortValue = (field: SortField): "ascending" | "descending" | "none" => {
+    if (sortField === field) return sortDirection;
+    return "none";
+  };
+
+  // Render sort indicator
+  const renderSortIcon = (field: SortField) => {
+    if (sortField !== field) return <ArrowUpDown className="ml-1 h-4 w-4 opacity-50" />;
+    if (sortDirection === "ascending") return <ArrowUp className="ml-1 h-4 w-4" />;
+    return <ArrowDown className="ml-1 h-4 w-4" />;
+  };
 
   const handleRowClick = useCallback((row: PrincipalPipelineRow) => {
     setSelectedPrincipal({ id: row.id, name: row.name });
@@ -128,16 +200,61 @@ export function PrincipalPipelineTable() {
         <Table>
           <TableHeader className="sticky top-0 bg-background">
             <TableRow>
-              <TableHead>Principal</TableHead>
-              <TableHead className="text-right">Pipeline</TableHead>
-              <TableHead className="text-center">This Week</TableHead>
-              <TableHead className="text-center">Last Week</TableHead>
-              <TableHead>Momentum</TableHead>
+              <TableHead
+                className="cursor-pointer select-none hover:bg-muted/50"
+                onClick={() => handleSort("name")}
+                aria-sort={getAriaSortValue("name")}
+              >
+                <div className="flex items-center">
+                  Principal
+                  {renderSortIcon("name")}
+                </div>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none text-right hover:bg-muted/50"
+                onClick={() => handleSort("totalPipeline")}
+                aria-sort={getAriaSortValue("totalPipeline")}
+              >
+                <div className="flex items-center justify-end">
+                  Pipeline
+                  {renderSortIcon("totalPipeline")}
+                </div>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none text-center hover:bg-muted/50"
+                onClick={() => handleSort("activeThisWeek")}
+                aria-sort={getAriaSortValue("activeThisWeek")}
+              >
+                <div className="flex items-center justify-center">
+                  This Week
+                  {renderSortIcon("activeThisWeek")}
+                </div>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none text-center hover:bg-muted/50"
+                onClick={() => handleSort("activeLastWeek")}
+                aria-sort={getAriaSortValue("activeLastWeek")}
+              >
+                <div className="flex items-center justify-center">
+                  Last Week
+                  {renderSortIcon("activeLastWeek")}
+                </div>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer select-none hover:bg-muted/50"
+                onClick={() => handleSort("momentum")}
+                aria-sort={getAriaSortValue("momentum")}
+              >
+                <div className="flex items-center">
+                  Momentum
+                  {renderSortIcon("momentum")}
+                </div>
+              </TableHead>
               <TableHead>Next Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((row) => (
+            {sortedData.map((row) => (
               <TableRow
                 key={row.id}
                 className="table-row-premium cursor-pointer"
