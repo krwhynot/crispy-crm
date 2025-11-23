@@ -502,17 +502,16 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Select first organization from combobox by clicking first option
-   * Directly clicks the option instead of using keyboard to ensure selection
+   * Uses dispatchEvent to bypass viewport issues with portaled CMDK content
    */
   async selectFirstOrganization(): Promise<void> {
     const combobox = this.getOrganizationCombobox();
     await combobox.click();
-    // Wait for options to load
-    await this.page.waitForTimeout(300);
-    // Click the first option - scroll into view first to avoid viewport issues
-    const firstOption = this.page.locator("[cmdk-item]").first();
-    await firstOption.scrollIntoViewIfNeeded();
-    await firstOption.click({ force: true }); // Force click in case of any overlay
+    // Wait for CMDK list to appear and have at least one item
+    const cmdkItem = this.page.locator("[cmdk-item]");
+    await cmdkItem.first().waitFor({ state: "visible", timeout: 5000 });
+    // Use dispatchEvent to bypass viewport checks (portaled content can be outside viewport)
+    await cmdkItem.first().dispatchEvent("click");
     // Wait for selection to be applied and popover to close
     await this.page.waitForTimeout(300);
     // If popover is still open, dismiss it
@@ -522,7 +521,7 @@ export class DashboardV3Page extends BasePage {
   /**
    * Select first opportunity from combobox by clicking first option
    * Required for interaction activities (Call, Email, Meeting, etc.)
-   * Uses direct click approach (same as selectFirstOrganization) for reliability
+   * Uses dispatchEvent to bypass viewport issues with portaled CMDK content
    */
   async selectFirstOpportunity(): Promise<void> {
     const combobox = this.getOpportunityCombobox();
@@ -530,9 +529,8 @@ export class DashboardV3Page extends BasePage {
     // Wait for CMDK list to appear and have at least one item
     const cmdkItem = this.page.locator("[cmdk-item]");
     await cmdkItem.first().waitFor({ state: "visible", timeout: 5000 });
-    // Click the first option - scroll into view first to avoid viewport issues
-    await cmdkItem.first().scrollIntoViewIfNeeded();
-    await cmdkItem.first().click({ force: true }); // Force click in case of any overlay
+    // Use dispatchEvent to bypass viewport checks (portaled content can be outside viewport)
+    await cmdkItem.first().dispatchEvent("click");
     // Wait for selection to be applied and popover to close
     await this.page.waitForTimeout(300);
     // If popover is still open, dismiss it

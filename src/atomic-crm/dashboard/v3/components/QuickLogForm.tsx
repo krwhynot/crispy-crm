@@ -179,11 +179,12 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
           data: {
             title: `Follow-up: ${data.notes.substring(0, 50)}`,
             due_date: data.followUpDate.toISOString(),
-            type: "follow_up",
+            type: "Follow-up", // Match schema enum (title-case with hyphen)
             priority: "medium",
-            contact_id: data.contactId,
-            opportunity_id: data.opportunityId,
-            organization_id: data.organizationId,
+            // Only include IDs that are valid numbers (not NaN/undefined)
+            ...(data.contactId && !isNaN(data.contactId) && { contact_id: data.contactId }),
+            ...(data.opportunityId && !isNaN(data.opportunityId) && { opportunity_id: data.opportunityId }),
+            ...(data.organizationId && !isNaN(data.organizationId) && { organization_id: data.organizationId }),
             sales_id: salesId,
             created_by: salesId,
           },
