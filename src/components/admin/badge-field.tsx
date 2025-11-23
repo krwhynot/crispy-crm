@@ -13,11 +13,11 @@ export const BadgeField = <RecordType extends RaRecord = RaRecord>({
   empty,
   variant = "outline",
   // Filter out React Admin-specific props that shouldn't be passed to DOM elements
-  label,
-  sortable,
-  sortBy,
-  textAlign,
-  rowClassName,
+  label: _label,
+  sortable: _sortable,
+  sortBy: _sortBy,
+  textAlign: _textAlign,
+  rowClassName: _rowClassName,
   ...rest
 }: BadgeFieldProps<RecordType>) => {
   const value = useFieldValue({ defaultValue, source, record });

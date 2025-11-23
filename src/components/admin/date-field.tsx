@@ -42,10 +42,10 @@ const DateFieldImpl = <RecordType extends Record<string, any> = Record<string, a
     record,
     defaultValue,
     // Filter out React Admin-specific props that shouldn't be passed to DOM elements
-    label,
-    sortable,
-    sortBy,
-    textAlign,
+    label: _label,
+    sortable: _sortable,
+    sortBy: _sortBy,
+    textAlign: _textAlign,
     ...rest
   } = inProps;
   const translate = useTranslate();

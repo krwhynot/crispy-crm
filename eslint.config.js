@@ -73,6 +73,7 @@ export default tseslint.config(
       "prism.js",
       "packages/create-react-admin/templates/**",
       ".github",
+      "archive/**", // Legacy/deprecated code - not actively maintained
     ],
   },
   // TypeScript configuration

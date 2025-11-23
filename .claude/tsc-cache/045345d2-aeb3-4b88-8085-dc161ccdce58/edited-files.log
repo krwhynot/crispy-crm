@@ -14,3 +14,10 @@
 1763848703:/home/krwhynot/projects/crispy-crm/src/hooks/useSlideOverState.test.ts:src
 1763848730:/home/krwhynot/projects/crispy-crm/src/atomic-crm/contacts/__tests__/ContactList.test.tsx:src
 1763848831:/home/krwhynot/projects/crispy-crm/src/atomic-crm/organizations/BranchLocationsSection.tsx:src
+1763849006:/home/krwhynot/projects/crispy-crm/src/components/admin/badge-field.tsx:src
+1763849007:/home/krwhynot/projects/crispy-crm/src/components/admin/date-field.tsx:src
+1763849009:/home/krwhynot/projects/crispy-crm/src/components/admin/email-field.tsx:src
+1763849011:/home/krwhynot/projects/crispy-crm/src/components/admin/number-field.tsx:src
+1763849029:/home/krwhynot/projects/crispy-crm/src/components/admin/file-field.tsx:src
+1763849031:/home/krwhynot/projects/crispy-crm/src/atomic-crm/sales/SalesList.tsx:src
+1763856214:/home/krwhynot/projects/crispy-crm/eslint.config.js:root
