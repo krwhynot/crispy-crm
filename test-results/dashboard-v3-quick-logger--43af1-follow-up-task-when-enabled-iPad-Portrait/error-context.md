@@ -354,39 +354,47 @@
               - generic [ref=e382]:
                 - generic [ref=e383]: Contact *
                 - combobox "Contact *" [ref=e384] [cursor=pointer]:
-                  - text: Select contact
+                  - text: A Mclovin
                   - img
                 - paragraph [ref=e385]: Select a contact OR organization
               - generic [ref=e386]:
                 - generic [ref=e387]: Organization *
                 - combobox "Organization *" [ref=e388] [cursor=pointer]:
-                  - text: Select organization
                   - img
                 - paragraph [ref=e389]: Select a contact OR organization
               - generic [ref=e390]:
                 - generic [ref=e391]: Opportunity
-                - combobox "Opportunity" [ref=e393] [cursor=pointer]:
-                  - text: Select opportunity (optional)
-                  - img
-            - generic [ref=e394]:
-              - generic [ref=e395]: Notes
-              - textbox "Notes" [ref=e396]:
+                - generic [ref=e392]:
+                  - combobox "Opportunity" [ref=e393] [cursor=pointer]:
+                    - text: A Mclovin @ Muskegon Country Club
+                    - img
+                  - button "Clear opportunity selection" [ref=e394] [cursor=pointer]:
+                    - img
+            - generic [ref=e395]:
+              - generic [ref=e396]: Notes
+              - textbox "Notes" [ref=e397]:
                 - /placeholder: Summary of the interaction...
-                - text: "E2E test email - bulk pricing discussion. Test ID: 1763925055558"
+                - text: "Follow-up required for contract discussion. Test ID: 1763925138048"
             - generic [ref=e398]:
-              - generic [ref=e399]: Create follow-up task?
-              - switch "Create follow-up task?" [ref=e400] [cursor=pointer]
-              - checkbox
-            - generic [ref=e401]:
-              - button "Cancel" [ref=e402] [cursor=pointer]
-              - generic [ref=e403]:
-                - button "Save & Close" [ref=e404] [cursor=pointer]
-                - button "Save & New" [active] [ref=e405] [cursor=pointer]
-  - contentinfo [ref=e406]:
-    - generic [ref=e408]:
-      - paragraph [ref=e409]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e410] [cursor=pointer]:
-        - img [ref=e411]
-        - generic [ref=e413]: Keyboard shortcuts
+              - generic [ref=e399]:
+                - generic [ref=e400]: Create follow-up task?
+                - switch "Create follow-up task?" [checked] [active] [ref=e401] [cursor=pointer]
+                - checkbox [checked]
+              - generic [ref=e402]:
+                - generic [ref=e403]: Follow-up Date
+                - button "Follow-up Date" [ref=e404] [cursor=pointer]:
+                  - img
+                  - generic [ref=e405]: Pick a date
+            - generic [ref=e406]:
+              - button "Cancel" [ref=e407] [cursor=pointer]
+              - generic [ref=e408]:
+                - button "Save & Close" [ref=e409] [cursor=pointer]
+                - button "Save & New" [ref=e410] [cursor=pointer]
+  - contentinfo [ref=e411]:
+    - generic [ref=e413]:
+      - paragraph [ref=e414]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e415] [cursor=pointer]:
+        - img [ref=e416]
+        - generic [ref=e418]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
