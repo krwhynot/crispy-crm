@@ -65,7 +65,7 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
               return topData[index]?.name || "";
             },
             label: (context: TooltipContextX) => {
-              return `${context.parsed.x} opportunities`;
+              return `${context.parsed.x ?? 0} opportunities`;
             },
           },
         },

@@ -181,8 +181,8 @@ export class ReportsOverviewPage extends BasePage {
   async selectDateRange(preset: string): Promise<void> {
     await this.getDateRangeSelector().click();
     await this.page.getByRole("option", { name: new RegExp(preset, "i") }).click();
-    // Wait for data to update
-    await this.page.waitForTimeout(300);
+    // Wait for network activity to settle after filtering
+    await this.page.waitForLoadState("networkidle");
   }
 
   /**
@@ -191,8 +191,8 @@ export class ReportsOverviewPage extends BasePage {
   async selectSalesRep(name: string): Promise<void> {
     await this.getSalesRepSelector().click();
     await this.page.getByRole("option", { name: new RegExp(name, "i") }).click();
-    // Wait for data to update
-    await this.page.waitForTimeout(300);
+    // Wait for network activity to settle after filtering
+    await this.page.waitForLoadState("networkidle");
   }
 
   /**
@@ -209,7 +209,7 @@ export class ReportsOverviewPage extends BasePage {
     const resetButton = this.getResetFiltersButton();
     if (await resetButton.isVisible()) {
       await resetButton.click();
-      await this.page.waitForTimeout(300);
+      await this.page.waitForLoadState("networkidle");
     }
   }
 

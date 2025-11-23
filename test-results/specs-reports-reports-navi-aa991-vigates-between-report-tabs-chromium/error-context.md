@@ -53,16 +53,12 @@
           - tab "Weekly Activity" [ref=e44] [cursor=pointer]
           - tab "Campaign Activity" [ref=e45] [cursor=pointer]
         - tabpanel "Overview" [ref=e46]:
-          - generic [ref=e52]:
-            - generic [ref=e55]: Pipeline by Stage
-            - generic [ref=e61]: Activity Trend (14 Days)
-            - generic [ref=e67]: Top Principals by Opportunities
-            - generic [ref=e73]: Rep Performance
-  - contentinfo [ref=e77]:
-    - generic [ref=e79]:
-      - paragraph [ref=e80]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e81] [cursor=pointer]:
-        - img [ref=e82]
-        - generic [ref=e84]: Keyboard shortcuts
+          - generic [ref=e47]: Loading...
+  - contentinfo [ref=e48]:
+    - generic [ref=e50]:
+      - paragraph [ref=e51]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+        - generic [ref=e55]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
