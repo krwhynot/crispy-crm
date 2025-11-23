@@ -501,28 +501,36 @@ export class DashboardV3Page extends BasePage {
   }
 
   /**
-   * Select first organization from combobox using keyboard
-   * Uses ArrowDown + Enter for reliable selection
+   * Select first organization from combobox by clicking first option
+   * Directly clicks the option instead of using keyboard to ensure selection
    */
   async selectFirstOrganization(): Promise<void> {
     const combobox = this.getOrganizationCombobox();
     await combobox.click();
-    await this.page.keyboard.press("ArrowDown");
-    await this.page.keyboard.press("Enter");
-    // Wait for the combobox to show a selected value (not placeholder)
+    // Wait for options to load
     await this.page.waitForTimeout(300);
-    // CMDK popovers don't auto-close on selection, click on dashboard header to close
-    await this.dismissComboboxPopover();
+    // Click the first option directly - this is more reliable than keyboard
+    const firstOption = this.page.locator("[cmdk-item]").first();
+    await firstOption.click();
+    // Wait for selection to be applied and popover to close
+    await this.page.waitForTimeout(300);
+    // If popover is still open, dismiss it
+    await this.dismissComboboxPopoverIfOpen();
   }
 
   /**
-   * Dismiss any open CMDK combobox popover by pressing Escape
-   * This is the most reliable way to close CMDK/Radix popovers
+   * Dismiss CMDK combobox popover if it's still open
+   * Clicks on the dashboard header to close any open popovers
    */
-  async dismissComboboxPopover(): Promise<void> {
-    // Escape is the standard way to close Radix popovers
-    await this.page.keyboard.press("Escape");
-    await this.page.waitForTimeout(200);
+  async dismissComboboxPopoverIfOpen(): Promise<void> {
+    // Check if popover is still open
+    const popover = this.page.locator("[data-radix-popper-content-wrapper]");
+    const isOpen = await popover.isVisible().catch(() => false);
+    if (isOpen) {
+      // Click the dashboard header to dismiss the popover
+      await this.getHeader().click({ force: true });
+      await this.page.waitForTimeout(200);
+    }
   }
 
   /**

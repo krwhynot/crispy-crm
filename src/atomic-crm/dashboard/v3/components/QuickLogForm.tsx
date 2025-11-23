@@ -56,6 +56,11 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   const [opportunities, setOpportunities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Combobox open state - controlled popovers that close on selection
+  const [contactOpen, setContactOpen] = useState(false);
+  const [orgOpen, setOrgOpen] = useState(false);
+  const [oppOpen, setOppOpen] = useState(false);
+
   const form = useForm<ActivityLogInput>({
     resolver: zodResolver(activityLogSchema),
     defaultValues: activityLogSchema.partial().parse({}),
