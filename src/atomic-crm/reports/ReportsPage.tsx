@@ -9,6 +9,7 @@ const OverviewTab = lazy(() => import("./tabs/OverviewTab"));
 const OpportunitiesTab = lazy(() => import("./tabs/OpportunitiesTab"));
 const WeeklyActivityTab = lazy(() => import("./tabs/WeeklyActivityTab"));
 const CampaignActivityTab = lazy(() => import("./tabs/CampaignActivityTab"));
+const DataQualityTab = lazy(() => import("./tabs/DataQualityTab"));
 
 export default function ReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,7 +33,7 @@ export default function ReportsPage() {
         <GlobalFilterBar />
 
         <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger
               value="overview"
               data-state={activeTab === "overview" ? "active" : "inactive"}
@@ -53,6 +54,12 @@ export default function ReportsPage() {
               data-state={activeTab === "campaign" ? "active" : "inactive"}
             >
               Campaign Activity
+            </TabsTrigger>
+            <TabsTrigger
+              value="data-quality"
+              data-state={activeTab === "data-quality" ? "active" : "inactive"}
+            >
+              Data Quality
             </TabsTrigger>
           </TabsList>
 
@@ -77,6 +84,12 @@ export default function ReportsPage() {
           <TabsContent value="campaign">
             <Suspense fallback={<div>Loading...</div>}>
               <CampaignActivityTab />
+            </Suspense>
+          </TabsContent>
+
+          <TabsContent value="data-quality">
+            <Suspense fallback={<div>Loading...</div>}>
+              <DataQualityTab />
             </Suspense>
           </TabsContent>
         </Tabs>
